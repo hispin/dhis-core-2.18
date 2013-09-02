@@ -12,8 +12,6 @@
     "enrollmentDescription":"$encoder.jsonEncode( ${program.dateOfEnrollmentDescription} )",
     "incidentDescription":"$encoder.jsonEncode( ${program.dateOfIncidentDescription} )",
     "type": "$!program.type",
-    "blockEntryForm": $!{program.blockEntryForm},
-    "remindCompleted": $!{program.remindCompleted},
     "programStages":[#set( $pssize = $program.programStages.size() )
     #foreach( $ps in $program.programStages )
     {
@@ -24,7 +22,9 @@
         "irregular": "$!{ps.irregular}",
         "displayGenerateEventBox": "$!{ps.displayGenerateEventBox}",
         "validCompleteOnly": "$!{ps.validCompleteOnly}",
-        "captureCoordinates": "$!{ps.captureCoordinates}"
+        "captureCoordinates": "$!{ps.captureCoordinates}",
+        "blockEntryForm": "$!ps.blockEntryForm",
+        "remindCompleted": "$!ps.remindCompleted"
     }#if( $velocityCount < $pssize ),#end
     #end],
     "programAssociations": $programAssociations.get( ${program.id} )

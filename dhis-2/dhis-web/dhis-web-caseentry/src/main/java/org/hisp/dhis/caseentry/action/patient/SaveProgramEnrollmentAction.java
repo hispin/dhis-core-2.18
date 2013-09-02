@@ -206,21 +206,26 @@ public class SaveProgramEnrollmentAction
             patient.getPrograms().add( program );
             patientService.updatePatient( patient );
 
-            Date dateCreatedEvent = format.parseDate( dateOfIncident );
-            if ( program.getGeneratedByEnrollmentDate() )
-            {
-                dateCreatedEvent = format.parseDate( enrollmentDate );
-            }
-
             boolean isFirstStage = false;
             Date currentDate = new Date();
             for ( ProgramStage programStage : program.getProgramStages() )
             {
                 if ( programStage.getAutoGenerateEvent() )
                 {
+                    Date dateCreatedEvent = null;
+                    if ( programStage.getGeneratedByEnrollmentDate() )
+                    {
+                        dateCreatedEvent = format.parseDate( enrollmentDate );
+                    }
+                    else
+                    {
+                        dateCreatedEvent = format.parseDate( dateOfIncident );
+
+                    }
+
                     Date dueDate = DateUtils
                         .getDateAfterAddition( dateCreatedEvent, programStage.getMinDaysFromStart() );
-
+                    
                     if ( !program.getIgnoreOverdueEvents()
                         || !(program.getIgnoreOverdueEvents() && dueDate.before( currentDate )) )
                     {
@@ -252,7 +257,7 @@ public class SaveProgramEnrollmentAction
             {
                 outboundSms = new ArrayList<OutboundSms>();
             }
-            
+
             outboundSms.addAll( programInstanceService.sendMessages( programInstance,
                 PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
             programInstanceService.updateProgramInstance( programInstance );

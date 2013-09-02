@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -52,9 +53,11 @@ public class ProgramStage
     extends BaseIdentifiableObject
 {
     public static final String TYPE_DEFAULT = "default";
+
     public static final String TYPE_SECTION = "section";
+
     public static final String TYPE_CUSTOM = "custom";
-    
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -85,10 +88,22 @@ public class ProgramStage
     private Boolean validCompleteOnly = false;
 
     private Boolean displayGenerateEventBox = true;
-    
+
     private Boolean captureCoordinates = false;
-    
+
     private Boolean relatedPatient = false;
+
+    private Boolean displayProvidedOtherFacility;
+
+    private Boolean blockEntryForm = false;
+
+    /**
+     * Enabled this property to show a pop-up for confirming Complete a program
+     * after to complete a progam-stage
+     */
+    private Boolean remindCompleted = false;
+
+    private Boolean generatedByEnrollmentDate;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -147,6 +162,58 @@ public class ProgramStage
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getGeneratedByEnrollmentDate()
+    {
+        return generatedByEnrollmentDate;
+    }
+
+    public void setGeneratedByEnrollmentDate( Boolean generatedByEnrollmentDate )
+    {
+        this.generatedByEnrollmentDate = generatedByEnrollmentDate;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getBlockEntryForm()
+    {
+        return blockEntryForm;
+    }
+
+    public void setBlockEntryForm( Boolean blockEntryForm )
+    {
+        this.blockEntryForm = blockEntryForm;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getDisplayProvidedOtherFacility()
+    {
+        return displayProvidedOtherFacility;
+    }
+
+    public void setDisplayProvidedOtherFacility( Boolean displayProvidedOtherFacility )
+    {
+        this.displayProvidedOtherFacility = displayProvidedOtherFacility;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getRemindCompleted()
+    {
+        return remindCompleted;
+    }
+
+    public void setRemindCompleted( Boolean remindCompleted )
+    {
+        this.remindCompleted = remindCompleted;
+    }
 
     public Set<PatientReminder> getPatientReminders()
     {
@@ -360,5 +427,5 @@ public class ProgramStage
     {
         this.relatedPatient = relatedPatient;
     }
-    
+
 }

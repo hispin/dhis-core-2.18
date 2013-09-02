@@ -250,6 +250,35 @@ public class UpdateProgramStageAction
         this.relatedPatient = relatedPatient;
     }
 
+    private Boolean displayProvidedOtherFacility;
+
+    public void setDisplayProvidedOtherFacility( Boolean displayProvidedOtherFacility )
+    {
+        this.displayProvidedOtherFacility = displayProvidedOtherFacility;
+    }
+
+    private Boolean generatedByEnrollmentDate;
+
+    public void setGeneratedByEnrollmentDate( Boolean generatedByEnrollmentDate )
+    {
+        this.generatedByEnrollmentDate = generatedByEnrollmentDate;
+    }
+
+
+    private Boolean blockEntryForm;
+
+    public void setBlockEntryForm( Boolean blockEntryForm )
+    {
+        this.blockEntryForm = blockEntryForm;
+    }
+
+    private Boolean remindCompleted = false;
+
+    public void setRemindCompleted( Boolean remindCompleted )
+    {
+        this.remindCompleted = remindCompleted;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -264,6 +293,10 @@ public class UpdateProgramStageAction
         displayGenerateEventBox = (displayGenerateEventBox == null) ? false : displayGenerateEventBox;
         captureCoordinates = (captureCoordinates == null) ? false : captureCoordinates;
         relatedPatient = (relatedPatient == null) ? false : relatedPatient;
+        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
+        generatedByEnrollmentDate = (generatedByEnrollmentDate == null) ? false : generatedByEnrollmentDate;
+        blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
+        remindCompleted = (remindCompleted == null) ? false : remindCompleted;
 
         ProgramStage programStage = programStageService.getProgramStage( id );
 
@@ -276,6 +309,10 @@ public class UpdateProgramStageAction
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setDisplayGenerateEventBox( displayGenerateEventBox );
         programStage.setRelatedPatient( relatedPatient );
+        programStage.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
+        programStage.setBlockEntryForm( blockEntryForm );
+        programStage.setRemindCompleted( remindCompleted );
+        programStage.setGeneratedByEnrollmentDate( generatedByEnrollmentDate );
 
         if ( !programStage.getProgram().isSingleEvent() )
         {

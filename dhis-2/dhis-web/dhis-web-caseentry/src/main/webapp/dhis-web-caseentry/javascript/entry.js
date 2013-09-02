@@ -795,8 +795,8 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
             $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
             $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
-            $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.program.blockEntryForm );
-            $( "#entryFormContainer input[id='remindCompleted']" ).val( data.program.remindCompleted );
+            $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
+            $( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
 
             $( "input[id='dueDate']" ).val( data.dueDate );
             $( "input[id='executionDate']" ).val( data.executionDate );

@@ -71,7 +71,33 @@
 			#end
 			
 			<tr><th colspan="2">$i18n.getString( "form_details" )</th></tr>
-	
+			
+			<tr>
+				<td><label>$i18n.getString( "show_provided_provided_elsewhere" )</label></td>
+				<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='true' #if( $programStage.displayProvidedOtherFacility=='true' ) checked #end ></td>
+				<td></td>
+			</tr>
+			
+			<tr>
+				<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
+				<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true' #if( $programStage.blockEntryForm=='true' ) checked #end ></td>
+				<td></td>
+			</tr>
+			
+			<tr>
+				<td><label>$i18n.getString( "remind_completing_program_after_program_stage_completed" )</label></td>
+				<td><input type="checkbox" id="remindCompleted" name="remindCompleted" value='true' #if( $programStage.remindCompleted=='true' ) checked #end ></td>
+				<td></td>
+			</tr>
+			
+			#if($programStage.program.type==1)
+			<tr>
+				<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
+				<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($programStage.generatedByEnrollmentDate=='true') checked #end #if( $programStage.program.type!='1' ) disabled #end ></td>
+				<td></td>
+			</tr>
+			#end
+		
 			<tr>
 				<td><label>$i18n.getString( "capture_coordinates" )</label></td>
 				<td><input type="checkbox" id="captureCoordinates" name="captureCoordinates" value='true' #if( $programStage.captureCoordinates && $programStage.captureCoordinates=='true' ) checked #end /></td>

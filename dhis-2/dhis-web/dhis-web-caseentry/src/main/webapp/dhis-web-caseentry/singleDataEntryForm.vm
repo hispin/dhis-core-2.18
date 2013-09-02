@@ -32,7 +32,7 @@
 						<colgroup>
 							<col id="deCol">
 							<col id="entryCol">
-							#if( $programStage.program.displayProvidedOtherFacility=='true')
+							#if( $programStage.displayProvidedOtherFacility=='true')
 							<col width="5%" />
 							#end
 						</colgroup>
@@ -43,7 +43,7 @@
 								<input type="text" class="sectionFilter" placeholder="$encoder.jsEscape( $i18n.getString( "filter_in_section" ) , "'")" onkeyup="filterInSection($(this));" >
 							</td>                   
 							<th>$i18n.getString( "value" )</th>
-							#if( $programStage.program.displayProvidedOtherFacility=='true')
+							#if( $programStage.displayProvidedOtherFacility=='true')
 							<th>$i18n.getString( "provided_elsewhere" )</th>
 							#end
 						</tr>
@@ -121,7 +121,7 @@
 											</td>
 											
 										<td>
-										#if( $programStage.program.displayProvidedOtherFacility=='true' )
+										#if( $programStage.displayProvidedOtherFacility=='true' )
 											#set( $id = $programStageDataElement.programStage.uid + '_' + $programStageDataElement.dataElement.uid + '_facility' )
 											#if( $programStageDataElement.allowProvidedElsewhere == 'true')
 												<input class='provided-elsewhere' name="$id" id="$id" type="checkbox" title="$i18n.getString('provided_elsewhere') ?"/>
@@ -223,7 +223,7 @@
 			#else
 				<input name="entryfield" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" class="{validate:{$validate}}" />
 			#end
-			#if( $programStage.program.displayProvidedOtherFacility=='true' )
+			#if( $programStage.displayProvidedOtherFacility=='true' )
 				#set( $id = $programStageDataElement.programStage.uid + '_' + $programStageDataElement.dataElement.uid + '_facility' )
 				#if( $programStageDataElement.allowProvidedElsewhere == 'true')
 					<input class='provided-elsewhere' name="$id" id="$id" type="checkbox" title="$i18n.getString('provided_elsewhere') ?"/>

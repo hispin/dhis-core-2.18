@@ -297,8 +297,8 @@ public class LoadDataEntryAction
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-        Boolean displayProvidedOtherFacility = program.getDisplayProvidedOtherFacility() == null
-            || !program.getDisplayProvidedOtherFacility();
+        Boolean displayProvidedOtherFacility = programStage.getDisplayProvidedOtherFacility() == null
+            || !programStage.getDisplayProvidedOtherFacility();
 
         if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_SECTION ) )
         {

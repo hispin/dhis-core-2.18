@@ -78,6 +78,18 @@ function showProgramStageDetails( programStageId )
 		setInnerHTML( 'dataElementCountField', json.programStage.dataElementCount );   
 		setInnerHTML( 'reportDateDescriptionField', json.programStage.reportDateDescription );
 		
+		var displayProvidedOtherFacility = ( json.programStage.displayProvidedOtherFacility == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'displayProvidedOtherFacilityField', displayProvidedOtherFacility );   	
+		
+		var blockEntryForm = ( json.programStage.blockEntryForm == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'blockEntryFormField', blockEntryForm );   	
+		
+		var generatedByEnrollmentDate = ( json.programStage.generatedByEnrollmentDate == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'generatedByEnrollmentDateField', generatedByEnrollmentDate );   	
+		
+		var remindCompleted = ( json.programStage.remindCompleted == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'remindCompletedField', remindCompleted );   	
+		
 		var templateMessage = "";
 		for(var i in json.programStage.patientReminders){
 			var index = eval(i) + 1;
