@@ -29,17 +29,80 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = ProgramController.RESOURCE_PATH )
+@RequestMapping(value = ProgramController.RESOURCE_PATH)
 public class ProgramController
     extends AbstractCrudController<Program>
 {
     public static final String RESOURCE_PATH = "/programs";
+
+    @Autowired
+    private ProgramService programService;
+
+    protected List<Program> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<Program> entityList;
+
+        Date lastUpdated = options.getLastUpdated();
+
+        if ( lastUpdated != null )
+        {
+            entityList = new ArrayList<Program>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
+        }
+        else if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
+
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<Program>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+        }
+        else
+        {
+            entityList = new ArrayList<Program>( manager.getAllSorted( getEntityClass() ) );
+        }
+
+        if ( options.getOptions().get( "type" ) != null )
+        {
+            try
+            {
+                int type = Integer.parseInt( options.getOptions().get( "type" ) );
+
+                Iterator<Program> iterator = entityList.iterator();
+
+                while ( iterator.hasNext() )
+                {
+                    Program program = iterator.next();
+
+                    if ( program.getType() != type )
+                    {
+                        iterator.remove();
+                    }
+                }
+            }
+            catch ( NumberFormatException ignored )
+            {
+            }
+        }
+
+        return entityList;
+    }
 }

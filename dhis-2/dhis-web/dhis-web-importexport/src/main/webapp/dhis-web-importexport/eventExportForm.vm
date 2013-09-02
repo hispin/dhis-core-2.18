@@ -1,2 +1,79 @@
+<script>
+$( function() {
+    $( '#submit' ).on( 'click', function() {
+        var format = $( '#format' ).val();
+        var program = $( '#programs' ).val();
+        var url = '../api/events' + format + "?program=" + program;
+
+        window.location = url;
+        console.log(url);
+    });
+
+    $.ajax({
+       url: '../api/programs.json',
+       data: {
+           type: 3
+       }
+    } ).done(function(data) {
+        var options = [];
+
+        $.each(data.programs, function(idx, item) {
+            var option = $( '<option/>' ).html( item.name ).val(item.id);
+            options.push( option );
+        });
+
+        if(options.length > 0) {
+            $( '#programs' ).removeAttr('disabled');
+        } else {
+            var option = $( '<option/>' ).html('$i18n.getString( "no_programs_available" )');
+            $( '#programs' ).attr('disabled', true);
+        }
+
+        $( '#programs' ).html( options );
+    });
+});
+</script>
 
 <h3>$i18n.getString( "event_data_export" )</h3>
+
+<div id="inputCriteria" class="inputCriteria" style="width: 480px;">
+<form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importMetaData.action">
+<table>
+<col width="140">
+<col>
+<tr>
+	<td>$i18n.getString( "programs" )</td>
+    <td><select disabled="disabled" style="width: 300px;" id="programs" name="programs">
+        <option>$i18n.getString( "no_programs_available" )</option>
+    </select>
+    </td>
+</tr>
+
+<tr>
+    <td>$i18n.getString( "compression" )</td>
+    <td>
+        <select disabled="disabled" id="compression" style="width: 300px;">
+            <option value="">$i18n.getString( "uncompressed" )</option>
+            <option value=".zip">$i18n.getString( "compression_zip" )</option>
+            <option value=".gz">$i18n.getString( "compression_gzip" )</option>
+        </select>
+    </td>
+</tr>
+
+<tr>
+    <td>$i18n.getString( "format" )</td>
+    <td>
+        <select id="format" style="width: 300px;">
+            <option value=".xml">XML</option>
+            <option value=".json">Json</option>
+        </select>
+    </td>
+</tr>
+
+<tr>
+	<td></td>
+	<td><input type="button" id="submit" value="$i18n.getString( 'export' )" style="width:120px" /></td>
+</tr>
+</table>
+</form>
+</div>
