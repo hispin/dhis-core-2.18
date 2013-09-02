@@ -66,6 +66,8 @@ public interface ProgramStageInstanceService
 
     Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage, OrganisationUnit organisationUnit);
 
+    Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage, OrganisationUnit organisationUnit, Date start, Date end);
+
     Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances );
 
     Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate );

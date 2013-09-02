@@ -166,6 +166,12 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( programStage, organisationUnit );
     }
 
+    @Override
+    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage, OrganisationUnit organisationUnit, Date start, Date end )
+    {
+        return programStageInstanceStore.get( programStage, organisationUnit, start, end, 0, Integer.MAX_VALUE );
+    }
+
     public void updateProgramStageInstance( ProgramStageInstance programStageInstance )
     {
         programStageInstance.setAutoFields();

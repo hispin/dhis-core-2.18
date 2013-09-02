@@ -36,6 +36,7 @@ import org.hisp.dhis.program.ProgramStageInstance;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -53,6 +54,8 @@ public interface EventService
     Events getEvents( Program program );
 
     Events getEvents( Program program, OrganisationUnit organisationUnit );
+
+    Events getEvents( Program program, OrganisationUnit organisationUnit, Date start, Date end );
 
     Event getEvent( String uid );
 

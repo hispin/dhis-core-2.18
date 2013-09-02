@@ -354,18 +354,29 @@ public abstract class BaseEventService implements EventService
 
         ProgramStage programStage = program.getProgramStageByStage( 1 );
 
-        List<ProgramStageInstance> programStageInstances = null;
+        List<ProgramStageInstance> programStageInstances;
 
-        if ( organisationUnit != null )
-        {
-            programStageInstances = new ArrayList<ProgramStageInstance>(
-                programStageInstanceService.getProgramStageInstances( programStage, organisationUnit ) );
-        }
-        else
-        {
-            programStageInstances = new ArrayList<ProgramStageInstance>(
-                programStageInstanceService.getProgramStageInstances( programStage ) );
-        }
+        programStageInstances = new ArrayList<ProgramStageInstance>(
+            programStageInstanceService.getProgramStageInstances( programStage, organisationUnit ) );
+
+        List<Event> convertedEvents = convertProgramStageInstances( programStageInstances );
+
+        events.setEvents( convertedEvents );
+
+        return events;
+    }
+
+    @Override
+    public Events getEvents( Program program, OrganisationUnit organisationUnit, Date start, Date end )
+    {
+        Events events = new Events();
+
+        ProgramStage programStage = program.getProgramStageByStage( 1 );
+
+        List<ProgramStageInstance> programStageInstances;
+
+        programStageInstances = new ArrayList<ProgramStageInstance>(
+            programStageInstanceService.getProgramStageInstances( programStage, organisationUnit, start, end ) );
 
         List<Event> convertedEvents = convertProgramStageInstances( programStageInstances );
 

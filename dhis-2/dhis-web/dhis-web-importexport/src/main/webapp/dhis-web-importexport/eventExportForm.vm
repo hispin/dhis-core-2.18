@@ -1,13 +1,39 @@
+<script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
+<script type="text/javascript" src="../dhis-web-commons/oust/selectionTreeSelect.js"></script>
 <script>
 $( function() {
+    datePickerInRange( 'startDate' , 'endDate' );
+
     $( '#submit' ).on( 'click', function() {
         var format = $( '#format' ).val();
         var program = $( '#programs' ).val();
         var url = '../api/events' + format + "?program=" + program;
 
+        if( program.length == 0 ) {
+            setHeaderDelayMessage( "No program selected." );
+            return false;
+        }
+
+        if( !selectionTreeSelection.isSelected() ) {
+            setHeaderDelayMessage( "No organisation unit selected." );
+            return false;
+        }
+
+        url += "&orgUnit=" + selectedOrganisationUnit[0];
+
+        var startDate = $('#startDate' ).val();
+        var endDate = $('#endDate' ).val();
+
+        url += "&startDate=" + startDate;
+        url += "&endDate=" + endDate;
+
         window.location = url;
         console.log(url);
     });
+
+    selectionTreeSelection.setMultipleSelectionAllowed( false );
+    selectionTree.clearSelectedOrganisationUnits();
+    selectionTree.buildSelectionTree();
 
     $.ajax({
        url: '../api/programs.json',
@@ -36,17 +62,36 @@ $( function() {
 
 <h3>$i18n.getString( "event_data_export" )</h3>
 
-<div id="inputCriteria" class="inputCriteria" style="width: 480px;">
+<div id="inputCriteria" class="inputCriteria" style="width: 730px;">
 <form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importMetaData.action">
 <table>
 <col width="140">
 <col>
+
+<tr>
+   <td colspan="2">$i18n.getString( "organisation_unit" )</td>
+</tr>
+
+<tr>
+   <td colspan="2"><div id="selectionTree" style="width:700px; height:220px"></div></td>
+</tr>
+
 <tr>
 	<td>$i18n.getString( "programs" )</td>
     <td><select disabled="disabled" style="width: 300px;" id="programs" name="programs">
         <option>$i18n.getString( "no_programs_available" )</option>
     </select>
     </td>
+</tr>
+
+<tr>
+    <td>$i18n.getString("start_date")</td>
+    <td><input type="text" id="startDate" name="startDate" value="$!startDate" style="width:300px"></td>
+</tr>
+
+<tr>
+    <td>$i18n.getString("end_date")</td>
+    <td><input type="text" id="endDate" name="endDate" value="$!endDate" style="width:300px"></td>
 </tr>
 
 <tr>

@@ -41,6 +41,7 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -55,13 +56,14 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = EventController.RESOURCE_PATH)
+@RequestMapping( value = EventController.RESOURCE_PATH )
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -81,27 +83,39 @@ public class EventController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.GET )
-    public String getEvents( @RequestParam( "program" ) String programUid, @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
+    public String getEvents(
+        @RequestParam( "program" ) String programUid,
+        @RequestParam( value = "orgUnit" ) String orgUnitUid,
+        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Program program = manager.get( Program.class, programUid );
-        OrganisationUnit organisationUnit = null;
+        OrganisationUnit organisationUnit;
 
         if ( program == null )
         {
             throw new NotFoundException( "Program", programUid );
         }
 
-        if ( orgUnitUid != null )
-        {
-            organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
+        organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
 
-            if ( organisationUnit == null )
+        if ( organisationUnit == null )
+        {
+            try
             {
-                throw new NotFoundException( "OrganisationUnit", programUid );
+                organisationUnit = manager.get( OrganisationUnit.class, Integer.parseInt( orgUnitUid ) );
             }
+            catch ( NumberFormatException ignored )
+            {
+            }
+        }
+
+        if ( organisationUnit == null )
+        {
+            throw new NotFoundException( "OrganisationUnit", programUid );
         }
 
         if ( program.isRegistration() || !program.isSingleEvent() )
@@ -109,7 +123,7 @@ public class EventController
             throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Only single event with no registration is currently supported." );
         }
 
-        Events events = eventService.getEvents( program, organisationUnit );
+        Events events = eventService.getEvents( program, organisationUnit, startDate, endDate );
 
         if ( options.hasLinks() )
         {
