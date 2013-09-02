@@ -42,8 +42,6 @@
 
     <property name="type" />
 
-    <property name="displayProvidedOtherFacility" />
-
     <property name="displayIncidentDate" />
     
     <property name="onlyEnrollOnce" />
@@ -61,12 +59,7 @@
       <many-to-many column="patientattributeid" class="org.hisp.dhis.patient.PatientAttribute"
         foreign-key="fk_program_patientAttributes_patientattributeid" />
     </list>
-
-    <property name="generatedByEnrollmentDate" />
-
     <property name="ignoreOverdueEvents" />
-
-    <property name="blockEntryForm" />
 
 	<set name="userRoles" table="program_userroles">
 		<key column="programid" />
@@ -74,8 +67,6 @@
 			column="userroleid" foreign-key="fk_program_userroles"/>
 	</set>
 			
- 	<property name="remindCompleted" />
- 
  	<set name="patientReminders" order-by="daysAllowedSendMessage" cascade="all">
       <key column="programid" />
       <one-to-many class="org.hisp.dhis.patient.PatientReminder" />

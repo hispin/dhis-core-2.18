@@ -147,36 +147,8 @@
 			<td></td>
 		</tr>
 		
-		<tr>
-			<th colspan="2">$i18n.getString( "form_details" )</th>
-		</tr>
-		
-		<tr>
-			<td><label>$i18n.getString( "show_provided_provided_elsewhere" )</label></td>
-			<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='true' #if( $program.displayProvidedOtherFacility=='true' ) checked #end ></td>
-			<td></td>
-		</tr>
-		
-		<tr>
-			<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
-			<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true' #if( $program.blockEntryForm=='true' ) checked #end ></td>
-			<td></td>
-		</tr>
-		
-		<tr>
-			<td><label>$i18n.getString( "remind_completing_program_after_program_stage_completed" )</label></td>
-			<td><input type="checkbox" id="remindCompleted" name="remindCompleted" value='true' #if( $program.remindCompleted=='true' ) checked #end ></td>
-			<td></td>
-		</tr>
-			
 		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
-		</tr>
-		
-		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>
-			<td><input type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end #if( $program.type!='1' ) disabled #end ></td>
-			<td></td>
 		</tr>
 		
 		<tr name='nonAnonymous'>

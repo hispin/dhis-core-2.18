@@ -32,9 +32,7 @@
     "program": {
         "id": "$!programStageInstance.programInstance.program.id",
         "uid": "$encoder.jsonEncode( $!programStageInstance.programInstance.program.uid )",
-        "type": "$!programStageInstance.programInstance.program.type",
-        "blockEntryForm": "$!programStageInstance.programInstance.program.blockEntryForm",
-        "remindCompleted": "$!programStageInstance.programInstance.program.remindCompleted"
+        "type": "$!programStageInstance.programInstance.program.type"
     },
 
     "programStage": {
@@ -44,7 +42,9 @@
         "irregular": "$!programStageInstance.programStage.irregular",
         "displayGenerateEventBox": "$!programStageInstance.programStage.displayGenerateEventBox",
         "validCompleteOnly": "$!programStageInstance.programStage.validCompleteOnly",
-        "captureCoordinates": "$!programStageInstance.programStage.captureCoordinates"
+        "captureCoordinates": "$!programStageInstance.programStage.captureCoordinates",
+        "blockEntryForm": "$!programStageInstance.programStage.blockEntryForm",
+        "remindCompleted": "$!programStageInstance.programStage.remindCompleted"
     },
 
     "programInstance": {

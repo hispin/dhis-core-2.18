@@ -102,7 +102,7 @@ public class AddProgramAction
     }
 
     private UserGroupService userGroupService;
-    
+
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
@@ -147,13 +147,6 @@ public class AddProgramAction
         this.type = type;
     }
 
-    private Boolean displayProvidedOtherFacility;
-
-    public void setDisplayProvidedOtherFacility( Boolean displayProvidedOtherFacility )
-    {
-        this.displayProvidedOtherFacility = displayProvidedOtherFacility;
-    }
-
     private Boolean displayIncidentDate;
 
     public void setDisplayIncidentDate( Boolean displayIncidentDate )
@@ -175,13 +168,6 @@ public class AddProgramAction
         this.personDisplayNames = personDisplayNames;
     }
 
-    private Boolean generateBydEnrollmentDate;
-
-    public void setGenerateBydEnrollmentDate( Boolean generateBydEnrollmentDate )
-    {
-        this.generateBydEnrollmentDate = generateBydEnrollmentDate;
-    }
-
     private Boolean ignoreOverdueEvents;
 
     public void setIgnoreOverdueEvents( Boolean ignoreOverdueEvents )
@@ -189,25 +175,11 @@ public class AddProgramAction
         this.ignoreOverdueEvents = ignoreOverdueEvents;
     }
 
-    private Boolean blockEntryForm;
-
-    public void setBlockEntryForm( Boolean blockEntryForm )
-    {
-        this.blockEntryForm = blockEntryForm;
-    }
-
     private Boolean onlyEnrollOnce = false;
 
     public void setOnlyEnrollOnce( Boolean onlyEnrollOnce )
     {
         this.onlyEnrollOnce = onlyEnrollOnce;
-    }
-
-    private Boolean remindCompleted = false;
-
-    public void setRemindCompleted( Boolean remindCompleted )
-    {
-        this.remindCompleted = remindCompleted;
     }
 
     private List<Integer> daysAllowedSendMessages = new ArrayList<Integer>();
@@ -258,9 +230,9 @@ public class AddProgramAction
     {
         this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
     }
-    
+
     private List<Integer> userGroup = new ArrayList<Integer>();
-    
+
     public void setUserGroup( List<Integer> userGroup )
     {
         this.userGroup = userGroup;
@@ -279,6 +251,7 @@ public class AddProgramAction
     {
         this.selectEnrollmentDatesInFuture = selectEnrollmentDatesInFuture;
     }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -286,13 +259,9 @@ public class AddProgramAction
     public String execute()
         throws Exception
     {
-        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
         displayIncidentDate = (displayIncidentDate == null) ? false : displayIncidentDate;
-        generateBydEnrollmentDate = (generateBydEnrollmentDate == null) ? false : generateBydEnrollmentDate;
         ignoreOverdueEvents = (ignoreOverdueEvents == null) ? false : ignoreOverdueEvents;
-        blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         onlyEnrollOnce = (onlyEnrollOnce == null) ? false : onlyEnrollOnce;
-        remindCompleted = (remindCompleted == null) ? false : remindCompleted;
         displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
         useBirthDateAsIncidentDate = (useBirthDateAsIncidentDate == null) ? false : useBirthDateAsIncidentDate;
         useBirthDateAsEnrollmentDate = (useBirthDateAsEnrollmentDate == null) ? false : useBirthDateAsEnrollmentDate;
@@ -306,11 +275,8 @@ public class AddProgramAction
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setType( type );
-        program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
         program.setDisplayIncidentDate( displayIncidentDate );
-        program.setBlockEntryForm( blockEntryForm );
         program.setOnlyEnrollOnce( onlyEnrollOnce );
-        program.setRemindCompleted( remindCompleted );
         program.setDisplayOnAllOrgunit( displayOnAllOrgunit );
         program.setUseBirthDateAsIncidentDate( useBirthDateAsIncidentDate );
         program.setUseBirthDateAsEnrollmentDate( useBirthDateAsEnrollmentDate );
@@ -318,12 +284,10 @@ public class AddProgramAction
 
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
-            program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );
             program.setIgnoreOverdueEvents( ignoreOverdueEvents );
         }
         else
         {
-            program.setGeneratedByEnrollmentDate( true );
             program.setIgnoreOverdueEvents( false );
         }
 
