@@ -9,12 +9,12 @@
 			<th colspan="3">$i18n.getString('validation_criteria_details')</th>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label>$i18n.getString('name') <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td colspan="2"><input type='text' id='name' name='name' style='width: 40em' value="$validationCriteria.name" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString('description')</label></td>
-			<td colspan="2"><input type='text' id='description' name='description' style='width: 40em' value="$validationCriteria.description"/></td>
+			<td><label>$i18n.getString('description') <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td colspan="2"><input type='text' id='description' name='description' style='width: 40em' value="$validationCriteria.description" class="{validate:{required:true,rangelength:[2,160]}}" /></td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('criteria')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
