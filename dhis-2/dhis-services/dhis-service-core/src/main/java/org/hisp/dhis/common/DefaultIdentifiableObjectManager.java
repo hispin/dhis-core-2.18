@@ -127,6 +127,20 @@ public class DefaultIdentifiableObjectManager
 
     @Override
     @SuppressWarnings("unchecked")
+    public <T extends IdentifiableObject> T get( Class<T> clazz, int id )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return null;
+        }
+
+        return (T) store.get( id );
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public <T extends IdentifiableObject> T get( Class<T> clazz, String uid )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
