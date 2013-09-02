@@ -26,6 +26,7 @@ $( function() {
 
         url += "&startDate=" + startDate;
         url += "&endDate=" + endDate;
+        url += "&links=false";
 
         window.location = url;
         console.log(url);
