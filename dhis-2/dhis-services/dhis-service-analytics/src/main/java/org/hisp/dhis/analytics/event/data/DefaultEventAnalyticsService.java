@@ -42,6 +42,7 @@ import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.QueryItem;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -72,6 +73,8 @@ public class DefaultEventAnalyticsService
     private static final String ITEM_EXECUTION_DATE = "executiondate";
     private static final String ITEM_ORG_UNIT = "ou";
     private static final String ITEM_ORG_UNIT_NAME = "ouname";
+    private static final String ITEM_GENDER = "gender";
+    private static final String ITEM_ISDEAD = "isdead";
     
     @Autowired
     private ProgramService programService;
@@ -303,6 +306,16 @@ public class DefaultEventAnalyticsService
     
     private IdentifiableObject getItem( String item, Program program )
     {
+        if ( ITEM_GENDER.equalsIgnoreCase( item ) )
+        {
+            return new BaseIdentifiableObject( ITEM_GENDER, ITEM_GENDER, ITEM_GENDER );
+        }
+        
+        if ( ITEM_ISDEAD.equalsIgnoreCase( item ) )
+        {
+            return new BaseIdentifiableObject( ITEM_ISDEAD, ITEM_ISDEAD, ITEM_ISDEAD );
+        }
+        
         DataElement de = dataElementService.getDataElement( item );
         
         if ( de != null && program.getAllDataElements().contains( de ) )
