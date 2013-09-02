@@ -1,5 +1,10 @@
 package org.hisp.dhis.system.database;
 
+import org.hisp.dhis.common.DxfNamespaces;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -60,6 +65,8 @@ public class DatabaseInfo
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getName()
     {
         return name;
@@ -70,6 +77,8 @@ public class DatabaseInfo
         this.name = name;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getType()
     {
         return type;
@@ -80,6 +89,8 @@ public class DatabaseInfo
         this.type = type;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getUser()
     {
         return user;
