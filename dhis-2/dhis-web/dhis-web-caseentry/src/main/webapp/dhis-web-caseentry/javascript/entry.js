@@ -440,6 +440,7 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 				showById('entryFormContainer');
 				showById('dataEntryFormDiv');
 				showById('entryForm');
+				showById('entryPostComment');
 			}
         }
         else
@@ -481,8 +482,10 @@ function toggleContentForReportDate(show)
 {
     if( show ){
         jQuery("#entryForm").show();
+		showById('entryPostComment');
     }else {
         jQuery("#entryForm").hide();
+		hideById('entryPostComment');
     }
 }
 
