@@ -69,7 +69,8 @@ public class EventAnalyticsController
         @RequestParam(required=false) String stage,
         @RequestParam String startDate,
         @RequestParam String endDate,
-        @RequestParam(required=false) String ou,
+        @RequestParam String ou,
+        @RequestParam(required=false) String ouMode,
         @RequestParam Set<String> item,
         @RequestParam(required=false) Set<String> asc,
         @RequestParam(required=false) Set<String> desc,
@@ -78,7 +79,7 @@ public class EventAnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, item, asc, desc, page, pageSize );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, ouMode, item, asc, desc, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getEvents( params );
@@ -93,7 +94,8 @@ public class EventAnalyticsController
         @RequestParam(required=false) String stage,
         @RequestParam String startDate,
         @RequestParam String endDate,
-        @RequestParam(required=false) String ou,
+        @RequestParam String ou,
+        @RequestParam(required=false) String ouMode,
         @RequestParam Set<String> item,
         @RequestParam(required=false) Set<String> asc,
         @RequestParam(required=false) Set<String> desc,
@@ -102,7 +104,7 @@ public class EventAnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, item, asc, desc, page, pageSize );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, ouMode, item, asc, desc, page, pageSize );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
         Grid grid = analyticsService.getEvents( params );
