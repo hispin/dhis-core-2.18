@@ -28,9 +28,11 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -48,6 +50,43 @@ public class JacksonEventService extends BaseEventService
     // EventService Impl
     // -------------------------------------------------------------------------
 
+    private static ObjectMapper xmlMapper = new XmlMapper();
+    private static ObjectMapper jsonMapper = new ObjectMapper();
+
+    @SuppressWarnings( "unchecked" )
+    private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
+    {
+        return (T) xmlMapper.readValue( inputStream, clazz );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
+    {
+        return (T) xmlMapper.readValue( input, clazz );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
+    {
+        return (T) jsonMapper.readValue( inputStream, clazz );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
+    {
+        return (T) jsonMapper.readValue( input, clazz );
+    }
+
+    static
+    {
+        xmlMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true );
+        xmlMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true );
+        xmlMapper.configure( DeserializationFeature.WRAP_EXCEPTIONS, true );
+        jsonMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true );
+        jsonMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true );
+        jsonMapper.configure( DeserializationFeature.WRAP_EXCEPTIONS, true );
+    }
+
     @Override
     public ImportSummaries saveEventsXml( InputStream inputStream ) throws IOException
     {
@@ -57,7 +96,7 @@ public class JacksonEventService extends BaseEventService
 
         try
         {
-            Events events = JacksonUtils.fromXml( input, Events.class );
+            Events events = fromXml( input, Events.class );
 
             for ( Event event : events.getEvents() )
             {
@@ -66,7 +105,7 @@ public class JacksonEventService extends BaseEventService
         }
         catch ( Exception ex )
         {
-            Event event = JacksonUtils.fromXml( input, Event.class );
+            Event event = fromXml( input, Event.class );
             importSummaries.getImportSummaries().add( saveEvent( event ) );
         }
 
@@ -76,7 +115,7 @@ public class JacksonEventService extends BaseEventService
     @Override
     public ImportSummary saveEventXml( InputStream inputStream ) throws IOException
     {
-        Event event = JacksonUtils.fromXml( inputStream, Event.class );
+        Event event = fromXml( inputStream, Event.class );
         return saveEvent( event );
     }
 
@@ -89,7 +128,7 @@ public class JacksonEventService extends BaseEventService
 
         try
         {
-            Events events = JacksonUtils.fromJson( input, Events.class );
+            Events events = fromJson( input, Events.class );
 
             for ( Event event : events.getEvents() )
             {
@@ -98,7 +137,7 @@ public class JacksonEventService extends BaseEventService
         }
         catch ( Exception ex )
         {
-            Event event = JacksonUtils.fromJson( input, Event.class );
+            Event event = fromJson( input, Event.class );
             importSummaries.getImportSummaries().add( saveEvent( event ) );
         }
 
@@ -108,7 +147,7 @@ public class JacksonEventService extends BaseEventService
     @Override
     public ImportSummary saveEventJson( InputStream inputStream ) throws IOException
     {
-        Event event = JacksonUtils.fromJson( inputStream, Event.class );
+        Event event = fromJson( inputStream, Event.class );
         return saveEvent( event );
     }
 }
