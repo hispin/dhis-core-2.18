@@ -157,6 +157,7 @@ public class JdbcEventAnalyticsTableManager
                 "left join programinstance pi on psi.programinstanceid=pi.programinstanceid " +
                 "left join programstage ps on psi.programstageid=ps.programstageid " +
                 "left join program pr on pi.programid=pr.programid " +
+                "left join patient pa on pi.patientid=pa.patientid " +
                 "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid " +
                 "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid " +
                 "where psi.executiondate >= '" + start + "' " +
@@ -212,13 +213,15 @@ public class JdbcEventAnalyticsTableManager
             columns.add( col );
         }
         
+        String[] gender = { "gender", "character varying(5)", "pa.gender" };
+        String[] isdead = { "isdead", "boolean", "pa.isdead" };            
         String[] psi = { "psi", "character(11) not null", "psi.uid" };
         String[] ps = { "ps", "character(11) not null", "ps.uid" };
         String[] ed = { "executiondate", "date", "psi.executiondate" };
         String[] ou = { "ou", "character(11) not null", "ou.uid" };
         String[] oun = { "ouname", "character varying(160) not null", "ou.name" };
         
-        columns.addAll( Arrays.asList( psi, ps, ed, ou, oun ) );
+        columns.addAll( Arrays.asList( gender, isdead, psi, ps, ed, ou, oun ) );
         
         return columns;
     }
