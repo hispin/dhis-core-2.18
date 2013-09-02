@@ -53,7 +53,7 @@ public class Options
         return str;
     }
 
-    protected static Date stringAsDate( String str )
+    public static Date stringAsDate( String str )
     {
         if ( str == null )
         {

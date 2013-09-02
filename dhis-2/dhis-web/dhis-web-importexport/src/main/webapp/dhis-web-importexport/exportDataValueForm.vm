@@ -5,7 +5,7 @@
         selectionTreeSelection.setMultipleSelectionAllowed( true );
 		selectionTree.clearSelectedOrganisationUnits();
         selectionTree.buildSelectionTree();
-        
+
         jQuery("#availableDataSets").dhisAjaxSelect({
 			source: "../api/dataSets.json?links=false&paging=false",
 			iterator: "dataSets",
