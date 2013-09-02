@@ -33,6 +33,7 @@ function dobTypeOnChange( container ){
 	{
 		jQuery('#' + container + ' [id=age]').rules("remove");
 		jQuery('#' + container + ' [id=age]').css("display","none");
+		jQuery('#' + container + ' [id=age]').val("");
 		
 		jQuery('#' + container + ' [id=birthDate]').rules("add",{required:true});
 		datePickerValid( container + ' [id=birthDate]' );
@@ -43,6 +44,7 @@ function dobTypeOnChange( container ){
 		jQuery('#' + container + ' [id=age]').rules("add",{required:true, number: true});
 		jQuery('#' + container + ' [id=age]').css("display","");
 		
+		jQuery('#' + container + ' [id=birthDate]').val("");
 		jQuery('#' + container + ' [id=birthDate]').rules("remove","required");
 		$('#' + container+ ' [id=birthDate]').datepicker("destroy");
 		jQuery('#' + container + ' [id=birthDate]').css("display","none");

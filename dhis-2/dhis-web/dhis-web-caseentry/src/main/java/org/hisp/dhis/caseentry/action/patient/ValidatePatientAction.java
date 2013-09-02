@@ -85,8 +85,6 @@ public class ValidatePatientAction
 
     private String birthDate;
 
-    private char ageType;
-
     private Integer age;
 
     private String gender;
@@ -248,7 +246,7 @@ public class ValidatePatientAction
             p.setGender( gender );
         }
 
-        if ( birthDate != null )
+        if ( birthDate != null && !birthDate.isEmpty() )
         {
             birthDate = birthDate.trim();
             p.setBirthDate( format.parseDate( birthDate ) );
@@ -256,7 +254,7 @@ public class ValidatePatientAction
         }
         else if ( age != null )
         {
-            p.setBirthDateFromAge( age.intValue(), ageType );
+            p.setBirthDateFromAge( age.intValue(), Patient.AGE_TYPE_YEAR );
         }
 
         if ( programId != null )
@@ -267,30 +265,7 @@ public class ValidatePatientAction
             if ( criteria != null )
             {
                 message = i18n.getString( "patient_could_not_be_enrolled_due_to_following_enrollment_criteria" ) + ": "
-                    + i18n.getString( criteria.getProperty() );
-
-                switch ( criteria.getOperator() )
-                {
-                case ValidationCriteria.OPERATOR_EQUAL_TO:
-                    message += " = ";
-                    break;
-                case ValidationCriteria.OPERATOR_GREATER_THAN:
-                    message += " > ";
-                    break;
-                default:
-                    message += " < ";
-                    break;
-                }
-
-                if ( criteria.getProperty() == "birthDate" )
-                {
-                    message += " " + format.formatValue( criteria.getValue() );
-                }
-                else
-                {
-                    message += " " + criteria.getValue().toString();
-                }
-
+                    + criteria.getDescription();
                 return INPUT;
             }
         }
@@ -411,10 +386,5 @@ public class ValidatePatientAction
     public void setRelationshipTypeId( Integer relationshipTypeId )
     {
         this.relationshipTypeId = relationshipTypeId;
-    }
-
-    public void setAgeType( char ageType )
-    {
-        this.ageType = ageType;
     }
 }
