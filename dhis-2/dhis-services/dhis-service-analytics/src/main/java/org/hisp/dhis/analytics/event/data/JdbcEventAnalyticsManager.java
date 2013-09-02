@@ -38,6 +38,8 @@ import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.QueryItem;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -73,13 +75,28 @@ public class JdbcEventAnalyticsManager
         
         sql = removeLast( sql, 1 ) + " ";
         
-        sql += "from " + params.getTableName() + " ";        
+        sql += "from " + params.getTableName() + " ";
         sql += "where executiondate >= '" + getMediumDateString( params.getStartDate() ) + "' ";
         sql += "and executiondate <= '" + getMediumDateString( params.getEndDate() ) + "' ";
         
-        if ( params.hasOrganisationUnits() )
+        if ( params.isOrganisationUnitMode( EventQueryParams.OU_MODE_SELECTED ) )
         {
             sql += "and ou in (" + getQuotedCommaDelimitedString( getUids( params.getOrganisationUnits() ) ) + ") ";
+        }
+        else if ( params.isOrganisationUnitMode( EventQueryParams.OU_MODE_CHILDREN ) )
+        {
+            sql += "and ou in (" + getQuotedCommaDelimitedString( getUids( params.getOrganisationUnitChildren() ) ) + ") ";
+        }
+        else // Descendants
+        {
+            sql += "and (";
+            
+            for ( OrganisationUnit unit : params.getOrganisationUnits() )
+            {
+                sql += "uidlevel" + unit.getLevel() + " = '" + unit.getUid() + "' or ";
+            }
+            
+            sql = TextUtils.removeLast( sql, 3 ) + ") ";
         }
         
         if ( params.getProgramStage() != null )

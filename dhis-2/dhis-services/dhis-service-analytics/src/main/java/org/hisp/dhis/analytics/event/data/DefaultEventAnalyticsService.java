@@ -143,7 +143,7 @@ public class DefaultEventAnalyticsService
         return grid;
     }
     
-    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, 
+    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, String ouMode,
         Set<String> item, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
     {
         EventQueryParams params = new EventQueryParams();
@@ -233,9 +233,16 @@ public class DefaultEventAnalyticsService
                 
                 if ( orgUnit != null )
                 {
+                    orgUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) );
+                    
                     params.getOrganisationUnits().add( orgUnit );
                 }
             }
+        }
+        
+        if ( params.getOrganisationUnits().isEmpty() )
+        {
+            throw new IllegalQueryException( "At least one organisation unit must be specified" );
         }
         
         if ( page != null && page <= 0 )
@@ -252,6 +259,7 @@ public class DefaultEventAnalyticsService
         params.setProgramStage( ps );
         params.setStartDate( start );
         params.setEndDate( end );
+        params.setOrganisationUnitMode( ouMode );
         params.setPage( page );
         
         if ( pageSize != null )

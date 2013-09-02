@@ -30,7 +30,9 @@ package org.hisp.dhis.analytics.event;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
@@ -41,6 +43,10 @@ import org.hisp.dhis.program.ProgramStage;
  */
 public class EventQueryParams
 {
+    public static final String OU_MODE_SELECTED = "selected";
+    public static final String OU_MODE_CHILDREN = "children";
+    public static final String OU_MODE_DESCENDANTS = "descendants";
+    
     private Program program;
     
     private ProgramStage programStage;
@@ -56,6 +62,8 @@ public class EventQueryParams
     private List<String> desc = new ArrayList<String>();
     
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+
+    private String organisationUnitMode;
     
     private String tableName;
     
@@ -90,9 +98,21 @@ public class EventQueryParams
     // Logic
     // -------------------------------------------------------------------------
 
-    public boolean hasOrganisationUnits()
+    public boolean isOrganisationUnitMode( String mode )
     {
-        return organisationUnits != null && !organisationUnits.isEmpty();
+        return organisationUnitMode != null && organisationUnitMode.equalsIgnoreCase( mode );
+    }
+    
+    public Set<OrganisationUnit> getOrganisationUnitChildren()
+    {
+        Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
+        
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            children.addAll( unit.getChildren() );
+        }
+        
+        return children;
     }
     
     public boolean isSorting()
@@ -202,6 +222,16 @@ public class EventQueryParams
     public void setOrganisationUnits( List<OrganisationUnit> organisationUnits )
     {
         this.organisationUnits = organisationUnits;
+    }
+
+    public String getOrganisationUnitMode()
+    {
+        return organisationUnitMode;
+    }
+
+    public void setOrganisationUnitMode( String organisationUnitMode )
+    {
+        this.organisationUnitMode = organisationUnitMode;
     }
 
     public String getTableName()
