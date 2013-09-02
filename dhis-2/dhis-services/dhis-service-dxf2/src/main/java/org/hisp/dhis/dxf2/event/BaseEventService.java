@@ -52,6 +52,7 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,6 +64,7 @@ import java.util.Set;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@Transactional
 public abstract class BaseEventService implements EventService
 {
     // -------------------------------------------------------------------------
@@ -95,6 +97,9 @@ public abstract class BaseEventService implements EventService
 
     @Autowired
     private InputValidationService inputValidationService;
+
+    @Autowired
+    private EventStore eventStore;
 
     @Autowired
     private I18nManager i18nManager;
@@ -369,18 +374,17 @@ public abstract class BaseEventService implements EventService
     @Override
     public Events getEvents( Program program, OrganisationUnit organisationUnit, Date start, Date end )
     {
-        Events events = new Events();
-
         ProgramStage programStage = program.getProgramStageByStage( 1 );
+        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, start, end );
+        Events events = new Events();
+        events.setEvents( eventList );
 
-        List<ProgramStageInstance> programStageInstances;
-
-        programStageInstances = new ArrayList<ProgramStageInstance>(
+        /*
+        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>(
             programStageInstanceService.getProgramStageInstances( programStage, organisationUnit, start, end ) );
 
         List<Event> convertedEvents = convertProgramStageInstances( programStageInstances );
-
-        events.setEvents( convertedEvents );
+        */
 
         return events;
     }
@@ -491,10 +495,10 @@ public abstract class BaseEventService implements EventService
         event.setCompleted( programStageInstance.isCompleted() );
         event.setEvent( programStageInstance.getUid() );
         event.setEventDate( programStageInstance.getExecutionDate().toString() );
+        event.setStoredBy( programStageInstance.getCompletedUser() );
         event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
         event.setProgram( programStageInstance.getProgramInstance().getProgram().getUid() );
         event.setProgramStage( programStageInstance.getProgramStage().getUid() );
-        event.setStoredBy( programStageInstance.getCompletedUser() );
 
         Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
 
