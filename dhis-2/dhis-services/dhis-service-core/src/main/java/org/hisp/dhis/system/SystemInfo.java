@@ -60,25 +60,45 @@ public class SystemInfo
     private String javaVersion;
     
     private String javaVendor;
-    
+
+    private String javaIoTmpDir;
+
+    private String javaOpts;
+
     private String osName;
     
     private String osArchitecture;
     
     private String osVersion;
     
-    private String javaIoTmpDir;
-
     private String externalDirectory;
 
     private DatabaseInfo databaseInfo;
 
-    private String javaOpts;
-
     private String memoryInfo;
 
-    private int cpuCores;
+    private Integer cpuCores;
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+    
+    public void clearSensitiveInfo()
+    {
+        this.revision = null;
+        this.javaVersion = null;
+        this.javaVendor = null;
+        this.javaIoTmpDir = null;
+        this.javaOpts = null;
+        this.osName = null;
+        this.osArchitecture = null;
+        this.osVersion = null;
+        this.externalDirectory = null;
+        this.databaseInfo = null;
+        this.memoryInfo = null;
+        this.cpuCores = null;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -167,6 +187,8 @@ public class SystemInfo
         this.environmentVariable = environmentVariable;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getJavaVersion()
     {
         return javaVersion;
@@ -177,6 +199,8 @@ public class SystemInfo
         this.javaVersion = javaVersion;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getJavaVendor()
     {
         return javaVendor;
@@ -187,36 +211,8 @@ public class SystemInfo
         this.javaVendor = javaVendor;
     }
 
-    public String getOsName()
-    {
-        return osName;
-    }
-
-    public void setOsName( String osName )
-    {
-        this.osName = osName;
-    }
-
-    public String getOsArchitecture()
-    {
-        return osArchitecture;
-    }
-
-    public void setOsArchitecture( String osArchitecture )
-    {
-        this.osArchitecture = osArchitecture;
-    }
-
-    public String getOsVersion()
-    {
-        return osVersion;
-    }
-
-    public void setOsVersion( String osVersion )
-    {
-        this.osVersion = osVersion;
-    }
-
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getJavaIoTmpDir()
     {
         return javaIoTmpDir;
@@ -227,26 +223,8 @@ public class SystemInfo
         this.javaIoTmpDir = javaIoTmpDir;
     }
 
-    public String getExternalDirectory()
-    {
-        return externalDirectory;
-    }
-
-    public void setExternalDirectory( String externalDirectory )
-    {
-        this.externalDirectory = externalDirectory;
-    }
-
-    public DatabaseInfo getDatabaseInfo()
-    {
-        return databaseInfo;
-    }
-
-    public void setDatabaseInfo( DatabaseInfo databaseInfo )
-    {
-        this.databaseInfo = databaseInfo;
-    }
-
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getJavaOpts()
     {
         return javaOpts;
@@ -257,6 +235,68 @@ public class SystemInfo
         this.javaOpts = javaOpts;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOsName()
+    {
+        return osName;
+    }
+
+    public void setOsName( String osName )
+    {
+        this.osName = osName;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOsArchitecture()
+    {
+        return osArchitecture;
+    }
+
+    public void setOsArchitecture( String osArchitecture )
+    {
+        this.osArchitecture = osArchitecture;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOsVersion()
+    {
+        return osVersion;
+    }
+
+    public void setOsVersion( String osVersion )
+    {
+        this.osVersion = osVersion;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getExternalDirectory()
+    {
+        return externalDirectory;
+    }
+
+    public void setExternalDirectory( String externalDirectory )
+    {
+        this.externalDirectory = externalDirectory;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public DatabaseInfo getDatabaseInfo()
+    {
+        return databaseInfo;
+    }
+
+    public void setDatabaseInfo( DatabaseInfo databaseInfo )
+    {
+        this.databaseInfo = databaseInfo;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getMemoryInfo()
     {
         return memoryInfo;
@@ -267,12 +307,14 @@ public class SystemInfo
         this.memoryInfo = memoryInfo;
     }
 
-    public int getCpuCores()
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getCpuCores()
     {
         return cpuCores;
     }
 
-    public void setCpuCores( int cpuCores )
+    public void setCpuCores( Integer cpuCores )
     {
         this.cpuCores = cpuCores;
     }
