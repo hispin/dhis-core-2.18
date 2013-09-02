@@ -74,7 +74,7 @@ public class SystemController
     
     @Autowired
     private Notifier notifier;
-
+    
     //--------------------------------------------------------------------------
     // UID Generator
     //--------------------------------------------------------------------------
@@ -146,8 +146,15 @@ public class SystemController
     public void getSystemInfo( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         SystemInfo info = systemService.getSystemInfo();
+        
         info.setContextPath( ContextUtils.getContextPath( request ) );
         info.setUserAgent( request.getHeader( ContextUtils.HEADER_USER_AGENT ) );
+        
+        if ( !currentUserService.currentUserIsSuper() )
+        {
+            info.clearSensitiveInfo();
+        }
+        
         JacksonUtils.toJson( response.getOutputStream(), info );
     }
 }
