@@ -48,6 +48,11 @@ public class WebOptions
     // Getters for standard web options
     //--------------------------------------------------------------------------
 
+    public boolean hasLinks( boolean defaultValue )
+    {
+        return stringAsBoolean( options.get( "links" ), defaultValue );
+    }
+
     public boolean hasLinks()
     {
         return stringAsBoolean( options.get( "links" ), true );
@@ -57,7 +62,7 @@ public class WebOptions
     {
         return stringAsBoolean( options.get( "paging" ), true );
     }
-    
+
     public int getPage()
     {
         return stringAsInt( options.get( "page" ), 1 );
@@ -67,7 +72,7 @@ public class WebOptions
     {
         return stringAsString( options.get( "viewClass" ), defaultValue );
     }
-    
+
     public int getPageSize()
     {
         return stringAsInt( options.get( "pageSize" ), Pager.DEFAULT_PAGE_SIZE );
