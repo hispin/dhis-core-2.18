@@ -439,11 +439,11 @@ public class DefaultPatientRegistrationFormService
             if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_BIRTHDATE )
                 || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_REGISTRATION_DATE ) )
             {
-                inputHtml += "<script>datePicker(\"" + fixedAttr + "\", true);</script>";
+                inputHtml += "<script>datePickerValid(\"" + fixedAttr + "\", true);</script>";
             }
             else
             {
-                inputHtml += "<script>datePicker(\"" + fixedAttr + "\", false);</script>";
+                inputHtml += "<script>datePickerValid(\"" + fixedAttr + "\", false);</script>";
             }
         }
 
