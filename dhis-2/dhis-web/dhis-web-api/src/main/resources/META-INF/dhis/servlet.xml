@@ -25,17 +25,19 @@
 
   <bean id="headerContentNegotiationStrategy" class="org.springframework.web.accept.HeaderContentNegotiationStrategy" />
 
-  <bean id="pathExtensionContentNegotiationStrategy" class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+  <bean id="pathExtensionContentNegotiationStrategy" class="org.hisp.dhis.api.view.CustomPathExtensionContentNegotiationStrategy">
     <constructor-arg name="mediaTypes">
       <map>
-        <entry key="html" value="text/html" />
         <entry key="json" value="application/json" />
+        <entry key="json.gz" value="application/json+gzip" />
         <entry key="jsonp" value="application/javascript" />
         <entry key="xml" value="application/xml" />
+        <entry key="xml.gz" value="application/xml+gzip" />
         <entry key="png" value="image/png" />
         <entry key="pdf" value="application/pdf" />
         <entry key="xls" value="application/vnd.ms-excel" />
         <entry key="csv" value="application/csv" />
+        <entry key="html" value="text/html" />
       </map>
     </constructor-arg>
   </bean>
@@ -56,12 +58,32 @@
 
     <property name="defaultViews">
       <list>
-        <bean class="org.hisp.dhis.api.view.JacksonXmlView" />
+        <bean class="org.hisp.dhis.api.view.JacksonXmlView">
+          <constructor-arg name="withCompression" value="false" />
+        </bean>
 
-        <bean class="org.hisp.dhis.api.view.JacksonJsonView" />
+        <bean class="org.hisp.dhis.api.view.JacksonXmlView">
+          <constructor-arg name="withCompression" value="true" />
+        </bean>
+
+        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+          <constructor-arg name="withPadding" value="false" />
+          <constructor-arg name="withCompression" value="false" />
+        </bean>
+
+        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+          <constructor-arg name="withPadding" value="false" />
+          <constructor-arg name="withCompression" value="true" />
+        </bean>
 
         <bean class="org.hisp.dhis.api.view.JacksonJsonView">
           <constructor-arg name="withPadding" value="true" />
+          <constructor-arg name="withCompression" value="false" />
+        </bean>
+
+        <bean class="org.hisp.dhis.api.view.JacksonJsonView">
+          <constructor-arg name="withPadding" value="true" />
+          <constructor-arg name="withCompression" value="true" />
         </bean>
 
         <bean class="org.hisp.dhis.api.view.PdfGridView" />
