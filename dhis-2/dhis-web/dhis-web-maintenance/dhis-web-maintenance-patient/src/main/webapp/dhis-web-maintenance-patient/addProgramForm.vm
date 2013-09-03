@@ -145,6 +145,12 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
+			<td><label>$i18n.getString( "allow_select_incident_date_in_future" )</label></td>
+			<td><input type="checkbox" id="selectIncidentDatesInFuture" name="selectIncidentDatesInFuture" value='true' ></td>
+			<td></td>
+		</tr>
+		
+		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
 			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true'></td>
 			<td></td>

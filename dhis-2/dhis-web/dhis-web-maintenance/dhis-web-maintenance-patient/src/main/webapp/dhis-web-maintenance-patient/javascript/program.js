@@ -35,8 +35,11 @@ function showProgramDetails( programId )
 		var useBirthDateAsEnrollmentDate = ( json.program.useBirthDateAsEnrollmentDate == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'useBirthDateAsEnrollmentDateField', useBirthDateAsEnrollmentDate );   	
 		
-		var displayOnAllOrgunit= ( json.program.selectEnrollmentDatesInFuture == 'true') ? i18n_yes : i18n_no;
+		var selectEnrollmentDatesInFuture= ( json.program.selectEnrollmentDatesInFuture == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'selectEnrollmentDatesInFutureField', selectEnrollmentDatesInFuture );   	
+		
+		var selectIncidentDatesInFuture= ( json.program.selectIncidentDatesInFuture == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'selectIncidentDatesInFutureField', selectIncidentDatesInFuture );   	
 		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		

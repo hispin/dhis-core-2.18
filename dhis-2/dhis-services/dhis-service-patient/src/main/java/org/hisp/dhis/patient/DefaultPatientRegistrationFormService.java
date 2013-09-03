@@ -55,6 +55,10 @@ public class DefaultPatientRegistrationFormService
 
     private static final String TAG_CLOSE = "/>";
 
+    private static final String PROGRAM_INCIDENT_DATE = "dateOfIncident";
+
+    private static final String PROGRAM_ENROLLMENT_DATE = "enrollmentDate";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -141,8 +145,8 @@ public class DefaultPatientRegistrationFormService
     }
 
     @Override
-    public String prepareDataEntryFormForAdd( String htmlCode, Program program, Collection<User> healthWorkers, Patient patient,
-        ProgramInstance programInstance, I18n i18n, I18nFormat format )
+    public String prepareDataEntryFormForAdd( String htmlCode, Program program, Collection<User> healthWorkers,
+        Patient patient, ProgramInstance programInstance, I18n i18n, I18nFormat format )
     {
         int index = 1;
 
@@ -292,13 +296,27 @@ public class DefaultPatientRegistrationFormService
 
                 inputHtml = "<input id=\"" + property + "\" name=\"" + property + "\" tabindex=\"" + index
                     + "\" value=\"" + value + "\" " + TAG_CLOSE;
-                if ( program != null && program.getSelectEnrollmentDatesInFuture() )
+                if ( property.equals( PROGRAM_ENROLLMENT_DATE ) )
                 {
-                    inputHtml += "<script>datePicker(\"" + property + "\", true);</script>";
+                    if ( program != null && program.getSelectEnrollmentDatesInFuture() )
+                    {
+                        inputHtml += "<script>datePicker(\"" + property + "\", true);</script>";
+                    }
+                    else
+                    {
+                        inputHtml += "<script>datePickerValid(\"" + property + "\", true);</script>";
+                    }
                 }
-                else
+                else if ( property.equals( PROGRAM_INCIDENT_DATE ) )
                 {
-                    inputHtml += "<script>datePickerValid(\"" + property + "\", true);</script>";
+                    if ( program != null && program.getSelectIncidentDatesInFuture() )
+                    {
+                        inputHtml += "<script>datePicker(\"" + property + "\", true);</script>";
+                    }
+                    else
+                    {
+                        inputHtml += "<script>datePickerValid(\"" + property + "\", true);</script>";
+                    }
                 }
             }
 

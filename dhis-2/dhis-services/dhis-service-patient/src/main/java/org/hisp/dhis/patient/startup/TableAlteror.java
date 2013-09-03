@@ -229,6 +229,7 @@ public class TableAlteror
         executeSql( "update programstage set blockEntryForm = false where blockEntryForm is null ");
         executeSql( "update programstage set remindCompleted = false where remindCompleted is null ");
         executeSql( "update programstage set displayProvidedOtherFacility = false where displayProvidedOtherFacility is null ");
+        executeSql( "update programstage set selectIncidentDatesInFuture = false where selectIncidentDatesInFuture is null ");
         executeSql( "ALTER TABLE program DROP COLUMN generatedByEnrollmentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN blockEntryForm" );
         executeSql( "ALTER TABLE program DROP COLUMN remindCompleted" );
