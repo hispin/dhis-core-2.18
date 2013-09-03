@@ -28,6 +28,7 @@ package org.hisp.dhis.analytics.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
 import javax.annotation.Resource;
@@ -84,25 +85,32 @@ public class AnalyticsTableTask
     public void run()
     {
         notifier.clear( taskId ).notify( taskId, "Updating resource tables" );
-        
-        resourceTableService.generateAll();
 
-        notifier.notify( taskId, "Updating analytics tables" );
-        
-        analyticsTableService.update( last3Years, taskId );
-        
-        notifier.notify( taskId, "Updating completeness tables" );
-        
-        completenessTableService.update( last3Years, taskId );
-
-        notifier.notify( taskId, "Updating compeleteness target table" );
-        
-        completenessTargetTableService.update( last3Years, taskId );
-        
-        notifier.notify( taskId, "Updating event analytics tables" );
-        
-        eventAnalyticsTableService.update( last3Years, taskId );
-        
-        notifier.notify( taskId, INFO, "Analytics tables updated", true );
+        try
+        {
+            resourceTableService.generateAll();
+    
+            notifier.notify( taskId, "Updating analytics tables" );
+            
+            analyticsTableService.update( last3Years, taskId );
+            
+            notifier.notify( taskId, "Updating completeness tables" );
+            
+            completenessTableService.update( last3Years, taskId );
+    
+            notifier.notify( taskId, "Updating compeleteness target table" );
+            
+            completenessTargetTableService.update( last3Years, taskId );
+            
+            notifier.notify( taskId, "Updating event analytics tables" );
+            
+            eventAnalyticsTableService.update( last3Years, taskId );
+            
+            notifier.notify( taskId, INFO, "Analytics tables updated", true );
+        }
+        catch ( RuntimeException ex )
+        {
+            notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
+        }
     }
 }

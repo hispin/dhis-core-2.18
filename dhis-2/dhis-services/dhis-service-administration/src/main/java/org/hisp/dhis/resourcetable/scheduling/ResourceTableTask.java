@@ -65,13 +65,12 @@ public class ResourceTableTask
         try
         {
             resourceTableService.generateAll();
+            
+            notifier.notify( taskId, NotificationLevel.INFO, "Resource tables generated", true );
         }
         catch ( RuntimeException ex )
         {
             notifier.notify( taskId, NotificationLevel.ERROR, "Process failed: " + ex.getMessage(), true );
-            return;
         }
-        
-        notifier.notify( taskId, NotificationLevel.INFO, "Resource tables generated", true );
     }
 }

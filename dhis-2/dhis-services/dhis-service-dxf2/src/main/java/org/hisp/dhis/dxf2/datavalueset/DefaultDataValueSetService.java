@@ -207,7 +207,7 @@ public class DefaultDataValueSetService
         catch ( RuntimeException ex )
         {
             log.error( DebugUtils.getStackTrace( ex ) );
-            notifier.notify( id, ERROR, "Unfortunately the process failed, check the logs", true );
+            notifier.notify( id, ERROR, "Process failed: " + ex.getMessage(), true );
             return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
         }
     }
@@ -222,7 +222,7 @@ public class DefaultDataValueSetService
         catch ( Exception ex )
         {
             log.error( DebugUtils.getStackTrace( ex ) );
-            notifier.notify( id, ERROR, "Unfortunately the process failed, check the logs", true );
+            notifier.notify( id, ERROR, "Process failed: " + ex.getMessage(), true );
             return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
         }
     }
@@ -237,7 +237,7 @@ public class DefaultDataValueSetService
         catch ( RuntimeException ex )
         {
             log.error( DebugUtils.getStackTrace( ex ) );
-            notifier.clear( id ).notify( id, ERROR, "Unfortunately the process failed, check the logs", true );
+            notifier.clear( id ).notify( id, ERROR, "Process failed: " + ex.getMessage(), true );
             return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
         }
     }
@@ -253,7 +253,7 @@ public class DefaultDataValueSetService
         catch ( RuntimeException ex )
         {
             log.error( DebugUtils.getStackTrace( ex ) );
-            notifier.clear( id ).notify( id, ERROR, "Unfortunately the process failed, check the logs", true );
+            notifier.clear( id ).notify( id, ERROR, "Process failed: " + ex.getMessage(), true );
             return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
         }
     }
