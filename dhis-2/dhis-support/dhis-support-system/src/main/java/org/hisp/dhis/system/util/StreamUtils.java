@@ -237,9 +237,11 @@ public class StreamUtils
      */
     public static String getContent( File file )
     {
+        BufferedInputStream in = null;
+        
         try
         {
-            BufferedInputStream in = new BufferedInputStream( new FileInputStream( file ) );
+            in = new BufferedInputStream( new FileInputStream( file ) );
 
             byte[] bytes = new byte[(int) file.length()];
 
@@ -250,6 +252,10 @@ public class StreamUtils
         catch ( IOException ex )
         {
             throw new RuntimeException( ex );
+        }
+        finally
+        {
+            closeInputStream( in );
         }
     }
 
