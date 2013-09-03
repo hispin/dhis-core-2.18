@@ -89,7 +89,6 @@ public class JRExportUtils
             exporter.setParameter( JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE );
             exporter.setParameter( JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE );
             exporter.setParameter( JRXlsAbstractExporterParameter.IS_COLLAPSE_ROW_SPAN, Boolean.TRUE );
-            exporter.setParameter( JRXlsAbstractExporterParameter.IS_IGNORE_CELL_BORDER, Boolean.TRUE );
             exporter.setParameter( JRXlsAbstractExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE );
             return exporter;
         }
