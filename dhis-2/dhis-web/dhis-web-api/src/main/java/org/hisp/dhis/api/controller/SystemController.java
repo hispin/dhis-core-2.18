@@ -107,7 +107,8 @@ public class SystemController
     }
 
     @RequestMapping( value = "/tasks/{category}", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
-    public void getTaskJson( HttpServletResponse response, @PathVariable("category") String category ) throws IOException
+    public void getTaskJson( @PathVariable("category") String category, 
+        @RequestParam(required=false) String lastId, HttpServletResponse response ) throws IOException
     {
         List<Notification> notifications = new ArrayList<Notification>();
 
@@ -117,7 +118,7 @@ public class SystemController
 
             TaskId taskId = new TaskId( taskCategory, currentUserService.getCurrentUser() );
 
-            notifications = notifier.getNotifications( taskId, null );
+            notifications = notifier.getNotifications( taskId, lastId );
         }
 
         JacksonUtils.toJson( response.getOutputStream(), notifications );
