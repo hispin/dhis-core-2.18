@@ -1,62 +1,16 @@
 
-var selected = false;
-
 function generateResourceTable()
 {
-    var organisationUnit = document.getElementById( "organisationUnit" ).checked;
-    var dataElementGroupSetStructure = document.getElementById( "dataElementGroupSetStructure" ).checked;
-    var indicatorGroupSetStructure = document.getElementById( "indicatorGroupSetStructure" ).checked;
-    var organisationUnitGroupSetStructure = document.getElementById( "organisationUnitGroupSetStructure" ).checked;
-    var categoryStructure = document.getElementById( "categoryStructure" ).checked;
-    var categoryOptionComboName = document.getElementById( "categoryOptionComboName" ).checked;
-    var dataElementStructure = document.getElementById( "dataElementStructure" ).checked;
-    var periodStructure = document.getElementById( "periodStructure" ).checked;
-    var dataElementCategoryOptionCombo = document.getElementById( "dataElementCategoryOptionCombo" ).checked;
-    
-    if ( organisationUnit || dataElementGroupSetStructure || indicatorGroupSetStructure || organisationUnitGroupSetStructure || 
-    		categoryStructure || categoryOptionComboName || dataElementStructure || periodStructure || dataElementCategoryOptionCombo )
-    {
-        setWaitMessage( i18n_generating_resource_tables );
-            
-        var params = {
-        	organisationUnit: organisationUnit,
-            dataElementGroupSetStructure: dataElementGroupSetStructure,
-            indicatorGroupSetStructure: indicatorGroupSetStructure,
-            organisationUnitGroupSetStructure: organisationUnitGroupSetStructure,
-            categoryStructure: categoryStructure,
-            categoryOptionComboName: categoryOptionComboName,
-            dataElementStructure: dataElementStructure,
-            periodStructure: periodStructure,
-            dataElementCategoryOptionCombo: dataElementCategoryOptionCombo
-        };
-            
-		$.ajax({
-			   type: "post",
-			   url: "generateResourceTable.action",
-			   data: params,
-			   dataType: "xml",
-			   success: function(result){
-					setMessage( i18n_resource_tables_generated );
-			   }
-			});
-    }
-    else
-    {
-        setMessage( i18n_select_options );
-    }
+	$( "#notificationTable" ).show().prepend( "<tr><td>" + _loading_bar_html + "</td></tr>" );
+	$.ajax( {
+		url: "../api/resourceTables",
+		type: "put",
+		success: pingNotificationsTimeout 
+	} );
 }
 
-function toggleAll()
-{	
-	selected = !selected;
-	
-	document.getElementById( "organisationUnit" ).checked = selected;
-	document.getElementById( "dataElementGroupSetStructure" ).checked = selected;
-	document.getElementById( "indicatorGroupSetStructure" ).checked = selected;
-	document.getElementById( "organisationUnitGroupSetStructure" ).checked = selected;
-	document.getElementById( "categoryStructure" ).checked = selected;
-	document.getElementById( "categoryOptionComboName" ).checked = selected;
-	document.getElementById( "dataElementStructure" ).checked = selected;	
-	document.getElementById( "periodStructure" ).checked = selected;
-	document.getElementById( "dataElementCategoryOptionCombo" ).checked = selected;
+function pingNotificationsTimeout()
+{
+	pingNotifications( "RESOURCETABLE_UPDATE", "notificationTable" );
+	setTimeout( "pingNotificationsTimeout()", 2500 );
 }

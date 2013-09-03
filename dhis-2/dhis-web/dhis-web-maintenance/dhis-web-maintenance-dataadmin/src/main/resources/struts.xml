@@ -44,11 +44,6 @@
 	  <param name="requiredAuthorities">F_PERFORM_MAINTENANCE</param>
     </action>
 
-    <action name="generateResourceTable" class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
-	  <param name="requiredAuthorities">F_PERFORM_MAINTENANCE</param>
-    </action>
-
     <!-- Cache -->
 
     <action name="showCache" class="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction">

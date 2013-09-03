@@ -177,6 +177,7 @@ public class DefaultResourceTableService
         log.info( "Data element category option combo table generated" );
         
         sqlViewService.createAllViewTables();
+        log.info( "Sql views created" );
     }
     
     // -------------------------------------------------------------------------
