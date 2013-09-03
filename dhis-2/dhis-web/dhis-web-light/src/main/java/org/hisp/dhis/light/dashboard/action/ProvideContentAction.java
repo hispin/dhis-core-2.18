@@ -37,7 +37,6 @@ import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -108,7 +107,7 @@ public class ProvideContentAction
     {
         chartsForAll = new ArrayList<Chart>( chartService.getAllCharts() );
         
-        User user = currentUserService.getCurrentUser();
+        currentUserService.getCurrentUser();
         
         //TODO implement new dashboard solution
 

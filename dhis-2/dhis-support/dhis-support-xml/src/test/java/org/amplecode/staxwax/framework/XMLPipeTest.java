@@ -101,8 +101,7 @@ public class XMLPipeTest
         while ( pipeoutput.hasNext() )
         {
             events2++;
-            XMLEvent ev = pipeoutput.nextEvent();
-            // stdoutWriter.add( ev );
+            pipeoutput.nextEvent();
         }
 
         assertEquals( "Number of events in and out of pipe", events1, events2 );

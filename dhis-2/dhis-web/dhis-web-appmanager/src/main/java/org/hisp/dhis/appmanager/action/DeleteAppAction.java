@@ -35,7 +35,6 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManagerService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -52,13 +51,6 @@ public class DeleteAppAction
     
     @Autowired
     private AppManagerService appManagerService;
-
-    private SystemAuthoritiesProvider authoritiesProvider;
-
-    public void setAuthoritiesProvider( SystemAuthoritiesProvider authoritiesProvider )
-    {
-        this.authoritiesProvider = authoritiesProvider;
-    }
 
     // -------------------------------------------------------------------------
     // Input & Output
