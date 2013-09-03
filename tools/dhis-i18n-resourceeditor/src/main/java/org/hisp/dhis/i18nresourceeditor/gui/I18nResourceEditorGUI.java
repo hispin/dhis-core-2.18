@@ -145,7 +145,7 @@ public class I18nResourceEditorGUI extends JFrame {
     private JFileChooser fcDHIS2resource = new JFileChooser();
     // Help tab
     private JEditorPane txtHelp = new JEditorPane();
-    private JFrame parent = (JFrame) this;
+    private JFrame parent = this;
     private JPanel panelHelp = new JPanel();
     private JButton cmdHelp = new JButton("Basic help");
     private JButton cmdHelpAdvanced = new JButton("More help ");

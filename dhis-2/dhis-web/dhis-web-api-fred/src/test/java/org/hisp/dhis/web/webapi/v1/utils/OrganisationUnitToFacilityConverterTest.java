@@ -122,6 +122,7 @@ public class OrganisationUnitToFacilityConverterTest
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testDataSets()
     {
         OrganisationUnit organisationUnit = new OrganisationUnit( "OrgUnit1" );

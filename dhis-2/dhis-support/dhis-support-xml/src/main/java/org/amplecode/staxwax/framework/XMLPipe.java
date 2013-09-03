@@ -190,7 +190,7 @@ public class XMLPipe
         {
             throw new UnsupportedOperationException( "Unused functionality.  Not implemented" );
         }
-    };
+    }
 
     private class PipeWriter
         implements XMLEventWriter
@@ -265,5 +265,5 @@ public class XMLPipe
             // not a real stream ... no handle to close
             return;
         }
-    };
+    }
 }
