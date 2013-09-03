@@ -141,7 +141,7 @@ public class DefaultPatientRegistrationFormService
     }
 
     @Override
-    public String prepareDataEntryFormForAdd( String htmlCode, Collection<User> healthWorkers, Patient patient,
+    public String prepareDataEntryFormForAdd( String htmlCode, Program program, Collection<User> healthWorkers, Patient patient,
         ProgramInstance programInstance, I18n i18n, I18nFormat format )
     {
         int index = 1;
@@ -149,7 +149,7 @@ public class DefaultPatientRegistrationFormService
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
-        
+
         while ( inputMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -163,7 +163,7 @@ public class DefaultPatientRegistrationFormService
             Matcher programMatcher = PROGRAM_PATTERN.matcher( inputHtml );
             Matcher suggestedMarcher = SUGGESTED_VALUE_PATTERN.matcher( inputHtml );
             Matcher classMarcher = CLASS_PATTERN.matcher( inputHtml );
-            
+
             index++;
 
             if ( fixedAttrMatcher.find() && fixedAttrMatcher.groupCount() > 0 )
@@ -192,17 +192,18 @@ public class DefaultPatientRegistrationFormService
                         }
                     }
                 }
-                else if( suggestedMarcher.find())
+                else if ( suggestedMarcher.find() )
                 {
                     value = suggestedMarcher.group( 2 );
                 }
-                
-                if( classMarcher.find() )
+
+                if ( classMarcher.find() )
                 {
                     hidden = classMarcher.group( 1 );
                 }
-                
-                inputHtml = getFixedAttributeField( inputHtml, fixedAttr, value.toString(), hidden, healthWorkers, i18n, index );
+
+                inputHtml = getFixedAttributeField( inputHtml, fixedAttr, value.toString(), hidden, healthWorkers,
+                    i18n, index );
             }
             else if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -253,7 +254,7 @@ public class DefaultPatientRegistrationFormService
             {
                 String uid = dynamicAttrMatcher.group( 1 );
                 PatientAttribute attribute = attributeService.getPatientAttribute( uid );
-                
+
                 if ( attribute == null )
                 {
                     inputHtml = "<input value='[" + i18n.getString( "missing_patient_attribute" ) + " " + uid
@@ -291,7 +292,14 @@ public class DefaultPatientRegistrationFormService
 
                 inputHtml = "<input id=\"" + property + "\" name=\"" + property + "\" tabindex=\"" + index
                     + "\" value=\"" + value + "\" " + TAG_CLOSE;
-                inputHtml += "<script>datePicker(\"" + property + "\", true);</script>";
+                if ( program != null && program.getSelectEnrollmentDatesInFuture() )
+                {
+                    inputHtml += "<script>datePicker(\"" + property + "\", true);</script>";
+                }
+                else
+                {
+                    inputHtml += "<script>datePickerValid(\"" + property + "\", true);</script>";
+                }
             }
 
             inputMatcher.appendReplacement( sb, inputHtml );
@@ -397,13 +405,13 @@ public class DefaultPatientRegistrationFormService
             inputHtml += " class=\"{validate:{phone:true}}\" " + hidden + " " + TAG_CLOSE;
             inputHtml += " <input type=\"button\" value=\"+\" style=\"width:20px;\" class=\"phoneNumberTR\" onclick=\"addCustomPhoneNumberField(\'\');\" />";
         }
-        
+
         // Age fields
         else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_AGE ) )
         {
             inputHtml += " class=\"{validate:{number:true}}\" " + hidden + " " + TAG_CLOSE;
         }
-        
+
         // Gender selector
         if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_GENDER ) )
         {
@@ -435,7 +443,7 @@ public class DefaultPatientRegistrationFormService
             || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_DEATH_DATE )
             || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_REGISTRATION_DATE ) )
         {
-            inputHtml += " class='" + hidden + "' "+ TAG_CLOSE;
+            inputHtml += " class='" + hidden + "' " + TAG_CLOSE;
             if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_BIRTHDATE )
                 || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_REGISTRATION_DATE ) )
             {
@@ -450,7 +458,7 @@ public class DefaultPatientRegistrationFormService
         // DobType field
         else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_DOB_TYPE ) )
         {
-            inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >" ;
+            inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >";
 
             if ( value.equals( "" ) || value.equals( Patient.DOB_TYPE_VERIFIED + "" ) )
             {
@@ -525,7 +533,6 @@ public class DefaultPatientRegistrationFormService
     {
         try
         {
-
             return ProgramInstance.class.getMethod( "get" + property ).invoke( programInstance );
         }
         catch ( Exception ex )

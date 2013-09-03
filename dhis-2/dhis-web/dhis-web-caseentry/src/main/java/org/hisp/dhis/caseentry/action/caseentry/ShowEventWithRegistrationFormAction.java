@@ -174,7 +174,8 @@ public class ShowEventWithRegistrationFormAction
         if ( patientRegistrationForm != null )
         {
             customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd( patientRegistrationForm
-                .getDataEntryForm().getHtmlCode(), healthWorkers, null, null, i18n, format );
+                .getDataEntryForm().getHtmlCode(), patientRegistrationForm.getProgram(), healthWorkers, null, null,
+                i18n, format );
         }
 
         if ( customRegistrationForm == null )

@@ -191,8 +191,8 @@ public class GetPatientAction
             if ( patientRegistrationForm != null )
             {
                 customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd(
-                    patientRegistrationForm.getDataEntryForm().getHtmlCode(), healthWorkers, patient, null, i18n,
-                    format );
+                    patientRegistrationForm.getDataEntryForm().getHtmlCode(), patientRegistrationForm.getProgram(),
+                    healthWorkers, patient, null, i18n, format );
             }
         }
         else
@@ -214,8 +214,8 @@ public class GetPatientAction
             if ( patientRegistrationForm != null )
             {
                 customRegistrationForm = patientRegistrationFormService.prepareDataEntryFormForAdd(
-                    patientRegistrationForm.getDataEntryForm().getHtmlCode(), healthWorkers, patient, programInstance,
-                    i18n, format );
+                    patientRegistrationForm.getDataEntryForm().getHtmlCode(), patientRegistrationForm.getProgram(),
+                    healthWorkers, patient, programInstance, i18n, format );
             }
         }
 
