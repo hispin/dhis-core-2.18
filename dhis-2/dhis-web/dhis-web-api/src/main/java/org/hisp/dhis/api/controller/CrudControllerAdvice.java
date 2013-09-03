@@ -41,8 +41,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import java.io.IOException;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -50,7 +48,7 @@ import java.io.IOException;
 public class CrudControllerAdvice
 {
     @ExceptionHandler
-    public ResponseEntity<String> notAuthenticatedExceptionHandler( NotAuthenticatedException ex ) throws IOException
+    public ResponseEntity<String> notAuthenticatedExceptionHandler( NotAuthenticatedException ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );
@@ -59,7 +57,7 @@ public class CrudControllerAdvice
     }
 
     @ExceptionHandler({ NotFoundException.class, NotFoundForQueryException.class })
-    public ResponseEntity<String> notFoundExceptionHandler( Exception ex ) throws IOException
+    public ResponseEntity<String> notFoundExceptionHandler( Exception ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.TEXT_PLAIN_VALUE );

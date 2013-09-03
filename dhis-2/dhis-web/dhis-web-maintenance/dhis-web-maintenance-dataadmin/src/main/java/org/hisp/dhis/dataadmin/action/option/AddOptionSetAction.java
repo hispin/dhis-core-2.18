@@ -36,7 +36,6 @@ import java.util.List;
 
 /**
  * @author Chau Thu Tran
- * @version $AddOptionSetAction.java Feb 3, 2012 9:28:11 PM$
  */
 public class AddOptionSetAction
     implements Action
@@ -54,8 +53,6 @@ public class AddOptionSetAction
     private String name;
 
     private List<String> options;
-
-    private Integer version;
 
     // -------------------------------------------------------------------------------------------------
     // Setters
@@ -76,11 +73,6 @@ public class AddOptionSetAction
         this.options = options;
     }
 
-    public void setVersion( Integer version )
-    {
-        this.version = version;
-    }
-
     // -------------------------------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------------------------------
@@ -97,5 +89,4 @@ public class AddOptionSetAction
 
         return SUCCESS;
     }
-
 }

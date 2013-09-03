@@ -87,6 +87,7 @@ public class PdfDataEntryFormImportUtil
     // METHODS
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings("unchecked")
     public void ImportProgramStage( InputStream in, I18nFormat format )
         throws Exception
     {
@@ -147,7 +148,6 @@ public class PdfDataEntryFormImportUtil
         for ( Map.Entry<Integer, ProgramStageInstanceStoage> entry : programStageInstanceDataManager
             .getProgramStageInstanceData().entrySet() )
         {
-            Integer key = entry.getKey(); // rowNumber
             ProgramStageInstanceStoage programStageInstanceStoage = entry.getValue();
 
             int date = programStageInstanceStoage.getDate();

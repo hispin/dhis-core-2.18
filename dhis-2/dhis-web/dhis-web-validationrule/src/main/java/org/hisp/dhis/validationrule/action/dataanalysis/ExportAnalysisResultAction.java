@@ -83,13 +83,6 @@ public class ExportAnalysisResultAction implements Action
         this.type = type;
     }
 
-    private Integer organisationUnitId;
-
-    public void setOrganisationUnitId( Integer organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
