@@ -81,7 +81,7 @@ public interface PatientRegistrationFormService
 
     PatientRegistrationForm getCommonPatientRegistrationForm();
 
-    String prepareDataEntryFormForAdd( String htmlCode, Collection<User> healthWorkers, Patient patient,
+    String prepareDataEntryFormForAdd( String htmlCode, Program program, Collection<User> healthWorkers, Patient patient,
         ProgramInstance programInstance, I18n i18n, I18nFormat format );
 
 }

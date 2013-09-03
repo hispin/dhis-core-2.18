@@ -150,6 +150,12 @@
 		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
 		</tr>
+	
+		<tr name='nonAnonymous'>
+			<td><label>$i18n.getString( "allow_select_enrollment_date_in_future" )</label></td>
+			<td><input type="checkbox" id="selectEnrollmentDatesInFuture" name="selectEnrollmentDatesInFuture" value='true' #if($program.selectEnrollmentDatesInFuture=='true') checked #end ></td>
+			<td></td>
+		</tr>
 		
 		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
