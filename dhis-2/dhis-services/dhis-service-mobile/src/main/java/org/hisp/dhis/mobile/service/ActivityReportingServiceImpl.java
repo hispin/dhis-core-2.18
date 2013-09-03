@@ -695,7 +695,7 @@ public class ActivityReportingServiceImpl
                 programStageInstance.setProgramInstance( programInstance );
                 programStageInstance.setProgramStage( programStage );
                 Date dateCreatedEvent = new Date();
-                if ( program.getGeneratedByEnrollmentDate() )
+                if ( programStage.getGeneratedByEnrollmentDate() )
                 {
                     // dateCreatedEvent = sdf.parseDateTime( enrollmentDate
                     // ).toDate();
