@@ -15,6 +15,7 @@
 	"displayOnAllOrgunit": "$!program.displayOnAllOrgunit",
 	"useBirthDateAsIncidentDate": "$!program.useBirthDateAsIncidentDate",
 	"useBirthDateAsEnrollmentDate": "$!program.useBirthDateAsEnrollmentDate",
-	"selectEnrollmentDatesInFuture": "$!program.selectEnrollmentDatesInFuture"
+	"selectEnrollmentDatesInFuture": "$!program.selectEnrollmentDatesInFuture",
+	"selectIncidentDatesInFuture": "$!program.selectIncidentDatesInFuture"
   }
 }

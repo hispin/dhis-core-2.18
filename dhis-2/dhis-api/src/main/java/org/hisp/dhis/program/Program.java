@@ -131,6 +131,8 @@ public class Program
     private Boolean useBirthDateAsEnrollmentDate;
 
     private Boolean selectEnrollmentDatesInFuture;
+    
+    private Boolean selectIncidentDatesInFuture;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -571,6 +573,19 @@ public class Program
     public void setSelectEnrollmentDatesInFuture( Boolean selectEnrollmentDatesInFuture )
     {
         this.selectEnrollmentDatesInFuture = selectEnrollmentDatesInFuture;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getSelectIncidentDatesInFuture()
+    {
+        return selectIncidentDatesInFuture;
+    }
+
+    public void setSelectIncidentDatesInFuture( Boolean selectIncidentDatesInFuture )
+    {
+        this.selectIncidentDatesInFuture = selectIncidentDatesInFuture;
     }
 
 }

@@ -1315,7 +1315,7 @@ function programOnchange( programId )
 			
 			jQuery("#dateOfIncidentField").datepicker("destroy");
 			jQuery("#enrollmentDateField").datepicker("destroy");
-			if(program.attr("selectEnrollmentDatesInFuture")=='true'){
+			if(program.attr("selectEnrollmentDatesInFuture")=='true' || program.attr("selectIncidentDatesInFuture")=='true' ){
 				datePickerInRange( 'dateOfIncidentField' , 'enrollmentDateField', false, true );
 			}
 			else{

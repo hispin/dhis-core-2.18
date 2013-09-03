@@ -31,7 +31,8 @@
 						displayIncidentDate='$!program.displayIncidentDate'
 						dateOfEnrollmentDescription='$!program.dateOfEnrollmentDescription'
 						dateOfIncidentDescription='$!program.dateOfIncidentDescription'
-						selectEnrollmentDatesInFuture='$!program.selectEnrollmentDatesInFuture'>$encoder.htmlEncode( $program.displayName )</option>
+						selectEnrollmentDatesInFuture='$!program.selectEnrollmentDatesInFuture'
+						selectIncidentDatesInFuture='$program.selectIncidentDatesInFuture'>$encoder.htmlEncode( $program.displayName )</option>
 					#end
 				</select>
 			</td>
