@@ -457,7 +457,7 @@ public class SaveMobileProgramEnrollmentAction
                     programStageInstance.setProgramStage( programStage );
 
                     Date dateCreatedEvent = sdf.parseDateTime( incidentDate ).toDate();
-                    if ( program.getGeneratedByEnrollmentDate() )
+                    if ( programStage.getGeneratedByEnrollmentDate() )
                     {
                         dateCreatedEvent = sdf.parseDateTime( enrollmentDate ).toDate();
                     }
