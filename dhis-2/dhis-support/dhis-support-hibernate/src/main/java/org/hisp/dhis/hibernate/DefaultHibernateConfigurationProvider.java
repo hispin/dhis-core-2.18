@@ -170,6 +170,8 @@ public class DefaultHibernateConfigurationProvider
             log.info( "Could not read external configuration from file system" );
         }
         
+        log.info( "Hibernate configuration loaded, using dialect: " + configuration.getProperty( "hibernate.dialect" ) );
+        
         this.configuration = configuration;
     }
     
