@@ -28,6 +28,12 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.InputValidationService;
@@ -53,13 +59,6 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -496,18 +495,6 @@ public abstract class BaseEventService implements EventService
         {
             programStageInstanceService.deleteProgramStageInstance( programStageInstance );
         }
-    }
-
-    private List<Event> convertProgramStageInstances( List<ProgramStageInstance> programStageInstances )
-    {
-        List<Event> events = new ArrayList<Event>();
-
-        for ( ProgramStageInstance programStageInstance : programStageInstances )
-        {
-            events.add( convertProgramStageInstance( programStageInstance ) );
-        }
-
-        return events;
     }
 
     private Event convertProgramStageInstance( ProgramStageInstance programStageInstance )

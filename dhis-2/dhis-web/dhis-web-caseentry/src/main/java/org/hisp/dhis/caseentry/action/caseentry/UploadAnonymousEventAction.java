@@ -108,6 +108,7 @@ public class UploadAnonymousEventAction implements Action
     // -------------------------------------------------------------------------
 
     @Override
+    @SuppressWarnings("unchecked")
     public String execute() throws Exception
     {
         ServletInputStream inputStream = ServletActionContext.getRequest().getInputStream();

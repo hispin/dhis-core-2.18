@@ -1717,7 +1717,7 @@ public class ActivityReportingServiceImpl
     public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLatestPatient()
         throws NotAllowedException
     {
-        Patient patient = (Patient) this.patientService.getPatient( this.patientId );
+        Patient patient = patientService.getPatient( this.patientId );
 
         org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( patient );
         return patientMobile;

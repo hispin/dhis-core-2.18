@@ -29,7 +29,7 @@ package org.amplecode.staxwax.reader;
  */
 import java.io.ByteArrayInputStream;
 import javax.xml.stream.XMLStreamException;
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
 import java.net.URL;

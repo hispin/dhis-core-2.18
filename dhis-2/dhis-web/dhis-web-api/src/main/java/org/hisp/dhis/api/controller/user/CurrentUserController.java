@@ -306,7 +306,6 @@ public class CurrentUserController
         JacksonUtils.toJsonWithView( response.getOutputStream(), userOrganisationUnits, viewClass );
     }
 
-    @SuppressWarnings( "unchecked" )
     @RequestMapping( value = { "/assignedPrograms" }, produces = { "application/json", "text/*" } )
     public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
         @RequestParam( defaultValue = "1" ) Integer type )
