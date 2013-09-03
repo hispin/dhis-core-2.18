@@ -347,8 +347,8 @@ public class AggregationServiceTest
         assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitF ), DELTA );
         assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitB ), DELTA );
 
-        assertEquals( 85.2, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitC ), 0.1 );
-        assertEquals( 115.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitF ), 0.1 );
+        assertEquals( 85.2, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitC ), 0.3 );
+        assertEquals( 115.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitF ), 0.3 );
         assertEquals( 193.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitB ), 0.6 );
     }
     
@@ -362,8 +362,8 @@ public class AggregationServiceTest
         assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitF ), DELTA );
         assertEquals( 0.6, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitB ), DELTA );
         
-        assertEquals( 0.66, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitC ), 0.01 );
-        assertEquals( 0.78, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitF ), 0.01 );
-        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitB ), 0.01 );
+        assertEquals( 0.66, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitC ), DELTA );
+        assertEquals( 0.78, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitF ), DELTA );
+        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitB ), DELTA );
     }
 }
