@@ -347,15 +347,48 @@ public abstract class BaseEventService implements EventService
     }
 
     @Override
-    public Events getEvents( Program program )
+    public Events getEvents( Program program, OrganisationUnit organisationUnit )
     {
-        return getEvents( program, null );
+        List<Event> eventList = eventStore.getAll( program, organisationUnit );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
     }
 
     @Override
-    public Events getEvents( Program program, OrganisationUnit organisationUnit )
+    public Events getEvents( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
-        ProgramStage programStage = program.getProgramStageByStage( 1 );
+        List<Event> eventList = eventStore.getAll( program, organisationUnit, startDate, endDate );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
+    public Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
+    {
+        List<Event> eventList = eventStore.getAll( programStage, organisationUnit );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
+    public Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    {
+        List<Event> eventList = eventStore.getAll( programStage, organisationUnit, startDate, endDate );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
+    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit )
+    {
         List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit );
         Events events = new Events();
         events.setEvents( eventList );
@@ -364,10 +397,19 @@ public abstract class BaseEventService implements EventService
     }
 
     @Override
-    public Events getEvents( Program program, OrganisationUnit organisationUnit, Date start, Date end )
+    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
-        ProgramStage programStage = program.getProgramStageByStage( 1 );
-        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, start, end );
+        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, startDate, endDate );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
+    public Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate )
+    {
+        List<Event> eventList = eventStore.getAll( programs, programStages, organisationUnits, startDate, endDate );
         Events events = new Events();
         events.setEvents( eventList );
 

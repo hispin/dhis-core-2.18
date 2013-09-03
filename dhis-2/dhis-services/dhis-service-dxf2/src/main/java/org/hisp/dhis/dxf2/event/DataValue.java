@@ -40,7 +40,7 @@ public class DataValue
 
     private String dataElement;
 
-    private Boolean providedElsewhere = false;
+    private Boolean providedElsewhere;
 
     public DataValue()
     {
