@@ -31,7 +31,6 @@ package org.hisp.dhis.caseentry.action.report;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
