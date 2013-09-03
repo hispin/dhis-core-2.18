@@ -17,14 +17,14 @@
         #foreach( $section in $sections )
             <div id="tab-${section.uid}">
                 #set( $categoryComboId = $sectionCombos.get( $section.id ) )
-                #renderSection( $categoryComboId, $section.dataElements )
+                #renderSection( $categoryComboId $section.dataElements )
             </div>
         #end
     </div>
 #else
     #foreach( $section in $sections )
         #set( $categoryComboId = $sectionCombos.get( $section.id ) )
-        #renderSection( $categoryComboId, $section.dataElements, $section.displayName )
+        #renderSection( $categoryComboId $section.dataElements $section.displayName )
     #end
 #end
 
