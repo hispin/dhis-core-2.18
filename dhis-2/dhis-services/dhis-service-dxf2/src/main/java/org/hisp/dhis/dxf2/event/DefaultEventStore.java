@@ -57,6 +57,24 @@ public class DefaultEventStore implements EventStore
     }
 
     @Override
+    public List<Event> getAll( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    {
+        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), startDate, endDate );
+    }
+
+    @Override
+    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit )
+    {
+        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null );
+    }
+
+    @Override
+    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    {
+        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), startDate, endDate );
+    }
+
+    @Override
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit )
     {
         return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null );
@@ -66,6 +84,18 @@ public class DefaultEventStore implements EventStore
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
         return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), startDate, endDate );
+    }
+
+    @Override
+    public List<Event> getAll( Program program, List<ProgramStage> programStages, OrganisationUnit organisationUnit )
+    {
+        return getAll( Arrays.asList( program ), programStages, Arrays.asList( organisationUnit ), null, null );
+    }
+
+    @Override
+    public List<Event> getAll( Program program, List<ProgramStage> programStages, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    {
+        return getAll( Arrays.asList( program ), programStages, Arrays.asList( organisationUnit ), startDate, endDate );
     }
 
     @Override

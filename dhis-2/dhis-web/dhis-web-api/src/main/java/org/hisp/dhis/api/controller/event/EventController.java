@@ -40,6 +40,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,7 +64,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = EventController.RESOURCE_PATH )
+@RequestMapping(value = EventController.RESOURCE_PATH)
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -82,22 +83,25 @@ public class EventController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String getEvents(
-        @RequestParam( "program" ) String programUid,
-        @RequestParam( value = "orgUnit" ) String orgUnitUid,
-        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
-        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam( value = "program", required = false ) String programUid,
+        @RequestParam(value = "programStage", required = false) String programStageUid,
+        @RequestParam(value = "orgUnit") String orgUnitUid,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Program program = manager.get( Program.class, programUid );
+        ProgramStage programStage = manager.get( ProgramStage.class, programStageUid );
         OrganisationUnit organisationUnit;
 
-        if ( program == null )
+        if ( program == null && programStage == null )
         {
-            throw new NotFoundException( "Program", programUid );
+            throw new HttpServerErrorException( HttpStatus.BAD_REQUEST,
+                "Both program and programStage is invalid or missing, needs at least one." );
         }
 
         organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
@@ -118,12 +122,20 @@ public class EventController
             throw new NotFoundException( "OrganisationUnit", programUid );
         }
 
-        if ( program.isRegistration() || !program.isSingleEvent() )
-        {
-            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Only single event with no registration is currently supported." );
-        }
+        Events events;
 
-        Events events = eventService.getEvents( program, organisationUnit, startDate, endDate );
+        if ( program != null && programStage != null )
+        {
+            events = eventService.getEvents( program, programStage, organisationUnit, startDate, endDate );
+        }
+        else if ( program != null )
+        {
+            events = eventService.getEvents( program, organisationUnit, startDate, endDate );
+        }
+        else
+        {
+            events = eventService.getEvents( programStage, organisationUnit, startDate, endDate );
+        }
 
         if ( options.hasLinks() )
         {
