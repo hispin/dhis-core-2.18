@@ -29,16 +29,15 @@ package org.hisp.dhis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.xml.xpath.XPathExpressionException;
-import org.hisp.dhis.dataelement.DataElement;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
+import javax.xml.xpath.XPathExpressionException;
+
+import org.junit.Test;
 /**
  *
  * @author bobj
  */
-
-import static org.junit.Assert.assertEquals;
 
 public class TestDhisTest
     extends DhisConvenienceTest

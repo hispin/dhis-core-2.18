@@ -28,9 +28,8 @@ package org.hisp.dhis.mobile.action.incoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
+
 import com.opensymphony.xwork2.Action;
 
 /**

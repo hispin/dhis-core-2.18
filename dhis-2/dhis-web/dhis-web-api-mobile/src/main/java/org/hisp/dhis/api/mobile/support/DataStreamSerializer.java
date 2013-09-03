@@ -82,16 +82,10 @@ public class DataStreamSerializer
         }
         finally
         {
-            if ( dos != null )
-            {
-                dos.flush();
-                dos.close();
-            }
+            dos.flush();
+            dos.close();
             
-            if ( gzip != null )
-            {
-                gzip.finish();
-            }
+            gzip.finish();
         }
     }
 

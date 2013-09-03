@@ -167,7 +167,7 @@ public class ShowSentSMSAction
                 {
                     tempString += "[unknown]";
                 }
-                else if ( users != null && users.size() > 0 )
+                else if ( users.size() > 0 )
                 {
 
                     Iterator<User> usersIterator = users.iterator();

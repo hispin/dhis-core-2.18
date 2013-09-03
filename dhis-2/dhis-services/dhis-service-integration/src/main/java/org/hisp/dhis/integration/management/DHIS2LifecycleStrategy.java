@@ -28,7 +28,20 @@ package org.hisp.dhis.integration.management;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.camel.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.concurrent.ThreadPoolExecutor;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.Component;
+import org.apache.camel.Endpoint;
+import org.apache.camel.ErrorHandlerFactory;
+import org.apache.camel.Processor;
+import org.apache.camel.Route;
+import org.apache.camel.Service;
+import org.apache.camel.VetoCamelContextStartException;
 import org.apache.camel.model.RoutesDefinition;
 import org.apache.camel.spi.LifecycleStrategy;
 import org.apache.camel.spi.RouteContext;
@@ -38,12 +51,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author bobj
