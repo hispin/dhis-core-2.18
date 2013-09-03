@@ -267,7 +267,7 @@ public class GetProgramStageSectionAction
         }
 
         if ( this.listOfProgramStageSections.size() == 0 && programStageInstance.isCompleted() == true
-            && programStage.getProgram().getBlockEntryForm() )
+            && programStage.getBlockEntryForm() )
         {
             return REDIRECT_COMPLETED_FORM;
         }
