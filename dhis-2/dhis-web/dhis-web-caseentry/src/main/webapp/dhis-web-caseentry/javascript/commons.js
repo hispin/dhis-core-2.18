@@ -555,11 +555,18 @@ function showCreateNewEvent( programInstanceId, programStageId )
 			height: 160
 		}).show('fast');
 		
-	if( programStageId != undefined )
-	{
-		jQuery('#repeatableProgramStage_' + programInstanceId).val(programStageId);
+	var flag = false;
+	jQuery('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
+		if( jQuery(this).css("display")!='none' && !flag){
+			jQuery(this).attr("selected","selected");
+			setSuggestedDueDate( programInstanceId );
+			flag = true;
+		}
+	});
+	
+	if(!flag){
+		jQuery('#repeatableProgramStage_' + programInstanceId).val("");
 	}
-	setSuggestedDueDate( programInstanceId );
 }
 
 function setSuggestedDueDate( programInstanceId )

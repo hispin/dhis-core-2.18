@@ -99,7 +99,7 @@
 				<select id='repeatableProgramStage_$!programInstance.id' name='repeatableProgramStageId_$!programInstance.id' onchange="setSuggestedDueDate('$programInstance.id')">
 					#foreach( $programStage in $programInstance.program.programStages )
 						#if( $programStage.irregular=='true')
-							<option value="$programStage.id" standardInterval='$programStage.standardInterval' repeatable="true">$!programStage.displayName</option>
+							<option value="$programStage.id" standardInterval='$programStage.standardInterval' selected repeatable="true">$!programStage.displayName</option>
 						#else
 							#set($hasEvent="false")
 							#foreach( $programStageInstance in $programInstance.programStageInstances )
@@ -108,7 +108,7 @@
 								#end
 							#end
 							
-							<option #if($hasEvent=="true") style="display:none;" #end value="$programStage.id" standardInterval='$programStage.minDaysFromStart' repeatable="false">$!programStage.displayName</option>
+							<option #if($hasEvent=="true") style="display:none;" #else selected #end value="$programStage.id" standardInterval='$programStage.minDaysFromStart' repeatable="false">$!programStage.displayName</option>
 						#end
 					#end
 				</select>
