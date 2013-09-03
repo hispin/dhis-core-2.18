@@ -125,6 +125,6 @@ public class HibernateImportDataValueStore
     {
         String sql = "SELECT COUNT(*) FROM importdatavalue WHERE status = '" + status.name() + "'";
         
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 }

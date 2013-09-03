@@ -257,7 +257,7 @@ public class JdbcAggregatedDataValueStore
             " AND ous.idlevel" + rootOrgunit.getLevel() + "=" + rootOrgunit.getId() +
             " AND adv.periodid IN (" + periodids + ") ";
 
-        return jdbcTemplate.queryForInt( sql );
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )

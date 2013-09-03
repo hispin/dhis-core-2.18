@@ -1824,9 +1824,9 @@ function pingNotifications( category, tableId, completedCallback )
 {
 	var lastUid = $( '#' + tableId ).prop( 'lastUid' ); // Store on table property
 	
-	var param = lastUid ? '&lastUid=' + lastUid : '';
+	var param = ( undefined !== lastUid ) ? '?lastId=' + lastUid : '';
 	
-	$.getJSON( '../dhis-web-commons-ajax-json/getNotifications.action?category=' + category + param, function( notifications )
+	$.getJSON( '../api/system/tasks/' + category + param, function( notifications )
 	{
 		var html = '', 
 			isComplete = false;
@@ -1850,7 +1850,9 @@ function pingNotifications( category, tableId, completedCallback )
 					$( '#loaderSpan' ).replaceWith ( '' ); // Hide previous loader bar
 				}
 				
-				html += '<tr><td>' + notification.time + '</td><td>' + notification.message + ' &nbsp;';
+				var time = ( undefined != notification.time ) ? notification.time.replace( 'T', ' ' ).substring( 0, 19 ) : '';
+				
+				html += '<tr><td>' + time + '</td><td>' + notification.message + ' &nbsp;';
 				html += notification.completed == 'true' ?  '<img src="../images/completed.png">' : loaderHtml;
 				html += '</td></tr>';
 			} );

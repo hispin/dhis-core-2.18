@@ -138,16 +138,6 @@ public class DefaultEventStore implements EventStore
         return events;
     }
 
-    private List<Integer> getIdList( IdentifiableObject identifiableObject )
-    {
-        if ( identifiableObject != null )
-        {
-            return Arrays.asList( identifiableObject.getId() );
-        }
-
-        return new ArrayList<Integer>();
-    }
-
     private List<Integer> getIdList( List<? extends IdentifiableObject> identifiableObjects )
     {
         List<Integer> integers = new ArrayList<Integer>();

@@ -43,7 +43,7 @@
 
 <div>
 <table id="notificationTable" class="notificationTable" style="display:none">
-<col width="120">
-<col width="380">
+<col width="140">
+<col width="360">
 </table>
 </div>
