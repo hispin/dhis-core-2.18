@@ -47,7 +47,6 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRProperties;
 
 import org.apache.velocity.VelocityContext;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
@@ -170,9 +169,6 @@ public class DefaultReportService
 
         try
         {
-            JRProperties.setProperty( "net.sf.jasperreports.awt.ignore.missing.font", "true" );
-            JRProperties.setProperty( "net.sf.jasperreports.default.font.name", "DejaVu Sans" );
-
             JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
 
             if ( report.hasReportTable() ) // Use JR data source
