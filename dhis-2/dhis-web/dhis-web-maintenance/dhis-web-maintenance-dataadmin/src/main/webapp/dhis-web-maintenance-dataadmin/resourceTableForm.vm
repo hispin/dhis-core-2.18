@@ -5,61 +5,38 @@
 	var i18n_select_options = '$encoder.jsEscape( $i18n.getString( "select_options" ), "'" )';
 </script>
 
+<style type="text/css">
+ul.resourceTables
+{
+  list-style-type: none;
+}
+
+ul.resourceTables li
+{
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+</style>
+
 <h3>$i18n.getString( "resource_table" ) #openHelp( "resourceTables" )</h3>
 
-<p>
-    <input type="checkbox" name="resourceTableCheckBox" id="organisationUnit"/>
-    <label for="organisationUnit">$i18n.getString( "organisation_unit_structure" ) <span style="color:#606060">(_orgunitstructure)</span></label>
-</p>
+<ul class="resourceTables">
+<li>$i18n.getString( "organisation_unit_structure" ) <span style="color:#606060">(_orgunitstructure)</span></li>
+<li>$i18n.getString( "data_element_group_set_structure" ) <span style="color:#606060">(_dataelementgroupsetstructure)</span></li>
+<li>$i18n.getString( "indicator_group_set_structure" ) <span style="color:#606060">(_indicatorgroupsetstructure)</span></li>
+<li>$i18n.getString( "organisation_unit_group_set_structure" ) <span style="color:#606060">(_organisationunitgroupsetstructure)</span></li>
+<li>$i18n.getString( "category_structure" ) <span style="color:#606060">(_categorystructure)</span></li>
+<li>$i18n.getString( "data_element_category_option_combo_name" ) <span style="color:#606060">(_categoryoptioncomboname)</span></li>
+<li>$i18n.getString( "data_element_structure" ) <span style="color:#606060">(_dataelementstructure)</span></li>
+<li>$i18n.getString( "period_structure" ) <span style="color:#606060">(_periodstructure)</span></li>
+<li>$i18n.getString( "data_element_category_option_combo" ) <span style="color:#606060">(_dataelementcategoryoptioncombo)</span></li>
+</ul>
 
-<p>
-	<input type="checkbox" name="resourceTableCheckBox" id="dataElementGroupSetStructure"/>
-	<label for="dataElementGroupSetStructure">$i18n.getString( "data_element_group_set_structure" ) <span style="color:#606060">(_dataelementgroupsetstructure)</span></label>
-</p>
+<p><input type="button" value='$i18n.getString( "generate_resource_tables" )' onclick="generateResourceTable()" style="width:150px"/></p>
 
-<p>
-    <input type="checkbox" name="resourceTableCheckBox" id="indicatorGroupSetStructure"/>
-    <label for="indicatorGroupSetStructure">$i18n.getString( "indicator_group_set_structure" ) <span style="color:#606060">(_indicatorgroupsetstructure)</span></label>
-</p>
-
-<p>
-    <input type="checkbox" name="resourceTableCheckBox" id="organisationUnitGroupSetStructure"/>
-    <label for="organisationUnitGroupSetStructure">$i18n.getString( "organisation_unit_group_set_structure" ) <span style="color:#606060">(_organisationunitgroupsetstructure)</span></label>
-</p>
-
-<p>
-	<input type="checkbox" name="resourceTableCheckBox" id="categoryStructure"/>
-	<label for="categoryStructure">$i18n.getString( "category_structure" ) <span style="color:#606060">(_categorystructure)</span></label>
-</p>
-
-<p>
-    <input type="checkbox" name="resourceTableCheckBox" id="categoryOptionComboName"/>
-    <label for="categoryOptionComboName">$i18n.getString( "data_element_category_option_combo_name" ) <span style="color:#606060">(_categoryoptioncomboname)</span></label>
-</p>
-
-<p>
-    <input type="checkbox" name="resourceTableCheckBox" id="dataElementStructure"/>
-    <label for="dataElementStructure">$i18n.getString( "data_element_structure" ) <span style="color:#606060">(_dataelementstructure)</span></label>
-</p>
-
-<p>
-    <input type="checkbox" name="resourceTableCheckBox" id="periodStructure"/>
-    <label for="periodStructure">$i18n.getString( "period_structure" ) <span style="color:#606060">(_periodstructure)</span></label>
-</p>
-
-<p>
-	<input type="checkbox" name="resourceTableCheckBox" id="dataElementCategoryOptionCombo"/>
-	<label for="dataElementCategoryOptionCombo">$i18n.getString( "data_element_category_option_combo" ) <span style="color:#606060">(_dataelementcategoryoptioncombo)</span></label>
-</p>
-
-<table>
-	<tr>
-		<td>
-			<input type="button" value='$i18n.getString( "select_all" )' id="selectAllButton" onclick="toggleAll()" style="width:100px"/>
-		    <input type="button" value='$i18n.getString( "generate_resource_tables" )' onclick="generateResourceTable()" style="width:150px"/> 
-		</td>
-	</tr>
-
+<div>
+<table id="notificationTable" class="notificationTable" style="display:none">
+<col width="140">
+<col width="360">
 </table>
-
-<span id="message"></span>
+</div>

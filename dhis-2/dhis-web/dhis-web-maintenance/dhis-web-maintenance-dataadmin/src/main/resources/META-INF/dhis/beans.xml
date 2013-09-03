@@ -17,16 +17,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
-  <!-- Resource table -->
-
-  <bean id="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
-      class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction"
-      scope="prototype">
-    <property name="resourceTableService" ref="org.hisp.dhis.resourcetable.ResourceTableService" />
-    <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />    
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-  </bean>
-
   <!-- Cache -->
 
   <bean id="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction"

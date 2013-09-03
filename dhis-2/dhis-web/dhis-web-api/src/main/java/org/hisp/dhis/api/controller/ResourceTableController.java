@@ -35,7 +35,10 @@ import org.hisp.dhis.analytics.scheduling.AnalyticsTableTask;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.resourcetable.scheduling.ResourceTableTask;
 import org.hisp.dhis.scheduling.DataMartTask;
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.scheduling.Scheduler;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -63,10 +66,17 @@ public class ResourceTableController
     @Autowired
     private Scheduler scheduler;
     
+    @Autowired
+    private CurrentUserService currentUserService;
+    
+    //TODO make tasks prototypes to avoid potential concurrency issues?
+    
     @RequestMapping( value = "/analytics", method = RequestMethod.PUT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void analytics( HttpServletResponse response )
     {
+        analyticsTableTask.setTaskId( new TaskId( TaskCategory.DATAMART, currentUserService.getCurrentUser() ) );
+        
         scheduler.executeTask( analyticsTableTask );
         
         ContextUtils.okResponse( response, "Initiated analytics table update" );
@@ -76,6 +86,8 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void data( HttpServletResponse response )
     {
+        dataMartTask.setTaskId( new TaskId( TaskCategory.DATAMART, currentUserService.getCurrentUser() ) );
+        
         scheduler.executeTask( dataMartTask );
         
         ContextUtils.okResponse( response, "Initiated data mart update" );
@@ -85,6 +97,8 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void resourceTables( HttpServletResponse response )
     {
+        resourceTableTask.setTaskId( new TaskId( TaskCategory.RESOURCETABLE_UPDATE, currentUserService.getCurrentUser() ) );
+        
         scheduler.executeTask( resourceTableTask );
         
         ContextUtils.okResponse( response, "Initiated resource table update" );
