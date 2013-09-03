@@ -29,12 +29,16 @@ package org.hisp.dhis.api.view;
  */
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.view.AbstractView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -44,30 +48,54 @@ public class JacksonJsonView
 {
     private static String CONTENT_TYPE_APPLICATION_JSON = "application/json";
 
+    private static String CONTENT_TYPE_APPLICATION_JSON_GZIP = "application/json+gzip";
+
     private static String CONTENT_TYPE_APPLICATION_JAVASCRIPT = "application/javascript";
 
+    private static String CONTENT_TYPE_APPLICATION_JAVASCRIPT_GZIP = "application/javascript+gzip";
+
     private boolean withPadding = false;
+
+    private boolean withCompression = false;
 
     private String callbackParameter = "callback";
 
     private String paddingFunction = "callback";
+
+    @Autowired
+    private ContextUtils contextUtils;
 
     public JacksonJsonView()
     {
         setContentType( CONTENT_TYPE_APPLICATION_JSON );
     }
 
-    public JacksonJsonView( boolean withPadding )
+    public JacksonJsonView( boolean withPadding, boolean withCompression )
     {
         this.withPadding = withPadding;
+        this.withCompression = withCompression;
 
         if ( !withPadding )
         {
-            setContentType( CONTENT_TYPE_APPLICATION_JSON );
+            if ( !withCompression )
+            {
+                setContentType( CONTENT_TYPE_APPLICATION_JSON );
+            }
+            else
+            {
+                setContentType( CONTENT_TYPE_APPLICATION_JSON_GZIP );
+            }
         }
         else
         {
-            setContentType( CONTENT_TYPE_APPLICATION_JAVASCRIPT );
+            if ( !withCompression )
+            {
+                setContentType( CONTENT_TYPE_APPLICATION_JAVASCRIPT );
+            }
+            else
+            {
+                setContentType( CONTENT_TYPE_APPLICATION_JAVASCRIPT_GZIP );
+            }
         }
     }
 
@@ -81,6 +109,11 @@ public class JacksonJsonView
         this.paddingFunction = paddingFunction;
     }
 
+    public void setWithCompression( boolean withCompression )
+    {
+        this.withCompression = withCompression;
+    }
+
     @Override
     protected void renderMergedOutputModel( Map<String, Object> model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
@@ -88,6 +121,19 @@ public class JacksonJsonView
         Object object = model.get( "model" );
         Class<?> viewClass = JacksonUtils.getViewClass( model.get( "viewClass" ) );
         response.setContentType( getContentType() + "; charset=UTF-8" );
+
+        OutputStream outputStream;
+
+        if ( !withCompression )
+        {
+            outputStream = response.getOutputStream();
+        }
+        else
+        {
+            response.setContentType( ContextUtils.CONTENT_TYPE_GZIP );
+            response.addHeader( ContextUtils.HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
+            outputStream = new GZIPOutputStream( response.getOutputStream() );
+        }
 
         if ( withPadding )
         {
@@ -103,11 +149,11 @@ public class JacksonJsonView
 
         if ( viewClass != null )
         {
-            JacksonUtils.toJsonWithView( response.getOutputStream(), object, viewClass );
+            JacksonUtils.toJsonWithView( outputStream, object, viewClass );
         }
         else
         {
-            JacksonUtils.toJson( response.getOutputStream(), object );
+            JacksonUtils.toJson( outputStream, object );
         }
     }
 }
