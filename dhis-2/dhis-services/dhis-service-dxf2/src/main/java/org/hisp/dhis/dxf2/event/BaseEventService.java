@@ -355,18 +355,10 @@ public abstract class BaseEventService implements EventService
     @Override
     public Events getEvents( Program program, OrganisationUnit organisationUnit )
     {
-        Events events = new Events();
-
         ProgramStage programStage = program.getProgramStageByStage( 1 );
-
-        List<ProgramStageInstance> programStageInstances;
-
-        programStageInstances = new ArrayList<ProgramStageInstance>(
-            programStageInstanceService.getProgramStageInstances( programStage, organisationUnit ) );
-
-        List<Event> convertedEvents = convertProgramStageInstances( programStageInstances );
-
-        events.setEvents( convertedEvents );
+        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit );
+        Events events = new Events();
+        events.setEvents( eventList );
 
         return events;
     }
@@ -378,13 +370,6 @@ public abstract class BaseEventService implements EventService
         List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, start, end );
         Events events = new Events();
         events.setEvents( eventList );
-
-        /*
-        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>(
-            programStageInstanceService.getProgramStageInstances( programStage, organisationUnit, start, end ) );
-
-        List<Event> convertedEvents = convertProgramStageInstances( programStageInstances );
-        */
 
         return events;
     }
@@ -412,7 +397,7 @@ public abstract class BaseEventService implements EventService
             return;
         }
 
-        OrganisationUnit organisationUnit = null;
+        OrganisationUnit organisationUnit;
 
         if ( event.getOrgUnit() != null )
         {

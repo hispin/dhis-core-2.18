@@ -28,14 +28,17 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -48,10 +51,29 @@ public class DefaultEventStore implements EventStore
     private JdbcTemplate jdbcTemplate;
 
     @Override
+    public List<Event> getAll( Program program, OrganisationUnit organisationUnit )
+    {
+        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), null, null );
+    }
+
+    @Override
+    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit )
+    {
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null );
+    }
+
+    @Override
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), startDate, endDate );
+    }
+
+    @Override
+    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate )
+    {
         List<Event> events = new ArrayList<Event>();
-        String sql = buildSql( programStage.getId(), organisationUnit.getId(), startDate.toString(), endDate.toString() );
+        String sql = buildSql( getIdList( programs ), getIdList( programStages ), getIdList( organisationUnits ),
+            startDate, endDate );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -66,8 +88,8 @@ public class DefaultEventStore implements EventStore
 
                 event.setCompleted( rowSet.getBoolean( "psi_completed" ) );
                 event.setEvent( rowSet.getString( "psi_uid" ) );
-                event.setProgram( program.getUid() );
-                event.setProgramStage( programStage.getUid() );
+                event.setProgram( rowSet.getString( "p_uid" ) );
+                event.setProgramStage( rowSet.getString( "ps_uid" ) );
                 event.setStoredBy( rowSet.getString( "psi_completeduser" ) );
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
                 event.setEventDate( rowSet.getString( "psi_executiondate" ) );
@@ -86,17 +108,87 @@ public class DefaultEventStore implements EventStore
         return events;
     }
 
-    private String buildSql( int programStageId, int orgUnitId, String startDate, String endDate )
+    private List<Integer> getIdList( IdentifiableObject identifiableObject )
     {
-        String sql = "select psi.uid as psi_uid, ou.uid as ou_uid, psi.executiondate as psi_executiondate," +
+        if ( identifiableObject != null )
+        {
+            return Arrays.asList( identifiableObject.getId() );
+        }
+
+        return new ArrayList<Integer>();
+    }
+
+    private List<Integer> getIdList( List<? extends IdentifiableObject> identifiableObjects )
+    {
+        List<Integer> integers = new ArrayList<Integer>();
+
+        for ( IdentifiableObject identifiableObject : identifiableObjects )
+        {
+            integers.add( identifiableObject.getId() );
+        }
+
+        return integers;
+    }
+
+    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds, Date startDate, Date endDate )
+    {
+        String sql = "select p.uid as p_uid, ps.uid as ps_uid, psi.uid as psi_uid, ou.uid as ou_uid, psi.executiondate as psi_executiondate," +
             " psi.completeduser as psi_completeduser, psi.completed as psi_completed," +
             " pdv.value as pdv_value, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid" +
-            " from programstageinstance psi" +
-            " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid and ou.organisationunitid=" + orgUnitId + ")" +
+            " from program p" +
+            " left join programstage ps on ps.programid=p.programid" +
+            " left join programstageinstance psi on ps.programstageid=psi.programstageid" +
+            " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid)" +
             " left join patientdatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid" +
-            " left join dataelement de on pdv.dataelementid=de.dataelementid" +
-            " where psi.programstageid=" + programStageId +
-            " and (psi.executiondate >= '" + startDate + "' and psi.executiondate <= '" + endDate + "') order by psi_uid";
+            " left join dataelement de on pdv.dataelementid=de.dataelementid ";
+
+        boolean startedWhere = false;
+
+        if ( !programIds.isEmpty() )
+        {
+            if ( startedWhere )
+            {
+                sql += " and p.programid in (" + TextUtils.getCommaDelimitedString( programIds ) + ") ";
+            }
+            else
+            {
+                sql += " where p.programid in (" + TextUtils.getCommaDelimitedString( programIds ) + ") ";
+                startedWhere = true;
+            }
+        }
+
+        if ( !programStageIds.isEmpty() )
+        {
+            if ( startedWhere )
+            {
+                sql += " and ps.programstageid in (" + TextUtils.getCommaDelimitedString( programStageIds ) + ") ";
+            }
+            else
+            {
+                sql += " where ps.programstageid in (" + TextUtils.getCommaDelimitedString( programStageIds ) + ") ";
+                startedWhere = true;
+            }
+        }
+
+        if ( !orgUnitIds.isEmpty() )
+        {
+            if ( startedWhere )
+            {
+                sql += " and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnitIds ) + ") ";
+            }
+            else
+            {
+                sql += " where ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnitIds ) + ") ";
+                startedWhere = true;
+            }
+        }
+
+        if ( startDate != null && endDate != null )
+        {
+            sql += " and (psi.executiondate >= '" + startDate.toString() + "' and psi.executiondate <= '" + endDate.toString() + "') ";
+        }
+
+        sql += " order by psi_uid;";
 
         return sql;
     }
