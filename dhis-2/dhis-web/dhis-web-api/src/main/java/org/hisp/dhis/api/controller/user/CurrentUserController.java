@@ -306,9 +306,9 @@ public class CurrentUserController
         JacksonUtils.toJsonWithView( response.getOutputStream(), userOrganisationUnits, viewClass );
     }
 
-    @RequestMapping( value = { "/assignedPrograms" }, produces = { "application/json", "text/*" } )
+    @RequestMapping(value = { "/assignedPrograms" }, produces = { "application/json", "text/*" })
     public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
-        @RequestParam( defaultValue = "1" ) Integer type )
+        @RequestParam(defaultValue = "1") Integer type )
         throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -321,6 +321,7 @@ public class CurrentUserController
         Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
         Set<Program> programs = new HashSet<Program>();
+        List<Program> userPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         Map<String, List<Program>> programAssociations = new HashMap<String, List<Program>>();
 
         if ( currentUser.getOrganisationUnits().isEmpty() && currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
@@ -354,9 +355,15 @@ public class CurrentUserController
 
             if ( !ouPrograms.isEmpty() )
             {
-                organisationUnits.add( organisationUnit );
-                programs.addAll( ouPrograms );
-                programAssociations.put( organisationUnit.getUid(), ouPrograms );
+                for ( Program program : ouPrograms )
+                {
+                    if ( userPrograms.contains( program ) )
+                    {
+                        organisationUnits.add( organisationUnit );
+                        programs.addAll( ouPrograms );
+                        programAssociations.put( organisationUnit.getUid(), ouPrograms );
+                    }
+                }
             }
         }
 
