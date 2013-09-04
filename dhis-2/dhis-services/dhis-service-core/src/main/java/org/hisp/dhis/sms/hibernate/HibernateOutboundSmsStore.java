@@ -28,17 +28,17 @@ package org.hisp.dhis.sms.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsStatus;
 import org.hisp.dhis.sms.outbound.OutboundSmsStore;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 public class HibernateOutboundSmsStore
     extends HibernateGenericStore<OutboundSms>
@@ -47,13 +47,6 @@ public class HibernateOutboundSmsStore
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -87,49 +80,19 @@ public class HibernateOutboundSmsStore
         return getCriteria().addOrder( Order.desc( "date" ) ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public List<OutboundSms> get( OutboundSmsStatus status )
     {
-        int realStatus = 0;
-
-        if ( status.equals( OutboundSmsStatus.OUTBOUND ) )
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( OutboundSms.class ).addOrder( Order.desc( "date" ) );
+        
+        if ( status != null )
         {
-            realStatus = OutboundSmsStatus.OUTBOUND.ordinal();
+            criteria.add( Restrictions.eq( "status", status ) );
         }
-        else if ( status.equals( OutboundSmsStatus.SENT ) )
-        {
-            realStatus = OutboundSmsStatus.SENT.ordinal();
-        }
-        else
-        {
-            realStatus = OutboundSmsStatus.ERROR.ordinal();
-        }
-
-        String sql = "select osm.id as outboundsmsid, message, ore.elt as phonenumber, date "
-            + "from outbound_sms osm inner join outbound_sms_recipients ore "
-            + "on osm.id=ore.outbound_sms_id where status = " + realStatus;
-
-        try
-        {
-            List<OutboundSms> OutboundSmsList = jdbcTemplate.query( sql, new RowMapper<OutboundSms>()
-            {
-                public OutboundSms mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-                    OutboundSms outboundSms = new OutboundSms( rs.getString( 2 ), rs.getString( 3 ) );
-                    outboundSms.setId( rs.getInt( 1 ) );
-                    outboundSms.setDate( rs.getDate( 4 ) );
-                    return outboundSms;
-                }
-            } );
-
-            return OutboundSmsList;
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-            return null;
-        }
+        return criteria.list();
     }
 
     @Override
