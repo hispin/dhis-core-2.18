@@ -93,4 +93,16 @@ public class DefaultOutboundSmsService
     {
         return outboundSmsStore.getOutboundSmsbyId( id );
     }
+
+    @Override
+    public List<OutboundSms> getOutboundSms( OutboundSmsStatus status, Integer min, Integer max )
+    {
+        return outboundSmsStore.get( status, min, max );
+    }
+
+    @Override
+    public List<OutboundSms> getAllOutboundSms( Integer min, Integer max )
+    {
+        return outboundSmsStore.getAllOutboundSms( min, max );
+    }
 }

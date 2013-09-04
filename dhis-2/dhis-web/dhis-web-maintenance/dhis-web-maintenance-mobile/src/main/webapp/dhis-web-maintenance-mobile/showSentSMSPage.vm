@@ -80,6 +80,10 @@
 				<input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/>
 			</td>
 		</tr>
+		<tr>
+			<td style="width:130px">$i18n.getString( "total_number_of_result" ):</td>
+			<td style="text-align:left" colspan="2">$total</td>
+		</tr>
 	</table>
 	<br/>
 	<table id="detailsSentSMSList" class="listTable" style="width:100%" border="0px">
@@ -107,6 +111,14 @@
 				<td style="text-align:center"><a href="javascript:removeSingleItem( '$outboundSms.id', '$outboundSms.message' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></td>
 			</tr>
 			#end
+			<tr>
+				<td colspan="8">
+					<p></p>
+					<div class="paging-container">
+						#parse( "/dhis-web-commons/paging/paging.vm" )
+					</div>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </form>
