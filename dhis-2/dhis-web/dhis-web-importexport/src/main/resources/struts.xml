@@ -61,7 +61,7 @@
       <param name="requiredAuthorities">F_IMPORT_DATA</param>
     </action>
 
-    <action name="importDataValue" class="org.hisp.dhis.importexport.action.event.ImportEventAction">
+    <action name="importEventDataValue" class="org.hisp.dhis.importexport.action.event.ImportEventAction">
       <result name="success" type="redirect">displayEventImportForm.action</result>
       <interceptor-ref name="fileUploadStack" />
       <param name="requiredAuthorities">F_IMPORT_DATA</param>
