@@ -35,17 +35,25 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.event.Event;
 import org.hisp.dhis.dxf2.event.EventService;
 import org.hisp.dhis.dxf2.event.Events;
+import org.hisp.dhis.dxf2.event.tasks.ImportEventTask;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,7 +87,16 @@ public class EventController
     private IdentifiableObjectManager manager;
 
     @Autowired
+    private CurrentUserService currentUserService;
+
+    @Autowired
+    private Scheduler scheduler;
+
+    @Autowired
     private EventService eventService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     // -------------------------------------------------------------------------
     // Controller
@@ -179,44 +196,69 @@ public class EventController
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
-    public void postXmlEvent( HttpServletResponse response, HttpServletRequest request ) throws Exception
+    public void postXmlEvent( HttpServletResponse response, HttpServletRequest request, ImportOptions importOptions ) throws Exception
     {
         InputStream inputStream = StreamUtils.wrapAndCheckCompressionFormat( request.getInputStream() );
-        ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
 
-        for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
+        if ( !importOptions.isAsync() )
         {
-            importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
-        }
+            ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
 
-        if ( importSummaries.getImportSummaries().size() == 1 )
+            for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
+            {
+                importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+            }
+
+            if ( importSummaries.getImportSummaries().size() == 1 )
+            {
+                ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
+                response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+            }
+
+            JacksonUtils.toXml( response.getOutputStream(), importSummaries );
+        }
+        else
         {
-            ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
-            response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+            User currentUser = currentUserService.getCurrentUser();
+            TaskId taskId = new TaskId( TaskCategory.EVENT_IMPORT, currentUser );
+            scheduler.executeTask( new ImportEventTask( inputStream, eventService, importOptions, taskId, currentUser, false ) );
+            response.setHeader( "Location", ContextUtils.getRootPath( request ) + "/system/tasks/" + TaskCategory.EVENT_IMPORT );
+            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         }
-
-        JacksonUtils.toXml( response.getOutputStream(), importSummaries );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
-    public void postJsonEvent( HttpServletResponse response, HttpServletRequest request ) throws Exception
+    public void postJsonEvent( HttpServletResponse response, HttpServletRequest request, ImportOptions importOptions ) throws Exception
     {
         InputStream inputStream = StreamUtils.wrapAndCheckCompressionFormat( request.getInputStream() );
-        ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
 
-        for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
+        if ( !importOptions.isAsync() )
         {
-            importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+            ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
+
+            for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
+            {
+                importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+            }
+
+            if ( importSummaries.getImportSummaries().size() == 1 )
+            {
+                ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
+                response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+            }
+
+            JacksonUtils.toJson( response.getOutputStream(), importSummaries );
+        }
+        else
+        {
+            User currentUser = currentUserService.getCurrentUser();
+            TaskId taskId = new TaskId( TaskCategory.EVENT_IMPORT, currentUser );
+            scheduler.executeTask( new ImportEventTask( inputStream, eventService, importOptions, taskId, currentUser, true ) );
+            response.setHeader( "Location", ContextUtils.getRootPath( request ) + "/system/tasks/" + TaskCategory.EVENT_IMPORT );
+            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         }
 
-        if ( importSummaries.getImportSummaries().size() == 1 )
-        {
-            ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
-            response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
-        }
-
-        JacksonUtils.toJson( response.getOutputStream(), importSummaries );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )

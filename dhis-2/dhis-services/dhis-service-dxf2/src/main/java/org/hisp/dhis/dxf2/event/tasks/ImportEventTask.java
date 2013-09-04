@@ -1,4 +1,4 @@
-package org.hisp.dhis.scheduling;
+package org.hisp.dhis.dxf2.event.tasks;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,17 +28,64 @@ package org.hisp.dhis.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.event.EventService;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.user.User;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public enum TaskCategory
+public class ImportEventTask
+    implements Runnable
 {
-    DATAMART,
-    RESOURCETABLE_UPDATE,
-    DATAVALUE_IMPORT,
-    EVENT_IMPORT,
-    METADATA_IMPORT,
-    METADATA_EXPORT,
-    AGGREGATE_QUERY_BUILDER,
-    SENDING_REMINDER_MESSAGE
+    private final InputStream inputStream;
+
+    private final EventService eventService;
+
+    private final ImportOptions importOptions;
+
+    private final TaskId taskId;
+
+    private final User user;
+
+    private final boolean jsonInput;
+
+    public ImportEventTask( InputStream inputStream, EventService eventService, ImportOptions importOptions, TaskId taskId, User user, boolean jsonInput )
+    {
+        this.inputStream = inputStream;
+        this.eventService = eventService;
+        this.importOptions = importOptions;
+        this.taskId = taskId;
+        this.user = user;
+        this.jsonInput = jsonInput;
+    }
+
+    @Override
+    public void run()
+    {
+        if ( jsonInput )
+        {
+            try
+            {
+                eventService.saveEventsJson( inputStream, taskId, importOptions );
+            }
+            catch ( IOException ignored )
+            {
+            }
+        }
+        else
+        {
+            try
+            {
+                eventService.saveEventsXml( inputStream, taskId, importOptions );
+            }
+            catch ( IOException ignored )
+            {
+            }
+        }
+    }
 }

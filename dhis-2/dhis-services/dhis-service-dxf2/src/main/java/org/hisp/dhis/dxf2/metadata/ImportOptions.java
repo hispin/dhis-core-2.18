@@ -42,7 +42,7 @@ public class ImportOptions
 
     private boolean dryRun;
 
-    private boolean async = true;
+    private boolean async;
 
     private ImportStrategy importStrategy;
 
