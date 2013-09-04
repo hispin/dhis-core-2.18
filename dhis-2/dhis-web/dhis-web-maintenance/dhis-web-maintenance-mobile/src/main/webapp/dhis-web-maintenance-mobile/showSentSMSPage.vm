@@ -72,7 +72,8 @@
 				<select id="statusType" onchange="filterByStatus(this.value)">
 					<option value="0" #if ( $!filterStatusType == 0 ) selected='selected' #end>$i18n.getString('outbound')</option>
 					<option value="1" #if ( $!filterStatusType == 1 ) selected='selected' #end>$i18n.getString('sent')</option>
-					<option value="2" #if ( $!filterStatusType == 2 ) selected='selected' #end>$i18n.getString('all')</option>
+					<option value="2" #if ( $!filterStatusType == 2 ) selected='selected' #end>$i18n.getString('error')</option>
+					<option value="3" #if ( $!filterStatusType == 3 ) selected='selected' #end>$i18n.getString('all')</option>
 				</select>
 			</td>
 			<td style="text-align:right">

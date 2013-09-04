@@ -345,7 +345,6 @@
     class="org.hisp.dhis.sms.hibernate.HibernateOutboundSmsStore">
      <property name="clazz" value="org.hisp.dhis.sms.outbound.OutboundSms" />	
      <property name="sessionFactory" ref="sessionFactory" />
-    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
   
   <!-- Service definitions -->

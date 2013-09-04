@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.SchedulingProgramObject;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -41,10 +42,8 @@ import org.hisp.dhis.sms.outbound.OutboundSmsStatus;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 
-import com.opensymphony.xwork2.Action;
-
 public class ShowSentSMSAction
-    implements Action
+    extends ActionPagingSupport<OutboundSms>
 {
 
     // -------------------------------------------------------------------------
@@ -114,6 +113,13 @@ public class ShowSentSMSAction
         return recipientNames;
     }
 
+    private Integer total;
+
+    public Integer getTotal()
+    {
+        return total;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -122,36 +128,23 @@ public class ShowSentSMSAction
     public String execute()
         throws Exception
     {
-        List<OutboundSms> tempListOutboundSMS = outboundSmsService.getAllOutboundSms();
-
         listOutboundSMS = new ArrayList<OutboundSms>();
-        
+
         if ( filterStatusType != null && filterStatusType == 0 )
         {
-            for ( OutboundSms each : tempListOutboundSMS )
-            {
-                if ( each.getStatus().equals( OutboundSmsStatus.OUTBOUND ) )
-                {
-                    this.listOutboundSMS.add( each );
-                }
-            }
+            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.OUTBOUND );
         }
         if ( filterStatusType != null && filterStatusType == 1 )
         {
-            for ( OutboundSms each : tempListOutboundSMS )
-            {
-                if ( each.getStatus().equals( OutboundSmsStatus.SENT ) )
-                {
-                    this.listOutboundSMS.add( each );
-                }
-            }
+            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.SENT );
         }
-        if ( filterStatusType != null && filterStatusType == 2 || filterStatusType == null )
+        if ( filterStatusType != null && filterStatusType == 2 )
         {
-            for ( OutboundSms each : tempListOutboundSMS )
-            {
-                this.listOutboundSMS.add( each );
-            }
+            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.ERROR );
+        }
+        if ( filterStatusType != null && filterStatusType == 3 || filterStatusType == null )
+        {
+            listOutboundSMS = outboundSmsService.getAllOutboundSms();
         }
 
         recipientNames = new ArrayList<String>();
