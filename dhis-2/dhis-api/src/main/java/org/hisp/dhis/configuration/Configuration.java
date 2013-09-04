@@ -53,6 +53,8 @@ public class Configuration
     
     private int id;
     
+    private String systemId;
+    
     private UserGroup feedbackRecipients;
     
     private OrganisationUnitLevel offlineOrganisationUnitLevel;
@@ -95,6 +97,16 @@ public class Configuration
     public void setId( int id )
     {
         this.id = id;
+    }
+
+    public String getSystemId()
+    {
+        return systemId;
+    }
+
+    public void setSystemId( String systemId )
+    {
+        this.systemId = systemId;
     }
 
     public UserGroup getFeedbackRecipients()

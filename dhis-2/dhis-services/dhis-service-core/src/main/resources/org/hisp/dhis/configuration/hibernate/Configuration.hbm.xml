@@ -12,6 +12,8 @@
       <generator class="native" />
     </id>
 
+    <property name="systemId" column="systemid" />
+
     <many-to-one name="feedbackRecipients" class="org.hisp.dhis.user.UserGroup"
         column="feedbackrecipientsid" foreign-key="fk_configuration_feedback_recipients" />
 

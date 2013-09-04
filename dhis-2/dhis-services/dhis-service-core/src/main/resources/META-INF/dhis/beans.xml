@@ -876,6 +876,11 @@
     <property name="skipInTests" value="true" />
   </bean>
   
+  <bean id="org.hisp.dhis.startup.ConfigurationPopulator" class="org.hisp.dhis.startup.ConfigurationPopulator">
+    <property name="runlevel" value="7" />
+    <property name="skipInTests" value="true" />
+  </bean>
+  
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject" ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
     <property name="targetMethod" value="addStartupRoutines" />
@@ -891,7 +896,7 @@
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
           <ref local="org.hisp.dhis.startup.ExpressionUpgrader" />
-          <!--<ref local="org.hisp.dhis.user.UserDefaultPopulator" />-->
+          <ref local="org.hisp.dhis.startup.ConfigurationPopulator" />
         </list>
       </list>
     </property>
