@@ -267,6 +267,13 @@ public class MessageConversation
     {
         userMessages.clear();
     }
+    
+    public String getLastSenderName()
+    {
+        boolean hasName = lastSenderFirstname != null || lastSenderSurname != null;
+                
+        return hasName ? ( lastSenderFirstname + " " + lastSenderSurname ) : null;
+    }
 
     // -------------------------------------------------------------------------------------------------------
     // Persistent fields
@@ -374,11 +381,6 @@ public class MessageConversation
         this.followUp = followUp;
     }
 
-    public String getLastSenderName()
-    {
-        return lastSenderFirstname + " " + lastSenderSurname;
-    }
-
     public String getLastSenderSurname()
     {
         return lastSenderSurname;
@@ -420,8 +422,7 @@ public class MessageConversation
 
             subject = messageConversation.getSubject() == null ? subject : messageConversation.getSubject();
             lastSender = messageConversation.getLastSender() == null ? lastSender : messageConversation.getLastSender();
-            lastMessage = messageConversation.getLastMessage() == null ? lastMessage : messageConversation
-                .getLastMessage();
+            lastMessage = messageConversation.getLastMessage() == null ? lastMessage : messageConversation.getLastMessage();
 
             removeAllUserMessages();
             userMessages.addAll( messageConversation.getUserMessages() );

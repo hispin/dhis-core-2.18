@@ -29,7 +29,8 @@
 		<td style="width:40px;padding-left:5px;" onclick="toggleFollowUp( '${conversation.id}' )">
 			<img id="followUp${conversation.id}" #if( $conversation.followUp ) src="../images/marked.png"#else src="../images/unmarked.png"#end></td>		
 		<td style="width:200px" onclick="read( '${conversation.id}' )">
-			$!encoder.htmlEncode( $conversation.lastSenderName )#if( $conversation.messageCount > 1 ) <span class="normal">(${conversation.messageCount})</span>#end
+			#if( $conversation.lastSenderName )$!encoder.htmlEncode( $conversation.lastSenderName )#else$i18n.getString( "system_notification" )#end
+			#if( $conversation.messageCount > 1 ) <span class="normal">(${conversation.messageCount})</span>#end
 		</td>
 		<td onclick="read( '${conversation.id}' )">$!encoder.htmlEncode( $conversation.subject )</td>
 		<td onclick="read( '${conversation.id}' )" style="width:80px">$!format.formatDate( $conversation.lastMessage )</td>

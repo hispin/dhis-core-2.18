@@ -123,6 +123,7 @@ public class DefaultMessageService
         if ( sender == null )
         {
             sender = currentUserService.getCurrentUser();
+            
             if ( sender != null )
             {
                 users.add( sender );
