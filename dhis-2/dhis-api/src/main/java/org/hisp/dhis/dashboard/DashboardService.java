@@ -1,6 +1,7 @@
 package org.hisp.dhis.dashboard;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.user.User;
 
@@ -41,6 +42,8 @@ public interface DashboardService
     final String ID = DashboardService.class.getName();
 
     DashboardSearchResult search( String query );
+    
+    DashboardSearchResult search( String query, Set<String> maxTypes );
     
     void addItemContent( String dashboardUid, String type, String contentUid );
     

@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import java.io.InputStream;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,9 +64,10 @@ public class DashboardController
     private DashboardService dashboardService;
     
     @RequestMapping( value = "/q/{query}", method = RequestMethod.GET )
-    public String search( @PathVariable String query, Model model, HttpServletResponse response ) throws Exception
+    public String search( @PathVariable String query, @RequestParam(required=false) Set<String> max, 
+        Model model, HttpServletResponse response ) throws Exception
     {
-        DashboardSearchResult result = dashboardService.search( query );
+        DashboardSearchResult result = dashboardService.search( query, max );
         
         model.addAttribute( "model", result );
         
