@@ -65,7 +65,7 @@ public class DashboardItem
     public static final String TYPE_REPORT_TABLES = "reportTables";
     public static final String TYPE_REPORTS = "reports";
     public static final String TYPE_RESOURCES = "resources";
-    public static final String TYPE_PATIENT_TABULAR_REPORT = "patientTabularReports";
+    public static final String TYPE_PATIENT_TABULAR_REPORTS = "patientTabularReports";
     
     private Chart chart;
     
@@ -135,7 +135,7 @@ public class DashboardItem
         }
         else if ( !patientTabularReports.isEmpty() )
         {
-            return TYPE_PATIENT_TABULAR_REPORT;
+            return TYPE_PATIENT_TABULAR_REPORTS;
         }
         return null;
     }
