@@ -201,17 +201,24 @@ public class EventController
 
         if ( !importOptions.isAsync() )
         {
-            ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
+            ImportSummaries importSummaries = eventService.saveEventsXml( inputStream, importOptions );
 
             for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
             {
-                importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+                if ( !importOptions.isDryRun() )
+                {
+                    importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+                }
             }
 
             if ( importSummaries.getImportSummaries().size() == 1 )
             {
                 ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
-                response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+
+                if ( !importOptions.isDryRun() )
+                {
+                    response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+                }
             }
 
             JacksonUtils.toXml( response.getOutputStream(), importSummaries );
@@ -233,17 +240,24 @@ public class EventController
 
         if ( !importOptions.isAsync() )
         {
-            ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
+            ImportSummaries importSummaries = eventService.saveEventsJson( inputStream, importOptions );
 
             for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
             {
-                importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+                if ( !importOptions.isDryRun() )
+                {
+                    importSummary.setHref( ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+                }
             }
 
             if ( importSummaries.getImportSummaries().size() == 1 )
             {
                 ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
-                response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+
+                if ( !importOptions.isDryRun() )
+                {
+                    response.setHeader( "Location", ContextUtils.getRootPath( request ) + RESOURCE_PATH + "/" + importSummary.getReference() );
+                }
             }
 
             JacksonUtils.toJson( response.getOutputStream(), importSummaries );

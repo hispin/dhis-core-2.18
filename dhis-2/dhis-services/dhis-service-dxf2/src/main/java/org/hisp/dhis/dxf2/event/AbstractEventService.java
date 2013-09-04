@@ -28,18 +28,13 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.InputValidationService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
@@ -59,6 +54,12 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -109,7 +110,7 @@ public abstract class AbstractEventService implements EventService
     // Implementation
     // -------------------------------------------------------------------------
 
-    protected ImportSummary saveEvent( Event event )
+    protected ImportSummary saveEvent( Event event, ImportOptions importOptions )
     {
         Program program;
 
@@ -175,7 +176,7 @@ public abstract class AbstractEventService implements EventService
 
         if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
         {
-            return saveSingleEventWithoutRegistration( program, organisationUnit, event );
+            return saveSingleEventWithoutRegistration( program, organisationUnit, event, importOptions );
         }
         else if ( program.getType() == Program.SINGLE_EVENT_WITH_REGISTRATION )
         {
@@ -189,7 +190,7 @@ public abstract class AbstractEventService implements EventService
         return new ImportSummary();
     }
 
-    private ImportSummary saveSingleEventWithoutRegistration( Program program, OrganisationUnit organisationUnit, Event event )
+    private ImportSummary saveSingleEventWithoutRegistration( Program program, OrganisationUnit organisationUnit, Event event, ImportOptions importOptions)
     {
         try
         {
@@ -210,10 +211,15 @@ public abstract class AbstractEventService implements EventService
         ImportSummary importSummary = new ImportSummary();
         importSummary.setStatus( ImportStatus.SUCCESS );
 
-        ProgramStageInstance programStageInstance = saveEventDate( program, organisationUnit, eventDate,
-            event.getCompleted(), event.getCoordinate() );
+        ProgramStageInstance programStageInstance = null;
 
-        importSummary.setReference( programStageInstance.getUid() );
+        if ( importOptions != null && !importOptions.isDryRun() )
+        {
+            programStageInstance = saveEventDate( program, organisationUnit, eventDate,
+                event.getCompleted(), event.getCoordinate() );
+
+            importSummary.setReference( programStageInstance.getUid() );
+        }
 
         String storedBy = event.getStoredBy();
 
@@ -240,7 +246,11 @@ public abstract class AbstractEventService implements EventService
             {
                 if ( validateDataElement( dataElement, dataValue.getValue(), importSummary ) )
                 {
-                    saveDataValue( programStageInstance, storedBy, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
+                    if ( importOptions != null && !importOptions.isDryRun() )
+                    {
+                        saveDataValue( programStageInstance, storedBy, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
+                    }
+
                     importSummary.getDataValueCount().incrementImported();
                 }
             }
