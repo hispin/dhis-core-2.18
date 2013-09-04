@@ -29,7 +29,12 @@ package org.hisp.dhis.common;
  */
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author Lars Helge Overland
@@ -66,17 +71,17 @@ public class IdentifiableObjectUtils
 
         return null;
     }
-    
+
     /**
      * Returns a list of uids for the given collection of IdentifiableObjects.
-     * 
+     *
      * @param objects the list of IdentifiableObjects.
      * @return a list of uids.
      */
     public static <T extends IdentifiableObject> List<String> getUids( Collection<T> objects )
     {
         List<String> uids = new ArrayList<String>();
-        
+
         if ( objects != null )
         {
             for ( T object : objects )
@@ -84,10 +89,10 @@ public class IdentifiableObjectUtils
                 uids.add( object.getUid() );
             }
         }
-        
+
         return uids;
     }
-    
+
     /**
      * Filters the given list of IdentifiableObjects based on the given key.
      *
@@ -97,7 +102,7 @@ public class IdentifiableObjectUtils
      * @return a filtered list of IdentifiableObjects.
      */
     public static <T extends IdentifiableObject> List<T> filterNameByKey( List<T> identifiableObjects, String key,
-                                                                          boolean ignoreCase )
+        boolean ignoreCase )
     {
         List<T> objects = new ArrayList<T>();
         ListIterator<T> iterator = identifiableObjects.listIterator();
@@ -120,17 +125,17 @@ public class IdentifiableObjectUtils
 
         return objects;
     }
-    
+
     /**
      * Returns a list of IdentifiableObjects.
-     * 
+     *
      * @param objects the IdentifiableObjects to include in the list.
      * @return a list of IdentifiableObjects.
      */
     public static List<IdentifiableObject> getList( IdentifiableObject... objects )
     {
         List<IdentifiableObject> list = new ArrayList<IdentifiableObject>();
-        
+
         if ( objects != null )
         {
             for ( IdentifiableObject object : objects )
@@ -138,13 +143,13 @@ public class IdentifiableObjectUtils
                 list.add( object );
             }
         }
-        
+
         return list;
     }
-    
+
     /**
      * Returns a list with erasure IdentifiableObject based on the given collection.
-     * 
+     *
      * @param collection the collection.
      * @return a list of IdentifiableObjects.
      */
@@ -154,12 +159,12 @@ public class IdentifiableObjectUtils
         list.addAll( collection );
         return list;
     }
-    
+
     /**
      * Returns a list typed with the desired erasure based on the given collection.
      * This operation implies an unchecked cast and it is the responsibility of
      * the caller to make sure the cast is valid.
-     * 
+     *
      * @param collection the collection.
      * @return a list.
      */
@@ -167,7 +172,7 @@ public class IdentifiableObjectUtils
     public static <T extends IdentifiableObject> List<T> asTypedList( Collection<IdentifiableObject> collection )
     {
         List<T> list = new ArrayList<T>();
-        
+
         if ( collection != null )
         {
             for ( IdentifiableObject object : collection )
@@ -175,13 +180,13 @@ public class IdentifiableObjectUtils
                 list.add( (T) object );
             }
         }
-        
+
         return list;
     }
 
     /**
      * Removes duplicates from the given list while maintaining the order.
-     * 
+     *
      * @param list the list.
      */
     public static <T extends IdentifiableObject> List<T> removeDuplicates( List<T> list )
@@ -215,7 +220,7 @@ public class IdentifiableObjectUtils
         {
             for ( IdentifiableObject object : objects )
             {
-                if ( object != null && object.getLastUpdated() != null && ( latest == null || object.getLastUpdated().after( latest ) ) )
+                if ( object != null && object.getLastUpdated() != null && (latest == null || object.getLastUpdated().after( latest )) )
                 {
                     latest = object.getLastUpdated();
                 }
@@ -224,15 +229,33 @@ public class IdentifiableObjectUtils
 
         return latest != null && objects != null ? objects.size() + SEPARATOR + LONG_DATE_FORMAT.format( latest ) : null;
     }
-    
+
     /**
      * Generates a tag reflecting the date of when the object was last updated.
-     * 
+     *
      * @param object the identifiable object.
      * @return a string tag.
      */
     public static String getLastUpdatedTag( IdentifiableObject object )
     {
         return object != null ? LONG_DATE_FORMAT.format( object.getLastUpdated() ) : null;
+    }
+
+    /**
+     * Returns a list of database identifiers from a list of idObjects
+     *
+     * @param identifiableObjects Collection of idObjects
+     * @return List of database identifiers for idObjects
+     */
+    public static List<Integer> getIdList( Collection<? extends IdentifiableObject> identifiableObjects )
+    {
+        List<Integer> integers = new ArrayList<Integer>();
+
+        for ( IdentifiableObject identifiableObject : identifiableObjects )
+        {
+            integers.add( identifiableObject.getId() );
+        }
+
+        return integers;
     }
 }
