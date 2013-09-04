@@ -41,6 +41,7 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.system.util.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
 
@@ -64,7 +66,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = EventController.RESOURCE_PATH)
+@RequestMapping( value = EventController.RESOURCE_PATH )
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -83,13 +85,13 @@ public class EventController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping( value = "", method = RequestMethod.GET )
     public String getEvents(
         @RequestParam( value = "program", required = false ) String programUid,
-        @RequestParam(value = "programStage", required = false) String programStageUid,
-        @RequestParam(value = "orgUnit") String orgUnitUid,
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+        @RequestParam( value = "programStage", required = false ) String programStageUid,
+        @RequestParam( value = "orgUnit" ) String orgUnitUid,
+        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
     {
@@ -179,7 +181,8 @@ public class EventController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public void postXmlEvent( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
-        ImportSummaries importSummaries = eventService.saveEventsXml( request.getInputStream() );
+        InputStream inputStream = StreamUtils.wrapAndCheckCompressionFormat( request.getInputStream() );
+        ImportSummaries importSummaries = eventService.saveEventsXml( inputStream );
 
         for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
         {
@@ -199,7 +202,8 @@ public class EventController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public void postJsonEvent( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
-        ImportSummaries importSummaries = eventService.saveEventsJson( request.getInputStream() );
+        InputStream inputStream = StreamUtils.wrapAndCheckCompressionFormat( request.getInputStream() );
+        ImportSummaries importSummaries = eventService.saveEventsJson( inputStream );
 
         for ( ImportSummary importSummary : importSummaries.getImportSummaries() )
         {
