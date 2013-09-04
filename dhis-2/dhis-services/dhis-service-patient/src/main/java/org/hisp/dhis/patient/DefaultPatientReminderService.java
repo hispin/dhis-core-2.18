@@ -146,7 +146,18 @@ public class DefaultPatientReminderService
         default:
             if ( patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
             {
-                phoneNumbers.add( patient.getPhoneNumber() );
+                if ( patient.getPhoneNumber().contains( ";" ) )
+                {
+                    String token[] = patient.getPhoneNumber().split( ";" );
+                    for ( String phoneNumber : token )
+                    {
+                        phoneNumbers.add( phoneNumber );
+                    }
+                }
+                else
+                {
+                    phoneNumbers.add( patient.getPhoneNumber() );
+                }
             }
             break;
         }

@@ -188,6 +188,7 @@ public class ProcessingSendSMSAction
                 {
                     each = "+" + each;
                 }
+
                 User user = new User();
                 user.setPhoneNumber( each );
                 recipientsList.add( user );
