@@ -104,16 +104,6 @@ public class JacksonJsonView
         this.callbackParameter = callbackParameter;
     }
 
-    public void setPaddingFunction( String paddingFunction )
-    {
-        this.paddingFunction = paddingFunction;
-    }
-
-    public void setWithCompression( boolean withCompression )
-    {
-        this.withCompression = withCompression;
-    }
-
     @Override
     protected void renderMergedOutputModel( Map<String, Object> model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception

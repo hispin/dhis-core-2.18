@@ -74,11 +74,6 @@ public class JacksonXmlView
         }
     }
 
-    public void setWithCompression( boolean withCompression )
-    {
-        this.withCompression = withCompression;
-    }
-
     @Override
     protected void renderMergedOutputModel( Map<String, Object> model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception

@@ -212,5 +212,4 @@ public class OrganisationUnitController
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
-
 }
