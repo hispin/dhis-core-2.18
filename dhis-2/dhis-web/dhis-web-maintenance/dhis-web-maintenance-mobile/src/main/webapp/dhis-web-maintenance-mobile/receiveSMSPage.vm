@@ -190,6 +190,7 @@
 			<th style="text-align:center">$i18n.getString( "no." )</th>
 			<th>$i18n.getString( "message" )</th>
 			<th>$i18n.getString( "phone_number" )</th>
+			<th>$i18n.getString( "sender" )</th>
 			<th>$i18n.getString( "status" )</th>
 			<th>$i18n.getString( "date" )</th>
 			<th style="text-align:center">$i18n.getString( "action" )</th>
@@ -204,6 +205,7 @@
 					<a id="$velocityCount" style="display: block" href="#" onclick="makeVisible( $incomingSms.id, $velocityCount )">$incomingSms.text</a>
 					<input type="hidden" id="$incomingSms.id" value="$incomingSms.text" onblur="makeVisible( $incomingSms.id, $velocityCount )"/></td>
 				<td>$incomingSms.originator</td>
+				<td>$senderNames.get($velocityCount)</td>
 				<td>$incomingSms.status</td>
 				<td>$incomingSms.sentDate.toLocaleString()</td>
 				<td style="text-align:center">#if($incomingSms.status == 'FAILED' || $incomingSms.status == 'INCOMING')<a href="javascript:reimport('$i18n.getString( 'reimport_confirm' )','$incomingSms.id')"> Re-import </a> #else None #end</td>
