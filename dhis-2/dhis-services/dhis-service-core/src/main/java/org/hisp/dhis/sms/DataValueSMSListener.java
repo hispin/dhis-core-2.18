@@ -69,7 +69,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class DataValueSMSListener
     implements IncomingSmsListener
-{
+{    
     private static final String defaultPattern = "([a-zA-Z]+)\\s*(\\d+)";
 
     private CompleteDataSetRegistrationService registrationService;

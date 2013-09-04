@@ -57,7 +57,7 @@ public class SendSmsAction
     // -------------------------------------------------------------------------
 
     private SmsSender smsSender;
-    
+
     public void setSmsSender( SmsSender smsSender )
     {
         this.smsSender = smsSender;

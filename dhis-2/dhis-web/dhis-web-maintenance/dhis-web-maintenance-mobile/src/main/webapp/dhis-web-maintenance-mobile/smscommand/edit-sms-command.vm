@@ -85,6 +85,11 @@
         <tr>
             <td style="width:130px">$i18n.getString( "no_codes_message" )</td>
             <td><textarea cols="35" type="text" name="defaultMessage">#if($smsCommand.defaultMessage)$smsCommand.defaultMessage#end</textarea></td>
+        </tr>
+        
+        <tr>
+            <td style="width:130px">$i18n.getString( "wrong_format_message" )</td>
+            <td><textarea cols="35" type="text" name="defaultMessage">#if($smsCommand.defaultMessage)$smsCommand.defaultMessage#end</textarea></td>
         </tr>	
 	</table>
 	
