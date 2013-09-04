@@ -28,11 +28,13 @@ package org.hisp.dhis.importexport.action.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.scheduling.TaskId;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.io.InputStream;
 
 /**
  * @author Lars Helge Overland
@@ -45,34 +47,43 @@ public class ImportDataValueTask
     public static final String FORMAT_PDF = "pdf";
 
     private DataValueSetService dataValueSetService;
-    private InputStream in;
-    private ImportOptions options;
-    private TaskId taskId;
-    private String format;
 
-    public ImportDataValueTask( DataValueSetService dataValueSetService, InputStream in, ImportOptions options, TaskId taskId, String format )
+    private InputStream inputStream;
+
+    private final ImportOptions options;
+
+    private final TaskId taskId;
+
+    private final String format;
+
+    private final Authentication authentication;
+
+    public ImportDataValueTask( DataValueSetService dataValueSetService, InputStream inputStream, ImportOptions options, TaskId taskId, String format )
     {
         this.dataValueSetService = dataValueSetService;
-        this.in = in;
+        this.inputStream = inputStream;
         this.options = options;
         this.taskId = taskId;
         this.format = format;
+        this.authentication = SecurityContextHolder.getContext().getAuthentication();
     }
 
     @Override
     public void run()
     {
+        SecurityContextHolder.getContext().setAuthentication( authentication );
+
         if ( FORMAT_CSV.equals( format ) )
         {
-            dataValueSetService.saveDataValueSetCsv( in, options, taskId );
+            dataValueSetService.saveDataValueSetCsv( inputStream, options, taskId );
         }
         else if ( FORMAT_PDF.equals( format ) )
         {
-            dataValueSetService.saveDataValueSetPdf( in, options, taskId );
+            dataValueSetService.saveDataValueSetPdf( inputStream, options, taskId );
         }
         else
         {
-            dataValueSetService.saveDataValueSet( in, options, taskId );
+            dataValueSetService.saveDataValueSet( inputStream, options, taskId );
         }
     }
 }

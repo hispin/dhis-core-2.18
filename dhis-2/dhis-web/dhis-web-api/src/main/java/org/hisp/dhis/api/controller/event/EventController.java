@@ -48,7 +48,6 @@ import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -219,9 +218,8 @@ public class EventController
         }
         else
         {
-            User currentUser = currentUserService.getCurrentUser();
-            TaskId taskId = new TaskId( TaskCategory.EVENT_IMPORT, currentUser );
-            scheduler.executeTask( new ImportEventTask( inputStream, eventService, importOptions, taskId, currentUser, false ) );
+            TaskId taskId = new TaskId( TaskCategory.EVENT_IMPORT, currentUserService.getCurrentUser() );
+            scheduler.executeTask( new ImportEventTask( inputStream, eventService, importOptions, taskId, false ) );
             response.setHeader( "Location", ContextUtils.getRootPath( request ) + "/system/tasks/" + TaskCategory.EVENT_IMPORT );
             response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         }
@@ -252,9 +250,8 @@ public class EventController
         }
         else
         {
-            User currentUser = currentUserService.getCurrentUser();
-            TaskId taskId = new TaskId( TaskCategory.EVENT_IMPORT, currentUser );
-            scheduler.executeTask( new ImportEventTask( inputStream, eventService, importOptions, taskId, currentUser, true ) );
+            TaskId taskId = new TaskId( TaskCategory.EVENT_IMPORT, currentUserService.getCurrentUser() );
+            scheduler.executeTask( new ImportEventTask( inputStream, eventService, importOptions, taskId, true ) );
             response.setHeader( "Location", ContextUtils.getRootPath( request ) + "/system/tasks/" + TaskCategory.EVENT_IMPORT );
             response.setStatus( HttpServletResponse.SC_NO_CONTENT );
         }

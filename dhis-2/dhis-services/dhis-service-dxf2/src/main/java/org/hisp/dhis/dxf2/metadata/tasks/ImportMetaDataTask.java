@@ -32,6 +32,8 @@ import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.scheduling.TaskId;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -41,13 +43,15 @@ public class ImportMetaDataTask
 {
     private String userUid;
 
-    private ImportService importService;
+    private final ImportService importService;
 
-    private ImportOptions importOptions;
+    private final ImportOptions importOptions;
 
-    private TaskId taskId;
+    private final TaskId taskId;
 
-    private MetaData metaData;
+    private final MetaData metaData;
+
+    private final Authentication authentication;
 
     public ImportMetaDataTask( String userUid, ImportService importService, ImportOptions importOptions, TaskId taskId, MetaData metaData )
     {
@@ -56,11 +60,13 @@ public class ImportMetaDataTask
         this.importOptions = importOptions;
         this.taskId = taskId;
         this.metaData = metaData;
+        this.authentication = SecurityContextHolder.getContext().getAuthentication();
     }
 
     @Override
     public void run()
     {
+        SecurityContextHolder.getContext().setAuthentication( authentication );
         importService.importMetaData( userUid, metaData, importOptions, taskId );
     }
 }
