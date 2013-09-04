@@ -83,6 +83,7 @@ public class ProcessingSendSMSAction
     {
         this.smsMessageSender = smsMessageSender;
     }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -193,12 +194,13 @@ public class ProcessingSendSMSAction
                 user.setPhoneNumber( each );
                 recipientsList.add( user );
             }
-            //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, true, recipients, gatewayId );
+            // message = messageSender.sendMessage( smsSubject, smsMessage,
+            // currentUser, true, recipients, gatewayId );
             message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
         }
         else if ( sendTarget.equals( "userGroup" ) )
         {
-            
+
             UserGroup group = userGroupService.getUserGroup( userGroup );
 
             if ( group == null )
@@ -214,7 +216,8 @@ public class ProcessingSendSMSAction
 
                 return ERROR;
             }
-            //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, group.getMembers(), gatewayId );
+            // message = messageSender.sendMessage( smsSubject, smsMessage,
+            // currentUser, false, group.getMembers(), gatewayId );
             message = smsMessageSender.sendMessage( smsSubject, text, currentUser, group.getMembers(), false );
         }
         else if ( sendTarget.equals( "user" ) )
@@ -234,8 +237,9 @@ public class ProcessingSendSMSAction
 
                     return ERROR;
                 }
-                
-                //message = messageSender.sendMessage( smsSubject, smsMessage, currentUser, false, users, gatewayId );
+
+                // message = messageSender.sendMessage( smsSubject, smsMessage,
+                // currentUser, false, users, gatewayId );
                 message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
             }
         }
@@ -254,38 +258,6 @@ public class ProcessingSendSMSAction
             if ( recipientsList.isEmpty() )
             {
                 message = i18n.getString( "selected_units_have_no_phone_number" );
-
-                return ERROR;
-            }
-
-            message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
-
-        }
-        else
-        {
-            Patient patient = null;
-
-            ObjectMapper mapper = new ObjectMapper().setVisibility( PropertyAccessor.FIELD,
-                JsonAutoDetect.Visibility.ANY );
-            mapper.disable( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES );
-
-            recipients = mapper.readValue( recipients.iterator().next(), Set.class );
-
-            for ( String patientId : recipients )
-            {
-                patient = patientService.getPatient( Integer.parseInt( patientId ) );
-
-                if ( patient != null && patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
-                {
-                    User user = new User();
-                    user.setPhoneNumber( patient.getPhoneNumber() );
-                    recipientsList.add( user );
-                }
-            }
-
-            if ( recipientsList.isEmpty() )
-            {
-                message = i18n.getString( "selected_persons_have_no_phone_number" );
 
                 return ERROR;
             }
