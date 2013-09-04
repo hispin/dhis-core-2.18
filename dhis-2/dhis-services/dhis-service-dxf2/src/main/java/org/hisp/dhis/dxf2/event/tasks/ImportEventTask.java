@@ -32,6 +32,8 @@ import org.hisp.dhis.dxf2.event.EventService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.user.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,23 +52,25 @@ public class ImportEventTask
 
     private final TaskId taskId;
 
-    private final User user;
-
     private final boolean jsonInput;
 
-    public ImportEventTask( InputStream inputStream, EventService eventService, ImportOptions importOptions, TaskId taskId, User user, boolean jsonInput )
+    private final Authentication authentication;
+
+    public ImportEventTask( InputStream inputStream, EventService eventService, ImportOptions importOptions, TaskId taskId, boolean jsonInput )
     {
         this.inputStream = inputStream;
         this.eventService = eventService;
         this.importOptions = importOptions;
         this.taskId = taskId;
-        this.user = user;
         this.jsonInput = jsonInput;
+        this.authentication = SecurityContextHolder.getContext().getAuthentication();
     }
 
     @Override
     public void run()
     {
+        SecurityContextHolder.getContext().setAuthentication( authentication );
+
         if ( jsonInput )
         {
             try
