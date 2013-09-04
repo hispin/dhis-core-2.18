@@ -40,6 +40,7 @@ import org.hisp.dhis.dxf2.InputValidationService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
@@ -64,7 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Transactional
-public abstract class BaseEventService implements EventService
+public abstract class AbstractEventService implements EventService
 {
     // -------------------------------------------------------------------------
     // Dependencies
