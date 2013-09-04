@@ -44,7 +44,7 @@ import java.nio.charset.Charset;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JacksonEventService extends BaseEventService
+public class JacksonEventService extends AbstractEventService
 {
     // -------------------------------------------------------------------------
     // EventService Impl
