@@ -108,8 +108,7 @@ public class EventController
         @RequestParam( value = "orgUnit" ) String orgUnitUid,
         @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
         @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
-        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
-        HttpServletResponse response ) throws Exception
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Program program = manager.get( Program.class, programUid );
@@ -275,7 +274,7 @@ public class EventController
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_DELETE')" )
-    public void deleteEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid )
+    public void deleteEvent( HttpServletResponse response, @PathVariable( "uid" ) String uid )
     {
         Event event = eventService.getEvent( uid );
 
