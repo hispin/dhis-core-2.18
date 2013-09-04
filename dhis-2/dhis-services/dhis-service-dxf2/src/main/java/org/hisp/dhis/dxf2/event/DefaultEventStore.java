@@ -42,6 +42,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -136,18 +138,6 @@ public class DefaultEventStore implements EventStore
         }
 
         return events;
-    }
-
-    private List<Integer> getIdList( List<? extends IdentifiableObject> identifiableObjects )
-    {
-        List<Integer> integers = new ArrayList<Integer>();
-
-        for ( IdentifiableObject identifiableObject : identifiableObjects )
-        {
-            integers.add( identifiableObject.getId() );
-        }
-
-        return integers;
     }
 
     private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds, Date startDate, Date endDate )
