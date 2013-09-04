@@ -34,8 +34,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $Id: ConfigurationDeletionHandler.java Jan 3, 2012 11:52:32 AM $
  */
 public class ConfigurationDeletionHandler
     extends DeletionHandler

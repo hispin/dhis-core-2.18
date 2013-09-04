@@ -38,6 +38,8 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
@@ -56,6 +58,9 @@ public class DefaultSystemService
     
     @Autowired
     private DatabaseInfoProvider databaseInfoProvider;
+    
+    @Autowired
+    private ConfigurationService configurationService;
 
     // -------------------------------------------------------------------------
     // SystemService implementation
@@ -155,6 +160,10 @@ public class DefaultSystemService
         info.setMemoryInfo( SystemUtils.getMemoryString() );        
         info.setCpuCores( SystemUtils.getCpuCores() );
         info.setServerDate( new Date() );
+        
+        Configuration config = configurationService.getConfiguration();
+        
+        info.setSystemId( config.getSystemId() );
         
         return info;
     }

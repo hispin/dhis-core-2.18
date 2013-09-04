@@ -78,6 +78,8 @@ public class SystemInfo
     private String memoryInfo;
 
     private Integer cpuCores;
+    
+    private String systemId;
 
     // -------------------------------------------------------------------------
     // Logic
@@ -97,6 +99,7 @@ public class SystemInfo
         this.databaseInfo = null;
         this.memoryInfo = null;
         this.cpuCores = null;
+        this.systemId = systemId;
     }
     
     // -------------------------------------------------------------------------
@@ -317,5 +320,17 @@ public class SystemInfo
     public void setCpuCores( Integer cpuCores )
     {
         this.cpuCores = cpuCores;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getSystemId()
+    {
+        return systemId;
+    }
+
+    public void setSystemId( String systemId )
+    {
+        this.systemId = systemId;
     }
 }
