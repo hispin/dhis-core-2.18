@@ -106,4 +106,39 @@ public class HibernateOutboundSmsStore
     {
         delete( sms );
     }
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public List<OutboundSms> get( OutboundSmsStatus status, Integer min, Integer max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( OutboundSms.class ).addOrder( Order.desc( "date" ) );
+        
+        if ( status != null )
+        {
+            criteria.add( Restrictions.eq( "status", status ) );
+        }
+        
+        if ( min != null && max != null)
+        {
+            criteria.setFirstResult( min ).setMaxResults( max );
+        }
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public List<OutboundSms> getAllOutboundSms( Integer min, Integer max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( OutboundSms.class ).addOrder( Order.desc( "date" ) );
+        
+        if ( min != null && max != null)
+        {
+            criteria.setFirstResult( min ).setMaxResults( max );
+        }
+        return criteria.list();
+    }
 }

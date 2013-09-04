@@ -129,22 +129,31 @@ public class ShowSentSMSAction
         throws Exception
     {
         listOutboundSMS = new ArrayList<OutboundSms>();
-
+        
         if ( filterStatusType != null && filterStatusType == 0 )
         {
-            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.OUTBOUND );
+            total = outboundSmsService.getOutboundSms( OutboundSmsStatus.OUTBOUND ).size();
+            paging = createPaging( total );
+            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.OUTBOUND, paging.getStartPos(), paging.getPageSize() );
         }
         if ( filterStatusType != null && filterStatusType == 1 )
         {
-            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.SENT );
+            total = outboundSmsService.getOutboundSms( OutboundSmsStatus.SENT ).size();
+            paging = createPaging( total );
+            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.SENT, paging.getStartPos(), paging.getPageSize() );
         }
         if ( filterStatusType != null && filterStatusType == 2 )
         {
-            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.ERROR );
+            total = outboundSmsService.getOutboundSms( OutboundSmsStatus.ERROR ).size();
+            paging = createPaging( total );
+            listOutboundSMS = outboundSmsService.getOutboundSms( OutboundSmsStatus.ERROR, paging.getStartPos(), paging.getPageSize() );
         }
         if ( filterStatusType != null && filterStatusType == 3 || filterStatusType == null )
         {
-            listOutboundSMS = outboundSmsService.getAllOutboundSms();
+            filterStatusType = 3;
+            total = outboundSmsService.getAllOutboundSms().size();
+            paging = createPaging( total );
+            listOutboundSMS = outboundSmsService.getAllOutboundSms( paging.getStartPos(), paging.getPageSize() );
         }
 
         recipientNames = new ArrayList<String>();
