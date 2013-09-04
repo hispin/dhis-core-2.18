@@ -51,6 +51,8 @@ import java.util.*;
 public class MessageConversation
     extends BaseIdentifiableObject
 {
+    private static final int RECIPIENTS_MAX_DISPLAY = 25;
+    
     // --------------------------------------------------------------------------
     // Persistent fields
     // --------------------------------------------------------------------------
@@ -80,7 +82,6 @@ public class MessageConversation
     private transient String lastSenderFirstname;
 
     private transient int messageCount;
-
 
     // --------------------------------------------------------------------------
     // Constructors
@@ -273,6 +274,28 @@ public class MessageConversation
         boolean hasName = lastSenderFirstname != null || lastSenderSurname != null;
                 
         return hasName ? ( lastSenderFirstname + " " + lastSenderSurname ) : null;
+    }
+    
+    public Set<User> getTopRecipients()
+    {
+        Set<User> recipients = new HashSet<User>();
+        
+        for ( UserMessage userMessage : userMessages )
+        {
+            recipients.add( userMessage.getUser() );
+            
+            if ( recipients.size() > RECIPIENTS_MAX_DISPLAY )
+            {
+                break;
+            }
+        }
+        
+        return recipients;
+    }
+    
+    public int getBottomRecipients()
+    {
+        return userMessages.size() - RECIPIENTS_MAX_DISPLAY;
     }
 
     // -------------------------------------------------------------------------------------------------------
