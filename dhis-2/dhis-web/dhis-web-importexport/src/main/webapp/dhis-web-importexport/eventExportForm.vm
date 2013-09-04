@@ -59,14 +59,13 @@ $( function() {
             $( '#programs' ).attr('disabled', true);
         }
 
-        $( '#programs' ).html( options );
-        $( '#programs' ).trigger('change');
+        $( '#programs' ).html( options ).trigger('change');
     });
 
     $( '#programs' ).on( 'change', function( e ) {
         var program = $( '#programs' ).val();
-        $( '#programStages' ).attr('disabled', true);
-        $( '#programStages' ).html($( '<option/>' ).html('$i18n.getString( "no_program_stages_available" )'));
+        $( '#programStages' ).attr('disabled', true)
+                .html($( '<option/>' ).html('$i18n.getString( "no_program_stages_available" )'));
 
         $.ajax({
            url: '../api/programs/' + program + '.json'
@@ -93,8 +92,10 @@ $( function() {
 <div id="inputCriteria" class="inputCriteria" style="width: 730px;">
 <form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importMetaData.action">
 <table>
-<col width="140">
-<col>
+    <colgroup>
+        <col style="width: 150px;" />
+        <col />
+    </colgroup>
 
 <tr>
    <td colspan="2">$i18n.getString( "organisation_unit" )</td>
