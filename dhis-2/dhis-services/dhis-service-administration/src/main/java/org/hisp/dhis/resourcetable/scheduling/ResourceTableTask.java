@@ -28,6 +28,7 @@ package org.hisp.dhis.resourcetable.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
@@ -45,6 +46,9 @@ public class ResourceTableTask
 
     @Autowired
     private Notifier notifier;
+
+    @Autowired
+    private MessageService messageService;
 
     private TaskId taskId;
 
@@ -71,6 +75,10 @@ public class ResourceTableTask
         catch ( RuntimeException ex )
         {
             notifier.notify( taskId, NotificationLevel.ERROR, "Process failed: " + ex.getMessage(), true );
+            
+            messageService.sendFeedback( "Resource table process failed", "Resource table process failed, please check the logs.", null );
+            
+            throw ex;
         }
     }
 }

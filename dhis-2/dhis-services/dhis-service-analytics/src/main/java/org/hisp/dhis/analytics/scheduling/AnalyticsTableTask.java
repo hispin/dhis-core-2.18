@@ -34,6 +34,7 @@ import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 import javax.annotation.Resource;
 
 import org.hisp.dhis.analytics.AnalyticsTableService;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
@@ -62,6 +63,9 @@ public class AnalyticsTableTask
     
     @Autowired
     private Notifier notifier;
+    
+    @Autowired
+    private MessageService messageService;
 
     private boolean last3Years;
 
@@ -111,6 +115,10 @@ public class AnalyticsTableTask
         catch ( RuntimeException ex )
         {
             notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
+            
+            messageService.sendFeedback( "Analytics table process failed", "Analytics table process failed, please check the logs.", null );
+            
+            throw ex;
         }
     }
 }

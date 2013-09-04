@@ -30,6 +30,7 @@ package org.hisp.dhis.scheduling;
 
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,10 +41,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessEngine;
 import org.hisp.dhis.datamart.DataMartEngine;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -67,6 +70,12 @@ public class DataMartTask
     @Autowired
     private SystemSettingManager systemSettingManager;
     
+    @Autowired
+    private Notifier notifier;
+
+    @Autowired
+    private MessageService messageService;
+
     private List<Period> periods;
     
     public void setPeriods( List<Period> periods )
@@ -111,8 +120,19 @@ public class DataMartTask
         
         Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
         
-        dataMartEngine.export( periodIds, taskId );
-        completenessEngine.exportDataSetCompleteness( periodIds, taskId ); 
+        try
+        {
+            dataMartEngine.export( periodIds, taskId );
+            completenessEngine.exportDataSetCompleteness( periodIds, taskId );
+        }
+        catch ( RuntimeException ex )
+        {
+            notifier.notify( taskId, ERROR, "Process failed: " + ex.getMessage(), true );
+            
+            messageService.sendFeedback( "Data mart process failed", "Data mart process failed, please check the logs.", null );
+
+            throw ex;
+        }
     }
 
     // -------------------------------------------------------------------------
