@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
@@ -43,7 +42,6 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -96,21 +94,9 @@ public class CompleteDataEntryAction
         this.format = format;
     }
 
-    private MessageService messageService;
-
-    public MessageService getMessageService()
-    {
-        return messageService;
-    }
-
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
-
-    public void setMessageService( MessageService messageService )
-    {
-        this.messageService = messageService;
-    }
 
     private Integer programStageId;
 
@@ -172,21 +158,7 @@ public class CompleteDataEntryAction
             PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
-        // Send DHIS message to user group
-        ProgramStage stage = programStageInstance.getProgramStage();
-        Set<PatientReminder> patientReminders = stage.getPatientReminders();
-
-        for ( PatientReminder patientReminder : patientReminders )
-        {
-            if ( patientReminder.getUserGroup() != null
-                && patientReminder.getWhenToSend() == PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT )
-            {
-                messageService.sendMessage( stage.getName(), patientReminder.getTemplateMessage(), null,
-                    patientReminder.getUserGroup().getMembers(), null, false, true );
-            }
-        }
-
+        
         // ---------------------------------------------------------------------
         // Check Completed status for all of ProgramStageInstance of
         // ProgramInstance
