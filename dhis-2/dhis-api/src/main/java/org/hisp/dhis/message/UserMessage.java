@@ -61,8 +61,6 @@ public class UserMessage
 
     private transient String lastRecipientFirstname;
     
-    
-
     public String getLastRecipientSurname()
     {
         return lastRecipientSurname;

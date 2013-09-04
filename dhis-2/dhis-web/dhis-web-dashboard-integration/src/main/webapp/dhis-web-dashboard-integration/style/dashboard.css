@@ -381,6 +381,11 @@ a.alert, .alert
   background-color: #ebf0f6;
 }
 
+.recipientsDiv
+{ 
+  padding-left: 38px;
+}
+
 .messageDiv
 {
   width: 700px;

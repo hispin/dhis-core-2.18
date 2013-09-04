@@ -93,6 +93,11 @@ public class HibernateUserCredentialsStore
 
     public UserCredentials getUserCredentials( User user )
     {
+        if ( user == null )
+        {
+            return null;
+        }
+        
         Session session = sessionFactory.getCurrentSession();
 
         return (UserCredentials) session.get( UserCredentials.class, user.getId() );
