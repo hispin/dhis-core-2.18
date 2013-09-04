@@ -147,11 +147,21 @@ public class DefaultSmsSender
 
         if ( gatewayId != null && !gatewayId.trim().isEmpty() )
         {
-            for ( User user : users )
+            if ( forceSend )
             {
-                if ( currentUserService.getCurrentUser() != null )
+                for ( User user : users )
                 {
-                    if ( !currentUserService.getCurrentUser().equals( user ) )
+                    if ( currentUserService.getCurrentUser() != null )
+                    {
+                        if ( !currentUserService.getCurrentUser().equals( user ) )
+                        {
+                            if ( isQualifiedReceiver( user ) )
+                            {
+                                toSendList.add( user );
+                            }
+                        }
+                    }
+                    else if ( currentUserService.getCurrentUser() == null )
                     {
                         if ( isQualifiedReceiver( user ) )
                         {
@@ -159,14 +169,12 @@ public class DefaultSmsSender
                         }
                     }
                 }
-                else if ( currentUserService.getCurrentUser() == null )
-                {
-                    if ( isQualifiedReceiver( user ) )
-                    {
-                        toSendList.add( user );
-                    }
-                }
             }
+            else
+            {
+                toSendList.addAll( users );
+            }
+            
 
             Set<String> phoneNumbers = null;
 

@@ -144,7 +144,6 @@ public class DHISMessageAlertListener
             {
                 throw new SMSParserException(
                     "No user associated with this phone number. Please contact your supervisor." );
-
             }
         }
     }

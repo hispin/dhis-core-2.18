@@ -34,6 +34,7 @@ import java.util.List;
 
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsStore;
+import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 
 public class DatabaseSupportedInternalMemoryMessageQueue
     implements MessageQueue
@@ -70,6 +71,7 @@ public class DatabaseSupportedInternalMemoryMessageQueue
     public void remove( IncomingSms message )
     {
         message.setParsed( true );
+        message.setStatus( SmsMessageStatus.PROCESSED );
         smsStore.update( message );
         queue.remove( message );
     }
