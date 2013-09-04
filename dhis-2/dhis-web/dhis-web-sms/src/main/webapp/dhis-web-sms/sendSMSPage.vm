@@ -43,10 +43,7 @@
 						<option value="phone">$i18n.getString( "raw_phone_number" )</option>
 						<option value="userGroup">$i18n.getString( "user_group" )</option>
 						<option value="user">$i18n.getString( "assigned_user_number" )</option>
-						<option value="unit">$i18n.getString( "stakeholder_contact_person" )</option>
-						#if( $auth.hasAccess( "dhis-web-sms", "showBeneficiarySMSForm" ) ) 
-						<option value="patient" selected="true">$i18n.getString( "patients_registered" )</option>
-						#end
+						<option value="unit">$i18n.getString( "org_unit_phone_number" )</option>
 					</select>
 				</td>
 			</tr>
