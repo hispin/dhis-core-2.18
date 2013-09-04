@@ -28,7 +28,13 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -36,13 +42,6 @@ import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
