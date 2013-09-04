@@ -33,6 +33,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.notification.NotificationLevel;
+import org.hisp.dhis.system.notification.Notifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -46,6 +51,9 @@ import java.nio.charset.Charset;
  */
 public class JacksonEventService extends AbstractEventService
 {
+    @Autowired
+    private Notifier notifier;
+
     // -------------------------------------------------------------------------
     // EventService Impl
     // -------------------------------------------------------------------------
@@ -53,25 +61,25 @@ public class JacksonEventService extends AbstractEventService
     private static ObjectMapper xmlMapper = new XmlMapper();
     private static ObjectMapper jsonMapper = new ObjectMapper();
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -90,9 +98,17 @@ public class JacksonEventService extends AbstractEventService
     @Override
     public ImportSummaries saveEventsXml( InputStream inputStream ) throws IOException
     {
+        return saveEventsXml( inputStream, null, ImportOptions.getDefaultImportOptions() );
+    }
+
+    @Override
+    public ImportSummaries saveEventsXml( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException
+    {
         ImportSummaries importSummaries = new ImportSummaries();
 
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+
+        notifier.clear( taskId ).notify( taskId, "Importing events" );
 
         try
         {
@@ -109,6 +125,9 @@ public class JacksonEventService extends AbstractEventService
             importSummaries.getImportSummaries().add( saveEvent( event ) );
         }
 
+        notifier.notify( taskId, NotificationLevel.INFO, "Import done", true ).
+            addTaskSummary( taskId, importSummaries );
+
         return importSummaries;
     }
 
@@ -122,9 +141,17 @@ public class JacksonEventService extends AbstractEventService
     @Override
     public ImportSummaries saveEventsJson( InputStream inputStream ) throws IOException
     {
+        return saveEventsJson( inputStream, null, ImportOptions.getDefaultImportOptions() );
+    }
+
+    @Override
+    public ImportSummaries saveEventsJson( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException
+    {
         ImportSummaries importSummaries = new ImportSummaries();
 
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+
+        notifier.clear( taskId ).notify( taskId, "Importing events" );
 
         try
         {
@@ -140,6 +167,9 @@ public class JacksonEventService extends AbstractEventService
             Event event = fromJson( input, Event.class );
             importSummaries.getImportSummaries().add( saveEvent( event ) );
         }
+
+        notifier.notify( taskId, NotificationLevel.INFO, "Import done", true ).
+            addTaskSummary( taskId, importSummaries );
 
         return importSummaries;
     }

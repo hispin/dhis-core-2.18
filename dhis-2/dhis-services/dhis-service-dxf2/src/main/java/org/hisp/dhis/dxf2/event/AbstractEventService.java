@@ -89,7 +89,7 @@ public abstract class AbstractEventService implements EventService
     private DataElementService dataElementService;
 
     @Autowired
-    private CurrentUserService currentUserService;
+    protected CurrentUserService currentUserService;
 
     @Autowired
     private PatientDataValueService patientDataValueService;
