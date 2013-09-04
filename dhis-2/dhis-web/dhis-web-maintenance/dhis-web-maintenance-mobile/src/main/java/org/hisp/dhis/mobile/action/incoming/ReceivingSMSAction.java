@@ -29,7 +29,10 @@ package org.hisp.dhis.mobile.action.incoming;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
@@ -37,6 +40,8 @@ import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -61,6 +66,13 @@ public class ReceivingSMSAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
+    }
+    
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     @Autowired
@@ -113,6 +125,13 @@ public class ReceivingSMSAction
     public void setKeyword( String keyword )
     {
         this.keyword = keyword;
+    }
+    
+    private List<String> senderNames;
+
+    public List<String> getSenderNames()
+    {
+        return senderNames;
     }
 
     private Integer total;
@@ -187,6 +206,40 @@ public class ReceivingSMSAction
                 }
             }
         }
+        
+        // Get the name of senders
+        senderNames = new ArrayList<String>();
+        senderNames.add( "" );
+        String tempString;
+        for ( IncomingSms incomingSms : listIncomingSms )
+        {
+            tempString = "";
+            String phoneNumber = incomingSms.getOriginator();
+            if ( !phoneNumber.isEmpty() )
+            {
+                Collection<User> users = userService.getUsersByPhoneNumber( phoneNumber );
+                if ( users == null || users.size() == 0 )
+                {
+                    tempString += "[unknown]";
+                }
+                else if ( users.size() > 0 )
+                {
+
+                    Iterator<User> usersIterator = users.iterator();
+                    while ( usersIterator.hasNext() )
+                    {
+                        User user = usersIterator.next();
+                        tempString += "[" + user.getUsername() + "]";
+                    }
+                }
+            }
+            else
+            {
+                tempString += "[unknown]";
+            }
+            senderNames.add( tempString );
+        }
+        
         return SUCCESS;
     }
 }

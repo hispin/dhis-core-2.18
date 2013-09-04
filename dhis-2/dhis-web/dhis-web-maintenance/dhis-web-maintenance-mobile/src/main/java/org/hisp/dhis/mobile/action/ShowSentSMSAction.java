@@ -156,6 +156,7 @@ public class ShowSentSMSAction
             listOutboundSMS = outboundSmsService.getAllOutboundSms( paging.getStartPos(), paging.getPageSize() );
         }
 
+        //Get the name of recipients
         recipientNames = new ArrayList<String>();
         recipientNames.add( "" );
         String tempString;
