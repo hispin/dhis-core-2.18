@@ -433,8 +433,8 @@ a.alert, .alert
 
 .replyArea
 {
-  width: 530px;
-  height: 80px;
+  width: 650px;
+  height: 100px;
   border: 1px solid #ccc;
   resize: none;
   overflow: auto;
