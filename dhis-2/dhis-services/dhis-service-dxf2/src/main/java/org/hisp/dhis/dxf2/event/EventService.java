@@ -49,13 +49,21 @@ public interface EventService
 {
     ImportSummary saveEventXml( InputStream inputStream ) throws IOException;
 
+    ImportSummary saveEventXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
+
     ImportSummaries saveEventsXml( InputStream inputStream ) throws IOException;
+
+    ImportSummaries saveEventsXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
 
     ImportSummaries saveEventsXml( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException;
 
     ImportSummary saveEventJson( InputStream inputStream ) throws IOException;
 
+    ImportSummary saveEventJson( InputStream inputStream, ImportOptions importOptions ) throws IOException;
+
     ImportSummaries saveEventsJson( InputStream inputStream ) throws IOException;
+
+    ImportSummaries saveEventsJson( InputStream inputStream, ImportOptions importOptions ) throws IOException;
 
     ImportSummaries saveEventsJson( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException;
 
