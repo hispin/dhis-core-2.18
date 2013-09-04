@@ -268,12 +268,4 @@ public class EventController
         eventService.updateEvent( updatedEvent );
         ContextUtils.okResponse( response, "Event updated: " + uid );
     }
-
-    /*
-    @ExceptionHandler( IllegalArgumentException.class )
-    public void handleError( IllegalArgumentException ex, HttpServletResponse response )
-    {
-        ContextUtils.conflictResponse( response, ex.getMessage() );
-    }
-    */
 }
