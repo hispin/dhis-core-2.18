@@ -120,9 +120,18 @@ public class JacksonJsonView
         }
         else
         {
-            response.setContentType( ContextUtils.CONTENT_TYPE_GZIP );
-            response.addHeader( ContextUtils.HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
-            outputStream = new GZIPOutputStream( response.getOutputStream() );
+            if ( !withPadding )
+            {
+                response.setContentType( CONTENT_TYPE_APPLICATION_JSON_GZIP );
+                response.addHeader( ContextUtils.HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
+                outputStream = new GZIPOutputStream( response.getOutputStream() );
+            }
+            else
+            {
+                response.setContentType( CONTENT_TYPE_APPLICATION_JAVASCRIPT_GZIP );
+                response.addHeader( ContextUtils.HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
+                outputStream = new GZIPOutputStream( response.getOutputStream() );
+            }
         }
 
         if ( withPadding )
