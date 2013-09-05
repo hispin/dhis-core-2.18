@@ -1,14 +1,14 @@
 
-<input type="hidden" id="equipmentInstanceID" name="equipmentInstanceID" value="$!equipmentInstance.id" />
-<input type="hidden" id="equipmentOrgUnitName" name="equipmentOrgUnitName" value="$!equipmentInstance.getOrganisationUnit().getName()" />
-<input type="hidden" id="equipmentCatalogName" name="equipmentCatalogName" value="$!equipmentInstance.getCatalog().getName()" />
+<input type="hidden" id="equipmentID" name="equipmentID" value="$!equipment.id" />
+<input type="hidden" id="equipmentOrgUnitName" name="equipmentOrgUnitName" value="$!equipment.getOrganisationUnit().getName()" />
+<input type="hidden" id="equipmentModelName" name="equipmentModelName" value="$!equipment.getModel().getName()" />
 
 <table width="100%">
-	<!-- InventoryType Attributes  -->
+	<!-- EquipmentType Attributes  -->
 	<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-	<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>-->
+	<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "equipmentType_attribute_details" )</th></tr>-->
 	#set( $mark = false )
-	#foreach( $attribute in $inventoryTypeAttributes )
+	#foreach( $attribute in $equipmentTypeAttributes )
 		#set( $attributeValue = "" )
 		#set( $attributeValue = $!equipmentValueMap.get( $attribute.id ) )
 		<tr #alternate($mark)>
@@ -28,15 +28,15 @@
 				#elseif( $attribute.valueType == "COMBO" )
 					<select  id="attr$attribute.id" name="attr$attribute.id" class='#validate( "default"  $attribute.mandatory )'>
 						<option value="">[$i18n.getString( "please_select" )]</option>
-						#foreach ($option in $!inventoryTypeAttributeOptionsMap.get( $attribute.id ) )
+						#foreach ($option in $!equipmentTypeAttributeOptionsMap.get( $attribute.id ) )
 							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 						#end
 					</select>
-                #elseif( $attribute.valueType == "CATALOG" )
-                    <select id="attr$attribute.id" name="attr$attribute.id" onChange="catalogDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
+                #elseif( $attribute.valueType == "MODEL" )
+                    <select id="attr$attribute.id" name="attr$attribute.id" onChange="modelDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
                         <option value="">[$i18n.getString( "please_select" )]</option>
-                        #foreach ($catalog in $catalogs )
-                            <option value="$catalog.id" #if($attributeValue == $catalog.name) selected="selected"  #end>$catalog.name</option>
+                        #foreach ($model in $models )
+                            <option value="$model.id" #if($attributeValue == $model.name) selected="selected"  #end>$model.name</option>
                         #end
                     </select>
 				#else

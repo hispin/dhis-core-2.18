@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.coldchain.catalog.Catalog;
-import org.hisp.dhis.coldchain.catalog.CatalogService;
-import org.hisp.dhis.coldchain.catalog.CatalogType;
-import org.hisp.dhis.coldchain.inventory.Equipment;
-import org.hisp.dhis.coldchain.inventory.InventoryType;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOption;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
-import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
-import org.hisp.dhis.coldchain.inventory.comparator.InventoryTypeAttributeOptionComparator;
+import org.hisp.dhis.coldchain.model.Model;
+import org.hisp.dhis.coldchain.model.ModelService;
+import org.hisp.dhis.coldchain.model.ModelType;
+import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
+import org.hisp.dhis.coldchain.equipment.EquipmentType;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOption;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeService;
+import org.hisp.dhis.coldchain.equipment.EquipmentType_Attribute;
+import org.hisp.dhis.coldchain.equipment.comparator.EquipmentTypeAttributeOptionComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -36,18 +36,18 @@ public class ShowAddEquipmentFormAction implements Action
         this.organisationUnitService = organisationUnitService;
     }
     
-    private InventoryTypeService inventoryTypeService;
+    private EquipmentTypeService equipmentTypeService;
     
-    public void setInventoryTypeService( InventoryTypeService inventoryTypeService )
+    public void setEquipmentTypeService( EquipmentTypeService equipmentTypeService )
     {
-        this.inventoryTypeService = inventoryTypeService;
+        this.equipmentTypeService = equipmentTypeService;
     }
     
-    private CatalogService catalogService;
+    private ModelService modelService;
     
-    public void setCatalogService( CatalogService catalogService )
+    public void setModelService( ModelService modelService )
     {
-        this.catalogService = catalogService;
+        this.modelService = modelService;
     }
     
     private OrganisationUnitGroupService organisationUnitGroupService;
@@ -69,11 +69,11 @@ public class ShowAddEquipmentFormAction implements Action
         this.orgUnitId = orgUnitId;
     }
 
-    private String inventoryTypeId;
+    private String equipmentTypeId;
 
-    public void setInventoryTypeId( String inventoryTypeId )
+    public void setEquipmentTypeId( String equipmentTypeId )
     {
-        this.inventoryTypeId = inventoryTypeId;
+        this.equipmentTypeId = equipmentTypeId;
     }
 
     private OrganisationUnit organisationUnit;
@@ -83,32 +83,32 @@ public class ShowAddEquipmentFormAction implements Action
         return organisationUnit;
     }
 
-    private InventoryType inventoryType;
+    private EquipmentType equipmentType;
 
-    public InventoryType getInventoryType()
+    public EquipmentType getEquipmentType()
     {
-        return inventoryType;
+        return equipmentType;
     }
 
-    private List<InventoryTypeAttribute> inventoryTypeAttributes;
+    private List<EquipmentTypeAttribute> equipmentTypeAttributes;
     
-    public List<InventoryTypeAttribute> getInventoryTypeAttributes()
+    public List<EquipmentTypeAttribute> getEquipmentTypeAttributes()
     {
-        return inventoryTypeAttributes;
+        return equipmentTypeAttributes;
     }
 
-    private List<Catalog> catalogs;
+    private List<Model> models;
     
-    public List<Catalog> getCatalogs()
+    public List<Model> getModels()
     {
-        return catalogs;
+        return models;
     }
     
-    private Map<Integer, List<InventoryTypeAttributeOption>> inventoryTypeAttributeOptionsMap = new HashMap<Integer, List<InventoryTypeAttributeOption>>();
+    private Map<Integer, List<EquipmentTypeAttributeOption>> equipmentTypeAttributeOptionsMap = new HashMap<Integer, List<EquipmentTypeAttributeOption>>();
     
-    public Map<Integer, List<InventoryTypeAttributeOption>> getInventoryTypeAttributeOptionsMap()
+    public Map<Integer, List<EquipmentTypeAttributeOption>> getEquipmentTypeAttributeOptionsMap()
     {
-        return inventoryTypeAttributeOptionsMap;
+        return equipmentTypeAttributeOptionsMap;
     }
     
     private List<OrganisationUnit> orgUnitList;
@@ -124,7 +124,7 @@ public class ShowAddEquipmentFormAction implements Action
     // -------------------------------------------------------------------------
     public String execute() throws Exception
     {
-        catalogs = new ArrayList<Catalog>();
+        models = new ArrayList<Model>();
         
         organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) );
         
@@ -132,9 +132,9 @@ public class ShowAddEquipmentFormAction implements Action
         
         OrganisationUnitGroup ouGroup = new OrganisationUnitGroup();
         
-        if ( Equipment.HEALTHFACILITY != null )
+        if ( EquipmentAttributeValue.HEALTHFACILITY != null )
         {
-			List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( Equipment.HEALTHFACILITY ) );
+			List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );
             ouGroup = ouGroups.get( 0 );
         }
         
@@ -143,46 +143,46 @@ public class ShowAddEquipmentFormAction implements Action
             orgUnitList.retainAll( ouGroup.getMembers() );
         }
         
-        inventoryType = inventoryTypeService.getInventoryType( Integer.parseInt( inventoryTypeId ) );
+        equipmentType = equipmentTypeService.getEquipmentType( Integer.parseInt( equipmentTypeId ) );
         
-        inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>();
-        for( InventoryType_Attribute inventoryType_Attribute : inventoryType.getInventoryType_Attributes() )
+        equipmentTypeAttributes = new ArrayList<EquipmentTypeAttribute>();
+        for( EquipmentType_Attribute equipmentType_Attribute : equipmentType.getEquipmentType_Attributes() )
         {
-            inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+            equipmentTypeAttributes.add( equipmentType_Attribute.getEquipmentTypeAttribute() );
         }
         
-        for( InventoryTypeAttribute inventoryTypeAttribute : inventoryTypeAttributes )
+        for( EquipmentTypeAttribute equipmentTypeAttribute : equipmentTypeAttributes )
         {
-            List<InventoryTypeAttributeOption> inventoryTypeAttributeOptions = new ArrayList<InventoryTypeAttributeOption>();
-            if( InventoryTypeAttribute.TYPE_COMBO.equalsIgnoreCase( inventoryTypeAttribute.getValueType() ) )
+            List<EquipmentTypeAttributeOption> equipmentTypeAttributeOptions = new ArrayList<EquipmentTypeAttributeOption>();
+            if( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( equipmentTypeAttribute.getValueType() ) )
             {
-                //System.out.println(" inside inventoryTypeAttribute.TYPE_COMBO ");
-                inventoryTypeAttributeOptions = new ArrayList<InventoryTypeAttributeOption>( inventoryTypeAttribute.getAttributeOptions() );
-                Collections.sort( inventoryTypeAttributeOptions, new InventoryTypeAttributeOptionComparator() );
-                inventoryTypeAttributeOptionsMap.put( inventoryTypeAttribute.getId(), inventoryTypeAttributeOptions );
+                //System.out.println(" inside equipmentTypeAttribute.TYPE_COMBO ");
+                equipmentTypeAttributeOptions = new ArrayList<EquipmentTypeAttributeOption>( equipmentTypeAttribute.getAttributeOptions() );
+                Collections.sort( equipmentTypeAttributeOptions, new EquipmentTypeAttributeOptionComparator() );
+                equipmentTypeAttributeOptionsMap.put( equipmentTypeAttribute.getId(), equipmentTypeAttributeOptions );
             }
 
             /*
-            System.out.println( "Name :" + catalogTypeAttribute.getName() );
-            System.out.println( "valueType :" + catalogTypeAttribute.getValueType() );
-            System.out.println( "Is mandatory :" + catalogTypeAttribute.isMandatory() );
+            System.out.println( "Name :" + modelTypeAttribute.getName() );
+            System.out.println( "valueType :" + modelTypeAttribute.getValueType() );
+            System.out.println( "Is mandatory :" + modelTypeAttribute.isMandatory() );
             */
         }
         
         
-        CatalogType catalogType = inventoryType.getCatalogType();
+        ModelType modelType = equipmentType.getModelType();
         
-        if( catalogType != null )
+        if( modelType != null )
         {
-            catalogs = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType ) );
+            models = new ArrayList<Model>( modelService.getModels( modelType ) );
         }
         /*
-        System.out.println( "Size of catalogs is --- "  + catalogs.size() );
+        System.out.println( "Size of models is --- "  + models.size() );
         
-        for( Catalog catalog : catalogs)
+        for( Model model : models)
         {
-            System.out.println( "Catalog name is "  + catalog.getName() );
-            System.out.println( "Catalog Id is "  + catalog.getId() );
+            System.out.println( "Model name is "  + model.getName() );
+            System.out.println( "Model Id is "  + model.getId() );
         }
         */
         

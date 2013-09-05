@@ -12,10 +12,10 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.coldchain.inventory.Equipment;
-import org.hisp.dhis.coldchain.inventory.InventoryType;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
-import org.hisp.dhis.coldchain.inventory.InventoryType_AttributeService;
+import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
+import org.hisp.dhis.coldchain.equipment.EquipmentType;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeService;
+import org.hisp.dhis.coldchain.equipment.EquipmentType_AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -66,11 +66,11 @@ public class GetFullOrganisationUnitDetailsAction implements Action
         this.attributeService = attributeService;
     }
     
-    private InventoryType_AttributeService inventoryType_AttributeService;
+    private EquipmentType_AttributeService equipmentType_AttributeService;
     
-    public void setInventoryType_AttributeService( InventoryType_AttributeService inventoryType_AttributeService )
+    public void setEquipmentType_AttributeService( EquipmentType_AttributeService equipmentType_AttributeService )
     {
-        this.inventoryType_AttributeService = inventoryType_AttributeService;
+        this.equipmentType_AttributeService = equipmentType_AttributeService;
     }
 
     private DataSetService dataSetService;
@@ -101,11 +101,11 @@ public class GetFullOrganisationUnitDetailsAction implements Action
         this.dataElementCategoryService = dataElementCategoryService;
     }
     
-    private InventoryTypeService inventoryTypeService;
+    private EquipmentTypeService equipmentTypeService;
 
-    public void setInventoryTypeService( InventoryTypeService inventoryTypeService )
+    public void setEquipmentTypeService( EquipmentTypeService equipmentTypeService )
     {
-        this.inventoryTypeService = inventoryTypeService;
+        this.equipmentTypeService = equipmentTypeService;
     }
     
     private OrganisationUnitGroupService organisationUnitGroupService;
@@ -214,11 +214,11 @@ public class GetFullOrganisationUnitDetailsAction implements Action
         return sections;
     }
     
-    private List<InventoryType> inventoryTypes;
+    private List<EquipmentType> equipmentTypes;
 
-    public List<InventoryType> getInventoryTypes()
+    public List<EquipmentType> getEquipmentTypes()
     {
-        return inventoryTypes;
+        return equipmentTypes;
     }
     
     private List<OrganisationUnit> orgUnitList;
@@ -234,11 +234,11 @@ public class GetFullOrganisationUnitDetailsAction implements Action
         return isDataSetAssign;
     }
     
-    public Map<Integer, String> inventoryTypeCountMap;
+    public Map<Integer, String> equipmentTypeCountMap;
     
-    public Map<Integer, String> getInventoryTypeCountMap()
+    public Map<Integer, String> getEquipmentTypeCountMap()
     {
-        return inventoryTypeCountMap;
+        return equipmentTypeCountMap;
     }
     
     private int year;
@@ -264,16 +264,16 @@ public class GetFullOrganisationUnitDetailsAction implements Action
         dataElementList = new ArrayList<DataElement>();
         period = new Period();
         dataValueMap = new HashMap<String, String>();
-        inventoryTypeCountMap = new HashMap<Integer, String>();
+        equipmentTypeCountMap = new HashMap<Integer, String>();
         
         // OrganisationUnit and its Attribute Information
         organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
         orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() ) );
         
-		List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( Equipment.HEALTHFACILITY ) );
+		List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );
 		OrganisationUnitGroup ouGroup = ouGroups.get( 0 ); 
-        //OrganisationUnitGroup ouGroup = organisationUnitGroupService.getOrganisationUnitGroupByName( Equipment.HEALTHFACILITY );
+        //OrganisationUnitGroup ouGroup = organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY );
        
         if ( ouGroup != null )
         {
@@ -297,7 +297,7 @@ public class GetFullOrganisationUnitDetailsAction implements Action
             attributedsByComma += "," + attribute.getId();
         }
         
-        selectedOrgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getId(), attributedsByComma ) );
+        selectedOrgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getId(), attributedsByComma ) );
         
         point = organisationUnit.getCoordinates() == null || coordinateIsValid( organisationUnit.getCoordinates() );
         longitude = ValidationUtils.getLongitude( organisationUnit.getCoordinates() );
@@ -430,14 +430,14 @@ public class GetFullOrganisationUnitDetailsAction implements Action
             System.out.println( dataElement.getName()  + " -- " + dataValueMap.get( organisationUnit.getId()+ ":" +  period.getId()  + ":" + dataElement.getId() ) );
         }
         */
-        // InventoryType and Equipment Information
-        inventoryTypes = new ArrayList<InventoryType>( inventoryTypeService.getAllInventoryTypes() );
+        // EquipmentType and EquipmentAttributeValue Information
+        equipmentTypes = new ArrayList<EquipmentType>( equipmentTypeService.getAllEquipmentTypes() );
         
-        inventoryTypeCountMap = new HashMap<Integer, String>( inventoryType_AttributeService.getEquipmentCountByOrgUnitList( orgUnitIdsByComma ) );
+        equipmentTypeCountMap = new HashMap<Integer, String>( equipmentType_AttributeService.getEquipmentCountByOrgUnitList( orgUnitIdsByComma ) );
         /*
-        for( InventoryType inventoryType :  inventoryTypes )
+        for( EquipmentType equipmentType :  equipmentTypes )
         {
-            System.out.println( inventoryType.getName()  + " -- " + inventoryTypeCountMap.get( inventoryType.getId() ) );
+            System.out.println( equipmentType.getName()  + " -- " + equipmentTypeCountMap.get( equipmentType.getId() ) );
             
         }
         */

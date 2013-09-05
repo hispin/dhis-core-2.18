@@ -3,10 +3,10 @@ package org.hisp.dhis.ccem.equipment.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
-import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
-import org.hisp.dhis.coldchain.inventory.EquipmentStatus;
-import org.hisp.dhis.coldchain.inventory.EquipmentStatusService;
+import org.hisp.dhis.coldchain.equipment.Equipment;
+import org.hisp.dhis.coldchain.equipment.EquipmentService;
+import org.hisp.dhis.coldchain.equipment.EquipmentStatus;
+import org.hisp.dhis.coldchain.equipment.EquipmentStatusService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -16,11 +16,11 @@ public class ShowEquipmentStatusHistoryFormAction implements Action
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private EquipmentInstanceService equipmentInstanceService;
+    private EquipmentService equipmentService;
 
-    public void setEquipmentInstanceService( EquipmentInstanceService equipmentInstanceService )
+    public void setEquipmentService( EquipmentService equipmentService )
     {
-        this.equipmentInstanceService = equipmentInstanceService;
+        this.equipmentService = equipmentService;
     }
 
     private EquipmentStatusService equipmentStatusService;
@@ -34,11 +34,11 @@ public class ShowEquipmentStatusHistoryFormAction implements Action
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer equipmentInstanceId;
+    private Integer equipmentId;
     
-    public void setEquipmentInstanceId( Integer equipmentInstanceId )
+    public void setEquipmentId( Integer equipmentId )
     {
-        this.equipmentInstanceId = equipmentInstanceId;
+        this.equipmentId = equipmentId;
     }
 
     private List<EquipmentStatus> equipmentStatusHistory;
@@ -54,9 +54,9 @@ public class ShowEquipmentStatusHistoryFormAction implements Action
     public String execute() throws Exception
     {
         //System.out.println("inside ShowEquipmentStatusHistoryFormAction ");
-        EquipmentInstance equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceId );
+        Equipment equipment = equipmentService.getEquipment( equipmentId );
         
-        equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistory( equipmentInstance ) );
+        equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistory( equipment ) );
         
         return SUCCESS;
     }

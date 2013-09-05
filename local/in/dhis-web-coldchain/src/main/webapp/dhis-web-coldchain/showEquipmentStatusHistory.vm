@@ -2,7 +2,7 @@
 <table class="mainPageTable">
 	<tr>
 		<td align="right">
-			<input type="button" value="$i18n.getString( 'Update Status' )" style="width:100px" onclick="showEquipmentStatusForm( '$equipmentInstance.id' );"/>
+			<input type="button" value="$i18n.getString( 'Update Status' )" style="width:100px" onclick="showEquipmentStatusForm( '$equipment.id' );"/>
 		</td>
 	</tr>
 	<tr>

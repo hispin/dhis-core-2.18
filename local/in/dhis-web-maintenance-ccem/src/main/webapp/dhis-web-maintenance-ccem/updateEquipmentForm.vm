@@ -1,4 +1,4 @@
-<script type="text/javascript" src="javascript/equipment.js"></script>
+<script type="text/javascript" src="javascript/equipmentAttributeValue.js"></script>
 ## Macro for generating the jQuery validation rules 
 #macro( validate $type $require )
   #if( $type == "NUMBER" )
@@ -34,31 +34,31 @@
 <h3>$i18n.getString( "update_equipment" )</h3>   
 
 <form id="equipmentForm" name="equipmentForm" method="post" >
-	<input type="hidden" id="equipmentInstanceID" name="equipmentInstanceID" value="$equipmentInstance.id" />
+	<input type="hidden" id="equipmentID" name="equipmentID" value="$equipment.id" />
 	<table>
 		<tr>
 			<td>$i18n.getString( "registering_unit" ) : </td>
-			<td>$equipmentInstance.organisationUnit.name</td>
+			<td>$equipment.organisationUnit.name</td>
 		</tr>	
 		<tr>
-			<td>$i18n.getString( "inventorytype" ) : </th>
-			<td>$equipmentInstance.inventoryType.name</th>
+			<td>$i18n.getString( "equipmenttype" ) : </th>
+			<td>$equipment.equipmentType.name</th>
 		</tr>
 		<tr>
-			<td>$i18n.getString( "catalog" ) : </td>
+			<td>$i18n.getString( "model" ) : </td>
 			<td>
-				<select id="catalog" name="catalog" onChange="catalogDetails( this.value );"  >
+				<select id="model" name="model" onChange="modelDetails( this.value );"  >
 					<option value="">[$i18n.getString( "please_select" )]</option>
-					#foreach ($catalog in $catalogs )
-						<option value="$catalog.id" #if($equipmentInstance.catalog.id == $catalog.id) selected="selected" #end>$catalog.name</option>
+					#foreach ($model in $models )
+						<option value="$model.id" #if($equipment.model.id == $model.id) selected="selected" #end>$model.name</option>
 					#end
 				</select>
 			</td>
 		</tr>
-		<!-- InventoryType Attributes  -->
+		<!-- EquipmentType Attributes  -->
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-		<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>
-		#foreach( $attribute in $inventoryTypeAttributes )
+		<tr><th colspan="2" class="heading-column">$i18n.getString( "equipmentType_attribute_details" )</th></tr>
+		#foreach( $attribute in $equipmentTypeAttributes )
 			#set( $attributeValue = "" )
 			#set( $attributeValue = $!equipmentValueMap.get( $attribute.id ) )
 			<tr>
@@ -78,15 +78,15 @@
 					#elseif( $attribute.valueType == "COMBO" )
 						<select  id="attr$attribute.id" name="attr$attribute.id" class='#validate( "default"  $attribute.mandatory )'>
 							<option value="">[$i18n.getString( "please_select" )]</option>
-							#foreach ($option in $!inventoryTypeAttributeOptionsMap.get( $attribute.id ) )
+							#foreach ($option in $!equipmentTypeAttributeOptionsMap.get( $attribute.id ) )
 								<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 							#end
 						</select>
-                    #elseif( $attribute.valueType == "CATALOG" )
-                        <select id="attr$attribute.id" name="attr$attribute.id" onChange="catalogDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
+                    #elseif( $attribute.valueType == "MODEL" )
+                        <select id="attr$attribute.id" name="attr$attribute.id" onChange="modelDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
                             <option value="">[$i18n.getString( "please_select" )]</option>
-                            #foreach ($catalog in $catalogs )
-                                <option value="$catalog.id" #if($attributeValue == $catalog.name) selected="selected"  #end>$catalog.name</option>
+                            #foreach ($model in $models )
+                                <option value="$model.id" #if($attributeValue == $model.name) selected="selected"  #end>$model.name</option>
                             #end
                         </select>
 					#else
@@ -103,14 +103,14 @@
 	</p>
 
 </form>
-<div id="detailsCatalogInfo"></div>
+<div id="detailsModelInfo"></div>
 <script>
     
     
-    var catalogDetailId = $equipmentInstanceCatalogId;
-    if ( catalogDetailId != 0 )
+    var modelDetailId = $equipmentModelId;
+    if ( modelDetailId != 0 )
     {
-    	catalogDetails( catalogDetailId );
+    	modelDetails( modelDetailId );
     }
     
     

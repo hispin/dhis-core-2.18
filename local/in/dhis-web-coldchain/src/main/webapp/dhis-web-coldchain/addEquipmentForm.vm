@@ -31,12 +31,12 @@
 
 <form id="equipmentForm" name="equipmentForm" method="post" >
 	<input type="hidden" id="ouId" name="ouId" value="$organisationUnit.id" />
-	<input type="hidden" id="itypeId" name="itypeId" value="$inventoryType.id" />	
+	<input type="hidden" id="itypeId" name="itypeId" value="$equipmentType.id" />	
 	<table width="100%">
 		
 		
 		<tr bgcolor="#285C91">
-			<td colspan="2"><font color="#FFFFFF"><strong>$inventoryType.name Details</strong></font></td>
+			<td colspan="2"><font color="#FFFFFF"><strong>$equipmentType.name Details</strong></font></td>
 		</tr>
 		<tr>
 			<td width="75%">Clinic<em title="$i18n.getString( 'required' )" class="required">*</em></td>
@@ -49,25 +49,25 @@
 				</select>
 			</td>
 		</tr>
-		#if( $!inventoryType.getCatalogType() )
+		#if( $!equipmentType.getModelType() )
 			<tr>
-				<td width="75%">Catalog Name/Model <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+				<td width="75%">Model Name/Model <em title="$i18n.getString( 'required' )" class="required">*</em></td>
 				<td width="25%">
-					<select  id="catalog" name="catalog" class="{validate:{required:true}}">
+					<select  id="model" name="model" class="{validate:{required:true}}">
 						<option value="">[$i18n.getString( "please_select" )]</option>
-						#foreach ($catalog in $catalogs )
-							<option value="$catalog.id" >$catalog.name</option>
+						#foreach ($model in $models )
+							<option value="$model.id" >$model.name</option>
 						#end
 					</select>
 				</td>			
 			</tr>
 	 		#end
        
-		<!-- InventoryType Attributes  -->
+		<!-- EquipmentType Attributes  -->
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-		<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>-->
+		<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "equipmentType_attribute_details" )</th></tr>-->
 		#set( $mark = false )
-		#foreach( $attribute in $inventoryTypeAttributes )
+		#foreach( $attribute in $equipmentTypeAttributes )
 			<tr #alternate($mark)>
 				<td class='text-column' width="75%"><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 				<td class="input-column" width="25%">
@@ -85,15 +85,15 @@
 					#elseif( $attribute.valueType == "COMBO" )
 						<select  id="attr$attribute.id" name="attr$attribute.id" class='#validate( "default"  $attribute.mandatory )'>
 							<option value="">[$i18n.getString( "please_select" )]</option>
-							#foreach ($option in $!inventoryTypeAttributeOptionsMap.get( $attribute.id ) )
+							#foreach ($option in $!equipmentTypeAttributeOptionsMap.get( $attribute.id ) )
 								<option value="$option.id" >$option.name</option>
 							#end
 						</select>
-                    #elseif( $attribute.valueType == "CATALOG" )
-                        <select  id="attr$attribute.id" name="attr$attribute.id" onChange="catalogDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
+                    #elseif( $attribute.valueType == "MODEL" )
+                        <select  id="attr$attribute.id" name="attr$attribute.id" onChange="modelDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
                             <option value="">[$i18n.getString( "please_select" )]</option>
-                            #foreach ($catalog in $catalogs )
-                                <option value="$catalog.id" >$catalog.name</option>
+                            #foreach ($model in $models )
+                                <option value="$model.id" >$model.name</option>
                             #end
                         </select>
 					#else
@@ -114,7 +114,7 @@
 	</p>
 
 </form>
-<div id="detailsCatalogInfo"></div>
+<div id="detailsModelInfo"></div>
 <script>
     var i18n_error_connect_to_server = '$encoder.jsEscape( $i18n.getString( "error_connect_to_server" ) , "'" )';
     var i18n_add_equipment_successfully = '$encoder.jsEscape( $i18n.getString( "add_equipment_successfully" ) , "'" )';

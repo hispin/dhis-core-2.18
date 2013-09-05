@@ -27,37 +27,37 @@
 </script>
 
 <form id="equipmentForm" name="equipmentForm" method="post" >
-	<input type="hidden" id="equipmentInstanceID" name="equipmentInstanceID" value="$equipmentInstance.id" />
-	<input type="hidden" id="equipmentOrgUnitName" name="equipmentOrgUnitName" value="$equipmentInstance.getOrganisationUnit().getName()" />
-	<input type="hidden" id="equipmentCatalogName" name="equipmentCatalogName" value="$equipmentCatalogName" />
+	<input type="hidden" id="equipmentID" name="equipmentID" value="$equipment.id" />
+	<input type="hidden" id="equipmentOrgUnitName" name="equipmentOrgUnitName" value="$equipment.getOrganisationUnit().getName()" />
+	<input type="hidden" id="equipmentModelName" name="equipmentModelName" value="$equipmentModelName" />
 	<table width="100%">
 		<tr>
 			<td colspan="2" align="right">
-				<a href="javascript:removeEquipment( '$equipmentInstance.id','$equipmentInstance.getOrganisationUnit().getName()','$!equipmentInstance.catalog.name' ); " title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				<a href="javascript:removeEquipment( '$equipment.id','$equipment.getOrganisationUnit().getName()','$!equipment.model.name' ); " title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
 			</td>
 		</tr>
 		
 		<tr bgcolor="#285C91">
-			<td colspan="2"><font color="#FFFFFF"><strong>$equipmentInstance.getInventoryType().name Details</strong></font></td>
+			<td colspan="2"><font color="#FFFFFF"><strong>$equipment.getEquipmentType().name Details</strong></font></td>
 		</tr>
-		#if( $!equipmentInstance.getInventoryType().getCatalogType() )
+		#if( $!equipment.getEquipmentType().getModelType() )
 			<tr>
-				<td width="75%">Catalog Name/Model <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+				<td width="75%">Model Name/Model <em title="$i18n.getString( 'required' )" class="required">*</em></td>
 				<td width="25%">
-					<select id="catalog" name="catalog" class="{validate:{required:true}}">
+					<select id="model" name="model" class="{validate:{required:true}}">
 						<option value="">[$i18n.getString( "please_select" )]</option>
-						#foreach ($catalog in $catalogs )
-							<option value="$catalog.id" #if($equipmentInstance.catalog.id == $catalog.id) selected="selected" #end>$catalog.name</option>
+						#foreach ($model in $models )
+							<option value="$model.id" #if($equipment.model.id == $model.id) selected="selected" #end>$model.name</option>
 						#end
 					</select>
 				</td>
 			</tr>
 		#end
-		<!-- InventoryType Attributes  -->
+		<!-- EquipmentType Attributes  -->
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-		<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>-->
+		<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "equipmentType_attribute_details" )</th></tr>-->
 		#set( $mark = false )
-		#foreach( $attribute in $inventoryTypeAttributes )
+		#foreach( $attribute in $equipmentTypeAttributes )
 			#set( $attributeValue = "" )
 			#set( $attributeValue = $!equipmentValueMap.get( $attribute.id ) )
 			<tr #alternate($mark)>
@@ -77,15 +77,15 @@
 					#elseif( $attribute.valueType == "COMBO" )
 						<select  id="attr$attribute.id" name="attr$attribute.id" class='#validate( "default"  $attribute.mandatory )'>
 							<option value="">[$i18n.getString( "please_select" )]</option>
-							#foreach ($option in $!inventoryTypeAttributeOptionsMap.get( $attribute.id ) )
+							#foreach ($option in $!equipmentTypeAttributeOptionsMap.get( $attribute.id ) )
 								<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 							#end
 						</select>
-                    #elseif( $attribute.valueType == "CATALOG" )
-                        <select id="attr$attribute.id" name="attr$attribute.id" onChange="catalogDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
+                    #elseif( $attribute.valueType == "MODEL" )
+                        <select id="attr$attribute.id" name="attr$attribute.id" onChange="modelDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
                             <option value="">[$i18n.getString( "please_select" )]</option>
-                            #foreach ($catalog in $catalogs )
-                                <option value="$catalog.id" #if($attributeValue == $catalog.name) selected="selected"  #end>$catalog.name</option>
+                            #foreach ($model in $models )
+                                <option value="$model.id" #if($attributeValue == $model.name) selected="selected"  #end>$model.name</option>
                             #end
                         </select>
 					#else
@@ -99,7 +99,7 @@
 
 	<p align="right">
 		
-		<!--<a href="javascript:removeEquipment( '$equipmentInstance.id','$equipmentInstance.getOrganisationUnit().getName()','$!equipmentInstance.catalog.name' ); " title='$i18n.getString( "delete" )'>delete</a>-->
+		<!--<a href="javascript:removeEquipment( '$equipment.id','$equipment.getOrganisationUnit().getName()','$!equipment.model.name' ); " title='$i18n.getString( "delete" )'>delete</a>-->
 		<input type="button"  value="$i18n.getString( 'Cancel' )" style="width:100px" onclick="closeUpdateWindow();"/>&nbsp;&nbsp;
         &nbsp;&nbsp;<input type="submit"  value="$i18n.getString( 'Save' )" style="width:100px"/>
 		

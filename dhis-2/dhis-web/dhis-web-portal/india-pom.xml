@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
-    <version>2.9-SNAPSHOT</version>
+    <version>2.13-SNAPSHOT</version>
   </parent>
   
   <artifactId>dhis-web-india-portal</artifactId>
@@ -18,14 +18,14 @@
   </build>
   
   <dependencies>
-  
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-	</dependency>
-	
+    </dependency>
+
     <!-- DHIS -->
-    
+
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons</artifactId>
@@ -35,25 +35,40 @@
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
     </dependency>
+
+    <!-- Web-API modules -->
+
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-api</artifactId>
-    </dependency>	
-    
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-api-fred</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+
     <!-- Web maintenance modules -->
-    
+
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-sms</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-datadictionary</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>	
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-dataset</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>	
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-organisationunit</artifactId>
@@ -78,19 +93,18 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-patient</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-  <dependency>
+    <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-mobile</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-importexport</artifactId>
@@ -102,7 +116,7 @@
       <artifactId>dhis-web-validationrule</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>	
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dataentry</artifactId>
@@ -114,7 +128,7 @@
       <artifactId>dhis-web-dashboard-integration</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>	
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-mapping</artifactId>
@@ -127,14 +141,11 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-	<!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-api-mobile</artifactId>
-      <version>${project.version}</version>
       <type>jar</type>
     </dependency>
-	-->
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-light</artifactId>
@@ -143,20 +154,42 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-mobile</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reporting</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>	
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-visualizer</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-pivot</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-appmanager</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
 	
-    <!-- India modules -->
-    
-
+	<!-- India modules -->    
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-maintenance-coldchain</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-coldchain</artifactId>
@@ -164,65 +197,10 @@
       <type>war</type>
     </dependency>
 	
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-dashboard</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
-	
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-reports-national</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
-
-	<dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-dataentry-national</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency> 
-	
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-excelimport</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-maintenance-in</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-survey</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
-
-	<dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-coldchain</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
-<!-- SMS Mobile application -->
-<!--
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-mobile</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
--->       
   </dependencies>
+  
   <properties>
     <rootDir>../../</rootDir>
   </properties>
+
 </project>

@@ -23,9 +23,9 @@
 <!--<h3>$i18n.getString( "equipmentstatus" )</h3>-->
 
 <form id="equipmentStatusForm" name="equipmentStatusForm" method="post" >
-	<input type="hidden" id="equipmentInstanceId" name="equipmentInstanceId" value="$equipmentInstanceId" />
-	<input type="hidden" id="equipmentOrgUnitName" name="equipmentOrgUnitName" value="$equipmentInstance.getOrganisationUnit().getName()" />
-	<input type="hidden" id="equipmentCatalogName" name="equipmentCatalogName" value="$equipmentInstance.getCatalog().getName()" />
+	<input type="hidden" id="equipmentId" name="equipmentId" value="$equipmentId" />
+	<input type="hidden" id="equipmentOrgUnitName" name="equipmentOrgUnitName" value="$equipment.getOrganisationUnit().getName()" />
+	<input type="hidden" id="equipmentModelName" name="equipmentModelName" value="$equipment.getModel().getName()" />
     <table>
     	<tr bgcolor="#285C91">
 			<td colspan="2"><font color="#FFFFFF"><strong>Status Details</strong></font></td>
@@ -82,7 +82,7 @@
        		<input type="button"  value="$i18n.getString( 'Cancel' )" style="width:100px" onclick="closewindow2();"/>
         	<input type="submit"  value="$i18n.getString( 'Save' )" style="width:100px"/>
         	<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllEquipments();"/>
-			<input type="button" class="button" value="$i18n.getString( 'show_history' )" onclick="showEquipmentStatusHistory( "$equipmentInstanceId" );" />
+			<input type="button" class="button" value="$i18n.getString( 'show_history' )" onclick="showEquipmentStatusHistory( "$equipmentId" );" />
     	</p>
 	</div>
 	-->

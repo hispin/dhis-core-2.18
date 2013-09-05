@@ -4,10 +4,10 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.coldchain.inventory.EquipmentDataValue" table="equipmentdatavalue">
+  <class name="org.hisp.dhis.coldchain.equipment.EquipmentDataValue" table="equipmentdatavalue">
 
     <composite-id>
-	  <key-many-to-one name="equipmentInstance" class="org.hisp.dhis.coldchain.inventory.EquipmentInstance" column="equipmentinstanceid" foreign-key="fk_equipmentdatavalue_equipmentinstanceid" />
+	  <key-many-to-one name="equipment" class="org.hisp.dhis.coldchain.equipment.Equipment" column="equipmentid" foreign-key="fk_equipmentdatavalue_equipmentid" />
       <key-many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_equipmentdatavalue_dataelementid" />
       <key-many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid" foreign-key="fk_equipmentdatavalue_periodid" />      
     </composite-id>

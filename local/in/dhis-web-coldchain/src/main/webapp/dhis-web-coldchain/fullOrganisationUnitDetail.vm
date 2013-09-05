@@ -52,16 +52,16 @@
 				</tr>
 				
 				<tr bgcolor="#285C91">$i18n.getString( "equipment_manager" )
-					<td><font color="#FFFFFF"><strong>$i18n.getString( "equipment" )</strong></font>
-					<!--<td align="left"><a href="javascript:closeFullOrgDetailsWindow(); " title='$i18n.getString( "Equipment Detail" )'><font color="#FFFFFF"><u>equipment details</u></font></a></td>-->
+					<td><font color="#FFFFFF"><strong>$i18n.getString( "equipmentAttributeValue" )</strong></font>
+					<!--<td align="left"><a href="javascript:closeFullOrgDetailsWindow(); " title='$i18n.getString( "EquipmentAttributeValue Detail" )'><font color="#FFFFFF"><u>equipmentAttributeValue details</u></font></a></td>-->
 					<td align="left"><font color="#FFFFFF">$i18n.getString( "equipment_count" )</font></td>
 				</tr>				
 				#set( $mark = false )
-				#foreach( $inventoryType in $inventoryTypes )
+				#foreach( $equipmentType in $equipmentTypes )
 				#set( $totalCount = "-" )
-            	#set( $totalCount = $!inventoryTypeCountMap.get( $inventoryType.id ) )	
+            	#set( $totalCount = $!equipmentTypeCountMap.get( $equipmentType.id ) )	
 					<tr #alternate($mark)>
-						<td>$inventoryType.name</td>
+						<td>$equipmentType.name</td>
 						<td align="center">$totalCount</td>
 					</tr>
 				#set( $mark = !$mark)	

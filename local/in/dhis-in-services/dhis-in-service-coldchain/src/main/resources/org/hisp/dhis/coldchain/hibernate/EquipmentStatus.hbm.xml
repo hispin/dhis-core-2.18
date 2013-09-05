@@ -3,14 +3,14 @@
  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="org.hisp.dhis.coldchain.inventory.EquipmentStatus" table="equipmentstatusupdates">
+	<class name="org.hisp.dhis.coldchain.equipment.EquipmentStatus" table="equipmentstatusupdates">
 
 		<id name="id" column="equipmentstatusid">
 			<generator class="native" />
 		</id>
 
-        <many-to-one name="equipmentInstance" class="org.hisp.dhis.coldchain.inventory.EquipmentInstance" column="equipmentinstanceid"
-            foreign-key="fk_equipmentstatus_equipmentInstanceid" />
+        <many-to-one name="equipment" class="org.hisp.dhis.coldchain.equipment.Equipment" column="equipmentid"
+            foreign-key="fk_equipmentstatus_equipmentid" />
 
 		<property name="reportingDate" column="reportingdate" />
 

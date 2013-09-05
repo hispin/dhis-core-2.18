@@ -3,27 +3,27 @@
 
 <h2>$i18n.getString( "equipment_manager" )</h2>
 <ul>
-	<li><a href="clinicInventories.action">$i18n.getString( "facility_inventories" )</a></li>
-	<li><a href="equipmentCatalogs.action">$i18n.getString( "equipment_catalogs" )</a></li>
-	<li><a href="vaccinesCatalogs.action">$i18n.getString( "vaccines" )</a></li>	
+	<li><a href="clinicEquipments.action">$i18n.getString( "facility_equipments" )</a></li>
+	<li><a href="equipmentModels.action">$i18n.getString( "equipment_models" )</a></li>
+	<li><a href="vaccinesModels.action">$i18n.getString( "vaccines" )</a></li>	
 </ul>
 
 <!--
 <h2>$i18n.getString( "ccem_setup" )</h2>
 <ul>
-	<li><a href="coldChainCatalogTypeAttribute.action">$i18n.getString( "catalogType_attribute" )</a></li>
-	<li><a href="catalogType.action">$i18n.getString( "catalogType" )</a></li>
+	<li><a href="coldChainModelTypeAttribute.action">$i18n.getString( "modelType_attribute" )</a></li>
+	<li><a href="modelType.action">$i18n.getString( "modelType" )</a></li>
 	<br/>
-	<li><a href="inventoryTypeAttributeList.action">$i18n.getString( "inventorytype_attribute" )</a></li>
-    <li><a href="inventoryTypeList.action">$i18n.getString( "inventorytype" )</a></li>
+	<li><a href="equipmentTypeAttributeList.action">$i18n.getString( "equipmenttype_attribute" )</a></li>
+    <li><a href="equipmentTypeList.action">$i18n.getString( "equipmenttype" )</a></li>
 	
 	
 </ul>
 
 <h2>$i18n.getString( "ccem_entry" )</h2>
 <ul>
-	<li><a href="catalog.action">$i18n.getString( "catalog" )</a></li>
-	<li><a href="enquipmentSelect.action">$i18n.getString( "equipment" )</a></li>	
+	<li><a href="model.action">$i18n.getString( "model" )</a></li>
+	<li><a href="enquipmentSelect.action">$i18n.getString( "equipmentAttributeValue" )</a></li>	
 </ul>
 -->
 

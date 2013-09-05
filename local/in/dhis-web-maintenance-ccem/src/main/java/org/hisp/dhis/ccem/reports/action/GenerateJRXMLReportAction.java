@@ -243,29 +243,29 @@ public class GenerateJRXMLReportAction
 
         hash.put( "reportName", ccemReport.getReportName() );
         hash.put( "date", date );
-        if ( ccemReport.getReportType().equals( CCEMReport.CATALOGTYPE_ATTRIBUTE_VALUE ) )
+        if ( ccemReport.getReportType().equals( CCEMReport.MODELTYPE_ATTRIBUTE_VALUE ) )
         {
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
-            hash.put( "inventoryTypeId", inventoryTypeId );
-            hash.put( "catalogTypeAttributeId", catalogTypeAttributeId );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            hash.put( "equipmentTypeId", equipmentTypeId );
+            hash.put( "modelTypeAttributeId", modelTypeAttributeId );
             fileName = "Refrigerators_freezer_models_by_agegroup.jrxml";
             JasperReport jasperReport = JasperCompileManager.compileReport( path + fileName );
             jasperPrint = JasperFillManager.fillReport( jasperReport, hash, con );
         }
-        else if ( ccemReport.getReportType().equals( CCEMReport.CATALOGTYPE_ATTRIBUTE_VALUE_AGE_GROUP.trim() ) )
+        else if ( ccemReport.getReportType().equals( CCEMReport.MODELTYPE_ATTRIBUTE_VALUE_AGE_GROUP.trim() ) )
 
         {
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
-            hash.put( "inventoryTypeId", inventoryTypeId );
-            hash.put( "catalogTypeAttributeId", catalogTypeAttributeId );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            hash.put( "equipmentTypeId", equipmentTypeId );
+            hash.put( "modelTypeAttributeId", modelTypeAttributeId );
             int i = 0;
-            Integer inventoryTypeAttributeId = 3;
+            Integer equipmentTypeAttributeId = 3;
             for ( CCEMReportDesign ccemReportDesign1 : reportDesignList )
             {
                 i++;
@@ -278,39 +278,39 @@ public class GenerateJRXMLReportAction
                 }
                 else if ( ccemCellContent1.split( ":" )[4].equalsIgnoreCase( "MORE" ) )
                 {
-                    inventoryTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
-                    catalogTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
-                    inventoryTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
+                    equipmentTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
+                    modelTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
+                    equipmentTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
                 }
                 else
                 {
-                    inventoryTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
-                    catalogTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
-                    inventoryTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
+                    equipmentTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
+                    modelTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
+                    equipmentTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
                 }
             }
-            Map<String, Integer> catalogTypeAttributeValueMap1 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 0, 2 ) );
+            Map<String, Integer> modelTypeAttributeValueMap1 = new HashMap<String, Integer>( ccemReportManager
+                .getModelTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 0, 2 ) );
 
-            Map<String, Integer> catalogTypeAttributeValueMap2 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 3, 5 ) );
+            Map<String, Integer> modelTypeAttributeValueMap2 = new HashMap<String, Integer>( ccemReportManager
+                .getModelTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 3, 5 ) );
 
-            Map<String, Integer> catalogTypeAttributeValueMap3 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 6, 10 ) );
+            Map<String, Integer> modelTypeAttributeValueMap3 = new HashMap<String, Integer>( ccemReportManager
+                .getModelTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 6, 10 ) );
 
-            Map<String, Integer> catalogTypeAttributeValueMap4 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId, 3, 11,
+            Map<String, Integer> modelTypeAttributeValueMap4 = new HashMap<String, Integer>( ccemReportManager
+                .getModelTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId, 3, 11,
                     -1 ) );
 
-            hash.put( "Value_0_2", catalogTypeAttributeValueMap1 );
-            hash.put( "Value_3_5", catalogTypeAttributeValueMap2 );
-            hash.put( "Value_6_10", catalogTypeAttributeValueMap3 );
-            hash.put( "Value_11_MORE", catalogTypeAttributeValueMap4 );
+            hash.put( "Value_0_2", modelTypeAttributeValueMap1 );
+            hash.put( "Value_3_5", modelTypeAttributeValueMap2 );
+            hash.put( "Value_6_10", modelTypeAttributeValueMap3 );
+            hash.put( "Value_11_MORE", modelTypeAttributeValueMap4 );
 
-            fileName = "CATALOGTYPE ATTRIBUTE VALUE AGE GROUP.jrxml";
+            fileName = "MODELTYPE ATTRIBUTE VALUE AGE GROUP.jrxml";
             JasperReport jasperReport = JasperCompileManager.compileReport( path + fileName );
             jasperPrint = JasperFillManager.fillReport( jasperReport, hash, con );
         }
@@ -797,24 +797,24 @@ public class GenerateJRXMLReportAction
             ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
 
             String[] partsOfCellContent = ccemCellContent1.split( "-" );
-            Integer vscrActualInventoryTypeId = Integer.parseInt( partsOfCellContent[0].split( ":" )[0] );
-            Integer vscrActualInventoryTypeAttributeId = Integer.parseInt( partsOfCellContent[0].split( ":" )[1] );
+            Integer vscrActualEquipmentTypeId = Integer.parseInt( partsOfCellContent[0].split( ":" )[0] );
+            Integer vscrActualEquipmentTypeAttributeId = Integer.parseInt( partsOfCellContent[0].split( ":" )[1] );
             Double factor = Double.parseDouble( partsOfCellContent[0].split( ":" )[2] );
             
 
-            Map<Integer, Double> equipmentSumByInventoryTypeMap = new HashMap<Integer, Double>( ccemReportManager
-                .getSumOfEquipmentDatabyInventoryType( orgUnitIdsByComma, vscrActualInventoryTypeId,
-                    vscrActualInventoryTypeAttributeId, factor ) );
+            Map<Integer, Double> equipmentSumByEquipmentTypeMap = new HashMap<Integer, Double>( ccemReportManager
+                .getSumOfEquipmentDatabyEquipmentType( orgUnitIdsByComma, vscrActualEquipmentTypeId,
+                    vscrActualEquipmentTypeAttributeId, factor ) );
 
             String[] partsOfVSRActualCellContent = partsOfCellContent[1].split( ":" );
-            Integer vsrActualInventoryTypeId = Integer.parseInt( partsOfVSRActualCellContent[0] );
-            Integer vsrActualCatalogTypeAttributeId = Integer.parseInt( partsOfVSRActualCellContent[1] );
-            Integer vsrActualInventoryTypeAttributeId = Integer.parseInt( partsOfVSRActualCellContent[2] );
+            Integer vsrActualEquipmentTypeId = Integer.parseInt( partsOfVSRActualCellContent[0] );
+            Integer vsrActualModelTypeAttributeId = Integer.parseInt( partsOfVSRActualCellContent[1] );
+            Integer vsrActualEquipmentTypeAttributeId = Integer.parseInt( partsOfVSRActualCellContent[2] );
             String vsrActualEquipmentValue = partsOfVSRActualCellContent[3];
 
-            Map<Integer, Double> catalogSumByEquipmentDataMap = new HashMap<Integer, Double>( ccemReportManager
-                .getCatalogDataSumByEquipmentData( orgUnitIdsByComma, vsrActualInventoryTypeId,
-                    vsrActualCatalogTypeAttributeId, vsrActualInventoryTypeAttributeId, vsrActualEquipmentValue ) );
+            Map<Integer, Double> modelSumByEquipmentDataMap = new HashMap<Integer, Double>( ccemReportManager
+                .getModelDataSumByEquipmentData( orgUnitIdsByComma, vsrActualEquipmentTypeId,
+                    vsrActualModelTypeAttributeId, vsrActualEquipmentTypeAttributeId, vsrActualEquipmentValue ) );
 
             /*
             // Calculations for Required Column
@@ -822,46 +822,46 @@ public class GenerateJRXMLReportAction
             ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
             partsOfCellContent = ccemCellContent1.split( "--" );
 
-            String[] catalogDataParts = partsOfCellContent[0].split( ":" );
-            Integer vsReqCatalogTypeId = Integer.parseInt( catalogDataParts[0] );
-            Integer vsReqStorageTempId = Integer.parseInt( catalogDataParts[1] );
-            String vsReqStorageTemp = catalogDataParts[2];
-            Integer vsReqNationalSupplyId = Integer.parseInt( catalogDataParts[3] );
-            String vsReqNationalSupply = catalogDataParts[4];
-            String vsReqCatalogAttribIds = catalogDataParts[5];
+            String[] modelDataParts = partsOfCellContent[0].split( ":" );
+            Integer vsReqModelTypeId = Integer.parseInt( modelDataParts[0] );
+            Integer vsReqStorageTempId = Integer.parseInt( modelDataParts[1] );
+            String vsReqStorageTemp = modelDataParts[2];
+            Integer vsReqNationalSupplyId = Integer.parseInt( modelDataParts[3] );
+            String vsReqNationalSupply = modelDataParts[4];
+            String vsReqModelAttribIds = modelDataParts[5];
 
-            Integer vsReqPackedVol = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[0] );
-            Integer vsReqDiluentVol = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[1] );
-            Integer vsReqDoses = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[2] );
-            Integer vsReqTargetPopCat = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[3] );
-            Integer vsReqUsage = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[4] );
-            Integer vsReqWastage = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[5] );
+            Integer vsReqPackedVol = Integer.parseInt( vsReqModelAttribIds.split( "," )[0] );
+            Integer vsReqDiluentVol = Integer.parseInt( vsReqModelAttribIds.split( "," )[1] );
+            Integer vsReqDoses = Integer.parseInt( vsReqModelAttribIds.split( "," )[2] );
+            Integer vsReqTargetPopCat = Integer.parseInt( vsReqModelAttribIds.split( "," )[3] );
+            Integer vsReqUsage = Integer.parseInt( vsReqModelAttribIds.split( "," )[4] );
+            Integer vsReqWastage = Integer.parseInt( vsReqModelAttribIds.split( "," )[5] );
 
-            List<Integer> catalogIdsForRequirement = new ArrayList<Integer>( ccemReportManager
-                .getCatalogIdsForRequirement( vsReqCatalogTypeId, vsReqStorageTempId, vsReqStorageTemp,
+            List<Integer> modelIdsForRequirement = new ArrayList<Integer>( ccemReportManager
+                .getModelIdsForRequirement( vsReqModelTypeId, vsReqStorageTempId, vsReqStorageTemp,
                     vsReqNationalSupplyId, vsReqNationalSupply ) );
 
-            Map<String, String> catalogDataForRequirement = new HashMap<String, String>( ccemReportManager
-                .getCatalogDataForRequirement( vsReqCatalogTypeId, vsReqStorageTempId, vsReqStorageTemp,
-                    vsReqNationalSupplyId, vsReqNationalSupply, vsReqCatalogAttribIds ) );
+            Map<String, String> modelDataForRequirement = new HashMap<String, String>( ccemReportManager
+                .getModelDataForRequirement( vsReqModelTypeId, vsReqStorageTempId, vsReqStorageTemp,
+                    vsReqNationalSupplyId, vsReqNationalSupply, vsReqModelAttribIds ) );
 
             Integer vsReqStaticDel = Integer.parseInt( partsOfCellContent[3].split( "," )[0] );
             Integer vsReqOutReachDel = Integer.parseInt( partsOfCellContent[3].split( "," )[1] );
 
-            String catalogOption_DataelementIds = vsReqStaticDel + "," + vsReqOutReachDel;
+            String modelOption_DataelementIds = vsReqStaticDel + "," + vsReqOutReachDel;
 
             String[] dataelementDataParts = partsOfCellContent[1].split( "," );
-            Map<String, Integer> catalogOption_DataelementMap = new HashMap<String, Integer>();
+            Map<String, Integer> modelOption_DataelementMap = new HashMap<String, Integer>();
 
-            for ( String de_catalogOption : dataelementDataParts )
+            for ( String de_modelOption : dataelementDataParts )
             {
-                catalogOption_DataelementMap.put( de_catalogOption.split( ":" )[1], Integer.parseInt( de_catalogOption
+                modelOption_DataelementMap.put( de_modelOption.split( ":" )[1], Integer.parseInt( de_modelOption
                     .split( ":" )[0] ) );
-                catalogOption_DataelementIds += "," + Integer.parseInt( de_catalogOption.split( ":" )[0] );
+                modelOption_DataelementIds += "," + Integer.parseInt( de_modelOption.split( ":" )[0] );
             }
 
             Map<String, String> dataElementDataForRequirement = new HashMap<String, String>( ccemReportManager
-                .getDataElementDataForCatalogOptionsForRequirement( orgUnitIdsByComma, catalogOption_DataelementIds,
+                .getDataElementDataForModelOptionsForRequirement( orgUnitIdsByComma, modelOption_DataelementIds,
                     periodId ) );
 
             String orgUnitGroupAttribIds = partsOfCellContent[2];
@@ -899,11 +899,11 @@ public class GenerateJRXMLReportAction
                     numberOfData.put( "OrgUnit Type", orgUnitGroupName );
                 }
 
-                Double vsrActualValue = catalogSumByEquipmentDataMap.get( orgUnit.getId() );
+                Double vsrActualValue = modelSumByEquipmentDataMap.get( orgUnit.getId() );
                 if ( vsrActualValue == null )
                     vsrActualValue = 0.0;
 
-                Double vscrActualValue = equipmentSumByInventoryTypeMap.get( orgUnit.getId() );
+                Double vscrActualValue = equipmentSumByEquipmentTypeMap.get( orgUnit.getId() );
                 if ( vscrActualValue == null )
                     vscrActualValue = 0.0;
 
@@ -914,10 +914,10 @@ public class GenerateJRXMLReportAction
                 // Calculation for Requirement Column
                 String tempStr = null;
                 Double vaccineRequirement = 0.0;
-                for ( Integer catalogId : catalogIdsForRequirement )
+                for ( Integer modelId : modelIdsForRequirement )
                 {
                     Double vsReqUsageData = 0.0;
-                    tempStr = catalogDataForRequirement.get( catalogId + ":" + vsReqUsage );
+                    tempStr = modelDataForRequirement.get( modelId + ":" + vsReqUsage );
                     if ( tempStr != null )
                     {
                         try
@@ -931,10 +931,10 @@ public class GenerateJRXMLReportAction
                     }
 
                     Double vsReqTargetPopData = 0.0;
-                    String vsReqTargetPopCatData = catalogDataForRequirement.get( catalogId + ":" + vsReqTargetPopCat );
+                    String vsReqTargetPopCatData = modelDataForRequirement.get( modelId + ":" + vsReqTargetPopCat );
                     if ( vsReqTargetPopCatData != null )
                     {
-                        Integer deId = catalogOption_DataelementMap.get( vsReqTargetPopCatData );
+                        Integer deId = modelOption_DataelementMap.get( vsReqTargetPopCatData );
                         tempStr = dataElementDataForRequirement.get( deId + ":" + periodId + ":" + orgUnit.getId() );
                         if ( tempStr != null )
                         {
@@ -950,7 +950,7 @@ public class GenerateJRXMLReportAction
                     }
 
                     Double vsReqDosesData = 0.0;
-                    tempStr = catalogDataForRequirement.get( catalogId + ":" + vsReqDoses );
+                    tempStr = modelDataForRequirement.get( modelId + ":" + vsReqDoses );
                     if ( tempStr != null )
                     {
                         try
@@ -964,7 +964,7 @@ public class GenerateJRXMLReportAction
                     }
 
                     Double vsReqPackedVolData = 0.0;
-                    tempStr = catalogDataForRequirement.get( catalogId + ":" + vsReqPackedVol );
+                    tempStr = modelDataForRequirement.get( modelId + ":" + vsReqPackedVol );
                     if ( tempStr != null )
                     {
                         try
@@ -985,7 +985,7 @@ public class GenerateJRXMLReportAction
                         || (tempStr2 != null && tempStr2.equalsIgnoreCase( "true" )) )
                     {
                         Double vsReqDiluentVolData = 0.0;
-                        tempStr = catalogDataForRequirement.get( catalogId + ":" + vsReqDiluentVol );
+                        tempStr = modelDataForRequirement.get( modelId + ":" + vsReqDiluentVol );
                         if ( tempStr != null )
                         {
                             try
@@ -1002,7 +1002,7 @@ public class GenerateJRXMLReportAction
                     }
 
                     Double vsReqWastageData = 0.0;
-                    tempStr = catalogDataForRequirement.get( catalogId + ":" + vsReqWastage );
+                    tempStr = modelDataForRequirement.get( modelId + ":" + vsReqWastage );
                     if ( tempStr != null )
                     {
                         try
@@ -1070,19 +1070,19 @@ public class GenerateJRXMLReportAction
             partsOfCellContent = ccemCellContent1.split( "--" );
 
             // PART 1 - 4:47:+4C:48:Yes
-            String[] catalogDataParts = partsOfCellContent[0].split( ":" );
-            Integer vsReqCatalogTypeId = Integer.parseInt( catalogDataParts[0] );
-            Integer vsReqStorageTempId = Integer.parseInt( catalogDataParts[1] );
-            String vsReqStorageTemp = catalogDataParts[2];
-            Integer vsReqNationalSupplyId = Integer.parseInt( catalogDataParts[3] );
-            String vsReqNationalSupply = catalogDataParts[4];
+            String[] modelDataParts = partsOfCellContent[0].split( ":" );
+            Integer vsReqModelTypeId = Integer.parseInt( modelDataParts[0] );
+            Integer vsReqStorageTempId = Integer.parseInt( modelDataParts[1] );
+            String vsReqStorageTemp = modelDataParts[2];
+            Integer vsReqNationalSupplyId = Integer.parseInt( modelDataParts[3] );
+            String vsReqNationalSupply = modelDataParts[4];
             
-            List<Integer> catalogIdsForRequirement = new ArrayList<Integer>( ccemReportManager.getCatalogIdsForRequirement( vsReqCatalogTypeId, vsReqStorageTempId, vsReqStorageTemp, vsReqNationalSupplyId, vsReqNationalSupply ) );
+            List<Integer> modelIdsForRequirement = new ArrayList<Integer>( ccemReportManager.getModelIdsForRequirement( vsReqModelTypeId, vsReqStorageTempId, vsReqStorageTemp, vsReqNationalSupplyId, vsReqNationalSupply ) );
 
             // PART 2 - 5
             String dataelementIds = ""+ partsOfCellContent[1];
             Integer vsReqLiveBirthDeId = Integer.parseInt( dataelementIds.split( "," )[0] );
-            Map<String, String> dataElementDataForRequirement = new HashMap<String, String>( ccemReportManager.getDataElementDataForCatalogOptionsForRequirement( orgUnitIdsByComma, dataelementIds, periodId ) );
+            Map<String, String> dataElementDataForRequirement = new HashMap<String, String>( ccemReportManager.getDataElementDataForModelOptionsForRequirement( orgUnitIdsByComma, dataelementIds, periodId ) );
 
             // PART 3 -  VaccineVolumePerChild
             String vvpcConstantName = ""+ partsOfCellContent[2];
@@ -1123,11 +1123,11 @@ public class GenerateJRXMLReportAction
                     numberOfData.put( "OrgUnit Type", orgUnitGroupName );
                 }
 
-                Double vsrActualValue = catalogSumByEquipmentDataMap.get( orgUnit.getId() );
+                Double vsrActualValue = modelSumByEquipmentDataMap.get( orgUnit.getId() );
                 if ( vsrActualValue == null )
                     vsrActualValue = 0.0;
 
-                Double vscrActualValue = equipmentSumByInventoryTypeMap.get( orgUnit.getId() );
+                Double vscrActualValue = equipmentSumByEquipmentTypeMap.get( orgUnit.getId() );
                 if ( vscrActualValue == null )
                     vscrActualValue = 0.0;
 
@@ -1138,7 +1138,7 @@ public class GenerateJRXMLReportAction
                 // Calculation for Requirement Column
                 String tempStr = null;
                 Double vaccineRequirement = 0.0;
-                for ( Integer catalogId : catalogIdsForRequirement )
+                for ( Integer modelId : modelIdsForRequirement )
                 {
                     Double vsReqLiveBirthData = 0.0;
                     tempStr = dataElementDataForRequirement.get( vsReqLiveBirthDeId + ":" + periodId + ":" + orgUnit.getId() );
