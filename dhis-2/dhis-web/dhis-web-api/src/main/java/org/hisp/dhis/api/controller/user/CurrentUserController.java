@@ -70,6 +70,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -321,6 +322,7 @@ public class CurrentUserController
         Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
         Set<Program> programs = new HashSet<Program>();
+        Map<String, List<Program>> programAssociations = new HashMap<String, List<Program>>();
         List<Program> userPrograms;
 
         if ( type == null )
@@ -331,8 +333,6 @@ public class CurrentUserController
         {
             userPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( type ) );
         }
-
-        Map<String, List<Program>> programAssociations = new HashMap<String, List<Program>>();
 
         if ( currentUserService.currentUserIsSuper() && currentUser.getOrganisationUnits().isEmpty() )
         {
@@ -369,8 +369,16 @@ public class CurrentUserController
                     if ( userPrograms.contains( program ) )
                     {
                         organisationUnits.add( organisationUnit );
-                        programs.addAll( ouPrograms );
-                        programAssociations.put( organisationUnit.getUid(), ouPrograms );
+                        programs.add( program );
+
+                        if ( programAssociations.get( organisationUnit.getUid() ) != null )
+                        {
+                            programAssociations.get( organisationUnit.getUid() ).add( program );
+                        }
+                        else
+                        {
+                            programAssociations.put( organisationUnit.getUid(), Arrays.asList( program ) );
+                        }
                     }
                 }
             }
