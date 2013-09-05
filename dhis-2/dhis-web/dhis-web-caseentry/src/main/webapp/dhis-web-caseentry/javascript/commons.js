@@ -1726,7 +1726,23 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
 		{
 			showById('programEnrollmentDiv');
 			var hasDataEntry = getFieldValue('hasDataEntry');
-			var type = jQuery('#tb_'+programInstanceId).attr('programType');
+			var type = jQuery( '#tb_' + programInstanceId ).attr('programType');
+			
+			var program = jQuery( '#tr1_' + programInstanceId )
+			var relationshipText=program.attr('relationshipText');
+			var relatedProgramId=program.attr('relatedProgram');
+			var patientId = getFieldValue('patientId');
+			var selectedProgram = program.attr('programId');
+			
+			if( relationshipText != "")
+			{
+				setInnerHTML('patientRelatedStageSpan',"&#8226; <a href='javascript:showAddPatientForm( " + relatedProgramId + "," + patientId + "," + selectedProgram + " );' id='relatedPatient_$!programStageInstance.id' >" + relationshipText + "</a>");
+			}
+			else
+			{
+				setInnerHTML('patientRelatedStageSpan','');
+			}
+			
 			if(type=='2'){
 				hideById('colorHelpLink');
 				hideById('programInstanceDiv');

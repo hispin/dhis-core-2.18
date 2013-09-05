@@ -46,6 +46,8 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
@@ -106,6 +108,13 @@ public class AddProgramAction
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
+    }
+
+    private RelationshipTypeService relationshipTypeService;
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
     }
 
     // -------------------------------------------------------------------------
@@ -259,6 +268,34 @@ public class AddProgramAction
         this.selectIncidentDatesInFuture = selectIncidentDatesInFuture;
     }
 
+    private String relationshipText;
+
+    public void setRelationshipText( String relationshipText )
+    {
+        this.relationshipText = relationshipText;
+    }
+
+    private Integer relationshipTypeId;
+
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
+    }
+
+    private Integer relatedProgramId;
+
+    public void setRelatedProgramId( Integer relatedProgramId )
+    {
+        this.relatedProgramId = relatedProgramId;
+    }
+
+    private Boolean relationshipFromA;
+
+    public void setRelationshipFromA( Boolean relationshipFromA )
+    {
+        this.relationshipFromA = relationshipFromA;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -299,6 +336,20 @@ public class AddProgramAction
         {
             program.setIgnoreOverdueEvents( false );
         }
+
+        if ( relatedProgramId != null )
+        {
+            Program relatedProgram = programService.getProgram( relatedProgramId );
+            program.setRelatedProgram( relatedProgram );
+        }
+
+        if ( relationshipTypeId != null )
+        {
+            RelationshipType relationshipType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+            program.setRelationshipType( relationshipType );
+        }
+        program.setRelationshipFromA( relationshipFromA );;
+        program.setRelationshipText( relationshipText );
 
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
         List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();

@@ -139,7 +139,13 @@
 						#set( $status = $programStageInstance.getEventStatus() )
 						#if( $status!=1 && $status!=5 && $flag=='false')
 							<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
-								programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
+								programStageInstanceId='$programStageInstanceId' 
+								relationshipText='$!programInstance.program.relationshipText'
+								relationshipType='$!programInstance.program.relationshipType.id'
+								relationshipSide='$!programInstance.program.relationshipSide'
+								relatedProgram='$!programInstance.program.relatedProgram.id'
+								programId='$programInstance.program.id'
+								style='cursor:pointer;'
 								onclick='javascript:setFieldValue("programIdAddPatient",$programInstance.program.id);loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' >
 								<td id='td_$programInstance.id'>
 									<a><span id='infor_$programInstance.id'>$programInstance.program.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>
@@ -148,7 +154,9 @@
 							</tr>
 							#if($programInstance.program.type==1 && $programStageInstance)
 							<tr>
-								<td id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
+								<td id='tr2_$programInstance.id' 
+									onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")'
+									style='cursor:pointer;'>
 									<a>&#8226; $programStageInstance.programStage.displayName ($format.formatDate($programStageInstance.dueDate))</a>
 								</td>
 							</tr>
@@ -159,6 +167,10 @@
 					#if($flag=='false')
 					<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
 						programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
+						relationshipText='$!programInstance.program.relationshipText'
+						relationshipType='$!programInstance.program.relationshipType.id'
+						relationshipSide='$!programInstance.program.relationshipSide'
+						relatedProgram='$!programInstance.program.relatedProgram.id'
 						onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", false)' >
 						<td id='td_$programInstance.id'>
 							<a><span id='infor_$programInstance.id'>$programInstance.program.displayName ($format.formatDate($programInstance.enrollmentDate))</span></a>

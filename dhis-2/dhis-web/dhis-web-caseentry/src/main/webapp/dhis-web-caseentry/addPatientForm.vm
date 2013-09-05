@@ -10,7 +10,14 @@
 				,errorElement:"span"
 				,submitHandler: function(form)
 					{
-						validateAddPatient(isContinue);
+						#if($!relatedProgram)
+							var programId = getFieldValue("relatedProgramId");
+							validateAddPatient(programId, true, isContinue);
+						#else
+							var programId = getFieldValue('programIdAddPatient');
+							validateAddPatient(programId, false, isContinue);
+						#end
+						
 					}
 				,beforeValidateHandler: function(form)
 					{
@@ -45,21 +52,37 @@
 
 <h3 id='patientMamagementLink'>
 	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
+	#if($!relatedProgram)
+		&#8226; <a href="javascript:showPatientDashboardForm($!patientId);">$i18n.getString( 'patient_dashboard' )</a>
+	#end
 	&#8226; $i18n.getString( "add_new_patient" )
 </h3>
 
 <form id="patientForm" name="patientForm" method="post" >
-<input type="hidden" id="representativeId" name="representativeId"/> 
-<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
-<input type="hidden" id="addRelationship" name="addRelationship" value="true">
+
+#if($relatedProgram)
+	<input type='hidden' name="relationshipTypeId" id="relationshipTypeId" value="$relatedProgram.relationshipType.id">
+	<input type='hidden' name="relationshipFromA" id="relationshipFromA" value="$relatedProgram.relationshipFromA" >
+	<input type='hidden' name="relationshipId" id="relationshipId" value="$patientId">
+	<input type='hidden' name="relatedProgramId" id="relatedProgramId" value="$program.id" >
+#else
+	<input type="hidden" id="representativeId" name="representativeId"/> 
+	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
+	<input type="hidden" id="addRelationship" name="addRelationship" value="true">
+#end
 <table>
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
 	<tr>
 		<td></td>
 		<td colspan='2' id='actionButtons'>
+			#if($!relatedProgram)
+				<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;" style="width:70px;" />
+				<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="showPatientDashboardForm($!patientId);" style="width:70px;" />
+			#else
 			<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;" style="width:70px;" />
 			<input type="submit" class="button" value="$i18n.getString( 'add_and_register_new' )" style="width:140px;" onclick="isContinue=true;"/>
 			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadPatientList();" style="width:70px;" />
+			#end
 		</td>
 	</tr>
 </table>

@@ -41,6 +41,8 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
@@ -83,6 +85,13 @@ public class UpdateProgramAction
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
+    }
+
+    private RelationshipTypeService relationshipTypeService;
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
     }
 
     // -------------------------------------------------------------------------
@@ -283,6 +292,34 @@ public class UpdateProgramAction
         this.selectIncidentDatesInFuture = selectIncidentDatesInFuture;
     }
 
+    private String relationshipText;
+
+    public void setRelationshipText( String relationshipText )
+    {
+        this.relationshipText = relationshipText;
+    }
+
+    private Integer relationshipTypeId;
+
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
+    }
+
+    private Boolean relationshipFromA;
+
+    public void setRelationshipFromA( Boolean relationshipFromA )
+    {
+        this.relationshipFromA = relationshipFromA;
+    }
+
+    private Integer relatedProgramId;
+
+    public void setRelatedProgramId( Integer relatedProgramId )
+    {
+        this.relatedProgramId = relatedProgramId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -325,6 +362,20 @@ public class UpdateProgramAction
         {
             program.setIgnoreOverdueEvents( false );
         }
+
+        if ( relatedProgramId != null )
+        {
+            Program relatedProgram = programService.getProgram( relatedProgramId );
+            program.setRelatedProgram( relatedProgram );
+        }
+
+        if ( relationshipTypeId != null )
+        {
+            RelationshipType relationshipType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+            program.setRelationshipType( relationshipType );
+        }
+        program.setRelationshipFromA( relationshipFromA );
+        program.setRelationshipText( relationshipText );
 
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
         List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
@@ -374,6 +425,13 @@ public class UpdateProgramAction
             {
                 reminder.setUserGroup( null );
             }
+
+            if ( relatedProgramId != null )
+            {
+                Program relatedProgram = programService.getProgram( relatedProgramId );
+                program.setRelatedProgram( relatedProgram );
+            }
+
             patientReminders.add( reminder );
         }
         program.setPatientReminders( patientReminders );

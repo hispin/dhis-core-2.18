@@ -181,6 +181,8 @@
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="userGroupService" 
 			ref="org.hisp.dhis.user.UserGroupService" />	
+		<property name="relationshipTypeService" 
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramListAction"
@@ -222,6 +224,8 @@
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+		<property name="relationshipTypeService" 
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 
 	<bean
@@ -234,6 +238,8 @@
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+		<property name="relationshipTypeService" 
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 	<bean id="org.hisp.dhis.patient.action.program.UpdateProgramAction"
 		class="org.hisp.dhis.patient.action.program.UpdateProgramAction"
@@ -245,6 +251,8 @@
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="userGroupService"
 			ref="org.hisp.dhis.user.UserGroupService" />
+		<property name="relationshipTypeService" 
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.ValidateProgramAction"
