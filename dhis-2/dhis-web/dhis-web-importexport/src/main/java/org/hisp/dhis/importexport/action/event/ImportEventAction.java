@@ -30,6 +30,14 @@ package org.hisp.dhis.importexport.action.event;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dxf2.event.EventService;
+import org.hisp.dhis.dxf2.event.tasks.ImportEventTask;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.scheduling.Scheduler;
+import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -46,6 +54,15 @@ public class ImportEventAction implements Action
     // -------------------------------------------------------------------------
 
     @Autowired
+    private Scheduler scheduler;
+
+    @Autowired
+    private Notifier notifier;
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
+    @Autowired
     private EventService eventService;
 
     // -------------------------------------------------------------------------
@@ -59,6 +76,13 @@ public class ImportEventAction implements Action
         this.upload = upload;
     }
 
+    private boolean dryRun;
+
+    public void setDryRun( boolean dryRun )
+    {
+        this.dryRun = dryRun;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -66,7 +90,17 @@ public class ImportEventAction implements Action
     @Override
     public String execute() throws Exception
     {
+        TaskId taskId = new TaskId( TaskCategory.EVENT_IMPORT, currentUserService.getCurrentUser() );
+
+        notifier.clear( taskId );
+
         InputStream in = new FileInputStream( upload );
+        in = StreamUtils.wrapAndCheckCompressionFormat( in );
+
+        ImportOptions importOptions = new ImportOptions();
+        importOptions.setDryRun( dryRun );
+
+        scheduler.executeTask( new ImportEventTask( in, eventService, importOptions, taskId, true ) );
 
         return SUCCESS;
     }
