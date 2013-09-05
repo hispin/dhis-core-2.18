@@ -11,7 +11,7 @@
   <tr>
     <td style="vertical-align:top" colspan='2'>
 		
-		<table class="listTable">
+		<table class="listTable" id='formList'>
 			  <col>   
 			  <col> 
 			  <col>
@@ -62,17 +62,27 @@
 					
 				  </tr>
 				#end
+				
 				#foreach($program in $programs)
-				<tr id="tr${registrationForm.id}">
-					<td>$encoder.htmlEncode( $program.name )</td>  
-					<td>[$i18n.getString('none')]</td>   
-					<td>[$i18n.getString('none')]</td> 					
-					<td style="text-align:center">
-					  	<a href="javascript:showDefaultRegistrationForm($program.id);" title="$i18n.getString( 'edit' )"><img src='../images/edit.png' alt="$i18n.getString( 'edit' )"></a>
-						<a href="javascript:addNewForm($program.id)" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
-						<img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
-					</td>
-				</tr>
+					#set($hasForm = false)
+					#foreach( $registrationForm in $registrationForms )
+						#if($registrationForm.program.id==$program.id)
+							#set($hasForm = true)
+						#end
+					#end
+					
+					#if($hasForm == false)
+						<tr id="tr${registrationForm.id}">
+							<td>$encoder.htmlEncode( $program.name )</td>  
+							<td>[$i18n.getString('none')]</td>   
+							<td>[$i18n.getString('none')]</td> 					
+							<td style="text-align:center">
+								<a href="javascript:showDefaultRegistrationForm($program.id);" title="$i18n.getString( 'edit' )"><img src='../images/edit.png' alt="$i18n.getString( 'edit' )"></a>
+								<a href="javascript:addNewForm($program.id)" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
+								<img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
+							</td>
+						</tr>
+					#end
 				#end
 				#if($hasCommonForm=='false')
 				 <tr id="tr${registrationForm.id}">
@@ -95,4 +105,8 @@
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient_registration_form" ) , "'" )';
 	var i18n_please_select = '[' + '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'" )' + ']';
+	
+	tableSorter( 'formList' );
+	var sorting = [[0,0]];
+	$("#formList").trigger("sorton", [sorting]);
 </script>
