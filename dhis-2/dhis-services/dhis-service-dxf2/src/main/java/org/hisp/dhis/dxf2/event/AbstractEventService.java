@@ -170,6 +170,7 @@ public abstract class AbstractEventService implements EventService
 
             if ( !assignedToOrganisationUnit )
             {
+                System.err.print( "Program is not assigned to this organisation unit." );
                 return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit." );
             }
         }
@@ -190,7 +191,7 @@ public abstract class AbstractEventService implements EventService
         return new ImportSummary();
     }
 
-    private ImportSummary saveSingleEventWithoutRegistration( Program program, OrganisationUnit organisationUnit, Event event, ImportOptions importOptions)
+    private ImportSummary saveSingleEventWithoutRegistration( Program program, OrganisationUnit organisationUnit, Event event, ImportOptions importOptions )
     {
         try
         {
@@ -213,24 +214,14 @@ public abstract class AbstractEventService implements EventService
 
         ProgramStageInstance programStageInstance = null;
 
-        if ( importOptions != null && !importOptions.isDryRun() )
+        String storedBy = getStoredBy( event, importSummary );
+
+        if ( importOptions == null || !importOptions.isDryRun() )
         {
             programStageInstance = saveEventDate( program, organisationUnit, eventDate,
-                event.getCompleted(), event.getCoordinate() );
+                event.getCompleted(), event.getCoordinate(), storedBy );
 
             importSummary.setReference( programStageInstance.getUid() );
-        }
-
-        String storedBy = event.getStoredBy();
-
-        if ( storedBy == null )
-        {
-            storedBy = currentUserService.getCurrentUsername();
-        }
-        else if ( storedBy.length() >= 31 )
-        {
-            importSummary.getConflicts().add( new ImportConflict( "storedBy", storedBy + " is more than 31 characters, using current username instead." ) );
-            storedBy = currentUserService.getCurrentUsername();
         }
 
         for ( DataValue dataValue : event.getDataValues() )
@@ -246,9 +237,11 @@ public abstract class AbstractEventService implements EventService
             {
                 if ( validateDataElement( dataElement, dataValue.getValue(), importSummary ) )
                 {
-                    if ( importOptions != null && !importOptions.isDryRun() )
+                    String dataValueStoredBy = dataValue.getStoredBy() != null ? dataValue.getStoredBy() : storedBy;
+
+                    if ( importOptions == null || !importOptions.isDryRun() )
                     {
-                        saveDataValue( programStageInstance, storedBy, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
+                        saveDataValue( programStageInstance, dataValueStoredBy, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
                     }
 
                     importSummary.getDataValueCount().incrementImported();
@@ -257,6 +250,25 @@ public abstract class AbstractEventService implements EventService
         }
 
         return importSummary;
+    }
+
+    private String getStoredBy( Event event, ImportSummary importSummary )
+    {
+        String storedBy = event.getStoredBy();
+
+        if ( storedBy == null )
+        {
+            storedBy = currentUserService.getCurrentUsername();
+        }
+        else if ( storedBy.length() >= 31 )
+        {
+            if ( importSummary != null )
+            {
+                importSummary.getConflicts().add( new ImportConflict( "storedBy", storedBy + " is more than 31 characters, using current username instead." ) );
+            }
+            storedBy = currentUserService.getCurrentUsername();
+        }
+        return storedBy;
     }
 
     private boolean validateDataElement( DataElement dataElement, String value, ImportSummary importSummary )
@@ -284,7 +296,7 @@ public abstract class AbstractEventService implements EventService
     }
 
     private ProgramStageInstance saveEventDate( Program program, OrganisationUnit organisationUnit, Date date, Boolean completed,
-        Coordinate coordinate )
+        Coordinate coordinate, String storedBy )
     {
         ProgramStage programStage = program.getProgramStages().iterator().next();
         ProgramInstance programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
@@ -312,7 +324,7 @@ public abstract class AbstractEventService implements EventService
         {
             programStageInstance.setCompleted( completed );
             programStageInstance.setCompletedDate( new Date() );
-            programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
+            programStageInstance.setCompletedUser( storedBy );
         }
 
         programStageInstanceService.addProgramStageInstance( programStageInstance );
@@ -461,10 +473,12 @@ public abstract class AbstractEventService implements EventService
 
         Date date = new Date();
 
+        String storedBy = getStoredBy( event, null );
+
         programStageInstance.setDueDate( date );
         programStageInstance.setExecutionDate( date );
         programStageInstance.setOrganisationUnit( organisationUnit );
-        programStageInstance.setCompletedUser( event.getStoredBy() );
+        programStageInstance.setCompletedUser( storedBy );
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
@@ -532,6 +546,7 @@ public abstract class AbstractEventService implements EventService
             value.setDataElement( patientDataValue.getDataElement().getUid() );
             value.setValue( patientDataValue.getValue() );
             value.setProvidedElsewhere( patientDataValue.getProvidedElsewhere() );
+            value.setStoredBy( patientDataValue.getStoredBy() );
 
             event.getDataValues().add( value );
         }

@@ -99,7 +99,6 @@ public class FormUtils
     public static Form fromProgram( Program program )
     {
         Assert.notNull( program );
-        Assert.isTrue( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION );
 
         Form form = new Form();
         form.setLabel( program.getDisplayName() );
