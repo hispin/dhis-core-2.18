@@ -32,7 +32,7 @@
 						#if($registrationForm.program)
 							$encoder.htmlEncode( $registrationForm.program.name )
 						#else
-							$i18n.getString('all')
+							$i18n.getString('no_program')
 							#set($hasCommonForm = 'true')
 						#end	
 					</td>  
@@ -86,7 +86,7 @@
 				#end
 				#if($hasCommonForm=='false')
 				 <tr id="tr${registrationForm.id}">
-					<td>$i18n.getString('all')</td>  
+					<td>$i18n.getString('no_program')</td>  
 					<td>[$i18n.getString('none')]</td>  
 					<td>[$i18n.getString('none')]</td> 					
 					<td style="text-align:center">
