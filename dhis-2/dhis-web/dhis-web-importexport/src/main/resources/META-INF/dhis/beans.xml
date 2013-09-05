@@ -219,4 +219,8 @@
     <property name="category" value="METADATA_IMPORT" />
   </bean>
 
+  <bean id="org.hisp.dhis.importexport.action.event.GetImportEventSummariesAction"
+    class="org.hisp.dhis.importexport.action.event.GetImportEventSummariesAction" scope="prototype">
+  </bean>
+
 </beans>

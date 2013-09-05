@@ -61,10 +61,15 @@
       <param name="requiredAuthorities">F_IMPORT_DATA</param>
     </action>
 
-    <action name="importEventDataValue" class="org.hisp.dhis.importexport.action.event.ImportEventAction">
+    <action name="importEvents" class="org.hisp.dhis.importexport.action.event.ImportEventAction">
       <result name="success" type="redirect">displayEventImportForm.action</result>
       <interceptor-ref name="fileUploadStack" />
       <param name="requiredAuthorities">F_IMPORT_DATA</param>
+    </action>
+
+    <action name="getImportEventSummaries" class="org.hisp.dhis.importexport.action.event.GetImportEventSummariesAction">
+      <result name="success" type="velocity">/dhis-web-importexport/importEvents.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <!-- Event Export -->
@@ -74,11 +79,6 @@
       <param name="page">/dhis-web-importexport/eventExportForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/eventData.js</param>
-      <param name="requiredAuthorities">F_EXPORT_DATA</param>
-    </action>
-
-    <action name="importDataValue" class="org.hisp.dhis.importexport.action.event.ExportEventAction">
-      <result name="success" type="redirect">displayEventExportForm.action</result>
       <param name="requiredAuthorities">F_EXPORT_DATA</param>
     </action>
 
