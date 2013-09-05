@@ -125,12 +125,12 @@ public abstract class AbstractEventService implements EventService
         }
         else
         {
-            return new ImportSummary( ImportStatus.ERROR, "No Event programId or programStageId was provided." );
+            return new ImportSummary( ImportStatus.ERROR, "No Event.program or Event.programStage was provided." );
         }
 
         if ( program == null )
         {
-            return new ImportSummary( ImportStatus.ERROR, "No valid Event programId or programStageId was provided." );
+            return new ImportSummary( ImportStatus.ERROR, "No valid Event.program or Event.programStage was provided." );
         }
         else
         {
@@ -142,11 +142,16 @@ public abstract class AbstractEventService implements EventService
             }
         }
 
+        if ( program.isRegistration() && event.getPerson() == null )
+        {
+            return new ImportSummary( ImportStatus.ERROR, "No Event.person was provided for registration based program." );
+        }
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
 
         if ( organisationUnit == null )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Event organisationUnitId does not point to a valid organisation unit." );
+            return new ImportSummary( ImportStatus.ERROR, "Event.orgUnit does not point to a valid organisation unit." );
         }
         else
         {
@@ -205,7 +210,7 @@ public abstract class AbstractEventService implements EventService
 
         if ( eventDate == null )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Event eventDate is not in a valid format." );
+            return new ImportSummary( ImportStatus.ERROR, "Event.eventDate is not in a valid format." );
         }
 
         ImportSummary importSummary = new ImportSummary();
