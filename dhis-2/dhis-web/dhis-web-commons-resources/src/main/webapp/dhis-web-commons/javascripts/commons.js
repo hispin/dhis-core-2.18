@@ -1830,20 +1830,19 @@ function pingNotifications( category, tableId, completedCallback )
 	{
 		var html = '', 
 			isComplete = false;
-		
+
 		if ( isDefined( notifications ) && notifications.length )
 		{
 			$.each( notifications, function( i, notification )
 			{
 				var first = i == 0,
-					loaderHtml = '';			
-				
-				if ( notification.completed == "true" )
-				{
-					isComplete = true;
-				}
-				
-				if ( first )
+					loaderHtml = '';
+
+                if( notification.completed === "true" || notification.completed === true ) {
+                    isComplete = true;
+                }
+
+                if ( first )
 				{
 					$( '#' + tableId ).prop( 'lastUid', notification.uid );
 					loaderHtml = _loading_bar_html;
@@ -1853,7 +1852,7 @@ function pingNotifications( category, tableId, completedCallback )
 				var time = ( undefined != notification.time ) ? notification.time.replace( 'T', ' ' ).substring( 0, 19 ) : '';
 				
 				html += '<tr><td>' + time + '</td><td>' + notification.message + ' &nbsp;';
-				html += notification.completed == 'true' ?  '<img src="../images/completed.png">' : loaderHtml;
+				html += isComplete ?  '<img src="../images/completed.png">' : loaderHtml;
 				html += '</td></tr>';
 			} );
 		
