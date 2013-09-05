@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.coldchain.inventory.InventoryType_AttributeService;
+import org.hisp.dhis.coldchain.equipment.EquipmentType_AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -45,11 +45,11 @@ public class ShowUpdateOrganisationUnitFormAction     implements Action
         this.attributeService = attributeService;
     }
     
-    private InventoryType_AttributeService inventoryType_AttributeService;
+    private EquipmentType_AttributeService equipmentType_AttributeService;
     
-    public void setInventoryType_AttributeService( InventoryType_AttributeService inventoryType_AttributeService )
+    public void setEquipmentType_AttributeService( EquipmentType_AttributeService equipmentType_AttributeService )
     {
-        this.inventoryType_AttributeService = inventoryType_AttributeService;
+        this.equipmentType_AttributeService = equipmentType_AttributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -142,7 +142,7 @@ public class ShowUpdateOrganisationUnitFormAction     implements Action
             attributedsByComma += "," + attribute.getId();
         }
         
-        selectedOrgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getId(), attributedsByComma ) );
+        selectedOrgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getId(), attributedsByComma ) );
         
         // ---------------------------------------------------------------------
         // Allow update only if org unit does not have polygon coordinates

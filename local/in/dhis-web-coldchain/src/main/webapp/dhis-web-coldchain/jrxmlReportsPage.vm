@@ -159,7 +159,7 @@ function formValidations()
 					    		<i>Select category:</i><br/>
 					    		<label><input type="radio" id="facilityType1" name="facilityType" value="Facility" checked onclick="selectFacilities()"/>Facility Infrastructure</label><br/>
 								<label><input type="radio" id="facilityType2" name="facilityType" value="Storage" onclick="selectFacilities()"/>Storage Requirements</label><br/>
-								<label><input type="radio" id="facilityType3" name="facilityType" value="Cold Chain" onclick="selectFacilities()"/>Cold Chain Equipment</label><br/>
+								<label><input type="radio" id="facilityType3" name="facilityType" value="Cold Chain" onclick="selectFacilities()"/>Cold Chain EquipmentAttributeValue</label><br/>
 								<label><input type="radio" id="facilityType4" name="facilityType" value="Energy" onclick="selectFacilities()"/>Energy</label><br/>
 				    		</div>
 	    				</td>

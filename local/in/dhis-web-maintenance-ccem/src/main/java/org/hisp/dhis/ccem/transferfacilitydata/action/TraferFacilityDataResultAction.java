@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.coldchain.inventory.Equipment;
+import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -152,9 +152,9 @@ public class TraferFacilityDataResultAction implements Action
         resultStatus = " ";
         
         // OrganisationUnit Information
-        List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( Equipment.HEALTHFACILITY ) ); 
+        List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) ); 
         OrganisationUnitGroup ouGroup = ouGroups.get( 0 );
-		//organisationUnitGroupService.getOrganisationUnitGroupByName( Equipment.HEALTHFACILITY );
+		//organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY );
         
         if ( ouGroup != null )
         {

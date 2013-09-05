@@ -3,7 +3,7 @@
 
 <div id='selectDiv'>
     
-    <h3>$i18n.getString( "equipment_management" ) #openHelp( "equipment" )</h3>
+    <h3>$i18n.getString( "equipment_management" ) #openHelp( "equipmentAttributeValue" )</h3>
     
     <table>     
         <tr>
@@ -13,13 +13,13 @@
 			<td>&nbsp;</td>	
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "inventorytype" )</label></td>
+			<td><label>$i18n.getString( "equipmenttype" )</label></td>
 			<td style="padding-right:5px">
-				<!--<select id="inventoryType" style="min-width:16em" onchange="inventoryTypeChange( this.value )">-->
-				<select id="inventoryType" style="min-width:21.5em" onchange="inventoryTypeChange()">
-					<!--<option value="0">$i18n.getString( "select_inventorytype" )</option>-->
-					#foreach( $inventoryType in $inventoryTypes )
-						<option value="$inventoryType.id">$inventoryType.name</option>
+				<!--<select id="equipmentType" style="min-width:16em" onchange="equipmentTypeChange( this.value )">-->
+				<select id="equipmentType" style="min-width:21.5em" onchange="equipmentTypeChange()">
+					<!--<option value="0">$i18n.getString( "select_equipmenttype" )</option>-->
+					#foreach( $equipmentType in $equipmentTypes )
+						<option value="$equipmentType.id">$equipmentType.name</option>
 					#end
 				</select>
 			</td>
@@ -54,19 +54,19 @@
 </div>
 
 <div id='listEquipmentDiv'></div> <!-- List All/Filtered Equipments -->
-<div id='editEquipmentDiv'></div> <!-- Add / Edit Equipment Form -->
-<div id='editEquipmentStatusDiv'></div> <!-- Add / Edit Equipment Status -->
-<div id='editEquipmentDataDiv'></div> <!-- Add / Edit Equipment Data -->
-<div id='equipmentStatusHistoryDiv'></div> <!-- List Equipment Status History -->
-<div id='resultSearchDiv' style='font-size:13px'></div> <!-- List searching Equipment -->
-<div id='equipmentDataEntryDiv'></div> <!-- DataEntry screen of Equipment -->
+<div id='editEquipmentDiv'></div> <!-- Add / Edit EquipmentAttributeValue Form -->
+<div id='editEquipmentStatusDiv'></div> <!-- Add / Edit EquipmentAttributeValue Status -->
+<div id='editEquipmentDataDiv'></div> <!-- Add / Edit EquipmentAttributeValue Data -->
+<div id='equipmentStatusHistoryDiv'></div> <!-- List EquipmentAttributeValue Status History -->
+<div id='resultSearchDiv' style='font-size:13px'></div> <!-- List searching EquipmentAttributeValue -->
+<div id='equipmentDataEntryDiv'></div> <!-- DataEntry screen of EquipmentAttributeValue -->
 
 #parse( "/dhis-web-commons/loader/loader.vm" )
 
 <script>
 	var i18n_equipment_status_history = '$encoder.jsEscape( $i18n.getString( "equipment_status_history" ) , "'")';
 	var i18n_equipment_details = '$encoder.jsEscape( $i18n.getString( "equipment_details" ) , "'")';
-    var i18n_select_inventorytype = '$encoder.jsEscape( $i18n.getString( "select_inventorytype" ) , "'")';
+    var i18n_select_equipmenttype = '$encoder.jsEscape( $i18n.getString( "select_equipmenttype" ) , "'")';
     var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
     var i18n_can_not_register_patient_for_orgunit = '$encoder.jsEscape( $i18n.getString( "can_not_register_patient_for_orgunit" ), "'")';   
     var i18n_please_select_village = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_village" ), "'")' + ']';
@@ -171,7 +171,7 @@
 <script type="text/javascript">
 jQuery( document ).ready( function()
 {
-	inventoryTypeChange();
+	equipmentTypeChange();
 	loadAllEquipments();
 });
 </script>

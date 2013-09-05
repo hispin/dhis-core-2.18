@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.coldchain.inventory.Equipment;
-import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
-import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
-import org.hisp.dhis.coldchain.inventory.EquipmentService;
-import org.hisp.dhis.coldchain.inventory.InventoryType;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
-import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
-import org.hisp.dhis.coldchain.inventory.InventoryType_AttributeService;
+import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
+import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValueService;
+import org.hisp.dhis.coldchain.equipment.Equipment;
+import org.hisp.dhis.coldchain.equipment.EquipmentService;
+import org.hisp.dhis.coldchain.equipment.EquipmentType;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeService;
+import org.hisp.dhis.coldchain.equipment.EquipmentType_Attribute;
+import org.hisp.dhis.coldchain.equipment.EquipmentType_AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -38,44 +38,44 @@ public class LoadEquipmentIcePacksDataAction  implements Action
         this.organisationUnitService = organisationUnitService;
     }
     
-    private InventoryTypeService inventoryTypeService;
+    private EquipmentTypeService equipmentTypeService;
     
-    public void setInventoryTypeService( InventoryTypeService inventoryTypeService )
+    public void setEquipmentTypeService( EquipmentTypeService equipmentTypeService )
     {
-        this.inventoryTypeService = inventoryTypeService;
-    }
-    
-    private EquipmentInstanceService equipmentInstanceService;
-
-    public void setEquipmentInstanceService( EquipmentInstanceService equipmentInstanceService )
-    {
-        this.equipmentInstanceService = equipmentInstanceService;
+        this.equipmentTypeService = equipmentTypeService;
     }
     
     private EquipmentService equipmentService;
-    
+
     public void setEquipmentService( EquipmentService equipmentService )
     {
         this.equipmentService = equipmentService;
     }
+    
+    private EquipmentAttributeValueService equipmentAttributeValueService;
+    
+    public void setEquipmentAttributeValueService( EquipmentAttributeValueService equipmentAttributeValueService )
+    {
+        this.equipmentAttributeValueService = equipmentAttributeValueService;
+    }
 
     
-    private InventoryType_AttributeService inventoryType_AttributeService;
+    private EquipmentType_AttributeService equipmentType_AttributeService;
     
-    public void setInventoryType_AttributeService( InventoryType_AttributeService inventoryType_AttributeService )
+    public void setEquipmentType_AttributeService( EquipmentType_AttributeService equipmentType_AttributeService )
     {
-        this.inventoryType_AttributeService = inventoryType_AttributeService;
+        this.equipmentType_AttributeService = equipmentType_AttributeService;
     }
     
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private int inventoryTypeId;
+    private int equipmentTypeId;
     
-    public void setInventoryTypeId( int inventoryTypeId )
+    public void setEquipmentTypeId( int equipmentTypeId )
     {
-        this.inventoryTypeId = inventoryTypeId;
+        this.equipmentTypeId = equipmentTypeId;
     }
     
     private int orgUnitId;
@@ -94,32 +94,32 @@ public class LoadEquipmentIcePacksDataAction  implements Action
     }
     
     
-    private InventoryType inventoryType;
+    private EquipmentType equipmentType;
 
-    public InventoryType getInventoryType()
+    public EquipmentType getEquipmentType()
     {
-        return inventoryType;
+        return equipmentType;
     }   
     
-    private List<EquipmentInstance> equipmentInstanceList;
+    private List<Equipment> equipmentList;
 
-    public List<EquipmentInstance> getEquipmentInstanceList()
+    public List<Equipment> getEquipmentList()
     {
-        return equipmentInstanceList;
+        return equipmentList;
     }
 
-    private EquipmentInstance equipmentInstance;
+    private Equipment equipment;
 
-    public EquipmentInstance getEquipmentInstance()
+    public Equipment getEquipment()
     {
-        return equipmentInstance;
+        return equipment;
     }
 
-    private List<InventoryTypeAttribute> inventoryTypeAttributes;
+    private List<EquipmentTypeAttribute> equipmentTypeAttributes;
     
-    public List<InventoryTypeAttribute> getInventoryTypeAttributes()
+    public List<EquipmentTypeAttribute> getEquipmentTypeAttributes()
     {
-        return inventoryTypeAttributes;
+        return equipmentTypeAttributes;
     }
 
     private Map<Integer, String> equipmentValueMap;
@@ -129,11 +129,11 @@ public class LoadEquipmentIcePacksDataAction  implements Action
         return equipmentValueMap;
     }
 
-    public List<InventoryType_Attribute> inventoryTypeAttributeList;
+    public List<EquipmentType_Attribute> equipmentTypeAttributeList;
     
-    public List<InventoryType_Attribute> getInventoryTypeAttributeList()
+    public List<EquipmentType_Attribute> getEquipmentTypeAttributeList()
     {
-        return inventoryTypeAttributeList;
+        return equipmentTypeAttributeList;
     }
 
 
@@ -145,67 +145,67 @@ public class LoadEquipmentIcePacksDataAction  implements Action
         
         organisationUnit = organisationUnitService.getOrganisationUnit(  orgUnitId );
         
-        inventoryType = inventoryTypeService.getInventoryType(  inventoryTypeId  );
+        equipmentType = equipmentTypeService.getEquipmentType(  equipmentTypeId  );
         
-        equipmentInstanceList = new ArrayList<EquipmentInstance>( equipmentInstanceService.getEquipmentInstances( organisationUnit, inventoryType ) );
+        equipmentList = new ArrayList<Equipment>( equipmentService.getEquipments( organisationUnit, equipmentType ) );
         
         /*
         
-        if( equipmentInstanceList == null || equipmentInstanceList.size() == 0 )
+        if( equipmentList == null || equipmentList.size() == 0 )
         {
             
         }
         else
         {
-            equipmentInstance = equipmentInstanceList.get( 0 );
+            equipment = equipmentList.get( 0 );
             
         }
         
-        for( EquipmentInstance equipmentInstance : equipmentInstanceList )
+        for( Equipment equipment : equipmentList )
         {
             
         }
         */
         
-        inventoryTypeAttributeList = new ArrayList<InventoryType_Attribute>();
+        equipmentTypeAttributeList = new ArrayList<EquipmentType_Attribute>();
         
-        inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>();
+        equipmentTypeAttributes = new ArrayList<EquipmentTypeAttribute>();
         
-        if( equipmentInstanceList != null && equipmentInstanceList.size() > 0 )
+        if( equipmentList != null && equipmentList.size() > 0 )
         {
-            equipmentInstance = equipmentInstanceList.get( 0 );
+            equipment = equipmentList.get( 0 );
             
-            inventoryTypeAttributeList = new ArrayList<InventoryType_Attribute>( inventoryType_AttributeService.getAllInventoryTypeAttributesByInventoryType( equipmentInstance.getInventoryType() ) );
+            equipmentTypeAttributeList = new ArrayList<EquipmentType_Attribute>( equipmentType_AttributeService.getAllEquipmentTypeAttributesByEquipmentType( equipment.getEquipmentType() ) );
             
-            for( InventoryType_Attribute inventoryType_Attribute : equipmentInstance.getInventoryType().getInventoryType_Attributes() )
+            for( EquipmentType_Attribute equipmentType_Attribute : equipment.getEquipmentType().getEquipmentType_Attributes() )
             {
-                inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+                equipmentTypeAttributes.add( equipmentType_Attribute.getEquipmentTypeAttribute() );
             }
         
         }
         
         else
         {
-            inventoryTypeAttributeList = new ArrayList<InventoryType_Attribute>( inventoryType_AttributeService.getAllInventoryTypeAttributesByInventoryType( inventoryType ) );
+            equipmentTypeAttributeList = new ArrayList<EquipmentType_Attribute>( equipmentType_AttributeService.getAllEquipmentTypeAttributesByEquipmentType( equipmentType ) );
         
-            for( InventoryType_Attribute inventoryType_Attribute : inventoryTypeAttributeList )
+            for( EquipmentType_Attribute equipmentType_Attribute : equipmentTypeAttributeList )
             {
-                inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+                equipmentTypeAttributes.add( equipmentType_Attribute.getEquipmentTypeAttribute() );
             }
         
         }
         
-        //inventoryTypeAttributeList = new ArrayList<InventoryType_Attribute>( inventoryType_AttributeService.getAllInventoryTypeAttributesByInventoryType( equipmentInstance.getInventoryType() ) );
+        //equipmentTypeAttributeList = new ArrayList<EquipmentType_Attribute>( equipmentType_AttributeService.getAllEquipmentTypeAttributesByEquipmentType( equipment.getEquipmentType() ) );
         
         equipmentValueMap = new HashMap<Integer, String>();
         
-        for( InventoryType_Attribute inventoryTypeAttribute1 : inventoryTypeAttributeList )
+        for( EquipmentType_Attribute equipmentTypeAttribute1 : equipmentTypeAttributeList )
         {
-            Equipment equipmentDetails = equipmentService.getEquipment( equipmentInstance, inventoryTypeAttribute1.getInventoryTypeAttribute() );
+            EquipmentAttributeValue equipmentAttributeValueDetails = equipmentAttributeValueService.getEquipmentAttributeValue( equipment, equipmentTypeAttribute1.getEquipmentTypeAttribute() );
            
-            if( equipmentDetails != null && equipmentDetails.getValue() != null )
+            if( equipmentAttributeValueDetails != null && equipmentAttributeValueDetails.getValue() != null )
             {
-                equipmentValueMap.put( inventoryTypeAttribute1.getInventoryTypeAttribute().getId(), equipmentDetails.getValue() );
+                equipmentValueMap.put( equipmentTypeAttribute1.getEquipmentTypeAttribute().getId(), equipmentAttributeValueDetails.getValue() );
             }
         }
         

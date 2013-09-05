@@ -44,8 +44,8 @@
 <form id="dataEntryForm" name="dataEntryForm" method="post" >	
 <div>
 	<input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnit.id">
-	<input type="hidden" id="inventoryTypeId" name="inventoryTypeId" value="$inventoryType.name">
-	<input type="hidden" id="equipmentInstanceId" name="equipmentInstanceId" value="$equipmentInstanceId">
+	<input type="hidden" id="equipmentTypeId" name="equipmentTypeId" value="$equipmentType.name">
+	<input type="hidden" id="equipmentId" name="equipmentId" value="$equipmentId">
 </div>	
 <div class="inputCriteria" style="width:600px;height:150px;">
 <table>
@@ -54,22 +54,22 @@
 		<td><input type="text" id="selectedOrganisationUnit" readonly="readonly" value="$!organisationUnit.name" style="width:367px"></td>
 	</tr>
 	<tr>
-		<td><label for="selectedInventorytype">$i18n.getString( "inventorytype" )</label></td>
-		<td><input type="text" id="selectedInventorytype" readonly="readonly" value="$!inventoryType.name" style="width:367px"></td>
+		<td><label for="selectedEquipmenttype">$i18n.getString( "equipmenttype" )</label></td>
+		<td><input type="text" id="selectedEquipmenttype" readonly="readonly" value="$!equipmentType.name" style="width:367px"></td>
 	</tr>
 	<!--
 	<tr>
-		<td><label for="inventoryTypeAttribute">$i18n.getString( "inventorytype_attribute" )</label></td>
-		<td>$inventoryTypeAttributeName</td>
+		<td><label for="equipmentTypeAttribute">$i18n.getString( "equipmenttype_attribute" )</label></td>
+		<td>$equipmentTypeAttributeName</td>
 	</tr>
 	<tr>
-		<td><label for="selectedInventorytype">$i18n.getString( "equipment_details" )</label></td>
-		<td>$inventoryTypeAttributeValue</td>
+		<td><label for="selectedEquipmenttype">$i18n.getString( "equipment_details" )</label></td>
+		<td>$equipmentTypeAttributeValue</td>
 	</tr>
 	-->
 	<tr>
-		<td><label for="inventoryTypeAttribute">$i18n.getString( "catalog" )</label></td>
-		<td><input type="text" id="catalogName" readonly="readonly" value="$catalogName" style="width:367px"></td>
+		<td><label for="equipmentTypeAttribute">$i18n.getString( "model" )</label></td>
+		<td><input type="text" id="modelName" readonly="readonly" value="$modelName" style="width:367px"></td>
 	</tr>				
 	<tr>
 		<td><label for="selectedDataSetId">$i18n.getString( "dataset" )</label></td>

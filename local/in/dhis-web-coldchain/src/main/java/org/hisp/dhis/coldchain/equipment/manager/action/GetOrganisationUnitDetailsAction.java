@@ -9,13 +9,13 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.coldchain.catalog.Catalog;
-import org.hisp.dhis.coldchain.inventory.Equipment;
-import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
-import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
-import org.hisp.dhis.coldchain.inventory.InventoryType;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
-import org.hisp.dhis.coldchain.inventory.InventoryType_AttributeService;
+import org.hisp.dhis.coldchain.model.Model;
+import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
+import org.hisp.dhis.coldchain.equipment.Equipment;
+import org.hisp.dhis.coldchain.equipment.EquipmentService;
+import org.hisp.dhis.coldchain.equipment.EquipmentType;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeService;
+import org.hisp.dhis.coldchain.equipment.EquipmentType_AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -32,7 +32,7 @@ import com.opensymphony.xwork2.Action;
  * @version GetOrganisationUnitDetailsAction.javaSep 26, 2012 1:30:34 PM	
  */
 
-public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<EquipmentInstance>
+public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equipment>
 {
     
     //private final String HEALTHFACILITY = "Health Facality";
@@ -62,25 +62,25 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
         this.attributeService = attributeService;
     }
     
-    private InventoryType_AttributeService inventoryType_AttributeService;
+    private EquipmentType_AttributeService equipmentType_AttributeService;
     
-    public void setInventoryType_AttributeService( InventoryType_AttributeService inventoryType_AttributeService )
+    public void setEquipmentType_AttributeService( EquipmentType_AttributeService equipmentType_AttributeService )
     {
-        this.inventoryType_AttributeService = inventoryType_AttributeService;
+        this.equipmentType_AttributeService = equipmentType_AttributeService;
     }
     
-    private InventoryTypeService inventoryTypeService;
+    private EquipmentTypeService equipmentTypeService;
 
-    public void setInventoryTypeService( InventoryTypeService inventoryTypeService )
+    public void setEquipmentTypeService( EquipmentTypeService equipmentTypeService )
     {
-        this.inventoryTypeService = inventoryTypeService;
+        this.equipmentTypeService = equipmentTypeService;
     }
     
-    private EquipmentInstanceService equipmentInstanceService;
+    private EquipmentService equipmentService;
 
-    public void setEquipmentInstanceService( EquipmentInstanceService equipmentInstanceService )
+    public void setEquipmentService( EquipmentService equipmentService )
     {
-        this.equipmentInstanceService = equipmentInstanceService;
+        this.equipmentService = equipmentService;
     }
    
     
@@ -155,11 +155,11 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
     String orgUnitIdsByComma;
     String attributedsByComma;
     
-    private List<InventoryType> inventoryTypes;
+    private List<EquipmentType> equipmentTypes;
 
-    public List<InventoryType> getInventoryTypes()
+    public List<EquipmentType> getEquipmentTypes()
     {
-        return inventoryTypes;
+        return equipmentTypes;
     }
     
     private Boolean listFilterOrgUnit;
@@ -289,12 +289,12 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
         
         organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
-        inventoryTypes = new ArrayList<InventoryType>( inventoryTypeService.getAllInventoryTypes() );
+        equipmentTypes = new ArrayList<EquipmentType>( equipmentTypeService.getAllEquipmentTypes() );
         
         
         orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() ) );
         
-        List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( Equipment.HEALTHFACILITY ) ); 
+        List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) ); 
         OrganisationUnitGroup ouGroup = ouGroups.get( 0 );				
        
         if ( ouGroup != null )
@@ -302,7 +302,7 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
             orgUnitList.retainAll( ouGroup.getMembers() );
         }
         
-        List<OrganisationUnitGroupSet> organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetByName( Catalog.NAME_FACILITY_TYPE ) );
+        List<OrganisationUnitGroupSet> organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetByName( Model.NAME_FACILITY_TYPE ) );
         organisationUnitGroupSet = organisationUnitGroupSets.get(0);
         orgUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSet.getOrganisationUnitGroups() );
         
@@ -351,14 +351,14 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
         }
         // value for selected orgUnit
         
-        selectedOrgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getId(), attributedsByComma ) );
+        selectedOrgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getId(), attributedsByComma ) );
         
         
         //search by attribute value
         if ( listFilterOrgUnit != null && listFilterOrgUnit )
         {
             
-            if( searchingOrgUnitFilterOptionId.equalsIgnoreCase(  Catalog.NAME_FACILITY_TYPE ) )
+            if( searchingOrgUnitFilterOptionId.equalsIgnoreCase(  Model.NAME_FACILITY_TYPE ) )
             {
                 OrganisationUnitGroup filterOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( searchingOrgUnitGroupId );
                 
@@ -388,13 +388,13 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
                 
             }
             
-            else if( searchingOrgUnitFilterOptionId.equalsIgnoreCase(  Equipment.PREFIX_ORGANISATIONUNIT_NAME ) )
+            else if( searchingOrgUnitFilterOptionId.equalsIgnoreCase(  EquipmentAttributeValue.PREFIX_ORGANISATIONUNIT_NAME ) )
             {
                 //orgUnitList = new ArrayList<OrganisationUnit>();
                 
-                //orgUnitList = new ArrayList<OrganisationUnit>( equipmentInstanceService.searchOrgUnitListByName( searchOrgText ));
+                //orgUnitList = new ArrayList<OrganisationUnit>( equipmentService.searchOrgUnitListByName( searchOrgText ));
                 
-                orgUnitList.retainAll( equipmentInstanceService.searchOrgUnitListByName( searchOrgText ) );
+                orgUnitList.retainAll( equipmentService.searchOrgUnitListByName( searchOrgText ) );
                 
                 filteredOrgUnitList.addAll( orgUnitList ); 
                 
@@ -472,18 +472,18 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
            orgunitHierarchyMap.put( orgUnit.getId(), getHierarchyOrgunit( orgUnit ) );
         }
         
-        orgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( orgUnitIdsByComma, attributedsByComma ) );
+        orgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( orgUnitIdsByComma, attributedsByComma ) );
         
         /*
         if( organisationUnit.getParent() != null )
         {
-            orgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( orgUnitIdsByComma, attributedsByComma ) );
-            parentOrgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getParent().getId(), attributedsByComma ) );
+            orgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( orgUnitIdsByComma, attributedsByComma ) );
+            parentOrgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getParent().getId(), attributedsByComma ) );
         }
         else
         {
-            orgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( orgUnitIdsByComma, attributedsByComma ) );
-            parentOrgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getId(), attributedsByComma ) );
+            orgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( orgUnitIdsByComma, attributedsByComma ) );
+            parentOrgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( ""+organisationUnit.getId(), attributedsByComma ) );
         }
         */
         
@@ -503,18 +503,18 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
             tempOrgUnitIdsByComma += "," + orgUnit.getId();
         }
         
-        orgUnitAttribDataValueMap = new HashMap<String, String>( inventoryType_AttributeService.getOrgUnitAttributeDataValue( tempOrgUnitIdsByComma, attributedsByComma ) );
+        orgUnitAttribDataValueMap = new HashMap<String, String>( equipmentType_AttributeService.getOrgUnitAttributeDataValue( tempOrgUnitIdsByComma, attributedsByComma ) );
     }
     
     private void listOrganisationUnitByFilter( String orgUnitIdsByComma, Attribute attribute, String searchAttributeText )
     {
         orgUnitList = new ArrayList<OrganisationUnit>();
         
-        orgUnitList = new ArrayList<OrganisationUnit>( inventoryType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
+        orgUnitList = new ArrayList<OrganisationUnit>( equipmentType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
         
-        filteredOrgUnitList = new ArrayList<OrganisationUnit>( inventoryType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
+        filteredOrgUnitList = new ArrayList<OrganisationUnit>( equipmentType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
         
-        //List<OrganisationUnit> tempOrgUnitList = new ArrayList<OrganisationUnit>( inventoryType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
+        //List<OrganisationUnit> tempOrgUnitList = new ArrayList<OrganisationUnit>( equipmentType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
         /*
         System.out.println( "--- Action " + orgUnitList.size() );
        
@@ -538,18 +538,18 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
     {
         orgUnitList = new ArrayList<OrganisationUnit>();
         
-        total = equipmentInstanceService.countOrgUnitByAttributeValue( orgunitIds, attribute, searchAttributeText );
+        total = equipmentService.countOrgUnitByAttributeValue( orgunitIds, attribute, searchAttributeText );
         
         this.paging = createPaging( total );
         
-        orgUnitList = new ArrayList<OrganisationUnit>( equipmentInstanceService.searchOrgUnitByAttributeValue( orgunitIds, attribute, searchAttributeText, paging.getStartPos(), paging.getPageSize() ) );
+        orgUnitList = new ArrayList<OrganisationUnit>( equipmentService.searchOrgUnitByAttributeValue( orgunitIds, attribute, searchAttributeText, paging.getStartPos(), paging.getPageSize() ) );
         
         /*
         orgUnitList = new ArrayList<OrganisationUnit>();
         
-        orgUnitList = new ArrayList<OrganisationUnit>( inventoryType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
+        orgUnitList = new ArrayList<OrganisationUnit>( equipmentType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
         
-        filteredOrgUnitList = new ArrayList<OrganisationUnit>( inventoryType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
+        filteredOrgUnitList = new ArrayList<OrganisationUnit>( equipmentType_AttributeService.searchOrgUnitByAttributeValue( orgUnitIdsByComma, attribute, searchAttributeText ) );
         */
     
     }

@@ -31,15 +31,15 @@
 
 <form id="equipmentIcePacksForm" name="equipmentIcePacksForm" method="post" >
 	<input type="hidden" id="ouId" name="ouId" value="$organisationUnit.id" />
-	<input type="hidden" id="inventoryTypeIcePacksId" name="inventoryTypeIcePacksId" value="$inventoryType.id" />	
+	<input type="hidden" id="equipmentTypeIcePacksId" name="equipmentTypeIcePacksId" value="$equipmentType.id" />	
 	<table width="100%">
 		<tr bgcolor="#285C91">
-			<td colspan="2"><font color="#FFFFFF"><strong>$inventoryType.name Details</strong></font></td>
+			<td colspan="2"><font color="#FFFFFF"><strong>$equipmentType.name Details</strong></font></td>
 		</tr>
 		<tr>
 			<td width="75%">Clinic<em title="$i18n.getString( 'required' )" class="required">*</em></td>
 			<td width="25%">
-				<select  id="healthFacility" name="healthFacility" class="{validate:{required:true}}" onchange="getInventoryIcePacksData()">
+				<select  id="healthFacility" name="healthFacility" class="{validate:{required:true}}" onchange="getEquipmentTypeIcePacksData()">
 					<option value="-1">[$i18n.getString( "please_select" )]</option>
 					#foreach ( $orgUnit in $orgUnitList )
 						<option value="$orgUnit.id" >$orgUnit.name</option>

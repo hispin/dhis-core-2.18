@@ -27,8 +27,8 @@
 <form id="dataEntryForm" name="dataEntryForm" method="post" >	
 <div>
 	<input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnit.id">
-	<input type="hidden" id="inventoryTypeId" name="inventoryTypeId" value="$inventoryType.name">
-	<input type="hidden" id="equipmentInstanceId" name="equipmentInstanceId" value="$equipmentInstanceId">
+	<input type="hidden" id="equipmentTypeId" name="equipmentTypeId" value="$equipmentType.name">
+	<input type="hidden" id="equipmentId" name="equipmentId" value="$equipmentId">
 </div>
 <table>
 	<tr>

@@ -210,8 +210,8 @@ function loadDataEntryForm()
 	//var periodTypeId = dataSetPeriod[1];
 	
 	var organisationUnitId = $( '#organisationUnitId' ).val();
-	var inventoryTypeId = $( '#inventoryTypeId' ).val();
-	var equipmentInstanceId = $( '#equipmentInstanceId' ).val();
+	var equipmentTypeId = $( '#equipmentTypeId' ).val();
+	var equipmentId = $( '#equipmentId' ).val();
 	
 	var selectedPeriodId = $( '#selectedPeriodId' ).val();
 	
@@ -225,7 +225,7 @@ function loadDataEntryForm()
 	else
 	{
 		//setInnerHTML('dataEntryFormDiv', '');
-		//alert( dataSetId +"---"+ selectedPeriodId +"----"+ equipmentInstanceId );
+		//alert( dataSetId +"---"+ selectedPeriodId +"----"+ equipmentId );
 		
 		//hideById('dataEntryFormDiv');
 	    jQuery('#loaderDiv').show();
@@ -236,7 +236,7 @@ function loadDataEntryForm()
 			{
 				dataSetId:dataSetId,
 				selectedPeriodId:selectedPeriodId,
-				equipmentInstanceId:equipmentInstanceId
+				equipmentId:equipmentId
 			}, function()
 			{
 				showById('dataEntryFormDiv');

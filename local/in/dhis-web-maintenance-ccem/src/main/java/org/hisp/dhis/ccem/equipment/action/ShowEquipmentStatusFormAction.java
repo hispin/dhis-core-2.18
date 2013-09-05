@@ -12,16 +12,16 @@ public class ShowEquipmentStatusFormAction implements Action
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    private Integer equipmentInstanceId;
+    private Integer equipmentId;
     
-    public void setEquipmentInstanceId( Integer equipmentInstanceId )
+    public void setEquipmentId( Integer equipmentId )
     {
-        this.equipmentInstanceId = equipmentInstanceId;
+        this.equipmentId = equipmentId;
     }
 
-    public Integer getEquipmentInstanceId()
+    public Integer getEquipmentId()
     {
-        return equipmentInstanceId;
+        return equipmentId;
     }
 
     // -------------------------------------------------------------------------

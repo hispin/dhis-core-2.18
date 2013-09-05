@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOption" table="equipmenttypeattributeoption">
+    <id name="id" column="equipmenttypeattributeoptionid">
+      <generator class="native"/>
+    </id>
+
+    <property name="name" not-null="true" length="160"/>
+	<!--<property name="name" not-null="true" unique="true" length="160"/>-->
+    
+    <many-to-one name="equipmentTypeAttribute" column="equipmenttypeattributeid" class="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute"
+      foreign-key="fk_equipmenttypetypeattributeoption_equipmenttypeattributeid" />
+
+  </class>
+</hibernate-mapping>

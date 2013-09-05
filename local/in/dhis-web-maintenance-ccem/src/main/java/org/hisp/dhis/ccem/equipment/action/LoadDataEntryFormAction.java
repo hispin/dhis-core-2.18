@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.coldchain.inventory.EquipmentDataValue;
-import org.hisp.dhis.coldchain.inventory.EquipmentDataValueService;
-import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
-import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
+import org.hisp.dhis.coldchain.equipment.EquipmentDataValue;
+import org.hisp.dhis.coldchain.equipment.EquipmentDataValueService;
+import org.hisp.dhis.coldchain.equipment.Equipment;
+import org.hisp.dhis.coldchain.equipment.EquipmentService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -25,11 +25,11 @@ public class LoadDataEntryFormAction implements Action
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private EquipmentInstanceService equipmentInstanceService;
+    private EquipmentService equipmentService;
     
-    public void setEquipmentInstanceService( EquipmentInstanceService equipmentInstanceService )
+    public void setEquipmentService( EquipmentService equipmentService )
     {
-        this.equipmentInstanceService = equipmentInstanceService;
+        this.equipmentService = equipmentService;
     }
     
     private DataSetService dataSetService;
@@ -68,11 +68,11 @@ public class LoadDataEntryFormAction implements Action
         this.dataSetId = dataSetId;
     }
 
-    private int equipmentInstanceId;
+    private int equipmentId;
     
-    public void setEquipmentInstanceId( int equipmentInstanceId )
+    public void setEquipmentId( int equipmentId )
     {
-        this.equipmentInstanceId = equipmentInstanceId;
+        this.equipmentId = equipmentId;
     }
     
     private String selectedPeriodId;
@@ -106,10 +106,10 @@ public class LoadDataEntryFormAction implements Action
     {
         //equipmentDataValueMap = null;
         
-        EquipmentInstance equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceId );
+        Equipment equipment = equipmentService.getEquipment( equipmentId );
         
-        //OrganisationUnit organisationUnit = equipmentInstance.getOrganisationUnit();
-        //InventoryType inventoryType =  equipmentInstance.getInventoryType();
+        //OrganisationUnit organisationUnit = equipment.getOrganisationUnit();
+        //EquipmentType equipmentType =  equipment.getEquipmentType();
         
         Period period = PeriodType.createPeriodExternalId( selectedPeriodId );
         
@@ -121,9 +121,9 @@ public class LoadDataEntryFormAction implements Action
         
         Collections.sort( dataElements, dataElementComparator );
         
-        //Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
+        //Collections.sort( modelTypeAttributes, new ModelTypeAttributeComparator() );
         
-        List<EquipmentDataValue> equipmentDataValues = new ArrayList<EquipmentDataValue>( equipmentDataValueService.getEquipmentDataValues( equipmentInstance, period, dataElements ) );      
+        List<EquipmentDataValue> equipmentDataValues = new ArrayList<EquipmentDataValue>( equipmentDataValueService.getEquipmentDataValues( equipment, period, dataElements ) );      
         
         //System.out.println( " Size of equipmentDataValues List is ======  :" + equipmentDataValues.size() );
         
@@ -140,9 +140,9 @@ public class LoadDataEntryFormAction implements Action
         
         //System.out.println( " Size of equipmentDataValues Map is  List is ======  :" + equipmentDataValueMap.size() );
         /*
-        System.out.println( " equipmentInstance Id is ======  :" + equipmentInstance.getId() );
+        System.out.println( " equipment Id is ======  :" + equipment.getId() );
         System.out.println( " Name of organisationUnit is ====  :" + organisationUnit.getName());
-        System.out.println( " Name of inventoryType is ====  :" + inventoryType.getName());
+        System.out.println( " Name of equipmentType is ====  :" + equipmentType.getName());
         System.out.println( " Name of dataSet is ====  :" + dataSet.getName());
         System.out.println( " Name of period is ====  :" + selectedPeriodId );
         System.out.println( " Size of dataElements is ====  :" + dataElements.size() );

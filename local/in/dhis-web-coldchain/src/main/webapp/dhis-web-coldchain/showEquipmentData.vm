@@ -5,17 +5,17 @@
     <table>
         <tr>
             <td>$i18n.getString( "registering_unit" ) : </td>
-            <td>$equipmentInstance.organisationUnit.name</td>
+            <td>$equipment.organisationUnit.name</td>
         </tr>   
         <tr>
-            <td>$i18n.getString( "inventorytype" ) : </th>
-            <td>$equipmentInstance.inventoryType.name</th>
+            <td>$i18n.getString( "equipmenttype" ) : </th>
+            <td>$equipment.equipmentType.name</th>
         </tr>
 
-        <!-- InventoryType Attributes  -->
+        <!-- EquipmentType Attributes  -->
         <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-        <tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>
-        #foreach( $attribute in $inventoryTypeAttributes )
+        <tr><th colspan="2" class="heading-column">$i18n.getString( "equipmentType_attribute_details" )</th></tr>
+        #foreach( $attribute in $equipmentTypeAttributes )
             #set( $attributeValue = "" )
             #set( $attributeValue = $!equipmentValueMap.get( $attribute.id ) )
             <tr>

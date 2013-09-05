@@ -1,7 +1,7 @@
 package org.hisp.dhis.coldchain.equipment.action;
 
-import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
-import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
+import org.hisp.dhis.coldchain.equipment.Equipment;
+import org.hisp.dhis.coldchain.equipment.EquipmentService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -11,33 +11,33 @@ public class ShowEquipmentStatusFormAction implements Action
     // Dependency
     // -------------------------------------------------------------------------
     
-    private EquipmentInstanceService equipmentInstanceService;
+    private EquipmentService equipmentService;
 
-    public void setEquipmentInstanceService( EquipmentInstanceService equipmentInstanceService )
+    public void setEquipmentService( EquipmentService equipmentService )
     {
-        this.equipmentInstanceService = equipmentInstanceService;
+        this.equipmentService = equipmentService;
     }
     
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    private Integer equipmentInstanceId;
+    private Integer equipmentId;
     
-    public void setEquipmentInstanceId( Integer equipmentInstanceId )
+    public void setEquipmentId( Integer equipmentId )
     {
-        this.equipmentInstanceId = equipmentInstanceId;
+        this.equipmentId = equipmentId;
     }
 
-    public Integer getEquipmentInstanceId()
+    public Integer getEquipmentId()
     {
-        return equipmentInstanceId;
+        return equipmentId;
     }
     
-    private EquipmentInstance equipmentInstance;
+    private Equipment equipment;
     
-    public EquipmentInstance getEquipmentInstance()
+    public Equipment getEquipment()
     {
-        return equipmentInstance;
+        return equipment;
     }
 
     
@@ -46,13 +46,13 @@ public class ShowEquipmentStatusFormAction implements Action
     // -------------------------------------------------------------------------
     public String execute() throws Exception
     {
-        if ( equipmentInstanceId != null )
+        if ( equipmentId != null )
         {
-            equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceId );
+            equipment = equipmentService.getEquipment( equipmentId );
         }
         
-        //equipmentInstance.getOrganisationUnit().getName();
-        //equipmentInstance.getCatalog().getName();
+        //equipment.getOrganisationUnit().getName();
+        //equipment.getModel().getName();
         
         return SUCCESS;
     }

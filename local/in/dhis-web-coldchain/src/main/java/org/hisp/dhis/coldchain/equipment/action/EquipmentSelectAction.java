@@ -3,8 +3,8 @@ package org.hisp.dhis.coldchain.equipment.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.coldchain.inventory.InventoryType;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
+import org.hisp.dhis.coldchain.equipment.EquipmentType;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -24,11 +24,11 @@ public class EquipmentSelectAction implements Action
         this.selectionManager = selectionManager;
     }
 
-    private InventoryTypeService inventoryTypeService;
+    private EquipmentTypeService equipmentTypeService;
 
-    public void setInventoryTypeService( InventoryTypeService inventoryTypeService )
+    public void setEquipmentTypeService( EquipmentTypeService equipmentTypeService )
     {
-        this.inventoryTypeService = inventoryTypeService;
+        this.equipmentTypeService = equipmentTypeService;
     }
     
     private OrganisationUnitService organisationUnitService;
@@ -49,11 +49,11 @@ public class EquipmentSelectAction implements Action
         return organisationUnit;
     }
 
-    private List<InventoryType> inventoryTypes;
+    private List<EquipmentType> equipmentTypes;
 
-    public List<InventoryType> getInventoryTypes()
+    public List<EquipmentType> getEquipmentTypes()
     {
-        return inventoryTypes;
+        return equipmentTypes;
     }
     
     private Integer orgUnitId;
@@ -87,7 +87,7 @@ public class EquipmentSelectAction implements Action
             organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         }
         
-        inventoryTypes = new ArrayList<InventoryType>( inventoryTypeService.getAllInventoryTypes() );
+        equipmentTypes = new ArrayList<EquipmentType>( equipmentTypeService.getAllEquipmentTypes() );
         
         return SUCCESS;
     }
