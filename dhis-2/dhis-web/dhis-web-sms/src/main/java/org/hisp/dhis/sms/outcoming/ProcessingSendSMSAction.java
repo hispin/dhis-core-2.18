@@ -28,16 +28,16 @@ package org.hisp.dhis.sms.outcoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.sms.SmsMessageSender;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -69,19 +69,16 @@ public class ProcessingSendSMSAction
     private CurrentUserService currentUserService;
 
     @Autowired
-    private PatientService patientService;
-
-    @Autowired
     private UserGroupService userGroupService;
 
     @Autowired
     private OutboundSmsTransportService transportService;
 
-    private SmsMessageSender smsMessageSender;
+    private SmsSender smsSender;
 
-    public void setSmsMessageSender( SmsMessageSender smsMessageSender )
+    public void setSmsSender( SmsSender smsSender )
     {
-        this.smsMessageSender = smsMessageSender;
+        this.smsSender = smsSender;
     }
 
     // -------------------------------------------------------------------------
@@ -174,7 +171,9 @@ public class ProcessingSendSMSAction
 
         User currentUser = currentUserService.getCurrentUser();
 
-        Set<User> recipientsList = new HashSet<User>();
+        List<User> recipientsList = new ArrayList<User>();
+
+        // Set<User> recipientsList = new HashSet<User>();
 
         if ( sendTarget != null && sendTarget.equals( "phone" ) )
         {
@@ -196,7 +195,7 @@ public class ProcessingSendSMSAction
             }
             // message = messageSender.sendMessage( smsSubject, smsMessage,
             // currentUser, true, recipients, gatewayId );
-            message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
+            message = smsSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
         }
         else if ( sendTarget.equals( "userGroup" ) )
         {
@@ -216,9 +215,11 @@ public class ProcessingSendSMSAction
 
                 return ERROR;
             }
+            
             // message = messageSender.sendMessage( smsSubject, smsMessage,
             // currentUser, false, group.getMembers(), gatewayId );
-            message = smsMessageSender.sendMessage( smsSubject, text, currentUser, group.getMembers(), false );
+            message = smsSender.sendMessage( smsSubject, text, currentUser, new ArrayList<User>( group.getMembers() ),
+                false );
         }
         else if ( sendTarget.equals( "user" ) )
         {
@@ -240,7 +241,7 @@ public class ProcessingSendSMSAction
 
                 // message = messageSender.sendMessage( smsSubject, smsMessage,
                 // currentUser, false, users, gatewayId );
-                message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
+                message = smsSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
             }
         }
         else if ( sendTarget.equals( "unit" ) )
@@ -262,7 +263,7 @@ public class ProcessingSendSMSAction
                 return ERROR;
             }
 
-            message = smsMessageSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
+            message = smsSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
 
         }
 
