@@ -65,7 +65,7 @@ function Patient()
 		removeItem( this.patientId, this.fullName, confirm_delete_patient, 'removePatient.action' );
 	};
 	
-	this.add = function(params,isContinue)
+	this.add = function( programId, related, params,isContinue)
 	{
 		$.ajax({
 		  type: "POST",
@@ -75,11 +75,28 @@ function Patient()
 			if(json.response=='success')
 			{
 				var patientId = json.message.split('_')[0];
-				var programId = getFieldValue('programIdAddPatient');
 				var	dateOfIncident = jQuery('#patientForm [id=dateOfIncident]').val();
 				var enrollmentDate = jQuery('#patientForm [id=enrollmentDate]').val();
-						
-				if( getFieldValue('programIdAddPatient')!='' && enrollmentDate != '')
+					
+				var originalPatientId = getFieldValue('patientId');
+				var relatedPatientId = patientId;
+				if(getFieldValue('relationshipFromA')=='false')
+				{
+					originalPatientId = patientId;
+					relatedPatientId = getFieldValue('patientId');
+				}
+				var relatedPatientId = 
+				jQuery.postJSON( "saveProgramEnrollment.action",
+				{
+					originalPatientId: originalPatientId,
+					relationshipTypeId: getFieldValue('relationshipTypeId'),
+					relatedPatientId: relatedPatientId
+				}, 
+				function( json ) 
+				{
+				});
+					
+				if( programId !='' && enrollmentDate != '')
 				{
 					jQuery.postJSON( "saveProgramEnrollment.action",
 					{
@@ -199,24 +216,29 @@ function removePatient( patientId, fullName, i18n_confirm_delete_patient )
 // Add Patient
 // -----------------------------------------------------------------------------
 
-function addPatient( isContinue )
+function addPatient( programId, related, isContinue )
 {		
 	var patient = new Patient();
-	var params = 'programId=' + getFieldValue('programIdAddPatient') + '&' + getParamsForDiv('patientForm');
-	patient.add(params);
+	var params = 'programId=' + programId + '&' + getParamsForDiv('patientForm');
+	patient.add(programId,related,params);
     return false;
 }
 
-function showAddPatientForm()
+function showAddPatientForm( programId, patientId, relatedProgramId )
 {
 	hideById('listPatientDiv');
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('migrationPatientDiv');
+	hideById('patientDashboard');
 	
 	jQuery('#loaderDiv').show();
-	jQuery('#editPatientDiv').load('showAddPatientForm.action?programId=' + getFieldValue('programIdAddPatient')
-		, function()
+	jQuery('#editPatientDiv').load('showAddPatientForm.action',
+		{
+			programId: programId,
+			patientId: patientId,
+			relatedProgramId: relatedProgramId
+		}, function()
 		{
 			showById('editPatientDiv');
 			jQuery('#loaderDiv').hide();
@@ -224,9 +246,9 @@ function showAddPatientForm()
 	
 }
 
-function validateAddPatient( isContinue )
+function validateAddPatient( programId, related, isContinue )
 {	
-	var params = "programId=" + getFieldValue('programIdAddPatient') + "&" + getParamsForDiv('patientForm');
+	var params = "programId=" + programId + "&" + getParamsForDiv('patientForm');
 	$("#patientForm :input").attr("disabled", true);
 	$("#patientForm").find("select").attr("disabled", true);
 	$.ajax({
@@ -234,12 +256,12 @@ function validateAddPatient( isContinue )
 		url: 'validatePatient.action',
 		data: params,
 		success: function(data){
-			addValidationCompleted(data,isContinue);
+			addValidationCompleted( programId, related, data,isContinue);
 		}
 	});	
 }
 
-function addValidationCompleted( data, isContinue )
+function addValidationCompleted( programId, related, data, isContinue )
 {
     var type = jQuery(data).find('message').attr('type');
 	var message = jQuery(data).find('message').text();
@@ -247,7 +269,7 @@ function addValidationCompleted( data, isContinue )
 	if ( type == 'success' )
 	{
 		removeDisabledIdentifier( );
-		addPatient( isContinue );
+		addPatient( programId, related, isContinue );
 	}
 	else
 	{
@@ -267,6 +289,32 @@ function addValidationCompleted( data, isContinue )
 		$("#patientForm :input").attr("disabled", false);
 		$("#patientForm").find("select").attr("disabled", false);
 	}
+}
+
+function addRelationship()
+{
+	jQuery('#loaderDiv').show();
+	var params = getParamsForDiv('addRelationshipDiv');
+		params += "&relationshipFromA=" + jQuery('#patientForm option:selected').attr("relationshipFromA");
+	$.ajax({
+		type: "POST",
+		url: 'addRelationshipPatient.action',
+		data: params,
+		success: function( json ) {
+			hideById('addRelationshipDiv');
+			showById('selectDiv');
+			showById('searchDiv');
+			showById('listPatientDiv');
+			jQuery('#loaderDiv').hide();
+
+			if( getFieldValue( 'isShowPatientList' ) == 'false' ){
+				showRelationshipList( getFieldValue('relationshipId') );
+			}
+			else{
+				loadPatientList();
+			}
+		}});
+    return false;
 }
 
 

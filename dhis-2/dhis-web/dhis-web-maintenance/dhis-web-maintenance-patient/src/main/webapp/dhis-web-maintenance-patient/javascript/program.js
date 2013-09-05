@@ -60,6 +60,21 @@ function removeProgram( programId, name )
 	removeItem( programId, name, i18n_confirm_delete, 'removeProgram.action' );
 }
 
+function relationshipTypeOnchange()
+{
+	clearListById( 'relationshipSide' );
+	var relationshipType = jQuery('#relationshipTypeId option:selected');
+	if( relationshipType.val() != "")
+	{
+		var aIsToB = relationshipType.attr('aIsToB');
+		var bIsToA = relationshipType.attr('bIsToA');
+		
+		var relationshipSide = jQuery("#relationshipFromA");
+		relationshipSide.append( '<option value="false">' + aIsToB + '</option>' );
+		relationshipSide.append( '<option value="true">' + bIsToA + '</option>' );
+	}
+}
+
 function programOnChange()
 {
 	var type = getFieldValue('type');

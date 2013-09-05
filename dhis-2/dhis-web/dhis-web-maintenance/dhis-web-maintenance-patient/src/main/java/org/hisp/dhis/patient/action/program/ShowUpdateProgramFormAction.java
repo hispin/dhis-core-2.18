@@ -30,9 +30,11 @@ package org.hisp.dhis.patient.action.program;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -41,6 +43,8 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
@@ -77,14 +81,21 @@ public class ShowUpdateProgramFormAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     private UserGroupService userGroupService;
-    
+
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
     }
-    
+
+    private RelationshipTypeService relationshipTypeService;
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -159,12 +170,26 @@ public class ShowUpdateProgramFormAction
     {
         return availableAttributes;
     }
-    
+
     private List<UserGroup> userGroups;
 
     public List<UserGroup> getUserGroups()
     {
         return userGroups;
+    }
+
+    private List<RelationshipType> relationshipTypes;
+
+    public List<RelationshipType> getRelationshipTypes()
+    {
+        return relationshipTypes;
+    }
+
+    private List<Program> programs;
+
+    public List<Program> getPrograms()
+    {
+        return programs;
     }
 
     // -------------------------------------------------------------------------
@@ -180,16 +205,23 @@ public class ShowUpdateProgramFormAction
 
         availableAttributes = patientAttributeService.getAllPatientAttributes();
 
-        Collection<Program> programs = programService.getAllPrograms();
+        programs = new ArrayList<Program>( programService.getAllPrograms() );
 
         for ( Program program : programs )
         {
-            availableIdentifierTypes.removeAll( new HashSet<PatientIdentifierType>( program.getPatientIdentifierTypes() ) );
-            availableAttributes.removeAll(  new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
+            availableIdentifierTypes
+                .removeAll( new HashSet<PatientIdentifierType>( program.getPatientIdentifierTypes() ) );
+            availableAttributes.removeAll( new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
         }
-        
+
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-        
+
+        programs.remove( program );
+        Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
+
+        relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
+        Collections.sort( relationshipTypes, IdentifiableObjectNameComparator.INSTANCE );
+
         return SUCCESS;
     }
 }

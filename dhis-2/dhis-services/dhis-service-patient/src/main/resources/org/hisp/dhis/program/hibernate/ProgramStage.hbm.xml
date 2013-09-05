@@ -57,8 +57,6 @@
 
 		<property name="captureCoordinates" />
 
-		<property name="relatedPatient" />
-		
 		<property name="generatedByEnrollmentDate" />
 
 		<property name="blockEntryForm" />

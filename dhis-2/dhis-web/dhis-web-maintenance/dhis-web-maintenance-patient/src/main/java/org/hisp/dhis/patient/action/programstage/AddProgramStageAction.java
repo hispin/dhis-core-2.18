@@ -318,7 +318,6 @@ public class AddProgramStageAction
         programStage.setValidCompleteOnly( validCompleteOnly );
         programStage.setAutoGenerateEvent( autoGenerateEvent );
         programStage.setCaptureCoordinates( captureCoordinates );
-        programStage.setRelatedPatient( relatedPatient );
         programStage.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
         programStage.setBlockEntryForm( blockEntryForm );
         programStage.setRemindCompleted( remindCompleted );

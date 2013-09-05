@@ -141,6 +141,25 @@ public class ShowAddPatientFormAction
         this.programId = programId;
     }
 
+    private Integer patientId;
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
+
+    public Integer getPatientId()
+    {
+        return patientId;
+    }
+
+    private Integer relatedProgramId;
+
+    public void setRelatedProgramId( Integer relatedProgramId )
+    {
+        this.relatedProgramId = relatedProgramId;
+    }
+
     private Collection<User> healthWorkers;
 
     public Collection<User> getHealthWorkers()
@@ -211,6 +230,13 @@ public class ShowAddPatientFormAction
         return patientRegistrationForm;
     }
 
+    private Program relatedProgram;
+
+    public Program getRelatedProgram()
+    {
+        return relatedProgram;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -277,6 +303,11 @@ public class ShowAddPatientFormAction
         }
 
         orgunitCountIdentifier = generateOrgunitIdentifier( organisationUnit );
+
+        if ( relatedProgramId != null )
+        {
+            relatedProgram = programService.getProgram( relatedProgramId );
+        }
 
         return SUCCESS;
     }

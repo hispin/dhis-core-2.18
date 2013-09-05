@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -46,6 +47,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientReminder;
+import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
@@ -131,8 +133,16 @@ public class Program
     private Boolean useBirthDateAsEnrollmentDate;
 
     private Boolean selectEnrollmentDatesInFuture;
-    
+
     private Boolean selectIncidentDatesInFuture;
+
+    private String relationshipText;
+
+    private RelationshipType relationshipType;
+
+    private Boolean relationshipFromA;
+
+    private Program relatedProgram;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -586,6 +596,58 @@ public class Program
     public void setSelectIncidentDatesInFuture( Boolean selectIncidentDatesInFuture )
     {
         this.selectIncidentDatesInFuture = selectIncidentDatesInFuture;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getRelationshipText()
+    {
+        return relationshipText;
+    }
+
+    public void setRelationshipText( String relationshipText )
+    {
+        this.relationshipText = relationshipText;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public RelationshipType getRelationshipType()
+    {
+        return relationshipType;
+    }
+
+    public void setRelationshipType( RelationshipType relationshipType )
+    {
+        this.relationshipType = relationshipType;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Program getRelatedProgram()
+    {
+        return relatedProgram;
+    }
+
+    public void setRelatedProgram( Program relatedProgram )
+    {
+        this.relatedProgram = relatedProgram;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getRelationshipFromA()
+    {
+        return relationshipFromA;
+    }
+
+    public void setRelationshipFromA( Boolean relationshipFromA )
+    {
+        this.relationshipFromA = relationshipFromA;
     }
 
 }

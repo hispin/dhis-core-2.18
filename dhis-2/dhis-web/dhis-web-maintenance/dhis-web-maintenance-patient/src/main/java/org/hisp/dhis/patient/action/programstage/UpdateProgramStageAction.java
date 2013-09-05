@@ -307,7 +307,6 @@ public class UpdateProgramStageAction
         programStage.setIrregular( irregular );
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setDisplayGenerateEventBox( displayGenerateEventBox );
-        programStage.setRelatedPatient( relatedPatient );
         programStage.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
         programStage.setBlockEntryForm( blockEntryForm );
         programStage.setRemindCompleted( remindCompleted );

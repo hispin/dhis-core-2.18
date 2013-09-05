@@ -125,10 +125,4 @@
 			disable('validateBtn');
 		}
 	}
-					
-	#if($programStage.relatedPatient=='true')
-		setInnerHTML('patientRelatedStageSpan',"&#8226; <a href='javascript:showAddRelationshipPatient( $programStageInstance.programInstance.patient.id, false, $programStageInstance.id );' id='relatedPatient_$!programStageInstance.id' >" + i18n_add_patient_related_the_selected_event + "</a>");
-	#else
-		setInnerHTML('patientRelatedStageSpan','<br>&nbsp;');
-	#end
 </script>
