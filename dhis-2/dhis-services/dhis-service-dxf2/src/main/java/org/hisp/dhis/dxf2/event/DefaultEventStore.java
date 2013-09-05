@@ -132,6 +132,7 @@ public class DefaultEventStore implements EventStore
             dataValue.setValue( rowSet.getString( "pdv_value" ) );
             dataValue.setProvidedElsewhere( rowSet.getBoolean( "pdv_providedelsewhere" ) );
             dataValue.setDataElement( rowSet.getString( "de_uid" ) );
+            dataValue.setStoredBy( rowSet.getString( "pdv_storedby" ) );
 
             event.getDataValues().add( dataValue );
         }
@@ -143,7 +144,7 @@ public class DefaultEventStore implements EventStore
     {
         String sql = "select p.uid as p_uid, ps.uid as ps_uid, psi.uid as psi_uid, ou.uid as ou_uid, psi.executiondate as psi_executiondate," +
             " psi.completeduser as psi_completeduser, psi.completed as psi_completed," +
-            " pdv.value as pdv_value, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid" +
+            " pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid" +
             " from program p" +
             " left join programstage ps on ps.programid=p.programid" +
             " left join programstageinstance psi on ps.programstageid=psi.programstageid" +

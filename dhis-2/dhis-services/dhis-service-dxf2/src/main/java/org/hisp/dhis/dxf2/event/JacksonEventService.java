@@ -61,25 +61,25 @@ public class JacksonEventService extends AbstractEventService
     private static ObjectMapper xmlMapper = new XmlMapper();
     private static ObjectMapper jsonMapper = new ObjectMapper();
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -122,13 +122,13 @@ public class JacksonEventService extends AbstractEventService
 
             for ( Event event : events.getEvents() )
             {
-                importSummaries.getImportSummaries().add( saveEvent( event, importOptions ) );
+                importSummaries.addImportSummary( saveEvent( event, importOptions ) );
             }
         }
         catch ( Exception ex )
         {
             Event event = fromXml( input, Event.class );
-            importSummaries.getImportSummaries().add( saveEvent( event, importOptions ) );
+            importSummaries.addImportSummary( saveEvent( event, importOptions ) );
         }
 
         notifier.notify( taskId, NotificationLevel.INFO, "Import done", true ).
@@ -177,13 +177,13 @@ public class JacksonEventService extends AbstractEventService
 
             for ( Event event : events.getEvents() )
             {
-                importSummaries.getImportSummaries().add( saveEvent( event, importOptions ) );
+                importSummaries.addImportSummary( saveEvent( event, importOptions ) );
             }
         }
         catch ( Exception ex )
         {
             Event event = fromJson( input, Event.class );
-            importSummaries.getImportSummaries().add( saveEvent( event, importOptions ) );
+            importSummaries.addImportSummary( saveEvent( event, importOptions ) );
         }
 
         notifier.notify( taskId, NotificationLevel.INFO, "Import done", true ).

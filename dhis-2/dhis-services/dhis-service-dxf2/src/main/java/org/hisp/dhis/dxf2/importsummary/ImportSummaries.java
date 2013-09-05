@@ -40,13 +40,28 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "importSummaries", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "importSummaries", namespace = DxfNamespaces.DXF_2_0)
 public class ImportSummaries
 {
+    private int imported;
+
+    private int updated;
+
+    private int ignored;
+
     private List<ImportSummary> importSummaries = new ArrayList<ImportSummary>();
 
     public ImportSummaries()
     {
+    }
+
+    public void addImportSummary( ImportSummary importSummary )
+    {
+        imported += importSummary.getDataValueCount().getImported();
+        updated += importSummary.getDataValueCount().getUpdated();
+        ignored += importSummary.getDataValueCount().getIgnored();
+
+        importSummaries.add( importSummary );
     }
 
     @JsonProperty
@@ -60,5 +75,34 @@ public class ImportSummaries
     public void setImportSummaries( List<ImportSummary> importSummaries )
     {
         this.importSummaries = importSummaries;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public int getImported()
+    {
+        return imported;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public int getUpdated()
+    {
+        return updated;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public int getIgnored()
+    {
+        return ignored;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ImportSummaries{" +
+            "importSummaries=" + importSummaries +
+            '}';
     }
 }

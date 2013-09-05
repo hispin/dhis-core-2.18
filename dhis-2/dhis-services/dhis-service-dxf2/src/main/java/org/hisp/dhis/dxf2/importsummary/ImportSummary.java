@@ -148,4 +148,18 @@ public class ImportSummary
     {
         this.href = href;
     }
+
+    @Override
+    public String toString()
+    {
+        return "ImportSummary{" +
+            "status=" + status +
+            ", description='" + description + '\'' +
+            ", dataValueCount=" + dataValueCount +
+            ", conflicts=" + conflicts +
+            ", dataSetComplete='" + dataSetComplete + '\'' +
+            ", reference='" + reference + '\'' +
+            ", href='" + href + '\'' +
+            '}';
+    }
 }

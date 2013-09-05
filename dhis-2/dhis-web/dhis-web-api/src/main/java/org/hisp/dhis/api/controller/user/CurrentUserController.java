@@ -308,7 +308,7 @@ public class CurrentUserController
 
     @RequestMapping(value = { "/assignedPrograms" }, produces = { "application/json", "text/*" })
     public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
-        @RequestParam(defaultValue = "1") Integer type )
+        @RequestParam(required = false) Integer type )
         throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -321,10 +321,20 @@ public class CurrentUserController
         Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
         Set<Program> programs = new HashSet<Program>();
-        List<Program> userPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+        List<Program> userPrograms;
+
+        if ( type == null )
+        {
+            userPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser() );
+        }
+        else
+        {
+            userPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( type ) );
+        }
+
         Map<String, List<Program>> programAssociations = new HashMap<String, List<Program>>();
 
-        if ( currentUser.getOrganisationUnits().isEmpty() && currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
+        if ( currentUserService.currentUserIsSuper() && currentUser.getOrganisationUnits().isEmpty() )
         {
             userOrganisationUnits.addAll( organisationUnitService.getRootOrganisationUnits() );
         }
@@ -350,8 +360,7 @@ public class CurrentUserController
 
         for ( OrganisationUnit organisationUnit : userOrganisationUnits )
         {
-            List<Program> ouPrograms = new ArrayList<Program>(
-                programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit ) );
+            List<Program> ouPrograms = new ArrayList<Program>( programService.getPrograms( organisationUnit ) );
 
             if ( !ouPrograms.isEmpty() )
             {

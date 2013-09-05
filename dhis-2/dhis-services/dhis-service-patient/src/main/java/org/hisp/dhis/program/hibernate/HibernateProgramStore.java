@@ -73,14 +73,14 @@ public class HibernateProgramStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
     public Collection<Program> getByType( int type )
     {
         return getCriteria( Restrictions.eq( "type", type ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
     public Collection<Program> get( int type, OrganisationUnit organisationUnit )
     {
@@ -144,7 +144,7 @@ public class HibernateProgramStore
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
     {
         Criteria criteria = getCriteria();

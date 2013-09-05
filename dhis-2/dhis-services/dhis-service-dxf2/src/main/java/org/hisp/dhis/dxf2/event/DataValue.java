@@ -40,7 +40,9 @@ public class DataValue
 
     private String dataElement;
 
-    private Boolean providedElsewhere;
+    private Boolean providedElsewhere = false;
+
+    private String storedBy;
 
     public DataValue()
     {
@@ -82,6 +84,18 @@ public class DataValue
         this.providedElsewhere = providedElsewhere;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
+
+    public void setStoredBy( String storedBy )
+    {
+        this.storedBy = storedBy;
+    }
+
     @Override
     public String toString()
     {
@@ -89,6 +103,7 @@ public class DataValue
             "value='" + value + '\'' +
             ", dataElement='" + dataElement + '\'' +
             ", providedElsewhere=" + providedElsewhere +
+            ", storedBy='" + storedBy + '\'' +
             '}';
     }
 }

@@ -40,7 +40,7 @@ public class DefaultCurrentUserService
     extends AbstractSpringSecurityCurrentUserService
 {
     private static final String SUPERUSER_AUTHORITY = "ALL";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -51,7 +51,7 @@ public class DefaultCurrentUserService
     {
         this.userService = userService;
     }
-    
+
     // -------------------------------------------------------------------------
     // CurrentUserService implementation
     // -------------------------------------------------------------------------
@@ -74,7 +74,7 @@ public class DefaultCurrentUserService
 
         return userCredentials.getUser();
     }
-    
+
     public boolean currentUserIsSuper()
     {
         String username = getCurrentUsername();
@@ -98,7 +98,7 @@ public class DefaultCurrentUserService
                 return true;
             }
         }
-        
+
         return false;
     }
 }

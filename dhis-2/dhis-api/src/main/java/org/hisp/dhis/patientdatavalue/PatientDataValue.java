@@ -148,6 +148,19 @@ public class PatientDataValue
         return true;
     }
 
+    @Override
+    public String toString()
+    {
+        return "PatientDataValue{" +
+            "dataElement=" + dataElement +
+            ", programStageInstance=" + programStageInstance +
+            ", timestamp=" + timestamp +
+            ", value='" + value + '\'' +
+            ", providedElsewhere=" + providedElsewhere +
+            ", storedBy='" + storedBy + '\'' +
+            '}';
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
