@@ -119,13 +119,13 @@
 			<tr>
 				<td></td>
 				<td></td>
-				<td name='addAndSearchBtn' rowspan='2' valign='bottom'>
+				<td name='addAndSearchBtn' rowspan='2' style='padding-top:5px;'>
 					<input type="button" class='normal-button' value='$i18n.getString( "add" )' onclick='addAttributeOption();'>
 				</td>
-				<td name='addAndSearchBtn' rowspan='2' valign='bottom' align="right" >
+				<td name='addAndSearchBtn' rowspan='2' style='padding-top:5px;' align="right" >
 					<input type="button" class='normal-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
-				<td name='addAndSearchBtn' rowspan='2' valign='bottom' align="right" >
+				<td name='addAndSearchBtn' rowspan='2' style='padding-top:5px;' align="right" >
 					<input type="button" class='normal-button hidden' id='sendSmsToListBtn' value="$i18n.getString('sms')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" >
 				</td>
 			</tr>
@@ -150,8 +150,8 @@
 				  <em title="$i18n.getString( 'required' )" class="required">*</em></label>
 				</td>		
 				<td>
-					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='width:200px;'>
-					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" >
+					<input type="password" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='width:200px;'>
+					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" align='bottom'>
 				</td>
 			</tr>
 		</tbody>
@@ -173,7 +173,7 @@
 	datePicker( 'startDueDate', true );
 	datePicker( 'endDueDate', true );
 	
-	var searchTextBox = '<input type="text" id="searchText" name="searchText" onkeyup="searchPatientsOnKeyUp( event );" style="width:202px;">';
+	var searchTextBox = '<input type="password" id="searchText" name="searchText" onkeyup="searchPatientsOnKeyUp( event );" style="width:202px;">';
 	var programComboBox = '<select class="search-field" id="searchText" name="searchText" style="width:205px;">';
 	#foreach ( $program in $programs ) 
 		programComboBox += '<option value="$program.id">$program.displayName</option>';
