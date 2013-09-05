@@ -28,7 +28,8 @@ package org.hisp.dhis.sms;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Set;
+import java.util.List;
+
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.user.User;
 
@@ -43,5 +44,5 @@ public interface SmsSender
     String sendMessage( String message, String phoneNumber )
         throws SmsServiceException;
 
-    String sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend );
+    String sendMessage( String subject, String text, User sender, List<User> users, boolean forceSend );
 }
