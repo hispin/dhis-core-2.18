@@ -2,6 +2,8 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 {	
 	showById('selectDiv');
 	showById('searchDiv');
+	showById( "programLoader" );
+	disable('programIdAddPatient');
 	showById('mainLinkLbl');
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
