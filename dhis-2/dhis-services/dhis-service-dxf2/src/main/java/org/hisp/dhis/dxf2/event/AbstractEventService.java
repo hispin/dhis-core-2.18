@@ -170,7 +170,6 @@ public abstract class AbstractEventService implements EventService
 
             if ( !assignedToOrganisationUnit )
             {
-                System.err.print( "Program is not assigned to this organisation unit." );
                 return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit." );
             }
         }
