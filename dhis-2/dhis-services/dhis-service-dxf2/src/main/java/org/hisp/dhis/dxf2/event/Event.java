@@ -52,7 +52,7 @@ public class Event extends BaseLinkableObject
 
     private String orgUnit;
 
-    private String patient;
+    private String person;
 
     private String eventDate;
 
@@ -118,14 +118,14 @@ public class Event extends BaseLinkableObject
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getPatient()
+    public String getPerson()
     {
-        return patient;
+        return person;
     }
 
-    public void setPatient( String patient )
+    public void setPerson( String person )
     {
-        this.patient = patient;
+        this.person = person;
     }
 
     @JsonProperty( required = true )
@@ -197,7 +197,7 @@ public class Event extends BaseLinkableObject
             ", programStage='" + programStage + '\'' +
             ", event='" + event + '\'' +
             ", orgUnit='" + orgUnit + '\'' +
-            ", patient='" + patient + '\'' +
+            ", person='" + person + '\'' +
             ", eventDate='" + eventDate + '\'' +
             ", completed=" + completed +
             ", storedBy='" + storedBy + '\'' +
