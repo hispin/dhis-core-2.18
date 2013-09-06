@@ -366,8 +366,8 @@ public class DataMartServiceTest
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitA ), 66.8, 0.5 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitB ), 66.8, 0.5 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitC ), 65.9, 0.5 );
-        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitD ), 67.0, 0.5 );
-        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitE ), 33.0, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitD ), 67.0, 1.1 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitE ), 33.0, 1.2 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitF ), 78.0, 0.5 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitG ), 34.1, 0.5 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitH ), 100.0, 0.5 );
