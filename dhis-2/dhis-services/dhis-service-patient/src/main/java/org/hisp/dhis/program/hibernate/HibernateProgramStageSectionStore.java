@@ -53,7 +53,7 @@ public class HibernateProgramStageSectionStore
         Criteria criteria = getCriteria( Restrictions.eq( "name", name ) );
         criteria.createAlias( "programStageDataElements", "programStageDataElement" );
         criteria.add( Restrictions.eq( "programStageDataElement.programStage", programStage ) );
-        
+
         return (ProgramStageSection) criteria.uniqueResult();
     }
 
