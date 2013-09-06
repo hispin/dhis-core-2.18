@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+  >
 <hibernate-mapping>
   <class name="org.hisp.dhis.patient.Patient" table="patient">
 
     <id name="id" column="patientid">
       <generator class="native" />
     </id>
+    &identifiableProperties;
 
     <property name="firstName" column="firstname" length="50" />
 
@@ -44,7 +46,8 @@
 
     <set name="attributes" table="patient_attributes">
       <key column="patientid" foreign-key="fk_patient_attributes_patientid" />
-      <many-to-many class="org.hisp.dhis.patient.PatientAttribute" column="patientattributeid" foreign-key="fk_patient_patientattributeid" />
+      <many-to-many class="org.hisp.dhis.patient.PatientAttribute" column="patientattributeid"
+        foreign-key="fk_patient_patientattributeid" />
     </set>
 
     <many-to-one name="representative" class="org.hisp.dhis.patient.Patient" column="representativeid"
@@ -52,8 +55,8 @@
 
     <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
       foreign-key="fk_patient_organisationunitid" />
- 	
- 	<many-to-one name="healthWorker" column="healthworkerid" class="org.hisp.dhis.user.User" foreign-key="fk_user_patientid" />
-    
+
+    <many-to-one name="healthWorker" column="healthworkerid" class="org.hisp.dhis.user.User" foreign-key="fk_user_patientid" />
+
   </class>
 </hibernate-mapping>

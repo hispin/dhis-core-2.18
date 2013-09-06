@@ -28,13 +28,7 @@ package org.hisp.dhis.caseentry.action.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18n;
@@ -49,7 +43,11 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
-import com.opensymphony.xwork2.Action;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ValidateAddRelationshipPatientAction
     implements Action
@@ -164,8 +162,8 @@ public class ValidateAddRelationshipPatientAction
         int endIndex = fullName.lastIndexOf( ' ' );
 
         String firstName = fullName.substring( 0, startIndex );
-        String middleName = "";
-        String lastName = "";
+        String middleName;
+        String lastName;
 
         if ( startIndex == endIndex )
         {
@@ -192,7 +190,7 @@ public class ValidateAddRelationshipPatientAction
                 boolean flagDuplicate = false;
                 for ( Patient p : patients )
                 {
-                    if ( id == null || (id != null && p.getId().intValue() != id.intValue()) )
+                    if ( id == null || (id != null && p.getId() != id) )
                     {
                         flagDuplicate = true;
                         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
@@ -221,7 +219,7 @@ public class ValidateAddRelationshipPatientAction
         }
         else
         {
-            p.setBirthDateFromAge( age.intValue(), ageType );
+            p.setBirthDateFromAge( age, ageType );
         }
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -230,8 +228,9 @@ public class ValidateAddRelationshipPatientAction
 
         if ( identifiers != null && identifiers.size() > 0 )
         {
-            String value = null;
+            String value;
             String idDuplicate = "";
+
             for ( PatientIdentifierType idType : identifiers )
             {
                 // If underAge is TRUE : Only check duplicate on
@@ -243,7 +242,7 @@ public class ValidateAddRelationshipPatientAction
                     {
                         PatientIdentifier identifier = patientIdentifierService.get( idType, value );
                         if ( identifier != null
-                            && (id == null || identifier.getPatient().getId().intValue() != id.intValue()) )
+                            && (id == null || identifier.getPatient().getId() != id) )
                         {
                             idDuplicate += idType.getName() + ", ";
                         }
