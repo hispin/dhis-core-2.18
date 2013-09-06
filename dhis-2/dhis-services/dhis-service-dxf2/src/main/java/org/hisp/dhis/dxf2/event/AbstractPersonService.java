@@ -72,7 +72,7 @@ public abstract class AbstractPersonService implements PersonService
         for ( Patient patient : patients )
         {
             Person person = new Person();
-            person.setPatient( patient.getUid() );
+            person.setPerson( patient.getUid() );
 
             persons.getPersons().add( person );
         }
