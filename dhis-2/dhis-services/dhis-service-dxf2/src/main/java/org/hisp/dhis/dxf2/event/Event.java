@@ -190,6 +190,44 @@ public class Event extends BaseLinkableObject
     }
 
     @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        Event event1 = (Event) o;
+
+        if ( completed != null ? !completed.equals( event1.completed ) : event1.completed != null ) return false;
+        if ( coordinate != null ? !coordinate.equals( event1.coordinate ) : event1.coordinate != null ) return false;
+        if ( dataValues != null ? !dataValues.equals( event1.dataValues ) : event1.dataValues != null ) return false;
+        if ( event != null ? !event.equals( event1.event ) : event1.event != null ) return false;
+        if ( eventDate != null ? !eventDate.equals( event1.eventDate ) : event1.eventDate != null ) return false;
+        if ( orgUnit != null ? !orgUnit.equals( event1.orgUnit ) : event1.orgUnit != null ) return false;
+        if ( person != null ? !person.equals( event1.person ) : event1.person != null ) return false;
+        if ( program != null ? !program.equals( event1.program ) : event1.program != null ) return false;
+        if ( programStage != null ? !programStage.equals( event1.programStage ) : event1.programStage != null ) return false;
+        if ( storedBy != null ? !storedBy.equals( event1.storedBy ) : event1.storedBy != null ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = program != null ? program.hashCode() : 0;
+        result = 31 * result + (programStage != null ? programStage.hashCode() : 0);
+        result = 31 * result + (event != null ? event.hashCode() : 0);
+        result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
+        result = 31 * result + (person != null ? person.hashCode() : 0);
+        result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
+        result = 31 * result + (completed != null ? completed.hashCode() : 0);
+        result = 31 * result + (storedBy != null ? storedBy.hashCode() : 0);
+        result = 31 * result + (coordinate != null ? coordinate.hashCode() : 0);
+        result = 31 * result + (dataValues != null ? dataValues.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString()
     {
         return "Event{" +

@@ -28,7 +28,16 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.user.User;
@@ -41,6 +50,7 @@ import java.util.Set;
 /**
  * @author Abyot Asalefew Gizaw
  */
+@JacksonXmlRootElement( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
 public class Patient
     extends BaseIdentifiableObject
 {
@@ -55,7 +65,7 @@ public class Patient
 
     public static final char DOB_TYPE_VERIFIED = 'V';
     public static final char DOB_TYPE_DECLARED = 'D';
-    public static final char DOB_TYPE_APPROXIATED = 'A';
+    public static final char DOB_TYPE_APPROXIMATED = 'A';
 
     public static final char AGE_TYPE_YEAR = 'Y';
     public static final char AGE_TYPE_MONTH = 'M';
@@ -70,7 +80,7 @@ public class Patient
 
     public static String FIXED_ATTR_BIRTH_DATE = "birthDate";
     public static String FIXED_ATTR_AGE = "age";
-    public static String FIXED_ATTR_INTERGER_AGE = "integerValueOfAge";
+    public static String FIXED_ATTR_INTEGER_AGE = "integerValueOfAge";
     public static String FIXED_ATTR_REGISTRATION_DATE = "registrationDate";
 
     private String firstName;
@@ -225,6 +235,15 @@ public class Patient
         return attributes;
     }
 
+    public void setAttributes( Set<PatientAttribute> attributes )
+    {
+        this.attributes = attributes;
+    }
+
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -235,11 +254,9 @@ public class Patient
         this.organisationUnit = organisationUnit;
     }
 
-    public void setAttributes( Set<PatientAttribute> attributes )
-    {
-        this.attributes = attributes;
-    }
-
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getFirstName()
     {
         return firstName;
@@ -250,6 +267,9 @@ public class Patient
         this.firstName = firstName;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getMiddleName()
     {
         return middleName;
@@ -260,6 +280,9 @@ public class Patient
         this.middleName = middleName;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getLastName()
     {
         return lastName;
@@ -270,6 +293,9 @@ public class Patient
         this.lastName = lastName;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getGender()
     {
         return gender;
@@ -280,6 +306,9 @@ public class Patient
         this.gender = gender;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getBirthDate()
     {
         return birthDate;
@@ -290,6 +319,9 @@ public class Patient
         this.birthDate = birthDate;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getDeathDate()
     {
         return deathDate;
@@ -300,6 +332,9 @@ public class Patient
         this.deathDate = deathDate;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getIsDead()
     {
         return isDead;
@@ -320,6 +355,10 @@ public class Patient
         this.identifiers = identifiers;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "programs", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "program", namespace = DxfNamespaces.DXF_2_0)
     public Set<Program> getPrograms()
     {
         return programs;
@@ -330,6 +369,10 @@ public class Patient
         this.programs = programs;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public User getHealthWorker()
     {
         return healthWorker;
@@ -340,24 +383,31 @@ public class Patient
         this.healthWorker = healthWorker;
     }
 
-    public void setRegistrationDate( Date registrationDate )
-    {
-        this.registrationDate = registrationDate;
-    }
-
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getRegistrationDate()
     {
         return registrationDate;
     }
 
-    public void setRepresentative( Patient representative )
+    public void setRegistrationDate( Date registrationDate )
     {
-        this.representative = representative;
+        this.registrationDate = registrationDate;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Patient getRepresentative()
     {
         return representative;
+    }
+
+    public void setRepresentative( Patient representative )
+    {
+        this.representative = representative;
     }
 
     // -------------------------------------------------------------------------
