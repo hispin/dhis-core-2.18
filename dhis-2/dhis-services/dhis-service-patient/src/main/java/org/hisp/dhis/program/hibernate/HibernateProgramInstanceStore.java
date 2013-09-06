@@ -48,7 +48,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 public class HibernateProgramInstanceStore
     extends HibernateGenericStore<ProgramInstance>

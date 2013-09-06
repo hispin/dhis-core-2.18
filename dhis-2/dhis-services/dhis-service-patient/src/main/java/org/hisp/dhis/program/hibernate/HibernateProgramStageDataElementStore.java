@@ -28,8 +28,6 @@ package org.hisp.dhis.program.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -39,6 +37,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementStore;
+
+import java.util.Collection;
 
 /**
  * @author Viet Nguyen
@@ -83,7 +83,7 @@ public class HibernateProgramStageDataElementStore
         session.delete( programStageDataElement );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageDataElement> getAll()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -93,7 +93,7 @@ public class HibernateProgramStageDataElementStore
         return criteria.list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageDataElement> get( ProgramStage programStage )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -103,7 +103,7 @@ public class HibernateProgramStageDataElementStore
         return criteria.add( Restrictions.eq( "programStage", programStage ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageDataElement> get( ProgramStage programStage, boolean compulsory )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -126,7 +126,7 @@ public class HibernateProgramStageDataElementStore
         return (ProgramStageDataElement) criteria.uniqueResult();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<DataElement> getListDataElement( ProgramStage programStage )
     {
         Session session = sessionFactory.getCurrentSession();
