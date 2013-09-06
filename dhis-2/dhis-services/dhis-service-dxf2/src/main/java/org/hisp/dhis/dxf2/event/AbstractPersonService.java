@@ -99,7 +99,7 @@ public abstract class AbstractPersonService implements PersonService
         Person person = new Person();
         Patient patient = patientService.getPatient( uid );
 
-        person.setPatient( patient.getUid() );
+        person.setPerson( patient.getUid() );
 
         return person;
     }
@@ -108,7 +108,7 @@ public abstract class AbstractPersonService implements PersonService
     public Person getPerson( Patient patient )
     {
         Person person = new Person();
-        person.setPatient( patient.getUid() );
+        person.setPerson( patient.getUid() );
 
         return person;
     }
