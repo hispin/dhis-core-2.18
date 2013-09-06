@@ -25,14 +25,7 @@
 					<td>$encoder.htmlEncode($!patient.getFullName())</td>
 				</tr>
 				#end
-				#foreach( $identifier in $identifiers )
-				<tr>
-					#if($!identifier.identifierType)
-						<td>$identifier.identifierType.displayName</td>
-						<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
-					#end
-				</tr>
-				#end
+				
 				<tr>
 					<td>$i18n.getString("location")</td>
 					<td>$encoder.htmlEncode($!patient.organisationUnit.name)</td>
@@ -114,6 +107,7 @@
 #end
 
 <td>
+
 	<div class="link-area" id="activeDiv" name="activeDiv">
 		<p class='header'>
 			$i18n.getString("active_programs")
@@ -184,6 +178,7 @@
 
 
 </td>
+
 <td>
 	
 	<div class="link-area" id="completedDiv" name="completedDiv" style="display:none;">
@@ -213,21 +208,17 @@
 	</div>
 	
 </td>
+
 <td>
 
-	<div class="link-area">
+	<div class="link-area" style="width:120%">
 		<p class='header'>
 			$i18n.getString("relationships")
 			
-			#if( $auth.hasAccess( "dhis-web-caseentry", "showRelationshipList" ) )
-				&#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );">$i18n.getString("management")</a>
-			#end
-			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "showAddRelationshipPatient" ) )			
 				&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false, '' );">$i18n.getString("add_new_patient")</a>
-				<span id="patientRelatedStageSpan"><br>&nbsp;<span>
+				<span id="patientRelatedStageSpan">&nbsp;<span>
 			#end
-			
 		</p>
 		<div class="contentProviderTable">
 			<table>

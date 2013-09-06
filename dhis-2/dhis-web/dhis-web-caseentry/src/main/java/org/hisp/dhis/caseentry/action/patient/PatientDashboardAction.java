@@ -41,10 +41,8 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicatorService;
@@ -70,8 +68,6 @@ public class PatientDashboardAction
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
-
-    private PatientAttributeValueService patientAttributeValueService;
 
     private RelationshipService relationshipService;
 
@@ -136,11 +132,6 @@ public class PatientDashboardAction
     public Map<PatientAttribute, String> getAttributeMap()
     {
         return attributeMap;
-    }
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -216,45 +207,6 @@ public class PatientDashboardAction
         Collection<Program> programs = programService
             .getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
         programs.addAll( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
-
-        // ---------------------------------------------------------------------
-        // Get patient-attribute-values
-        // ---------------------------------------------------------------------
-
-        Collection<PatientAttributeValue> _attributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patient );
-        attributeValues = new HashSet<PatientAttributeValue>();
-
-        for ( Program program : programs )
-        {
-            Collection<PatientAttribute> atttributes = program.getPatientAttributes();
-            for ( PatientAttributeValue attributeValue : _attributeValues )
-            {
-                if ( atttributes.contains( attributeValue.getPatientAttribute() ) )
-                {
-                    attributeValues.add( attributeValue );
-                }
-            }
-        }
-
-        // ---------------------------------------------------------------------
-        // Get patient-identifiers
-        // ---------------------------------------------------------------------
-
-        Collection<PatientIdentifier> _identifiers = patient.getIdentifiers();
-        identifiers = new HashSet<PatientIdentifier>();
-
-        for ( Program program : programs )
-        {
-            Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
-            for ( PatientIdentifier identifier : _identifiers )
-            {
-                if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
-                {
-                    identifiers.add( identifier );
-                }
-            }
-        }
 
         // ---------------------------------------------------------------------
         // Get relationship
