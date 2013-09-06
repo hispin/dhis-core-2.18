@@ -270,13 +270,14 @@
 #end
 
 <script>
-	#if($!patient.dobType && $!patient.dobType=='A') 
+	if(getFieldValue('dobType')=='A'){
 		showById('age');
 		hideById('birthDate');
-	#else
+	}
+	else{
 		hideById('age');
 		showById('birthDate');
-	#end
+	}
 	
 	#if( $!patient.phoneNumber )
 		if(!addRelationship){

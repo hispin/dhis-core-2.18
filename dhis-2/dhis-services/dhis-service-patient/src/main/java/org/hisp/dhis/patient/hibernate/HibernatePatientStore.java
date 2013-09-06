@@ -425,6 +425,10 @@ public class HibernatePatientStore
                 {
                     patientWhere += " ((DATE(now()) - DATE(birthdate))/365) " + value;
                 }
+                else if(id.equals( Patient.FIXED_ATTR_REGISTRATION_DATE ))
+                {
+                    patientWhere += "p." + id + value;
+                }
                 else
                 {
                     patientWhere += " lower(p." + id + ")='" + value + "'";

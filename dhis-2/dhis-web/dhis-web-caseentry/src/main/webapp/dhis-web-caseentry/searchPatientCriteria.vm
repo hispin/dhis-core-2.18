@@ -103,6 +103,7 @@
 				<option value="prg">$i18n.getString( "search_by_program" )</option>
 				
 				#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
+					<option value="fixedAttr_registrationDate">$i18n.getString( "registration_date" )</option>
 					<option value="fixedAttr_birthDate">$i18n.getString( "date_of_birth" )</option>
 					<option value="fixedAttr_age">$i18n.getString( "age_year" )</option>
 					<option value="fixedAttr_gender">$i18n.getString( "gender" )</option>
@@ -119,13 +120,13 @@
 			<tr>
 				<td></td>
 				<td></td>
-				<td name='addAndSearchBtn' rowspan='2' style='padding-top:5px;'>
+				<td name='addAndSearchBtn' rowspan='2' style='padding-bottom:2px;' valign='bottom'>
 					<input type="button" class='normal-button' value='$i18n.getString( "add" )' onclick='addAttributeOption();'>
 				</td>
-				<td name='addAndSearchBtn' rowspan='2' style='padding-top:5px;' align="right" >
+				<td name='addAndSearchBtn' rowspan='2' style='padding-bottom:2px;' valign='bottom' align="right" align="bottom">
 					<input type="button" class='normal-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
-				<td name='addAndSearchBtn' rowspan='2' style='padding-top:5px;' align="right" >
+				<td name='addAndSearchBtn' rowspan='2' style='padding-bottom:2px;' valign='bottom' align="right" align="bottom">
 					<input type="button" class='normal-button hidden' id='sendSmsToListBtn' value="$i18n.getString('sms')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" >
 				</td>
 			</tr>
@@ -138,6 +139,7 @@
 					<option value="prg">$i18n.getString( "search_by_program" )</option>
 					
 					#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
+						<option value="fixedAttr_registrationDate">$i18n.getString( "registration_date" )</option>
 						<option value="fixedAttr_birthDate">$i18n.getString( "date_of_birth" )</option>
 						<option value="fixedAttr_age">$i18n.getString( "age_year" )</option>
 						<option value="fixedAttr_gender">$i18n.getString( "gender" )</option>

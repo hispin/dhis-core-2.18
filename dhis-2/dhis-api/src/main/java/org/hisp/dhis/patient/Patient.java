@@ -70,6 +70,8 @@ public class Patient
 
     public static String FIXED_ATTR_BIRTH_DATE = "birthDate";
     public static String FIXED_ATTR_AGE = "age";
+    public static String FIXED_ATTR_INTERGER_AGE = "integerValueOfAge";
+    public static String FIXED_ATTR_REGISTRATION_DATE = "registrationDate";
 
     private Integer id;
 

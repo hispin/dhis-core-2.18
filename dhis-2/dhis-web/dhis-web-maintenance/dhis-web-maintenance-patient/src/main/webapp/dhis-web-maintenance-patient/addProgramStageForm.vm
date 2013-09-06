@@ -45,11 +45,6 @@
 		<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' checked /></td>
 	</tr>
 	
-	<tr>
-		<td><label>$i18n.getString( "related_patient" )</em></label></td>
-		<td><input type="checkbox" id="relatedPatient" name="relatedPatient" value='true'/></td>
-	</tr>
-	
 	<tr><th colspan="2">$i18n.getString( "repeatable_program_stage_details" )</th></tr>
 	
 	<tr>

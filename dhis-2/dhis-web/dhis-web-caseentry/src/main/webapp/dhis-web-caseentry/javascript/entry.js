@@ -699,6 +699,7 @@ function blockEntryForm()
 		jQuery('#delete_' + id ).hide();
 	});
 	jQuery('.date-field').removeClass('datefield');
+	enable('uncompleteBtn');
 }
 
 function unblockEntryForm()
