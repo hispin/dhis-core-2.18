@@ -28,12 +28,7 @@ package org.hisp.dhis.caseentry.action.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.i18n.I18n;
@@ -50,11 +45,13 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.validation.ValidationCriteria;
 
-import com.opensymphony.xwork2.Action;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
  */
 public class ValidatePatientAction
     implements Action
@@ -159,7 +156,7 @@ public class ValidatePatientAction
                     boolean flagDuplicate = false;
                     for ( Patient p : patients )
                     {
-                        if ( id == null || (id != null && p.getId().intValue() != id.intValue()) )
+                        if ( id == null || (id != null && p.getId() != id) )
                         {
                             flagDuplicate = true;
                             Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
@@ -220,7 +217,7 @@ public class ValidatePatientAction
                         PatientIdentifier identifier = patientIdentifierService.get( idType, value );
 
                         if ( identifier != null
-                            && (id == null || identifier.getPatient().getId().intValue() != id.intValue()) )
+                            && (id == null || identifier.getPatient().getId() != id) )
                         {
                             idDuplicate += idType.getName() + ", ";
                         }
@@ -254,7 +251,7 @@ public class ValidatePatientAction
         }
         else if ( age != null )
         {
-            p.setBirthDateFromAge( age.intValue(), Patient.AGE_TYPE_YEAR );
+            p.setBirthDateFromAge( age, Patient.AGE_TYPE_YEAR );
         }
 
         if ( programId != null )

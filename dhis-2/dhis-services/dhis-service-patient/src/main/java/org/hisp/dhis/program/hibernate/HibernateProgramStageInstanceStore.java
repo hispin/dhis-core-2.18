@@ -35,9 +35,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.jdbc.StatementBuilder;
@@ -88,7 +88,7 @@ import java.util.Set;
  * @author Abyot Asalefew
  */
 public class HibernateProgramStageInstanceStore
-    extends HibernateGenericStore<ProgramStageInstance>
+    extends HibernateIdentifiableObjectStore<ProgramStageInstance>
     implements ProgramStageInstanceStore
 {
     // -------------------------------------------------------------------------
@@ -155,7 +155,7 @@ public class HibernateProgramStageInstanceStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage )
     {
         List<ProgramStageInstance> list = new ArrayList<ProgramStageInstance>( getCriteria(
@@ -165,44 +165,44 @@ public class HibernateProgramStageInstanceStore
         return list.isEmpty() ? null : list.get( list.size() - 1 );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( ProgramStage programStage )
     {
         return getCriteria( Restrictions.eq( "programStage", programStage ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances )
     {
         return getCriteria( Restrictions.in( "programInstance", programInstances ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( Date dueDate )
     {
         return getCriteria( Restrictions.eq( "dueDate", dueDate ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( Date dueDate, Boolean completed )
     {
         return getCriteria( Restrictions.eq( "dueDate", dueDate ), Restrictions.eq( "completed", completed ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( Date startDate, Date endDate )
     {
         return (getCriteria( Restrictions.ge( "dueDate", startDate ), Restrictions.le( "dueDate", endDate ) )).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( Date startDate, Date endDate, Boolean completed )
     {
         return (getCriteria( Restrictions.ge( "dueDate", startDate ), Restrictions.le( "dueDate", endDate ),
             Restrictions.eq( "completed", completed ) )).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed )
     {
         String hql = "from ProgramStageInstance psi where psi.organisationUnit = :unit";
@@ -242,7 +242,7 @@ public class HibernateProgramStageInstanceStore
         return q.list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<ProgramStageInstance> get( Patient patient, Boolean completed )
     {
         String hql = "from ProgramStageInstance where programInstance.patient = :patient and completed = :completed";
@@ -251,13 +251,13 @@ public class HibernateProgramStageInstanceStore
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
         return getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.eq( "organisationUnit", organisationUnit ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate,
         Date endDate, int min, int max )
     {
@@ -464,7 +464,7 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
         Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer min, Integer max )
     {
@@ -719,7 +719,7 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, Boolean completed )
     {
@@ -787,7 +787,7 @@ public class HibernateProgramStageInstanceStore
         return grid;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( Patient patient )
     {
         return getCriteria().createAlias( "patients", "patient" )
@@ -2155,7 +2155,7 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<Integer> getOrgunitIds( Date startDate, Date endDate )
     {
         Criteria criteria = getCriteria();

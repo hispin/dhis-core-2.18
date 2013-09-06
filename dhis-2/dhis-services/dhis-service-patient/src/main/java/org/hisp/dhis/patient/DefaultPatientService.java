@@ -28,14 +28,6 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -51,6 +43,14 @@ import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -465,7 +465,7 @@ public class DefaultPatientService
         if ( representativeId == null )
             return false;
 
-        return patient.getRepresentative() == null || !patient.getRepresentative().getId().equals( representativeId );
+        return patient.getRepresentative() == null || !(patient.getRepresentative().getId() == representativeId);
     }
 
     @Override

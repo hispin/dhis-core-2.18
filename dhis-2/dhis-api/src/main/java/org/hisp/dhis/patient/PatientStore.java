@@ -28,14 +28,14 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Abyot Asalefew Gizaw

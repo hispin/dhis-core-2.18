@@ -28,9 +28,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-import java.util.UUID;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
@@ -39,6 +36,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author bobj
@@ -53,10 +53,11 @@ public class IdentityPopulator
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup", "sqlview",
         "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "map", "mapview",
         "reporttable", "report", "messageconversation", "message", "userinfo", "usergroup", "userrole", "maplegend",
-        "maplegendset", "maplayer", "section", "optionset", "program", "programinstance", "programstage", "programstageinstance"
+        "maplegendset", "maplayer", "section", "optionset", "program", "programinstance", "programstage", "programstageinstance",
+        "patient"
     };
-    
-    private static final Map<String, String> TABLE_ID_MAP = DimensionalObjectUtils.asMap( 
+
+    private static final Map<String, String> TABLE_ID_MAP = DimensionalObjectUtils.asMap(
         "dataelementcategoryoption", "categoryoptionid",
         "dataelementcategory", "categoryid" );
 
@@ -79,11 +80,11 @@ public class IdentityPopulator
             try
             {
                 log.debug( "Checking table: " + table );
-                
+
                 int count = 0;
-                
+
                 SqlRowSet resultSet = jdbcTemplate.queryForRowSet( "SELECT * from " + table + " WHERE uid IS NULL" );
-                
+
                 while ( resultSet.next() )
                 {
                     ++count;
@@ -92,7 +93,7 @@ public class IdentityPopulator
                     String sql = "update " + table + " set uid = '" + CodeGenerator.generateCode() + "' where " + idColumn + " = " + id;
                     jdbcTemplate.update( sql );
                 }
-                
+
                 if ( count > 0 )
                 {
                     log.info( count + " uids set on " + table );
@@ -101,9 +102,9 @@ public class IdentityPopulator
                 count = 0;
 
                 resultSet = jdbcTemplate.queryForRowSet( "SELECT * from " + table + " WHERE lastUpdated IS NULL" );
-                
+
                 String timestamp = DateUtils.getLongDateString();
-                
+
                 while ( resultSet.next() )
                 {
                     ++count;
@@ -112,7 +113,7 @@ public class IdentityPopulator
                     String sql = "update " + table + " set lastupdated = '" + timestamp + "' where " + idColumn + " = " + id;
                     jdbcTemplate.update( sql );
                 }
-                
+
                 if ( count > 0 )
                 {
                     log.info( count + " last updated set on " + table );
@@ -121,7 +122,7 @@ public class IdentityPopulator
                 count = 0;
 
                 resultSet = jdbcTemplate.queryForRowSet( "SELECT * from " + table + " WHERE created IS NULL" );
-                
+
                 while ( resultSet.next() )
                 {
                     ++count;
@@ -130,7 +131,7 @@ public class IdentityPopulator
                     String sql = "update " + table + " set created = '" + timestamp + "' where " + idColumn + " = " + id;
                     jdbcTemplate.update( sql );
                 }
-                
+
                 if ( count > 0 )
                 {
                     log.info( count + " timestamps set on " + table );
@@ -139,27 +140,27 @@ public class IdentityPopulator
             catch ( Exception ex )
             {
                 log.error( "Problem updating: " + table + ", id column: " + getIdColumn( table ), ex );
-                
+
                 throw ex;
             }
         }
 
         log.debug( "Identifiable properties updated" );
-        
+
         createUidConstraints();
 
         log.debug( "Identifiable constraints updated" );
-        
+
         createOrgUnitUuids();
-        
-        log.debug( "Organisation unit uuids updated" );        
+
+        log.debug( "Organisation unit uuids updated" );
     }
 
     private String getIdColumn( String table )
     {
-        return TABLE_ID_MAP.containsKey( table ) ? TABLE_ID_MAP.get( table ) : ( table + "id" );        
+        return TABLE_ID_MAP.containsKey( table ) ? TABLE_ID_MAP.get( table ) : (table + "id");
     }
-    
+
     private void createUidConstraints()
     {
         for ( String table : tables )
@@ -176,7 +177,7 @@ public class IdentityPopulator
             }
         }
     }
-    
+
     private void createOrgUnitUuids()
     {
         try

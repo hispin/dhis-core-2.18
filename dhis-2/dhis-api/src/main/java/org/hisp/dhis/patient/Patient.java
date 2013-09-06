@@ -28,11 +28,11 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.user.User;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -42,7 +42,7 @@ import java.util.Set;
  * @author Abyot Asalefew Gizaw
  */
 public class Patient
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -72,8 +72,6 @@ public class Patient
     public static String FIXED_ATTR_AGE = "age";
     public static String FIXED_ATTR_INTERGER_AGE = "integerValueOfAge";
     public static String FIXED_ATTR_REGISTRATION_DATE = "registrationDate";
-
-    private Integer id;
 
     private String firstName;
 
@@ -127,7 +125,7 @@ public class Patient
         final int prime = 31;
         int result = 1;
 
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((uid == null) ? 0 : uid.hashCode());
         result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
         result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
         result = prime * result + ((gender == null) ? 0 : gender.hashCode());
@@ -222,11 +220,6 @@ public class Patient
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public Integer getId()
-    {
-        return id;
-    }
-
     public Set<PatientAttribute> getAttributes()
     {
         return attributes;
@@ -245,11 +238,6 @@ public class Patient
     public void setAttributes( Set<PatientAttribute> attributes )
     {
         this.attributes = attributes;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
     }
 
     public String getFirstName()
@@ -404,7 +392,7 @@ public class Patient
         {
             return "< 1 yr";
         }
-        
+
         return age + " yr";
     }
 
@@ -568,12 +556,12 @@ public class Patient
     {
         switch ( dobType )
         {
-        case DOB_TYPE_VERIFIED:
-            return "Verified";
-        case DOB_TYPE_DECLARED:
-            return "Declared";
-        default:
-            return "Approxiated";
+            case DOB_TYPE_VERIFIED:
+                return "Verified";
+            case DOB_TYPE_DECLARED:
+                return "Declared";
+            default:
+                return "Approxiated";
         }
     }
 }
