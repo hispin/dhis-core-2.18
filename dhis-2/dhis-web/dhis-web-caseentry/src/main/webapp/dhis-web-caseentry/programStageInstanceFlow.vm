@@ -99,7 +99,7 @@
 				<select id='repeatableProgramStage_$!programInstance.id' name='repeatableProgramStageId_$!programInstance.id' onchange="setSuggestedDueDate('$programInstance.id')">
 					#foreach( $programStage in $programInstance.program.programStages )
 						#if( $programStage.irregular=='true')
-							<option value="$programStage.id" standardInterval='$programStage.standardInterval' selected repeatable="true">$!programStage.displayName</option>
+							<option value="$programStage.uid" localid='$programStage.id' standardInterval='$programStage.standardInterval' selected repeatable="true">$!programStage.displayName</option>
 						#else
 							#set($hasEvent="false")
 							#foreach( $programStageInstance in $programInstance.programStageInstances )
@@ -108,7 +108,7 @@
 								#end
 							#end
 							
-							<option #if($hasEvent=="true") style="display:none;" #else selected #end value="$programStage.id" standardInterval='$programStage.minDaysFromStart' repeatable="false">$!programStage.displayName</option>
+							<option #if($hasEvent=="true") style="display:none;" #else selected #end value="$programStage.uid" localid='$programStage.id' standardInterval='$programStage.minDaysFromStart' repeatable="false">$!programStage.displayName</option>
 						#end
 					#end
 				</select>
@@ -128,7 +128,7 @@
 		<tr>
 			<td></td>
 			<td>
-				<input type='button' value='$i18n.getString("create")' onclick='registerIrregularEncounter( "$!programInstance.id",getFieldValue("repeatableProgramStage_$!programInstance.id"), jQuery("#repeatableProgramStage_$!programInstance.id option:selected").text(),getFieldValue("dueDateNewEncounter_$programInstance.id" ) );' />
+				<input type='button' value='$i18n.getString("create")' onclick='registerIrregularEncounter( "$!programInstance.id",jQuery("#repeatableProgramStage_$!programInstance.id option:selected").attr("localid"), jQuery("#repeatableProgramStage_$!programInstance.id option:selected").text(),getFieldValue("dueDateNewEncounter_$programInstance.id" ) );' />
 				<input type='button' value='$i18n.getString("cancel")' onclick="closeDueDateDiv('$!programInstance.id');" />
 			</td>
 		</tr>

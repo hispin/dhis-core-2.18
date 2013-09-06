@@ -179,7 +179,7 @@ public class DefaultPatientRegistrationFormService
                 String hidden = "";
                 if ( patient != null )
                 {
-                    Object object = getValueFromPatient( StringUtils.capitalize( fixedAttr ), patient );
+                    Object object = getValueFromPatient( fixedAttr, patient );
                     if ( object != null )
                     {
                         if ( object instanceof Date )
@@ -536,6 +536,12 @@ public class DefaultPatientRegistrationFormService
 
     private Object getValueFromPatient( String property, Patient patient )
     {
+        if ( property.equals( Patient.FIXED_ATTR_AGE ) )
+        {
+            property = Patient.FIXED_ATTR_INTERGER_AGE;
+        }
+        property = StringUtils.capitalize( property );
+
         try
         {
             return Patient.class.getMethod( "get" + property ).invoke( patient );

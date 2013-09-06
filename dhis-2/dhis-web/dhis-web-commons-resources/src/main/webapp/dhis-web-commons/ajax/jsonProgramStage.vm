@@ -3,7 +3,6 @@
     "id": "${programStage.id}",
 	"name": "$!encoder.jsonEncode( ${programStage.name} )",
 	"description": "$!encoder.jsonEncode( ${programStage.description} )",
-	"relatedPatient": "${programStage.relatedPatient}",
 	"minDaysFromStart": "${programStage.minDaysFromStart}",
 	"dataElementCount": "${programStageDataElements.size()}",
 	"standardInterval": "$!programStage.standardInterval",

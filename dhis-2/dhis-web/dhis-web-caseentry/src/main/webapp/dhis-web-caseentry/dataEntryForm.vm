@@ -75,13 +75,11 @@
 	#end
 </div>
 
-<table id='entryPostComment' class='listTable hidden' style="width:600px;">
+<table id='entryPostComment' class='listTable hidden' style="width:100%;">
 <tr>
-	<th class='coordinates1'><label for="postComment">$i18n.getString('post_comment'):</label></th>
-	<th>
+	<th><label for="postComment">$i18n.getString('post_comment'):</label>
 		<input type="text" class="{validate:{maxlength:160}} criteria" id="commentInput" name='commentInput'
-				style="width:380px;#if($programStage.captureCoordinates=='false') margin-left:11px; padding-left: 2px;  #end "
-			   onkeypress="keypressOnComment( event, this );">
+			style="width:85%" onkeypress="keypressOnComment( event, this );" value="" >
 		<input id="commentButton" name='commentButton' type="button" style='width:40px' value="$i18n.getString('add')" onclick='addComment( byId("commentInput"), $programStageInstance.id )'>
 	</th>
 </tr>
