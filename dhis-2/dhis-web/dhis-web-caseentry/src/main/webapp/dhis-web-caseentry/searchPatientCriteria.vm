@@ -152,7 +152,7 @@
 				  <em title="$i18n.getString( 'required' )" class="required">*</em></label>
 				</td>		
 				<td>
-					<input type="password" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='width:200px;'>
+					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='width:200px;'>
 					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" align='bottom'>
 				</td>
 			</tr>
@@ -175,7 +175,7 @@
 	datePicker( 'startDueDate', true );
 	datePicker( 'endDueDate', true );
 	
-	var searchTextBox = '<input type="password" id="searchText" name="searchText" onkeyup="searchPatientsOnKeyUp( event );" style="width:202px;">';
+	var searchTextBox = '<input type="text" id="searchText" name="searchText" onkeyup="searchPatientsOnKeyUp( event );" style="width:202px;">';
 	var programComboBox = '<select class="search-field" id="searchText" name="searchText" style="width:205px;">';
 	#foreach ( $program in $programs ) 
 		programComboBox += '<option value="$program.id">$program.displayName</option>';

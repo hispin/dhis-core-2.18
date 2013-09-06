@@ -34,7 +34,6 @@ import java.util.List;
 
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -64,7 +63,7 @@ public class GetProgramTrackingListAction
     }
 
     private PatientAttributeValueService patientAttributeValueService;
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -74,8 +73,6 @@ public class GetProgramTrackingListAction
     private ProgramStageInstance programStageInstance;
 
     private List<OutboundSms> outboundSms;
-
-    private List<PatientComment> comments;
 
     private String currentUsername;
 
@@ -110,11 +107,6 @@ public class GetProgramTrackingListAction
         return currentUsername;
     }
 
-    public List<PatientComment> getComments()
-    {
-        return comments;
-    }
-
     public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
@@ -134,15 +126,14 @@ public class GetProgramTrackingListAction
         throws Exception
     {
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-        
+
         outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
-       
-        comments = new ArrayList<PatientComment>( programStageInstance.getPatientComments() );
 
         currentUsername = currentUserService.getCurrentUsername();
 
-        attributeValues = patientAttributeValueService.getPatientAttributeValues( programStageInstance.getProgramInstance().getPatient() );
-        
+        attributeValues = patientAttributeValueService.getPatientAttributeValues( programStageInstance
+            .getProgramInstance().getPatient() );
+
         return SUCCESS;
     }
 
