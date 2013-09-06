@@ -10,7 +10,6 @@
 	"blockEntryForm": "$!program.blockEntryForm",
 	"remindCompleted": "$!program.remindCompleted",
 	"generatedByEnrollmentDate": "$!program.generatedByEnrollmentDate",
-	"displayProvidedOtherFacility": "$!program.displayProvidedOtherFacility",
 	"patientReminders":[
 	#foreach($patientReminder in $programStage.patientReminders)
 	  {

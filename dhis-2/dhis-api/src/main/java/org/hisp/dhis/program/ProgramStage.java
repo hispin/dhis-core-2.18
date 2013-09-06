@@ -90,8 +90,6 @@ public class ProgramStage
     private Boolean displayGenerateEventBox = true;
 
     private Boolean captureCoordinates = false;
-    
-    private Boolean displayProvidedOtherFacility;
 
     private Boolean blockEntryForm = false;
 
@@ -186,20 +184,7 @@ public class ProgramStage
     {
         this.blockEntryForm = blockEntryForm;
     }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getDisplayProvidedOtherFacility()
-    {
-        return displayProvidedOtherFacility;
-    }
-
-    public void setDisplayProvidedOtherFacility( Boolean displayProvidedOtherFacility )
-    {
-        this.displayProvidedOtherFacility = displayProvidedOtherFacility;
-    }
-
+    
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )

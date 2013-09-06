@@ -68,12 +68,6 @@
 			<tr><th colspan="2">$i18n.getString( "form_details" )</th></tr>
 			
 			<tr>
-				<td><label>$i18n.getString( "show_provided_provided_elsewhere" )</label></td>
-				<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='true' #if( $programStage.displayProvidedOtherFacility=='true' ) checked #end ></td>
-				<td></td>
-			</tr>
-			
-			<tr>
 				<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
 				<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true' #if( $programStage.blockEntryForm=='true' ) checked #end ></td>
 				<td></td>

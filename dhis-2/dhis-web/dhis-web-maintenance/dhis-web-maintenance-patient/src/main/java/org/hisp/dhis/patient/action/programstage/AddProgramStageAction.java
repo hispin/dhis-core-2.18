@@ -257,13 +257,6 @@ public class AddProgramStageAction
         this.relatedPatient = relatedPatient;
     }
 
-    private Boolean displayProvidedOtherFacility;
-
-    public void setDisplayProvidedOtherFacility( Boolean displayProvidedOtherFacility )
-    {
-        this.displayProvidedOtherFacility = displayProvidedOtherFacility;
-    }
-
     private Boolean generatedByEnrollmentDate;
 
     public void setGeneratedByEnrollmentDate( Boolean generatedByEnrollmentDate )
@@ -299,7 +292,6 @@ public class AddProgramStageAction
         displayGenerateEventBox = (displayGenerateEventBox == null) ? false : displayGenerateEventBox;
         captureCoordinates = (captureCoordinates == null) ? false : captureCoordinates;
         relatedPatient = (relatedPatient == null) ? false : relatedPatient;
-        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
         generatedByEnrollmentDate = (generatedByEnrollmentDate == null) ? false : generatedByEnrollmentDate;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
@@ -318,7 +310,6 @@ public class AddProgramStageAction
         programStage.setValidCompleteOnly( validCompleteOnly );
         programStage.setAutoGenerateEvent( autoGenerateEvent );
         programStage.setCaptureCoordinates( captureCoordinates );
-        programStage.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
         programStage.setBlockEntryForm( blockEntryForm );
         programStage.setRemindCompleted( remindCompleted );
         programStage.setGeneratedByEnrollmentDate( generatedByEnrollmentDate );

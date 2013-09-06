@@ -154,7 +154,7 @@ public class LoadDataEntryAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-    
+
     public void setProgramIndicatorService( ProgramIndicatorService programIndicatorService )
     {
         this.programIndicatorService = programIndicatorService;
@@ -297,8 +297,6 @@ public class LoadDataEntryAction
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-        Boolean displayProvidedOtherFacility = programStage.getDisplayProvidedOtherFacility() == null
-            || !programStage.getDisplayProvidedOtherFacility();
 
         if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_SECTION ) )
         {
@@ -309,8 +307,7 @@ public class LoadDataEntryAction
         else if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_CUSTOM ) )
         {
             customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry(
-                dataEntryForm.getHtmlCode(), null, displayProvidedOtherFacility.toString(), i18n, programStage, null,
-                organisationUnit );
+                dataEntryForm.getHtmlCode(), null, i18n, programStage, null, organisationUnit );
         }
 
         if ( programStageInstance != null )
@@ -347,8 +344,8 @@ public class LoadDataEntryAction
             if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_CUSTOM ) )
             {
                 customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry(
-                    dataEntryForm.getHtmlCode(), patientDataValues, displayProvidedOtherFacility.toString(), i18n,
-                    programStage, programStageInstance, organisationUnit );
+                    dataEntryForm.getHtmlCode(), patientDataValues, i18n, programStage, programStageInstance,
+                    organisationUnit );
             }
 
             // -----------------------------------------------------------------

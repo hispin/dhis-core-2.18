@@ -1,5 +1,10 @@
 #set( $tabIndex = 1 )
 #foreach( $section in $sections )
+	#foreach( $programStageDataElement in $section.programStageDataElements )
+		#if($programStageDataElement.allowProvidedElsewhere == 'true')
+			#set($hasProvideElsewhere = true)
+		#end
+	#end
 	<table class="formSection" width='80%' id='sec_$section.id' >
 		<tr>
 		  <td class='entryScreen'>
@@ -13,7 +18,7 @@
 						<colgroup>
 							<col id="deCol">
 							<col id="entryCol">
-							#if( $programStage.displayProvidedOtherFacility=='true')
+							#if( $hasProvideElsewhere=='true')
 							<col width="5%" />
 							#end
 						</colgroup>
@@ -24,7 +29,7 @@
 								<input type="text" class="sectionFilter" placeholder="$encoder.jsEscape( $i18n.getString( "filter_in_section" ) , "'")" onkeyup="filterInSection($(this));" >
 							</td>                   
 							<th>$i18n.getString( "value" )</th>
-							#if( $programStage.displayProvidedOtherFacility=='true')
+							#if( $hasProvideElsewhere=='true')
 							<th>$i18n.getString( "provided_elsewhere" )</th>
 							#end
 						</tr>
@@ -87,7 +92,7 @@
 										onkeypress="return keyPress(event, this)" tabindex="$tabIndex"/>
 								#end
 							</td> 
-							#if( $programStage.displayProvidedOtherFacility=='true' )
+							
 							<td style='width:20px;' align='center'>
 								#set( $id = $programStageDataElement.programStage.uid + '-' + $programStageDataElement.dataElement.uid + '-facility' )
 								#if( $programStageDataElement.allowProvidedElsewhere == 'true')
@@ -96,7 +101,6 @@
 									</div>
 								#end
 							</td>
-							#end
 						</tr>
 						#set( $tabIndex = $tabIndex + 1 )
 						#end

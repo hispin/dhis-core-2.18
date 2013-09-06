@@ -50,9 +50,8 @@ public interface ProgramDataEntryService
     // ProgramDataEntryService
     // --------------------------------------------------------------------------
 
-    String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, String disabled,
-        I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
-        OrganisationUnit organisationUnit );
+    String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, I18n i18n,
+        ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit );
 
     String prepareDataEntryFormForAdd( String htmlCode, I18n i18n, ProgramStage programStage );
 
