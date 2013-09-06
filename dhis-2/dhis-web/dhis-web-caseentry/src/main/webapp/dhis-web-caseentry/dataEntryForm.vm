@@ -79,7 +79,7 @@
 <tr>
 	<th><label for="postComment">$i18n.getString('post_comment'):</label>
 		<input type="text" class="{validate:{maxlength:160}} criteria" id="commentInput" name='commentInput'
-			style="width:85%" onkeypress="keypressOnComment( event, this );" value="" >
+			style="width:85%" onkeypress="keypressOnComment( event, this );" >
 		<input id="commentButton" name='commentButton' type="button" style='width:40px' value="$i18n.getString('add')" onclick='addComment( byId("commentInput"), $programStageInstance.id )'>
 	</th>
 </tr>

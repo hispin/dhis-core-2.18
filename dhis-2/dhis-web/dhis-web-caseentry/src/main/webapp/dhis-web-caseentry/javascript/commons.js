@@ -1958,7 +1958,7 @@ function addComment( field, programStageInstanceId )
 		return;
 	}
 	
-	jQuery.postUTF8( 'addPatientComment.action',
+	jQuery.postUTF8( 'savePatientComment.action',
 		{
 			programStageInstanceId: programStageInstanceId,
 			commentText: commentText 

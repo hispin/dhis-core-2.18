@@ -87,16 +87,14 @@ public class RemovePatientCommentAction
     public String execute()
     {
         PatientComment patientComment = commentService.getPatientComment( id );
-        
+
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
-        programStageInstance.getPatientComments().remove( patientComment );
-        
         commentService.deletePatientComment( patientComment );
-        
+
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        
+
         return SUCCESS;
     }
 

@@ -798,6 +798,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
             $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
             $( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
+			$( "#entryFormContainer input[id='commentInput']" ).val( data.comment );
 
             $( "input[id='dueDate']" ).val( data.dueDate );
             $( "input[id='executionDate']" ).val( data.executionDate );
@@ -823,22 +824,6 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                 $( '#longitude' ).val( data.longitude );
                 $( '#latitude' ).val( data.latitude );
             }
-
-            if(data.comments.length > 0) {
-                $.each(data.comments, function(idx, item) {
-                    var comment = [
-                        "<tr>",
-                        "<td>" + item.createdDate + "</td>",
-                        "<td>" + item.creator + "</td>",
-						"<td>" + i18n_comment + "</td>",
-                        "<td>" + item.text + "</td>",
-                        "</tr>"
-                    ].join(' ');
-
-                    $( '#commentTB' ).append( comment )
-                });
-            }
-
             _.each( data.dataValues, function ( value, key ) {
                 var fieldId = getProgramStageUid() + '-' + key + '-val';
                 var field = $('#' + fieldId);

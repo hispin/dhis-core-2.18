@@ -537,7 +537,7 @@ public class DefaultProgramInstanceService
                 }
             }
         }
-        
+
         return outboundSmsList;
     }
 
@@ -577,15 +577,12 @@ public class DefaultProgramInstanceService
 
             // Comments
 
-            List<PatientComment> comments = new ArrayList<PatientComment>( programStageInstance.getPatientComments() );
+            PatientComment comment = programStageInstance.getPatientComment();
 
-            for ( PatientComment comment : comments )
-            {
-                grid.addRow();
-                grid.addValue( i18n.getString( "comment" ) + " " + i18n.getString( "on" ) + " "
-                    + format.formatDateTime( comment.getCreatedDate() ) );
-                grid.addValue( comment.getCommentText() );
-            }
+            grid.addRow();
+            grid.addValue( i18n.getString( "comment" ) + " " + i18n.getString( "on" ) + " "
+                + format.formatDateTime( comment.getCreatedDate() ) );
+            grid.addValue( comment.getCommentText() );
 
             // SMS messages
 
