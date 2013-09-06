@@ -29,8 +29,6 @@ package org.hisp.dhis.settings.user.action;
  */
 
 import static org.hisp.dhis.user.UserSettingService.*;
-import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
-import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
 import java.util.Locale;
 
@@ -120,6 +118,13 @@ public class SetGeneralSettingsAction
         this.messageSmsNotification = messageSmsNotification;
     }
 
+    private String displayOptionSetAsRadioButton;
+
+    public void setDisplayOptionSetAsRadioButton( String displayOptionSetAsRadioButton )
+    {
+        this.displayOptionSetAsRadioButton = displayOptionSetAsRadioButton;
+    }
+
     private String message;
 
     public String getMessage()
@@ -143,16 +148,18 @@ public class SetGeneralSettingsAction
     {
         localeManager.setCurrentLocale( getRespectiveLocale( currentLocale ) );
 
-        userSettingService.saveUserSetting( KEY_DB_LOCALE, getRespectiveLocale( StringUtils
-            .trimToNull( currentLocaleDb ) ) );
+        userSettingService.saveUserSetting( KEY_DB_LOCALE,
+            getRespectiveLocale( StringUtils.trimToNull( currentLocaleDb ) ) );
 
         styleManager.setUserStyle( currentStyle );
-        
+
         userSettingService.saveUserSetting( KEY_ANALYSIS_DISPLAY_PROPERTY, analysisDisplayProperty );
-        
+
         userSettingService.saveUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, messageEmailNotification );
 
         userSettingService.saveUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, messageSmsNotification );
+
+        userSettingService.saveUserSetting( KEY_DISPLAY_OPTION_SET_AS_RADIO_BUTTON, displayOptionSetAsRadioButton );
 
         message = i18n.getString( "settings_updated" );
 

@@ -32,6 +32,7 @@ import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATI
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_ANALYSIS_DISPLAY_PROPERTY;
 import static org.hisp.dhis.user.UserSettingService.DEFAULT_ANALYSIS_DISPLAY_PROPERTY;
+import static org.hisp.dhis.user.UserSettingService.KEY_DISPLAY_OPTION_SET_AS_RADIO_BUTTON;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,7 +113,7 @@ public class GetGeneralSettingsAction
     {
         return currentLocale;
     }
-    
+
     private List<Locale> availableLocalesDb;
 
     public List<Locale> getAvailableLocalesDb()
@@ -162,6 +163,13 @@ public class GetGeneralSettingsAction
         return messageSmsNotification;
     }
 
+    private String displayOptionSetAsRadioButton;
+
+    public String getDisplayOptionSetAsRadioButton()
+    {
+        return displayOptionSetAsRadioButton;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -189,7 +197,7 @@ public class GetGeneralSettingsAction
         {
             currentLocale = localeManager.getFallbackLocale();
         }
-        
+
         // ---------------------------------------------------------------------
         // Get available locales in db
         // ---------------------------------------------------------------------
@@ -205,7 +213,7 @@ public class GetGeneralSettingsAction
         } );
 
         currentLocaleDb = i18nService.getCurrentLocale();
-        
+
         // ---------------------------------------------------------------------
         // Get styles
         // ---------------------------------------------------------------------
@@ -213,12 +221,16 @@ public class GetGeneralSettingsAction
         styles = styleManager.getStyles();
 
         currentStyle = styleManager.getCurrentStyle();
-        
-        analysisDisplayProperty = (String) userSettingService.getUserSetting( KEY_ANALYSIS_DISPLAY_PROPERTY, DEFAULT_ANALYSIS_DISPLAY_PROPERTY );
+
+        analysisDisplayProperty = (String) userSettingService.getUserSetting( KEY_ANALYSIS_DISPLAY_PROPERTY,
+            DEFAULT_ANALYSIS_DISPLAY_PROPERTY );
 
         messageEmailNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
 
         messageSmsNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, false );
+
+        displayOptionSetAsRadioButton = (String) userSettingService.getUserSetting(
+            KEY_DISPLAY_OPTION_SET_AS_RADIO_BUTTON, "" );
 
         return SUCCESS;
     }

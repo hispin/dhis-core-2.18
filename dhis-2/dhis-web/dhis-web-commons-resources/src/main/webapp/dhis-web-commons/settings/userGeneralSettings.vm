@@ -7,7 +7,8 @@
 				currentStyle: getFieldValue( 'currentStyle' ),
 				analysisDisplayProperty: getFieldValue( 'analysisDisplayProperty' ),
                 messageEmailNotification: jQuery( '#messageEmailNotification' ).is(':checked' ),
-                messageSmsNotification: jQuery( '#messageSmsNotification' ).is(':checked' )
+                messageSmsNotification: jQuery( '#messageSmsNotification' ).is(':checked' ),
+				displayOptionSetAsRadioButton: getFieldValue( 'displayOptionSetAsRadioButton' )
 			}, function ( json ) {
 				if ( json.response == "success" )
 				{	
@@ -64,6 +65,16 @@
 <option value="name" #if( "name" == $analysisDisplayProperty )selected="selected"#end>$i18n.getString( "name" )</option>
 <option value="shortName" #if( "shortName" == $analysisDisplayProperty )selected="selected"#end>$i18n.getString( "short_name" )</option>
 </select>
+</div>
+
+
+<div class="settingLabel">$i18n.getString( "refer_option_set_fields_in_data_entry_form_as_dropdown_box_or_ratio_button" )</div>
+<div class="setting">
+	<select id="displayOptionSetAsRadioButton" name="displayOptionSetAsRadioButton">
+		<option value="" #if( "" == $displayOptionSetAsRadioButton ) selected="selected" #end>[$i18n.getString( "please_select" )]</option>
+		<option value="dropdown" #if( "dropdown" == $displayOptionSetAsRadioButton ) selected="selected" #end>$i18n.getString( "drowndown_box" )</option>
+		<option value="radio" #if( "radio" == $displayOptionSetAsRadioButton ) selected="selected" #end>$i18n.getString( "radio_button" )</option>
+	</select>
 </div>
 
 <div class="setting">

@@ -29,6 +29,7 @@ package org.hisp.dhis.patient.action.programstage;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patient.PatientReminder;
@@ -256,7 +257,6 @@ public class UpdateProgramStageAction
         this.generatedByEnrollmentDate = generatedByEnrollmentDate;
     }
 
-
     private Boolean blockEntryForm;
 
     public void setBlockEntryForm( Boolean blockEntryForm )
@@ -269,6 +269,13 @@ public class UpdateProgramStageAction
     public void setRemindCompleted( Boolean remindCompleted )
     {
         this.remindCompleted = remindCompleted;
+    }
+
+    private List<Boolean> displayAsRadioButtons = new ArrayList<Boolean>();
+
+    public void setDisplayAsRadioButtons( List<Boolean> displayAsRadioButtons )
+    {
+        this.displayAsRadioButtons = displayAsRadioButtons;
     }
 
     // -------------------------------------------------------------------------
@@ -344,6 +351,7 @@ public class UpdateProgramStageAction
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
             Boolean allowDate = allowDateInFutures.get( i ) == null ? false : allowDateInFutures.get( i );
+            Boolean displayRadioButton = displayAsRadioButtons.get( i ) == null ? false : displayAsRadioButtons.get( i );
 
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
@@ -354,7 +362,8 @@ public class UpdateProgramStageAction
                     this.compulsories.get( i ), i );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
-                programStageDataElement.setAllowDateInFuture( allowDate );
+                programStageDataElement.setAllowDateInFuture( allowDate ); 
+                programStageDataElement.setDisplayAsRadioButton( displayRadioButton );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
             else
@@ -364,6 +373,7 @@ public class UpdateProgramStageAction
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
                 programStageDataElement.setAllowDateInFuture( allowDate );
+                programStageDataElement.setDisplayAsRadioButton( displayRadioButton );
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 
                 programStageDataElements.remove( programStageDataElement );

@@ -92,6 +92,12 @@ function saveOpt( dataElementUid )
     valueSaver.save();
 }
 
+function saveRadio( dataElementUid, value )
+{
+	var valueSaver = new ValueSaver( dataElementUid, value, 'bool', SUCCESS_COLOR );
+    valueSaver.save();
+}
+
 function updateProvidingFacility( dataElementUid, checkField )
 {
 	var programStageUid = byId( 'programStageUid' ).value;
@@ -799,6 +805,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
             $( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
 			$( "#entryFormContainer input[id='commentInput']" ).val( data.comment );
+			$( "#entryFormContainer input[id='displayOptionSetAsRadioButton']" ).val( data.displayOptionSetAsRadioButton );
 
             $( "input[id='dueDate']" ).val( data.dueDate );
             $( "input[id='executionDate']" ).val( data.executionDate );
@@ -985,6 +992,11 @@ function getOptions( uid, query, success ) {
 function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField );
+	if(input.attr('options')=='no')
+	{
+		return;
+	}
+	
 	input.parent().width( input.width() + 50 );
 	var dataElementUid = input.attr('id').split('-')[1];
 	

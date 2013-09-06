@@ -152,6 +152,13 @@ public class AddProgramStageAction
         this.allowProvidedElsewhere = allowProvidedElsewhere;
     }
 
+    private List<Boolean> displayAsRadioButtons = new ArrayList<Boolean>();
+
+    public void setDisplayAsRadioButtons( List<Boolean> displayAsRadioButtons )
+    {
+        this.displayAsRadioButtons = displayAsRadioButtons;
+    }
+
     private Boolean irregular;
 
     public void setIrregular( Boolean irregular )
@@ -343,12 +350,14 @@ public class AddProgramStageAction
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
             Boolean allowDate = allowDateInFutures.get( i ) == null ? false : allowDateInFutures.get( i );
+            Boolean displayRadioButton = displayAsRadioButtons.get( i ) == null ? false : displayAsRadioButtons.get( i );
 
             ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
                 this.compulsories.get( i ), new Integer( i ) );
             programStageDataElement.setAllowProvidedElsewhere( allowed );
             programStageDataElement.setDisplayInReports( displayInReport );
             programStageDataElement.setAllowDateInFuture( allowDate );
+            programStageDataElement.setDisplayAsRadioButton( displayRadioButton );
             programStageDataElementService.addProgramStageDataElement( programStageDataElement );
         }
 

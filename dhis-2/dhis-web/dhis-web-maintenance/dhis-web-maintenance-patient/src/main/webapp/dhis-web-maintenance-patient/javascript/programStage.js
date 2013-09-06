@@ -124,6 +124,15 @@ function selectDataElements()
 			else{
 				html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
 			}
+			
+			if( jQuery(item).attr('valuetype') =='optionset')
+			{
+				html += "<td align='center'><input type='checkbox' name='displayAsRadioButton'></td>";
+			}
+			else{
+				html += "<td align='center'><input type='hidden' name='displayAsRadioButton'></td>";
+			}
+			
 			html += "</tr>";
 			selectedList.append( html );
 			jQuery( item ).remove();
@@ -140,12 +149,22 @@ function selectAllDataElements()
 		html += "<td align='center'><input type='checkbox' name='compulsory'></td>";
 		html += "<td align='center'><input type='checkbox' name='allowProvided'></td>";
 		html += "<td align='center'><input type='checkbox' name='displayInReport'></td>";
+		
 		if( jQuery(item).attr('valuetype') =='date'){
 			html += "<td align='center'><input type='checkbox' name='allowDateInFuture'></td>";
 		}
 		else{
 			html += "<td align='center'><input type='hidden' name='allowDateInFuture'></td>";
 		}
+		
+		if( jQuery(item).attr('valuetype') =='optionset')
+		{
+			html += "<td align='center'><input type='checkbox' name='displayAsRadioButton'></td>";
+		}
+		else{
+			html += "<td align='center'><input type='hidden' name='displayAsRadioButton'></td>";
+		}
+		
 		html += "</tr>";
 		selectedList.append( html );
 		jQuery( item ).remove();

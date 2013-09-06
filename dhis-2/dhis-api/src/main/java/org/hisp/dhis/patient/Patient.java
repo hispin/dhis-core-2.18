@@ -83,6 +83,8 @@ public class Patient
     public static String FIXED_ATTR_INTEGER_AGE = "integerValueOfAge";
     public static String FIXED_ATTR_REGISTRATION_DATE = "registrationDate";
 
+    public static String FIXED_ATTR_FULL_NAME = "fullName";
+
     private String firstName;
 
     private String middleName;
