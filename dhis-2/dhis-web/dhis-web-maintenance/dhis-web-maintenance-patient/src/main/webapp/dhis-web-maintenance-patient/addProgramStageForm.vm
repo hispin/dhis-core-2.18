@@ -120,7 +120,8 @@
 			<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>     
 			<select id="allowProvidedElsewhere" name='allowProvidedElsewhere' multiple="multiple" class="hidden"></select>     
 			<select id="displayInReports" name='displayInReports' multiple="multiple" class="hidden"></select>     
-			<select id="allowDateInFutures" name='allowDateInFutures' multiple="multiple" class="hidden"></select>     
+			<select id="allowDateInFutures" name='allowDateInFutures' multiple="multiple" class="hidden"></select>   
+			<select id="displayAsRadioButtons" name='displayAsRadioButtons' multiple="multiple" class="hidden"></select>      
 		</th>
       </tr>
     </thead>
@@ -155,6 +156,7 @@
 							<th>$i18n.getString( "allow_provided_elsewhere" )</th>
 							<th>$i18n.getString( "display_in_reports" )</th>
 							<th>$i18n.getString( "date_in_future" )</th>
+							<th>$i18n.getString( "display_as_radio_button" )</th>
 					</thead>
 					<tbody id="selectedList"></tbody>
 				</table>

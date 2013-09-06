@@ -11,6 +11,7 @@
 	"shortName": "$!encoder.jsonEncode( ${dataElement.displayShortName} )",
 	"code": "$!encoder.jsonEncode( ${dataElement.code} )",
 	"type": "$!{dataElement.type}",
+	"optionSet": #if($!dataElement.optionSet) "true"  #else "false" #end,
 	"aggregationOperator": "$!{dataElement.aggregationOperator}",
 	"zeroIsSignificant": "$!{dataElement.zeroIsSignificant}",
 	"dataSets": [ #foreach( $dataSet in $dataSets )${dataSet.id}#if( $velocityCount < $dataSets.size() ),#end#end ],

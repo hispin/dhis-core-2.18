@@ -1,5 +1,6 @@
 {
     "currentUsername": "$encoder.jsonEncode( $currentUsername )",
+	"displayOptionSetAsRadioButton": "$!displayOptionSetAsRadioButton" ,
     "id": "$!programStageInstance.id",
     "dueDate": "$format.formatDate( $!programStageInstance.dueDate )",
     "executionDate": "$!format.formatDate( $programStageInstance.executionDate )",

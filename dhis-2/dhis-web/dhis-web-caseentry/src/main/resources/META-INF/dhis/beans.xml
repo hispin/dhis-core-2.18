@@ -111,6 +111,8 @@
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="programIndicatorService"
 			ref="org.hisp.dhis.program.ProgramIndicatorService" />
+		<property name="userSettingService"
+			ref="org.hisp.dhis.user.UserSettingService" />
 	</bean>
 
 	<bean

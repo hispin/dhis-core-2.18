@@ -232,6 +232,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN blockEntryForm" );
         executeSql( "ALTER TABLE program DROP COLUMN remindCompleted" );
         executeSql( "ALTER TABLE program DROP COLUMN displayProvidedOtherFacility" );
+        executeSql( "UPDATE programstage_dataelements SET displayAsRadioButton=false WHERE displayAsRadioButton is null" );
     }
 
     // -------------------------------------------------------------------------

@@ -56,6 +56,7 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 import org.hisp.dhis.program.comparator.ProgramStageSectionSortOrderComparator;
 import org.hisp.dhis.system.util.ValidationUtils;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -117,6 +118,20 @@ public class LoadDataEntryAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private UserSettingService userSettingService;
+
+    public void setUserSettingService( UserSettingService userSettingService )
+    {
+        this.userSettingService = userSettingService;
+    }
+
+    private String displayOptionSetAsRadioButton;
+
+    public String getDisplayOptionSetAsRadioButton()
+    {
+        return displayOptionSetAsRadioButton;
     }
 
     // -------------------------------------------------------------------------
@@ -355,6 +370,9 @@ public class LoadDataEntryAction
             longitude = ValidationUtils.getLongitude( programStageInstance.getCoordinates() );
             latitude = ValidationUtils.getLatitude( programStageInstance.getCoordinates() );
         }
+
+        displayOptionSetAsRadioButton = (String) userSettingService.getUserSetting(
+            UserSettingService.KEY_DISPLAY_OPTION_SET_AS_RADIO_BUTTON, "" );
 
         return SUCCESS;
     }
