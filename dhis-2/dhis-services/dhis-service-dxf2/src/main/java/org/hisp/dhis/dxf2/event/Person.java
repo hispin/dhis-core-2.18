@@ -39,7 +39,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 @JacksonXmlRootElement( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
 public class Person
 {
-    private String patient;
+    private String person;
 
     public Person()
     {
@@ -47,14 +47,14 @@ public class Person
 
     @JsonProperty( required = true )
     @JacksonXmlProperty( isAttribute = true )
-    public String getPatient()
+    public String getPerson()
     {
-        return patient;
+        return person;
     }
 
-    public void setPatient( String patient )
+    public void setPerson( String person )
     {
-        this.patient = patient;
+        this.person = person;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Person
 
         Person person = (Person) o;
 
-        if ( patient != null ? !patient.equals( person.patient ) : person.patient != null ) return false;
+        if ( person != null ? !person.equals( person.person ) : person.person != null ) return false;
 
         return true;
     }
@@ -73,14 +73,14 @@ public class Person
     @Override
     public int hashCode()
     {
-        return patient != null ? patient.hashCode() : 0;
+        return person != null ? person.hashCode() : 0;
     }
 
     @Override
     public String toString()
     {
         return "Person{" +
-            "patient='" + patient + '\'' +
+            "person='" + person + '\'' +
             '}';
     }
 }
