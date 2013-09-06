@@ -186,6 +186,12 @@ public class DefaultPatientService
     }
 
     @Override
+    public Patient getPatient( String uid )
+    {
+        return patientStore.getByUid( uid );
+    }
+
+    @Override
     public Collection<Patient> getAllPatients()
     {
         return patientStore.getAll();

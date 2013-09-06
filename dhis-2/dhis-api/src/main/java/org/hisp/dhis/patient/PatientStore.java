@@ -28,7 +28,7 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
@@ -42,7 +42,7 @@ import java.util.List;
  * @version $Id$
  */
 public interface PatientStore
-    extends GenericStore<Patient>
+    extends GenericIdentifiableObjectStore<Patient>
 {
     String ID = PatientStore.class.getName();
 

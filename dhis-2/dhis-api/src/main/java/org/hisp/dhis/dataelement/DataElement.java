@@ -492,6 +492,9 @@ public class DataElement
         this.domainType = domainType;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getTextType()
     {
         return textType;
@@ -691,6 +694,7 @@ public class DataElement
             domainType = dataElement.getDomainType() == null ? domainType : dataElement.getDomainType();
             type = dataElement.getType() == null ? type : dataElement.getType();
             numberType = dataElement.getNumberType() == null ? numberType : dataElement.getNumberType();
+            textType = dataElement.getTextType() == null ? textType : dataElement.getTextType();
             aggregationOperator = dataElement.getAggregationOperator() == null ? aggregationOperator : dataElement
                 .getAggregationOperator();
             categoryCombo = dataElement.getCategoryCombo() == null ? categoryCombo : dataElement.getCategoryCombo();

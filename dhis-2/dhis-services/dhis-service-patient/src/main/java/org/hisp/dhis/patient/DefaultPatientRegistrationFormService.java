@@ -490,7 +490,7 @@ public class DefaultPatientRegistrationFormService
                 inputHtml += "<option value=\"D\" selected >" + i18n.getString( "declared" ) + "</option>";
                 inputHtml += "<option value=\"A\">" + i18n.getString( "approximated" ) + "</option>";
             }
-            else if ( value.equals( Patient.DOB_TYPE_APPROXIATED + "" ) )
+            else if ( value.equals( Patient.DOB_TYPE_APPROXIMATED + "" ) )
             {
                 inputHtml += "<option value=\"V\">" + i18n.getString( "verified" ) + "</option>";
                 inputHtml += "<option value=\"D\">" + i18n.getString( "declared" ) + "</option>";
@@ -538,7 +538,7 @@ public class DefaultPatientRegistrationFormService
     {
         if ( property.equals( Patient.FIXED_ATTR_AGE ) )
         {
-            property = Patient.FIXED_ATTR_INTERGER_AGE;
+            property = Patient.FIXED_ATTR_INTEGER_AGE;
         }
         property = StringUtils.capitalize( property );
 
