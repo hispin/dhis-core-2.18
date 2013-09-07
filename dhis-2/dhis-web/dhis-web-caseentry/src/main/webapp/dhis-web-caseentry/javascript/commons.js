@@ -1888,7 +1888,7 @@ function sendSmsOnePatientForm()
 		});
 }
 
-function sendSmsOnePatient( field, programStageInstanceId )
+function sendSmsOnePatient( field, id )
 {
 	if(field.value==""){
 		field.style.backgroundColor = ERROR_COLOR;
@@ -1896,10 +1896,17 @@ function sendSmsOnePatient( field, programStageInstanceId )
 		return;
 	}
 	
+	var url = 'sendSMS.action?';
+	if(getFieldValue('sendFromEvent')=="true"){
+		url += "programStageInstanceId=" + id;
+	}
+	else{
+		url += "programInstanceId=" + getFieldValue('programInstanceId');
+	}
+	
 	field.style.backgroundColor = SAVING_COLOR;
-	jQuery.postUTF8( 'sendSMS.action',
+	jQuery.postUTF8( url,
 		{
-			programStageInstanceId: programStageInstanceId,
 			msg: field.value,
 			sendTo: getFieldValue('sendTo')
 		}, function ( json )

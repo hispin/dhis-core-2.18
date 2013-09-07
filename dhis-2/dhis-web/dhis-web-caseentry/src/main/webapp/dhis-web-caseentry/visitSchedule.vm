@@ -88,8 +88,9 @@
 		#end
 		</td>
 		
-		<td valign="top">
+		<td valign="top" colspan='4'>
 			<input type="button" id='updateCommentBtn' name='updateCommentBtn' #if($!programStageInstance.patientComment) value="$i18n.getString( 'update_comment' )" #else value="$i18n.getString( 'save_comment' )" #end style="width:130px" onclick="saveComment($programInstance.id);">
+			<input type="button" id='sendProgramSMSBtn' name='sendProgramSMSBtn' value="$i18n.getString( 'send_message' )" style="width:130px" onclick="setFieldValue('sendFromEvent','false');sendSmsOnePatientForm();">
 		</td>
 	</tr>
 
@@ -187,7 +188,7 @@
 					|| $!programInstance.patient.healthWorker.phoneNumber 
 					|| $!programInstance.patient.healthWorker.organisationUnit.phoneNumber 
 					|| $hasUsers ))
-				<img src="images/send_sms.png" class='img-button' title="$i18n.getString( 'send_message' )" onclick="setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatientForm();"/>
+				<img src="images/send_sms.png" class='img-button' title="$i18n.getString( 'send_message' )" onclick="setFieldValue('sendFromEvent','true');setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatientForm();"/>
 				#end
 				#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
 					<a href="javascript:removeEvent($programStageInstance.id, false)" link="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" id='del_$programStageInstance.id' name='del_$programStageInstance.id' alt='$i18n.getString( "remove" )' #if( $status==1 ) class='hidden' #end></a>
@@ -200,6 +201,7 @@
 	</table>
 	
 	<div id='smsDiv' name="smsDiv" class='hidden'>
+		<input type='hidden' id='sendFromEvent' name='sendFromEvent' value='true'>
 		<table>
 			<tr>
 				<td>$i18n.getString("send_to")</td>
@@ -230,7 +232,7 @@
 			<tr>
 				<td></td>
 				<td>
-					<input type='button' value="$i18n.getString('send')" onclick="sendSmsOnePatient(byId('smsField'),getFieldValue('programStageInstanceId') );">
+					<input type='button' value="$i18n.getString('send')" onclick="var id=getFieldValue('programStageInstanceId');if(getFieldValue('sendFromEvent')=='false'){id=$programInstance.id};sendSmsOnePatient(byId('smsField'),id );">
 					<input type='button' value="$i18n.getString('cancel')" onclick="jQuery('#smsDiv').dialog('close');">
 				</td>
 			</tr>
