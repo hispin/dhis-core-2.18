@@ -2239,7 +2239,15 @@ function saveComment( programInstanceId )
 		}, 
 		function( json ) 
 		{   
-			 $( '#comment' ).css( 'background-color', SUCCESS_COLOR );
+			$( '#comment' ).css( 'background-color', SUCCESS_COLOR );
+			if(getFieldValue('comment')!=''){
+				setFieldValue('updateCommentBtn',i18n_update_comment);
+				showSuccessMessage(i18n_update_success);
+			}
+			else{
+				setFieldValue('updateCommentBtn',i18n_save_comment);
+				showSuccessMessage(i18n_save_success);
+			}
 		});
 }
 
