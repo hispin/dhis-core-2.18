@@ -23,9 +23,11 @@
             <div class="commentHeader">$encoder.htmlEncode( $i18n.getString( "program_enrollment" ) )</div>
         </td>
 		<!-- Comment -->
-		<td style="height:24px" valign="bottom" colspan='3'>
+		<td style="height:24px" valign="bottom" >
             <div class="commentHeader">$i18n.getString( "comment" )</div>
 		</td>
+		<td colspan='2' style="background-color: #e0e0e0; height:26px;">$i18n.getString( "updated_by" ): $!encoder.htmlEncode( $programInstance.patientComment.creator )</td>
+		<td colspan='2' style="background-color: #e0e0e0; height:26px;">$i18n.getString( "updated_date" ): $!format.formatDate( $programInstance.patientComment.createdDate )</td>
     </tr>
    
    <tr>
@@ -71,7 +73,7 @@
 			#foreach( $programStageInstance in $programStageInstances )
 				#if( $!programStageInstance.executionDate 
 					|| $!programStageInstance.outboundSms.size() > 0 
-					|| $!programStageInstance.patientComments.size() > 0 )
+					|| $!programStageInstance.patientComment )
 					
 					#set($allowRemove = 'false')
 				#end
@@ -87,12 +89,8 @@
 		</td>
 		
 		<td valign="top">
-			<input type="button" value="$i18n.getString( 'save_comment' )" style="width:130px" onclick="saveComment($programInstance.id);">
+			<input type="button" id='updateCommentBtn' name='updateCommentBtn' #if($!programStageInstance.patientComment) value="$i18n.getString( 'update_comment' )" #else value="$i18n.getString( 'save_comment' )" #end style="width:130px" onclick="saveComment($programInstance.id);">
 		</td>
-		<td style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_by" ):</td>
-		<td>$!encoder.htmlEncode( $programInstance.patientComment.creator )</td>
-		<td style="background-color: #e0e0e0; height:26px;">$i18n.getString( "stored_date" ):</td>
-		<td>$!format.formatDate( $programInstance.patientComment.createdDate )</td>
 	</tr>
 
 </table>
