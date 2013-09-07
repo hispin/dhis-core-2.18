@@ -322,7 +322,15 @@ function generateTemplateMessageForm()
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
 				+ 	'<td><label>' + i18n_days_before_after_due_date + '</label></td>'
-				+ 	'<td><input type="text" id="daysAllowedSendMessage' + rowId + '" name="daysAllowedSendMessage' + rowId + '" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/></td>'
+				+ 	'<td>'
+				+		'<input type="text" onchange="setRealDays(' + rowId + ')" style="width:100px;" realvalue="" id="daysAllowedSendMessage' + rowId + '" name="daysAllowedSendMessage' + rowId + '" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/> '
+				+ 		i18n_days
+				+		' <select id="time' + rowId + '" name="time' + rowId + '" style="width:100px;" onchange="setRealDays(' + rowId + ')" >'
+				+			'<option value="1">' + i18n_before + '</option>'
+				+			'<option value="-1">' + i18n_after + '</option>'
+				+		'</select> '
+				+		i18n_scheduled_date
+				+   ' </td>'
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
 				+ 	'<td><label>' + i18n_recipients + '</label></td>'
@@ -378,9 +386,11 @@ function whenToSendOnChange(index)
 	var whenToSend = getFieldValue('whenToSend' + index );
 	if(whenToSend==2){
 		disable('daysAllowedSendMessage' + index );
+		disable('time' + index );
 	}
 	else{
 		enable('daysAllowedSendMessage' + index );
+		enable('time' + index );
 	}
 }
 function showHideUserGroup()
@@ -428,4 +438,12 @@ function getMessageLength(rowId)
 	{
 		jQuery('#templateMessage' + rowId ).removeAttr('maxlength');
 	}
+}
+
+function setRealDays(rowId)
+{
+	var daysAllowedSendMessage = jQuery("#daysAllowedSendMessage" + rowId);
+	var time = jQuery("#time" + rowId + " option:selected ").val();
+	daysAllowedSendMessage.attr("realvalue", time * eval(daysAllowedSendMessage).val());
+	var aasdf= 0;
 }
