@@ -217,7 +217,7 @@
 					<td><label>$i18n.getString( "send_when_to" )</label></td>
 					<td>
 						<select type="text" id="whenToSend$index" name="whenToSend$index" class="whenToSend" onchange='whenToSendOnChange($index)' >
-							<option value="" >$i18n.getString("scheduled")</option>
+							<option value="" >$i18n.getString("days_scheduled")</option>
 							<option value="2" #if($!reminder.whenToSend==2) selected #end >$i18n.getString("complete_event")</option>
 						</select>
 					</td>
