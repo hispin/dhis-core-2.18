@@ -232,7 +232,8 @@ function showAddPatientForm( programId, patientId, relatedProgramId )
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('migrationPatientDiv');
-	hideById('patientDashboard');
+	setInnerHTML('addRelationshipDiv','');
+	setInnerHTML('patientDashboard','');
 	
 	jQuery('#loaderDiv').show();
 	jQuery('#editPatientDiv').load('showAddPatientForm.action',
