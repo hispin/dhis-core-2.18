@@ -137,4 +137,35 @@
 	setFieldValue('startDueDate','');
 	setFieldValue('endDueDate','');
 	jQuery('#emptyProgramOption').text('[' + '$i18n.getString("view_all")' + ']');
+	
+	
+	jQuery(document).ready(function($) {
+		if (window.history && window.history.pushState) {
+			$(window).on('popstate', function() {
+			  var hashLocation = location.hash;
+			  var hashSplit = hashLocation.split("#!/");
+			  var hashName = hashSplit[1];
+
+			  if (hashName !== '') {
+				var hash = window.location.hash;
+				if (hash === '') {
+				  window.location.href="patient.action";
+				}
+			  }
+			});
+			window.history.pushState('patient', null, './#patient');
+	}
+	
+	$( "#orgUnitTree" ).one( "ouwtLoaded", function () {
+        var def = $.Deferred();
+        var promise = def.promise();
+        promise = promise.then( function () {
+            selection.setListenerFunction( organisationUnitSelected );
+        } );
+
+        def.resolve();
+    } );
+
+});
+	
 </script>
