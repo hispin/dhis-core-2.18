@@ -35,6 +35,8 @@ import java.util.Set;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientReminderService;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.SmsSender;
@@ -84,6 +86,13 @@ public class SendSmsAction
         this.patientReminderService = patientReminderService;
     }
 
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -100,6 +109,13 @@ public class SendSmsAction
     public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
+    }
+
+    private Integer programInstanceId;
+
+    public void setProgramInstanceId( Integer programInstanceId )
+    {
+        this.programInstanceId = programInstanceId;
     }
 
     private String msg;
@@ -131,6 +147,24 @@ public class SendSmsAction
     public String execute()
         throws Exception
     {
+        if ( programStageInstanceId != null )
+        {
+            sendSMSToEvent();
+        }
+        else if ( programInstanceId != null )
+        {
+            sendSMSToProgram();
+        }
+
+        return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private String sendSMSToEvent()
+    {
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
@@ -155,10 +189,11 @@ public class SendSmsAction
                 outboundSmsList = new ArrayList<OutboundSms>();
             }
             outboundSmsList.add( outboundSms );
+
             programStageInstance.setOutboundSms( outboundSmsList );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
-            message = i18n.getString( "message_is_sent" );
+            message = i18n.getString( "message_is_sent" + " " + phoneNumbers );
+            return ERROR;
         }
         catch ( SmsServiceException e )
         {
@@ -166,8 +201,45 @@ public class SendSmsAction
 
             return ERROR;
         }
-
-        return SUCCESS;
     }
 
+    private String sendSMSToProgram()
+    {
+        ProgramInstance programInstance = programInstanceService
+            .getProgramInstance( programInstanceId );
+
+        PatientReminder patientReminder = new PatientReminder();
+        patientReminder.setTemplateMessage( msg );
+        patientReminder.setSendTo( sendTo );
+
+        Set<String> phoneNumbers = patientReminderService.getPhonenumbers( patientReminder, programInstance.getPatient() );
+
+        try
+        {
+            OutboundSms outboundSms = new OutboundSms();
+            outboundSms.setMessage( msg );
+            outboundSms.setRecipients( phoneNumbers );
+            outboundSms.setSender( currentUserService.getCurrentUsername() );
+            smsSender.sendMessage( outboundSms, null );
+
+            List<OutboundSms> outboundSmsList = programInstance.getOutboundSms();
+            if ( outboundSmsList == null )
+            {
+                outboundSmsList = new ArrayList<OutboundSms>();
+            }
+            outboundSmsList.add( outboundSms );
+
+            programInstance.setOutboundSms( outboundSmsList );
+            programInstanceService.updateProgramInstance( programInstance );
+            message = i18n.getString( "message_is_sent" + " " + phoneNumbers );
+
+            return SUCCESS;
+        }
+        catch ( SmsServiceException e )
+        {
+            message = e.getMessage();
+
+            return ERROR;
+        }
+    }
 }

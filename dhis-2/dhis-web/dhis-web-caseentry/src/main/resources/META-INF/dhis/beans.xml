@@ -1090,6 +1090,8 @@
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientReminderService" ref="org.hisp.dhis.patient.PatientReminderService" />
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.reminder.SendSmsToListAction"
