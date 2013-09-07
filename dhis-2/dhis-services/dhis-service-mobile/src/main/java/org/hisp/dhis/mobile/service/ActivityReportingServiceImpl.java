@@ -605,7 +605,14 @@ public class ActivityReportingServiceImpl
 
             }
 
-            programStageInstance.setExecutionDate( new Date() );
+            if ( PeriodUtil.stringToDate( mobileProgramStage.getReportDate() ) != null )
+            {
+                programStageInstance.setExecutionDate( PeriodUtil.stringToDate( mobileProgramStage.getReportDate() ) );
+            }
+            else
+            {
+                programStageInstance.setExecutionDate( new Date() );
+            }
 
             if ( programStageInstance.getProgramStage().getProgramStageDataElements().size() > dataElements.size() )
             {
@@ -1046,6 +1053,18 @@ public class ActivityReportingServiceImpl
             mobileProgramStage.setId( programStageInstance.getId() );
             mobileProgramStage.setName( eachProgramStage.getName() );
 
+            // get report date
+            if ( programStageInstance.getExecutionDate() != null )
+            {
+                mobileProgramStage.setReportDate( PeriodUtil.dateToString( programStageInstance.getExecutionDate() ) );
+            }
+            else
+            {
+                mobileProgramStage.setReportDate( "" );
+            }
+
+            mobileProgramStage.setReportDateDescription( programStageInstance.getProgramStage()
+                .getReportDateDescription() );
             // is repeatable
             mobileProgramStage.setRepeatable( eachProgramStage.getIrregular() );
 
@@ -1113,7 +1132,20 @@ public class ActivityReportingServiceImpl
         {
             org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement mobileDataElement = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement();
             mobileDataElement.setId( programStageDataElement.getDataElement().getId() );
-            mobileDataElement.setName( programStageDataElement.getDataElement().getName() );
+
+            String dataElementName;
+
+            if ( programStageDataElement.getDataElement().getFormName() != null
+                || !programStageDataElement.getDataElement().getFormName().trim().equals( "" ) )
+            {
+                dataElementName = programStageDataElement.getDataElement().getFormName();
+            }
+            else
+            {
+                dataElementName = programStageDataElement.getDataElement().getName();
+            }
+
+            mobileDataElement.setName( dataElementName );
             mobileDataElement.setType( programStageDataElement.getDataElement().getType() );
 
             // problem
@@ -1800,21 +1832,24 @@ public class ActivityReportingServiceImpl
             patientIdentifierSet.add( systemGenerateIdentifier );
         }
 
-        for ( org.hisp.dhis.api.mobile.model.PatientAttribute paAtt : patientAttributesMobile )
+        if ( patientAttributesMobile != null )
         {
+            for ( org.hisp.dhis.api.mobile.model.PatientAttribute paAtt : patientAttributesMobile )
+            {
 
-            org.hisp.dhis.patient.PatientAttribute patientAttribute = patientAttributeService
-                .getPatientAttributeByName( paAtt.getName() );
+                org.hisp.dhis.patient.PatientAttribute patientAttribute = patientAttributeService
+                    .getPatientAttributeByName( paAtt.getName() );
 
-            patientAttributeSet.add( patientAttribute );
+                patientAttributeSet.add( patientAttribute );
 
-            PatientAttributeValue patientAttributeValue = new PatientAttributeValue();
+                PatientAttributeValue patientAttributeValue = new PatientAttributeValue();
 
-            patientAttributeValue.setPatient( patientWeb );
-            patientAttributeValue.setPatientAttribute( patientAttribute );
-            patientAttributeValue.setValue( paAtt.getValue() );
-            patientAttributeValues.add( patientAttributeValue );
+                patientAttributeValue.setPatient( patientWeb );
+                patientAttributeValue.setPatientAttribute( patientAttribute );
+                patientAttributeValue.setValue( paAtt.getValue() );
+                patientAttributeValues.add( patientAttributeValue );
 
+            }
         }
 
         patientWeb.setIdentifiers( patientIdentifierSet );

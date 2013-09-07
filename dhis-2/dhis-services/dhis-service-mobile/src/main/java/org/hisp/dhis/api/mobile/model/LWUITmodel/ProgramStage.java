@@ -44,6 +44,10 @@ public class ProgramStage
 {
     private String clientVersion;
 
+    private String reportDate;
+
+    private String reportDateDescription;
+
     private boolean isRepeatable;
 
     private boolean isCompleted;
@@ -114,11 +118,37 @@ public class ProgramStage
         this.isSingleEvent = isSingleEvent;
     }
 
+    public String getReportDate()
+    {
+        return reportDate;
+    }
+
+    public void setReportDate( String reportDate )
+    {
+        this.reportDate = reportDate;
+    }
+
+    public String getReportDateDescription()
+    {
+        return reportDateDescription;
+    }
+
+    public void setReportDateDescription( String reportDateDescription )
+    {
+        this.reportDateDescription = reportDateDescription;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
         super.serialize( dout );
+        if ( this.reportDate == null )
+        {
+            reportDate = "";
+        }
+        dout.writeUTF( this.reportDate );
+        dout.writeUTF( this.reportDateDescription );
         dout.writeBoolean( this.isRepeatable() );
         dout.writeBoolean( this.isCompleted() );
         dout.writeBoolean( this.isSingleEvent );
@@ -141,6 +171,8 @@ public class ProgramStage
         throws IOException
     {
         super.deSerialize( dint );
+        this.setReportDate( dint.readUTF() );
+        this.setReportDateDescription( dint.readUTF() );
         this.setRepeatable( dint.readBoolean() );
         this.setCompleted( dint.readBoolean() );
         this.setSingleEvent( dint.readBoolean() );
