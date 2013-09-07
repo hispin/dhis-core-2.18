@@ -357,7 +357,11 @@ function generateTemplateMessageForm()
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
 				+	'<td><label>' + i18n_message + '</label></td>'
-				+	'<td><textarea id="templateMessage' + rowId + '" name="templateMessage' + rowId + '" style="width:320px" class="templateMessage {validate:{required:true, rangelength:[3,160]}}"></textarea></td>'
+				+	'<td><textarea id="templateMessage' + rowId + '" name="templateMessage' + rowId + '" style="width:320px" class="templateMessage {validate:{required:true}}"></textarea></td>'
+				+ '</tr>'
+				+ '<tr>'
+				+	'<td></td>'
+				+ 	'<td id="messageLengthTD' + rowId + '"></td>'
 				+ '</tr>';
 
 	jQuery('#programStageMessage').append( contend );
@@ -399,3 +403,29 @@ function onchangeUserGroup( id )
 		showById( 'tr'+id );
 	}
 };
+
+
+function getMessageLength(rowId)
+{
+	var message = getFieldValue( 'templateMessage' + rowId );
+	var length = 0;
+	var idx = message.indexOf('{');
+	while( idx >=0 ){
+		length += message.substr(0,idx).length;
+		var end = message.indexOf('}');
+		if(end>=0){
+			message = message.substr(end + 1, message.length);
+			idx = message.indexOf('{');
+		}
+	}
+	length += message.length;
+	setInnerHTML('messageLengthTD' + rowId, length + " " + i18n_characters_without_params);
+	if( length>=160 )
+	{
+		jQuery('#templateMessage' + rowId ).attr('maxlength', 160);
+	}
+	else
+	{
+		jQuery('#templateMessage' + rowId ).removeAttr('maxlength');
+	}
+}

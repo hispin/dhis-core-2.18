@@ -274,7 +274,6 @@ function moveDownPropertyList()
 function generateTemplateMessageForm()
 {
 	var rowId = jQuery('.daysAllowedSendMessage').length + 1;
-	
 	var contend = '<tr name="tr' + rowId + '" class="listAlternateRow" >'
 				+ 	'<td colspan="2">' + i18n_reminder + ' ' + rowId + '<a href="javascript:removeTemplateMessageForm('+ rowId +')"> ( '+ i18n_remove_reminder + ' )</a></td>'
 				+ '</tr>'
@@ -335,7 +334,11 @@ function generateTemplateMessageForm()
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
 				+	'<td><label>' + i18n_message + '</label></td>'
-				+	'<td><textarea id="templateMessage' + rowId + '" name="templateMessage' + rowId + '" style="width:320px" class="templateMessage {validate:{required:true, rangelength:[3,160]}}"></textarea></td>'
+				+	'<td><textarea onkeypress="getMessageLength( ' + rowId + ');" id="templateMessage' + rowId + '" name="templateMessage' + rowId + '" style="width:320px" class="templateMessage {validate:{required:true}}"></textarea></td>'
+				+ '</tr>'
+				+ '<tr>'
+				+	'<td></td>'
+				+ 	'<td id="messageLengthTD' + rowId + '"></td>'
 				+ '</tr>';
 
 	jQuery('#programStageMessage').append( contend );
@@ -363,6 +366,7 @@ function insertParams( paramValue, rowId )
 {
 	var templateMessage = paramValue;
 	insertTextCommon('templateMessage' + rowId, templateMessage);
+	getMessageLength(rowId );
 }
 
 function whenToSendOnChange(index)
@@ -375,5 +379,30 @@ function whenToSendOnChange(index)
 	else{
 		disable('dateToCompare' + index );
 		disable('daysAllowedSendMessage' + index );
+	}
+}
+
+function getMessageLength(rowId)
+{
+	var message = getFieldValue( 'templateMessage' + rowId );
+	var length = 0;
+	var idx = message.indexOf('{');
+	while( idx >=0 ){
+		length += message.substr(0,idx).length;
+		var end = message.indexOf('}');
+		if(end>=0){
+			message = message.substr(end + 1, message.length);
+			idx = message.indexOf('{');
+		}
+	}
+	length += message.length;
+	setInnerHTML('messageLengthTD' + rowId, length + " " + i18n_characters_without_params);
+	if( length>=160 )
+	{
+		jQuery('#templateMessage' + rowId ).attr('maxlength', 160);
+	}
+	else
+	{
+		jQuery('#templateMessage' + rowId ).removeAttr('maxlength');
 	}
 }
