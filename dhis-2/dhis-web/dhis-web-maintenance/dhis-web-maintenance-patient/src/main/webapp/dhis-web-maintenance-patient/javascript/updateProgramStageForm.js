@@ -3,23 +3,8 @@ jQuery( document ).ready( function()
 {
 	showHideUserGroup();
 	validation( 'updateProgramStageForm', function( form ){ 
-		if( duplicate==true) 
-			return false;
-		else
-			form.submit();
+		form.submit();
 	}, function(){
-		duplicate = false;
-		var COLOR_RED = '#ff8a8a';
-		jQuery(".daysAllowedSendMessage").each( function( i, a ){ 
-			jQuery(".daysAllowedSendMessage").each( function(j, b){ 
-				if( i!=j && a.value==b.value){
-					jQuery( a ).css( 'background-color', COLOR_RED );
-					jQuery( b ).css( 'background-color', COLOR_RED );
-					duplicate = true;
-				}
-			});
-		});
-		
 		var selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
 		selectedDataElementsValidator.empty();
 		
