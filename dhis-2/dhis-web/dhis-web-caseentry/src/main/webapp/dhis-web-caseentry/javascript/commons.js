@@ -1905,6 +1905,7 @@ function sendSmsOnePatient( field, programStageInstanceId )
 		}, function ( json )
 		{
 			if ( json.response == "success" ) {
+				jQuery('#smsDiv').dialog('close');
 				var date = new Date();
 				var currentTime = date.getHours() + ":" + date.getMinutes();
 				jQuery('[name=commentTB]').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
@@ -1920,11 +1921,13 @@ function sendSmsOnePatient( field, programStageInstanceId )
 				jQuery('#enrollmentDate').width('325');
 				jQuery('#dateOfIncident').width('325');
 				jQuery('#removeProgram').remove();
+				showSuccessMessage(json.message);
 			}
 			else {
 				field.style.backgroundColor = ERROR_COLOR;
 				hideById('smsSuccess');
 				setInnerHTML('smsError', json.message);
+				showErrorMessage(json.message);
 			}
 			
 			if( jQuery("#messageTB tr.hidden").length > 0 ){
