@@ -125,24 +125,13 @@ public class UnregisteredSMSListener
             {
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
-                UserCredentials anonymousUser = userService.getUserCredentialsByUsername( "system" );
+                UserCredentials anonymousUser = userService.getUserCredentialsByUsername( "anonymous" );
 
                 if ( anonymousUser == null )
                 {
                     anonymousUser = userService.getUserCredentialsByUsername( "admin" );
                 }
-                /*
-                 * MessageConversation conversation = new MessageConversation(
-                 * smsCommand.getName(), anonymousUser.getUser() );
-                 * 
-                 * conversation.addMessage( new Message( message, null,
-                 * anonymousUser.getUser() ) );
-                 * 
-                 * for ( User receiver : receivers ) { boolean read = false;
-                 * 
-                 * conversation.addUserMessage( new UserMessage( receiver, read
-                 * ) ); }
-                 */
+                
                 // forward to user group by SMS, E-mail, DHIS conversation
 
                 messageService.sendMessage( smsCommand.getName(), message, null, receivers, anonymousUser.getUser(),
@@ -184,4 +173,9 @@ public class UnregisteredSMSListener
         this.smsMessageSender = smsMessageSender;
     }
 
+    public void setIncomingSmsService( IncomingSmsService incomingSmsService )
+    {
+        this.incomingSmsService = incomingSmsService;
+    }
+    
 }
