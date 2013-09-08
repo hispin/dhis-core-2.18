@@ -1883,6 +1883,23 @@ public class ActivityReportingServiceImpl
             List<Patient> tempPatients = (List<Patient>) patientService.getPatients( orgUnit, program, null, null );
             patients.retainAll( tempPatients );
         }
+        
+        if ( programId != 0 && orgUnitId != 0 )
+        {
+            boolean isProgramBelongToOrgUnit = false;
+            for( Program program: programService.getPrograms( orgUnit ))
+            {
+                if ( program.getId() == programId )
+                {
+                    isProgramBelongToOrgUnit = true;
+                    break;
+                }
+            }
+            if ( isProgramBelongToOrgUnit == false )
+            {
+                throw NotAllowedException.NO_PROGRAM_BELONG_ORGUNIT;
+            }
+        }
 
         if ( patients.size() > 1 )
         {
