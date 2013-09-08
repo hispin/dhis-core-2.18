@@ -61,6 +61,9 @@ public interface ActivityReportingService
     public Patient findPatient( int patientId )
         throws NotAllowedException;
 
+    public Patient findPatientInAdvanced( String keyword, int orgUnitId, int programId )
+        throws NotAllowedException;
+
     public String saveProgramStage( ProgramStage programStage, int patientId, int orgUnitId )
         throws NotAllowedException;
 

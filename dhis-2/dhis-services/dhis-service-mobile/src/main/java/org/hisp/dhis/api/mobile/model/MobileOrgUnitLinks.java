@@ -82,6 +82,8 @@ public class MobileOrgUnitLinks
     private String getVariesInfoUrl;
 
     private String findLatestPersonUrl;
+    
+    private String findPatientInAdvancedUrl;
 
     @XmlAttribute
     public int getId()
@@ -295,6 +297,16 @@ public class MobileOrgUnitLinks
         this.findLatestPersonUrl = findLatestPersonUrl;
     }
 
+    public String getFindPatientInAdvancedUrl()
+    {
+        return findPatientInAdvancedUrl;
+    }
+
+    public void setFindPatientInAdvancedUrl( String findPatientInAdvancedUrl )
+    {
+        this.findPatientInAdvancedUrl = findPatientInAdvancedUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
 
         throws IOException
@@ -319,6 +331,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.downloadAnonymousProgramUrl );
         dataOutputStream.writeUTF( this.findProgramUrl );
         dataOutputStream.writeUTF( this.findLatestPersonUrl );
+        dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -344,6 +357,7 @@ public class MobileOrgUnitLinks
         this.downloadAnonymousProgramUrl = dataInputStream.readUTF();
         this.findProgramUrl = dataInputStream.readUTF();
         this.findLatestPersonUrl = dataInputStream.readUTF();
+        this.findPatientInAdvancedUrl = dataInputStream.readUTF();
     }
 
     @Override
@@ -402,5 +416,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.downloadAnonymousProgramUrl );
         dataOutputStream.writeUTF( this.findProgramUrl );
         dataOutputStream.writeUTF( this.findLatestPersonUrl );
+        dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
     }
 }

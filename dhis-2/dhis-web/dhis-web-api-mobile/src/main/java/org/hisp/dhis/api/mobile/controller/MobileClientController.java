@@ -156,6 +156,7 @@ public class MobileClientController
         orgUnit.setDownloadAnonymousProgramUrl( getUrl( request, unit.getId(), "downloadAnonymousProgramUrl" ) );
         orgUnit.setFindProgramUrl( getUrl( request, unit.getId(), "findProgram" ) );
         orgUnit.setFindLatestPersonUrl( getUrl( request, unit.getId(), "findLatestPerson" ) );
+        orgUnit.setFindPatientInAdvancedUrl( getUrl( request, unit.getId(), "findPatientInAdvanced" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );

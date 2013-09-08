@@ -343,6 +343,14 @@ public class MobileOrganisationUnitController
     {
         return activityReportingService.findPatient( keyword, id );
     }
+    
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findPatientInAdvanced/{programId}" )
+    @ResponseBody
+    public Patient findPatientInAdvanced( @PathVariable int programId, @PathVariable int id, @RequestHeader( "name" ) String keyword )
+        throws NotAllowedException
+    {
+        return activityReportingService.findPatientInAdvanced( keyword, id, programId );
+    }
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/uploadProgramStage/{patientId}" )
     @ResponseBody

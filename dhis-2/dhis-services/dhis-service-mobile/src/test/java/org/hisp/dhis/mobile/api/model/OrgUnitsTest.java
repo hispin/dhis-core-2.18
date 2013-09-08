@@ -93,6 +93,7 @@ public class OrgUnitsTest
         unit.setDownloadAnonymousProgramUrl( "downloadAnonymousProgramUrl" );
         unit.setFindProgramUrl( "findProgramUrl" );
         unit.setFindLatestPersonUrl( "findLatestPersonUrl" );
+        unit.setFindPatientInAdvancedUrl( "findPatientInAdvancedUrl" );
         return unit;
     }
 }
