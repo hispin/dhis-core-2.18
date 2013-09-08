@@ -6,6 +6,7 @@ dhis2.db.currentItem;
 dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
+dhis2.db.currentMaxType = [];
 
 // TODO remove position from template
 // TODO support table as link and embedded
@@ -47,7 +48,9 @@ dhis2.db.tmpl = {
 	dashboardIntro: "<li><div class='dasboardIntro'>${i18n_add}</div>" +
 			        "<div class='dasboardTip'>${i18n_arrange}</div></li>",
 	
-	hitHeader: "<li class='hitHeader'>${title}</li>",
+	hitHeader: "<li class='hitHeader'>${title} &nbsp; " +
+	           "<a id='hitMore-${type}' href='javascript:dhis2.db.searchMore( \"${type}\" )'>See more hits &raquo;</a>" +
+	           "<a id='hitFewer-${type}' href='javascript:dhis2.db.searchFewer( \"${type}\" )' style='display:none'>&laquo; See fewer hits</a></li>",
 	
 	hitItem: "<li><a class='viewLink' href='${link}'><img src='../images/${img}.png'>${name}</a>" +
 	         "{{if canManage}}<a class='addLink' href='javascript:dhis2.db.addItemContent( \"${type}\", \"${id}\" )'>Add</a>{{/if}}</li>",
@@ -523,6 +526,18 @@ dhis2.db.renderReportTable = function( tableId, itemId )
 // Search
 //------------------------------------------------------------------------------
 
+dhis2.db.searchMore = function( type )
+{
+	dhis2.db.currentMaxType.push( type );
+	dhis2.db.search();
+}
+
+dhis2.db.searchFewer = function( type )
+{
+	dhis2.db.currentMaxType.splice( $.inArray( type, dhis2.db.currentMaxType ), 1 );
+	dhis2.db.search();
+}
+
 dhis2.db.search = function()
 {
 	var query = $.trim( $( "#searchField" ).val() );
@@ -532,13 +547,40 @@ dhis2.db.search = function()
 		dhis2.db.hideSearch();
 		return false;
 	}
-	
-	var hits = $.get( "../api/dashboards/q/" + query, function( data ) {
+		
+	var hits = $.get( "../api/dashboards/q/" + query + dhis2.db.getMaxParams(), function( data ) {
 		var $h = $( "#hitDiv" );
 		dhis2.db.renderSearch( data, $h );
+		dhis2.db.setHitLinks();
 		$h.show();
 		$( "#searchField" ).focus();
 	} );		
+}
+
+dhis2.db.setHitLinks = function()
+{
+	for ( var i = 0; i < dhis2.db.currentMaxType.length; i++ )
+	{
+		var type = dhis2.db.currentMaxType[i];
+		
+		$( "#hitMore-" + type ).hide();
+		$( "#hitFewer-" + type ).show();
+	}
+}
+
+dhis2.db.getMaxParams = function()
+{
+	var params = "?";
+	
+	if ( dhis2.db.currentMaxType.length )
+	{		
+		for ( var i = 0; i < dhis2.db.currentMaxType.length; i++ )
+		{
+			params += "max=" + dhis2.db.currentMaxType[i] + "&";
+		}
+	}
+	
+	return params.substring( 0, ( params.length - 1 ) );
 }
 
 dhis2.db.renderSearch = function( data, $h )
@@ -550,7 +592,7 @@ dhis2.db.renderSearch = function( data, $h )
 	{
 		if ( data.userCount > 0 )
 		{
-			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Users" } ) );
+			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Users", "type": "users" } ) );
 			
 			for ( var i in data.users )
 			{
@@ -561,7 +603,7 @@ dhis2.db.renderSearch = function( data, $h )
 		
 		if ( data.chartCount > 0 )
 		{
-			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Charts" } ) );
+			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Charts", "type": "chart" } ) );
 			
 			for ( var i in data.charts )
 			{
@@ -572,7 +614,7 @@ dhis2.db.renderSearch = function( data, $h )
 		
 		if ( data.mapCount > 0 )
 		{
-			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Maps" } ) );
+			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Maps", "type": "map" } ) );
 			
 			for ( var i in data.maps )
 			{
@@ -583,7 +625,7 @@ dhis2.db.renderSearch = function( data, $h )
 		
 		if ( data.reportTableCount > 0 )
 		{
-			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Pivot tables" } ) );
+			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Pivot tables", "type": "reportTable" } ) );
 			
 			for ( var i in data.reportTables )
 			{
@@ -594,7 +636,7 @@ dhis2.db.renderSearch = function( data, $h )
 		
 		if ( data.reportCount > 0 )
 		{
-			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Standard reports" } ) );
+			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Standard reports", "type": "reports" } ) );
 			
 			for ( var i in data.reports )
 			{
@@ -605,7 +647,7 @@ dhis2.db.renderSearch = function( data, $h )
 		
 		if ( data.resourceCount > 0 )
 		{
-			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Resources" } ) );
+			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Resources", "type": "resources" } ) );
 			
 			for ( var i in data.resources )
 			{
@@ -616,7 +658,7 @@ dhis2.db.renderSearch = function( data, $h )
 		
 		if ( data.patientTabularReportCount > 0 )
 		{
-			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Tabular reports" } ) );
+			$h.append( $.tmpl( dhis2.db.tmpl.hitHeader, { "title": "Tabular reports", "type": "tabularReports" } ) );
 			
 			for ( var i in data.patientTabularReports )
 			{
