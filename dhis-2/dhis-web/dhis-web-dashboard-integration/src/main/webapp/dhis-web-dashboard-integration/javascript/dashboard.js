@@ -537,6 +537,7 @@ dhis2.db.search = function()
 		var $h = $( "#hitDiv" );
 		dhis2.db.renderSearch( data, $h );
 		$h.show();
+		$( "#searchField" ).focus();
 	} );		
 }
 
