@@ -223,7 +223,7 @@ public class TableAlteror
         executeSql( "update program set useBirthDateAsIncidentDate = false where useBirthDateAsIncidentDate is null");
         executeSql( "update program set useBirthDateAsEnrollmentDate = false where useBirthDateAsEnrollmentDate is null");
         executeSql( "update program set selectEnrollmentDatesInFuture = false where selectEnrollmentDatesInFuture is null");
-        executeSql( " ");
+        executeSql( "update program set selectIncidentDatesInFuture = false where selectIncidentDatesInFuture is null");
         executeSql( "update validationcriteria set description = name where description is null or description='' ");
         executeSql( "update programstage set generatedByEnrollmentDate = false where generatedByEnrollmentDate is null ");
         executeSql( "update programstage set blockEntryForm = false where blockEntryForm is null ");
