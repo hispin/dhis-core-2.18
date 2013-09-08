@@ -1890,12 +1890,6 @@ public class ActivityReportingServiceImpl
 
             DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
-            /*
-             * Iterator iterator = patients.iterator(); int i = 0; while ( i <
-             * 10 ) { Patient patient = (Patient) iterator.next(); patientsInfo
-             * += patient.getId() + "/" + patient.getFullName() + "/" +
-             * dateFormat.format( patient.getBirthDate() ) + "$"; i++; }
-             */
             int i = 1;
             for ( Patient each : patients )
             {
