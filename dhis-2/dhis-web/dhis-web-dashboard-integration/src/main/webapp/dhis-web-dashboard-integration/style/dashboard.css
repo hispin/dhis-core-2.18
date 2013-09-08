@@ -273,7 +273,12 @@
   font-family: LiberationSansBold;
 }
 
-#hitDiv a:hover
+.hitHeader a:hover
+{
+  text-decoration: none;
+}
+
+.viewLink:hover, .addLink:hover
 {
   text-decoration: none;
   background-color: #eee;
