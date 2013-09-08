@@ -29,6 +29,8 @@ package org.hisp.dhis.mobile.service;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,9 +41,11 @@ import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Required;
 
 public class DefaultProgramService
@@ -54,6 +58,13 @@ public class DefaultProgramService
     private org.hisp.dhis.program.ProgramService programService;
 
     private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
+    
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // ProgramService
@@ -73,13 +84,19 @@ public class DefaultProgramService
     
     public List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> getProgramsLWUIT( OrganisationUnit unit )
     {
+        Collection<org.hisp.dhis.program.Program> programByUnit = programService.getPrograms( unit );
+        
+        Collection<org.hisp.dhis.program.Program> programByCurrentUser = new HashSet<org.hisp.dhis.program.Program>( programService.getProgramsByCurrentUser());
+        
+        programByCurrentUser.retainAll( programByUnit );
+        
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> programs = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Program>();
 
-        for ( org.hisp.dhis.program.Program program : programService.getPrograms( unit ) )
+        for ( org.hisp.dhis.program.Program program : programByCurrentUser )
         {
             programs.add( getProgramLWUIT( program.getId()) );
         }
-
+        
         return programs;
     }
 
@@ -189,7 +206,13 @@ public class DefaultProgramService
             //programStage = i18n( i18nService, locale, programStage );
 
             org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage prStg = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
-
+            
+            //add report date
+            
+            prStg.setReportDate( "" );
+            
+            prStg.setReportDateDescription( programStage.getReportDateDescription() );
+            
             prStg.setId( programStage.getId() );
 
             prStg.setName( programStage.getName() );

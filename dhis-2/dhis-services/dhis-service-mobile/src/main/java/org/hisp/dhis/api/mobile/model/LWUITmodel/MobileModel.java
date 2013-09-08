@@ -60,7 +60,6 @@ public class MobileModel
         else
         {
             dout.writeInt( programs.size() );
-            System.out.println( programs.size() );
             for ( Program prog : programs )
             {
                 prog.setClientVersion( DataStreamSerializable.TWO_POINT_TEN );

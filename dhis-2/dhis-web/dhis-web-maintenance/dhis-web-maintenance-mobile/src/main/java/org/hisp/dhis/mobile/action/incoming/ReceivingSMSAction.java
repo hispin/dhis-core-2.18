@@ -40,6 +40,7 @@ import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,13 @@ public class ReceivingSMSAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
+    }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     @Autowired
@@ -140,6 +148,13 @@ public class ReceivingSMSAction
     {
         return total;
     }
+    
+    private User user;
+    
+    public User getUser()
+    {
+        return user;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -148,6 +163,8 @@ public class ReceivingSMSAction
     public String execute()
         throws Exception
     {
+        this.user = currentUserService.getCurrentUser();
+        
         ModemGatewayConfig gatewayConfig = (ModemGatewayConfig) smsConfigurationManager
             .checkInstanceOfGateway( ModemGatewayConfig.class );
 

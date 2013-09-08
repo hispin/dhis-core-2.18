@@ -265,8 +265,8 @@ public class DefaultPatientService
         patients.addAll( getPatientsByNames( searchText, 0, Integer.MAX_VALUE ) );
         patients.addAll( getPatientsByPhone( searchText, 0, Integer.MAX_VALUE ) );
 
-        // if an orgunit has been selected, filter out every patient that has a
-        // different ou
+        // if an org-unit has been selected, filter out every patient that has a
+        // different org-unit
         if ( orgUnitId != 0 )
         {
             Set<Patient> toRemoveList = new HashSet<Patient>();

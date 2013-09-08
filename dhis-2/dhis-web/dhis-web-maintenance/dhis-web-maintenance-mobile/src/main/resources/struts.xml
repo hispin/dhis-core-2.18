@@ -40,6 +40,7 @@
     <action name="deleteReceiveSMS" class="org.hisp.dhis.mobile.action.incoming.DeleteReceiveSMSAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_MOBILE_DELETE_SMS</param>
     </action>
     
     <action name="updateReceiveSMS" class="org.hisp.dhis.mobile.action.incoming.UpdateReceiveSMSAction">
@@ -51,6 +52,7 @@
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_MOBILE_DELETE_SMS</param>
     </action>
     
     <action name="reimport" class="org.hisp.dhis.mobile.action.incoming.ReimportSMSAction">

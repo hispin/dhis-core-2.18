@@ -68,6 +68,7 @@ public class OrgUnitTest
         unit.setDownloadAnonymousProgramUrl( "downloadAnonymousProgramUrl" );
         unit.setFindProgramUrl( "findProgramUrl" );
         unit.setFindLatestPersonUrl( "findLatestPersonUrl" );
+        unit.setFindPatientInAdvancedUrl( "findPatientInAdvanced" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );
