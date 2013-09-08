@@ -767,6 +767,7 @@
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService"/>
   </bean>
   
   <bean id="org.hisp.dhis.sms.DHISMessageAlertListener" class="org.hisp.dhis.sms.DHISMessageAlertListener">
@@ -881,6 +882,12 @@
     <property name="skipInTests" value="true" />
   </bean>
   
+  <bean id="org.hisp.dhis.user.UserDefaultPopulator" class="org.hisp.dhis.user.UserDefaultPopulator">
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="runlevel" value="5" />
+    <property name="skipInTests" value="true" />
+  </bean>
+  
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="targetObject" ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
     <property name="targetMethod" value="addStartupRoutines" />
@@ -897,6 +904,7 @@
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
           <ref local="org.hisp.dhis.startup.ExpressionUpgrader" />
           <ref local="org.hisp.dhis.startup.ConfigurationPopulator" />
+          <ref local="org.hisp.dhis.user.UserDefaultPopulator" />
         </list>
       </list>
     </property>
