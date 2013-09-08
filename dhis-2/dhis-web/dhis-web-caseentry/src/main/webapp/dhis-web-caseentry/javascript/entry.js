@@ -804,12 +804,13 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
             $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
             $( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
-			$( "#entryFormContainer input[id='commentInput']" ).val( data.comment );
 			$( "#entryFormContainer input[id='displayOptionSetAsRadioButton']" ).val( data.displayOptionSetAsRadioButton );
 
             $( "input[id='dueDate']" ).val( data.dueDate );
             $( "input[id='executionDate']" ).val( data.executionDate );
-
+			$( "#commentInput" ).val( data.comment );
+			$( "#commentInput" ).height(data.comment.split('\n').length * 15  + 12);
+			
             if ( data.program.type != '1' ) {
                 hideById( 'newEncounterBtn' );
             }

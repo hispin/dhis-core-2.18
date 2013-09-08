@@ -78,10 +78,13 @@
 
 <table id='entryPostComment' class='listTable hidden' style="width:100%;">
 <tr>
-	<th><label for="postComment">$i18n.getString('post_comment'):</label>
-		<input type="text" class="{validate:{maxlength:160}} criteria" id="commentInput" name='commentInput'
-			style="width:85%" onkeypress="keypressOnComment( event, this );" >
-		<input id="commentButton" name='commentButton' type="button" style='width:40px' value="$i18n.getString('add')" onclick='addComment( byId("commentInput"), $programStageInstance.id )'>
+	<th width="10%"><label for="postComment">$i18n.getString('post_comment'):</label></th>
+	<th width="85%">
+		<textarea type="text" class="criteria" id="commentInput" name='commentInput'
+			style="width:100%;height:12px;" onkeyup='commentKeyup()'></textarea>
+	</th>
+	<th width="5%">
+		<input id="commentButton" name='commentButton' type="button" style='width:40px;' value="$i18n.getString('add')" onclick='addComment( byId("commentInput"), $programStageInstance.id )'>
 	</th>
 </tr>
 </table>
@@ -124,4 +127,5 @@
 			disable('validateBtn');
 		}
 	}
+	
 </script>

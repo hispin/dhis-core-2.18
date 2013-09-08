@@ -2028,6 +2028,13 @@ function removeComment( programStageInstanceId, commentId )
 	}
 }
 
+function commentKeyup(){
+	var commentInput = byId('commentInput');
+	while($(commentInput).outerHeight() < commentInput.scrollHeight + parseFloat($(commentInput).css("borderTopWidth")) + parseFloat($(commentInput).css("borderBottomWidth"))) {
+		$(commentInput).height($(commentInput).height()+10);
+	};
+}
+
 function removeMessage(programInstanceId, programStageInstanceId, smsId )
 {
 	var result = window.confirm( i18n_confirmation_delete_message);
