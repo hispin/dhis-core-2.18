@@ -35,7 +35,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -111,7 +110,6 @@ public class GeoToolsMapGenerationService
         InternalMap internalMap = new InternalMap();
         
         List<MapView> mapViews = new ArrayList<MapView>( map.getMapViews() );
-        Collections.reverse( mapViews );
         
         for ( MapView mapView : mapViews )
         {        
