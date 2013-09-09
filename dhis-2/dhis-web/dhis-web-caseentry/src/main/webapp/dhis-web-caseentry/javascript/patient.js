@@ -222,7 +222,7 @@ function addPatient( programId, related, isContinue )
 {		
 	var patient = new Patient();
 	var params = 'programId=' + programId + '&' + getParamsForDiv('patientForm');
-	patient.add(programId,related,params);
+	patient.add(programId,related,params, isContinue );
     return false;
 }
 

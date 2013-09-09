@@ -119,8 +119,10 @@
 		setFieldValue('selectedOrgunitText', i18n_please_select_village );
 	#elseif( $status == 2 )
 		setFieldValue('selectedOrgunitText', '$organisationUnit.name' );
+		enable('listPatientBtn');
 	#else
 		setFieldValue('selectedOrgunitText', '$organisationUnit.name' );
+		enable('listPatientBtn');
 		showById('searchDiv');
 	#end
 	
@@ -138,24 +140,6 @@
 	setFieldValue('endDueDate','');
 	jQuery('#emptyProgramOption').text('[' + '$i18n.getString("view_all")' + ']');
 	
-	
-	jQuery(document).ready(function($) {
-		if (window.history && window.history.pushState) {
-			$(window).on('popstate', function() {
-			  var hashLocation = location.hash;
-			  var hashSplit = hashLocation.split("#!/");
-			  var hashName = hashSplit[1];
-
-			  if (hashName !== '') {
-				var hash = window.location.hash;
-				if (hash === '') {
-				  window.location.href="patient.action";
-				}
-			  }
-			});
-			window.history.pushState('patient.action#patient', null, './patient.action#patient');
-	}
-	
 	$( "#orgUnitTree" ).one( "ouwtLoaded", function () {
         var def = $.Deferred();
         var promise = def.promise();
@@ -165,7 +149,5 @@
 
         def.resolve();
     } );
-
-});
 	
 </script>
