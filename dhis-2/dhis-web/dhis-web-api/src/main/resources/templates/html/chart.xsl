@@ -123,4 +123,13 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="d:chart" mode="short">
+    <xsl:if test="@name">
+      <h3>Chart</h3>
+      <table class="chart">
+        <xsl:apply-templates select="." mode="row"/>
+      </table>
+    </xsl:if>
+  </xsl:template>
+
 </xsl:stylesheet>

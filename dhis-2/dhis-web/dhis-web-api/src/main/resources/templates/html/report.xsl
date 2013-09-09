@@ -51,11 +51,22 @@
   </div>
   </xsl:template>
 
+  <xsl:template match="d:reports" mode="short">
+    <xsl:if test="count(child::*) > 0">
+      <h3>Reports</h3>
+      <table class="reports">
+        <xsl:apply-templates select="child::*" mode="row"/>
+      </table>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template match="d:reportTable" mode="short">
-    <h3>ReportTable</h3>
-    <table class="reportTable">
-      <xsl:apply-templates select="." mode="row"/>
-    </table>
+    <xsl:if test="@name">
+      <h3>ReportTable</h3>
+      <table class="reportTable">
+        <xsl:apply-templates select="." mode="row"/>
+      </table>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>

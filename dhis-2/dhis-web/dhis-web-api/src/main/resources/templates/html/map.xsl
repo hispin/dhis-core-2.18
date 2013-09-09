@@ -28,4 +28,11 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="d:map" mode="short">
+    <h3>Map</h3>
+    <table class="map">
+      <xsl:apply-templates select="." mode="row"/>
+    </table>
+  </xsl:template>
+
 </xsl:stylesheet>

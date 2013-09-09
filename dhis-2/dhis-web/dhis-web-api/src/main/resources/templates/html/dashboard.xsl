@@ -37,14 +37,8 @@
   </xsl:template>
 
   <xsl:template match="d:dashboardItem" mode="short">
-    <table>
-      <tr>
-        <td>Type</td>
-        <td><xsl:value-of select="d:type" /></td>
-      </tr>
-    </table>
-
-    <xsl:apply-templates select="d:users|d:documents|d:reportTables|d:reports" mode="short" />
+    <h4 style="border-bottom: 1px solid black; width: 800px;">Dashboard Item (<xsl:value-of select="d:type" />)</h4>
+    <xsl:apply-templates select="d:users|d:documents|d:reportTables|d:reports|d:reportTable|d:chart" mode="short" />
   </xsl:template>
 
 </xsl:stylesheet>

@@ -44,4 +44,13 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="d:documents" mode="short">
+    <xsl:if test="count(child::*) > 0">
+      <h3>Documents</h3>
+      <table class="documents">
+        <xsl:apply-templates select="child::*" mode="row"/>
+      </table>
+    </xsl:if>
+  </xsl:template>
+
 </xsl:stylesheet>
