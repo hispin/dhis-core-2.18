@@ -1490,7 +1490,7 @@ Ext.onReady( function() {
 						this.currentValue = this.getValue();
 
 						var value = this.getValue(),
-							url = value ? pt.init.contextPath + '/api/reportTables/query/' + value + '.json?links=false' : null,
+							url = value ? pt.init.contextPath + '/api/reportTables/query/' + value + '.json?viewClass=sharing&links=false' : null,
 							store = pt.store.reportTable;
 
 						store.page = 1;
@@ -1504,7 +1504,7 @@ Ext.onReady( function() {
 			text: PT.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? pt.init.contextPath + '/api/reportTables/query/' + value + '.json?links=false' : null,
+					url = value ? pt.init.contextPath + '/api/reportTables/query/' + value + '.json?viewClass=sharing&links=false' : null,
 					store = pt.store.reportTable;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -1516,7 +1516,7 @@ Ext.onReady( function() {
 			text: PT.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? pt.init.contextPath + '/api/reportTables/query/' + value + '.json?links=false' : null,
+					url = value ? pt.init.contextPath + '/api/reportTables/query/' + value + '.json?viewClass=sharing&links=false' : null,
 					store = pt.store.reportTable;
 
 				store.page = store.page + 1;
