@@ -1924,7 +1924,7 @@ Ext.onReady( function() {
 			});
 
 			window = Ext.create('Ext.window.Window', {
-				title: DV.i18n.share + ' ' + DV.i18n.interpretation + '<span style="font-weight:normal; font-size:11px"> (' + dv.favorite.name + ') </span>',
+				title: dv.favorite.name,
 				layout: 'fit',
 				//iconCls: 'dv-window-title-interpretation',
 				width: 500,
