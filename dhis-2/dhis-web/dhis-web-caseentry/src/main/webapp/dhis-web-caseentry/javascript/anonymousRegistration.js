@@ -350,11 +350,13 @@ function organisationUnitSelected( orgUnits, orgUnitNames ) {
     hideById( 'minimized-advanced-search' );
     hideById( 'listDiv' );
     hideById( 'programName' );
+
     setFieldValue( "listAll", true );
     setFieldValue( "startDate", '' );
     setFieldValue( "endDate", '' );
     setFieldValue( "programStageId", '' );
     setFieldValue( "programId", '' );
+
     jQuery( '#advancedSearchTB [name=searchText]' ).val( '' );
 
     setFieldValue( 'orgunitId', orgUnits[0] );
