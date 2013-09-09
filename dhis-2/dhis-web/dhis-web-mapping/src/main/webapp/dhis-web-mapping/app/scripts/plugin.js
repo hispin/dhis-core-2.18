@@ -33,7 +33,7 @@ Ext.onReady( function() {
 			afterRender,
 			getViews,
 			createViewport,
-			gis,
+			//gis,
 			initialize;
 
 		validateConfig = function() {
@@ -254,40 +254,37 @@ Ext.onReady( function() {
 				return;
 			}
 
-			gis = GIS.core.getInstance({
-				baseUrl: config.url,
-				el: config.el
-			});
-
 			Ext.data.JsonP.request({
-				url: gis.init.contextPath + gis.conf.url.path_gis + 'initialize.action',
+				url: '../initialize.action',
 				success: function(r) {
-					gis.init = r;
+					gis = GIS.core.getInstance(r);
+					
+					gis.el = config.el;
+
+					GIS.core.createSelectHandlers(gis, gis.layer.boundary);
+					GIS.core.createSelectHandlers(gis, gis.layer.thematic1);
+					GIS.core.createSelectHandlers(gis, gis.layer.thematic2);
+					GIS.core.createSelectHandlers(gis, gis.layer.thematic3);
+					GIS.core.createSelectHandlers(gis, gis.layer.thematic4);
+					GIS.core.createSelectHandlers(gis, gis.layer.facility);
+
+					gis.map = {
+						id: config.id,
+						longitude: config.longitude,
+						latitude: config.latitude,
+						zoom: config.zoom,
+						mapViews: getViews()
+					};
+
+					gis.viewport = createViewport();
+
+					gis.olmap.mask = Ext.create('Ext.LoadMask', gis.viewport.centerRegion.getEl(), {
+						msg: 'Loading'
+					});
+
+					GIS.core.MapLoader(gis).load();
 				}
 			});
-
-			GIS.core.createSelectHandlers(gis, gis.layer.boundary);
-			GIS.core.createSelectHandlers(gis, gis.layer.thematic1);
-			GIS.core.createSelectHandlers(gis, gis.layer.thematic2);
-			GIS.core.createSelectHandlers(gis, gis.layer.thematic3);
-			GIS.core.createSelectHandlers(gis, gis.layer.thematic4);
-			GIS.core.createSelectHandlers(gis, gis.layer.facility);
-
-			gis.map = {
-				id: config.id,
-				longitude: config.longitude,
-				latitude: config.latitude,
-				zoom: config.zoom,
-				mapViews: getViews()
-			};
-
-			gis.viewport = createViewport();
-
-			gis.olmap.mask = Ext.create('Ext.LoadMask', gis.viewport.centerRegion.getEl(), {
-				msg: 'Loading'
-			});
-
-			GIS.core.MapLoader(gis).load();
 		}();
 	};
 
