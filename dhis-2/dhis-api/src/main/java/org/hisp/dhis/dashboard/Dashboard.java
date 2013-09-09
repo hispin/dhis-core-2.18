@@ -159,7 +159,7 @@ public class Dashboard
     }
 
     @JsonProperty
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getItemCount()
     {
         return items == null ? 0 : items.size();
@@ -171,8 +171,8 @@ public class Dashboard
 
     @JsonProperty( value = "items" )
     @JsonView( { DetailedView.class } )
-    @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "item", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "dashboardItems", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "dashboardItem", namespace = DxfNamespaces.DXF_2_0)
     public List<DashboardItem> getItems()
     {
         return items;

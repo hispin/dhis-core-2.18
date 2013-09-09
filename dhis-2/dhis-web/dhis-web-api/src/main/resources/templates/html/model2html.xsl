@@ -58,6 +58,7 @@
   <xsl:include href="program.xsl" />
   <xsl:include href="programStage.xsl" />
   <xsl:include href="event.xsl" />
+  <xsl:include href="dashboard.xsl" />
 
   <!-- Config elements -->
 
