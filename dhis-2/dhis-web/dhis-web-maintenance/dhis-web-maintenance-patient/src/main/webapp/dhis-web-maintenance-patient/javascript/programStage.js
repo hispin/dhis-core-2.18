@@ -94,7 +94,7 @@ function showProgramStageDetails( programStageId )
 		for(var i in json.programStage.patientReminders){
 			var index = eval(i) + 1;
 			templateMessage += "<p class='bold'>" + i18n_template_reminder_message + " " + index + "</p>";
-			templateMessage += "<p class='bold'>" + i18n_days_before_after_due_date + ":</p>" ;
+			templateMessage += "<p class='bold'>" + i18n_send_message + ":</p>" ;
 			templateMessage	+= "<p>" + json.programStage.patientReminders[i].daysAllowedSendMessage + "</p>";
 			templateMessage	+= "<p class='bold'>" + i18n_message + ":</p>";
 			templateMessage	+= "<p>" + json.programStage.patientReminders[i].templateMessage + "</p>";
@@ -321,7 +321,7 @@ function generateTemplateMessageForm()
 				+	'</td>'
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
-				+ 	'<td><label>' + i18n_days_before_after_due_date + '</label></td>'
+				+ 	'<td><label>' + i18n_send_message + '</label></td>'
 				+ 	'<td>'
 				+		'<input type="text" onchange="setRealDays(' + rowId + ')" style="width:100px;" realvalue="" id="daysAllowedSendMessage' + rowId + '" name="daysAllowedSendMessage' + rowId + '" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/> '
 				+ 		i18n_days

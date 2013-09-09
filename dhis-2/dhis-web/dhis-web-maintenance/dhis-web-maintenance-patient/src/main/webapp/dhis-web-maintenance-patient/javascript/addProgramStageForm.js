@@ -39,42 +39,43 @@ jQuery( document ).ready( function()
 		
 		jQuery("#selectedList").find("tr").each( function( i, item ){ 
 			
-			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'></option>" );
+			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
 			
 			var compulsory = jQuery( item ).find( "input[name='compulsory']:first");
 			var checked = compulsory.attr('checked') ? true : false;
-			compulsories.append( "<option value='" + checked + "' selected='true'></option>" );
+			compulsories.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 			
 			var allowProvided = jQuery( item ).find( "input[name='allowProvided']:first");
 			checked = allowProvided.attr('checked') ? true : false;
-			allowProvidedElsewhere.append( "<option value='" + checked + "' selected='true'></option>" );
+			allowProvidedElsewhere.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 			
 			var displayInReport = jQuery( item ).find( "input[name='displayInReport']:first");
 			checked = displayInReport.attr('checked') ? true : false;
-			displayInReports.append( "<option value='" + checked + "' selected='true'></option>" );
+			displayInReports.append( "<option value='" + checked + "' selected='true'><" + checked + "/option>" );
 		
 			var allowDateInFuture = jQuery( item ).find( "input[name='allowDateInFuture']:first");
 			checked = allowDateInFuture.attr('checked') ? true : false;
-			allowDateInFutures.append( "<option value='" + checked + "' selected='true'></option>" );
+			allowDateInFutures.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 			
 			var displayAsRadioButton = jQuery( item ).find( "input[name='displayAsRadioButton']:first");
 			checked = displayAsRadioButton.attr('checked') ? true : false;
-			displayAsRadioButtons.append( "<option value='" + checked + "' selected='true'></option>" );
+			displayAsRadioButtons.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 		});
 		jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
-			daysAllowedSendMessages.append( "<option value='" + jQuery(item).attr('realvalue') + "' selected='true'></option>" );
+			var days = (jQuery(item).attr('realvalue')==undefined) ? 0 : jQuery(item).attr('realvalue');
+			daysAllowedSendMessages.append( "<option value='" + days + "' selected='true'>" + days + "</option>" );
 		});
 		jQuery(".templateMessage").each( function( i, item ){ 
-			templateMessages.append( "<option value='" + item.value + "' selected='true'></option>" );
+			templateMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		jQuery(".sendTo").each( function( i, item ){ 
-			sendTo.append( "<option value='" + item.value + "' selected='true'></option>" );
+			sendTo.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		jQuery(".whenToSend").each( function( i, item ){ 
-			whenToSend.append( "<option value='" + item.value + "' selected='true'></option>" );
+			whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		jQuery(".userGroup").each( function( i, item ){ 
-			userGroup.append( "<option value='" + item.value + "' selected='true'></option>" );
+			userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 	});
 	
