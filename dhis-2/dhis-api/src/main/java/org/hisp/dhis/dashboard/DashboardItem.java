@@ -55,7 +55,7 @@ import java.util.List;
 public class DashboardItem
     extends BaseIdentifiableObject
 {
-    public static final int MAX_CONTENT = 9;
+    public static final int MAX_CONTENT = 8;
 
     public static final String TYPE_CHART = "chart";
     public static final String TYPE_MAP = "map";
