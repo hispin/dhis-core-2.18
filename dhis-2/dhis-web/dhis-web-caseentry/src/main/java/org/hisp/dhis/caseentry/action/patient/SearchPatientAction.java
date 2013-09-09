@@ -194,7 +194,7 @@ public class SearchPatientAction
             }
             else
             {
-                organisationUnit = null;
+                orgunits = null;
             }
 
             total = patientService.countSearchPatients( searchTexts, orgunits, null );
