@@ -496,7 +496,7 @@ Ext.onReady( function() {
 				isLoaded: false,
 				pageSize: 10,
 				page: 1,
-				defaultUrl: gis.init.contextPath + gis.conf.url.path_api + 'maps.json?links=false',
+				defaultUrl: gis.init.contextPath + gis.conf.url.path_api + 'maps.json?viewClass=sharing&links=false',
 				loadStore: function(url) {
 					this.proxy.url = url || this.defaultUrl;
 

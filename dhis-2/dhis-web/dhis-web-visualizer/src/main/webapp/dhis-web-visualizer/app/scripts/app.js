@@ -587,7 +587,7 @@ Ext.onReady( function() {
                 isLoaded: false,
                 pageSize: 10,
                 page: 1,
-                defaultUrl: init.contextPath + '/api/charts.json?links=false',
+                defaultUrl: init.contextPath + '/api/charts.json?viewClass=sharing&links=false',
                 loadStore: function(url) {
                     this.proxy.url = url || this.defaultUrl;
 
