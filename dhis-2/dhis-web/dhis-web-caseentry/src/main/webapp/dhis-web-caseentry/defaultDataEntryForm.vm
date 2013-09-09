@@ -71,7 +71,7 @@
 				</script> 
 			#elseif($hasOptionSet=='true')
 				#if(($displayOptionSetAsRadioButton=='dropdown') || ( $displayOptionSetAsRadioButton=='' && $programStageDataElement.displayAsRadioButton =='false' ) )
-					<input id='$id' name="entryfield" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
+					<input id='$id' name="entryfield" data-optionset="$!programStageDataElement.dataElement.optionSet.uid" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
 				#elseif(($displayOptionSetAsRadioButton=='radio' && $programStageDataElement.displayAsRadioButton =='true' ) || ( $displayOptionSetAsRadioButton=='' && $programStageDataElement.displayAsRadioButton =='true' ) )
 					<table style='width:100%'>
 						<tr>

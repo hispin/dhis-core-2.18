@@ -769,8 +769,11 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                     $( '#latitude' ).val( obj.coordinate.latitude );
                 }
 
-                if ( obj.executionDate.completed !== undefined ) {
-                    $( "#entryFormContainer input[id='completed']" ).val( obj.executionDate.completed );
+                if(obj.executionDate) {
+                    $( "input[id='executionDate']" ).val( obj.executionDate.executionDate );
+                    $("#entryFormContainer input[id='completed']").val(obj.executionDate.completed);
+                    $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
+                    $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
                 }
             }
 
@@ -832,6 +835,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                 $( '#longitude' ).val( data.longitude );
                 $( '#latitude' ).val( data.latitude );
             }
+
             _.each( data.dataValues, function ( value, key ) {
                 var fieldId = getProgramStageUid() + '-' + key + '-val';
                 var field = $('#' + fieldId);
@@ -936,8 +940,12 @@ function runValidation()
 }
 
 function searchOptionSet( uid, query, success ) {
+    console.log(uid);
+
     if(window.DAO !== undefined && window.DAO.store !== undefined ) {
+        console.log('searching in store');
         DAO.store.get( 'optionSets', uid ).done( function ( obj ) {
+            console.log(obj);
             if(obj) {
                 var options = [];
 
@@ -1005,7 +1013,7 @@ function autocompletedField( idField )
 		delay: 0,
 		minLength: 0,
 		source: function( request, response ){
-            searchOptionSet( dataElementUid, input.val(), response );
+            searchOptionSet( input.data('optionset'), input.val(), response );
 		},
 		minLength: 0,
 		select: function( event, ui ) {
