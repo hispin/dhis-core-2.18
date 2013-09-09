@@ -49,15 +49,6 @@ function dobTypeOnChange( container ){
 		$('#' + container+ ' [id=birthDate]').datepicker("destroy");
 		jQuery('#' + container + ' [id=birthDate]').css("display","none");
 	}
-	else 
-	{
-		jQuery('#' + container + ' [id=age]').rules("remove");
-		jQuery('#' + container + ' [id=age]').css("display","");
-		
-		jQuery('#' + container + ' [id=birthDate]').rules("remove","required");
-		$('#' + container+ ' [id=birthDate]').datepicker("destroy");
-		jQuery('#' + container + ' [id=birthDate]').css("display","none");
-	}
 }
 
 // -----------------------------------------------------------------------------

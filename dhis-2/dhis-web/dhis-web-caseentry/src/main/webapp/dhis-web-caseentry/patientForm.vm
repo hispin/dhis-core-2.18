@@ -273,6 +273,7 @@
 	if(getFieldValue('dobType')=='A'){
 		showById('age');
 		hideById('birthDate');
+		setFieldValue('birthDate',"");
 	}
 	else{
 		hideById('age');
