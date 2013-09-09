@@ -1103,6 +1103,7 @@ Ext.onReady( function() {
 		};
 
 		loadOrganisationUnits = function(view) {
+console.log(view);			
 			Ext.data.JsonP.request({
 				url: gis.init.contextPath + gis.conf.url.path_gis + 'getGeoJson.action',
 				params: {
