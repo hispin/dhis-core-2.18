@@ -849,9 +849,29 @@ public class ActivityReportingServiceImpl
         List<org.hisp.dhis.patient.PatientAttribute> atts;
 
         patientModel.setId( patient.getId() );
-        patientModel.setFirstName( patient.getFirstName() );
-        patientModel.setLastName( patient.getLastName() );
-        patientModel.setMiddleName( patient.getMiddleName() );
+        
+        String firstName = "";
+        String lastName = "";
+        String middleName = "";
+        
+        if ( patient.getFirstName() != null )
+        {
+            firstName = patient.getFirstName();
+        }
+        
+        if ( patient.getLastName() != null )
+        {
+            lastName = patient.getLastName();
+        }
+        
+        if ( patient.getMiddleName() != null )
+        {
+            middleName = patient.getMiddleName();
+        }
+        
+        patientModel.setFirstName( firstName );
+        patientModel.setLastName( lastName );
+        patientModel.setMiddleName( middleName );
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         patientModel.setAge( period.getYears() );
@@ -1914,8 +1934,15 @@ public class ActivityReportingServiceImpl
                 {
                     break;
                 }
-                patientsInfo += each.getId() + "/" + each.getFullName() + "/" + dateFormat.format( each.getBirthDate() )
+                if ( each.getBirthDate() != null )
+                {
+                    patientsInfo += each.getId() + "/" + each.getFullName() + "/" + dateFormat.format( each.getBirthDate() )
                     + "$";
+                }
+                else
+                {
+                    patientsInfo += each.getId() + "/" + each.getFullName() + "/DOB$";
+                }
                 i++;
             }
 
