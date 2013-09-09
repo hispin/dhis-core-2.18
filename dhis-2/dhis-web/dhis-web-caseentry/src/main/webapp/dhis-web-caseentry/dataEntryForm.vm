@@ -64,9 +64,9 @@
 		
 	</table>
 	</table>
-	
+
 	<br>
-	
+
 	#if( $customDataEntryFormCode )
 		#parse( "/dhis-web-caseentry/customDataEntryForm.vm" )
 	#elseif( $sections && $sections.size() > 0 )
