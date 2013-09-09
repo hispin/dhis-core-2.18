@@ -40,6 +40,7 @@ import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.common.view.SharingView;
 import org.hisp.dhis.common.view.ShortNameView;
 import org.hisp.dhis.common.view.UuidView;
 
@@ -92,6 +93,7 @@ public class JacksonUtils
 
         viewClasses.put( "default", BasicView.class );
         viewClasses.put( "basic", BasicView.class );
+        viewClasses.put( "sharing", SharingView.class );
         viewClasses.put( "shortName", ShortNameView.class );
         viewClasses.put( "detailed", DetailedView.class );
         viewClasses.put( "uuid", UuidView.class );
