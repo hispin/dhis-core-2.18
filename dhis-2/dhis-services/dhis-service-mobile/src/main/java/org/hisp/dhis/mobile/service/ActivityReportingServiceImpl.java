@@ -954,7 +954,7 @@ public class ActivityReportingServiceImpl
                 mobileProgramList.add( getMobileProgram( patient, each ) );
             }
         }
-
+        
         patientModel.setPrograms( mobileProgramList );
         /*
          * List<Integer> mobileProgramIDList = new ArrayList<Integer>(); for (
@@ -1060,75 +1060,78 @@ public class ActivityReportingServiceImpl
     private List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> getMobileProgramStages( Patient patient,
         ProgramInstance programInstance )
     {
-
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStages = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
         for ( ProgramStage eachProgramStage : programInstance.getProgram().getProgramStages() )
         {
             ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
                 programInstance, eachProgramStage );
-            org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
-            List<org.hisp.dhis.api.mobile.model.LWUITmodel.Section> mobileSections = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Section>();
-            mobileProgramStage.setId( programStageInstance.getId() );
-            mobileProgramStage.setName( eachProgramStage.getName() );
-
-            // get report date
-            if ( programStageInstance.getExecutionDate() != null )
+            
+            //only for Mujhu database, because there is null program stage instance. This condition should be removed in the future
+            if( programStageInstance != null )
             {
-                mobileProgramStage.setReportDate( PeriodUtil.dateToString( programStageInstance.getExecutionDate() ) );
-            }
-            else
-            {
-                mobileProgramStage.setReportDate( "" );
-            }
+                org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
+                List<org.hisp.dhis.api.mobile.model.LWUITmodel.Section> mobileSections = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Section>();
+                mobileProgramStage.setId( programStageInstance.getId() );
+                mobileProgramStage.setName( eachProgramStage.getName() );
 
-            if ( programStageInstance.getProgramStage().getReportDateDescription() == null )
-            {
-                mobileProgramStage.setReportDateDescription( "Report Date" );
-            }
-            else
-            {
-                mobileProgramStage.setReportDateDescription( programStageInstance.getProgramStage()
-                    .getReportDateDescription() );
-            }
-
-            // is repeatable
-            mobileProgramStage.setRepeatable( eachProgramStage.getIrregular() );
-
-            // is completed
-            mobileProgramStage.setCompleted( checkIfProgramStageCompleted( patient, programInstance.getProgram(),
-                eachProgramStage ) );
-
-            // is single event
-            mobileProgramStage.setSingleEvent( programInstance.getProgram().isSingleEvent() );
-
-            // Set all data elements
-            mobileProgramStage.setDataElements( getDataElementsForMobile( eachProgramStage, programStageInstance ) );
-
-            // Set all program sections
-            if ( eachProgramStage.getProgramStageSections().size() > 0 )
-            {
-                for ( ProgramStageSection eachSection : eachProgramStage.getProgramStageSections() )
+                // get report date
+                if ( programStageInstance.getExecutionDate() != null )
                 {
-                    org.hisp.dhis.api.mobile.model.LWUITmodel.Section mobileSection = new org.hisp.dhis.api.mobile.model.LWUITmodel.Section();
-                    mobileSection.setId( eachSection.getId() );
-                    mobileSection.setName( eachSection.getName() );
-
-                    // Set all data elements' id, then we could have full from
-                    // data element list of program stage
-                    List<Integer> dataElementIds = new ArrayList<Integer>();
-                    for ( ProgramStageDataElement eachPogramStageDataElement : eachSection
-                        .getProgramStageDataElements() )
-                    {
-                        dataElementIds.add( eachPogramStageDataElement.getDataElement().getId() );
-                    }
-                    mobileSection.setDataElementIds( dataElementIds );
-                    mobileSections.add( mobileSection );
+                    mobileProgramStage.setReportDate( PeriodUtil.dateToString( programStageInstance.getExecutionDate() ) );
                 }
+                else
+                {
+                    mobileProgramStage.setReportDate( "" );
+                }
+
+                if ( programStageInstance.getProgramStage().getReportDateDescription() == null )
+                {
+                    mobileProgramStage.setReportDateDescription( "Report Date" );
+                }
+                else
+                {
+                    mobileProgramStage.setReportDateDescription( programStageInstance.getProgramStage()
+                        .getReportDateDescription() );
+                }
+
+                // is repeatable
+                mobileProgramStage.setRepeatable( eachProgramStage.getIrregular() );
+
+                // is completed
+                mobileProgramStage.setCompleted( checkIfProgramStageCompleted( patient, programInstance.getProgram(),
+                    eachProgramStage ) );
+
+                // is single event
+                mobileProgramStage.setSingleEvent( programInstance.getProgram().isSingleEvent() );
+
+                // Set all data elements
+                mobileProgramStage.setDataElements( getDataElementsForMobile( eachProgramStage, programStageInstance ) );
+
+                // Set all program sections
+                if ( eachProgramStage.getProgramStageSections().size() > 0 )
+                {
+                    for ( ProgramStageSection eachSection : eachProgramStage.getProgramStageSections() )
+                    {
+                        org.hisp.dhis.api.mobile.model.LWUITmodel.Section mobileSection = new org.hisp.dhis.api.mobile.model.LWUITmodel.Section();
+                        mobileSection.setId( eachSection.getId() );
+                        mobileSection.setName( eachSection.getName() );
+
+                        // Set all data elements' id, then we could have full from
+                        // data element list of program stage
+                        List<Integer> dataElementIds = new ArrayList<Integer>();
+                        for ( ProgramStageDataElement eachPogramStageDataElement : eachSection
+                            .getProgramStageDataElements() )
+                        {
+                            dataElementIds.add( eachPogramStageDataElement.getDataElement().getId() );
+                        }
+                        mobileSection.setDataElementIds( dataElementIds );
+                        mobileSections.add( mobileSection );
+                    }
+                }
+                mobileProgramStage.setSections( mobileSections );
+
+                mobileProgramStages.add( mobileProgramStage );
             }
-            mobileProgramStage.setSections( mobileSections );
-
-            mobileProgramStages.add( mobileProgramStage );
-
         }
         return mobileProgramStages;
     }
