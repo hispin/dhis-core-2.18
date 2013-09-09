@@ -601,33 +601,6 @@ public class OrganisationUnit
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof OrganisationUnit) )
-        {
-            return false;
-        }
-
-        final OrganisationUnit other = (OrganisationUnit) o;
-
-        return name.equals( other.getName() );
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
