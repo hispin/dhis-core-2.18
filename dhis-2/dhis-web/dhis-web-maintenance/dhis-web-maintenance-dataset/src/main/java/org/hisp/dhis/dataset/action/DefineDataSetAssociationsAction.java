@@ -28,14 +28,13 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork2.Action;
+import java.util.HashSet;
 
 /**
  * @author Kristian
@@ -85,7 +84,7 @@ public class DefineDataSetAssociationsAction
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         dataSet.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() ) );
-        
+
         dataSetService.updateDataSet( dataSet );
 
         return SUCCESS;
