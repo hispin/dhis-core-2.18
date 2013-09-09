@@ -145,6 +145,9 @@ public class DashboardItem
     public int getContentCount()
     {
         int count = 0;
+        count += chart != null ? 1 : 0;
+        count += map != null ? 1 : 0;
+        count += reportTable != null ? 1 : 0;
         count += users.size();
         count += reportTables.size();
         count += reports.size();
