@@ -234,6 +234,7 @@ function Selection()
                     subtree.reloadTree();
 
                     $( "#ouwt_loader" ).hide();
+                    $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                 } );
             } );
         }
