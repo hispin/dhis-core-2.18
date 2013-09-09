@@ -2121,7 +2121,7 @@ Ext.onReady( function() {
 			});
 
 			window = Ext.create('Ext.window.Window', {
-				title: PT.i18n.share + ' ' + PT.i18n.interpretation + '<span style="font-weight:normal; font-size:11px"> (' + pt.favorite.name + ') </span>',
+				title: pt.favorite.name,
 				layout: 'fit',
 				//iconCls: 'pt-window-title-interpretation',
 				width: 500,

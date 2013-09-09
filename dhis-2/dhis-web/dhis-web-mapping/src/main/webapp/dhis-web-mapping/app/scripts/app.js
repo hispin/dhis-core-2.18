@@ -3145,11 +3145,21 @@ Ext.onReady( function() {
 			fieldStyle: 'padding-left: 4px; padding-top: 3px',
 			emptyText: GIS.i18n.write_your_interpretation
 		});
+		console.log(gis);
 
 		panel = Ext.create('Ext.panel.Panel', {
 			cls: 'gis-container-inner',
-			html: '<b>' + GIS.i18n.link_ + ': </b>' + gis.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + gis.map.id,
-			style: 'padding:6px 0 6px 1px'
+			html: function() {
+				var moduleUrl = gis.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + gis.map.id,
+					apiUrl = gis.init.contextPath + '/api/maps/' + gis.map.id + '/data.html',
+					html = '';
+					
+				html += '<div><b>GIS link: </b><span class="user-select"><a href="' + moduleUrl + '" target="_blank">' + moduleUrl + '</a></span></div>';
+				html += '<div style="padding-top:3px"><b>API link: </b><span class="user-select"><a href="' + apiUrl + '" target="_blank">' + apiUrl + '</a></span></div>';
+				
+				return html;
+			}(),
+			style: 'padding-top: 8px; padding-bottom: 5px'
 		});
 
 		button = Ext.create('Ext.button.Button', {
@@ -3170,11 +3180,11 @@ Ext.onReady( function() {
 		});
 
 		window = Ext.create('Ext.window.Window', {
-			title: GIS.i18n.share_interpretation,
+			title: gis.map.name,
 			layout: 'fit',
 			iconCls: 'gis-window-title-icon-interpretation',
 			cls: 'gis-container-default',
-            bodyStyle: 'padding:5px 5px 0',
+            bodyStyle: 'padding:5px 5px 2px',
 			width: 500,
 			resizable: true,
 			modal: true,
@@ -3188,7 +3198,7 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				show: function() {
-					this.setPosition(325, 37);
+					this.setPosition(325, 33);
 				},
 				destroy: function() {
 					document.body.oncontextmenu = function(){
