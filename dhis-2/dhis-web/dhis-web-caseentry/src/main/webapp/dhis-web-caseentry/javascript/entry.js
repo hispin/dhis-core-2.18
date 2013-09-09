@@ -940,12 +940,8 @@ function runValidation()
 }
 
 function searchOptionSet( uid, query, success ) {
-    console.log(uid);
-
     if(window.DAO !== undefined && window.DAO.store !== undefined ) {
-        console.log('searching in store');
         DAO.store.get( 'optionSets', uid ).done( function ( obj ) {
-            console.log(obj);
             if(obj) {
                 var options = [];
 
