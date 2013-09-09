@@ -1293,7 +1293,7 @@ Ext.onReady( function() {
 						this.currentValue = this.getValue();
 
 						var value = this.getValue(),
-							url = value ? dv.init.contextPath + '/api/charts/query/' + value + '.json?links=false' : null,
+							url = value ? dv.init.contextPath + '/api/charts/query/' + value + '.json?viewClass=sharing&links=false' : null,
 							store = dv.store.chart;
 
 						store.page = 1;
@@ -1307,7 +1307,7 @@ Ext.onReady( function() {
 			text: DV.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? dv.init.contextPath + '/api/charts/query/' + value + '.json?links=false' : null,
+					url = value ? dv.init.contextPath + '/api/charts/query/' + value + '.json?viewClass=sharing&links=false' : null,
 					store = dv.store.chart;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -1319,7 +1319,7 @@ Ext.onReady( function() {
 			text: DV.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? dv.init.contextPath + '/api/charts/query/' + value + '.json?links=false' : null,
+					url = value ? dv.init.contextPath + '/api/charts/query/' + value + '.json?viewClass=sharing&links=false' : null,
 					store = dv.store.chart;
 
 				store.page = store.page + 1;

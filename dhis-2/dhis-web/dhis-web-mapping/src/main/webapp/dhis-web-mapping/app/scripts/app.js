@@ -1997,7 +1997,7 @@ Ext.onReady( function() {
 						this.currentValue = this.getValue();
 
 						var value = this.getValue(),
-							url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
+							url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
 							store = gis.store.maps;
 
 						store.page = 1;
@@ -2011,7 +2011,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
+					url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
 					store = gis.store.maps;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -2023,7 +2023,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
+					url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
 					store = gis.store.maps;
 
 				store.page = store.page + 1;
