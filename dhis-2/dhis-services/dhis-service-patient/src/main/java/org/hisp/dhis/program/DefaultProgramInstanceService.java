@@ -579,11 +579,14 @@ public class DefaultProgramInstanceService
 
             PatientComment comment = programStageInstance.getPatientComment();
 
-            grid.addRow();
-            grid.addValue( i18n.getString( "comment" ) + " " + i18n.getString( "on" ) + " "
-                + format.formatDateTime( comment.getCreatedDate() ) );
-            grid.addValue( comment.getCommentText() );
-
+            if ( comment != null )
+            {
+                grid.addRow();
+                grid.addValue( i18n.getString( "comment" ) + " " + i18n.getString( "on" ) + " "
+                    + format.formatDateTime( comment.getCreatedDate() ) );
+                grid.addValue( comment.getCommentText() );
+            }
+            
             // SMS messages
 
             List<OutboundSms> messasges = programStageInstance.getOutboundSms();
