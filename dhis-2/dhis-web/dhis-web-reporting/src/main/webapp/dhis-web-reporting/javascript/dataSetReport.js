@@ -223,3 +223,17 @@ function shareInterpretation()
 	    } );
     }
 }
+
+//------------------------------------------------------------------------------
+// Hooks in custom forms - must be present to avoid errors in forms
+//------------------------------------------------------------------------------
+
+function onValueSave( fn )
+{
+	// Do nothing
+}
+
+function onFormLoad( fn )
+{
+	// Do nothing
+}
