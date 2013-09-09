@@ -295,7 +295,8 @@ public class UpdateProgramStageAction
         generatedByEnrollmentDate = (generatedByEnrollmentDate == null) ? false : generatedByEnrollmentDate;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
-
+        captureCoordinates = (captureCoordinates == null) ? false : captureCoordinates;
+        
         ProgramStage programStage = programStageService.getProgramStage( id );
 
         programStage.setName( name );
