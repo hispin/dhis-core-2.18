@@ -233,6 +233,11 @@ function getSearchParams()
 {
 	var params = "";
 	var programIds = "";
+	if(getFieldValue('programIdAddPatient')!='')
+	{
+		programIds += "&programIds=" + getFieldValue('programIdAddPatient');
+		params += "prg_" + getFieldValue('programIdAddPatient');
+	}
 	var programStageId = jQuery('#programStageAddPatient').val();
 	if( getFieldValue('searchByProgramStage') == "true" ){
 		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
@@ -257,7 +262,7 @@ function getSearchParams()
 				if( idx == 0){
 					p = "&searchTexts=" + item.value;
 					if(item.value=='prg'){
-						programIds += '&programIds=';
+						params += '&prg=';
 						flag = true;
 					}
 				}

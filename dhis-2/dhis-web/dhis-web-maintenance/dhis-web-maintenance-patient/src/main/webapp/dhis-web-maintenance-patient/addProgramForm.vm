@@ -31,27 +31,28 @@
 		userGroup.empty();		
 		
 		jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
-			daysAllowedSendMessages.append( "<option value='" + jQuery(item).attr('realvalue') + "' selected='true'></option>" );
+			var days = (jQuery(item).attr('realvalue')==undefined) ? 0 : jQuery(item).attr('realvalue');
+			daysAllowedSendMessages.append( "<option value='" + days + "' selected='true'>" + days + "</option>" );
 		});
 		
 		jQuery(".templateMessage").each( function( i, item ){ 
-			templateMessages.append( "<option value='" + item.value + "' selected='true'></option>" );
+			templateMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		
 		jQuery(".dateToCompare").each( function( i, item ){ 
-			datesToCompare.append( "<option value='" + item.value + "' selected='true'></option>" );
+			datesToCompare.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		
 		jQuery(".sendTo").each( function( i, item ){ 
-			sendTo.append( "<option value='" + item.value + "' selected='true'></option>" );
+			sendTo.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		}); 
 		
 		jQuery(".whenToSend").each( function( i, item ){ 
-			whenToSend.append( "<option value='" + item.value + "' selected='true'></option>" );
+			whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		
 		jQuery(".userGroup").each( function( i, item ){ 
-			userGroup.append( "<option value='" + item.value + "' selected='true'></option>" );
+			userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		
 		var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
