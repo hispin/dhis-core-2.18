@@ -247,6 +247,7 @@ Ext.onReady( function() {
 	var reportId = TR.conf.util.getURLParameters('id');
     Ext.Ajax.request({
         url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.initialize + "?id=" + reportId,
+		disableCaching: false,
         success: function(r) {
             
     TR.init = TR.conf.init.ajax.jsonfy(r);    
@@ -1064,6 +1065,7 @@ Ext.onReady( function() {
 						TR.util.mask.showMask(TR.cmp.caseBasedFavorite.window, TR.i18n.renaming + '...');
 						Ext.Ajax.request({
 							url:  TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_rename,
+							disableCaching: false,
 							method: 'POST',
 							params: {id: id, name: name},
 							success: function() {
@@ -1087,6 +1089,7 @@ Ext.onReady( function() {
 						
 						Ext.Ajax.request({
 							url: baseurl,
+							disableCaching: false,
 							method: 'POST',
 							success: function() {
 								TR.store.caseBasedFavorite.load({callback: function() {
@@ -1101,6 +1104,7 @@ Ext.onReady( function() {
 					run: function(id) {
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_get + '?id=' + id,
+							disableCaching: false,
 							scope: this,
 							success: function(r) {
 								var f = Ext.JSON.decode(r.responseText);
@@ -1197,12 +1201,14 @@ Ext.onReady( function() {
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_validate,
 							method: 'POST',
+							disableCaching: false,
 							params: {name:name},
 							success: function(r) {
 									var json = Ext.JSON.decode(r.responseText);
 									if(json.response=='success'){
 										Ext.Ajax.request({
 											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_save,
+											disableCaching: false,
 											method: 'POST',
 											params: p,
 											success: function() {
@@ -1228,6 +1234,7 @@ Ext.onReady( function() {
 						
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_validate,
+							disableCaching: false,
 							method: 'POST',
 							params: {id:id, name:name},
 							success: function(r) {
@@ -1235,6 +1242,7 @@ Ext.onReady( function() {
 									if(json.response=='success'){
 										Ext.Ajax.request({
 											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_rename,
+											disableCaching: false,
 											method: 'POST',
 											params: {id: id, name: name},
 											success: function() {
@@ -1265,6 +1273,7 @@ Ext.onReady( function() {
 						});
 						Ext.Ajax.request({
 							url: baseurl,
+							disableCaching: false,
 							method: 'POST',
 							success: function() {
 								TR.store.aggregateFavorite.load({callback: function() {
@@ -1279,6 +1288,7 @@ Ext.onReady( function() {
 					run: function(id) {
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_get + '?id=' + id,
+							disableCaching: false,
 							scope: this,
 							success: function(r) {
 								var f = Ext.JSON.decode(r.responseText);
@@ -1427,7 +1437,7 @@ Ext.onReady( function() {
 								storeProgramStage.parent = f.programStageId;
 								storeProgramStage.isLoadFromFavorite = true;
 								
-								var url = storeProgramStage.getProxy().url + f.programId + ".json?viewClass=export";
+								var url = storeProgramStage.getProxy().url + f.programId + ".json";
 								storeProgramStage.load({url:url});
 								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
 								
@@ -1855,11 +1865,12 @@ Ext.onReady( function() {
 				// Show report on grid
 				else
 				{
-					url += programId + ".json?stage=" + programStageId + "&viewClass=export";
+					url += programId + ".json?stage=" + programStageId;
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 					Ext.Ajax.request({
 						url: url,
 						method: "GET",
+						disableCaching: false,
 						scope: this,
 						params: this.getParams(),
 						success: function(r) {
@@ -1898,9 +1909,6 @@ Ext.onReady( function() {
 				p.endDate = TR.cmp.settings.endDate.rawValue;
 				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
 				p.level = Ext.getCmp('levelCombobox').getValue();
-				p.orgunitIds = TR.state.orgunitIds;
-				p.programStageId = TR.cmp.params.programStage.getValue();
-				p.programId = Ext.getCmp('programCombobox').getValue();
 				
 				// order-by
 				
@@ -1922,8 +1930,12 @@ Ext.onReady( function() {
 						p.ou +=";"
 					}
 				}
-				p.userOrganisationUnit = Ext.getCmp('userOrgunit').getValue();
-				p.userOrganisationUnitChildren = Ext.getCmp('userOrgunitChildren').getValue();
+				if( Ext.getCmp('userOrgunit').getValue() == "true" ){
+					p.userOrganisationUnit = Ext.getCmp('userOrgunit').getValue();
+				}
+				if( Ext.getCmp('userOrgunitChildren').getValue() == "true" ){
+					p.userOrganisationUnitChildren = Ext.getCmp('userOrgunitChildren').getValue();
+				}
 				if( Ext.getCmp('completedEventsOpt').getValue() == true )
 				{
 					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
@@ -1932,15 +1944,6 @@ Ext.onReady( function() {
 				if( Ext.getCmp('displayOrgunitCode').getValue()== true )
 				{
 					p.displayOrgunitCode = Ext.getCmp('displayOrgunitCode').getValue();
-				}
-				
-				if( Ext.getCmp('useFormNameDataElementOpt').getValue()== true )
-				{
-					p.useFormNameDataElement = Ext.getCmp('useFormNameDataElementOpt').getValue();
-				}
-				else
-				{
-					p.useFormNameDataElement = "false";
 				}
 				
 				// Get searching values
@@ -1996,20 +1999,10 @@ Ext.onReady( function() {
 				document.getElementById('endDate').value = TR.cmp.settings.endDate.rawValue;
 				document.getElementById('facilityLB').value =  TR.cmp.settings.facilityLB.getValue();
 				document.getElementById('level').value = Ext.getCmp('levelCombobox').getValue();
-				document.getElementById('programStageId').value = TR.cmp.params.programStage.getValue();				
 				document.getElementById('userOrganisationUnit').value = Ext.getCmp('userOrgunit').getValue();
 				document.getElementById('userOrganisationUnitChildren').value = Ext.getCmp('userOrgunitChildren').getValue();
 				document.getElementById('desc').value = TR.state.desc;
 				document.getElementById('asc').value = TR.state.asc;
-				
-				if( Ext.getCmp('useFormNameDataElementOpt').getValue()== true )
-				{
-					document.getElementById('useFormNameDataElement').value = Ext.getCmp('useFormNameDataElementOpt').getValue();
-				}
-				else
-				{
-					document.getElementById('useFormNameDataElement').value = "false";
-				}
 				
 				// organisation unit
 				var ous = "";
@@ -2176,6 +2169,7 @@ Ext.onReady( function() {
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 					Ext.Ajax.request({
 						url: url,
+						disableCaching: false,
 						method: "POST",
 						scope: this,
 						params: this.getParams(),
@@ -3187,6 +3181,7 @@ Ext.onReady( function() {
 						
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_validate,
+							disableCaching: false,
 							method: 'POST',
 							params: {name:name},
 							success: function(r) {
@@ -3194,6 +3189,7 @@ Ext.onReady( function() {
 									if(json.response=='success'){
 										Ext.Ajax.request({
 											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_save,
+											disableCaching: false,
 											method: 'POST',
 											params: p,
 											success: function() {
@@ -3224,6 +3220,7 @@ Ext.onReady( function() {
 						
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_validate,
+							disableCaching: false,
 							method: 'POST',
 							params: {id:id, name:name},
 							success: function(r) {
@@ -3231,6 +3228,7 @@ Ext.onReady( function() {
 									if(json.response=='success'){
 										Ext.Ajax.request({
 											url:  TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_rename,
+											disableCaching: false,
 											method: 'POST',
 											params: {id: id, name: name},
 											failure: function(r) {
@@ -3403,6 +3401,7 @@ Ext.onReady( function() {
 								if (record.data.access.manage) {
 									Ext.Ajax.request({
 										url:TR.conf.finals.ajax.path_api + 'sharing?type=patientTabularReport&id=' + record.data.id,
+										disableCaching: false,
 										method: 'GET',
 										failure: function(r) {
 											TR.util.mask.hideMask();
@@ -3436,6 +3435,7 @@ Ext.onReady( function() {
 									
 									Ext.Ajax.request({
 										url: baseurl,
+										disableCaching: false,
 										method: 'POST',
 										success: function() {
 											TR.store.caseBasedFavorite.loadStore();
@@ -3638,12 +3638,14 @@ Ext.onReady( function() {
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_validate,
 							method: 'POST',
+							disableCaching: false,
 							params: {name:name},
 							success: function(r) {
 									var json = Ext.JSON.decode(r.responseText);
 									if(json.response=='success'){
 										Ext.Ajax.request({
 											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_save,
+											disableCaching: false,
 											method: 'POST',
 											params: p,
 											success: function() {
@@ -3681,6 +3683,7 @@ Ext.onReady( function() {
 						var r = TR.cmp.aggregateFavorite.grid.getSelectionModel().getSelection()[0];
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_rename,
+							disableCaching: false,
 							method: 'POST',
 							params: {id: id, name: name},
 							success: function() {
@@ -3841,6 +3844,7 @@ Ext.onReady( function() {
 								if (record.data.access.manage) {
 									Ext.Ajax.request({
 										url:TR.conf.finals.ajax.path_api + 'sharing?type=patientAggregateReport&id=' + record.data.id,
+										disableCaching: false,
 										method: 'GET',
 										failure: function(r) {
 											TR.util.mask.hideMask();
@@ -3874,6 +3878,7 @@ Ext.onReady( function() {
 									
 									Ext.Ajax.request({
 										url: baseurl,
+										disableCaching: false,
 										method: 'POST',
 										success: function() {
 											TR.store.aggregateFavorite.loadStore();
@@ -4112,17 +4117,6 @@ Ext.onReady( function() {
 			labelWidth: 135
 		});
 		
-		var useFormNameDataElementField = Ext.create('Ext.form.field.Checkbox', {
-			xtype: 'checkbox',
-			cls: 'tr-checkbox',
-			id: 'useFormNameDataElementOpt',
-			style:'padding-left: 20px;',
-			boxLabel: TR.i18n.use_data_element_form_names,
-			boxLabelAlign: 'before',
-			labelWidth: 135,
-			checked: true
-		});
-		
 		var facilityLBField = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'tr-combo',
 			id: 'facilityLBCombobox',
@@ -4267,8 +4261,7 @@ Ext.onReady( function() {
 							items:[
 								completedEventsField,
 								displayTotalsOptField,
-								displayOrgunitCodeField,
-								useFormNameDataElementField
+								displayOrgunitCodeField
 							]
 						},
 						facilityLBField,
@@ -4539,6 +4532,7 @@ Ext.onReady( function() {
 					handler: function() {
 						Ext.Ajax.request({
 							url: getURL(sharing.object.id),
+							disableCaching: false,
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json'
@@ -4977,7 +4971,7 @@ Ext.onReady( function() {
 											var storeProgramStage = TR.store.programStage;
 											storeProgramStage.parent = pid;
 											
-											var url = storeProgramStage.getProxy().url + pid  + ".json?viewClass=export";
+											var url = storeProgramStage.getProxy().url + pid  + ".json";
 											storeProgramStage.load({url:url});
 											
 											TR.store.dataelement.available.removeAll();
@@ -5857,6 +5851,7 @@ Ext.onReady( function() {
 													}
 													Ext.Ajax.request({
 														url: url,
+														disableCaching: false,
 														method: 'GET',
 														params: params,
 														scope: this,
