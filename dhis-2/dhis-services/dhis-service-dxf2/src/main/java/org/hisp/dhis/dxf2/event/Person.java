@@ -45,7 +45,7 @@ public class Person
 
     private String orgUnit;
 
-    private Name name;
+    private String name;
 
     private Gender gender;
 
@@ -89,12 +89,12 @@ public class Person
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Name getName()
+    public String getName()
     {
         return name;
     }
 
-    public void setName( Name name )
+    public void setName( String name )
     {
         this.name = name;
     }

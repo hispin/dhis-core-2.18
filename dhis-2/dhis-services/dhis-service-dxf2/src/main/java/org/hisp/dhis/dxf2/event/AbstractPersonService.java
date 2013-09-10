@@ -105,12 +105,7 @@ public abstract class AbstractPersonService implements PersonService
         person.setPerson( patient.getUid() );
         person.setOrgUnit( patient.getOrganisationUnit().getUid() );
 
-        Name name = new Name(
-            nullIfEmpty( patient.getFirstName() ),
-            nullIfEmpty( patient.getMiddleName() ),
-            nullIfEmpty( patient.getLastName() ) );
-
-        person.setName( name );
+        person.setName( patient.getFullName() );
         person.setGender( Gender.fromString( patient.getGender() ) );
 
         person.setDeceased( patient.getIsDead() );
