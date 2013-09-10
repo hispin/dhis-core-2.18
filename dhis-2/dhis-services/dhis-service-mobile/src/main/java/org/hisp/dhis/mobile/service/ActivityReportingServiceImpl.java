@@ -846,13 +846,13 @@ public class ActivityReportingServiceImpl
     private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientModel( Patient patient )
     {
         org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientModel = new org.hisp.dhis.api.mobile.model.LWUITmodel.Patient();
-        
+
         List<PatientAttribute> patientAtts = new ArrayList<PatientAttribute>();
-        
+
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> mobileProgramList = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Program>();
-        
+
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> mobileCompletedProgramList = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Program>();
-        
+
         List<org.hisp.dhis.patient.PatientAttribute> atts;
 
         patientModel.setId( patient.getId() );
@@ -962,7 +962,7 @@ public class ActivityReportingServiceImpl
             }
         }
         patientModel.setPrograms( mobileProgramList );
-        
+
         // Set completed programs
         List<ProgramInstance> listOfCompletedProgramInstance = new ArrayList<ProgramInstance>(
             programInstanceService.getProgramInstances( patient, ProgramInstance.STATUS_COMPLETED ) );
@@ -975,7 +975,7 @@ public class ActivityReportingServiceImpl
             }
         }
         patientModel.setCompletedPrograms( mobileCompletedProgramList );
-        
+
         /*
          * List<Integer> mobileProgramIDList = new ArrayList<Integer>(); for (
          * Program eachProgram : patient.getPrograms()) {
@@ -1187,7 +1187,8 @@ public class ActivityReportingServiceImpl
 
             String dataElementName;
 
-            if ( programStageDataElement.getDataElement().getFormName() != null && !programStageDataElement.getDataElement().getFormName().trim().equals( "" ) )
+            if ( programStageDataElement.getDataElement().getFormName() != null
+                && !programStageDataElement.getDataElement().getFormName().trim().equals( "" ) )
             {
                 dataElementName = programStageDataElement.getDataElement().getFormName();
             }
@@ -1699,31 +1700,33 @@ public class ActivityReportingServiceImpl
         return patientIdentifierTypes;
     }
 
-    public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts()
+    public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts( String programId )
     {
-
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
-
-        // Collection<Program> programs = programService.getAllPrograms();
-        //
-        // for ( Program program : programs )
-        // {
-        // patientAttributes.removeAll( program.getPatientAttributes() );
-        // }
+        if ( programId != null && !programId.trim().equals( "" ) )
+        {
+            Program program = programService.getProgram( Integer.parseInt( programId ) );
+            patientAttributes = program.getPatientAttributes();
+        }
+        else
+        {
+            patientAttributes = patientAttributeService.getAllPatientAttributes();
+        }
 
         return patientAttributes;
     }
 
-    public Collection<PatientIdentifierType> getIdentifiers()
+    public Collection<PatientIdentifierType> getIdentifiers( String programId )
     {
-        patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        if ( programId != null && !programId.trim().equals( "" ) )
+        {
+            Program program = programService.getProgram( Integer.parseInt( programId ) );
+            patientIdentifierTypes = program.getPatientIdentifierTypes();
+        }
+        else
+        {
+            patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        }
 
-        // Collection<Program> programs = programService.getAllPrograms();
-        // for ( Program program : programs )
-        // {
-        // patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes()
-        // );
-        // }
         return patientIdentifierTypes;
 
     }
@@ -1732,7 +1735,7 @@ public class ActivityReportingServiceImpl
     {
         Collection<PatientAttribute> list = new HashSet<PatientAttribute>();
 
-        for ( org.hisp.dhis.patient.PatientAttribute patientAtt : getPatientAtts() )
+        for ( org.hisp.dhis.patient.PatientAttribute patientAtt : getPatientAtts( null ) )
         {
             list.add( new PatientAttribute( patientAtt.getName(), null, patientAtt.getValueType(),
                 new ArrayList<String>() ) );
@@ -1743,10 +1746,10 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> getIdentifiersForMobile()
+    public Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> getIdentifiersForMobile( String programId )
     {
         Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> list = new HashSet<org.hisp.dhis.api.mobile.model.PatientIdentifier>();
-        for ( PatientIdentifierType identifierType : getIdentifiers() )
+        for ( PatientIdentifierType identifierType : getIdentifiers( programId ) )
         {
             String id = "";
             String idt = identifierType.getName();
@@ -1760,17 +1763,14 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public Collection<PatientAttribute> getPatientAttributesForMobile()
+    public Collection<PatientAttribute> getPatientAttributesForMobile( String programId )
     {
         Collection<PatientAttribute> list = new HashSet<PatientAttribute>();
-        for ( org.hisp.dhis.patient.PatientAttribute pa : getPatientAtts() )
+        for ( org.hisp.dhis.patient.PatientAttribute pa : getPatientAtts( programId ) )
         {
             PatientAttribute patientAttribute = new PatientAttribute();
             String name = pa.getName();
-            // if ( pa.isMandatory() == true )
-            // {
-            // name += " (*)";
-            // }
+
             patientAttribute.setName( name );
             patientAttribute.setType( pa.getValueType() );
             patientAttribute.setValue( "" );
@@ -1782,8 +1782,7 @@ public class ActivityReportingServiceImpl
                     optionList.add( option.getName() );
                 }
             }
-            // list.add( new PatientAttribute( name, value, pa.getValueType(),
-            // pa.getP ) );
+
             patientAttribute.setPredefinedValues( optionList );
             list.add( patientAttribute );
         }
@@ -1813,7 +1812,8 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public Integer savePatient( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patient, int orgUnitId, String programIdText )
+    public Integer savePatient( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patient, int orgUnitId,
+        String programIdText )
         throws NotAllowedException
     {
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
@@ -1917,7 +1917,7 @@ public class ActivityReportingServiceImpl
         patientWeb.setAttributes( patientAttributeSet );
 
         patientId = patientService.createPatient( patientWeb, null, null, patientAttributeValues );
-        
+
         try
         {
             int programId = Integer.parseInt( programIdText );
@@ -1927,7 +1927,6 @@ public class ActivityReportingServiceImpl
         {
             return patientId;
         }
-        
 
         return patientId;
 
@@ -1949,7 +1948,7 @@ public class ActivityReportingServiceImpl
     {
         Collection<Patient> patients = new HashSet<Patient>( patientService.getPatientsForMobile( keyword, orgUnitId ) );
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-        
+
         if ( programId != 0 )
         {
             Program program = programService.getProgram( programId );

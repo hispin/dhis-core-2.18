@@ -72,15 +72,15 @@ public interface ActivityReportingService
 
     public Collection<PatientIdentifierType> getIdentifierTypes();
 
-    public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts();
+    public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts(String programId);
 
-    public Collection<PatientIdentifierType> getIdentifiers();
+    public Collection<PatientIdentifierType> getIdentifiers( String programId );
 
     public Collection<PatientAttribute> getAttsForMobile();
 
-    public Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> getIdentifiersForMobile();
+    public Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> getIdentifiersForMobile( String programId );
 
-    public Collection<PatientAttribute> getPatientAttributesForMobile();
+    public Collection<PatientAttribute> getPatientAttributesForMobile( String programId );
 
     public Patient addRelationship( Relationship enrollmentRelationship, int orgUnitId )
         throws NotAllowedException;
