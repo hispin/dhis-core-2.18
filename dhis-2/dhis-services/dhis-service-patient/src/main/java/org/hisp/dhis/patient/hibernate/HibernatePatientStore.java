@@ -513,7 +513,7 @@ public class HibernatePatientStore
             else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
                 patientWhere += patientOperator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%"
-                    + id + "%' ) or lower(pi.identifier)='" + id + "' ";
+                    + id + "%' ) or lower(pi.identifier) like '%" + id + "%' ";
 
                 String[] keyValues = id.split( " " );
                 if ( keyValues.length == 2 )
@@ -750,7 +750,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-
+        
         return sql;
     }
 
