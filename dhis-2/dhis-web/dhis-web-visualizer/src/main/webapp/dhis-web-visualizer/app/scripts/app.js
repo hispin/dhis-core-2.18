@@ -3641,16 +3641,22 @@ Ext.onReady( function() {
 			showSeparator: false,
 			menuValue: 'orgunit',
 			clickHandler: function(param) {
+				if (!param) {
+					return;
+				}
+				
 				var items = this.items.items;
 				this.menuValue = param;
 
 				// Menu item icon cls
 				for (var i = 0; i < items.length; i++) {
-					if (items[i].param === param) {
-						items[i].setIconCls('dv-menu-item-selected');
-					}
-					else {
-						items[i].setIconCls('');
+					if (items[i].setIconCls) {
+						if (items[i].param === param) {
+							items[i].setIconCls('dv-menu-item-selected');
+						}
+						else {
+							items[i].setIconCls('dv-menu-item-unselected');
+						}
 					}
 				}
 
@@ -3685,17 +3691,24 @@ Ext.onReady( function() {
 			},
 			items: [
 				{
+					xtype: 'label',
+					text: 'Selection mode',
+					style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
+				},
+				{
 					text: DV.i18n.select_organisation_units + '&nbsp;&nbsp;',
 					param: 'orgunit',
 					iconCls: 'dv-menu-item-selected'
 				},
 				{
-					text: DV.i18n.select_boundaries_and_levels + '&nbsp;&nbsp;',
-					param: 'level'
+					text: 'Select levels' + '&nbsp;&nbsp;',
+					param: 'level',
+					iconCls: 'dv-menu-item-unselected'
 				},
 				{
-					text: DV.i18n.select_boundaries_and_groups + '&nbsp;&nbsp;',
-					param: 'group'
+					text: 'Select groups' + '&nbsp;&nbsp;',
+					param: 'group',
+					iconCls: 'dv-menu-item-unselected'
 				}
 			],
 			listeners: {

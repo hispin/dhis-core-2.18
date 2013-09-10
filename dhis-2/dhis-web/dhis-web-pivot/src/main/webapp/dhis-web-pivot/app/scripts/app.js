@@ -3525,16 +3525,22 @@ Ext.onReady( function() {
 			showSeparator: false,
 			menuValue: 'orgunit',
 			clickHandler: function(param) {
+				if (!param) {
+					return;
+				}
+				
 				var items = this.items.items;
 				this.menuValue = param;
 
 				// Menu item icon cls
 				for (var i = 0; i < items.length; i++) {
-					if (items[i].param === param) {
-						items[i].setIconCls('pt-menu-item-selected');
-					}
-					else {
-						items[i].setIconCls('');
+					if (items[i].setIconCls) {
+						if (items[i].param === param) {
+							items[i].setIconCls('pt-menu-item-selected');
+						}
+						else {
+							items[i].setIconCls('pt-menu-item-unselected');
+						}
 					}
 				}
 
@@ -3569,17 +3575,24 @@ Ext.onReady( function() {
 			},
 			items: [
 				{
+					xtype: 'label',
+					text: 'Selection mode',
+					style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
+				},
+				{
 					text: PT.i18n.select_organisation_units + '&nbsp;&nbsp;',
 					param: 'orgunit',
 					iconCls: 'pt-menu-item-selected'
 				},
 				{
-					text: PT.i18n.select_boundaries_and_levels + '&nbsp;&nbsp;',
-					param: 'level'
+					text: 'Select levels' + '&nbsp;&nbsp;',
+					param: 'level',
+					iconCls: 'pt-menu-item-unselected'
 				},
 				{
-					text: PT.i18n.select_boundaries_and_groups + '&nbsp;&nbsp;',
-					param: 'group'
+					text: 'Select groups' + '&nbsp;&nbsp;',
+					param: 'group',
+					iconCls: 'pt-menu-item-unselected'
 				}
 			],
 			listeners: {
@@ -4072,7 +4085,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'label',
 						text: PT.i18n.table_layout,
-						style: 'padding:7px 5px 5px 7px; font-weight:bold'
+						style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
 					},
 					{
 						text: 'Microsoft Excel (.xls)',

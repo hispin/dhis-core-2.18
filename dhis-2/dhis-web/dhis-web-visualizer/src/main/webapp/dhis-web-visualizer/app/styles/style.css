@@ -404,6 +404,10 @@ body.x-windows {
     background-image:url('../images/check.png');
     padding-left: 18px;
 }
+.dv-menu-item-unselected {
+    background-image:url('../images/check-un.png');
+    padding-left: 18px;
+}
 
 	/* Menu align */
 .dv-btn-menu {
