@@ -193,9 +193,16 @@ public class HibernatePatientStore
     public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
         Integer max )
     {
-        Criteria criteria = getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias(
+        Criteria criteria;
+        if ( organisationUnit != null )
+        {
+            criteria = getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias(
             "programs", "program" ).add( Restrictions.eq( "program.id", program.getId() ) );
-
+        }
+        else
+        {
+            criteria = getCriteria().createAlias("programs", "program" ).add( Restrictions.eq( "program.id", program.getId() ) );
+        }
         criteria.addOrder( Order.desc( "id" ) );
 
         if ( min != null && max != null )
