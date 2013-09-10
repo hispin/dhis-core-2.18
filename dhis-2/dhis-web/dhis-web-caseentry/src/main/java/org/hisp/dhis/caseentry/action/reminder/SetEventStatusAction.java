@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -100,7 +101,10 @@ public class SetEventStatusAction
             programStageInstance.setCompleted( true );
             programStageInstance.setStatus( null );
 
-            // Send message when to completed the event
+            // -----------------------------------------------------------------
+            // Send sms when to completed program
+            // -----------------------------------------------------------------
+
             List<OutboundSms> psiOutboundSms = programStageInstance.getOutboundSms();
             if ( psiOutboundSms == null )
             {
@@ -108,6 +112,20 @@ public class SetEventStatusAction
             }
             psiOutboundSms.addAll( programStageInstanceService.sendMessages( programStageInstance,
                 PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
+
+            // -----------------------------------------------------------------
+            // Send DHIS message when to completed the event
+            // -----------------------------------------------------------------
+
+            List<MessageConversation> psiMessageConversations = programStageInstance.getMessageConversations();
+            if ( psiMessageConversations == null )
+            {
+                psiMessageConversations = new ArrayList<MessageConversation>();
+            }
+
+            psiMessageConversations.addAll( programStageInstanceService.sendMessageConversations( programStageInstance,
+                PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
+
             break;
         case ProgramStageInstance.VISITED_STATUS:
             programStageInstance.setCompleted( false );

@@ -705,8 +705,6 @@
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetProgramAction"

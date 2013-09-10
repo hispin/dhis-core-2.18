@@ -37,6 +37,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -52,10 +53,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * @version $Id$
  */
 @JacksonXmlRootElement( localName = "programInstance", namespace = DxfNamespaces.DXF_2_0 )
-public class ProgramInstance extends BaseIdentifiableObject
+public class ProgramInstance
+    extends BaseIdentifiableObject
 {
     public static int STATUS_ACTIVE = 0;
+
     public static int STATUS_COMPLETED = 1;
+
     public static int STATUS_CANCELLED = 2;
 
     /**
@@ -80,6 +84,8 @@ public class ProgramInstance extends BaseIdentifiableObject
     private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
 
     private List<OutboundSms> outboundSms;
+
+    private List<MessageConversation> messageConversations;
 
     private Boolean followup;
 
@@ -119,10 +125,10 @@ public class ProgramInstance extends BaseIdentifiableObject
         final int prime = 31;
         int result = 1;
 
-        result = prime * result + ( ( dateOfIncident == null) ? 0 : dateOfIncident.hashCode() );
-        result = prime * result + ( ( enrollmentDate == null) ? 0 : enrollmentDate.hashCode() );
-        result = prime * result + ( ( patient == null) ? 0 : patient.hashCode() );
-        result = prime * result + ( ( program == null) ? 0 : program.hashCode() );
+        result = prime * result + ((dateOfIncident == null) ? 0 : dateOfIncident.hashCode());
+        result = prime * result + ((enrollmentDate == null) ? 0 : enrollmentDate.hashCode());
+        result = prime * result + ((patient == null) ? 0 : patient.hashCode());
+        result = prime * result + ((program == null) ? 0 : program.hashCode());
 
         return result;
     }
@@ -371,6 +377,16 @@ public class ProgramInstance extends BaseIdentifiableObject
     public void setPatientComment( PatientComment patientComment )
     {
         this.patientComment = patientComment;
+    }
+
+    public List<MessageConversation> getMessageConversations()
+    {
+        return messageConversations;
+    }
+
+    public void setMessageConversations( List<MessageConversation> messageConversations )
+    {
+        this.messageConversations = messageConversations;
     }
 
     // -------------------------------------------------------------------------

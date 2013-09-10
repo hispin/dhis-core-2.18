@@ -66,6 +66,10 @@ public class PatientReminder
     public static final int SEND_WHEN_TO_C0MPLETED_EVENT = 2;
     public static final int SEND_WHEN_TO_C0MPLETED_PROGRAM = 3;
 
+    public static final int MESSAGE_TYPE_DIRECT_SMS = 1;
+    public static final int MESSAGE_TYPE_DHIS_MESSAGE = 2;
+    public static final int MESSAGE_TYPE_BOTH = 3;
+    
     private int id;
 
     private String name;
@@ -80,6 +84,8 @@ public class PatientReminder
 
     private Integer whenToSend;
 
+    private Integer messageType;
+    
     private UserGroup userGroup;
 
     // -------------------------------------------------------------------------
@@ -181,5 +187,15 @@ public class PatientReminder
     public void setUserGroup( UserGroup userGroup )
     {
         this.userGroup = userGroup;
+    }
+
+    public Integer getMessageType()
+    {
+        return messageType;
+    }
+
+    public void setMessageType( Integer messageType )
+    {
+        this.messageType = messageType;
     }
 }

@@ -35,6 +35,7 @@ import java.util.List;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -103,5 +104,8 @@ public interface ProgramInstanceService
     Collection<SchedulingProgramObject> getScheduleMesssages();
 
     Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status, I18nFormat format );
+
+    Collection<MessageConversation> sendMessageConversations( ProgramInstance programInstance,
+        int sendWhenToC0mpletedEvent, I18nFormat format );
 
 }

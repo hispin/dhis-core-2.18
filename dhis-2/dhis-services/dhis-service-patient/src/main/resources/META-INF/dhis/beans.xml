@@ -194,6 +194,7 @@
 		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientReminderService" ref="org.hisp.dhis.patient.PatientReminderService" />
+		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramInstanceService" class="org.hisp.dhis.program.DefaultProgramInstanceService">
@@ -206,6 +207,7 @@
 		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientReminderService" ref="org.hisp.dhis.patient.PatientReminderService" />
+		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageService" class="org.hisp.dhis.program.DefaultProgramStageService">
@@ -416,7 +418,8 @@
 		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="notifier" ref="notifier" />
@@ -500,11 +503,13 @@
 			<list>
 				<list>
 					<ref local="org.hisp.dhis.patient.PatientDeletionHandler" />
-					<ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientAuditDeletionHandler" />
-					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />

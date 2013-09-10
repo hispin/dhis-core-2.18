@@ -236,6 +236,13 @@ public class UpdateProgramStageAction
         this.whenToSend = whenToSend;
     }
 
+    private List<Integer> messageType = new ArrayList<Integer>();
+
+    public void setMessageType( List<Integer> messageType )
+    {
+        this.messageType = messageType;
+    }
+
     private List<Integer> userGroup = new ArrayList<Integer>();
 
     public void setUserGroup( List<Integer> userGroup )
@@ -295,8 +302,7 @@ public class UpdateProgramStageAction
         generatedByEnrollmentDate = (generatedByEnrollmentDate == null) ? false : generatedByEnrollmentDate;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
-        captureCoordinates = (captureCoordinates == null) ? false : captureCoordinates;
-        
+
         ProgramStage programStage = programStageService.getProgramStage( id );
 
         programStage.setName( name );
@@ -328,6 +334,7 @@ public class UpdateProgramStageAction
             reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
+            reminder.setMessageType( messageType.get( i ) );
             if ( reminder.getSendTo() == PatientReminder.SEND_TO_USER_GROUP )
             {
                 UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
@@ -363,7 +370,7 @@ public class UpdateProgramStageAction
                     this.compulsories.get( i ), i );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
-                programStageDataElement.setAllowDateInFuture( allowDate ); 
+                programStageDataElement.setAllowDateInFuture( allowDate );
                 programStageDataElement.setDisplayAsRadioButton( displayRadioButton );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }

@@ -297,7 +297,7 @@ function generateTemplateMessageForm()
 				+   '</td>'
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
-				+ 	'<td><label>' + i18n_days_before_after_comparison_date + '</label></td>'
+				+ 	'<td><label>' + i18n_send_message + '</label></td>'
 				+ 	'<td>'
 				+		'<input type="text" onchange="setRealDays(' + rowId + ')" style="width:100px;" realvalue="" id="daysAllowedSendMessage' + rowId + '" name="daysAllowedSendMessage' + rowId + '" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/> '
 				+ 		i18n_days
@@ -327,6 +327,16 @@ function generateTemplateMessageForm()
 				+	'</td>'
 				+ '/<tr>'
 				+ '<tr name="tr' + rowId + '">'
+				+ '	<td><label>' + i18n_message_type + '</label></td>'
+				+ '	<td>'
+				+ '		<select type="text" id="messageType' + rowId + '" name="messageType' + rowId + '" class="messageType {validate:{required:true,number:true}}" >'
+				+ '			<option value="1">' + i18n_direct_sms + '</option>'
+				+ '			<option value="2">' + i18n_message + '</option>'
+				+ '			<option value="3">' + i18n_both + '</option>'
+				+ '		</select>'
+				+ '	</td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
 				+	'<td>' + i18n_params + '</td>'
 				+	'<td>'
 				+		'<select multiple size="4" id="params' + rowId +'" name="params" ondblclick="insertParams(this.value, ' + rowId + ');">'
@@ -342,7 +352,7 @@ function generateTemplateMessageForm()
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'
 				+	'<td><label>' + i18n_message + '</label></td>'
-				+	'<td><textarea onkeypress="getMessageLength( ' + rowId + ');" id="templateMessage' + rowId + '" name="templateMessage' + rowId + '" style="width:320px" class="templateMessage {validate:{required:true}}"></textarea></td>'
+				+	'<td><textarea onkeyup="getMessageLength( ' + rowId + ');" id="templateMessage' + rowId + '" name="templateMessage' + rowId + '" style="width:320px" class="templateMessage {validate:{required:true}}"></textarea></td>'
 				+ '</tr>'
 				+ '<tr>'
 				+	'<td></td>'
@@ -423,4 +433,21 @@ function setRealDays(rowId)
 	var time = jQuery("#time" + rowId + " option:selected ").val();
 	daysAllowedSendMessage.attr("realvalue", time * eval(daysAllowedSendMessage).val());
 	var aasdf= 0;
+}
+
+function onchangeUserGroup( id )
+{
+	var value = document.getElementById( 'sendTo' + id ).value;
+	hideById( 'tr'+id );
+	
+	if( value=="1" || value=="3" ){
+		setFieldValue('messageType' + id , '1');
+		disable('messageType' + id );
+	}
+	else{
+		if ( value == "5") {
+			showById( 'tr' + id );
+		}
+		enable ('messageType' + id );
+	}
 }
