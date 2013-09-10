@@ -29,11 +29,13 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.dxf2.event.Person;
 import org.hisp.dhis.dxf2.event.PersonService;
 import org.hisp.dhis.dxf2.event.Persons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +47,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = PersonController.RESOURCE_PATH )
+@RequestMapping(value = PersonController.RESOURCE_PATH)
 public class PersonController
 {
     public static final String RESOURCE_PATH = "/persons";
@@ -53,15 +55,27 @@ public class PersonController
     @Autowired
     private PersonService personService;
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String getPersons( @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Persons persons = personService.getPersons();
 
         model.addAttribute( "model", persons );
-        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
         return "persons";
+    }
+
+    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
+    {
+        WebOptions options = new WebOptions( parameters );
+        Person person = personService.getPerson( id );
+
+        model.addAttribute( "model", person );
+        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+
+        return "person";
     }
 }
