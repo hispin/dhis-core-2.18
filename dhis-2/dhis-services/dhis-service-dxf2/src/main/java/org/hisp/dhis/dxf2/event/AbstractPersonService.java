@@ -33,6 +33,7 @@ import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,47 +68,57 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public Persons getPersons()
     {
-        Persons persons = new Persons();
-
-        // TODO replace with sql, will be very bad performance when identifiers, attributes etc are included
         List<Patient> patients = new ArrayList<Patient>( patientService.getAllPatients() );
-
-        for ( Patient patient : patients )
-        {
-            persons.getPersons().add( getPerson( patient ) );
-        }
-
-        return persons;
+        return getPersons( patients );
     }
 
     @Override
     public Persons getPersons( OrganisationUnit organisationUnit )
     {
-        Persons persons = new Persons();
-
         List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit ) );
+        return getPersons( patients );
+    }
 
-        for ( Patient patient : patients )
-        {
-            persons.getPersons().add( getPerson( patient ) );
-        }
+    @Override
+    public Persons getPersons( Gender gender )
+    {
+        List<Patient> patients = new ArrayList<Patient>( patientService.getPatiensByGender( gender.getValue() ) );
+        return getPersons( patients );
+    }
 
-        return persons;
+    @Override
+    public Persons getPersons( Program program )
+    {
+        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( program ) );
+        return getPersons( patients );
+    }
+
+    @Override
+    public Persons getPersons( Program program, Gender gender )
+    {
+        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( program, gender.getValue() ) );
+        return getPersons( patients );
+    }
+
+    @Override
+    public Persons getPersons( OrganisationUnit organisationUnit, Program program )
+    {
+        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program ) );
+        return getPersons( patients );
     }
 
     @Override
     public Persons getPersons( OrganisationUnit organisationUnit, Gender gender )
     {
-        Persons persons = new Persons();
-
         List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, gender.getValue() ) );
+        return getPersons( patients );
+    }
 
-        for ( Patient patient : patients )
-        {
-            persons.getPersons().add( getPerson( patient ) );
-        }
-
-        return persons;
+    @Override
+    public Persons getPersons( OrganisationUnit organisationUnit, Program program, Gender gender )
+    {
+        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program, gender.getValue() ) );
+        return getPersons( patients );
     }
 
     @Override

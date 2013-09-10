@@ -30,6 +30,7 @@ package org.hisp.dhis.dxf2.event;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.program.Program;
 
 import java.util.Collection;
 
@@ -42,7 +43,17 @@ public interface PersonService
 
     Persons getPersons( OrganisationUnit organisationUnit );
 
+    Persons getPersons( Gender gender );
+
+    Persons getPersons( Program program );
+
+    Persons getPersons( Program program, Gender gender );
+
+    Persons getPersons( OrganisationUnit organisationUnit, Program program );
+
     Persons getPersons( OrganisationUnit organisationUnit, Gender gender );
+
+    Persons getPersons( OrganisationUnit organisationUnit, Program program, Gender gender );
 
     Persons getPersons( Collection<Patient> patients );
 

@@ -298,6 +298,30 @@ public class DefaultPatientService
     }
 
     @Override
+    public Collection<Patient> getPatients( Program program )
+    {
+        return patientStore.getByProgram( program, 0, Integer.MAX_VALUE );
+    }
+
+    @Override
+    public Collection<Patient> getPatients( Program program, String gender )
+    {
+        return patientStore.getByProgram( program, gender, 0, Integer.MAX_VALUE );
+    }
+
+    @Override
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, String gender )
+    {
+        return patientStore.getByOrgUnitProgramGender( organisationUnit, program, gender, 0, Integer.MAX_VALUE );
+    }
+
+    @Override
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program )
+    {
+        return patientStore.getByOrgUnitProgram( organisationUnit, program, 0, Integer.MAX_VALUE );
+    }
+
+    @Override
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String gender, Integer min, Integer max )
     {
         return patientStore.getByOrgUnitAndGender( organisationUnit, gender, min, max );
