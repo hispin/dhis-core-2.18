@@ -86,7 +86,13 @@ public class Patient
     private String phoneNumber;
 
     private String organisationUnitName;
+    
+    private List<Program> completedPrograms;
 
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+    
     public List<PatientIdentifier> getIdentifiers()
     {
         return identifiers;
@@ -313,6 +319,20 @@ public class Patient
         this.organisationUnitName = organisationUnitName;
     }
 
+    public List<Program> getCompletedPrograms()
+    {
+        return completedPrograms;
+    }
+
+    public void setCompletedPrograms( List<Program> completedPrograms )
+    {
+        this.completedPrograms = completedPrograms;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Override Methods
+    // -------------------------------------------------------------------------
+
     @Override
     public void serialize( DataOutputStream out )
         throws IOException
@@ -415,12 +435,13 @@ public class Patient
             dout.writeInt( 0 );
         }
 
-        // Write Program
+        // Write Programs
         dout.writeInt( programs.size() );
         for ( Program each : programs )
         {
             each.serialize( dout );
         }
+        
         /*dout.writeInt( programsID.size() );
         for ( Integer each : programsID )
         {
@@ -454,6 +475,13 @@ public class Patient
 
         dout.writeInt( enrollmentRelationships.size() );
         for ( Relationship each : enrollmentRelationships )
+        {
+            each.serialize( dout );
+        }
+        
+        // Write completed Programs
+        dout.writeInt( completedPrograms.size() );
+        for ( Program each : completedPrograms )
         {
             each.serialize( dout );
         }

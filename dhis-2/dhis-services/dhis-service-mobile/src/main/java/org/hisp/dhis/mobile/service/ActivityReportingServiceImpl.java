@@ -846,8 +846,13 @@ public class ActivityReportingServiceImpl
     private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientModel( Patient patient )
     {
         org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientModel = new org.hisp.dhis.api.mobile.model.LWUITmodel.Patient();
+        
         List<PatientAttribute> patientAtts = new ArrayList<PatientAttribute>();
+        
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> mobileProgramList = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Program>();
+        
+        List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> mobileCompletedProgramList = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Program>();
+        
         List<org.hisp.dhis.patient.PatientAttribute> atts;
 
         patientModel.setId( patient.getId() );
@@ -945,20 +950,36 @@ public class ActivityReportingServiceImpl
 
         patientModel.setPatientAttValues( patientAtts );
 
-        // Set all programs
-
+        // Set current programs
         List<ProgramInstance> listOfProgramInstance = new ArrayList<ProgramInstance>(
-            programInstanceService.getProgramInstances( patient ) );
+            programInstanceService.getProgramInstances( patient, ProgramInstance.STATUS_ACTIVE ) );
 
         if ( listOfProgramInstance.size() > 0 )
         {
+            System.out.println("current");
             for ( ProgramInstance each : listOfProgramInstance )
             {
+                System.out.println(each.getProgram().getName());
                 mobileProgramList.add( getMobileProgram( patient, each ) );
             }
         }
-
         patientModel.setPrograms( mobileProgramList );
+        
+        // Set completed programs
+        List<ProgramInstance> listOfCompletedProgramInstance = new ArrayList<ProgramInstance>(
+            programInstanceService.getProgramInstances( patient, ProgramInstance.STATUS_COMPLETED ) );
+
+        if ( listOfCompletedProgramInstance.size() > 0 )
+        {
+            System.out.println("completed");
+            for ( ProgramInstance each : listOfCompletedProgramInstance )
+            {
+                System.out.println(each.getProgram().getName());
+                mobileCompletedProgramList.add( getMobileProgram( patient, each ) );
+            }
+        }
+        patientModel.setCompletedPrograms( mobileCompletedProgramList );
+        
         /*
          * List<Integer> mobileProgramIDList = new ArrayList<Integer>(); for (
          * Program eachProgram : patient.getPrograms()) {
@@ -1170,8 +1191,7 @@ public class ActivityReportingServiceImpl
 
             String dataElementName;
 
-            if ( programStageDataElement.getDataElement().getFormName() != null
-                || !programStageDataElement.getDataElement().getFormName().trim().equals( "" ) )
+            if ( programStageDataElement.getDataElement().getFormName() != null && !programStageDataElement.getDataElement().getFormName().trim().equals( "" ) )
             {
                 dataElementName = programStageDataElement.getDataElement().getFormName();
             }
@@ -1933,6 +1953,7 @@ public class ActivityReportingServiceImpl
     {
         Collection<Patient> patients = new HashSet<Patient>( patientService.getPatientsForMobile( keyword, orgUnitId ) );
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        
         if ( programId != 0 )
         {
             Program program = programService.getProgram( programId );
