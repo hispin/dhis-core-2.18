@@ -28,6 +28,7 @@ package org.hisp.dhis.api.mobile.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.EOFException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;

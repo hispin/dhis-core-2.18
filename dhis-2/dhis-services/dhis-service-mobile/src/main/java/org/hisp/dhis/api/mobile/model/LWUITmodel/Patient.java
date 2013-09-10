@@ -31,6 +31,7 @@ package org.hisp.dhis.api.mobile.model.LWUITmodel;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -463,7 +464,7 @@ public class Patient
 
     @Override
     public void deSerialize( DataInputStream din )
-        throws IOException
+        throws IOException, EOFException
     {
         this.setId( din.readInt() );
         this.setFirstName( din.readUTF() );
@@ -552,9 +553,9 @@ public class Patient
         }
 
         int numbIdentifiers = din.readInt();
+        this.identifiers = new ArrayList<PatientIdentifier>();
         if ( numbIdentifiers > 0 )
         {
-            this.identifiers = new ArrayList<PatientIdentifier>();
             for ( int i = 0; i < numbIdentifiers; i++ )
             {
                 PatientIdentifier identifier = new PatientIdentifier();
@@ -562,10 +563,6 @@ public class Patient
                 this.identifiers.add( identifier );
     
             }
-        }
-        else
-        {
-            this.identifiers = null;
         }
         
         // Program & Relationship
