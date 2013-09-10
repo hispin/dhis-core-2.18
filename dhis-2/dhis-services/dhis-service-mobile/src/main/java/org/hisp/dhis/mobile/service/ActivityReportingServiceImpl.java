@@ -1702,11 +1702,12 @@ public class ActivityReportingServiceImpl
     {
         patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
 
-        Collection<Program> programs = programService.getAllPrograms();
-        for ( Program program : programs )
-        {
-            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
-        }
+        // Collection<Program> programs = programService.getAllPrograms();
+        // for ( Program program : programs )
+        // {
+        // patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes()
+        // );
+        // }
         return patientIdentifierTypes;
 
     }
@@ -1796,7 +1797,7 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public Integer savePatient( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patient, int orgUnitId )
+    public Integer savePatient( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patient, int orgUnitId, String programIdText )
         throws NotAllowedException
     {
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
@@ -1900,6 +1901,17 @@ public class ActivityReportingServiceImpl
         patientWeb.setAttributes( patientAttributeSet );
 
         patientId = patientService.createPatient( patientWeb, null, null, patientAttributeValues );
+        
+        try
+        {
+            int programId = Integer.parseInt( programIdText );
+            this.enrollProgram( patientId + "-" + programId );
+        }
+        catch ( Exception e )
+        {
+            return patientId;
+        }
+        
 
         return patientId;
 

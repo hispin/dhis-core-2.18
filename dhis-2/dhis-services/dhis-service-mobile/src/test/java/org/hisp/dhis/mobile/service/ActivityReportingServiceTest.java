@@ -55,8 +55,8 @@ public class ActivityReportingServiceTest
         Patient patientA = this.createLWUITPatient( 'A' );
         Patient patientB = this.createLWUITPatient( 'B' );
 
-        int patientAId = activityReportingService.savePatient( patientA, 779 );
-        int patientBId = activityReportingService.savePatient( patientB, 779 );
+        int patientAId = activityReportingService.savePatient( patientA, 779, "" );
+        int patientBId = activityReportingService.savePatient( patientB, 779, "" );
 
         patientA = activityReportingService.findPatient( patientAId );
         assertEquals( patientAId, patientA.getId() );

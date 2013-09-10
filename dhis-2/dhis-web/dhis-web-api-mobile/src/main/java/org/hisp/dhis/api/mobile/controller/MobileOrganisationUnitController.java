@@ -446,10 +446,10 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/registerPerson" )
     @ResponseBody
-    public String savePatient( @PathVariable int id, @RequestBody Patient patient )
+    public String savePatient( @PathVariable int id, @RequestBody Patient patient, @RequestHeader( "programid" ) String programId )
         throws NotAllowedException
     {
-        if ( activityReportingService.savePatient( patient, id ) != null )
+        if ( activityReportingService.savePatient( patient, id, programId ) != null )
         {
             return PATIENT_REGISTERED;
         }
