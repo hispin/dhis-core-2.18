@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.event.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -29,44 +29,31 @@ package org.hisp.dhis.dxf2.event;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "persons", namespace = DxfNamespaces.DXF_2_0 )
-public class Persons
+@JacksonXmlRootElement( localName = "contact", namespace = DxfNamespaces.DXF_2_0 )
+public class Contact
 {
-    private List<Person> persons = new ArrayList<Person>();
+    private String phoneNumber;
 
-    public Persons()
+    public Contact()
     {
     }
 
-    @JsonProperty( "personList" )
-    @JacksonXmlElementWrapper( localName = "personList", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
-    public List<Person> getPersons()
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getPhoneNumber()
     {
-        return persons;
+        return phoneNumber;
     }
 
-    public void setPersons( List<Person> persons )
+    public void setPhoneNumber( String phoneNumber )
     {
-        this.persons = persons;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Persons{" +
-            "persons=" + persons +
-            '}';
+        this.phoneNumber = phoneNumber;
     }
 }

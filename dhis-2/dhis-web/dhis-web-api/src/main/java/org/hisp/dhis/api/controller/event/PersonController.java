@@ -30,10 +30,10 @@ package org.hisp.dhis.api.controller.event;
 
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.event.Gender;
-import org.hisp.dhis.dxf2.event.Person;
-import org.hisp.dhis.dxf2.event.PersonService;
-import org.hisp.dhis.dxf2.event.Persons;
+import org.hisp.dhis.dxf2.event.person.Gender;
+import org.hisp.dhis.dxf2.event.person.Person;
+import org.hisp.dhis.dxf2.event.person.PersonService;
+import org.hisp.dhis.dxf2.event.person.Persons;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
