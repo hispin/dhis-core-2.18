@@ -239,7 +239,7 @@ public class ActivityReportingServiceImpl
         long lowerBound = cal.getTime().getTime();
 
         List<Activity> items = new ArrayList<Activity>();
-        Collection<Patient> patients = patientService.getPatients( unit, null, null );
+        Collection<Patient> patients = patientService.getPatients( unit, 0, Integer.MAX_VALUE );
 
         for ( Patient patient : patients )
         {
@@ -271,7 +271,7 @@ public class ActivityReportingServiceImpl
     {
 
         List<Activity> items = new ArrayList<Activity>();
-        Collection<Patient> patients = patientService.getPatients( unit, null, null );
+        Collection<Patient> patients = patientService.getPatients( unit, 0, Integer.MAX_VALUE );
 
         for ( Patient patient : patients )
         {
