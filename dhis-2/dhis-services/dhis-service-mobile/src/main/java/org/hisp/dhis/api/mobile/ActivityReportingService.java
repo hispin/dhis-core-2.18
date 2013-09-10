@@ -94,7 +94,7 @@ public interface ActivityReportingService
     public Patient findLatestPatient()
         throws NotAllowedException;
 
-    public Integer savePatient( Patient patient, int orgUnitId )
+    public Integer savePatient( Patient patient, int orgUnitId, String programId )
         throws NotAllowedException;
 
 }
