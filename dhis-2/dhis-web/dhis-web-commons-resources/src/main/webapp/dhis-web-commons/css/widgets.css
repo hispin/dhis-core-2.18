@@ -366,7 +366,8 @@ div#headerMessage
   left: 155px;
   position: fixed;
   display: none;
-  padding: 9px;
+  padding: 10px;
+  padding-bottom: 9px;
   width: 410px;
   background-color: #f8eab0;
   border: 1px solid #dbae56;

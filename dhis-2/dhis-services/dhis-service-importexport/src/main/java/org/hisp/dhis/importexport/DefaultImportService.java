@@ -180,8 +180,7 @@ public class DefaultImportService
                 dxfInStream = 
                     new BufferedInputStream(new FileInputStream( transformOutput ));
                 rootNameSpace = preConverter.getDocumentRoot( dxfInStream ).getNamespaceURI();
-                dxfReader = XMLFactory.getXMLReader( dxfInStream );
-                
+                dxfReader = XMLFactory.getXMLReader( dxfInStream );                
             }
 
             log.debug( "Sending DXFv1 to converter" );

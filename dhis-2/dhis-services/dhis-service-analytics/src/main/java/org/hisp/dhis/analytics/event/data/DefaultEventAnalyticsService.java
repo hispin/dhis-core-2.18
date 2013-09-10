@@ -102,6 +102,8 @@ public class DefaultEventAnalyticsService
     // -------------------------------------------------------------------------
 
     //TODO org unit children / descendants
+    //TODO order the event analytics tables up front to avoid sorting in queries
+    //TODO include ordered column to avoid slow offset clause for paging
     
     public Grid getEvents( EventQueryParams params )
     {
