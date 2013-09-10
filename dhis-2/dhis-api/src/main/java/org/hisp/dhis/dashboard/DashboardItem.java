@@ -210,6 +210,7 @@ public class DashboardItem
         count += reportTables.size();
         count += reports.size();
         count += resources.size();
+        count += patientTabularReports.size();
         return count;
     }
 
@@ -234,9 +235,13 @@ public class DashboardItem
         {
             return removeContent( uid, reports );
         }
-        else
+        else if ( !resources.isEmpty() )
         {
             return removeContent( uid, resources );
+        }
+        else
+        {
+            return removeContent( uid, patientTabularReports );
         }
     }
 
