@@ -343,10 +343,11 @@ public class MobileOrganisationUnitController
     {
         return activityReportingService.findPatient( keyword, id );
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findPatientInAdvanced/{programId}" )
     @ResponseBody
-    public Patient findPatientInAdvanced( @PathVariable int programId, @PathVariable int id, @RequestHeader( "name" ) String keyword )
+    public Patient findPatientInAdvanced( @PathVariable int programId, @PathVariable int id,
+        @RequestHeader( "name" ) String keyword )
         throws NotAllowedException
     {
         return activityReportingService.findPatientInAdvanced( keyword, id, programId );
@@ -445,7 +446,8 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/registerPerson" )
     @ResponseBody
-    public String savePatient( @PathVariable int id, @RequestBody Patient patient, @RequestHeader( "programid" ) String programId )
+    public String savePatient( @PathVariable int id, @RequestBody Patient patient,
+        @RequestHeader( "programid" ) String programId )
         throws NotAllowedException
     {
         if ( activityReportingService.savePatient( patient, id, programId ) != null )
@@ -461,12 +463,13 @@ public class MobileOrganisationUnitController
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/getVariesInfo" )
     @ResponseBody
     public PatientIdentifierAndAttribute getVariesInfo( @PathVariable String clientVersion, @PathVariable int id,
-        @RequestHeader( "accept-language" ) String locale )
+        @RequestHeader( "accept-language" ) String locale, @RequestHeader( "programid" ) String programId )
     {
         PatientIdentifierAndAttribute patientIdentifierAndAttribute = new PatientIdentifierAndAttribute();
         patientIdentifierAndAttribute.setClientVersion( clientVersion );
-        patientIdentifierAndAttribute.setPatientIdentifiers( activityReportingService.getIdentifiersForMobile() );
-        patientIdentifierAndAttribute.setPatientAttributes( activityReportingService.getPatientAttributesForMobile() );
+        patientIdentifierAndAttribute.setPatientIdentifiers( activityReportingService
+            .getIdentifiersForMobile( programId ) );
+        patientIdentifierAndAttribute.setPatientAttributes( activityReportingService.getPatientAttributesForMobile(programId) );
 
         return patientIdentifierAndAttribute;
 

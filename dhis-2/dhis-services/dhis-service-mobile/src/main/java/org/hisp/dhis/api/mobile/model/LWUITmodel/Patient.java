@@ -565,6 +565,7 @@ public class Patient
         
         // Patient Attribute & Identifiers
         int attsNumb = din.readInt();
+        System.out.println("Att numb: " + attsNumb);
         if( attsNumb > 0 )
         {
             this.patientAttValues = new ArrayList<PatientAttribute>();
@@ -581,6 +582,7 @@ public class Patient
         }
 
         int numbIdentifiers = din.readInt();
+        System.out.println("Ids numb: " + attsNumb);
         this.identifiers = new ArrayList<PatientIdentifier>();
         if ( numbIdentifiers > 0 )
         {
