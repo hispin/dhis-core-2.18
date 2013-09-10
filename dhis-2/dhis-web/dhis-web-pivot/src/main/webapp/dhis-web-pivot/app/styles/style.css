@@ -488,6 +488,9 @@ table.pivot {
 .x-menu-body {
 	padding: 0;
 }
+.x-menu-body .x-box-inner {
+	background-color: #fafafa;
+}
 
 	/* Menu item */
 .x-menu-item-link {
@@ -524,6 +527,11 @@ table.pivot {
     background-image:url('../images/check.png');
     padding-left: 18px;
 }
+.pt-menu-item-unselected {
+    background-image:url('../images/check-un.png');
+    padding-left: 18px;
+}
+	
 
 	/* Menu align */
 .pt-btn-menu {
