@@ -18,7 +18,7 @@
 
     <property name="lastUpdated" type="timestamp" />
 
-    <property name="text" column="messagetext" />
+    <property name="text" column="messagetext" type="text" />
 
     <property name="metaData" column="metadata" />
 
