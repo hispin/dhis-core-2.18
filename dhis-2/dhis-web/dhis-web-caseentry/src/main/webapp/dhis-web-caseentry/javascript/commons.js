@@ -1722,7 +1722,7 @@ function showPatientDashboardForm( patientId )
 
 function activeProgramInstanceDiv( programInstanceId )
 {
-	jQuery(".selected").each(function(){
+	jQuery("#patientDashboard .selected").each(function(){
 		jQuery(this).removeClass();
 	});
 	
