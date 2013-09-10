@@ -122,6 +122,30 @@ public interface PatientService
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, Integer min, Integer max );
 
     /**
+     * Search Patient base on organization unit with result limited
+     *
+     * @param organisationUnit organisationUnit
+     * @return Patient List
+     */
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit );
+
+    /**
+     * Search Patient base on organization unit with result limited
+     *
+     * @param organisationUnit organisationUnit
+     * @return Patient List
+     */
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String gender, Integer min, Integer max );
+
+    /**
+     * Search Patient base on organization unit with result limited
+     *
+     * @param organisationUnit organisationUnit
+     * @return Patient List
+     */
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String gender );
+
+    /**
      * Search Patient base on organization unit and sort the result by
      * PatientAttribute
      *
@@ -143,7 +167,7 @@ public interface PatientService
      * @param max
      * @return
      */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, Integer min, Integer max );
+    Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min, Integer max );
 
     /**
      * Search Patient base on PatientIdentifierType or Attribute or Patient's

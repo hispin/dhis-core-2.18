@@ -29,9 +29,12 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.dxf2.event.Gender;
 import org.hisp.dhis.dxf2.event.Person;
 import org.hisp.dhis.dxf2.event.PersonService;
 import org.hisp.dhis.dxf2.event.Persons;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,11 +58,33 @@ public class PersonController
     @Autowired
     private PersonService personService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String getPersons( @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
+    @Autowired
+    private IdentifiableObjectManager manager;
+
+    @RequestMapping( value = "", method = RequestMethod.GET )
+    public String getPersons(
+        @RequestParam( required = false ) String orgUnit,
+        @RequestParam( required = false ) Gender gender,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        Persons persons = personService.getPersons();
+        Persons persons;
+
+        // it will be required in the future to have at least orgUnit, but for now, we allow no parameters
+        if ( gender == null && orgUnit == null )
+        {
+            persons = personService.getPersons();
+        }
+        else if ( gender != null )
+        {
+            OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, orgUnit );
+            persons = personService.getPersons( organisationUnit, gender );
+        }
+        else
+        {
+            OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, orgUnit );
+            persons = personService.getPersons( organisationUnit );
+        }
 
         model.addAttribute( "model", persons );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );

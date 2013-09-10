@@ -37,23 +37,23 @@ public enum DateOfBirthType
     DECLARED( "D" ),
     APPROXIMATE( "A" );
 
-    private final String type;
+    private final String value;
 
-    private DateOfBirthType( String type )
+    private DateOfBirthType( String value )
     {
-        this.type = type;
+        this.value = value;
     }
 
-    public String getType()
+    public String getValue()
     {
-        return type;
+        return value;
     }
 
     public static DateOfBirthType fromString( String text )
     {
         for ( DateOfBirthType dateOfBirthType : DateOfBirthType.values() )
         {
-            if ( text.equals( dateOfBirthType.getType() ) )
+            if ( text.equals( dateOfBirthType.getValue() ) )
             {
                 return dateOfBirthType;
             }

@@ -56,6 +56,8 @@ public interface PatientStore
 
     Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
 
+    Collection<Patient> getByOrgUnitAndGender( OrganisationUnit organisationUnit, String gender, Integer min, Integer max );
+
     Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
         Integer max );
 

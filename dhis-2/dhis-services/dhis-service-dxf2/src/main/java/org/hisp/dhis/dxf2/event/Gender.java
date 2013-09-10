@@ -39,23 +39,23 @@ public enum Gender
 {
     MALE( "M" ), FEMALE( "F" ), TRANSGENDER( "T" );
 
-    private String type;
+    private final String value;
 
-    private Gender( String type )
+    private Gender( String value )
     {
-        this.type = type;
+        this.value = value;
     }
 
-    public String getType()
+    public String getValue()
     {
-        return type;
+        return value;
     }
 
     public static Gender fromString( String text )
     {
         for ( Gender gender : Gender.values() )
         {
-            if ( text.equals( gender.getType() ) )
+            if ( text.equals( gender.getValue() ) )
             {
                 return gender;
             }
