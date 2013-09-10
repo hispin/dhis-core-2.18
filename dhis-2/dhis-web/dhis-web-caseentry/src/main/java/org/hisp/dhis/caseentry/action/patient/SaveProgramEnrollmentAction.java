@@ -266,6 +266,8 @@ public class SaveProgramEnrollmentAction
             outboundSms.addAll( programInstanceService.sendMessages( programInstance,
                 PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
 
+            programInstanceService.updateProgramInstance( programInstance );
+            
             // -----------------------------------------------------------------
             // Send DHIS message when to completed the program
             // -----------------------------------------------------------------
