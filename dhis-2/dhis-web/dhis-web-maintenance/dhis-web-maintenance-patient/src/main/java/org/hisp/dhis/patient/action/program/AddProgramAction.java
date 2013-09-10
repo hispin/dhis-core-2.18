@@ -254,6 +254,13 @@ public class AddProgramAction
         this.whenToSend = whenToSend;
     }
 
+    private List<Integer> messageType = new ArrayList<Integer>();
+
+    public void setMessageType( List<Integer> messageType )
+    {
+        this.messageType = messageType;
+    }
+
     private Boolean selectEnrollmentDatesInFuture;
 
     public void setSelectEnrollmentDatesInFuture( Boolean selectEnrollmentDatesInFuture )
@@ -348,7 +355,7 @@ public class AddProgramAction
             RelationshipType relationshipType = relationshipTypeService.getRelationshipType( relationshipTypeId );
             program.setRelationshipType( relationshipType );
         }
-        program.setRelationshipFromA( relationshipFromA );;
+        program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
@@ -390,6 +397,7 @@ public class AddProgramAction
             reminder.setDateToCompare( datesToCompare.get( i ) );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
+            reminder.setMessageType( messageType.get( i ) );
             if ( sendTo.get( i ) == PatientReminder.SEND_TO_USER_GROUP )
             {
                 UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );

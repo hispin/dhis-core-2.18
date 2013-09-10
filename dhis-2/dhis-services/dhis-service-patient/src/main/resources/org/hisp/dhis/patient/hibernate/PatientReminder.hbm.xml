@@ -22,6 +22,8 @@
  	
  	<property name="whenToSend" />
  	
+ 	<property name="messageType" />
+ 	
  	<many-to-one name="userGroup" class="org.hisp.dhis.user.UserGroup" column="usergroupid" foreign-key="fk_patientreminder_usergroup"/>
   </class>
 </hibernate-mapping>

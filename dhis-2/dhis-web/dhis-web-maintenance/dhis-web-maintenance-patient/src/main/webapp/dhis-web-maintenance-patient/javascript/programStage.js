@@ -351,6 +351,16 @@ function generateTemplateMessageForm()
 				+	'</td>'
 				+ '/<tr>'
 				+ '<tr name="tr' + rowId + '">'
+				+ '	<td><label>' + i18n_message_type + '</label></td>'
+				+ '	<td>'
+				+ '		<select type="text" id="messageType' + rowId + '" name="messageType' + rowId + '" class="messageType {validate:{required:true,number:true}}" >'
+				+ '			<option value="1">' + i18n_direct_sms + '</option>'
+				+ '			<option value="2">' + i18n_message + '</option>'
+				+ '			<option value="3">' + i18n_both + '</option>'
+				+ '		</select>'
+				+ '	</td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
 				+	'<td>' + i18n_params + '</td>'
 				+	'<td>'
 				+		'<select multiple size="4" id="params' + rowId +'" name="params" ondblclick="insertParams(this.value, ' + rowId + ');">'
@@ -407,13 +417,20 @@ function showHideUserGroup()
 
 function onchangeUserGroup( id )
 {
-	var value = document.getElementById( 'sendTo'+id ).value;
+	var value = document.getElementById( 'sendTo' + id ).value;
 	hideById( 'tr'+id );
-	if ( value == 5) {
-		showById( 'tr'+id );
+	
+	if( value=="1" || value=="3" ){
+		setFieldValue('messageType' + id , '1');
+		disable('messageType' + id );
 	}
-};
-
+	else{
+		if ( value == "5") {
+			showById( 'tr' + id );
+		}
+		enable ('messageType' + id );
+	}
+}
 
 function getMessageLength(rowId)
 {

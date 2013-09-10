@@ -38,6 +38,9 @@ jQuery( document ).ready( function()
 		var userGroup = jQuery( "#userGroup" );
 		userGroup.empty();
 		
+		var messageType = jQuery( "#messageType" );
+		messageType.empty();
+
 		jQuery("#selectedList").find("tr").each( function( i, item ){ 
 			
 			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
@@ -74,6 +77,9 @@ jQuery( document ).ready( function()
 		});
 		jQuery(".whenToSend").each( function( i, item ){ 
 			whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+		});
+		jQuery(".messageType").each( function( i, item ){ 
+			messageType.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		jQuery(".userGroup").each( function( i, item ){ 
 			userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );

@@ -32,8 +32,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
@@ -225,7 +227,7 @@ public class SaveProgramEnrollmentAction
 
                     Date dueDate = DateUtils
                         .getDateAfterAddition( dateCreatedEvent, programStage.getMinDaysFromStart() );
-                    
+
                     if ( !program.getIgnoreOverdueEvents()
                         || !(program.getIgnoreOverdueEvents() && dueDate.before( currentDate )) )
                     {
@@ -251,7 +253,10 @@ public class SaveProgramEnrollmentAction
                 }
             }
 
+            // -----------------------------------------------------------------
             // send messages after enrollment program
+            // -----------------------------------------------------------------
+
             List<OutboundSms> outboundSms = programInstance.getOutboundSms();
             if ( outboundSms == null )
             {
@@ -260,6 +265,20 @@ public class SaveProgramEnrollmentAction
 
             outboundSms.addAll( programInstanceService.sendMessages( programInstance,
                 PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
+
+            // -----------------------------------------------------------------
+            // Send DHIS message when to completed the program
+            // -----------------------------------------------------------------
+
+            List<MessageConversation> piMessageConversations = programInstance.getMessageConversations();
+            if ( piMessageConversations == null )
+            {
+                piMessageConversations = new ArrayList<MessageConversation>();
+            }
+
+            piMessageConversations.addAll( programInstanceService.sendMessageConversations( programInstance,
+                PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
+
             programInstanceService.updateProgramInstance( programInstance );
         }
         else
@@ -272,7 +291,7 @@ public class SaveProgramEnrollmentAction
             for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
             {
                 if ( !programStageInstance.isCompleted()
-                    || programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS )
+                    || (programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS) )
                 {
                     Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ),
                         programStageInstance.getProgramStage().getMinDaysFromStart() );

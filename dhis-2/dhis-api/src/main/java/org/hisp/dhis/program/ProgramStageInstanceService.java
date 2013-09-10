@@ -36,6 +36,7 @@ import java.util.Map;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientreport.TabularReportColumn;
@@ -64,9 +65,11 @@ public interface ProgramStageInstanceService
 
     Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage );
 
-    Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage, OrganisationUnit organisationUnit);
+    Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage,
+        OrganisationUnit organisationUnit );
 
-    Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage, OrganisationUnit organisationUnit, Date start, Date end);
+    Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage,
+        OrganisationUnit organisationUnit, Date start, Date end );
 
     Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances );
 
@@ -144,5 +147,8 @@ public interface ProgramStageInstanceService
     Collection<OutboundSms> sendMessages( ProgramStageInstance programStageInstance, int status, I18nFormat format );
 
     Collection<ProgramStageInstance> getProgramStageInstance( Patient patient );
+
+    Collection<MessageConversation> sendMessageConversations( ProgramStageInstance programStageInstance, int status,
+        I18nFormat format );
 
 }

@@ -208,6 +208,13 @@ public class AddProgramStageAction
         this.whenToSend = whenToSend;
     }
 
+    private List<Integer> messageType = new ArrayList<Integer>();
+
+    public void setMessageType( List<Integer> messageType )
+    {
+        this.messageType = messageType;
+    }
+
     private Boolean autoGenerateEvent;
 
     public void setAutoGenerateEvent( Boolean autoGenerateEvent )
@@ -329,6 +336,7 @@ public class AddProgramStageAction
             reminder.setDateToCompare( PatientReminder.DUE_DATE_TO_COMPARE );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
+            reminder.setMessageType( messageType.get( i ) );
             if ( sendTo.get( i ) == PatientReminder.SEND_TO_USER_GROUP )
             {
                 UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );

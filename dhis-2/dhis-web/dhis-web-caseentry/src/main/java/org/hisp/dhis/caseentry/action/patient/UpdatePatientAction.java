@@ -212,6 +212,10 @@ public class UpdatePatientAction
         {
             patient.setHealthWorker( userService.getUser( healthWorker ) );
         }
+        else
+        {
+            patient.setHealthWorker( null );
+        }
 
         if ( birthDate != null || age != null )
         {
@@ -379,9 +383,9 @@ public class UpdatePatientAction
         this.userService = userService;
     }
 
-    public void setHealthWorkerId( Integer healthWorkerId )
+    public void setHealthWorker( Integer healthWorker )
     {
-        this.healthWorker = healthWorkerId;
+        this.healthWorker = healthWorker;
     }
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )

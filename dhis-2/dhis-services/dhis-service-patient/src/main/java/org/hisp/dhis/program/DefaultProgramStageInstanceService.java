@@ -33,6 +33,8 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -120,6 +122,13 @@ public class DefaultProgramStageInstanceService
         this.patientReminderService = patientReminderService;
     }
 
+    private MessageService messageService;
+
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -161,13 +170,15 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage, OrganisationUnit organisationUnit )
+    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage,
+        OrganisationUnit organisationUnit )
     {
         return programStageInstanceStore.get( programStage, organisationUnit );
     }
 
     @Override
-    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage, OrganisationUnit organisationUnit, Date start, Date end )
+    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage,
+        OrganisationUnit organisationUnit, Date start, Date end )
     {
         return programStageInstanceStore.get( programStage, organisationUnit, start, end, 0, Integer.MAX_VALUE );
     }
@@ -582,7 +593,10 @@ public class DefaultProgramStageInstanceService
         Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
         for ( PatientReminder rm : reminders )
         {
-            if ( rm != null && rm.getWhenToSend() != null && rm.getWhenToSend() == status )
+            if ( rm != null
+                && rm.getWhenToSend() != null
+                && rm.getWhenToSend() == status
+                && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
             {
                 OutboundSms outboundSms = sendEventMessage( rm, programStageInstance, patient, format );
                 if ( outboundSms != null )
@@ -593,6 +607,31 @@ public class DefaultProgramStageInstanceService
         }
 
         return outboundSmsList;
+    }
+
+    @Override
+    public Collection<MessageConversation> sendMessageConversations( ProgramStageInstance programStageInstance,
+        int status, I18nFormat format )
+    {
+        Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
+
+        Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
+        for ( PatientReminder rm : reminders )
+        {
+            if ( rm != null
+                && rm.getWhenToSend() != null
+                && rm.getWhenToSend() == status
+                && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
+            {
+                int id = messageService.sendMessage( programStageInstance.getProgramStage().getDisplayName(),
+                    patientReminderService.getMessageFromTemplate( rm, programStageInstance, format ), null,
+                    patientReminderService.getUsers( rm, programStageInstance.getProgramInstance().getPatient() ),
+                    null, false, true );
+                messageConversations.add( messageService.getMessageConversation( id ) );
+            }
+        }
+
+        return messageConversations;
     }
 
     public Collection<ProgramStageInstance> getProgramStageInstance( Patient patient )

@@ -257,6 +257,13 @@ public class UpdateProgramAction
         this.whenToSend = whenToSend;
     }
 
+    private List<Integer> messageType = new ArrayList<Integer>();
+
+    public void setMessageType( List<Integer> messageType )
+    {
+        this.messageType = messageType;
+    }
+
     private Boolean useBirthDateAsIncidentDate;
 
     public void setUseBirthDateAsIncidentDate( Boolean useBirthDateAsIncidentDate )
@@ -415,6 +422,7 @@ public class UpdateProgramAction
             reminder.setDateToCompare( datesToCompare.get( i ) );
             reminder.setSendTo( sendTo.get( i ) );
             reminder.setWhenToSend( whenToSend.get( i ) );
+            reminder.setMessageType( messageType.get( i ) );
 
             if ( reminder.getSendTo() == PatientReminder.SEND_TO_USER_GROUP )
             {

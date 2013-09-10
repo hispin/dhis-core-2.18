@@ -163,4 +163,31 @@ public class DefaultPatientReminderService
         }
         return phoneNumbers;
     }
+
+    public Set<User> getUsers( PatientReminder patientReminder, Patient patient )
+    {
+        Set<User> users = new HashSet<User>();
+
+        switch ( patientReminder.getSendTo() )
+        {
+        case PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED:
+            users.addAll( patient.getOrganisationUnit().getUsers() );
+            break;
+        case PatientReminder.SEND_TO_HEALTH_WORKER:
+            if ( patient.getHealthWorker() != null && patient.getHealthWorker().getPhoneNumber() != null )
+            {
+                users.add( patient.getHealthWorker() );
+            }
+            break;
+        case PatientReminder.SEND_TO_USER_GROUP:
+            if ( patientReminder.getUserGroup().getMembers().size() > 0 )
+            {
+                users.addAll( patientReminder.getUserGroup().getMembers() );
+            }
+            break;
+        default:
+            break;
+        }
+        return users;
+    }
 }

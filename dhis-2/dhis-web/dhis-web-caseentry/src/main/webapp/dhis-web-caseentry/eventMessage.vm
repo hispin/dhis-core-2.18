@@ -37,9 +37,23 @@
 				<td>$format.formatDateTime($!sms.date)</td>
 				<td>$i18n.getString('all')</td>
 				<td>$sms.sender</td>
-				<td>$i18n.getString('message')</td>
+				<td>$i18n.getString('sms')</td>
 				<td #if( $sms.status=='ERROR') style="color:red" #end >$sms.status</td>
 				<td>$sms.message</td>
+				<td>
+					<a href="javascript:removeMessage( $programInstances.id, '', $sms.id )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+				</td>
+			</tr>
+			#set( $mark = !$mark )
+		#end 
+		#foreach( $messageConversation in $programInstance.messageConversations )
+			<tr id="tr${sms.id}" #alternate( $mark )>
+				<td>$format.formatDateTime($!messageConversation.lastMessage)</td>
+				<td>$i18n.getString('all')</td>
+				<td>$messageConversation.lastSender.username</td>
+				<td>$i18n.getString('message')</td>
+				<td></td>
+				<td>$messageConversation.messages.get(0)</td>
 				<td>
 					<a href="javascript:removeMessage( $programInstances.id, '', $sms.id )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				</td>
@@ -78,6 +92,20 @@
 				</tr>
 				#set( $mark = !$mark )
 			#end
+			#foreach( $messageConversation in $programStageInstance.messageConversations )
+			<tr id="tr${sms.id}" #alternate( $mark )>
+				<td>$format.formatDateTime($!messageConversation.lastMessage)</td>
+				<td>$programStageInstance.programStage.displayName</td>
+				<td>$messageConversation.lastSender.username</td>
+				<td>$i18n.getString('message')</td>
+				<td></td>
+				<td>$messageConversation.messages.get(0)</td>
+				<td>
+					<a href="javascript:removeMessage( $programInstances.id, '', $sms.id )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+				</td>
+			</tr>
+			#set( $mark = !$mark )
+		#end
 		#end
 	</tbody>
 </table>

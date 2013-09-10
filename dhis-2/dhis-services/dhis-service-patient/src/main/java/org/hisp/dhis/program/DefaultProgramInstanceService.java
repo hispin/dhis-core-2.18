@@ -41,6 +41,8 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -119,6 +121,13 @@ public class DefaultProgramInstanceService
     public void setPatientReminderService( PatientReminderService patientReminderService )
     {
         this.patientReminderService = patientReminderService;
+    }
+
+    private MessageService messageService;
+
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
     }
 
     // -------------------------------------------------------------------------
@@ -477,6 +486,18 @@ public class DefaultProgramInstanceService
                 + format.formatDateTime( messasge.getDate() ) );
             grid.addValue( messasge.getMessage() );
         }
+        
+        // Get message conversations of the program-instance
+
+        List<MessageConversation> conversations = programInstance.getMessageConversations();
+
+        for ( MessageConversation conversation : conversations )
+        {
+            grid.addRow();
+            grid.addValue( i18n.getString( "message" ) + " " + i18n.getString( "on" ) + " "
+                + format.formatDateTime( conversation.getLastUpdated()) );
+            grid.addValue( conversation.getMessages().get( 0 ) );
+        }
 
         // Program-instance attributes
 
@@ -528,7 +549,10 @@ public class DefaultProgramInstanceService
         Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
         for ( PatientReminder rm : reminders )
         {
-            if ( rm != null && rm.getWhenToSend() != null && rm.getWhenToSend() == status )
+            if ( rm != null
+                && rm.getWhenToSend() != null
+                && rm.getWhenToSend() == status
+                && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
             {
                 OutboundSms outboundSms = sendProgramMessage( rm, programInstance, patient, format );
                 if ( outboundSms != null )
@@ -539,6 +563,30 @@ public class DefaultProgramInstanceService
         }
 
         return outboundSmsList;
+    }
+
+    @Override
+    public Collection<MessageConversation> sendMessageConversations( ProgramInstance programInstance, int status,
+        I18nFormat format )
+    {
+        Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
+
+        Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
+        for ( PatientReminder rm : reminders )
+        {
+            if ( rm != null
+                && rm.getWhenToSend() != null
+                && rm.getWhenToSend() == status
+                && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
+            {
+                int id = messageService.sendMessage( programInstance.getProgram().getDisplayName(),
+                    patientReminderService.getMessageFromTemplate( rm, programInstance, format ), null,
+                    patientReminderService.getUsers( rm, programInstance.getPatient() ), null, false, true );
+                messageConversations.add( messageService.getMessageConversation( id ) );
+            }
+        }
+
+        return messageConversations;
     }
 
     // -------------------------------------------------------------------------
@@ -586,7 +634,7 @@ public class DefaultProgramInstanceService
                     + format.formatDateTime( comment.getCreatedDate() ) );
                 grid.addValue( comment.getCommentText() );
             }
-            
+
             // SMS messages
 
             List<OutboundSms> messasges = programStageInstance.getOutboundSms();

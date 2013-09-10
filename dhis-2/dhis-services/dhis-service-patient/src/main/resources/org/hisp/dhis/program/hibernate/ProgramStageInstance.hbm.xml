@@ -40,11 +40,14 @@
 			<many-to-many class="org.hisp.dhis.sms.outbound.OutboundSms"
 				column="outboundsmsid" />
 		</list>
-
-		<many-to-one name="patientComment" cascade="all"
-			class="org.hisp.dhis.patientcomment.PatientComment" column="patientcommentid"
-			foreign-key="fk_programstageinstance_patientcommentid" />
-
+		
+		<list name="messageConversations" table="programstageinstance_messageconversation">
+			<key column="programstageinstanceid" />
+			<list-index column="sort_order" base="1" />
+			<many-to-many class="org.hisp.dhis.message.MessageConversation"
+				column="messageconversationid" />
+		</list>
+		
 		<property name="status" column="status" />
 
 		<property name="coordinates" type="text" />

@@ -29,6 +29,9 @@
 				var whenToSend = jQuery( "#whenToSend" );
 				whenToSend.empty();
 				
+				var messageType = jQuery( "#messageType" );
+				messageType.empty();
+				
 				var userGroup = jQuery( "#userGroup" );
 				userGroup.empty();
 				
@@ -53,6 +56,10 @@
 					whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 				});
 				
+				jQuery(".messageType").each( function( i, item ){ 
+					messageType.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+				});
+				
 				jQuery(".userGroup").each( function( i, item ){ 
 					userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 				});
@@ -63,9 +70,7 @@
 				personDisplayNames.empty();
 				if(getFieldValue('type')!=3){
 					jQuery("#selectedList").find("tr").each( function( i, item ){ 
-						
 						selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
-						
 						var displayed = jQuery( item ).find( "input[name='displayed']:first");
 						var checked = displayed.attr('checked') ? true : false;
 						personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
@@ -74,15 +79,7 @@
 			});
 	checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );
 });
-	function onchangeUserGroup( id )
-	{
-		var value = document.getElementById( 'sendTo'+id ).value;
-		hideById( 'tr'+id );
-		if ( value == 5) {
-			showById( 'tr'+id );
-		}
-	};
-	
+
 </script>
 
 <h3>$i18n.getString( "edit_program" )</h3>
@@ -93,6 +90,7 @@
   <select id='datesToCompare' name="datesToCompare" multiple="multiple" class="hidden"></select>
   <select id='sendTo' name="sendTo" multiple="multiple" class="hidden"></select>
   <select id='whenToSend' name="whenToSend" multiple="multiple" class="hidden"></select>
+	<select id='messageType' name="messageType" multiple="multiple" class="hidden"></select>
   <select id='userGroup' name="userGroup" multiple="multiple" class="hidden"></select>
 
   <input type="hidden" id="id" name="id" value="$program.id">
@@ -335,7 +333,7 @@
 					</td>
 				</tr>
 				<tr name="tr$index">
-					<td><label>$i18n.getString( "send_when_to" )</label></td>
+					<td><label>$i18n.getString( "send_base_on" )</label></td>
 					<td>
 						<select type="text" id="whenToSend$index" name="whenToSend$index" class="whenToSend" onchange='whenToSendOnChange($index)'>
 							<option value="" >$i18n.getString("days_scheduled")</option>
@@ -380,8 +378,8 @@
 					<td>
 						<select type="text" id="sendTo$index" name="sendTo$index" class="sendTo {validate:{required:true,number:true}}" onchange="onchangeUserGroup( $index )">
 							<option value="1" #if($!reminder.sendTo==1) selected #end >$i18n.getString("patient_sms_only")</option>
-							<option value="2" #if($!reminder.sendTo==2) selected #end >$i18n.getString("orgunit_phone_number_sms_only")</option>
-							<option value="3" #if($!reminder.sendTo==3) selected #end >$i18n.getString("health_worker_assigned_to_person")</option>
+							<option value="3" #if($!reminder.sendTo==3) selected #end >$i18n.getString("orgunit_phone_number_sms_only")</option>
+							<option value="2" #if($!reminder.sendTo==2) selected #end >$i18n.getString("health_worker_assigned_to_person")</option>
 							<option value="4" #if($!reminder.sendTo==4) selected #end >$i18n.getString("all_users_in_orgunit_registered")</option>
 							<option value="5" #if($!reminder.sendTo==5) selected #end >$i18n.getString("user_group")</option>
 						</select>
@@ -394,6 +392,16 @@
 						#foreach($eachGroup in $userGroups)
 							<option value="$eachGroup.id" #if($!reminder.userGroup.id==$eachGroup.id) selected #end>$i18n.getString($eachGroup.name)</option>
 						#end	
+						</select>
+					</td>
+				</tr>
+				<tr name="tr$index">
+					<td><label>$i18n.getString( "message_type" )</label></td>
+					<td>
+						<select type="text" id="messageType$index" name="messageType$index" #if($!reminder.sendTo==1 || $!reminder.sendTo==3) disabled #end class="messageType {validate:{required:true,number:true}}" >
+							<option value="1" #if($!reminder.messageType==1) selected #end >$i18n.getString("direct_sms")</option>
+							<option value="2" #if($!reminder.messageType==2) selected #end >$i18n.getString("message")</option>
+							<option value="3" #if($!reminder.messageType==3) selected #end >$i18n.getString("both")</option>
 						</select>
 					</td>
 				</tr>
@@ -413,7 +421,7 @@
 				</tr>
 				<tr name="tr$index">
 					<td><label>$i18n.getString( "message" )</label></td>
-					<td><textarea onkeypress="getMessageLength($index)" id="templateMessage$index" name="templateMessage$index" style="width:320px" class="templateMessage {validate:{required:true, rangelength:[3,160]}}">$reminder.templateMessage</textarea></td>
+					<td><textarea onkeyup="getMessageLength($index)" id="templateMessage$index" name="templateMessage$index" style="width:320px" class="templateMessage {validate:{required:true}}">$reminder.templateMessage</textarea></td>
 				</tr>
 				<tr>
 					<td></td>
@@ -472,5 +480,10 @@
 	var i18n_before = '$encoder.jsEscape( $i18n.getString( "before" ) , "'")';
 	var i18n_after = '$encoder.jsEscape( $i18n.getString( "after" ) , "'")';
 	var i18n_scheduled_date = '$encoder.jsEscape( $i18n.getString( "scheduled_date" ) , "'")';
+	var i18n_message_type = '$encoder.jsEscape( $i18n.getString( "message_type" ) , "'")';
+	var i18n_direct_sms = '$encoder.jsEscape( $i18n.getString( "direct_sms" ) , "'")';
+	var i18n_message = '$encoder.jsEscape( $i18n.getString( "message" ) , "'")';
+	var i18n_both = '$encoder.jsEscape( $i18n.getString( "both" ) , "'")';
+	
 	programOnChange();
 </script>
