@@ -44,13 +44,21 @@ public interface StatementBuilder
     //--------------------------------------------------------------------------
 
     /**
-     * Encodes the provided SQL value.
+     * Encodes the provided SQL value. Value will be wrapped in quotes.
      * 
      * @param value the value.
      * @return the SQL encoded value.
      */
     String encode( String value );
-    
+
+    /**
+     * Encodes the provided SQL value.
+     * 
+     * @param value the value.
+     * @param quote whether to wrap the resulting value in quotes.
+     * @return the SQL encoded value.
+     */
+    String encode( String value, boolean quote );
     /**
      * Returns the character used to quote database table and column names.
      * 

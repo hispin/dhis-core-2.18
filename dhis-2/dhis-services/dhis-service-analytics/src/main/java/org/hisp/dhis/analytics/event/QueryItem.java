@@ -28,12 +28,10 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.system.util.TextUtils;
 
 /**
  * @author Lars Helge Overland
@@ -90,27 +88,6 @@ public class QueryItem
         }
         
         return OPERATOR_MAP.get( operator.toLowerCase() );
-    }
-    
-    public String getSqlFilter()
-    {
-        if ( operator == null || filter == null )
-        {
-            return null;
-        }        
-        
-        if ( operator.equals( "like" ) )
-        {
-            return "'%" + filter.toLowerCase() + "%'";
-        }
-        else if ( operator.equals( "in" ) )
-        {
-            String[] split = filter.toLowerCase().split( ":" );
-                        
-            return "(" + TextUtils.getQuotedCommaDelimitedString( Arrays.asList( split ) ) + ")";
-        }
-        
-        return "'" + filter.toLowerCase() + "'";
     }
     
     @Override
