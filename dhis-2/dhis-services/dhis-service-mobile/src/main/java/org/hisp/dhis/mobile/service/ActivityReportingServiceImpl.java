@@ -956,10 +956,8 @@ public class ActivityReportingServiceImpl
 
         if ( listOfProgramInstance.size() > 0 )
         {
-            System.out.println("current");
             for ( ProgramInstance each : listOfProgramInstance )
             {
-                System.out.println(each.getProgram().getName());
                 mobileProgramList.add( getMobileProgram( patient, each ) );
             }
         }
@@ -971,10 +969,8 @@ public class ActivityReportingServiceImpl
 
         if ( listOfCompletedProgramInstance.size() > 0 )
         {
-            System.out.println("completed");
             for ( ProgramInstance each : listOfCompletedProgramInstance )
             {
-                System.out.println(each.getProgram().getName());
                 mobileCompletedProgramList.add( getMobileProgram( patient, each ) );
             }
         }
