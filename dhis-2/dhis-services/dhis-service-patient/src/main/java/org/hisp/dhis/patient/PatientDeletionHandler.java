@@ -28,12 +28,12 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Collection;
 
 public class PatientDeletionHandler
     extends DeletionHandler
@@ -82,13 +82,13 @@ public class PatientDeletionHandler
     @Override
     public void deletePatientAttribute( PatientAttribute patientAttribute )
     {
-        jdbcTemplate.execute( "delete from patient_attributes where patientattributeid=" +  patientAttribute.getId() );
+        jdbcTemplate.execute( "delete from patient_attributes where patientattributeid=" + patientAttribute.getId() );
     }
 
     @Override
     public String allowDeleteOrganisationUnit( OrganisationUnit unit )
     {
-        return patientService.getPatients( unit, null, null ).size() == 0 ? null : ERROR;
+        return patientService.getPatients( unit, 0, Integer.MAX_VALUE ).size() == 0 ? null : ERROR;
     }
 
     @Override
