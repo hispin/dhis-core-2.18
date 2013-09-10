@@ -63,7 +63,11 @@ public class DefaultPatientReminderService
         String incidentDate = format.formatDate( programInstance.getDateOfIncident() );
         String erollmentDate = format.formatDate( programInstance.getEnrollmentDate() );
 
-        templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+        if ( patientName != null )
+        {
+            templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+        }
+
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
         templateMessage = templateMessage
             .replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
@@ -91,7 +95,10 @@ public class DefaultPatientReminderService
         String daysSinceDueDate = DateUtils.daysBetween( new Date(), programStageInstance.getDueDate() ) + "";
         String dueDate = format.formatDate( programStageInstance.getDueDate() );
 
-        templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+        if ( patientName != null )
+        {
+            templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+        }
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME,
             programStageName );
