@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.event.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,32 +28,43 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.dxf2.event.person.Gender;
+import org.hisp.dhis.dxf2.event.person.Person;
+import org.hisp.dhis.dxf2.event.person.Persons;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.program.Program;
+
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "contact", namespace = DxfNamespaces.DXF_2_0 )
-public class Contact
+public interface PersonService
 {
-    private String phoneNumber;
+    Persons getPersons();
 
-    public Contact()
-    {
-    }
+    Persons getPersons( OrganisationUnit organisationUnit );
 
-    @JsonProperty( required = true )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getPhoneNumber()
-    {
-        return phoneNumber;
-    }
+    Persons getPersons( Gender gender );
 
-    public void setPhoneNumber( String phoneNumber )
-    {
-        this.phoneNumber = phoneNumber;
-    }
+    Persons getPersons( Program program );
+
+    Persons getPersons( Program program, Gender gender );
+
+    Persons getPersons( OrganisationUnit organisationUnit, Program program );
+
+    Persons getPersons( OrganisationUnit organisationUnit, Gender gender );
+
+    Persons getPersons( OrganisationUnit organisationUnit, Program program, Gender gender );
+
+    Persons getPersons( Collection<Patient> patients );
+
+    Person getPerson( String uid );
+
+    Person getPerson( Patient patient );
+
+    void updatePerson( Person person );
+
+    void deletePerson( Person person );
 }

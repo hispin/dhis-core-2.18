@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.event.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,40 +28,39 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.program.Program;
-
-import java.util.Collection;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface PersonService
+@JacksonXmlRootElement( localName = "gender", namespace = DxfNamespaces.DXF_2_0 )
+public enum Gender
 {
-    Persons getPersons();
+    MALE( "M" ), FEMALE( "F" ), TRANSGENDER( "T" );
 
-    Persons getPersons( OrganisationUnit organisationUnit );
+    private final String value;
 
-    Persons getPersons( Gender gender );
+    private Gender( String value )
+    {
+        this.value = value;
+    }
 
-    Persons getPersons( Program program );
+    public String getValue()
+    {
+        return value;
+    }
 
-    Persons getPersons( Program program, Gender gender );
+    public static Gender fromString( String text )
+    {
+        for ( Gender gender : Gender.values() )
+        {
+            if ( text.equals( gender.getValue() ) )
+            {
+                return gender;
+            }
+        }
 
-    Persons getPersons( OrganisationUnit organisationUnit, Program program );
-
-    Persons getPersons( OrganisationUnit organisationUnit, Gender gender );
-
-    Persons getPersons( OrganisationUnit organisationUnit, Program program, Gender gender );
-
-    Persons getPersons( Collection<Patient> patients );
-
-    Person getPerson( String uid );
-
-    Person getPerson( Patient patient );
-
-    void updatePerson( Person person );
-
-    void deletePerson( Person person );
+        throw new IllegalArgumentException();
+    }
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.event.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.event;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.hisp.dhis.dxf2.event.person.AbstractPersonService;
 import org.hisp.dhis.system.notification.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
 

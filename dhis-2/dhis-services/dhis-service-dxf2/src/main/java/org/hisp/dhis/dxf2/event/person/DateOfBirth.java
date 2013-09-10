@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.event.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,39 +28,50 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
+
+import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "gender", namespace = DxfNamespaces.DXF_2_0 )
-public enum Gender
+@JacksonXmlRootElement( localName = "dateOfBirth", namespace = DxfNamespaces.DXF_2_0 )
+public class DateOfBirth
 {
-    MALE( "M" ), FEMALE( "F" ), TRANSGENDER( "T" );
+    private Date date;
 
-    private final String value;
+    private DateOfBirthType type;
 
-    private Gender( String value )
+    public DateOfBirth()
     {
-        this.value = value;
     }
 
-    public String getValue()
+    public DateOfBirth( Date date )
     {
-        return value;
+        this.date = date;
+        this.type = DateOfBirthType.VERIFIED;
     }
 
-    public static Gender fromString( String text )
+    public DateOfBirth( Date date, DateOfBirthType type )
     {
-        for ( Gender gender : Gender.values() )
-        {
-            if ( text.equals( gender.getValue() ) )
-            {
-                return gender;
-            }
-        }
+        this.date = date;
+        this.type = type;
+    }
 
-        throw new IllegalArgumentException();
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public Date getDate()
+    {
+        return date;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public DateOfBirthType getType()
+    {
+        return type;
     }
 }

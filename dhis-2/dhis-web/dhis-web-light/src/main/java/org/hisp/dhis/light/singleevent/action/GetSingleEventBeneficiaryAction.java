@@ -28,9 +28,7 @@ package org.hisp.dhis.light.singleevent.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
@@ -40,7 +38,9 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.util.SessionUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class GetSingleEventBeneficiaryAction
     implements Action
@@ -155,10 +155,11 @@ public class GetSingleEventBeneficiaryAction
     {
         //delete previous data value of other single event form
         SessionUtils.removeSessionVar( "prevDataValues" );
-        
+
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Program program = programService.getProgram( programId );
-        Collection<Patient> allPatient = patientService.getPatients( orgUnit, null, null  );
+        Collection<Patient> allPatient = patientService.getPatients( orgUnit, 0, Integer.MAX_VALUE );
+
         for ( Patient patient : allPatient )
         {
             if ( programInstanceService.getProgramInstances( patient, program ).size() == 0 )
