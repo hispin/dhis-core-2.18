@@ -47,7 +47,7 @@
 			#set( $mark = !$mark )
 		#end 
 		#foreach( $messageConversation in $programInstance.messageConversations )
-			<tr id="tr${sms.id}" #alternate( $mark )>
+			<tr id="tr${messageConversation.id}" #alternate( $mark )>
 				<td>$format.formatDateTime($!messageConversation.lastMessage)</td>
 				<td>$i18n.getString('all')</td>
 				<td>$messageConversation.lastSender.username</td>

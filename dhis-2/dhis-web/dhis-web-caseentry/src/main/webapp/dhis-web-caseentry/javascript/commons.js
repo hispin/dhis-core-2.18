@@ -1918,6 +1918,7 @@ function sendSmsOnePatient( field, id )
 					+ "<td>" + field.value + "</td>"+
 					+ "<td>" + field.value + "</td></tr>");
 				field.style.backgroundColor = SUCCESS_COLOR;
+				field.value="";
 				hideById('smsError');
 				setInnerHTML('smsSuccess', json.message);
 			

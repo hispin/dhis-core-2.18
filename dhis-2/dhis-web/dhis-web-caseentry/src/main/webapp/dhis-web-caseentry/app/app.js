@@ -1907,15 +1907,16 @@ Ext.onReady( function() {
 				var p = {};
 				p.startDate = TR.cmp.settings.startDate.rawValue;
 				p.endDate = TR.cmp.settings.endDate.rawValue;
-				p.facilityLB = TR.cmp.settings.facilityLB.getValue();
-				p.level = Ext.getCmp('levelCombobox').getValue();
+				if(TR.cmp.settings.facilityLB.getValue()!="" ){
+					p.ouMode = TR.cmp.settings.facilityLB.getValue();
+				}
 				
 				// order-by
 				
 				if(TR.state.asc!=""){				
 					p.asc = TR.state.asc;
 				}
-				else{
+				else if(TR.state.desc!=""){
 					p.desc= TR.state.desc;
 				}
 				
@@ -4129,9 +4130,9 @@ Ext.onReady( function() {
 			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
 			store:  new Ext.data.ArrayStore({
 				fields: ['value', 'name'],
-				data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
+				data: [['', TR.i18n.all], ['CHILDREN', TR.i18n.children_only], ['SELECTED', TR.i18n.selected]],
 			}),
-			value: 'all',
+			value: '',
 			listeners: {
 				added: function() {
 					TR.cmp.settings.facilityLB = this;

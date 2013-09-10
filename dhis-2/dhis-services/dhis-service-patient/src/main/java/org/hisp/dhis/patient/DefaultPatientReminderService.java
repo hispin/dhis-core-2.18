@@ -115,7 +115,6 @@ public class DefaultPatientReminderService
     public Set<String> getPhonenumbers( PatientReminder patientReminder, Patient patient )
     {
         Set<String> phoneNumbers = new HashSet<String>();
-
         switch ( patientReminder.getSendTo() )
         {
         case PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED:
