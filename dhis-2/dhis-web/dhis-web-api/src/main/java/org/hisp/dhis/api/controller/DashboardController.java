@@ -29,12 +29,15 @@ package org.hisp.dhis.api.controller;
  */
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.WebUtils;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dashboard.Dashboard;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
@@ -223,5 +226,33 @@ public class DashboardController
             
             ContextUtils.okResponse( response, "Dashboard item content removed" );
         }        
+    }
+
+    // -------------------------------------------------------------------------
+    // Hooks
+    // -------------------------------------------------------------------------
+
+    @Override
+    protected void postProcessEntity( Dashboard entity, WebOptions options, Map<String, String> parameters ) throws Exception
+    {
+        for ( DashboardItem item : entity.getItems() )
+        {
+            if ( item != null )
+            {                
+                item.setHref( null ); // Null item link, not relevant
+            
+                if ( item.getEmbeddedItem() != null )
+                {
+                    WebUtils.generateLinks( item.getEmbeddedItem() );
+                }
+                else if ( item.getLinkItems() != null )
+                {
+                    for ( IdentifiableObject link : item.getLinkItems() )
+                    {
+                        WebUtils.generateLinks( link );
+                    }
+                }
+            }
+        }
     }
 }

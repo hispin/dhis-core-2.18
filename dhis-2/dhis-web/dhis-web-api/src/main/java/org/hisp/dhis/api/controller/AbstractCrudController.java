@@ -93,7 +93,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         handleLinksAndAccess( options, metaData, entityList );
 
         postProcessEntities( entityList );
-        postProcessEntities( entityList, parameters );
+        postProcessEntities( entityList, options, parameters );
 
         model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
@@ -113,7 +113,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         handleLinksAndAccess( options, metaData, entityList );
 
         postProcessEntities( entityList );
-        postProcessEntities( entityList, parameters );
+        postProcessEntities( entityList, options, parameters );
 
         model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
@@ -144,7 +144,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         postProcessEntity( entity );
-        postProcessEntity( entity, parameters );
+        postProcessEntity( entity, options, parameters );
 
         model.addAttribute( "model", entity );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
@@ -170,7 +170,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         postProcessEntity( entity );
-        postProcessEntity( entity, parameters );
+        postProcessEntity( entity, options, parameters );
 
         model.addAttribute( "model", entity );
         model.addAttribute( "viewClass", "detailed" );
@@ -232,7 +232,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
      * Override to process entities after it has been retrieved from
      * storage and before it is returned to the view. Entities is null-safe.
      */
-    protected void postProcessEntities( List<T> entityList, Map<String, String> parameters )
+    protected void postProcessEntities( List<T> entityList, WebOptions options, Map<String, String> parameters )
     {
 
     }
@@ -258,7 +258,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
      * Override to process a single entity after it has been retrieved from
      * storage and before it is returned to the view. Entity is null-safe.
      */
-    protected void postProcessEntity( T entity, Map<String, String> parameters ) throws Exception
+    protected void postProcessEntity( T entity, WebOptions options, Map<String, String> parameters ) throws Exception
     {
     }
 
@@ -348,7 +348,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             }
         }
     }
-
+    
     //--------------------------------------------------------------------------
     // Reflection helpers
     //--------------------------------------------------------------------------

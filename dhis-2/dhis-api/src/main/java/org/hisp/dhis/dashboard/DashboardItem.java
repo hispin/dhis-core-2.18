@@ -49,6 +49,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Represents an item in the dashboard. An item can represent an embedded object
+ * or represent links to other objects.
+ * 
  * @author Lars Helge Overland
  */
 @JacksonXmlRootElement( localName = "dashboardItem", namespace = DxfNamespaces.DXF_2_0 )
@@ -136,6 +139,59 @@ public class DashboardItem
         {
             return TYPE_PATIENT_TABULAR_REPORTS;
         }
+        
+        return null;
+    }
+    
+    /**
+     * Returns the actual item object if this dashboard item represents an 
+     * embedded item and not links to items.
+     */
+    public IdentifiableObject getEmbeddedItem()
+    {
+        if ( chart != null )
+        {
+            return chart;
+        }
+        else if ( map != null )
+        {
+            return map;
+        }
+        else if ( reportTable != null )
+        {
+            return reportTable;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Returns a list of the actual item objects if this dashboard item 
+     * represents a list of objects and not an embedded item.
+     */
+    public List<? extends IdentifiableObject> getLinkItems()
+    {
+        if ( !users.isEmpty() )
+        {
+            return users;
+        }
+        else if ( !reportTables.isEmpty() )
+        {
+            return reportTables;
+        }
+        else if ( !reports.isEmpty() )
+        {
+            return reports;
+        }
+        else if ( !resources.isEmpty() )
+        {
+            return resources;
+        }
+        else if ( !patientTabularReports.isEmpty() )
+        {
+            return patientTabularReports;
+        }
+        
         return null;
     }
 
@@ -313,7 +369,6 @@ public class DashboardItem
     // -------------------------------------------------------------------------
     // Merge with
     // -------------------------------------------------------------------------
-
 
     @Override
     public void mergeWith( IdentifiableObject other )

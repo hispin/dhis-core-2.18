@@ -76,7 +76,7 @@ public class MessageConversationController
     private CurrentUserService currentUserService;
 
     @Override
-    public void postProcessEntity( MessageConversation entity, Map<String, String> parameters ) throws Exception
+    public void postProcessEntity( MessageConversation entity, WebOptions options, Map<String, String> parameters ) throws Exception
     {
         Boolean markRead = Boolean.parseBoolean( parameters.get( "markRead" ) );
 
