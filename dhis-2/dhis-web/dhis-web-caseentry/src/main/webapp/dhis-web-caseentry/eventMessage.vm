@@ -105,7 +105,7 @@
 				</td>
 			</tr>
 			#set( $mark = !$mark )
-		#end
+			#end
 		#end
 	</tbody>
 </table>
