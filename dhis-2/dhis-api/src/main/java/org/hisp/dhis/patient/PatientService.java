@@ -130,6 +130,38 @@ public interface PatientService
     Collection<Patient> getPatients( OrganisationUnit organisationUnit );
 
     /**
+     *
+     * @param program
+     * @return
+     */
+    Collection<Patient> getPatients( Program program );
+
+    /**
+     *
+     * @param program
+     * @param gender
+     * @return
+     */
+    Collection<Patient> getPatients( Program program, String gender );
+
+    /**
+     *
+     * @param organisationUnit
+     * @param program
+     * @param gender
+     * @return
+     */
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, String gender );
+
+    /**
+     *
+     * @param organisationUnit
+     * @param program
+     * @return
+     */
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program );
+
+    /**
      * Search Patient base on organization unit with result limited
      *
      * @param organisationUnit organisationUnit
@@ -257,5 +289,4 @@ public interface PatientService
 
     Grid getTrackingEventsReport( Program program, List<String> searchKeys, Collection<OrganisationUnit> orgunit,
         Boolean followup, I18n i18n );
-
 }

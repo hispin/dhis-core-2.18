@@ -93,5 +93,9 @@ public interface PatientStore
         Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer min,
         Integer max );
 
+    Collection<Patient> getByOrgUnitProgramGender( OrganisationUnit organisationUnit, Program program, String gender, int min, int max );
 
+    Collection<Patient> getByProgram( Program program, int min, int max );
+
+    Collection<Patient> getByProgram( Program program, String gender, int min, int max );
 }
