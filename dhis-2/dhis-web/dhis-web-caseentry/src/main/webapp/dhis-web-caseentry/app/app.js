@@ -1974,12 +1974,11 @@ Ext.onReady( function() {
 							if( filterOpt == 'IN' )
 							{
 								var filterValues = filterValue.split(";");
-								filter +="(";
 								for(var i=0;i<filterValues.length;i++)
 								{
-									filter += "'"+ filterValues[i] +"',";
+									filter += filterValues[i] +":";
 								}
-								filter = filter.substr(0,filter.length - 1) + ")";
+								filter = filter.substr(0,filter.length - 1);
 							}
 							else
 							{
