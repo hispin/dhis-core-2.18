@@ -661,6 +661,23 @@ public class Patient
         {
             this.enrollmentRelationships = null;
         }
+        
+        int numbCompletedPrograms = din.readInt();
+        if ( numbCompletedPrograms > 0 )
+        {
+            this.completedPrograms = new ArrayList<Program>();
+            for ( int i = 0; i < numbCompletedPrograms; i++ )
+            {
+                Program program = new Program();
+                program.deSerialize( din );
+                this.completedPrograms.add( program );
+    
+            }
+        }
+        else
+        {
+            this.completedPrograms = null;
+        }
     }
 
     @Override
