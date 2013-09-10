@@ -32,6 +32,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,6 +167,14 @@ public abstract class AbstractPersonService implements PersonService
 
         person.setDateOfBirth( dateOfBirth );
         person.setDateOfRegistration( patient.getRegistrationDate() );
+
+        for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
+        {
+            String identifierType = patientIdentifier.getIdentifierType() == null ? null : patientIdentifier.getIdentifierType().getUid();
+
+            Identifier identifier = new Identifier( identifierType, patientIdentifier.getIdentifier() );
+            person.getIdentifiers().add( identifier );
+        }
 
         return person;
     }

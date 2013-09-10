@@ -33,7 +33,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -58,6 +60,8 @@ public class Person
     private Date dateOfRegistration;
 
     private Contact contact;
+
+    private List<Identifier> identifiers = new ArrayList<Identifier>();
 
     public Person()
     {
@@ -169,6 +173,18 @@ public class Person
     public void setContact( Contact contact )
     {
         this.contact = contact;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public List<Identifier> getIdentifiers()
+    {
+        return identifiers;
+    }
+
+    public void setIdentifiers( List<Identifier> identifiers )
+    {
+        this.identifiers = identifiers;
     }
 
     @Override
