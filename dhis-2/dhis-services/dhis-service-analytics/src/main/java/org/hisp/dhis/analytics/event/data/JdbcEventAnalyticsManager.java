@@ -33,11 +33,14 @@ import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.removeLast;
 
+import java.util.Arrays;
+
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.QueryItem;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.system.util.Timer;
@@ -53,6 +56,9 @@ public class JdbcEventAnalyticsManager
 {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    private StatementBuilder statementBuilder;
 
     // -------------------------------------------------------------------------
     // EventAnalyticsManager implementation
@@ -111,8 +117,8 @@ public class JdbcEventAnalyticsManager
         for ( QueryItem filter : params.getItems() )
         {
             if ( filter.hasFilter() )
-            {
-                sql += "and lower(" + filter.getItem().getUid() + ") " + filter.getSqlOperator() + " " + filter.getSqlFilter() + " ";
+            {                
+                sql += "and lower(" + filter.getItem().getUid() + ") " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
             }
         }
 
@@ -172,4 +178,34 @@ public class JdbcEventAnalyticsManager
         
         return grid;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private String getSqlFilter( QueryItem item )
+    {
+        String operator = item.getOperator();
+        String filter = item.getFilter();
+        
+        if ( operator == null || filter == null )
+        {
+            return null;
+        }
+        
+        filter = statementBuilder.encode( filter, false );
+        
+        if ( operator.equals( "like" ) )
+        {
+            return "'%" + filter.toLowerCase() + "%'";
+        }
+        else if ( operator.equals( "in" ) )
+        {
+            String[] split = filter.toLowerCase().split( ":" );
+                        
+            return "(" + TextUtils.getQuotedCommaDelimitedString( Arrays.asList( split ) ) + ")";
+        }
+        
+        return "'" + filter.toLowerCase() + "'";
+    }    
 }

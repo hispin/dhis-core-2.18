@@ -42,13 +42,19 @@ public abstract class AbstractStatementBuilder
     @Override
     public String encode( String value )
     {
+        return encode( value, true );
+    }
+    
+    @Override
+    public String encode( String value, boolean quote )
+    {
         if ( value != null )
         {
             value = value.endsWith( "\\" ) ? value.substring( 0, value.length() - 1 ) : value;
             value = value.replaceAll( QUOTE, QUOTE + QUOTE );
         }
         
-        return QUOTE + value + QUOTE;
+        return quote ? ( QUOTE + value + QUOTE ) : value;
     }
 
     @Override
