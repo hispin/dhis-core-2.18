@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 
 import java.util.Collection;
@@ -38,6 +39,10 @@ import java.util.Collection;
 public interface PersonService
 {
     Persons getPersons();
+
+    Persons getPersons( OrganisationUnit organisationUnit );
+
+    Persons getPersons( OrganisationUnit organisationUnit, Gender gender );
 
     Persons getPersons( Collection<Patient> patients );
 

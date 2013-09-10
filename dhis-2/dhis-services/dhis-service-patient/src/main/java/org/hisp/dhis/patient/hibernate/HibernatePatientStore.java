@@ -190,6 +190,24 @@ public class HibernatePatientStore
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getByOrgUnitAndGender( OrganisationUnit organisationUnit, String gender, Integer min, Integer max )
+    {
+        String hql = "select p from Patient p where p.organisationUnit = :organisationUnit and p.gender = :gender order by p.id DESC";
+
+        Query query = getQuery( hql );
+        query.setEntity( "organisationUnit", organisationUnit );
+        query.setString( "gender", gender );
+
+        if ( min != null && max != null )
+        {
+            query.setFirstResult( min ).setMaxResults( max );
+        }
+
+        return query.list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
         Integer max )
     {
