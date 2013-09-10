@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -71,10 +73,7 @@ public abstract class AbstractPersonService implements PersonService
 
         for ( Patient patient : patients )
         {
-            Person person = new Person();
-            person.setPerson( patient.getUid() );
-
-            persons.getPersons().add( person );
+            persons.getPersons().add( getPerson( patient ) );
         }
 
         return persons;
@@ -96,12 +95,7 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public Person getPerson( String uid )
     {
-        Person person = new Person();
-        Patient patient = patientService.getPatient( uid );
-
-        person.setPerson( patient.getUid() );
-
-        return person;
+        return getPerson( patientService.getPatient( uid ) );
     }
 
     @Override
@@ -109,6 +103,32 @@ public abstract class AbstractPersonService implements PersonService
     {
         Person person = new Person();
         person.setPerson( patient.getUid() );
+        person.setOrgUnit( patient.getOrganisationUnit().getUid() );
+
+        Name name = new Name(
+            nullIfEmpty( patient.getFirstName() ),
+            nullIfEmpty( patient.getMiddleName() ),
+            nullIfEmpty( patient.getLastName() ) );
+
+        person.setName( name );
+        person.setGender( Gender.fromString( patient.getGender() ) );
+
+        person.setDeceased( patient.getIsDead() );
+        person.setDateOfDeath( patient.getDeathDate() );
+
+        Contact contact = new Contact();
+        contact.setPhoneNumber( nullIfEmpty( patient.getPhoneNumber() ) );
+
+        if ( contact.getPhoneNumber() != null )
+        {
+            person.setContact( contact );
+        }
+
+        DateOfBirth dateOfBirth = new DateOfBirth( patient.getBirthDate(),
+            DateOfBirthType.fromString( String.valueOf( patient.getDobType() ) ) );
+
+        person.setDateOfBirth( dateOfBirth );
+        person.setDateOfRegistration( patient.getRegistrationDate() );
 
         return person;
     }

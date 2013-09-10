@@ -33,13 +33,31 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
 
+import java.util.Date;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "person", namespace = DxfNamespaces.DXF_2_0)
 public class Person
 {
     private String person;
+
+    private String orgUnit;
+
+    private Name name;
+
+    private Gender gender;
+
+    private DateOfBirth dateOfBirth;
+
+    private boolean deceased;
+
+    private Date dateOfDeath;
+
+    private Date dateOfRegistration;
+
+    private Contact contact;
 
     public Person()
     {
@@ -55,6 +73,102 @@ public class Person
     public void setPerson( String person )
     {
         this.person = person;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public String getOrgUnit()
+    {
+        return orgUnit;
+    }
+
+    public void setOrgUnit( String orgUnit )
+    {
+        this.orgUnit = orgUnit;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Name getName()
+    {
+        return name;
+    }
+
+    public void setName( Name name )
+    {
+        this.name = name;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Gender getGender()
+    {
+        return gender;
+    }
+
+    public void setGender( Gender gender )
+    {
+        this.gender = gender;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public DateOfBirth getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth( DateOfBirth dateOfBirth )
+    {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isDeceased()
+    {
+        return deceased;
+    }
+
+    public void setDeceased( boolean deceased )
+    {
+        this.deceased = deceased;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Date getDateOfDeath()
+    {
+        return dateOfDeath;
+    }
+
+    public void setDateOfDeath( Date dateOfDeath )
+    {
+        this.dateOfDeath = dateOfDeath;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Date getDateOfRegistration()
+    {
+        return dateOfRegistration;
+    }
+
+    public void setDateOfRegistration( Date dateOfRegistration )
+    {
+        this.dateOfRegistration = dateOfRegistration;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Contact getContact()
+    {
+        return contact;
+    }
+
+    public void setContact( Contact contact )
+    {
+        this.contact = contact;
     }
 
     @Override
