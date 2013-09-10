@@ -31,6 +31,9 @@ package org.hisp.dhis.api.mobile.model;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
@@ -43,14 +46,20 @@ public class PatientAttribute
 
     private String value;
 
+    private String type;
+
+    private List<String> predefinedValues = new ArrayList<String>();
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public PatientAttribute( String name, String value )
+    public PatientAttribute( String name, String value, String type, List<String> predefinedValues )
     {
         this.name = name;
         this.value = value;
+        this.type = type;
+        this.predefinedValues = predefinedValues;
     }
 
     public PatientAttribute()
@@ -93,12 +102,44 @@ public class PatientAttribute
         this.clientVersion = clientVersion;
     }
 
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
+    public List<String> getPredefinedValues()
+    {
+        return predefinedValues;
+    }
+
+    public void setPredefinedValues( List<String> predefinedValues )
+    {
+        this.predefinedValues = predefinedValues;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
         dout.writeUTF( this.name );
         dout.writeUTF( this.value );
+        dout.writeUTF( this.type );
+
+        int valueSize = this.predefinedValues.size();
+        dout.writeInt( valueSize );
+        if ( valueSize > 0 )
+        {
+            for ( String option : predefinedValues )
+            {
+                dout.writeUTF( option );
+            }
+        }
+
     }
 
     @Override
@@ -107,6 +148,17 @@ public class PatientAttribute
     {
         name = dataInputStream.readUTF();
         value = dataInputStream.readUTF();
+        type = dataInputStream.readUTF();
+
+        List<String> optionList = new ArrayList<String>();
+
+        int size = dataInputStream.readInt();
+
+        for ( int i = 0; i < size; i++ )
+        {
+            optionList.add( dataInputStream.readUTF() );
+        }
+        predefinedValues = optionList;
     }
 
     @Override
@@ -130,7 +182,7 @@ public class PatientAttribute
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 
 }
