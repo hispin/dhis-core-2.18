@@ -92,6 +92,7 @@
 
   <bean id="org.hisp.dhis.sqlview.SqlViewExpandStore" class="org.hisp.dhis.sqlview.jdbc.JdbcSqlViewExpandStore">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="statementBuilder" ref="statementBuilder" />
   </bean>
 
   <bean id="org.hisp.dhis.sqlview.SqlViewService" class="org.hisp.dhis.sqlview.DefaultSqlViewService">

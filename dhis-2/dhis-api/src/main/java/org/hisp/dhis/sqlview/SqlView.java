@@ -87,7 +87,7 @@ public class SqlView
     {
         final Pattern p = Pattern.compile( "\\W" );
 
-        String input = new String( this.name );
+        String input = name;
         
         String[] items = p.split( input.trim().replaceAll( "_", "" ) );
 
@@ -95,7 +95,7 @@ public class SqlView
 
         for ( String s : items )
         {
-            input += (s.equals( "" ) == true) ? "" : ("_" + s);
+            input += s.isEmpty() ? "" : ( "_" + s );
         }
 
         return PREFIX_VIEWNAME + input;
