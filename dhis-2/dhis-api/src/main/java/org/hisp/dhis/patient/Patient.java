@@ -359,8 +359,8 @@ public class Patient
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "programs", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "program", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "programs", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "program", namespace = DxfNamespaces.DXF_2_0 )
     public Set<Program> getPrograms()
     {
         return programs;
@@ -533,6 +533,45 @@ public class Patient
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
+
+    public void setFullName( String fullName )
+    {
+        name = fullName;
+
+        if ( fullName == null )
+        {
+            return;
+        }
+
+        fullName = fullName.trim();
+
+        int startIndex = fullName.indexOf( ' ' );
+        int endIndex = fullName.lastIndexOf( ' ' );
+
+        String firstName = fullName;
+        String middleName = "";
+        String lastName = "";
+
+        if ( fullName.indexOf( ' ' ) != -1 )
+        {
+            firstName = fullName.substring( 0, startIndex );
+
+            if ( startIndex == endIndex )
+            {
+                middleName = "";
+                lastName = fullName.substring( startIndex + 1, fullName.length() );
+            }
+            else
+            {
+                middleName = fullName.substring( startIndex + 1, endIndex );
+                lastName = fullName.substring( endIndex + 1, fullName.length() );
+            }
+        }
+
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+    }
 
     public String getFullName()
     {

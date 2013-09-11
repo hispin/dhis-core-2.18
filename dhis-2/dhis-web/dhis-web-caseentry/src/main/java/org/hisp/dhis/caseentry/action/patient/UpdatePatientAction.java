@@ -28,12 +28,7 @@ package org.hisp.dhis.caseentry.action.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
@@ -55,7 +50,10 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserService;
 
-import com.opensymphony.xwork2.Action;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -146,36 +144,7 @@ public class UpdatePatientAction
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
 
-        if ( fullName != null )
-        {
-            fullName = fullName.trim();
-
-            int startIndex = fullName.indexOf( ' ' );
-            int endIndex = fullName.lastIndexOf( ' ' );
-
-            String firstName = fullName.toString();
-            String middleName = "";
-            String lastName = "";
-
-            if ( fullName.indexOf( ' ' ) != -1 )
-            {
-                firstName = fullName.substring( 0, startIndex );
-                if ( startIndex == endIndex )
-                {
-                    middleName = "";
-                    lastName = fullName.substring( startIndex + 1, fullName.length() );
-                }
-                else
-                {
-                    middleName = fullName.substring( startIndex + 1, endIndex );
-                    lastName = fullName.substring( endIndex + 1, fullName.length() );
-                }
-            }
-
-            patient.setFirstName( firstName );
-            patient.setMiddleName( middleName );
-            patient.setLastName( lastName );
-        }
+        patient.setFullName( fullName );
 
         // ---------------------------------------------------------------------
         // Set Other information for patient
@@ -202,6 +171,7 @@ public class UpdatePatientAction
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
         patient.setIsDead( isDead );
+
         if ( deathDate != null )
         {
             deathDate = deathDate.trim();
