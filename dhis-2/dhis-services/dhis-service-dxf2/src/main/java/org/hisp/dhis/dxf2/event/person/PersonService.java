@@ -28,13 +28,12 @@ package org.hisp.dhis.dxf2.event.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.event.person.Gender;
-import org.hisp.dhis.dxf2.event.person.Person;
-import org.hisp.dhis.dxf2.event.person.Persons;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 
 /**
@@ -63,6 +62,12 @@ public interface PersonService
     Person getPerson( String uid );
 
     Person getPerson( Patient patient );
+
+    void savePersonXml( InputStream inputStream ) throws IOException;
+
+    void savePersonJson( InputStream inputStream ) throws IOException;
+
+    void savePerson( Person person );
 
     void updatePerson( Person person );
 

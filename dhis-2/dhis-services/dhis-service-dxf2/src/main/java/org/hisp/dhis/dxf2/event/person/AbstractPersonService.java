@@ -179,9 +179,25 @@ public abstract class AbstractPersonService implements PersonService
         return person;
     }
 
+    public Patient getPatient( Person person )
+    {
+        Patient patient = new Patient();
+
+
+
+        return patient;
+    }
+
+    @Override
+    public void savePerson( Person person )
+    {
+        Patient patient = getPatient( person );
+    }
+
     @Override
     public void updatePerson( Person person )
     {
+        Patient patient = getPatient( person );
     }
 
     @Override
