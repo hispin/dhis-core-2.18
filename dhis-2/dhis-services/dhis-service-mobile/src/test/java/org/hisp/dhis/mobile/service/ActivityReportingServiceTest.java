@@ -71,7 +71,7 @@ public class ActivityReportingServiceTest
     {
         Patient patient = new Patient();
         patient.setAge( 1 );
-        patient.setBirthDate( new Date() );
+        patient.setBirthDate( "25-09-1990" );
         patient.setFirstName( "Firstname" + uniqueCharacter );
         patient.setMiddleName( "Middlename" + uniqueCharacter );
         patient.setLastName( "Lastname" + uniqueCharacter );

@@ -65,7 +65,7 @@ public class Patient
 
     private String gender;
 
-    private Date birthDate;
+    private String birthDate;
 
     private Date registrationDate;
 
@@ -194,12 +194,12 @@ public class Patient
         this.gender = gender;
     }
 
-    public Date getBirthDate()
+    public String getBirthDate()
     {
         return birthDate;
     }
 
-    public void setBirthDate( Date birthDate )
+    public void setBirthDate( String birthDate )
     {
         this.birthDate = birthDate;
     }
@@ -378,7 +378,7 @@ public class Patient
         if ( birthDate != null )
         {
             dout.writeBoolean( true );
-            dout.writeLong( birthDate.getTime() );
+            dout.writeUTF( birthDate );
         }
         else
         {
@@ -533,7 +533,7 @@ public class Patient
         // DOB
         if ( din.readBoolean() )
         {
-            this.setBirthDate( new Date( din.readLong() ) );
+            this.setBirthDate( din.readUTF() );
         }
         else
         {
@@ -565,7 +565,6 @@ public class Patient
         
         // Patient Attribute & Identifiers
         int attsNumb = din.readInt();
-        System.out.println("Att numb: " + attsNumb);
         if( attsNumb > 0 )
         {
             this.patientAttValues = new ArrayList<PatientAttribute>();
@@ -582,7 +581,6 @@ public class Patient
         }
 
         int numbIdentifiers = din.readInt();
-        System.out.println("Ids numb: " + attsNumb);
         this.identifiers = new ArrayList<PatientIdentifier>();
         if ( numbIdentifiers > 0 )
         {
@@ -605,7 +603,6 @@ public class Patient
                 Program program = new Program();
                 program.deSerialize( din );
                 this.programs.add( program );
-    
             }
         }
         else
@@ -622,7 +619,6 @@ public class Patient
                 Relationship relationship = new Relationship();
                 relationship.deSerialize( din );
                 this.relationships.add( relationship );
-    
             }
         }
         else
@@ -639,7 +635,6 @@ public class Patient
                 Program program = new Program();
                 program.deSerialize( din );
                 this.enrollmentPrograms.add( program );
-    
             }
         }
         else
@@ -656,7 +651,6 @@ public class Patient
                 Relationship relationship = new Relationship();
                 relationship.deSerialize( din );
                 this.enrollmentRelationships.add( relationship );
-    
             }
         }
         else
@@ -673,7 +667,6 @@ public class Patient
                 Program program = new Program();
                 program.deSerialize( din );
                 this.completedPrograms.add( program );
-    
             }
         }
         else

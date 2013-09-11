@@ -882,6 +882,8 @@ public class ActivityReportingServiceImpl
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         patientModel.setAge( period.getYears() );
+        /*DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
+        patientModel.setAge( dateFormat.format( patient.getBirthDate() ) );*/
         if ( patient.getOrganisationUnit() != null )
         {
             patientModel.setOrganisationUnitName( patient.getOrganisationUnit().getName() );
@@ -902,7 +904,8 @@ public class ActivityReportingServiceImpl
             }
             if ( setting.getBirthdate() )
             {
-                patientModel.setBirthDate( patient.getBirthDate() );
+                DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
+                patientModel.setBirthDate( dateFormat.format( patient.getBirthDate()) );
             }
             if ( setting.getRegistrationdate() )
             {
@@ -1817,7 +1820,7 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
-
+        
         int startIndex = patient.getFirstName().indexOf( ' ' );
         int endIndex = patient.getFirstName().lastIndexOf( ' ' );
 
@@ -1846,7 +1849,7 @@ public class ActivityReportingServiceImpl
         patientWeb.setGender( patient.getGender() );
         patientWeb.setDobType( patient.getDobType() );
         patientWeb.setPhoneNumber( patient.getPhoneNumber() );
-        patientWeb.setBirthDate( patient.getBirthDate() );
+        patientWeb.setBirthDate( PeriodUtil.stringToDate( patient.getBirthDate() ) );
         patientWeb.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
         patientWeb.setRegistrationDate( new Date() );
 
@@ -1883,7 +1886,7 @@ public class ActivityReportingServiceImpl
         // --------------------------------------------------------------------------------
         if ( identifierTypes.size() == 0 )
         {
-            String identifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(),
+            String identifier = PatientIdentifierGenerator.getNewIdentifier( PeriodUtil.stringToDate( patient.getBirthDate() ),
                 patient.getGender() );
 
             org.hisp.dhis.patient.PatientIdentifier systemGenerateIdentifier = new org.hisp.dhis.patient.PatientIdentifier();
@@ -1977,7 +1980,7 @@ public class ActivityReportingServiceImpl
         {
             String patientsInfo = new String();
 
-            DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+            DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
 
             int i = 1;
             for ( Patient each : patients )
