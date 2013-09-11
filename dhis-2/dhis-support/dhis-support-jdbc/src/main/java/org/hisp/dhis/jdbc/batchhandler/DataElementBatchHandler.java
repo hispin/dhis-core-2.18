@@ -103,7 +103,6 @@ public class DataElementBatchHandler
         statementBuilder.setColumn( "categorycomboid" );
         statementBuilder.setColumn( "sortorder" );
         statementBuilder.setColumn( "zeroissignificant" );
-        statementBuilder.setColumn( "lastupdated" );
     }
     
     protected void setValues( DataElement dataElement )
@@ -120,6 +119,5 @@ public class DataElementBatchHandler
         statementBuilder.setValue( dataElement.getCategoryCombo().getId() );
         statementBuilder.setValue( dataElement.getSortOrder() );
         statementBuilder.setValue( dataElement.isZeroIsSignificant() );
-        statementBuilder.setValue( dataElement.getLastUpdated() );
     }
 }

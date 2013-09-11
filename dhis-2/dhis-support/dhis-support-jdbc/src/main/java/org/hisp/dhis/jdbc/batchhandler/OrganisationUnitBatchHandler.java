@@ -104,7 +104,6 @@ public class OrganisationUnitBatchHandler
         statementBuilder.setColumn( "geocode" );
         statementBuilder.setColumn( "featuretype" );
         statementBuilder.setColumn( "coordinates" );
-        statementBuilder.setColumn( "lastupdated" );
     }
     
     protected void setValues( OrganisationUnit unit )
@@ -122,6 +121,5 @@ public class OrganisationUnitBatchHandler
         statementBuilder.setValue( unit.getGeoCode() );
         statementBuilder.setValue( unit.getFeatureType() );
         statementBuilder.setValue( unit.getCoordinates() );
-        statementBuilder.setValue( unit.getLastUpdated() );
     }
 }
