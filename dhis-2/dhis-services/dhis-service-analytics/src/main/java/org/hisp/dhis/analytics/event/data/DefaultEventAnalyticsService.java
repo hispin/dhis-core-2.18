@@ -46,6 +46,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -101,9 +102,7 @@ public class DefaultEventAnalyticsService
     // EventAnalyticsService implementation
     // -------------------------------------------------------------------------
 
-    //TODO org unit children / descendants
-    //TODO order the event analytics tables up front to avoid sorting in queries
-    //TODO include ordered column to avoid slow offset clause for paging
+    //TODO order the event analytics tables up front to avoid default sorting in queries
     
     public Grid getEvents( EventQueryParams params )
     {
@@ -132,17 +131,31 @@ public class DefaultEventAnalyticsService
 
         List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
         
+        int count = 0;
+        
         for ( EventQueryParams query : queries )
         {
+            if ( params.isPaging() )
+            {
+                count += analyticsManager.getEventCount( query );
+            }
+            
             analyticsManager.getEvents( query, grid );
         }
-
+        
         // ---------------------------------------------------------------------
         // Meta-data
         // ---------------------------------------------------------------------
 
-        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        Map<Object, Object> metaData = new HashMap<Object, Object>();        
         metaData.put( AnalyticsService.NAMES_META_KEY, getUidNameMap( params ) );
+
+        if ( params.isPaging() )
+        {
+            Pager pager = new Pager( params.getPageWithDefault(), count, params.getPageSizeWithDefault() );
+            metaData.put( AnalyticsService.PAGER_META_KEY, pager );
+        }
+        
         grid.setMetaData( metaData );
         
         return grid;
@@ -278,7 +291,7 @@ public class DefaultEventAnalyticsService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
+    
     private Map<String, String> getUidNameMap( EventQueryParams params )
     {
         Map<String, String> map = new HashMap<String, String>();

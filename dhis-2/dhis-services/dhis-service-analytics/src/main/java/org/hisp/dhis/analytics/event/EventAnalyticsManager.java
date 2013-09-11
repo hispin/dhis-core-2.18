@@ -36,4 +36,6 @@ import org.hisp.dhis.common.Grid;
 public interface EventAnalyticsManager
 {
     Grid getEvents( EventQueryParams params, Grid grid );
+    
+    int getEventCount( EventQueryParams params );
 }
