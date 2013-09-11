@@ -56,6 +56,11 @@ public abstract class AbstractStatementBuilder
         
         return quote ? ( QUOTE + value + QUOTE ) : value;
     }
+    
+    public String columnQuote( String column )
+    {
+        return column != null ? ( getColumnQuote() + column + getColumnQuote() ) : null;
+    }
 
     @Override
     public String getPeriodIdentifierStatement( Period period )

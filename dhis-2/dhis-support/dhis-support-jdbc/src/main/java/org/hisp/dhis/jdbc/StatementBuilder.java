@@ -59,12 +59,21 @@ public interface StatementBuilder
      * @return the SQL encoded value.
      */
     String encode( String value, boolean quote );
+    
     /**
      * Returns the character used to quote database table and column names.
      * 
      * @return a quote character.
      */
     String getColumnQuote();
+    
+    /**
+     * Wraps the given column or table in quotes.
+     * 
+     * @param column the column or table name.
+     * @return the column or table name wrapped in quotes.
+     */
+    String columnQuote( String column );
     
     /**
      * Returns statement for vacuum and analyze operations for a table. Returns

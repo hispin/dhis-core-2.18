@@ -33,6 +33,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewExpandStore;
 import org.hisp.dhis.system.util.SqlHelper;
@@ -50,7 +51,6 @@ public class JdbcSqlViewExpandStore
     private static final Log log = LogFactory.getLog( JdbcSqlViewExpandStore.class );
     
     private static final String PREFIX_CREATEVIEW_QUERY = "CREATE VIEW ";
-    private static final String PREFIX_DROPVIEW_QUERY = "DROP VIEW IF EXISTS ";
     private static final String PREFIX_SELECT_QUERY = "SELECT * FROM ";
 
     // -------------------------------------------------------------------------
@@ -63,6 +63,13 @@ public class JdbcSqlViewExpandStore
     {
         this.jdbcTemplate = jdbcTemplate;
     }
+    
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
 
     // -------------------------------------------------------------------------
     // Implementing methods
@@ -73,7 +80,7 @@ public class JdbcSqlViewExpandStore
     {
         try
         {
-            jdbcTemplate.queryForRowSet( "select * from " + viewTableName.toLowerCase() + " limit 1" );
+            jdbcTemplate.queryForRowSet( "select * from " + statementBuilder.columnQuote( viewTableName.toLowerCase() ) + " limit 1" );
             
             return true;
         }
@@ -90,7 +97,7 @@ public class JdbcSqlViewExpandStore
 
         dropViewTable( viewName );
 
-        final String sql = PREFIX_CREATEVIEW_QUERY + viewName + " AS " + sqlViewInstance.getSqlQuery();
+        final String sql = PREFIX_CREATEVIEW_QUERY + statementBuilder.columnQuote( viewName ) + " AS " + sqlViewInstance.getSqlQuery();
         
         log.debug( "Create view SQL: " + sql );
         
@@ -109,7 +116,7 @@ public class JdbcSqlViewExpandStore
     @Override
     public void setUpDataSqlViewTable( Grid grid, String viewTableName, Map<String, String> criteria )
     {
-        String sql = PREFIX_SELECT_QUERY + viewTableName;
+        String sql = PREFIX_SELECT_QUERY + statementBuilder.columnQuote( viewTableName );
         
         if ( criteria != null && !criteria.isEmpty() )
         {
@@ -157,7 +164,7 @@ public class JdbcSqlViewExpandStore
     {
         try
         {
-            jdbcTemplate.update( PREFIX_DROPVIEW_QUERY + viewName );
+            jdbcTemplate.update( "DROP VIEW IF EXISTS " + statementBuilder.columnQuote( viewName ) );
         }
         catch ( BadSqlGrammarException ex )
         {
