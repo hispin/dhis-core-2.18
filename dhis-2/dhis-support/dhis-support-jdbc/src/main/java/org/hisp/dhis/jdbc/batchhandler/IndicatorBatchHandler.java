@@ -103,7 +103,6 @@ public class IndicatorBatchHandler
         statementBuilder.setColumn( "denominator" );
         statementBuilder.setColumn( "denominatordescription" );
         statementBuilder.setColumn( "sortorder" );
-        statementBuilder.setColumn( "lastupdated" );
     }
     
     protected void setValues( Indicator indicator )
@@ -120,6 +119,5 @@ public class IndicatorBatchHandler
         statementBuilder.setValue( indicator.getDenominator() );
         statementBuilder.setValue( indicator.getDenominatorDescription() );
         statementBuilder.setValue( indicator.getSortOrder() );
-        statementBuilder.setValue( indicator.getLastUpdated() );
     }
 }
