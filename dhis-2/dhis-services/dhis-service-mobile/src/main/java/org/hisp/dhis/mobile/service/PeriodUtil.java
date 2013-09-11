@@ -184,4 +184,17 @@ public class PeriodUtil
         return date;
     }
 
+    public static String convertDateFormat( String standardDate )
+    {
+        try
+        {
+            String[] tokens = standardDate.split( "-" );
+            return tokens[2] + "-" + tokens[1] + "-" + tokens[0];
+        }
+        catch ( Exception e )
+        {
+            return standardDate;
+        }
+    }
+
 }

@@ -543,10 +543,17 @@ public class ActivityReportingServiceImpl
             {
                 DataElement dataElement = dataElementService.getDataElement( dataElements.get( i ).getId() );
 
+                String value = dataElements.get( i ).getValue();
+
+                if ( dataElement.getType().equalsIgnoreCase( "date" ) && !value.trim().equals( "" ) )
+                {
+                    value = PeriodUtil.convertDateFormat( value );
+                }
+
                 PatientDataValue patientDataValue = new PatientDataValue();
                 patientDataValue.setDataElement( dataElement );
 
-                patientDataValue.setValue( dataElements.get( i ).getValue() );
+                patientDataValue.setValue( value );
                 patientDataValue.setProgramStageInstance( programStageInstance );
                 patientDataValue.setTimestamp( new Date() );
                 patientDataValueService.savePatientDataValue( patientDataValue );
@@ -584,6 +591,12 @@ public class ActivityReportingServiceImpl
             for ( int i = 0; i < dataElements.size(); i++ )
             {
                 DataElement dataElement = dataElementService.getDataElement( dataElements.get( i ).getId() );
+                String value = dataElements.get( i ).getValue();
+
+                if ( dataElement.getType().equalsIgnoreCase( "date" ) && !value.trim().equals( "" ) )
+                {
+                    value = PeriodUtil.convertDateFormat( value );
+                }
 
                 PatientDataValue previousPatientDataValue = patientDataValueService.getPatientDataValue(
                     programStageInstance, dataElement );
@@ -591,12 +604,12 @@ public class ActivityReportingServiceImpl
                 if ( previousPatientDataValue == null )
                 {
                     PatientDataValue patientDataValue = new PatientDataValue( programStageInstance, dataElement,
-                        new Date(), dataElements.get( i ).getValue() );
+                        new Date(), value );
                     patientDataValueService.savePatientDataValue( patientDataValue );
                 }
                 else
                 {
-                    previousPatientDataValue.setValue( dataElements.get( i ).getValue() );
+                    previousPatientDataValue.setValue( value );
                     previousPatientDataValue.setTimestamp( new Date() );
                     previousPatientDataValue.setProvidedElsewhere( false );
                     patientDataValueService.updatePatientDataValue( previousPatientDataValue );
@@ -882,8 +895,10 @@ public class ActivityReportingServiceImpl
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         patientModel.setAge( period.getYears() );
-        /*DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
-        patientModel.setAge( dateFormat.format( patient.getBirthDate() ) );*/
+        /*
+         * DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
+         * patientModel.setAge( dateFormat.format( patient.getBirthDate() ) );
+         */
         if ( patient.getOrganisationUnit() != null )
         {
             patientModel.setOrganisationUnitName( patient.getOrganisationUnit().getName() );
@@ -1213,7 +1228,16 @@ public class ActivityReportingServiceImpl
                 programStageDataElement.getDataElement() );
             if ( patientDataValue != null )
             {
-                mobileDataElement.setValue( patientDataValue.getValue() );
+                // Convert to standard date format before send to client
+                if ( programStageDataElement.getDataElement().getType().equalsIgnoreCase( "date" )
+                    && !patientDataValue.equals( "" ) )
+                {
+                    mobileDataElement.setValue( PeriodUtil.convertDateFormat( patientDataValue.getValue() ) );
+                }
+                else
+                {
+                    mobileDataElement.setValue( patientDataValue.getValue() );
+                }
             }
             else
             {
@@ -1820,7 +1844,7 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
-        
+
         int startIndex = patient.getFirstName().indexOf( ' ' );
         int endIndex = patient.getFirstName().lastIndexOf( ' ' );
 
@@ -1886,8 +1910,8 @@ public class ActivityReportingServiceImpl
         // --------------------------------------------------------------------------------
         if ( identifierTypes.size() == 0 )
         {
-            String identifier = PatientIdentifierGenerator.getNewIdentifier( PeriodUtil.stringToDate( patient.getBirthDate() ),
-                patient.getGender() );
+            String identifier = PatientIdentifierGenerator.getNewIdentifier(
+                PeriodUtil.stringToDate( patient.getBirthDate() ), patient.getGender() );
 
             org.hisp.dhis.patient.PatientIdentifier systemGenerateIdentifier = new org.hisp.dhis.patient.PatientIdentifier();
             systemGenerateIdentifier.setIdentifier( identifier );
