@@ -70,6 +70,10 @@ public class StatementBuilderFactoryBean
         {
             this.statementBuilder = new H2StatementBuilder();
         }
+        else if ( statementDialect.equals( StatementDialect.HSQL ) )
+        {
+            this.statementBuilder = new HsqlStatementBuilder();
+        }
         else
         {
             throw new RuntimeException( "Unsupported dialect: " + statementDialect.toString() );

@@ -52,7 +52,7 @@ public class StatementDialectFactoryBean
         dialectMap.put( "org.hibernate.dialect.MySQLDialect", StatementDialect.MYSQL );
         dialectMap.put( "org.hibernate.dialect.PostgreSQLDialect", StatementDialect.POSTGRESQL );
         dialectMap.put( "org.hibernate.dialect.H2Dialect", StatementDialect.H2 );
-        dialectMap.put( "org.hisp.dhis.dialect.H2Dialect", StatementDialect.H2 );
+        dialectMap.put( "org.hibernate.dialect.HSQLDialect", StatementDialect.HSQL );
     }
     
     // -------------------------------------------------------------------------
