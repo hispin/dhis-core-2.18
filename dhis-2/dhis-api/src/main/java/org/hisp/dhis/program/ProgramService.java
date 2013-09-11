@@ -50,6 +50,8 @@ public interface ProgramService
     Program getProgram( int id );
 
     Program getProgramByName( String name );
+    
+    Program getProgramByCode( String code );
 
     Collection<Program> getAllPrograms();
 

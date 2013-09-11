@@ -204,14 +204,14 @@ public class ShowUpdateProgramFormAction
         availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
 
         availableAttributes = patientAttributeService.getAllPatientAttributes();
-
+        availableAttributes.removeAll( new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
+        
         programs = new ArrayList<Program>( programService.getAllPrograms() );
 
-        for ( Program program : programs )
+        for ( Program p : programs )
         {
             availableIdentifierTypes
-                .removeAll( new HashSet<PatientIdentifierType>( program.getPatientIdentifierTypes() ) );
-            availableAttributes.removeAll( new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
+                .removeAll( new HashSet<PatientIdentifierType>( p.getPatientIdentifierTypes() ) );
         }
 
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );

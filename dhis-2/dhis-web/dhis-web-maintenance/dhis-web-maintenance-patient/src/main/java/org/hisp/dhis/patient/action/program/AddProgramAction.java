@@ -302,7 +302,7 @@ public class AddProgramAction
     {
         this.relationshipFromA = relationshipFromA;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -334,7 +334,7 @@ public class AddProgramAction
         program.setUseBirthDateAsEnrollmentDate( useBirthDateAsEnrollmentDate );
         program.setSelectEnrollmentDatesInFuture( selectEnrollmentDatesInFuture );
         program.setSelectIncidentDatesInFuture( selectIncidentDatesInFuture );
-
+        
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             program.setIgnoreOverdueEvents( ignoreOverdueEvents );

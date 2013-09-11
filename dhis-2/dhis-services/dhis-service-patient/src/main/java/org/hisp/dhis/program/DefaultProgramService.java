@@ -69,7 +69,7 @@ public class DefaultProgramService
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int saveProgram( Program program )
     {
@@ -175,11 +175,16 @@ public class DefaultProgramService
     {
         return i18n( i18nService, programStore.getByUid( uid ) );
     }
-    
+
     @Override
     public Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit )
     {
-         return i18n( i18nService, programStore.getProgramsByDisplayOnAllOrgunit( displayOnAllOrgunit, orgunit ) );
+        return i18n( i18nService, programStore.getProgramsByDisplayOnAllOrgunit( displayOnAllOrgunit, orgunit ) );
     }
-    
+
+    public Program getProgramByCode( String code )
+    {
+        return i18n( i18nService, programStore.getByCode( code ) );
+    }
+
 }

@@ -1197,6 +1197,24 @@
 			</result>
 			<param name="requiredAuthorities">F_ACCESS_PATIENT_ATTRIBUTES</param>
 		</action>
+		
+		<action name="allowEditPatientFixedAttributes" class="org.hisp.dhis.caseentry.action.NoAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<param name="requiredAuthorities">F_ALLOW_EDIT_PATIENT_PROPERTIES</param>
+		</action>
+		
+		<action name="allowEditPatientAttributes" class="org.hisp.dhis.caseentry.action.NoAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<param name="requiredAuthorities">F_ALLOW_EDIT_PATIENT_ATTRIBUTES</param>
+		</action>
+		
+		<action name="allowEditPatientIdentifier" class="org.hisp.dhis.caseentry.action.NoAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<param name="requiredAuthorities">F_ALLOW_EDIT_PATIENT_IDENTIFIERS</param>
+		</action>
 
 
 		<!-- Program-stage-completeness -->
