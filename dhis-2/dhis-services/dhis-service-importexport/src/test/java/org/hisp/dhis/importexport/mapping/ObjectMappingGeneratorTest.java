@@ -163,8 +163,8 @@ public class ObjectMappingGeneratorTest
     {        
         PeriodType periodTypeA = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
         
-        Period periodA = createPeriod( periodTypeA, getDate( 1, 0, 2000 ), getDate( 31, 0, 2000 ) );
-        Period periodB = createPeriod( periodTypeA, getDate( 1, 1, 2000 ), getDate( 28, 1, 2000 ) );
+        Period periodA = createPeriod( periodTypeA, getDate( 2000, 0, 1 ), getDate( 2000, 0, 31 ) );
+        Period periodB = createPeriod( periodTypeA, getDate( 2000, 1, 1 ), getDate( 2000, 1, 28 ) );
         
         periodA.setId( 'A' );
         periodB.setId( 'B' );
