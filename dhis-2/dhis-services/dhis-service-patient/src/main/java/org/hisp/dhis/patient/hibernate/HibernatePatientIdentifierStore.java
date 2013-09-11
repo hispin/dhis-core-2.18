@@ -126,6 +126,6 @@ public class HibernatePatientIdentifierStore
     {
         Number rs = (Number) getCriteria( Restrictions.ilike( "identifier", identifier ) ).setProjection(
             Projections.rowCount() ).uniqueResult();
-        return rs != null ? true: false;
+        return ( rs != null & rs.intValue() > 0 )? true: false;
     }
 }

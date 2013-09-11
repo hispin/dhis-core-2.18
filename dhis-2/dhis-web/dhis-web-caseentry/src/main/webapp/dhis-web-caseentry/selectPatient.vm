@@ -140,14 +140,4 @@
 	setFieldValue('endDueDate','');
 	jQuery('#emptyProgramOption').text('[' + '$i18n.getString("view_all")' + ']');
 	
-	$( "#orgUnitTree" ).one( "ouwtLoaded", function () {
-        var def = $.Deferred();
-        var promise = def.promise();
-        promise = promise.then( function () {
-            selection.setListenerFunction( organisationUnitSelected );
-        } );
-
-        def.resolve();
-    } );
-	
 </script>

@@ -103,7 +103,7 @@ public class ViewPatientRegistrationFormAction
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
-    
+
     private Integer programId;
 
     public void setProgramId( Integer programId )
@@ -113,12 +113,12 @@ public class ViewPatientRegistrationFormAction
 
     private Collection<PatientAttribute> attributes = new HashSet<PatientAttribute>();
 
-    private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
-
     public Collection<PatientAttribute> getAttributes()
     {
         return attributes;
     }
+
+    private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
 
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
@@ -167,30 +167,23 @@ public class ViewPatientRegistrationFormAction
         if ( programId == null )
         {
             registrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
+
+            identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+            attributes = patientAttributeService.getAllPatientAttributes();
+            for ( Program p : programs )
+            {
+                identifierTypes.remove( p.getPatientIdentifierTypes() );
+                attributes.remove( p.getPatientAttributes() );
+            }
         }
         else
         {
             program = programService.getProgram( programId );
+            identifierTypes = program.getPatientIdentifierTypes();
+            attributes = program.getPatientAttributes();
             registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
         }
-
-        // ---------------------------------------------------------------------
-        // Get dynamic attributes and identifier-types
-        // ---------------------------------------------------------------------
-
-        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-
-        attributes = patientAttributeService.getAllPatientAttributes();
-
-        for ( Program program : programs )
-        {
-            if ( programId == null || program.getId() != programId )
-            {
-                identifierTypes.removeAll( program.getPatientIdentifierTypes() );
-                attributes.removeAll( program.getPatientAttributes() );
-            }
-        }
-
+        
         // ---------------------------------------------------------------------
         // Get images
         // ---------------------------------------------------------------------

@@ -81,8 +81,6 @@ public class GetPatientAction
 
     private PatientAttributeValueService patientAttributeValueService;
 
-    private PatientAttributeService patientAttributeService;
-
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private RelationshipService relationshipService;
@@ -94,6 +92,8 @@ public class GetPatientAction
     private ProgramInstanceService programInstanceService;
 
     private PatientAttributeGroupService attributeGroupService;
+
+    private PatientAttributeService attributeService;
 
     private I18n i18n;
 
@@ -135,6 +135,8 @@ public class GetPatientAction
 
     private Integer programId;
 
+    private Map<String, List<PatientAttribute>> attributesMap = new HashMap<String, List<PatientAttribute>>();
+
     public void setProgramId( Integer programId )
     {
         this.programId = programId;
@@ -157,6 +159,16 @@ public class GetPatientAction
     public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
+    }
+
+    public void setAttributeService( PatientAttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
+    public Map<String, List<PatientAttribute>> getAttributesMap()
+    {
+        return attributesMap;
     }
 
     // -------------------------------------------------------------------------
@@ -219,44 +231,45 @@ public class GetPatientAction
             }
         }
 
+        List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+
         if ( customRegistrationForm == null )
         {
-            // -------------------------------------------------------------------------
-            // Get identifier-types && attributes
-            // -------------------------------------------------------------------------
-
-            programs = programService.getAllPrograms();
-
-            // -------------------------------------------------------------------------
-            // Get identifier-types && attributes
-            // -------------------------------------------------------------------------
-
-            identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-            Collection<PatientAttribute> patientAttributesInProgram = new HashSet<PatientAttribute>();
-
-            noGroupAttributes = patientAttributeService.getPatientAttributesWithoutGroup();
-
-            Collection<Program> programs = programService.getAllPrograms();
-            programs.remove( program );
-
-            for ( Program _program : programs )
-            {
-                identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
-                patientAttributesInProgram.removeAll( _program.getPatientAttributes() );
-                noGroupAttributes.removeAll( _program.getPatientAttributes() );
-            }
-
             attributeGroups = new ArrayList<PatientAttributeGroup>(
                 attributeGroupService.getAllPatientAttributeGroups() );
             Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
-            for ( PatientAttributeGroup attributeGroup : attributeGroups )
-            {
-                List<PatientAttribute> attributes = attributeGroup.getAttributes();
-                attributes.removeAll( patientAttributesInProgram );
 
-                if ( attributes.size() > 0 )
+            if ( program == null )
+            {
+                identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+                attributes = new ArrayList<PatientAttribute>( attributeService.getAllPatientAttributes() );
+                Collection<Program> programs = programService.getAllPrograms();
+                for ( Program p : programs )
                 {
-                    attributeGroupsMap.put( attributeGroup.getId(), attributes );
+                    identifierTypes.removeAll( p.getPatientIdentifierTypes() );
+                    attributes.removeAll( p.getPatientAttributes() );
+                }
+            }
+            else
+            {
+                identifierTypes = program.getPatientIdentifierTypes();
+                attributes = program.getPatientAttributes();
+            }
+
+            for ( PatientAttribute attribute : attributes )
+            {
+                PatientAttributeGroup patientAttributeGroup = attribute.getPatientAttributeGroup();
+                String groupName = (patientAttributeGroup == null) ? "" : patientAttributeGroup.getDisplayName();
+                if ( attributesMap.containsKey( groupName ) )
+                {
+                    List<PatientAttribute> attrs = attributesMap.get( groupName );
+                    attrs.add( attribute );
+                }
+                else
+                {
+                    List<PatientAttribute> attrs = new ArrayList<PatientAttribute>();
+                    attrs.add( attribute );
+                    attributesMap.put( groupName, attrs );
                 }
             }
 
@@ -387,11 +400,6 @@ public class GetPatientAction
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
-    }
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
     }
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )

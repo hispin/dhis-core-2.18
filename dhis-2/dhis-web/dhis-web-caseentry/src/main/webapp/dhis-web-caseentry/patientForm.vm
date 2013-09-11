@@ -16,7 +16,7 @@
 	  #end
 	#end
 	
-	<tr id='registrationDateTR'>
+	<tr id='registrationDateTR' name='propertiesField'>
 		<td class='text-column'><label for="registration_date">$i18n.getString( "registration_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td class="input-column" colspan='2'>
 			<input type="text" id="registrationDate" name="registrationDate" class="{validate:{required:true}}" value='$!format.formatDate($!patient.registrationDate)'/>
@@ -27,12 +27,12 @@
 		<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 	</tr>
 
-	<tr>
+	<tr name='propertiesField'>
 		<td class='text-column'><label for="fullName">$i18n.getString( "full_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.getFullName()" class="{validate:{required:true, rangelength:[3,50]}}"></td>
 	</tr>
 
-	<tr>
+	<tr name='propertiesField'>
 		<td class='text-column'><label for="gender">$i18n.getString( "gender" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td class="input-column">
 			<select id="gender" name="gender">
@@ -43,7 +43,7 @@
 		</td>					
 	</tr>
 
-	<tr>
+	<tr name='propertiesField'>
 		<td class='text-column' ><label for="birthDate">$i18n.getString( "date_of_birth" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td class="input-column">
 			<select id='dobType' name="dobType" style='width:120px' onchange='dobTypeOnChange("patientForm")' >
@@ -63,7 +63,7 @@
 		</td>
 	</tr>
 
-	<tr class='phoneNumberTR'>
+	<tr class='phoneNumberTR' name='propertiesField'>
 		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
 		<td class="input-column">
 			<input type="text" id="phoneNumber" name="phoneNumber" class="{validate:{phone:true}}"/>
@@ -71,7 +71,7 @@
 		</td>
 	</tr>
 
-	<tr>
+	<tr name='propertiesField'>
 		<td class='text-column'><label for="healthWorker">$i18n.getString( "health_worker" )</label></td>
 		<td class="input-column">
 			<select id="healthWorkerId" name="healthWorkerId">
@@ -87,7 +87,7 @@
 
 	#if($!patient.underAge)
 		#set( $representative = $!patient.representative ) 
-		<tr id="representativeFormDiv" name="representativeFormDiv">
+		<tr id="representativeFormDiv" name='propertiesField'>
 			<td class='text-column'>$i18n.getString("guardian")</td>
 			<td> 
 				$!patient.representative.getFullName() <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='img-button'>
@@ -104,14 +104,14 @@
 
 	<!-- DEAD -->
 
-	<tr id="deathCheckboxTR">
+	<tr id="deathCheckboxTR" name='propertiesField'>
 		<td class='text-column'>$i18n.getString("is_dead")</td>
 		<td>
 			<input type="checkbox" name="isDead" id="isDead" value="true" #if($!patient.isDead) checked="checked" #end onchange='isDeathOnChange();'/>
 		</td>
 	</tr>
 
-	<tr id='deathDateTR' #if($!patient.isDead) #else class="hidden" #end>
+	<tr id='deathDateTR' #if($!patient.isDead) #else class="hidden" #end name='propertiesField'>
 		<td class='text-column'><label for="deathDate">$i18n.getString("death_date")</label></td>
 		<td class="input-column">
 			<input type="text" name="deathDate" id="deathDate" #if($!patient.deathDate) value="$format.formatDate( $!patient.deathDate )" #end>
@@ -137,7 +137,7 @@
 				#set( $identifier = $!orgunitCountIdentifier )
 			#end
 		
-			<tr> 
+			<tr name='idenFields'> 
 				<td class='text-column'><label>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory) <em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">
 					<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$!identifier" data="{related:$identifierType.related}" #if($identifierType.related && $!patient.underAge) disabled="disabled" #end 
@@ -152,16 +152,14 @@
 	<!-- ATTRIBUTES IN GROUPS -->
 	
 	#foreach ($attributeGroup in $attributeGroups )
-		#set($attributes = $attributeGroupsMap.get($attributeGroup.id))
-		#if($!attributes || $attributes.size() > 0)
-			<tr><td>&nbsp;</td></tr>
-			<tr><th colspan="2" class="heading-column">$attributeGroup.displayName</th></tr>
-		#end
+		#set($attributes = $attributesMap.get($attributeGroup.displayName))
+		<tr><td>&nbsp;</td></tr>
+		<tr><th colspan="2" class="heading-column">$attributeGroup.displayName</th></tr>
 		#foreach($attribute in $attributes )
 			#if( $attribute )
 				#set($value = "")
 				#set($value = $patientAttributeValueMap.get($attribute.id))
-				<tr>
+				<tr name='attributesFields'>
 					<td class='text-column'><label>$encoder.htmlEncode($attribute.displayName) #if($attribute.mandatory) <em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 					<td class="input-column">
 						#if( $attribute.valueType == "bool" )
@@ -196,18 +194,14 @@
 	<tr><td>&nbsp;</td></tr>
 
 	<!-- ATTRIBUTES NOT IN GROUPS -->
-
-	#if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 
-		#if($!noGroupAttributes || $noGroupAttributes.size() > 0)
+	#set($attributes = $attributesMap.get(""))
+	#if ($!attributes) 
 		<tr><th colspan="2" class="heading-column">$i18n.getString( "other_details" )</th></tr>
-		#end
-		#foreach($attribute in $noGroupAttributes )
-		#if( $!attribute && $attribute.program )
-		#elseif( $!attribute )
+		#foreach($attribute in $attributes )
 			#set( $attributeValue = "" )
 			#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 			#if( $attribute.valueType != 'calculated')
-			<tr>
+			<tr name='attributesFields'>
 				<td class='text-column'><label>$encoder.htmlEncode($attribute.displayName) #if($attribute.mandatory) <em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">
 					#if( $attribute.valueType == "bool" )
@@ -235,7 +229,6 @@
 					#end
 				</td>		
 			</tr>
-			#end
 			#end
 		#end
 	#end
@@ -270,6 +263,33 @@
 #end
 
 <script>
+	var disableButtons = true;
+	
+	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientFixedAttributes" ) )
+		disableButtons = false;
+	#else
+		jQuery('#patientForm [name=propertiesField] input').attr('disabled',true);
+		jQuery('#patientForm [name=propertiesField] select').attr('disabled',true);
+	#end
+	
+	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientAttributes" ) )
+		disableButtons = false;
+	#else
+		jQuery('#patientForm [name=idenFields] input').attr('disabled',true);
+		jQuery('#patientForm [name=idenFields] select').attr('disabled',true);
+	#end
+
+	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientIdentifier" ) )
+		disableButtons = false;
+	#else
+		jQuery('#patientForm [name=attributesFields] input').attr('disabled',true);
+		jQuery('#patientForm [name=attributesFields] select').attr('disabled',true);
+	#end
+	
+	if(disableButtons){
+		jQuery('#patientForm .button').attr('disabled',true);
+	}
+
 	if(getFieldValue('dobType')=='A'){
 		showById('age');
 		hideById('birthDate');

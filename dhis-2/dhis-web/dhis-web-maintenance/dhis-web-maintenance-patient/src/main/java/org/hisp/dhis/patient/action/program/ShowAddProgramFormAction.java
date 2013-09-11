@@ -31,6 +31,7 @@ package org.hisp.dhis.patient.action.program;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -138,19 +139,20 @@ public class ShowAddProgramFormAction
 
     public String execute()
     {
-        availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-
-        availableAttributes = patientAttributeService.getAllPatientAttributes();
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
-
-        for ( Program program : programs )
+       
+      
+        availableAttributes = patientAttributeService.getAllPatientAttributes();
+ 
+        availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        for ( Program p : programs )
         {
-            availableIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
-            availableAttributes.removeAll( program.getPatientAttributes() );
+            availableIdentifierTypes
+                .removeAll( new HashSet<PatientIdentifierType>( p.getPatientIdentifierTypes() ) );
         }
-
+        
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
         
         relationshipTypes = new ArrayList<RelationshipType>(relationshipTypeService.getAllRelationshipTypes());
