@@ -227,8 +227,7 @@ public class DashboardController
                 dashboard.removeItem( item.getUid() ); // Remove if empty
             }
             
-            dashboardService.updateDashboard( dashboard );
-            
+            dashboardService.updateDashboard( dashboard );            
             
             ContextUtils.okResponse( response, "Dashboard item content removed" );
         }        

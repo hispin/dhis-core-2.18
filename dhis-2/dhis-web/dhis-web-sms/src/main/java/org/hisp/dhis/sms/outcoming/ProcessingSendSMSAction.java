@@ -53,7 +53,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id$
  */
 public class ProcessingSendSMSAction
     implements Action
@@ -218,6 +217,7 @@ public class ProcessingSendSMSAction
             
             // message = messageSender.sendMessage( smsSubject, smsMessage,
             // currentUser, false, group.getMembers(), gatewayId );
+            
             message = smsSender.sendMessage( smsSubject, text, currentUser, new ArrayList<User>( group.getMembers() ),
                 false );
         }
@@ -241,6 +241,7 @@ public class ProcessingSendSMSAction
 
                 // message = messageSender.sendMessage( smsSubject, smsMessage,
                 // currentUser, false, users, gatewayId );
+                
                 message = smsSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
             }
         }
@@ -264,7 +265,6 @@ public class ProcessingSendSMSAction
             }
 
             message = smsSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
-
         }
 
         if ( message != null && !message.equals( "success" ) )

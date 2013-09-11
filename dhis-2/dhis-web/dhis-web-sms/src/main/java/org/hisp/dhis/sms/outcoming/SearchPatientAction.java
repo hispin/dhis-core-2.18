@@ -180,6 +180,10 @@ public class SearchPatientAction
         return SUCCESS;
     }
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private String getHierarchyOrgunit( OrganisationUnit orgunit )
     {
         String hierarchyOrgunit = orgunit.getName();

@@ -155,7 +155,6 @@ public class MenuAction
             dataSet = dataSetService.getDataSet( dataSetId );
         }
 
-
         return SUCCESS;
     }
 }
