@@ -92,6 +92,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 public interface AnalyticsService
 {
     final String NAMES_META_KEY = "names";
+    final String PAGER_META_KEY = "pager";
     
     /**
      * Generates aggregated values for the given query.
