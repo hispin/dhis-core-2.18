@@ -32,6 +32,8 @@ import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.datavalue.DataValue;
 
+import static org.hisp.dhis.system.util.DateUtils.*;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: DataValueBatchHandler.java 5062 2008-05-01 18:10:35Z larshelg $
@@ -111,7 +113,7 @@ public class DataValueBatchHandler
         statementBuilder.setValue( value.getSource().getId() );
         statementBuilder.setValue( value.getValue() );
         statementBuilder.setValue( value.getStoredBy() );
-        statementBuilder.setValue( value.getTimestamp() );
+        statementBuilder.setValue( getLongDateString( value.getTimestamp() ) );
         statementBuilder.setValue( value.getComment() );
         statementBuilder.setValue( value.getOptionCombo().getId() );
         statementBuilder.setValue( value.isFollowup() );
