@@ -214,12 +214,11 @@ public class ValidatePatientAction
 
                     if ( StringUtils.isNotBlank( value ) )
                     {
-                        PatientIdentifier identifier = patientIdentifierService.get( idType, value );
+                        boolean isDuplicate = patientIdentifierService.checkDuplicateIdentifier( value );
 
-                        if ( identifier != null
-                            && (id == null || identifier.getPatient().getId() != id) )
+                        if ( isDuplicate )
                         {
-                            idDuplicate += idType.getName() + ", ";
+                            idDuplicate += value + ", ";
                         }
                     }
                 }

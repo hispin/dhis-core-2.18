@@ -66,4 +66,6 @@ public interface PatientIdentifierStore
         
     Collection<PatientIdentifier> get(Collection<PatientIdentifierType> identifierTypes, Patient patient);
 
+    boolean checkDuplicateIdentifier( String identifier );
+
 }

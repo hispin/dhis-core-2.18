@@ -104,8 +104,8 @@ public class HibernatePatientIdentifierStore
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
     {
-        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection(
-            Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
+        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) )
+            .setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
     public int countGetPatientsByIdentifier( String identifier )
@@ -122,4 +122,10 @@ public class HibernatePatientIdentifierStore
             .list();
     }
 
+    public boolean checkDuplicateIdentifier( String identifier )
+    {
+        Number rs = (Number) getCriteria( Restrictions.ilike( "identifier", identifier ) ).setProjection(
+            Projections.rowCount() ).uniqueResult();
+        return rs != null ? true: false;
+    }
 }

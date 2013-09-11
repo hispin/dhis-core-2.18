@@ -47,26 +47,29 @@ public interface PatientIdentifierService
     PatientIdentifier getPatientIdentifier( int id );
 
     PatientIdentifier getPatientIdentifier( Patient patient );
-    
+
     Collection<PatientIdentifier> getAllPatientIdentifiers();
-    
+
     Collection<PatientIdentifier> getPatientIdentifiersByType( PatientIdentifierType identifierType );
 
     Collection<PatientIdentifier> getPatientIdentifiersByIdentifier( String identifier );
-    
-    PatientIdentifier getPatientIdentifier(String identifier, Patient patient);
-    
-    PatientIdentifier getPatientIdentifier(PatientIdentifierType identifierType, Patient patient);
-    
+
+    PatientIdentifier getPatientIdentifier( String identifier, Patient patient );
+
+    PatientIdentifier getPatientIdentifier( PatientIdentifierType identifierType, Patient patient );
+
     Collection<PatientIdentifier> getPatientIdentifiers( Patient patient );
-    
+
     PatientIdentifier get( PatientIdentifierType type, String identifier );
-    
-    Patient getPatient( PatientIdentifierType idenType, String value);
-    
+
+    Patient getPatient( PatientIdentifierType idenType, String value );
+
     Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max );
-    
+
     int countGetPatientsByIdentifier( String identifier );
-    
-    Collection<PatientIdentifier> getPatientIdentifiers(Collection<PatientIdentifierType> identifierTypes, Patient patient);
+
+    Collection<PatientIdentifier> getPatientIdentifiers( Collection<PatientIdentifierType> identifierTypes,
+        Patient patient );
+
+    boolean checkDuplicateIdentifier( String identifier );
 }
