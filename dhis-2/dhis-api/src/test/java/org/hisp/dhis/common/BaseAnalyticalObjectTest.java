@@ -33,7 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataset.DataSet;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -109,5 +111,41 @@ public class BaseAnalyticalObjectTest
         assertEquals( "a1-b1-c1", BaseAnalyticalObject.getIdentifer( column, row ) );
         assertEquals( "b1", BaseAnalyticalObject.getIdentifer( new ArrayList<NameableObject>(), row ) );
         assertEquals( "b1", BaseAnalyticalObject.getIdentifer( null, row ) );
+    }
+    
+    @Test
+    public void testEquals()
+    {
+        DataElement deA = new DataElement();
+        deA.setUid( "A" );
+        deA.setCode( "A" );
+        deA.setName( "A" );
+
+        DataElement deB = new DataElement();
+        deB.setUid( "B" );
+        deB.setCode( "B" );
+        deB.setName( "B" );
+
+        DataElement deC = new DataElement();
+        deC.setUid( "A" );
+        deC.setCode( "A" );
+        deC.setName( "A" );
+        
+        DataSet dsA = new DataSet();
+        dsA.setUid( "A" );
+        dsA.setCode( "A" );
+        dsA.setName( "A" );
+
+        DataSet dsD = new DataSet();
+        dsD.setUid( "D" );
+        dsD.setCode( "D" );
+        dsD.setName( "D" );
+        
+        assertTrue( deA.equals( deC ) );
+        
+        assertFalse( deA.equals( deB ) );
+        assertFalse( deA.equals( dsA ) );
+        assertFalse( deA.equals( dsD ) );
+        assertFalse( dsA.equals( dsD ) );        
     }
 }
