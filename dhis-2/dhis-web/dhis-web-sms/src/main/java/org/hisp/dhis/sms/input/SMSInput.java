@@ -52,7 +52,7 @@ public class SMSInput
     {
         IncomingSms sms = new IncomingSms();
 
-        // setter for sms's originator
+        // setter for sms originator
         if ( sender != null )
         {
             sms.setOriginator( sender );
@@ -70,7 +70,7 @@ public class SMSInput
             sms.setOriginator( msisdn );
         }
 
-        // setter for sms's text
+        // setter for sms text
         if ( message != null )
         {
             sms.setText( message );
@@ -84,7 +84,7 @@ public class SMSInput
             sms.setText( content );
         }
 
-        // check whether 2 necessary attributes are null 
+        // check whether two necessary attributes are null 
         if ( sms.getOriginator() == null || sms.getText() == null )
         {
             setNullToAll();

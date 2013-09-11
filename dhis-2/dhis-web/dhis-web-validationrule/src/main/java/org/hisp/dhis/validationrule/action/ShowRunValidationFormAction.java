@@ -43,8 +43,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $ ShowRunValidationFormAction.java May 31, 2011 11:30:17 AM $
- * 
  */
 public class ShowRunValidationFormAction
     implements Action
@@ -79,7 +77,9 @@ public class ShowRunValidationFormAction
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
-    } private List<ValidationRuleGroup> validationRuleGroups;
+    }
+    
+    private List<ValidationRuleGroup> validationRuleGroups;
 
     public List<ValidationRuleGroup> getValidationRuleGroups()
     {
