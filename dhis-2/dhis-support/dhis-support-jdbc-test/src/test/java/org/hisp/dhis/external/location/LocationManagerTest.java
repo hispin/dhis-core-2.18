@@ -40,6 +40,7 @@ import java.io.OutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Ignore // Takes forever to run, enable to test modifications
 public class LocationManagerTest
     extends DhisSpringTest
 {
