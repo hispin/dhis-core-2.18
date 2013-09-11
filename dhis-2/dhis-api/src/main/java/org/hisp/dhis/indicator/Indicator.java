@@ -139,33 +139,6 @@ public class Indicator
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof Indicator) )
-        {
-            return false;
-        }
-
-        final Indicator other = (Indicator) o;
-
-        return name.equals( other.getName() );
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 

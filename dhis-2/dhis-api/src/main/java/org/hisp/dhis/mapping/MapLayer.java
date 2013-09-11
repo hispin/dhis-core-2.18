@@ -80,33 +80,6 @@ public class MapLayer
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final MapLayer other = (MapLayer) object;
-
-        return name.equals( other.name );
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 

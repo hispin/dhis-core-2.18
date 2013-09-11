@@ -76,33 +76,6 @@ public class Constant
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof Constant) )
-        {
-            return false;
-        }
-
-        final Constant other = (Constant) o;
-
-        return name.equals( other.getName() );
-    }
-
-    // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 

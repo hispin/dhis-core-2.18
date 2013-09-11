@@ -81,39 +81,6 @@ public class ProgramIndicator
     }
 
     // -------------------------------------------------------------------------
-    // Logical
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-        
-        final ProgramIndicator other = (ProgramIndicator) object;
-        
-        return name.equals( other.name );
-    }
-
-    // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
 

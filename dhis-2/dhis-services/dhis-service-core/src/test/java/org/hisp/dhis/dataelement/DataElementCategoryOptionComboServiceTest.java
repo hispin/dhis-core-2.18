@@ -135,15 +135,12 @@ public class DataElementCategoryOptionComboServiceTest
     {
         categoryService.generateOptionCombos( categoryComboA );
         
-        DataElementCategoryOption catopt1 = new DataElementCategoryOption("Male");
-        DataElementCategoryOption catopt2 = new DataElementCategoryOption("0-20");
-
         Collection<DataElementCategoryOption> catopts = new LinkedList<DataElementCategoryOption>();
-        catopts.add( catopt1 );
-        catopts.add( catopt2 );
+        catopts.add( categoryOptionA );
+        catopts.add( categoryOptionC );
         
         DataElementCategoryOptionCombo catoptcombo = categoryService.getDataElementCategoryOptionCombo( catopts );
-        assertNotNull(catoptcombo);
+        assertNotNull( catoptcombo );
     }
 
     @Test

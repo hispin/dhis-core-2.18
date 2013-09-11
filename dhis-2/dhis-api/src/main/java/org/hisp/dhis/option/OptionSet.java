@@ -69,29 +69,6 @@ public class OptionSet
         this.name = name;
     }
 
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof OptionSet) )
-        {
-            return false;
-        }
-
-        final OptionSet other = (OptionSet) o;
-
-        return name.equals( other.getName() );
-    }
-
     public void removeAllOptions()
     {
         options.clear();

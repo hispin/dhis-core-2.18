@@ -120,11 +120,13 @@ public class ProgramStageInstance
             return false;
         }
 
-        if ( getClass() != object.getClass() )
+        if ( !getClass().isAssignableFrom( object.getClass() ) )
         {
             return false;
         }
 
+        // TODO include due date and execution date to make consistent with hashcode
+        
         final ProgramStageInstance other = (ProgramStageInstance) object;
 
         return programInstance.equals( other.getProgramInstance() ) && programStage.equals( other.getProgramStage() );

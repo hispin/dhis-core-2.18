@@ -91,45 +91,6 @@ public class DataElementCategoryOption
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( !(object instanceof DataElementCategoryOption) )
-        {
-            return false;
-        }
-
-        final DataElementCategoryOption other = (DataElementCategoryOption) object;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 

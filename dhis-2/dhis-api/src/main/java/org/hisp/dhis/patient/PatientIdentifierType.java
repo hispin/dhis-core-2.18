@@ -82,39 +82,6 @@ public class PatientIdentifierType
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final PatientIdentifierType other = (PatientIdentifierType) object;
-
-        return name.equals( other.getName() );
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 

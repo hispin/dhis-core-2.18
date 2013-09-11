@@ -111,14 +111,6 @@ public class ProgramInstance
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    /**
-     * @return the id
-     */
-    public int getId()
-    {
-        return id;
-    }
-
     @Override
     public int hashCode()
     {
@@ -146,7 +138,7 @@ public class ProgramInstance
             return false;
         }
 
-        if ( getClass() != object.getClass() )
+        if ( !getClass().isAssignableFrom( object.getClass() ) )
         {
             return false;
         }
@@ -202,6 +194,14 @@ public class ProgramInstance
         }
 
         return true;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId()
+    {
+        return id;
     }
 
     /**

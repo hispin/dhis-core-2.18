@@ -70,7 +70,6 @@ public class UserGroup
 
     public UserGroup()
     {
-
     }
 
     public UserGroup( String name )
@@ -82,30 +81,6 @@ public class UserGroup
     {
         this.name = name;
         this.members = members;
-    }
-
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------     
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-        else if ( object == null )
-        {
-            return false;
-        }
-        else if ( !(object instanceof UserGroup) )
-        {
-            return false;
-        }
-
-        final UserGroup userGroup = (UserGroup) object;
-
-        return name.equals( userGroup.getName() );
     }
 
     // -------------------------------------------------------------------------

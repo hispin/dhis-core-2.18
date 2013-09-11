@@ -208,45 +208,6 @@ public class DataElement
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof DataElement) )
-        {
-            return false;
-        }
-
-        final DataElement other = (DataElement) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 

@@ -80,37 +80,6 @@ public class SqlView
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object obj )
-    {
-        if ( this == obj )
-        {
-            return true;
-        }
-        if ( obj == null )
-        {
-            return false;
-        }
-        if ( getClass() != obj.getClass() )
-        {
-            return false;
-        }
-
-        final SqlView other = (SqlView) obj;
-
-        return name.equals( other.name );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[ Name: " + name + ", sql query: " + sqlQuery + " ]";
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 

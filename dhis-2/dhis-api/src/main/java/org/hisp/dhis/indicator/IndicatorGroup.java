@@ -113,39 +113,6 @@ public class IndicatorGroup
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof IndicatorGroup) )
-        {
-            return false;
-        }
-
-        final IndicatorGroup other = (IndicatorGroup) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 

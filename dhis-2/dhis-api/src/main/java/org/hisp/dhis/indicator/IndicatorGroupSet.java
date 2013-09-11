@@ -154,39 +154,6 @@ public class IndicatorGroupSet
     }
 
     // -------------------------------------------------------------------------
-    // equals and hashCode
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof IndicatorGroupSet) )
-        {
-            return false;
-        }
-
-        final IndicatorGroupSet other = (IndicatorGroupSet) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
@@ -208,7 +175,6 @@ public class IndicatorGroupSet
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
 
     @Override
     public boolean haveUniqueNames()

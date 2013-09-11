@@ -84,39 +84,6 @@ public class DataDictionary
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof DataDictionary) )
-        {
-            return false;
-        }
-
-        final DataDictionary other = (DataDictionary) o;
-
-        return name.equals( other.getName() );
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 

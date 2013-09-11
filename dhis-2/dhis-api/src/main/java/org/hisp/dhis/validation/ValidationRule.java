@@ -98,41 +98,6 @@ public class ValidationRule
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // ------------------------------------------------------------------------- 
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-        else if ( object == null )
-        {
-            return false;
-        }
-        else if ( !(object instanceof ValidationRule) )
-        {
-            return false;
-        }
-
-        final ValidationRule validationRule = (ValidationRule) object;
-
-        return name.equals( validationRule.getName() );
-    }
-
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // ------------------------------------------------------------------------- 
 

@@ -156,45 +156,6 @@ public class DataElementCategory
         return new ArrayList<NameableObject>( categoryOptions );
     }
     
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( !(object instanceof DataElementCategory) )
-        {
-            return false;
-        }
-
-        final DataElementCategory other = (DataElementCategory) object;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
     // ------------------------------------------------------------------------
     // Logic
     // ------------------------------------------------------------------------
