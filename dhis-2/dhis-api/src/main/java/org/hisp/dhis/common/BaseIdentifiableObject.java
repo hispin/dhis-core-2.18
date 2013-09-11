@@ -339,13 +339,11 @@ public class BaseIdentifiableObject
         int result = uid != null ? uid.hashCode() : 0;
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (lastUpdated != null ? lastUpdated.hashCode() : 0);
-        result = 31 * result + (created != null ? created.hashCode() : 0);
 
         return result;
     }
 
-    @Override
+    @Override   
     public boolean equals( Object o )
     {
         if ( this == o )

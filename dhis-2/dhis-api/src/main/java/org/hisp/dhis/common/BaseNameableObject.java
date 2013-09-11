@@ -94,13 +94,22 @@ public class BaseNameableObject
     }
 
     @Override
+    public int hashCode()
+    {
+        int result = super.hashCode();
+        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public boolean equals( Object o )
     {
         if ( this == o )
         {
             return true;
         }
-        
+
         if ( o == null || getClass() != o.getClass() )
         {
             return false;
@@ -113,19 +122,17 @@ public class BaseNameableObject
 
         BaseNameableObject that = (BaseNameableObject) o;
 
-        if ( description != null ? !description.equals( that.description ) : that.description != null ) return false;
-        if ( shortName != null ? !shortName.equals( that.shortName ) : that.shortName != null ) return false;
+        if ( shortName != null ? !shortName.equals( that.shortName ) : that.shortName != null )
+        {
+            return false;
+        }
+        
+        if ( description != null ? !description.equals( that.description ) : that.description != null )
+        {
+            return false;
+        }
 
         return true;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int result = super.hashCode();
-        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
     }
 
     @JsonProperty
