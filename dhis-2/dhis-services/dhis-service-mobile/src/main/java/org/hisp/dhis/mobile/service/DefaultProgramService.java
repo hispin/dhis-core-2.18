@@ -41,11 +41,9 @@ import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
-import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Required;
 
 public class DefaultProgramService
@@ -59,13 +57,6 @@ public class DefaultProgramService
 
     private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
     
-    private CurrentUserService currentUserService;
-    
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     // -------------------------------------------------------------------------
     // ProgramService
     // -------------------------------------------------------------------------

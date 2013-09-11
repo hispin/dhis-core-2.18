@@ -127,35 +127,6 @@ public class Message
     }
 
     @Override
-    public int hashCode()
-    {
-        return uid.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final Message other = (Message) object;
-
-        return uid.equals( other.uid );
-    }
-
-    @Override
     public String toString()
     {
         return "[" + text + "]";

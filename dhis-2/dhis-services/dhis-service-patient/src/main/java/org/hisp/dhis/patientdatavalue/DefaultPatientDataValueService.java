@@ -130,5 +130,4 @@ public class DefaultPatientDataValueService
     {
         return patientDataValueStore.get( programStageInstance, dataElement );
     }
-
 }

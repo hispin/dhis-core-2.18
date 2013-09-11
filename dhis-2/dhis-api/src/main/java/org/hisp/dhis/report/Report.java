@@ -132,45 +132,6 @@ public class Report
     }
     
     // -------------------------------------------------------------------------
-    // Equals and hashCode
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-
-        int result = 1;
-
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-
-        return result;
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final Report other = (Report) object;
-
-        return this.name.equals( other.getName() );
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 

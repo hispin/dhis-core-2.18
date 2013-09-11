@@ -477,7 +477,6 @@ public class BaseIdentifiableObject
             "', name='" + name +
             "', created='" + created +
             "', lastUpdated='" + lastUpdated +
-            "', class='" + getClass().getSimpleName() +
             "']";
     }
 

@@ -98,41 +98,6 @@ public class ValidationRuleGroup
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------     
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-        else if ( object == null )
-        {
-            return false;
-        }
-        else if ( !(object instanceof ValidationRuleGroup) )
-        {
-            return false;
-        }
-
-        final ValidationRuleGroup validationRuleGroup = (ValidationRuleGroup) object;
-
-        return name.equals( validationRuleGroup.getName() );
-    }
-
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------     
 

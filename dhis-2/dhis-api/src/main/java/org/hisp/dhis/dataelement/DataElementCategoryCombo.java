@@ -223,41 +223,6 @@ public class DataElementCategoryCombo
         return name != null && name.equals( DEFAULT_CATEGORY_COMBO_NAME );
     }
 
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( !(object instanceof DataElementCategoryCombo) )
-        {
-            return false;
-        }
-
-        final DataElementCategoryCombo other = (DataElementCategoryCombo) object;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------

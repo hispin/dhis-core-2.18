@@ -84,7 +84,7 @@ public class RelationshipType
             return false;
         }
 
-        if ( getClass() != object.getClass() )
+        if ( !getClass().isAssignableFrom( object.getClass() ) )
         {
             return false;
         }

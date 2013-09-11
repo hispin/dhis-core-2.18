@@ -174,33 +174,6 @@ public class OrganisationUnitGroup
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof OrganisationUnitGroup) )
-        {
-            return false;
-        }
-
-        final OrganisationUnitGroup other = (OrganisationUnitGroup) o;
-
-        return name.equals( other.getName() );
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 

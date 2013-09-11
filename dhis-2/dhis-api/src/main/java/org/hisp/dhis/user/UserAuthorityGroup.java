@@ -72,33 +72,6 @@ public class UserAuthorityGroup
     private Set<DataSet> dataSets = new HashSet<DataSet>();
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof UserAuthorityGroup) )
-        {
-            return false;
-        }
-
-        final UserAuthorityGroup other = (UserAuthorityGroup) o;
-
-        return name.equals( other.getName() );
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 

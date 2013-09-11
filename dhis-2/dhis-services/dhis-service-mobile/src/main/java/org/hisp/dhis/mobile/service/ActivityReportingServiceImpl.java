@@ -905,7 +905,7 @@ public class ActivityReportingServiceImpl
             if ( setting.getBirthdate() )
             {
                 DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
-                patientModel.setBirthDate( dateFormat.format( patient.getBirthDate()) );
+                patientModel.setBirthDate( dateFormat.format( patient.getBirthDate() ) );
             }
             if ( setting.getRegistrationdate() )
             {
