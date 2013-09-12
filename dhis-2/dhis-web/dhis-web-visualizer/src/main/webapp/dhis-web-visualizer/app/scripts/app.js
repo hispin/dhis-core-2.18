@@ -470,7 +470,7 @@ Ext.onReady( function() {
 
                     this.setProxy({
                         type: 'ajax',
-                        url: conf.finals.ajax.path_api + path,
+                        url: init.contextPath + conf.finals.ajax.path_api + path,
                         reader: {
                             type: 'json',
                             root: 'dataElements'
