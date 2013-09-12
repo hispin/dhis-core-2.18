@@ -45,7 +45,7 @@ public interface DashboardService
     
     DashboardSearchResult search( String query, Set<String> maxTypes );
     
-    void addItemContent( String dashboardUid, String type, String contentUid );
+    boolean addItemContent( String dashboardUid, String type, String contentUid );
     
     void mergeDashboard( Dashboard dashboard );
     

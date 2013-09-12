@@ -53,6 +53,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static org.hisp.dhis.dashboard.Dashboard.MAX_ITEMS;
+
 /**
  * @author Lars Helge Overland
  */
@@ -155,9 +157,16 @@ public class DashboardController
     public void postJsonItemContent( HttpServletResponse response, HttpServletRequest request, 
         @PathVariable String dashboardUid, @RequestParam String type, @RequestParam( "id" ) String contentUid ) throws Exception
     {
-        dashboardService.addItemContent( dashboardUid, type, contentUid );
+        boolean result = dashboardService.addItemContent( dashboardUid, type, contentUid );
         
-        ContextUtils.okResponse( response, "Dashboard item added" );
+        if ( !result )
+        {
+            ContextUtils.conflictResponse( response, "Max number of dashboard items reached: " + MAX_ITEMS );
+        }
+        else
+        {
+            ContextUtils.okResponse( response, "Dashboard item added" );
+        }
     }
     
     @RequestMapping( value = "/{dashboardUid}/items/{itemUid}/position/{position}", method = RequestMethod.POST )

@@ -49,6 +49,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class Dashboard
     extends BaseIdentifiableObject
 {
+    public static final int MAX_ITEMS = 40;
+    
     private List<DashboardItem> items = new ArrayList<DashboardItem>();
 
     // -------------------------------------------------------------------------
