@@ -225,8 +225,9 @@ public class ExcelUtils
         {
             for ( GridHeader col : grid.getVisibleHeaders() )
             {
-                sheet.addCell( new Label( column++, 3, i18n.getString( DateUtils.convertDate( col.getName() ) ),
-                    cellFormat ) );
+                //TODO use i18nFormat.formatDate for label
+                
+                sheet.addCell( new Label( column++, 3, col.getName(), cellFormat ) );
             }
         }
         catch ( RowsExceededException e )
