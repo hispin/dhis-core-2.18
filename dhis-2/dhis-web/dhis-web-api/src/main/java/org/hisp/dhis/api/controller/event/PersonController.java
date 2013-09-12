@@ -29,11 +29,13 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.event.person.Gender;
 import org.hisp.dhis.dxf2.event.person.Person;
 import org.hisp.dhis.dxf2.event.person.PersonService;
 import org.hisp.dhis.dxf2.event.person.Persons;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +59,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = PersonController.RESOURCE_PATH)
+@RequestMapping( value = PersonController.RESOURCE_PATH )
 public class PersonController
 {
     public static final String RESOURCE_PATH = "/persons";
@@ -72,11 +74,11 @@ public class PersonController
     // READ
     // -------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping( value = "", method = RequestMethod.GET )
     public String getPersons(
-        @RequestParam(value = "orgUnit", required = false) String orgUnitUid,
-        @RequestParam(required = false) Gender gender,
-        @RequestParam(value = "program", required = false) String programUid,
+        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
+        @RequestParam( required = false ) Gender gender,
+        @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -155,7 +157,7 @@ public class PersonController
         return organisationUnit;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
     public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model )
     {
         WebOptions options = new WebOptions( parameters );
@@ -172,17 +174,44 @@ public class PersonController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
-    @ResponseStatus( value = HttpStatus.CREATED )
     public void postPersonXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        personService.savePersonXml( request.getInputStream() );
+        Persons persons = personService.savePersonXml( request.getInputStream() );
+
+        if ( persons.getPersons().size() > 1 )
+        {
+            response.setStatus( HttpServletResponse.SC_CREATED );
+            JacksonUtils.toXml( response.getOutputStream(), persons );
+        }
+        else
+        {
+            response.setStatus( HttpServletResponse.SC_CREATED );
+            response.setHeader( "Location", getResourcePath( request, persons.getPersons().get( 0 ) ) );
+            JacksonUtils.toXml( response.getOutputStream(), persons.getPersons().get( 0 ) );
+        }
     }
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
-    @ResponseStatus( value = HttpStatus.CREATED )
     public void postPersonJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        personService.savePersonJson( request.getInputStream() );
+        Persons persons = personService.savePersonJson( request.getInputStream() );
+
+        if ( persons.getPersons().size() > 1 )
+        {
+            response.setStatus( HttpServletResponse.SC_CREATED );
+            JacksonUtils.toJson( response.getOutputStream(), persons );
+        }
+        else
+        {
+            response.setStatus( HttpServletResponse.SC_CREATED );
+            response.setHeader( "Location", getResourcePath( request, persons.getPersons().get( 0 ) ) );
+            JacksonUtils.toJson( response.getOutputStream(), persons.getPersons().get( 0 ) );
+        }
+    }
+
+    public String getResourcePath( HttpServletRequest request, Person person )
+    {
+        return ContextUtils.getContextPath( request ) + "/api/" + "persons" + "/" + person.getPerson();
     }
 
     // -------------------------------------------------------------------------
@@ -191,16 +220,18 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void updatePersonXml( @PathVariable String id, HttpServletRequest request ) throws IOException
+    public void updatePersonXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        personService.updatePersonXml( id, request.getInputStream() );
+        Person person = personService.updatePersonXml( id, request.getInputStream() );
+        JacksonUtils.toXml( response.getOutputStream(), person );
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void updatePersonJson( @PathVariable String id, HttpServletRequest request ) throws IOException
+    public void updatePersonJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        personService.updatePersonJson( id, request.getInputStream() );
+        Person person = personService.updatePersonJson( id, request.getInputStream() );
+        JacksonUtils.toJson( response.getOutputStream(), person );
     }
 
     // -------------------------------------------------------------------------

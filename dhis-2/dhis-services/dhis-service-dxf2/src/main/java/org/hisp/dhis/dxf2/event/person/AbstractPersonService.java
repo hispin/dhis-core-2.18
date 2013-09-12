@@ -196,21 +196,29 @@ public abstract class AbstractPersonService implements PersonService
     }
 
     // -------------------------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Person savePerson( Person person )
+    {
+        System.err.println( "SAVE: " + person );
+        Patient patient = getPatient( person );
+
+        return person;
+    }
+
+    // -------------------------------------------------------------------------
     // UPDATE
     // -------------------------------------------------------------------------
 
     @Override
-    public void savePerson( Person person )
-    {
-        System.err.println( "SAVE: " + person );
-        Patient patient = getPatient( person );
-    }
-
-    @Override
-    public void updatePerson( Person person )
+    public Person updatePerson( Person person )
     {
         System.err.println( "UPDATE: " + person );
         Patient patient = getPatient( person );
+
+        return person;
     }
 
     // -------------------------------------------------------------------------

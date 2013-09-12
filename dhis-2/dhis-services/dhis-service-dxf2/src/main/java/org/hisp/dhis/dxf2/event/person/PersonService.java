@@ -71,21 +71,21 @@ public interface PersonService
     // CREATE
     // -------------------------------------------------------------------------
 
-    void savePersonXml( InputStream inputStream ) throws IOException;
+    Persons savePersonXml( InputStream inputStream ) throws IOException;
 
-    void savePersonJson( InputStream inputStream ) throws IOException;
+    Persons savePersonJson( InputStream inputStream ) throws IOException;
 
-    void savePerson( Person person );
+    Person savePerson( Person person );
 
     // -------------------------------------------------------------------------
     // UPDATE
     // -------------------------------------------------------------------------
 
-    void updatePersonXml( String id, InputStream inputStream ) throws IOException;
+    Person updatePersonXml( String id, InputStream inputStream ) throws IOException;
 
-    void updatePersonJson( String id, InputStream inputStream ) throws IOException;
+    Person updatePersonJson( String id, InputStream inputStream ) throws IOException;
 
-    void updatePerson( Person person );
+    Person updatePerson( Person person );
 
     // -------------------------------------------------------------------------
     // DELETE
