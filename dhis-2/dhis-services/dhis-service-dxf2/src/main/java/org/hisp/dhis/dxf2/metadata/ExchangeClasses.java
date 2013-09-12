@@ -47,6 +47,8 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.dxf2.event.Event;
+import org.hisp.dhis.dxf2.event.person.Person;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -156,7 +158,6 @@ final public class ExchangeClasses
         allExportClasses.put( MessageConversation.class, "messageConversations" );
         allExportClasses.put( Interpretation.class, "interpretations" );
 
-        allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( ProgramStage.class, "programStages" );
 
         allExportClasses.put( BaseDimensionalObject.class, "dimensions" );

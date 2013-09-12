@@ -93,9 +93,10 @@ public class JacksonPersonService extends AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public void savePersonXml( InputStream inputStream ) throws IOException
+    public Persons savePersonXml( InputStream inputStream ) throws IOException
     {
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+        Persons savedPersons = new Persons();
 
         try
         {
@@ -103,20 +104,23 @@ public class JacksonPersonService extends AbstractPersonService
 
             for ( Person person : persons.getPersons() )
             {
-                savePerson( person );
+                savedPersons.getPersons().add( savePerson( person ) );
             }
         }
         catch ( Exception ex )
         {
             Person person = fromXml( input, Person.class );
-            savePerson( person );
+            savedPersons.getPersons().add( savePerson( person ) );
         }
+
+        return savedPersons;
     }
 
     @Override
-    public void savePersonJson( InputStream inputStream ) throws IOException
+    public Persons savePersonJson( InputStream inputStream ) throws IOException
     {
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+        Persons savedPersons = new Persons();
 
         try
         {
@@ -124,14 +128,16 @@ public class JacksonPersonService extends AbstractPersonService
 
             for ( Person person : persons.getPersons() )
             {
-                savePerson( person );
+                savedPersons.getPersons().add( savePerson( person ) );
             }
         }
         catch ( Exception ex )
         {
             Person person = fromJson( input, Person.class );
-            savePerson( person );
+            savedPersons.getPersons().add( savePerson( person ) );
         }
+
+        return savedPersons;
     }
 
     // -------------------------------------------------------------------------
@@ -139,20 +145,24 @@ public class JacksonPersonService extends AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public void updatePersonXml( String id, InputStream inputStream ) throws IOException
+    public Person updatePersonXml( String id, InputStream inputStream ) throws IOException
     {
         Person person = fromXml( inputStream, Person.class );
         person.setPerson( id );
 
         updatePerson( person );
+
+        return person;
     }
 
     @Override
-    public void updatePersonJson( String id, InputStream inputStream ) throws IOException
+    public Person updatePersonJson( String id, InputStream inputStream ) throws IOException
     {
         Person person = fromJson( inputStream, Person.class );
         person.setPerson( id );
 
         updatePerson( person );
+
+        return person;
     }
 }
