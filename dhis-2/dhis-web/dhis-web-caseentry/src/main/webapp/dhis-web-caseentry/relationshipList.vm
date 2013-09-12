@@ -15,7 +15,7 @@
 			<table>
 				<tr>
 					<td class="bold text-column">$i18n.getString( "full_name" ): </td>
-					<td>$encoder.htmlEncode( $patient.getFullName() )<td>
+					<td>$encoder.htmlEncode( $patient.name )<td>
 				</tr>
 				<tr>
 					<td class="bold text-column">$i18n.getString( "gender" ): </td>

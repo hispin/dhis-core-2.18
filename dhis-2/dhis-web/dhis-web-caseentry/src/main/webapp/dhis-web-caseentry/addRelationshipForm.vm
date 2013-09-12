@@ -51,7 +51,7 @@
     <td class='information'>
         <table>  
 			 <tr>
-                <td>$encoder.htmlEncode( $patient.getFullName() ) $i18n.getString( "is" )</td>
+                <td>$encoder.htmlEncode( $patient.name ) $i18n.getString( "is" )</td>
                <td>
                     <select id="relationshipTypeId" name="relationshipTypeId" class="{validate:{required:true}}" style='width:205px;'>
                         <option value="">[$i18n.getString( "select_relationship" )]</option>

@@ -39,7 +39,7 @@
 			<td>$velocityCount</td>
 			
 			<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
-				<a>$encoder.htmlEncode($patient.getFullName())</a>
+				<a>$encoder.htmlEncode($patient.name)</a>
 			</td>
 			
 			<td>#if($!patient.gender) $i18n.getString($!patient.gender) #end</td>

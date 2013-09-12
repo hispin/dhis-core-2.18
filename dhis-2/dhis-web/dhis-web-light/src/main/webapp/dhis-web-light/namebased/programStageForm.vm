@@ -1,5 +1,5 @@
 <div class="header-box" align="center">
-	<h3 style="text-align: left; background-color: #719953; border-color: #719953; color: white;">$patient.firstName $patient.lastName</h3>
+	<h3 style="text-align: left; background-color: #719953; border-color: #719953; color: white;">$patient.name</h3>
 	<p style="text-align: left;">
 	Program Stage: $encoder.htmlEncode( $programStage.name )<br/>
 	
@@ -139,7 +139,7 @@
 		<li><a href="selectActivity.action?organisationUnitId=$orgUnitId&patientId=$patientId&current=$current"> $i18n.getString("activity_list")</a></li>
 	#end
 	
-	<li><a href="showPatientProgramList.action?patientId=$patientId">$!encoder.htmlEncode( ${patient.getFullName()} )</a></li>
+	<li><a href="showPatientProgramList.action?patientId=$patientId">$!encoder.htmlEncode( ${patient.name} )</a></li>
 	<li><a href="index.action">$i18n.getString("home")</a></li>
 	
 </ul>

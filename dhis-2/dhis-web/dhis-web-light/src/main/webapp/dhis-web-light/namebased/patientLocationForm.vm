@@ -1,4 +1,4 @@
-<h2>$i18n.getString( "register_location_for" ) $patient.getFullName()</h2>
+<h2>$i18n.getString( "register_location_for" ) $patient.name</h2>
 
 <form action="registerPatientLocation.action" method="POST">
 <div class="header-box" align="center">
@@ -26,7 +26,7 @@
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
-	<li><a href="showPatientProgramList.action?patientId=$patient.getId()">$!encoder.htmlEncode( ${patient.getFullName()} )</a></li>
+	<li><a href="showPatientProgramList.action?patientId=$patient.getId()">$!encoder.htmlEncode( ${patient.name} )</a></li>
 	<li> <a href="trackingMenu.action"> $i18n.getString("tracking_menu")</a> </li>
 	<li><a href="index.action">$i18n.getString("home")</a></li>
 </ul>

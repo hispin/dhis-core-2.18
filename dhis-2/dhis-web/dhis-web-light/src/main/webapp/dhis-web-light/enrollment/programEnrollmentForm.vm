@@ -1,4 +1,4 @@
-<h2>$i18n.getString( "enroll" ) $patient.getFullName() to $program.getName()</h2>
+<h2>$i18n.getString( "enroll" ) $patient.name to $program.getName()</h2>
 <form action="saveMobileProgramEnrollment.action" method="POST">
 <div class="header-box" align="center">
 <input type="hidden" name="patientId" value="$patientId"/>	

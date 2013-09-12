@@ -9,7 +9,7 @@
 <p>
 <ul>
 #foreach( $patient in $patients )
-	<li><a href="showAddNewRelationshipForm.action?originalPatientId=$originalPatientId&relatedPatientId=$patient.id&relationshipTypeId=$relationshipTypeId">$!encoder.htmlEncode( ${patient.getFullName()} )</a></li>
+	<li><a href="showAddNewRelationshipForm.action?originalPatientId=$originalPatientId&relatedPatientId=$patient.id&relationshipTypeId=$relationshipTypeId">$!encoder.htmlEncode( ${patient.name} )</a></li>
 #end
 </ul>
 </p>
