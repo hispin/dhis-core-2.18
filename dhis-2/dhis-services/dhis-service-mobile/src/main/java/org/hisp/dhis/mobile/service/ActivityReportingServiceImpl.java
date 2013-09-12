@@ -28,21 +28,6 @@ package org.hisp.dhis.mobile.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.PatientMobileSettingService;
@@ -51,9 +36,9 @@ import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.Beneficiary;
 import org.hisp.dhis.api.mobile.model.DataValue;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.Task;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -94,6 +79,21 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ActivityReportingServiceImpl
     implements ActivityReportingService
@@ -461,7 +461,7 @@ public class ActivityReportingServiceImpl
 
                 for ( Patient each : patients )
                 {
-                    patientsInfo += each.getId() + "/" + each.getFullName() + "/"
+                    patientsInfo += each.getId() + "/" + each.getName() + "/"
                         + dateFormat.format( each.getBirthDate() ) + "$";
                 }
 
@@ -771,9 +771,7 @@ public class ActivityReportingServiceImpl
         List<org.hisp.dhis.patient.PatientAttribute> atts;
 
         beneficiary.setId( patient.getId() );
-        beneficiary.setFirstName( patient.getFirstName() );
-        beneficiary.setLastName( patient.getLastName() );
-        beneficiary.setMiddleName( patient.getMiddleName() );
+        beneficiary.setName( patient.getName() );
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         beneficiary.setAge( period.getYears() );
@@ -869,29 +867,7 @@ public class ActivityReportingServiceImpl
         List<org.hisp.dhis.patient.PatientAttribute> atts;
 
         patientModel.setId( patient.getId() );
-
-        String firstName = "";
-        String lastName = "";
-        String middleName = "";
-
-        if ( patient.getFirstName() != null )
-        {
-            firstName = patient.getFirstName();
-        }
-
-        if ( patient.getLastName() != null )
-        {
-            lastName = patient.getLastName();
-        }
-
-        if ( patient.getMiddleName() != null )
-        {
-            middleName = patient.getMiddleName();
-        }
-
-        patientModel.setFirstName( firstName );
-        patientModel.setLastName( lastName );
-        patientModel.setMiddleName( middleName );
+        patientModel.setName( patient.getName() );
 
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         patientModel.setAge( period.getYears() );
@@ -1027,20 +1003,20 @@ public class ActivityReportingServiceImpl
             if ( eachRelationship.getPatientA().getId() == patient.getId() )
             {
                 relationshipMobile.setName( eachRelationship.getRelationshipType().getaIsToB() );
-                relationshipMobile.setPersonBName( eachRelationship.getPatientB().getFullName() );
+                relationshipMobile.setPersonBName( eachRelationship.getPatientB().getName() );
                 relationshipMobile.setPersonBId( eachRelationship.getPatientB().getId() );
                 // relationshipMobile.setPersonAName(
-                // eachRelationship.getPatientA().getFullName() );
+                // eachRelationship.getPatientA().getName() );
                 // relationshipMobile.setPersonAId(
                 // eachRelationship.getPatientA().getId() );
             }
             else
             {
                 relationshipMobile.setName( eachRelationship.getRelationshipType().getbIsToA() );
-                relationshipMobile.setPersonBName( eachRelationship.getPatientA().getFullName() );
+                relationshipMobile.setPersonBName( eachRelationship.getPatientA().getName() );
                 relationshipMobile.setPersonBId( eachRelationship.getPatientA().getId() );
                 // relationshipMobile.setPersonAName(
-                // eachRelationship.getPatientB().getFullName() );
+                // eachRelationship.getPatientB().getName() );
                 // relationshipMobile.setPersonAId(
                 // eachRelationship.getPatientB().getId() );
             }
@@ -1360,7 +1336,7 @@ public class ActivityReportingServiceImpl
 
                 for ( Patient each : patients )
                 {
-                    patientsInfo += each.getId() + "/" + each.getFullName() + "/"
+                    patientsInfo += each.getId() + "/" + each.getName() + "/"
                         + dateFormat.format( each.getBirthDate() ) + "$";
                 }
 
@@ -1845,31 +1821,7 @@ public class ActivityReportingServiceImpl
     {
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
 
-        int startIndex = patient.getFirstName().indexOf( ' ' );
-        int endIndex = patient.getFirstName().lastIndexOf( ' ' );
-
-        String firstName = patient.getFirstName().toString();
-        String middleName = "";
-        String lastName = "";
-
-        if ( patient.getFirstName().indexOf( ' ' ) != -1 )
-        {
-            firstName = patient.getFirstName().substring( 0, startIndex );
-            if ( startIndex == endIndex )
-            {
-                middleName = "";
-                lastName = patient.getFirstName().substring( startIndex + 1, patient.getFirstName().length() );
-            }
-            else
-            {
-                middleName = patient.getFirstName().substring( startIndex + 1, endIndex );
-                lastName = patient.getFirstName().substring( endIndex + 1, patient.getFirstName().length() );
-            }
-        }
-
-        patientWeb.setFirstName( firstName );
-        patientWeb.setMiddleName( middleName );
-        patientWeb.setLastName( lastName );
+        patientWeb.setName( patient.getName() );
         patientWeb.setGender( patient.getGender() );
         patientWeb.setDobType( patient.getDobType() );
         patientWeb.setPhoneNumber( patient.getPhoneNumber() );
@@ -2015,12 +1967,12 @@ public class ActivityReportingServiceImpl
                 }
                 if ( each.getBirthDate() != null )
                 {
-                    patientsInfo += each.getId() + "/" + each.getFullName() + "/"
+                    patientsInfo += each.getId() + "/" + each.getName() + "/"
                         + dateFormat.format( each.getBirthDate() ) + "$";
                 }
                 else
                 {
-                    patientsInfo += each.getId() + "/" + each.getFullName() + "/DOB$";
+                    patientsInfo += each.getId() + "/" + each.getName() + "/DOB$";
                 }
                 i++;
             }

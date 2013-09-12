@@ -73,8 +73,8 @@ public class PatientStoreTest
         int idA = patientStore.save( patientA );
         int idB = patientStore.save( patientB );
         
-        assertEquals( patientA.getFirstName(), patientStore.get( idA ).getFirstName() );
-        assertEquals( patientB.getFirstName(), patientStore.get( idB ).getFirstName() );        
+        assertEquals( patientA.getName(), patientStore.get( idA ).getName() );
+        assertEquals( patientB.getName(), patientStore.get( idB ).getName() );
     }
 
     @Test
@@ -83,8 +83,8 @@ public class PatientStoreTest
         int idA = patientStore.save( patientA );
         int idB = patientStore.save( patientB );
       
-        assertEquals( patientA.getFirstName(), patientStore.get( idA ).getFirstName() );
-        assertEquals( patientB.getFirstName(), patientStore.get( idB ).getFirstName() );
+        assertEquals( patientA.getName(), patientStore.get( idA ).getName() );
+        assertEquals( patientB.getName(), patientStore.get( idB ).getName() );
     }
     
     @Test

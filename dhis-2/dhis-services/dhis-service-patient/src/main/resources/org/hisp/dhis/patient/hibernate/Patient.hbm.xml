@@ -12,6 +12,8 @@
     </id>
     &identifiableProperties;
 
+    <property name="name" column="name" length="230" />
+
     <property name="firstName" column="firstname" length="50" />
 
     <property name="middleName" column="middlename" length="50" />

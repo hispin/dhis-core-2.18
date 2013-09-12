@@ -928,9 +928,7 @@ public abstract class DhisConvenienceTest
     {
         Patient patient = new Patient();
 
-        patient.setFirstName( "FirstName" + uniqueChar );
-        patient.setMiddleName( "MiddleName" + uniqueChar );
-        patient.setLastName( "LastName" + uniqueChar );
+        patient.setName( "FirstName" + uniqueChar );
         patient.setGender( Patient.MALE );
         patient.setBirthDate( getDate( 1970, 1, 1 ) );
         patient.setRegistrationDate( new Date() );

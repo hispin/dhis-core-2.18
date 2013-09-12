@@ -144,7 +144,7 @@ public class UpdatePatientAction
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
 
-        patient.setFullName( fullName );
+        patient.setName( fullName );
 
         // ---------------------------------------------------------------------
         // Set Other information for patient
