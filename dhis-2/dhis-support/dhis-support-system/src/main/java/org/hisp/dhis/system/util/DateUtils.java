@@ -399,36 +399,6 @@ public class DateUtils
     }
 
     /**
-     * This method converts a string from the date format "yyyy-MM-dd" to
-     * "dd-MMM-yyyy".
-     * 
-     * @param date is the string to be converted.
-     * @return converted string if the date is valid, else the original string
-     *         is returned
-     */
-    public static String convertDate( String dateString )
-    {
-        if ( !dateIsValid( dateString ) )
-        {
-            return dateString;
-        }
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat( DEFAULT_DATE_FORMAT );
-
-        try
-        {
-            Date date = dateFormat.parse( dateString );
-            dateFormat.applyPattern( "dd MMM yyyy" );
-
-            return dateFormat.format( date );
-        }
-        catch ( ParseException pe )
-        {
-            throw new RuntimeException( "Date string could not be parsed: " + dateString );
-        }
-    }
-
-    /**
      * This method adds days to a date
      * 
      * @param date the date.

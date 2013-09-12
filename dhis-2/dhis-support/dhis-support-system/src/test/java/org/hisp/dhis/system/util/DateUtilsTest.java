@@ -28,11 +28,9 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.hisp.dhis.system.util.DateUtils.dateIsValid;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.hisp.dhis.system.util.DateUtils.convertDate;
-import static org.hisp.dhis.system.util.DateUtils.dateIsValid;
 
 import org.junit.Test;
 
@@ -50,13 +48,5 @@ public class DateUtilsTest
         assertFalse( dateIsValid( "07-07-2000" ) );
         assertFalse( dateIsValid( "2000-03-40" ) );
         assertFalse( dateIsValid( "20d20-03-01" ) );
-    }
-    
-    @Test
-    public void testConvertDate()
-    {
-        assertEquals( "20 apr 2009", convertDate( "2009-04-20" ).toLowerCase() );
-        assertEquals( "10 mar 2010", convertDate( "2010-03-10" ).toLowerCase() );
-        assertEquals( "Invalid", convertDate( "Invalid" ) );
     }
 }
