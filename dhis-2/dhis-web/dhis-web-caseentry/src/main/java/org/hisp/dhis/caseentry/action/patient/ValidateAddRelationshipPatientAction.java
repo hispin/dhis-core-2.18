@@ -158,36 +158,16 @@ public class ValidateAddRelationshipPatientAction
         // Check duplicated patient
         // ---------------------------------------------------------------------
 
-        int startIndex = fullName.indexOf( ' ' );
-        int endIndex = fullName.lastIndexOf( ' ' );
-
-        String firstName = fullName.substring( 0, startIndex );
-        String middleName;
-        String lastName;
-
-        if ( startIndex == endIndex )
-        {
-            middleName = "";
-            lastName = fullName.substring( startIndex, fullName.length() );
-        }
-        else
-        {
-            middleName = fullName.substring( startIndex + 1, endIndex );
-            lastName = fullName.substring( endIndex, fullName.length() );
-        }
-
         if ( !checkedDuplicate )
         {
-
             // Check duplication name, birthdate, gender
-            patients = patientService.getPatients( firstName, middleName, lastName, format.parseDate( birthDate ),
-                gender );
+            patients = patientService.getPatients( fullName, format.parseDate( birthDate ), gender );
 
             if ( patients != null && patients.size() > 0 )
             {
                 message = i18n.getString( "patient_duplicate" );
-
                 boolean flagDuplicate = false;
+
                 for ( Patient p : patients )
                 {
                     if ( id == null || (id != null && p.getId() != id) )
