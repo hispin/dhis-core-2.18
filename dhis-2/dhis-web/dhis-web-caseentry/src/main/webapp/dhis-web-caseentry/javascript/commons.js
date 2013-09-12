@@ -552,8 +552,17 @@ function showColorHelp()
 function showCreateNewEvent( programInstanceId, programStageId )
 {
 	var flag = false;
+	
 	if(programStageId!=undefined)
 	{
+		jQuery('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
+			if( jQuery(this).css("display")!='none' && programStageId==jQuery(this).attr('prevStageId')){
+				jQuery(this).attr("selected","selected");
+				setSuggestedDueDate( programInstanceId );
+				flag = true;
+			}
+		});
+		
 		jQuery('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
 			if( jQuery(this).css("display")!='none' && programStageId==jQuery(this).val()){
 				jQuery(this).attr("selected","selected");

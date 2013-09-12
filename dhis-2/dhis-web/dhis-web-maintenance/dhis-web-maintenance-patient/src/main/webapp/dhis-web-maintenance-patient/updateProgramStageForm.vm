@@ -81,6 +81,12 @@
 				<td></td>
 			</tr>
 			
+			<tr>
+				<td><label>$i18n.getString( "remind_creating_next_event_on_this_event_completed" )</label></td>
+				<td><input type="checkbox" id="allowGenerateNextVisit" name="allowGenerateNextVisit" value='true' #if( $programStage.allowGenerateNextVisit=='true' ) checked #end ></td>
+				<td></td>
+			</tr>
+			
 			#if($programStage.program.type==1)
 			<tr>
 				<td><label>$i18n.getString( "generated_events_by_enrollment_date" )</label></td>

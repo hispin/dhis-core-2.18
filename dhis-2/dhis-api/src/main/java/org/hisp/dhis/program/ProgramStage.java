@@ -101,6 +101,8 @@ public class ProgramStage
 
     private Boolean generatedByEnrollmentDate;
 
+    private Boolean allowGenerateNextVisit = false;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -145,7 +147,7 @@ public class ProgramStage
     {
         this.blockEntryForm = blockEntryForm;
     }
-    
+
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -360,6 +362,19 @@ public class ProgramStage
     public void setCaptureCoordinates( Boolean captureCoordinates )
     {
         this.captureCoordinates = captureCoordinates;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getAllowGenerateNextVisit()
+    {
+        return allowGenerateNextVisit;
+    }
+
+    public void setAllowGenerateNextVisit( Boolean allowGenerateNextVisit )
+    {
+        this.allowGenerateNextVisit = allowGenerateNextVisit;
     }
 
 }

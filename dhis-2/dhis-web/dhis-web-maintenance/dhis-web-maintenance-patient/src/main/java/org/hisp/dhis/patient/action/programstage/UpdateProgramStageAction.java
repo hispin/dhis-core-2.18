@@ -285,6 +285,13 @@ public class UpdateProgramStageAction
         this.displayAsRadioButtons = displayAsRadioButtons;
     }
 
+    private Boolean allowGenerateNextVisit;
+
+    public void setAllowGenerateNextVisit( Boolean allowGenerateNextVisit )
+    {
+        this.allowGenerateNextVisit = allowGenerateNextVisit;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -302,6 +309,7 @@ public class UpdateProgramStageAction
         generatedByEnrollmentDate = (generatedByEnrollmentDate == null) ? false : generatedByEnrollmentDate;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
+        allowGenerateNextVisit = (allowGenerateNextVisit == null) ? false : allowGenerateNextVisit;
 
         ProgramStage programStage = programStageService.getProgramStage( id );
 
@@ -316,6 +324,7 @@ public class UpdateProgramStageAction
         programStage.setBlockEntryForm( blockEntryForm );
         programStage.setRemindCompleted( remindCompleted );
         programStage.setGeneratedByEnrollmentDate( generatedByEnrollmentDate );
+        programStage.setAllowGenerateNextVisit( allowGenerateNextVisit );
 
         if ( !programStage.getProgram().isSingleEvent() )
         {

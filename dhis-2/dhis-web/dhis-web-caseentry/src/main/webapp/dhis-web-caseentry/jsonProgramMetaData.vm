@@ -24,7 +24,8 @@
         "validCompleteOnly": "$!{ps.validCompleteOnly}",
         "captureCoordinates": "$!{ps.captureCoordinates}",
         "blockEntryForm": "$!ps.blockEntryForm",
-        "remindCompleted": "$!ps.remindCompleted"
+        "remindCompleted": "$!ps.remindCompleted",
+		"allowGenerateNextVisit": "$!ps.allowGenerateNextVisit"
     }#if( $velocityCount < $pssize ),#end
     #end],
     "programAssociations": $programAssociations.get( ${program.id} )

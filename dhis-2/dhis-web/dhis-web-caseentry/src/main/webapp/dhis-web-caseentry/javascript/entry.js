@@ -550,7 +550,7 @@ function runCompleteEvent( isCreateEvent )
 		}
 		var compulsory = data['compulsory']; 
 		if( compulsory == 'true' && 
-			( !jQuery(this).val() || jQuery(this).val() == "undifined" ) ){
+			( !jQuery(this).val() || jQuery(this).val() == "undefined" ) ){
                 flag = true;
                 jQuery(this).parent().addClass("errorCell");
             }
@@ -578,7 +578,8 @@ function runCompleteEvent( isCreateEvent )
                 var displayGenerateEventBox = jQuery('#entryFormContainer [name=displayGenerateEventBox]').val();
                 var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
 
-                if( irregular == 'true' && displayGenerateEventBox=="true" ) {
+                if( ( irregular == 'true' && displayGenerateEventBox=="true" ) 
+					|| getFieldValue('allowGenerateNextVisit')=='true') {
                     var programStageUid = getProgramStageUid();
                     showCreateNewEvent( programInstanceId, programStageUid );
                 }
@@ -607,7 +608,7 @@ function runCompleteEvent( isCreateEvent )
 
                 hideLoader();
 
-                if ( isCreateEvent ) {
+                if ( isCreateEvent) {
                     showAddEventForm(isCreateEvent);
                 }
             } ).fail(function() {
@@ -808,6 +809,7 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
             $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
             $( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
 			$( "#entryFormContainer input[id='displayOptionSetAsRadioButton']" ).val( data.displayOptionSetAsRadioButton );
+			$( "#entryFormContainer input[id='allowGenerateNextVisit']" ).val( data.programStage.allowGenerateNextVisit );
 
             $( "input[id='dueDate']" ).val( data.dueDate );
             $( "input[id='executionDate']" ).val( data.executionDate );
