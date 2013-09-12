@@ -111,9 +111,14 @@ public class DefaultDashboardService
     }
 
     @Override
-    public void addItemContent( String dashboardUid, String type, String contentUid )
+    public boolean addItemContent( String dashboardUid, String type, String contentUid )
     {
         Dashboard dashboard = getDashboard( dashboardUid );               
+        
+        if ( dashboard == null )
+        {
+            return false;
+        }
         
         if ( TYPE_CHART.equals( type ) )
         {
@@ -164,8 +169,15 @@ public class DefaultDashboardService
                 dashboard.getItems().add( 0, item );
             }
         }
+
+        if ( dashboard.getItemCount() > Dashboard.MAX_ITEMS )
+        {
+            return false;
+        }
         
         updateDashboard( dashboard );
+        
+        return true;
     }
     
     public void mergeDashboard( Dashboard dashboard )

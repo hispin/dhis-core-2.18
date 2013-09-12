@@ -7,6 +7,7 @@ dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
 dhis2.db.currentShareId;
 dhis2.db.currentMaxType = [];
+dhis2.db.maxItems = 40;
 
 // TODO remove position from template
 // TODO support table as link and embedded
@@ -467,6 +468,9 @@ dhis2.db.addItemContent = function( type, id )
 	    	},
 	    	success: function() {
 	    		dhis2.db.renderDashboard( dhis2.db.current );
+	    	},
+	    	error: function( xhr ) {
+	    		setHeaderDelayMessage( xhr.responseText );
 	    	}
 	    } );
 	}
