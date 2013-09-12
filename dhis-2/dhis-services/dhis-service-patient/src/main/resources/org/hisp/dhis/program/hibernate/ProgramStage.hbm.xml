@@ -62,6 +62,8 @@
 		<property name="blockEntryForm" />
 
 		<property name="remindCompleted" />
+		
+		<property name="allowGenerateNextVisit" />
 
 	</class>
 </hibernate-mapping>

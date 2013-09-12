@@ -292,6 +292,13 @@ public class AddProgramStageAction
         this.remindCompleted = remindCompleted;
     }
 
+    private Boolean allowGenerateNextVisit;
+
+    public void setAllowGenerateNextVisit( Boolean allowGenerateNextVisit )
+    {
+        this.allowGenerateNextVisit = allowGenerateNextVisit;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -309,6 +316,7 @@ public class AddProgramStageAction
         generatedByEnrollmentDate = (generatedByEnrollmentDate == null) ? false : generatedByEnrollmentDate;
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
+        allowGenerateNextVisit = (allowGenerateNextVisit == null) ? false : allowGenerateNextVisit;
 
         ProgramStage programStage = new ProgramStage();
         Program program = programService.getProgram( id );
@@ -327,6 +335,7 @@ public class AddProgramStageAction
         programStage.setBlockEntryForm( blockEntryForm );
         programStage.setRemindCompleted( remindCompleted );
         programStage.setGeneratedByEnrollmentDate( generatedByEnrollmentDate );
+        programStage.setAllowGenerateNextVisit( allowGenerateNextVisit );
 
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )

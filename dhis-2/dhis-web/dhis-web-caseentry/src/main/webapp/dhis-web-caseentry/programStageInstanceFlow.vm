@@ -97,9 +97,17 @@
 			<td>$i18n.getString( 'program_stage' )</td>
 			<td>
 				<select id='repeatableProgramStage_$!programInstance.id' name='repeatableProgramStageId_$!programInstance.id' onchange="setSuggestedDueDate('$programInstance.id')">
+					#set($allowGenerateNextVisit='false')
+					#set($prevStageId='')
 					#foreach( $programStage in $programInstance.program.programStages )
 						#if( $programStage.irregular=='true')
-							<option value="$programStage.uid" localid='$programStage.id' standardInterval='$programStage.standardInterval' selected repeatable="true">$!programStage.displayName</option>
+							#if($!programStage.standardInterval)
+								#set($standardInterval=$!programStage.standardInterval)
+							#else
+								#set($standardInterval=0)
+							#end
+							<option value="$programStage.uid" localid='$programStage.id' prevStageId='$prevStageId'
+								standardInterval='$standardInterval' selected repeatable="true">$!programStage.displayName</option>
 						#else
 							#set($hasEvent="false")
 							#foreach( $programStageInstance in $programInstance.programStageInstances )
@@ -107,8 +115,21 @@
 									#set($hasEvent="true")
 								#end
 							#end
+							<option 
+								#if($hasEvent=="true") style="display:none;" #else selected #end 
+								value="$programStage.uid" localid='$programStage.id' prevStageId='$prevStageId'
+								standardInterval='$programStage.minDaysFromStart' allowGenerateNextVisit='$allowGenerateNextVisit' repeatable="false">$!programStage.displayName</option>
 							
-							<option #if($hasEvent=="true") style="display:none;" #else selected #end value="$programStage.uid" localid='$programStage.id' standardInterval='$programStage.minDaysFromStart' repeatable="false">$!programStage.displayName</option>
+						#end
+						
+						#if($allowGenerateNextVisit=='true')
+							#set($allowGenerateNextVisit='false')
+							#set($prevStageId='')
+						#end
+						
+						#if($programStage.allowGenerateNextVisit=='true')
+							#set($allowGenerateNextVisit='true')
+							#set($prevStageId=$programStage.uid)
 						#end
 					#end
 				</select>

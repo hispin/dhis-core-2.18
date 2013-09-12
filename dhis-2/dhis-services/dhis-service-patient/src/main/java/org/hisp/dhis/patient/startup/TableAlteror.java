@@ -234,6 +234,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN displayProvidedOtherFacility" );
         executeSql( "UPDATE programstage_dataelements SET displayAsRadioButton=false WHERE displayAsRadioButton is null" );
         executeSql( "UPDATE patientreminder SET messageType=1 WHERE messageType is null" );
+        executeSql( "UPDATE programstage SET allowGenerateNextVisit=false WHERE allowGenerateNextVisit is null" );
         
     }
 

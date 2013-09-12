@@ -7,9 +7,10 @@
 	"dataElementCount": "${programStageDataElements.size()}",
 	"standardInterval": "$!programStage.standardInterval",
 	"reportDateDescription": "$!encoder.jsonEncode( ${programStage.reportDateDescription} )",
-	"blockEntryForm": "$!program.blockEntryForm",
-	"remindCompleted": "$!program.remindCompleted",
-	"generatedByEnrollmentDate": "$!program.generatedByEnrollmentDate",
+	"blockEntryForm": "$!programStage.blockEntryForm",
+	"remindCompleted": "$!programStage.remindCompleted",
+	"allowGenerateNextVisit": "$!programStage.allowGenerateNextVisit",
+	"generatedByEnrollmentDate": "$!programStage.generatedByEnrollmentDate",
 	"patientReminders":[
 	#foreach($patientReminder in $programStage.patientReminders)
 	  {

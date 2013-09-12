@@ -19,6 +19,7 @@
 <input type='hidden' name='blockEntryForm' id='blockEntryForm'>
 <input type='hidden' name='remindCompleted' id='remindCompleted'>
 <input type='hidden' name='displayOptionSetAsRadioButton' id='displayOptionSetAsRadioButton'>
+<input type='hidden' name='allowGenerateNextVisit' id='allowGenerateNextVisit'>
 
 <div id='entryForm' class='hidden'>
 	<table style="width:600px;margin-top:-30px" class="listTable">

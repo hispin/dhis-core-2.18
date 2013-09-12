@@ -36,7 +36,8 @@
         "validCompleteOnly": "$!programStageInstance.programStage.validCompleteOnly",
         "captureCoordinates": "$!programStageInstance.programStage.captureCoordinates",
         "blockEntryForm": "$!programStageInstance.programStage.blockEntryForm",
-        "remindCompleted": "$!programStageInstance.programStage.remindCompleted"
+        "remindCompleted": "$!programStageInstance.programStage.remindCompleted",
+		"allowGenerateNextVisit": "$!programStageInstance.programStage.allowGenerateNextVisit"
     },
 
     "programInstance": {
