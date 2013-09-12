@@ -193,9 +193,19 @@ public class Person
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
 
-        Person person = (Person) o;
+        Person person1 = (Person) o;
 
-        if ( person != null ? !person.equals( person.person ) : person.person != null ) return false;
+        if ( deceased != person1.deceased ) return false;
+        if ( contact != null ? !contact.equals( person1.contact ) : person1.contact != null ) return false;
+        if ( dateOfBirth != null ? !dateOfBirth.equals( person1.dateOfBirth ) : person1.dateOfBirth != null ) return false;
+        if ( dateOfDeath != null ? !dateOfDeath.equals( person1.dateOfDeath ) : person1.dateOfDeath != null ) return false;
+        if ( dateOfRegistration != null ? !dateOfRegistration.equals( person1.dateOfRegistration ) : person1.dateOfRegistration != null )
+            return false;
+        if ( gender != person1.gender ) return false;
+        if ( identifiers != null ? !identifiers.equals( person1.identifiers ) : person1.identifiers != null ) return false;
+        if ( name != null ? !name.equals( person1.name ) : person1.name != null ) return false;
+        if ( orgUnit != null ? !orgUnit.equals( person1.orgUnit ) : person1.orgUnit != null ) return false;
+        if ( person != null ? !person.equals( person1.person ) : person1.person != null ) return false;
 
         return true;
     }
@@ -203,7 +213,17 @@ public class Person
     @Override
     public int hashCode()
     {
-        return person != null ? person.hashCode() : 0;
+        int result = person != null ? person.hashCode() : 0;
+        result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+        result = 31 * result + (deceased ? 1 : 0);
+        result = 31 * result + (dateOfDeath != null ? dateOfDeath.hashCode() : 0);
+        result = 31 * result + (dateOfRegistration != null ? dateOfRegistration.hashCode() : 0);
+        result = 31 * result + (contact != null ? contact.hashCode() : 0);
+        result = 31 * result + (identifiers != null ? identifiers.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -211,6 +231,15 @@ public class Person
     {
         return "Person{" +
             "person='" + person + '\'' +
+            ", orgUnit='" + orgUnit + '\'' +
+            ", name='" + name + '\'' +
+            ", gender=" + gender +
+            ", dateOfBirth=" + dateOfBirth +
+            ", deceased=" + deceased +
+            ", dateOfDeath=" + dateOfDeath +
+            ", dateOfRegistration=" + dateOfRegistration +
+            ", contact=" + contact +
+            ", identifiers=" + identifiers +
             '}';
     }
 }

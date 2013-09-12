@@ -81,4 +81,35 @@ public class Identifier
     {
         this.value = value;
     }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        Identifier that = (Identifier) o;
+
+        if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
+        if ( value != null ? !value.equals( that.value ) : that.value != null ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = type != null ? type.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Identifier{" +
+            "type='" + type + '\'' +
+            ", value='" + value + '\'' +
+            '}';
+    }
 }
