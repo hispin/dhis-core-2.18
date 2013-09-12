@@ -38,15 +38,19 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -64,11 +68,15 @@ public class PersonController
     @Autowired
     private IdentifiableObjectManager manager;
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
+    // -------------------------------------------------------------------------
+    // READ
+    // -------------------------------------------------------------------------
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String getPersons(
-        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
-        @RequestParam( required = false ) Gender gender,
-        @RequestParam( value = "program", required = false ) String programUid,
+        @RequestParam(value = "orgUnit", required = false) String orgUnitUid,
+        @RequestParam(required = false) Gender gender,
+        @RequestParam(value = "program", required = false) String programUid,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -147,8 +155,8 @@ public class PersonController
         return organisationUnit;
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model )
     {
         WebOptions options = new WebOptions( parameters );
         Person person = personService.getPerson( id );
@@ -157,5 +165,53 @@ public class PersonController
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
         return "person";
+    }
+
+    // -------------------------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------------------------
+
+    @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postPersonXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        personService.savePersonXml( request.getInputStream() );
+    }
+
+    @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postPersonJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        personService.savePersonJson( request.getInputStream() );
+    }
+
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void updatePersonXml( @PathVariable String id, HttpServletRequest request ) throws IOException
+    {
+        personService.updatePersonXml( id, request.getInputStream() );
+    }
+
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void updatePersonJson( @PathVariable String id, HttpServletRequest request ) throws IOException
+    {
+        personService.updatePersonJson( id, request.getInputStream() );
+    }
+
+    // -------------------------------------------------------------------------
+    // DELETE
+    // -------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void deletePerson( @PathVariable String id )
+    {
+        Person person = personService.getPerson( id );
+        personService.deletePerson( person );
     }
 }

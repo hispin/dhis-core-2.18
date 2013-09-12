@@ -56,4 +56,31 @@ public class Contact
     {
         this.phoneNumber = phoneNumber;
     }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        Contact contact = (Contact) o;
+
+        if ( phoneNumber != null ? !phoneNumber.equals( contact.phoneNumber ) : contact.phoneNumber != null ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return phoneNumber != null ? phoneNumber.hashCode() : 0;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Contact{" +
+            "phoneNumber='" + phoneNumber + '\'' +
+            '}';
+    }
 }

@@ -54,25 +54,25 @@ public class JacksonPersonService extends AbstractPersonService
     private static ObjectMapper xmlMapper = new XmlMapper();
     private static ObjectMapper jsonMapper = new ObjectMapper();
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -87,6 +87,10 @@ public class JacksonPersonService extends AbstractPersonService
         jsonMapper.configure( DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true );
         jsonMapper.configure( DeserializationFeature.WRAP_EXCEPTIONS, true );
     }
+
+    // -------------------------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------------------------
 
     @Override
     public void savePersonXml( InputStream inputStream ) throws IOException
@@ -128,5 +132,27 @@ public class JacksonPersonService extends AbstractPersonService
             Person person = fromJson( input, Person.class );
             savePerson( person );
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void updatePersonXml( String id, InputStream inputStream ) throws IOException
+    {
+        Person person = fromXml( inputStream, Person.class );
+        person.setPerson( id );
+
+        updatePerson( person );
+    }
+
+    @Override
+    public void updatePersonJson( String id, InputStream inputStream ) throws IOException
+    {
+        Person person = fromJson( inputStream, Person.class );
+        person.setPerson( id );
+
+        updatePerson( person );
     }
 }

@@ -41,6 +41,10 @@ import java.util.Collection;
  */
 public interface PersonService
 {
+    // -------------------------------------------------------------------------
+    // READ
+    // -------------------------------------------------------------------------
+
     Persons getPersons();
 
     Persons getPersons( OrganisationUnit organisationUnit );
@@ -63,13 +67,29 @@ public interface PersonService
 
     Person getPerson( Patient patient );
 
+    // -------------------------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------------------------
+
     void savePersonXml( InputStream inputStream ) throws IOException;
 
     void savePersonJson( InputStream inputStream ) throws IOException;
 
     void savePerson( Person person );
 
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
+
+    void updatePersonXml( String id, InputStream inputStream ) throws IOException;
+
+    void updatePersonJson( String id, InputStream inputStream ) throws IOException;
+
     void updatePerson( Person person );
+
+    // -------------------------------------------------------------------------
+    // DELETE
+    // -------------------------------------------------------------------------
 
     void deletePerson( Person person );
 }

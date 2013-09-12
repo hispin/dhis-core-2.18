@@ -28,8 +28,6 @@ package org.hisp.dhis.dxf2.event.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
@@ -57,13 +55,12 @@ public abstract class AbstractPersonService implements PersonService
     @Autowired
     private PatientService patientService;
 
-    @Autowired
-    private I18nManager i18nManager;
-
-    private I18nFormat format;
-
     // -------------------------------------------------------------------------
     // Implementation
+    // -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
+    // READ
     // -------------------------------------------------------------------------
 
     @Override
@@ -162,8 +159,19 @@ public abstract class AbstractPersonService implements PersonService
             person.setContact( contact );
         }
 
-        DateOfBirth dateOfBirth = new DateOfBirth( patient.getBirthDate(),
-            DateOfBirthType.fromString( String.valueOf( patient.getDobType() ) ) );
+        DateOfBirth dateOfBirth;
+
+        if ( patient.getDobType().equals( Patient.DOB_TYPE_VERIFIED ) || patient.getDobType().equals( Patient.DOB_TYPE_DECLARED ) )
+        {
+            dateOfBirth = new DateOfBirth( patient.getBirthDate(),
+                DateOfBirthType.fromString( String.valueOf( patient.getDobType() ) ) );
+        }
+        else
+        {
+            // assume APPROXIMATE
+            dateOfBirth = new DateOfBirth( patient.getIntegerValueOfAge() );
+        }
+
 
         person.setDateOfBirth( dateOfBirth );
         person.setDateOfRegistration( patient.getRegistrationDate() );
@@ -184,25 +192,35 @@ public abstract class AbstractPersonService implements PersonService
         Patient patient = new Patient();
 
 
-
         return patient;
     }
+
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
 
     @Override
     public void savePerson( Person person )
     {
+        System.err.println( "SAVE: " + person );
         Patient patient = getPatient( person );
     }
 
     @Override
     public void updatePerson( Person person )
     {
+        System.err.println( "UPDATE: " + person );
         Patient patient = getPatient( person );
     }
+
+    // -------------------------------------------------------------------------
+    // DELETE
+    // -------------------------------------------------------------------------
 
     @Override
     public void deletePerson( Person person )
     {
+        System.err.println( "DELETE:" + person );
         Patient patient = patientService.getPatient( person.getPerson() );
 
         if ( patient != null )
