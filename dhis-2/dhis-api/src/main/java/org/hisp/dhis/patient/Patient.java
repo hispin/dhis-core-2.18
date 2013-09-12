@@ -85,12 +85,6 @@ public class Patient
 
     public static String FIXED_ATTR_FULL_NAME = "fullName";
 
-    private String firstName;
-
-    private String middleName;
-
-    private String lastName;
-
     private String gender;
 
     private Date birthDate;
@@ -128,107 +122,6 @@ public class Patient
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-
-        result = prime * result + ((uid == null) ? 0 : uid.hashCode());
-        result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
-        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
-
-        return result;
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( !getClass().isAssignableFrom( object.getClass() ) )
-        {
-            return false;
-        }
-
-        final Patient other = (Patient) object;
-
-        if ( birthDate == null )
-        {
-            if ( other.birthDate != null )
-            {
-                return false;
-            }
-        }
-        else if ( !birthDate.equals( other.birthDate ) )
-        {
-            return false;
-        }
-
-        if ( firstName == null )
-        {
-            if ( other.firstName != null )
-            {
-                return false;
-            }
-        }
-        else if ( !firstName.equals( other.firstName ) )
-        {
-            return false;
-        }
-
-        if ( gender == null )
-        {
-            if ( other.gender != null )
-                return false;
-        }
-        else if ( !gender.equals( other.gender ) )
-        {
-            return false;
-        }
-
-        if ( lastName == null )
-        {
-            if ( other.lastName != null )
-            {
-                return false;
-            }
-        }
-        else if ( !lastName.equals( other.lastName ) )
-        {
-            return false;
-        }
-
-        if ( middleName == null )
-        {
-            if ( other.middleName != null )
-            {
-                return false;
-            }
-        }
-        else if ( !middleName.equals( other.middleName ) )
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -254,45 +147,6 @@ public class Patient
     public void setOrganisationUnit( OrganisationUnit organisationUnit )
     {
         this.organisationUnit = organisationUnit;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getFirstName()
-    {
-        return firstName;
-    }
-
-    public void setFirstName( String firstName )
-    {
-        this.firstName = firstName;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getMiddleName()
-    {
-        return middleName;
-    }
-
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getLastName()
-    {
-        return lastName;
-    }
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
     }
 
     @JsonProperty
@@ -533,80 +387,6 @@ public class Patient
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
-
-    public void setFullName( String fullName )
-    {
-        name = fullName;
-
-        if ( fullName == null )
-        {
-            return;
-        }
-
-        fullName = fullName.trim();
-
-        int startIndex = fullName.indexOf( ' ' );
-        int endIndex = fullName.lastIndexOf( ' ' );
-
-        String firstName = fullName;
-        String middleName = "";
-        String lastName = "";
-
-        if ( fullName.indexOf( ' ' ) != -1 )
-        {
-            firstName = fullName.substring( 0, startIndex );
-
-            if ( startIndex == endIndex )
-            {
-                middleName = "";
-                lastName = fullName.substring( startIndex + 1, fullName.length() );
-            }
-            else
-            {
-                middleName = fullName.substring( startIndex + 1, endIndex );
-                lastName = fullName.substring( endIndex + 1, fullName.length() );
-            }
-        }
-
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-    }
-
-    public String getFullName()
-    {
-        boolean space = false;
-        String name = "";
-
-        if ( firstName != null && firstName.length() != 0 )
-        {
-            name = firstName;
-            space = true;
-        }
-
-        if ( middleName != null && middleName.length() != 0 )
-        {
-            if ( space )
-            {
-                name += " ";
-            }
-
-            name += middleName;
-            space = true;
-        }
-
-        if ( lastName != null && lastName.length() != 0 )
-        {
-            if ( space )
-            {
-                name += " ";
-            }
-
-            name += lastName;
-        }
-
-        return name;
-    }
 
     public String getPhoneNumber()
     {

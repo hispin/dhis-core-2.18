@@ -28,19 +28,19 @@ package org.hisp.dhis.mobile.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.*;
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.api.mobile.ActivityReportingService;
+import org.hisp.dhis.api.mobile.NotAllowedException;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
+import org.hisp.dhis.api.mobile.model.PatientAttribute;
+import org.hisp.dhis.api.mobile.model.PatientIdentifier;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.api.mobile.ActivityReportingService;
-import org.hisp.dhis.api.mobile.NotAllowedException;
-import org.hisp.dhis.api.mobile.model.PatientAttribute;
-import org.hisp.dhis.api.mobile.model.PatientIdentifier;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertEquals;
 
 public class ActivityReportingServiceTest
     extends DhisSpringTest
@@ -60,11 +60,11 @@ public class ActivityReportingServiceTest
 
         patientA = activityReportingService.findPatient( patientAId );
         assertEquals( patientAId, patientA.getId() );
-        assertEquals( "FirstnameA", patientA.getFirstName() );
+        assertEquals( "FirstnameA", patientA.getName() );
 
         patientB = activityReportingService.findPatient( patientBId );
         assertEquals( patientBId, patientB.getId() );
-        assertEquals( "FirstnameB", patientB.getFirstName() );
+        assertEquals( "FirstnameB", patientB.getName() );
     }
 
     private Patient createLWUITPatient( char uniqueCharacter )
@@ -72,9 +72,7 @@ public class ActivityReportingServiceTest
         Patient patient = new Patient();
         patient.setAge( 1 );
         patient.setBirthDate( "25-09-1990" );
-        patient.setFirstName( "Firstname" + uniqueCharacter );
-        patient.setMiddleName( "Middlename" + uniqueCharacter );
-        patient.setLastName( "Lastname" + uniqueCharacter );
+        patient.setName( "Firstname" + uniqueCharacter );
         patient.setGender( "male" );
         patient.setOrganisationUnitName( "OrgUnitName" );
         patient.setPhoneNumber( "095678943" );

@@ -55,7 +55,7 @@ public class DefaultPatientReminderService
         Patient patient = programInstance.getPatient();
         String templateMessage = patientReminder.getTemplateMessage();
 
-        String patientName = patient.getFirstName();
+        String patientName = patient.getName();
         String organisationunitName = patient.getOrganisationUnit().getName();
         String programName = programInstance.getProgram().getName();
         String daysSinceEnrollementDate = DateUtils.daysBetween( new Date(), programInstance.getEnrollmentDate() ) + "";
@@ -88,7 +88,7 @@ public class DefaultPatientReminderService
         Patient patient = programStageInstance.getProgramInstance().getPatient();
         String templateMessage = patientReminder.getTemplateMessage();
 
-        String patientName = patient.getFirstName();
+        String patientName = patient.getName();
         String organisationunitName = patient.getOrganisationUnit().getName();
         String programName = programStageInstance.getProgramInstance().getProgram().getName();
         String programStageName = programStageInstance.getProgramStage().getName();

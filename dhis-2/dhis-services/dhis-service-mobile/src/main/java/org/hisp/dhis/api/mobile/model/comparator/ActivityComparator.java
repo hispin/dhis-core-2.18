@@ -42,6 +42,6 @@ public class ActivityComparator
     @Override
     public int compare( Activity act1, Activity act2 )
     {
-        return act2.getBeneficiary().getFullName().compareToIgnoreCase( act1.getBeneficiary().getFullName() );
+        return act2.getBeneficiary().getName().compareToIgnoreCase( act1.getBeneficiary().getName() );
     }
 }

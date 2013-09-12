@@ -235,7 +235,11 @@ public class TableAlteror
         executeSql( "UPDATE programstage_dataelements SET displayAsRadioButton=false WHERE displayAsRadioButton is null" );
         executeSql( "UPDATE patientreminder SET messageType=1 WHERE messageType is null" );
         executeSql( "UPDATE programstage SET allowGenerateNextVisit=false WHERE allowGenerateNextVisit is null" );
-        
+
+        executeSql( "update patient set name=concat_ws(' ', trim(firstname), trim(middlename), trim(lastname))" );
+        executeSql( "alter table patient drop column firstname" );
+        executeSql( "alter table patient drop column middlename" );
+        executeSql( "alter table patient drop column lastname" );
     }
 
     // -------------------------------------------------------------------------

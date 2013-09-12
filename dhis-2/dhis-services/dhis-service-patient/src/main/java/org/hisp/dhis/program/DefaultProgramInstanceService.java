@@ -28,14 +28,6 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
@@ -61,6 +53,14 @@ import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -247,13 +247,13 @@ public class DefaultProgramInstanceService
 
         Grid attrGrid = new ListGrid();
 
-        if ( patient.getFirstName() == null && patient.getMiddleName() == null && patient.getLastName() == null )
+        if ( patient.getName() == null )
         {
             attrGrid.setTitle( "" );
         }
         else
         {
-            attrGrid.setTitle( patient.getFullName() );
+            attrGrid.setTitle( patient.getName() );
         }
         attrGrid.setSubtitle( "" );
 
@@ -486,7 +486,7 @@ public class DefaultProgramInstanceService
                 + format.formatDateTime( messasge.getDate() ) );
             grid.addValue( messasge.getMessage() );
         }
-        
+
         // Get message conversations of the program-instance
 
         List<MessageConversation> conversations = programInstance.getMessageConversations();
@@ -495,7 +495,7 @@ public class DefaultProgramInstanceService
         {
             grid.addRow();
             grid.addValue( i18n.getString( "message" ) + " " + i18n.getString( "on" ) + " "
-                + format.formatDateTime( conversation.getLastUpdated()) );
+                + format.formatDateTime( conversation.getLastUpdated() ) );
             grid.addValue( conversation.getMessages().get( 0 ) );
         }
 
