@@ -57,7 +57,7 @@ public class Person
 
     private Date dateOfDeath;
 
-    private Date dateOfRegistration;
+    private Date dateOfRegistration = new Date();
 
     private Contact contact;
 

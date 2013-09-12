@@ -28,16 +28,21 @@ package org.hisp.dhis.dxf2.event.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
@@ -54,6 +59,12 @@ public abstract class AbstractPersonService implements PersonService
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private PatientIdentifierService patientIdentifierService;
+
+    @Autowired
+    private IdentifiableObjectManager manager;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -161,19 +172,24 @@ public abstract class AbstractPersonService implements PersonService
 
         DateOfBirth dateOfBirth;
 
-        if ( patient.getDobType().equals( Patient.DOB_TYPE_VERIFIED ) || patient.getDobType().equals( Patient.DOB_TYPE_DECLARED ) )
+        Character dobType = patient.getDobType();
+
+        if ( dobType != null && patient.getBirthDate() != null )
         {
-            dateOfBirth = new DateOfBirth( patient.getBirthDate(),
-                DateOfBirthType.fromString( String.valueOf( patient.getDobType() ) ) );
-        }
-        else
-        {
-            // assume APPROXIMATE
-            dateOfBirth = new DateOfBirth( patient.getIntegerValueOfAge() );
+            if ( dobType.equals( Patient.DOB_TYPE_VERIFIED ) || dobType.equals( Patient.DOB_TYPE_DECLARED ) )
+            {
+                dateOfBirth = new DateOfBirth( patient.getBirthDate(),
+                    DateOfBirthType.fromString( String.valueOf( dobType ) ) );
+            }
+            else
+            {
+                // assume APPROXIMATE
+                dateOfBirth = new DateOfBirth( patient.getIntegerValueOfAge() );
+            }
+
+            person.setDateOfBirth( dateOfBirth );
         }
 
-
-        person.setDateOfBirth( dateOfBirth );
         person.setDateOfRegistration( patient.getRegistrationDate() );
 
         for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
@@ -189,8 +205,62 @@ public abstract class AbstractPersonService implements PersonService
 
     public Patient getPatient( Person person )
     {
-        Patient patient = new Patient();
+        Assert.hasText( person.getOrgUnit() );
 
+        Patient patient = new Patient();
+        patient.setName( person.getName() );
+        patient.setGender( person.getGender().getValue() );
+
+        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
+        Assert.notNull( organisationUnit );
+
+        patient.setOrganisationUnit( organisationUnit );
+
+        DateOfBirth dateOfBirth = person.getDateOfBirth();
+
+        if ( dateOfBirth != null )
+        {
+            if ( dateOfBirth.getDate() != null && (dateOfBirth.getType().equals( DateOfBirthType.DECLARED ) ||
+                dateOfBirth.getType().equals( DateOfBirthType.VERIFIED )) )
+            {
+                char dobType = dateOfBirth.getType().getValue().charAt( 0 );
+                patient.setDobType( dobType );
+                patient.setBirthDate( dateOfBirth.getDate() );
+            }
+            else if ( dateOfBirth.getAge() != null && dateOfBirth.getType().equals( DateOfBirthType.APPROXIMATE ) )
+            {
+                char dobType = dateOfBirth.getType().getValue().charAt( 0 );
+                patient.setDobType( dobType );
+                patient.setBirthDateFromAge( dateOfBirth.getAge(), dobType );
+            }
+        }
+
+        if ( person.getContact() != null && person.getContact().getPhoneNumber() != null )
+        {
+            patient.setPhoneNumber( person.getContact().getPhoneNumber() );
+        }
+
+        patient.setIsDead( person.isDeceased() );
+
+        if ( person.isDeceased() && person.getDateOfDeath() != null )
+        {
+            patient.setDeathDate( person.getDateOfDeath() );
+        }
+
+        patient.setRegistrationDate( person.getDateOfRegistration() );
+
+        Iterator<Identifier> iterator = person.getIdentifiers().iterator();
+
+        // remove systemId from Person object
+        while ( iterator.hasNext() )
+        {
+            Identifier next = iterator.next();
+
+            if ( next.getType() == null )
+            {
+                iterator.remove();
+            }
+        }
 
         return patient;
     }
@@ -202,10 +272,12 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public Person savePerson( Person person )
     {
-        System.err.println( "SAVE: " + person );
         Patient patient = getPatient( person );
+        addSystemIdentifier( patient );
 
-        return person;
+        patientService.savePatient( patient );
+
+        return getPerson( patient );
     }
 
     // -------------------------------------------------------------------------
@@ -218,7 +290,7 @@ public abstract class AbstractPersonService implements PersonService
         System.err.println( "UPDATE: " + person );
         Patient patient = getPatient( person );
 
-        return person;
+        return getPerson( patient );
     }
 
     // -------------------------------------------------------------------------
@@ -239,5 +311,29 @@ public abstract class AbstractPersonService implements PersonService
         {
             throw new IllegalArgumentException();
         }
+    }
+
+    private void addSystemIdentifier( Patient patient )
+    {
+        if ( patient.getBirthDate() == null || patient.getGender() == null )
+        {
+            return;
+        }
+
+        String systemId = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient.getGender() );
+
+        PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
+
+        while ( patientIdentifier != null )
+        {
+            systemId = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient.getGender() );
+            patientIdentifier = patientIdentifierService.get( null, systemId );
+        }
+
+        patientIdentifier = new PatientIdentifier();
+        patientIdentifier.setPatient( patient );
+        patientIdentifier.setIdentifier( systemId );
+
+        patient.getIdentifiers().add( patientIdentifier );
     }
 }
