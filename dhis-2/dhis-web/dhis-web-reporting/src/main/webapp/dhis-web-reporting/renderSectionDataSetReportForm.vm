@@ -5,6 +5,11 @@
   width: 90px;
   line-height: 170%;
 }
+
+.lAln
+{
+  text-align: left;
+}
 </style>
 
 #parse( "dhis-web-reporting/renderDataSetReportHeader.vm" )
@@ -28,7 +33,8 @@
 <tr>
 #foreach( $col in $row )
 #set( $index = ( $velocityCount - 1 ) )
-#if( $grid.getVisibleHeaders().get( $index ).meta )<td style="text-align:left">$!encoder.htmlEncode( $col )</td>#else <td>$!format.formatValue( $col )</td>#end
+#if( $grid.getVisibleHeaders().get( $index ).meta )<td class="lAln">$!encoder.htmlEncode( $col.value )</td>
+#else<td #if( $col.hasAttr( 'de' ) )data-de="$!{col.attr( 'de' )}"#end #if( $col.hasAttr( 'co' ) )data-co="$!{col.attr( 'co' )}"#end>$!format.formatValue( $col.value )</td>#end
 #end
 </tr>
 #end
