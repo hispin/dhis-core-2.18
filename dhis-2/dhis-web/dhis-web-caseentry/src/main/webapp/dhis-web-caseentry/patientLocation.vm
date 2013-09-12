@@ -20,7 +20,7 @@
 		#end
 	#end
 	#if($value=="")
-		#set($value=$!patient.getFullName())
+		#set($value=$!patient.name)
 	#else
 		#set($flag=true)
 	#end
@@ -28,7 +28,7 @@
 		#set($value=$systemId)
 	#end
 					
-	#if($patient.getFullName()=='')
+	#if($patient.name=='')
 	<tr>
 		<td>
 			#if($flag==true)

@@ -127,7 +127,7 @@
 					#end
 					
 					#if($value=="")
-						#set($value=$!patient.getFullName())
+						#set($value=$!patient.name)
 					#end
 					#if($value=="")
 						#set($value=$systemId)

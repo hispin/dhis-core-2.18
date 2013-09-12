@@ -3,7 +3,7 @@
 <p>
 <ul>
 #foreach( $patient in $patients )
-	<li><a href="showPatientProgramList.action?patientId=$patient.getId()">$!encoder.htmlEncode( ${patient.getFullName()} )</a></li>
+	<li><a href="showPatientProgramList.action?patientId=$patient.getId()">$!encoder.htmlEncode( ${patient.name} )</a></li>
 #end
 </ul>
 </p>

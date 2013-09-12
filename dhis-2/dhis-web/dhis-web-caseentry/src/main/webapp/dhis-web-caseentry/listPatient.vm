@@ -83,7 +83,7 @@
 					#end
 				#end
 				#if($value=="")
-					#set($value=$patient.getFullName())
+					#set($value=$patient.name)
 				#end
 				<td style="cursor:pointer;" onclick="javascript:showUpdatePatientForm('$patient.id');">
 					<a>$encoder.htmlEncode($value)</a>

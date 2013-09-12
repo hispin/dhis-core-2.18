@@ -89,7 +89,7 @@
 					#end
 				#end
 				#if($value=="")
-					#set($value=$patient.getFullName())
+					#set($value=$patient.names)
 				#end
 				<td>$!encoder.htmlEncode($value)</td>
 				

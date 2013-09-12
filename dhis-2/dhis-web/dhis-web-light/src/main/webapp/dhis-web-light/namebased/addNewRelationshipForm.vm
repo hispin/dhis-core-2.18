@@ -6,12 +6,12 @@
 <input type="hidden" name="relatedPatientId" value="$relatedPatientId"/>	
 <input type="hidden" name="relationshipTypeId" value="$relationshipTypeId"/>	
 	<p style="text-align: left;">
-		<label>$originalPatient.getFullName() is</label>
+		<label>$originalPatient.name is</label>
 		<select name="relationship" style="width: 100%;">
 			<option value="$relationshipType.getaIsToB()">$relationshipType.getaIsToB()</option>
 			<option value="$relationshipType.getbIsToA()">$relationshipType.getbIsToA()</option>
 		</select>
-		<label>of $relatedPatient.getFullName()</label>
+		<label>of $relatedPatient.name</label>
 	</p>
 
 </div>
