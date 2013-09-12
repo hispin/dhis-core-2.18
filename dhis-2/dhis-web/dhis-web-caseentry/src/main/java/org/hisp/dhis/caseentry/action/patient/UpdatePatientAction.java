@@ -141,7 +141,7 @@ public class UpdatePatientAction
         verified = (verified == null) ? false : verified;
 
         // ---------------------------------------------------------------------
-        // Set FirstName, MiddleName, LastName by FullName
+        // Set FullName
         // ---------------------------------------------------------------------
 
         patient.setName( fullName );

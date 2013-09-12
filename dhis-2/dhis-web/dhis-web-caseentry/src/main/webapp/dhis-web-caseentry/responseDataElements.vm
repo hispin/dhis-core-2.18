@@ -3,6 +3,11 @@
   #if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
   
   {
+	"id": "fixedAttr_name",
+	"name": "$i18n.getString('name')",
+	"valueType": "string"
+  },
+  {
 	"id": "fixedAttr_firstName",
 	"name": "$i18n.getString('first_name')",
 	"valueType": "string"

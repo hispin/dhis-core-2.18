@@ -107,7 +107,7 @@ public class AddRepresentativeAction
         patient = new Patient();
 
         // ---------------------------------------------------------------------
-        // Set FirstName, MiddleName, LastName by FullName
+        // Set FullName
         // ---------------------------------------------------------------------
 
         fullName = fullName.trim();

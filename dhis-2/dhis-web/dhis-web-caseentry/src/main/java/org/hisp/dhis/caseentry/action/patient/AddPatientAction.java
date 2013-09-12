@@ -151,7 +151,7 @@ public class AddPatientAction
         Patient patient = new Patient();
 
         // ---------------------------------------------------------------------
-        // Set FirstName, MiddleName, LastName by FullName
+        // Set FullName
         // ---------------------------------------------------------------------
 
         patient.setName( fullName );

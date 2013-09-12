@@ -9,8 +9,7 @@
 <p>
 <ul>
 #foreach( $patient in $patientList )
-	#set($fullName = $patient.getFirstName() + " " + $patient.getMiddleName() + " " + $patient.getLastName())
-	<li><a href="selectEnrollmentProgram.action?patientId=$patient.Id">$!encoder.htmlEncode( ${fullName} )</a></li>
+	<li><a href="selectEnrollmentProgram.action?patientId=$patient.Id">$!encoder.htmlEncode( $patient.name )</a></li>
 #end
 </ul>
 </p>
