@@ -173,7 +173,7 @@ public class MySQLStatementBuilder
     @Override
     public String getPatientFullName()
     {
-        return  "concat( firstname, \" \",middleName , \" \" , lastname)";
+        return  "name";
     }
 
     @Override

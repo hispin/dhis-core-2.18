@@ -427,31 +427,7 @@ public class ActivityReportingServiceImpl
     {
         if ( isNumber( keyword ) == false )
         {
-
-            int startIndex = keyword.indexOf( ' ' );
-            int endIndex = keyword.lastIndexOf( ' ' );
-
-            String firstName = keyword.toString();
-            String middleName = " ";
-            String lastName = " ";
-
-            if ( keyword.indexOf( ' ' ) != -1 )
-            {
-                firstName = keyword.substring( 0, startIndex );
-                if ( startIndex == endIndex )
-                {
-                    middleName = "  ";
-                    lastName = keyword.substring( startIndex + 1, keyword.length() );
-                }
-                else
-                {
-                    middleName = " " + keyword.substring( startIndex + 1, endIndex ) + " ";
-                    lastName = keyword.substring( endIndex + 1, keyword.length() );
-                }
-            }
-
-            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( firstName + middleName
-                + lastName, orgUnitId );
+            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( keyword, orgUnitId );
 
             if ( patients.size() > 1 )
             {
@@ -1301,29 +1277,7 @@ public class ActivityReportingServiceImpl
         else
         {
             String fullName = enrollmentRelationship.getPersonBName();
-            int startIndex = fullName.indexOf( ' ' );
-            int endIndex = fullName.lastIndexOf( ' ' );
-
-            String firstName = fullName.toString();
-            String middleName = " ";
-            String lastName = " ";
-
-            if ( fullName.indexOf( ' ' ) != -1 )
-            {
-                firstName = fullName.substring( 0, startIndex );
-                if ( startIndex == endIndex )
-                {
-                    middleName = "  ";
-                    lastName = fullName.substring( startIndex + 1, fullName.length() );
-                }
-                else
-                {
-                    middleName = " " + fullName.substring( startIndex + 1, endIndex ) + " ";
-                    lastName = fullName.substring( endIndex + 1, fullName.length() );
-                }
-            }
-            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( firstName + middleName
-                + lastName, orgUnitId );
+            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( fullName, orgUnitId );
 
             // remove the own searcher
             patients = removeIfDuplicated( patients, enrollmentRelationship.getPersonAId() );

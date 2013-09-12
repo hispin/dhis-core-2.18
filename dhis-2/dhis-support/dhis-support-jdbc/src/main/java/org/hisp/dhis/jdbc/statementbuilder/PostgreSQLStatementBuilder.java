@@ -173,7 +173,7 @@ public class PostgreSQLStatementBuilder
     @Override
     public String getPatientFullName()
     {
-        return  "firstname || ' ' || middleName || ' ' || lastname";
+        return  "name";
     }
 
     @Override

@@ -170,7 +170,7 @@ public class H2StatementBuilder
     @Override
     public String getPatientFullName()
     {
-        return  "concat( firstname, \" \",middleName , \" \" , lastname)";
+        return  "name";
     }
 
     @Override
