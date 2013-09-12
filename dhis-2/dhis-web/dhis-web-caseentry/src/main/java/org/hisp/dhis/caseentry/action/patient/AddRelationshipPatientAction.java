@@ -172,7 +172,7 @@ public class AddRelationshipPatientAction
         patient = new Patient();
 
         // ---------------------------------------------------------------------
-        // Set FirstName, MiddleName, LastName by FullName
+        // Set FullName
         // ---------------------------------------------------------------------
 
         if ( fullName != null )

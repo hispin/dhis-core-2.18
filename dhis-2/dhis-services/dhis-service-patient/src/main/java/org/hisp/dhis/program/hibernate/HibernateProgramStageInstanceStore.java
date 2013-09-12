@@ -424,7 +424,7 @@ public class HibernateProgramStageInstanceStore
             for ( int i = 1; i <= cols; i++ )
             {
                 message = rs.getString( "templatemessage" );
-                String patientName = rs.getString( "firstName" );
+                String patientName = rs.getString( "name" );
                 String organisationunitName = rs.getString( "orgunitName" );
                 String programName = rs.getString( "programName" );
                 String programStageName = rs.getString( "programStageName" );
@@ -2389,7 +2389,7 @@ public class HibernateProgramStageInstanceStore
 
     private String sendMessageToPatientSql()
     {
-        return "select psi.programstageinstanceid, p.phonenumber, prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName "
+        return "select psi.programstageinstanceid, p.phonenumber, prm.templatemessage, p.name, org.name as orgunitName "
             + ",pg.name as programName, ps.name as programStageName, psi.duedate,(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "from patient p INNER JOIN programinstance pi "
             + "     ON p.patientid=pi.patientid "
@@ -2415,7 +2415,7 @@ public class HibernateProgramStageInstanceStore
 
     private String sendMessageToHealthWorkerSql()
     {
-        return "SELECT psi.programstageinstanceid, uif.phonenumber, prm.templatemessage,p.firstname, p.middlename, p.lastname, org.name as orgunitName, "
+        return "SELECT psi.programstageinstanceid, uif.phonenumber, prm.templatemessage, p.name, org.name as orgunitName, "
             + "pg.name as programName, ps.name as programStageName, psi.duedate, "
             + "         (DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + " FROM patient p INNER JOIN programinstance pi "
@@ -2446,7 +2446,7 @@ public class HibernateProgramStageInstanceStore
 
     private String sendMessageToOrgunitRegisteredSql()
     {
-        return "select psi.programstageinstanceid, ou.phonenumber, prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName, "
+        return "select psi.programstageinstanceid, ou.phonenumber, prm.templatemessage, p.name, org.name as orgunitName, "
             + "pg.name as programName, ps.name as programStageName, psi.duedate,"
             + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "            from patient p INNER JOIN programinstance pi "
@@ -2476,7 +2476,7 @@ public class HibernateProgramStageInstanceStore
 
     private String sendMessageToUsersSql()
     {
-        return "select psi.programstageinstanceid, uif.phonenumber,prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName ,"
+        return "select psi.programstageinstanceid, uif.phonenumber,prm.templatemessage, p.name, org.name as orgunitName ,"
             + " pg.name as programName, ps.name as programStageName, psi.duedate, "
             + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "  from patient p INNER JOIN programinstance pi "
@@ -2508,7 +2508,7 @@ public class HibernateProgramStageInstanceStore
 
     private String sendMessageToUserGroupsSql()
     {
-        return "select psi.programstageinstanceid, uif.phonenumber,prm.templatemessage, p.firstname, p.middlename, p.lastname, org.name as orgunitName ,"
+        return "select psi.programstageinstanceid, uif.phonenumber,prm.templatemessage, p.name, org.name as orgunitName ,"
             + " pg.name as programName, ps.name as programStageName, psi.duedate, "
             + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "  from patient p INNER JOIN programinstance pi "

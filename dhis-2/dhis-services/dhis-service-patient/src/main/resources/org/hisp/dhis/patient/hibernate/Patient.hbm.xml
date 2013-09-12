@@ -14,12 +14,6 @@
 
     <property name="name" column="name" length="230" />
 
-    <property name="firstName" column="firstname" length="50" />
-
-    <property name="middleName" column="middlename" length="50" />
-
-    <property name="lastName" column="lastname" length="50" />
-
     <property name="birthDate" column="birthdate" />
 
     <property name="deathDate" column="deathdate" />
