@@ -125,6 +125,11 @@ public class Patient
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    public String getFullName()
+    {
+        return name;
+    }
+
     public Set<PatientAttribute> getAttributes()
     {
         return attributes;
