@@ -414,7 +414,7 @@ public class JdbcCaseAggregationConditionManager
         {
             if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
             {
-                sql += "p.firstName, p.middleName, p.lastName, p.gender, p.birthDate, p.phoneNumber, ";
+                sql += "p.name, p.gender, p.birthDate, p.phoneNumber, ";
             }
 
             if ( hasDataelement )

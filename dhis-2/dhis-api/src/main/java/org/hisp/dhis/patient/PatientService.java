@@ -61,7 +61,7 @@ public interface PatientService
     Collection<Patient> getAllPatients();
 
     /**
-     * Search Patient base on firstname/middlename/lastname/birthDate/gender
+     * Search Patient base on name/birthDate/gender
      *
      * @param name
      * @param birthdate
@@ -242,7 +242,7 @@ public interface PatientService
     int countGetPatients( String searchText );
 
     /**
-     * Search Patient base on firstname/middlename/lastname and get number of
+     * Search Patient base on name and get number of
      * result
      *
      * @param name
