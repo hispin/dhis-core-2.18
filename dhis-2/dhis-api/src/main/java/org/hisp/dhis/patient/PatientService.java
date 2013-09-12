@@ -63,14 +63,12 @@ public interface PatientService
     /**
      * Search Patient base on firstname/middlename/lastname/birthDate/gender
      *
-     * @param firstName
-     * @param middleName
-     * @param lastName
+     * @param name
      * @param birthdate
      * @param gender
      * @return Patient List
      */
-    Collection<Patient> getPatients( String firstName, String middleName, String lastName, Date birthdate, String gender );
+    Collection<Patient> getPatients( String name, Date birthdate, String gender );
 
     /**
      * Search Patient base on gender
@@ -83,7 +81,7 @@ public interface PatientService
     /**
      * Search Patient base on birthDate
      *
-     * @param birthdate
+     * @param birthDate
      * @return Patient List
      */
     Collection<Patient> getPatientsByBirthDate( Date birthDate );

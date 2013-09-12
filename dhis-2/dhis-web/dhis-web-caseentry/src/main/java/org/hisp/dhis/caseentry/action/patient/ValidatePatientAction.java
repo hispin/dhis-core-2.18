@@ -122,32 +122,9 @@ public class ValidatePatientAction
         {
             fullName = fullName.trim();
 
-            int startIndex = fullName.indexOf( ' ' );
-            int endIndex = fullName.lastIndexOf( ' ' );
-
-            String firstName = fullName.toString();
-            String middleName = "";
-            String lastName = "";
-
-            if ( fullName.indexOf( ' ' ) != -1 )
-            {
-                firstName = fullName.substring( 0, startIndex );
-                if ( startIndex == endIndex )
-                {
-                    middleName = "";
-                    lastName = fullName.substring( startIndex + 1, fullName.length() );
-                }
-                else
-                {
-                    middleName = fullName.substring( startIndex + 1, endIndex );
-                    lastName = fullName.substring( endIndex + 1, fullName.length() );
-                }
-            }
-
             if ( !checkedDuplicate && birthDate != null && gender != null )
             {
-                patients = patientService.getPatients( firstName, middleName, lastName, format.parseDate( birthDate ),
-                    gender );
+                patients = patientService.getPatients( fullName, format.parseDate( birthDate ), gender );
 
                 if ( patients != null && patients.size() > 0 )
                 {

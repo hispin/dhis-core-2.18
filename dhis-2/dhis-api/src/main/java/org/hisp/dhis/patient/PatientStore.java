@@ -52,7 +52,7 @@ public interface PatientStore
 
     Collection<Patient> getByNames( String name, Integer min, Integer max );
 
-    Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate, String gender );
+    Collection<Patient> get( String name, Date birthdate, String gender );
 
     Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
 

@@ -148,26 +148,17 @@ public class HibernatePatientStore
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate, String gender )
+    public Collection<Patient> get( String name, Date birthdate, String gender )
 
     {
         Criteria crit = getCriteria();
         Conjunction con = Restrictions.conjunction();
-
-        if ( StringUtils.isNotBlank( firstName ) )
-            con.add( Restrictions.ilike( "firstName", firstName ) );
-
-        if ( StringUtils.isNotBlank( middleName ) )
-            con.add( Restrictions.ilike( "middleName", middleName ) );
-
-        if ( StringUtils.isNotBlank( lastName ) )
-            con.add( Restrictions.ilike( "lastName", lastName ) );
-
+        con.add( Restrictions.ilike( "name", name ) );
         con.add( Restrictions.eq( "gender", gender ) );
         con.add( Restrictions.eq( "birthDate", birthdate ) );
         crit.add( con );
 
-        crit.addOrder( Order.asc( "firstName" ) );
+        crit.addOrder( Order.asc( "name" ) );
 
         return crit.list();
     }
@@ -438,7 +429,7 @@ public class HibernatePatientStore
         String selector = count ? "count(*) " : "* ";
 
         String sql = "select " + selector
-            + " from ( select distinct p.patientid, p.firstname, p.middlename, p.lastname, p.gender, p.phonenumber,";
+            + " from ( select distinct p.patientid, p.name, p.gender, p.phonenumber,";
 
         if ( identifierTypes != null )
         {
@@ -466,7 +457,7 @@ public class HibernatePatientStore
 
         String patientWhere = "";
         String patientOperator = " where ";
-        String patientGroupBy = " GROUP BY  p.patientid, p.firstname, p.middlename, p.lastname, p.gender, p.phonenumber ";
+        String patientGroupBy = " GROUP BY  p.patientid, p.name, p.gender, p.phonenumber ";
         String otherWhere = "";
         String operator = " where ";
         String orderBy = "";
@@ -711,12 +702,12 @@ public class HibernatePatientStore
             if ( isPriorityEvent )
             {
                 subSQL += ",pgi.followup ";
-                orderBy = " ORDER BY pgi.followup desc, p.patientid, p.firstname, p.middlename, p.lastname, duedate asc ";
+                orderBy = " ORDER BY pgi.followup desc, p.patientid, p.name, duedate asc ";
                 patientGroupBy += ",pgi.followup ";
             }
             else
             {
-                orderBy = " ORDER BY p.patientid, p.firstname, p.middlename, p.lastname, duedate asc ";
+                orderBy = " ORDER BY p.patientid, p.name, duedate asc ";
             }
             sql = sql + subSQL + from + " inner join programinstance pgi on " + " (pgi.patientid=p.patientid) "
                 + " inner join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) "
@@ -750,7 +741,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-        
+
         return sql;
     }
 

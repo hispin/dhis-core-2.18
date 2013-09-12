@@ -198,10 +198,9 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatients( String firstName, String middleName, String lastName, Date birthdate,
-        String gender )
+    public Collection<Patient> getPatients( String name, Date birthdate, String gender )
     {
-        return patientStore.get( firstName, middleName, lastName, birthdate, gender );
+        return patientStore.get( name, birthdate, gender );
     }
 
     @Override
