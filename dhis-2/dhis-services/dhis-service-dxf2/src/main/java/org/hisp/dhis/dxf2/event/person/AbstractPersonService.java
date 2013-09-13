@@ -33,6 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.program.Program;
@@ -255,11 +256,24 @@ public abstract class AbstractPersonService implements PersonService
         // remove systemId from Person object
         while ( iterator.hasNext() )
         {
-            Identifier next = iterator.next();
+            Identifier identifier = iterator.next();
 
-            if ( next.getType() == null )
+            if ( identifier.getType() == null )
             {
                 iterator.remove();
+                continue;
+            }
+
+            PatientIdentifierType type = manager.get( PatientIdentifierType.class, identifier.getType() );
+
+            if ( type != null )
+            {
+                PatientIdentifier patientIdentifier = new PatientIdentifier();
+                patientIdentifier.setIdentifier( identifier.getValue().trim() );
+                patientIdentifier.setIdentifierType( type );
+                patientIdentifier.setPatient( patient );
+
+                patient.getIdentifiers().add( patientIdentifier );
             }
         }
 
@@ -338,6 +352,7 @@ public abstract class AbstractPersonService implements PersonService
         patientIdentifier = new PatientIdentifier();
         patientIdentifier.setPatient( patient );
         patientIdentifier.setIdentifier( systemId );
+        patientIdentifier.setIdentifierType( null );
 
         patient.getIdentifiers().add( patientIdentifier );
     }

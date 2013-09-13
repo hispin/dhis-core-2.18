@@ -50,6 +50,11 @@ public class PatientIdentifier
 
     private String identifier;
 
+    public PatientIdentifier()
+    {
+        setAutoFields();
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
