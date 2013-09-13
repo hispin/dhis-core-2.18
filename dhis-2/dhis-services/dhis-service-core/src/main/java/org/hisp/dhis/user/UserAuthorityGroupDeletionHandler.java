@@ -74,8 +74,10 @@ public class UserAuthorityGroupDeletionHandler
     }
     
     @Override
-    public void deleteUserCredentials( UserCredentials credentials )
+    public void deleteUser( User user )
     {
+        UserCredentials credentials = user.getUserCredentials();
+        
         Iterator<UserAuthorityGroup> iterator = credentials.getUserAuthorityGroups().iterator();
         
         while ( iterator.hasNext() )

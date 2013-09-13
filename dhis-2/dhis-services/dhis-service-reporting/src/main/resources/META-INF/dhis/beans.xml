@@ -131,13 +131,6 @@
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dashboard.DashboardContentStore" class="org.hisp.dhis.dashboard.hibernate.HibernateDashboardContentStore">
-    <property name="clazz" value="org.hisp.dhis.dashboard.DashboardContent" />
-    <property name="sessionFactory" ref="sessionFactory" />
-	<property name="jdbcTemplate" ref="jdbcTemplate" />
-    <property name="cacheable" value="true" />
-  </bean>
-
   <bean id="org.hisp.dhis.dashboard.DashboardService" class="org.hisp.dhis.dashboard.impl.DefaultDashboardService">
     <property name="dashboardStore" ref="org.hisp.dhis.dashboard.DashboardStore" />
   </bean>

@@ -89,7 +89,6 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.validation.ValidationCriteria;
@@ -415,15 +414,6 @@ public abstract class DeletionHandler
     }
 
     public String allowDeleteUser( User user )
-    {
-        return null;
-    }
-
-    public void deleteUserCredentials( UserCredentials credentials )
-    {
-    }
-
-    public String allowDeleteUserCredentials( UserCredentials credentials )
     {
         return null;
     }

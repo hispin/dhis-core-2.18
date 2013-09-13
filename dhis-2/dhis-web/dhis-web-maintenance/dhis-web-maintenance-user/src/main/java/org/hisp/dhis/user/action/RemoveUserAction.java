@@ -118,7 +118,6 @@ public class RemoveUserAction
         }
         else
         {
-            userService.deleteUserCredentials( user.getUserCredentials() );
             userService.deleteUser( user );
         }
 
