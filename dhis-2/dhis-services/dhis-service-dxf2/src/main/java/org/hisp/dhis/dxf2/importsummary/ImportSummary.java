@@ -44,7 +44,10 @@ public class ImportSummary
 
     private String description;
 
+    /* we want to phase out this at some point, use importCount instead */
     private ImportCount dataValueCount = new ImportCount();
+
+    private ImportCount importCount = new ImportCount();
 
     private List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
 
@@ -98,6 +101,18 @@ public class ImportSummary
     public void setDataValueCount( ImportCount dataValueCount )
     {
         this.dataValueCount = dataValueCount;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public ImportCount getImportCount()
+    {
+        return importCount;
+    }
+
+    public void setImportCount( ImportCount importCount )
+    {
+        this.importCount = importCount;
     }
 
     @JsonProperty

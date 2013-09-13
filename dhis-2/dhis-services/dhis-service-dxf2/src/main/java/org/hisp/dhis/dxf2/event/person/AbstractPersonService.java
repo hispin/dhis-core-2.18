@@ -313,6 +313,7 @@ public abstract class AbstractPersonService implements PersonService
     public ImportSummary savePerson( Person person )
     {
         ImportSummary importSummary = new ImportSummary();
+        importSummary.setDataValueCount( null );
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         importConflicts.addAll( checkForRequiredIdentifiers( person ) );
@@ -322,7 +323,8 @@ public abstract class AbstractPersonService implements PersonService
 
         if ( !importConflicts.isEmpty() )
         {
-            importSummary.getDataValueCount().incrementIgnored();
+            importSummary.setStatus( ImportStatus.ERROR );
+            importSummary.getImportCount().incrementIgnored();
             return importSummary;
         }
 
@@ -336,7 +338,7 @@ public abstract class AbstractPersonService implements PersonService
 
         importSummary.setStatus( ImportStatus.SUCCESS );
         importSummary.setReference( patient.getUid() );
-        importSummary.getDataValueCount().incrementImported();
+        importSummary.getImportCount().incrementImported();
 
         return importSummary;
     }

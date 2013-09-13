@@ -57,9 +57,19 @@ public class ImportSummaries
 
     public void addImportSummary( ImportSummary importSummary )
     {
-        imported += importSummary.getDataValueCount().getImported();
-        updated += importSummary.getDataValueCount().getUpdated();
-        ignored += importSummary.getDataValueCount().getIgnored();
+        if ( importSummary.getDataValueCount() != null )
+        {
+            imported += importSummary.getDataValueCount().getImported();
+            updated += importSummary.getDataValueCount().getUpdated();
+            ignored += importSummary.getDataValueCount().getIgnored();
+        }
+
+        if ( importSummary.getImportCount() != null )
+        {
+            imported += importSummary.getImportCount().getImported();
+            updated += importSummary.getImportCount().getUpdated();
+            ignored += importSummary.getImportCount().getIgnored();
+        }
 
         importSummaries.add( importSummary );
     }
@@ -78,21 +88,21 @@ public class ImportSummaries
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public int getImported()
     {
         return imported;
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public int getUpdated()
     {
         return updated;
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public int getIgnored()
     {
         return ignored;
