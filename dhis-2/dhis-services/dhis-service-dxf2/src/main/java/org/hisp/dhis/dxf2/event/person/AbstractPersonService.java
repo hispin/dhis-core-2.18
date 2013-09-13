@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.event.person;
  */
 
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -268,16 +269,17 @@ public abstract class AbstractPersonService implements PersonService
 
         patient.setRegistrationDate( person.getDateOfRegistration() );
 
-        Iterator<Identifier> iterator = person.getIdentifiers().iterator();
-
-        // remove systemId from Person object
-        while ( iterator.hasNext() )
+        for ( Identifier identifier : person.getIdentifiers() )
         {
-            Identifier identifier = iterator.next();
-
             if ( identifier.getType() == null )
             {
-                iterator.remove();
+                PatientIdentifier patientIdentifier = new PatientIdentifier();
+                patientIdentifier.setIdentifier( identifier.getValue().trim() );
+                patientIdentifier.setIdentifierType( null );
+                patientIdentifier.setPatient( patient );
+
+                patient.getIdentifiers().add( patientIdentifier );
+
                 continue;
             }
 
@@ -304,12 +306,87 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public Person savePerson( Person person )
     {
-        Patient patient = getPatient( person );
-        addSystemIdentifier( patient );
+        checkForRequiredIdentifiers( person );
+        checkForRequiredAttributes( person );
+        addSystemIdentifier( person );
 
+        Patient patient = getPatient( person );
         patientService.savePatient( patient );
 
+        addAttributes( patient, person );
+        patientService.updatePatient( patient );
+
         return getPerson( patient );
+    }
+
+    private ImportConflict checkForRequiredIdentifiers( Person person )
+    {
+        return null;
+    }
+
+    private ImportConflict checkForRequiredAttributes( Person person )
+    {
+        return null;
+    }
+
+    private void addAttributes( Patient patient, Person person )
+    {
+        for ( Attribute attribute : person.getAttributes() )
+        {
+            PatientAttribute patientAttribute = manager.get( PatientAttribute.class, attribute.getType() );
+
+            if ( patientAttribute != null )
+            {
+                PatientAttributeValue patientAttributeValue = new PatientAttributeValue();
+                patientAttributeValue.setPatient( patient );
+                patientAttributeValue.setValue( attribute.getValue() );
+                patientAttributeValue.setPatientAttribute( patientAttribute );
+
+                patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
+
+                patient.getAttributes().add( patientAttribute );
+            }
+        }
+    }
+
+    private void addSystemIdentifier( Person person )
+    {
+        Date birthDate = person.getDateOfBirth() != null ? person.getDateOfBirth().getDate() : null;
+        String gender = person.getGender() != null ? person.getGender().getValue() : null;
+
+        if ( birthDate == null || gender == null )
+        {
+            birthDate = new Date();
+            gender = "F";
+        }
+
+        Iterator<Identifier> iterator = person.getIdentifiers().iterator();
+
+        // remove any old system identifiers
+        while ( iterator.hasNext() )
+        {
+            Identifier identifier = iterator.next();
+
+            if ( identifier.getType() == null )
+            {
+                iterator.remove();
+            }
+        }
+
+        String systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
+
+        PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
+
+        while ( patientIdentifier != null )
+        {
+            systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
+            patientIdentifier = patientIdentifierService.get( null, systemId );
+        }
+
+        Identifier identifier = new Identifier();
+        identifier.setValue( systemId );
+
+        person.getIdentifiers().add( identifier );
     }
 
     // -------------------------------------------------------------------------
@@ -343,34 +420,5 @@ public abstract class AbstractPersonService implements PersonService
         {
             throw new IllegalArgumentException();
         }
-    }
-
-    private void addSystemIdentifier( Patient patient )
-    {
-        Date birthDate = patient.getBirthDate();
-        String gender = patient.getGender();
-
-        if ( birthDate == null || gender == null )
-        {
-            birthDate = new Date();
-            gender = "F";
-        }
-
-        String systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
-
-        PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
-
-        while ( patientIdentifier != null )
-        {
-            systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
-            patientIdentifier = patientIdentifierService.get( null, systemId );
-        }
-
-        patientIdentifier = new PatientIdentifier();
-        patientIdentifier.setPatient( patient );
-        patientIdentifier.setIdentifier( systemId );
-        patientIdentifier.setIdentifierType( null );
-
-        patient.getIdentifiers().add( patientIdentifier );
     }
 }
