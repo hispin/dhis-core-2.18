@@ -42,6 +42,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -315,18 +316,22 @@ public abstract class AbstractPersonService implements PersonService
 
     private void addSystemIdentifier( Patient patient )
     {
-        if ( patient.getBirthDate() == null || patient.getGender() == null )
+        Date birthDate = patient.getBirthDate();
+        String gender = patient.getGender();
+
+        if ( birthDate == null || gender == null )
         {
-            return;
+            birthDate = new Date();
+            gender = "F";
         }
 
-        String systemId = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient.getGender() );
+        String systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
 
         PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
 
         while ( patientIdentifier != null )
         {
-            systemId = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient.getGender() );
+            systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
             patientIdentifier = patientIdentifierService.get( null, systemId );
         }
 
