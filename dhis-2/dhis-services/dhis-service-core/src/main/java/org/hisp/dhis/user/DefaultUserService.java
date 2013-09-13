@@ -178,6 +178,8 @@ public class DefaultUserService
     {
         AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), user, AuditLogUtil.ACTION_DELETE );
 
+        userCredentialsStore.deleteUserCredentials( user.getUserCredentials() );
+        
         userStore.delete( user );
     }
     
@@ -369,11 +371,6 @@ public class DefaultUserService
     public void updateUserCredentials( UserCredentials userCredentials )
     {
         userCredentialsStore.updateUserCredentials( userCredentials );
-    }
-
-    public void deleteUserCredentials( UserCredentials userCredentials )
-    {
-        userCredentialsStore.deleteUserCredentials( userCredentials );
     }
 
     public Collection<UserCredentials> getAllUserCredentials()

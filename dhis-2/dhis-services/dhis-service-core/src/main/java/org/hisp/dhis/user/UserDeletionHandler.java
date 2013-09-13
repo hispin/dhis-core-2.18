@@ -62,6 +62,19 @@ public class UserDeletionHandler
     }
 
     @Override
+    public void deleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
+    {
+        Iterator<UserCredentials> iterator = authorityGroup.getMembers().iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            UserCredentials credentials = iterator.next();
+            credentials.getUserAuthorityGroups().remove( authorityGroup );
+            userService.updateUserCredentials( credentials );
+        }
+    }
+    
+    @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
         Iterator<User> iterator = unit.getUsers().iterator();

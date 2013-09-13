@@ -146,7 +146,6 @@ public class DeleteCurrentUserAction
             }
             else
             {
-                userService.deleteUserCredentials( userService.getUserCredentials( user ) );
                 userService.deleteUser( user );
             }
             

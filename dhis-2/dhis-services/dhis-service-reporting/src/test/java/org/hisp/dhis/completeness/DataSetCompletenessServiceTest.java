@@ -58,12 +58,14 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@Ignore //TODO this test takes too long to run, reimplement
 public class DataSetCompletenessServiceTest
     extends DhisTest
 {
