@@ -28,8 +28,6 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataset.DataSet;
@@ -66,6 +64,19 @@ public class ChartDeletionHandler
     public String getClassName()
     {
         return Chart.class.getSimpleName();
+    }
+
+    @Override
+    public void deleteUser( User user )
+    {
+        for ( Chart chart : chartService.getAllCharts() )
+        {
+            if ( chart.getUser() != null && chart.getUser().equals( user ) )
+            {
+                chart.setUser( null );                
+                chartService.updateChart( chart );
+            }
+        }
     }
 
     @Override
@@ -130,19 +141,6 @@ public class ChartDeletionHandler
         }
     }
     
-    @Override
-    public void deleteUser( User user )
-    {
-        Iterator<Chart> iterator = chartService.getChartsByUser( user ).iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            Chart chart = iterator.next();
-            iterator.remove();
-            chartService.deleteChart( chart );
-        }
-    }
-
     @Override
     public void deleteDataElementGroup( DataElementGroup group )
     {

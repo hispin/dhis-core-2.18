@@ -71,7 +71,7 @@ public class ResourceTableController
     
     //TODO make tasks prototypes to avoid potential concurrency issues?
     
-    @RequestMapping( value = "/analytics", method = RequestMethod.PUT )
+    @RequestMapping( value = "/analytics", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void analytics( HttpServletResponse response )
     {
@@ -82,7 +82,7 @@ public class ResourceTableController
         ContextUtils.okResponse( response, "Initiated analytics table update" );
     }
 
-    @RequestMapping( value = "/dataMart", method = RequestMethod.PUT )
+    @RequestMapping( value = "/dataMart", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void data( HttpServletResponse response )
     {
@@ -93,7 +93,7 @@ public class ResourceTableController
         ContextUtils.okResponse( response, "Initiated data mart update" );
     }
     
-    @RequestMapping( method = RequestMethod.PUT )
+    @RequestMapping( method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
     public void resourceTables( HttpServletResponse response )
     {

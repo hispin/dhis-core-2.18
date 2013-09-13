@@ -110,6 +110,8 @@ public interface MappingService
         
     List<Map> getMapsBetweenLikeName( String name, int first, int max );
     
+    List<Map> getAllMaps();
+    
     // -------------------------------------------------------------------------
     // MapView
     // -------------------------------------------------------------------------
