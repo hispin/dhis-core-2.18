@@ -42,7 +42,6 @@ import java.util.Set;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 @JacksonXmlRootElement( localName = "patientAttribute", namespace = DxfNamespaces.DXF_2_0 )
 public class PatientAttribute
@@ -86,6 +85,7 @@ public class PatientAttribute
 
     public PatientAttribute()
     {
+        setAutoFields();
     }
 
     // -------------------------------------------------------------------------

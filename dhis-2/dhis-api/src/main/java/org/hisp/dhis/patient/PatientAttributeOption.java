@@ -32,8 +32,6 @@ import java.io.Serializable;
 
 /**
  * @author Viet
- *
- * @version $Id$
  */
 public class PatientAttributeOption implements Serializable
 {
@@ -43,11 +41,11 @@ public class PatientAttributeOption implements Serializable
     private static final long serialVersionUID = 9052641474847384010L;
 
     private int id;
-    
+
     private String name;
-    
+
     private PatientAttribute patientAttribute;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -59,7 +57,7 @@ public class PatientAttributeOption implements Serializable
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int hashCode()
     {
@@ -99,7 +97,6 @@ public class PatientAttributeOption implements Serializable
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    
 
     public int getId()
     {
