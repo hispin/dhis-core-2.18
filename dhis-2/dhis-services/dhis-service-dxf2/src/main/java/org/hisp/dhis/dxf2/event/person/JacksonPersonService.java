@@ -149,25 +149,18 @@ public class JacksonPersonService extends AbstractPersonService
     @Override
     public ImportSummary updatePersonXml( String id, InputStream inputStream ) throws IOException
     {
-        ImportSummary importSummary = new ImportSummary();
         Person person = fromXml( inputStream, Person.class );
         person.setPerson( id );
 
-        updatePerson( person );
-
-        return importSummary;
+        return updatePerson( person );
     }
 
     @Override
     public ImportSummary updatePersonJson( String id, InputStream inputStream ) throws IOException
     {
-        ImportSummary importSummary = new ImportSummary();
-
         Person person = fromJson( inputStream, Person.class );
         person.setPerson( id );
 
-        updatePerson( person );
-
-        return importSummary;
+        return updatePerson( person );
     }
 }
