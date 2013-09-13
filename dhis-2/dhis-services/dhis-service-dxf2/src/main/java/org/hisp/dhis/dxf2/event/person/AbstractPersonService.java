@@ -31,11 +31,14 @@ package org.hisp.dhis.dxf2.event.person;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +67,9 @@ public abstract class AbstractPersonService implements PersonService
 
     @Autowired
     private PatientIdentifierService patientIdentifierService;
+
+    @Autowired
+    private PatientAttributeValueService patientAttributeValueService;
 
     @Autowired
     private IdentifiableObjectManager manager;
@@ -200,6 +206,17 @@ public abstract class AbstractPersonService implements PersonService
 
             Identifier identifier = new Identifier( identifierType, patientIdentifier.getIdentifier() );
             person.getIdentifiers().add( identifier );
+        }
+
+        for ( PatientAttribute patientAttribute : patient.getAttributes() )
+        {
+            PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
+
+            Attribute attribute = new Attribute();
+            attribute.setType( patientAttribute.getUid() );
+            attribute.setValue( patientAttributeValue.getValue() );
+
+            person.getAttributes().add( attribute );
         }
 
         return person;

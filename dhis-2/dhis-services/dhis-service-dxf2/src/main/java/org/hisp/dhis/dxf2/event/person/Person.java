@@ -63,6 +63,8 @@ public class Person
 
     private List<Identifier> identifiers = new ArrayList<Identifier>();
 
+    private List<Attribute> attributes = new ArrayList<Attribute>();
+
     public Person()
     {
     }
@@ -185,6 +187,18 @@ public class Person
     public void setIdentifiers( List<Identifier> identifiers )
     {
         this.identifiers = identifiers;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public void setAttributes( List<Attribute> attributes )
+    {
+        this.attributes = attributes;
     }
 
     @Override
