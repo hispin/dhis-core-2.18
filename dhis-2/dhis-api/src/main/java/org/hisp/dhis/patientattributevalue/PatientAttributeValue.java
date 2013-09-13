@@ -117,6 +117,17 @@ public class PatientAttributeValue
         return result;
     }
 
+    @Override
+    public String toString()
+    {
+        return "PatientAttributeValue{" +
+            "patientAttribute=" + patientAttribute +
+            ", patient=" + patient +
+            ", value='" + value + '\'' +
+            ", patientAttributeOption=" + patientAttributeOption +
+            '}';
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

@@ -210,6 +210,7 @@ public class Person
         Person person1 = (Person) o;
 
         if ( deceased != person1.deceased ) return false;
+        if ( attributes != null ? !attributes.equals( person1.attributes ) : person1.attributes != null ) return false;
         if ( contact != null ? !contact.equals( person1.contact ) : person1.contact != null ) return false;
         if ( dateOfBirth != null ? !dateOfBirth.equals( person1.dateOfBirth ) : person1.dateOfBirth != null ) return false;
         if ( dateOfDeath != null ? !dateOfDeath.equals( person1.dateOfDeath ) : person1.dateOfDeath != null ) return false;
@@ -237,11 +238,11 @@ public class Person
         result = 31 * result + (dateOfRegistration != null ? dateOfRegistration.hashCode() : 0);
         result = 31 * result + (contact != null ? contact.hashCode() : 0);
         result = 31 * result + (identifiers != null ? identifiers.hashCode() : 0);
+        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString()
+    @Override public String toString()
     {
         return "Person{" +
             "person='" + person + '\'' +
@@ -254,6 +255,7 @@ public class Person
             ", dateOfRegistration=" + dateOfRegistration +
             ", contact=" + contact +
             ", identifiers=" + identifiers +
+            ", attributes=" + attributes +
             '}';
     }
 }
