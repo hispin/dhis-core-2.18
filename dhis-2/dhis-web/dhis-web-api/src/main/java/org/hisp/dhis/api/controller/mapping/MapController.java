@@ -188,15 +188,6 @@ public class MapController
             return;
         }
 
-        Iterator<MapView> views = map.getMapViews().iterator();
-
-        while ( views.hasNext() )
-        {
-            MapView view = views.next();
-            views.remove();
-            mappingService.deleteMapView( view );
-        }
-
         mappingService.deleteMap( map );
     }
 

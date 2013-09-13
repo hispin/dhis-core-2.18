@@ -36,6 +36,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -63,6 +64,19 @@ public class ReportTableDeletionHandler
     public String getClassName()
     {
         return ReportTable.class.getSimpleName();
+    }
+    
+    @Override
+    public void deleteUser( User user )
+    {
+        for ( ReportTable reportTable : reportTableService.getAllReportTables() )
+        {
+            if ( reportTable.getUser() != null && reportTable.getUser().equals( reportTable ) )
+            {
+                reportTable.setUser( user );
+                reportTableService.updateReportTable( reportTable );
+            }
+        }
     }
 
     @Override

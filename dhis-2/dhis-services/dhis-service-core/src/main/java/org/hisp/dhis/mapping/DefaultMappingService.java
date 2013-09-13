@@ -265,6 +265,11 @@ public class DefaultMappingService
         mapStore.delete( map );
     }
 
+    public List<Map> getAllMaps()
+    {
+        return mapStore.getAll();
+    }
+    
     public List<Map> getMapsBetweenLikeName( String name, int first, int max )
     {
         return mapStore.getAllLikeNameOrderedName( name, first, max );
