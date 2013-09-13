@@ -72,7 +72,7 @@ public class UserGroupDeletionHandler
         while ( iterator.hasNext() )
         {
             UserGroup group = iterator.next();
-            group.removeUser( user );
+            group.getMembers().remove( user );
             userGroupService.updateUserGroup( group );
         }
     }
