@@ -39,5 +39,7 @@ import org.hisp.dhis.user.User;
 public interface InterpretationStore
     extends GenericIdentifiableObjectStore<Interpretation>
 {
+    List<Interpretation> getInterpretations( User user );
+    
     List<Interpretation> getInterpretations( User user, int first, int max );
 }

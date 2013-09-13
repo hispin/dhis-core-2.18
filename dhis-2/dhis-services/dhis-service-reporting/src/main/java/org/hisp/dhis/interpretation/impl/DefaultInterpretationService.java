@@ -132,6 +132,11 @@ public class DefaultInterpretationService
         return interpretationStore.getInterpretations( user, first, max );
     }
     
+    public List<Interpretation> getInterpretations( User user )
+    {
+        return interpretationStore.getInterpretations( user );
+    }
+    
     public void addInterpretationComment( String uid, String text )
     {
         Interpretation interpretation = getInterpretation( uid );

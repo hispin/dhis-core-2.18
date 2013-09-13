@@ -30,32 +30,36 @@ package org.hisp.dhis.interpretation;
 
 import java.util.List;
 
+import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  */
-public interface InterpretationService
+public class InterpretationDeletionHandler
+    extends DeletionHandler
 {
-    int saveInterpretation( Interpretation interpretation );
+    @Autowired
+    private InterpretationService interpretationService;
     
-    Interpretation getInterpretation( int id );
-    
-    Interpretation getInterpretation( String uid );
-    
-    void updateInterpretation( Interpretation interpretation );
-    
-    void deleteInterpretation( Interpretation interpretation );
-    
-    List<Interpretation> getInterpretations( int first, int max );
+    @Override
+    protected String getClassName()
+    {
+        return DeletionHandler.class.getSimpleName();
+    }
 
-    List<Interpretation> getInterpretations( User user );
-    
-    List<Interpretation> getInterpretations( User user, int first, int max );
-    
-    void addInterpretationComment( String uid, String text );
-    
-    void updateCurrentUserLastChecked();
-    
-    long getNewInterpretationCount();
+    public void deleteUser( User user )
+    {
+        List<Interpretation> interpretations = interpretationService.getInterpretations( user );
+        
+        for ( Interpretation interpretation : interpretations )
+        {
+            if ( interpretation.getUser() != null && interpretation.getUser().equals( user ) )
+            {
+                interpretation.setUser( null );
+                interpretationService.updateInterpretation( interpretation );
+            }
+        }
+    }
 }

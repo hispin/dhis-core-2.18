@@ -54,6 +54,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -714,5 +715,13 @@ public abstract class DeletionHandler
     {
         return null;
     }
-
+    
+    public void deleteIntepretation( Interpretation interpretation )
+    {
+    }
+    
+    public String allowDeleteInterpretation( Interpretation interpretation )
+    {
+        return null;
+    }
 }
