@@ -353,6 +353,8 @@ public interface UserService
      * @return a Collection of UserSettings.
      */
     Collection<UserSetting> getAllUserSettings( User user );
+    
+    Collection<UserSetting> getUserSettings( String name );
 
     /**
      * Deletes a UserSetting.
