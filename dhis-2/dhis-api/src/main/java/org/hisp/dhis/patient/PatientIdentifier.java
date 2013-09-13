@@ -28,14 +28,14 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
 public class PatientIdentifier
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -44,8 +44,6 @@ public class PatientIdentifier
 
     public static final int IDENTIFIER_INDEX_LENGTH = 5;
 
-    private int id;
-
     private PatientIdentifierType identifierType;
 
     private Patient patient;
@@ -53,60 +51,8 @@ public class PatientIdentifier
     private String identifier;
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((identifierType == null) ? 0 : identifierType.hashCode());
-        result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
-        
-        return result;
-    }
-
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        PatientIdentifier other = (PatientIdentifier) object;
-
-        return identifier.equals( other.getIdentifier() ) && identifierType.equals( other.getIdentifierType() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + identifierType.getName() + ":"  + identifier + "]";
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
 
     public Patient getPatient()
     {
@@ -137,5 +83,5 @@ public class PatientIdentifier
     {
         return identifierType;
     }
-    
+
 }
