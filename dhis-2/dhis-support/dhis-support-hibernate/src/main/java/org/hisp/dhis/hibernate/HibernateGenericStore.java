@@ -33,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -129,6 +130,16 @@ public class HibernateGenericStore<T>
     // Convenience methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns the current session.
+     * 
+     * @return the current session.
+     */
+    protected final Session getSession()
+    {
+        return sessionFactory.getCurrentSession();
+    }
+    
     /**
      * Creates a Query.
      *

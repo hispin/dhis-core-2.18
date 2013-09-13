@@ -210,6 +210,8 @@
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
 
+  <bean id="org.hisp.dhis.interpretation.InterpretationDeletionHandler" class="org.hisp.dhis.interpretation.InterpretationDeletionHandler" />
+
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -221,6 +223,7 @@
           <ref local="org.hisp.dhis.report.ReportDeletionHandler" />
           <ref local="org.hisp.dhis.reporttable.ReportTableDeletionHandler" />
           <ref local="org.hisp.dhis.chart.ChartDeletionHandler" />
+          <ref local="org.hisp.dhis.interpretation.InterpretationDeletionHandler" />
         </list>
       </list>
     </property>

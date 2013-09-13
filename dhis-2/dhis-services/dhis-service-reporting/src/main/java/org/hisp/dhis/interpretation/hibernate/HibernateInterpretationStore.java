@@ -41,7 +41,19 @@ import org.hisp.dhis.user.User;
  */
 public class HibernateInterpretationStore
     extends HibernateIdentifiableObjectStore<Interpretation> implements InterpretationStore
-{
+{    
+    @SuppressWarnings("unchecked")
+    public List<Interpretation> getInterpretations( User user )
+    {
+        String hql = "select distinct i from Interpretation i left join i.comments c " +
+            "where i.user = :user or c.user = :user order by i.lastUpdated desc";
+        
+        Query query = getQuery( hql );
+        query.setEntity( "user", user );
+        
+        return query.list();
+    }
+    
     @SuppressWarnings("unchecked")
     public List<Interpretation> getInterpretations( User user, int first, int max )
     {
