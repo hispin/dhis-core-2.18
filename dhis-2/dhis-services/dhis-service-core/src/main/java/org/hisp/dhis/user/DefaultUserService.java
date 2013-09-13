@@ -46,7 +46,6 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -181,7 +180,7 @@ public class DefaultUserService
 
         userStore.delete( user );
     }
-
+    
     public Collection<User> getAllUsers()
     {
         return userStore.getAll();
@@ -522,7 +521,6 @@ public class DefaultUserService
         return userStore.getUsersByOrganisationUnits( units );
     }
     
-    @Transactional(propagation=Propagation.REQUIRES_NEW)
     public void removeUserSettings( User user )
     {
         userStore.removeUserSettings( user );
@@ -531,6 +529,5 @@ public class DefaultUserService
     public Collection<String> getUsernames( String query, Integer max )
     {
         return userCredentialsStore.getUsernames( query, max );
-    }
-    
+    }    
 }
