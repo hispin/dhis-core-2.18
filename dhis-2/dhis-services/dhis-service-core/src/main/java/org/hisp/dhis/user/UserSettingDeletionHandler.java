@@ -51,13 +51,6 @@ public class UserSettingDeletionHandler
         this.userSettingService = userSettingService;
     }
     
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -86,6 +79,12 @@ public class UserSettingDeletionHandler
     @Override
     public void deleteUser( User user )
     {
-        userService.removeUserSettings( user );
+        for ( UserSetting setting : userSettingService.getAllUserSettings() )
+        {
+            if ( setting.getUser() != null && setting.getUser().equals( user ) )
+            {
+                userSettingService.deleteUserSetting( setting.getName() );
+            }                
+        }
     }
 }
