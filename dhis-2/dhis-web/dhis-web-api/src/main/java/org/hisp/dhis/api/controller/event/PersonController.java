@@ -35,6 +35,8 @@ import org.hisp.dhis.dxf2.event.person.Gender;
 import org.hisp.dhis.dxf2.event.person.Person;
 import org.hisp.dhis.dxf2.event.person.PersonService;
 import org.hisp.dhis.dxf2.event.person.Persons;
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
@@ -176,42 +178,44 @@ public class PersonController
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
     public void postPersonXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        Persons persons = personService.savePersonXml( request.getInputStream() );
+        ImportSummaries importSummaries = personService.savePersonXml( request.getInputStream() );
 
-        if ( persons.getPersons().size() > 1 )
+        if ( importSummaries.getImportSummaries().size() > 1 )
         {
             response.setStatus( HttpServletResponse.SC_CREATED );
-            JacksonUtils.toXml( response.getOutputStream(), persons );
+            JacksonUtils.toXml( response.getOutputStream(), importSummaries );
         }
         else
         {
             response.setStatus( HttpServletResponse.SC_CREATED );
-            response.setHeader( "Location", getResourcePath( request, persons.getPersons().get( 0 ) ) );
-            JacksonUtils.toXml( response.getOutputStream(), persons.getPersons().get( 0 ) );
+            ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
+            response.setHeader( "Location", getResourcePath( request, importSummary ) );
+            JacksonUtils.toXml( response.getOutputStream(), importSummary );
         }
     }
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
     public void postPersonJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        Persons persons = personService.savePersonJson( request.getInputStream() );
+        ImportSummaries importSummaries = personService.savePersonJson( request.getInputStream() );
 
-        if ( persons.getPersons().size() > 1 )
+        if ( importSummaries.getImportSummaries().size() > 1 )
         {
             response.setStatus( HttpServletResponse.SC_CREATED );
-            JacksonUtils.toJson( response.getOutputStream(), persons );
+            JacksonUtils.toJson( response.getOutputStream(), importSummaries );
         }
         else
         {
             response.setStatus( HttpServletResponse.SC_CREATED );
-            response.setHeader( "Location", getResourcePath( request, persons.getPersons().get( 0 ) ) );
-            JacksonUtils.toJson( response.getOutputStream(), persons.getPersons().get( 0 ) );
+            ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
+            response.setHeader( "Location", getResourcePath( request, importSummary ) );
+            JacksonUtils.toJson( response.getOutputStream(), importSummary );
         }
     }
 
-    public String getResourcePath( HttpServletRequest request, Person person )
+    public String getResourcePath( HttpServletRequest request, ImportSummary importSummary )
     {
-        return ContextUtils.getContextPath( request ) + "/api/" + "persons" + "/" + person.getPerson();
+        return ContextUtils.getContextPath( request ) + "/api/" + "persons" + "/" + importSummary.getReference();
     }
 
     // -------------------------------------------------------------------------
@@ -222,16 +226,16 @@ public class PersonController
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void updatePersonXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        Person person = personService.updatePersonXml( id, request.getInputStream() );
-        JacksonUtils.toXml( response.getOutputStream(), person );
+        ImportSummary importSummary = personService.updatePersonXml( id, request.getInputStream() );
+        JacksonUtils.toXml( response.getOutputStream(), importSummary );
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void updatePersonJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        Person person = personService.updatePersonJson( id, request.getInputStream() );
-        JacksonUtils.toJson( response.getOutputStream(), person );
+        ImportSummary importSummary = personService.updatePersonJson( id, request.getInputStream() );
+        JacksonUtils.toJson( response.getOutputStream(), importSummary );
     }
 
     // -------------------------------------------------------------------------

@@ -30,6 +30,8 @@ package org.hisp.dhis.dxf2.event.person;
 
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportStatus;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -308,13 +310,21 @@ public abstract class AbstractPersonService implements PersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public Person savePerson( Person person )
+    public ImportSummary savePerson( Person person )
     {
+        ImportSummary importSummary = new ImportSummary();
+
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         importConflicts.addAll( checkForRequiredIdentifiers( person ) );
         importConflicts.addAll( checkForRequiredAttributes( person ) );
 
-        System.err.println( importConflicts );
+        importSummary.setConflicts( importConflicts );
+
+        if ( !importConflicts.isEmpty() )
+        {
+            importSummary.getDataValueCount().incrementIgnored();
+            return importSummary;
+        }
 
         addSystemIdentifier( person );
 
@@ -324,7 +334,11 @@ public abstract class AbstractPersonService implements PersonService
         addAttributes( patient, person );
         patientService.updatePatient( patient );
 
-        return getPerson( patient );
+        importSummary.setStatus( ImportStatus.SUCCESS );
+        importSummary.setReference( patient.getUid() );
+        importSummary.getDataValueCount().incrementImported();
+
+        return importSummary;
     }
 
     private List<ImportConflict> checkForRequiredIdentifiers( Person person )
@@ -459,12 +473,14 @@ public abstract class AbstractPersonService implements PersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public Person updatePerson( Person person )
+    public ImportSummary updatePerson( Person person )
     {
+        ImportSummary importSummary = new ImportSummary();
+
         System.err.println( "UPDATE: " + person );
         Patient patient = getPatient( person );
 
-        return getPerson( patient );
+        return importSummary;
     }
 
     // -------------------------------------------------------------------------

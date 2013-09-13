@@ -31,6 +31,8 @@ package org.hisp.dhis.dxf2.event.person;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.system.notification.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
@@ -54,25 +56,25 @@ public class JacksonPersonService extends AbstractPersonService
     private static ObjectMapper xmlMapper = new XmlMapper();
     private static ObjectMapper jsonMapper = new ObjectMapper();
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -93,10 +95,10 @@ public class JacksonPersonService extends AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public Persons savePersonXml( InputStream inputStream ) throws IOException
+    public ImportSummaries savePersonXml( InputStream inputStream ) throws IOException
     {
+        ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
-        Persons savedPersons = new Persons();
 
         try
         {
@@ -104,23 +106,23 @@ public class JacksonPersonService extends AbstractPersonService
 
             for ( Person person : persons.getPersons() )
             {
-                savedPersons.getPersons().add( savePerson( person ) );
+                importSummaries.addImportSummary( savePerson( person ) );
             }
         }
         catch ( Exception ex )
         {
             Person person = fromXml( input, Person.class );
-            savedPersons.getPersons().add( savePerson( person ) );
+            importSummaries.addImportSummary( savePerson( person ) );
         }
 
-        return savedPersons;
+        return importSummaries;
     }
 
     @Override
-    public Persons savePersonJson( InputStream inputStream ) throws IOException
+    public ImportSummaries savePersonJson( InputStream inputStream ) throws IOException
     {
+        ImportSummaries importSummaries = new ImportSummaries();
         String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
-        Persons savedPersons = new Persons();
 
         try
         {
@@ -128,16 +130,16 @@ public class JacksonPersonService extends AbstractPersonService
 
             for ( Person person : persons.getPersons() )
             {
-                savedPersons.getPersons().add( savePerson( person ) );
+                importSummaries.addImportSummary( savePerson( person ) );
             }
         }
         catch ( Exception ex )
         {
             Person person = fromJson( input, Person.class );
-            savedPersons.getPersons().add( savePerson( person ) );
+            importSummaries.addImportSummary( savePerson( person ) );
         }
 
-        return savedPersons;
+        return importSummaries;
     }
 
     // -------------------------------------------------------------------------
@@ -145,24 +147,27 @@ public class JacksonPersonService extends AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Override
-    public Person updatePersonXml( String id, InputStream inputStream ) throws IOException
+    public ImportSummary updatePersonXml( String id, InputStream inputStream ) throws IOException
     {
+        ImportSummary importSummary = new ImportSummary();
         Person person = fromXml( inputStream, Person.class );
         person.setPerson( id );
 
         updatePerson( person );
 
-        return person;
+        return importSummary;
     }
 
     @Override
-    public Person updatePersonJson( String id, InputStream inputStream ) throws IOException
+    public ImportSummary updatePersonJson( String id, InputStream inputStream ) throws IOException
     {
+        ImportSummary importSummary = new ImportSummary();
+
         Person person = fromJson( inputStream, Person.class );
         person.setPerson( id );
 
         updatePerson( person );
 
-        return person;
+        return importSummary;
     }
 }

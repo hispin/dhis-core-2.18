@@ -28,6 +28,8 @@ package org.hisp.dhis.dxf2.event.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
@@ -71,21 +73,21 @@ public interface PersonService
     // CREATE
     // -------------------------------------------------------------------------
 
-    Persons savePersonXml( InputStream inputStream ) throws IOException;
+    ImportSummaries savePersonXml( InputStream inputStream ) throws IOException;
 
-    Persons savePersonJson( InputStream inputStream ) throws IOException;
+    ImportSummaries savePersonJson( InputStream inputStream ) throws IOException;
 
-    Person savePerson( Person person );
+    ImportSummary savePerson( Person person );
 
     // -------------------------------------------------------------------------
     // UPDATE
     // -------------------------------------------------------------------------
 
-    Person updatePersonXml( String id, InputStream inputStream ) throws IOException;
+    ImportSummary updatePersonXml( String id, InputStream inputStream ) throws IOException;
 
-    Person updatePersonJson( String id, InputStream inputStream ) throws IOException;
+    ImportSummary updatePersonJson( String id, InputStream inputStream ) throws IOException;
 
-    Person updatePerson( Person person );
+    ImportSummary updatePerson( Person person );
 
     // -------------------------------------------------------------------------
     // DELETE
