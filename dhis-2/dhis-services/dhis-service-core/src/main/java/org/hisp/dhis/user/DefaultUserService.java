@@ -498,6 +498,11 @@ public class DefaultUserService
     {
         return userCredentialsStore.getAllUserSettings( user );
     }
+    
+    public Collection<UserSetting> getUserSettings( String name )
+    {
+        return userCredentialsStore.getUserSettings( name );
+    }
 
     public UserSetting getUserSetting( User user, String name )
     {
