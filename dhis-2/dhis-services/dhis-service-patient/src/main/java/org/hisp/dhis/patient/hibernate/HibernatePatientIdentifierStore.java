@@ -29,6 +29,7 @@ package org.hisp.dhis.patient.hibernate;
  */
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -62,6 +63,13 @@ public class HibernatePatientIdentifierStore
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifierType", type ),
             Restrictions.eq( "identifier", identifier ) ).uniqueResult();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientIdentifier> getAll( PatientIdentifierType type, String identifier )
+    {
+        return getCriteria( Restrictions.eq( "identifierType", type ),
+            Restrictions.eq( "identifier", identifier ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )

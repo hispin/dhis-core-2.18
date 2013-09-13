@@ -48,6 +48,9 @@ public interface PatientIdentifierStore
 
     PatientIdentifier get( PatientIdentifierType type, String identifier );
 
+    /* We need this since we have allowed identifiers with duplicate values in the past. This returns a list instead. */
+    Collection<PatientIdentifier> getAll( PatientIdentifierType type, String identifier );
+
     Collection<PatientIdentifier> getByIdentifier( String identifier );
 
     Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType );

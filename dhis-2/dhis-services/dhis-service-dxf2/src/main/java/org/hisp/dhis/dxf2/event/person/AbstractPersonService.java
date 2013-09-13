@@ -48,8 +48,12 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
@@ -306,8 +310,12 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public Person savePerson( Person person )
     {
-        checkForRequiredIdentifiers( person );
-        checkForRequiredAttributes( person );
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        importConflicts.addAll( checkForRequiredIdentifiers( person ) );
+        importConflicts.addAll( checkForRequiredAttributes( person ) );
+
+        System.err.println( importConflicts );
+
         addSystemIdentifier( person );
 
         Patient patient = getPatient( person );
@@ -319,14 +327,71 @@ public abstract class AbstractPersonService implements PersonService
         return getPerson( patient );
     }
 
-    private ImportConflict checkForRequiredIdentifiers( Person person )
+    private List<ImportConflict> checkForRequiredIdentifiers( Person person )
     {
-        return null;
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        Collection<PatientIdentifierType> patientIdentifierTypes = manager.getAll( PatientIdentifierType.class );
+        Map<String, String> cacheMap = new HashMap<String, String>();
+
+        for ( Identifier identifier : person.getIdentifiers() )
+        {
+            if ( identifier.getValue() != null )
+            {
+                cacheMap.put( identifier.getType(), identifier.getValue() );
+            }
+        }
+
+        for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
+        {
+            if ( patientIdentifierType.isMandatory() )
+            {
+                if ( !cacheMap.keySet().contains( patientIdentifierType.getUid() ) )
+                {
+                    importConflicts.add(
+                        new ImportConflict( "Identifier.type", "Missing required identifier type " + patientIdentifierType.getUid() ) );
+                }
+            }
+
+            Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getAll(
+                patientIdentifierType, cacheMap.get( patientIdentifierType.getUid() ) );
+
+            if ( !patientIdentifiers.isEmpty() )
+            {
+                importConflicts.add(
+                    new ImportConflict( "Identifier.value", "Value already exists for identifier type " + patientIdentifierType.getUid() ) );
+            }
+        }
+
+        return importConflicts;
     }
 
-    private ImportConflict checkForRequiredAttributes( Person person )
+    private List<ImportConflict> checkForRequiredAttributes( Person person )
     {
-        return null;
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        Collection<PatientAttribute> patientAttributes = manager.getAll( PatientAttribute.class );
+        Set<String> cache = new HashSet<String>();
+
+        for ( Identifier identifier : person.getIdentifiers() )
+        {
+            if ( identifier.getValue() != null )
+            {
+                cache.add( identifier.getType() );
+            }
+        }
+
+        for ( PatientAttribute patientAttribute : patientAttributes )
+        {
+            if ( patientAttribute.isMandatory() )
+            {
+                if ( !cache.contains( patientAttribute.getUid() ) )
+                {
+                    importConflicts.add(
+                        new ImportConflict( "Identifier.type", "Missing required attribute type " + patientAttribute.getUid() ) );
+                }
+            }
+        }
+
+        return importConflicts;
     }
 
     private void addAttributes( Patient patient, Person person )

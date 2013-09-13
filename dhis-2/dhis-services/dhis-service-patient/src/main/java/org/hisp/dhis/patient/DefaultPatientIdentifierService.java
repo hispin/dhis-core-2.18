@@ -28,9 +28,9 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -115,6 +115,11 @@ public class DefaultPatientIdentifierService
         return patientIdentifierStore.get( type, identifier );
     }
 
+    public Collection<PatientIdentifier> getAll( PatientIdentifierType type, String identifier )
+    {
+        return patientIdentifierStore.getAll( type, identifier );
+    }
+
     public Patient getPatient( PatientIdentifierType idenType, String value )
     {
         return patientIdentifierStore.getPatient( idenType, value );
@@ -135,7 +140,7 @@ public class DefaultPatientIdentifierService
     {
         return patientIdentifierStore.get( identifierTypes, patient );
     }
-    
+
     @Override
     public boolean checkDuplicateIdentifier( String identifier )
     {
