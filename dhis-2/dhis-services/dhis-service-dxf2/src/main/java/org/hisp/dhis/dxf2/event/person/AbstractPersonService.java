@@ -343,6 +343,85 @@ public abstract class AbstractPersonService implements PersonService
         return importSummary;
     }
 
+    private void addSystemIdentifier( Person person )
+    {
+        Date birthDate = person.getDateOfBirth() != null ? person.getDateOfBirth().getDate() : null;
+        String gender = person.getGender() != null ? person.getGender().getValue() : null;
+
+        if ( birthDate == null || gender == null )
+        {
+            birthDate = new Date();
+            gender = "F";
+        }
+
+        Iterator<Identifier> iterator = person.getIdentifiers().iterator();
+
+        // remove any old system identifiers
+        while ( iterator.hasNext() )
+        {
+            Identifier identifier = iterator.next();
+
+            if ( identifier.getType() == null )
+            {
+                iterator.remove();
+            }
+        }
+
+        String systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
+
+        PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
+
+        while ( patientIdentifier != null )
+        {
+            systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
+            patientIdentifier = patientIdentifierService.get( null, systemId );
+        }
+
+        Identifier identifier = new Identifier();
+        identifier.setValue( systemId );
+
+        person.getIdentifiers().add( identifier );
+    }
+
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
+
+    @Override
+    public ImportSummary updatePerson( Person person )
+    {
+        ImportSummary importSummary = new ImportSummary();
+
+        System.err.println( "UPDATE: " + person );
+        Patient patient = getPatient( person );
+
+        return importSummary;
+    }
+
+    // -------------------------------------------------------------------------
+    // DELETE
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void deletePerson( Person person )
+    {
+        System.err.println( "DELETE:" + person );
+        Patient patient = patientService.getPatient( person.getPerson() );
+
+        if ( patient != null )
+        {
+            patientService.deletePatient( patient );
+        }
+        else
+        {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // HELPERS
+    // -------------------------------------------------------------------------
+
     private List<ImportConflict> checkForRequiredIdentifiers( Person person )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
@@ -427,81 +506,6 @@ public abstract class AbstractPersonService implements PersonService
 
                 patient.getAttributes().add( patientAttribute );
             }
-        }
-    }
-
-    private void addSystemIdentifier( Person person )
-    {
-        Date birthDate = person.getDateOfBirth() != null ? person.getDateOfBirth().getDate() : null;
-        String gender = person.getGender() != null ? person.getGender().getValue() : null;
-
-        if ( birthDate == null || gender == null )
-        {
-            birthDate = new Date();
-            gender = "F";
-        }
-
-        Iterator<Identifier> iterator = person.getIdentifiers().iterator();
-
-        // remove any old system identifiers
-        while ( iterator.hasNext() )
-        {
-            Identifier identifier = iterator.next();
-
-            if ( identifier.getType() == null )
-            {
-                iterator.remove();
-            }
-        }
-
-        String systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
-
-        PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
-
-        while ( patientIdentifier != null )
-        {
-            systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
-            patientIdentifier = patientIdentifierService.get( null, systemId );
-        }
-
-        Identifier identifier = new Identifier();
-        identifier.setValue( systemId );
-
-        person.getIdentifiers().add( identifier );
-    }
-
-    // -------------------------------------------------------------------------
-    // UPDATE
-    // -------------------------------------------------------------------------
-
-    @Override
-    public ImportSummary updatePerson( Person person )
-    {
-        ImportSummary importSummary = new ImportSummary();
-
-        System.err.println( "UPDATE: " + person );
-        Patient patient = getPatient( person );
-
-        return importSummary;
-    }
-
-    // -------------------------------------------------------------------------
-    // DELETE
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void deletePerson( Person person )
-    {
-        System.err.println( "DELETE:" + person );
-        Patient patient = patientService.getPatient( person.getPerson() );
-
-        if ( patient != null )
-        {
-            patientService.deletePatient( patient );
-        }
-        else
-        {
-            throw new IllegalArgumentException();
         }
     }
 }
