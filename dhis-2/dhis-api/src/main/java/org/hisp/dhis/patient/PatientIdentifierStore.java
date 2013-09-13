@@ -28,43 +28,43 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+
+import java.util.Collection;
 
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
 public interface PatientIdentifierStore
-    extends GenericStore<PatientIdentifier>
+    extends GenericIdentifiableObjectStore<PatientIdentifier>
 {
     String ID = PatientIdentifierStore.class.getName();
 
     PatientIdentifier get( Patient patient );
 
     PatientIdentifier get( String identifier, OrganisationUnit organisationUnit );
-    
+
     PatientIdentifier get( PatientIdentifierType type, String identifier );
 
     Collection<PatientIdentifier> getByIdentifier( String identifier );
-    
-    Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType );
-    
-    PatientIdentifier getPatientIdentifier(String identifier, Patient patient);
 
-    PatientIdentifier getPatientIdentifier(PatientIdentifierType identifierType, Patient patient);
-    
+    Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType );
+
+    PatientIdentifier getPatientIdentifier( String identifier, Patient patient );
+
+    PatientIdentifier getPatientIdentifier( PatientIdentifierType identifierType, Patient patient );
+
     Collection<PatientIdentifier> getPatientIdentifiers( Patient patient );
-    
-    Patient getPatient( PatientIdentifierType idenType, String value);
-    
+
+    Patient getPatient( PatientIdentifierType idenType, String value );
+
     Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max );
-    
+
     int countGetPatientsByIdentifier( String identifier );
-        
-    Collection<PatientIdentifier> get(Collection<PatientIdentifierType> identifierTypes, Patient patient);
+
+    Collection<PatientIdentifier> get( Collection<PatientIdentifierType> identifierTypes, Patient patient );
 
     boolean checkDuplicateIdentifier( String identifier );
 
