@@ -15,7 +15,7 @@
         foreign-key="fk_completedatasetregistration_organisationunitid" />
     </composite-id>
 
-    <property name="date" type="date" column="date" />
+    <property name="date" column="date" type="timestamp" />
 	<property name="storedBy" column="storedby" />
 
   </class>

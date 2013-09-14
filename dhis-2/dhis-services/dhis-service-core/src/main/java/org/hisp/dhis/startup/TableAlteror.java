@@ -629,6 +629,7 @@ public class TableAlteror
         executeSql( "UPDATE optionset SET version=1 WHERE version IS NULL" );
         
         executeSql( "ALTER TABLE datavalue ALTER COLUMN lastupdated TYPE timestamp" );
+        executeSql( "ALTER TABLE completedatasetregistration ALTER COLUMN date TYPE timestamp" );
         executeSql( "ALTER TABLE message ALTER COLUMN userid DROP NOT NULL" );
         
         executeSql( "delete from usersetting where name = 'dashboardConfig' or name = 'dashboardConfiguration'" );
