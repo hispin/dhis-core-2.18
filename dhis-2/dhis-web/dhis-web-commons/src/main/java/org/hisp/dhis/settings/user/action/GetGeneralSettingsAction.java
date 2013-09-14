@@ -34,14 +34,12 @@ import static org.hisp.dhis.user.UserSettingService.KEY_DISPLAY_OPTION_SET_AS_RA
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.SortedMap;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.setting.StyleManager;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -56,13 +54,6 @@ public class GetGeneralSettingsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private ResourceBundleManager resourceBundleManager;
-
-    public void setResourceBundleManager( ResourceBundleManager resourceBundleManager )
-    {
-        this.resourceBundleManager = resourceBundleManager;
-    }
 
     private I18nService i18nService;
 
@@ -177,15 +168,15 @@ public class GetGeneralSettingsAction
         // Get available UI locales
         // ---------------------------------------------------------------------
 
-        availableLocales = new ArrayList<Locale>( resourceBundleManager.getAvailableLocales() );
+        availableLocales = localeManager.getAvailableLocales();
 
         currentLocale = localeManager.getCurrentLocale();
-
+                
         // ---------------------------------------------------------------------
         // Get available DB locales
         // ---------------------------------------------------------------------
 
-        availableLocalesDb = new ArrayList<Locale>( i18nService.getAvailableLocales() );
+        availableLocalesDb = i18nService.getAvailableLocales();
 
         currentLocaleDb = i18nService.getCurrentLocale();
 

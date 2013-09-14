@@ -54,6 +54,17 @@ public class UserSetting
 
     private Serializable value;
 
+    public UserSetting()
+    {
+    }
+    
+    public UserSetting( User user, String name, Serializable value )
+    {
+        this.user = user;
+        this.name = name;
+        this.value = value;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
