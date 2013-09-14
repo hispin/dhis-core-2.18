@@ -50,6 +50,7 @@ public interface UserSettingService
     final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";
     final String KEY_MESSAGE_EMAIL_NOTIFICATION = "keyMessageEmailNotification";
     final String KEY_MESSAGE_SMS_NOTIFICATION = "keyMessageSmsNotification";
+    final String KEY_UI_LOCALE = "currentLocale";
     final String KEY_DB_LOCALE = "keyLocaleUserSetting";
     final String KEY_GENERATE_REPORT_INTERFACE = "keyGenerateReportInterface";
     final String KEY_ANALYSIS_DISPLAY_PROPERTY = "keyAnalysisDisplayProperty";

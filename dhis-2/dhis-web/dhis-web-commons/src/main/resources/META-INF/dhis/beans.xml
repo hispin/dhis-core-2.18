@@ -580,7 +580,6 @@
   <bean id="org.hisp.dhis.settings.user.action.GetGeneralSettingsAction"
     class="org.hisp.dhis.settings.user.action.GetGeneralSettingsAction"
     scope="prototype">
-    <property name="resourceBundleManager" ref="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     <property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />

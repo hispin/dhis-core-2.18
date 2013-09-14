@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
+import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManagerException;
 import org.hisp.dhis.user.UserSettingService;
 
 /**
@@ -42,13 +44,6 @@ import org.hisp.dhis.user.UserSettingService;
 public class UserSettingLocaleManager
     implements LocaleManager
 {
-    private String userSettingKey;
-
-    public void setUserSettingKey( String userSettingKey )
-    {
-        this.userSettingKey = userSettingKey;
-    }
-
     private Locale defaultLocale;
 
     public void setDefaultLocale( Locale defaultLocale )
@@ -65,6 +60,13 @@ public class UserSettingLocaleManager
     public void setUserSettingService( UserSettingService userSettingService )
     {
         this.userSettingService = userSettingService;
+    }
+    
+    private ResourceBundleManager resourceBundleManager;
+
+    public void setResourceBundleManager( ResourceBundleManager resourceBundleManager )
+    {
+        this.resourceBundleManager = resourceBundleManager;
     }
 
     // -------------------------------------------------------------------------
@@ -90,7 +92,7 @@ public class UserSettingLocaleManager
 
     public void setCurrentLocale( Locale locale )
     {
-        userSettingService.saveUserSetting( userSettingKey, locale );
+        userSettingService.saveUserSetting( UserSettingService.KEY_UI_LOCALE, locale );
     }
 
     public List<Locale> getLocalesOrderedByPriority()
@@ -111,11 +113,23 @@ public class UserSettingLocaleManager
 
     private Locale getUserSelectedLocale()
     {
-        return (Locale) userSettingService.getUserSetting( userSettingKey, null );
+        return (Locale) userSettingService.getUserSetting( UserSettingService.KEY_UI_LOCALE, null );
     }
 
     public Locale getFallbackLocale()
     {
         return DHIS_STANDARD_LOCALE;
+    }
+    
+    public List<Locale> getAvailableLocales()
+    {
+        try
+        {
+            return resourceBundleManager.getAvailableLocales();
+        }
+        catch ( ResourceBundleManagerException ex )
+        {
+            throw new RuntimeException( ex );
+        }
     }
 }

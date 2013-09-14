@@ -38,12 +38,17 @@ public class LocaleUtils
     /**
      * Creates a Locale object based on the input String
      *
-     * @param localestr String to parse
+     * @param localeStr String to parse
      * @return A locale object or null if not valid
      */
-    public static Locale getLocale( String localestr ) 
+    public static Locale getLocale( String localeStr ) 
     {
-        String[] parts = localestr.split( "_" );
+        if ( localeStr == null )
+        {
+            return null;
+        }
+        
+        String[] parts = localeStr.split( "_" );
 
         Locale thisLocale;
 
