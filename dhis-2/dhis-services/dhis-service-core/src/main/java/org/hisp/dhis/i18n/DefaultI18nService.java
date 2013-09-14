@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -47,6 +46,7 @@ import java.util.Map;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.comparator.LocaleNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.translation.Translation;
@@ -95,13 +95,7 @@ public class DefaultI18nService
             }
         }
 
-        Collections.sort( locales, new Comparator<Locale>()
-        {
-            public int compare( Locale l1, Locale l2 )
-            {
-                return l1.getDisplayName().compareTo( l2.getDisplayName() );
-            }
-        } );
+        Collections.sort( locales, LocaleNameComparator.INSTANCE );
     }
 
     // -------------------------------------------------------------------------

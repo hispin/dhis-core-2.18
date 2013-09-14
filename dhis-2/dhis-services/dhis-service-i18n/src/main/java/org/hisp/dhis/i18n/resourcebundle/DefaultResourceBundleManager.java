@@ -28,6 +28,7 @@ package org.hisp.dhis.i18n.resourcebundle;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.comparator.LocaleNameComparator;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.util.PathUtils;
 
@@ -37,9 +38,12 @@ import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -53,8 +57,6 @@ import java.util.regex.Pattern;
  * @author Torgeir Lorange Ostby
  * @author Pham Thi Thuy
  * @author Nguyen Dang Quang
- * @version $Id: DefaultResourceBundleManager.java 6335 2008-11-20 11:11:26Z
- *          larshelg $
  */
 public class DefaultResourceBundleManager
     implements ResourceBundleManager
@@ -122,7 +124,7 @@ public class DefaultResourceBundleManager
         }
     }
 
-    public Collection<Locale> getAvailableLocales()
+    public List<Locale> getAvailableLocales()
         throws ResourceBundleManagerException
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -134,16 +136,22 @@ public class DefaultResourceBundleManager
             throw new ResourceBundleManagerException( "Failed to find global resource bundle" );
         }
 
+        List<Locale> locales = null;
+        
         if ( url.toExternalForm().startsWith( "jar:" ) )
         {
-            return getAvailableLocalesFromJar( url );
+            locales = new ArrayList<Locale>( getAvailableLocalesFromJar( url ) );
         }
         else
         {
             String dirPath = new File( url.getFile() ).getParent();
 
-            return getAvailableLocalesFromDir( dirPath );
+            locales = new ArrayList<Locale>( getAvailableLocalesFromDir( dirPath ) );
         }
+        
+        Collections.sort( locales, LocaleNameComparator.INSTANCE );
+        
+        return locales;
     }
 
     private Collection<Locale> getAvailableLocalesFromJar( URL url )

@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n.resourcebundle;
+package org.hisp.dhis.common.comparator;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,24 +28,20 @@ package org.hisp.dhis.i18n.resourcebundle;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Comparator;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
- * @author Pham Thi Thuy
- * @author Nguyen Dang Quang
- * @version $Id: ResourceBundleManager.java 6335 2008-11-20 11:11:26Z larshelg $
+ * @author Lars Helge Overland
  */
-public interface ResourceBundleManager
+public class LocaleNameComparator
+    implements Comparator<Locale>
 {
-    String ID = ResourceBundleManager.class.getName();
-
-    ResourceBundle getSpecificResourceBundle( Class<?> clazz, Locale locale );
-
-    ResourceBundle getSpecificResourceBundle( String clazzName, Locale locale );
-
-    ResourceBundle getGlobalResourceBundle( Locale locale ) throws ResourceBundleManagerException;
-
-    List<Locale> getAvailableLocales() throws ResourceBundleManagerException;
+    public static final LocaleNameComparator INSTANCE = new LocaleNameComparator();
+    
+    @Override
+    public int compare( Locale o1, Locale o2 )
+    {
+        return o1.getDisplayName().compareTo( o2.getDisplayName() );
+    }
 }
