@@ -252,7 +252,6 @@ public interface UserService
     void updateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup );
 
     /**
-     * 2
      * Retrieves the UserAuthorityGroup with the given identifier.
      *
      * @param id the identifier of the UserAuthorityGroup to retrieve.
@@ -261,7 +260,6 @@ public interface UserService
     UserAuthorityGroup getUserAuthorityGroup( int id );
 
     /**
-     * 2
      * Retrieves the UserAuthorityGroup with the given identifier.
      *
      * @param id the identifier of the UserAuthorityGroup to retrieve.
@@ -323,6 +321,14 @@ public interface UserService
     void addUserSetting( UserSetting userSetting );
 
     /**
+     * If a matching UserSetting exists, based on its user and name, it will be
+     * updated, if not, the given UserSetting will be added.
+     * 
+     * @param userSetting the UserSetting.
+     */
+    void addOrUpdateUserSetting( UserSetting userSetting );
+    
+    /**
      * Updates a UserSetting.
      *
      * @param userSetting the UserSetting to update.
@@ -339,6 +345,18 @@ public interface UserService
      */
     UserSetting getUserSetting( User user, String name );
 
+    /**
+     * Retrieves a user setting value for the given user and setting name. Returns
+     * the given default value if the setting does not exist or the setting value
+     * is null.
+     * 
+     * @param user the user.
+     * @param name the setting name.
+     * @param defaultValue the default value.
+     * @return a setting value.
+     */
+    Serializable getUserSettingValue( User user, String name, Serializable defaultValue );
+    
     /**
      * Retrieves all UserSettings for the given User.
      *

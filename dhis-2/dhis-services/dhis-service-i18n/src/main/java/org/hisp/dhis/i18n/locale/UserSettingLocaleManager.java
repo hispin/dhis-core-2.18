@@ -44,13 +44,6 @@ import org.hisp.dhis.user.UserSettingService;
 public class UserSettingLocaleManager
     implements LocaleManager
 {
-    private Locale defaultLocale;
-
-    public void setDefaultLocale( Locale defaultLocale )
-    {
-        this.defaultLocale = defaultLocale;
-    }
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -80,11 +73,6 @@ public class UserSettingLocaleManager
         if ( locale != null )
         {
             return locale;
-        }
-
-        if ( defaultLocale != null )
-        {
-            return defaultLocale;
         }
 
         return DHIS_STANDARD_LOCALE;

@@ -89,6 +89,30 @@
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
         <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )"></td> 
     </tr>
+    
+    <tr>
+        <td><label>$i18n.getString( "language" )</label></td>
+        <td>
+            <select id="localeUi" name="localeUi">
+            #foreach( $locale in $availableLocales )
+                <option value="$locale.toString()" #if( $locale == $currentLocale )selected="selected"#end>$locale.getDisplayName()</option>
+            #end
+            </select>
+        </td>
+    </tr>
+    
+    <tr>
+        <td><label>$i18n.getString( "db_language" )</label></td>
+        <td>
+            <select id="localeDb" name="localeDb">
+            <option value="">[$i18n.getString( "use_db_locale_no_translation" )]</option>
+            #foreach( $locale in $availableLocalesDb )
+                <option value="$locale.toString()" #if( $locale == $currentLocaleDb )selected="selected"#end>$locale.getDisplayName()</option>
+            #end
+            </select>
+        </td>
+    </tr>
+    
 </table>
 
 #tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )

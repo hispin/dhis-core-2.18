@@ -35,6 +35,7 @@ import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.system.util.AttributeUtils;
+import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.user.*;
 
 import java.util.*;
@@ -137,6 +138,20 @@ public class UpdateUserAction
         this.phoneNumber = phoneNumber;
     }
 
+    private String localeUi;
+    
+    public void setLocaleUi( String localeUi )
+    {
+        this.localeUi = localeUi;
+    }
+
+    private String localeDb;
+
+    public void setLocaleDb( String localeDb )
+    {
+        this.localeDb = localeDb;
+    }
+
     private Collection<String> selectedList = new ArrayList<String>();
 
     public void setSelectedList( Collection<String> selectedList )
@@ -232,6 +247,9 @@ public class UpdateUserAction
             selectionManager.setSelectedOrganisationUnits( units );
         }
 
+        userService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_UI_LOCALE, LocaleUtils.getLocale( localeUi ) ) );
+        userService.addOrUpdateUserSetting( new UserSetting( user, UserSettingService.KEY_DB_LOCALE, LocaleUtils.getLocale( localeDb ) ) );
+        
         return SUCCESS;
     }
 }
