@@ -28,19 +28,35 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
+import static org.hisp.dhis.user.UserSettingService.KEY_UI_LOCALE;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.system.filter.UserAuthorityGroupCanIssueFilter;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.user.*;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 
-import java.util.*;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Nguyen Hong Duc
@@ -88,6 +104,20 @@ public class SetupTreeAction
         this.attributeService = attributeService;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService i18nService )
+    {
+        this.i18nService = i18nService;
+    }
+
+    private LocaleManager localeManager;
+
+    public void setLocaleManager( LocaleManager localeManager )
+    {
+        this.localeManager = localeManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -120,6 +150,34 @@ public class SetupTreeAction
         return organisationUnitGroups;
     }
 
+    private List<Locale> availableLocales;
+
+    public List<Locale> getAvailableLocales()
+    {
+        return availableLocales;
+    }
+
+    private Locale currentLocale;
+
+    public Locale getCurrentLocale()
+    {
+        return currentLocale;
+    }
+
+    private List<Locale> availableLocalesDb;
+
+    public List<Locale> getAvailableLocalesDb()
+    {
+        return availableLocalesDb;
+    }
+
+    private Locale currentLocaleDb;
+
+    public Locale getCurrentLocaleDb()
+    {
+        return currentLocaleDb;
+    }
+
     private List<Attribute> attributes;
 
     public List<Attribute> getAttributes()
@@ -143,9 +201,12 @@ public class SetupTreeAction
     {
         userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
 
-        FilterUtils.filter( userAuthorityGroups,
-            new UserAuthorityGroupCanIssueFilter( currentUserService.getCurrentUser() ) );
+        FilterUtils.filter( userAuthorityGroups, new UserAuthorityGroupCanIssueFilter( currentUserService.getCurrentUser() ) );
 
+        availableLocales = localeManager.getAvailableLocales();
+        
+        availableLocalesDb = i18nService.getAvailableLocales();
+        
         if ( id != null )
         {
             User user = userService.getUser( id );
@@ -160,6 +221,10 @@ public class SetupTreeAction
             userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );
 
             attributeValues = AttributeUtils.getAttributeValueMap( user.getAttributeValues() );
+            
+            currentLocale = (Locale) userService.getUserSettingValue( user, KEY_UI_LOCALE, LocaleManager.DHIS_STANDARD_LOCALE );
+            
+            currentLocaleDb = (Locale) userService.getUserSettingValue( user, KEY_DB_LOCALE, null );
         }
         else
         {
@@ -167,6 +232,8 @@ public class SetupTreeAction
             {
                 selectionTreeManager.setSelectedOrganisationUnits( selectionManager.getSelectedOrganisationUnits() );
             }
+            
+            currentLocale = LocaleManager.DHIS_STANDARD_LOCALE;
         }
 
         attributes = new ArrayList<Attribute>( attributeService.getUserAttributes() );

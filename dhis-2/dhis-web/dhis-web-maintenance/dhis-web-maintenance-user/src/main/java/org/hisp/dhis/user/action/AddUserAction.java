@@ -39,11 +39,14 @@ import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.system.util.AttributeUtils;
+import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.UserSetting;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -157,6 +160,20 @@ public class AddUserAction
         this.passwordUnMatched = passwordUnMatched;
     }
 
+    private String localeUi;
+    
+    public void setLocaleUi( String localeUi )
+    {
+        this.localeUi = localeUi;
+    }
+
+    private String localeDb;
+
+    public void setLocaleDb( String localeDb )
+    {
+        this.localeDb = localeDb;
+    }
+
     private Collection<String> selectedList = new ArrayList<String>();
 
     public void setSelectedList( Collection<String> selectedList )
@@ -170,7 +187,7 @@ public class AddUserAction
     {
         this.jsonAttributeValues = jsonAttributeValues;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -235,7 +252,10 @@ public class AddUserAction
         {
             selectionManager.setSelectedOrganisationUnits( orgUnits );
         }
-
+        
+        userService.addUserSetting( new UserSetting( user, UserSettingService.KEY_UI_LOCALE, LocaleUtils.getLocale( localeUi ) ) );
+        userService.addUserSetting( new UserSetting( user, UserSettingService.KEY_DB_LOCALE, LocaleUtils.getLocale( localeDb ) ) );
+        
         return SUCCESS;
     }
 }

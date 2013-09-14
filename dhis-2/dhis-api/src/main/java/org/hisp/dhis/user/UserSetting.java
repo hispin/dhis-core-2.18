@@ -104,6 +104,13 @@ public class UserSetting
         return result;
     }
 
+    public void mergeWith( UserSetting other )
+    {
+        user = other.getUser() != null ? other.getUser() : user;
+        name = other.getName() != null ? other.getName() : name;
+        value = other.getValue() != null ? other.getValue() : value;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

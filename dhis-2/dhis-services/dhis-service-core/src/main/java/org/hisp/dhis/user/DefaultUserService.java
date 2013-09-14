@@ -480,6 +480,21 @@ public class DefaultUserService
     {
         userCredentialsStore.addUserSetting( userSetting );
     }
+    
+    public void addOrUpdateUserSetting( UserSetting userSetting )
+    {
+        UserSetting setting = getUserSetting( userSetting.getUser(), userSetting.getName() );
+        
+        if ( setting != null )
+        {
+            setting.mergeWith( userSetting );
+            updateUserSetting( setting );
+        }
+        else
+        {
+            addUserSetting( userSetting );
+        }
+    }
 
     public void updateUserSetting( UserSetting userSetting )
     {
@@ -504,6 +519,13 @@ public class DefaultUserService
     public UserSetting getUserSetting( User user, String name )
     {
         return userCredentialsStore.getUserSetting( user, name );
+    }
+    
+    public Serializable getUserSettingValue( User user, String name, Serializable defaultValue )
+    {
+        UserSetting setting = getUserSetting( user, name );
+        
+        return setting != null && setting.getValue() != null ? setting.getValue() : defaultValue;
     }
 
     public Map<User, Serializable> getUserSettings( String name, Serializable defaultValue )

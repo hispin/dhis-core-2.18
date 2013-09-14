@@ -43,11 +43,11 @@ public class LocaleUtils
      */
     public static Locale getLocale( String localeStr ) 
     {
-        if ( localeStr == null )
+        if ( localeStr == null || localeStr.trim().isEmpty() )
         {
             return null;
         }
-        
+                
         String[] parts = localeStr.split( "_" );
 
         Locale thisLocale;
