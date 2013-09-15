@@ -35,7 +35,7 @@
 				<tbody id="list">
 				#foreach( $organisationUnit in $organisationUnits )
 				<tr id="tr${organisationUnit.id}">
-					<td>$encoder.htmlEncode( $organisationUnit.name )</td>
+					<td onclick="showOrganisationUnitDetails( $organisationUnit.id )">$encoder.htmlEncode( $organisationUnit.name )</td>
 					<td style="text-align:right">
 						<a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 						#if( $organisationUnit.children.size() == 0 && $auth.hasAccess( "dhis-web-maintenance-organisationunit", "removeOrganisationUnit" ) )
