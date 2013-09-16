@@ -274,33 +274,7 @@ public abstract class AbstractPersonService implements PersonService
         }
 
         patient.setRegistrationDate( person.getDateOfRegistration() );
-
-        for ( Identifier identifier : person.getIdentifiers() )
-        {
-            if ( identifier.getType() == null )
-            {
-                PatientIdentifier patientIdentifier = new PatientIdentifier();
-                patientIdentifier.setIdentifier( identifier.getValue().trim() );
-                patientIdentifier.setIdentifierType( null );
-                patientIdentifier.setPatient( patient );
-
-                patient.getIdentifiers().add( patientIdentifier );
-
-                continue;
-            }
-
-            PatientIdentifierType type = manager.get( PatientIdentifierType.class, identifier.getType() );
-
-            if ( type != null )
-            {
-                PatientIdentifier patientIdentifier = new PatientIdentifier();
-                patientIdentifier.setIdentifier( identifier.getValue().trim() );
-                patientIdentifier.setIdentifierType( type );
-                patientIdentifier.setPatient( patient );
-
-                patient.getIdentifiers().add( patientIdentifier );
-            }
-        }
+        updateIdentifiers( person, patient );
 
         return patient;
     }
@@ -328,12 +302,12 @@ public abstract class AbstractPersonService implements PersonService
             return importSummary;
         }
 
-        addSystemIdentifier( person );
+        updateSystemIdentifier( person );
 
         Patient patient = getPatient( person );
         patientService.savePatient( patient );
 
-        addAttributes( person, patient );
+        updateAttributeValues( person, patient );
         patientService.updatePatient( patient );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
@@ -341,46 +315,6 @@ public abstract class AbstractPersonService implements PersonService
         importSummary.getImportCount().incrementImported();
 
         return importSummary;
-    }
-
-    private void addSystemIdentifier( Person person )
-    {
-        Date birthDate = person.getDateOfBirth() != null ? person.getDateOfBirth().getDate() : null;
-        String gender = person.getGender() != null ? person.getGender().getValue() : null;
-
-        if ( birthDate == null || gender == null )
-        {
-            birthDate = new Date();
-            gender = "F";
-        }
-
-        Iterator<Identifier> iterator = person.getIdentifiers().iterator();
-
-        // remove any old system identifiers
-        while ( iterator.hasNext() )
-        {
-            Identifier identifier = iterator.next();
-
-            if ( identifier.getType() == null )
-            {
-                iterator.remove();
-            }
-        }
-
-        String systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
-
-        PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
-
-        while ( patientIdentifier != null )
-        {
-            systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
-            patientIdentifier = patientIdentifierService.get( null, systemId );
-        }
-
-        Identifier identifier = new Identifier();
-        identifier.setValue( systemId );
-
-        person.getIdentifiers().add( identifier );
     }
 
     // -------------------------------------------------------------------------
@@ -396,6 +330,7 @@ public abstract class AbstractPersonService implements PersonService
         importSummary.setDataValueCount( null );
 
         Patient patient = manager.get( Patient.class, person.getPerson() );
+        System.err.println( "Patient: " + person );
         OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
@@ -443,6 +378,13 @@ public abstract class AbstractPersonService implements PersonService
         patient.setDobType( dateOfBirth.getType().getValue().charAt( 0 ) );
         patient.setBirthDate( dateOfBirth.getDate() );
 
+        updateSystemIdentifier( person );
+        removeIdentifiers( patient );
+        removeAttributeValues( patient );
+        patientService.updatePatient( patient );
+
+        updateIdentifiers( person, patient );
+        updateAttributeValues( person, patient );
         patientService.updatePatient( patient );
 
         System.err.println( "Patient: " + getPerson( patient ) );
@@ -553,7 +495,7 @@ public abstract class AbstractPersonService implements PersonService
         return importConflicts;
     }
 
-    private void addAttributes( Person person, Patient patient )
+    private void updateAttributeValues( Person person, Patient patient )
     {
         for ( Attribute attribute : person.getAttributes() )
         {
@@ -571,5 +513,116 @@ public abstract class AbstractPersonService implements PersonService
                 patient.getAttributes().add( patientAttribute );
             }
         }
+    }
+
+    private void updateSystemIdentifier( Person person )
+    {
+        Date birthDate = person.getDateOfBirth() != null ? person.getDateOfBirth().getDate() : null;
+        String gender = person.getGender() != null ? person.getGender().getValue() : null;
+
+        if ( birthDate == null || gender == null )
+        {
+            birthDate = new Date();
+            gender = "F";
+        }
+
+        Iterator<Identifier> iterator = person.getIdentifiers().iterator();
+
+        // remove any old system identifiers
+        while ( iterator.hasNext() )
+        {
+            Identifier identifier = iterator.next();
+
+            if ( identifier.getType() == null )
+            {
+                iterator.remove();
+            }
+        }
+
+        Identifier identifier = generateSystemIdentifier( birthDate, gender );
+
+        if ( person.getPerson() != null )
+        {
+            identifier = generateSystemIdentifier( birthDate, gender );
+            Patient patient = manager.get( Patient.class, person.getPerson() );
+
+            for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
+            {
+                if ( patientIdentifier.getIdentifierType() == null && patientIdentifier.getIdentifier() != null )
+                {
+                    identifier = new Identifier( patientIdentifier.getIdentifier() );
+                    break;
+                }
+            }
+        }
+
+        person.getIdentifiers().add( identifier );
+    }
+
+    private Identifier generateSystemIdentifier( Date birthDate, String gender )
+    {
+        String systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
+
+        PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
+
+        while ( patientIdentifier != null )
+        {
+            systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
+            patientIdentifier = patientIdentifierService.get( null, systemId );
+        }
+
+        Identifier identifier = new Identifier();
+        identifier.setValue( systemId );
+
+        return identifier;
+    }
+
+    // add identifiers from person => patient
+    private void updateIdentifiers( Person person, Patient patient )
+    {
+        for ( Identifier identifier : person.getIdentifiers() )
+        {
+            if ( identifier.getType() == null )
+            {
+                PatientIdentifier patientIdentifier = new PatientIdentifier();
+                patientIdentifier.setIdentifier( identifier.getValue().trim() );
+                patientIdentifier.setIdentifierType( null );
+                patientIdentifier.setPatient( patient );
+
+                patient.getIdentifiers().add( patientIdentifier );
+
+                continue;
+            }
+
+            PatientIdentifierType type = manager.get( PatientIdentifierType.class, identifier.getType() );
+
+            if ( type != null && nullIfEmpty( identifier.getValue() ) != null )
+            {
+                PatientIdentifier patientIdentifier = new PatientIdentifier();
+                patientIdentifier.setIdentifier( identifier.getValue().trim() );
+                patientIdentifier.setIdentifierType( type );
+                patientIdentifier.setPatient( patient );
+
+                patient.getIdentifiers().add( patientIdentifier );
+            }
+        }
+    }
+
+    private void removeIdentifiers( Patient patient )
+    {
+        for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
+        {
+            patientIdentifierService.deletePatientIdentifier( patientIdentifier );
+        }
+
+        patient.setIdentifiers( new HashSet<PatientIdentifier>() );
+        patientService.updatePatient( patient );
+    }
+
+    private void removeAttributeValues( Patient patient )
+    {
+        patientAttributeValueService.deletePatientAttributeValue( patient );
+        patient.setAttributes( new HashSet<PatientAttribute>() );
+        patientService.updatePatient( patient );
     }
 }
