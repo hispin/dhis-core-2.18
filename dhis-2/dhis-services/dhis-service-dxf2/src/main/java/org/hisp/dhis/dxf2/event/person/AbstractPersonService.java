@@ -408,6 +408,14 @@ public abstract class AbstractPersonService implements PersonService
                 new ImportConflict( "OrganisationUnit", "orgUnit " + person.getOrgUnit() + " does not point to valid organisation unit" ) );
         }
 
+        DateOfBirth dateOfBirth = person.getDateOfBirth();
+
+        if ( dateOfBirth == null )
+        {
+            importConflicts.add(
+                new ImportConflict( "DateOfBirth", "dateOfBirth is not present" ) );
+        }
+
         importSummary.setConflicts( importConflicts );
 
         if ( !importConflicts.isEmpty() )
@@ -426,6 +434,14 @@ public abstract class AbstractPersonService implements PersonService
 
         String phoneNumber = person.getContact() != null ? person.getContact().getPhoneNumber() : null;
         patient.setPhoneNumber( phoneNumber );
+
+        if ( DateOfBirthType.APPROXIMATE.equals( dateOfBirth.getType() ) )
+        {
+            dateOfBirth = new DateOfBirth( dateOfBirth.getAge() );
+        }
+
+        patient.setDobType( dateOfBirth.getType().getValue().charAt( 0 ) );
+        patient.setBirthDate( dateOfBirth.getDate() );
 
         patientService.updatePatient( patient );
 
