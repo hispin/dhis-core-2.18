@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event.person;
+package org.hisp.dhis.dxf2.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,88 +28,39 @@ package org.hisp.dhis.dxf2.event.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "identifier", namespace = DxfNamespaces.DXF_2_0 )
-public class Identifier
+@JacksonXmlRootElement( localName = "gender", namespace = DxfNamespaces.DXF_2_0 )
+public enum Gender
 {
-    private String type;
+    MALE( "M" ), FEMALE( "F" ), TRANSGENDER( "T" );
 
-    private String value;
+    private final String value;
 
-    public Identifier()
-    {
-    }
-
-    public Identifier( String value )
+    private Gender( String value )
     {
         this.value = value;
     }
 
-    public Identifier( String type, String value )
-    {
-        this.type = type;
-        this.value = value;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
     public String getValue()
     {
         return value;
     }
 
-    public void setValue( String value )
+    public static Gender fromString( String text )
     {
-        this.value = value;
-    }
+        for ( Gender gender : Gender.values() )
+        {
+            if ( text.equals( gender.getValue() ) )
+            {
+                return gender;
+            }
+        }
 
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
-
-        Identifier that = (Identifier) o;
-
-        if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
-        if ( value != null ? !value.equals( that.value ) : that.value != null ) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Identifier{" +
-            "type='" + type + '\'' +
-            ", value='" + value + '\'' +
-            '}';
+        throw new IllegalArgumentException();
     }
 }

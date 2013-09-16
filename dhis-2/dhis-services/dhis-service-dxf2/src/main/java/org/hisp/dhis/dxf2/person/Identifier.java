@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event.person;
+package org.hisp.dhis.dxf2.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -36,23 +36,23 @@ import org.hisp.dhis.common.DxfNamespaces;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
-public class Attribute
+@JacksonXmlRootElement( localName = "identifier", namespace = DxfNamespaces.DXF_2_0 )
+public class Identifier
 {
     private String type;
 
     private String value;
 
-    public Attribute()
+    public Identifier()
     {
     }
 
-    public Attribute( String value )
+    public Identifier( String value )
     {
         this.value = value;
     }
 
-    public Attribute( String type, String value )
+    public Identifier( String type, String value )
     {
         this.type = type;
         this.value = value;
@@ -88,10 +88,10 @@ public class Attribute
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
 
-        Attribute attribute = (Attribute) o;
+        Identifier that = (Identifier) o;
 
-        if ( type != null ? !type.equals( attribute.type ) : attribute.type != null ) return false;
-        if ( value != null ? !value.equals( attribute.value ) : attribute.value != null ) return false;
+        if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
+        if ( value != null ? !value.equals( that.value ) : that.value != null ) return false;
 
         return true;
     }
@@ -104,9 +104,10 @@ public class Attribute
         return result;
     }
 
-    @Override public String toString()
+    @Override
+    public String toString()
     {
-        return "Attribute{" +
+        return "Identifier{" +
             "type='" + type + '\'' +
             ", value='" + value + '\'' +
             '}';
