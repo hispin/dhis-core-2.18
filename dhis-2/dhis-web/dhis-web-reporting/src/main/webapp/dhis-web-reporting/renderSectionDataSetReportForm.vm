@@ -34,7 +34,7 @@
 #foreach( $col in $row )
 #set( $index = ( $velocityCount - 1 ) )
 #if( $grid.getVisibleHeaders().get( $index ).meta )<td class="lAln">$!encoder.htmlEncode( $col.value )</td>
-#else<td #if( $col.hasAttr( 'de' ) )data-de="$!{col.attr( 'de' )}"#end #if( $col.hasAttr( 'co' ) )data-co="$!{col.attr( 'co' )}"#end>$!format.formatValue( $col.value )</td>#end
+#else<td><span class="val" #if( $col.hasAttr( 'de' ) )data-de="$!{col.attr( 'de' )}" data-co="$!{col.attr( 'co' )}"#end>$!format.formatValue( $col.value )</span></td>#end
 #end
 </tr>
 #end

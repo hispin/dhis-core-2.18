@@ -142,7 +142,7 @@ public class DefaultDataSetReportService
         Map<String, Double> totalMap = dataSetReportStore.getAggregatedTotals( dataSet, period, unit, groups );
 
         List<Grid> grids = new ArrayList<Grid>();
-System.out.println("value mpa " + valueMap);
+        
         // ---------------------------------------------------------------------
         // Create a grid for each section
         // ---------------------------------------------------------------------
@@ -318,7 +318,7 @@ System.out.println("value mpa " + valueMap);
 
                 Double dataValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );
 
-                String value = "<span data-de=\"" + dataElementId + "\" data-co=\"" + optionComboId + "\">" + format.formatValue( dataValue ) + "</span>";
+                String value = "<span class=\"val\" data-de=\"" + dataElementId + "\" data-co=\"" + optionComboId + "\">" + format.formatValue( dataValue ) + "</span>";
                 
                 inputMatcher.appendReplacement( buffer, value );
             }
