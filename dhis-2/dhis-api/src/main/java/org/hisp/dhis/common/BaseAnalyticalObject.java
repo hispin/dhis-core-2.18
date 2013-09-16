@@ -292,7 +292,7 @@ public abstract class BaseAnalyticalObject
             
             if ( itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty() )
             {
-                items.addAll( organisationUnitGroups ); // Must be set externally
+                items.addAll( organisationUnitsInGroups ); // Must be set externally
             }
             
             type = DimensionType.ORGANISATIONUNIT;
