@@ -75,7 +75,7 @@ public class Section
     {
     }
 
-    public Section( String name, String title, DataSet dataSet, List<DataElement> dataElements, Set<DataElementOperand> greyedFields )
+    public Section( String name, DataSet dataSet, List<DataElement> dataElements, Set<DataElementOperand> greyedFields )
     {
         this.name = name;
         this.dataSet = dataSet;

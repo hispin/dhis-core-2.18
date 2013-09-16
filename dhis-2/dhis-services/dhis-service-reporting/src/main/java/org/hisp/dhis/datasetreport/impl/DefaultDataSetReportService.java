@@ -37,7 +37,6 @@ import static org.hisp.dhis.datasetreport.DataSetReportStore.SEPARATOR;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +45,7 @@ import java.util.regex.Matcher;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.GridValue;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -61,7 +60,6 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
@@ -77,7 +75,6 @@ import org.hisp.dhis.system.util.FilterUtils;
 public class DefaultDataSetReportService
     implements DataSetReportService
 {   
-    private static final String NULL_REPLACEMENT = "";
     private static final String DEFAULT_HEADER = "Value";
     private static final String TOTAL_HEADER = "Total";
     private static final String SPACE = " ";
@@ -145,7 +142,7 @@ public class DefaultDataSetReportService
         Map<String, Double> totalMap = dataSetReportStore.getAggregatedTotals( dataSet, period, unit, groups );
 
         List<Grid> grids = new ArrayList<Grid>();
-
+System.out.println("value mpa " + valueMap);
         // ---------------------------------------------------------------------
         // Create a grid for each section
         // ---------------------------------------------------------------------
@@ -247,106 +244,33 @@ public class DefaultDataSetReportService
         return grids;
     }
 
-    // TODO convert to sections and render similarily
-    
-    public Grid getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups, boolean selectedUnitOnly, I18nFormat format, I18n i18n )
+    public List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups, 
+        boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
-
-        Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
-        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-
-        Map<String, Double> valueMap = dataSetReportStore.getAggregatedValues( dataSet, period, unit, groups, selectedUnitOnly );
-        Map<String, Double> indicatorValueMap = dataSetReportStore.getAggregatedIndicatorValues( dataSet, period, unit, groups );
+        ListMap<DataElementCategoryCombo, DataElement> map = new ListMap<DataElementCategoryCombo, DataElement>();
         
-        // ---------------------------------------------------------------------
-        // Get category option combos
-        // ---------------------------------------------------------------------
-
-        Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
-
-        for ( DataElement dataElement : dataElements )
+        for ( DataElement dataElement : dataSet.getDataElements() )
         {
-            optionCombos.addAll( dataElement.getCategoryCombo().getOptionCombos() );
+            map.putValue( dataElement.getCategoryCombo(), dataElement );
         }
 
-        List<DataElementCategoryOptionCombo> orderedOptionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-            optionCombos );
-
-        Collections.sort( orderedOptionCombos, IdentifiableObjectNameComparator.INSTANCE );
-
-        // ---------------------------------------------------------------------
-        // Create a grid
-        // ---------------------------------------------------------------------
-
-        Grid grid = new ListGrid().setTitle( dataSet.getName() );
-        grid.setSubtitle( unit.getName() + SPACE + format.formatPeriod( period ) );
-
-        // ---------------------------------------------------------------------
-        // Headers
-        // ---------------------------------------------------------------------
-
-        grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
-         
-        for ( DataElementCategoryOptionCombo optionCombo : orderedOptionCombos )
-        {
-            grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
-        }
-
-        // ---------------------------------------------------------------------
-        // Values
-        // ---------------------------------------------------------------------
-
-        for ( DataElement dataElement : dataElements )
-        {
-            grid.addRow();
-
-            grid.addValue( dataElement.getName() );
-
-            for ( DataElementCategoryOptionCombo optionCombo : orderedOptionCombos )
-            {
-                Double value = null;
-
-                if ( selectedUnitOnly )
-                {
-                    DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
-                    value = dataValue != null && dataValue.getValue() != null ? Double.parseDouble( dataValue.getValue() ) : null;
-                }
-                else
-                {
-                    value = valueMap.get( dataElement.getUid() + SEPARATOR + optionCombo.getUid() );
-                }
-
-                grid.addValue( value );
-
-            }
-        }
+        DataSet temp = new DataSet( dataSet.getName(), dataSet.getShortName(), dataSet.getPeriodType() );
+        temp.setDataElements( dataSet.getDataElements() );
         
-        // ---------------------------------------------------------------------
-        // Indicator values
-        // ---------------------------------------------------------------------
-
-        List<Indicator> indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
-        
-        for ( Indicator indicator : indicators )
+        for ( DataElementCategoryCombo categoryCombo : map.keySet() )
         {
-            grid.addRow();
-
-            grid.addValue( indicator.getName() );
+            List<DataElement> dataElements = map.get( categoryCombo );
             
-            Double value = indicatorValueMap.get( String.valueOf( indicator.getUid() ) );
+            String name = categoryCombo.isDefault() ? dataSet.getName() : categoryCombo.getName();
             
-            grid.addValue( value );
+            Section section = new Section( name, dataSet, dataElements, null );
             
-            for ( int i = 0; i < orderedOptionCombos.size() - 1; i++ )
-            {
-                grid.addValue( NULL_REPLACEMENT );
-            }
+            temp.getSections().add( section );
         }
         
-        return grid;
+        return getSectionDataSetReport( temp, period, unit, groups, selectedUnitOnly, format, i18n );
     }
-
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

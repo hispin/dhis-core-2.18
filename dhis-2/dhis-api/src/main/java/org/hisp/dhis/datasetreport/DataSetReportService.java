@@ -65,7 +65,7 @@ public interface DataSetReportService
      * @param period the period.
      * @param selectedUnitOnly indicates whether to use captured or aggregated data. 
      * @param format the i18n format.
-     * @return
+     * @return a list of Grids.
      */
     List<Grid> getCustomDataSetReportAsGrid( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups,
         boolean selectedUnitOnly, I18nFormat format );
@@ -80,9 +80,9 @@ public interface DataSetReportService
      * @param selectedUnitOnly indicates whether to use captured or aggregated data. 
      * @param format the i18n format.
      * @param i18n the i18n object.
-     * @return a Grid.
+     * @return a list of Grids.
      */
-    Grid getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups,  boolean selectedUnitOnly, I18nFormat format, I18n i18n );
+    List<Grid> getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, Set<OrganisationUnitGroup> groups,  boolean selectedUnitOnly, I18nFormat format, I18n i18n );
     
     /**
      * Generates a list of Grids representing a data set report. The data elements

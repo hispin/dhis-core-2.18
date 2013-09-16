@@ -229,13 +229,6 @@ public class GenerateDataSetReportAction
         return grids;
     }
 
-    private Grid grid;
-
-    public Grid getGrid()
-    {
-        return grid;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -304,7 +297,7 @@ public class GenerateDataSetReportAction
         }
         else
         {
-            grid = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, ouGroups, selectedUnitOnly, format, i18n );
+            grids = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, ouGroups, selectedUnitOnly, format, i18n );
         }
         
         return type != null ? type : dataSetType;
