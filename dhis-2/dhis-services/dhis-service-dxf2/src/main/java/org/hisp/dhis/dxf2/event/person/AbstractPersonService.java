@@ -324,18 +324,22 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public ImportSummary updatePerson( Person person )
     {
-        System.err.println( "Person: " + person );
-
         ImportSummary importSummary = new ImportSummary();
         importSummary.setDataValueCount( null );
-
-        Patient patient = manager.get( Patient.class, person.getPerson() );
-        System.err.println( "Patient: " + person );
-        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         importConflicts.addAll( checkForRequiredIdentifiers( person ) );
         importConflicts.addAll( checkForRequiredAttributes( person ) );
+
+        Patient patient = manager.get( Patient.class, person.getPerson() );
+
+        if ( patient == null )
+        {
+            importConflicts.add(
+                new ImportConflict( "Person", "person " + person.getPerson() + " does not point to valid person" ) );
+        }
+
+        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
 
         if ( organisationUnit == null )
         {
@@ -386,8 +390,6 @@ public abstract class AbstractPersonService implements PersonService
         updateIdentifiers( person, patient );
         updateAttributeValues( person, patient );
         patientService.updatePatient( patient );
-
-        System.err.println( "Patient: " + getPerson( patient ) );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
         importSummary.setReference( patient.getUid() );
