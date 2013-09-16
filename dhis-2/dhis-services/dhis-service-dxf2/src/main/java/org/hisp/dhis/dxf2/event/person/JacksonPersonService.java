@@ -106,12 +106,14 @@ public class JacksonPersonService extends AbstractPersonService
 
             for ( Person person : persons.getPersons() )
             {
+                person.setPerson( null );
                 importSummaries.addImportSummary( savePerson( person ) );
             }
         }
         catch ( Exception ex )
         {
             Person person = fromXml( input, Person.class );
+            person.setPerson( null );
             importSummaries.addImportSummary( savePerson( person ) );
         }
 
@@ -130,12 +132,14 @@ public class JacksonPersonService extends AbstractPersonService
 
             for ( Person person : persons.getPersons() )
             {
+                person.setPerson( null );
                 importSummaries.addImportSummary( savePerson( person ) );
             }
         }
         catch ( Exception ex )
         {
             Person person = fromJson( input, Person.class );
+            person.setPerson( null );
             importSummaries.addImportSummary( savePerson( person ) );
         }
 

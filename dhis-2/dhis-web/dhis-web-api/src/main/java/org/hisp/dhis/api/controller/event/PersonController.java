@@ -202,11 +202,6 @@ public class PersonController
         }
     }
 
-    public String getResourcePath( HttpServletRequest request, ImportSummary importSummary )
-    {
-        return ContextUtils.getContextPath( request ) + "/api/" + "persons" + "/" + importSummary.getReference();
-    }
-
     // -------------------------------------------------------------------------
     // UPDATE
     // -------------------------------------------------------------------------
@@ -264,5 +259,10 @@ public class PersonController
         }
 
         return program;
+    }
+
+    private String getResourcePath( HttpServletRequest request, ImportSummary importSummary )
+    {
+        return ContextUtils.getContextPath( request ) + "/api/" + "persons" + "/" + importSummary.getReference();
     }
 }
