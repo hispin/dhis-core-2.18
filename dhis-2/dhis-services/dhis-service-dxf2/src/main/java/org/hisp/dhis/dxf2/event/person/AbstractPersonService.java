@@ -390,16 +390,23 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public ImportSummary updatePerson( Person person )
     {
-        System.err.println( "UPDATE: " + person );
+        System.err.println( "Person: " + person );
 
         ImportSummary importSummary = new ImportSummary();
         importSummary.setDataValueCount( null );
 
-        Patient patient = patientService.getPatient( person.getPerson() );
+        Patient patient = manager.get( Patient.class, person.getPerson() );
+        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         importConflicts.addAll( checkForRequiredIdentifiers( person ) );
         importConflicts.addAll( checkForRequiredAttributes( person ) );
+
+        if ( organisationUnit == null )
+        {
+            importConflicts.add(
+                new ImportConflict( "OrganisationUnit", "orgUnit " + person.getOrgUnit() + " does not point to valid organisation unit" ) );
+        }
 
         importSummary.setConflicts( importConflicts );
 
@@ -409,6 +416,20 @@ public abstract class AbstractPersonService implements PersonService
             importSummary.getImportCount().incrementIgnored();
             return importSummary;
         }
+
+        patient.setName( person.getName() );
+        patient.setGender( person.getGender().getValue() );
+        patient.setIsDead( person.isDeceased() );
+        patient.setDeathDate( person.getDateOfDeath() );
+        // TODO should we allow update of this property?
+        patient.setRegistrationDate( person.getDateOfRegistration() );
+
+        String phoneNumber = person.getContact() != null ? person.getContact().getPhoneNumber() : null;
+        patient.setPhoneNumber( phoneNumber );
+
+        patientService.updatePatient( patient );
+
+        System.err.println( "Patient: " + getPerson( patient ) );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
         importSummary.setReference( patient.getUid() );
@@ -424,7 +445,6 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public void deletePerson( Person person )
     {
-        System.err.println( "DELETE:" + person );
         Patient patient = patientService.getPatient( person.getPerson() );
 
         if ( patient != null )
