@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event.person;
+package org.hisp.dhis.dxf2.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,39 +28,45 @@ package org.hisp.dhis.dxf2.event.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "gender", namespace = DxfNamespaces.DXF_2_0 )
-public enum Gender
+@JacksonXmlRootElement( localName = "persons", namespace = DxfNamespaces.DXF_2_0 )
+public class Persons
 {
-    MALE( "M" ), FEMALE( "F" ), TRANSGENDER( "T" );
+    private List<Person> persons = new ArrayList<Person>();
 
-    private final String value;
-
-    private Gender( String value )
+    public Persons()
     {
-        this.value = value;
     }
 
-    public String getValue()
+    @JsonProperty( "personList" )
+    @JacksonXmlElementWrapper( localName = "personList", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Person> getPersons()
     {
-        return value;
+        return persons;
     }
 
-    public static Gender fromString( String text )
+    public void setPersons( List<Person> persons )
     {
-        for ( Gender gender : Gender.values() )
-        {
-            if ( text.equals( gender.getValue() ) )
-            {
-                return gender;
-            }
-        }
+        this.persons = persons;
+    }
 
-        throw new IllegalArgumentException();
+    @Override
+    public String toString()
+    {
+        return "Persons{" +
+            "persons=" + persons +
+            '}';
     }
 }

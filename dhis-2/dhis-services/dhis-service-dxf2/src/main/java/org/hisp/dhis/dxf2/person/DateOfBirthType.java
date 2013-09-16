@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event.tasks;
+package org.hisp.dhis.dxf2.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,68 +28,37 @@ package org.hisp.dhis.dxf2.event.tasks;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.event.EventService;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.scheduling.TaskId;
-import org.hisp.dhis.user.User;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ImportEventTask
-    implements Runnable
+public enum DateOfBirthType
 {
-    private final InputStream inputStream;
+    VERIFIED( "V" ),
+    DECLARED( "D" ),
+    APPROXIMATE( "A" );
 
-    private final EventService eventService;
+    private final String value;
 
-    private final ImportOptions importOptions;
-
-    private final TaskId taskId;
-
-    private final boolean jsonInput;
-
-    private final Authentication authentication;
-
-    public ImportEventTask( InputStream inputStream, EventService eventService, ImportOptions importOptions, TaskId taskId, boolean jsonInput )
+    private DateOfBirthType( String value )
     {
-        this.inputStream = inputStream;
-        this.eventService = eventService;
-        this.importOptions = importOptions;
-        this.taskId = taskId;
-        this.jsonInput = jsonInput;
-        this.authentication = SecurityContextHolder.getContext().getAuthentication();
+        this.value = value;
     }
 
-    @Override
-    public void run()
+    public String getValue()
     {
-        SecurityContextHolder.getContext().setAuthentication( authentication );
+        return value;
+    }
 
-        if ( jsonInput )
+    public static DateOfBirthType fromString( String text )
+    {
+        for ( DateOfBirthType dateOfBirthType : DateOfBirthType.values() )
         {
-            try
+            if ( text.equals( dateOfBirthType.getValue() ) )
             {
-                eventService.saveEventsJson( inputStream, taskId, importOptions );
-            }
-            catch ( IOException ignored )
-            {
+                return dateOfBirthType;
             }
         }
-        else
-        {
-            try
-            {
-                eventService.saveEventsXml( inputStream, taskId, importOptions );
-            }
-            catch ( IOException ignored )
-            {
-            }
-        }
+
+        throw new IllegalArgumentException();
     }
 }

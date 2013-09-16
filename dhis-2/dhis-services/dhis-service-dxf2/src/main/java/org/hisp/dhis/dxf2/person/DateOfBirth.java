@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event.person;
+package org.hisp.dhis.dxf2.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo

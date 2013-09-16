@@ -35,7 +35,7 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.event.Event;
 import org.hisp.dhis.dxf2.event.EventService;
 import org.hisp.dhis.dxf2.event.Events;
-import org.hisp.dhis.dxf2.event.tasks.ImportEventTask;
+import org.hisp.dhis.dxf2.event.ImportEventTask;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;

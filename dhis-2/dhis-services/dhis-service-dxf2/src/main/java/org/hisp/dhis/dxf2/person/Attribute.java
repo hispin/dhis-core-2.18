@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event.person;
+package org.hisp.dhis.dxf2.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -29,44 +29,86 @@ package org.hisp.dhis.dxf2.event.person;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "persons", namespace = DxfNamespaces.DXF_2_0 )
-public class Persons
+@JacksonXmlRootElement( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
+public class Attribute
 {
-    private List<Person> persons = new ArrayList<Person>();
+    private String type;
 
-    public Persons()
+    private String value;
+
+    public Attribute()
     {
     }
 
-    @JsonProperty( "personList" )
-    @JacksonXmlElementWrapper( localName = "personList", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
-    public List<Person> getPersons()
+    public Attribute( String value )
     {
-        return persons;
+        this.value = value;
     }
 
-    public void setPersons( List<Person> persons )
+    public Attribute( String type, String value )
     {
-        this.persons = persons;
+        this.type = type;
+        this.value = value;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
 
     @Override
-    public String toString()
+    public boolean equals( Object o )
     {
-        return "Persons{" +
-            "persons=" + persons +
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        Attribute attribute = (Attribute) o;
+
+        if ( type != null ? !type.equals( attribute.type ) : attribute.type != null ) return false;
+        if ( value != null ? !value.equals( attribute.value ) : attribute.value != null ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = type != null ? type.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
+
+    @Override public String toString()
+    {
+        return "Attribute{" +
+            "type='" + type + '\'' +
+            ", value='" + value + '\'' +
             '}';
     }
 }

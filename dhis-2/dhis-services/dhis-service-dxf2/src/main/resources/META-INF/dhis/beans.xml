@@ -18,7 +18,7 @@
 
   <bean id="org.hisp.dhis.dxf2.event.EventService" class="org.hisp.dhis.dxf2.event.JacksonEventService" />
 
-  <bean id="org.hisp.dhis.dxf2.event.PersonService" class="org.hisp.dhis.dxf2.event.person.JacksonPersonService" />
+  <bean id="org.hisp.dhis.dxf2.event.PersonService" class="org.hisp.dhis.dxf2.person.JacksonPersonService" />
 
   <bean id="org.hisp.dhis.dxf2.InputValidationService" class="org.hisp.dhis.dxf2.DefaultInputValidationService" />
 

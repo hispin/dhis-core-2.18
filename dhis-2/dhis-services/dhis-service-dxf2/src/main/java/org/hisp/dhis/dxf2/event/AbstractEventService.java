@@ -185,14 +185,22 @@ public abstract class AbstractEventService implements EventService
         }
         else if ( program.getType() == Program.SINGLE_EVENT_WITH_REGISTRATION )
         {
-            return saveSingleEventWithRegistration( program, organisationUnit, event );
+            return saveEventWithRegistration( program, organisationUnit, event, importOptions );
         }
         else if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
-            return saveMultipleEventsWithRegistration( program, organisationUnit, event );
+            return saveEventWithRegistration( program, organisationUnit, event, importOptions );
         }
 
         return new ImportSummary();
+    }
+
+    private ImportSummary saveEventWithRegistration( Program program, OrganisationUnit organisationUnit, Event event, ImportOptions importOptions )
+    {
+        ImportSummary importSummary = new ImportSummary();
+        importSummary.setStatus( ImportStatus.SUCCESS );
+
+        return importSummary;
     }
 
     private ImportSummary saveSingleEventWithoutRegistration( Program program, OrganisationUnit organisationUnit, Event event, ImportOptions importOptions )
@@ -222,7 +230,9 @@ public abstract class AbstractEventService implements EventService
 
         if ( importOptions == null || !importOptions.isDryRun() )
         {
-            programStageInstance = saveEventDate( program, organisationUnit, eventDate,
+            ProgramInstance programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
+
+            programStageInstance = saveEventDate( programInstance, organisationUnit, eventDate,
                 event.getCompleted(), event.getCoordinate(), storedBy );
 
             importSummary.setReference( programStageInstance.getUid() );
@@ -299,11 +309,10 @@ public abstract class AbstractEventService implements EventService
         return new ImportSummary();
     }
 
-    private ProgramStageInstance saveEventDate( Program program, OrganisationUnit organisationUnit, Date date, Boolean completed,
+    private ProgramStageInstance saveEventDate( ProgramInstance programInstance, OrganisationUnit organisationUnit, Date date, Boolean completed,
         Coordinate coordinate, String storedBy )
     {
-        ProgramStage programStage = program.getProgramStages().iterator().next();
-        ProgramInstance programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
+        ProgramStage programStage = programInstance.getProgram().getProgramStageByStage( 1 );
 
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
         programStageInstance.setProgramInstance( programInstance );

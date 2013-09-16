@@ -32,10 +32,10 @@ import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.event.person.Gender;
-import org.hisp.dhis.dxf2.event.person.Person;
-import org.hisp.dhis.dxf2.event.person.PersonService;
-import org.hisp.dhis.dxf2.event.person.Persons;
+import org.hisp.dhis.dxf2.person.Gender;
+import org.hisp.dhis.dxf2.person.Person;
+import org.hisp.dhis.dxf2.person.PersonService;
+import org.hisp.dhis.dxf2.person.Persons;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -233,6 +233,11 @@ public class PersonController
         Person person = getPerson( id );
         personService.deletePerson( person );
     }
+
+    // -------------------------------------------------------------------------
+    // ENROLLMENT
+    // -------------------------------------------------------------------------
+
 
     // -------------------------------------------------------------------------
     // HELPERS
