@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.event.person.Gender;
@@ -135,18 +136,6 @@ public class PersonController
         return "persons";
     }
 
-    private Program getProgram( String programUid )
-    {
-        Program program = manager.get( Program.class, programUid );
-
-        if ( program == null )
-        {
-            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "program is not valid uid." );
-        }
-
-        return program;
-    }
-
     private OrganisationUnit getOrganisationUnit( String orgUnitUid )
     {
         OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
@@ -244,9 +233,36 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deletePerson( @PathVariable String id )
+    public void deletePerson( @PathVariable String id ) throws NotFoundException
+    {
+        Person person = getPerson( id );
+        personService.deletePerson( person );
+    }
+
+    // -------------------------------------------------------------------------
+    // HELPERS
+    // -------------------------------------------------------------------------
+
+    private Person getPerson( String id ) throws NotFoundException
     {
         Person person = personService.getPerson( id );
-        personService.deletePerson( person );
+
+        if ( person == null )
+        {
+            throw new NotFoundException( "Person", id );
+        }
+        return person;
+    }
+
+    private Program getProgram( String id ) throws NotFoundException
+    {
+        Program program = manager.get( Program.class, id );
+
+        if ( program == null )
+        {
+            throw new NotFoundException( "Person", id );
+        }
+
+        return program;
     }
 }
