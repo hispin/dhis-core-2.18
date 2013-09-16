@@ -39,7 +39,7 @@ import java.util.Date;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "dateOfBirth", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "dateOfBirth", namespace = DxfNamespaces.DXF_2_0 )
 public class DateOfBirth
 {
     private Date date;
@@ -50,31 +50,33 @@ public class DateOfBirth
 
     public DateOfBirth()
     {
+        this.type = DateOfBirthType.APPROXIMATE;
+        this.age = 0;
     }
 
     public DateOfBirth( Date date )
     {
-        this.date = date;
-        this.age = Patient.getIntegerValueOfAge( date );
         this.type = DateOfBirthType.VERIFIED;
+        this.age = Patient.getIntegerValueOfAge( date );
+        this.date = date;
     }
 
     public DateOfBirth( Date date, DateOfBirthType type )
     {
-        this.date = date;
-        this.age = Patient.getIntegerValueOfAge( date );
         this.type = type;
+        this.age = Patient.getIntegerValueOfAge( date );
+        this.date = date;
     }
 
     public DateOfBirth( Integer age )
     {
+        this.type = DateOfBirthType.APPROXIMATE;
         this.age = age;
         this.date = Patient.getBirthFromAge( age, Patient.AGE_TYPE_YEAR );
-        this.type = DateOfBirthType.APPROXIMATE;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(isAttribute = true)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
     public Date getDate()
     {
         return date;
@@ -102,6 +104,7 @@ public class DateOfBirth
 
         DateOfBirth that = (DateOfBirth) o;
 
+        if ( age != null ? !age.equals( that.age ) : that.age != null ) return false;
         if ( date != null ? !date.equals( that.date ) : that.date != null ) return false;
         if ( type != that.type ) return false;
 
@@ -113,6 +116,7 @@ public class DateOfBirth
     {
         int result = date != null ? date.hashCode() : 0;
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (age != null ? age.hashCode() : 0);
         return result;
     }
 
@@ -122,6 +126,7 @@ public class DateOfBirth
         return "DateOfBirth{" +
             "date=" + date +
             ", type=" + type +
+            ", age=" + age +
             '}';
     }
 }
