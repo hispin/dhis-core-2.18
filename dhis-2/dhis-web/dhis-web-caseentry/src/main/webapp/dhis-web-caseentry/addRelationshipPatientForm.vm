@@ -61,8 +61,8 @@
 			<select name="relationshipTypeId" id="relationshipTypeId" class="{validate:{required:true}}" >
 				<option value="">[$i18n.getString( "please_select" )]</option>        
 				#foreach ($relationship in $relationshipTypes)
-					<option value="$relationship.id" relationshipFromA='true'>$encoder.htmlEncode(${relationship.aIsToB}) $i18n.getString("of") $encoder.htmlEncode($patient.name) ($encoder.htmlEncode(${relationship.bIsToA}))</option>
-					<option value="$relationship.id" relationshipFromA='false'>$encoder.htmlEncode(${relationship.bIsToA}) $i18n.getString("of") $encoder.htmlEncode($patient.name) ($encoder.htmlEncode(${relationship.aIsToB}))</option>
+					<option value="$relationship.id" relationshipFromA='true'>$encoder.htmlEncode(${relationship.aIsToB}) $i18n.getString("of") $encoder.htmlEncode($patient.getFullName()) ($encoder.htmlEncode(${relationship.bIsToA}))</option>
+					<option value="$relationship.id" relationshipFromA='false'>$encoder.htmlEncode(${relationship.bIsToA}) $i18n.getString("of") $encoder.htmlEncode($patient.getFullName()) ($encoder.htmlEncode(${relationship.aIsToB}))</option>
 				#end
 			</select>
 		</td>

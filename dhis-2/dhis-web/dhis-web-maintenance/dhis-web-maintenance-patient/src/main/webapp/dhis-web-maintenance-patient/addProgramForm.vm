@@ -127,6 +127,14 @@
 			<td></td>
 		</tr>
 		
+		<tr>
+			<td><label>$i18n.getString( "default_data_entry_method" ) </label></td>
+			<td>
+				<input type='checkbox' id='dataEntryMethod' name='dataEntryMethod' value='true' >
+			</td>
+			<td></td>
+		</tr>
+		
 		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
 		</tr>

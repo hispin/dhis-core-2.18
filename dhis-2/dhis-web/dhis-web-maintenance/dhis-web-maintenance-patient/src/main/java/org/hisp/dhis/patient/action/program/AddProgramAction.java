@@ -302,7 +302,14 @@ public class AddProgramAction
     {
         this.relationshipFromA = relationshipFromA;
     }
-    
+
+    private Boolean dataEntryMethod;
+
+    public void setDataEntryMethod( Boolean dataEntryMethod )
+    {
+        this.dataEntryMethod = dataEntryMethod;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -318,6 +325,7 @@ public class AddProgramAction
         useBirthDateAsEnrollmentDate = (useBirthDateAsEnrollmentDate == null) ? false : useBirthDateAsEnrollmentDate;
         selectEnrollmentDatesInFuture = (selectEnrollmentDatesInFuture == null) ? false : selectEnrollmentDatesInFuture;
         selectIncidentDatesInFuture = (selectIncidentDatesInFuture == null) ? false : selectIncidentDatesInFuture;
+        dataEntryMethod = (dataEntryMethod == null) ? false : dataEntryMethod;
 
         Program program = new Program();
 
@@ -334,7 +342,8 @@ public class AddProgramAction
         program.setUseBirthDateAsEnrollmentDate( useBirthDateAsEnrollmentDate );
         program.setSelectEnrollmentDatesInFuture( selectEnrollmentDatesInFuture );
         program.setSelectIncidentDatesInFuture( selectIncidentDatesInFuture );
-        
+        program.setDataEntryMethod( dataEntryMethod );
+
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             program.setIgnoreOverdueEvents( ignoreOverdueEvents );

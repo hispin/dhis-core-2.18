@@ -327,6 +327,13 @@ public class UpdateProgramAction
         this.relatedProgramId = relatedProgramId;
     }
 
+    private Boolean dataEntryMethod;
+
+    public void setDataEntryMethod( Boolean dataEntryMethod )
+    {
+        this.dataEntryMethod = dataEntryMethod;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -345,6 +352,7 @@ public class UpdateProgramAction
         useBirthDateAsEnrollmentDate = (useBirthDateAsEnrollmentDate == null) ? false : useBirthDateAsEnrollmentDate;
         selectEnrollmentDatesInFuture = (selectEnrollmentDatesInFuture == null) ? false : selectEnrollmentDatesInFuture;
         selectIncidentDatesInFuture = (selectIncidentDatesInFuture == null) ? false : selectIncidentDatesInFuture;
+        dataEntryMethod = (dataEntryMethod == null) ? false : dataEntryMethod;
 
         Program program = programService.getProgram( id );
         program.setName( name );
@@ -360,6 +368,7 @@ public class UpdateProgramAction
         program.setUseBirthDateAsEnrollmentDate( useBirthDateAsEnrollmentDate );
         program.setSelectEnrollmentDatesInFuture( selectEnrollmentDatesInFuture );
         program.setSelectIncidentDatesInFuture( selectIncidentDatesInFuture );
+        program.setDataEntryMethod( dataEntryMethod );
 
         if ( type == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {

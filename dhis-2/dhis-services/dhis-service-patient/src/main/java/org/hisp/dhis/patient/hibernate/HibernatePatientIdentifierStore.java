@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.hibernate;
  */
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -130,9 +129,9 @@ public class HibernatePatientIdentifierStore
             .list();
     }
 
-    public boolean checkDuplicateIdentifier( String identifier )
+    public boolean checkDuplicateIdentifier( Integer patientId, String identifier )
     {
-        Number rs = (Number) getCriteria( Restrictions.ilike( "identifier", identifier ) ).setProjection(
+        Number rs = (Number) getCriteria( Restrictions.eq( "patient.id", patientId ) , Restrictions.ilike( "identifier", identifier ) ).setProjection(
             Projections.rowCount() ).uniqueResult();
         return ( rs != null & rs.intValue() > 0 )? true: false;
     }

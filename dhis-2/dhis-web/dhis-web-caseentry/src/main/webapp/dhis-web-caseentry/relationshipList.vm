@@ -15,7 +15,7 @@
 			<table>
 				<tr>
 					<td class="bold text-column">$i18n.getString( "full_name" ): </td>
-					<td>$encoder.htmlEncode( $patient.name )<td>
+					<td>$encoder.htmlEncode( $patient.getFullName() )<td>
 				</tr>
 				<tr>
 					<td class="bold text-column">$i18n.getString( "gender" ): </td>
@@ -95,7 +95,7 @@
 				
 				<td style="text-align:center">
 					<a href="javascript:manageRepresentative( '$patient.id', $partnerId )" title="$i18n.getString( 'set_as_representative' )"><img src="images/representative.png" alt="$i18n.getString( 'manage_representative' )"></a>
-					<a href="javascript:removeRelationship( '$relationship.id', '$encoder.jsEncode( $relationship.patientA.getName() )', '$encoder.jsEncode( $relationship.relationshipType.aIsToB )', '$encoder.jsEncode( $relationship.patientB.getName() )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+					<a href="javascript:removeRelationship( '$relationship.id', '$encoder.jsEncode( $relationship.patientA.getFullName() )', '$encoder.jsEncode( $relationship.relationshipType.aIsToB )', '$encoder.jsEncode( $relationship.patientB.getFullName() )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				</td>   						
 			</tr>
 			#set( $mark = !$mark)

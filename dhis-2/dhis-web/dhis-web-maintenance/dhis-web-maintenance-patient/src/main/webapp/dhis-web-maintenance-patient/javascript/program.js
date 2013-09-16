@@ -41,6 +41,9 @@ function showProgramDetails( programId )
 		var selectIncidentDatesInFuture= ( json.program.selectIncidentDatesInFuture == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'selectIncidentDatesInFutureField', selectIncidentDatesInFuture );   	
 		
+		var dataEntryMethod= ( json.program.dataEntryMethod == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'dataEntryMethodField', dataEntryMethod );   	
+		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );

@@ -87,6 +87,7 @@
 				<p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
 				<p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "type" ):</label><br><span id="typeField"></span></p>                           
+				<p><label class="bold">$i18n.getString( "data_entry_method" ):</label><br><span id="dataEntryMethodField"></span></p>                           
 				<p><label class="bold">$i18n.getString( "display_date_of_incident" ):</label><br><span id="displayIncidentDateField"></span></p>
 				<p><label class="bold">$i18n.getString( "allow_select_enrollment_date_in_future" ):</label><br><span id="selectEnrollmentDatesInFutureField"></span></p>
 				<p><label class="bold">$i18n.getString( "allow_select_incident_date_in_future" ):</label><br><span id="selectIncidentDatesInFutureField"></span></p>

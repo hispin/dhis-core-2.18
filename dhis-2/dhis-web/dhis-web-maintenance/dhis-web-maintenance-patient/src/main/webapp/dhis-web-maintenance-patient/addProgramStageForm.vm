@@ -128,7 +128,6 @@
 			<select id="allowProvidedElsewhere" name='allowProvidedElsewhere' multiple="multiple" class="hidden"></select>     
 			<select id="displayInReports" name='displayInReports' multiple="multiple" class="hidden"></select>     
 			<select id="allowDateInFutures" name='allowDateInFutures' multiple="multiple" class="hidden"></select>   
-			<select id="displayAsRadioButtons" name='displayAsRadioButtons' multiple="multiple" class="hidden"></select>      
 		</th>
       </tr>
     </thead>

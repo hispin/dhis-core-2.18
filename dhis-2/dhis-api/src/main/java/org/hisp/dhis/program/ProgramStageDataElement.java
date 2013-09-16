@@ -78,8 +78,6 @@ public class ProgramStageDataElement
 
     private Boolean allowDateInFuture;
 
-    private Boolean displayAsRadioButton;
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -193,20 +191,7 @@ public class ProgramStageDataElement
     {
         this.allowDateInFuture = allowDateInFuture;
     }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getDisplayAsRadioButton()
-    {
-        return displayAsRadioButton;
-    }
-
-    public void setDisplayAsRadioButton( Boolean displayAsRadioButton )
-    {
-        this.displayAsRadioButton = displayAsRadioButton;
-    }
-
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

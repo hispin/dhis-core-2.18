@@ -68,11 +68,11 @@
 </div>
 
 
-<div class="settingLabel">$i18n.getString( "refer_option_set_fields_in_data_entry_form_as_dropdown_box_or_ratio_button" )</div>
+<div class="settingLabel">$i18n.getString( "preferred_mode_of_data_entry" )</div>
 <div class="setting">
 	<select id="displayOptionSetAsRadioButton" name="displayOptionSetAsRadioButton">
 		<option value="" #if( "" == $displayOptionSetAsRadioButton ) selected="selected" #end>[$i18n.getString( "please_select" )]</option>
-		<option value="dropdown" #if( "dropdown" == $displayOptionSetAsRadioButton ) selected="selected" #end>$i18n.getString( "drowndown_box" )</option>
+		<option value="dropdown" #if( "dropdown" == $displayOptionSetAsRadioButton ) selected="selected" #end>$i18n.getString( "dropdown_box" )</option>
 		<option value="radio" #if( "radio" == $displayOptionSetAsRadioButton ) selected="selected" #end>$i18n.getString( "radio_button" )</option>
 	</select>
 </div>

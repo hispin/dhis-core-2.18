@@ -127,6 +127,14 @@
 		</tr>
 		
 		<tr>
+			<td><label>$i18n.getString( "default_data_entry_method" ) </label></td>
+			<td>
+				<input type='checkbox' id='dataEntryMethod' name='dataEntryMethod' value='true' #if( $program.dataEntryMethod=='true' ) selected #end >
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr>
 			<td><label>$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input type="text" id="version" name="version" value="$program.version" class="{validate:{required:true,integer:true}}"></td>
 			<td></td>

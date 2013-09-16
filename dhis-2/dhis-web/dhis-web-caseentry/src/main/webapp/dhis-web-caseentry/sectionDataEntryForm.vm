@@ -81,9 +81,12 @@
 										#end
 									</script> 
 								#elseif($hasOptionSet=='true')
-									#if(($displayOptionSetAsRadioButton=='dropdown') || ( $displayOptionSetAsRadioButton=='' && $programStageDataElement.displayAsRadioButton =='false' ) )
+									#if( $programStageDataElement.dataElement.optionSet.options.size() <= 7 && (($displayOptionSetAsRadioButton=='dropdown') 
+										|| ( $displayOptionSetAsRadioButton=='' && $program.dataEntryMethod =='false' ) ) )
 										<input id='$id' name="entryfield" data-optionset="$!programStageDataElement.dataElement.optionSet.uid" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
-									#elseif(($displayOptionSetAsRadioButton=='radio' && $programStageDataElement.displayAsRadioButton =='true' ) || ( $displayOptionSetAsRadioButton=='' && $programStageDataElement.displayAsRadioButton =='true' ) )
+									#elseif( $programStageDataElement.dataElement.optionSet.options.size() <= 7 && 
+										(($displayOptionSetAsRadioButton=='radio' && $program.dataEntryMethod =='true' ) 
+										|| ( $displayOptionSetAsRadioButton=='' && $program.dataEntryMethod =='true' ) ) )
 										<table style='width:100%'>
 											<tr>
 												<td>

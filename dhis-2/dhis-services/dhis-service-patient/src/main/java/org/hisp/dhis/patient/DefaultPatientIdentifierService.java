@@ -142,8 +142,8 @@ public class DefaultPatientIdentifierService
     }
 
     @Override
-    public boolean checkDuplicateIdentifier( String identifier )
+    public boolean checkDuplicateIdentifier( Integer patientId, String identifier )
     {
-        return patientIdentifierStore.checkDuplicateIdentifier( identifier );
+        return patientIdentifierStore.checkDuplicateIdentifier( patientId, identifier );
     }
 }
