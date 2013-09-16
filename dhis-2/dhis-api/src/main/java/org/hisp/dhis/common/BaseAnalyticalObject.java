@@ -290,7 +290,7 @@ public abstract class BaseAnalyticalObject
                 items.addAll( organisationUnitsAtLevel ); // Must be set externally
             }
             
-            if ( itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty() )
+            if ( itemOrganisationUnitGroups != null && !itemOrganisationUnitGroups.isEmpty() && organisationUnitsInGroups != null )
             {
                 items.addAll( organisationUnitsInGroups ); // Must be set externally
             }
