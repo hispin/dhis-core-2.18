@@ -34,7 +34,7 @@
 							#end
 						#end
 						#if($value=="")
-							#set( $value=$programInstance.patient.name)
+							#set( $value=$programInstance.patient.getFullName())
 						#end
 							
 						<input type='button' class='patient-object' value="$value"

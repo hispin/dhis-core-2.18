@@ -278,13 +278,6 @@ public class UpdateProgramStageAction
         this.remindCompleted = remindCompleted;
     }
 
-    private List<Boolean> displayAsRadioButtons = new ArrayList<Boolean>();
-
-    public void setDisplayAsRadioButtons( List<Boolean> displayAsRadioButtons )
-    {
-        this.displayAsRadioButtons = displayAsRadioButtons;
-    }
-
     private Boolean allowGenerateNextVisit;
 
     public void setAllowGenerateNextVisit( Boolean allowGenerateNextVisit )
@@ -368,8 +361,7 @@ public class UpdateProgramStageAction
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
             Boolean allowDate = allowDateInFutures.get( i ) == null ? false : allowDateInFutures.get( i );
-            Boolean displayRadioButton = displayAsRadioButtons.get( i ) == null ? false : displayAsRadioButtons.get( i );
-
+           
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
 
@@ -380,7 +372,6 @@ public class UpdateProgramStageAction
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
                 programStageDataElement.setAllowDateInFuture( allowDate );
-                programStageDataElement.setDisplayAsRadioButton( displayRadioButton );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
             else
@@ -390,7 +381,6 @@ public class UpdateProgramStageAction
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElement.setDisplayInReports( displayInReport );
                 programStageDataElement.setAllowDateInFuture( allowDate );
-                programStageDataElement.setDisplayAsRadioButton( displayRadioButton );
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 
                 programStageDataElements.remove( programStageDataElement );

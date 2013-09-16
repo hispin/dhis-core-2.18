@@ -19,9 +19,6 @@ jQuery( document ).ready( function()
 		var allowDateInFutures = jQuery( "#allowDateInFutures" );
 		allowDateInFutures.empty();
 		
-		var displayAsRadioButtons = jQuery( "#displayAsRadioButtons" );
-		displayAsRadioButtons.empty();
-		
 		var templateMessages = jQuery( "#templateMessages" );
 		templateMessages.empty();
 		
@@ -59,10 +56,6 @@ jQuery( document ).ready( function()
 			var allowDateInFuture = jQuery( item ).find( "input[name='allowDateInFuture']:first");
 			checked = allowDateInFuture.attr('checked') ? true : false;
 			allowDateInFutures.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-			
-			var displayAsRadioButton = jQuery( item ).find( "input[name='displayAsRadioButton']:first");
-			checked = displayAsRadioButton.attr('checked') ? true : false;
-			displayAsRadioButtons.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 		});
 		jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
 			var days = (jQuery(item).attr('realvalue')==undefined) ? 0 : jQuery(item).attr('realvalue');

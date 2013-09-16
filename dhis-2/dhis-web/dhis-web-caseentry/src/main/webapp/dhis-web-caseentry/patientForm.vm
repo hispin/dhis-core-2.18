@@ -29,7 +29,7 @@
 
 	<tr name='propertiesField'>
 		<td class='text-column'><label for="fullName">$i18n.getString( "full_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.name" class="{validate:{required:true, rangelength:[3,50]}}"></td>
+		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.getFullName()" class="{validate:{required:true, rangelength:[3,50]}}"></td>
 	</tr>
 
 	<tr name='propertiesField'>
@@ -270,6 +270,7 @@
 	#else
 		jQuery('#patientForm [name=propertiesField] input').attr('disabled',true);
 		jQuery('#patientForm [name=propertiesField] select').attr('disabled',true);
+		jQuery('#patientForm [name=attr*] select').attr('disabled',true);
 	#end
 	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientAttributes" ) )

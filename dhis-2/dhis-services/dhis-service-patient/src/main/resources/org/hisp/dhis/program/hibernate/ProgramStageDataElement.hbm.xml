@@ -22,8 +22,6 @@
 	<property name="displayInReports"/>
 	
 	<property name="allowDateInFuture"/>
-	
-	<property name="displayAsRadioButton"/>
 
   </class>
 </hibernate-mapping>

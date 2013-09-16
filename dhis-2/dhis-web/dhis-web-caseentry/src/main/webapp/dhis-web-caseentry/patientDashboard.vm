@@ -19,10 +19,10 @@
 		</p>
 		<div class="contentProviderTable">
 			<table>
-				#if( $!patient.name!='' )
+				#if( $!patient.getFullName()!='' )
 				<tr>
 					<td>$i18n.getString("full_name")</td>
-					<td>$encoder.htmlEncode($!patient.name)</td>
+					<td>$encoder.htmlEncode($!patient.getFullName())</td>
 				</tr>
 				#end
 				
@@ -228,7 +228,7 @@
 							<td><a href='#'>$rel.relationshipType.bIsToA</a></td>
 							<td>
 								#set($patient=$rel.patientB)
-								#set($value=$!patient.name)
+								#set($value=$!patient.getFullName())
 								#foreach( $identifier in $patient.identifiers)
 									#if($!identifier.identifierType)
 										#set($value=$identifier.identifier)
@@ -248,7 +248,7 @@
 							<td><a href='#'>$rel.relationshipType.aIsToB</a></td>
 							<td><a href='#'>
 								#set($patient=$rel.patientA)
-								#set($value=$!patient.name)
+								#set($value=$!patient.getFullName())
 								#foreach( $identifier in $patient.identifiers)
 									#if($!identifier.identifierType)
 										#set($value=$identifier.identifier)

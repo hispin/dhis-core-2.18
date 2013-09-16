@@ -191,7 +191,7 @@ public class ValidatePatientAction
 
                     if ( StringUtils.isNotBlank( value ) )
                     {
-                        boolean isDuplicate = patientIdentifierService.checkDuplicateIdentifier( value );
+                        boolean isDuplicate = patientIdentifierService.checkDuplicateIdentifier( id, value );
 
                         if ( isDuplicate )
                         {
