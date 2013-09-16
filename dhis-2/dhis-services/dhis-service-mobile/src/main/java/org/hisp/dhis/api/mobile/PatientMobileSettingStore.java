@@ -33,9 +33,8 @@ import java.util.Collection;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.patient.PatientMobileSetting;
 
-public interface PatientMobileSettingStore extends GenericStore<PatientMobileSetting>
+public interface PatientMobileSettingStore 
+    extends GenericStore<PatientMobileSetting>
 {
-
-    public Collection<PatientMobileSetting> getCurrentSetting();
-
+    Collection<PatientMobileSetting> getCurrentSetting();
 }

@@ -140,6 +140,11 @@ public class DataElementCategory
 
         return null;
     }
+    
+    public boolean isDefault()
+    {
+        return DEFAULT_NAME.equals( name );
+    }
 
     // -------------------------------------------------------------------------
     // Dimensional object

@@ -84,9 +84,9 @@ public class SectionStoreTest
 
         Set<DataElementOperand> operands = new HashSet<DataElementOperand>( categoryService.getOperands( dataElements ) );
         
-        sectionA = new Section( "SectionA", "TitleA", dataSet, dataElements, operands );
-        sectionB = new Section( "SectionB", "TitleB", dataSet, dataElements, operands );
-        sectionC = new Section( "SectionC", "TitleC", dataSet, dataElements, operands );
+        sectionA = new Section( "SectionA", dataSet, dataElements, operands );
+        sectionB = new Section( "SectionB", dataSet, dataElements, operands );
+        sectionC = new Section( "SectionC", dataSet, dataElements, operands );
         
     }
     

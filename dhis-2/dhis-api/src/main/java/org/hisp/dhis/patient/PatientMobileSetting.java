@@ -30,13 +30,12 @@ package org.hisp.dhis.patient;
 
 import java.util.List;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-
 public class PatientMobileSetting
-    extends BaseIdentifiableObject
 {
-    private static final long serialVersionUID = -5947521380646718129L;
+    public static final long serialVersionUID = -5947521380646718129L;
 
+    private int id;
+    
     private Boolean gender;
 
     private Boolean dobtype;
@@ -53,6 +52,16 @@ public class PatientMobileSetting
 
     public PatientMobileSetting()
     {
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
     }
 
     public List<PatientAttribute> getPatientAttributes()

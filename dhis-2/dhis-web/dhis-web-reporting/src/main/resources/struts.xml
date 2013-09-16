@@ -180,7 +180,7 @@
     </action>
 
     <action name="generateDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction">
-      <result name="default" type="velocity">/dhis-web-reporting/renderDefaultDataSetReportForm.vm</result>
+      <result name="default" type="velocity">/dhis-web-reporting/renderSectionDataSetReportForm.vm</result>
       <result name="section" type="velocity">/dhis-web-reporting/renderSectionDataSetReportForm.vm</result>
       <result name="custom" type="velocity">/dhis-web-reporting/renderCustomDataSetReportForm.vm</result>
       <result name="xls" type="gridXlsResult" />

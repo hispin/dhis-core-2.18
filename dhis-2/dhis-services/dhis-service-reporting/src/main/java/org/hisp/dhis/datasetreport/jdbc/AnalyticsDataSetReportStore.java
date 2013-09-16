@@ -72,9 +72,9 @@ public class AnalyticsDataSetReportStore
         Set<OrganisationUnitGroup> groups, boolean rawData )
     {
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
-
+System.out.println("de " + dataElements);
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-
+System.out.println("de 2 " + dataElements);
         if ( dataElements.isEmpty() )
         {
             return new HashMap<String, Double>();
@@ -96,7 +96,7 @@ public class AnalyticsDataSetReportStore
         }
         
         Map<String, Double> map = analyticsService.getAggregatedDataValueMapping( params );
-        
+System.out.println("map " + map);
         Map<String, Double> dataMap = new HashMap<String, Double>();
         
         for ( Entry<String, Double> entry : map.entrySet() )
@@ -127,6 +127,11 @@ public class AnalyticsDataSetReportStore
             
             for ( DataElementCategory category : categories )
             {
+                if ( category.isDefault() )
+                {
+                    continue;
+                }
+                
                 DataQueryParams params = new DataQueryParams();
                 
                 params.setDataElements( dataElements );
