@@ -394,7 +394,9 @@ public class DefaultDataSetReportService
 
                 Double dataValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );
 
-                inputMatcher.appendReplacement( buffer, format.formatValue( dataValue ) );
+                String value = "<span data-de=\"" + dataElementId + "\" data-co=\"" + optionComboId + "\">" + format.formatValue( dataValue ) + "</span>";
+                
+                inputMatcher.appendReplacement( buffer, value );
             }
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
             {
