@@ -333,7 +333,7 @@ public abstract class AbstractPersonService implements PersonService
         Patient patient = getPatient( person );
         patientService.savePatient( patient );
 
-        addAttributes( patient, person );
+        addAttributes( person, patient );
         patientService.updatePatient( patient );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
@@ -390,10 +390,29 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public ImportSummary updatePerson( Person person )
     {
-        ImportSummary importSummary = new ImportSummary();
-
         System.err.println( "UPDATE: " + person );
-        Patient patient = getPatient( person );
+
+        ImportSummary importSummary = new ImportSummary();
+        importSummary.setDataValueCount( null );
+
+        Patient patient = patientService.getPatient( person.getPerson() );
+
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        importConflicts.addAll( checkForRequiredIdentifiers( person ) );
+        importConflicts.addAll( checkForRequiredAttributes( person ) );
+
+        importSummary.setConflicts( importConflicts );
+
+        if ( !importConflicts.isEmpty() )
+        {
+            importSummary.setStatus( ImportStatus.ERROR );
+            importSummary.getImportCount().incrementIgnored();
+            return importSummary;
+        }
+
+        importSummary.setStatus( ImportStatus.SUCCESS );
+        importSummary.setReference( patient.getUid() );
+        importSummary.getImportCount().incrementImported();
 
         return importSummary;
     }
@@ -427,6 +446,7 @@ public abstract class AbstractPersonService implements PersonService
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         Collection<PatientIdentifierType> patientIdentifierTypes = manager.getAll( PatientIdentifierType.class );
         Map<String, String> cacheMap = new HashMap<String, String>();
+        Patient patient = manager.get( Patient.class, person.getPerson() );
 
         for ( Identifier identifier : person.getIdentifiers() )
         {
@@ -447,13 +467,21 @@ public abstract class AbstractPersonService implements PersonService
                 }
             }
 
-            Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getAll(
-                patientIdentifierType, cacheMap.get( patientIdentifierType.getUid() ) );
+            List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>( patientIdentifierService.getAll(
+                patientIdentifierType, cacheMap.get( patientIdentifierType.getUid() ) ) );
 
             if ( !patientIdentifiers.isEmpty() )
             {
-                importConflicts.add(
-                    new ImportConflict( "Identifier.value", "Value already exists for identifier type " + patientIdentifierType.getUid() ) );
+                // if .size() > 1, there is something wrong with the db.. but we for-loop for now
+                for ( PatientIdentifier patientIdentifier : patientIdentifiers )
+                {
+                    if ( !patientIdentifier.getPatient().equals( patient ) )
+                    {
+                        importConflicts.add(
+                            new ImportConflict( "Identifier.value", "Value already exists for patient " + patientIdentifier.getPatient().getUid()
+                                + " with identifier type " + patientIdentifierType.getUid() ) );
+                    }
+                }
             }
         }
 
@@ -489,7 +517,7 @@ public abstract class AbstractPersonService implements PersonService
         return importConflicts;
     }
 
-    private void addAttributes( Patient patient, Person person )
+    private void addAttributes( Person person, Patient patient )
     {
         for ( Attribute attribute : person.getAttributes() )
         {
