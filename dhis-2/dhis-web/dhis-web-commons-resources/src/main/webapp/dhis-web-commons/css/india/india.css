@@ -215,6 +215,7 @@ a.menuLink:hover
   left: 0px;
   padding-top: 6px;
   border-right: 1px solid #ddd;
+  box-shadow: #eee 0 0 2px 0;
 }
 
 #leftBarContents
