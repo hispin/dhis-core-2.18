@@ -658,12 +658,7 @@ public class TableAlteror
         executeSql( "alter table mapview drop column periodid" );
 
         executeSql( "insert into mapview_orgunitlevels ( mapviewid, sort_order, orgunitlevel ) select m.mapviewid, 0, o.level " + 
-            "from mapview m join orgunitlevel o on (m.organisationunitlevelid=o.orgunitlevelid) where m.organisationunitlevelid is not null" );
-        
-        System.out.println();
-        System.out.println("insert into mapview_orgunitlevels ( mapviewid, sort_order, orgunitlevel ) select m.mapviewid, 0, o.level " + 
-            "from mapview m join orgunitlevel o on (m.organisationunitlevelid=o.orgunitlevelid) where m.organisationunitlevelid is not null");
-        
+            "from mapview m join orgunitlevel o on (m.organisationunitlevelid=o.orgunitlevelid) where m.organisationunitlevelid is not null" );                
         executeSql( "alter table mapview drop column organisationunitlevelid" );
         
         executeSql( "alter table mapview drop column dataelementgroupid" );        
