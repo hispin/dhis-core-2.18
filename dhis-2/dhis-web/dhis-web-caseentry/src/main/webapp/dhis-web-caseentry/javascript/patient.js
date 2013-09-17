@@ -79,25 +79,7 @@ function Patient()
 				var patientId = json.message.split('_')[0];
 				var	dateOfIncident = jQuery('#patientForm [id=dateOfIncident]').val();
 				var enrollmentDate = jQuery('#patientForm [id=enrollmentDate]').val();
-					
-				var originalPatientId = getFieldValue('patientId');
-				var relatedPatientId = patientId;
-				if(getFieldValue('relationshipFromA')=='false')
-				{
-					originalPatientId = patientId;
-					relatedPatientId = getFieldValue('patientId');
-				}
-				var relatedPatientId = 
-				jQuery.postJSON( "saveProgramEnrollment.action",
-				{
-					originalPatientId: originalPatientId,
-					relationshipTypeId: getFieldValue('relationshipTypeId'),
-					relatedPatientId: relatedPatientId
-				}, 
-				function( json ) 
-				{
-				});
-					
+				
 				if( programId !='' && enrollmentDate != '')
 				{
 					jQuery.postJSON( "saveProgramEnrollment.action",

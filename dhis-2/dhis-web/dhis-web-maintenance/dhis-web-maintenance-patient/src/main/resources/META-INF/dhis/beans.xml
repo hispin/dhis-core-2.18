@@ -159,7 +159,7 @@
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeVisitScheduleAction"
 		class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeVisitScheduleAction"
@@ -167,7 +167,7 @@
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
-	
+
 	<!-- Program -->
 
 	<bean id="org.hisp.dhis.patient.action.program.AddProgramAction"
@@ -179,9 +179,8 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="userGroupService" 
-			ref="org.hisp.dhis.user.UserGroupService" />	
-		<property name="relationshipTypeService" 
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 
@@ -224,7 +223,7 @@
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
-		<property name="relationshipTypeService" 
+		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 
@@ -238,7 +237,7 @@
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
-		<property name="relationshipTypeService" 
+		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 	<bean id="org.hisp.dhis.patient.action.program.UpdateProgramAction"
@@ -249,9 +248,8 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="userGroupService"
-			ref="org.hisp.dhis.user.UserGroupService" />
-		<property name="relationshipTypeService" 
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 	</bean>
 
@@ -340,8 +338,7 @@
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-		<property name="userGroupService"
-			ref="org.hisp.dhis.user.UserGroupService" />
+		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 	</bean>
 
 	<bean
@@ -573,7 +570,7 @@
 			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.dataentryform.ShowDefaultPatientRegistrationFormAction"
 		class="org.hisp.dhis.patient.action.dataentryform.ShowDefaultPatientRegistrationFormAction"
@@ -591,7 +588,7 @@
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.dataentryform.SaveDefaultPatientRegistrationFormAcion"
 		class="org.hisp.dhis.patient.action.dataentryform.SaveDefaultPatientRegistrationFormAcion"
@@ -717,12 +714,20 @@
 	<!-- Patient Identifier Type -->
 
 	<bean
+		id="org.hisp.dhis.patient.action.patientidentifiertype.ShowAddPatientIdentifierTypeFormAction"
+		class="org.hisp.dhis.patient.action.patientidentifiertype.ShowAddPatientIdentifierTypeFormAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+
+	<bean
 		id="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction"
 		class="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction"
 		scope="prototype">
 		<property name="patientIdentifierTypeService">
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
 	<bean
@@ -777,6 +782,9 @@
 		</property>
 		<property name="programService">
 			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService" />
 		</property>
 	</bean>
 
@@ -1197,7 +1205,7 @@
 			<ref bean="org.hisp.dhis.program.ProgramIndicatorService" />
 		</property>
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorDescripttionAction"
 		class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorDescripttionAction"

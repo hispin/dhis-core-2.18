@@ -30,13 +30,14 @@ package org.hisp.dhis.patient;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.period.PeriodType;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "patientIdentifierType", namespace = DxfNamespaces.DXF_2_0)
-@XmlAccessorType(value = XmlAccessType.NONE)
+@XmlRootElement( name = "patientIdentifierType", namespace = DxfNamespaces.DXF_2_0 )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class PatientIdentifierType
     extends BaseIdentifiableObject
 {
@@ -52,8 +53,8 @@ public class PatientIdentifierType
     public static final String VALUE_TYPE_NUMBER = "number";
 
     public static final String VALUE_TYPE_LETTER = "letter";
-    
-    public static final String VALUE_TYPE_ORGUNIT_COUNT = "orgunitCount";
+
+    public static final String VALUE_TYPE_LOCAL_ID = "localId";
 
     private String description;
 
@@ -66,6 +67,14 @@ public class PatientIdentifierType
     private String type;
 
     private Boolean personDisplayName;
+
+    // For Local ID type
+
+    private Boolean orgunitScope;
+
+    private Boolean programScope;
+
+    private PeriodType periodType;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -163,6 +172,36 @@ public class PatientIdentifierType
     public void setPersonDisplayName( Boolean personDisplayName )
     {
         this.personDisplayName = personDisplayName;
+    }
+
+    public Boolean getOrgunitScope()
+    {
+        return orgunitScope;
+    }
+
+    public void setOrgunitScope( Boolean orgunitScope )
+    {
+        this.orgunitScope = orgunitScope;
+    }
+
+    public Boolean getProgramScope()
+    {
+        return programScope;
+    }
+
+    public void setProgramScope( Boolean programScope )
+    {
+        this.programScope = programScope;
+    }
+
+    public PeriodType getPeriodType()
+    {
+        return periodType;
+    }
+
+    public void setPeriodType( PeriodType periodType )
+    {
+        this.periodType = periodType;
     }
 
 }

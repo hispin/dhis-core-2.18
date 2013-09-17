@@ -43,7 +43,7 @@
 		<tr>
 			<td><label for="noChars">$i18n.getString( "no_of_char" )</label></td>
 			<td>
-				<input style="width: 330px;" type="text" name="noChars" id="noChars" #if( $patientIdentifierType.type=='orgunitCount' ) disabled #end value="$!patientIdentifierType.noChars" class="{validate:{required:false, number:true}}" />
+				<input style="width: 330px;" type="text" name="noChars" id="noChars" value="$!patientIdentifierType.noChars" class="{validate:{number:true}}" />
 			</td>		
 			<td></td>				
 		</tr> 	
@@ -55,12 +55,44 @@
 					<option value="string" #if( $patientIdentifierType.type=='string' ) selected="selected" #end>$i18n.getString( "text" )</option>
 					<option value="number" #if( $patientIdentifierType.type=='number' ) selected="selected" #end>$i18n.getString( "number" )</option>
 					<option value="letter" #if( $patientIdentifierType.type=='letter' ) selected="selected" #end>$i18n.getString( "letter_only" )</option>
-					<option value="orgunitCount" #if( $patientIdentifierType.type=='orgunitCount' ) selected="selected" #end>$i18n.getString( "orgunit_count" )</option>
+					<option value="localId" #if( $patientIdentifierType.type=='localId' ) selected="selected" #end>$i18n.getString( "local_identifier" )</option>
 				</select>
 			</td>		
 			<td></td>				
 		</tr>
 		
+		<tr name='localIdField' #if($patientIdentifierType.type!='localId' ) style='display:none;' #end >
+			<th colspan='2'><label for="type">$i18n.getString( "scope" )</label></th>
+		</tr>
+			
+		<tr name='localIdField' #if($patientIdentifierType.type!='localId' ) style='display:none;' #end >
+			<td><label for="type">$i18n.getString( "orgunit" )</label></td>
+			<td>
+				<input type='checkbox' id="orgunitScope" name="orgunitScope" value='true' #if( $patientIdentifierType.orgunitScope=='true' ) checked #end >
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr name='localIdField' #if($patientIdentifierType.type!='localId' ) style='display:none;' #end>
+			<td><label for="type">$i18n.getString( "program" )</label></td>
+			<td>
+				<input type='checkbox' id="programScope" name="programScope" value='true'  #if( $patientIdentifierType.programScope=='true' ) checked #end >
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr name='localIdField' #if($patientIdentifierType.type!='localId' ) style='display:none;' #end>
+			<td><label for="type">$i18n.getString( "period_type" )</label></td>
+			<td>
+				<select type='checkbox' id="periodTypeName" name="periodTypeName" >
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					#foreach ( $periodType in $periodTypes )
+					<option value="$periodType.name" #if( $patientIdentifierType.periodType.name==$periodType.name ) selected #end>$i18n.getString( $periodType.name )</option>
+					#end
+				</select>
+			</td>
+			<td></td>
+		</tr>
 	</tbody>
 	<tr>
 		<td></td>

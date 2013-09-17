@@ -33,6 +33,8 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,6 +54,13 @@ public class DefaultPatientIdentifierTypeService
     public void setPatientIdentifierTypeStore( PatientIdentifierTypeStore patientIdentifierTypeStore )
     {
         this.patientIdentifierTypeStore = patientIdentifierTypeStore;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     private I18nService i18nService;
@@ -82,11 +91,25 @@ public class DefaultPatientIdentifierTypeService
 
     public int savePatientIdentifierType( PatientIdentifierType patientIdentifierType )
     {
+        if ( patientIdentifierType.getPeriodType() != null )
+        {
+            PeriodType periodType = periodService.reloadPeriodType( patientIdentifierType.getPeriodType() );
+
+            patientIdentifierType.setPeriodType( periodType );
+        }
+        
         return patientIdentifierTypeStore.save( patientIdentifierType );
     }
 
     public void updatePatientIdentifierType( PatientIdentifierType patientIdentifierType )
     {
+        if ( patientIdentifierType.getPeriodType() != null )
+        {
+            PeriodType periodType = periodService.reloadPeriodType( patientIdentifierType.getPeriodType() );
+
+            patientIdentifierType.setPeriodType( periodType );
+        }
+
         patientIdentifierTypeStore.update( patientIdentifierType );
     }
 
