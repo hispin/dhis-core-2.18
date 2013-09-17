@@ -28,13 +28,37 @@ package org.hisp.dhis.dxf2.events.enrollment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractEnrollmentService implements EnrollmentService
+@JacksonXmlRootElement( localName = "enrollments", namespace = DxfNamespaces.DXF_2_0 )
+public class Enrollments
 {
-    @Override public Enrollment getEnrollment( String id )
+    private List<Enrollment> enrollments = new ArrayList<Enrollment>();
+
+    public Enrollments()
     {
-        return null;
+    }
+
+    @JsonProperty( "enrollmentList" )
+    @JacksonXmlElementWrapper( localName = "enrollmentList", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "enrollment", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Enrollment> getEnrollments()
+    {
+        return enrollments;
+    }
+
+    public void setEnrollments( List<Enrollment> enrollments )
+    {
+        this.enrollments = enrollments;
     }
 }

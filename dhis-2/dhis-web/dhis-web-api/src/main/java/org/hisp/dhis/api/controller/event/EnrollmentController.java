@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.enrollment;
+package org.hisp.dhis.api.controller.event;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,13 +28,15 @@ package org.hisp.dhis.dxf2.events.enrollment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractEnrollmentService implements EnrollmentService
+@Controller
+@RequestMapping( value = EnrollmentController.RESOURCE_PATH )
+public class EnrollmentController
 {
-    @Override public Enrollment getEnrollment( String id )
-    {
-        return null;
-    }
+    public static final String RESOURCE_PATH = "/enrollments";
 }

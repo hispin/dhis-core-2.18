@@ -33,4 +33,9 @@ package org.hisp.dhis.dxf2.events.enrollment;
  */
 public interface EnrollmentService
 {
+    // -------------------------------------------------------------------------
+    // READ
+    // -------------------------------------------------------------------------
+
+    Enrollment getEnrollment(String id);
 }

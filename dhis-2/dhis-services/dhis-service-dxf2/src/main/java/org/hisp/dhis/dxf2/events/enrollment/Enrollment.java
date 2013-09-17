@@ -28,9 +28,60 @@ package org.hisp.dhis.dxf2.events.enrollment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@JacksonXmlRootElement( localName = "enrollment", namespace = DxfNamespaces.DXF_2_0 )
 public class Enrollment
 {
+    private String enrollment;
+
+    private String person;
+
+    private String program;
+
+    public Enrollment()
+    {
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public String getPerson()
+    {
+        return person;
+    }
+
+    public void setPerson( String person )
+    {
+        this.person = person;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public String getEnrollment()
+    {
+        return enrollment;
+    }
+
+    public void setEnrollment( String enrollment )
+    {
+        this.enrollment = enrollment;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public String getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( String program )
+    {
+        this.program = program;
+    }
 }
