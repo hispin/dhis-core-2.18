@@ -1,4 +1,4 @@
-package org.hisp.dhis.patient.hibernate;
+package org.hisp.dhis.setting;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,31 +28,13 @@ package org.hisp.dhis.patient.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.patient.PatientAttributeOptionStore;
+import org.hisp.dhis.common.GenericStore;
 
 /**
- * @author Viet
+ * @author Lars Helge Overland
  */
-public class HibernatePatientAttributeOptionStore
-    extends HibernateGenericStore<PatientAttributeOption>
-    implements PatientAttributeOptionStore
+public interface SystemSettingStore
+    extends GenericStore<SystemSetting>
 {
-    public PatientAttributeOption get( PatientAttribute patientAttribute, String name )
-    {
-        return (PatientAttributeOption) getCriteria( Restrictions.eq( "name", name ),
-            Restrictions.eq( "patientAttribute", patientAttribute ) ).uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttributeOption> get( PatientAttribute patientAttribute )
-    {
-        return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ) ).list();
-    }
-
+    SystemSetting getByName( String name );
 }

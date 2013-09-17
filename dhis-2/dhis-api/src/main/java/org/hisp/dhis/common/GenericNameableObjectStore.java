@@ -32,7 +32,6 @@ import java.util.List;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public interface GenericNameableObjectStore<T>
     extends GenericIdentifiableObjectStore<T>

@@ -474,7 +474,7 @@ div#selectionTree
 {
   color: #777;
   font-size: 11pt;
-  margin-bottom: 9px;
+  margin-bottom: 15px;
 }
 
 .interpretationContainer
@@ -530,7 +530,7 @@ div#selectionTree
 .commentArea
 {
   height: 18px;
-  width: 360px;
+  width: 390px;
   border: 1px solid #ccc;
   resize: none;
   overflow: auto;

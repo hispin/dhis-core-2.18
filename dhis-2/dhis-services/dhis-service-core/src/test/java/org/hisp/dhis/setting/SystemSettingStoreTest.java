@@ -35,29 +35,25 @@ import static org.junit.Assert.assertNull;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.setting.SystemSetting;
 import org.junit.Test;
 
 /**
  * @author Stian Strandli
- * @version $Id: SystemSettingStoreTest.java 4866 2008-04-11 10:40:35Z larshelg $
  */
 public class SystemSettingStoreTest
     extends DhisSpringTest
 {
-    private GenericIdentifiableObjectStore<SystemSetting> systemSettingStore;
+    private SystemSettingStore systemSettingStore;
 
     private SystemSetting settingA;
     private SystemSetting settingB;
     private SystemSetting settingC;
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public void setUpTest()
         throws Exception
     {
-        systemSettingStore = (GenericIdentifiableObjectStore<SystemSetting>) getBean( "org.hisp.dhis.setting.SystemSettingStore" );
+        systemSettingStore = (SystemSettingStore) getBean( "org.hisp.dhis.setting.SystemSettingStore" );
 
         settingA = new SystemSetting();
         settingA.setName( "Setting1" );
