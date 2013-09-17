@@ -74,6 +74,16 @@
 					<td>$!programIndicatorsMap.get($key)</td>
 				</tr>
 				#end
+				#foreach( $identifier in $identifiers )
+				<tr>
+					#if($!identifier.identifierType)
+						<td>$!identifier.identifierType.displayName</td>
+					#else
+						<td>$i18n.getString("system_identifier")</td>
+					#end
+					<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
+				</tr>
+				#end
 				#foreach( $attributeValue in $attributeValues )
 				<tr>
 					<td>$attributeValue.patientAttribute.displayName</td>
@@ -88,15 +98,6 @@
 							$encoder.htmlEncode($attributeValue.value)
 						#end	
 					</td>
-				</tr>
-				#end
-				#foreach( $identifier in $identifiers )
-				<tr>
-					#if($!identifier.identifierType)
-					#else
-						<td>$i18n.getString("system_identifier")</td>
-						<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
-					#end
 				</tr>
 				#end
 			</table>
@@ -216,7 +217,7 @@
 			$i18n.getString("relationships")
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "showAddRelationshipPatient" ) )			
-				&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false, '' );">$i18n.getString("add_new_patient")</a>
+				&#8226; <a href="javascript:showRelationshipList( '$patient.id');">$i18n.getString("add_relative")</a>
 				<span id="patientRelatedStageSpan">&nbsp;<span>
 			#end
 		</p>
