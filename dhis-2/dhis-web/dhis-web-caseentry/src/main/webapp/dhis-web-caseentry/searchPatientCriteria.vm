@@ -108,6 +108,7 @@
 					<option value="fixedAttr_age">$i18n.getString( "age_year" )</option>
 					<option value="fixedAttr_gender">$i18n.getString( "gender" )</option>
 					<option value="fixedAttr_phoneNumber">$i18n.getString( "phone_number" )</option>
+					<option value="pi_enrollmentDate">$i18n.getString( "enrollment_date" )</option>
 					#foreach( $attribute in $patientAttributes )
 						<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
 					#end
@@ -144,6 +145,7 @@
 						<option value="fixedAttr_age">$i18n.getString( "age_year" )</option>
 						<option value="fixedAttr_gender">$i18n.getString( "gender" )</option>
 						<option value="fixedAttr_phoneNumber">$i18n.getString( "phone_number" )</option>
+						<option value="pi_enrollmentDate">$i18n.getString( "enrollment_date" )</option>
 						#foreach( $attribute in $patientAttributes )
 							<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
 						#end
