@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.person;
+package org.hisp.dhis.dxf2.events.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -32,54 +32,68 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.patient.Patient;
+
+import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "identifier", namespace = DxfNamespaces.DXF_2_0 )
-public class Identifier
+@JacksonXmlRootElement( localName = "dateOfBirth", namespace = DxfNamespaces.DXF_2_0 )
+public class DateOfBirth
 {
-    private String type;
+    private Date date;
 
-    private String value;
+    private DateOfBirthType type;
 
-    public Identifier()
+    private Integer age;
+
+    public DateOfBirth()
     {
+        this.type = DateOfBirthType.APPROXIMATE;
+        this.age = 0;
     }
 
-    public Identifier( String value )
+    public DateOfBirth( Date date )
     {
-        this.value = value;
+        this.type = DateOfBirthType.VERIFIED;
+        this.age = Patient.getIntegerValueOfAge( date );
+        this.date = date;
     }
 
-    public Identifier( String type, String value )
+    public DateOfBirth( Date date, DateOfBirthType type )
     {
         this.type = type;
-        this.value = value;
+        this.age = Patient.getIntegerValueOfAge( date );
+        this.date = date;
     }
 
-    @JsonProperty
+    public DateOfBirth( Integer age )
+    {
+        this.type = DateOfBirthType.APPROXIMATE;
+        this.age = age;
+        this.date = Patient.getBirthFromAge( age, Patient.AGE_TYPE_YEAR );
+    }
+
+    @JsonProperty( required = true )
     @JacksonXmlProperty( isAttribute = true )
-    public String getType()
+    public Date getDate()
+    {
+        return date;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
+    public DateOfBirthType getType()
     {
         return type;
     }
 
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
-    @JsonProperty
+    @JsonProperty( required = true )
     @JacksonXmlProperty( isAttribute = true )
-    public String getValue()
+    public Integer getAge()
     {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
+        return age;
     }
 
     @Override
@@ -88,10 +102,11 @@ public class Identifier
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
 
-        Identifier that = (Identifier) o;
+        DateOfBirth that = (DateOfBirth) o;
 
-        if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
-        if ( value != null ? !value.equals( that.value ) : that.value != null ) return false;
+        if ( age != null ? !age.equals( that.age ) : that.age != null ) return false;
+        if ( date != null ? !date.equals( that.date ) : that.date != null ) return false;
+        if ( type != that.type ) return false;
 
         return true;
     }
@@ -99,17 +114,19 @@ public class Identifier
     @Override
     public int hashCode()
     {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
+        int result = date != null ? date.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (age != null ? age.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString()
     {
-        return "Identifier{" +
-            "type='" + type + '\'' +
-            ", value='" + value + '\'' +
+        return "DateOfBirth{" +
+            "date=" + date +
+            ", type=" + type +
+            ", age=" + age +
             '}';
     }
 }

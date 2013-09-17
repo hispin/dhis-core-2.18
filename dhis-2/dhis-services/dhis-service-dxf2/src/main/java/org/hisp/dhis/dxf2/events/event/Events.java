@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.person;
+package org.hisp.dhis.dxf2.events.event;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,39 +28,75 @@ package org.hisp.dhis.dxf2.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "gender", namespace = DxfNamespaces.DXF_2_0 )
-public enum Gender
+@JacksonXmlRootElement( localName = "events", namespace = DxfNamespaces.DXF_2_0 )
+public class Events
 {
-    MALE( "M" ), FEMALE( "F" ), TRANSGENDER( "T" );
+    private String program;
 
-    private final String value;
+    private String programInstance;
 
-    private Gender( String value )
+    private List<Event> events = new ArrayList<Event>();
+
+    public Events()
     {
-        this.value = value;
     }
 
-    public String getValue()
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getProgram()
     {
-        return value;
+        return program;
     }
 
-    public static Gender fromString( String text )
+    public void setProgram( String program )
     {
-        for ( Gender gender : Gender.values() )
-        {
-            if ( text.equals( gender.getValue() ) )
-            {
-                return gender;
-            }
-        }
+        this.program = program;
+    }
 
-        throw new IllegalArgumentException();
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getProgramInstance()
+    {
+        return programInstance;
+    }
+
+    public void setProgramInstance( String programInstance )
+    {
+        this.programInstance = programInstance;
+    }
+
+    @JsonProperty( "eventList" )
+    @JacksonXmlElementWrapper( localName = "eventList", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Event> getEvents()
+    {
+        return events;
+    }
+
+    public void setEvents( List<Event> events )
+    {
+        this.events = events;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Events{" +
+            "program='" + program + '\'' +
+            ", programInstance='" + programInstance + '\'' +
+            ", events=" + events +
+            '}';
     }
 }

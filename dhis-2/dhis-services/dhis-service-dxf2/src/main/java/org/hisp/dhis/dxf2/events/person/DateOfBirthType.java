@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.events.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,72 +28,37 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.system.util.ValidationUtils;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "coordinate", namespace = DxfNamespaces.DXF_2_0 )
-public class Coordinate
+public enum DateOfBirthType
 {
-    private Double latitude;
+    VERIFIED( "V" ),
+    DECLARED( "D" ),
+    APPROXIMATE( "A" );
 
-    private Double longitude;
+    private final String value;
 
-    public Coordinate()
+    private DateOfBirthType( String value )
     {
+        this.value = value;
     }
 
-    public Coordinate( Double longitude, Double latitude )
+    public String getValue()
     {
-        this.longitude = longitude;
-        this.latitude = latitude;
+        return value;
     }
 
-    @JsonProperty( required = true )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public Double getLatitude()
+    public static DateOfBirthType fromString( String text )
     {
-        return latitude;
-    }
+        for ( DateOfBirthType dateOfBirthType : DateOfBirthType.values() )
+        {
+            if ( text.equals( dateOfBirthType.getValue() ) )
+            {
+                return dateOfBirthType;
+            }
+        }
 
-    public void setLatitude( Double latitude )
-    {
-        this.latitude = latitude;
-    }
-
-    @JsonProperty( required = true )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
-    public Double getLongitude()
-    {
-        return longitude;
-    }
-
-    public void setLongitude( Double longitude )
-    {
-        this.longitude = longitude;
-    }
-
-    public boolean isValid()
-    {
-        return ValidationUtils.coordinateIsValid( getCoordinateString() );
-    }
-
-    public String getCoordinateString()
-    {
-        return "[" + longitude + "," + latitude + "]";
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Coordinate{" +
-            "latitude=" + latitude +
-            ", longitude=" + longitude +
-            '}';
+        throw new IllegalArgumentException();
     }
 }

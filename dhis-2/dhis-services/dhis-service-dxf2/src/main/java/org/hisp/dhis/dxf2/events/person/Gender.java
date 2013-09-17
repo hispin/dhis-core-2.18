@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.events.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,68 +28,39 @@ package org.hisp.dhis.dxf2.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.event.EventService;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.scheduling.TaskId;
-import org.hisp.dhis.user.User;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.io.IOException;
-import java.io.InputStream;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ImportEventTask
-    implements Runnable
+@JacksonXmlRootElement( localName = "gender", namespace = DxfNamespaces.DXF_2_0 )
+public enum Gender
 {
-    private final InputStream inputStream;
+    MALE( "M" ), FEMALE( "F" ), TRANSGENDER( "T" );
 
-    private final EventService eventService;
+    private final String value;
 
-    private final ImportOptions importOptions;
-
-    private final TaskId taskId;
-
-    private final boolean jsonInput;
-
-    private final Authentication authentication;
-
-    public ImportEventTask( InputStream inputStream, EventService eventService, ImportOptions importOptions, TaskId taskId, boolean jsonInput )
+    private Gender( String value )
     {
-        this.inputStream = inputStream;
-        this.eventService = eventService;
-        this.importOptions = importOptions;
-        this.taskId = taskId;
-        this.jsonInput = jsonInput;
-        this.authentication = SecurityContextHolder.getContext().getAuthentication();
+        this.value = value;
     }
 
-    @Override
-    public void run()
+    public String getValue()
     {
-        SecurityContextHolder.getContext().setAuthentication( authentication );
+        return value;
+    }
 
-        if ( jsonInput )
+    public static Gender fromString( String text )
+    {
+        for ( Gender gender : Gender.values() )
         {
-            try
+            if ( text.equals( gender.getValue() ) )
             {
-                eventService.saveEventsJson( inputStream, taskId, importOptions );
-            }
-            catch ( IOException ignored )
-            {
+                return gender;
             }
         }
-        else
-        {
-            try
-            {
-                eventService.saveEventsXml( inputStream, taskId, importOptions );
-            }
-            catch ( IOException ignored )
-            {
-            }
-        }
+
+        throw new IllegalArgumentException();
     }
 }
