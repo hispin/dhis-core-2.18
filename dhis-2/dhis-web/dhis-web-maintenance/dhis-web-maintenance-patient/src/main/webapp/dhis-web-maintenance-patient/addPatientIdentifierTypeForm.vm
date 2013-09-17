@@ -42,7 +42,7 @@
 		<tr>
 			<td><label for="noChar">$i18n.getString( "no_of_char" )</label></td>
 			<td>
-				<input style="width: 330px;" type="text" name="noChars" id="noChars" class="{validate:{required:false, number:true}}" />
+				<input style="width: 330px;" type="text" name="noChars" id="noChars" class="{validate:{number:true}}" />
 			</td>
 			<td></td>
 		</tr>
@@ -54,7 +54,40 @@
 					<option value="string" selected="selected">$i18n.getString( "text" )</option>
 					<option value="number">$i18n.getString( "number" )</option>
 					<option value="letter">$i18n.getString( "letter_only" )</option>
-					<option value="orgunitCount">$i18n.getString( "orgunit_count" )</option>
+					<option value="localId">$i18n.getString( "local_identifier" )</option>
+				</select>
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr name='localIdField' style='display:none;'>
+			<th colspan='2'><label for="type">$i18n.getString( "scope" )</label></th>
+		</tr>
+			
+		<tr name='localIdField' style='display:none;'>
+			<td><label for="type">$i18n.getString( "orgunit" )</label></td>
+			<td>
+				<input type='checkbox' id="orgunitScope" name="orgunitScope" value='true' >
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr name='localIdField' style='display:none;'>
+			<td><label for="type">$i18n.getString( "program" )</label></td>
+			<td>
+				<input type='checkbox' id="programScope" name="programScope" value='true' >
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr name='localIdField' style='display:none;'>
+			<td><label for="type">$i18n.getString( "period_type" )</label></td>
+			<td>
+				<select type='checkbox' id="periodTypeName" name="periodTypeName" >
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					#foreach ( $periodType in $periodTypes )
+					<option value="$periodType.name">$i18n.getString( $periodType.name )</option>
+					#end
 				</select>
 			</td>
 			<td></td>

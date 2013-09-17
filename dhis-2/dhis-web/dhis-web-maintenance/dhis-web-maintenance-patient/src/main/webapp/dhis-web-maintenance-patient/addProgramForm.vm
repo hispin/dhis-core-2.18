@@ -128,7 +128,7 @@
 		</tr>
 		
 		<tr>
-			<td><label>$i18n.getString( "default_data_entry_method" ) </label></td>
+			<td><label>$i18n.getString( "data_entry_method" ) </label></td>
 			<td>
 				<input type='checkbox' id='dataEntryMethod' name='dataEntryMethod' value='true' >
 			</td>

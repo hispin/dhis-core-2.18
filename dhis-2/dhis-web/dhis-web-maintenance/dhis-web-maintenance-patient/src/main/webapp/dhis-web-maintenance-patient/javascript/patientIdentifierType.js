@@ -37,12 +37,12 @@ function removePatientIdentifierType( patientIdentifierTypeId, name )
 function typeOnChange()
 {
 	var type = getFieldValue('type');
-	if(type=='orgunitCount')
+	if(type=='localId')
 	{
-		disable('noChars');
+		jQuery('[name=localIdField]').show();
 	}
 	else
 	{
-		enable('noChars');
+		jQuery('[name=localIdField]').hide();
 	}
 }

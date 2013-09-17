@@ -30,6 +30,8 @@ package org.hisp.dhis.patient.action.patientidentifiertype;
 
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,7 +47,19 @@ public class AddPatientIdentifierTypeAction
     // -------------------------------------------------------------------------
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
-    
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -61,6 +75,14 @@ public class AddPatientIdentifierTypeAction
     private Integer noChars;
 
     private String type;
+
+    // For Local ID type
+
+    private Boolean orgunitScope;
+
+    private Boolean programScope;
+
+    private String periodTypeName;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
@@ -86,11 +108,6 @@ public class AddPatientIdentifierTypeAction
         this.description = description;
     }
 
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-
     public void setMandatory( Boolean mandatory )
     {
         this.mandatory = mandatory;
@@ -99,6 +116,26 @@ public class AddPatientIdentifierTypeAction
     public void setRelated( Boolean related )
     {
         this.related = related;
+    }
+
+    public Boolean getOrgunitScope()
+    {
+        return orgunitScope;
+    }
+
+    public void setProgramScope( Boolean programScope )
+    {
+        this.programScope = programScope;
+    }
+
+    public void setOrgunitScope( Boolean orgunitScope )
+    {
+        this.orgunitScope = orgunitScope;
+    }
+
+    public void setPeriodTypeName( String periodTypeName )
+    {
+        this.periodTypeName = periodTypeName;
     }
 
     // -------------------------------------------------------------------------
@@ -111,16 +148,27 @@ public class AddPatientIdentifierTypeAction
         PatientIdentifierType identifierType = new PatientIdentifierType();
         identifierType.setName( name );
         identifierType.setDescription( description );
-        
+
         related = (related == null) ? false : true;
         identifierType.setRelated( related );
-        
+
         mandatory = (mandatory == null) ? false : true;
         identifierType.setMandatory( mandatory );
-        
+
         identifierType.setNoChars( noChars );
         identifierType.setType( type );
 
+        if ( type.equals( PatientIdentifierType.VALUE_TYPE_LOCAL_ID ) )
+        {
+            orgunitScope = (orgunitScope == null) ? false : orgunitScope;
+            programScope = (programScope == null) ? false : programScope;
+            PeriodType periodType = (periodTypeName == null) ? null : periodService
+                .getPeriodTypeByName( periodTypeName );
+
+            identifierType.setOrgunitScope( orgunitScope );
+            identifierType.setProgramScope( programScope );
+            identifierType.setPeriodType( periodType );
+        }
         patientIdentifierTypeService.savePatientIdentifierType( identifierType );
 
         return SUCCESS;

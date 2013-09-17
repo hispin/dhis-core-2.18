@@ -89,6 +89,7 @@
 		class="org.hisp.dhis.patient.hibernate.HibernatePatientIdentifierStore">
 		<property name="clazz" value="org.hisp.dhis.patient.PatientIdentifier" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientIdentifierTypeStore"
@@ -261,6 +262,7 @@
 		<property name="patientIdentifierTypeStore"
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientAttributeService" class="org.hisp.dhis.patient.DefaultPatientAttributeService">

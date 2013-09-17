@@ -560,6 +560,9 @@
 		<property name="identifierTypeService">
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
+		<property name="selectionManager">
+			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		</property>
 	</bean>
 
 	<bean

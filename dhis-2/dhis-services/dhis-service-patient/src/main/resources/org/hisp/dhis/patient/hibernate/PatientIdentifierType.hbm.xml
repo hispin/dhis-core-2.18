@@ -8,7 +8,7 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.patient.PatientIdentifierType" table="patientidentifiertype">
 
-    <id name="id" column="patientidentifiertypeid">
+   <id name="id" column="patientidentifiertypeid">
       <generator class="native" />
     </id>
     &identifiableProperties;
@@ -27,5 +27,12 @@
 
     <property name="personDisplayName" />
 
+    <property name="orgunitScope" />
+
+    <property name="programScope" />
+    
+    <many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
+      	foreign-key="fk_patientidentifiertype_periodtypeid" />
+	
   </class>
 </hibernate-mapping>

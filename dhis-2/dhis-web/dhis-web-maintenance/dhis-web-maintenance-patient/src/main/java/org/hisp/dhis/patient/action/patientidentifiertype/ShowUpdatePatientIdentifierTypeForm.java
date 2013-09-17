@@ -28,10 +28,14 @@ package org.hisp.dhis.patient.action.patientidentifiertype;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -53,6 +57,8 @@ public class ShowUpdatePatientIdentifierTypeForm
 
     private ProgramService programService;
 
+    private PeriodService periodService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -63,6 +69,8 @@ public class ShowUpdatePatientIdentifierTypeForm
 
     private Collection<Program> programs;
 
+    private List<PeriodType> periodTypes = new ArrayList<PeriodType>();
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -70,6 +78,11 @@ public class ShowUpdatePatientIdentifierTypeForm
     public PatientIdentifierType getPatientIdentifierType()
     {
         return patientIdentifierType;
+    }
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     public Collection<Program> getPrograms()
@@ -97,6 +110,11 @@ public class ShowUpdatePatientIdentifierTypeForm
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
+    public List<PeriodType> getPeriodTypes()
+    {
+        return periodTypes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -105,6 +123,8 @@ public class ShowUpdatePatientIdentifierTypeForm
         throws Exception
     {
         patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
+        
+        periodTypes = periodService.getAllPeriodTypes();
 
         programs = programService.getAllPrograms();
 
