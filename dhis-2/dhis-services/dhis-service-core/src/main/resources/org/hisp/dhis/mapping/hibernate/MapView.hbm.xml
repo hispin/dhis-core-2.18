@@ -22,29 +22,52 @@
 
     <property name="valueType" />
 
-    <many-to-one name="indicatorGroup" class="org.hisp.dhis.indicator.IndicatorGroup" column="indicatorgroupid"
-      foreign-key="fk_mapview_indicatorgroupid" />
+    <list name="dataElements" table="mapview_dataelements">
+      <cache usage="read-write" />
+      <key column="mapviewid" foreign-key="fk_mapview_dataelements_mapviewid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="dataelementid" class="org.hisp.dhis.dataelement.DataElement"
+        foreign-key="fk_mapview_dataelements_dataelementid" />
+    </list>
 
-    <many-to-one name="indicator" class="org.hisp.dhis.indicator.Indicator" column="indicatorid"
-      foreign-key="fk_mapview_indicatorid" />
+    <list name="dataElementOperands" table="mapview_dataelementoperands" cascade="all-delete-orphan">
+      <cache usage="read-write" />
+      <key column="mapviewid" foreign-key="fk_mapview_dataelementoperands_mapviewid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="dataelementoperandid" class="org.hisp.dhis.dataelement.DataElementOperand"
+        foreign-key="fk_mapview_dataelementoperands_dataelementoperandid" />
+    </list>
 
-    <many-to-one name="dataElementGroup" class="org.hisp.dhis.dataelement.DataElementGroup" column="dataelementgroupid"
-      foreign-key="fk_mapview_dataelementgroupid" />
+    <list name="indicators" table="mapview_indicators">
+      <cache usage="read-write" />
+      <key column="mapviewid" foreign-key="fk_mapview_indicators_mapviewid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="indicatorid" class="org.hisp.dhis.indicator.Indicator"
+        foreign-key="fk_mapview_indicators_indicatorid" />
+    </list>
 
-    <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
-      foreign-key="fk_mapview_dataelementid" />
-      
-    <many-to-one name="dataElementOperand" class="org.hisp.dhis.dataelement.DataElementOperand" column="dataelementoperandid"
-      foreign-key="fk_mapview_dataelementoperandid" cascade="all" />
+    <list name="organisationUnits" table="mapview_organisationunits">
+      <cache usage="read-write" />
+      <key column="mapviewid" foreign-key="fk_mapview_organisationunits_mapviewid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+        foreign-key="fk_mapview_organisationunits_organisationunitid" />
+    </list>
 
-    <many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid" 
-        foreign-key="fk_mapview_periodid" />
+    <list name="periods" table="mapview_periods">
+      <cache usage="read-write" />
+      <key column="mapviewid" foreign-key="fk_mapview_periods_mapviewid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="periodid" class="org.hisp.dhis.period.Period"
+        foreign-key="fk_mapview_periods_periodid" />
+    </list>
 
-    <many-to-one name="parentOrganisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
-      column="parentorganisationunitid" foreign-key="fk_mapview_parentorganisationunitid" />
-
-    <many-to-one name="organisationUnitLevel" class="org.hisp.dhis.organisationunit.OrganisationUnitLevel"
-      column="organisationunitlevelid" foreign-key="fk_mapview_organisationunitlevelid" />
+    <list name="organisationUnitLevels" table="mapview_orgunitlevels">
+      <cache usage="read-write" />
+      <key column="mapviewid" foreign-key="fk_mapview_orgunitlevels_mapviewid" />
+      <list-index column="sort_order" base="0" />
+      <element column="orgunitlevel" type="integer" />
+    </list>
 
     <property name="legendType" />
 

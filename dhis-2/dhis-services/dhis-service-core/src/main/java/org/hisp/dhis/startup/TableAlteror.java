@@ -635,9 +635,41 @@ public class TableAlteror
         executeSql( "delete from usersetting where name = 'dashboardConfig' or name = 'dashboardConfiguration'" );
         executeSql( "ALTER TABLE interpretation ALTER COLUMN userid DROP NOT NULL" );
 
+        upgradeMapViewsToAnalyticalObject();
+        
         log.info( "Tables updated" );
     }
 
+    private void upgradeMapViewsToAnalyticalObject()
+    {
+        executeSql( "insert into mapview_dataelements ( mapviewid, sort_order, dataelementid ) select mapviewid, 0, dataelementid from mapview where dataelementid is not null" );
+        executeSql( "alter table mapview drop column dataelementid" );
+
+        executeSql( "insert into mapview_dataelementoperands ( mapviewid, sort_order, dataelementoperandid ) select mapviewid, 0, dataelementoperandid from mapview where dataelementoperandid is not null" );
+        executeSql( "alter table mapview drop column dataelementoperandid" );
+
+        executeSql( "insert into mapview_indicators ( mapviewid, sort_order, indicatorid ) select mapviewid, 0, indicatorid from mapview where indicatorid is not null" );
+        executeSql( "alter table mapview drop column indicatorid" );
+
+        executeSql( "insert into mapview_organisationunits ( mapviewid, sort_order, organisationunitid ) select mapviewid, 0, parentorganisationunitid from mapview where parentorganisationunitid is not null" );
+        executeSql( "alter table mapview drop column parentorganisationunitid" );
+
+        executeSql( "insert into mapview_periods ( mapviewid, sort_order, periodid ) select mapviewid, 0, periodid from mapview where periodid is not null" );
+        executeSql( "alter table mapview drop column periodid" );
+
+        executeSql( "insert into mapview_orgunitlevels ( mapviewid, sort_order, orgunitlevel ) select m.mapviewid, 0, o.level " + 
+            "from mapview m join orgunitlevel o on (m.organisationunitlevelid=o.orgunitlevelid) where m.organisationunitlevelid is not null" );
+        
+        System.out.println();
+        System.out.println("insert into mapview_orgunitlevels ( mapviewid, sort_order, orgunitlevel ) select m.mapviewid, 0, o.level " + 
+            "from mapview m join orgunitlevel o on (m.organisationunitlevelid=o.orgunitlevelid) where m.organisationunitlevelid is not null");
+        
+        executeSql( "alter table mapview drop column organisationunitlevelid" );
+        
+        executeSql( "alter table mapview drop column dataelementgroupid" );        
+        executeSql( "alter table mapview drop column indicatorgroupid" );
+    }
+    
     private void upgradeChartRelativePeriods()
     {
         BatchHandler<RelativePeriods> batchHandler = batchHandlerFactory.createBatchHandler( RelativePeriodsBatchHandler.class ).init();

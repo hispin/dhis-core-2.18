@@ -31,7 +31,7 @@
 
     <list name="dataElementOperands" table="reporttable_dataelementoperands" cascade="all-delete-orphan">
       <cache usage="read-write" />
-      <key column="reporttableid" foreign-key="fk_reporttable_dataelementoperandid_reporttableid" />
+      <key column="reporttableid" foreign-key="fk_reporttable_dataelementoperands_reporttableid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="dataelementoperandid" class="org.hisp.dhis.dataelement.DataElementOperand"
         foreign-key="fk_reporttable_dataelementoperands_dataelementoperandid" />

@@ -88,4 +88,18 @@ public class NameableObjectUtils
         
         return list;
     }
+
+    /**
+     * Returns a list typed with the desired erasure based on the given collection.
+     * This operation implies an unchecked cast and it is the responsibility of
+     * the caller to make sure the cast is valid.
+     * 
+     * @param collection the collection.
+     * @param the class type.
+     * @return a list.
+     */
+    public static <T extends NameableObject> List<T> asTypedList( Collection<NameableObject> collection, Class<T> clazz )
+    {
+        return asTypedList( collection );
+    }
 }

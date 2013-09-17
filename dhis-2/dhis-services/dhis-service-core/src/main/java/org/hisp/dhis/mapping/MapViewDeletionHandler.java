@@ -31,11 +31,7 @@ package org.hisp.dhis.mapping;
 import java.util.Iterator;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -58,13 +54,6 @@ public class MapViewDeletionHandler
         this.mappingService = mappingService;
     }
     
-    private DataElementOperandService operandService;
-
-    public void setOperandService( DataElementOperandService operandService )
-    {
-        this.operandService = operandService;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -76,23 +65,11 @@ public class MapViewDeletionHandler
     }
     
     @Override
-    public void deleteMapView( MapView mapView )
-    {
-        DataElementOperand operand = mapView.getDataElementOperand();
-        
-        if ( operand != null )
-        {
-            mapView.setDataElementOperand( null );
-            operandService.deleteDataElementOperand( operand );
-        }
-    }
-    
-    @Override
     public String allowDeletePeriod( Period period )
     {
         for ( MapView mapView : mappingService.getAllMapViews() )
         {
-            if ( mapView.getPeriod().equals( period ) )
+            if ( mapView.getPeriods().contains( period ) )
             {
                 return mapView.getName();
             }
@@ -100,24 +77,7 @@ public class MapViewDeletionHandler
         
         return null;
     }
-    
-    @Override
-    public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
-    {
-        Iterator<MapView> mapViews = mappingService.getAllMapViews().iterator();
         
-        while ( mapViews.hasNext() )
-        {
-            MapView mapView = mapViews.next();
-            
-            if ( mapView.getIndicatorGroup() != null && mapView.getIndicatorGroup().equals( indicatorGroup ) )
-            {
-                mapViews.remove();
-                mappingService.deleteMapView( mapView );
-            }
-        }
-    }
-    
     @Override
     public void deleteIndicator( Indicator indicator )
     {
@@ -127,24 +87,7 @@ public class MapViewDeletionHandler
         {
             MapView mapView = mapViews.next();
             
-            if ( mapView.getIndicator() != null && mapView.getIndicator().equals( indicator ) )
-            {
-                mapViews.remove();
-                mappingService.deleteMapView( mapView );
-            }
-        }
-    }
-    
-    @Override
-    public void deleteDataElementGroup( DataElementGroup dataElementGroup )
-    {
-        Iterator<MapView> mapViews = mappingService.getAllMapViews().iterator();
-        
-        while ( mapViews.hasNext() )
-        {
-            MapView mapView = mapViews.next();
-            
-            if ( mapView.getDataElementGroup() != null && mapView.getDataElementGroup().equals( dataElementGroup ) )
+            if ( mapView.getIndicators() != null && mapView.getIndicators().contains( indicator ) )
             {
                 mapViews.remove();
                 mappingService.deleteMapView( mapView );
@@ -161,7 +104,7 @@ public class MapViewDeletionHandler
         {
             MapView mapView = mapViews.next();
             
-            if ( mapView.getDataElement() != null && mapView.getDataElement().equals( dataElement ) )
+            if ( mapView.getDataElements() != null && mapView.getDataElements().contains( dataElement ) )
             {
                 mapViews.remove();
                 mappingService.deleteMapView( mapView );
@@ -178,7 +121,7 @@ public class MapViewDeletionHandler
         {
             MapView mapView = mapViews.next();
             
-            if ( mapView.getParentOrganisationUnit() != null && mapView.getParentOrganisationUnit().equals( organisationUnit ) )
+            if ( mapView.getOrganisationUnits() != null && mapView.getOrganisationUnits().contains( organisationUnit ) )
             {
                 mapViews.remove();
                 mappingService.deleteMapView( mapView );

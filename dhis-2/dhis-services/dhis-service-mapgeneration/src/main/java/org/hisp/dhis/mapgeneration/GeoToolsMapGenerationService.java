@@ -28,8 +28,6 @@ package org.hisp.dhis.mapgeneration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.NameableObjectUtils.getList;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -161,15 +159,29 @@ public class GeoToolsMapGenerationService
 
     private InternalMapLayer getSingleInternalMapLayer( MapView mapView )
     {
-        if ( mapView == null || mapView.getPeriod() == null || mapView.getParentOrganisationUnit() == null )
+        if ( mapView == null )
         {
             return null;
         }
 
         boolean isIndicator = MapView.VALUE_TYPE_INDICATOR.equals( mapView.getValueType() );
 
-        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
-            getOrganisationUnitsAtLevel( mapView.getOrganisationUnitLevel().getLevel(), mapView.getParentOrganisationUnit() ) );
+        List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();
+        
+        if ( mapView.hasOrganisationUnitLevels() )
+        {
+            atLevels.addAll( organisationUnitService.getOrganisationUnitsAtLevels( mapView.getOrganisationUnitLevels(), mapView.getOrganisationUnits() ) );
+        }
+        
+        if ( mapView.hasItemOrganisationUnitGroups() )
+        {
+            inGroups.addAll( organisationUnitService.getOrganisationUnits( mapView.getItemOrganisationUnitGroups(), mapView.getOrganisationUnits() ) );
+        }
+
+        mapView.init( null, null, null, atLevels, inGroups, null );
+        
+        List<OrganisationUnit> organisationUnits = mapView.getAllOrganisationUnits();
 
         java.util.Map<String, OrganisationUnit> uidOuMap = new HashMap<String, OrganisationUnit>();
         
@@ -178,12 +190,12 @@ public class GeoToolsMapGenerationService
             uidOuMap.put( ou.getUid(), ou );
         }
         
-        mapView.setOrganisationUnitsAtLevel( organisationUnits );
+        DataQueryParams params = analyticsService.getFromAnalyticalObject( mapView, null );
         
-        Grid grid = getDataGrid( mapView );
-        
+        Grid grid = analyticsService.getAggregatedDataValues( params );
+
         Collection<MapValue> mapValues = getMapValues( grid );
-        
+
         if ( mapValues.isEmpty() )
         {
             return null;
@@ -193,7 +205,7 @@ public class GeoToolsMapGenerationService
         String name = mapView.getName();
 
         // Get the period
-        Period period = mapView.getPeriod();
+        Period period = mapView.getPeriods().get( 0 ); //TODO make more robust
 
         // Get the low and high radii
         int radiusLow = !isIndicator ? mapView.getRadiusLow() : DEFAULT_RADIUS_LOW;
@@ -255,30 +267,6 @@ public class GeoToolsMapGenerationService
     }
 
     /**
-     * Creates a Grid with aggregated data.
-     */
-    private Grid getDataGrid( MapView mapView )
-    {
-        DataQueryParams params = new DataQueryParams();
-        
-        if ( mapView.getIndicator() != null )
-        {
-            params.setIndicators( getList( mapView.getIndicator() ) );
-        }
-        else if ( mapView.getDataElement() != null )
-        {
-            params.setDataElements( getList( mapView.getDataElement() ) );
-        }
-        
-        //TODO operands
-
-        params.setOrganisationUnits( mapView.getOrganisationUnitsAtLevel() );
-        params.setFilterPeriods( getList( mapView.getPeriod() ) );
-        
-        return analyticsService.getAggregatedDataValues( params );
-    }
-    
-    /**
      * Creates a list of aggregated map values.
      */
     private List<MapValue> getMapValues( Grid grid )
@@ -289,8 +277,8 @@ public class GeoToolsMapGenerationService
         {
             if ( row != null && row.size() >= 3 )
             {
-                String ou = (String) row.get( 1 );
-                Double value = (Double) row.get( 2 );
+                String ou = (String) row.get( 0 );
+                Double value = (Double) row.get( ( row.size() - 1 ) );
                 
                 mapValues.add( new MapValue( ou, value ) );
             }
