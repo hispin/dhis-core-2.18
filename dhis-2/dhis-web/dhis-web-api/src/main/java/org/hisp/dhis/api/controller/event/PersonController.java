@@ -32,12 +32,13 @@ import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.dxf2.importsummary.ImportStatus;
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.person.Gender;
 import org.hisp.dhis.dxf2.person.Person;
 import org.hisp.dhis.dxf2.person.PersonService;
 import org.hisp.dhis.dxf2.person.Persons;
-import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
@@ -178,7 +179,12 @@ public class PersonController
         {
             response.setStatus( HttpServletResponse.SC_CREATED );
             ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
-            response.setHeader( "Location", getResourcePath( request, importSummary ) );
+
+            if ( !importSummary.getStatus().equals( ImportStatus.ERROR ) )
+            {
+                response.setHeader( "Location", getResourcePath( request, importSummary ) );
+            }
+
             JacksonUtils.toXml( response.getOutputStream(), importSummary );
         }
     }
@@ -197,7 +203,12 @@ public class PersonController
         {
             response.setStatus( HttpServletResponse.SC_CREATED );
             ImportSummary importSummary = importSummaries.getImportSummaries().get( 0 );
-            response.setHeader( "Location", getResourcePath( request, importSummary ) );
+
+            if ( !importSummary.getStatus().equals( ImportStatus.ERROR ) )
+            {
+                response.setHeader( "Location", getResourcePath( request, importSummary ) );
+            }
+
             JacksonUtils.toJson( response.getOutputStream(), importSummary );
         }
     }
@@ -233,11 +244,6 @@ public class PersonController
         Person person = getPerson( id );
         personService.deletePerson( person );
     }
-
-    // -------------------------------------------------------------------------
-    // ENROLLMENT
-    // -------------------------------------------------------------------------
-
 
     // -------------------------------------------------------------------------
     // HELPERS
