@@ -1,33 +1,39 @@
+#macro( getSymbol $ip )
+#if( $ip.chartInterpretation )
+<img src="../images/chart.png">
+#elseif( $ip.mapInterpretation )
+<img src="../images/map.png">
+#elseif( $ip.reportTableInterpretation )
+<img src="../images/table.png">
+#elseif( $ip.dataSetReportInterpretation )
+<img src="../images/dataset.png">
+#end
+#end
+
 #set( $maxComments = 4 )
 #foreach( $ip in $interpretations )
 <div class="interpretationContainer">
-    <div class="interpretationSymbol">
-	#if( $ip.chartInterpretation )
-	   <img src="../images/chart.png">
-    #elseif( $ip.mapInterpretation )
-        <img src="../images/map.png">
-    #elseif( $ip.reportTableInterpretation )
-        <img src="../images/table.png">
-    #elseif( $ip.dataSetReportInterpretation )
-        <img src="../images/dataset.png">
-    #end
-    
     #if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end
     #if( $ip.period )#set( $pe = "&pe=" + $ip.period.isoDate )#else#set( $pe = "" )#end
-    </div>
+    
     <div class="interpretation">
 	    <div class="interpretationName">
-	        <a class="bold userLink" href="profile.action?id=${ip.user.uid}">${encoder.htmlEncode( $ip.user.name )}</a>&nbsp;
-	        <span class="grey">${format.formatDate( $ip.created )}</span>
+	    	<div class="interpretationSymbol">
+	    	  #getSymbol( $ip )
+	    	</div>
+	    	<div class="interpretationUser">
+	           <a class="bold userLink" href="profile.action?id=${ip.user.uid}">${encoder.htmlEncode( $ip.user.name )}</a><br>
+	           <span class="tipText">${format.formatDate( $ip.created )}</span>
+	        </div>
 	    </div>
 	    <div class="interpretationText">
 	        $!dhisTextUtils.htmlify( ${ip.text} )
 	    </div>
-	    <div class="interpretationChart">
+	    <div class="interpretationItem">
 	    #if( $ip.chartInterpretation )
 	        <a href="../dhis-web-visualizer/app/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}">
 	        <img style="cursor:pointer" 
-	             src="../api/charts/${ip.chart.uid}/data?date=${format.formatDate( $ip.created )}&width=530&height=300${ou}"	             
+	             src="../api/charts/${ip.chart.uid}/data?date=${format.formatDate( $ip.created )}&width=560&height=300${ou}"	             
 	             title="$i18n.getString( 'click_to_view_in_data_visualizer' )"></a>
 	    #elseif( $ip.mapInterpretation )
 	        <a class="bold" 
