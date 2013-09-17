@@ -29,6 +29,8 @@ package org.hisp.dhis.de.action;
  */
 
 import com.opensymphony.xwork2.Action;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
@@ -189,21 +191,8 @@ public class SaveValueAction
 
         Date now = new Date();
 
-        if ( storedBy == null )
-        {
-            storedBy = "[unknown]";
-        }
-
-        if ( value != null && value.trim().length() == 0 )
-        {
-            value = null;
-        }
-
-        if ( value != null )
-        {
-            value = value.trim();
-        }
-
+        value = StringUtils.trimToNull( value );
+        
         // ---------------------------------------------------------------------
         // Validate value according to type from data element
         // ---------------------------------------------------------------------
