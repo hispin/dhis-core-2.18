@@ -306,7 +306,7 @@ public class CurrentUserController
         JacksonUtils.toJsonWithView( response.getOutputStream(), userOrganisationUnits, viewClass );
     }
 
-    @RequestMapping(value = { "/assignedPrograms" }, produces = { "application/json", "text/*" })
+    @RequestMapping(value = { "/assignedPrograms", "/programs" }, produces = { "application/json", "text/*" })
     public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
         @RequestParam(required = false) Integer type )
         throws IOException, NotAuthenticatedException
@@ -418,7 +418,7 @@ public class CurrentUserController
     }
 
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = "/assignedDataSets", produces = { "application/json", "text/*" })
+    @RequestMapping(value = { "/assignedDataSets", "/dataSets" }, produces = { "application/json", "text/*" })
     public void getDataSets( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
