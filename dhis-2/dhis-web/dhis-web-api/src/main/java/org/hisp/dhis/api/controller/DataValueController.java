@@ -45,6 +45,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -123,6 +124,14 @@ public class DataValueController
         }
         
         value = StringUtils.trimToNull( value );
+
+        String valid = ValidationUtils.dataValueIsValid( value, dataElement );
+        
+        if ( valid != null )
+        {
+            ContextUtils.conflictResponse( response, "Invalid value: " + value + ", must match data element type: " + dataElement.getType() );
+            return;
+        }
         
         String storedBy = currentUserService.getCurrentUsername();
 
