@@ -38,7 +38,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -316,8 +315,10 @@ public class DefaultMappingService
     {
         if ( mapView != null )
         {
-            mapView.getParentOrganisationUnit().setLevel(
-                organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit().getId() ) );
+            for ( OrganisationUnit unit : mapView.getOrganisationUnits() )
+            {
+                unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getId() ) );
+            }
         }
     }
 
@@ -336,10 +337,10 @@ public class DefaultMappingService
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
 
-        mapView.setIndicator( indicator );
-        mapView.setPeriod( period );
-        mapView.setParentOrganisationUnit( unit );
-        mapView.setOrganisationUnitLevel( new OrganisationUnitLevel( level, "" ) );
+        mapView.getIndicators().add( indicator );
+        mapView.getPeriods().add( period );
+        mapView.getOrganisationUnits().add( unit );
+        mapView.getOrganisationUnitLevels().add( level );
         mapView.setName( indicator.getName() );
         mapView.setValueType( MapView.VALUE_TYPE_INDICATOR );
 
@@ -356,10 +357,9 @@ public class DefaultMappingService
             {
                 //TODO poor performance, fix
 
-                if ( mapView.getParentOrganisationUnit() != null )
+                for ( OrganisationUnit unit : mapView.getOrganisationUnits() )
                 {
-                    mapView.getParentOrganisationUnit().setLevel(
-                        organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit().getId() ) );
+                    unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getId() ) );
                 }
             }
         }

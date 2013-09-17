@@ -28,8 +28,6 @@ package org.hisp.dhis.api.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.period.PeriodType.getPeriodFromIsoString;
-
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -41,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.common.DimensionService;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -51,8 +50,10 @@ import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,9 @@ public class MapController
 
     @Autowired
     private MapGenerationService mapGenerationService;
+    
+    @Autowired
+    private DimensionService dimensionService;
 
     @Autowired
     private ContextUtils contextUtils;
@@ -194,22 +198,22 @@ public class MapController
     @Override
     public void postProcessEntity( Map map ) throws Exception
     {
+        I18nFormat format = i18nManager.getI18nFormat();
+        
         for ( MapView view : map.getMapViews() )
         {
-            if ( view != null )
+            view.populateAnalyticalProperties();
+            
+            for ( OrganisationUnit organisationUnit : view.getOrganisationUnits() )
             {
-                if ( view.getPeriod() != null )
+                view.getParentGraphMap().put( organisationUnit.getUid(), organisationUnit.getParentGraph() );
+            }
+            
+            if ( view.getPeriods() != null && !view.getPeriods().isEmpty() )
+            {   
+                for ( Period period : view.getPeriods() )
                 {
-                    I18nFormat format = i18nManager.getI18nFormat();
-                    
-                    view.getPeriod().setName( format.formatPeriod( view.getPeriod() ) );
-                }
-                
-                if ( view.getParentOrganisationUnit() != null )
-                {
-                    String parentUid = view.getParentOrganisationUnit().getUid();
-                    view.setParentGraph( view.getParentOrganisationUnit().getParentGraph() + "/" + parentUid );
-                    view.setParentLevel( organisationUnitService.getLevelOfOrganisationUnit( view.getParentOrganisationUnit().getId() ) );
+                    period.setName( format.formatPeriod( period ) );
                 }
             }
         }
@@ -233,54 +237,12 @@ public class MapController
 
     private void mergeMap( Map map )
     {
-        if ( map.getUser() != null )
-        {
-            map.setUser( currentUserService.getCurrentUser() );
-        }
     }
 
     private void mergeMapView( MapView view )
     {
-        if ( view.getIndicatorGroup() != null )
-        {
-            view.setIndicatorGroup( indicatorService.getIndicatorGroup( view.getIndicatorGroup().getUid() ) );
-        }
-
-        if ( view.getIndicator() != null )
-        {
-            view.setIndicator( indicatorService.getIndicator( view.getIndicator().getUid() ) );
-        }
-
-        if ( view.getDataElementGroup() != null )
-        {
-            view.setDataElementGroup( dataElementService.getDataElementGroup( view.getDataElementGroup().getUid() ) );
-        }
-
-        if ( view.getDataElement() != null )
-        {
-            view.setDataElement( dataElementService.getDataElement( view.getDataElement().getUid() ) );
-        }
+        dimensionService.mergeAnalyticalObject( view );
         
-        if ( view.getDataElementOperand() != null )
-        {
-            view.setDataElementOperand( operandService.getDataElementOperandByUid( view.getDataElementOperand().getUid() ) );
-        }        
-
-        if ( view.getPeriod() != null )
-        {
-            view.setPeriod( periodService.reloadPeriod( getPeriodFromIsoString( view.getPeriod().getUid() ) ) );
-        }
-
-        if ( view.getParentOrganisationUnit() != null )
-        {
-            view.setParentOrganisationUnit( organisationUnitService.getOrganisationUnit( view.getParentOrganisationUnit().getUid() ) );
-        }
-
-        if ( view.getOrganisationUnitLevel() != null )
-        {
-            view.setOrganisationUnitLevel( organisationUnitService.getOrganisationUnitLevel( view.getOrganisationUnitLevel().getUid() ) );
-        }
-
         if ( view.getLegendSet() != null )
         {
             view.setLegendSet( mappingService.getMapLegendSet( view.getLegendSet().getUid() ) );

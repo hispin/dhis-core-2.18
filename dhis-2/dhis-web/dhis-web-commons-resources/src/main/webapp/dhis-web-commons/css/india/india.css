@@ -61,7 +61,7 @@ input[type=text],input[type=password],textarea
   top: 0px;
   left: 0px;
   right: 0px;
-  box-shadow: 0 0 2px #000;
+  box-shadow: 0 0 3px #222;
 }
 
 #headerBanner
@@ -215,7 +215,7 @@ a.menuLink:hover
   left: 0px;
   padding-top: 6px;
   border-right: 1px solid #ddd;
-  box-shadow: #eee 0 0 2px 0;
+  box-shadow: #ddd 0 0 2px 0;
 }
 
 #leftBarContents

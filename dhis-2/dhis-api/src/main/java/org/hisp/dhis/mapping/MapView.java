@@ -28,41 +28,40 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObjectUtils;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.adapter.JacksonPeriodDeserializer;
-import org.hisp.dhis.common.adapter.JacksonPeriodSerializer;
-import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
-import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
-import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 
 /**
+ * For analytical data, organisation units and indicators/data elements are
+ * dimensions, and period is filter.
+ * 
  * @author Jan Henrik Overland
  */
 @JacksonXmlRootElement( localName = "mapView", namespace = DxfNamespaces.DXF_2_0)
 public class MapView
-    extends BaseIdentifiableObject
+    extends BaseAnalyticalObject
 {
     public static final String LAYER_BOUNDARY = "boundary";
     public static final String LAYER_THEMATIC1 = "thematic1";
@@ -81,22 +80,6 @@ public class MapView
     private String layer;
 
     private String valueType;
-
-    private IndicatorGroup indicatorGroup;
-
-    private Indicator indicator;
-
-    private DataElementGroup dataElementGroup;
-
-    private DataElement dataElement;
-
-    private DataElementOperand dataElementOperand;
-    
-    private Period period;
-
-    private OrganisationUnit parentOrganisationUnit;
-
-    private OrganisationUnitLevel organisationUnitLevel;
 
     private String legendType;
 
@@ -120,43 +103,54 @@ public class MapView
 
     private Integer areaRadius;
 
+    // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
+    private transient I18nFormat format;
+
     private transient String parentGraph;
 
     private transient int parentLevel;
 
     private transient List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
 
+    private transient List<OrganisationUnit> organisationUnitsInGroups = new ArrayList<OrganisationUnit>();
+
     public MapView()
     {
     }
 
-    public MapView( String layer, String name, String valueType, IndicatorGroup indicatorGroup, Indicator indicator,
-        DataElementGroup dataElementGroup, DataElement dataElement,
-        Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
-        String legendType, Integer method, Integer classes, String colorLow, String colorHigh,
-        MapLegendSet legendSet, Integer radiusLow, Integer radiusHigh, Double opacity )
-    {
-        this.layer = layer;
-        this.name = name;
-        this.valueType = valueType;
-        this.indicatorGroup = indicatorGroup;
-        this.indicator = indicator;
-        this.dataElementGroup = dataElementGroup;
-        this.dataElement = dataElement;
-        this.period = period;
-        this.parentOrganisationUnit = parentOrganisationUnit;
-        this.organisationUnitLevel = organisationUnitLevel;
-        this.legendType = legendType;
-        this.method = method;
-        this.classes = classes;
-        this.colorLow = colorLow;
-        this.colorHigh = colorHigh;
-        this.legendSet = legendSet;
-        this.radiusLow = radiusLow;
-        this.radiusHigh = radiusHigh;
-        this.opacity = opacity;
-    }
+    // -------------------------------------------------------------------------
+    // Analytical
+    // -------------------------------------------------------------------------
 
+    @Override
+    public void init( User user, Date date, OrganisationUnit organisationUnit,
+        List<OrganisationUnit> organisationUnitsAtLevel, List<OrganisationUnit> organisationUnitsInGroups, I18nFormat format )
+    {
+        this.user = user;
+        this.relativePeriodDate = date;
+        this.relativeOrganisationUnit = organisationUnit;
+        this.organisationUnitsAtLevel = organisationUnitsAtLevel;
+        this.organisationUnitsInGroups = organisationUnitsInGroups;
+    }
+    
+    @Override
+    public void populateAnalyticalProperties()
+    {
+        columns.addAll( getDimensionalObjectList( DimensionalObject.ORGUNIT_DIM_ID ) );
+        columns.addAll( getDimensionalObjectList( DimensionalObject.DATA_X_DIM_ID ) );
+        filters.addAll( getDimensionalObjectList( DimensionalObject.PERIOD_DIM_ID ) );
+    }
+    
+    public List<OrganisationUnit> getAllOrganisationUnits()
+    {
+        DimensionalObject object = getDimensionalObject( ORGUNIT_DIM_ID, relativePeriodDate, user, true, organisationUnitsAtLevel, organisationUnitsInGroups, format );
+
+        return object != null ? NameableObjectUtils.asTypedList( object.getItems(), OrganisationUnit.class ) : null;
+    }    
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -170,7 +164,7 @@ public class MapView
     @Override
     public String getName()
     {
-        return indicator != null ? indicator.getName() : dataElement != null ? dataElement.getName() : uid;
+        return indicators != null ? indicators.get( 0 ).getName() : dataElements != null ? dataElements.get( 0 ).getName() : uid;
     }
 
     @JsonProperty
@@ -197,133 +191,6 @@ public class MapView
     public void setValueType( String valueType )
     {
         this.valueType = valueType;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public IndicatorGroup getIndicatorGroup()
-    {
-        return indicatorGroup;
-    }
-
-    public void setIndicatorGroup( IndicatorGroup indicatorGroup )
-    {
-        this.indicatorGroup = indicatorGroup;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public Indicator getIndicator()
-    {
-        return indicator;
-    }
-
-    public void setIndicator( Indicator indicator )
-    {
-        this.indicator = indicator;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public DataElementGroup getDataElementGroup()
-    {
-        return dataElementGroup;
-    }
-
-    public void setDataElementGroup( DataElementGroup dataElementGroup )
-    {
-        this.dataElementGroup = dataElementGroup;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public DataElement getDataElement()
-    {
-        return dataElement;
-    }
-
-    public void setDataElement( DataElement dataElement )
-    {
-        this.dataElement = dataElement;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public DataElementOperand getDataElementOperand()
-    {
-        return dataElementOperand;
-    }
-
-    public void setDataElementOperand( DataElementOperand dataElementOperand )
-    {
-        this.dataElementOperand = dataElementOperand;
-    }
-
-    @JsonProperty
-    @JsonSerialize( using = JacksonPeriodTypeSerializer.class )
-    @JsonDeserialize( using = JacksonPeriodTypeDeserializer.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public PeriodType getPeriodType()
-    {
-        return period != null ? period.getPeriodType() : null;
-    }
-
-    public void setPeriodType( PeriodType periodType )
-    {
-        // ignore
-    }
-
-    @JsonProperty
-    @JsonSerialize( using = JacksonPeriodSerializer.class )
-    @JsonDeserialize( using = JacksonPeriodDeserializer.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public Period getPeriod()
-    {
-        return period;
-    }
-
-    public void setPeriod( Period period )
-    {
-        this.period = period;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public OrganisationUnit getParentOrganisationUnit()
-    {
-        return parentOrganisationUnit;
-    }
-
-    public void setParentOrganisationUnit( OrganisationUnit parentOrganisationUnit )
-    {
-        this.parentOrganisationUnit = parentOrganisationUnit;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public OrganisationUnitLevel getOrganisationUnitLevel()
-    {
-        return organisationUnitLevel;
-    }
-
-    public void setOrganisationUnitLevel( OrganisationUnitLevel organisationUnitLevel )
-    {
-        this.organisationUnitLevel = organisationUnitLevel;
     }
 
     @JsonProperty
@@ -497,23 +364,6 @@ public class MapView
         this.parentLevel = parentLevel;
     }
 
-    public List<OrganisationUnit> getOrganisationUnitsAtLevel()
-    {
-        return organisationUnitsAtLevel;
-    }
-
-    public void setOrganisationUnitsAtLevel( List<OrganisationUnit> organisationUnitsAtLevel )
-    {
-        this.organisationUnitsAtLevel = organisationUnitsAtLevel;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[Indicator: " + indicator + ", org unit: " +
-            parentOrganisationUnit + ", period: " + period + ", value type: " + valueType + "]";
-    }
-
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -525,13 +375,6 @@ public class MapView
 
             layer = mapView.getLayer() == null ? layer : mapView.getLayer();
             valueType = mapView.getValueType() == null ? valueType : mapView.getValueType();
-            indicatorGroup = mapView.getIndicatorGroup() == null ? indicatorGroup : mapView.getIndicatorGroup();
-            indicator = mapView.getIndicator() == null ? indicator : mapView.getIndicator();
-            dataElementGroup = mapView.getDataElementGroup() == null ? dataElementGroup : mapView.getDataElementGroup();
-            dataElement = mapView.getDataElement() == null ? dataElement : mapView.getDataElement();
-            period = mapView.getPeriod() == null ? period : mapView.getPeriod();
-            parentOrganisationUnit = mapView.getParentOrganisationUnit() == null ? parentOrganisationUnit : mapView.getParentOrganisationUnit();
-            organisationUnitLevel = mapView.getOrganisationUnitLevel() == null ? organisationUnitLevel : mapView.getOrganisationUnitLevel();
             legendType = mapView.getLegendType() == null ? legendType : mapView.getLegendType();
             method = mapView.getMethod() == null ? method : mapView.getMethod();
             classes = mapView.getClasses() == null ? classes : mapView.getClasses();
