@@ -35,7 +35,7 @@ import java.util.HashSet;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
@@ -50,7 +50,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
  * @author Abyot Asalefew
  */
 public class HibernateProgramInstanceStore
-    extends HibernateGenericStore<ProgramInstance>
+    extends HibernateIdentifiableObjectStore<ProgramInstance>
     implements ProgramInstanceStore
 {
     // -------------------------------------------------------------------------
