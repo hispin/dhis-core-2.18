@@ -137,23 +137,11 @@ public class PersonController
         return "persons";
     }
 
-    private OrganisationUnit getOrganisationUnit( String orgUnitUid )
-    {
-        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
-
-        if ( organisationUnit == null )
-        {
-            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "orgUnit is not a valid uid." );
-        }
-
-        return organisationUnit;
-    }
-
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model )
+    public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
-        Person person = personService.getPerson( id );
+        Person person = getPerson( id );
 
         model.addAttribute( "model", person );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
@@ -275,5 +263,17 @@ public class PersonController
     private String getResourcePath( HttpServletRequest request, ImportSummary importSummary )
     {
         return ContextUtils.getContextPath( request ) + "/api/" + "persons" + "/" + importSummary.getReference();
+    }
+
+    private OrganisationUnit getOrganisationUnit( String orgUnitUid )
+    {
+        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
+
+        if ( organisationUnit == null )
+        {
+            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "orgUnit is not a valid uid." );
+        }
+
+        return organisationUnit;
     }
 }
