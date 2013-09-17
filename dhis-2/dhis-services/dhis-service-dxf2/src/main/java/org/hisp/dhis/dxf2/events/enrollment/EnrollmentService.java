@@ -28,6 +28,13 @@ package org.hisp.dhis.dxf2.events.enrollment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+
+import java.util.Collection;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -37,5 +44,33 @@ public interface EnrollmentService
     // READ
     // -------------------------------------------------------------------------
 
-    Enrollment getEnrollment(String id);
+    Enrollments getEnrollments();
+
+    Enrollments getEnrollments( Patient patient );
+
+    Enrollments getEnrollments( Program program );
+
+    Enrollments getEnrollments( OrganisationUnit organisationUnit );
+
+    Enrollments getEnrollments( Program program, OrganisationUnit organisationUnit );
+
+    Enrollments getEnrollments( Collection<ProgramInstance> programInstances );
+
+    Enrollment getEnrollment( String id );
+
+    Enrollment getEnrollment( ProgramInstance programInstance );
+
+    // -------------------------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------------------------
+
+
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
+
+
+    // -------------------------------------------------------------------------
+    // DELETE
+    // -------------------------------------------------------------------------
 }

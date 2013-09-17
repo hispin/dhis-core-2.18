@@ -56,6 +56,8 @@ public interface ProgramInstanceService
 
     ProgramInstance getProgramInstance( int id );
 
+    ProgramInstance getProgramInstance( String id );
+
     Collection<ProgramInstance> getAllProgramInstances();
 
     Collection<ProgramInstance> getProgramInstances( Integer status );

@@ -47,6 +47,32 @@ import java.util.List;
  */
 public interface EventService
 {
+    // -------------------------------------------------------------------------
+    // READ
+    // -------------------------------------------------------------------------
+
+    Events getEvents( Program program, OrganisationUnit organisationUnit );
+
+    Events getEvents( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+
+    Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
+
+    Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+
+    Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit );
+
+    Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+
+    Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate );
+
+    Event getEvent( String uid );
+
+    Event getEvent( ProgramStageInstance programStageInstance );
+
+    // -------------------------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------------------------
+
     ImportSummary saveEventXml( InputStream inputStream ) throws IOException;
 
     ImportSummary saveEventXml( InputStream inputStream, ImportOptions importOptions ) throws IOException;
@@ -67,25 +93,15 @@ public interface EventService
 
     ImportSummaries saveEventsJson( InputStream inputStream, TaskId taskId, ImportOptions importOptions ) throws IOException;
 
-    Events getEvents( Program program, OrganisationUnit organisationUnit );
-
-    Events getEvents( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
-
-    Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
-
-    Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate );
-
-    Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit );
-
-    Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate );
-
-    Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate );
-
-    Event getEvent( String uid );
-
-    Event getEvent( ProgramStageInstance programStageInstance );
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
 
     void updateEvent( Event event );
+
+    // -------------------------------------------------------------------------
+    // DELETE
+    // -------------------------------------------------------------------------
 
     void deleteEvent( Event event );
 }
