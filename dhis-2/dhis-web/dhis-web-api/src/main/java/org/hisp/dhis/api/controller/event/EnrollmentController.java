@@ -29,11 +29,16 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.api.controller.exception.NotFoundException;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollments;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +50,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = EnrollmentController.RESOURCE_PATH )
+@RequestMapping(value = EnrollmentController.RESOURCE_PATH)
 public class EnrollmentController
 {
     public static final String RESOURCE_PATH = "/enrollments";
@@ -57,11 +62,11 @@ public class EnrollmentController
     // READ
     // -------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String getEnrollments(
-        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
-        @RequestParam( value = "program", required = false ) String programUid,
-        @RequestParam( value = "person", required = false ) String personUid,
+        @RequestParam(value = "orgUnit", required = false) String orgUnitUid,
+        @RequestParam(value = "program", required = false) String programUid,
+        @RequestParam(value = "person", required = false) String personUid,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
     {
         WebOptions options = new WebOptions( parameters );
@@ -73,5 +78,38 @@ public class EnrollmentController
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
         return "enrollments";
+    }
+
+    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    public String getEnrollment( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
+    {
+        WebOptions options = new WebOptions( parameters );
+        Enrollment enrollment = getEnrollment( id );
+
+        model.addAttribute( "model", enrollment );
+        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+
+        return "person";
+    }
+
+    // -------------------------------------------------------------------------
+    // HELPERS
+    // -------------------------------------------------------------------------
+
+    private Enrollment getEnrollment( String id ) throws NotFoundException
+    {
+        Enrollment enrollment = enrollmentService.getEnrollment( id );
+
+        if ( enrollment == null )
+        {
+            throw new NotFoundException( "Enrollment", id );
+        }
+
+        return enrollment;
+    }
+
+    private String getResourcePath( HttpServletRequest request, ImportSummary importSummary )
+    {
+        return ContextUtils.getContextPath( request ) + "/api/" + "enrollments" + "/" + importSummary.getReference();
     }
 }
