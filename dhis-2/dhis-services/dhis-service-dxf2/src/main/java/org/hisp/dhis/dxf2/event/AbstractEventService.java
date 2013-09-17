@@ -198,12 +198,12 @@ public abstract class AbstractEventService implements EventService
                 if ( programStageInstances.isEmpty() )
                 {
                     return new ImportSummary( ImportStatus.ERROR, "No active event exists for single event program " + program.getUid()
-                        + ", please fix your database." );
+                        + ", please check and correct your database." );
                 }
                 else if ( programStageInstances.size() > 1 )
                 {
                     return new ImportSummary( ImportStatus.ERROR, "Multiple active events exists for single event program " + program.getUid()
-                        + ", please fix your database." );
+                        + ", please check and correct your database." );
                 }
 
                 programStageInstance = programStageInstances.get( 0 );
