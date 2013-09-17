@@ -273,14 +273,14 @@
 		jQuery('#patientForm [name=attr*] select').attr('disabled',true);
 	#end
 	
-	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientAttributes" ) )
+	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientIdentifier" ) )
 		disableButtons = false;
 	#else
 		jQuery('#patientForm [name=idenFields] input').attr('disabled',true);
 		jQuery('#patientForm [name=idenFields] select').attr('disabled',true);
 	#end
 
-	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientIdentifier" ) )
+	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientAttributes" ) )
 		disableButtons = false;
 	#else
 		jQuery('#patientForm [name=attributesFields] input').attr('disabled',true);

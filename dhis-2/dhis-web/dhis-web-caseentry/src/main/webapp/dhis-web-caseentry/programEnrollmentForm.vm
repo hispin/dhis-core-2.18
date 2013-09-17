@@ -64,7 +64,7 @@
 					#foreach ($identifierType in $identifierTypes) 
 						#set( $identifier = '')
 						#set( $identifier = $identiferMap.get( $identifierType.id ) )
-						<tr #alternate( $mark )>
+						<tr #alternate( $mark ) name='idenFields'>
 							<td class='text-column'><label>$identifierType.displayName #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
 							<td class="input-column">
 								<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value='$!identifier' class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" />
@@ -77,7 +77,7 @@
 					#foreach($attribute in $patientAttributes )
 							#set( $attributeValue = '')
 							#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
-							<tr #alternate( $mark )>
+							<tr #alternate( $mark ) name='attributesFields'>
 								<td class='text-column'><label>$attribute.displayName #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 								<td class="input-column" >
 									#if( $attribute.valueType == "bool" )
@@ -108,7 +108,7 @@
 					<tr><td>&nbsp;</td></tr>
 					<tr>
 						<td></td>
-						<td><input type='submit' value='$i18n.getString("save")' class='button' /></td>
+						<td><input type='submit' id='saveIdenAndAttrBtn' value='$i18n.getString("save")' class='button' /></td>
 					</tr>
 				</table>
 			</form>
@@ -148,6 +148,24 @@
 			saveCoordinatesEvent($!programStageInstance.id);
 		});
 		
+		var disableButtons = true;
+		#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientIdentifier" ) )
+			disableButtons = false;
+		#else
+			jQuery('#patientForm [name=idenFields] input').attr('disabled',true);
+			jQuery('#patientForm [name=idenFields] select').attr('disabled',true);
+		#end
+
+		#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditPatientAttributes" ) )
+			disableButtons = false;
+		#else
+			jQuery('#patientForm [name=attributesFields] input').attr('disabled',true);
+			jQuery('#patientForm [name=attributesFields] select').attr('disabled',true);
+		#end
+		
+		if(disableButtons){
+			disabled('saveIdenAndAttrBtn');
+		}
 		#if( $programInstance.status==1)
 			jQuery("[id=tab-2] :input").prop('disabled', true);
 			jQuery("[id=tab-3] :input").prop('disabled', true);
