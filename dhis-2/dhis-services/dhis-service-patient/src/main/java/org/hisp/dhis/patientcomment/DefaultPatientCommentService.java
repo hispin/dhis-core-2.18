@@ -30,7 +30,7 @@ package org.hisp.dhis.patientcomment;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericStore;
 
 /**
  * @author Chau Thu Tran
@@ -44,9 +44,9 @@ public class DefaultPatientCommentService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<PatientComment> patientCommentStore;
+    private GenericStore<PatientComment> patientCommentStore;
 
-    public void setPatientCommentStore( GenericIdentifiableObjectStore<PatientComment> patientCommentStore )
+    public void setPatientCommentStore( GenericStore<PatientComment> patientCommentStore )
     {
         this.patientCommentStore = patientCommentStore;
     }
@@ -84,5 +84,4 @@ public class DefaultPatientCommentService
     {
         return patientCommentStore.getAll();
     }
-
 }

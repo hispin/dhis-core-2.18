@@ -30,15 +30,13 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.common.GenericStore;
 
 /**
  * @author Viet
- *
- * @version $Id$
  */
 public interface PatientAttributeOptionStore 
-    extends GenericNameableObjectStore<PatientAttributeOption>
+    extends GenericStore<PatientAttributeOption>
 {
     String ID = PatientAttributeOption.class.getName(); 
     

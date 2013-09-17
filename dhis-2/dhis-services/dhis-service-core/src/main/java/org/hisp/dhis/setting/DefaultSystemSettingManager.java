@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -49,9 +48,9 @@ public class DefaultSystemSettingManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<SystemSetting> systemSettingStore;
+    private SystemSettingStore systemSettingStore;
 
-    public void setSystemSettingStore( GenericIdentifiableObjectStore<SystemSetting> systemSettingStore )
+    public void setSystemSettingStore( SystemSettingStore systemSettingStore )
     {
         this.systemSettingStore = systemSettingStore;
     }

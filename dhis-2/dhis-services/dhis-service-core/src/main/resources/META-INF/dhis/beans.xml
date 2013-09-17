@@ -125,7 +125,7 @@
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.validation.ValidationRuleGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+  <bean id="org.hisp.dhis.validation.ValidationRuleGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.validation.ValidationRuleGroup" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
@@ -144,8 +144,7 @@
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboStore"
-    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryComboStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryCombo" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
@@ -294,7 +293,7 @@
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.setting.SystemSettingStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+  <bean id="org.hisp.dhis.setting.SystemSettingStore" class="org.hisp.dhis.setting.hibernate.HibernateSystemSettingStore">
     <property name="clazz" value="org.hisp.dhis.setting.SystemSetting" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />

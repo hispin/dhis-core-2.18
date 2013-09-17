@@ -33,7 +33,7 @@ import java.util.Date;
 
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
@@ -50,7 +50,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @version $Id$
  */
 public class HibernatePatientIdentifierStore
-    extends HibernateGenericStore<PatientIdentifier>
+    extends HibernateIdentifiableObjectStore<PatientIdentifier>
     implements PatientIdentifierStore
 {
     // -------------------------------------------------------------------------
