@@ -171,10 +171,16 @@ public class HibernateProgramStageInstanceStore
         return getCriteria( Restrictions.eq( "programStage", programStage ) ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances )
     {
         return getCriteria( Restrictions.in( "programInstance", programInstances ) ).list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed )
+    {
+        return getCriteria( Restrictions.in( "programInstance", programInstances ), Restrictions.eq( "completed", completed ) ).list();
     }
 
     @SuppressWarnings("unchecked")

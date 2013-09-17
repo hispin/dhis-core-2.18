@@ -206,6 +206,11 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( programInstances );
     }
 
+    public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances, boolean completed )
+    {
+        return programStageInstanceStore.get( programInstances, completed );
+    }
+
     public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate )
     {
         return programStageInstanceStore.get( dueDate );

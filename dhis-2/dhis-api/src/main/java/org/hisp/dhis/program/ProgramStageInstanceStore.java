@@ -67,6 +67,8 @@ public interface ProgramStageInstanceStore
 
     Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances );
 
+    Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed );
+
     /**
      * Get all {@link ProgramStageInstance program stage instances} for unit.
      *

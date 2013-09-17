@@ -73,6 +73,8 @@ public interface ProgramStageInstanceService
 
     Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances );
 
+    Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances, boolean completed );
+
     Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate );
 
     Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed );
