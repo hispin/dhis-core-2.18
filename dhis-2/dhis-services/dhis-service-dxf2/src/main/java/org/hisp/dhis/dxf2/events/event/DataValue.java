@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.events.event;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -29,74 +29,81 @@ package org.hisp.dhis.dxf2.event;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "events", namespace = DxfNamespaces.DXF_2_0 )
-public class Events
+public class DataValue
 {
-    private String program;
+    private String value;
 
-    private String programInstance;
+    private String dataElement;
 
-    private List<Event> events = new ArrayList<Event>();
+    private Boolean providedElsewhere = false;
 
-    public Events()
+    private String storedBy;
+
+    public DataValue()
     {
     }
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getProgram()
+    public String getValue()
     {
-        return program;
+        return value;
     }
 
-    public void setProgram( String program )
+    public void setValue( String value )
     {
-        this.program = program;
+        this.value = value;
     }
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getProgramInstance()
+    public String getDataElement()
     {
-        return programInstance;
+        return dataElement;
     }
 
-    public void setProgramInstance( String programInstance )
+    public void setDataElement( String dataElement )
     {
-        this.programInstance = programInstance;
+        this.dataElement = dataElement;
     }
 
-    @JsonProperty( "eventList" )
-    @JacksonXmlElementWrapper( localName = "eventList", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "event", namespace = DxfNamespaces.DXF_2_0 )
-    public List<Event> getEvents()
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public Boolean getProvidedElsewhere()
     {
-        return events;
+        return providedElsewhere;
     }
 
-    public void setEvents( List<Event> events )
+    public void setProvidedElsewhere( Boolean providedElsewhere )
     {
-        this.events = events;
+        this.providedElsewhere = providedElsewhere;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
+
+    public void setStoredBy( String storedBy )
+    {
+        this.storedBy = storedBy;
     }
 
     @Override
     public String toString()
     {
-        return "Events{" +
-            "program='" + program + '\'' +
-            ", programInstance='" + programInstance + '\'' +
-            ", events=" + events +
+        return "DataValue{" +
+            "value='" + value + '\'' +
+            ", dataElement='" + dataElement + '\'' +
+            ", providedElsewhere=" + providedElsewhere +
+            ", storedBy='" + storedBy + '\'' +
             '}';
     }
 }

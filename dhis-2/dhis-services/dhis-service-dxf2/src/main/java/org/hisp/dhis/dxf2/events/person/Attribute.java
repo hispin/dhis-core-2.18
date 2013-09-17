@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.events.person;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -30,22 +30,44 @@ package org.hisp.dhis.dxf2.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.DxfNamespaces;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DataValue
+@JacksonXmlRootElement( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
+public class Attribute
 {
+    private String type;
+
     private String value;
 
-    private String dataElement;
-
-    private Boolean providedElsewhere = false;
-
-    private String storedBy;
-
-    public DataValue()
+    public Attribute()
     {
+    }
+
+    public Attribute( String value )
+    {
+        this.value = value;
+    }
+
+    public Attribute( String type, String value )
+    {
+        this.type = type;
+        this.value = value;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
     }
 
     @JsonProperty
@@ -60,50 +82,33 @@ public class DataValue
         this.value = value;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getDataElement()
+    @Override
+    public boolean equals( Object o )
     {
-        return dataElement;
-    }
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
 
-    public void setDataElement( String dataElement )
-    {
-        this.dataElement = dataElement;
-    }
+        Attribute attribute = (Attribute) o;
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public Boolean getProvidedElsewhere()
-    {
-        return providedElsewhere;
-    }
+        if ( type != null ? !type.equals( attribute.type ) : attribute.type != null ) return false;
+        if ( value != null ? !value.equals( attribute.value ) : attribute.value != null ) return false;
 
-    public void setProvidedElsewhere( Boolean providedElsewhere )
-    {
-        this.providedElsewhere = providedElsewhere;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getStoredBy()
-    {
-        return storedBy;
-    }
-
-    public void setStoredBy( String storedBy )
-    {
-        this.storedBy = storedBy;
+        return true;
     }
 
     @Override
-    public String toString()
+    public int hashCode()
     {
-        return "DataValue{" +
-            "value='" + value + '\'' +
-            ", dataElement='" + dataElement + '\'' +
-            ", providedElsewhere=" + providedElsewhere +
-            ", storedBy='" + storedBy + '\'' +
+        int result = type != null ? type.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
+
+    @Override public String toString()
+    {
+        return "Attribute{" +
+            "type='" + type + '\'' +
+            ", value='" + value + '\'' +
             '}';
     }
 }

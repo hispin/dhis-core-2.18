@@ -29,8 +29,8 @@ package org.hisp.dhis.importexport.action.event;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dxf2.event.EventService;
-import org.hisp.dhis.dxf2.event.ImportEventTask;
+import org.hisp.dhis.dxf2.events.event.EventService;
+import org.hisp.dhis.dxf2.events.event.ImportEventTask;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;

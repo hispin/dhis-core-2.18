@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.person;
+package org.hisp.dhis.dxf2.events.event;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -32,83 +32,68 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.system.util.ValidationUtils;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
-public class Attribute
+@JacksonXmlRootElement( localName = "coordinate", namespace = DxfNamespaces.DXF_2_0 )
+public class Coordinate
 {
-    private String type;
+    private Double latitude;
 
-    private String value;
+    private Double longitude;
 
-    public Attribute()
+    public Coordinate()
     {
     }
 
-    public Attribute( String value )
+    public Coordinate( Double longitude, Double latitude )
     {
-        this.value = value;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
-    public Attribute( String type, String value )
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public Double getLatitude()
     {
-        this.type = type;
-        this.value = value;
+        return latitude;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getType()
+    public void setLatitude( Double latitude )
     {
-        return type;
+        this.latitude = latitude;
     }
 
-    public void setType( String type )
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0, isAttribute = true )
+    public Double getLongitude()
     {
-        this.type = type;
+        return longitude;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getValue()
+    public void setLongitude( Double longitude )
     {
-        return value;
+        this.longitude = longitude;
     }
 
-    public void setValue( String value )
+    public boolean isValid()
     {
-        this.value = value;
+        return ValidationUtils.coordinateIsValid( getCoordinateString() );
     }
 
-    @Override
-    public boolean equals( Object o )
+    public String getCoordinateString()
     {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
-
-        Attribute attribute = (Attribute) o;
-
-        if ( type != null ? !type.equals( attribute.type ) : attribute.type != null ) return false;
-        if ( value != null ? !value.equals( attribute.value ) : attribute.value != null ) return false;
-
-        return true;
+        return "[" + longitude + "," + latitude + "]";
     }
 
     @Override
-    public int hashCode()
+    public String toString()
     {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        return result;
-    }
-
-    @Override public String toString()
-    {
-        return "Attribute{" +
-            "type='" + type + '\'' +
-            ", value='" + value + '\'' +
+        return "Coordinate{" +
+            "latitude=" + latitude +
+            ", longitude=" + longitude +
             '}';
     }
 }

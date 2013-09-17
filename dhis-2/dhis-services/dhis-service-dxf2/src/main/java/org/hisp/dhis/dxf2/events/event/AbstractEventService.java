@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.event;
+package org.hisp.dhis.dxf2.events.event;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -144,7 +144,7 @@ public abstract class AbstractEventService implements EventService
 
         if ( programStage == null && !program.isSingleEvent() )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Event.programStage does not point to a valid programStage, and program is multi-event program" );
+            return new ImportSummary( ImportStatus.ERROR, "Event.programStage does not point to a valid programStage, and program is multi-event" );
         }
         else
         {
