@@ -221,14 +221,14 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("relationship_details")</td>
+			<td>$i18n.getString("who_is_the_new_relative_to_the_existing_person")</td>
 			<td>
 				<select type='text' id='relationshipFromA' name='relationshipFromA'></select>
 			</td>
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("program_related")</td>
+			<td>$i18n.getString("program_for_new_relative_to_be_enrolled_in")</td>
 			<td>
 				<select type='text' id='relatedProgramId' name='relatedProgramId' >
 					<option value=''>[$i18n.getString("please_select")]</option>
