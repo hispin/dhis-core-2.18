@@ -28,8 +28,18 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
+import org.hisp.dhis.dxf2.events.enrollment.Enrollments;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -39,4 +49,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EnrollmentController
 {
     public static final String RESOURCE_PATH = "/enrollments";
+
+    @Autowired
+    private EnrollmentService enrollmentService;
+
+    // -------------------------------------------------------------------------
+    // READ
+    // -------------------------------------------------------------------------
+
+    @RequestMapping( value = "", method = RequestMethod.GET )
+    public String getEnrollments(
+        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
+        @RequestParam( value = "program", required = false ) String programUid,
+        @RequestParam( value = "person", required = false ) String personUid,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
+    {
+        WebOptions options = new WebOptions( parameters );
+        Enrollments enrollments;
+
+        enrollments = enrollmentService.getEnrollments();
+
+        model.addAttribute( "model", enrollments );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+
+        return "enrollments";
+    }
 }

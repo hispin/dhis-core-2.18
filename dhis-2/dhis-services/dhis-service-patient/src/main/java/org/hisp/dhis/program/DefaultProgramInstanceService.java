@@ -154,6 +154,12 @@ public class DefaultProgramInstanceService
         return programInstanceStore.get( id );
     }
 
+    @Override
+    public ProgramInstance getProgramInstance( String id )
+    {
+        return programInstanceStore.getByUid( id );
+    }
+
     public Collection<ProgramInstance> getProgramInstances( Integer status )
     {
         return programInstanceStore.get( status );
