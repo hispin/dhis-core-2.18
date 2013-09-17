@@ -75,6 +75,7 @@ public class Patient
     public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";
     public static String PREFIX_PATIENT_ATTRIBUTE = "attr";
     public static String PREFIX_PROGRAM = "prg";
+    public static String PREFIX_PROGRAM_INSTANCE = "pi";
     public static String PREFIX_PROGRAM_EVENT_BY_STATUS = "stat";
     public static String PREFIX_PROGRAM_STAGE = "prgst";
 

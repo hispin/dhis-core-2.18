@@ -114,7 +114,8 @@ function searchObjectOnChange( this_ )
 	{
 		element.replaceWith( getAgeTextBox() );
 	}
-	else if ( attributeId=='fixedAttr_registrationDate' )
+	else if ( attributeId=='fixedAttr_registrationDate' ||
+		attributeId=='pi_enrollmentDate' )
 	{
 		element.replaceWith( getRegistrationDate(container) );
 		datePickerValid( 'searchText_' + container );
@@ -245,6 +246,7 @@ function getSearchParams()
 	}
 	
 	var flag = false;
+	var addProgramId = false;
 	jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
 		var dateOperator = "";
 		var p = "";
@@ -252,8 +254,9 @@ function getSearchParams()
 			if(item.type!="button"){
 				if( idx == 0){
 					p = "&searchTexts=" + item.value;
-					if(item.value=='prg'){
+					if(item.value=='prg' || item.value=='pi_enrollmentDate'){
 						flag = true;
+						addProgramId = true;
 					}
 				}
 				else if( item.name == 'dateOperator'){
@@ -286,6 +289,11 @@ function getSearchParams()
 		if( getFieldValue('searchByProgramStage') == "false" && !searchInAllFacility ){
 			p += "_" + getFieldValue('orgunitId');
 		}
+		
+		if( addProgramId ){
+			p += "_" + getFieldValue('programIdAddPatient');
+		}
+		
 		params += p;
 	});
 		
