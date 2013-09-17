@@ -70,7 +70,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -81,7 +80,7 @@ import java.util.Set;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = CurrentUserController.RESOURCE_PATH, method = RequestMethod.GET)
+@RequestMapping(value = { CurrentUserController.RESOURCE_PATH, "/me" }, method = RequestMethod.GET)
 public class CurrentUserController
 {
     public static final String RESOURCE_PATH = "/currentUser";
@@ -371,14 +370,12 @@ public class CurrentUserController
                         organisationUnits.add( organisationUnit );
                         programs.add( program );
 
-                        if ( programAssociations.get( organisationUnit.getUid() ) != null )
+                        if ( programAssociations.get( organisationUnit.getUid() ) == null )
                         {
-                            programAssociations.get( organisationUnit.getUid() ).add( program );
+                            programAssociations.put( organisationUnit.getUid(), new ArrayList<Program>() );
                         }
-                        else
-                        {
-                            programAssociations.put( organisationUnit.getUid(), Arrays.asList( program ) );
-                        }
+
+                        programAssociations.get( organisationUnit.getUid() ).add( program );
                     }
                 }
             }
@@ -420,8 +417,8 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), forms );
     }
 
-    @SuppressWarnings( "unchecked" )
-    @RequestMapping( value = "/assignedDataSets", produces = { "application/json", "text/*" } )
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/assignedDataSets", produces = { "application/json", "text/*" })
     public void getDataSets( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
