@@ -762,6 +762,7 @@ public class DefaultProgramInstanceService
         Date currentDate = today.getTime();
 
         programInstance.setEndDate( currentDate );
+        programInstance.setStatus( ProgramInstance.STATUS_CANCELLED );
         updateProgramInstance( programInstance );
 
         // ---------------------------------------------------------------------
