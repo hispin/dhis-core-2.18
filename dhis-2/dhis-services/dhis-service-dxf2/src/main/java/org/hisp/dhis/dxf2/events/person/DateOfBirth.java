@@ -83,7 +83,7 @@ public class DateOfBirth
     }
 
     @JsonProperty( required = true )
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DateOfBirthType getType()
     {
         return type;

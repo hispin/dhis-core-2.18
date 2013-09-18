@@ -47,6 +47,8 @@ public class Enrollment
 
     private String program;
 
+    private EnrollmentStatus status;
+
     private Date dateOfEnrollment;
 
     private Date dateOfIncident;
@@ -89,6 +91,18 @@ public class Enrollment
     public void setProgram( String program )
     {
         this.program = program;
+    }
+
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public EnrollmentStatus getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus( EnrollmentStatus status )
+    {
+        this.status = status;
     }
 
     @JsonProperty( required = true )

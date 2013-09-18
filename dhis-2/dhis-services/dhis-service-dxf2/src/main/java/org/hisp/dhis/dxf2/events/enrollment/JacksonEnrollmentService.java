@@ -31,9 +31,13 @@ package org.hisp.dhis.dxf2.events.enrollment;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -47,25 +51,25 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
     private static ObjectMapper xmlMapper = new XmlMapper();
     private static ObjectMapper jsonMapper = new ObjectMapper();
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -81,4 +85,81 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
         jsonMapper.configure( DeserializationFeature.WRAP_EXCEPTIONS, true );
     }
 
+    // -------------------------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------------------------
+
+    @Override
+    public ImportSummaries saveEnrollmentsJson( InputStream inputStream ) throws IOException
+    {
+        ImportSummaries importSummaries = new ImportSummaries();
+        String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+
+        try
+        {
+            Enrollments enrollments = fromJson( input, Enrollments.class );
+
+            for ( Enrollment enrollment : enrollments.getEnrollments() )
+            {
+                enrollment.setEnrollment( null );
+                importSummaries.addImportSummary( saveEnrollment( enrollment ) );
+            }
+        }
+        catch ( Exception ex )
+        {
+            Enrollment enrollment = fromJson( input, Enrollment.class );
+            enrollment.setEnrollment( null );
+            importSummaries.addImportSummary( saveEnrollment( enrollment ) );
+        }
+
+        return importSummaries;
+    }
+
+    @Override
+    public ImportSummaries saveEnrollmentsXml( InputStream inputStream ) throws IOException
+    {
+        ImportSummaries importSummaries = new ImportSummaries();
+        String input = StreamUtils.copyToString( inputStream, Charset.forName( "UTF-8" ) );
+
+        try
+        {
+            Enrollments enrollments = fromXml( input, Enrollments.class );
+
+            for ( Enrollment enrollment : enrollments.getEnrollments() )
+            {
+                enrollment.setEnrollment( null );
+                importSummaries.addImportSummary( saveEnrollment( enrollment ) );
+            }
+        }
+        catch ( Exception ex )
+        {
+            Enrollment enrollment = fromXml( input, Enrollment.class );
+            enrollment.setEnrollment( null );
+            importSummaries.addImportSummary( saveEnrollment( enrollment ) );
+        }
+
+        return importSummaries;
+    }
+
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
+
+    @Override
+    public ImportSummary updateEnrollmentJson( String id, InputStream inputStream ) throws IOException
+    {
+        Enrollment enrollment = fromJson( inputStream, Enrollment.class );
+        enrollment.setEnrollment( id );
+
+        return updateEnrollment( enrollment );
+    }
+
+    @Override
+    public ImportSummary updateEnrollmentXml( String id, InputStream inputStream ) throws IOException
+    {
+        Enrollment enrollment = fromXml( inputStream, Enrollment.class );
+        enrollment.setEnrollment( id );
+
+        return updateEnrollment( enrollment );
+    }
 }

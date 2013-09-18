@@ -67,6 +67,11 @@ public class ImportSummary
         this.description = description;
     }
 
+    public ImportSummary( ImportStatus status )
+    {
+        this.status = status;
+    }
+
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public ImportStatus getStatus()

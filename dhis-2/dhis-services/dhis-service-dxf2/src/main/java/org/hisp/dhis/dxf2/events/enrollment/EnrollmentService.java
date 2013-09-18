@@ -29,11 +29,15 @@ package org.hisp.dhis.dxf2.events.enrollment;
  */
 
 import org.hisp.dhis.dxf2.events.person.Person;
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 
 /**
@@ -69,12 +73,27 @@ public interface EnrollmentService
     // CREATE
     // -------------------------------------------------------------------------
 
+    ImportSummary saveEnrollment( Enrollment enrollment );
+
+    ImportSummaries saveEnrollmentsJson( InputStream inputStream ) throws IOException;
+
+    ImportSummaries saveEnrollmentsXml( InputStream inputStream ) throws IOException;
 
     // -------------------------------------------------------------------------
     // UPDATE
     // -------------------------------------------------------------------------
 
+    ImportSummary updateEnrollment( Enrollment enrollment );
+
+    ImportSummary updateEnrollmentJson( String id, InputStream inputStream ) throws IOException;
+
+    ImportSummary updateEnrollmentXml( String id, InputStream inputStream ) throws IOException;
+
     // -------------------------------------------------------------------------
     // DELETE
     // -------------------------------------------------------------------------
+
+    void deleteEnrollment( Enrollment enrollment );
+
+    void cancelEnrollment( Enrollment enrollment );
 }
