@@ -884,7 +884,6 @@ public class ActivityReportingServiceImpl
                         new ArrayList<String>() ) );
                 }
             }
-
         }
 
         // Set all identifier
@@ -976,20 +975,12 @@ public class ActivityReportingServiceImpl
                 relationshipMobile.setName( eachRelationship.getRelationshipType().getaIsToB() );
                 relationshipMobile.setPersonBName( eachRelationship.getPatientB().getName() );
                 relationshipMobile.setPersonBId( eachRelationship.getPatientB().getId() );
-                // relationshipMobile.setPersonAName(
-                // eachRelationship.getPatientA().getName() );
-                // relationshipMobile.setPersonAId(
-                // eachRelationship.getPatientA().getId() );
             }
             else
             {
                 relationshipMobile.setName( eachRelationship.getRelationshipType().getbIsToA() );
                 relationshipMobile.setPersonBName( eachRelationship.getPatientA().getName() );
                 relationshipMobile.setPersonBId( eachRelationship.getPatientA().getId() );
-                // relationshipMobile.setPersonAName(
-                // eachRelationship.getPatientB().getName() );
-                // relationshipMobile.setPersonAId(
-                // eachRelationship.getPatientB().getId() );
             }
             relationshipList.add( relationshipMobile );
         }
