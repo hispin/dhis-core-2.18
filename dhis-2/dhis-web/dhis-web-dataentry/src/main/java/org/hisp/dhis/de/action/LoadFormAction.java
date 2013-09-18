@@ -326,12 +326,9 @@ public class LoadFormAction
             for ( int i = 0; i < orderedCategoryCombos.size(); i++ )
             {
                 Section section = new Section();
+                section.setUid( CodeGenerator.generateCode() );
                 section.setId( i );
                 section.setSortOrder( i );
-
-                // generate a random uid so that equals work
-                section.setUid( CodeGenerator.generateCode() );
-
                 section.setDataSet( dataSet );
                 dataSet.getSections().add( section );
 
