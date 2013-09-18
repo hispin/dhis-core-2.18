@@ -28,15 +28,9 @@ package org.hisp.dhis.caseentry.action.reminder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.sms.outbound.OutboundSms;
 
 import com.opensymphony.xwork2.Action;
 
@@ -98,55 +92,30 @@ public class SetEventStatusAction
         switch ( status.intValue() )
         {
         case ProgramStageInstance.COMPLETED_STATUS:
-            programStageInstance.setCompleted( true );
-            programStageInstance.setStatus( null );
-
-            // -----------------------------------------------------------------
-            // Send sms when to completed program
-            // -----------------------------------------------------------------
-
-            List<OutboundSms> psiOutboundSms = programStageInstance.getOutboundSms();
-            if ( psiOutboundSms == null )
-            {
-                psiOutboundSms = new ArrayList<OutboundSms>();
-            }
-            psiOutboundSms.addAll( programStageInstanceService.sendMessages( programStageInstance,
-                PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
-
-            // -----------------------------------------------------------------
-            // Send DHIS message when to completed the event
-            // -----------------------------------------------------------------
-
-            List<MessageConversation> psiMessageConversations = programStageInstance.getMessageConversations();
-            if ( psiMessageConversations == null )
-            {
-                psiMessageConversations = new ArrayList<MessageConversation>();
-            }
-
-            psiMessageConversations.addAll( programStageInstanceService.sendMessageConversations( programStageInstance,
-                PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
-
+            programStageInstanceService.completeProgramStageInstance( programStageInstance, format );
             break;
         case ProgramStageInstance.VISITED_STATUS:
             programStageInstance.setCompleted( false );
             programStageInstance.setStatus( null );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
             break;
         case ProgramStageInstance.LATE_VISIT_STATUS:
             programStageInstance.setCompleted( false );
             programStageInstance.setStatus( null );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
             break;
         case ProgramStageInstance.FUTURE_VISIT_STATUS:
             programStageInstance.setCompleted( false );
             programStageInstance.setStatus( null );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
             break;
         case ProgramStageInstance.SKIPPED_STATUS:
             programStageInstance.setStatus( status );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
             break;
         default:
             break;
         }
-
-        programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
         return SUCCESS;
     }

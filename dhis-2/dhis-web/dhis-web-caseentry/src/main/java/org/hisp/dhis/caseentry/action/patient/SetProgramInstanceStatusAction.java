@@ -29,21 +29,12 @@ package org.hisp.dhis.caseentry.action.patient;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.sms.outbound.OutboundSms;
 
 import com.opensymphony.xwork2.Action;
 
@@ -63,13 +54,6 @@ public class SetProgramInstanceStatusAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
-    }
-
-    private ProgramStageInstanceService programStageInstanceService;
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
     }
 
     private I18nFormat format;
@@ -120,61 +104,14 @@ public class SetProgramInstanceStatusAction
 
         if ( status == ProgramInstance.STATUS_COMPLETED )
         {
-            // ---------------------------------------------------------------------
-            // Send sms-message when to completed the program
-            // ---------------------------------------------------------------------
-
-            List<OutboundSms> piOutboundSms = programInstance.getOutboundSms();
-            if ( piOutboundSms == null )
-            {
-                piOutboundSms = new ArrayList<OutboundSms>();
-            }
-
-            piOutboundSms.addAll( programInstanceService.sendMessages( programInstance,
-                PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
-
-            // -----------------------------------------------------------------
-            // Send DHIS message when to completed the program
-            // -----------------------------------------------------------------
-
-            List<MessageConversation> piMessageConversations = programInstance.getMessageConversations();
-            if ( piMessageConversations == null )
-            {
-                piMessageConversations = new ArrayList<MessageConversation>();
-            }
-
-            piMessageConversations.addAll( programInstanceService.sendMessageConversations( programInstance,
-                PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
-
-            programInstance.setEndDate( new Date() );
+            programInstanceService.completeProgramInstanceStatus( programInstance, format );
         }
 
         else if ( status == ProgramInstance.STATUS_CANCELLED )
         {
-            Calendar today = Calendar.getInstance();
-            PeriodType.clearTimeOfDay( today );
-            Date currentDate = today.getTime();
-
-            programInstance.setEndDate( currentDate );
-
-            for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
-            {
-                if ( programStageInstance.getExecutionDate() == null )
-                {
-                    // Set status as skipped for overdue events
-                    if ( programStageInstance.getDueDate().before( currentDate ) )
-                    {
-                        programStageInstance.setStatus( ProgramStageInstance.SKIPPED_STATUS );
-                        programStageInstanceService.updateProgramStageInstance( programStageInstance );
-                    }
-                    // Delete scheduled events
-                    else
-                    {
-                        programStageInstanceService.deleteProgramStageInstance( programStageInstance );
-                    }
-                }
-            }
+            programInstanceService.cancelProgramInstanceStatus( programInstance );
         }
+        // For Active status
         else
         {
             programInstance.setEndDate( null );

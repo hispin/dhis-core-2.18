@@ -110,4 +110,17 @@ public interface ProgramInstanceService
     Collection<MessageConversation> sendMessageConversations( ProgramInstance programInstance,
         int sendWhenToC0mpletedEvent, I18nFormat format );
 
+    ProgramInstance enrollmentPatient( Patient patient, Program program, Date enrollmentDate, Date dateOfIncident,
+        OrganisationUnit orgunit, I18nFormat format );
+
+    boolean canAutoCompleteProgramInstanceStatus( ProgramInstance programInstance );
+
+    void completeProgramInstanceStatus( ProgramInstance programInstance, I18nFormat format );
+
+    /**
+     * Set status as skipped for overdue events; Remove scheduled events
+     * 
+     * **/
+
+    void cancelProgramInstanceStatus( ProgramInstance programInstance );
 }
