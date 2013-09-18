@@ -28,15 +28,18 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollments;
+import org.hisp.dhis.dxf2.events.person.Person;
+import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +47,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -57,21 +63,59 @@ public class EnrollmentController
     @Autowired
     private EnrollmentService enrollmentService;
 
+    @Autowired
+    private PersonService personService;
+
+    @Autowired
+    private IdentifiableObjectManager manager;
+
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping( value = "", method = RequestMethod.GET )
     public String getEnrollments(
         @RequestParam(value = "orgUnit", required = false) String orgUnitUid,
         @RequestParam(value = "program", required = false) String programUid,
         @RequestParam(value = "person", required = false) String personUid,
-        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request )
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Enrollments enrollments;
 
-        enrollments = enrollmentService.getEnrollments();
+        if ( orgUnitUid == null && programUid == null && personUid == null )
+        {
+            enrollments = enrollmentService.getEnrollments();
+        }
+        else if ( orgUnitUid != null && programUid != null )
+        {
+            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+            Program program = getProgram( programUid );
+
+            enrollments = enrollmentService.getEnrollments( program, organisationUnit );
+        }
+        else if ( programUid != null && personUid != null )
+        {
+            Program program = getProgram( programUid );
+            Person person = getPerson( personUid );
+
+            enrollments = enrollmentService.getEnrollments( program, person );
+        }
+        else if ( orgUnitUid != null )
+        {
+            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+            enrollments = enrollmentService.getEnrollments( organisationUnit );
+        }
+        else if ( programUid != null )
+        {
+            Program program = getProgram( programUid );
+            enrollments = enrollmentService.getEnrollments( program );
+        }
+        else
+        {
+            Person person = getPerson( personUid );
+            enrollments = enrollmentService.getEnrollments( person );
+        }
 
         model.addAttribute( "model", enrollments );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
@@ -105,5 +149,46 @@ public class EnrollmentController
         }
 
         return enrollment;
+    }
+
+    private Person getPerson( String id ) throws NotFoundException
+    {
+        Person person = personService.getPerson( id );
+
+        if ( person == null )
+        {
+            throw new NotFoundException( "Person", id );
+        }
+
+        return person;
+    }
+
+    private OrganisationUnit getOrganisationUnit( String id ) throws NotFoundException
+    {
+        OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, id );
+
+        if ( organisationUnit == null )
+        {
+            throw new NotFoundException( "OrganisationUnit", id );
+        }
+
+        return organisationUnit;
+    }
+
+    private Program getProgram( String id ) throws NotFoundException
+    {
+        Program program = manager.get( Program.class, id );
+
+        if ( program == null )
+        {
+            throw new NotFoundException( "Program", id );
+        }
+
+        return program;
+    }
+
+    private String getResourcePath( HttpServletRequest request, ImportSummary importSummary )
+    {
+        return ContextUtils.getContextPath( request ) + "/api/" + "enrollments" + "/" + importSummary.getReference();
     }
 }

@@ -50,6 +50,8 @@ public interface ProgramInstanceStore
 
     Collection<ProgramInstance> get( Collection<Program> programs );
 
+    Collection<ProgramInstance> get( Collection<Program> programs, OrganisationUnit organisationUnit );
+
     Collection<ProgramInstance> get( Program program, Integer status );
 
     Collection<ProgramInstance> get( Collection<Program> programs, Integer status );
