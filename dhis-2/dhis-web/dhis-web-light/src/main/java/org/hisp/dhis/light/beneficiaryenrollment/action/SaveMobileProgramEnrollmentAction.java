@@ -445,7 +445,6 @@ public class SaveMobileProgramEnrollmentAction
 
             programInstanceService.addProgramInstance( programInstance );
 
-            patient.getPrograms().add( program );
             patientService.updatePatient( patient );
 
             for ( ProgramStage programStage : program.getProgramStages() )
