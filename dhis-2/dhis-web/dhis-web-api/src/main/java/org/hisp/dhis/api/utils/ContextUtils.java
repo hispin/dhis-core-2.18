@@ -51,6 +51,7 @@ import java.util.Calendar;
 
 import static org.apache.commons.lang.StringUtils.trimToNull;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
+import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_CACHE_STRATEGY;
 
 /**
  * @author Lars Helge Overland
@@ -105,7 +106,7 @@ public class ContextUtils
 
         if ( cacheStrategy.equals( CacheStrategy.RESPECT_SYSTEM_SETTING ) )
         {
-            String strategy = trimToNull( (String) systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY ) );
+            String strategy = trimToNull( (String) systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY, DEFAULT_CACHE_STRATEGY ) );
 
             cacheStrategy = strategy != null ? CacheStrategy.valueOf( strategy ) : CacheStrategy.NO_CACHE;
         }
