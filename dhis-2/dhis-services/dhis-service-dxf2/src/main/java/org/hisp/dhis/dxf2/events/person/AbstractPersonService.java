@@ -167,6 +167,11 @@ public abstract class AbstractPersonService implements PersonService
     @Override
     public Person getPerson( Patient patient )
     {
+        if ( patient == null )
+        {
+            return null;
+        }
+
         Person person = new Person();
         person.setPerson( patient.getUid() );
         person.setOrgUnit( patient.getOrganisationUnit().getUid() );

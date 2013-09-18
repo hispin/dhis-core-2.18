@@ -76,7 +76,7 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     @Override
     public Enrollments getEnrollments( Person person )
     {
-        Patient patient = patientService.getPatient( person.getPerson() );
+        Patient patient = getPatient( person.getPerson() );
         return getEnrollments( patient );
     }
 
@@ -113,8 +113,20 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     @Override
     public Enrollments getEnrollments( Program program, Person person )
     {
-        Patient patient = patientService.getPatient( person.getPerson() );
+        Patient patient = getPatient( person.getPerson() );
         return getEnrollments( programInstanceService.getProgramInstances( patient, program ) );
+    }
+
+    private Patient getPatient( String person )
+    {
+        Patient patient = patientService.getPatient( person );
+
+        if ( patient == null )
+        {
+            throw new IllegalArgumentException( "Person does not exist." );
+        }
+
+        return patient;
     }
 
     @Override
@@ -157,6 +169,7 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
         List<Program> programs = new ArrayList<Program>();
         programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
         programs.addAll( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
+    
         return programs;
     }
 }
