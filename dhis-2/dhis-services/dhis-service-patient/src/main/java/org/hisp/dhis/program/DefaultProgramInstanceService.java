@@ -612,7 +612,7 @@ public class DefaultProgramInstanceService
 
     @Override
     public ProgramInstance enrollPatient( Patient patient, Program program, Date enrollmentDate,
-        Date dateOfIncident, OrganisationUnit orgunit, I18nFormat format )
+        Date dateOfIncident, OrganisationUnit organisationUnit, I18nFormat format )
     {
         if ( enrollmentDate == null )
         {
@@ -656,7 +656,7 @@ public class DefaultProgramInstanceService
             if ( programStage.getAutoGenerateEvent() )
             {
                 ProgramStageInstance programStageInstance = generateEvent( programInstance, programStage,
-                    enrollmentDate, dateOfIncident, orgunit );
+                    enrollmentDate, dateOfIncident, organisationUnit );
                 programStageInstanceService.addProgramStageInstance( programStageInstance );
             }
         }
