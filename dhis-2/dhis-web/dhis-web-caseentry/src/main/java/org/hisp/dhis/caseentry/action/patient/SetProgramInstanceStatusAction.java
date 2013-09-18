@@ -36,9 +36,7 @@ import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -59,13 +57,6 @@ public class SetProgramInstanceStatusAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
 
     private ProgramInstanceService programInstanceService;
 
@@ -125,10 +116,6 @@ public class SetProgramInstanceStatusAction
         throws Exception
     {
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
-
-        Patient patient = programInstance.getPatient();
-
-        Program program = programInstance.getProgram();
         programInstance.setStatus( status );
 
         if ( status == ProgramInstance.STATUS_COMPLETED )
@@ -160,11 +147,6 @@ public class SetProgramInstanceStatusAction
                 PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
 
             programInstance.setEndDate( new Date() );
-            if ( !program.getOnlyEnrollOnce() )
-            {
-                patient.getPrograms().remove( program );
-                patientService.updatePatient( patient );
-            }
         }
 
         else if ( status == ProgramInstance.STATUS_CANCELLED )
@@ -192,15 +174,10 @@ public class SetProgramInstanceStatusAction
                     }
                 }
             }
-            patient.getPrograms().remove( program );
-            patientService.updatePatient( patient );
         }
         else
         {
             programInstance.setEndDate( null );
-
-            patient.getPrograms().add( program );
-            patientService.updatePatient( patient );
         }
 
         programInstanceService.updateProgramInstance( programInstance );

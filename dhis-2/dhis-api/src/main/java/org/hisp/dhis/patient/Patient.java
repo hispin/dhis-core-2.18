@@ -28,24 +28,23 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.user.User;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -99,9 +98,7 @@ public class Patient
     private boolean isDead = false;
 
     private Set<PatientIdentifier> identifiers = new HashSet<PatientIdentifier>();
-
-    private Set<Program> programs = new HashSet<Program>();
-
+    
     private OrganisationUnit organisationUnit;
 
     private Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
@@ -216,21 +213,7 @@ public class Patient
     {
         this.identifiers = identifiers;
     }
-
-    @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "programs", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "program", namespace = DxfNamespaces.DXF_2_0)
-    public Set<Program> getPrograms()
-    {
-        return programs;
-    }
-
-    public void setPrograms( Set<Program> programs )
-    {
-        this.programs = programs;
-    }
-
+    
     @JsonProperty
     @JsonSerialize(as = BaseIdentifiableObject.class)
     @JsonView({ DetailedView.class, ExportView.class })

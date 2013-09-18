@@ -311,14 +311,6 @@ public class HibernatePatientStore
     }
 
     @Override
-    public void removeErollmentPrograms( Program program )
-    {
-        String sql = "delete from patient_programs where programid='" + program.getId() + "'";
-
-        jdbcTemplate.execute( sql );
-    }
-
-    @Override
     public Collection<Patient> search( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {

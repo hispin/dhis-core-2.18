@@ -113,7 +113,6 @@ public class DataRecordingSelectAction
         // ---------------------------------------------------------------------
 
         programs = programService.getPrograms( orgunit );
-        programs.retainAll( patient.getPrograms() );
         programs.retainAll( programService.getProgramsByCurrentUser());
         
         selectedStateManager.setSelectedPatient( patient );

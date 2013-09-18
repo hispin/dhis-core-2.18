@@ -566,11 +566,6 @@ public class DefaultPatientService
         return patientStore.getRepresentatives( patient );
     }
 
-    public void removeErollmentPrograms( Program program )
-    {
-        patientStore.removeErollmentPrograms( program );
-    }
-
     public Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max )
     {

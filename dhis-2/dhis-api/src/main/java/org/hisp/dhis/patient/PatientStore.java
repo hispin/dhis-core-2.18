@@ -69,8 +69,6 @@ public interface PatientStore
 
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 
-    void removeErollmentPrograms( Program program );
-
     int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup );
 
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );

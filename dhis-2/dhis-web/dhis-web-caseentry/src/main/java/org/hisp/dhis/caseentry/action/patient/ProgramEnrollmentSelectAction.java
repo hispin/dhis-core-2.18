@@ -30,6 +30,7 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -122,7 +123,15 @@ public class ProgramEnrollmentSelectAction
         programs.addAll( programService.getProgramsByDisplayOnAllOrgunit( false, orgunit ) );
         programs.retainAll( programService.getProgramsByCurrentUser() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
-        programs.removeAll( patient.getPrograms() );
+        
+        Iterator<Program> iterProgram = programs.iterator();
+        while(iterProgram.hasNext() )
+        {
+            if( iterProgram.next().getOnlyEnrollOnce())
+            {
+                iterProgram.remove();
+            }
+        }
         
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, ProgramInstance.STATUS_ACTIVE );
 

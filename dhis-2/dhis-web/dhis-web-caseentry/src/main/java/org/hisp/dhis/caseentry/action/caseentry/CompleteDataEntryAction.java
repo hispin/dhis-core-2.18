@@ -36,9 +36,7 @@ import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -72,13 +70,6 @@ public class CompleteDataEntryAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
-    }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
     }
 
     private CurrentUserService currentUserService;
@@ -226,13 +217,6 @@ public class CompleteDataEntryAction
 
             programInstanceService.updateProgramInstance( programInstance );
 
-            Program program = programInstance.getProgram();
-            if ( !program.getOnlyEnrollOnce() )
-            {
-                Patient patient = programInstance.getPatient();
-                patient.getPrograms().remove( program );
-                patientService.updatePatient( patient );
-            }
         }
 
         return "programcompleted";

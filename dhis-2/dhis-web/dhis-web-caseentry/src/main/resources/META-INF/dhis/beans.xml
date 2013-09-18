@@ -2,7 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-
 	<!-- Selection -->
 
 	<bean id="org.hisp.dhis.caseentry.state.SelectedStateManager"
@@ -120,7 +119,6 @@
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
@@ -701,7 +699,6 @@
 		id="org.hisp.dhis.caseentry.action.patient.SetProgramInstanceStatusAction"
 		class="org.hisp.dhis.caseentry.action.patient.SetProgramInstanceStatusAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />

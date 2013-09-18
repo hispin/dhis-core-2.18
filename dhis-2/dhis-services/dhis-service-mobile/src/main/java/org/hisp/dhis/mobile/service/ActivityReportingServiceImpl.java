@@ -437,8 +437,8 @@ public class ActivityReportingServiceImpl
 
                 for ( Patient each : patients )
                 {
-                    patientsInfo += each.getId() + "/" + each.getName() + "/"
-                        + dateFormat.format( each.getBirthDate() ) + "$";
+                    patientsInfo += each.getId() + "/" + each.getName() + "/" + dateFormat.format( each.getBirthDate() )
+                        + "$";
                 }
 
                 throw new NotAllowedException( patientsInfo );
@@ -489,9 +489,6 @@ public class ActivityReportingServiceImpl
             programInstance.setProgram( programStage.getProgram() );
             programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
             programInstance.setPatient( patient );
-
-            patient.getPrograms().add( programStage.getProgram() );
-            patientService.updatePatient( patient );
 
             programInstanceService.addProgramInstance( programInstance );
 
@@ -676,8 +673,6 @@ public class ActivityReportingServiceImpl
         programInstance.setPatient( patient );
         programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
         programInstanceService.addProgramInstance( programInstance );
-        patient.getPrograms().add( program );
-        patientService.updatePatient( patient );
         for ( ProgramStage programStage : program.getProgramStages() )
         {
             if ( programStage.getAutoGenerateEvent() )
@@ -1290,8 +1285,8 @@ public class ActivityReportingServiceImpl
 
                 for ( Patient each : patients )
                 {
-                    patientsInfo += each.getId() + "/" + each.getName() + "/"
-                        + dateFormat.format( each.getBirthDate() ) + "$";
+                    patientsInfo += each.getId() + "/" + each.getName() + "/" + dateFormat.format( each.getBirthDate() )
+                        + "$";
                 }
 
                 throw new NotAllowedException( patientsInfo );
@@ -1921,8 +1916,8 @@ public class ActivityReportingServiceImpl
                 }
                 if ( each.getBirthDate() != null )
                 {
-                    patientsInfo += each.getId() + "/" + each.getName() + "/"
-                        + dateFormat.format( each.getBirthDate() ) + "$";
+                    patientsInfo += each.getId() + "/" + each.getName() + "/" + dateFormat.format( each.getBirthDate() )
+                        + "$";
                 }
                 else
                 {
