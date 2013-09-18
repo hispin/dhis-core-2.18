@@ -1082,7 +1082,7 @@ function insertDataValues()
 	    {
 	    	if ( json.locked )
 	    	{
-	            $( '#contentDiv input').attr( 'disabled', 'disabled' );
+	            $( '#contentDiv input').attr( 'readonly', 'readonly' );
 	            $( '.entryoptionset').autocomplete( 'disable' );
                 $( '.sectionFilter').removeAttr( 'disabled' );
                 $( '#completenessDiv' ).hide();
@@ -1091,8 +1091,7 @@ function insertDataValues()
 	    	else
 	    	{
                 $( '.entryoptionset' ).autocomplete( 'enable' );
-                $( '#contentDiv input' ).removeAttr( 'disabled' );
-                $( '#contentDiv input' ).css( 'backgroundColor', '#fff' );
+                $( '#contentDiv input' ).removeAttr( 'readonly' );
 	    		$( '#completenessDiv' ).show();
 	    	}
 	    	
