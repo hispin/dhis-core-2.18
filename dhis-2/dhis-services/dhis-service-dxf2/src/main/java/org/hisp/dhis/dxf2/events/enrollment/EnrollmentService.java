@@ -108,4 +108,6 @@ public interface EnrollmentService
     void deleteEnrollment( Enrollment enrollment );
 
     void cancelEnrollment( Enrollment enrollment );
+
+    void completeEnrollment( Enrollment enrollment );
 }

@@ -287,11 +287,30 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     @Override
     public void deleteEnrollment( Enrollment enrollment )
     {
+        ProgramInstance programInstance = programInstanceService.getProgramInstance( enrollment.getEnrollment() );
+        programInstanceService.deleteProgramInstance( programInstance );
     }
 
     @Override
     public void cancelEnrollment( Enrollment enrollment )
     {
+        ProgramInstance programInstance = programInstanceService.getProgramInstance( enrollment.getEnrollment() );
+        programInstanceService.cancelProgramInstanceStatus( programInstance );
+    }
+
+    @Override
+    public void completeEnrollment( Enrollment enrollment )
+    {
+        try
+        {
+            format = i18nManager.getI18nFormat();
+        }
+        catch ( I18nManagerException ignored )
+        {
+        }
+
+        ProgramInstance programInstance = programInstanceService.getProgramInstance( enrollment.getEnrollment() );
+        programInstanceService.completeProgramInstanceStatus( programInstance, format );
     }
 
     // -------------------------------------------------------------------------
