@@ -113,6 +113,15 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     }
 
     @Override
+    public Enrollments getEnrollments( Patient patient )
+    {
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+            programInstanceService.getProgramInstances( patient ) );
+
+        return getEnrollments( programInstances );
+    }
+
+    @Override
     public Enrollments getEnrollments( Patient patient, EnrollmentStatus status )
     {
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
@@ -223,7 +232,10 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
         }
         catch ( I18nManagerException ex )
         {
-            return new ImportSummary( ImportStatus.ERROR, ex.getMessage() );
+            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, ex.getMessage() );
+            importSummary.getImportCount().incrementIgnored();
+
+            return importSummary;
         }
 
         Patient patient = getPatient( enrollment.getPerson() );
@@ -234,8 +246,11 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
 
         if ( !enrollments.getEnrollments().isEmpty() )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Person " + person.getPerson() + " already have an active enrollment in program "
+            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "Person " + person.getPerson() + " already have an active enrollment in program "
                 + program.getUid() );
+            importSummary.getImportCount().incrementIgnored();
+
+            return importSummary;
         }
 
         ProgramInstance programInstance = programInstanceService.enrollPatient( patient, program, enrollment.getDateOfEnrollment(), enrollment.getDateOfIncident(),
