@@ -266,7 +266,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
 
-    @RequestMapping(value = "/assignedOrganisationUnits", produces = { "application/json", "text/*" })
+    @RequestMapping(value = { "/assignedOrganisationUnits", "/organisationUnits" }, produces = { "application/json", "text/*" })
     public void getAssignedOrganisationUnits( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
