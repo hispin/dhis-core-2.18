@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.events.enrollment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
@@ -46,9 +47,13 @@ public interface EnrollmentService
 
     Enrollments getEnrollments();
 
+    Enrollments getEnrollments( Person person );
+
     Enrollments getEnrollments( Patient patient );
 
     Enrollments getEnrollments( Program program );
+
+    Enrollments getEnrollments( Program program, Person person );
 
     Enrollments getEnrollments( OrganisationUnit organisationUnit );
 

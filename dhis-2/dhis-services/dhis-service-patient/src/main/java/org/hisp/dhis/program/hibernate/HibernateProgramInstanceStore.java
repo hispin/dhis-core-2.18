@@ -86,6 +86,14 @@ public class HibernateProgramInstanceStore
         return getCriteria( Restrictions.in( "program", programs ) ).list();
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramInstance> get( Collection<Program> programs, OrganisationUnit organisationUnit )
+    {
+        return getCriteria( Restrictions.in( "program", programs ) ).createAlias( "patient", "patient" )
+            .add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) ).list();
+    }
+
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Program program, Integer status )
     {
@@ -217,9 +225,9 @@ public class HibernateProgramInstanceStore
         sql += " UNION ( " + sendToHealthWorkerSql( dateToCompare ) + " ) ";
 
         sql += " UNION ( " + sendMessageToOrgunitRegisteredSql( dateToCompare ) + " ) ";
-        
+
         sql += " UNION ( " + sendMessageToUsersSql( dateToCompare ) + " ) ";
-        
+
         sql += " UNION ( " + sendMessageToUserGroupsSql( dateToCompare ) + " ) ";
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
@@ -268,10 +276,10 @@ public class HibernateProgramInstanceStore
 
             schedulingProgramObjects.add( schedulingProgramObject );
         }
-        
+
         return schedulingProgramObjects;
     }
-    
+
 
     private String sendToPatientSql( String dateToCompare )
     {
@@ -365,7 +373,7 @@ public class HibernateProgramInstanceStore
             + "'        and prm.sendto = "
             + PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
     }
-    
+
     private String sendMessageToUserGroupsSql( String dateToCompare )
     {
         return "select pi.programinstanceid, uif.phonenumber,prm.templatemessage, p.name, org.name as orgunitName ,"

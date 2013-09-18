@@ -28,11 +28,15 @@ package org.hisp.dhis.dxf2.events.enrollment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.events.person.Person;
+import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -47,6 +51,15 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     @Autowired
     private ProgramInstanceService programInstanceService;
 
+    @Autowired
+    private ProgramService programService;
+
+    @Autowired
+    private PersonService personService;
+
+    @Autowired
+    private PatientService patientService;
+
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
@@ -54,8 +67,17 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     @Override
     public Enrollments getEnrollments()
     {
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( programInstanceService.getAllProgramInstances() );
+        List<Program> programs = getProgramsWithRegistration();
+
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( programs ) );
         return getEnrollments( programInstances );
+    }
+
+    @Override
+    public Enrollments getEnrollments( Person person )
+    {
+        Patient patient = patientService.getPatient( person.getPerson() );
+        return getEnrollments( patient );
     }
 
     @Override
@@ -68,19 +90,31 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     @Override
     public Enrollments getEnrollments( Program program )
     {
-        return null;
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program ) );
+        return getEnrollments( programInstances );
     }
 
     @Override
     public Enrollments getEnrollments( OrganisationUnit organisationUnit )
     {
-        return null;
+        List<Program> programs = getProgramsWithRegistration();
+
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( programs, organisationUnit ) );
+
+        return getEnrollments( programInstances );
     }
 
     @Override
     public Enrollments getEnrollments( Program program, OrganisationUnit organisationUnit )
     {
-        return null;
+        return getEnrollments( programInstanceService.getProgramInstances( program, organisationUnit ) );
+    }
+
+    @Override
+    public Enrollments getEnrollments( Program program, Person person )
+    {
+        Patient patient = patientService.getPatient( person.getPerson() );
+        return getEnrollments( programInstanceService.getProgramInstances( patient, program ) );
     }
 
     @Override
@@ -112,5 +146,17 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
         enrollment.setProgram( programInstance.getProgram().getUid() );
 
         return enrollment;
+    }
+
+    // -------------------------------------------------------------------------
+    // HELPERS
+    // -------------------------------------------------------------------------
+
+    private List<Program> getProgramsWithRegistration()
+    {
+        List<Program> programs = new ArrayList<Program>();
+        programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
+        programs.addAll( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
+        return programs;
     }
 }
