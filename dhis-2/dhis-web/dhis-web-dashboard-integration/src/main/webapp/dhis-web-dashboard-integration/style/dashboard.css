@@ -482,9 +482,9 @@ div#selectionTree
   width: 580px;
   border: 1px solid #ddd;
   border-radius: 3px;
-  padding: 30px 20px 20px 20px;
+  padding: 25px 20px 20px 20px;
   margin-bottom: 25px;
-  box-shadow: #ddd 0 1px 1px 0;
+  box-shadow: #e1e1e1 0 1px 1px 0;
 }
 
 .interpretationSymbol
