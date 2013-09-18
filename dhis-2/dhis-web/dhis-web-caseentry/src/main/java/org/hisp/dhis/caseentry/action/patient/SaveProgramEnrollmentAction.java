@@ -180,7 +180,7 @@ public class SaveProgramEnrollmentAction
 
         if ( programInstance == null )
         {
-            programInstance = programInstanceService.enrollmentPatient( patient, program, enrollment, incident,
+            programInstance = programInstanceService.enrollPatient( patient, program, enrollment, incident,
                 orgunit, format );
         }
 

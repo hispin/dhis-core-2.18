@@ -606,7 +606,7 @@ public class DefaultProgramInstanceService
     }
 
     @Override
-    public ProgramInstance enrollmentPatient( Patient patient, Program program, Date enrollmentDate,
+    public ProgramInstance enrollPatient( Patient patient, Program program, Date enrollmentDate,
         Date dateOfIncident, OrganisationUnit orgunit, I18nFormat format )
     {
         if ( enrollmentDate == null )
