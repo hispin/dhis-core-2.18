@@ -59,6 +59,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class Interpretation
     extends BaseIdentifiableObject
 {
+    public static final String TYPE_CHART = "chart";
+    public static final String TYPE_MAP = "map";
+    public static final String TYPE_REPORT_TABLE = "reportTable";
+    public static final String TYPE_DATASET_REPORT = "dataSetReport";
+    
     private Chart chart;
 
     private Map map;
@@ -121,7 +126,31 @@ public class Interpretation
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-
+    
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getType()
+    {
+        if ( chart != null )
+        {
+            return TYPE_CHART;
+        }
+        else if ( map != null )
+        {
+            return TYPE_MAP;
+        }
+        else if ( reportTable != null )
+        {
+            return TYPE_REPORT_TABLE;
+        }
+        else if ( dataSet != null )
+        {
+            return TYPE_DATASET_REPORT;
+        }
+        
+        return null;
+    }
+    
     public void addComment( InterpretationComment comment )
     {
         this.comments.add( comment );
