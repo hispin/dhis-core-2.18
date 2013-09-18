@@ -262,9 +262,7 @@ public interface PatientService
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 
     Object getObjectValue( String property, String value, I18nFormat format );
-
-    void removeErollmentPrograms( Program program );
-
+    
     Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
         Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
 

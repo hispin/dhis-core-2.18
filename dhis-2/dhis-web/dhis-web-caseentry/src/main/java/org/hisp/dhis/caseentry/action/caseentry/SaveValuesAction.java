@@ -164,9 +164,6 @@ public class SaveValuesAction
         programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
         programInstance.setPatient( patient );
 
-        patient.getPrograms().add( program );
-        patientService.updatePatient( patient );
-
         programInstanceService.addProgramInstance( programInstance );
 
         // ---------------------------------------------------------------------

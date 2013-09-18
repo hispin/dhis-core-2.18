@@ -203,8 +203,6 @@ public class SaveExecutionDateAction
                     programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
 
                     programInstance.setPatient( patient );
-                    patient.getPrograms().add( program );
-                    patientService.updatePatient( patient );
 
                     programInstanceService.addProgramInstance( programInstance );
                 }

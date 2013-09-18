@@ -197,37 +197,36 @@ public class TableAlteror
         executeSql( "update caseaggregationcondition set \"operator\"='times' where \"operator\"='SUM'" );
 
         executeSql( "update prorgam set \"operator\"='times' where \"operator\"='SUM'" );
-        
+
         executeSql( "update program set remindCompleted=false where remindCompleted is null" );
         executeSql( "update patientreminder set dateToCompare='duedate' where programstageid is not null" );
         executeSql( "UPDATE programinstance SET followup=false where followup is null" );
         executeSql( "UPDATE patientreminder SET sendTo=1 where sendTo is null" );
-        
-        
+
         updateUid();
 
         updateUidInDataEntryFrom();
 
         updateProgramInstanceStatus();
-        
+
         executeSql( "ALTER TABLE program DROP COLUMN disableRegistrationFields" );
-        executeSql( "ALTER TABLE program ALTER COLUMN dateofincidentdescription DROP NOT NULL");
-        executeSql( "ALTER TABLE patient ALTER COLUMN birthdate DROP NOT NULL");
-        executeSql( "ALTER TABLE patient ALTER COLUMN gender DROP NOT NULL");
-        executeSql( "ALTER TABLE patient ALTER COLUMN underage DROP NOT NULL");
-        executeSql( "ALTER TABLE program ALTER COLUMN dateofenrollmentdescription DROP NOT NULL");
+        executeSql( "ALTER TABLE program ALTER COLUMN dateofincidentdescription DROP NOT NULL" );
+        executeSql( "ALTER TABLE patient ALTER COLUMN birthdate DROP NOT NULL" );
+        executeSql( "ALTER TABLE patient ALTER COLUMN gender DROP NOT NULL" );
+        executeSql( "ALTER TABLE patient ALTER COLUMN underage DROP NOT NULL" );
+        executeSql( "ALTER TABLE program ALTER COLUMN dateofenrollmentdescription DROP NOT NULL" );
         executeSql( "UPDATE program SET displayOnAllOrgunit=true where displayOnAllOrgunit is null" );
         executeSql( "UPDATE program SET useFormNameDataElement=true where useFormNameDataElement is null" );
-        executeSql( "ALTER TABLE caseaggregationcondition ALTER COLUMN aggregationexpression TYPE varchar(1000)");
-        executeSql( "update patientattribute set displayonvisitschedule = false where displayonvisitschedule is null");
-        executeSql( "update program set useBirthDateAsIncidentDate = false where useBirthDateAsIncidentDate is null");
-        executeSql( "update program set useBirthDateAsEnrollmentDate = false where useBirthDateAsEnrollmentDate is null");
-        executeSql( "update program set selectEnrollmentDatesInFuture = false where selectEnrollmentDatesInFuture is null");
-        executeSql( "update program set selectIncidentDatesInFuture = false where selectIncidentDatesInFuture is null");
-        executeSql( "update validationcriteria set description = name where description is null or description='' ");
-        executeSql( "update programstage set generatedByEnrollmentDate = false where generatedByEnrollmentDate is null ");
-        executeSql( "update programstage set blockEntryForm = false where blockEntryForm is null ");
-        executeSql( "update programstage set remindCompleted = false where remindCompleted is null ");
+        executeSql( "ALTER TABLE caseaggregationcondition ALTER COLUMN aggregationexpression TYPE varchar(1000)" );
+        executeSql( "update patientattribute set displayonvisitschedule = false where displayonvisitschedule is null" );
+        executeSql( "update program set useBirthDateAsIncidentDate = false where useBirthDateAsIncidentDate is null" );
+        executeSql( "update program set useBirthDateAsEnrollmentDate = false where useBirthDateAsEnrollmentDate is null" );
+        executeSql( "update program set selectEnrollmentDatesInFuture = false where selectEnrollmentDatesInFuture is null" );
+        executeSql( "update program set selectIncidentDatesInFuture = false where selectIncidentDatesInFuture is null" );
+        executeSql( "update validationcriteria set description = name where description is null or description='' " );
+        executeSql( "update programstage set generatedByEnrollmentDate = false where generatedByEnrollmentDate is null " );
+        executeSql( "update programstage set blockEntryForm = false where blockEntryForm is null " );
+        executeSql( "update programstage set remindCompleted = false where remindCompleted is null " );
         executeSql( "ALTER TABLE program DROP COLUMN generatedByEnrollmentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN blockEntryForm" );
         executeSql( "ALTER TABLE program DROP COLUMN remindCompleted" );
@@ -240,6 +239,8 @@ public class TableAlteror
         executeSql( "alter table patient drop column firstname" );
         executeSql( "alter table patient drop column middlename" );
         executeSql( "alter table patient drop column lastname" );
+
+        executeSql( "DROP TABLE patient_programs" );
     }
 
     // -------------------------------------------------------------------------

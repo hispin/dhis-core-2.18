@@ -205,9 +205,6 @@ public class SaveProgramEnrollmentAction
 
             programInstanceService.addProgramInstance( programInstance );
 
-            patient.getPrograms().add( program );
-            patientService.updatePatient( patient );
-
             boolean isFirstStage = false;
             Date currentDate = new Date();
             for ( ProgramStage programStage : program.getProgramStages() )
