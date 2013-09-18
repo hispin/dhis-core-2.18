@@ -30,8 +30,6 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,8 +52,6 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -96,10 +92,8 @@ public class AddRelationshipPatientAction
 
     private RelationshipTypeService relationshipTypeService;
 
-    private ProgramStageInstanceService programStageInstanceService;
-
     private SystemSettingManager systemSettingManager;
-    
+
     private UserService userService;
 
     // -------------------------------------------------------------------------
@@ -138,16 +132,9 @@ public class AddRelationshipPatientAction
 
     private boolean relationshipFromA;
 
-    private Integer programStageInstanceId;
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
-    public void setProgramStageInstanceId( Integer programStageInstanceId )
-    {
-        this.programStageInstanceId = programStageInstanceId;
-    }
 
     public void setUserService( UserService userService )
     {
@@ -393,34 +380,13 @@ public class AddRelationshipPatientAction
             }
         }
 
-        // Save relationship with event
-        
-        if ( programStageInstanceId != null )
-        {
-            ProgramStageInstance programStageInstance = programStageInstanceService
-                .getProgramStageInstance( programStageInstanceId );
-            Set<Patient> patients = programStageInstance.getPatients();
-            if ( patients == null )
-            {
-                patients = new HashSet<Patient>();
-            }
-            patients.add(patient);
-            programStageInstance.setPatients( patients );
-            programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        }
-
         return SUCCESS;
     }
 
     // -----------------------------------------------------------------------------
     // Getter/Setter
     // -----------------------------------------------------------------------------
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
+    
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;

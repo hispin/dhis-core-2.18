@@ -30,7 +30,6 @@ package org.hisp.dhis.settings.user.action;
 
 import static org.hisp.dhis.user.UserSettingService.DEFAULT_ANALYSIS_DISPLAY_PROPERTY;
 import static org.hisp.dhis.user.UserSettingService.KEY_ANALYSIS_DISPLAY_PROPERTY;
-import static org.hisp.dhis.user.UserSettingService.KEY_DISPLAY_OPTION_SET_AS_RADIO_BUTTON;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
@@ -150,13 +149,6 @@ public class GetGeneralSettingsAction
         return messageSmsNotification;
     }
 
-    private String displayOptionSetAsRadioButton;
-
-    public String getDisplayOptionSetAsRadioButton()
-    {
-        return displayOptionSetAsRadioButton;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -171,7 +163,7 @@ public class GetGeneralSettingsAction
         availableLocales = localeManager.getAvailableLocales();
 
         currentLocale = localeManager.getCurrentLocale();
-                
+
         // ---------------------------------------------------------------------
         // Get available DB locales
         // ---------------------------------------------------------------------
@@ -194,9 +186,6 @@ public class GetGeneralSettingsAction
         messageEmailNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
 
         messageSmsNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, false );
-
-        displayOptionSetAsRadioButton = (String) userSettingService.getUserSetting(
-            KEY_DISPLAY_OPTION_SET_AS_RADIO_BUTTON, "" );
 
         return SUCCESS;
     }
