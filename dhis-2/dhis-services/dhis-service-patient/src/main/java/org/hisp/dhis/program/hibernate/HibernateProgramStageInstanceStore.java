@@ -793,13 +793,6 @@ public class HibernateProgramStageInstanceStore
         return grid;
     }
 
-    @SuppressWarnings("unchecked")
-    public Collection<ProgramStageInstance> get( Patient patient )
-    {
-        return getCriteria().createAlias( "patients", "patient" )
-            .add( Restrictions.eq( "patient.id", patient.getId() ) ).list();
-    }
-
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

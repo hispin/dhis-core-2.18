@@ -45,6 +45,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -53,6 +54,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -206,7 +208,8 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( programInstances );
     }
 
-    public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances, boolean completed )
+    public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances,
+        boolean completed )
     {
         return programStageInstanceStore.get( programInstances, completed );
     }
@@ -639,9 +642,48 @@ public class DefaultProgramStageInstanceService
         return messageConversations;
     }
 
-    public Collection<ProgramStageInstance> getProgramStageInstance( Patient patient )
+    @Override
+    public void completeProgramStageInstance( ProgramStageInstance programStageInstance, I18nFormat format )
     {
-        return programStageInstanceStore.get( patient );
+        programStageInstance.setCompleted( true );
+
+        Calendar today = Calendar.getInstance();
+        PeriodType.clearTimeOfDay( today );
+        Date date = today.getTime();
+
+        programStageInstance.setCompletedDate( date );
+        programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
+
+        // ---------------------------------------------------------------------
+        // Send sms-message when to completed the event
+        // ---------------------------------------------------------------------
+
+        List<OutboundSms> outboundSms = programStageInstance.getOutboundSms();
+        if ( outboundSms == null )
+        {
+            outboundSms = new ArrayList<OutboundSms>();
+        }
+
+        outboundSms.addAll( sendMessages( programStageInstance, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
+
+        // ---------------------------------------------------------------------
+        // Send DHIS message when to completed the event
+        // ---------------------------------------------------------------------
+
+        List<MessageConversation> messageConversations = programStageInstance.getMessageConversations();
+        if ( messageConversations == null )
+        {
+            messageConversations = new ArrayList<MessageConversation>();
+        }
+
+        messageConversations.addAll( sendMessageConversations( programStageInstance,
+            PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
+      
+        // ---------------------------------------------------------------------
+        // Update the event
+        // ---------------------------------------------------------------------
+
+        updateProgramStageInstance( programStageInstance );
     }
 
     // -------------------------------------------------------------------------

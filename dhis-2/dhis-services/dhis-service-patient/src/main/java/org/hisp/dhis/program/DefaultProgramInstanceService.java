@@ -47,14 +47,17 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -128,6 +131,13 @@ public class DefaultProgramInstanceService
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
+    }
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
     }
 
     // -------------------------------------------------------------------------
@@ -595,9 +605,222 @@ public class DefaultProgramInstanceService
         return messageConversations;
     }
 
+    @Override
+    public ProgramInstance enrollmentPatient( Patient patient, Program program, Date enrollmentDate,
+        Date dateOfIncident, OrganisationUnit orgunit, I18nFormat format )
+    {
+        if ( enrollmentDate == null )
+        {
+            if ( program.getUseBirthDateAsIncidentDate() )
+            {
+                enrollmentDate = patient.getBirthDate();
+            }
+            else
+            {
+                enrollmentDate = new Date();
+            }
+        }
+
+        if ( dateOfIncident == null )
+        {
+            if ( program.getUseBirthDateAsIncidentDate() )
+            {
+                dateOfIncident = patient.getBirthDate();
+            }
+            else
+            {
+                dateOfIncident = enrollmentDate;
+            }
+        }
+
+        ProgramInstance programInstance = new ProgramInstance();
+        programInstance.setEnrollmentDate( enrollmentDate );
+        programInstance.setDateOfIncident( dateOfIncident );
+        programInstance.setProgram( program );
+        programInstance.setPatient( patient );
+        programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
+
+        addProgramInstance( programInstance );
+
+        // ---------------------------------------------------------------------
+        // Generate events of program-instance
+        // ---------------------------------------------------------------------
+
+        for ( ProgramStage programStage : program.getProgramStages() )
+        {
+            if ( programStage.getAutoGenerateEvent() )
+            {
+                ProgramStageInstance programStageInstance = generateEvent( programInstance, programStage,
+                    enrollmentDate, dateOfIncident, orgunit );
+                programStageInstanceService.addProgramStageInstance( programStageInstance );
+            }
+        }
+
+        // -----------------------------------------------------------------
+        // send messages after enrollment program
+        // -----------------------------------------------------------------
+
+        List<OutboundSms> outboundSms = programInstance.getOutboundSms();
+        if ( outboundSms == null )
+        {
+            outboundSms = new ArrayList<OutboundSms>();
+        }
+
+        outboundSms.addAll( sendMessages( programInstance, PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
+
+        // -----------------------------------------------------------------
+        // Send DHIS message when to completed the program
+        // -----------------------------------------------------------------
+
+        List<MessageConversation> piMessageConversations = programInstance.getMessageConversations();
+        if ( piMessageConversations == null )
+        {
+            piMessageConversations = new ArrayList<MessageConversation>();
+        }
+
+        piMessageConversations.addAll( sendMessageConversations( programInstance,
+            PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
+
+        updateProgramInstance( programInstance );
+
+        return programInstance;
+    }
+
+    @Override
+    public boolean canAutoCompleteProgramInstanceStatus( ProgramInstance programInstance )
+    {
+        Set<ProgramStageInstance> stageInstances = programInstance.getProgramStageInstances();
+
+        for ( ProgramStageInstance stageInstance : stageInstances )
+        {
+            if ( !stageInstance.isCompleted() || stageInstance.getProgramStage().getIrregular() )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void completeProgramInstanceStatus( ProgramInstance programInstance, I18nFormat format )
+    {
+        // ---------------------------------------------------------------------
+        // Send sms-message when to completed the program
+        // ---------------------------------------------------------------------
+
+        List<OutboundSms> outboundSms = programInstance.getOutboundSms();
+        if ( outboundSms == null )
+        {
+            outboundSms = new ArrayList<OutboundSms>();
+        }
+
+        outboundSms.addAll( sendMessages( programInstance, PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
+
+        // -----------------------------------------------------------------
+        // Send DHIS message when to completed the program
+        // -----------------------------------------------------------------
+
+        List<MessageConversation> messageConversations = programInstance.getMessageConversations();
+        if ( messageConversations == null )
+        {
+            messageConversations = new ArrayList<MessageConversation>();
+        }
+
+        messageConversations.addAll( sendMessageConversations( programInstance,
+            PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
+
+        // -----------------------------------------------------------------
+        // Update program-instance
+        // -----------------------------------------------------------------
+
+        programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
+
+        programInstance.setEndDate( new Date() );
+
+        updateProgramInstance( programInstance );
+    }
+
+    public void cancelProgramInstanceStatus( ProgramInstance programInstance )
+    {
+        // ---------------------------------------------------------------------
+        // Set status of the program-instance
+        // ---------------------------------------------------------------------
+
+        Calendar today = Calendar.getInstance();
+        PeriodType.clearTimeOfDay( today );
+        Date currentDate = today.getTime();
+
+        programInstance.setEndDate( currentDate );
+        updateProgramInstance( programInstance );
+
+        // ---------------------------------------------------------------------
+        // Set statuses of the program-stage-instances
+        // ---------------------------------------------------------------------
+
+        for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
+        {
+            if ( programStageInstance.getExecutionDate() == null )
+            {
+                // ---------------------------------------------------------------------
+                // Set status as skipped for overdue events
+                // ---------------------------------------------------------------------
+                if ( programStageInstance.getDueDate().before( currentDate ) )
+                {
+                    programStageInstance.setStatus( ProgramStageInstance.SKIPPED_STATUS );
+                    programStageInstanceService.updateProgramStageInstance( programStageInstance );
+                }
+
+                // ---------------------------------------------------------------------
+                // Remove scheduled events
+                // ---------------------------------------------------------------------
+                else
+                {
+                    programStageInstanceService.deleteProgramStageInstance( programStageInstance );
+                }
+            }
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    private ProgramStageInstance generateEvent( ProgramInstance programInstance, ProgramStage programStage,
+        Date enrollmentDate, Date dateOfIncident, OrganisationUnit orgunit )
+    {
+        ProgramStageInstance programStageInstance = null;
+
+        Date currentDate = new Date();
+        Date dateCreatedEvent = null;
+        if ( programStage.getGeneratedByEnrollmentDate() )
+        {
+            dateCreatedEvent = enrollmentDate;
+        }
+        else
+        {
+            dateCreatedEvent = dateOfIncident;
+        }
+
+        Date dueDate = DateUtils.getDateAfterAddition( dateCreatedEvent, programStage.getMinDaysFromStart() );
+
+        if ( !programInstance.getProgram().getIgnoreOverdueEvents()
+            || !(programInstance.getProgram().getIgnoreOverdueEvents() && dueDate.before( currentDate )) )
+        {
+            programStageInstance = new ProgramStageInstance();
+            programStageInstance.setProgramInstance( programInstance );
+            programStageInstance.setProgramStage( programStage );
+            programStageInstance.setDueDate( dueDate );
+
+            if ( programInstance.getProgram().isSingleEvent() )
+            {
+                programStageInstance.setOrganisationUnit( orgunit );
+                programStageInstance.setExecutionDate( dueDate );
+            }
+        }
+
+        return programStageInstance;
+    }
 
     private void getProgramStageInstancesReport( Grid grid, ProgramInstance programInstance, I18nFormat format,
         I18n i18n )

@@ -28,23 +28,11 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -70,13 +58,6 @@ public class CompleteDataEntryAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
     }
 
     private I18nFormat format;
@@ -129,42 +110,7 @@ public class CompleteDataEntryAction
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
-        programStageInstance.setCompleted( true );
-
-        Calendar today = Calendar.getInstance();
-        PeriodType.clearTimeOfDay( today );
-        Date date = today.getTime();
-
-        programStageInstance.setCompletedDate( date );
-        programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
-
-        // ---------------------------------------------------------------------
-        // Send sms-message when to completed the event
-        // ---------------------------------------------------------------------
-
-        List<OutboundSms> psiOutboundSms = programStageInstance.getOutboundSms();
-        if ( psiOutboundSms == null )
-        {
-            psiOutboundSms = new ArrayList<OutboundSms>();
-        }
-
-        psiOutboundSms.addAll( programStageInstanceService.sendMessages( programStageInstance,
-            PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
-
-        // ---------------------------------------------------------------------
-        // Send DHIS message when to completed the event
-        // ---------------------------------------------------------------------
-
-        List<MessageConversation> psiMessageConversations = programStageInstance.getMessageConversations();
-        if ( psiMessageConversations == null )
-        {
-            psiMessageConversations = new ArrayList<MessageConversation>();
-        }
-
-        psiMessageConversations.addAll( programStageInstanceService.sendMessageConversations( programStageInstance,
-            PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
-
-        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        programStageInstanceService.completeProgramStageInstance( programStageInstance, format );
 
         // ---------------------------------------------------------------------
         // Check Completed status for all of ProgramStageInstance of
@@ -174,48 +120,14 @@ public class CompleteDataEntryAction
         if ( !programStageInstance.getProgramInstance().getProgram().getType()
             .equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
         {
-            ProgramInstance programInstance = programStageInstance.getProgramInstance();
-
-            Set<ProgramStageInstance> stageInstances = programInstance.getProgramStageInstances();
-
-            for ( ProgramStageInstance stageInstance : stageInstances )
+            boolean canCompleted = programInstanceService.canAutoCompleteProgramInstanceStatus( programStageInstance
+                .getProgramInstance() );
+            if ( !canCompleted )
             {
-                if ( !stageInstance.isCompleted() || stageInstance.getProgramStage().getIrregular() )
-                {
-                    return SUCCESS;
-                }
+                return SUCCESS;
             }
 
-            programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
-            programInstance.setEndDate( new Date() );
-
-            // ---------------------------------------------------------------------
-            // Send sms-message when to completed the program
-            // ---------------------------------------------------------------------
-
-            List<OutboundSms> piOutboundSms = programInstance.getOutboundSms();
-            if ( piOutboundSms == null )
-            {
-                piOutboundSms = new ArrayList<OutboundSms>();
-            }
-
-            piOutboundSms.addAll( programInstanceService.sendMessages( programInstance,
-                PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
-
-            // ---------------------------------------------------------------------
-            // Send DHIS message when to completed the program
-            // ---------------------------------------------------------------------
-
-            List<MessageConversation> piMessageConversations = programInstance.getMessageConversations();
-            if ( piMessageConversations == null )
-            {
-                piMessageConversations = new ArrayList<MessageConversation>();
-            }
-
-            piMessageConversations.addAll( programInstanceService.sendMessageConversations( programInstance,
-                PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
-
-            programInstanceService.updateProgramInstance( programInstance );
+            programInstanceService.completeProgramInstanceStatus( programStageInstance.getProgramInstance(), format );
 
         }
 

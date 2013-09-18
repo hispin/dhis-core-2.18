@@ -30,24 +30,21 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -81,13 +78,6 @@ public class SaveProgramEnrollmentAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
-    }
-
-    private ProgramStageInstanceService programStageInstanceService;
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
     }
 
     private SelectedStateManager selectedStateManager;
@@ -162,143 +152,65 @@ public class SaveProgramEnrollmentAction
     public String execute()
         throws Exception
     {
+
         Patient patient = patientService.getPatient( patientId );
 
         Program program = programService.getProgram( programId );
 
-        if ( enrollmentDate == null || enrollmentDate.isEmpty() )
-        {
-            if ( program.getUseBirthDateAsIncidentDate() )
-            {
-                enrollmentDate = format.formatDate( patient.getBirthDate() );
-            }
-        }
+        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
 
-        if ( dateOfIncident == null || dateOfIncident.isEmpty() )
-        {
-            if ( program.getUseBirthDateAsIncidentDate() )
-            {
-                dateOfIncident = format.formatDate( patient.getBirthDate() );
-            }
-            else
-            {
-                dateOfIncident = enrollmentDate;
-            }
-        }
+        Date enrollment = (enrollmentDate == null || enrollmentDate.isEmpty()) ? null : format
+            .parseDate( enrollmentDate );
+
+        Date incident = (dateOfIncident == null || dateOfIncident.isEmpty()) ? null : format.parseDate( dateOfIncident );
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             ProgramInstance.STATUS_ACTIVE );
+
+        ProgramInstance programInstance = null;
 
         if ( programInstances.iterator().hasNext() )
         {
             programInstance = programInstances.iterator().next();
         }
 
+        // ---------------------------------------------------------------------
+        // Generate program-instance and visits scheduled
+        // ---------------------------------------------------------------------
+
         if ( programInstance == null )
         {
-            programInstance = new ProgramInstance();
-            programInstance.setEnrollmentDate( format.parseDate( enrollmentDate ) );
-            programInstance.setDateOfIncident( format.parseDate( dateOfIncident ) );
-            programInstance.setProgram( program );
-            programInstance.setPatient( patient );
-            programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
+            programInstance = programInstanceService.enrollmentPatient( patient, program, enrollment, incident,
+                orgunit, format );
+        }
 
-            programInstanceService.addProgramInstance( programInstance );
+        // ---------------------------------------------------------------------
+        // Update enrollment-date and incident-date
+        // ---------------------------------------------------------------------
 
-            boolean isFirstStage = false;
-            Date currentDate = new Date();
-            for ( ProgramStage programStage : program.getProgramStages() )
-            {
-                if ( programStage.getAutoGenerateEvent() )
-                {
-                    Date dateCreatedEvent = null;
-                    if ( programStage.getGeneratedByEnrollmentDate() )
-                    {
-                        dateCreatedEvent = format.parseDate( enrollmentDate );
-                    }
-                    else
-                    {
-                        dateCreatedEvent = format.parseDate( dateOfIncident );
-
-                    }
-
-                    Date dueDate = DateUtils
-                        .getDateAfterAddition( dateCreatedEvent, programStage.getMinDaysFromStart() );
-
-                    if ( !program.getIgnoreOverdueEvents()
-                        || !(program.getIgnoreOverdueEvents() && dueDate.before( currentDate )) )
-                    {
-                        ProgramStageInstance programStageInstance = new ProgramStageInstance();
-                        programStageInstance.setProgramInstance( programInstance );
-                        programStageInstance.setProgramStage( programStage );
-                        programStageInstance.setDueDate( dueDate );
-
-                        if ( program.isSingleEvent() )
-                        {
-                            programStageInstance.setOrganisationUnit( selectedStateManager
-                                .getSelectedOrganisationUnit() );
-                            programStageInstance.setExecutionDate( dueDate );
-                        }
-                        programStageInstanceService.addProgramStageInstance( programStageInstance );
-
-                        if ( !isFirstStage )
-                        {
-                            activeProgramStageInstance = programStageInstance;
-                            isFirstStage = true;
-                        }
-                    }
-                }
-            }
-
-            // -----------------------------------------------------------------
-            // send messages after enrollment program
-            // -----------------------------------------------------------------
-
-            List<OutboundSms> outboundSms = programInstance.getOutboundSms();
-            if ( outboundSms == null )
-            {
-                outboundSms = new ArrayList<OutboundSms>();
-            }
-
-            outboundSms.addAll( programInstanceService.sendMessages( programInstance,
-                PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
-
-            programInstanceService.updateProgramInstance( programInstance );
-            
-            // -----------------------------------------------------------------
-            // Send DHIS message when to completed the program
-            // -----------------------------------------------------------------
-
-            List<MessageConversation> piMessageConversations = programInstance.getMessageConversations();
-            if ( piMessageConversations == null )
-            {
-                piMessageConversations = new ArrayList<MessageConversation>();
-            }
-
-            piMessageConversations.addAll( programInstanceService.sendMessageConversations( programInstance,
-                PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
+        else
+        {
+            programInstance.setEnrollmentDate( enrollment );
+            programInstance.setDateOfIncident( incident );
 
             programInstanceService.updateProgramInstance( programInstance );
         }
-        else
+
+        // ---------------------------------------------------------------------
+        // Get the active event of program-instance
+        // ---------------------------------------------------------------------
+
+        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>(
+            programInstance.getProgramStageInstances() );
+        Collections.sort( programStageInstances, new ProgramStageInstanceVisitDateComparator() );
+
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
-            programInstance.setEnrollmentDate( format.parseDate( enrollmentDate ) );
-            programInstance.setDateOfIncident( format.parseDate( dateOfIncident ) );
-
-            programInstanceService.updateProgramInstance( programInstance );
-
-            for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
+            if ( !programStageInstance.isCompleted()
+                && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS )
             {
-                if ( !programStageInstance.isCompleted()
-                    || (programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS) )
-                {
-                    Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ),
-                        programStageInstance.getProgramStage().getMinDaysFromStart() );
-
-                    programStageInstance.setDueDate( dueDate );
-
-                    programStageInstanceService.updateProgramStageInstance( programStageInstance );
-                }
+                activeProgramStageInstance = programStageInstance;
+                break;
             }
         }
 
