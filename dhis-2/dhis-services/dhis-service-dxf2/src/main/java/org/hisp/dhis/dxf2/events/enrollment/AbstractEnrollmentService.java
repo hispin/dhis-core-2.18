@@ -156,6 +156,8 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
         enrollment.setEnrollment( programInstance.getUid() );
         enrollment.setPerson( programInstance.getPatient().getUid() );
         enrollment.setProgram( programInstance.getProgram().getUid() );
+        enrollment.setDateOfEnrollment( programInstance.getEnrollmentDate() );
+        enrollment.setDateOfIncident( programInstance.getDateOfIncident() );
 
         return enrollment;
     }
@@ -169,7 +171,7 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
         List<Program> programs = new ArrayList<Program>();
         programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
         programs.addAll( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
-    
+
         return programs;
     }
 }
