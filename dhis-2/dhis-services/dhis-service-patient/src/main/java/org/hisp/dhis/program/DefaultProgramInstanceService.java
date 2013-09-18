@@ -195,6 +195,11 @@ public class DefaultProgramInstanceService
         return programInstanceStore.get( programs, organisationUnit );
     }
 
+    public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, OrganisationUnit organisationUnit, int status )
+    {
+        return programInstanceStore.get( programs, organisationUnit, status );
+    }
+
     public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, Integer status )
     {
         return programInstanceStore.get( programs, status );

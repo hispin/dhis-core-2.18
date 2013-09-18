@@ -94,6 +94,14 @@ public class HibernateProgramInstanceStore
             .add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) ).list();
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramInstance> get( Collection<Program> programs, OrganisationUnit organisationUnit, int status )
+    {
+        return getCriteria( Restrictions.eq( "status", status ), Restrictions.in( "program", programs ) ).createAlias( "patient", "patient" )
+            .add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) ).list();
+    }
+
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Program program, Integer status )
     {

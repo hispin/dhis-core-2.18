@@ -34,6 +34,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
+import org.hisp.dhis.dxf2.events.enrollment.EnrollmentStatus;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollments;
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.events.person.PersonService;
@@ -86,6 +87,7 @@ public class EnrollmentController
         @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam( value = "person", required = false ) String personUid,
+        @RequestParam( value = "status", required = false ) EnrollmentStatus status,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
@@ -93,7 +95,7 @@ public class EnrollmentController
 
         if ( orgUnitUid == null && programUid == null && personUid == null )
         {
-            enrollments = enrollmentService.getEnrollments();
+            enrollments = status != null ? enrollmentService.getEnrollments( status ) : enrollmentService.getEnrollments();
         }
         else if ( orgUnitUid != null && programUid != null )
         {
@@ -107,22 +109,24 @@ public class EnrollmentController
             Program program = getProgram( programUid );
             Person person = getPerson( personUid );
 
-            enrollments = enrollmentService.getEnrollments( program, person );
+            enrollments = status != null ? enrollmentService.getEnrollments( program, person, status )
+                : enrollmentService.getEnrollments( program, person );
         }
         else if ( orgUnitUid != null )
         {
             OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-            enrollments = enrollmentService.getEnrollments( organisationUnit );
+            enrollments = status != null ? enrollmentService.getEnrollments( organisationUnit, status )
+                : enrollmentService.getEnrollments( organisationUnit );
         }
         else if ( programUid != null )
         {
             Program program = getProgram( programUid );
-            enrollments = enrollmentService.getEnrollments( program );
+            enrollments = status != null ? enrollmentService.getEnrollments( program, status ) : enrollmentService.getEnrollments( program );
         }
         else
         {
-            Person person = getPerson( personUid );
-            enrollments = enrollmentService.getEnrollments( person );
+                Person person = getPerson( personUid );
+            enrollments = status != null ? enrollmentService.getEnrollments( person, status ) : enrollmentService.getEnrollments( person );
         }
 
         model.addAttribute( "model", enrollments );

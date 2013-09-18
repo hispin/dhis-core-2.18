@@ -51,15 +51,27 @@ public interface EnrollmentService
 
     Enrollments getEnrollments();
 
+    Enrollments getEnrollments( EnrollmentStatus status );
+
     Enrollments getEnrollments( Person person );
+
+    Enrollments getEnrollments( Person person, EnrollmentStatus status );
 
     Enrollments getEnrollments( Patient patient );
 
+    Enrollments getEnrollments( Patient patient, EnrollmentStatus status );
+
     Enrollments getEnrollments( Program program );
+
+    Enrollments getEnrollments( Program program, EnrollmentStatus status );
 
     Enrollments getEnrollments( Program program, Person person );
 
+    Enrollments getEnrollments( Program program, Person person, EnrollmentStatus status );
+
     Enrollments getEnrollments( OrganisationUnit organisationUnit );
+
+    Enrollments getEnrollments( OrganisationUnit organisationUnit, EnrollmentStatus status );
 
     Enrollments getEnrollments( Program program, OrganisationUnit organisationUnit );
 
