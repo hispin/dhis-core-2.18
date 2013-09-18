@@ -55,12 +55,6 @@
 		<property name="completedUser" />
 
 		<property name="completedDate" />
-
-		<set name="patients" table="programstageinstance_patients">
-			<key column="programstageinstanceid" />
-			<many-to-many class="org.hisp.dhis.patient.Patient"
-				column="patientid" />
-		</set>
-
+		
 	</class>
 </hibernate-mapping>

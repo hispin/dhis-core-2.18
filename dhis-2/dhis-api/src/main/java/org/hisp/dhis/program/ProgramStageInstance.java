@@ -28,17 +28,15 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patientcomment.PatientComment;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patientcomment.PatientComment;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
  * @author Abyot Asalefew
@@ -87,8 +85,6 @@ public class ProgramStageInstance
 
     private Date completedDate;
 
-    private Set<Patient> patients;
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -125,8 +121,9 @@ public class ProgramStageInstance
             return false;
         }
 
-        // TODO include due date and execution date to make consistent with hashcode
-        
+        // TODO include due date and execution date to make consistent with
+        // hashcode
+
         final ProgramStageInstance other = (ProgramStageInstance) object;
 
         return programInstance.equals( other.getProgramInstance() ) && programStage.equals( other.getProgramStage() );
@@ -299,16 +296,6 @@ public class ProgramStageInstance
     public void setCoordinates( String coordinates )
     {
         this.coordinates = coordinates;
-    }
-
-    public Set<Patient> getPatients()
-    {
-        return patients;
-    }
-
-    public void setPatients( Set<Patient> patients )
-    {
-        this.patients = patients;
     }
 
     public List<MessageConversation> getMessageConversations()

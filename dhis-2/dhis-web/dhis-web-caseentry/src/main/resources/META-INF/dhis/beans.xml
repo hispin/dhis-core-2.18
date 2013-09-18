@@ -111,8 +111,6 @@
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="programIndicatorService"
 			ref="org.hisp.dhis.program.ProgramIndicatorService" />
-		<property name="userSettingService"
-			ref="org.hisp.dhis.user.UserSettingService" />
 	</bean>
 
 	<bean
@@ -737,8 +735,6 @@
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
