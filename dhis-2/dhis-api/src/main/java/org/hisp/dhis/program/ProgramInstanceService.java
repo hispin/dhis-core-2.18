@@ -68,6 +68,8 @@ public interface ProgramInstanceService
 
     Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, OrganisationUnit organisationUnit );
 
+    Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, OrganisationUnit organisationUnit, int status );
+
     Collection<ProgramInstance> getProgramInstances( Program program, Integer status );
 
     Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, Integer status );
