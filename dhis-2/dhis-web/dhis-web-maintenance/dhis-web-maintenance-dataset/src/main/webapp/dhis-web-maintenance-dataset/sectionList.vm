@@ -61,7 +61,7 @@
 					<td style="text-align:center"><a href="editSection.action?sectionId=$section.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
 					<td style="text-align:center"><a href="javascript:translate( '$section.getClass().getSimpleName()', '$section.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a></td>
 					<td style="text-align:center"><a href="javascript:removeSection( '$section.id', '$encoder.jsEncode( $section.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a></td>
-					<td style="text-align:center"><a href="greySection.action?sectionId=$section.id" title="$i18n.getString( 'section_grey_field_managment' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'section_grey_field_managment' )"/></a></td>
+					<td style="text-align:center"><a href="greySection.action?sectionId=$section.id" title="$i18n.getString( 'section_grey_field_managment' )"><img src="../images/grey_field.png" alt="$i18n.getString( 'section_grey_field_managment' )"/></a></td>
 					<td style="text-align:center"><a href="javascript:showSectionDetails( $section.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
 				</tr>
 				#end
