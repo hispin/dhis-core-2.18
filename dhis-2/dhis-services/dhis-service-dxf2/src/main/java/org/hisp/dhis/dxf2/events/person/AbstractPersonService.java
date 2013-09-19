@@ -219,7 +219,18 @@ public abstract class AbstractPersonService implements PersonService
             Identifier identifier = new Identifier( identifierType, patientIdentifier.getIdentifier() );
             person.getIdentifiers().add( identifier );
         }
-        
+
+        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+
+        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+        {
+            Attribute attribute = new Attribute();
+            attribute.setType( patientAttributeValue.getPatientAttribute().getUid() );
+            attribute.setValue( patientAttributeValue.getValue() );
+
+            person.getAttributes().add( attribute );
+        }
+
         return person;
     }
 
