@@ -388,14 +388,15 @@ a.alert, .alert
 
 .recipientsDiv
 { 
-  padding-left: 38px;
+  width: 660px;
+  padding-left: 40px;
 }
 
 .messageDiv
 {
-  width: 700px;
+  width: 660px;
   border-bottom: 1px solid #cccccc;
-  padding-left: 38px;
+  padding-left: 40px;
   padding-top: 16px;
   padding-bottom: 22px;
 }
