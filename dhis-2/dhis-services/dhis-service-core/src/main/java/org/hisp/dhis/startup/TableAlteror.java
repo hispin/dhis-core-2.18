@@ -663,6 +663,9 @@ public class TableAlteror
         
         executeSql( "alter table mapview drop column dataelementgroupid" );        
         executeSql( "alter table mapview drop column indicatorgroupid" );
+        
+        executeSql( "update table mapview set userorganisationunit = false where userorganisationunit is null" );
+        executeSql( "update table mapview set userorganisationunitchildren = false where userorganisationunitchildren is null" );
     }
     
     private void upgradeChartRelativePeriods()
