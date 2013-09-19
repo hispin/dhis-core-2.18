@@ -467,6 +467,7 @@ public class HibernatePatientStore
             String[] keys = searchKey.split( "_" );
             String id = keys[1];
             String value = "";
+
             if ( keys.length >= 3 )
             {
                 value = keys[2];
@@ -495,15 +496,21 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
-                patientWhere += patientOperator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%"
-                    + id + "%' ) or lower(pi.identifier) like '%" + id + "%' ";
 
                 String[] keyValues = id.split( " " );
+                patientWhere += patientOperator + "(";
+                String opt = "";
+                for ( String v : keyValues )
+                {
+                    patientWhere += opt + " lower( p.name ) like '%" + v
+                        + "%' or lower(pi.identifier) like '%" + v + "%' ";
+                    opt = "or";
+                }
+                
                 if ( keyValues.length == 2 )
                 {
                     String otherId = keyValues[0] + "  " + keyValues[1];
-                    patientWhere += " or lower( " + statementBuilder.getPatientFullName() + " ) like '%" + otherId
-                        + "%'  ";
+                    patientWhere += " or lower( p.name ) like '%" + otherId + "%'  ";
                 }
                 patientWhere += ")";
                 patientOperator = " and ";
@@ -513,7 +520,17 @@ public class HibernatePatientStore
             {
                 sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid="
                     + id + " ) as " + Patient.PREFIX_PATIENT_ATTRIBUTE + "_" + id + ",";
-                otherWhere += operator + "lower(" + Patient.PREFIX_PATIENT_ATTRIBUTE + "_" + id + ")='" + value + "'";
+                
+                String[] keyValues = value.split( " " );
+                otherWhere += operator + "(";
+                String opt = "";
+                for ( String v : keyValues )
+                {
+                    otherWhere += opt + " lower(" + Patient.PREFIX_PATIENT_ATTRIBUTE + "_" + id + ") like '%" + v + "%'";
+                    opt = "or";
+                }
+                otherWhere += ")";
+               
                 operator = " and ";
             }
             else if ( keys[0].equals( Patient.PREFIX_PROGRAM ) )
