@@ -39,6 +39,8 @@ import org.hisp.dhis.common.DxfNamespaces;
 @JacksonXmlRootElement( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
 public class Attribute
 {
+    private String displayName;
+
     private String type;
 
     private String value;
@@ -56,6 +58,18 @@ public class Attribute
     {
         this.type = type;
         this.value = value;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    public void setDisplayName( String name )
+    {
+        this.displayName = name;
     }
 
     @JsonProperty
@@ -90,6 +104,7 @@ public class Attribute
 
         Attribute attribute = (Attribute) o;
 
+        if ( displayName != null ? !displayName.equals( attribute.displayName ) : attribute.displayName != null ) return false;
         if ( type != null ? !type.equals( attribute.type ) : attribute.type != null ) return false;
         if ( value != null ? !value.equals( attribute.value ) : attribute.value != null ) return false;
 
@@ -99,15 +114,18 @@ public class Attribute
     @Override
     public int hashCode()
     {
-        int result = type != null ? type.hashCode() : 0;
+        int result = displayName != null ? displayName.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 
-    @Override public String toString()
+    @Override
+    public String toString()
     {
         return "Attribute{" +
-            "type='" + type + '\'' +
+            "displayName='" + displayName + '\'' +
+            ", type='" + type + '\'' +
             ", value='" + value + '\'' +
             '}';
     }

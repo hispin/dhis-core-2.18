@@ -39,12 +39,26 @@ import org.hisp.dhis.common.DxfNamespaces;
 @JacksonXmlRootElement( localName = "relationship", namespace = DxfNamespaces.DXF_2_0 )
 public class Relationship
 {
+    private String displayName;
+
     private String person;
 
     private String type;
 
     public Relationship()
     {
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    public void setDisplayName( String name )
+    {
+        this.displayName = name;
     }
 
     @JsonProperty
@@ -79,6 +93,7 @@ public class Relationship
 
         Relationship that = (Relationship) o;
 
+        if ( displayName != null ? !displayName.equals( that.displayName ) : that.displayName != null ) return false;
         if ( person != null ? !person.equals( that.person ) : that.person != null ) return false;
         if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
 
@@ -88,15 +103,18 @@ public class Relationship
     @Override
     public int hashCode()
     {
-        int result = person != null ? person.hashCode() : 0;
+        int result = displayName != null ? displayName.hashCode() : 0;
+        result = 31 * result + (person != null ? person.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
 
-    @Override public String toString()
+    @Override
+    public String toString()
     {
         return "Relationship{" +
-            "person='" + person + '\'' +
+            "displayName='" + displayName + '\'' +
+            ", person='" + person + '\'' +
             ", type='" + type + '\'' +
             '}';
     }
