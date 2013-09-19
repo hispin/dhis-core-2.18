@@ -48,13 +48,6 @@ public class PatientDeletionHandler
         this.patientService = patientService;
     }
 
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -77,13 +70,7 @@ public class PatientDeletionHandler
             patientService.updatePatient( representative );
         }
     }
-
-    @Override
-    public void deletePatientAttribute( PatientAttribute patientAttribute )
-    {
-        jdbcTemplate.execute( "delete from patient_attributes where patientattributeid=" + patientAttribute.getId() );
-    }
-
+    
     @Override
     public String allowDeleteOrganisationUnit( OrganisationUnit unit )
     {
