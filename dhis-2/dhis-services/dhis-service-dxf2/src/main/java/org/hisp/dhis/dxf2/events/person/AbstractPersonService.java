@@ -43,6 +43,8 @@ import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -77,6 +79,9 @@ public abstract class AbstractPersonService implements PersonService
 
     @Autowired
     private PatientAttributeValueService patientAttributeValueService;
+
+    @Autowired
+    private RelationshipService relationshipService;
 
     @Autowired
     private IdentifiableObjectManager manager;
@@ -211,6 +216,17 @@ public abstract class AbstractPersonService implements PersonService
         }
 
         person.setDateOfRegistration( patient.getRegistrationDate() );
+
+        Collection<Relationship> relationshipsForPatient = relationshipService.getRelationshipsForPatient( patient );
+
+        for ( Relationship relationshipPatient : relationshipsForPatient )
+        {
+            org.hisp.dhis.dxf2.events.person.Relationship relationship = new org.hisp.dhis.dxf2.events.person.Relationship();
+            relationship.setPerson( relationshipPatient.getPatientA().getUid() );
+            relationship.setType( relationshipPatient.getRelationshipType().getUid() );
+
+            person.getRelationships().add( relationship );
+        }
 
         for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
         {

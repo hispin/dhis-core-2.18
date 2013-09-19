@@ -40,7 +40,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "person", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
 public class Person
 {
     private String person;
@@ -60,6 +60,8 @@ public class Person
     private Date dateOfRegistration = new Date();
 
     private Contact contact;
+
+    private List<Relationship> relationships = new ArrayList<Relationship>();
 
     private List<Identifier> identifiers = new ArrayList<Identifier>();
 
@@ -179,6 +181,18 @@ public class Person
 
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public List<Relationship> getRelationships()
+    {
+        return relationships;
+    }
+
+    public void setRelationships( List<Relationship> relationships )
+    {
+        this.relationships = relationships;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public List<Identifier> getIdentifiers()
     {
         return identifiers;
@@ -221,6 +235,7 @@ public class Person
         if ( name != null ? !name.equals( person1.name ) : person1.name != null ) return false;
         if ( orgUnit != null ? !orgUnit.equals( person1.orgUnit ) : person1.orgUnit != null ) return false;
         if ( person != null ? !person.equals( person1.person ) : person1.person != null ) return false;
+        if ( relationships != null ? !relationships.equals( person1.relationships ) : person1.relationships != null ) return false;
 
         return true;
     }
@@ -237,6 +252,7 @@ public class Person
         result = 31 * result + (dateOfDeath != null ? dateOfDeath.hashCode() : 0);
         result = 31 * result + (dateOfRegistration != null ? dateOfRegistration.hashCode() : 0);
         result = 31 * result + (contact != null ? contact.hashCode() : 0);
+        result = 31 * result + (relationships != null ? relationships.hashCode() : 0);
         result = 31 * result + (identifiers != null ? identifiers.hashCode() : 0);
         result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
         return result;
@@ -254,6 +270,7 @@ public class Person
             ", dateOfDeath=" + dateOfDeath +
             ", dateOfRegistration=" + dateOfRegistration +
             ", contact=" + contact +
+            ", relationships=" + relationships +
             ", identifiers=" + identifiers +
             ", attributes=" + attributes +
             '}';
