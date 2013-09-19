@@ -114,7 +114,7 @@ import org.xml.sax.InputSource;
 public abstract class DhisConvenienceTest
 {
     protected static final Log log = LogFactory.getLog( DhisConvenienceTest.class );
-    
+
     protected static final String BASE_UID = "123456789a";
     protected static final String BASE_IN_UID = "inabcdefgh";
     protected static final String BASE_DE_UID = "deabcdefgh";
@@ -124,7 +124,7 @@ public abstract class DhisConvenienceTest
     private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
 
     private static Date date;
-    
+
     protected static final double DELTA = 0.01;
 
     // -------------------------------------------------------------------------
@@ -150,13 +150,13 @@ public abstract class DhisConvenienceTest
     protected OrganisationUnitGroupService organisationUnitGroupService;
 
     protected AggregatedDataValueService aggregatedDataValueService;
-    
+
     protected AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService;
 
     protected PeriodService periodService;
 
     protected ConstantService constantService;
-    
+
     protected ValidationRuleService validationRuleService;
 
     protected ValidationCriteriaService validationCriteriaService;
@@ -172,9 +172,9 @@ public abstract class DhisConvenienceTest
     protected ProgramStageService programStageService;
 
     protected DataEntryFormService dataEntryFormService;
-    
+
     protected UserService userService;
-    
+
     protected MessageService messageService;
 
     static
@@ -192,7 +192,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * Creates a date.
-     * 
+     *
      * @param year the year.
      * @param month the month.
      * @param day the day of month.
@@ -212,7 +212,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * Creates a date.
-     * 
+     *
      * @param day the day of the year.
      * @return a date.
      */
@@ -231,7 +231,7 @@ public abstract class DhisConvenienceTest
      * implementation type of the collection in contrast to the native equals
      * method. This is useful for black-box testing where one will not know the
      * implementation type of the returned collection for a method.
-     * 
+     *
      * @param actual the actual collection to check.
      * @param reference the reference objects to check against.
      * @return true if the collections are equal, false otherwise.
@@ -304,7 +304,7 @@ public abstract class DhisConvenienceTest
      * service; making the test unaware of the implementation and thus
      * re-usable. A weakness is that the field name of the dependency must be
      * assumed.
-     * 
+     *
      * @param targetService the target service.
      * @param fieldName the name of the dependency field in the target service.
      * @param dependency the dependency.
@@ -324,7 +324,7 @@ public abstract class DhisConvenienceTest
      * service; making the test unaware of the implementation and thus
      * re-usable. A weakness is that the field name of the dependency must be
      * assumed.
-     * 
+     *
      * @param targetService the target service.
      * @param fieldName the name of the dependency field in the target service.
      * @param dependency the dependency.
@@ -333,9 +333,9 @@ public abstract class DhisConvenienceTest
     protected void setDependency( Object targetService, String fieldName, Object dependency, Class<?> clazz )
     {
         try
-        {            
+        {
             targetService = getRealObject( targetService );
-            
+
             String setMethodName = "set" + fieldName.substring( 0, 1 ).toUpperCase()
                 + fieldName.substring( 1, fieldName.length() );
 
@@ -354,7 +354,7 @@ public abstract class DhisConvenienceTest
     /**
      * If the given class is advised by Spring AOP it will return the target class,
      * i.e. the advised class. If not the given class is returned unchanged.
-     * 
+     *
      * @param object the object.
      */
     @SuppressWarnings("unchecked")
@@ -365,10 +365,10 @@ public abstract class DhisConvenienceTest
         {
             return (T) ((Advised) object).getTargetSource().getTarget();
         }
-        
+
         return object;
     }
-    
+
     // -------------------------------------------------------------------------
     // Create object methods
     // -------------------------------------------------------------------------
@@ -463,7 +463,7 @@ public abstract class DhisConvenienceTest
 
         return categoryOptionCombo;
     }
-    
+
     /**
      * @param categoryCombo the category combo.
      * @param categoryOptions the category options.
@@ -472,14 +472,14 @@ public abstract class DhisConvenienceTest
     public static DataElementCategoryOptionCombo createCategoryOptionCombo( DataElementCategoryCombo categoryCombo, DataElementCategoryOption... categoryOptions )
     {
         DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
-        
+
         categoryOptionCombo.setCategoryCombo( categoryCombo );
-        
+
         for ( DataElementCategoryOption categoryOption : categoryOptions )
         {
             categoryOptionCombo.getCategoryOptions().add( categoryOption );
         }
-        
+
         return categoryOptionCombo;
     }
 
@@ -682,7 +682,7 @@ public abstract class DhisConvenienceTest
 
         return period;
     }
-    
+
     /**
      * @param isoPeriod the ISO period string.
      */
@@ -807,7 +807,7 @@ public abstract class DhisConvenienceTest
         expression.setDescription( "Description" + uniqueCharacter );
         expression.setDataElementsInExpression( dataElementsInExpression );
         expression.setOptionCombosInExpression( optionCombosInExpression );
-        
+
         return expression;
     }
 
@@ -836,7 +836,7 @@ public abstract class DhisConvenienceTest
 
         return importDataValue;
     }
-    
+
     public static MapLegend createMapLegend( char uniqueCharacter, Double startValue, Double endValue )
     {
         MapLegend legend = new MapLegend();
@@ -883,12 +883,12 @@ public abstract class DhisConvenienceTest
 
         UserCredentials credentials = new UserCredentials();
         credentials.setUsername( "username" );
-        
+
         user.setUserCredentials( credentials );
-        
+
         return user;
     }
-    
+
     public static UserGroup createUserGroup( char uniqueCharacter, Set<User> users )
     {
         UserGroup userGroup = new UserGroup();
@@ -927,11 +927,27 @@ public abstract class DhisConvenienceTest
     public static Patient createPatient( char uniqueChar, OrganisationUnit organisationUnit )
     {
         Patient patient = new Patient();
+        patient.setAutoFields();
 
         patient.setName( "FirstName" + uniqueChar );
         patient.setGender( Patient.MALE );
         patient.setBirthDate( getDate( 1970, 1, 1 ) );
         patient.setRegistrationDate( new Date() );
+        patient.setOrganisationUnit( organisationUnit );
+
+        return patient;
+    }
+
+    public static Patient createPatient( char uniqueChar, String gender, OrganisationUnit organisationUnit )
+    {
+        Patient patient = new Patient();
+        patient.setAutoFields();
+
+        patient.setName( "FirstName" + uniqueChar );
+        patient.setGender( gender );
+        patient.setBirthDate( getDate( 1970, 1, 1 ) );
+        patient.setRegistrationDate( new Date() );
+        patient.setOrganisationUnit( organisationUnit );
 
         return patient;
     }
@@ -957,7 +973,7 @@ public abstract class DhisConvenienceTest
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param sql A query statement to retreive record/data from database.
-     * 
+     *
      * @return a sqlView instance
      */
     protected static SqlView createSqlView( char uniqueCharacter, String sql )
@@ -973,7 +989,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * 
+     *
      * @return a concept instance
      */
     protected static Concept createConcept( char uniqueCharacter )
@@ -985,23 +1001,23 @@ public abstract class DhisConvenienceTest
         return concept;
     }
 
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param value The value for constant
-     * 
+     *
      * @return a constant instance
      */
     protected static Constant createConstant( char uniqueCharacter, double value )
     {
         Constant constant = new Constant();
-        
+
         constant.setName( "Constant" + uniqueCharacter );
         constant.setValue( value );
-        
+
         return constant;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -1010,7 +1026,7 @@ public abstract class DhisConvenienceTest
      * Injects the externalDir property of LocationManager to
      * user.home/dhis2_test_dir. LocationManager dependency must be retrieved
      * from the context up front.
-     * 
+     *
      * @param locationManager The LocationManager to be injected with the
      *        external directory.
      */
