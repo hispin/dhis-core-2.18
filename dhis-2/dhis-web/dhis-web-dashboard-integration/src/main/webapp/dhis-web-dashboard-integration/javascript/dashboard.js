@@ -258,6 +258,7 @@ dhis2.db.removeDashboard = function()
 			url: "../api/dashboards/" + dhis2.db.current,
 	    	success: function() {
 	    		$( "#manageDashboardForm" ).dialog( "destroy" );
+	    		dhis2.db.current = undefined;
 	    		dhis2.db.renderDashboardListLoadFirst();
 	    	}
 		} );
@@ -354,10 +355,10 @@ dhis2.db.renderDashboard = function( id )
 	
 	$( "#dashboard-" + dhis2.db.current ).addClass( "currentDashboard" );
 	
-	$d = $( "#contentList" ).empty();
-	
 	$.getJSON( "../api/dashboards/" + id, function( data )
 	{
+        $d = $( "#contentList" ).empty();
+		
         updateSharing( data );
 
         if( undefined !== data.items )
