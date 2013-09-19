@@ -219,18 +219,7 @@ public abstract class AbstractPersonService implements PersonService
             Identifier identifier = new Identifier( identifierType, patientIdentifier.getIdentifier() );
             person.getIdentifiers().add( identifier );
         }
-
-        for ( PatientAttribute patientAttribute : patient.getAttributes() )
-        {
-            PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
-
-            Attribute attribute = new Attribute();
-            attribute.setType( patientAttribute.getUid() );
-            attribute.setValue( patientAttributeValue.getValue() );
-
-            person.getAttributes().add( attribute );
-        }
-
+        
         return person;
     }
 
@@ -516,8 +505,6 @@ public abstract class AbstractPersonService implements PersonService
                 patientAttributeValue.setPatientAttribute( patientAttribute );
 
                 patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
-
-                patient.getAttributes().add( patientAttribute );
             }
         }
     }
@@ -629,7 +616,6 @@ public abstract class AbstractPersonService implements PersonService
     private void removeAttributeValues( Patient patient )
     {
         patientAttributeValueService.deletePatientAttributeValue( patient );
-        patient.setAttributes( new HashSet<PatientAttribute>() );
         patientService.updatePatient( patient );
     }
 }

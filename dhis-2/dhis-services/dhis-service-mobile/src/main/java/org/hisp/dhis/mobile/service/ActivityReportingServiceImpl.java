@@ -1833,7 +1833,6 @@ public class ActivityReportingServiceImpl
         }
 
         patientWeb.setIdentifiers( patientIdentifierSet );
-        patientWeb.setAttributes( patientAttributeSet );
 
         patientId = patientService.createPatient( patientWeb, null, null, patientAttributeValues );
 
