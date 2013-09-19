@@ -39,6 +39,8 @@ import org.hisp.dhis.common.DxfNamespaces;
 @JacksonXmlRootElement( localName = "identifier", namespace = DxfNamespaces.DXF_2_0 )
 public class Identifier
 {
+    private String displayName;
+
     private String type;
 
     private String value;
@@ -56,6 +58,18 @@ public class Identifier
     {
         this.type = type;
         this.value = value;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    public void setDisplayName( String name )
+    {
+        this.displayName = name;
     }
 
     @JsonProperty
@@ -90,6 +104,7 @@ public class Identifier
 
         Identifier that = (Identifier) o;
 
+        if ( displayName != null ? !displayName.equals( that.displayName ) : that.displayName != null ) return false;
         if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
         if ( value != null ? !value.equals( that.value ) : that.value != null ) return false;
 
@@ -99,16 +114,17 @@ public class Identifier
     @Override
     public int hashCode()
     {
-        int result = type != null ? type.hashCode() : 0;
+        int result = displayName != null ? displayName.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString()
+    @Override public String toString()
     {
         return "Identifier{" +
-            "type='" + type + '\'' +
+            "displayName='" + displayName + '\'' +
+            ", type='" + type + '\'' +
             ", value='" + value + '\'' +
             '}';
     }
