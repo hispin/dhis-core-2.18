@@ -31,7 +31,7 @@
       <key column="dashboarditemid" foreign-key="fk_dashboarditem_reporttables_dashboardid" />
       <list-index column="sort_order" base="0" />
       <many-to-many column="reporttableid" class="org.hisp.dhis.reporttable.ReportTable" foreign-key="fk_dashboarditem_reporttables_reporttableid" />
-    </list>    
+    </list>
     
     <list name="reports" table="dashboarditem_reports">
       <key column="dashboarditemid" foreign-key="fk_dashboarditem_reports_dashboardid" />
@@ -50,6 +50,8 @@
       <list-index column="sort_order" base="0" />
       <many-to-many column="patienttabularreportid" class="org.hisp.dhis.patientreport.PatientTabularReport" foreign-key="fk_dashboarditem_patienttabularreports_patienttabularreportid" />
     </list>
+    
+    <property name="messages" />
 
   </class>
 </hibernate-mapping>
