@@ -102,7 +102,7 @@ public class MessageConversationController
         {
             int count = manager.getCount( getEntityClass() );
 
-            Pager pager = new Pager( options.getPage(), count );
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
             entityList = new ArrayList<MessageConversation>( messageService.getMessageConversations( pager.getOffset(), pager.getPageSize() ) );
