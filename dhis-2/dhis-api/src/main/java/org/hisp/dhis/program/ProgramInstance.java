@@ -409,4 +409,27 @@ public class ProgramInstance
 
         return null;
     }
+
+    public ProgramStageInstance getActiveProgramStageInstance()
+    {
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
+        {
+            if ( programStageInstance.getProgramStage().getOpenAfterEnrollment() && !programStageInstance.isCompleted()
+                && ( programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS ) )
+            {
+                return programStageInstance;
+            }
+        }
+
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
+        {
+            if ( !programStageInstance.isCompleted()
+                &&  ( programStageInstance.getStatus() != null &&  programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS ) )
+            {
+                return programStageInstance;
+            }
+        }
+
+        return null;
+    }
 }

@@ -64,6 +64,10 @@
 		<property name="remindCompleted" />
 		
 		<property name="allowGenerateNextVisit" />
+		
+		<property name="openAfterEnrollment" />
+		
+		<property name="reportDateToUse" />
 
 	</class>
 </hibernate-mapping>

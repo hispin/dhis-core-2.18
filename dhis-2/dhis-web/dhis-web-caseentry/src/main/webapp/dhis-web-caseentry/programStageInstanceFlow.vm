@@ -19,6 +19,15 @@
 							#if($!programStageInstance.executionDate)
 								#set($valueDate=$format.formatDate( $programStageInstance.executionDate ))
 							#end
+							
+							#set($reportDateToUse = "")
+							#if($programStageInstance.programStage.reportDateToUse=='registrationDate' )
+								#set($reportDateToUse = "$format.formatDate( $programInstance.patient.registrationDate)")
+							#elseif($programStageInstance.programStage.reportDateToUse=='dateOfIncident' )
+								#set($reportDateToUse = "$format.formatDate( $programInstance.dateOfIncident)")
+							#elseif($programStageInstance.programStage.reportDateToUse=='enrollmentDate' )
+								#set($reportDateToUse = "$format.formatDate( $programInstance.enrollmentDate)")
+							#end
 							<div class="orgunit-object" id="org_$!programStageInstance.id">&nbsp;$!programStageInstance.organisationUnit.name</div>
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"
@@ -32,6 +41,8 @@
 								reportDate="$!format.formatDate( $!programStageInstance.executionDate )"
 								reportDateDes="$programStageInstance.programStage.reportDateDescription"
 								dueDate="$format.formatDate( $programStageInstance.dueDate )"
+								openAfterEnrollment="$programStageInstance.programStage.openAfterEnrollment"
+								reportDateToUse="$reportDateToUse"
 								class="stage-object" 
 								value="$programStageInstance.programStage.displayName&#13;&#10;&nbsp;$valueDate" 
 								linkedEvent='false'

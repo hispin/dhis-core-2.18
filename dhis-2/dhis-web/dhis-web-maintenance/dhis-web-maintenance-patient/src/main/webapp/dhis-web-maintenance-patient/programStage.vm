@@ -73,6 +73,8 @@
 				<p><label class="bold">$i18n.getString( "capture_coordinates" ):</label><br><span id="captureCoordinatesField"></span></p>
 				<p><label class="bold">$i18n.getString( "complete_allowed_only_if_validation_passes" ):</label><br><span id="validCompleteOnlyField"></span></p>
 				<p><label class="bold">$i18n.getString( "report_date_description" ):</label><br><span id="reportDateDescriptionField"></span></p>
+				<p><label class="bold">$i18n.getString( "open_data_entry_form_after_enrolment" ):</label><br><span id="openAfterEnrollmentField"></span></p>
+				<p><label class="bold">$i18n.getString( "report_date_to_use" ):</label><br><span id="reportDateToUseField"></span></p>
 				<p><label class="bold">$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>		
 				<p><span id="templateMessageField"></span></p>
 			</div>
