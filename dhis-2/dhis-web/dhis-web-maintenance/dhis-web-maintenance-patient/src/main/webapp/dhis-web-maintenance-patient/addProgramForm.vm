@@ -130,7 +130,10 @@
 		<tr>
 			<td><label>$i18n.getString( "data_entry_method" ) </label></td>
 			<td>
-				<input type='checkbox' id='dataEntryMethod' name='dataEntryMethod' value='true' >
+				<select id='dataEntryMethod' name='dataEntryMethod' >
+					<option value='false' selected>$i18n.getString('drop_down_lists')</option>
+					<option value='true'>$i18n.getString('radio_buttons')</option>
+				</select>
 			</td>
 			<td></td>
 		</tr>

@@ -674,7 +674,7 @@ public class DefaultProgramDataEntryService
         }
         else
         {
-            inputHTML += " class=\"optionset\"  data-optionset=\"" + dataElement.getOptionSet().getUid() + "\" ";
+            inputHTML += " class=\"optionset\" optionset=\"" + dataElement.getOptionSet().getUid() + "\" data-optionset=\"" + dataElement.getOptionSet().getUid() + "\" ";
         }
 
         if ( DataElement.VALUE_TYPE_LONG_TEXT.equals( dataElement.getDetailedTextType() ) )
