@@ -32,7 +32,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -53,14 +52,7 @@ public class PatientAttributeValueDeletionHandler
     {
         this.patientAttributeValueService = patientAttributeValueService;
     }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -92,11 +84,7 @@ public class PatientAttributeValueDeletionHandler
         {
             for ( PatientAttributeValue attributeValue : attributeValues )
             {
-                Patient patient = attributeValue.getPatient();
                 patientAttributeValueService.deletePatientAttributeValue( attributeValue );
-
-                patient.getAttributes().remove( patientAttribute );
-                patientService.updatePatient( patient );
             }
         }
     }
