@@ -28,16 +28,6 @@ package org.hisp.dhis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.StringReader;
-import java.lang.reflect.Method;
-import java.util.*;
-import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
@@ -106,6 +96,22 @@ import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.xml.sax.InputSource;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.io.StringReader;
+import java.lang.reflect.Method;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -193,9 +199,9 @@ public abstract class DhisConvenienceTest
     /**
      * Creates a date.
      *
-     * @param year the year.
+     * @param year  the year.
      * @param month the month.
-     * @param day the day of month.
+     * @param day   the day of month.
      * @return a date.
      */
     public static Date getDate( int year, int month, int day )
@@ -232,7 +238,7 @@ public abstract class DhisConvenienceTest
      * method. This is useful for black-box testing where one will not know the
      * implementation type of the returned collection for a method.
      *
-     * @param actual the actual collection to check.
+     * @param actual    the actual collection to check.
      * @param reference the reference objects to check against.
      * @return true if the collections are equal, false otherwise.
      */
@@ -306,8 +312,8 @@ public abstract class DhisConvenienceTest
      * assumed.
      *
      * @param targetService the target service.
-     * @param fieldName the name of the dependency field in the target service.
-     * @param dependency the dependency.
+     * @param fieldName     the name of the dependency field in the target service.
+     * @param dependency    the dependency.
      */
     protected void setDependency( Object targetService, String fieldName, Object dependency )
     {
@@ -326,9 +332,9 @@ public abstract class DhisConvenienceTest
      * assumed.
      *
      * @param targetService the target service.
-     * @param fieldName the name of the dependency field in the target service.
-     * @param dependency the dependency.
-     * @param clazz the class type of the dependency.
+     * @param fieldName     the name of the dependency field in the target service.
+     * @param dependency    the dependency.
+     * @param clazz         the class type of the dependency.
      */
     protected void setDependency( Object targetService, String fieldName, Object dependency, Class<?> clazz )
     {
@@ -339,7 +345,7 @@ public abstract class DhisConvenienceTest
             String setMethodName = "set" + fieldName.substring( 0, 1 ).toUpperCase()
                 + fieldName.substring( 1, fieldName.length() );
 
-            Class<?>[] argumentClass = new Class<?>[] { clazz };
+            Class<?>[] argumentClass = new Class<?>[]{ clazz };
 
             Method method = targetService.getClass().getMethod( setMethodName, argumentClass );
 
@@ -357,7 +363,7 @@ public abstract class DhisConvenienceTest
      *
      * @param object the object.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private <T> T getRealObject( T object )
         throws Exception
     {
@@ -395,7 +401,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @param categoryCombo The category combo.
+     * @param categoryCombo   The category combo.
      */
     public static DataElement createDataElement( char uniqueCharacter, DataElementCategoryCombo categoryCombo )
     {
@@ -408,8 +414,8 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @param valueType The value type.
+     * @param uniqueCharacter     A unique character to identify the object.
+     * @param valueType           The value type.
      * @param aggregationOperator The aggregation operator.
      */
     public static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator )
@@ -423,10 +429,10 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @param valueType The value type.
+     * @param uniqueCharacter     A unique character to identify the object.
+     * @param valueType           The value type.
      * @param aggregationOperator The aggregation operator.
-     * @param categoryCombo The category combo.
+     * @param categoryCombo       The category combo.
      */
     public static DataElement createDataElement( char uniqueCharacter, String type, String aggregationOperator,
         DataElementCategoryCombo categoryCombo )
@@ -442,9 +448,10 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param categoryComboUniqueIdentifier A unique character to identify the
-     *        category combo.
-     * @param categoryOptionUniqueIdentifiers Unique characters to identify the
-     *        category options.
+     *                                      category combo.
+     * @param categoryOptionUniqueIdentifiers
+     *                                      Unique characters to identify the
+     *                                      category options.
      * @return
      */
     public static DataElementCategoryOptionCombo createCategoryOptionCombo( char categoryComboUniqueIdentifier,
@@ -465,7 +472,7 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param categoryCombo the category combo.
+     * @param categoryCombo   the category combo.
      * @param categoryOptions the category options.
      * @return
      */
@@ -540,7 +547,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @param type The type.
+     * @param type            The type.
      */
     public static Indicator createIndicator( char uniqueCharacter, IndicatorType type )
     {
@@ -589,7 +596,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @param periodType The period type.
+     * @param periodType      The period type.
      */
     public static DataSet createDataSet( char uniqueCharacter, PeriodType periodType )
     {
@@ -626,7 +633,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @param parent The parent.
+     * @param parent          The parent.
      */
     public static OrganisationUnit createOrganisationUnit( char uniqueCharacter, OrganisationUnit parent )
     {
@@ -668,9 +675,9 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param type The PeriodType.
+     * @param type      The PeriodType.
      * @param startDate The start date.
-     * @param endDate The end date.
+     * @param endDate   The end date.
      */
     public static Period createPeriod( PeriodType type, Date startDate, Date endDate )
     {
@@ -693,7 +700,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param startDate The start date.
-     * @param endDate The end date.
+     * @param endDate   The end date.
      */
     public static Period createPeriod( Date startDate, Date endDate )
     {
@@ -707,10 +714,10 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param dataElement The data element.
-     * @param period The period.
-     * @param source The source.
-     * @param value The value.
+     * @param dataElement         The data element.
+     * @param period              The period.
+     * @param source              The source.
+     * @param value               The value.
      * @param categoryOptionCombo The data element category option combo.
      */
     public static DataValue createDataValue( DataElement dataElement, Period period, OrganisationUnit source, String value,
@@ -731,11 +738,11 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param dataElement The data element.
-     * @param period The period.
-     * @param source The source.
-     * @param value The value.
-     * @param lastupdated The date.
+     * @param dataElement         The data element.
+     * @param period              The period.
+     * @param source              The source.
+     * @param value               The value.
+     * @param lastupdated         The date.
      * @param categoryOptionCombo The data element category option combo.
      */
     public static DataValue createDataValue( DataElement dataElement, Period period, OrganisationUnit source, String value,
@@ -757,10 +764,10 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @param operator The operator.
-     * @param leftSide The left side expression.
-     * @param rightSide The right side expression.
-     * @param periodType The period-type.
+     * @param operator        The operator.
+     * @param leftSide        The left side expression.
+     * @param rightSide       The right side expression.
+     * @param periodType      The period-type.
      */
     public static ValidationRule createValidationRule( char uniqueCharacter, Operator operator, Expression leftSide,
         Expression rightSide, PeriodType periodType )
@@ -793,10 +800,10 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @param expressionString The expression string.
+     * @param uniqueCharacter          A unique character to identify the object.
+     * @param expressionString         The expression string.
      * @param dataElementsInExpression A collection of the data elements
-     *        entering into the expression.
+     *                                 entering into the expression.
      */
     public static Expression createExpression( char uniqueCharacter, String expressionString,
         Set<DataElement> dataElementsInExpression, Set<DataElementCategoryOptionCombo> optionCombosInExpression )
@@ -812,12 +819,12 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param dataElementId The data element identifier.
+     * @param dataElementId         The data element identifier.
      * @param categoryOptionComboId The data element category option combo
-     *        identifier.
-     * @param periodId The period identifier.
-     * @param sourceId The source identifier.
-     * @param status The status.
+     *                              identifier.
+     * @param periodId              The period identifier.
+     * @param sourceId              The source identifier.
+     * @param status                The status.
      */
     public static ImportDataValue createImportDataValue( int dataElementId, int categoryOptionComboId, int periodId,
         int sourceId, ImportObjectStatus status )
@@ -909,17 +916,24 @@ public abstract class DhisConvenienceTest
         program.setDateOfEnrollmentDescription( "DateOfEnrollmentDescription" );
         program.setDateOfIncidentDescription( "DateOfIncidentDescription" );
         program.setProgramStages( programStages );
+        program.getOrganisationUnits().add( organisationUnit );
 
         return program;
     }
 
     public static ProgramStage createProgramStage( char uniqueCharacter, int minDays )
     {
+        return createProgramStage( uniqueCharacter, minDays, false );
+    }
+
+    public static ProgramStage createProgramStage( char uniqueCharacter, int minDays, boolean irregular )
+    {
         ProgramStage programStage = new ProgramStage();
 
         programStage.setName( "name" + uniqueCharacter );
         programStage.setDescription( "description" + uniqueCharacter );
         programStage.setMinDaysFromStart( minDays );
+        programStage.setIrregular( irregular );
 
         return programStage;
     }
@@ -972,8 +986,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @param sql A query statement to retreive record/data from database.
-     *
+     * @param sql             A query statement to retreive record/data from database.
      * @return a sqlView instance
      */
     protected static SqlView createSqlView( char uniqueCharacter, String sql )
@@ -989,7 +1002,6 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     *
      * @return a concept instance
      */
     protected static Concept createConcept( char uniqueCharacter )
@@ -1004,8 +1016,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @param value The value for constant
-     *
+     * @param value           The value for constant
      * @return a constant instance
      */
     protected static Constant createConstant( char uniqueCharacter, double value )
@@ -1028,7 +1039,7 @@ public abstract class DhisConvenienceTest
      * from the context up front.
      *
      * @param locationManager The LocationManager to be injected with the
-     *        external directory.
+     *                        external directory.
      */
     public void setExternalTestDir( LocationManager locationManager )
     {

@@ -34,9 +34,16 @@ import org.hisp.dhis.dxf2.events.person.Gender;
 import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
-import org.junit.Assert;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramStage;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -48,6 +55,9 @@ public class PersonServiceTest
     private PersonService personService;
 
     @Autowired
+    private ProgramInstanceService programInstanceService;
+
+    @Autowired
     private IdentifiableObjectManager manager;
 
     private Patient maleA;
@@ -57,6 +67,8 @@ public class PersonServiceTest
 
     private OrganisationUnit organisationUnitA;
     private OrganisationUnit organisationUnitB;
+
+    private Program programA;
 
     @Override
     protected void setUpTest() throws Exception
@@ -71,12 +83,20 @@ public class PersonServiceTest
         femaleA = createPatient( 'A', Patient.FEMALE, organisationUnitA );
         femaleB = createPatient( 'A', Patient.FEMALE, organisationUnitB );
 
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA.setUseBirthDateAsEnrollmentDate( true );
+        programA.setUseBirthDateAsIncidentDate( true );
+
         manager.save( organisationUnitA );
         manager.save( organisationUnitB );
         manager.save( maleA );
         manager.save( maleB );
         manager.save( femaleA );
         manager.save( femaleB );
+        manager.save( programA );
+
+        programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, null );
+        programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, null );
     }
 
     @Override
@@ -88,13 +108,38 @@ public class PersonServiceTest
     @Test
     public void testGetPersons()
     {
-        Assert.assertEquals( 4, personService.getPersons().getPersons().size() );
+        assertEquals( 4, personService.getPersons().getPersons().size() );
     }
 
     @Test
     public void testGetPersonByGender()
     {
-        Assert.assertEquals( 2, personService.getPersons( Gender.MALE ).getPersons().size() );
-        Assert.assertEquals( 2, personService.getPersons( Gender.FEMALE ).getPersons().size() );
+        assertEquals( 2, personService.getPersons( Gender.MALE ).getPersons().size() );
+        assertEquals( 2, personService.getPersons( Gender.FEMALE ).getPersons().size() );
+    }
+
+    @Test
+    public void testGetPersonByOrganisationUnit()
+    {
+        assertEquals( 2, personService.getPersons( organisationUnitA ).getPersons().size() );
+        assertEquals( 2, personService.getPersons( organisationUnitB ).getPersons().size() );
+    }
+
+    @Test
+    public void testGetPersonByOrganisationUnitAndGender()
+    {
+        assertEquals( 0, personService.getPersons( organisationUnitA, Gender.TRANSGENDER ).getPersons().size() );
+        assertEquals( 1, personService.getPersons( organisationUnitA, Gender.MALE ).getPersons().size() );
+        assertEquals( 1, personService.getPersons( organisationUnitA, Gender.FEMALE ).getPersons().size() );
+        assertEquals( 0, personService.getPersons( organisationUnitB, Gender.TRANSGENDER ).getPersons().size() );
+        assertEquals( 1, personService.getPersons( organisationUnitB, Gender.MALE ).getPersons().size() );
+        assertEquals( 1, personService.getPersons( organisationUnitB, Gender.FEMALE ).getPersons().size() );
+    }
+
+    @Test
+    @Ignore
+    public void testGetPersonByProgram()
+    {
+        assertEquals( 2, personService.getPersons( programA ).getPersons().size() );
     }
 }

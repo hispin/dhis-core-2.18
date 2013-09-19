@@ -132,6 +132,11 @@ public class HibernateDbmsManager
         emptyTable( "categorycombos_categories" );
         emptyTable( "categories_categoryoptions" );
 
+        emptyTable( "programstageinstance" );
+        emptyTable( "programinstance" );
+        emptyTable( "programstage" );
+        emptyTable( "program_organisationunits" );
+        emptyTable( "program" );
         emptyTable( "patient" );
 
         emptyTable( "organisationunit" );
