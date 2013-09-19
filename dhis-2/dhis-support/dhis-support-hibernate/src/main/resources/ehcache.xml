@@ -274,6 +274,8 @@
   
   <cache name="org.hisp.dhis.mapping.MapView.organisationUnitLevels" maxElementsInMemory="500" />
   
+  <cache name="org.hisp.dhis.mapping.MapView.itemOrganisationUnitGroups" maxElementsInMemory="500" />
+  
   <cache name="org.hisp.dhis.attribute.Attribute.attributeValues" maxElementsInMemory="5000" />
   
   <cache name="org.hisp.dhis.option.OptionSet.options" maxElementsInMemory="2000" />
