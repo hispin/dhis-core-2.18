@@ -28,19 +28,25 @@ package org.hisp.dhis.relationship;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
-@XmlRootElement( name = "relationshipType", namespace = DxfNamespaces.DXF_2_0 )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@XmlRootElement(name = "relationshipType", namespace = DxfNamespaces.DXF_2_0)
+@XmlAccessorType(value = XmlAccessType.NONE)
 public class RelationshipType
     extends BaseIdentifiableObject
 {
@@ -59,57 +65,23 @@ public class RelationshipType
 
     public RelationshipType()
     {
+        setAutoFields();
     }
 
     public RelationshipType( String aIsToB, String bIsToA )
     {
+        this();
         this.aIsToB = aIsToB;
         this.bIsToA = bIsToA;
-    }
-
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( !getClass().isAssignableFrom( object.getClass() ) )
-        {
-            return false;
-        }
-
-        final RelationshipType other = (RelationshipType) object;
-
-        return aIsToB.equals( other.getaIsToB() ) && bIsToA.equals( other.getbIsToA() );
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-
-        result = result * prime + aIsToB.hashCode();
-        result = result * prime + bIsToA.hashCode();
-
-        return result;
     }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getaIsToB()
     {
         return aIsToB;
@@ -120,6 +92,9 @@ public class RelationshipType
         this.aIsToB = aIsToB;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getbIsToA()
     {
         return bIsToA;
@@ -128,5 +103,14 @@ public class RelationshipType
     public void setbIsToA( String bIsToA )
     {
         this.bIsToA = bIsToA;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "RelationshipType{" +
+            "aIsToB='" + aIsToB + '\'' +
+            ", bIsToA='" + bIsToA + '\'' +
+            '}';
     }
 }
