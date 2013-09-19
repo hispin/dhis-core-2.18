@@ -308,11 +308,6 @@ public class AddPatientAction
                 value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
                 if ( StringUtils.isNotBlank( value ) )
                 {
-                    if ( !patient.getAttributes().contains( attribute ) )
-                    {
-                        patient.getAttributes().add( attribute );
-                    }
-
                     attributeValue = new PatientAttributeValue();
                     attributeValue.setPatient( patient );
                     attributeValue.setPatientAttribute( attribute );

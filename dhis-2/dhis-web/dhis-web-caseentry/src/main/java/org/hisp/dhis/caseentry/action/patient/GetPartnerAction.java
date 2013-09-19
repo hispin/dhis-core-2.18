@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -147,11 +146,6 @@ public class GetPartnerAction
             {
                 partnerIsRepresentative = true;
             }
-        }
-
-        for ( PatientAttribute patientAttribute : partner.getAttributes() )
-        {
-            patientAttributeValueMap.put( patientAttribute.getId(), PatientAttributeValue.UNKNOWN );
         }
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService

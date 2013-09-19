@@ -68,9 +68,9 @@ public class SaveIdentifierAndAttributeAction
     private PatientIdentifierService patientIdentifierService;
 
     private PatientAttributeValueService patientAttributeValueService;
-    
+
     private PatientAttributeService patientAttributeService;
-    
+
     private PatientAttributeOptionService patientAttributeOptionService;
 
     private ProgramService programService;
@@ -78,7 +78,7 @@ public class SaveIdentifierAndAttributeAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-   
+
     private Integer programId;
 
     private Integer patientId;
@@ -234,11 +234,6 @@ public class SaveIdentifierAndAttributeAction
                 {
                     attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, attribute );
 
-                    if ( !patient.getAttributes().contains( attribute ) )
-                    {
-                        patient.getAttributes().add( attribute );
-                    }
-
                     if ( attributeValue == null )
                     {
                         attributeValue = new PatientAttributeValue();
@@ -290,7 +285,6 @@ public class SaveIdentifierAndAttributeAction
                 else if ( attributeValue != null )
                 {
                     patientAttributeValueService.deletePatientAttributeValue( attributeValue );
-                    patient.getAttributes().remove( attribute );
                 }
             }
         }
