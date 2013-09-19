@@ -945,6 +945,7 @@ public abstract class DhisConvenienceTest
 
         patient.setName( "FirstName" + uniqueChar );
         patient.setGender( Patient.MALE );
+        patient.setDobType( Patient.DOB_TYPE_VERIFIED );
         patient.setBirthDate( getDate( 1970, 1, 1 ) );
         patient.setRegistrationDate( new Date() );
         patient.setOrganisationUnit( organisationUnit );
@@ -959,6 +960,7 @@ public abstract class DhisConvenienceTest
 
         patient.setName( "FirstName" + uniqueChar );
         patient.setGender( gender );
+        patient.setDobType( Patient.DOB_TYPE_VERIFIED );
         patient.setBirthDate( getDate( 1970, 1, 1 ) );
         patient.setRegistrationDate( new Date() );
         patient.setOrganisationUnit( organisationUnit );

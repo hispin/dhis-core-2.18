@@ -137,6 +137,8 @@ public class HibernateDbmsManager
         emptyTable( "programstage" );
         emptyTable( "program_organisationunits" );
         emptyTable( "program" );
+        emptyTable( "patientidentifier" );
+        emptyTable( "patientidentifier_patient" );
         emptyTable( "patient" );
 
         emptyTable( "organisationunit" );
