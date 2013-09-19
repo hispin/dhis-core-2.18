@@ -129,7 +129,10 @@ $program.dataEntryMethod
 		<tr>
 			<td><label>$i18n.getString( "data_entry_method" ) </label></td>
 			<td>
-				<input type='checkbox' id='dataEntryMethod' name='dataEntryMethod' value='true' #if( $program.dataEntryMethod=='true' ) checked #end >
+				<select id='dataEntryMethod' name='dataEntryMethod' >
+					<option value='false' #if( $program.dataEntryMethod=='false' ) selected #end>$i18n.getString('drop_down_lists')</option>
+					<option value='true' #if( $program.dataEntryMethod=='true' ) selected #end>$i18n.getString('radio_buttons')</option>
+				</select>
 			</td>
 			<td></td>
 		</tr>

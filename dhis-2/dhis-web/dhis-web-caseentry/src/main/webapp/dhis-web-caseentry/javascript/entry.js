@@ -1011,7 +1011,7 @@ function autocompletedField( idField )
 		delay: 0,
 		minLength: 0,
 		source: function( request, response ){
-            searchOptionSet( input.data('optionset'), input.val(), response );
+            searchOptionSet( input.attr('optionset'), input.val(), response );
 		},
 		minLength: 0,
 		select: function( event, ui ) {
