@@ -27,8 +27,24 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-commons</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-commons-resources</artifactId>
+      <type>war</type>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-api</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
     </dependency>
+    
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-importexport</artifactId>
@@ -44,19 +60,6 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-dxf2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-commons</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-commons-resources</artifactId>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-api</artifactId>
     </dependency>
     
   </dependencies>

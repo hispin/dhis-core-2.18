@@ -28,12 +28,20 @@
 
     <dependency>
       <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-core</artifactId>
     </dependency>
 
     <!-- Web-API modules -->
