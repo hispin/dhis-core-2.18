@@ -524,7 +524,6 @@ public class SaveBeneficiaryAction
         }
 
         patient.setIdentifiers( patientIdentifierSet );
-        patient.setAttributes( patientAttributeSet );
         patientId = patientService.createPatient( patient, null, null, patientAttributeValues );
         validated = true;
 
