@@ -192,7 +192,7 @@ dhis2.db.openManageDashboardForm = function()
 				autoOpen: true,
 				modal: true,
 				width: 405,
-				height: 275,
+				height: 345,
 				resizable: false,
 				title: name
 			} );
@@ -401,6 +401,10 @@ dhis2.db.renderDashboard = function( id )
 				{
 					dhis2.db.renderLinkItem( $d, item.id, item.patientTabularReports, "Person tabular reports", position, "../dhis-web-caseentry/app/index.html?type=patientTabularReport&id=", ""  );
 				}
+				else if ( "messages" == item.type )
+				{
+					dhis2.db.renderMessagesItem( $d, item.id );
+				}
 			} );
 			
 			dhis2.db.renderLastDropItem( $d, parseInt( data.items.length - 1 ) );
@@ -414,12 +418,37 @@ dhis2.db.renderDashboard = function( id )
 	} );
 }
 
-dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position, baseUrl, urlSuffix )
+dhis2.db.linkItemHeaderHtml = function( itemId, title )
 {
-	var html = 
+	var html =
 		"<li id='liDrop-" + itemId + "' class='liDropItem'><div class='dropItem' id='drop-" + itemId + "' data-item='" + itemId + "'></div></li>" +
 		"<li id='li-" + itemId + "' class='liItem'><div class='item' id='" + itemId + "'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"" + itemId + "\" )'>" + i18n_remove + "</a></div>" +
-		"<ul class='itemList'><li class='itemTitle' title='" + i18n_drag_to_new_position + "'>" + title + "</li>";
+		"<ul id='ul-" + itemId + "' class='itemList'><li class='itemTitle' title='" + i18n_drag_to_new_position + "'>" + title + "</li>";
+	
+	return html;
+}
+
+dhis2.db.renderMessagesItem = function( $d, itemId )
+{
+	var html = dhis2.db.linkItemHeaderHtml( itemId, "Messages" ) + "</ul></div></li>";
+	
+	$d.append( html );
+	
+	$ul = $( "#ul-" + itemId );
+	
+	$.get( "../api/messageConversations.json?pageSize=8", function( json )
+	{
+		$.each( json.messageConversations, function( index, message )
+		{
+			$ul.append( "<li><a href='readMessage.action?id=" + message.id + "'>" + message.name + "</a></li>" );
+		} );
+		
+	} );
+}
+
+dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position, baseUrl, urlSuffix )
+{
+	var html = dhis2.db.linkItemHeaderHtml( itemId, title );
 	
 	$.each( contents, function( index, content )
 	{

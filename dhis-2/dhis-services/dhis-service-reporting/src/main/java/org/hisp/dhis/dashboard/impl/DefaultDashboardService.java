@@ -37,6 +37,7 @@ import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLE;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLES;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_RESOURCES;
 import static org.hisp.dhis.dashboard.DashboardItem.TYPE_USERS;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MESSAGES;
 
 import java.util.HashSet;
 import java.util.List;
@@ -138,6 +139,12 @@ public class DefaultDashboardService
             item.setReportTable( objectManager.get( ReportTable.class, contentUid ) );
             dashboard.getItems().add( 0, item );
         }
+        else if ( TYPE_MESSAGES.equals( type ) )
+        {
+            DashboardItem item = new DashboardItem();
+            item.setMessages( true );
+            dashboard.getItems().add( 0, item );
+        }
         else // Link item
         {
             DashboardItem availableItem = dashboard.getAvailableItemByType( type );
@@ -164,6 +171,7 @@ public class DefaultDashboardService
             {
                 item.getPatientTabularReports().add( objectManager.get( PatientTabularReport.class, contentUid ) );
             }
+            
             if ( availableItem == null )
             {
                 dashboard.getItems().add( 0, item );

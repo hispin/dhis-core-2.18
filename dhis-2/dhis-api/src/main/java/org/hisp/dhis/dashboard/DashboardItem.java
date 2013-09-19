@@ -71,6 +71,7 @@ public class DashboardItem
     public static final String TYPE_REPORTS = "reports";
     public static final String TYPE_RESOURCES = "resources";
     public static final String TYPE_PATIENT_TABULAR_REPORTS = "patientTabularReports";
+    public static final String TYPE_MESSAGES = "messages";
 
     private Chart chart;
 
@@ -88,6 +89,8 @@ public class DashboardItem
 
     private List<PatientTabularReport> patientTabularReports = new ArrayList<PatientTabularReport>();
 
+    private Boolean messages;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -141,6 +144,10 @@ public class DashboardItem
         else if ( !patientTabularReports.isEmpty() )
         {
             return TYPE_PATIENT_TABULAR_REPORTS;
+        }
+        else if ( messages != null )
+        {
+            return TYPE_MESSAGES;
         }
         
         return null;
@@ -211,6 +218,7 @@ public class DashboardItem
         count += reports.size();
         count += resources.size();
         count += patientTabularReports.size();
+        count += messages != null ? 1 : 0;
         return count;
     }
 
@@ -382,6 +390,19 @@ public class DashboardItem
         this.patientTabularReports = patientTabularReports;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getMessages()
+    {
+        return messages;
+    }
+
+    public void setMessages( Boolean messages )
+    {
+        this.messages = messages;
+    }
+
     // -------------------------------------------------------------------------
     // Merge with
     // -------------------------------------------------------------------------
@@ -403,6 +424,7 @@ public class DashboardItem
             reports = item.getReports() == null ? reports : item.getReports();
             resources = item.getResources() == null ? resources : item.getResources();
             patientTabularReports = item.getPatientTabularReports() == null ? patientTabularReports : item.getPatientTabularReports();
+            messages = item.getMessages() == null ? messages : item.getMessages();
         }
     }
 }
