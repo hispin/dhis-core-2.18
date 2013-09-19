@@ -30,8 +30,13 @@ package org.hisp.dhis.dxf2.events;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.dxf2.events.person.DateOfBirth;
+import org.hisp.dhis.dxf2.events.person.DateOfBirthType;
 import org.hisp.dhis.dxf2.events.person.Gender;
+import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.events.person.PersonService;
+import org.hisp.dhis.dxf2.importsummary.ImportStatus;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
@@ -41,9 +46,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -78,10 +86,10 @@ public class PersonServiceTest
 
         organisationUnitB.setParent( organisationUnitA );
 
-        maleA = createPatient( 'B', Patient.MALE, organisationUnitA );
+        maleA = createPatient( 'A', Patient.MALE, organisationUnitA );
         maleB = createPatient( 'B', Patient.MALE, organisationUnitB );
-        femaleA = createPatient( 'A', Patient.FEMALE, organisationUnitA );
-        femaleB = createPatient( 'A', Patient.FEMALE, organisationUnitB );
+        femaleA = createPatient( 'C', Patient.FEMALE, organisationUnitA );
+        femaleB = createPatient( 'D', Patient.FEMALE, organisationUnitB );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         programA.setUseBirthDateAsEnrollmentDate( true );
@@ -138,8 +146,86 @@ public class PersonServiceTest
 
     @Test
     @Ignore
+    public void testGetPersonByOrganisationUnitAndGenderAndProgram()
+    {
+        assertEquals( 1, personService.getPersons( organisationUnitA, programA, Gender.MALE ).getPersons().size() );
+        assertEquals( 1, personService.getPersons( organisationUnitA, programA, Gender.FEMALE ).getPersons().size() );
+        assertEquals( 0, personService.getPersons( organisationUnitB, programA, Gender.MALE ).getPersons().size() );
+        assertEquals( 0, personService.getPersons( organisationUnitB, programA, Gender.FEMALE ).getPersons().size() );
+    }
+
+    @Test
+    public void getPersonByPatients()
+    {
+        List<Patient> patients = Arrays.asList( maleA, femaleB );
+        assertEquals( 2, personService.getPersons( patients ).getPersons().size() );
+    }
+
+    @Test
+    public void getPersonByUid()
+    {
+        assertEquals( maleA.getUid(), personService.getPerson( maleA.getUid() ).getPerson() );
+        assertEquals( femaleB.getUid(), personService.getPerson( femaleB.getUid() ).getPerson() );
+        assertNotEquals( femaleA.getUid(), personService.getPerson( femaleB.getUid() ).getPerson() );
+        assertNotEquals( maleA.getUid(), personService.getPerson( maleB.getUid() ).getPerson() );
+    }
+
+    @Test
+    public void getPersonByPatient()
+    {
+        assertEquals( maleA.getUid(), personService.getPerson( maleA ).getPerson() );
+        assertEquals( femaleB.getUid(), personService.getPerson( femaleB ).getPerson() );
+        assertNotEquals( femaleA.getUid(), personService.getPerson( femaleB ).getPerson() );
+        assertNotEquals( maleA.getUid(), personService.getPerson( maleB ).getPerson() );
+    }
+
+    @Test
+    @Ignore
     public void testGetPersonByProgram()
     {
         assertEquals( 2, personService.getPersons( programA ).getPersons().size() );
+    }
+
+    @Test
+    public void testUpdatePerson()
+    {
+        Person person = personService.getPerson( maleA.getUid() );
+        person.setName( "UPDATED_NAME" );
+        person.setGender( Gender.TRANSGENDER );
+
+        ImportSummary importSummary = personService.updatePerson( person );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( "UPDATED_NAME", personService.getPerson( maleA.getUid() ).getName() );
+        assertEquals( Gender.TRANSGENDER, personService.getPerson( maleA.getUid() ).getGender() );
+    }
+
+    @Test
+    public void testSavePerson()
+    {
+        Person person = new Person();
+        person.setName( "NAME" );
+        person.setGender( Gender.MALE );
+        person.setOrgUnit( organisationUnitA.getUid() );
+
+        DateOfBirth dateOfBirth = new DateOfBirth( new Date(), DateOfBirthType.VERIFIED );
+        person.setDateOfBirth( dateOfBirth );
+
+        ImportSummary importSummary = personService.savePerson( person );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( "NAME", personService.getPerson( importSummary.getReference() ).getName() );
+        assertEquals( Gender.MALE, personService.getPerson( importSummary.getReference() ).getGender() );
+        assertEquals( DateOfBirthType.VERIFIED, personService.getPerson( importSummary.getReference() ).getDateOfBirth().getType() );
+    }
+
+    @Test
+    public void testDeletePerson()
+    {
+        Person person = personService.getPerson( maleA.getUid() );
+        personService.deletePerson( person );
+
+        assertNull( personService.getPerson( maleA.getUid() ) );
+        assertNotNull( personService.getPerson( maleB.getUid() ) );
     }
 }
