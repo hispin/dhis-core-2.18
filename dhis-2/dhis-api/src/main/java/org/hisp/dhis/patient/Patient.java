@@ -100,9 +100,7 @@ public class Patient
     private Set<PatientIdentifier> identifiers = new HashSet<PatientIdentifier>();
     
     private OrganisationUnit organisationUnit;
-
-    private Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
-
+    
     private Patient representative;
 
     private boolean underAge;
@@ -126,16 +124,6 @@ public class Patient
     public String getFullName()
     {
         return name;
-    }
-
-    public Set<PatientAttribute> getAttributes()
-    {
-        return attributes;
-    }
-
-    public void setAttributes( Set<PatientAttribute> attributes )
-    {
-        this.attributes = attributes;
     }
 
     @JsonProperty

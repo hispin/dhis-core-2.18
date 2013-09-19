@@ -35,12 +35,6 @@
       <one-to-many class="org.hisp.dhis.patient.PatientIdentifier" />
     </set>
     
-    <set name="attributes" table="patient_attributes">
-      <key column="patientid" foreign-key="fk_patient_attributes_patientid" />
-      <many-to-many class="org.hisp.dhis.patient.PatientAttribute" column="patientattributeid"
-        foreign-key="fk_patient_patientattributeid" />
-    </set>
-
     <many-to-one name="representative" class="org.hisp.dhis.patient.Patient" column="representativeid"
       foreign-key="fk_representativeid" />
 

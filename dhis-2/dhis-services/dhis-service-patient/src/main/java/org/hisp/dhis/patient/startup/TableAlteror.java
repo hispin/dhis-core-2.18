@@ -241,6 +241,7 @@ public class TableAlteror
         executeSql( "alter table patient drop column lastname" );
 
         executeSql( "DROP TABLE patient_programs" );
+        executeSql( "DROP TABLE patient_attributes" );
     }
 
     // -------------------------------------------------------------------------
