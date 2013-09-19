@@ -237,9 +237,10 @@ public abstract class AbstractPersonService implements PersonService
         for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
         {
             String identifierType = patientIdentifier.getIdentifierType() == null ? null : patientIdentifier.getIdentifierType().getUid();
+            String displayName = patientIdentifier.getIdentifierType() != null ? patientIdentifier.getIdentifierType().getDisplayName() : null;
 
             Identifier identifier = new Identifier( identifierType, patientIdentifier.getIdentifier() );
-            identifier.setDisplayName( patientIdentifier.getIdentifierType() != null ? patientIdentifier.getIdentifierType().getDisplayName() : null );
+            identifier.setDisplayName( displayName );
             person.getIdentifiers().add( identifier );
         }
 
