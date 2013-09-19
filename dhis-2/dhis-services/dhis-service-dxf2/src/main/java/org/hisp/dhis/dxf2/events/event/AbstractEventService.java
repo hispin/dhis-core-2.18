@@ -193,8 +193,6 @@ public abstract class AbstractEventService implements EventService
                 List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>(
                     programStageInstanceService.getProgramStageInstances( programInstances, false ) );
 
-                System.err.println( "programStageInstances: " + programStageInstances );
-
                 if ( programStageInstances.isEmpty() )
                 {
                     return new ImportSummary( ImportStatus.ERROR, "No active event exists for single event program " + program.getUid()
@@ -222,7 +220,7 @@ public abstract class AbstractEventService implements EventService
             return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit." );
         }
 
-        return saveEvent( program, programStage, organisationUnit, event, importOptions );
+        return saveEvent( program, programInstance, programStage, programStageInstance, organisationUnit, event, importOptions );
     }
 
     // -------------------------------------------------------------------------
@@ -525,7 +523,7 @@ public abstract class AbstractEventService implements EventService
         }
     }
 
-    private ProgramStageInstance saveEventDate( ProgramStage programStage, ProgramInstance programInstance, OrganisationUnit organisationUnit, Date date, Boolean completed,
+    private ProgramStageInstance createProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance, OrganisationUnit organisationUnit, Date date, Boolean completed,
         Coordinate coordinate, String storedBy )
     {
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
@@ -559,10 +557,15 @@ public abstract class AbstractEventService implements EventService
         return programStageInstance;
     }
 
-    private ImportSummary saveEvent( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Event event, ImportOptions importOptions )
+    private ImportSummary saveEvent( Program program, ProgramInstance programInstance, ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit, Event event, ImportOptions importOptions )
     {
+        Assert.notNull( program );
+        Assert.notNull( programInstance );
+        Assert.notNull( programStage );
+
         ImportSummary importSummary = new ImportSummary();
         importSummary.setStatus( ImportStatus.SUCCESS );
+        boolean dryRun = importOptions != null && importOptions.isDryRun();
 
         if ( !program.isSingleEvent() )
         {
@@ -578,13 +581,9 @@ public abstract class AbstractEventService implements EventService
 
         String storedBy = getStoredBy( event, importSummary );
 
-        ProgramStageInstance programStageInstance = null;
-
-        if ( importOptions == null || !importOptions.isDryRun() )
+        if ( !dryRun && programStageInstance == null )
         {
-            ProgramInstance programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
-
-            programStageInstance = saveEventDate( programStage, programInstance, organisationUnit, eventDate,
+            programStageInstance = createProgramStageInstance( programStage, programInstance, organisationUnit, eventDate,
                 event.getCompleted(), event.getCoordinate(), storedBy );
 
             importSummary.setReference( programStageInstance.getUid() );
@@ -596,7 +595,7 @@ public abstract class AbstractEventService implements EventService
 
             if ( dataElement == null )
             {
-                importSummary.getConflicts().add( new ImportConflict( "dataElementId", dataValue.getDataElement() + " is not a valid dataElementId." ) );
+                importSummary.getConflicts().add( new ImportConflict( "dataElement", dataValue.getDataElement() + " is not a valid dataElementId." ) );
                 importSummary.getDataValueCount().incrementIgnored();
             }
             else
@@ -605,7 +604,7 @@ public abstract class AbstractEventService implements EventService
                 {
                     String dataValueStoredBy = dataValue.getStoredBy() != null ? dataValue.getStoredBy() : storedBy;
 
-                    if ( importOptions == null || !importOptions.isDryRun() )
+                    if ( !dryRun )
                     {
                         saveDataValue( programStageInstance, dataValueStoredBy, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
                     }
