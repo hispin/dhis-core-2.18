@@ -133,10 +133,9 @@ public class UnregisteredSMSListener
                 }
                 
                 // forward to user group by SMS, E-mail, DHIS conversation
-
                 messageService.sendMessage( smsCommand.getName(), message, null, receivers, anonymousUser.getUser(),
                     false, false );
-
+                
                 // confirm SMS was received and forwarded completely
                 Set<User> feedbackList = new HashSet<User>();
                 User sender = new User();

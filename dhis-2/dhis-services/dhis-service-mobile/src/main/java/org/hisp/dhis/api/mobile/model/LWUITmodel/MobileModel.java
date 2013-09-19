@@ -129,6 +129,5 @@ public class MobileModel
         throws IOException
     {
         // TODO Auto-generated method stub
-        
     }
 }

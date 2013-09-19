@@ -70,7 +70,6 @@ public class DatabaseSupportedInternalMemoryMessageQueue
     @Override
     public void remove( IncomingSms message )
     {
-        System.out.println("IMPORTANT POINT IS HERE");
         message.setParsed( true );
         message.setStatus( SmsMessageStatus.PROCESSED );
         smsStore.update( message );
