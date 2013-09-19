@@ -620,8 +620,7 @@ div#selectionTree
   width: 610px;
   margin-left: 40px;
   margin-top: 15px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #ccc;
+  padding-bottom: 15px;
 }
 
 #profileInterpretationFeed
