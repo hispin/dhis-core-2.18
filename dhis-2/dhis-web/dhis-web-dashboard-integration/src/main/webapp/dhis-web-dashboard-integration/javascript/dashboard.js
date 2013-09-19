@@ -436,13 +436,19 @@ dhis2.db.renderMessagesItem = function( $d, itemId )
 	
 	$ul = $( "#ul-" + itemId );
 	
-	$.get( "../api/messageConversations.json?pageSize=8", function( json )
+	$.get( "../api/messageConversations.json?viewClass=detailed&pageSize=5", function( json )
 	{
 		$.each( json.messageConversations, function( index, message )
 		{
-			$ul.append( "<li><a href='readMessage.action?id=" + message.id + "'>" + message.name + "</a></li>" );
+			var sender = message.lastSenderFirstname + " " + message.lastSenderSurname;
+			var count = message.messageCount > 1 ? ( " (" + message.messageCount + ")" ) : "";			
+			var readSpan = message.read ? "" : " class='bold'";
+			
+			$ul.append( 
+				"<li><a href='readMessage.action?id=" + message.id + "'>" + 
+				"<span" + readSpan + ">" + sender + count + " <span class='tipText'>" + message.lastMessage + "</span><br>" 
+				+ message.name + "</span></a></li>" );
 		} );
-		
 	} );
 }
 

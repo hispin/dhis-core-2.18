@@ -80,7 +80,7 @@ public class MessageConversation
     private transient String lastSenderSurname;
 
     private transient String lastSenderFirstname;
-
+    
     private transient int messageCount;
 
     // --------------------------------------------------------------------------
@@ -375,6 +375,8 @@ public class MessageConversation
         this.followUp = followUp;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
     public String getLastSenderSurname()
     {
         return lastSenderSurname;
@@ -385,6 +387,8 @@ public class MessageConversation
         this.lastSenderSurname = lastSenderSurname;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
     public String getLastSenderFirstname()
     {
         return lastSenderFirstname;
@@ -395,6 +399,8 @@ public class MessageConversation
         this.lastSenderFirstname = lastSenderFirstname;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
     public int getMessageCount()
     {
         return messageCount;

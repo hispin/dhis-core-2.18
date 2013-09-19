@@ -69,12 +69,12 @@ public class HibernateMessageConversationStore
     {
         SqlHelper sh = new SqlHelper();
 
-        String sql = "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, um.isread, um.isfollowup, ("
-            + "select count(messageconversationid) from messageconversation_messages mcm where mcm.messageconversationid=mc.messageconversationid) as messagecount "
-            + "from messageconversation mc "
-            + "left join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid "
-            + "left join usermessage um on mu.usermessageid=um.usermessageid "
-            + "left join userinfo ui on mc.lastsenderid=ui.userinfoid ";
+        String sql = "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, um.isread, um.isfollowup, (" +
+            "select count(messageconversationid) from messageconversation_messages mcm where mcm.messageconversationid=mc.messageconversationid) as messagecount " +
+            "from messageconversation mc " +
+            "inner join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
+            "inner join usermessage um on mu.usermessageid=um.usermessageid " +
+            "inner join userinfo ui on mc.lastsenderid=ui.userinfoid ";
 
         if ( user != null )
         {
