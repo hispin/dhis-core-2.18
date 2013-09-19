@@ -28,11 +28,12 @@ package org.hisp.dhis.sms.input;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageEncoding;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Christian and Magnus
