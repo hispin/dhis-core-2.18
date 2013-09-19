@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf.metadata;
+package org.hisp.dhis.dxf2.metadata;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -50,6 +50,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.assertEquals;
@@ -125,14 +126,14 @@ public class DefaultExportServiceTest
     @Override
     public void setUpTest()
     {
-        deA = createDataElement( 'A' );
-        deB = createDataElement( 'B' );
-        deC = createDataElement( 'C' );
-        dsA = createDataSet( 'A', new MonthlyPeriodType() );
-        ouA = createOrganisationUnit( 'A' );
-        ouB = createOrganisationUnit( 'B' );
-        peA = createPeriod( getDate( 2012, 1, 1 ), getDate( 2012, 1, 31 ) );
-        peB = createPeriod( getDate( 2012, 2, 1 ), getDate( 2012, 2, 29 ) );
+        deA = DhisConvenienceTest.createDataElement( 'A' );
+        deB = DhisConvenienceTest.createDataElement( 'B' );
+        deC = DhisConvenienceTest.createDataElement( 'C' );
+        dsA = DhisConvenienceTest.createDataSet( 'A', new MonthlyPeriodType() );
+        ouA = DhisConvenienceTest.createOrganisationUnit( 'A' );
+        ouB = DhisConvenienceTest.createOrganisationUnit( 'B' );
+        peA = DhisConvenienceTest.createPeriod( DhisConvenienceTest.getDate( 2012, 1, 1 ), DhisConvenienceTest.getDate( 2012, 1, 31 ) );
+        peB = DhisConvenienceTest.createPeriod( DhisConvenienceTest.getDate( 2012, 2, 1 ), DhisConvenienceTest.getDate( 2012, 2, 29 ) );
         optionComboA = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         deA.setUid( "f7n9E0hX8qk" );
@@ -167,9 +168,9 @@ public class DefaultExportServiceTest
         
         String metaDataXml = JacksonUtils.toXmlAsString( metaData);
         
-        assertEquals("1", xpathTest("count(//d:organisationUnits)", metaDataXml));
-        assertEquals("2", xpathTest("count(//d:organisationUnit)", metaDataXml));
-        assertEquals("3", xpathTest("count(//d:dataElement)", metaDataXml));
-        assertEquals("DE_A", xpathTest("//d:dataElement[@name='DataElementA']/@code", metaDataXml));
+        assertEquals( "1", xpathTest( "count(//d:organisationUnits)", metaDataXml ) );
+        assertEquals( "2", xpathTest( "count(//d:organisationUnit)", metaDataXml ) );
+        assertEquals( "3", xpathTest( "count(//d:dataElement)", metaDataXml ) );
+        assertEquals( "DE_A", xpathTest( "//d:dataElement[@name='DataElementA']/@code", metaDataXml ) );
     }
 }
