@@ -51,7 +51,7 @@ public class SaveRepresentativeAction
     {
         this.patientService = patientService;
     }
-    
+
     private PatientAttributeValueService patientAttributeValueService;
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
@@ -103,11 +103,6 @@ public class SaveRepresentativeAction
         patient = patientService.getPatient( patientId );
         patient.setRepresentative( representative );
         patient.setUnderAge( true );
-
-        if ( copyAttribute )
-        {
-            patient.getAttributes().addAll( representative.getAttributes() );
-        }
 
         patientService.updatePatient( patient );
 

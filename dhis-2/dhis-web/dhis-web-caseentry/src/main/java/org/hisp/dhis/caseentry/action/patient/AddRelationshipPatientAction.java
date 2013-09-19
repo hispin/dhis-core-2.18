@@ -348,11 +348,6 @@ public class AddRelationshipPatientAction
                 value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
                 if ( StringUtils.isNotBlank( value ) )
                 {
-                    if ( !patient.getAttributes().contains( attribute ) )
-                    {
-                        patient.getAttributes().add( attribute );
-                    }
-
                     attributeValue = new PatientAttributeValue();
                     attributeValue.setPatient( patient );
                     attributeValue.setPatientAttribute( attribute );
@@ -386,7 +381,7 @@ public class AddRelationshipPatientAction
     // -----------------------------------------------------------------------------
     // Getter/Setter
     // -----------------------------------------------------------------------------
-    
+
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;

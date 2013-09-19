@@ -270,7 +270,6 @@ public class UpdatePatientAction
 
         if ( attributes != null && attributes.size() > 0 )
         {
-            patient.getAttributes().clear();
             valuesForDelete = patientAttributeValueService.getPatientAttributeValues( patient );
 
             for ( PatientAttribute attribute : attributes )
@@ -280,11 +279,6 @@ public class UpdatePatientAction
                 if ( StringUtils.isNotBlank( value ) )
                 {
                     attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, attribute );
-
-                    if ( !patient.getAttributes().contains( attribute ) )
-                    {
-                        patient.getAttributes().add( attribute );
-                    }
 
                     if ( attributeValue == null )
                     {
