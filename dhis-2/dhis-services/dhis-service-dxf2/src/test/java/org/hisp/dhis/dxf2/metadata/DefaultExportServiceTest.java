@@ -28,9 +28,7 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.HashMap;
-import javax.xml.xpath.XPathExpressionException;
+import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -41,22 +39,22 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
-import org.hisp.dhis.dxf2.metadata.ExportService;
-import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.dxf2.metadata.Options;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
+import java.util.HashMap;
+
 import static org.junit.Assert.assertEquals;
 
 /**
- *
  * @author bobj
  */
 public class DefaultExportServiceTest
@@ -67,25 +65,25 @@ public class DefaultExportServiceTest
 
     @Autowired
     private DataElementService dataElementService;
-    
+
     @Autowired
     private DataElementCategoryService categoryService;
-    
+
     @Autowired
     private DataSetService dataSetService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
+
     @Autowired
     private PeriodService periodService;
-    
+
     @Autowired
     private DataValueSetService dataValueSetService;
-    
+
     @Autowired
     private DataValueService dataValueService;
-    
+
     @Autowired
     private CompleteDataSetRegistrationService registrationService;
 
@@ -159,15 +157,15 @@ public class DefaultExportServiceTest
         periodService.addPeriod( peA );
         periodService.addPeriod( peB );
     }
-    
+
     @Test
     public void exportMetaDataTest() throws IOException, XPathExpressionException
     {
-        Options options = new Options(new HashMap<String,String>() );
-        MetaData metaData = exportService.getMetaData( options);
-        
-        String metaDataXml = JacksonUtils.toXmlAsString( metaData);
-        
+        Options options = new Options( new HashMap<String, String>() );
+        MetaData metaData = exportService.getMetaData( options );
+
+        String metaDataXml = JacksonUtils.toXmlAsString( metaData );
+
         assertEquals( "1", xpathTest( "count(//d:organisationUnits)", metaDataXml ) );
         assertEquals( "2", xpathTest( "count(//d:organisationUnit)", metaDataXml ) );
         assertEquals( "3", xpathTest( "count(//d:dataElement)", metaDataXml ) );
