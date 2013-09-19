@@ -69,6 +69,18 @@
       <element column="orgunitlevel" type="integer" />
     </list>
 
+    <list name="itemOrganisationUnitGroups" table="mapview_itemorgunitgroups">
+      <cache usage="read-write" />
+      <key column="mapviewid" foreign-key="fk_mapview_itemorgunitunitgroups_mapviewid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="orgunitgroupid" class="org.hisp.dhis.organisationunit.OrganisationUnitGroup"
+        foreign-key="fk_mapview_itemorgunitgroups_orgunitgroupid" />
+    </list>
+    
+    <property name="userOrganisationUnit" />
+
+    <property name="userOrganisationUnitChildren" />
+
     <property name="legendType" />
 
     <property name="method" />
