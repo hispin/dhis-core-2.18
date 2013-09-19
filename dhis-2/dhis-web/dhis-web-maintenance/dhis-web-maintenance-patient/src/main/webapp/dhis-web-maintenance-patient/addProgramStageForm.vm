@@ -67,6 +67,42 @@
 	
 	<tr><th colspan="2">$i18n.getString( "form_details" )</th></tr>
 	
+	#set($openAfterEnrollment = '' )
+	#foreach($ps in $program.programStages )
+		#if( $ps.openAfterEnrollment=='true')
+			#set($openAfterEnrollment = $ps.displayName )
+		#end
+	#end
+	
+	#if($openAfterEnrollment!='' ) 
+	<tr>
+		<td colspan='2' style="color:grey;font-style:italic">$i18n.getString('the_properties_to_open_data_entry_form_after_enrolment_is_active_in_the_stage'): $openAfterEnrollment</td>
+		<td></td>
+	</tr>
+	#end
+	
+	<tr>
+		<td><label>$i18n.getString( "open_data_entry_form_after_enrolment" )</label></td>
+		<td><input type="checkbox" id="openAfterEnrollment" name="openAfterEnrollment" value='true' 
+			onchange="openAfterEnrollmentOnchange();" 
+			#if($openAfterEnrollment!='' ) disabled #end >
+		</td>
+		<td></td>
+	</tr>
+	
+	<tr>
+		<td><label>$i18n.getString( "report_date_to_use" )</label></td>
+		<td>
+			<select id="reportDateToUse" name="reportDateToUse" disabled class="{validate:{required:true}}" >
+				<option value=''>[$i18n.getString('please_select')]</option>
+				<option value='registrationDate'>$i18n.getString("registration_date")</option>
+				<option value='dateOfIncident'>$i18n.getString("date_of_incident")</option>
+				<option value='enrollmentDate'>$i18n.getString("date_of_enrollment")</option>
+			</select>
+		</td>
+		<td></td>
+	</tr>
+	
 	<tr>
 		<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
 		<td><input type="checkbox" id="blockEntryForm" name="blockEntryForm" value='true'></td>

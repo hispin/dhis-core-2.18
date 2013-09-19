@@ -242,6 +242,9 @@ public class TableAlteror
 
         executeSql( "DROP TABLE patient_programs" );
         executeSql( "DROP TABLE patient_attributes" );
+
+        executeSql( "update programstage set openAfterEnrollment=false where openAfterEnrollment is null" );
+        executeSql( "update programstage set reportDateToUse=false where reportDateToUse is null" );
     }
 
     // -------------------------------------------------------------------------

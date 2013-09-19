@@ -11,6 +11,8 @@
 	"remindCompleted": "$!programStage.remindCompleted",
 	"allowGenerateNextVisit": "$!programStage.allowGenerateNextVisit",
 	"generatedByEnrollmentDate": "$!programStage.generatedByEnrollmentDate",
+	"openAfterEnrollment": "$!programStage.openAfterEnrollment",
+	"reportDateToUse": "$!programStage.reportDateToUse",
 	"patientReminders":[
 	#foreach($patientReminder in $programStage.patientReminders)
 	  {

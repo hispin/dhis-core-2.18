@@ -58,6 +58,12 @@ public class ProgramStage
 
     public static final String TYPE_CUSTOM = "custom";
 
+    public static final String REPORT_DATE_TO_USE_REGISTRATION_DATE = "registrationDate";
+
+    public static final String REPORT_DATE_TO_USE_INCIDENT_DATE = "dateOfIncident";
+
+    public static final String REPORT_DATE_TO_USE_ENROLLMENT_DATE = "enrollmentDate";
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -102,6 +108,10 @@ public class ProgramStage
     private Boolean generatedByEnrollmentDate;
 
     private Boolean allowGenerateNextVisit = false;
+
+    private Boolean openAfterEnrollment = false;
+
+    private String reportDateToUse;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -375,6 +385,32 @@ public class ProgramStage
     public void setAllowGenerateNextVisit( Boolean allowGenerateNextVisit )
     {
         this.allowGenerateNextVisit = allowGenerateNextVisit;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getOpenAfterEnrollment()
+    {
+        return openAfterEnrollment;
+    }
+
+    public void setOpenAfterEnrollment( Boolean openAfterEnrollment )
+    {
+        this.openAfterEnrollment = openAfterEnrollment;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getReportDateToUse()
+    {
+        return reportDateToUse;
+    }
+
+    public void setReportDateToUse( String reportDateToUse )
+    {
+        this.reportDateToUse = reportDateToUse;
     }
 
 }

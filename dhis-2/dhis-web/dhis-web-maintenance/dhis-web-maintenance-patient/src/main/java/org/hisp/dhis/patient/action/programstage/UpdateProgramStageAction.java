@@ -285,6 +285,20 @@ public class UpdateProgramStageAction
         this.allowGenerateNextVisit = allowGenerateNextVisit;
     }
 
+    private Boolean openAfterEnrollment;
+
+    public void setOpenAfterEnrollment( Boolean openAfterEnrollment )
+    {
+        this.openAfterEnrollment = openAfterEnrollment;
+    }
+
+    private String reportDateToUse;
+
+    public void setReportDateToUse( String reportDateToUse )
+    {
+        this.reportDateToUse = reportDateToUse;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -303,6 +317,7 @@ public class UpdateProgramStageAction
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
         allowGenerateNextVisit = (allowGenerateNextVisit == null) ? false : allowGenerateNextVisit;
+        openAfterEnrollment = (openAfterEnrollment == null) ? false : openAfterEnrollment;
 
         ProgramStage programStage = programStageService.getProgramStage( id );
 
@@ -318,6 +333,8 @@ public class UpdateProgramStageAction
         programStage.setRemindCompleted( remindCompleted );
         programStage.setGeneratedByEnrollmentDate( generatedByEnrollmentDate );
         programStage.setAllowGenerateNextVisit( allowGenerateNextVisit );
+        programStage.setOpenAfterEnrollment( openAfterEnrollment );
+        programStage.setReportDateToUse( reportDateToUse );
 
         if ( !programStage.getProgram().isSingleEvent() )
         {
@@ -361,7 +378,7 @@ public class UpdateProgramStageAction
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
             Boolean allowDate = allowDateInFutures.get( i ) == null ? false : allowDateInFutures.get( i );
-           
+
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
 

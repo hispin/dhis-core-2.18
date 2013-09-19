@@ -190,12 +190,14 @@ public class DefaultProgramInstanceService
         return programInstanceStore.get( programs );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, OrganisationUnit organisationUnit )
+    public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs,
+        OrganisationUnit organisationUnit )
     {
         return programInstanceStore.get( programs, organisationUnit );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, OrganisationUnit organisationUnit, int status )
+    public Collection<ProgramInstance> getProgramInstances( Collection<Program> programs,
+        OrganisationUnit organisationUnit, int status )
     {
         return programInstanceStore.get( programs, organisationUnit, status );
     }
@@ -616,8 +618,8 @@ public class DefaultProgramInstanceService
     }
 
     @Override
-    public ProgramInstance enrollPatient( Patient patient, Program program, Date enrollmentDate,
-        Date dateOfIncident, OrganisationUnit organisationUnit, I18nFormat format )
+    public ProgramInstance enrollPatient( Patient patient, Program program, Date enrollmentDate, Date dateOfIncident,
+        OrganisationUnit organisationUnit, I18nFormat format )
     {
         if ( enrollmentDate == null )
         {

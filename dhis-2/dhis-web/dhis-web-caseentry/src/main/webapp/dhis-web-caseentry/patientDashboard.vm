@@ -122,19 +122,26 @@
 		<div class="contentProviderTable">
 			<table id='activeTB' name='activeTB' style='cursor:pointer;'>
 				#foreach( $programInstance in $activeProgramInstances )
-					#set($programStageInstanceId = '')
-					#if($programInstance.program.type==1)
-						#foreach( $programStageInstance in $programInstance.programStageInstances)
-							#set($programStageInstanceId = $programStageInstance.id)
+					#set($programStageInstance='')
+					#foreach ( $psi in $programInstance.programStageInstances )
+						#if( $psi.programStage.openAfterEnrollment=='true' && $psi.getStatus() != 1 && $psi.getStatus() != 5 )
+							#set($programStageInstance=$psi)
 						#end
 					#end
 					
-					#set($flag = 'false')
-					#foreach( $programStageInstance in $programInstance.programStageInstances )
+					#if($programStageInstance=='')
+						#foreach( $psi in $programInstance.programStageInstances )
+							#if ( $psi.getStatus() != 1 && $psi.getStatus() != 5  )
+								#set($programStageInstance=$psi)
+							#end
+						#end
+					#end
+
+					#set($programStageInstance = $programInstance.getActiveProgramStageInstance())
+					#if( $!programStageInstance)
 						#set( $status = $programStageInstance.getEventStatus() )
-						#if( $status!=1 && $status!=5 && $flag=='false')
 							<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
-								programStageInstanceId='$programStageInstanceId' 
+								programStageInstanceId='$programStageInstance.id' 
 								relationshipText='$!programInstance.program.relationshipText'
 								relationshipType='$!programInstance.program.relationshipType.id'
 								relationshipSide='$!programInstance.program.relationshipSide'
@@ -156,12 +163,9 @@
 								</td>
 							</tr>
 							#end
-						#set($flag = 'true')
-						#end
-					#end
-					#if($flag=='false')
+					#else
 					<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
-						programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
+						programStageInstanceId='$programStageInstance.id' style='cursor:pointer;'
 						relationshipText='$!programInstance.program.relationshipText'
 						relationshipType='$!programInstance.program.relationshipType.id'
 						relationshipSide='$!programInstance.program.relationshipSide'
@@ -325,4 +329,5 @@
 	var i18n_save_comment = '$encoder.jsEscape( $i18n.getString( "save_comment" ) , "'")';
 	var i18n_update_success = '$encoder.jsEscape( $i18n.getString( "update_success" ) , "'")';
 	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'")';
+	var i18n_please_enter_report_date = '$encoder.jsEscape( $i18n.getString( "please_enter_report_date " ) , "'")';
 </script>

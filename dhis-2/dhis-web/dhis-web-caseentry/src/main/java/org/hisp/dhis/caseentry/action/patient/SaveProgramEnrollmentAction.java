@@ -180,8 +180,8 @@ public class SaveProgramEnrollmentAction
 
         if ( programInstance == null )
         {
-            programInstance = programInstanceService.enrollPatient( patient, program, enrollment, incident,
-                orgunit, format );
+            programInstance = programInstanceService.enrollPatient( patient, program, enrollment, incident, orgunit,
+                format );
         }
 
         // ---------------------------------------------------------------------
@@ -204,15 +204,7 @@ public class SaveProgramEnrollmentAction
             programInstance.getProgramStageInstances() );
         Collections.sort( programStageInstances, new ProgramStageInstanceVisitDateComparator() );
 
-        for ( ProgramStageInstance programStageInstance : programStageInstances )
-        {
-            if ( !programStageInstance.isCompleted()
-                && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS )
-            {
-                activeProgramStageInstance = programStageInstance;
-                break;
-            }
-        }
+        activeProgramStageInstance = programInstance.getActiveProgramStageInstance();
 
         return SUCCESS;
     }
