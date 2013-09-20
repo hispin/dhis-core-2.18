@@ -30,9 +30,25 @@ package org.hisp.dhis.dxf2.events;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.dxf2.events.enrollment.AbstractEnrollmentService;
+import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
+import org.hisp.dhis.dxf2.importsummary.ImportStatus;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramStage;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -46,9 +62,52 @@ public class EnrollmentServiceTest
     @Autowired
     private IdentifiableObjectManager manager;
 
+    @Autowired
+    private ProgramInstanceService programInstanceService;
+
+    private Patient maleA;
+    private Patient maleB;
+    private Patient femaleA;
+    private Patient femaleB;
+
+    private OrganisationUnit organisationUnitA;
+    private OrganisationUnit organisationUnitB;
+
+    private Program programA;
+
     @Override
     protected void setUpTest() throws Exception
     {
+        organisationUnitA = createOrganisationUnit( 'A' );
+        organisationUnitB = createOrganisationUnit( 'B' );
+
+        organisationUnitB.setParent( organisationUnitA );
+
+        maleA = createPatient( 'A', Patient.MALE, organisationUnitA );
+        maleB = createPatient( 'B', Patient.MALE, organisationUnitB );
+        femaleA = createPatient( 'C', Patient.FEMALE, organisationUnitA );
+        femaleB = createPatient( 'D', Patient.FEMALE, organisationUnitB );
+
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA.setUseBirthDateAsEnrollmentDate( true );
+        programA.setUseBirthDateAsIncidentDate( true );
+
+        manager.save( organisationUnitA );
+        manager.save( organisationUnitB );
+        manager.save( maleA );
+        manager.save( maleB );
+        manager.save( femaleA );
+        manager.save( femaleB );
+        manager.save( programA );
+
+        /*
+        programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, null );
+        programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, null );
+        */
+
+        // mocked format
+        I18nFormat mockFormat = Mockito.mock( I18nFormat.class );
+        ((AbstractEnrollmentService) enrollmentService).setFormat( mockFormat );
     }
 
     @Override
@@ -58,8 +117,19 @@ public class EnrollmentServiceTest
     }
 
     @Test
-    public void noTest()
+    public void testSaveEnrollment()
     {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setPerson( maleA.getUid() );
+        enrollment.setProgram( programA.getUid() );
 
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+
+        assertEquals( 1, enrollments.size() );
+        assertEquals( maleA.getUid(), enrollments.get( 0 ).getPerson() );
+        assertEquals( programA.getUid(), enrollments.get( 0 ).getProgram() );
     }
 }

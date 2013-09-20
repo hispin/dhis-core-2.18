@@ -115,7 +115,30 @@ public abstract class AbstractEventService implements EventService
     @Autowired
     private I18nManager i18nManager;
 
-    private I18nFormat format;
+    private I18nFormat _format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this._format = format;
+    }
+
+    public I18nFormat getFormat()
+    {
+        if ( _format != null )
+        {
+            return _format;
+        }
+
+        try
+        {
+            _format = i18nManager.getI18nFormat();
+        }
+        catch ( I18nManagerException ignored )
+        {
+        }
+
+        return _format;
+    }
 
     // -------------------------------------------------------------------------
     // CREATE
@@ -123,15 +146,6 @@ public abstract class AbstractEventService implements EventService
 
     protected ImportSummary saveEvent( Event event, ImportOptions importOptions )
     {
-        try
-        {
-            format = i18nManager.getI18nFormat();
-        }
-        catch ( I18nManagerException ex )
-        {
-            return new ImportSummary( ImportStatus.ERROR, ex.getMessage() );
-        }
-
         Program program = programService.getProgram( event.getProgram() );
         ProgramInstance programInstance = null;
         ProgramStage programStage = programStageService.getProgramStage( event.getProgramStage() );
@@ -572,7 +586,7 @@ public abstract class AbstractEventService implements EventService
             return new ImportSummary( ImportStatus.ERROR, "Multi-event programs are not supported right now." );
         }
 
-        Date eventDate = format.parseDate( event.getEventDate() );
+        Date eventDate = getFormat().parseDate( event.getEventDate() );
 
         if ( eventDate == null )
         {
