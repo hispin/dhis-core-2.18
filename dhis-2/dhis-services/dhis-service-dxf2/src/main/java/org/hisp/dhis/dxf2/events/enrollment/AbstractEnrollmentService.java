@@ -74,6 +74,7 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
 
     private I18nFormat _format;
 
+    @Override
     public void setFormat( I18nFormat format )
     {
         this._format = format;

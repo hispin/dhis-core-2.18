@@ -30,7 +30,6 @@ package org.hisp.dhis.dxf2.events;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.events.enrollment.AbstractEnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentStatus;
@@ -120,7 +119,7 @@ public class EnrollmentServiceTest
 
         // mocked format
         I18nFormat mockFormat = mock( I18nFormat.class );
-        ((AbstractEnrollmentService) enrollmentService).setFormat( mockFormat );
+        enrollmentService.setFormat( mockFormat );
     }
 
     @Override

@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.system.notification.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -44,6 +45,7 @@ import java.nio.charset.Charset;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@Transactional
 public class JacksonPersonService extends AbstractPersonService
 {
     @Autowired

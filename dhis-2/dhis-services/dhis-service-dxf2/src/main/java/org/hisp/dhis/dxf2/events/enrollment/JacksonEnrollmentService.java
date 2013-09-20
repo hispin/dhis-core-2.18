@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.patient.Patient;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -43,6 +43,7 @@ import java.nio.charset.Charset;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@Transactional
 public class JacksonEnrollmentService extends AbstractEnrollmentService
 {
     // -------------------------------------------------------------------------

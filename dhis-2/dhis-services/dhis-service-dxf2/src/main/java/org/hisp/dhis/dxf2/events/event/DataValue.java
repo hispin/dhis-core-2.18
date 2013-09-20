@@ -48,6 +48,12 @@ public class DataValue
     {
     }
 
+    public DataValue( String dataElement, String value )
+    {
+        this.dataElement = dataElement;
+        this.value = value;
+    }
+
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
     public String getValue()

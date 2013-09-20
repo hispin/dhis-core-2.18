@@ -69,7 +69,6 @@ import java.util.Set;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Transactional
 public abstract class AbstractEventService implements EventService
 {
     // -------------------------------------------------------------------------
@@ -117,6 +116,7 @@ public abstract class AbstractEventService implements EventService
 
     private I18nFormat _format;
 
+    @Override
     public void setFormat( I18nFormat format )
     {
         this._format = format;
@@ -144,7 +144,14 @@ public abstract class AbstractEventService implements EventService
     // CREATE
     // -------------------------------------------------------------------------
 
-    protected ImportSummary saveEvent( Event event, ImportOptions importOptions )
+    @Override
+    public ImportSummary saveEvent( Event event )
+    {
+        return saveEvent( event, null );
+    }
+
+    @Override
+    public ImportSummary saveEvent( Event event, ImportOptions importOptions )
     {
         Program program = programService.getProgram( event.getProgram() );
         ProgramInstance programInstance = null;
@@ -165,6 +172,7 @@ public abstract class AbstractEventService implements EventService
             programStage = program.getProgramStageByStage( 1 );
         }
 
+        Assert.notNull( program );
         Assert.notNull( programStage );
 
         if ( verifyProgramAccess( program ) )
@@ -209,17 +217,35 @@ public abstract class AbstractEventService implements EventService
 
                 if ( programStageInstances.isEmpty() )
                 {
-                    return new ImportSummary( ImportStatus.ERROR, "No active event exists for single event program " + program.getUid()
+                    return new ImportSummary( ImportStatus.ERROR, "No active event exists for single event registration program " + program.getUid()
                         + ", please check and correct your database." );
                 }
                 else if ( programStageInstances.size() > 1 )
                 {
-                    return new ImportSummary( ImportStatus.ERROR, "Multiple active events exists for single event program " + program.getUid()
+                    return new ImportSummary( ImportStatus.ERROR, "Multiple active events exists for single event registration program " + program.getUid()
                         + ", please check and correct your database." );
                 }
 
                 programStageInstance = programStageInstances.get( 0 );
             }
+        }
+        else
+        {
+            List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+                programInstanceService.getProgramInstances( program, ProgramInstance.STATUS_ACTIVE ) );
+
+            if ( programInstances.isEmpty() )
+            {
+                return new ImportSummary( ImportStatus.ERROR, "No active event exists for single event no registration program " + program.getUid()
+                    + ", please check and correct your database." );
+            }
+            else if ( programInstances.size() > 1 )
+            {
+                return new ImportSummary( ImportStatus.ERROR, "Multiple active events exists for single event no registration program " + program.getUid()
+                    + ", please check and correct your database." );
+            }
+
+            programInstance = programInstances.get( 0 );
         }
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );

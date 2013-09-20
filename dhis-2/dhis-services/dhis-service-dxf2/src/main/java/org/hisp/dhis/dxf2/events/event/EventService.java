@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.events.event;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -47,6 +48,8 @@ import java.util.List;
  */
 public interface EventService
 {
+    public void setFormat(I18nFormat format);
+
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
@@ -72,6 +75,10 @@ public interface EventService
     // -------------------------------------------------------------------------
     // CREATE
     // -------------------------------------------------------------------------
+
+    ImportSummary saveEvent( Event event );
+
+    ImportSummary saveEvent( Event event, ImportOptions importOptions );
 
     ImportSummary saveEventXml( InputStream inputStream ) throws IOException;
 
