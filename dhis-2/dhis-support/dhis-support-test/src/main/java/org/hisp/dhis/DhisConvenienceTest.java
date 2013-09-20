@@ -916,6 +916,12 @@ public abstract class DhisConvenienceTest
         program.setDateOfEnrollmentDescription( "DateOfEnrollmentDescription" );
         program.setDateOfIncidentDescription( "DateOfIncidentDescription" );
         program.setProgramStages( programStages );
+
+        for ( ProgramStage programStage : programStages )
+        {
+            programStage.setProgram( program );
+        }
+
         program.getOrganisationUnits().add( organisationUnit );
 
         return program;
