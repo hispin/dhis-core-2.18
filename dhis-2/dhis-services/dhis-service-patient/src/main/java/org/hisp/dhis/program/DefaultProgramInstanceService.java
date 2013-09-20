@@ -664,7 +664,11 @@ public class DefaultProgramInstanceService
             {
                 ProgramStageInstance programStageInstance = generateEvent( programInstance, programStage,
                     enrollmentDate, dateOfIncident, organisationUnit );
-                programStageInstanceService.addProgramStageInstance( programStageInstance );
+
+                if ( programStageInstance != null )
+                {
+                    programStageInstanceService.addProgramStageInstance( programStageInstance );
+                }
             }
         }
 
