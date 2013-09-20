@@ -145,7 +145,6 @@ public class PersonServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetPersonByOrganisationUnitAndGenderAndProgram()
     {
         assertEquals( 1, personService.getPersons( organisationUnitA, programA, Gender.MALE ).getPersons().size() );
@@ -180,7 +179,6 @@ public class PersonServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetPersonByProgram()
     {
         assertEquals( 2, personService.getPersons( programA ).getPersons().size() );
