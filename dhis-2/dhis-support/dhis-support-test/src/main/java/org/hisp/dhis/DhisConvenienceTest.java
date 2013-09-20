@@ -363,7 +363,7 @@ public abstract class DhisConvenienceTest
      *
      * @param object the object.
      */
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private <T> T getRealObject( T object )
         throws Exception
     {
