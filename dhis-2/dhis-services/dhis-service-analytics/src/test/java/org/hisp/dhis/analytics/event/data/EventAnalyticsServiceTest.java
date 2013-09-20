@@ -38,8 +38,11 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
 
 /**
  * @author Lars Helge Overland
@@ -49,19 +52,19 @@ public class EventAnalyticsServiceTest
 {
     @Autowired
     private EventAnalyticsService analyticsService;
-    
+
     @Autowired
     private ProgramService programService;
-    
+
     @Autowired
     private DataElementService dataElementService;
-    
+
     @Autowired
     private PatientAttributeService attributeService;
 
     @Autowired
     private PatientIdentifierTypeService identifierTypeService;
-    
+
     private Program prA;
     private DataElement deA;
     private DataElement deB;
@@ -73,13 +76,13 @@ public class EventAnalyticsServiceTest
     @Override
     public void setUpTest()
     {
-        prA = createProgram( 'A', null, null );
-        
+        prA = createProgram( 'A', new HashSet<ProgramStage>(), null );
+
     }
-    
+
     @Test
     public void testGetFromUrl()
     {
-        
+
     }
 }
