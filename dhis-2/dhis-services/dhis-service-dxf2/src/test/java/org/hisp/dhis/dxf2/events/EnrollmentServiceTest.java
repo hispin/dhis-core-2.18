@@ -33,22 +33,27 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.enrollment.AbstractEnrollmentService;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
+import org.hisp.dhis.dxf2.events.enrollment.EnrollmentStatus;
+import org.hisp.dhis.dxf2.events.person.Person;
+import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -56,6 +61,9 @@ import static org.junit.Assert.assertEquals;
 public class EnrollmentServiceTest
     extends DhisTest
 {
+    @Autowired
+    private PersonService personService;
+
     @Autowired
     private EnrollmentService enrollmentService;
 
@@ -74,39 +82,44 @@ public class EnrollmentServiceTest
     private OrganisationUnit organisationUnitB;
 
     private Program programA;
+    private ProgramStage programStage;
 
     @Override
     protected void setUpTest() throws Exception
     {
         organisationUnitA = createOrganisationUnit( 'A' );
         organisationUnitB = createOrganisationUnit( 'B' );
-
         organisationUnitB.setParent( organisationUnitA );
+
+        manager.save( organisationUnitA );
+        manager.save( organisationUnitB );
 
         maleA = createPatient( 'A', Patient.MALE, organisationUnitA );
         maleB = createPatient( 'B', Patient.MALE, organisationUnitB );
         femaleA = createPatient( 'C', Patient.FEMALE, organisationUnitA );
         femaleB = createPatient( 'D', Patient.FEMALE, organisationUnitB );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
-        programA.setUseBirthDateAsEnrollmentDate( true );
-        programA.setUseBirthDateAsIncidentDate( true );
-
-        manager.save( organisationUnitA );
-        manager.save( organisationUnitB );
         manager.save( maleA );
         manager.save( maleB );
         manager.save( femaleA );
         manager.save( femaleB );
+
+        programStage = createProgramStage( 'A', 0 );
+        programStage.setGeneratedByEnrollmentDate( true );
+        manager.save( programStage );
+
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programA.setUseBirthDateAsEnrollmentDate( true );
+        programA.setUseBirthDateAsIncidentDate( true );
+        programA.setIgnoreOverdueEvents( false );
+
+        programA.getProgramStages().add( programStage );
+        programStage.setProgram( programA );
+
         manager.save( programA );
 
-        /*
-        programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, null );
-        programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, null );
-        */
-
         // mocked format
-        I18nFormat mockFormat = Mockito.mock( I18nFormat.class );
+        I18nFormat mockFormat = mock( I18nFormat.class );
         ((AbstractEnrollmentService) enrollmentService).setFormat( mockFormat );
     }
 
@@ -117,6 +130,67 @@ public class EnrollmentServiceTest
     }
 
     @Test
+    @Ignore
+    public void testGetEnrollments()
+    {
+        programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+        programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+
+        assertEquals( 2, enrollmentService.getEnrollments().getEnrollments().size() );
+    }
+
+    @Test
+    @Ignore
+    public void testGetEnrollmentsByPatient()
+    {
+        programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+        programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+
+        assertEquals( 1, enrollmentService.getEnrollments( maleA ).getEnrollments().size() );
+        assertEquals( 1, enrollmentService.getEnrollments( femaleA ).getEnrollments().size() );
+    }
+
+    @Test
+    @Ignore
+    public void testGetEnrollmentsByPerson()
+    {
+        programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+        programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+
+        Person male = personService.getPerson( maleA );
+        Person female = personService.getPerson( femaleA );
+
+        assertEquals( 1, enrollmentService.getEnrollments( male ).getEnrollments().size() );
+        assertEquals( 1, enrollmentService.getEnrollments( female ).getEnrollments().size() );
+    }
+
+    @Test
+    @Ignore
+    public void testGetEnrollmentsByStatus()
+    {
+
+        ProgramInstance piMale = programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+        ProgramInstance piFemale = programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
+
+        assertEquals( 2, enrollmentService.getEnrollments( EnrollmentStatus.ACTIVE ).getEnrollments().size() );
+        assertEquals( 0, enrollmentService.getEnrollments( EnrollmentStatus.CANCELLED ).getEnrollments().size() );
+        assertEquals( 0, enrollmentService.getEnrollments( EnrollmentStatus.COMPLETED ).getEnrollments().size() );
+
+        programInstanceService.cancelProgramInstanceStatus( piMale );
+
+        assertEquals( 1, enrollmentService.getEnrollments( EnrollmentStatus.ACTIVE ).getEnrollments().size() );
+        assertEquals( 1, enrollmentService.getEnrollments( EnrollmentStatus.CANCELLED ).getEnrollments().size() );
+        assertEquals( 0, enrollmentService.getEnrollments( EnrollmentStatus.COMPLETED ).getEnrollments().size() );
+
+        programInstanceService.completeProgramInstanceStatus( piFemale, mock( I18nFormat.class ) );
+
+        assertEquals( 0, enrollmentService.getEnrollments( EnrollmentStatus.ACTIVE ).getEnrollments().size() );
+        assertEquals( 1, enrollmentService.getEnrollments( EnrollmentStatus.CANCELLED ).getEnrollments().size() );
+        assertEquals( 1, enrollmentService.getEnrollments( EnrollmentStatus.COMPLETED ).getEnrollments().size() );
+    }
+
+    @Test
+    @Ignore
     public void testSaveEnrollment()
     {
         Enrollment enrollment = new Enrollment();
