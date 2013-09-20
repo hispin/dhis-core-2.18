@@ -250,11 +250,6 @@ public class Program
         this.description = description;
     }
 
-    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
-    {
-        this.organisationUnits = organisationUnits;
-    }
-
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -276,6 +271,11 @@ public class Program
     public Set<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
+    }
+
+    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
+    {
+        this.organisationUnits = organisationUnits;
     }
 
     @JsonProperty( value = "programInstances" )
@@ -504,6 +504,7 @@ public class Program
     }
 
     @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisplayOnAllOrgunit()
     {
