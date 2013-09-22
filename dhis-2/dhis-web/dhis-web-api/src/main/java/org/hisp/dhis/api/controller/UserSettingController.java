@@ -31,9 +31,8 @@ package org.hisp.dhis.api.controller;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,15 +44,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( "/systemSettings" )
-public class SystemSettingController
+@RequestMapping( "/userSettings" )
+public class UserSettingController
 {
     @Autowired
-    private SystemSettingManager systemSettingManager;
-    
+    private UserSettingService userSettingService;
+
     @RequestMapping( value = "/{key}", method = RequestMethod.POST )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_SYSTEM_SETTING')" )
-    public void setSystemSetting( @PathVariable( "key" ) String key, @RequestParam String value, HttpServletResponse response )
+    public void setUserSetting( @PathVariable( "key" ) String key, @RequestParam String value, HttpServletResponse response )
     {
         if ( key == null || value == null )
         {
@@ -61,21 +59,20 @@ public class SystemSettingController
             return;
         }
         
-        systemSettingManager.saveSystemSetting( key, value );
+        userSettingService.saveUserSetting( key, value );
         
-        ContextUtils.okResponse( response, "System setting saved" );
+        ContextUtils.okResponse( response, "User setting saved" );
     }
     
     @RequestMapping( value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key )
     {
-        return (String) systemSettingManager.getSystemSetting( key );
+        return (String) userSettingService.getUserSetting( key );
     }
     
     @RequestMapping( value = "/{key}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_SYSTEM_SETTING')" )
     public void removeSystemSetting( @PathVariable( "key" ) String key )
     {
-        systemSettingManager.deleteSystemSetting( key );
+        userSettingService.deleteUserSetting( key );
     }
 }
