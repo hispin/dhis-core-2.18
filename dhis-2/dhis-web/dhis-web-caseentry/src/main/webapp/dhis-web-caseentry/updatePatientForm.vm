@@ -106,7 +106,7 @@
 	<table>
 		<tr>
 			<td class="bold text-column">$i18n.getString("full_name"): </td>
-			<td>$encoder.htmlEncode($!representative.getFullName())</td>
+			<td>$!encoder.htmlEncode($!representative.name)</td>
 		</tr>
 		<tr>
 			<td class="bold text-column">$i18n.getString("relationship"): </td>

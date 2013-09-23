@@ -19,10 +19,10 @@
 		</p>
 		<div class="contentProviderTable">
 			<table>
-				#if( $!patient.getFullName()!='' )
+				#if( $!patient.name!='' )
 				<tr>
 					<td>$i18n.getString("full_name")</td>
-					<td>$encoder.htmlEncode($!patient.getFullName())</td>
+					<td>$encoder.htmlEncode($!patient.name)</td>
 				</tr>
 				#end
 				
@@ -62,7 +62,7 @@
 					<td>$i18n.getString("health_worker")</td>
 					<td>
 						#if($!patient.healthWorker )
-							$encoder.htmlEncode($!patient.healthWorker.name)
+							$!encoder.htmlEncode($patient.healthWorker.name)
 						#else
 							[$i18n.getString('none')]
 						#end
@@ -88,7 +88,8 @@
 				<tr>
 					<td>$attributeValue.patientAttribute.displayName</td>
 					<td id='dashboard_attr$attributeValue.patientAttribute.id'>
-						#if($attributeValue.patientAttribute.valueType=='bool')
+						#if($attributeValue.patientAttribute.valueType=='bool' 
+							|| $attributeValue.patientAttribute.valueType=='trueOnly')
 							#if($attributeValue.value)
 								$i18n.getString("yes")
 							#else
@@ -229,11 +230,11 @@
 			<table>
 				#foreach( $rel in $relationships )
 					#if($rel.patientA.id==$patient.id)
-						<tr onclick="showPatientDashboardForm($rel.patientB.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.getFullName()'>
+						<tr onclick="showPatientDashboardForm($rel.patientB.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.name'>
 							<td><a href='#'>$rel.relationshipType.bIsToA</a></td>
 							<td>
 								#set($patient=$rel.patientB)
-								#set($value=$!patient.getFullName())
+								#set($value=$!patient.name)
 								#foreach( $identifier in $patient.identifiers)
 									#if($!identifier.identifierType)
 										#set($value=$identifier.identifier)
@@ -249,11 +250,11 @@
 							</td>
 						</tr>
 					#else
-						<tr onclick="showPatientDashboardForm($rel.patientA.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.getFullName()'>
-							<td><a href='#'>$rel.relationshipType.aIsToB</a></td>
+						<tr onclick="showPatientDashboardForm($rel.patientA.id)" title='$i18n.getString( "move_to_dashboard_of" ) $!rel.patientB.name'>
+							<td><a href='#'>$!rel.relationshipType.aIsToB</a></td>
 							<td><a href='#'>
-								#set($patient=$rel.patientA)
-								#set($value=$!patient.getFullName())
+								#set($patient=$!rel.patientA)
+								#set($value=$!patient.name)
 								#foreach( $identifier in $patient.identifiers)
 									#if($!identifier.identifierType)
 										#set($value=$identifier.identifier)
@@ -308,7 +309,7 @@
 			#foreach( $patientAudit in $patientAudits )
 			<tr #alternate( $mark )>
 				<td>$format.formatDate($patientAudit.date)</td>
-				<td>$encoder.htmlEncode($patientAudit.visitor)</td>
+				<td>$!encoder.htmlEncode($patientAudit.visitor)</td>
 				<td>$i18n.getString($patientAudit.accessedModule)</td>
 			</tr>
 			#set( $mark = !$mark )
