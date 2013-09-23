@@ -31,6 +31,7 @@ package org.hisp.dhis.dxf2.events;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
@@ -44,23 +45,14 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.user.UserService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -81,7 +73,13 @@ public class NoRegistrationSingleEventServiceTest
     private ProgramStageDataElementService programStageDataElementService;
 
     @Autowired
+    private EnrollmentService enrollmentService;
+
+    @Autowired
     private ProgramInstanceService programInstanceService;
+
+    @Autowired
+    private ProgramStageInstanceService programStageInstanceService;
 
     @Autowired
     private IdentifiableObjectManager manager;
@@ -147,7 +145,112 @@ public class NoRegistrationSingleEventServiceTest
     }
 
     @Test
+    public void testGetPersonsByProgramOrgUnit()
+    {
+        for ( int i = 0; i < 10; i++ )
+        {
+            Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
+
+            ImportSummary importSummary = eventService.saveEvent( event );
+            assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+            assertNotNull( importSummary.getReference() );
+        }
+
+        assertEquals( 10, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+    }
+
+    @Test
+    public void testGetPersonsByProgramStageOrgUnit()
+    {
+        for ( int i = 0; i < 10; i++ )
+        {
+            Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
+
+            ImportSummary importSummary = eventService.saveEvent( event );
+            assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+            assertNotNull( importSummary.getReference() );
+        }
+
+        assertEquals( 10, eventService.getEvents( programStageA, organisationUnitA ).getEvents().size() );
+    }
+
+    @Test
+    public void testGetPersonsByProgramProgramStageOrgUnit()
+    {
+        for ( int i = 0; i < 10; i++ )
+        {
+            Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
+
+            ImportSummary importSummary = eventService.saveEvent( event );
+            assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+            assertNotNull( importSummary.getReference() );
+        }
+
+        assertEquals( 10, eventService.getEvents( programA, programStageA, organisationUnitA ).getEvents().size() );
+    }
+
+    @Test
+    public void testGetPersonsByProgramStageInstance()
+    {
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
+
+        ImportSummary importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+        assertNotNull( importSummary.getReference() );
+
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( importSummary.getReference() );
+
+        assertNotNull( programStageInstance );
+        assertNotNull( eventService.getEvent( programStageInstance ) );
+    }
+
+    @Test
+    public void testGetEventByUid()
+    {
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
+
+        ImportSummary importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+        assertNotNull( importSummary.getReference() );
+
+        assertNotNull( eventService.getEvent( importSummary.getReference() ) );
+    }
+
+    @Test
     public void testSaveEvent()
+    {
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
+        ImportSummary importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+        assertEquals( 0, importSummary.getConflicts().size() );
+        assertNotNull( importSummary.getReference() );
+
+        event = eventService.getEvent( importSummary.getReference() );
+        assertNotNull( event );
+        assertEquals( "10", event.getDataValues().get( 0 ).getValue() );
+    }
+
+    @Test
+    public void testUpdateEvent()
+    {
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
+
+        ImportSummary importSummary = eventService.saveEvent( event );
+
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+        assertNotNull( importSummary.getReference() );
+        assertEquals( "10", event.getDataValues().get( 0 ).getValue() );
+
+        event = eventService.getEvent( importSummary.getReference() );
+        event.getDataValues().get( 0 ).setValue( "254" );
+        eventService.updateEvent( event );
+
+        event = eventService.getEvent( importSummary.getReference() );
+        assertEquals( "254", event.getDataValues().get( 0 ).getValue() );
+    }
+
+    @Test
+    public void testDeleteEvent()
     {
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid() );
 

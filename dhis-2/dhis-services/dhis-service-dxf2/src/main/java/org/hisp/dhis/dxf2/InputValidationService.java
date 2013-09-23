@@ -29,12 +29,15 @@ package org.hisp.dhis.dxf2;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.i18n.I18nFormat;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public interface InputValidationService
 {
+    public void setFormat( I18nFormat format );
+
     final class Status
     {
         private boolean success = true;
@@ -63,4 +66,6 @@ public interface InputValidationService
     }
 
     Status validateDataElement( DataElement dataElement, String value );
+
+    Status validateDataElement( DataElement dataElement, String value, I18nFormat format );
 }

@@ -46,10 +46,36 @@ public class DefaultInputValidationService implements InputValidationService
     // -------------------------------------------------------------------------
 
     @Autowired
-    private I18nManager i18nManager;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    private I18nManager i18nManager;
+
+    private I18nFormat _format;
+
+    @Override
+    public void setFormat( I18nFormat format )
+    {
+        this._format = format;
+    }
+
+    public I18nFormat getFormat()
+    {
+        if ( _format != null )
+        {
+            return _format;
+        }
+
+        try
+        {
+            _format = i18nManager.getI18nFormat();
+        }
+        catch ( I18nManagerException ignored )
+        {
+        }
+
+        return _format;
+    }
 
     // -------------------------------------------------------------------------
     // InputValidationService Implementation
@@ -58,17 +84,12 @@ public class DefaultInputValidationService implements InputValidationService
     @Override
     public Status validateDataElement( DataElement dataElement, String value )
     {
-        I18nFormat format;
+        return validateDataElement( dataElement, value, getFormat() );
+    }
 
-        try
-        {
-            format = i18nManager.getI18nFormat();
-        }
-        catch ( I18nManagerException ex )
-        {
-            return new Status( false, ex.getMessage() );
-        }
-
+    @Override
+    public Status validateDataElement( DataElement dataElement, String value, I18nFormat format )
+    {
         value = value.trim();
 
         if ( value.length() >= 255 )
@@ -92,7 +113,7 @@ public class DefaultInputValidationService implements InputValidationService
         }
         else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_DATE ) )
         {
-            boolean dateIsValidated = format.parseDate( value ) != null;
+            boolean dateIsValidated = getFormat().parseDate( value ) != null;
 
             if ( !dateIsValidated )
             {
@@ -118,7 +139,7 @@ public class DefaultInputValidationService implements InputValidationService
             else if ( dataElement.getTextType().equals( DataElement.VALUE_TYPE_TEXT ) ||
                 dataElement.getTextType().equals( DataElement.VALUE_TYPE_LONG_TEXT ) )
             {
-                // no validation for this right now, we already to length validation
+                // no validation for this right now, we already have length validation
             }
         }
         else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_NUMBER ) )
