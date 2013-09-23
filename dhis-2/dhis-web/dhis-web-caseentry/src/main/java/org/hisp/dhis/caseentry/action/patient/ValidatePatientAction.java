@@ -199,24 +199,12 @@ public class ValidatePatientAction
                     {
                         boolean isDuplicate = false;
 
-                        if ( idType.getType().equals( PatientIdentifierType.VALUE_TYPE_LOCAL_ID ) )
-                        {
-                            OrganisationUnit orgunit = (idType.getOrgunitScope()) ? selectionManager
-                                .getSelectedOrganisationUnit() : null;
+                        OrganisationUnit orgunit = (idType.getOrgunitScope()) ? selectionManager
+                            .getSelectedOrganisationUnit() : null;
+                        Program program = (idType.getProgramScope()) ? programService.getProgram( programId ) : null;
 
-                            Program program = (idType.getProgramScope()) ? programService.getProgram( programId )
-                                : null;
-                            isDuplicate = patientIdentifierService.checkDuplicateIdentifier( idType, value, orgunit,
-                                program, idType.getPeriodType() );
-                        }
-                        else
-                        {
-                            PatientIdentifier identifier = patientIdentifierService.get( idType, value );
-                            if ( identifier != null && (id == null || identifier.getPatient().getId() != id) )
-                            {
-                                idDuplicate += idType.getName() + ", ";
-                            }
-                        }
+                        isDuplicate = patientIdentifierService.checkDuplicateIdentifier( idType, value, id,
+                            orgunit, program, idType.getPeriodType() );
 
                         if ( isDuplicate )
                         {

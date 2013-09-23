@@ -617,6 +617,22 @@
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.caseentry.action.patient.ValidatePatientIdentifierAction"
+		class="org.hisp.dhis.caseentry.action.patient.ValidatePatientIdentifierAction"
+		scope="prototype">
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="identifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="selectionManager">
+			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		</property>
+	</bean>
+
+
 	<!-- Patient-Program Enrollment -->
 
 	<bean
@@ -874,7 +890,7 @@
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		scope="prototype">
@@ -1042,7 +1058,7 @@
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.caseentry.action.report.ValidateAggregateReportAction"
 		class="org.hisp.dhis.caseentry.action.report.ValidateAggregateReportAction"
@@ -1071,8 +1087,7 @@
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientReminderService" ref="org.hisp.dhis.patient.PatientReminderService" />
-		<property name="programInstanceService"
-			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.reminder.SendSmsToListAction"
@@ -1122,13 +1137,15 @@
 
 	<!-- Comment && Message -->
 
-	<bean id="org.hisp.dhis.caseentry.action.reminder.SavePatientCommentAction"
+	<bean
+		id="org.hisp.dhis.caseentry.action.reminder.SavePatientCommentAction"
 		class="org.hisp.dhis.caseentry.action.reminder.SavePatientCommentAction"
 		scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="patientCommentService" ref="org.hisp.dhis.patientcomment.PatientCommentService" />
+		<property name="patientCommentService"
+			ref="org.hisp.dhis.patientcomment.PatientCommentService" />
 	</bean>
 
 	<bean
@@ -1161,8 +1178,10 @@
 			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
 
-    <bean id="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction"
-		class="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction" scope="prototype">
+	<bean
+		id="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction"
+		class="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction"
+		scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>

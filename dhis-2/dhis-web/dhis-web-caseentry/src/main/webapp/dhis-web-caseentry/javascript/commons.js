@@ -1400,7 +1400,7 @@ function saveSingleEnrollment(patientId, programId)
 			
 			jQuery('#activeTB' ).append(activedRow);
 			jQuery('#enrollmentDiv').dialog("close");
-			saveIdentifierAndAttribute( patientId, programId,'identifierAndAttributeDiv' );
+			validateIdentifier( patientId, programId,'identifierAndAttributeDiv' );
 			loadActiveProgramStageRecords( programInstanceId );
 			showSuccessMessage(i18n_enrol_success);
 		});
@@ -1611,11 +1611,29 @@ function removeProgramInstance( programInstanceId )
 // Identifiers && Attributes for selected program
 // ----------------------------------------------------------------
 
-function saveIdentifierAndAttribute( patientId, programId, paramsDiv)
+function validateIdentifier(  patientId, programId, paramsDiv)
 {
 	var params  = getParamsForDiv(paramsDiv);
 		params += "&patientId=" + patientId;
 		params +="&programId=" + programId;
+	$.ajax({
+		type: "POST",
+		url: 'validatePatientIdentifier.action',
+		data: params,
+		success: function(json) 
+		{
+			if( json.response=='success'){
+				saveIdentifierAndAttribute( params);
+			}
+			else{
+				showErrorMessage( json.message );
+			}
+		}
+	});
+}
+
+function saveIdentifierAndAttribute(params)
+{
 	$.ajax({
 			type: "POST",
 			url: 'savePatientIdentifierAndAttribute.action',
