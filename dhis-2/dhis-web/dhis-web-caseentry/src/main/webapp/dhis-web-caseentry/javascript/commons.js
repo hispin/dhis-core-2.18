@@ -685,7 +685,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				+ 'reportDate="" '
 				+ 'reportDateDes="' + selectedStage.attr('reportDateDes') + '" '
 				+ 'dueDate="' + dueDate + '" '
-				+ 'openAfterEnrollment="' + selectedStage.attr('selectedStage') + '" '
+				+ 'openAfterEnrollment="' + selectedStage.attr('openAfterEnrollment') + '" '
 				+ 'reportDateToUse="' + selectedStage.attr('reportDateToUse') + '" '
 				+ 'class="stage-object" '
 				+ 'value="'+ programStageName + '&#13;&#10;&nbsp;' + dueDate + '" '
