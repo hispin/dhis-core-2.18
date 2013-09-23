@@ -1096,8 +1096,6 @@ function insertDataValues()
 	    		$( '#completenessDiv' ).show();
 	    	}
 	    	
-	    	$( '.indicator' ).attr( 'readonly', 'readonly' );
-	    	
 	        // Set data values, works for selects too as data value=select value
 
 	        $.safeEach( json.dataValues, function( i, value )
@@ -1189,6 +1187,10 @@ function insertDataValues()
                 $( '#contentDiv input' ).css( 'backgroundColor', '#eee' );
                 $( '.sectionFilter' ).css( 'backgroundColor', '#fff' );
             }
+        },
+        complete: function()
+        {
+	    	$( '.indicator' ).attr( 'readonly', 'readonly' );	    	
         }
 	} );
 }
