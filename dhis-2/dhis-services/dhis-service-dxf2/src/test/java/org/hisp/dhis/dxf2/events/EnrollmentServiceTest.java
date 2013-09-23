@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.events;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hamcrest.CoreMatchers;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
@@ -44,7 +45,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -52,6 +52,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -108,9 +109,8 @@ public class EnrollmentServiceTest
         manager.save( programStage );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
-        programA.setUseBirthDateAsEnrollmentDate( true );
-        programA.setUseBirthDateAsIncidentDate( true );
-        programA.setIgnoreOverdueEvents( false );
+        programA.setType( Program.SINGLE_EVENT_WITH_REGISTRATION );
+        manager.save( programA );
 
         programA.getProgramStages().add( programStage );
         programStage.setProgram( programA );
@@ -129,7 +129,6 @@ public class EnrollmentServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetEnrollments()
     {
         programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
@@ -139,7 +138,6 @@ public class EnrollmentServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetEnrollmentsByPatient()
     {
         programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
@@ -150,7 +148,6 @@ public class EnrollmentServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetEnrollmentsByPerson()
     {
         programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
@@ -164,10 +161,8 @@ public class EnrollmentServiceTest
     }
 
     @Test
-    @Ignore
     public void testGetEnrollmentsByStatus()
     {
-
         ProgramInstance piMale = programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
         ProgramInstance piFemale = programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
 
@@ -189,7 +184,6 @@ public class EnrollmentServiceTest
     }
 
     @Test
-    @Ignore
     public void testSaveEnrollment()
     {
         Enrollment enrollment = new Enrollment();
@@ -204,5 +198,19 @@ public class EnrollmentServiceTest
         assertEquals( 1, enrollments.size() );
         assertEquals( maleA.getUid(), enrollments.get( 0 ).getPerson() );
         assertEquals( programA.getUid(), enrollments.get( 0 ).getProgram() );
+    }
+
+    @Test
+    public void testMultipleEnrollmentsShouldFail()
+    {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setPerson( maleA.getUid() );
+        enrollment.setProgram( programA.getUid() );
+
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+        importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
+        assertThat( importSummary.getDescription(), CoreMatchers.containsString( "already have an active enrollment in program" ) );
     }
 }
