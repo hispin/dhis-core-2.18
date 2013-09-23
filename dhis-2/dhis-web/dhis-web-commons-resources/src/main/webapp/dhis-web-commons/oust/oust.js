@@ -59,7 +59,7 @@ function SelectionTreeSelection()
             onSelectFunction();
         }
 		
-        var unitTag = document.getElementById( getTagId( unitId ));
+        var unitTag = document.getElementById( getTagId( unitId ) );
         var linkTags = $(unitTag).find( 'a' );
 
         if ( linkTags[0].className == 'selected' )
@@ -90,7 +90,7 @@ function SelectionTreeSelection()
                 }
 
                 // Set new select mark
-                var unitTag = document.getElementById( getTagId( unitId ));
+                var unitTag = document.getElementById( getTagId( unitId ) );
                 linkTags = $(unitTag).find( 'a' );
                 linkTags[0].className = 'selected';
             }
@@ -114,7 +114,7 @@ function SelectionTreeSelection()
 			selectedOrganisationUnitUid.push( unitUids[i] );
         }
 
-        jQuery( 'body' ).trigger( 'oust.selected', selectedOrganisationUnit);
+        jQuery( 'body' ).trigger( 'oust.selected', selectedOrganisationUnit );
         
         if ( listenerFunction )
         {

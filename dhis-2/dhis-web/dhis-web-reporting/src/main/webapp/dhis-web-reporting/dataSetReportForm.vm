@@ -123,7 +123,7 @@ div.inputSection {
 <div id="advancedOptionsLink" style="padding: 8px 0;"><a href="javascript:showAdvancedOptions()">$i18n.getString( "more_options" )</a></div>
 
 <div class="inputSection">
-<input type="button" value='$i18n.getString( "get_report" )' style="width:120px" onclick="validateDataSetReport()">
+<input type="button" value='$i18n.getString( "get_report" )' style="width:120px" onclick="generateDataSetReport()">
 <input type="button" value='$i18n.getString( "cancel" )' style="width:120px" onclick="hideCriteria()">
 </div>
 </div>

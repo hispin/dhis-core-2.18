@@ -47,11 +47,11 @@ function setDataSetReport( dataSetReport )
 	
 	selectionTreeSelection.setMultipleSelectionAllowed( false );
 	selectionTree.buildSelectionTree();
-		
+	
 	$( "body" ).on( "oust.selected", function() 
 	{
 		$( "body" ).off( "oust.selected" );
-		validateDataSetReport();
+		generateDataSetReport();
 	} );
 }
 
@@ -94,10 +94,26 @@ function displayPreviousPeriods()
 // Run report
 //------------------------------------------------------------------------------
 
-function validateDataSetReport()
+//TODO rewrite to use uid only
+
+function drillDownDataSetReport( orgUnitId, orgUnitUid )
+{
+	selectionTree.clearSelectedOrganisationUnits();
+	selectionTreeSelection.select( orgUnitId );
+	
+	var dataSetReport = getDataSetReport();
+	dataSetReport["ou"] = orgUnitUid;
+	displayDataSetReport( dataSetReport );
+}
+
+function generateDataSetReport()
 {
 	var dataSetReport = getDataSetReport();
-	
+	displayDataSetReport( dataSetReport );
+}
+
+function displayDataSetReport( dataSetReport )
+{	
     if ( !dataSetReport.ds )
     {
         setHeaderMessage( i18n_select_data_set );
