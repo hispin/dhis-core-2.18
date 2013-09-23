@@ -651,6 +651,7 @@ public class DefaultProgramStageInstanceService
         PeriodType.clearTimeOfDay( today );
         Date date = today.getTime();
 
+        programStageInstance.setStatus( ProgramStageInstance.COMPLETED_STATUS );
         programStageInstance.setCompletedDate( date );
         programStageInstance.setCompletedUser( currentUserService.getCurrentUsername() );
 
@@ -659,6 +660,7 @@ public class DefaultProgramStageInstanceService
         // ---------------------------------------------------------------------
 
         List<OutboundSms> outboundSms = programStageInstance.getOutboundSms();
+
         if ( outboundSms == null )
         {
             outboundSms = new ArrayList<OutboundSms>();
@@ -671,6 +673,7 @@ public class DefaultProgramStageInstanceService
         // ---------------------------------------------------------------------
 
         List<MessageConversation> messageConversations = programStageInstance.getMessageConversations();
+
         if ( messageConversations == null )
         {
             messageConversations = new ArrayList<MessageConversation>();
@@ -678,7 +681,7 @@ public class DefaultProgramStageInstanceService
 
         messageConversations.addAll( sendMessageConversations( programStageInstance,
             PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, format ) );
-      
+
         // ---------------------------------------------------------------------
         // Update the event
         // ---------------------------------------------------------------------
