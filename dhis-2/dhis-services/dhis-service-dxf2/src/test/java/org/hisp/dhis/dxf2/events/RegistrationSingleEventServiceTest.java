@@ -37,7 +37,6 @@ import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
-import org.hisp.dhis.dxf2.events.event.EventStatus;
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -224,7 +223,6 @@ public class RegistrationSingleEventServiceTest
 
         Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
         event.setCompleted( true );
-        event.setStatus( EventStatus.COMPLETED );
         ImportSummary importSummary1 = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary1.getStatus() );
         enrollment = enrollmentService.getEnrollments( personMaleA ).getEnrollments().get( 0 );
@@ -235,7 +233,6 @@ public class RegistrationSingleEventServiceTest
 
         event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
         event.setCompleted( true );
-        event.setStatus( EventStatus.COMPLETED );
         ImportSummary importSummary2 = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary2.getStatus() );
         enrollment = enrollmentService.getEnrollments( personMaleA ).getEnrollments().get( 0 );

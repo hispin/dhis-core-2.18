@@ -739,6 +739,7 @@ public class DefaultProgramInstanceService
         // -----------------------------------------------------------------
 
         List<MessageConversation> messageConversations = programInstance.getMessageConversations();
+
         if ( messageConversations == null )
         {
             messageConversations = new ArrayList<MessageConversation>();
@@ -752,7 +753,6 @@ public class DefaultProgramInstanceService
         // -----------------------------------------------------------------
 
         programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
-
         programInstance.setEndDate( new Date() );
 
         updateProgramInstance( programInstance );
