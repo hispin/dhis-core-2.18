@@ -222,10 +222,14 @@ public abstract class AbstractEventService implements EventService
                 {
                     return new ImportSummary( ImportStatus.ERROR,
                         "Person " + patient.getUid() + " have multiple active enrollments into programStage " + programStage.getUid()
-                            + " please check and correct your database for multiple active events." );
+                            + " please check and correct your database for multiple active stages." );
                 }
 
                 programStageInstance = programStageInstances.get( 0 );
+            }
+            else
+            {
+
             }
         }
         else
