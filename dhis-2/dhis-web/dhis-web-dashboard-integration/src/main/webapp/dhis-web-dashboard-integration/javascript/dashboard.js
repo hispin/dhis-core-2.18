@@ -9,7 +9,6 @@ dhis2.db.currentShareId;
 dhis2.db.currentMaxType = [];
 dhis2.db.maxItems = 40;
 
-// TODO remove position from template
 // TODO support table as link and embedded
 // TODO double horizontal size
 // TODO dashboard list horizontal scroll
@@ -364,43 +363,41 @@ dhis2.db.renderDashboard = function( id )
         if( undefined !== data.items )
         {
 			$.each( data.items, function( index, item )
-			{
-				var position = index - 1;
-				
+			{				
 				if ( "chart" == item.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": item.id, "id": item.chart.id, "name": item.chart.name, "position": position, 
+					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": item.id, "id": item.chart.id, "name": item.chart.name, 
 						"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) )
 				}
 				else if ( "map" == item.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": item.id, "id": item.map.id, "name": item.map.name, "position": position,
+					$d.append( $.tmpl( dhis2.db.tmpl.mapItem, { "itemId": item.id, "id": item.map.id, "name": item.map.name, 
 						"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) )
 				}
 				else if ( "reportTable" == item.type )
 				{
-					$d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": item.id, "id": item.reportTable.id, "name": item.reportTable.name, "position": position,
+					$d.append( $.tmpl( dhis2.db.tmpl.reportTableItem, { "itemId": item.id, "id": item.reportTable.id, "name": item.reportTable.name, 
 						"i18n_remove": i18n_remove, "i18n_view": i18n_view_full_size, "i18n_share": i18n_share, "i18n_click": i18n_click_to_explore_drag_to_new_position } ) )
 				}
 				else if ( "users" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.users, "Users", position, "../dhis-web-dashboard-integration/profile.action?id=", "" );
+					dhis2.db.renderLinkItem( $d, item.id, item.users, "Users", "../dhis-web-dashboard-integration/profile.action?id=", "" );
 				}
 				else if ( "reportTables" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.reportTables, "Pivot tables", position, "../dhis-web-pivot/app/index.html?id=", "" );
+					dhis2.db.renderLinkItem( $d, item.id, item.reportTables, "Pivot tables", "../dhis-web-pivot/app/index.html?id=", "" );
 				}
 				else if ( "reports" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.reports, "Reports", position, "../dhis-web-reporting/getReportParams.action?mode=report&uid=", "" );
+					dhis2.db.renderLinkItem( $d, item.id, item.reports, "Reports", "../dhis-web-reporting/getReportParams.action?mode=report&uid=", "" );
 				}
 				else if ( "resources" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources", position, "../api/documents/", "/data" );
+					dhis2.db.renderLinkItem( $d, item.id, item.resources, "Resources", "../api/documents/", "/data" );
 				}
 				else if ( "patientTabularReports" == item.type )
 				{
-					dhis2.db.renderLinkItem( $d, item.id, item.patientTabularReports, "Person tabular reports", position, "../dhis-web-caseentry/app/index.html?type=patientTabularReport&id=", ""  );
+					dhis2.db.renderLinkItem( $d, item.id, item.patientTabularReports, "Person tabular reports", "../dhis-web-caseentry/app/index.html?type=patientTabularReport&id=", ""  );
 				}
 				else if ( "messages" == item.type )
 				{
@@ -408,7 +405,7 @@ dhis2.db.renderDashboard = function( id )
 				}
 			} );
 			
-			dhis2.db.renderLastDropItem( $d, parseInt( data.items.length - 1 ) );
+			dhis2.db.renderLastDropItem( $d );
 		}
 		else
 		{
@@ -453,7 +450,7 @@ dhis2.db.renderMessagesItem = function( $d, itemId )
 	} );
 }
 
-dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position, baseUrl, urlSuffix )
+dhis2.db.renderLinkItem = function( $d, itemId, contents, title, baseUrl, urlSuffix )
 {
 	var html = dhis2.db.linkItemHeaderHtml( itemId, title );
 	
@@ -469,7 +466,7 @@ dhis2.db.renderLinkItem = function( $d, itemId, contents, title, position, baseU
 	$d.append( html );
 }
 
-dhis2.db.renderLastDropItem = function( $d, position )
+dhis2.db.renderLastDropItem = function( $d )
 {
 	var html = "<li id='liDrop-dropLast' class='liDropItem'><div class='dropItem lastDropItem blankDropItem' id='dropLast' data-item='dropLast'></div></li>";
 	
