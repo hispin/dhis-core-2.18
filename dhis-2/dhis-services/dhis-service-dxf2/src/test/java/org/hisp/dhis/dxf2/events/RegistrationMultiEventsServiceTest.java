@@ -194,7 +194,7 @@ public class RegistrationMultiEventsServiceTest
     @Test
     public void testSaveWithoutProgramStageShouldFail()
     {
-        Event event = createEvent( programA.getUid(), null, organisationUnitA.getUid(), personMaleA.getPerson() );
+        Event event = createEvent( programA.getUid(), null, organisationUnitA.getUid(), personMaleA.getPerson(), dataElementA.getUid() );
         ImportSummary importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
         assertThat( importSummary.getDescription(), CoreMatchers.containsString( "Event.programStage does not point to a valid programStage" ) );
@@ -203,10 +203,26 @@ public class RegistrationMultiEventsServiceTest
     @Test
     public void testSaveWithoutEnrollmentShouldFail()
     {
-        Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementA.getUid() );
         ImportSummary importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
         assertThat( importSummary.getDescription(), CoreMatchers.containsString( "is not enrolled in program" ) );
+    }
+
+    @Test
+    public void testSaveWithEnrollmentShouldNotFail()
+    {
+        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementA.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementB.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
     }
 
     private Enrollment createEnrollment( String program, String person )
@@ -218,7 +234,7 @@ public class RegistrationMultiEventsServiceTest
         return enrollment;
     }
 
-    private Event createEvent( String program, String programStage, String orgUnit, String person )
+    private Event createEvent( String program, String programStage, String orgUnit, String person, String dataElement )
     {
         Event event = new Event();
         event.setProgram( program );
@@ -226,7 +242,7 @@ public class RegistrationMultiEventsServiceTest
         event.setOrgUnit( orgUnit );
         event.setPerson( person );
 
-        event.getDataValues().add( new DataValue( dataElementA.getUid(), "10" ) );
+        event.getDataValues().add( new DataValue( dataElement, "10" ) );
 
         return event;
     }
