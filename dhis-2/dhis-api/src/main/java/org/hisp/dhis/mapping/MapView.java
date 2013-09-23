@@ -164,7 +164,8 @@ public class MapView
     @Override
     public String getName()
     {
-        return indicators != null ? indicators.get( 0 ).getName() : dataElements != null ? dataElements.get( 0 ).getName() : uid;
+        return ( indicators != null && !indicators.isEmpty() ) ? indicators.get( 0 ).getName() : 
+            ( dataElements != null && !dataElements.isEmpty() ) ? dataElements.get( 0 ).getName() : uid;
     }
 
     @JsonProperty
