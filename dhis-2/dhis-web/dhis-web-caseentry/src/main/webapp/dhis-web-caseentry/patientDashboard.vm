@@ -123,21 +123,7 @@
 		<div class="contentProviderTable">
 			<table id='activeTB' name='activeTB' style='cursor:pointer;'>
 				#foreach( $programInstance in $activeProgramInstances )
-					#set($programStageInstance='')
-					#foreach ( $psi in $programInstance.programStageInstances )
-						#if( $psi.programStage.openAfterEnrollment=='true' && $psi.getStatus() != 1 && $psi.getStatus() != 5 )
-							#set($programStageInstance=$psi)
-						#end
-					#end
-					
-					#if($programStageInstance=='')
-						#foreach( $psi in $programInstance.programStageInstances )
-							#if ( $psi.getStatus() != 1 && $psi.getStatus() != 5  )
-								#set($programStageInstance=$psi)
-							#end
-						#end
-					#end
-
+				
 					#set($programStageInstance = $programInstance.getActiveProgramStageInstance())
 					#if( $!programStageInstance)
 						#set( $status = $programStageInstance.getEventStatus() )
