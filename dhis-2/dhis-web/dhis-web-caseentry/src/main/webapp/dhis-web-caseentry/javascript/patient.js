@@ -409,14 +409,6 @@ function loadDataEntry( programStageInstanceId )
 					}
 				}
 				
-				var linkedEvent = jQuery(".stage-object-selected").attr("linkedEvent");
-				if( linkedEvent=='true' ) {
-					blockEntryForm();
-					disable('executionDate');
-				}
-				else{
-					enable('executionDate');
-				}
 				$(window).scrollTop(200);
 			}
 			else
