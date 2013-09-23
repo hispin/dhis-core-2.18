@@ -466,3 +466,17 @@ function openAfterEnrollmentOnchange()
 		disable('reportDateToUse');
 	}
 }
+
+function autoGenerateEventOnChange(openAfterEnrollment)
+{
+	if(openAfterEnrollment==''){
+		if( byId('autoGenerateEvent').checked ){
+			enable('openAfterEnrollment');
+		}
+		else{
+			disable('openAfterEnrollment');
+			disable('reportDateToUse');
+		}
+	}
+}
+

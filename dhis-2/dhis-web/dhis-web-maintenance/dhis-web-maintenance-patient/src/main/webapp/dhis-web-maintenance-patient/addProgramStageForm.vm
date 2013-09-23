@@ -41,11 +41,6 @@
 		<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" class="{validate:{number:true,min:0}}"/></td>
 	</tr>
 	
-	<tr>
-		<td><label>$i18n.getString( "auto_generate_event" )</label></td>
-		<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' checked /></td>
-	</tr>
-	
 	<tr><th colspan="2">$i18n.getString( "repeatable_program_stage_details" )</th></tr>
 	
 	<tr>
@@ -74,6 +69,12 @@
 		#end
 	#end
 	
+	<tr>
+		<td><label>$i18n.getString( "auto_generate_event" )</label></td>
+		<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' checked onchange='autoGenerateEventOnChange("$openAfterEnrollment")' /></td>
+	</tr>
+	
+	
 	#if($openAfterEnrollment!='' ) 
 	<tr>
 		<td colspan='2' style="color:grey;font-style:italic">$i18n.getString('the_properties_to_open_data_entry_form_after_enrolment_is_active_in_the_stage'): $openAfterEnrollment</td>
@@ -84,8 +85,7 @@
 	<tr>
 		<td><label>$i18n.getString( "open_data_entry_form_after_enrolment" )</label></td>
 		<td><input type="checkbox" id="openAfterEnrollment" name="openAfterEnrollment" value='true' 
-			onchange="openAfterEnrollmentOnchange();" 
-			#if($openAfterEnrollment!='' ) disabled #end >
+			onchange="openAfterEnrollmentOnchange();" disabled >
 		</td>
 		<td></td>
 	</tr>
