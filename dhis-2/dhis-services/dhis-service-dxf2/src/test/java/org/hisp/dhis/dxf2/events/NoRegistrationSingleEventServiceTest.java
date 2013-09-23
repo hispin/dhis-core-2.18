@@ -54,8 +54,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -258,7 +257,11 @@ public class NoRegistrationSingleEventServiceTest
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
         assertNotNull( importSummary.getReference() );
 
-        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+        event = eventService.getEvent( importSummary.getReference() );
+        assertNotNull( event );
+        eventService.deleteEvent( event );
+        event = eventService.getEvent( importSummary.getReference() );
+        assertNull( event );
     }
 
     private Event createEvent( String program, String orgUnit )
