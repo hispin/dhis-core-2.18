@@ -234,7 +234,7 @@
     </action>
 
     <action name="showedAssociationsEditor" class="org.hisp.dhis.dataset.action.editor.ShowedAssociationsEditorAction">
-      <result name="success" type="velocity">/dhis-web-maintenance-dataset/htmlGrid.vm</result>
+      <result name="success" type="velocity">/dhis-web-maintenance-dataset/dataSetAssignmentEditor.vm</result>
       <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 
