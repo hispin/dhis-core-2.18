@@ -7,7 +7,7 @@
 		#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 			<tr>            
 				<td class="bold">$i18n.getString( "full_name" ):</td>
-				<td>$encoder.htmlEncode( $patient.getFullName() )<td>
+				<td>$!encoder.htmlEncode( $patient.name )<td>
 			</tr>
 			<tr>
 				<td class="bold">$i18n.getString( "gender" ):</td>

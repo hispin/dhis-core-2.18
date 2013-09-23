@@ -68,7 +68,7 @@
 					#end
 				#end
 				#if($value=="")
-					#set($value=$patient.getFullName())
+					#set($value=$!patient.name)
 				#end
 				
 				$value

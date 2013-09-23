@@ -29,7 +29,7 @@
 
 	<tr name='propertiesField'>
 		<td class='text-column'><label for="fullName">$i18n.getString( "full_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.getFullName()" class="{validate:{required:true, rangelength:[3,50]}}"></td>
+		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.name" class="{validate:{required:true, rangelength:[3,50]}}"></td>
 	</tr>
 
 	<tr name='propertiesField'>
@@ -90,7 +90,7 @@
 		<tr id="representativeFormDiv" name='propertiesField'>
 			<td class='text-column'>$i18n.getString("guardian")</td>
 			<td> 
-				$!patient.representative.getFullName() <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='img-button'>
+				$!patient.representative.name <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='img-button'>
 			</td>
 		</tr>
 	#else
