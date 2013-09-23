@@ -66,13 +66,13 @@ public class PatientIdentifierType
 
     private String type;
 
-    private Boolean personDisplayName;
+    private Boolean personDisplayName = false;;
 
     // For Local ID type
 
-    private Boolean orgunitScope;
+    private Boolean orgunitScope = false;
 
-    private Boolean programScope;
+    private Boolean programScope = false;;
 
     private PeriodType periodType;
 

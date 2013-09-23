@@ -146,8 +146,9 @@ public class DefaultPatientIdentifierService
 
     @Override
     public boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        OrganisationUnit orgunit, Program program, PeriodType periodType )
+        Integer patientId, OrganisationUnit orgunit, Program program, PeriodType periodType )
     {
-        return patientIdentifierStore.checkDuplicateIdentifier( patientIdentifierType, identifier, orgunit, program, periodType );
+        return patientIdentifierStore.checkDuplicateIdentifier( patientIdentifierType, identifier, patientId, orgunit,
+            program, periodType );
     }
 }

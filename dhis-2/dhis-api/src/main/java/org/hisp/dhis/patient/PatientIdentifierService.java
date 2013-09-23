@@ -78,5 +78,5 @@ public interface PatientIdentifierService
         Patient patient );
 
     boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        OrganisationUnit orgunit, Program program, PeriodType periodType );
+        Integer patientId, OrganisationUnit orgunit, Program program, PeriodType periodType );
 }

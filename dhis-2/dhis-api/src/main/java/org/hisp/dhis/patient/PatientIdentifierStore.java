@@ -75,6 +75,6 @@ public interface PatientIdentifierStore
     Collection<PatientIdentifier> get( Collection<PatientIdentifierType> identifierTypes, Patient patient );
 
     boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        OrganisationUnit orgunit, Program program, PeriodType periodType );
+        Integer patientId, OrganisationUnit orgunit, Program program, PeriodType periodType );
 
 }

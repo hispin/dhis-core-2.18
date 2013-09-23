@@ -152,27 +152,33 @@ public class HibernatePatientIdentifierStore
 
     @SuppressWarnings( "deprecation" )
     public boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        OrganisationUnit orgunit, Program program, PeriodType periodType )
+        Integer patientId, OrganisationUnit orgunit, Program program, PeriodType periodType )
     {
         String sql = "select count(*) from patientidentifier pi inner join patient p on pi.patientid=p.patientid "
             + "inner join programinstance pis on pis.patientid=pi.patientid where pi.patientidentifiertypeid="
             + patientIdentifierType.getId() + " and pi.identifier='" + identifier + "' ";
-        if ( orgunit != null )
+
+        if ( patientId != null )
+        {
+            sql += " and pi.patientid!=" + patientId;
+        }
+
+        if ( patientIdentifierType.getType().equals( PatientIdentifierType.VALUE_TYPE_LOCAL_ID ) && orgunit != null )
         {
             sql += " and p.organisationunitid=" + orgunit.getId();
         }
 
-        if ( program != null )
+        if ( patientIdentifierType.getType().equals( PatientIdentifierType.VALUE_TYPE_LOCAL_ID ) && program != null )
         {
             sql += " and pis.programid=" + program.getId();
         }
 
-        if ( periodType != null )
+        if ( patientIdentifierType.getType().equals( PatientIdentifierType.VALUE_TYPE_LOCAL_ID ) && periodType != null )
         {
             Date currentDate = new Date();
             Period period = periodType.createPeriod( currentDate );
             sql += " and pis.enrollmentdate >='" + period.getStartDateString() + "' and pis.enrollmentdate <='"
-                + DateUtils.getMediumDateString( period.getEndDate() )  + "'";
+                + DateUtils.getMediumDateString( period.getEndDate() ) + "'";
         }
 
         return jdbcTemplate.queryForInt( sql ) == 0 ? false : true;

@@ -729,6 +729,18 @@
 			<param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
 		</action>
 
+		<action name="validatePatientIdentifier"
+			class="org.hisp.dhis.caseentry.action.patient.ValidatePatientIdentifierAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+
 		<!-- Relationship -->
 
 		<action name="getPartner"
@@ -1197,19 +1209,19 @@
 			</result>
 			<param name="requiredAuthorities">F_ACCESS_PATIENT_ATTRIBUTES</param>
 		</action>
-		
+
 		<action name="allowEditPatientFixedAttributes" class="org.hisp.dhis.caseentry.action.NoAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 			<param name="requiredAuthorities">F_ALLOW_EDIT_PATIENT_PROPERTIES</param>
 		</action>
-		
+
 		<action name="allowEditPatientAttributes" class="org.hisp.dhis.caseentry.action.NoAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 			<param name="requiredAuthorities">F_ALLOW_EDIT_PATIENT_ATTRIBUTES</param>
 		</action>
-		
+
 		<action name="allowEditPatientIdentifier" class="org.hisp.dhis.caseentry.action.NoAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
