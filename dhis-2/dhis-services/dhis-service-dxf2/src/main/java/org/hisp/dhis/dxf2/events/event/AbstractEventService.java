@@ -216,13 +216,13 @@ public abstract class AbstractEventService implements EventService
 
                 if ( programStageInstances.isEmpty() )
                 {
-                    return new ImportSummary( ImportStatus.ERROR, "No active event exists for single event registration program " + program.getUid()
-                        + ", please check and correct your database." );
+                    return new ImportSummary( ImportStatus.ERROR, "Person " + patient.getUid() + " is not enrolled in program " + program.getUid() );
                 }
                 else if ( programStageInstances.size() > 1 )
                 {
-                    return new ImportSummary( ImportStatus.ERROR, "Multiple active events exists for single event registration program " + program.getUid()
-                        + ", please check and correct your database." );
+                    return new ImportSummary( ImportStatus.ERROR,
+                        "Person " + patient.getUid() + " have multiple active enrollments into program " + program.getUid()
+                            + " please check and correct your database for multiple active events." );
                 }
 
                 programStageInstance = programStageInstances.get( 0 );
@@ -625,9 +625,11 @@ public abstract class AbstractEventService implements EventService
         {
             programStageInstance = createProgramStageInstance( programStage, programInstance, organisationUnit, eventDate,
                 event.getCompleted(), event.getCoordinate(), storedBy );
-
-            importSummary.setReference( programStageInstance.getUid() );
         }
+
+        programStageInstance.setStatus( event.getStatus().getValue() );
+        programStageInstance.setCompleted( event.getCompleted() );
+        importSummary.setReference( programStageInstance.getUid() );
 
         for ( DataValue dataValue : event.getDataValues() )
         {

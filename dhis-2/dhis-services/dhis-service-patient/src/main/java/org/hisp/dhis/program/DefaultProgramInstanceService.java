@@ -726,6 +726,7 @@ public class DefaultProgramInstanceService
         // ---------------------------------------------------------------------
 
         List<OutboundSms> outboundSms = programInstance.getOutboundSms();
+
         if ( outboundSms == null )
         {
             outboundSms = new ArrayList<OutboundSms>();
