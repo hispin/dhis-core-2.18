@@ -128,7 +128,7 @@ public class DefaultPatientIdentifierService
         return patientIdentifierStore.getPatient( idenType, value );
     }
 
-    public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
+    public Collection<Patient> getPatientsByIdentifier( String identifier, Integer min, Integer max )
     {
         return patientIdentifierStore.getPatientsByIdentifier( identifier, min, max );
     }
