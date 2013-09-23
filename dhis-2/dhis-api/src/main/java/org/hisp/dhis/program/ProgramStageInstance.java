@@ -344,4 +344,24 @@ public class ProgramStageInstance
             return ProgramStageInstance.FUTURE_VISIT_STATUS;
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return "ProgramStageInstance{" +
+            "programInstance=" + programInstance +
+            ", programStage=" + programStage +
+            ", dueDate=" + dueDate +
+            ", executionDate=" + executionDate +
+            ", organisationUnit=" + organisationUnit +
+            ", completed=" + completed +
+            ", outboundSms=" + outboundSms +
+            ", messageConversations=" + messageConversations +
+            ", patientComment=" + patientComment +
+            ", status=" + status +
+            ", coordinates='" + coordinates + '\'' +
+            ", completedUser='" + completedUser + '\'' +
+            ", completedDate=" + completedDate +
+            '}';
+    }
 }

@@ -121,7 +121,6 @@ public abstract class AbstractPersonService implements PersonService
         return _format;
     }
 
-
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------

@@ -56,7 +56,6 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -497,7 +496,7 @@ public abstract class AbstractEventService implements EventService
 
     private boolean validateDataElement( DataElement dataElement, String value, ImportSummary importSummary )
     {
-        InputValidationService.Status status = inputValidationService.validateDataElement( dataElement, value );
+        InputValidationService.Status status = inputValidationService.validateDataElement( dataElement, value, getFormat() );
 
         if ( !status.isSuccess() )
         {

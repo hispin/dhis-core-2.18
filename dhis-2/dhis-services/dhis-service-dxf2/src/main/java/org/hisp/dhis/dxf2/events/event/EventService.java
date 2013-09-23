@@ -48,7 +48,7 @@ import java.util.List;
  */
 public interface EventService
 {
-    public void setFormat(I18nFormat format);
+    public void setFormat( I18nFormat format );
 
     // -------------------------------------------------------------------------
     // READ

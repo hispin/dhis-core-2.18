@@ -125,6 +125,7 @@ public class HibernateDbmsManager
         emptyTable( "datasetoperands" );
         emptyTable( "dataset" );
 
+        emptyTable( "patientdatavalue" );
         emptyTable( "programstageinstance" );
         emptyTable( "programinstance" );
         emptyTable( "programstage_dataelements" );
