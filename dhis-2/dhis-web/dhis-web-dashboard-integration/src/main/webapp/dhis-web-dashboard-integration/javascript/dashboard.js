@@ -535,6 +535,12 @@ dhis2.db.removeItemContent = function( itemId, contentId )
     } );
 }
 
+dhis2.db.addMessagesContent = function()
+{
+	dhis2.db.addItemContent( "messages", "" );
+	$( "#manageDashboardForm" ).dialog( "destroy" );	
+}
+
 dhis2.db.getIndex = function( itemId )
 {
 	return parseInt( $( ".liDropItem" ).index( $( "#liDrop-" + itemId ) ) );

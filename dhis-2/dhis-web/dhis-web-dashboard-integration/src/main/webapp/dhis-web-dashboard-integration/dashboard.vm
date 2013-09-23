@@ -91,7 +91,7 @@ var i18n_add = '$encoder.jsEscape( $i18n.getString( "add" ), "'")';
 	<div><label style="margin-right: 10px">$i18n.getString( "name" )</label><input type="text" id="dashboardRename" style="width: 230px; padding: 5px; margin-right: 10px;">
     <a class="greyButtonLink" href="javascript:dhis2.db.renameDashboard()" style="margin-top: 1px">$i18n.getString( "rename" )</a></div>
     <h4>$i18n.getString( "add_items_to_current_dashboard" )</h4>
-    <div><a class="greyButtonLink" href="javascript:dhis2.db.addItemContent( 'messages', '' )">$i18n.getString( "messages" )</a></div>
+    <div><a class="greyButtonLink" href="javascript:dhis2.db.addMessagesContent()">$i18n.getString( "messages" )</a></div>
 	<h4>$i18n.getString( "delete_current_dashboard" )</h4>
 	<div><a class="greyButtonLink" href="javascript:dhis2.db.removeDashboard()">$i18n.getString( "delete" )</a></div>
 </div>

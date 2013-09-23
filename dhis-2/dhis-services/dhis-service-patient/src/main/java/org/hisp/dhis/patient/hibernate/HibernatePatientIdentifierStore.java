@@ -31,7 +31,6 @@ package org.hisp.dhis.patient.hibernate;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
