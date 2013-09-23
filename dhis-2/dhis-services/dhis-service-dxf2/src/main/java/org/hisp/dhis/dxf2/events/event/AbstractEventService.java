@@ -443,6 +443,7 @@ public abstract class AbstractEventService implements EventService
 
         event.setCompleted( programStageInstance.isCompleted() );
         event.setEvent( programStageInstance.getUid() );
+        event.setStatus( EventStatus.fromInt( programStageInstance.getStatus() ) );
         event.setEventDate( programStageInstance.getExecutionDate().toString() );
         event.setStoredBy( programStageInstance.getCompletedUser() );
         event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );

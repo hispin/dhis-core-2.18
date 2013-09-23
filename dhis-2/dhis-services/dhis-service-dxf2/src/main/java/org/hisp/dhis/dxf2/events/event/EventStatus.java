@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.events.enrollment;
+package org.hisp.dhis.dxf2.events.event;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,64 +28,40 @@ package org.hisp.dhis.dxf2.events.enrollment;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "enrollments", namespace = DxfNamespaces.DXF_2_0 )
-public class Enrollments
+@JacksonXmlRootElement( localName = "eventStatus", namespace = DxfNamespaces.DXF_2_0 )
+public enum EventStatus
 {
-    private List<Enrollment> enrollments = new ArrayList<Enrollment>();
+    ACTIVE( 0 ), COMPLETED( 1 ), VISITED( 2 ), FUTURE_VISIT( 3 ), LATE_VISIT( 4 ), SKIPPED( 5 );
 
-    public Enrollments()
+    private final int value;
+
+    private EventStatus( int value )
     {
+        this.value = value;
     }
 
-    @JsonProperty( "enrollmentList" )
-    @JacksonXmlElementWrapper( localName = "enrollmentList", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "enrollment", namespace = DxfNamespaces.DXF_2_0 )
-    public List<Enrollment> getEnrollments()
+    public int getValue()
     {
-        return enrollments;
+        return value;
     }
 
-    public void setEnrollments( List<Enrollment> enrollments )
+    public static EventStatus fromInt( int status )
     {
-        this.enrollments = enrollments;
-    }
+        for ( EventStatus eventStatus : EventStatus.values() )
+        {
+            if ( eventStatus.getValue() == status )
+            {
+                return eventStatus;
+            }
+        }
 
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
-
-        Enrollments that = (Enrollments) o;
-
-        if ( enrollments != null ? !enrollments.equals( that.enrollments ) : that.enrollments != null ) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return enrollments != null ? enrollments.hashCode() : 0;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Enrollments{" +
-            "enrollments=" + enrollments +
-            '}';
+        throw new IllegalArgumentException();
     }
 }
+
