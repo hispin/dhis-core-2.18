@@ -70,7 +70,7 @@ public interface PatientIdentifierService
 
     Patient getPatient( PatientIdentifierType idenType, String value );
 
-    Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max );
+    Collection<Patient> getPatientsByIdentifier( String identifier, Integer min, Integer max );
 
     int countGetPatientsByIdentifier( String identifier );
 

@@ -267,8 +267,16 @@ public class Patient
         DataOutputStream dout = new DataOutputStream( bout );
 
         dout.writeInt( this.getId() );
-        dout.writeUTF( this.getName() );
-
+        
+        if ( name != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( name );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
         if ( organisationUnitName != null )
         {
             dout.writeBoolean( true );

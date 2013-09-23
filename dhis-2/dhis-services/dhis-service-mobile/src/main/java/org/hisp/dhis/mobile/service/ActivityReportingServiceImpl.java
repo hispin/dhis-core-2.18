@@ -838,8 +838,11 @@ public class ActivityReportingServiceImpl
         List<org.hisp.dhis.patient.PatientAttribute> atts;
 
         patientModel.setId( patient.getId() );
-        patientModel.setName( patient.getName() );
-
+        
+        if ( patient.getName() != null )
+        {
+            patientModel.setName( patient.getName() );
+        }
         Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         patientModel.setAge( period.getYears() );
         /*
@@ -850,7 +853,10 @@ public class ActivityReportingServiceImpl
         {
             patientModel.setOrganisationUnitName( patient.getOrganisationUnit().getName() );
         }
-        patientModel.setPhoneNumber( patient.getPhoneNumber() );
+        if ( patient.getPhoneNumber() != null )
+        {
+            patientModel.setPhoneNumber( patient.getPhoneNumber() );
+        }
 
         this.setSetting( getSettings() );
 
@@ -908,9 +914,8 @@ public class ActivityReportingServiceImpl
                 identifiers
                     .add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idTypeName, id.getIdentifier() ) );
             }
-
-            patientModel.setIdentifiers( identifiers );
         }
+        patientModel.setIdentifiers( identifiers );
 
         patientModel.setPatientAttValues( patientAtts );
 
@@ -1313,15 +1318,24 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Program getAllAnonymousProgram( int orgUnitId )
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Program getAllProgramByOrgUnit( int orgUnitId, String programType )
         throws NotAllowedException
     {
         String programsInfo = "";
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
 
-        List<Program> tempPrograms = new ArrayList<Program>(
-            programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+        List<Program> tempPrograms = null;
+        
+        if ( Integer.valueOf( programType )==( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
+        {
+            tempPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+        }
+        else if ( Integer.valueOf( programType )==( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) )
+        {
+            tempPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
+        }
+            
         List<Program> programs = new ArrayList<Program>();
 
         for ( Program program : tempPrograms )
@@ -1336,9 +1350,9 @@ public class ActivityReportingServiceImpl
         {
             if ( programs.size() == 1 )
             {
-                Program anonymousProgram = programs.get( 0 );
+                Program program = programs.get( 0 );
 
-                return getMobileAnonymousProgram( anonymousProgram );
+                return getMobileAnonymousProgram( program );
             }
             else
             {

@@ -85,7 +85,7 @@ public interface ActivityReportingService
     public Patient addRelationship( Relationship enrollmentRelationship, int orgUnitId )
         throws NotAllowedException;
 
-    public Program getAllAnonymousProgram( int orgUnitId )
+    public Program getAllProgramByOrgUnit( int orgUnitId, String programType )
         throws NotAllowedException;
 
     public Program findProgram( String programInfo )

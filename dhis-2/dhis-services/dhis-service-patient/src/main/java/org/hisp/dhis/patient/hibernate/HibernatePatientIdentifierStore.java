@@ -31,6 +31,7 @@ package org.hisp.dhis.patient.hibernate;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -130,10 +131,18 @@ public class HibernatePatientIdentifierStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
-    {
-        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) )
+    public Collection<Patient> getPatientsByIdentifier( String identifier, Integer min, Integer max )
+    {       
+        if( min != null & max != null )
+        {
+            return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) )
             .setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
+        }
+        else
+        {
+            return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) )
+            .setProjection( Projections.property( "patient" ) ).list();
+        }
     }
 
     public int countGetPatientsByIdentifier( String identifier )
