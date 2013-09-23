@@ -28,15 +28,15 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Abyot Asalefew
@@ -48,6 +48,8 @@ public class ProgramStageInstance
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 6239130884678145713L;
+
+    public static final int ACTIVE_STATUS = 0;
 
     public static final int COMPLETED_STATUS = 1;
 
@@ -77,7 +79,7 @@ public class ProgramStageInstance
 
     private PatientComment patientComment;
 
-    private Integer status;
+    private Integer status = ACTIVE_STATUS;
 
     private String coordinates;
 

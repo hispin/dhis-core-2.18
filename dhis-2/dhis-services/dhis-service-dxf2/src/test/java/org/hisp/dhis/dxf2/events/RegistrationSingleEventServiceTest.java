@@ -32,6 +32,7 @@ import org.hamcrest.CoreMatchers;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
 import org.hisp.dhis.dxf2.events.event.DataValue;
 import org.hisp.dhis.dxf2.events.event.Event;
@@ -44,7 +45,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -155,15 +155,6 @@ public class RegistrationSingleEventServiceTest
         manager.update( programStageA );
         manager.update( programA );
 
-        ProgramInstance programInstance = new ProgramInstance();
-        programInstance.setProgram( programA );
-        programInstance.setDateOfIncident( new Date() );
-        programInstance.setEnrollmentDate( new Date() );
-
-        programInstanceService.addProgramInstance( programInstance );
-        programA.getProgramInstances().add( programInstance );
-        manager.update( programA );
-
         createSuperuserAndInjectSecurityContext( 'A' );
 
         // mocked format
@@ -185,6 +176,53 @@ public class RegistrationSingleEventServiceTest
         ImportSummary importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
         assertThat( importSummary.getDescription(), CoreMatchers.containsString( "is not enrolled in program" ) );
+    }
+
+    @Test
+    public void testSaveWithEnrollmentShouldNotFail()
+    {
+        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+    }
+
+    @Test
+    public void testSavingMultipleEventsShouldOnlyUpdate()
+    {
+        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        Event event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+
+        event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+
+        event = createEvent( programA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 1, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+    }
+
+    private Enrollment createEnrollment( String program, String person )
+    {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setProgram( program );
+        enrollment.setPerson( person );
+
+        return enrollment;
     }
 
     private Event createEvent( String program, String orgUnit, String person )
