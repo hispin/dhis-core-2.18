@@ -198,7 +198,6 @@
 							<th>$i18n.getString( "allow_provided_elsewhere" )</th>
 							<th>$i18n.getString( "display_in_reports" )</th>
 							<th>$i18n.getString( "date_in_future" )</th>
-							<th>$i18n.getString( "display_as_radio_button" )</th>
 					</thead>
 					<tbody id="selectedList"></tbody>
 				</table>
