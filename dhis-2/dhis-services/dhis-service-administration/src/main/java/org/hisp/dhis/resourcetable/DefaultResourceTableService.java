@@ -79,7 +79,6 @@ import org.springframework.util.Assert;
 /**
  * @author Lars Helge Overland
  */
-@Transactional
 public class DefaultResourceTableService
     implements ResourceTableService
 {
@@ -191,6 +190,7 @@ public class DefaultResourceTableService
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateOrganisationUnitStructures()
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
@@ -240,6 +240,7 @@ public class DefaultResourceTableService
     // DataElementCategoryOptionComboName
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateCategoryOptionComboNames()
     {
         resourceTableStore.createDataElementCategoryOptionComboName();
@@ -268,6 +269,7 @@ public class DefaultResourceTableService
     // DataElementGroupSetTable
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateDataElementGroupSetTable()
     {
         // ---------------------------------------------------------------------
@@ -315,6 +317,7 @@ public class DefaultResourceTableService
     // IndicatorGroupSetTable
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateIndicatorGroupSetTable()
     {
         // ---------------------------------------------------------------------
@@ -362,6 +365,7 @@ public class DefaultResourceTableService
     // OrganisationUnitGroupSetTable
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateOrganisationUnitGroupSetTable()
     {
         // ---------------------------------------------------------------------
@@ -411,6 +415,7 @@ public class DefaultResourceTableService
     // CategoryTable
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateCategoryTable()
     {
         // ---------------------------------------------------------------------
@@ -457,6 +462,7 @@ public class DefaultResourceTableService
     // DataElementTable
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateDataElementTable()
     {
         // ---------------------------------------------------------------------
@@ -494,6 +500,7 @@ public class DefaultResourceTableService
     // PeriodTable
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateDatePeriodTable()
     {
         // ---------------------------------------------------------------------
@@ -535,7 +542,8 @@ public class DefaultResourceTableService
         
         resourceTableStore.batchUpdate( PeriodType.PERIOD_TYPES.size() + 1, TABLE_NAME_DATE_PERIOD_STRUCTURE, batchArgs );
     }    
-    
+
+    @Transactional
     public void generatePeriodTable()
     {
         // ---------------------------------------------------------------------
@@ -585,6 +593,7 @@ public class DefaultResourceTableService
     // DataElementCategoryOptionComboTable
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateDataElementCategoryOptionComboTable()
     {
         resourceTableStore.createAndGenerateDataElementCategoryOptionCombo();
