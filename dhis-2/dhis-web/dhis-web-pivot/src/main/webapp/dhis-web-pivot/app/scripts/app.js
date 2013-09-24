@@ -187,6 +187,12 @@ Ext.onReady( function() {
 
 				w.hasDestroyOnBlurHandler = true;
 			};
+			
+			util.message = {
+				alert: function(message) {
+					alert(message);
+				}
+			}			
 		}());
 
         // init
@@ -298,10 +304,10 @@ Ext.onReady( function() {
 					var path;
 
 					if (Ext.isString(uid)) {
-						path = conf.finals.ajax.dataelement_get + uid + '.json?links=false&paging=false';
+						path = conf.finals.url.dataelement_get + uid + '.json?links=false&paging=false';
 					}
 					else if (uid === 0) {
-						path = conf.finals.ajax.dataelement_getall;
+						path = conf.finals.url.dataelement_getall;
 					}
 
 					if (!path) {
@@ -311,7 +317,7 @@ Ext.onReady( function() {
 
 					this.setProxy({
 						type: 'ajax',
-						url: init.contextPath + conf.finals.ajax.path_api + path,
+						url: init.contextPath + conf.finals.url.path_api + path,
 						reader: {
 							type: 'json',
 							root: 'dataElements'
@@ -329,7 +335,7 @@ Ext.onReady( function() {
 					if (Ext.isString(uid)) {
 						this.setProxy({
 							type: 'ajax',
-							url: init.contextPath + conf.finals.ajax.path_commons + 'getOperands.action?uid=' + uid,
+							url: init.contextPath + conf.finals.url.path_commons + 'getOperands.action?uid=' + uid,
 							reader: {
 								type: 'json',
 								root: 'operands'
@@ -369,7 +375,7 @@ Ext.onReady( function() {
 				fields: ['id', 'name'],
 				proxy: {
 					type: 'ajax',
-					url: init.contextPath + conf.finals.ajax.path_api + conf.finals.ajax.dataset_get,
+					url: init.contextPath + conf.finals.url.path_api + conf.finals.url.dataset_get,
 					reader: {
 						type: 'json',
 						root: 'dataSets'
@@ -464,7 +470,7 @@ Ext.onReady( function() {
 				fields: ['id', 'name'],
 				proxy: {
 					type: 'ajax',
-					url: init.contextPath + conf.finals.ajax.path_api + conf.finals.ajax.organisationunitgroup_getall,
+					url: init.contextPath + conf.finals.url.path_api + conf.finals.url.organisationunitgroup_getall,
 					reader: {
 						type: 'json',
 						root: 'organisationUnitGroups'
@@ -2105,7 +2111,7 @@ Ext.onReady( function() {
 				handler: function() {
 					if (textArea.getValue()) {
 						Ext.Ajax.request({
-							url: pt.init.contextPath + pt.conf.finals.ajax.path_api + 'interpretations/reportTable/' + pt.favorite.id,
+							url: pt.init.contextPath + pt.conf.finals.url.path_api + 'interpretations/reportTable/' + pt.favorite.id,
 							method: 'POST',
 							params: textArea.getValue(),
 							headers: {'Content-Type': 'text/html'},
@@ -2336,7 +2342,7 @@ Ext.onReady( function() {
 						fields: ['id', 'name', 'index'],
 						proxy: {
 							type: 'ajax',
-							url: pt.init.contextPath + pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicatorgroup_get,
+							url: pt.init.contextPath + pt.conf.finals.url.path_api + pt.conf.finals.url.indicatorgroup_get,
 							reader: {
 								type: 'json',
 								root: 'indicatorGroups'
@@ -2373,11 +2379,11 @@ Ext.onReady( function() {
 							}
 							else {
 								if (cb.getValue() === 0) {
-									store.proxy.url = pt.init.contextPath + pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicator_getall;
+									store.proxy.url = pt.init.contextPath + pt.conf.finals.url.path_api + pt.conf.finals.url.indicator_getall;
 									store.load();
 								}
 								else {
-									store.proxy.url = pt.init.contextPath + pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.indicator_get + cb.getValue() + '.json';
+									store.proxy.url = pt.init.contextPath + pt.conf.finals.url.path_api + pt.conf.finals.url.indicator_get + cb.getValue() + '.json';
 									store.load();
 								}
 							}
@@ -2487,7 +2493,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'index'],
 			proxy: {
 				type: 'ajax',
-				url: pt.init.contextPath + pt.conf.finals.ajax.path_api + pt.conf.finals.ajax.dataelementgroup_get,
+				url: pt.init.contextPath + pt.conf.finals.url.path_api + pt.conf.finals.url.dataelementgroup_get,
 				reader: {
 					type: 'json',
 					root: 'dataElementGroups'
@@ -3373,21 +3379,21 @@ Ext.onReady( function() {
 			},
 			selectByGroup: function(id) {
 				if (id) {
-					var url = pt.init.contextPath + pt.conf.finals.ajax.path_module + pt.conf.finals.ajax.organisationunit_getbygroup,
+					var url = pt.init.contextPath + pt.conf.finals.url.path_module + pt.conf.finals.url.organisationunit_getbygroup,
 						params = {id: id};
 					this.select(url, params);
 				}
 			},
 			selectByLevel: function(level) {
 				if (level) {
-					var url = pt.init.contextPath + pt.conf.finals.ajax.path_module + pt.conf.finals.ajax.organisationunit_getbylevel,
+					var url = pt.init.contextPath + pt.conf.finals.url.path_module + pt.conf.finals.url.organisationunit_getbylevel,
 						params = {level: level};
 					this.select(url, params);
 				}
 			},
 			selectByIds: function(ids) {
 				if (ids) {
-					var url = pt.init.contextPath + pt.conf.finals.ajax.path_module + pt.conf.finals.ajax.organisationunit_getbyids;
+					var url = pt.init.contextPath + pt.conf.finals.url.path_module + pt.conf.finals.url.organisationunit_getbyids;
 					Ext.Array.each(ids, function(item) {
 						url = Ext.String.urlAppend(url, 'ids=' + item);
 					});
@@ -3400,7 +3406,7 @@ Ext.onReady( function() {
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
-					url: pt.init.contextPath + pt.conf.finals.ajax.path_module + pt.conf.finals.ajax.organisationunitchildren_get
+					url: pt.init.contextPath + pt.conf.finals.url.path_module + pt.conf.finals.url.organisationunitchildren_get
 				},
 				root: {
 					id: pt.conf.finals.root.id,

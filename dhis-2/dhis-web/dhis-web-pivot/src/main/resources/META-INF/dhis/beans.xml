@@ -13,7 +13,6 @@
   <bean id="org.hisp.dhis.pivot.action.InitializeAction"
     class="org.hisp.dhis.pivot.action.InitializeAction"
     scope="prototype">
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dimensionService" ref="org.hisp.dhis.common.DimensionService" />
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />

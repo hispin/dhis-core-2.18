@@ -747,6 +747,10 @@ Ext.onReady( function() {
 			domainAxisTitle,
 			rangeAxisTitle,
 
+            hideCategoryLabels,
+            categoryLabelRotation,
+            categoryLabelSize,
+
 			data,
 			style,
 
@@ -872,7 +876,76 @@ Ext.onReady( function() {
 		});
 		dv.viewport.rangeAxisTitle = rangeAxisTitle;
 
-		data = {
+		hideCategoryLabels = Ext.create('Ext.form.field.Checkbox', {
+			boxLabel: DV.i18n.hide_category_labels,
+			style: 'margin-bottom:7px',
+			listeners: {
+				change: function() {
+					categoryLabelRotation.xable();
+                    categoryLabelSize.xable();
+				}
+			}
+		});
+		dv.viewport.hideCategoryLabels = hideCategoryLabels;
+
+		categoryLabelRotation = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'dv-combo',
+			style: 'margin-bottom:3px',
+			width: 250,
+			labelWidth: 130,
+			fieldLabel: DV.i18n.category_label_rotation,
+			labelStyle: 'color:#333',
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 'normal',
+			xable: function() {
+				this.setDisabled(hideCategoryLabels.getValue());
+			},
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 'Vertical', text: DV.i18n.vertical},
+					{id: '10 degrees', text: 10 + ' ' + DV.i18n.degrees},
+					{id: '20 degrees', text: 20 + ' ' + DV.i18n.degrees},
+					{id: '30 degrees', text: 30 + ' ' + DV.i18n.degrees},
+					{id: '40 degrees', text: 40 + ' ' + DV.i18n.degrees},
+					{id: '50 degrees', text: 50 + ' ' + DV.i18n.degrees},
+					{id: '60 degrees', text: 60 + ' ' + DV.i18n.degrees},
+					{id: '70 degrees', text: 70 + ' ' + DV.i18n.degrees},
+					{id: '80 degrees', text: 80 + ' ' + DV.i18n.degrees},
+                    {id: 'Horizontal', text: DV.i18n.horizontal}
+				]
+			})
+		});
+		dv.viewport.categoryLabelRotation = categoryLabelRotation;
+
+		categoryLabelSize = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'dv-combo',
+			style: 'margin-bottom:3px',
+			width: 250,
+			labelWidth: 130,
+			fieldLabel: DV.i18n.category_label_size,
+			labelStyle: 'color:#333',
+			queryMode: 'local',
+			valueField: 'id',
+			editable: false,
+			value: 'normal',
+			xable: function() {
+				this.setDisabled(hideCategoryLabels.getValue());
+			},
+			store: Ext.create('Ext.data.Store', {
+				fields: ['id', 'text'],
+				data: [
+					{id: 'large', text: DV.i18n.large},
+					{id: 'normal', text: DV.i18n.normal},
+					{id: 'small', text: DV.i18n.small_}
+				]
+			})
+		});
+		dv.viewport.categoryLabelSize = categoryLabelSize;
+
+        data = {
 			xtype: 'container',
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
@@ -918,7 +991,10 @@ Ext.onReady( function() {
 				hideTitle,
 				title,
 				domainAxisTitle,
-				rangeAxisTitle
+				rangeAxisTitle,
+                hideCategoryLabels,
+                categoryLabelRotation,
+                categoryLabelSize
 			]
 		};
 
@@ -4112,6 +4188,12 @@ Ext.onReady( function() {
                         alert(DV.i18n.detailed_data_elements_cannot_be_specified_as_filter);
                         return;
                     }
+
+					// Data sets as filter
+					if (layout.filters[i].dimension === dimConf.dataSet.objectName) {
+						util.message.alert(DV.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter');
+						return;
+					}
 
                 }
             }

@@ -339,6 +339,11 @@ public class OrganisationUnit
 
         return false;
     }
+    
+    public boolean hasCoordinatesUp()
+    {
+        return parent != null && parent.parent != null && parent.parent.hasChildrenWithCoordinates();
+    }
 
     public boolean hasCoordinates()
     {

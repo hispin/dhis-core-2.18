@@ -30,17 +30,19 @@ package org.hisp.dhis.mapping.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.mapping.MapLayer;
-import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.mapping.comparator.MapLayerNameComparator;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -57,13 +59,6 @@ public class InitializeAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MappingService mappingService;
-
-    public void setMappingService( MappingService mappingService )
-    {
-        this.mappingService = mappingService;
-    }
-
     private ConfigurationService configurationService;
 
     public void setConfigurationService( ConfigurationService configurationService )
@@ -76,6 +71,20 @@ public class InitializeAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -105,13 +114,6 @@ public class InitializeAction
         return contextPath;
     }
 
-    private List<MapLayer> overlays;
-
-    public List<MapLayer> getOverlays()
-    {
-        return overlays;
-    }
-
     private DataElementGroup infrastructuralDataElementGroup;
 
     public DataElementGroup getInfrastructuralDataElementGroup()
@@ -132,6 +134,27 @@ public class InitializeAction
     {
         return rootNodes;
     }
+    
+    private Collection<OrganisationUnitLevel> levels;
+
+    public Collection<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
+    }
+    
+    private Collection<IndicatorGroup> indicatorGroups;
+
+    public Collection<IndicatorGroup> getIndicatorGroups()
+    {
+        return indicatorGroups;
+    }
+    
+    private Collection<DataElementGroup> dataElementGroups;
+
+    public Collection<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -141,16 +164,23 @@ public class InitializeAction
         throws Exception
     {
         contextPath = ContextUtils.getContextPath( ServletActionContext.getRequest() );
-        
-        overlays = new ArrayList<MapLayer>( mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
-
-        Collections.sort( overlays, new MapLayerNameComparator() );
 
         infrastructuralDataElementGroup = configurationService.getConfiguration().getInfrastructuralDataElements();
 
         infrastructuralPeriodType = configurationService.getConfiguration().getInfrastructuralPeriodTypeDefaultIfNull();
 
         rootNodes = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
+
+        if ( rootNodes.size() < 1 )
+        {
+            rootNodes.add( new OrganisationUnit() );
+        }
+        
+        levels = organisationUnitService.getOrganisationUnitLevels();
+        
+        indicatorGroups = indicatorService.getAllIndicatorGroups();
+        
+        dataElementGroups = dataElementService.getAllDataElementGroups();
 
         return SUCCESS;
     }

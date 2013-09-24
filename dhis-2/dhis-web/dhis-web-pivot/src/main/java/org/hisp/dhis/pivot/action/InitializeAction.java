@@ -30,21 +30,16 @@ package org.hisp.dhis.pivot.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.DimensionService;
-import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.RelativePeriods;
 
 import com.opensymphony.xwork2.Action;
 
@@ -65,13 +60,6 @@ public class InitializeAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
     
     private DimensionService dimensionService;
 
@@ -85,13 +73,6 @@ public class InitializeAction
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -126,76 +107,6 @@ public class InitializeAction
     public Collection<OrganisationUnit> getRootNodes()
     {
         return rootNodes;
-    }
-
-    private List<Period> lastMonth;
-
-    public List<Period> getLastMonth()
-    {
-        return lastMonth;
-    }
-
-    private List<Period> last12Months;
-
-    public List<Period> getLast12Months()
-    {
-        return last12Months;
-    }
-    
-    private List<Period> last3Months;
-
-    public List<Period> getLast3Months()
-    {
-        return last3Months;
-    }
-
-    private List<Period> lastQuarter;
-
-    public List<Period> getLastQuarter()
-    {
-        return lastQuarter;
-    }
-
-    private List<Period> last4Quarters;
-
-    public List<Period> getLast4Quarters()
-    {
-        return last4Quarters;
-    }
-
-    private List<Period> lastSixMonth;
-
-    public List<Period> getLastSixMonth()
-    {
-        return lastSixMonth;
-    }
-
-    private List<Period> last2SixMonths;
-
-    public List<Period> getLast2SixMonths()
-    {
-        return last2SixMonths;
-    }
-
-    private List<Period> lastYear;
-
-    public List<Period> getLastYear()
-    {
-        return lastYear;
-    }
-
-    private List<Period> thisYear;
-
-    public List<Period> getThisYear()
-    {
-        return thisYear;
-    }
-
-    private List<Period> last5Years;
-
-    public List<Period> getLast5Years()
-    {
-        return last5Years;
     }
     
     private Collection<DimensionalObject> dimensions;
@@ -234,38 +145,6 @@ public class InitializeAction
         {
             rootNodes.add( new OrganisationUnit() );
         }
-
-        RelativePeriods rp = new RelativePeriods();
-
-        rp.clear().setReportingMonth( true );
-        lastMonth = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setLast12Months( true );
-        last12Months = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setLast3Months( true );
-        last3Months = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setReportingQuarter( true );
-        lastQuarter = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setLast4Quarters( true );
-        last4Quarters = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setLastSixMonth( true );
-        lastSixMonth = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setLast2SixMonths( true );
-        last2SixMonths = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setLastYear( true );
-        lastYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setThisYear( true );
-        thisYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-
-        rp.clear().setLast5Years( true );
-        last5Years = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
         dimensions = dimensionService.getAllDimensions();
         
@@ -274,15 +153,5 @@ public class InitializeAction
         levels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;
-    }
-
-    private List<Period> setNames( List<Period> periods )
-    {
-        for ( Period period : periods )
-        {
-            period.setName( format.formatPeriod( period ) );
-        }
-
-        return periods;
     }
 }

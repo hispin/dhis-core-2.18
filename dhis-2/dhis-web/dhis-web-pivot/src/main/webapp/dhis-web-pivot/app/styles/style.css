@@ -478,7 +478,6 @@ table.pivot {
     border-color: #bbb;
     border-radius: 2px;
 }
-
 .x-menu-item-active .x-menu-item-link {
 	border-radius: 0;
 	border-color: #e1e1e1;
@@ -493,6 +492,10 @@ table.pivot {
 }
 
 	/* Menu item */
+.x-menu-item {
+	background-color: #fafafa;
+}
+
 .x-menu-item-link {
     padding: 4px 5px 4px 26px;
 }
