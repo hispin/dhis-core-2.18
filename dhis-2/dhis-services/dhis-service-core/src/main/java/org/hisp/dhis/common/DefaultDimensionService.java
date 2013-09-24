@@ -68,6 +68,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriodEnum;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.util.UniqueArrayList;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -88,6 +89,9 @@ public class DefaultDimensionService
 
     @Autowired
     private PeriodService periodService;
+    
+    @Autowired
+    private CurrentUserService currentUserService;
     
     //--------------------------------------------------------------------------
     // DimensionService implementation
@@ -191,6 +195,10 @@ public class DefaultDimensionService
             if ( object.getUser() != null )
             {
                 object.setUser( identifiableObjectManager.get( User.class, object.getUser().getUid() ) );
+            }
+            else
+            {
+                object.setUser( currentUserService.getCurrentUser() );
             }
             
             mergeDimensionalObjects( object, object.getColumns() );

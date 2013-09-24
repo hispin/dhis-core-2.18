@@ -244,7 +244,11 @@ public class MapController
         if ( map.getUser() != null )
         {
             map.setUser( userService.getUser( map.getUser().getUid() ) );
-        }        
+        }
+        else
+        {
+            map.setUser( currentUserService.getCurrentUser() );
+        }
     }
 
     private void mergeMapView( MapView view )
