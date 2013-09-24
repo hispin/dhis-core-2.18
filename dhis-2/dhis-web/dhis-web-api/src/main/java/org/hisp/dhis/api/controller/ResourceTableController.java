@@ -102,5 +102,5 @@ public class ResourceTableController
         scheduler.executeTask( resourceTableTask );
         
         ContextUtils.okResponse( response, "Initiated resource table update" );
-    }
+    }    
 }
