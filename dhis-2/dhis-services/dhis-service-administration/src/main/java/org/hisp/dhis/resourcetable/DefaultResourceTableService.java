@@ -72,7 +72,6 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
-import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -137,55 +136,6 @@ public class DefaultResourceTableService
         this.periodService = periodService;
     }
 
-    private SqlViewService sqlViewService;
-    
-    public void setSqlViewService( SqlViewService sqlViewService )
-    {
-        this.sqlViewService = sqlViewService;
-    }
-
-    // -------------------------------------------------------------------------
-    // All
-    // -------------------------------------------------------------------------
-
-    public void generateAll()
-    {
-        sqlViewService.dropAllSqlViewTables();
-
-        generateOrganisationUnitStructures();
-        log.info( "Organisation unit structure table generated" );
-        
-        generateCategoryOptionComboNames();
-        log.info( "Category option combo name table generated" );
-        
-        generateDataElementGroupSetTable();
-        log.info( "Data element group set table generated" );
-        
-        generateIndicatorGroupSetTable();
-        log.info( "Indicator group set table generated" );
-
-        generateOrganisationUnitGroupSetTable();
-        log.info( "Organisation unit group set table generated" );
-
-        generateCategoryTable();
-        log.info( "Category table generated" );
-
-        generateDataElementTable();
-        log.info( "Data element table generated" );
-        
-        generatePeriodTable();
-        log.info( "Period table generated" );
-        
-        generateDatePeriodTable();
-        log.info( "Date period table generated" );
-        
-        generateDataElementCategoryOptionComboTable();
-        log.info( "Data element category option combo table generated" );
-        
-        sqlViewService.createAllViewTables();
-        log.info( "Sql views created" );
-    }
-    
     // -------------------------------------------------------------------------
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------
@@ -234,6 +184,8 @@ public class DefaultResourceTableService
         }
 
         resourceTableStore.batchUpdate( ( maxLevel * 2 ) + 2, TABLE_NAME_ORGANISATION_UNIT_STRUCTURE, batchArgs );
+        
+        log.info( "Organisation unit structure table generated" );
     }
 
     // -------------------------------------------------------------------------
@@ -263,6 +215,8 @@ public class DefaultResourceTableService
         }
         
         resourceTableStore.batchUpdate( 2, TABLE_NAME_CATEGORY_OPTION_COMBO_NAME, batchArgs );
+        
+        log.info( "Category option combo name table generated" );
     }
 
     // -------------------------------------------------------------------------
@@ -311,6 +265,8 @@ public class DefaultResourceTableService
         }
         
         resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateDataElementGroupSetTableStatement.TABLE_NAME, batchArgs );
+        
+        log.info( "Data element group set table generated" );
     }
 
     // -------------------------------------------------------------------------
@@ -359,6 +315,8 @@ public class DefaultResourceTableService
         }
         
         resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateIndicatorGroupSetTableStatement.TABLE_NAME, batchArgs );
+        
+        log.info( "Indicator group set table generated" );
     }
     
     // -------------------------------------------------------------------------
@@ -409,6 +367,8 @@ public class DefaultResourceTableService
         }
 
         resourceTableStore.batchUpdate( ( groupSets.size() * 2 ) + 2, CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME, batchArgs );
+        
+        log.info( "Organisation unit group set table generated" );
     }
     
     // -------------------------------------------------------------------------
@@ -456,6 +416,8 @@ public class DefaultResourceTableService
         }
         
         resourceTableStore.batchUpdate( ( categories.size() * 2 ) + 2, CreateCategoryTableStatement.TABLE_NAME, batchArgs );
+        
+        log.info( "Category table generated" );
     }
 
     // -------------------------------------------------------------------------
@@ -494,6 +456,8 @@ public class DefaultResourceTableService
         }
         
         resourceTableStore.batchUpdate( 4, TABLE_NAME_DATA_ELEMENT_STRUCTURE, batchArgs );
+        
+        log.info( "Data element table generated" );
     }
 
     // -------------------------------------------------------------------------
@@ -541,6 +505,8 @@ public class DefaultResourceTableService
         }
         
         resourceTableStore.batchUpdate( PeriodType.PERIOD_TYPES.size() + 1, TABLE_NAME_DATE_PERIOD_STRUCTURE, batchArgs );
+        
+        log.info( "Period table generated" );
     }    
 
     @Transactional
@@ -587,6 +553,8 @@ public class DefaultResourceTableService
         }
 
         resourceTableStore.batchUpdate( PeriodType.PERIOD_TYPES.size() + 3, TABLE_NAME_PERIOD_STRUCTURE, batchArgs );
+        
+        log.info( "Date period table generated" );
     }
 
     // -------------------------------------------------------------------------
@@ -597,5 +565,7 @@ public class DefaultResourceTableService
     public void generateDataElementCategoryOptionComboTable()
     {
         resourceTableStore.createAndGenerateDataElementCategoryOptionCombo();
+        
+        log.info( "Data element category option combo table generated" );
     }
 }

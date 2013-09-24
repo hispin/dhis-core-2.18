@@ -31,6 +31,7 @@ package org.hisp.dhis.resourcetable.scheduling;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class ResourceTableTask
 {
     @Autowired
     private ResourceTableService resourceTableService;
+    
+    @Autowired
+    private SqlViewService sqlViewService;
 
     @Autowired
     private Notifier notifier;
@@ -68,7 +72,7 @@ public class ResourceTableTask
         
         try
         {
-            resourceTableService.generateAll();
+            generateAll();
             
             notifier.notify( taskId, NotificationLevel.INFO, "Resource tables generated", true );
         }
@@ -80,5 +84,25 @@ public class ResourceTableTask
             
             throw ex;
         }
+    }    
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void generateAll()
+    {
+        sqlViewService.dropAllSqlViewTables();
+        resourceTableService.generateOrganisationUnitStructures();        
+        resourceTableService.generateCategoryOptionComboNames();
+        resourceTableService.generateDataElementGroupSetTable();
+        resourceTableService.generateIndicatorGroupSetTable();
+        resourceTableService.generateOrganisationUnitGroupSetTable();
+        resourceTableService.generateCategoryTable();
+        resourceTableService.generateDataElementTable();
+        resourceTableService.generatePeriodTable();
+        resourceTableService.generateDatePeriodTable();
+        resourceTableService.generateDataElementCategoryOptionComboTable();
+        sqlViewService.createAllViewTables();
     }
 }
