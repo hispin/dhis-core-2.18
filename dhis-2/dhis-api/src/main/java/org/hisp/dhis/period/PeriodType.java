@@ -54,6 +54,9 @@ public abstract class PeriodType
     // Available PeriodTypes
     // -------------------------------------------------------------------------
 
+    /**
+     * All period types in descending order according to frequency.
+     */
     public static final List<PeriodType> PERIOD_TYPES = new ArrayList<PeriodType>()
     {
         {
