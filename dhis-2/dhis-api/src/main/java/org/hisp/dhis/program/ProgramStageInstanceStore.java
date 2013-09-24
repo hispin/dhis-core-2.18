@@ -55,6 +55,8 @@ public interface ProgramStageInstanceStore
 
     ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage );
 
+    Collection<ProgramStageInstance> getAll( ProgramInstance programInstance, ProgramStage programStage );
+
     Collection<ProgramStageInstance> get( ProgramStage programStage );
 
     Collection<ProgramStageInstance> get( Date dueDate );
