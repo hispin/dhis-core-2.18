@@ -140,7 +140,7 @@ public class MapView
     public void populateAnalyticalProperties()
     {
         columns.addAll( getDimensionalObjectList( DimensionalObject.ORGUNIT_DIM_ID ) );
-        columns.addAll( getDimensionalObjectList( DimensionalObject.DATA_X_DIM_ID ) );
+        rows.addAll( getDimensionalObjectList( DimensionalObject.DATA_X_DIM_ID ) );
         filters.addAll( getDimensionalObjectList( DimensionalObject.PERIOD_DIM_ID ) );
     }
     
