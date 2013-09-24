@@ -870,7 +870,7 @@ public class ActivityReportingServiceImpl
             {
                 patientModel.setDobType( patient.getDobType() );
             }
-            if ( setting.getBirthdate() )
+            if ( setting.getBirthdate() && patient.getBirthDate()!=null )
             {
                 DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
                 patientModel.setBirthDate( dateFormat.format( patient.getBirthDate() ) );
@@ -1924,21 +1924,32 @@ public class ActivityReportingServiceImpl
             DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
 
             int i = 1;
+            String name = "";
+            String DOB = "";
             for ( Patient each : patients )
             {
                 if ( i > 10 )
                 {
                     break;
                 }
-                if ( each.getBirthDate() != null )
+                
+                if ( each.getName() != null )
                 {
-                    patientsInfo += each.getId() + "/" + each.getName() + "/" + dateFormat.format( each.getBirthDate() )
-                        + "$";
+                    name = each.getName();
                 }
                 else
                 {
-                    patientsInfo += each.getId() + "/" + each.getName() + "/DOB$";
+                    name = "unknown";
                 }
+                if ( each.getBirthDate() != null )
+                {
+                    DOB = dateFormat.format( each.getBirthDate() );
+                }
+                else
+                {
+                    DOB = "unknown";
+                }
+                patientsInfo += each.getId() + "/" + name + "/" + DOB + "$";
                 i++;
             }
 
