@@ -166,6 +166,12 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( programInstance, programStage );
     }
 
+    @Override
+    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, ProgramStage programStage )
+    {
+        return programStageInstanceStore.getAll( programInstance, programStage );
+    }
+
     public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage )
     {
         return programStageInstanceStore.get( programStage );

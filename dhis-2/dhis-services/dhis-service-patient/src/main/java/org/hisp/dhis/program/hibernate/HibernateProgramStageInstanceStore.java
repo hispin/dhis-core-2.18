@@ -155,7 +155,7 @@ public class HibernateProgramStageInstanceStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage )
     {
         List<ProgramStageInstance> list = new ArrayList<ProgramStageInstance>( getCriteria(
@@ -165,13 +165,22 @@ public class HibernateProgramStageInstanceStore
         return list.isEmpty() ? null : list.get( list.size() - 1 );
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramStageInstance> getAll( ProgramInstance programInstance, ProgramStage programStage )
+    {
+        Criteria criteria = getCriteria( Restrictions.eq( "programInstance", programInstance ), Restrictions.eq( "programStage", programStage ) )
+            .addOrder( Order.asc( "id" ) );
+
+        return criteria.list();
+    }
+
     @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( ProgramStage programStage )
     {
         return getCriteria( Restrictions.eq( "programStage", programStage ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances )
     {
         return getCriteria( Restrictions.in( "programInstance", programInstances ) ).list();
