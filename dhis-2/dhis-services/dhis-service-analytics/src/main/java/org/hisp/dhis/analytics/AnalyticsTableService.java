@@ -47,4 +47,9 @@ public interface AnalyticsTableService
      * Drops analytics and and temporary analytics tables between 1900 and 2100.
      */
     void dropTables();
+    
+    /**
+     * Generate required resource tables.
+     */
+    void generateResourceTables();
 }
