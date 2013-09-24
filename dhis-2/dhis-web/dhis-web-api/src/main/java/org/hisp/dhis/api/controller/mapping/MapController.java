@@ -56,6 +56,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -108,6 +109,9 @@ public class MapController
     
     @Autowired
     private DimensionService dimensionService;
+    
+    @Autowired
+    private UserService userService; 
 
     @Autowired
     private ContextUtils contextUtils;
@@ -237,6 +241,10 @@ public class MapController
 
     private void mergeMap( Map map )
     {
+        if ( map.getUser() != null )
+        {
+            map.setUser( userService.getUser( map.getUser().getUid() ) );
+        }        
     }
 
     private void mergeMapView( MapView view )

@@ -42,6 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.DateUtils;
@@ -160,6 +161,7 @@ public class JdbcEventAnalyticsTableManager
                 "left join patient pa on pi.patientid=pa.patientid " +
                 "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid " +
                 "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid " +
+                "left join _dateperiodstructure dps on psi.executiondate=dps.dateperiod " +
                 "where psi.executiondate >= '" + start + "' " +
                 "and psi.executiondate <= '" + end + "' " +
                 "and pr.programid=" + table.getProgram().getId() + ";";
@@ -183,6 +185,15 @@ public class JdbcEventAnalyticsTableManager
         {
             String column = PREFIX_ORGUNITLEVEL + level.getLevel();
             String[] col = { column, "character(11)", "ous." + column };
+            columns.add( col );
+        }
+
+        List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes();
+        
+        for ( PeriodType periodType : periodTypes )
+        {
+            String column = periodType.getName().toLowerCase();
+            String[] col = { column, "character varying(10)", "dps." + column };
             columns.add( col );
         }
         
