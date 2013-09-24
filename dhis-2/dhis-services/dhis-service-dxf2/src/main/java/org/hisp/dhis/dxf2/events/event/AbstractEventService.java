@@ -153,7 +153,7 @@ public abstract class AbstractEventService implements EventService
     public ImportSummary saveEvent( Event event, ImportOptions importOptions )
     {
         Program program = programService.getProgram( event.getProgram() );
-        ProgramInstance programInstance = null;
+        ProgramInstance programInstance;
         ProgramStage programStage = programStageService.getProgramStage( event.getProgramStage() );
         ProgramStageInstance programStageInstance = null;
 
@@ -166,7 +166,7 @@ public abstract class AbstractEventService implements EventService
         {
             return new ImportSummary( ImportStatus.ERROR, "Event.programStage does not point to a valid programStage, and program is multi stage" );
         }
-        else
+        else if ( programStage == null )
         {
             programStage = program.getProgramStageByStage( 1 );
         }
@@ -229,7 +229,14 @@ public abstract class AbstractEventService implements EventService
             }
             else
             {
-
+                if ( !programStage.getIrregular() )
+                {
+                    programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
+                }
+                else
+                {
+                    return new ImportSummary( ImportStatus.ERROR, "ERROR!" );
+                }
             }
         }
         else

@@ -945,7 +945,7 @@ public abstract class DhisConvenienceTest
     {
         ProgramStage programStage = new ProgramStage();
 
-        programStage.setName( "name" + uniqueCharacter );
+        programStage.setName( "ProgramStage" + uniqueCharacter );
         programStage.setDescription( "description" + uniqueCharacter );
         programStage.setMinDaysFromStart( minDays );
         programStage.setIrregular( irregular );
