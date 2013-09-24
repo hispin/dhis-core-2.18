@@ -35,7 +35,6 @@ import javax.annotation.Resource;
 
 import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +56,6 @@ public class AnalyticsTableTask
     
     @Resource(name="org.hisp.dhis.analytics.EventAnalyticsTableService")
     private AnalyticsTableService eventAnalyticsTableService;
-    
-    @Autowired
-    private ResourceTableService resourceTableService;
     
     @Autowired
     private Notifier notifier;
@@ -92,7 +88,7 @@ public class AnalyticsTableTask
 
         try
         {
-            resourceTableService.generateAll();
+            analyticsTableService.generateResourceTables();
     
             notifier.notify( taskId, "Updating analytics tables" );
             

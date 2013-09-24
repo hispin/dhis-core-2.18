@@ -45,7 +45,9 @@ import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
@@ -72,6 +74,12 @@ public class DefaultAnalyticsTableService
     
     @Autowired
     private DataElementService dataElementService;
+    
+    @Autowired
+    private ResourceTableService resourceTableService;
+    
+    @Autowired
+    private SqlViewService sqlViewService;
     
     @Autowired
     private Notifier notifier;
@@ -143,6 +151,22 @@ public class DefaultAnalyticsTableService
             tableManager.dropTable( table.getTableName() );
             tableManager.dropTable( table.getTempTableName() );            
         }
+    }
+
+    public void generateResourceTables()
+    {
+        sqlViewService.dropAllSqlViewTables();
+        resourceTableService.generateOrganisationUnitStructures();        
+        resourceTableService.generateCategoryOptionComboNames();
+        resourceTableService.generateDataElementGroupSetTable();
+        resourceTableService.generateIndicatorGroupSetTable();
+        resourceTableService.generateOrganisationUnitGroupSetTable();
+        resourceTableService.generateCategoryTable();
+        resourceTableService.generateDataElementTable();
+        resourceTableService.generatePeriodTable();
+        resourceTableService.generateDatePeriodTable();
+        resourceTableService.generateDataElementCategoryOptionComboTable();
+        sqlViewService.createAllViewTables();
     }
     
     // -------------------------------------------------------------------------
