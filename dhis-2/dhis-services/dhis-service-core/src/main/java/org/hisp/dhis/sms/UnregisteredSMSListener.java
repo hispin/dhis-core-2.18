@@ -61,6 +61,8 @@ public class UnregisteredSMSListener
     private SmsMessageSender smsMessageSender;
 
     private IncomingSmsService incomingSmsService;
+    
+    public static final String USER_NAME = "anonymous";
 
     @Transactional
     @Override
@@ -129,7 +131,18 @@ public class UnregisteredSMSListener
 
                 if ( anonymousUser == null )
                 {
-                    anonymousUser = userService.getUserCredentialsByUsername( "admin" );
+                    User user = new User();
+                    UserCredentials usercredential = new UserCredentials();
+                    usercredential.setUsername( USER_NAME );
+                    usercredential.setPassword( USER_NAME );
+                    usercredential.setUser( user );
+                    user.setSurname( USER_NAME );
+                    user.setFirstName( USER_NAME );
+                    user.setUserCredentials( usercredential );
+                    
+                    userService.addUserCredentials( usercredential );
+                    userService.addUser( user );
+                    anonymousUser = userService.getUserCredentialsByUsername( "anonymous" );
                 }
                 
                 // forward to user group by SMS, E-mail, DHIS conversation
