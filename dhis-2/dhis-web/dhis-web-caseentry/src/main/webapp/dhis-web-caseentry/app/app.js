@@ -1828,7 +1828,7 @@ Ext.onReady( function() {
 		
 		caseBasedReport: {
 			generate: function( type ) {
-				
+			
 				// Validation
 				
 				if( !TR.state.caseBasedReport.validation.objects() )
@@ -1882,6 +1882,8 @@ Ext.onReady( function() {
 							else{
 								TR.value.columns = json.headers;
 								TR.value.values = json.rows;
+								TR.state.totalRecords = json.metaData.pager.total;
+								TR.state.total = json.metaData.pager.pageCount;
 								
 								// Get fields
 								
@@ -1897,6 +1899,7 @@ Ext.onReady( function() {
 								TR.store.getDataTableStore();
 								TR.datatable.getDataTable();
 							}
+							TR.datatable.setPagingToolbarStatus();
 							TR.util.mask.hideMask();
 						}
 					});
