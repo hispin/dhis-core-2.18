@@ -1,18 +1,19 @@
 Ext.onReady( function() {
 	var createViewport,
-		initialize,
-		gis;
-	
+		initialize;
+		//gis;
+
 	GIS.app = {};
-	
+
 	GIS.app.extendInstance = function(gis) {
-		var util = gis.util,
+		var conf = gis.conf,
+			util = gis.util,
 			init = gis.init,
 			store = gis.store,
 			layer;
-			
+
 		// util
-		(function() {			
+		(function() {
 			util.map.getFeaturesByLayers = function(layers) {
 				var a = [];
 				for (var i = 0; i < layers.length; i++) {
@@ -298,75 +299,21 @@ Ext.onReady( function() {
 
 		// init
 		(function() {
+			
+			// root nodes
 			for (var i = 0; i < init.rootNodes.length; i++) {
 				init.rootNodes[i].path = '/root/' + init.rootNodes[i].id;
 			}
+			
+			// sort indicator groups
+			gis.util.object.sortObjectsByString(init.indicatorGroups);
+			
+			// sort data element groups
+			gis.util.object.sortObjectsByString(init.dataElementGroups);			
 		}());
-		
+
 		// store
 		(function() {
-			store.indicatorGroups = Ext.create('Ext.data.Store', {
-				fields: ['id', 'name'],
-				proxy: {
-					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_api + 'indicatorGroups.json?links=false&paging=false',
-					reader: {
-						type: 'json',
-						root: 'indicatorGroups'
-					}
-				},
-				cmp: [],
-				isLoaded: false,
-				loadFn: function(fn) {
-					if (this.isLoaded) {
-						fn.call();
-					}
-					else {
-						this.load(fn);
-					}
-				},
-				listeners: {
-					load: function() {
-						if (!this.isLoaded) {
-							this.isLoaded = true;
-							gis.util.gui.combo.setQueryMode(this.cmp, 'local');
-						}
-						this.sort('name', 'ASC');
-					}
-				}
-			});
-
-			store.dataElementGroups = Ext.create('Ext.data.Store', {
-				fields: ['id', 'name'],
-				proxy: {
-					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_api + 'dataElementGroups.json?links=false&paging=false',
-					reader: {
-						type: 'json',
-						root: 'dataElementGroups'
-					}
-				},
-				cmp: [],
-				isLoaded: false,
-				loadFn: function(fn) {
-					if (this.isLoaded) {
-						fn.call();
-					}
-					else {
-						this.load(fn);
-					}
-				},
-				listeners: {
-					load: function() {
-						if (!this.isLoaded) {
-							this.isLoaded = true;
-							gis.util.gui.combo.setQueryMode(this.cmp, 'local');
-						}
-						this.sort('name', 'ASC');
-					}
-				}
-			});
-
 			store.periodTypes = Ext.create('Ext.data.Store', {
 				fields: ['id', 'name'],
 				data: gis.conf.period.periodTypes
@@ -376,7 +323,7 @@ Ext.onReady( function() {
 				fields: ['id', 'name'],
 				proxy: {
 					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_gis + 'getPeriodsByPeriodType.action',
+					url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getPeriodsByPeriodType.action',
 					reader: {
 						type: 'json',
 						root: 'periods'
@@ -400,7 +347,7 @@ Ext.onReady( function() {
 				fields: ['id', 'name'],
 				proxy: {
 					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_api + 'organisationUnitGroupSets.json?paging=false&links=false',
+					url: gis.init.contextPath + gis.conf.finals.url.path_api + 'organisationUnitGroupSets.json?paging=false&links=false',
 					reader: {
 						type: 'json',
 						root: 'organisationUnitGroupSets'
@@ -455,11 +402,23 @@ Ext.onReady( function() {
 				}
 			});
 
+			store.organisationUnitGroup = Ext.create('Ext.data.Store', {
+				fields: ['id', 'name'],
+				proxy: {
+					type: 'ajax',
+					url: init.contextPath + conf.finals.url.path_api + conf.finals.url.organisationunitgroup_getall,
+					reader: {
+						type: 'json',
+						root: 'organisationUnitGroups'
+					}
+				}
+			});
+
 			store.legendSets = Ext.create('Ext.data.Store', {
 				fields: ['id', 'name'],
 				proxy: {
 					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_api + 'mapLegendSets.json?links=false&paging=false',
+					url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets.json?links=false&paging=false',
 					reader: {
 						type: 'json',
 						root: 'mapLegendSets'
@@ -496,7 +455,7 @@ Ext.onReady( function() {
 				isLoaded: false,
 				pageSize: 10,
 				page: 1,
-				defaultUrl: gis.init.contextPath + gis.conf.url.path_api + 'maps.json?viewClass=sharing&links=false',
+				defaultUrl: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps.json?viewClass=sharing&links=false',
 				loadStore: function(url) {
 					this.proxy.url = url || this.defaultUrl;
 
@@ -526,7 +485,7 @@ Ext.onReady( function() {
 				}
 			});
 		}());
-		
+
 		// layer
 		(function() {
 			layer = gis.layer.facility;
@@ -577,7 +536,6 @@ Ext.onReady( function() {
 			numberField: null,
 			imageUrl: null,
 			text: null,
-			width: 184,
 			height: 22,
 			value: false,
 			opacity: 0.8,
@@ -608,6 +566,10 @@ Ext.onReady( function() {
 			setOpacity: function(opacity) {
 				this.opacity = opacity === 0 ? 0.01 : opacity;
 				this.layer.setLayerOpacity(this.opacity);
+				
+				if (this.layer.circleLayer) {
+					this.layer.circleLayer.setOpacity(this.opacity);
+				}
 			},
 			disableItem: function() {
 				this.checkbox.setValue(false);
@@ -686,7 +648,7 @@ Ext.onReady( function() {
 
 				this.items = [
 					{
-						width: this.checkbox.width + 6,
+						width: this.checkbox.width + 4,
 						items: this.checkbox
 					},
 					{
@@ -695,7 +657,7 @@ Ext.onReady( function() {
 						bodyStyle: 'padding-top: 4px'
 					},
 					{
-						width: 98,
+						width: 104,
 						html: this.text,
 						bodyStyle: 'padding-top: 4px'
 					},
@@ -749,13 +711,28 @@ Ext.onReady( function() {
 				this.numberField.disable();
 			},
 			initComponent: function() {
-				var that = this;
+				var that = this,
+					padding = 6;
+
+				this.numberField = Ext.create('Ext.form.field.Number', {
+					cls: 'gis-numberfield',
+					fieldStyle: 'border-top-left-radius: 1px; border-bottom-left-radius: 1px',
+					style: 'padding-bottom: 3px',
+					width: 70,
+					height: 21,
+					minValue: 0,
+					maxValue: 9999999,
+					value: this.number,
+					allowBlank: false,
+					disabled: true
+				});
 
 				this.checkbox = Ext.create('Ext.form.field.Checkbox', {
-					width: 191,
+					width: this.width - this.numberField.width - padding,
 					boxLabel: this.text,
 					checked: this.value,
 					disabled: this.disabled,
+					boxLabelCls: 'x-form-cb-label-alt1',
 					listeners: {
 						change: function(chb, value) {
 							if (value) {
@@ -768,22 +745,9 @@ Ext.onReady( function() {
 					}
 				});
 
-				this.numberField = Ext.create('Ext.form.field.Number', {
-					cls: 'gis-numberfield',
-					fieldStyle: 'border-top-left-radius: 1px; border-bottom-left-radius: 1px',
-					style: 'padding-bottom: 3px',
-					width: 65,
-					height: 21,
-					minValue: 0,
-					maxValue: 999999,
-					value: this.number,
-					allowBlank: false,
-					disabled: true
-				});
-
 				this.items = [
 					{
-						width: this.checkbox.width + 6,
+						width: this.checkbox.width + padding,
 						items: this.checkbox
 					},
 					{
@@ -1657,7 +1621,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: gis.init.contextPath + gis.conf.url.path_api + 'sharing/search',
+				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'sharing/search',
 				reader: {
 					type: 'json',
 					root: 'userGroups'
@@ -1753,7 +1717,7 @@ Ext.onReady( function() {
 					text: 'Save',
 					handler: function() {
 						Ext.Ajax.request({
-							url: gis.init.contextPath + gis.conf.url.path_api + 'sharing?type=map&id=' + sharing.object.id,
+							url: gis.init.contextPath + gis.conf.finals.url.path_api + 'sharing?type=map&id=' + sharing.object.id,
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/json'
@@ -1821,7 +1785,9 @@ Ext.onReady( function() {
 
 		// Vars
 			windowWidth = 500,
-			windowCmpWidth = windowWidth - 22;
+			windowCmpWidth = windowWidth - 22,
+			
+			dimConf = gis.conf.finals.dimension;
 
 		gis.store.maps.on('load', function(store, records) {
 			var pager = store.proxy.reader.jsonData.pager;
@@ -1861,8 +1827,7 @@ Ext.onReady( function() {
 			createButton = Ext.create('Ext.button.Button', {
 				text: GIS.i18n.create,
 				handler: function() {
-					var dimConf = gis.conf.finals.dimension,
-						name = nameTextfield.getValue(),
+					var name = nameTextfield.getValue(),
 						layers = gis.util.map.getVisibleVectorLayers(),
 						layer,
 						lonlat = gis.olmap.getCenter(),
@@ -1877,16 +1842,21 @@ Ext.onReady( function() {
 								view = layer.widget.getView();
 
 								// Operand
-								if (view.valueType === dimConf.dataElement.value && Ext.isObject(view.dataElement) && Ext.isString(view.dataElement.id) && view.dataElement.id.indexOf('-') !== -1) {
-									view.dataElementOperand = {id: view.dataElement.id.replace('-', '.')};
-									view.dataElement = null;
+								if (Ext.isArray(view.columns) && view.columns.length) {
+									for (var j = 0; j < view.columns.length; j++) {
+										for (var k = 0, item; k < view.columns[j].items.length; k++) {
+											item = view.columns[j].items[k];
+											
+											if (item.id.indexOf('-') !== -1) {
+												item.id = item.id.replace('-', '.');
+											}
+										}
+									}
 								}
 
 								// add
 								view.layer = layer.id;
 
-								// remove
-								delete view.periodType;
 								views.push(view);
 							}
 
@@ -1902,7 +1872,7 @@ Ext.onReady( function() {
 							};
 
 							Ext.Ajax.request({
-								url: gis.init.contextPath + gis.conf.url.path_api + 'maps/',
+								url: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/',
 								method: 'POST',
 								headers: {'Content-Type': 'application/json'},
 								params: Ext.encode(map),
@@ -1933,7 +1903,7 @@ Ext.onReady( function() {
 					var name = nameTextfield.getValue();
 
 					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.url.path_gis + 'renameMap.action?id=' + id + '&name=' + name + '&user=true',
+						url: gis.init.contextPath + gis.conf.finals.url.path_module + 'renameMap.action?id=' + id + '&name=' + name + '&user=true',
 						success: function() {
 							gis.store.maps.loadStore();
 
@@ -1997,7 +1967,7 @@ Ext.onReady( function() {
 						this.currentValue = this.getValue();
 
 						var value = this.getValue(),
-							url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
+							url = value ? gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
 							store = gis.store.maps;
 
 						store.page = 1;
@@ -2011,7 +1981,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.prev,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					url = value ? gis.init.contextPath + gis.conf.finals.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
 					store = gis.store.maps;
 
 				store.page = store.page <= 1 ? 1 : store.page - 1;
@@ -2023,7 +1993,7 @@ Ext.onReady( function() {
 			text: GIS.i18n.next,
 			handler: function() {
 				var value = searchTextfield.getValue(),
-					url = value ? gis.init.contextPath + gis.conf.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
+					url = value ? gis.init.contextPath + gis.conf.finals.url.path_api +  'maps/query/' + value + '.json?viewClass=sharing&links=false' : null,
 					store = gis.store.maps;
 
 				store.page = store.page + 1;
@@ -2131,7 +2101,7 @@ Ext.onReady( function() {
 											};
 
 											Ext.Ajax.request({
-												url: gis.init.contextPath + gis.conf.url.path_api + 'maps/' + record.data.id,
+												url: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/' + record.data.id,
 												method: 'PUT',
 												headers: {'Content-Type': 'application/json'},
 												params: Ext.encode(map),
@@ -2188,7 +2158,7 @@ Ext.onReady( function() {
 
 									if (confirm(message)) {
 										Ext.Ajax.request({
-											url: gis.init.contextPath + gis.conf.url.path_gis + 'addMapViewToDashboard.action',
+											url: gis.init.contextPath + gis.conf.finals.url.path_module + 'addMapViewToDashboard.action',
 											params: {
 												id: record.data.id
 											}
@@ -2409,7 +2379,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: gis.init.contextPath + gis.conf.url.path_api + 'mapLegendSets.json?links=false&paging=false',
+				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets.json?links=false&paging=false',
 				reader: {
 					type: 'json',
 					root: 'mapLegendSets'
@@ -2845,7 +2815,7 @@ Ext.onReady( function() {
 			});
 
 			if (id) {
-				legendStore.proxy.url = gis.init.contextPath + gis.conf.url.path_api +  'mapLegendSets/' + id + '.json?links=false&paging=false';
+				legendStore.proxy.url = gis.init.contextPath + gis.conf.finals.url.path_api +  'mapLegendSets/' + id + '.json?links=false&paging=false';
 				legendStore.load();
 
 				legendSetName.setValue(legendSetStore.getById(id).data.name);
@@ -2872,7 +2842,7 @@ Ext.onReady( function() {
 		deleteLegendSet = function(id) {
 			if (id) {
 				Ext.Ajax.request({
-					url: gis.init.contextPath + gis.conf.url.path_api + 'mapLegendSets/' + id,
+					url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets/' + id,
 					method: 'DELETE',
 					success: function() {
 						legendSetStore.load();
@@ -2971,7 +2941,7 @@ Ext.onReady( function() {
 					var body = Ext.encode(getRequestBody());
 
 					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.url.path_api + 'mapLegendSets/',
+						url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets/',
 						method: 'POST',
 						headers: {'Content-Type': 'application/json'},
 						params: body,
@@ -2995,7 +2965,7 @@ Ext.onReady( function() {
 					body = Ext.encode(getRequestBody());
 
 					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.url.path_api + 'mapLegendSets/' + id,
+						url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets/' + id,
 						method: 'PUT',
 						headers: {'Content-Type': 'application/json'},
 						params: body,
@@ -3167,7 +3137,7 @@ Ext.onReady( function() {
 			handler: function() {
 				if (textarea.getValue() && gis.map && gis.map.id) {
 					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.url.path_api + 'interpretations/map/' + gis.map.id,
+						url: gis.init.contextPath + gis.conf.finals.url.path_api + 'interpretations/map/' + gis.map.id,
 						method: 'POST',
 						params: textarea.getValue(),
 						headers: {'Content-Type': 'text/html'},
@@ -3263,8 +3233,16 @@ Ext.onReady( function() {
 		var infrastructuralDataElementValuesStore,
 
 		// Components
-			level,
-			parent,
+		
+			treePanel,
+			userOrganisationUnit,
+			userOrganisationUnitChildren,
+			userOrganisationUnitGrandChildren,
+			organisationUnitLevel,
+			organisationUnitGroup,
+			toolMenu,
+			tool,
+			toolPanel,
 
 		// Functions
 			reset,
@@ -3300,59 +3278,386 @@ Ext.onReady( function() {
 
 		// Components
 
-		level = Ext.create('Ext.form.field.ComboBox', {
-			fieldLabel: GIS.i18n.level,
-			editable: false,
-			valueField: 'id',
-			displayField: 'name',
-			mode: 'remote',
-			forceSelection: true,
-			width: gis.conf.layout.widget.item_width,
-			labelWidth: gis.conf.layout.widget.itemlabel_width,
-			style: 'margin-bottom: 4px',
-			store: gis.store.organisationUnitLevels,
-			listeners: {
-				added: function() {
-					this.store.cmp.push(this);
-				}
-			}
-		});
-
-		parent = Ext.create('Ext.tree.Panel', {
-			autoScroll: true,
-			lines: false,
-			rootVisible: false,
-			multiSelect: false,
-			width: gis.conf.layout.widget.item_width,
+		treePanel = Ext.create('Ext.tree.Panel', {
+			cls: 'gis-tree',
 			height: 300,
+			style: 'border-top: 1px solid #ddd; padding-top: 1px',
+			width: gis.conf.layout.widget.item_width,
+			rootVisible: false,
+			autoScroll: true,
+			multiSelect: true,
+			rendered: false,
 			reset: function() {
+				var rootNode = this.getRootNode().findChild('id', gis.init.rootNodes[0].id);
 				this.collapseAll();
-				this.expandPath(gis.init.rootNodes[0].path);
-				this.selectPath(gis.init.rootNodes[0].path);
+				this.expandPath(rootNode.getPath());
+				this.getSelectionModel().select(rootNode);
+			},
+			selectRootIf: function() {
+				if (this.getSelectionModel().getSelection().length < 1) {
+					var node = this.getRootNode().findChild('id', gis.init.rootNodes[0].id);
+					if (this.rendered) {
+						this.getSelectionModel().select(node);
+					}
+					return node;
+				}
+			},
+			numberOfRecords: 0,
+			recordsToSelect: [],
+			multipleSelectIf: function(doUpdate) {
+				if (this.recordsToSelect.length === this.numberOfRecords) {
+					this.getSelectionModel().select(this.recordsToSelect);
+					this.recordsToSelect = [];
+					this.numberOfRecords = 0;
+
+					if (doUpdate) {
+						update();
+					}
+				}
+			},
+			multipleExpand: function(id, path, doUpdate) {
+				this.expandPath('/' + gis.conf.finals.root.id + path, 'id', '/', function() {
+					var record = this.getRootNode().findChild('id', id, true);
+					this.recordsToSelect.push(record);
+					this.multipleSelectIf(doUpdate);
+				}, this);
+			},
+			select: function(url, params) {
+				if (!params) {
+					params = {};
+				}
+				Ext.Ajax.request({
+					url: url,
+					method: 'GET',
+					params: params,
+					scope: this,
+					success: function(r) {
+						var a = Ext.decode(r.responseText).organisationUnits;
+						this.numberOfRecords = a.length;
+						for (var i = 0; i < a.length; i++) {
+							this.multipleExpand(a[i].id, a[i].path);
+						}
+					}
+				});
+			},
+			selectByGroup: function(id) {
+				if (id) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbygroup,
+						params = {id: id};
+					this.select(url, params);
+				}
+			},
+			selectByLevel: function(level) {
+				if (level) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbylevel,
+						params = {level: level};
+					this.select(url, params);
+				}
+			},
+			selectByIds: function(ids) {
+				if (ids) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbyids;
+					Ext.Array.each(ids, function(item) {
+						url = Ext.String.urlAppend(url, 'ids=' + item);
+					});
+					if (!this.rendered) {
+						gis.cmp.dimension.organisationUnit.panel.expand();
+					}
+					this.select(url);
+				}
 			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_gis + 'getOrganisationUnitChildren.action'
+					url: gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunitchildren_get
 				},
 				root: {
-					id: 'root',
+					id: gis.conf.finals.root.id,
 					expanded: true,
 					children: gis.init.rootNodes
-				},
-				listeners: {
-					load: function(s, node, r) {
-						//for (var i = 0; i < r.length; i++) {
-							//r[i].data.text = gis.util.json.encodeString(r[i].data.text);
-						//}
-					}
 				}
 			}),
-			listeners: {
+			xable: function(values) {
+				for (var i = 0; i < values.length; i++) {
+					if (!!values[i]) {
+						this.disable();
+						return;
+					}
+				}
+
+				this.enable();
+			},
+			getDimension: function() {
+				var r = treePanel.getSelectionModel().getSelection(),
+					config = {
+						dimension: gis.conf.finals.dimension.organisationUnit.objectName,
+						items: []
+					};
+
+				if (toolMenu.menuValue === 'orgunit') {
+					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue() || userOrganisationUnitGrandChildren.getValue()) {
+						if (userOrganisationUnit.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT',
+								name: ''
+							});
+						}
+						if (userOrganisationUnitChildren.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT_CHILDREN',
+								name: ''
+							});
+						}
+						if (userOrganisationUnitGrandChildren.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT_GRANDCHILDREN',
+								name: ''
+							});
+						}
+					}
+					else {
+						for (var i = 0; i < r.length; i++) {
+							config.items.push({id: r[i].data.id});
+						}
+					}
+				}
+				else if (toolMenu.menuValue === 'level') {
+					var levels = organisationUnitLevel.getValue();
+
+					for (var i = 0; i < levels.length; i++) {
+						config.items.push({
+							id: 'LEVEL-' + levels[i],
+							name: ''
+						});
+					}
+
+					for (var i = 0; i < r.length; i++) {
+						config.items.push({
+							id: r[i].data.id,
+							name: ''
+						});
+					}
+				}
+				else if (toolMenu.menuValue === 'group') {
+					var groupIds = organisationUnitGroup.getValue();
+
+					for (var i = 0; i < groupIds.length; i++) {
+						config.items.push({
+							id: 'OU_GROUP-' + groupIds[i],
+							name: ''
+						});
+					}
+
+					for (var i = 0; i < r.length; i++) {
+						config.items.push({
+							id: r[i].data.id,
+							name: ''
+						});
+					}
+				}
+
+				return config.items.length ? config : null;
+			},
+            listeners: {
+				render: function() {
+					this.rendered = true;
+				},
 				afterrender: function() {
 					this.getSelectionModel().select(0);
+				},
+				itemcontextmenu: function(v, r, h, i, e) {
+					v.getSelectionModel().select(r, false);
+
+					if (v.menu) {
+						v.menu.destroy();
+					}
+					v.menu = Ext.create('Ext.menu.Menu', {
+						id: 'treepanel-contextmenu',
+						showSeparator: false,
+						shadow: false
+					});
+					if (!r.data.leaf) {
+						v.menu.add({
+							id: 'treepanel-contextmenu-item',
+							text: GIS.i18n.select_all_children,
+							icon: 'images/node-select-child.png',
+							handler: function() {
+								r.expand(false, function() {
+									v.getSelectionModel().select(r.childNodes, true);
+									v.getSelectionModel().deselect(r);
+								});
+							}
+						});
+					}
+					else {
+						return;
+					}
+
+					v.menu.showAt(e.xy);
 				}
 			}
+		});
+
+		userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.30,
+			style: 'padding-top:2px; padding-left:3px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'User OU',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnitChildren.getValue(), userOrganisationUnitGrandChildren.getValue()]);
+			}
+		});
+
+		userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.30,
+			style: 'padding-top:2px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'Children',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitGrandChildren.getValue()]);
+			}
+		});
+
+		userOrganisationUnitGrandChildren = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.40,
+			style: 'padding-top:2px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'Grand children',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitChildren.getValue()]);
+			}
+		});
+
+		organisationUnitLevel = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'gis-combo',
+			multiSelect: true,
+			style: 'margin-bottom:0',
+			width: gis.conf.layout.widget.item_width - 38,
+			valueField: 'level',
+			displayField: 'name',
+			emptyText: GIS.i18n.select_organisation_unit_levels,
+			editable: false,
+			hidden: true,
+			store: {
+				fields: ['id', 'name', 'level'],
+				data: gis.init.organisationUnitLevels
+			}
+		});
+
+		organisationUnitGroup = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'gis-combo',
+			multiSelect: true,
+			style: 'margin-bottom:0',
+			width: gis.conf.layout.widget.item_width - 38,
+			valueField: 'id',
+			displayField: 'name',
+			emptyText: GIS.i18n.select_organisation_unit_groups,
+			editable: false,
+			hidden: true,
+			store: gis.store.organisationUnitGroup
+		});
+
+		toolMenu = Ext.create('Ext.menu.Menu', {
+			shadow: false,
+			showSeparator: false,
+			menuValue: 'orgunit',
+			clickHandler: function(param) {
+				if (!param) {
+					return;
+				}
+				
+				var items = this.items.items;
+				this.menuValue = param;
+
+				// Menu item icon cls
+				for (var i = 0; i < items.length; i++) {
+					if (items[i].setIconCls) {
+						if (items[i].param === param) {
+							items[i].setIconCls('gis-menu-item-selected');
+						}
+						else {
+							items[i].setIconCls('gis-menu-item-unselected');
+						}
+					}
+				}
+
+				// Gui
+				if (param === 'orgunit') {
+					userOrganisationUnit.show();
+					userOrganisationUnitChildren.show();
+					userOrganisationUnitGrandChildren.show();
+					organisationUnitLevel.hide();
+					organisationUnitGroup.hide();
+
+					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+						treePanel.disable();
+					}
+				}
+				else if (param === 'level') {
+					userOrganisationUnit.hide();
+					userOrganisationUnitChildren.hide();
+					userOrganisationUnitGrandChildren.hide();
+					organisationUnitLevel.show();
+					organisationUnitGroup.hide();
+					treePanel.enable();
+				}
+				else if (param === 'group') {
+					userOrganisationUnit.hide();
+					userOrganisationUnitChildren.hide();
+					userOrganisationUnitGrandChildren.hide();
+					organisationUnitLevel.hide();
+					organisationUnitGroup.show();
+					treePanel.enable();
+				}
+			},
+			items: [
+				{
+					xtype: 'label',
+					text: 'Selection mode',
+					style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
+				},
+				{
+					text: GIS.i18n.select_organisation_units + '&nbsp;&nbsp;',
+					param: 'orgunit',
+					iconCls: 'gis-menu-item-selected'
+				},
+				{
+					text: 'Select levels' + '&nbsp;&nbsp;',
+					param: 'level',
+					iconCls: 'gis-menu-item-unselected'
+				},
+				{
+					text: 'Select groups' + '&nbsp;&nbsp;',
+					param: 'group',
+					iconCls: 'gis-menu-item-unselected'
+				}
+			],
+			listeners: {
+				afterrender: function() {
+					this.getEl().addCls('gis-btn-menu');
+				},
+				click: function(menu, item) {
+					this.clickHandler(item.param);
+				}
+			}
+		});
+
+		tool = Ext.create('Ext.button.Button', {
+			cls: 'gis-button-organisationunitselection',
+			iconCls: 'gis-button-icon-gear',
+			width: 36,
+			height: 24,
+			menu: toolMenu
+		});
+
+		toolPanel = Ext.create('Ext.panel.Panel', {
+			width: 36,
+			bodyStyle: 'border:0 none; text-align:right',
+			style: 'margin-right:2px',
+			items: tool
 		});
 
 		// Functions
@@ -3360,8 +3665,15 @@ Ext.onReady( function() {
 		reset = function() {
 
 			// Components
-			level.clearValue();
-			parent.reset();
+			toolMenu.clickHandler('orgunit');
+			treePanel.reset();
+			
+			userOrganisationUnit.setValue(false);
+			userOrganisationUnitChildren.setValue(false);
+			userOrganisationUnitGrandChildren.setValue(false);
+			
+			organisationUnitLevel.clearValue();
+			organisationUnitGroup.clearValue();
 
 			// Layer options
 			if (layer.searchWindow) {
@@ -3378,13 +3690,56 @@ Ext.onReady( function() {
 		};
 
 		setGui = function(view) {
+			var ouDim = view.rows[0],
+				isOu = false,
+				isOuc = false,
+				isOugc = false,
+				levels = [],
+				groups = [];
 
-			// Level and parent
-			gis.store.organisationUnitLevels.loadFn( function() {
-				level.setValue(view.organisationUnitLevel.id);
-			});
+			// Organisation units
+			for (var i = 0, item; i < ouDim.items.length; i++) {
+				item = ouDim.items[i];
+				
+				if (item.id === 'USER_ORGUNIT') {
+					isOu = true;
+				}
+				else if (item.id === 'USER_ORGUNIT_CHILDREN') {
+					isOuc = true;
+				}
+				else if (item.id === 'USER_ORGUNIT_GRANDCHILDREN') {
+					isOugc = true;
+				}
+				else if (item.id.substr(0,5) === 'LEVEL') {
+					levels.push(parseInt(item.id.split('-')[1]));
+				}
+				else if (item.id.substr(0,8) === 'OU_GROUP') {
+					groups.push(parseInt(item.id.split('-')[1]));
+				}
+			}
 
-			parent.selectPath('/root' + view.parentGraph);
+			if (levels.length) {
+				toolMenu.clickHandler('level');
+				organisationUnitLevel.setValue(levels);
+			}
+			else if (groups.length) {
+				toolMenu.clickHandler('group');
+				organisationUnitGroup.setValue(groups);
+			}
+			else {
+				toolMenu.clickHandler('orgunit');
+				userOrganisationUnit.setValue(isOu);
+				userOrganisationUnitChildren.setValue(isOuc);
+				userOrganisationUnitGrandChildren.setValue(isOugc);
+			}
+			
+			treePanel.numberOfRecords = gis.util.object.getLength(view.parentGraphMap);
+			
+			for (var key in view.parentGraphMap) {
+				if (view.parentGraphMap.hasOwnProperty(key)) {
+					treePanel.multipleExpand(key, view.parentGraphMap[key], false);
+				}
+			}
 
 			// Layer item
 			layer.item.setValue(true, view.opacity);
@@ -3394,74 +3749,17 @@ Ext.onReady( function() {
 		};
 
 		getView = function(config) {
-			var parentArray = parent.getSelectionModel().getSelection(),
-				store = gis.store.organisationUnitLevels,
-				view;
-
-			parentArray = parentArray.length ? parentArray : [{raw: gis.init.rootNodes[0]}];
-
-			view = {
-				organisationUnitLevel: {
-					id: level.getValue(),
-					name: level.getRawValue(),
-					level: store.data.items.length && level.getValue() ? store.getById(level.getValue()).data.level : null
-				},
-				parentOrganisationUnit: {
-					id: parentArray[0].raw.id,
-					name: parentArray[0].raw.text
-				},
-				parentLevel: parentArray[0].raw.level,
-				parentGraph: parentArray[0].raw.path,
-				opacity: layer.item.getOpacity()
-			};
-
-			if (config && Ext.isObject(config)) {
-				view = layer.core.extendView(view, config);
-			}
-
+			var view = {};
+			
+			view.rows = [treePanel.getDimension()];
+			
 			return validateView(view);
 		};
 
-		validateView = function(view) {
-			if (!view.organisationUnitLevel.id || !Ext.isString(view.organisationUnitLevel.id)) {
-				GIS.logg.push([view.organisationUnitLevel.id, layer.id + '.organisationUnitLevel.id: string']);
-				alert(GIS.i18n.no_level_selected);
-				return false;
-			}
-			if (!view.organisationUnitLevel.name || !Ext.isString(view.organisationUnitLevel.name)) {
-				GIS.logg.push([view.organisationUnitLevel.name, layer.id + '.organisationUnitLevel.name: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.organisationUnitLevel.level || !Ext.isNumber(view.organisationUnitLevel.level)) {
-				GIS.logg.push([view.organisationUnitLevel.level, layer.id + '.organisationUnitLevel.level: number']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentOrganisationUnit.id || !Ext.isString(view.parentOrganisationUnit.id)) {
-				GIS.logg.push([view.parentOrganisationUnit.id, layer.id + '.parentOrganisationUnit.id: string']);
-				alert(GIS.i18n.no_parent_organisationunit_selected);
-				return false;
-			}
-			if (!view.parentOrganisationUnit.name || !Ext.isString(view.parentOrganisationUnit.name)) {
-				GIS.logg.push([view.parentOrganisationUnit.name, layer.id + '.parentOrganisationUnit.name: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentLevel || !Ext.isNumber(view.parentLevel)) {
-				GIS.logg.push([view.parentLevel, layer.id + '.parentLevel: number']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentGraph || !Ext.isString(view.parentGraph)) {
-				GIS.logg.push([view.parentGraph, layer.id + '.parentGraph: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-
-			if (view.parentOrganisationUnit.level > view.organisationUnitLevel.level) {
-				GIS.logg.push([view.parentOrganisationUnit.level, view.organisationUnitLevel.level, layer.id + '.parentOrganisationUnit.level: number <= ' + layer.id + '.organisationUnitLevel.level']);
-				alert(GIS.i18n.level_not_higher_than_parent_level);
+		validateView = function(view) {			
+			if (!(Ext.isArray(view.rows) && view.rows.length && Ext.isString(view.rows[0].dimension) && Ext.isArray(view.rows[0].items) && view.rows[0].items.length)) {
+				GIS.logg.push([view.rows, layer.id + '.rows: dimension array']);
+				alert('No organisation units selected');
 				return false;
 			}
 
@@ -3488,11 +3786,30 @@ Ext.onReady( function() {
 					//width: 270,
 					items: [
 						{
-							html: GIS.i18n.organisation_unit_level_parent,
+							html: GIS.i18n.organisation_units,
 							cls: 'gis-form-subtitle-first'
 						},
-						level,
-						parent
+						{
+							layout: 'column',
+							bodyStyle: 'border:0 none',
+							style: 'padding-bottom:2px',
+							items: [
+								toolPanel,
+								{
+									width: gis.conf.layout.widget.item_width - 38,
+									layout: 'column',
+									bodyStyle: 'border:0 none',
+									items: [
+										userOrganisationUnit,
+										userOrganisationUnitChildren,
+										userOrganisationUnitGrandChildren,
+										organisationUnitLevel,
+										organisationUnitGroup
+									]
+								}
+							]
+						},
+						treePanel
 					]
 				}
 			]
@@ -3524,6 +3841,7 @@ Ext.onReady( function() {
 			dataElement,
 			dataElementDetailLevel,
 			dataElementPanel,
+			dataSet,
 			periodType,
 			period,
 			periodPrev,
@@ -3536,8 +3854,16 @@ Ext.onReady( function() {
 			colorHigh,
 			radiusLow,
 			radiusHigh,
-			level,
-			parent,
+			
+			treePanel,
+			userOrganisationUnit,
+			userOrganisationUnitChildren,
+			userOrganisationUnitGrandChildren,
+			organisationUnitLevel,
+			organisationUnitGroup,
+			toolMenu,
+			tool,
+			toolPanel,
 
 			periodTypePanel,
 			methodPanel,
@@ -3549,7 +3875,6 @@ Ext.onReady( function() {
 			reset,
 			setGui,
 			getView,
-			validateView,
 
 		// Convenience
 			dimConf = gis.conf.finals.dimension,
@@ -3630,7 +3955,7 @@ Ext.onReady( function() {
 
 				this.setProxy({
 					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_api + path,
+					url: gis.init.contextPath + gis.conf.finals.url.path_api + path,
 					reader: {
 						type: 'json',
 						root: 'dataElements'
@@ -3654,7 +3979,7 @@ Ext.onReady( function() {
 				if (Ext.isString(uid)) {
 					this.setProxy({
 						type: 'ajax',
-						url: gis.conf.url.path_commons + 'getOperands.action?uid=' + uid,
+						url: gis.conf.finals.url.path_commons + 'getOperands.action?uid=' + uid,
 						reader: {
 							type: 'json',
 							root: 'operands'
@@ -3692,6 +4017,27 @@ Ext.onReady( function() {
 				}
 			}
 		});
+
+        dataSetStore = Ext.create('Ext.data.Store', {
+            fields: ['id', 'name'],
+            proxy: {
+                type: 'ajax',
+                url: gis.init.contextPath + gis.conf.finals.url.path_api + gis.conf.finals.url.dataset_get,
+                reader: {
+                    type: 'json',
+                    root: 'dataSets'
+                }
+            },
+            sortStore: function() {
+                this.sort('name', 'ASC');
+            },
+            isLoaded: false,
+            listeners: {
+                load: function(s) {
+                    this.isLoaded = true;
+                }
+            }
+        });
 
 		periodsByTypeStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'index'],
@@ -3760,17 +4106,26 @@ Ext.onReady( function() {
 		// Togglers
 
 		valueTypeToggler = function(valueType) {
-			if (valueType === 'indicator') {
+			if (valueType === dimConf.indicator.objectName) {
 				indicatorGroup.show();
 				indicator.show();
 				dataElementGroup.hide();
 				dataElementPanel.hide();
+				dataSet.hide();
 			}
-			else if (valueType === 'dataElement') {
+			else if (valueType === dimConf.dataElement.objectName || valueType === dimConf.operand.objectName) {
 				indicatorGroup.hide();
 				indicator.hide();
 				dataElementGroup.show();
 				dataElementPanel.show();
+				dataSet.hide();
+			}
+			else if (valueType === dimConf.dataSet.objectName) {
+				indicatorGroup.hide();
+				indicator.hide();
+				dataElementGroup.hide();
+				dataElementPanel.hide();
+				dataSet.show();
 			}
 		};
 
@@ -3800,12 +4155,13 @@ Ext.onReady( function() {
 			forceSelection: true,
 			width: gis.conf.layout.widget.item_width,
 			labelWidth: gis.conf.layout.widget.itemlabel_width,
-			value: gis.conf.finals.dimension.indicator.id,
+			value: dimConf.indicator.objectName,
 			store: Ext.create('Ext.data.ArrayStore', {
 				fields: ['id', 'name'],
 				data: [
-					[gis.conf.finals.dimension.indicator.id, GIS.i18n.indicator],
-					[gis.conf.finals.dimension.dataElement.id, GIS.i18n.dataelement]
+					[dimConf.indicator.objectName, GIS.i18n.indicator],
+					[dimConf.dataElement.objectName, GIS.i18n.dataelement],
+					[dimConf.dataSet.objectName, GIS.i18n.dataset]
 				]
 			}),
 			listeners: {
@@ -3821,19 +4177,24 @@ Ext.onReady( function() {
 			valueField: 'id',
 			displayField: 'name',
 			forceSelection: true,
+			queryMode: 'local',
 			width: gis.conf.layout.widget.item_width,
 			labelWidth: gis.conf.layout.widget.itemlabel_width,
-			store: gis.store.indicatorGroups,
+			store: {
+				fields: ['id', 'name'],
+				data: gis.init.indicatorGroups
+				//listeners: {
+					//load: function() {
+						//this.sort('name', 'ASC');
+					//}
+				//}
+			},
 			listeners: {
-				added: function() {
-					this.store.cmp.push(this);
-				},
 				select: function() {
 					indicator.clearValue();
-
-					var store = indicator.store;
-					store.proxy.url = gis.init.contextPath + gis.conf.url.path_api +  'indicatorGroups/' + this.getValue() + '.json?links=false&paging=false';
-					store.load();
+					
+					indicator.store.proxy.url = gis.init.contextPath + gis.conf.finals.url.path_api +  'indicatorGroups/' + this.getValue() + '.json?links=false&paging=false';
+					indicator.store.load();
 				}
 			}
 		});
@@ -3852,7 +4213,7 @@ Ext.onReady( function() {
 			listeners: {
 				select: function(cb) {
 					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.url.path_api + 'indicators/' + this.getValue() + '.json?links=false',
+						url: gis.init.contextPath + gis.conf.finals.url.path_api + 'indicators/' + this.getValue() + '.json?links=false',
 						success: function(r) {
 							r = Ext.decode(r.responseText);
 
@@ -3884,10 +4245,13 @@ Ext.onReady( function() {
 			valueField: 'id',
 			displayField: 'name',
 			forceSelection: true,
+			hidden: true,
 			width: gis.conf.layout.widget.item_width,
 			labelWidth: gis.conf.layout.widget.itemlabel_width,
-			hidden: true,
-			store: gis.store.dataElementGroups,
+			store: {
+				fields: ['id', 'name'],
+				data: gis.init.dataElementGroups
+			},
 			loadAvailable: function(preventLoad) {
 				var store = dataElementsByGroupStore,
 					detailLevel = dataElementDetailLevel.getValue(),
@@ -3903,9 +4267,6 @@ Ext.onReady( function() {
 				}
 			},
 			listeners: {
-				added: function() {
-					this.store.cmp.push(this);
-				},
 				select: function(cb) {
 					dataElement.clearValue();
 					cb.loadAvailable();
@@ -3937,7 +4298,7 @@ Ext.onReady( function() {
 					}
 
 					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.url.path_api + 'dataElements/' + id + '.json?links=false',
+						url: gis.init.contextPath + gis.conf.finals.url.path_api + 'dataElements/' + id + '.json?links=false',
 						success: function(r) {
 							r = Ext.decode(r.responseText);
 
@@ -3971,7 +4332,7 @@ Ext.onReady( function() {
 			valueField: 'id',
 			displayField: 'text',
 			width: 65 - 2,
-			value: gis.conf.finals.dimension.dataElement.objectName,
+			value: dimConf.dataElement.objectName,
 			onSelect: function() {
 				dataElementGroup.loadAvailable();
 				dataElement.clearValue();
@@ -3979,8 +4340,8 @@ Ext.onReady( function() {
 			store: {
 				fields: ['id', 'text'],
 				data: [
-					{id: gis.conf.finals.dimension.dataElement.objectName, text: GIS.i18n.totals},
-					{id: gis.conf.finals.dimension.operand.objectName, text: GIS.i18n.details}
+					{id: dimConf.dataElement.objectName, text: GIS.i18n.totals},
+					{id: dimConf.operand.objectName, text: GIS.i18n.details}
 				]
 			},
 			listeners: {
@@ -4000,6 +4361,19 @@ Ext.onReady( function() {
 			]
 		});
 
+		dataSet = Ext.create('Ext.form.field.ComboBox', {
+			fieldLabel: GIS.i18n.dataset,
+			editable: false,
+			valueField: 'id',
+			displayField: 'name',
+			forceSelection: true,
+			hidden: true,
+			width: gis.conf.layout.widget.item_width,
+			labelWidth: gis.conf.layout.widget.itemlabel_width,
+			listConfig: {loadMask: false},
+			store: dataSetStore
+		});
+
 		periodType = Ext.create('Ext.form.field.ComboBox', {
 			editable: false,
 			valueField: 'id',
@@ -4009,22 +4383,39 @@ Ext.onReady( function() {
 			width: 142,
 			store: gis.store.periodTypes,
 			periodOffset: 0,
-			listeners: {
-				select: function() {
-					var pt = new PeriodType(),
-						type = this.getValue(),
-						offset = this.periodOffset,
+			selectHandler: function() {
+				var type = this.getValue(),
+					pType,
+					offset,
+					periods;
 
-						periods = pt.get(type).generatePeriods({
-							offset: offset,
-							filterFuturePeriods: true,
-							reversePeriods: true
-						});
+				if (type === 'relativePeriods') {
+					periodsByTypeStore.loadData(gis.conf.period.relativePeriods);
+
+					periodPrev.disable();
+					periodNext.disable();
+				}
+				else {
+					pType = new PeriodType();
+					offset = this.periodOffset;
+					periods = pType.get(type).generatePeriods({
+						offset: offset,
+						filterFuturePeriods: true,
+						reversePeriods: true
+					});
 
 					periodsByTypeStore.setIndex(periods);
 					periodsByTypeStore.loadData(periods);
 
-					period.selectFirst();
+					periodPrev.enable();
+					periodNext.enable();
+				}
+
+				period.selectFirst();
+			},
+			listeners: {
+				select: function() {
+					this.selectHandler();
 				}
 			}
 		});
@@ -4165,59 +4556,386 @@ Ext.onReady( function() {
 			value: 15
 		});
 
-		level = Ext.create('Ext.form.field.ComboBox', {
-			fieldLabel: GIS.i18n.level,
-			editable: false,
-			valueField: 'id',
-			displayField: 'name',
-			mode: 'remote',
-			forceSelection: true,
-			width: gis.conf.layout.widget.item_width,
-			labelWidth: gis.conf.layout.widget.itemlabel_width,
-			style: 'margin-bottom: 4px',
-			store: gis.store.organisationUnitLevels,
-			listeners: {
-				added: function() {
-					this.store.cmp.push(this);
-				}
-			}
-		});
-
-		parent = Ext.create('Ext.tree.Panel', {
-			autoScroll: true,
-			lines: false,
-			rootVisible: false,
-			multiSelect: false,
-			width: gis.conf.layout.widget.item_width,
+		treePanel = Ext.create('Ext.tree.Panel', {
+			cls: 'gis-tree',
 			height: 210,
+			style: 'border-top: 1px solid #ddd; padding-top: 1px',
+			width: gis.conf.layout.widget.item_width,
+			rootVisible: false,
+			autoScroll: true,
+			multiSelect: true,
+			rendered: false,
 			reset: function() {
+				var rootNode = this.getRootNode().findChild('id', gis.init.rootNodes[0].id);
 				this.collapseAll();
-				this.expandPath(gis.init.rootNodes[0].path);
-				this.selectPath(gis.init.rootNodes[0].path);
+				this.expandPath(rootNode.getPath());
+				this.getSelectionModel().select(rootNode);
+			},
+			selectRootIf: function() {
+				if (this.getSelectionModel().getSelection().length < 1) {
+					var node = this.getRootNode().findChild('id', gis.init.rootNodes[0].id);
+					if (this.rendered) {
+						this.getSelectionModel().select(node);
+					}
+					return node;
+				}
+			},
+			numberOfRecords: 0,
+			recordsToSelect: [],
+			multipleSelectIf: function(doUpdate) {
+				if (this.recordsToSelect.length === this.numberOfRecords) {
+					this.getSelectionModel().select(this.recordsToSelect);
+					this.recordsToSelect = [];
+					this.numberOfRecords = 0;
+
+					if (doUpdate) {
+						update();
+					}
+				}
+			},
+			multipleExpand: function(id, path, doUpdate) {
+				this.expandPath('/' + gis.conf.finals.root.id + path, 'id', '/', function() {
+					var record = this.getRootNode().findChild('id', id, true);
+					this.recordsToSelect.push(record);
+					this.multipleSelectIf(doUpdate);
+				}, this);
+			},
+			select: function(url, params) {
+				if (!params) {
+					params = {};
+				}
+				Ext.Ajax.request({
+					url: url,
+					method: 'GET',
+					params: params,
+					scope: this,
+					success: function(r) {
+						var a = Ext.decode(r.responseText).organisationUnits;
+						this.numberOfRecords = a.length;
+						for (var i = 0; i < a.length; i++) {
+							this.multipleExpand(a[i].id, a[i].path);
+						}
+					}
+				});
+			},
+			selectByGroup: function(id) {
+				if (id) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbygroup,
+						params = {id: id};
+					this.select(url, params);
+				}
+			},
+			selectByLevel: function(level) {
+				if (level) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbylevel,
+						params = {level: level};
+					this.select(url, params);
+				}
+			},
+			selectByIds: function(ids) {
+				if (ids) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbyids;
+					Ext.Array.each(ids, function(item) {
+						url = Ext.String.urlAppend(url, 'ids=' + item);
+					});
+					if (!this.rendered) {
+						gis.cmp.dimension.organisationUnit.panel.expand();
+					}
+					this.select(url);
+				}
 			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_gis + 'getOrganisationUnitChildren.action'
+					url: gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunitchildren_get
 				},
 				root: {
-					id: 'root',
+					id: gis.conf.finals.root.id,
 					expanded: true,
 					children: gis.init.rootNodes
-				},
-				listeners: {
-					load: function(s, node, r) {
-						//for (var i = 0; i < r.length; i++) {
-							//r[i].data.text = gis.util.json.encodeString(r[i].data.text);
-						//}
-					}
 				}
 			}),
-			listeners: {
+			xable: function(values) {
+				for (var i = 0; i < values.length; i++) {
+					if (!!values[i]) {
+						this.disable();
+						return;
+					}
+				}
+
+				this.enable();
+			},
+			getDimension: function() {
+				var r = treePanel.getSelectionModel().getSelection(),
+					config = {
+						dimension: gis.conf.finals.dimension.organisationUnit.objectName,
+						items: []
+					};
+
+				if (toolMenu.menuValue === 'orgunit') {
+					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue() || userOrganisationUnitGrandChildren.getValue()) {
+						if (userOrganisationUnit.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT',
+								name: ''
+							});
+						}
+						if (userOrganisationUnitChildren.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT_CHILDREN',
+								name: ''
+							});
+						}
+						if (userOrganisationUnitGrandChildren.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT_GRANDCHILDREN',
+								name: ''
+							});
+						}
+					}
+					else {
+						for (var i = 0; i < r.length; i++) {
+							config.items.push({id: r[i].data.id});
+						}
+					}
+				}
+				else if (toolMenu.menuValue === 'level') {
+					var levels = organisationUnitLevel.getValue();
+
+					for (var i = 0; i < levels.length; i++) {
+						config.items.push({
+							id: 'LEVEL-' + levels[i],
+							name: ''
+						});
+					}
+
+					for (var i = 0; i < r.length; i++) {
+						config.items.push({
+							id: r[i].data.id,
+							name: ''
+						});
+					}
+				}
+				else if (toolMenu.menuValue === 'group') {
+					var groupIds = organisationUnitGroup.getValue();
+
+					for (var i = 0; i < groupIds.length; i++) {
+						config.items.push({
+							id: 'OU_GROUP-' + groupIds[i],
+							name: ''
+						});
+					}
+
+					for (var i = 0; i < r.length; i++) {
+						config.items.push({
+							id: r[i].data.id,
+							name: ''
+						});
+					}
+				}
+
+				return config.items.length ? config : null;
+			},
+            listeners: {
+				render: function() {
+					this.rendered = true;
+				},
 				afterrender: function() {
 					this.getSelectionModel().select(0);
+				},
+				itemcontextmenu: function(v, r, h, i, e) {
+					v.getSelectionModel().select(r, false);
+
+					if (v.menu) {
+						v.menu.destroy();
+					}
+					v.menu = Ext.create('Ext.menu.Menu', {
+						id: 'treepanel-contextmenu',
+						showSeparator: false,
+						shadow: false
+					});
+					if (!r.data.leaf) {
+						v.menu.add({
+							id: 'treepanel-contextmenu-item',
+							text: GIS.i18n.select_all_children,
+							icon: 'images/node-select-child.png',
+							handler: function() {
+								r.expand(false, function() {
+									v.getSelectionModel().select(r.childNodes, true);
+									v.getSelectionModel().deselect(r);
+								});
+							}
+						});
+					}
+					else {
+						return;
+					}
+
+					v.menu.showAt(e.xy);
 				}
 			}
+		});
+
+		userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.30,
+			style: 'padding-top:2px; padding-left:3px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'User OU',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnitChildren.getValue(), userOrganisationUnitGrandChildren.getValue()]);
+			}
+		});
+
+		userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.30,
+			style: 'padding-top:2px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'Children',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitGrandChildren.getValue()]);
+			}
+		});
+
+		userOrganisationUnitGrandChildren = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.40,
+			style: 'padding-top:2px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'Grand children',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitChildren.getValue()]);
+			}
+		});
+
+		organisationUnitLevel = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'gis-combo',
+			multiSelect: true,
+			style: 'margin-bottom:0',
+			width: gis.conf.layout.widget.item_width - 38,
+			valueField: 'level',
+			displayField: 'name',
+			emptyText: GIS.i18n.select_organisation_unit_levels,
+			editable: false,
+			hidden: true,
+			store: {
+				fields: ['id', 'name', 'level'],
+				data: gis.init.organisationUnitLevels
+			}
+		});
+
+		organisationUnitGroup = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'gis-combo',
+			multiSelect: true,
+			style: 'margin-bottom:0',
+			width: gis.conf.layout.widget.item_width - 38,
+			valueField: 'id',
+			displayField: 'name',
+			emptyText: GIS.i18n.select_organisation_unit_groups,
+			editable: false,
+			hidden: true,
+			store: gis.store.organisationUnitGroup
+		});
+
+		toolMenu = Ext.create('Ext.menu.Menu', {
+			shadow: false,
+			showSeparator: false,
+			menuValue: 'orgunit',
+			clickHandler: function(param) {
+				if (!param) {
+					return;
+				}
+				
+				var items = this.items.items;
+				this.menuValue = param;
+
+				// Menu item icon cls
+				for (var i = 0; i < items.length; i++) {
+					if (items[i].setIconCls) {
+						if (items[i].param === param) {
+							items[i].setIconCls('gis-menu-item-selected');
+						}
+						else {
+							items[i].setIconCls('gis-menu-item-unselected');
+						}
+					}
+				}
+
+				// Gui
+				if (param === 'orgunit') {
+					userOrganisationUnit.show();
+					userOrganisationUnitChildren.show();
+					userOrganisationUnitGrandChildren.show();
+					organisationUnitLevel.hide();
+					organisationUnitGroup.hide();
+
+					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+						treePanel.disable();
+					}
+				}
+				else if (param === 'level') {
+					userOrganisationUnit.hide();
+					userOrganisationUnitChildren.hide();
+					userOrganisationUnitGrandChildren.hide();
+					organisationUnitLevel.show();
+					organisationUnitGroup.hide();
+					treePanel.enable();
+				}
+				else if (param === 'group') {
+					userOrganisationUnit.hide();
+					userOrganisationUnitChildren.hide();
+					userOrganisationUnitGrandChildren.hide();
+					organisationUnitLevel.hide();
+					organisationUnitGroup.show();
+					treePanel.enable();
+				}
+			},
+			items: [
+				{
+					xtype: 'label',
+					text: 'Selection mode',
+					style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
+				},
+				{
+					text: GIS.i18n.select_organisation_units + '&nbsp;&nbsp;',
+					param: 'orgunit',
+					iconCls: 'gis-menu-item-selected'
+				},
+				{
+					text: 'Select levels' + '&nbsp;&nbsp;',
+					param: 'level',
+					iconCls: 'gis-menu-item-unselected'
+				},
+				{
+					text: 'Select groups' + '&nbsp;&nbsp;',
+					param: 'group',
+					iconCls: 'gis-menu-item-unselected'
+				}
+			],
+			listeners: {
+				afterrender: function() {
+					this.getEl().addCls('gis-btn-menu');
+				},
+				click: function(menu, item) {
+					this.clickHandler(item.param);
+				}
+			}
+		});
+
+		tool = Ext.create('Ext.button.Button', {
+			cls: 'gis-button-organisationunitselection',
+			iconCls: 'gis-button-icon-gear',
+			width: 36,
+			height: 24,
+			menu: toolMenu
+		});
+
+		toolPanel = Ext.create('Ext.panel.Panel', {
+			width: 36,
+			bodyStyle: 'border:0 none; text-align:right',
+			style: 'margin-right:2px',
+			items: tool
 		});
 
 		periodTypePanel = Ext.create('Ext.panel.Panel', {
@@ -4279,31 +4997,52 @@ Ext.onReady( function() {
 
 		// Functions
 
-		reset = function() {
+		reset = function(skipTree) {
 
 			// Components
 			valueType.reset();
-			valueTypeToggler(gis.conf.finals.dimension.indicator.id);
+			valueTypeToggler(dimConf.indicator.objectName);
 
 			indicatorGroup.clearValue();
 			indicator.clearValue();
+			indicator.store.removeAll();
+			
 			dataElementGroup.clearValue();
 			dataElement.clearValue();
+			dataElement.store.removeAll();
+			
+			dataSet.clearValue();
+			dataSet.store.removeAll();
 
 			periodType.clearValue();
 			period.clearValue();
+			period.store.removeAll();
 
 			legendType.reset();
 			legendTypeToggler(gis.conf.finals.widget.legendtype_automatic);
 			legendSet.clearValue();
+			legendSet.store.removeAll();
+			
 			classes.reset();
 			method.reset();
 			colorLow.reset();
 			colorHigh.reset();
 			radiusLow.reset();
 			radiusHigh.reset();
-			level.clearValue();
-			parent.reset();
+			
+			toolMenu.clickHandler('orgunit');
+			
+			if (!skipTree) {
+				toolMenu.clickHandler('orgunit');
+				treePanel.reset();
+			}
+			
+			userOrganisationUnit.setValue(false);
+			userOrganisationUnitChildren.setValue(false);
+			userOrganisationUnitGrandChildren.setValue(false);
+			
+			organisationUnitLevel.clearValue();
+			organisationUnitGroup.clearValue();
 
 			// Layer options
 			if (layer.searchWindow) {
@@ -4324,60 +5063,47 @@ Ext.onReady( function() {
 		};
 
 		setGui = function(view) {
+			var dxDim = view.columns[0],
+				peDim = view.filters[0],
+				ouDim = view.rows[0],
+				vType = dxDim.dimension === dimConf.operand.objectName ? dimConf.dataElement.objectName : dxDim.dimension,
+				lType = Ext.isObject(view.legendSet) && Ext.isString(view.legendSet.id) ? gis.conf.finals.widget.legendtype_predefined : gis.conf.finals.widget.legendtype_automatic,
+				objectNameCmpMap = {},
+				isOu = false,
+				isOuc = false,
+				isOugc = false,
+				levels = [],
+				groups = [];
+				
+			objectNameCmpMap[dimConf.indicator.objectName] = indicator;
+			objectNameCmpMap[dimConf.dataElement.objectName] = dataElement;
+			objectNameCmpMap[dimConf.operand.objectName] = dataElement;
+			objectNameCmpMap[dimConf.dataSet.objectName] = dataSet;
+			
+			// Reset
+			reset(true);
 
 			// Value type
-			valueType.setValue(view.valueType);
-
-			// Indicator and data element
-			valueTypeToggler(view.valueType);
-
-			var	indeGroupView = view.valueType === dimConf.indicator.id ? indicatorGroup : dataElementGroup,
-				indeGroupStore = indeGroupView.store,
-				indeGroupRecord = view.valueType === dimConf.indicator.id ? view.indicatorGroup : view.dataElementGroup,
-
-				indeStore = view.valueType === dimConf.indicator.id ? indicatorsByGroupStore : dataElementsByGroupStore,
-				indeView = view.valueType === dimConf.indicator.id ? indicator : dataElement,
-				indeRecord = view.valueType === dimConf.indicator.id ? view.indicator : view.dataElement;
-
-			// in/de group
-			indeGroupStore.removeAll();
-			indeGroupStore.add(indeGroupRecord);
-			indeGroupView.setValue(indeGroupRecord.id);
-
-			// in/de/dc
-			if (view.valueType === dimConf.dataElement.id) {
-				if (Ext.isObject(view.dataElement) && Ext.isString(view.dataElement.id) && view.dataElement.id.indexOf('-') !== -1) {
-					dataElementDetailLevel.setValue(dimConf.operand.objectName);
-					indeStore.setDetailsProxy(indeGroupRecord.id, false, function() {
-						indeView.setValue(indeRecord.id);
-					});
-				}
-				else {
-					dataElementDetailLevel.setValue(dimConf.dataElement.objectName);
-					indeStore.setTotalsProxy(indeGroupRecord.id, false, function() {
-						indeView.setValue(indeRecord.id);
-					});
-				}
+			valueType.setValue(vType);
+			valueTypeToggler(vType);			
+			
+			if (vType === dimConf.dataElement.objectName) {
+				dataElementDetailLevel.setValue(dxDim.dimension);
 			}
-			else {
-				indeStore.proxy.url = gis.init.contextPath + '/api/indicatorGroups/' + indeGroupRecord.id + '.json?links=false&paging=false';
-				indeStore.load({
-					callback: function() {
-						indeView.setValue(indeRecord.id);
-					}
-				});
-			}
-
+			
+			// Data
+			objectNameCmpMap[dxDim.dimension].store.add(dxDim.items[0]);
+			objectNameCmpMap[dxDim.dimension].setValue(dxDim.items[0].id);
+			
 			// Period
-			periodType.setValue(view.periodType);
-			periodType.fireEvent('select');
-			period.setValue(view.period.id);
-
+			period.store.add(peDim.items[0])
+			period.setValue(peDim.items[0].id);
+			
 			// Legend
-			legendType.setValue(view.legendType);
-			legendTypeToggler(view.legendType);
-
-			if (view.legendType === gis.conf.finals.widget.legendtype_automatic) {
+			legendType.setValue(lType);
+			legendTypeToggler(lType);
+			
+			if (lType === gis.conf.finals.widget.legendtype_automatic) {
 				classes.setValue(view.classes);
 				method.setValue(view.method);
 				colorLow.setValue(view.colorLow);
@@ -4385,18 +5111,54 @@ Ext.onReady( function() {
 				radiusLow.setValue(view.radiusLow);
 				radiusHigh.setValue(view.radiusHigh);
 			}
-			else if (view.legendType === gis.conf.finals.widget.legendtype_predefined) {
-				gis.store.legendSets.loadFn( function() {
-					legendSet.setValue(view.legendSet.id);
-				});
+			else if (lType === gis.conf.finals.widget.legendtype_predefined) {
+				legendSet.store.add(view.legendSet);
+				legendSet.setValue(view.legendSet.id);
 			}
 
-			// Level and parent
-			gis.store.organisationUnitLevels.loadFn( function() {
-				level.setValue(view.organisationUnitLevel.id);
-			});
+			// Organisation units
+			for (var i = 0, item; i < ouDim.items.length; i++) {
+				item = ouDim.items[i];
+				
+				if (item.id === 'USER_ORGUNIT') {
+					isOu = true;
+				}
+				else if (item.id === 'USER_ORGUNIT_CHILDREN') {
+					isOuc = true;
+				}
+				else if (item.id === 'USER_ORGUNIT_GRANDCHILDREN') {
+					isOugc = true;
+				}
+				else if (item.id.substr(0,5) === 'LEVEL') {
+					levels.push(parseInt(item.id.split('-')[1]));
+				}
+				else if (item.id.substr(0,8) === 'OU_GROUP') {
+					groups.push(parseInt(item.id.split('-')[1]));
+				}
+			}
 
-			parent.selectPath('/root' + view.parentGraph);
+			if (levels.length) {
+				toolMenu.clickHandler('level');
+				organisationUnitLevel.setValue(levels);
+			}
+			else if (groups.length) {
+				toolMenu.clickHandler('group');
+				organisationUnitGroup.setValue(groups);
+			}
+			else {
+				toolMenu.clickHandler('orgunit');
+				userOrganisationUnit.setValue(isOu);
+				userOrganisationUnitChildren.setValue(isOuc);
+				userOrganisationUnitGrandChildren.setValue(isOugc);
+			}
+			
+			treePanel.numberOfRecords = gis.util.object.getLength(view.parentGraphMap);
+			
+			for (var key in view.parentGraphMap) {
+				if (view.parentGraphMap.hasOwnProperty(key)) {
+					treePanel.multipleExpand(key, view.parentGraphMap[key], false);
+				}
+			}
 
 			// Layer item
 			layer.item.setValue(true, view.opacity);
@@ -4411,186 +5173,46 @@ Ext.onReady( function() {
 		};
 
 		getView = function(config) {
-			var parentArray = parent.getSelectionModel().getSelection(),
-				store = gis.store.organisationUnitLevels,
-				view;
+			var vType = valueType.getValue() === dimConf.dataElement.objectName ? dataElementDetailLevel.getValue() : valueType.getValue(),
+				objectNameCmpMap = {},
+				view = {};
+				
+			objectNameCmpMap[dimConf.indicator.objectName] = indicator;
+			objectNameCmpMap[dimConf.dataElement.objectName] = dataElement;
+			objectNameCmpMap[dimConf.operand.objectName] = dataElement;
+			objectNameCmpMap[dimConf.dataSet.objectName] = dataSet;
 
-			parentArray = parentArray.length ? parentArray : [{raw: gis.init.rootNodes[0]}];
-
-			view = {
-				valueType: valueType.getValue(),
-				indicatorGroup: {
-					id: indicatorGroup.getValue(),
-					name: indicatorGroup.getRawValue()
-				},
-				indicator: {
-					id: indicator.getValue(),
-					name: indicator.getRawValue()
-				},
-				dataElementGroup: {
-					id: dataElementGroup.getValue(),
-					name: dataElementGroup.getRawValue()
-				},
-				dataElement: {
-					id: dataElement.getValue(),
-					name: dataElement.getRawValue()
-				},
-				periodType: periodType.getValue(),
-				period: {
+			view.columns = [{
+				dimension: vType,
+				items: [{
+					id: objectNameCmpMap[vType].getValue()
+				}]
+			}];
+			
+			view.rows = [treePanel.getDimension()];
+			
+			view.filters = [{
+				dimension: dimConf.period.objectName,
+				items: [{
 					id: period.getValue()
-				},
-				legendType: legendType.getValue(),
-				legendSet: {
-					id: legendSet.getValue(),
-					name: legendSet.getRawValue()
-				},
-				classes: parseInt(classes.getValue()),
-				method: parseInt(method.getValue()),
-				colorLow: colorLow.getValue(),
-				colorHigh: colorHigh.getValue(),
-				radiusLow: parseInt(radiusLow.getValue()),
-				radiusHigh: parseInt(radiusHigh.getValue()),
-				organisationUnitLevel: {
-					id: level.getValue(),
-					name: level.getRawValue(),
-					level: store.data.items.length && level.getValue() ? store.getById(level.getValue()).data.level : null
-				},
-				parentOrganisationUnit: {
-					id: parentArray[0].raw.id,
-					name: parentArray[0].raw.text
-				},
-				parentLevel: parentArray[0].raw.level,
-				parentGraph: parentArray[0].raw.path,
-				opacity: layer.item.getOpacity()
-			};
-
-			if (config && Ext.isObject(config)) {
-				view = layer.core.extendView(view, config);
+				}]
+			}];
+			
+			view.classes = parseInt(classes.getValue());
+			view.method = parseInt(method.getValue());
+			view.colorLow = colorLow.getValue();
+			view.colorHigh = colorHigh.getValue();
+			view.radiusLow = parseInt(radiusLow.getValue());
+			view.radiusHigh = parseInt(radiusHigh.getValue());
+			view.opacity = layer.item.getOpacity();
+			
+			if (legendType.getValue() === gis.conf.finals.widget.legendtype_predefined && legendSet.getValue()) {
+				view.legendSet = {
+					id: legendSet.getValue()
+				};
 			}
 
-			return validateView(view);
-		};
-
-		validateView = function(view) {
-			if (view.valueType === gis.conf.finals.dimension.indicator.id) {
-				if (!view.indicatorGroup.id || !Ext.isString(view.indicatorGroup.id)) {
-					GIS.logg.push([view.indicatorGroup.id, layer.id + '.indicatorGroup.id: string']);
-					//alert("validation failed"); //todo
-					return false;
-				}
-				if (!view.indicator.id || !Ext.isString(view.indicator.id)) {
-					GIS.logg.push([view.indicator.id, layer.id + '.indicator.id: string']);
-					alert(GIS.i18n.no_indicator_selected);
-					return false;
-				}
-			}
-			else if (view.valueType === gis.conf.finals.dimension.dataElement.id) {
-				if (!view.dataElementGroup.id || !Ext.isString(view.dataElementGroup.id)) {
-					GIS.logg.push([view.dataElementGroup.id, layer.id + '.dataElementGroup.id: string']);
-					//alert("validation failed"); //todo
-					return false;
-				}
-				if (!view.dataElement.id || !Ext.isString(view.dataElement.id)) {
-					GIS.logg.push([view.dataElement.id, layer.id + '.dataElement.id: string']);
-					alert(GIS.i18n.no_dataelement_selected);
-					return false;
-				}
-			}
-
-			if (!view.periodType || !Ext.isString(view.periodType)) {
-				GIS.logg.push([view.periodType, layer.id + '.periodType: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.period.id || !Ext.isString(view.period.id)) {
-				GIS.logg.push([view.period.id, layer.id + '.period.id: string']);
-					alert(GIS.i18n.no_period_selected);
-				return false;
-			}
-
-			if (view.legendType === gis.conf.finals.widget.legendtype_automatic) {
-				if (!view.classes || !Ext.isNumber(view.classes)) {
-					GIS.logg.push([view.classes, layer.id + '.classes: number']);
-					//alert("validation failed"); //todo
-					return false;
-				}
-				if (!view.method || !Ext.isNumber(view.method)) {
-					GIS.logg.push([view.method, layer.id + '.method: number']);
-					//alert("validation failed"); //todo
-					return false;
-				}
-				if (!view.colorLow || !Ext.isString(view.colorLow)) {
-					GIS.logg.push([view.colorLow, layer.id + '.colorLow: string']);
-					//alert("validation failed"); //todo
-					return false;
-				}
-				if (!view.radiusLow || !Ext.isNumber(view.radiusLow)) {
-					GIS.logg.push([view.radiusLow, layer.id + '.radiusLow: number']);
-					//alert("validation failed"); //todo
-					return false;
-				}
-				if (!view.colorHigh || !Ext.isString(view.colorHigh)) {
-					GIS.logg.push([view.colorHigh, layer.id + '.colorHigh: string']);
-					//alert("validation failed"); //todo
-					return false;
-				}
-				if (!view.radiusHigh || !Ext.isNumber(view.radiusHigh)) {
-					GIS.logg.push([view.radiusHigh, layer.id + '.radiusHigh: number']);
-					//alert("validation failed"); //todo
-					return false;
-				}
-			}
-			else if (view.legendType === gis.conf.finals.widget.legendtype_predefined) {
-				if (!view.legendSet.id || !Ext.isString(view.legendSet.id)) {
-					GIS.logg.push([view.legendSet.id, layer.id + '.legendSet.id: string']);
-					alert(GIS.i18n.no_legendset_selected);
-					return false;
-				}
-			}
-
-			if (!view.organisationUnitLevel.id || !Ext.isString(view.organisationUnitLevel.id)) {
-				GIS.logg.push([view.organisationUnitLevel.id, layer.id + '.organisationUnitLevel.id: string']);
-					alert(GIS.i18n.no_level_selected);
-				return false;
-			}
-			if (!view.organisationUnitLevel.name || !Ext.isString(view.organisationUnitLevel.name)) {
-				GIS.logg.push([view.organisationUnitLevel.name, layer.id + '.organisationUnitLevel.name: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.organisationUnitLevel.level || !Ext.isNumber(view.organisationUnitLevel.level)) {
-				GIS.logg.push([view.organisationUnitLevel.level, layer.id + '.organisationUnitLevel.level: number']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentOrganisationUnit.id || !Ext.isString(view.parentOrganisationUnit.id)) {
-				GIS.logg.push([view.parentOrganisationUnit.id, layer.id + '.parentOrganisationUnit.id: string']);
-					alert(GIS.i18n.no_parent_organisationunit_selected);
-				return false;
-			}
-			if (!view.parentOrganisationUnit.name || !Ext.isString(view.parentOrganisationUnit.name)) {
-				GIS.logg.push([view.parentOrganisationUnit.name, layer.id + '.parentOrganisationUnit.name: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentLevel || !Ext.isNumber(view.parentLevel)) {
-				GIS.logg.push([view.parentLevel, layer.id + '.parentLevel: number']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentGraph || !Ext.isString(view.parentGraph)) {
-				GIS.logg.push([view.parentGraph, layer.id + '.parentGraph: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-
-			if (view.parentOrganisationUnit.level > view.organisationUnitLevel.level) {
-				GIS.logg.push([view.parentOrganisationUnit.level, view.organisationUnitLevel.level, layer.id + '.parentOrganisationUnit.level: number <= ' + layer.id + '.organisationUnitLevel.level']);
-				alert(GIS.i18n.level_not_higher_than_parent_level);
-				return false;
-			}
-
-			return view;
+			return gis.api.layout.Layout(view);
 		};
 
 		panel = Ext.create('Ext.panel.Panel', {
@@ -4610,7 +5232,6 @@ Ext.onReady( function() {
 				{
 					xtype: 'form',
 					cls: 'el-border-0',
-					//width: 270,
 					items: [
 						{
 							html: GIS.i18n.data_options,
@@ -4621,6 +5242,7 @@ Ext.onReady( function() {
 						indicator,
 						dataElementGroup,
 						dataElementPanel,
+						dataSet,
 						periodTypePanel,
 						period,
 						{
@@ -4633,11 +5255,30 @@ Ext.onReady( function() {
 						lowPanel,
 						highPanel,
 						{
-							html: GIS.i18n.organisation_unit_level_parent,
+							html: GIS.i18n.organisation_units,
 							cls: 'gis-form-subtitle'
 						},
-						level,
-						parent
+						{
+							layout: 'column',
+							bodyStyle: 'border:0 none',
+							style: 'padding-bottom:2px',
+							items: [
+								toolPanel,
+								{
+									width: gis.conf.layout.widget.item_width - 38,
+									layout: 'column',
+									bodyStyle: 'border:0 none',
+									items: [
+										userOrganisationUnit,
+										userOrganisationUnitChildren,
+										userOrganisationUnitGrandChildren,
+										organisationUnitLevel,
+										organisationUnitGroup
+									]
+								}
+							]
+						},
+						treePanel
 					]
 				}
 			]
@@ -4655,16 +5296,21 @@ Ext.onReady( function() {
 
 		// Components
 			groupSet,
-			level,
-			parent,
+			
+			treePanel,
+			userOrganisationUnit,
+			userOrganisationUnitChildren,
+			userOrganisationUnitGrandChildren,
+			organisationUnitLevel,
+			organisationUnitGroup,
+			toolMenu,
+			tool,
+			toolPanel,
+			
 			areaRadius,
 
-			periodTypePanel,
-			methodPanel,
-			lowPanel,
-			highPanel,
-
 		// Functions
+		
 			//createSelectHandlers,
 			reset,
 			setGui,
@@ -4700,10 +5346,11 @@ Ext.onReady( function() {
 		// Components
 
 		groupSet = Ext.create('Ext.form.field.ComboBox', {
-            fieldLabel: GIS.i18n.groupset,
+			cls: 'gis-combo',
             editable: false,
             valueField: 'id',
             displayField: 'name',
+            emptyText: GIS.i18n.select_groupset,
             mode: 'remote',
             forceSelection: true,
             width: gis.conf.layout.widget.item_width,
@@ -4712,63 +5359,390 @@ Ext.onReady( function() {
             store: gis.store.groupSets
         });
 
-		level = Ext.create('Ext.form.field.ComboBox', {
-			fieldLabel: GIS.i18n.level,
-			editable: false,
-			valueField: 'id',
-			displayField: 'name',
-			mode: 'remote',
-			forceSelection: true,
+		treePanel = Ext.create('Ext.tree.Panel', {
+			cls: 'gis-tree',
+			height: 300,
+			style: 'border-top: 1px solid #ddd; padding-top: 1px',
 			width: gis.conf.layout.widget.item_width,
-			labelWidth: gis.conf.layout.widget.itemlabel_width,
-			style: 'margin-bottom: 4px',
-			store: gis.store.organisationUnitLevels,
-			listeners: {
-				added: function() {
-					this.store.cmp.push(this);
-				}
-			}
-		});
-
-		parent = Ext.create('Ext.tree.Panel', {
-			autoScroll: true,
-			lines: false,
 			rootVisible: false,
-			multiSelect: false,
-			width: gis.conf.layout.widget.item_width,
-			height: 210,
+			autoScroll: true,
+			multiSelect: true,
+			rendered: false,
 			reset: function() {
+				var rootNode = this.getRootNode().findChild('id', gis.init.rootNodes[0].id);
 				this.collapseAll();
-				this.expandPath(gis.init.rootNodes[0].path);
-				this.selectPath(gis.init.rootNodes[0].path);
+				this.expandPath(rootNode.getPath());
+				this.getSelectionModel().select(rootNode);
+			},
+			selectRootIf: function() {
+				if (this.getSelectionModel().getSelection().length < 1) {
+					var node = this.getRootNode().findChild('id', gis.init.rootNodes[0].id);
+					if (this.rendered) {
+						this.getSelectionModel().select(node);
+					}
+					return node;
+				}
+			},
+			numberOfRecords: 0,
+			recordsToSelect: [],
+			multipleSelectIf: function(doUpdate) {
+				if (this.recordsToSelect.length === this.numberOfRecords) {
+					this.getSelectionModel().select(this.recordsToSelect);
+					this.recordsToSelect = [];
+					this.numberOfRecords = 0;
+
+					if (doUpdate) {
+						update();
+					}
+				}
+			},
+			multipleExpand: function(id, path, doUpdate) {
+				this.expandPath('/' + gis.conf.finals.root.id + path, 'id', '/', function() {
+					var record = this.getRootNode().findChild('id', id, true);
+					this.recordsToSelect.push(record);
+					this.multipleSelectIf(doUpdate);
+				}, this);
+			},
+			select: function(url, params) {
+				if (!params) {
+					params = {};
+				}
+				Ext.Ajax.request({
+					url: url,
+					method: 'GET',
+					params: params,
+					scope: this,
+					success: function(r) {
+						var a = Ext.decode(r.responseText).organisationUnits;
+						this.numberOfRecords = a.length;
+						for (var i = 0; i < a.length; i++) {
+							this.multipleExpand(a[i].id, a[i].path);
+						}
+					}
+				});
+			},
+			selectByGroup: function(id) {
+				if (id) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbygroup,
+						params = {id: id};
+					this.select(url, params);
+				}
+			},
+			selectByLevel: function(level) {
+				if (level) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbylevel,
+						params = {level: level};
+					this.select(url, params);
+				}
+			},
+			selectByIds: function(ids) {
+				if (ids) {
+					var url = gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunit_getbyids;
+					Ext.Array.each(ids, function(item) {
+						url = Ext.String.urlAppend(url, 'ids=' + item);
+					});
+					if (!this.rendered) {
+						gis.cmp.dimension.organisationUnit.panel.expand();
+					}
+					this.select(url);
+				}
 			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.url.path_gis + 'getOrganisationUnitChildren.action'
+					url: gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunitchildren_get
 				},
 				root: {
-					id: 'root',
+					id: gis.conf.finals.root.id,
 					expanded: true,
 					children: gis.init.rootNodes
-				},
-				listeners: {
-					load: function(s, node, r) {
-						//for (var i = 0; i < r.length; i++) {
-							//r[i].data.text = gis.util.json.encodeString(r[i].data.text);
-						//}
-					}
 				}
 			}),
-			listeners: {
+			xable: function(values) {
+				for (var i = 0; i < values.length; i++) {
+					if (!!values[i]) {
+						this.disable();
+						return;
+					}
+				}
+
+				this.enable();
+			},
+			getDimension: function() {
+				var r = treePanel.getSelectionModel().getSelection(),
+					config = {
+						dimension: gis.conf.finals.dimension.organisationUnit.objectName,
+						items: []
+					};
+
+				if (toolMenu.menuValue === 'orgunit') {
+					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue() || userOrganisationUnitGrandChildren.getValue()) {
+						if (userOrganisationUnit.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT',
+								name: ''
+							});
+						}
+						if (userOrganisationUnitChildren.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT_CHILDREN',
+								name: ''
+							});
+						}
+						if (userOrganisationUnitGrandChildren.getValue()) {
+							config.items.push({
+								id: 'USER_ORGUNIT_GRANDCHILDREN',
+								name: ''
+							});
+						}
+					}
+					else {
+						for (var i = 0; i < r.length; i++) {
+							config.items.push({id: r[i].data.id});
+						}
+					}
+				}
+				else if (toolMenu.menuValue === 'level') {
+					var levels = organisationUnitLevel.getValue();
+
+					for (var i = 0; i < levels.length; i++) {
+						config.items.push({
+							id: 'LEVEL-' + levels[i],
+							name: ''
+						});
+					}
+
+					for (var i = 0; i < r.length; i++) {
+						config.items.push({
+							id: r[i].data.id,
+							name: ''
+						});
+					}
+				}
+				else if (toolMenu.menuValue === 'group') {
+					var groupIds = organisationUnitGroup.getValue();
+
+					for (var i = 0; i < groupIds.length; i++) {
+						config.items.push({
+							id: 'OU_GROUP-' + groupIds[i],
+							name: ''
+						});
+					}
+
+					for (var i = 0; i < r.length; i++) {
+						config.items.push({
+							id: r[i].data.id,
+							name: ''
+						});
+					}
+				}
+
+				return config.items.length ? config : null;
+			},
+            listeners: {
+				render: function() {
+					this.rendered = true;
+				},
 				afterrender: function() {
 					this.getSelectionModel().select(0);
+				},
+				itemcontextmenu: function(v, r, h, i, e) {
+					v.getSelectionModel().select(r, false);
+
+					if (v.menu) {
+						v.menu.destroy();
+					}
+					v.menu = Ext.create('Ext.menu.Menu', {
+						id: 'treepanel-contextmenu',
+						showSeparator: false,
+						shadow: false
+					});
+					if (!r.data.leaf) {
+						v.menu.add({
+							id: 'treepanel-contextmenu-item',
+							text: GIS.i18n.select_all_children,
+							icon: 'images/node-select-child.png',
+							handler: function() {
+								r.expand(false, function() {
+									v.getSelectionModel().select(r.childNodes, true);
+									v.getSelectionModel().deselect(r);
+								});
+							}
+						});
+					}
+					else {
+						return;
+					}
+
+					v.menu.showAt(e.xy);
 				}
 			}
 		});
 
+		userOrganisationUnit = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.30,
+			style: 'padding-top:2px; padding-left:3px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'User OU',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnitChildren.getValue(), userOrganisationUnitGrandChildren.getValue()]);
+			}
+		});
+
+		userOrganisationUnitChildren = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.30,
+			style: 'padding-top:2px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'Children',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitGrandChildren.getValue()]);
+			}
+		});
+
+		userOrganisationUnitGrandChildren = Ext.create('Ext.form.field.Checkbox', {
+			columnWidth: 0.40,
+			style: 'padding-top:2px; margin-bottom:0',
+			boxLabelCls: 'x-form-cb-label-alt1',
+			boxLabel: 'Grand children',
+			labelWidth: gis.conf.layout.form_label_width,
+			handler: function(chb, checked) {
+				treePanel.xable([checked, userOrganisationUnit.getValue(), userOrganisationUnitChildren.getValue()]);
+			}
+		});
+
+		organisationUnitLevel = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'gis-combo',
+			multiSelect: true,
+			style: 'margin-bottom:0',
+			width: gis.conf.layout.widget.item_width - 38,
+			valueField: 'level',
+			displayField: 'name',
+			emptyText: GIS.i18n.select_organisation_unit_levels,
+			editable: false,
+			hidden: true,
+			store: {
+				fields: ['id', 'name', 'level'],
+				data: gis.init.organisationUnitLevels
+			}
+		});
+
+		organisationUnitGroup = Ext.create('Ext.form.field.ComboBox', {
+			cls: 'gis-combo',
+			multiSelect: true,
+			style: 'margin-bottom:0',
+			width: gis.conf.layout.widget.item_width - 38,
+			valueField: 'id',
+			displayField: 'name',
+			emptyText: GIS.i18n.select_organisation_unit_groups,
+			editable: false,
+			hidden: true,
+			store: gis.store.organisationUnitGroup
+		});
+
+		toolMenu = Ext.create('Ext.menu.Menu', {
+			shadow: false,
+			showSeparator: false,
+			menuValue: 'orgunit',
+			clickHandler: function(param) {
+				if (!param) {
+					return;
+				}
+				
+				var items = this.items.items;
+				this.menuValue = param;
+
+				// Menu item icon cls
+				for (var i = 0; i < items.length; i++) {
+					if (items[i].setIconCls) {
+						if (items[i].param === param) {
+							items[i].setIconCls('gis-menu-item-selected');
+						}
+						else {
+							items[i].setIconCls('gis-menu-item-unselected');
+						}
+					}
+				}
+
+				// Gui
+				if (param === 'orgunit') {
+					userOrganisationUnit.show();
+					userOrganisationUnitChildren.show();
+					userOrganisationUnitGrandChildren.show();
+					organisationUnitLevel.hide();
+					organisationUnitGroup.hide();
+
+					if (userOrganisationUnit.getValue() || userOrganisationUnitChildren.getValue()) {
+						treePanel.disable();
+					}
+				}
+				else if (param === 'level') {
+					userOrganisationUnit.hide();
+					userOrganisationUnitChildren.hide();
+					userOrganisationUnitGrandChildren.hide();
+					organisationUnitLevel.show();
+					organisationUnitGroup.hide();
+					treePanel.enable();
+				}
+				else if (param === 'group') {
+					userOrganisationUnit.hide();
+					userOrganisationUnitChildren.hide();
+					userOrganisationUnitGrandChildren.hide();
+					organisationUnitLevel.hide();
+					organisationUnitGroup.show();
+					treePanel.enable();
+				}
+			},
+			items: [
+				{
+					xtype: 'label',
+					text: 'Selection mode',
+					style: 'padding:7px 5px 5px 7px; font-weight:bold; border:0 none'
+				},
+				{
+					text: GIS.i18n.select_organisation_units + '&nbsp;&nbsp;',
+					param: 'orgunit',
+					iconCls: 'gis-menu-item-selected'
+				},
+				{
+					text: 'Select levels' + '&nbsp;&nbsp;',
+					param: 'level',
+					iconCls: 'gis-menu-item-unselected'
+				},
+				{
+					text: 'Select groups' + '&nbsp;&nbsp;',
+					param: 'group',
+					iconCls: 'gis-menu-item-unselected'
+				}
+			],
+			listeners: {
+				afterrender: function() {
+					this.getEl().addCls('gis-btn-menu');
+				},
+				click: function(menu, item) {
+					this.clickHandler(item.param);
+				}
+			}
+		});
+
+		tool = Ext.create('Ext.button.Button', {
+			cls: 'gis-button-organisationunitselection',
+			iconCls: 'gis-button-icon-gear',
+			width: 36,
+			height: 24,
+			menu: toolMenu
+		});
+
+		toolPanel = Ext.create('Ext.panel.Panel', {
+			width: 36,
+			bodyStyle: 'border:0 none; text-align:right',
+			style: 'margin-right:2px',
+			items: tool
+		});
+
 		areaRadius = Ext.create('Ext.ux.panel.CheckTextNumber', {
-			width: 262,
+			width: gis.conf.layout.widget.item_width,
 			text: GIS.i18n.show_circular_area + ':'
 		});
 
@@ -4778,9 +5752,16 @@ Ext.onReady( function() {
 
 			// Components
 			groupSet.clearValue();
-
-			level.clearValue();
-			parent.reset();
+			
+			toolMenu.clickHandler('orgunit');
+			treePanel.reset();
+			
+			userOrganisationUnit.setValue(false);
+			userOrganisationUnitChildren.setValue(false);
+			userOrganisationUnitGrandChildren.setValue(false);
+			
+			organisationUnitLevel.clearValue();
+			organisationUnitGroup.clearValue();
 
 			areaRadius.reset();
 
@@ -4808,16 +5789,64 @@ Ext.onReady( function() {
 		};
 
 		setGui = function(view) {
-			// Components
-            gis.store.groupSets.loadFn( function() {
-                groupSet.setValue(view.organisationUnitGroupSet.id);
-            });
+			var ouDim = view.rows[0],
+				isOu = false,
+				isOuc = false,
+				isOugc = false,
+				levels = [],
+				groups = [];
+				
+			// Group set
+			groupSet.store.removeAll();
+			groupSet.store.add(view.organisationUnitGroupSet);
+			groupSet.setValue(view.organisationUnitGroupSet.id);
 
-			gis.store.organisationUnitLevels.loadFn( function() {
-				level.setValue(view.organisationUnitLevel.id);
-			});
+			// Organisation units
+			for (var i = 0, item; i < ouDim.items.length; i++) {
+				item = ouDim.items[i];
+				
+				if (item.id === 'USER_ORGUNIT') {
+					isOu = true;
+				}
+				else if (item.id === 'USER_ORGUNIT_CHILDREN') {
+					isOuc = true;
+				}
+				else if (item.id === 'USER_ORGUNIT_GRANDCHILDREN') {
+					isOugc = true;
+				}
+				else if (item.id.substr(0,5) === 'LEVEL') {
+					levels.push(parseInt(item.id.split('-')[1]));
+				}
+				else if (item.id.substr(0,8) === 'OU_GROUP') {
+					groups.push(parseInt(item.id.split('-')[1]));
+				}
+			}
 
-			parent.selectPath('/root' + view.parentGraph);
+			if (levels.length) {
+				toolMenu.clickHandler('level');
+				organisationUnitLevel.setValue(levels);
+			}
+			else if (groups.length) {
+				toolMenu.clickHandler('group');
+				organisationUnitGroup.setValue(groups);
+			}
+			else {
+				toolMenu.clickHandler('orgunit');
+				userOrganisationUnit.setValue(isOu);
+				userOrganisationUnitChildren.setValue(isOuc);
+				userOrganisationUnitGrandChildren.setValue(isOugc);
+			}
+			
+			treePanel.numberOfRecords = gis.util.object.getLength(view.parentGraphMap);
+			
+			for (var key in view.parentGraphMap) {
+				if (view.parentGraphMap.hasOwnProperty(key)) {
+					treePanel.multipleExpand(key, view.parentGraphMap[key], false);
+				}
+			}
+			
+			// Area radius
+			areaRadius.setValue(true, view.areaRadius);
 
 			// Layer item
 			layer.item.setValue(true, view.opacity);
@@ -4832,85 +5861,31 @@ Ext.onReady( function() {
 		};
 
 		getView = function(config) {
-			var parentArray = parent.getSelectionModel().getSelection(),
-				store = gis.store.organisationUnitLevels,
-				view;
-
-			parentArray = parentArray.length ? parentArray : [{raw: gis.init.rootNodes[0]}];
-
-			view = {
-				organisationUnitGroupSet: {
-					id: groupSet.getValue(),
-					name: groupSet.getRawValue()
-				},
-				organisationUnitLevel: {
-					id: level.getValue(),
-					name: level.getRawValue(),
-					level: store.data.items.length && level.getValue() ? store.getById(level.getValue()).data.level : null
-				},
-				parentOrganisationUnit: {
-					id: parentArray[0].raw.id,
-					name: parentArray[0].raw.text
-				},
-				areaRadius: areaRadius.getValue() ? areaRadius.getNumber() : null,
-				parentLevel: parentArray[0].raw.level,
-				parentGraph: parentArray[0].raw.path,
-				opacity: layer.item.getOpacity()
+			var view = {};
+			
+			view.rows = [treePanel.getDimension()];
+			
+			view.organisationUnitGroupSet = {
+				id: groupSet.getValue()
 			};
-
-			if (config && Ext.isObject(config)) {
-				view = layer.core.extendView(view, config);
-			}
-
+			
+			view.areaRadius = areaRadius.getValue() ? areaRadius.getNumber() : null;
+			
+			view.opacity = layer.item.getOpacity();
+			
 			return validateView(view);
 		};
 
 		validateView = function(view) {
-			if (!view.organisationUnitGroupSet.id || !Ext.isString(view.organisationUnitGroupSet.id)) {
+			if (!(Ext.isObject(view.organisationUnitGroupSet) && Ext.isString(view.organisationUnitGroupSet.id))) {
 				GIS.logg.push([view.organisationUnitGroupSet.id, layer.id + '.organisationUnitGroupSet.id: string']);
 				alert(GIS.i18n.no_groupset_selected);
 				return false;
 			}
-
-			if (!view.organisationUnitLevel.id || !Ext.isString(view.organisationUnitLevel.id)) {
-				GIS.logg.push([view.organisationUnitLevel.id, layer.id + '.organisationUnitLevel.id: string']);
-				alert(GIS.i18n.no_level_selected);
-				return false;
-			}
-			if (!view.organisationUnitLevel.name || !Ext.isString(view.organisationUnitLevel.name)) {
-				GIS.logg.push([view.organisationUnitLevel.name, layer.id + '.organisationUnitLevel.name: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.organisationUnitLevel.level || !Ext.isNumber(view.organisationUnitLevel.level)) {
-				GIS.logg.push([view.organisationUnitLevel.level, layer.id + '.organisationUnitLevel.level: number']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentOrganisationUnit.id || !Ext.isString(view.parentOrganisationUnit.id)) {
-				GIS.logg.push([view.parentOrganisationUnit.id, layer.id + '.parentOrganisationUnit.id: string']);
-				alert(GIS.i18n.no_parent_organisationunit_selected);
-				return false;
-			}
-			if (!view.parentOrganisationUnit.name || !Ext.isString(view.parentOrganisationUnit.name)) {
-				GIS.logg.push([view.parentOrganisationUnit.name, layer.id + '.parentOrganisationUnit.name: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentLevel || !Ext.isNumber(view.parentLevel)) {
-				GIS.logg.push([view.parentLevel, layer.id + '.parentLevel: number']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-			if (!view.parentGraph || !Ext.isString(view.parentGraph)) {
-				GIS.logg.push([view.parentGraph, layer.id + '.parentGraph: string']);
-					//alert("validation failed"); //todo
-				return false;
-			}
-
-			if (view.parentOrganisationUnit.level > view.organisationUnitLevel.level) {
-				GIS.logg.push([view.parentOrganisationUnit.level, view.organisationUnitLevel.level, layer.id + '.parentOrganisationUnit.level: number <= ' + layer.id + '.organisationUnitLevel.level']);
-				alert(GIS.i18n.level_not_higher_than_parent_level);
+			
+			if (!(Ext.isArray(view.rows) && view.rows.length && Ext.isString(view.rows[0].dimension) && Ext.isArray(view.rows[0].items) && view.rows[0].items.length)) {
+				GIS.logg.push([view.rows, layer.id + '.rows: dimension array']);
+				alert('No organisation units selected');
 				return false;
 			}
 
@@ -4941,11 +5916,30 @@ Ext.onReady( function() {
 						},
 						groupSet,
 						{
-							html: GIS.i18n.organisation_unit_level_parent,
+							html: GIS.i18n.organisation_units,
 							cls: 'gis-form-subtitle'
 						},
-						level,
-						parent,
+						{
+							layout: 'column',
+							bodyStyle: 'border:0 none',
+							style: 'padding-bottom:2px',
+							items: [
+								toolPanel,
+								{
+									width: gis.conf.layout.widget.item_width - 38,
+									layout: 'column',
+									bodyStyle: 'border:0 none',
+									items: [
+										userOrganisationUnit,
+										userOrganisationUnitChildren,
+										userOrganisationUnitGrandChildren,
+										organisationUnitLevel,
+										organisationUnitGroup
+									]
+								}
+							]
+						},
+						treePanel,
 						{
 							html: GIS.i18n.surrounding_areas,
 							cls: 'gis-form-subtitle'
@@ -5160,68 +6154,16 @@ Ext.onReady( function() {
 			items: function() {
 				var a = [];
 
-				layersPanel = GIS.app.LayersPanel();					
-				
+				layersPanel = GIS.app.LayersPanel();
+
 				a.push({
 					title: GIS.i18n.layer_stack_transparency,
-					bodyStyle: 'padding: 4px 6px 3px',
+					bodyStyle: 'padding: 3px 2px 2px 5px',
 					items: layersPanel,
 					collapsible: true,
 					animCollapse: false
 				});
-				
-				a.push({
-					title: GIS.i18n.thematic_layer_1_legend,
-					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
-					collapsible: true,
-					collapsed: true,
-					animCollapse: false,
-					listeners: {
-						added: function() {
-							gis.layer.thematic1.legendPanel = this;
-						}
-					}
-				});
-				
-				a.push({
-					title: GIS.i18n.thematic_layer_2_legend,
-					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
-					collapsible: true,
-					collapsed: true,
-					animCollapse: false,
-					listeners: {
-						added: function() {
-							gis.layer.thematic2.legendPanel = this;
-						}
-					}
-				});
-				
-				a.push({
-					title: GIS.i18n.thematic_layer_3_legend,
-					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
-					collapsible: true,
-					collapsed: true,
-					animCollapse: false,
-					listeners: {
-						added: function() {
-							gis.layer.thematic3.legendPanel = this;
-						}
-					}
-				});
-				
-				a.push({
-					title: GIS.i18n.thematic_layer_4_legend,
-					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
-					collapsible: true,
-					collapsed: true,
-					animCollapse: false,
-					listeners: {
-						added: function() {
-							gis.layer.thematic4.legendPanel = this;
-						}
-					}
-				});
-				
+
 				a.push({
 					title: GIS.i18n.facility_layer_legend,
 					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
@@ -5234,7 +6176,59 @@ Ext.onReady( function() {
 						}
 					}
 				});
-				
+
+				a.push({
+					title: GIS.i18n.thematic_layer_1_legend,
+					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
+					collapsible: true,
+					collapsed: true,
+					animCollapse: false,
+					listeners: {
+						added: function() {
+							gis.layer.thematic1.legendPanel = this;
+						}
+					}
+				});
+
+				a.push({
+					title: GIS.i18n.thematic_layer_2_legend,
+					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
+					collapsible: true,
+					collapsed: true,
+					animCollapse: false,
+					listeners: {
+						added: function() {
+							gis.layer.thematic2.legendPanel = this;
+						}
+					}
+				});
+
+				a.push({
+					title: GIS.i18n.thematic_layer_3_legend,
+					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
+					collapsible: true,
+					collapsed: true,
+					animCollapse: false,
+					listeners: {
+						added: function() {
+							gis.layer.thematic3.legendPanel = this;
+						}
+					}
+				});
+
+				a.push({
+					title: GIS.i18n.thematic_layer_4_legend,
+					bodyStyle: 'padding: 4px 6px 6px; border: 0 none',
+					collapsible: true,
+					collapsed: true,
+					animCollapse: false,
+					listeners: {
+						added: function() {
+							gis.layer.thematic4.legendPanel = this;
+						}
+					}
+				});
+
 				return a;
 			}(),
 			listeners: {
@@ -5268,7 +6262,7 @@ Ext.onReady( function() {
 						center = gis.viewport.centerRegion;
 
 					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.url.path_gis + 'updateOrganisationUnitCoordinates.action',
+						url: gis.init.contextPath + gis.conf.finals.url.path_module + 'updateOrganisationUnitCoordinates.action',
 						method: 'POST',
 						params: {id: gis.olmap.relocate.feature.attributes.id, coordinates: coordinates},
 						success: function(r) {
@@ -5294,14 +6288,14 @@ Ext.onReady( function() {
 				};
 				GIS.core.MapLoader(gis).load();
 			}
-			
+
 			if (base.length) {
-			
+
 				// hide base layer
 				if (base === 'false') {
 					for (var i = 0, item; i < layersPanel.layerItems.length; i++) {
 						item = layersPanel.layerItems[i];
-						
+
 						if (item.layer.layerType === gis.conf.finals.layer.type_base && item.layer.visibility) {
 							item.disableItem();
 						}
@@ -5309,10 +6303,10 @@ Ext.onReady( function() {
 				}
 				else {
 					var isEnabled = false;
-					
+
 					for (var i = 0, item; i < layersPanel.layerItems.length; i++) {
 						item = layersPanel.layerItems[i];
-						
+
 						if (item.layer.layerType === gis.conf.finals.layer.type_base) {
 							if (base === item.layer.id) {
 								item.enableItem();
@@ -5323,12 +6317,12 @@ Ext.onReady( function() {
 							}
 						}
 					}
-					
+
 					if (!isEnabled) {
 						layersPanel.layerItems[layersPanel.layerItems.length - 1].enableItem();
 					}
 				}
-			}				
+			}
 		};
 
 		viewport = Ext.create('Ext.container.Viewport', {
@@ -5355,9 +6349,9 @@ Ext.onReady( function() {
 
 		return viewport;
 	};
-	
+
 	initialize = function() {
-	
+
 		// ext configuration
 		Ext.QuickTips.init();
 
@@ -5366,7 +6360,7 @@ Ext.onReady( function() {
 				this.callParent();
 			}
 		});
-		
+
 		// right click handler
 		document.body.oncontextmenu = function() {
 			return false;
@@ -5376,12 +6370,13 @@ Ext.onReady( function() {
 			url: '../initialize.action',
 			success: function(r) {
 				gis = GIS.core.getInstance(Ext.decode(r.responseText));
-				
+
 				GIS.app.createExtensions();
 
 				GIS.app.extendInstance(gis);
-								
-				gis.viewport = createViewport();
+
+				gis.viewport = createViewport();				
+console.log("gis", gis);
 			}
 		});
 	}();

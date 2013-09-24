@@ -3,36 +3,37 @@
  *
  * Combobox
  * GIS Combobox
- * 
+ *
  * Panel
- * 
+ *
  * GIS form
- * 
+ *
  * Button
  * GIS Button
- * 
+ *
  * Toolbar
- * 
+ *
  * Menu
  * GIS Menu
+ *
+ * GIS Treepanel
  * 
- * Treepanel
  * Colorpicker
- * 
+ *
  * GIS Window
- * 
+ *
  * GIS Grid
- * 
+ *
  * GIS TextField
- * 
+ *
  * GIS TextArea
- * 
+ *
  * Checkbox
- * 
+ *
  * GIS NumberField
- * 
+ *
  * GIS Label
- * 
+ *
  * Tooltip
 */
 
@@ -99,7 +100,7 @@ html * {
 }
 
 .gis-container-default .x-window-body {
-	padding: 8px;
+	padding: 5px;
 	background: #fff;
 }
 .gis-container-inner .x-panel-body {
@@ -255,6 +256,41 @@ html * {
     font-size: 10px !important;
 }
 
+.gis-combo .x-form-text, .gis-combo .x-form-trigger {
+	height: 24px;
+	padding-top: 1px;
+}
+gis-combo .x-form-item-label {
+	padding: 4px 0 0;
+}
+
+
+/*----------------------------------------------------------------------------
+ * Multiselect
+ *--------------------------------------------------------------------------*/
+
+	/* Inner border */
+.x-fit-item {
+    border-style: none;
+}
+
+	/* Boundlist (multiselect, comboboxlist etc) */
+.x-boundlist-item {
+    color: #333;
+    padding: 3px 2px 3px 4px;
+    font-size: 10px;
+    border: 1px solid transparent;
+}
+.x-boundlist-item-over {
+    background-color: #e1e1e1;
+    border-color: #e1e1e1;
+}
+.x-boundlist-selected {
+    background-color: #d3d3d3;
+    border-color: #d3d3d3;
+}
+
+
 
 /*----------------------------------------------------------------------------
  * Panel
@@ -289,8 +325,8 @@ html * {
 .gis-form-widget .x-form-text { /* Combo text */
 	font-size: 10px !important;
 	padding: 3px 1px 1px 4px;
-	border-top-left-radius: 2px;
-	border-bottom-left-radius: 2px;
+	border-top-left-radius: 1px;
+	border-bottom-left-radius: 1px;
 }
 .x-boundlist-item { /* Combo list text */
 	font-size: 10px !important;
@@ -322,6 +358,10 @@ html * {
 	border-color: #bbb;
 }
 
+.x-btn-default-small {
+	border-radius: 1px;
+}
+
 .x-btn-default-toolbar-small-pressed {
 	border-color: #bbb;
     background-image: none;
@@ -339,6 +379,12 @@ html * {
  * GIS Button
  *--------------------------------------------------------------------------*/
 
+.gis-button-icon-gear {
+	width: 22px !important;
+	height: 22px !important;
+	background: url('../images/gear_18.png') no-repeat;
+}
+
 .gis-button-icon-table {
 	background: url('../images/table_14.png') no-repeat;
 }
@@ -347,6 +393,10 @@ html * {
 }
 .gis-button-icon-map {
 	background: url('../images/map_14.png') no-repeat;
+}
+
+.gis-button-organisationunitselection .x-btn-center {
+	width: 18px !important;
 }
 
 
@@ -401,7 +451,7 @@ html * {
 
 		/* Toolbar btn menu */
 		.gis-toolbar-btn-menu { /* Align menu */
-			margin-top: 5px;
+			margin-top: 4px;
 		}
 		.gis-toolbar-btn-menu .x-panel-body-default { /* Menu border */
 			border-radius: 2px;
@@ -413,9 +463,27 @@ html * {
  * Menu
  *--------------------------------------------------------------------------*/
 
-.x-menu-body { /* General menu */
-	background: #fff !important;
+.x-menu-body {
+    border-color: #bbb;
+    border-radius: 2px;
 	padding: 0;
+	background-color: #fff !important;
+}
+.x-menu-item-active .x-menu-item-link {
+	border-radius: 0;
+	border-color: #e1e1e1;
+	background-color: #e1e1e1;
+	background-image: none;
+}
+
+	/* Menu item */
+
+.x-menu-item-link {
+    padding: 4px 5px 4px 26px;
+}
+	/* Menu item color */
+.x-menu-item-text {
+    color: #111;
 }
 
 
@@ -424,18 +492,10 @@ html * {
  *--------------------------------------------------------------------------*/
 
 .gis-toolbar-btn-menu-first { /* Boundary layer menu spacing from viewport */
-	left: 3px !important;
+	left: 2px !important;
 }
 
 	/* Menu item */
-	.x-menu-item-link { /* Menu item normal */
-		padding: 4px 5px 4px 26px;
-	}
-	.x-menu-item-active .x-menu-item-link { /* Menu item hover */
-		background: #ddd;
-		border-color: #ddd;
-		border-radius: 1px;
-	}
 	.gis-menu-item-first.x-menu-item-active .x-menu-item-link { /* Menu item (first) hover */
 		border-top-left-radius: 2px;
 		border-top-right-radius: 2px;
@@ -459,7 +519,7 @@ html * {
 	.gis-menu-item-icon-favorite {
 		left: 6px;
 	}
-	
+
 	.gis-menu-item-icon-edit {
 		background: url('../images/edit_16.png') no-repeat;
 	}
@@ -497,23 +557,51 @@ html * {
 		height: 1px;
 	}
 	.x-menu-item-text {
-		font-size: 10px !important;
 	}
+
+.gis-menu-item-selected {
+    background-image:url('../images/check.png');
+    padding-left: 18px;
+}
+.gis-menu-item-unselected {
+    background-image:url('../images/check-un.png');
+    padding-left: 18px;
+}
+
+	/* Menu align */
+.gis-btn-menu {
+	margin-top: 2px;
+}
 
 
 /*----------------------------------------------------------------------------
- * Treepanel
+ * GIS Treepanel
  *--------------------------------------------------------------------------*/
 
-.x-tree-panel .x-grid-row .x-grid-cell-inner { /* Tree font */
-	font-size: 10px !important;
-	height: 17px;
+	/* Node height */
+.gis-tree.x-tree-panel .x-grid-row .x-grid-cell-inner {
+    height: 17px;
+    font-size: 10px !important;
 }
 
-.x-tree-panel .x-panel-body {
-	border: 1px solid #ccc !important;
-	border-radius: 2px;
-	padding: 3px 0 0px 3px;
+	/* Selected row background */
+.gis-tree .x-grid-row-selected .x-grid-cell,
+.gis-tree .x-grid-row-selected .x-grid-rowwrap-div {
+    background-color: #e0e0e0;
+    border-radius: 2px 2px 2px 2px;
+}
+
+	/* Hover row background */
+.gis-tree .x-grid-cell {
+    border-radius: 2px 2px 2px 2px;
+}
+
+	/* Treepanel contextmenu */
+#treepanel-contextmenu {
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ddd;
 }
 
 
@@ -662,10 +750,6 @@ html * {
 	cursor: pointer !important;
 }
 
-.gis-grid .x-grid-cell-inner,
-.gis-grid .x-grid-cell-inner * {
-	font-size: 10px !important;
-}
 .gis-grid .x-grid-cell-inner {
 	padding-top: 3px;
 	padding-bottom: 3px;
@@ -713,6 +797,7 @@ html * {
 /*----------------------------------------------------------------------------
  * GIS Textarea
  *--------------------------------------------------------------------------*/
+
 .gis-textarea .x-form-field {
 	font-size: 11px;
 }
@@ -730,6 +815,20 @@ html * {
 label.x-form-cb-label {
     cursor: pointer;
     cursor: hand;
+}
+
+.x-form-cb-wrap {
+	padding-top: 4px;
+}
+.x-form-checkbox {
+	vertical-align: 0;
+}
+
+	/* Alternative boxlabel cls */
+label.x-form-cb-label-alt1 {
+    position: relative;
+    top: -2px;
+    padding-left: 4px;
 }
 
 
@@ -776,3 +875,25 @@ label.x-form-cb-label {
 	border-top-color: #111;
 }
 
+
+/*----------------------------------------------------------------------------
+ * LoadMask
+ *--------------------------------------------------------------------------*/
+
+.x-mask-msg {
+	padding: 0;
+	border: 0 none;
+	background-image: none;
+	background-color: transparent;
+}
+.x-mask-msg div {
+    background-position: 11px center;
+}
+.x-mask-msg .x-mask-loading {
+	border: 0 none;
+	background-color: #000;
+	color: #fff;
+	border-radius: 2px;
+	padding: 12px 14px 12px 30px;
+	opacity: 0.65;
+}

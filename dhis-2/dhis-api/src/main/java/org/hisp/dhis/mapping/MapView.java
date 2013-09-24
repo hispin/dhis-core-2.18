@@ -41,6 +41,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.DimensionalView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -66,6 +67,8 @@ public class MapView
     public static final String LAYER_BOUNDARY = "boundary";
     public static final String LAYER_THEMATIC1 = "thematic1";
     public static final String LAYER_THEMATIC2 = "thematic2";
+    public static final String LAYER_THEMATIC3 = "thematic3";
+    public static final String LAYER_THEMATIC4 = "thematic4";
     public static final String LAYER_FACILITY = "facility";
     public static final String LAYER_SYMBOL = "symbol";
 
@@ -139,8 +142,8 @@ public class MapView
     @Override
     public void populateAnalyticalProperties()
     {
-        columns.addAll( getDimensionalObjectList( DimensionalObject.ORGUNIT_DIM_ID ) );
-        rows.addAll( getDimensionalObjectList( DimensionalObject.DATA_X_DIM_ID ) );
+        columns.addAll( getDimensionalObjectList( DimensionalObject.DATA_X_DIM_ID ) );
+        rows.addAll( getDimensionalObjectList( DimensionalObject.ORGUNIT_DIM_ID ) );
         filters.addAll( getDimensionalObjectList( DimensionalObject.PERIOD_DIM_ID ) );
     }
     
@@ -169,7 +172,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getLayer()
     {
@@ -208,7 +211,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Integer getMethod()
     {
@@ -221,7 +224,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Integer getClasses()
     {
@@ -234,7 +237,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getColorLow()
     {
@@ -247,7 +250,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getColorHigh()
     {
@@ -261,7 +264,7 @@ public class MapView
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public MapLegendSet getLegendSet()
     {
@@ -274,7 +277,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Integer getRadiusLow()
     {
@@ -287,7 +290,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Integer getRadiusHigh()
     {
@@ -300,7 +303,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Double getOpacity()
     {
@@ -314,7 +317,7 @@ public class MapView
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public OrganisationUnitGroupSet getOrganisationUnitGroupSet()
     {
@@ -327,7 +330,7 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public Integer getAreaRadius()
     {

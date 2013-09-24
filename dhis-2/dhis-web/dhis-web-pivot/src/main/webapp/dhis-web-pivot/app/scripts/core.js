@@ -31,7 +31,7 @@ Ext.onReady( function() {
 		// conf
 		(function() {
 			conf.finals = {
-				ajax: {
+				url: {
 					path_module: '/dhis-web-pivot/',
 					path_api: '/api/',
 					path_commons: '/dhis-web-commons-ajax-json/',
@@ -661,7 +661,7 @@ Ext.onReady( function() {
 							}
 
 							// Data sets as filter
-							if (layout.filters[i].dimension === dimConf.category.objectName) {
+							if (layout.filters[i].dimension === dimConf.dataSet.objectName) {
 								util.message.alert(PT.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter');
 								return;
 							}

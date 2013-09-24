@@ -1,8 +1,8 @@
 Ext.onReady( function() {
-	
-	// ext config	
+
+	// ext config
 	Ext.Ajax.method = 'GET';
-	
+
 	// namespace
 	if (!('GIS' in window)) {
 		GIS = {
@@ -12,9 +12,12 @@ Ext.onReady( function() {
 
 	// mode
 	GIS.isDebug = false;
-	
+
 	// html5
 	GIS.isSessionStorage = 'sessionStorage' in window && window['sessionStorage'] !== null;
+
+	// log
+	GIS.logg = [];
 
 	// core
 
@@ -56,7 +59,7 @@ Ext.onReady( function() {
 				}),
 				new OpenLayers.Control.MousePosition({
 					prefix: '<span id="mouseposition" class="el-fontsize-10"><span class="text-mouseposition-lonlat">LON </span>',
-					separator: '<span class="text-mouseposition-lonlat">&nbsp;&nbsp;LAT </span>',
+					separator: '<span class="text-mouseposition-lonlat">,&nbsp;LAT </span>',
 					suffix: '<div id="google-logo" name="http://www.google.com/intl/en-US_US/help/terms_maps.html" onclick="window.open(Ext.get(this).dom.attributes.name.nodeValue);"></div></span>'
 				}),
 				new OpenLayers.Control.Permalink(),
@@ -194,7 +197,8 @@ Ext.onReady( function() {
 			infrastructuralPeriod,
 			onHoverSelect,
 			onHoverUnselect,
-			onClickSelect;
+			onClickSelect,
+			dimConf = gis.conf.finals.dimension;
 
 		onHoverSelect = function fn(feature) {
 			if (window) {
@@ -280,7 +284,7 @@ Ext.onReady( function() {
 			// Infrastructural data
 			showInfo = function() {
 				Ext.Ajax.request({
-					url: gis.init.contextPath + gis.conf.url.path_gis + 'getFacilityInfo.action',
+					url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getFacilityInfo.action',
 					params: {
 						id: feature.attributes.id
 					},
@@ -428,59 +432,28 @@ Ext.onReady( function() {
 			};
 
 			// Drill or float
-			drill = function(direction) {
-				var store = gis.store.organisationUnitLevels,
-					view = layer.core.view,
-					config,
+			drill = function(parent, level) {
+				var view = Ext.clone(layer.core.view),
+					items,
 					loader;
+					
+				items = [
+					{id: parent},
+					{id: 'LEVEL-' + level}
+				];
+				
+				view.rows = [{
+					dimension: dimConf.organisationUnit.objectName,
+					items: items
+				}];
 
-				store.loadFn( function() {
-					if (direction === 'up') {
-						var rootNode = gis.init.rootNodes[0],
-							level = store.getAt(store.find('level', view.organisationUnitLevel.level - 1));
-
-						config = {
-							organisationUnitLevel: {
-								id: level.data.id,
-								name: level.data.name,
-								level: level.data.level
-							},
-							parentOrganisationUnit: {
-								id: rootNode.id,
-								name: rootNode.text,
-								level: rootNode.level
-							},
-							parentGraph: '/' + gis.init.rootNodes[0].id
-						};
-					}
-					else if (direction === 'down') {
-						var level = store.getAt(store.find('level', view.organisationUnitLevel.level + 1));
-
-						config = {
-							organisationUnitLevel: {
-								id: level.data.id,
-								name: level.data.name,
-								level: level.data.level
-							},
-							parentOrganisationUnit: {
-								id: feature.attributes.id,
-								name: feature.attributes.name,
-								level: view.organisationUnitLevel.level
-							},
-							parentGraph: feature.attributes.path
-						};
-					}
-
-					view = layer.core.extendView(null, config);
-
-					if (view) {
-						loader = layer.core.getLoader();
-						loader.updateGui = true;
-						loader.zoomToVisibleExtent = true;
-						loader.hideMask = true;
-						loader.load(view);
-					}
-				});
+				if (view) {
+					loader = layer.core.getLoader();
+					loader.updateGui = true;
+					loader.zoomToVisibleExtent = true;
+					loader.hideMask = true;
+					loader.load(view);
+				}
 			};
 
 			// Menu
@@ -490,16 +463,16 @@ Ext.onReady( function() {
 					iconCls: 'gis-menu-item-icon-float',
 					disabled: !feature.attributes.hasCoordinatesUp,
 					handler: function() {
-						drill('up');
+						drill(feature.attributes.grandParentId, parseInt(feature.attributes.level) - 1);
 					}
 				}),
 				Ext.create('Ext.menu.Item', {
 					text: 'Drill down',
 					iconCls: 'gis-menu-item-icon-drill',
 					cls: 'gis-menu-item-first',
-					disabled: !feature.attributes.hcwc,
+					disabled: !feature.attributes.hasCoordinatesDown,
 					handler: function() {
-						drill('down');
+						drill(feature.attributes.id, parseInt(feature.attributes.level) + 1);
 					}
 				})
 			];
@@ -576,7 +549,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name', 'level'],
 			proxy: {
 				type: 'jsonp',
-				url: gis.init.contextPath + gis.conf.url.path_api + 'organisationUnitLevels.jsonp?viewClass=detailed&links=false&paging=false',
+				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'organisationUnitLevels.jsonp?viewClass=detailed&links=false&paging=false',
 				reader: {
 					type: 'json',
 					root: 'organisationUnitLevels'
@@ -747,7 +720,7 @@ Ext.onReady( function() {
 
 		getMap = function() {
 			Ext.data.JsonP.request({
-				url: gis.init.contextPath + gis.conf.url.path_api + 'maps/' + gis.map.id + '.jsonp?links=false',
+				url: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/' + gis.map.id + '.jsonp?viewClass=dimensional&links=false',
 				success: function(r) {
 
 					// Operand
@@ -756,10 +729,18 @@ Ext.onReady( function() {
 							view = r.mapViews[i];
 
 							if (view) {
-								if (Ext.isObject(view.dataElementOperand) && Ext.isString(view.dataElementOperand.id)) {
-									view.dataElement = Ext.clone(view.dataElementOperand);
-									view.dataElement.id = view.dataElement.id.replace('.', '-');
-									delete view.dataElementOperand;
+								if (Ext.isArray(view.columns) && view.columns.length) {
+									for (var j = 0, dim; j < view.columns.length; j++) {
+										dim = view.columns[j];
+										
+										if (Ext.isArray(dim.items) && dim.items.length) {
+											for (var k = 0, item; k < dim.items.length; k++) {
+												item = dim.items[k];
+												
+												item.id = item.id.replace('.', '-');
+											}
+										}
+									}
 								}
 							}
 						}
@@ -795,6 +776,7 @@ Ext.onReady( function() {
 
 			for (var i = 0; i < views.length; i++) {
 				view = views[i];
+				
 				loader = gis.layer[view.layer].core.getLoader();
 				loader.updateGui = !gis.el;
 				loader.callBack = callBack;
@@ -858,7 +840,11 @@ Ext.onReady( function() {
 			loader;
 
 		compareView = function(view, doExecute) {
-			var src = layer.core.view;
+			var src = layer.core.view,
+				viewIds,
+				viewDim,
+				srcIds,
+				srcDim;
 
 			if (!src) {
 				if (doExecute) {
@@ -866,15 +852,30 @@ Ext.onReady( function() {
 				}
 				return gis.conf.finals.widget.loadtype_organisationunit;
 			}
-
-			if (view.organisationUnitLevel.id !== src.organisationUnitLevel.id) {
-				if (doExecute) {
-					loadOrganisationUnits(view);
+			
+			viewIds = [];
+			viewDim = view.rows[0];
+			srcIds = [];
+			srcDim = src.rows[0];
+			
+			// organisation units
+			if (viewDim.items.length === srcDim.items.length) {					
+				for (var i = 0; i < viewDim.items.length; i++) {
+					viewIds.push(viewDim.items[i].id);
 				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
+				
+				for (var i = 0; i < srcDim.items.length; i++) {
+					srcIds.push(srcDim.items[i].id);
+				}
+				
+				if (Ext.Array.difference(viewIds, srcIds).length !== 0) {
+					if (doExecute) {
+						loadOrganisationUnits(view);
+					}
+					return gis.conf.finals.widget.loadtype_organisationunit;
+				}
 			}
-
-			if (view.parentOrganisationUnit.id !== src.parentOrganisationUnit.id) {
+			else {
 				if (doExecute) {
 					loadOrganisationUnits(view);
 				}
@@ -885,17 +886,21 @@ Ext.onReady( function() {
 		};
 
 		loadOrganisationUnits = function(view) {
+			var items = view.rows[0].items,
+				idParamString = '';
+			
+			for (var i = 0; i < items.length; i++) {
+				idParamString += 'ids=' + items[i].id;
+				idParamString += i !== items.length - 1 ? '&' : '';
+			}
+			
 			Ext.data.JsonP.request({
-				url: gis.init.contextPath + gis.conf.url.path_gis + 'getGeoJson.action',
-				params: {
-					parentId: view.parentOrganisationUnit.id,
-					level: view.organisationUnitLevel.id
-				},
+				url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJson.action?' + idParamString,
 				scope: this,
 				disableCaching: false,
 				success: function(r) {
 					var geojson = gis.util.geojson.decode(r),
-						format = new OpenLayers.Format.GeoJSON(),
+						format = new OpenLayers.Format.GeoJSON(),						
 						features = gis.util.map.getTransformedFeatureArray(format.read(geojson));
 
 					if (!Ext.isArray(features)) {
@@ -1024,7 +1029,11 @@ Ext.onReady( function() {
 			dimConf = gis.conf.finals.dimension;
 
 		compareView = function(view, doExecute) {
-			var src = layer.core.view;
+			var src = layer.core.view,
+				viewIds,
+				viewDim,
+				srcIds,
+				srcDim;
 
 			if (!src) {
 				if (doExecute) {
@@ -1032,89 +1041,132 @@ Ext.onReady( function() {
 				}
 				return gis.conf.finals.widget.loadtype_organisationunit;
 			}
-
-			if (view.organisationUnitLevel.id !== src.organisationUnitLevel.id) {
-				if (doExecute) {
-					loadOrganisationUnits(view);
+			
+			// organisation units
+			viewIds = [];
+			viewDim = view.rows[0];
+			srcIds = [];
+			srcDim = src.rows[0];
+				
+			if (viewDim.items.length === srcDim.items.length) {					
+				for (var i = 0; i < viewDim.items.length; i++) {
+					viewIds.push(viewDim.items[i].id);
 				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
-			}
-
-			if (view.parentOrganisationUnit.id !== src.parentOrganisationUnit.id) {
-				if (doExecute) {
-					loadOrganisationUnits(view);
+				
+				for (var i = 0; i < srcDim.items.length; i++) {
+					srcIds.push(srcDim.items[i].id);
 				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
-			}
-
-			if (view.valueType !== src.valueType) {
-				if (doExecute) {
-					loadData(view);
+				
+				if (Ext.Array.difference(viewIds, srcIds).length !== 0) {
+					if (doExecute) {
+						loadOrganisationUnits(view);
+					}
+					return gis.conf.finals.widget.loadtype_organisationunit;
 				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
 			}
 			else {
-				if (view.valueType === dimConf.indicator.id && view.indicator.id !== src.indicator.id) {
-					if (doExecute) {
-						loadData(view);
-					}
-					return gis.conf.finals.widget.loadtype_data;
+				if (doExecute) {
+					loadOrganisationUnits(view);
 				}
-				if (view.valueType === dimConf.dataElement.id && view.dataElement.id !== src.dataElement.id) {
+				return gis.conf.finals.widget.loadtype_organisationunit;
+			}
+			
+			// data
+			viewIds = [];
+			viewDim = view.columns[0];
+			srcIds = [];
+			srcDim = src.columns[0];
+					
+			if (viewDim.items.length === srcDim.items.length) {
+				for (var i = 0; i < viewDim.items.length; i++) {
+					viewIds.push(viewDim.items[i].id);
+				}
+				
+				for (var i = 0; i < srcDim.items.length; i++) {
+					srcIds.push(srcDim.items[i].id);
+				}
+				
+				if (Ext.Array.difference(viewIds, srcIds).length !== 0) {
 					if (doExecute) {
 						loadData(view);
 					}
-					return gis.conf.finals.widget.loadtype_data;
+					return gis.conf.finals.widget.loadtype_organisationunit;
 				}
 			}
-
-			if (view.period.id !== src.period.id) {
+			else {
 				if (doExecute) {
 					loadData(view);
 				}
-				return gis.conf.finals.widget.loadtype_data;
+				return gis.conf.finals.widget.loadtype_organisationunit;
 			}
-
-			if (view.legendType !== src.legendType) {
+			
+			// period
+			viewIds = [];
+			viewDim = view.filters[0];
+			srcIds = [];
+			srcDim = src.filters[0];
+					
+			if (viewDim.items.length === srcDim.items.length) {					
+				for (var i = 0; i < viewDim.items.length; i++) {
+					viewIds.push(viewDim.items[i].id);
+				}
+				
+				for (var i = 0; i < srcDim.items.length; i++) {
+					srcIds.push(srcDim.items[i].id);
+				}
+				
+				if (Ext.Array.difference(viewIds, srcIds).length !== 0) {
+					if (doExecute) {
+						loadData(view);
+					}
+					return gis.conf.finals.widget.loadtype_organisationunit;
+				}
+			}
+			else {
+				if (doExecute) {
+					loadData(view);
+				}
+				return gis.conf.finals.widget.loadtype_organisationunit;
+			}
+			
+			// legend			
+			if (typeof view.legendSet !== typeof src.legendSet) {
 				if (doExecute) {
 					loadLegend(view);
 				}
 				return gis.conf.finals.widget.loadtype_legend;
 			}
-			else {
-				if (view.legendType === gis.conf.finals.widget.legendtype_automatic) {
-					if (view.classes !== src.classes || view.method !== src.method || view.colorLow !== src.colorLow || view.radiusLow !== src.radiusLow ||	view.colorHigh !== src.colorHigh || view.radiusHigh !== src.radiusHigh) {
-						if (doExecute) {
-							loadLegend(view);
-						}
-						return gis.conf.finals.widget.loadtype_legend;
-					}
-				}
-
-				if (view.legendType === gis.conf.finals.widget.legendtype_predefined && view.legendSet.id !== src.legendSet.id) {
+			else if (view.classes !== src.classes ||
+				view.method !== src.method ||
+				view.colorLow !== src.colorLow ||
+				view.radiusLow !== src.radiusLow ||
+				view.colorHigh !== src.colorHigh ||
+				view.radiusHigh !== src.radiusHigh) {
 					if (doExecute) {
 						loadLegend(view);
 					}
 					return gis.conf.finals.widget.loadtype_legend;
-				}
 			}
 
 			gis.olmap.mask.hide();
 		};
 
 		loadOrganisationUnits = function(view) {
-console.log(view);			
+			var items = view.rows[0].items,
+				idParamString = '';
+			
+			for (var i = 0; i < items.length; i++) {
+				idParamString += 'ids=' + items[i].id;
+				idParamString += i !== items.length - 1 ? '&' : '';
+			}
+			
 			Ext.data.JsonP.request({
-				url: gis.init.contextPath + gis.conf.url.path_gis + 'getGeoJson.action',
-				params: {
-					parentId: view.parentOrganisationUnit.id,
-					level: view.organisationUnitLevel.id
-				},
+				url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJson.action?' + idParamString,
 				scope: this,
 				disableCaching: false,
 				success: function(r) {
 					var geojson = gis.util.geojson.decode(r),
-						format = new OpenLayers.Format.GeoJSON(),
+						format = new OpenLayers.Format.GeoJSON(),						
 						features = gis.util.map.getTransformedFeatureArray(format.read(geojson));
 
 					if (!Ext.isArray(features)) {
@@ -1142,47 +1194,55 @@ console.log(view);
 			view = view || layer.core.view;
 			features = features || layer.features.slice(0);
 
-			var type = view.valueType,
-				dimConf = gis.conf.finals.dimension,
+			var dimConf = gis.conf.finals.dimension,
 				paramString = '?',
-				indicator = gis.conf.finals.dimension.indicator,
-				dataElement = gis.conf.finals.dimension.dataElement,
-				period = gis.conf.finals.dimension.period,
-				organisationUnit = gis.conf.finals.dimension.organisationUnit,
-				dx;
+				dxItems = view.columns[0].items,
+				isOperand = view.columns[0].dimension === dimConf.operand.objectName,
+				peItems = view.filters[0].items,
+				ouItems = view.rows[0].items;
 
 			// ou
-			paramString += 'dimension=ou:LEVEL-' + view.organisationUnitLevel.level + '-' + view.parentOrganisationUnit.id;
+			paramString += 'dimension=ou:';
+			
+			for (var i = 0; i < ouItems.length; i++) {
+				paramString += ouItems[i].id;
+				paramString += i < ouItems.length - 1 ? ';' : '';
+			}
 
 			// dx
-			if (view[type] && Ext.isString(view[type].id) && view[type].id.indexOf('-') !== -1) {
-				paramString += '&dimension=co&dimension=dx:' + view[type].id.substr(0, view[type].id.indexOf('-'));
+			paramString += '&dimension=dx:';
+			
+			for (var i = 0; i < dxItems.length; i++) {
+				paramString += isOperand ? dxItems[i].id.split('-')[0] : dxItems[i].id;
+				paramString += i < dxItems.length - 1 ? ';' : '';
 			}
-			else if (view[type] && Ext.isString(view[type].id)) {
-				paramString += '&dimension=dx:' + view[type].id;
+			
+			paramString += isOperand ? '&dimension=co' : '';
+			
+			// pe
+			paramString += '&filter=pe:';
+			
+			for (var i = 0; i < peItems.length; i++) {
+				paramString += peItems[i].id;
+				paramString += i < peItems.length - 1 ? ';' : '';
 			}
-
-			// Filter
-			paramString += '&filter=pe:' + view.period.id;
-
-			// Skip metaData
-			paramString += '&skipMeta=true';
-
-			Ext.Ajax.request({
-				url: gis.init.contextPath + '/api/analytics.json' + paramString,
+			
+			Ext.data.JsonP.request({
+				url: gis.init.contextPath + '/api/analytics.jsonp' + paramString,
 				disableCaching: false,
 				scope: this,
 				success: function(r) {
-					var response = Ext.decode(r.responseText),
-						dimConf = gis.conf.finals.dimension,
+					var response = gis.api.response.Response(r),
 						featureMap = {},
 						valueMap = {},
 						ouIndex,
 						dxIndex,
 						valueIndex,
-						newFeatures = [];
-
-					if (!(Ext.isObject(response) && Ext.isArray(response.rows) && response.rows.length)) {
+						newFeatures = [],
+						dimensions,
+						items = [];
+						
+					if (!response) {
 						alert(GIS.i18n.current_selection_no_data);
 						olmap.mask.hide();
 						return;
@@ -1193,9 +1253,6 @@ console.log(view);
 						if (response.headers[i].name === dimConf.organisationUnit.dimensionName) {
 							ouIndex = i;
 						}
-						else if (response.headers[i].name === dimConf.data.dimensionName) {
-							dxIndex = i;
-						}
 						else if (response.headers[i].name === dimConf.value.dimensionName) {
 							valueIndex = i;
 						}
@@ -1204,6 +1261,7 @@ console.log(view);
 					// Feature map
 					for (var i = 0, id; i < features.length; i++) {
 						var id = features[i].attributes.id;
+						
 						featureMap[id] = true;
 					}
 
@@ -1211,12 +1269,14 @@ console.log(view);
 					for (var i = 0; i < response.rows.length; i++) {
 						var id = response.rows[i][ouIndex],
 							value = parseFloat(response.rows[i][valueIndex]);
+							
 						valueMap[id] = value;
 					}
 
 					for (var i = 0; i < features.length; i++) {
 						var feature = features[i],
 							id = feature.attributes.id;
+							
 						if (featureMap.hasOwnProperty(id) && valueMap.hasOwnProperty(id)) {
 							feature.attributes.value = valueMap[id];
 							feature.attributes.label = feature.attributes.name + ' (' + feature.attributes.value + ')';
@@ -1228,6 +1288,8 @@ console.log(view);
 					layer.addFeatures(newFeatures);
 
 					layer.core.featureStore.loadFeatures(layer.features.slice(0));
+					
+					gis.response = response;
 
 					loadLegend(view);
 				}
@@ -1235,46 +1297,68 @@ console.log(view);
 		};
 
 		loadLegend = function(view) {
-			view = view || layer.core.view;
-
-			var options,
-				predefined = gis.conf.finals.widget.legendtype_predefined,
-				classificationMethod = mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS,
-				method = view.legendType === predefined ? classificationMethod : view.method,
-				bounds,
-				colors,
-				names,
-				legend,
-				legends,
+			var bounds,
+				addNames,
 				fn;
-
+			
+			view = view || layer.core.view;
+			
+			addNames = function(response) {
+					
+				// All dimensions
+				var dimensions = [].concat(view.columns || [], view.rows || [], view.filters || []),
+					metaData = response.metaData;
+					
+				for (var i = 0, dimension; i < dimensions.length; i++) {
+					dimension = dimensions[i];
+					
+					for (var j = 0, item; j < dimension.items.length; j++) {
+						item = dimension.items[j];
+						
+						if (item.id.indexOf('-') !== -1) {
+							var ids = item.id.split('-');							
+							item.name = metaData.names[ids[0]] + ' ' + metaData.names[ids[1]];
+						}
+						else {
+							item.name = metaData.names[item.id];
+						}
+					}
+				}
+								
+				// Period name without changing the id
+				view.filters[0].items[0].name = metaData.names[gis.response.metaData['pe'][0]];
+			};
+			
 			fn = function() {
-				options = {
+				
+				addNames(gis.response);
+				
+				// Classification options
+				var options = {
 					indicator: gis.conf.finals.widget.value,
-					method: method,
+					method: view.legendSet ? mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS : view.method,
 					numClasses: view.classes,
 					bounds: bounds,
 					colors: layer.core.getColors(view.colorLow, view.colorHigh),
 					minSize: view.radiusLow,
 					maxSize: view.radiusHigh
 				};
-
-				view.legendSet = view.legendSet || {};
-				view.legendSet.names = names;
+				
 				layer.core.view = view;
 				layer.core.colorInterpolation = colors;
 				layer.core.applyClassification(options);
 
 				afterLoad(view);
 			};
-
-			if (view.legendType === gis.conf.finals.widget.legendtype_predefined) {
-					bounds = [];
-					colors = [];
-					names = [];
+			
+			if (view.legendSet) {
+				var bounds = [],
+					colors = [],
+					names = [],
+					legends = [];
 
 				Ext.Ajax.request({
-					url: gis.init.contextPath + gis.conf.url.path_api + 'mapLegendSets/' + view.legendSet.id + '.json?links=false&paging=false',
+					url: gis.init.contextPath + gis.conf.finals.url.path_api + 'mapLegendSets/' + view.legendSet.id + '.json?links=false&paging=false',
 					scope: this,
 					success: function(r) {
 						legends = Ext.decode(r.responseText).mapLegends;
@@ -1284,7 +1368,7 @@ console.log(view);
 						});
 
 						for (var i = 0; i < legends.length; i++) {
-							if (bounds[bounds.length-1] !== legends[i].startValue) {
+							if (bounds[bounds.length - 1] !== legends[i].startValue) {
 								if (bounds.length !== 0) {
 									colors.push(new mapfish.ColorRgb(240,240,240));
 									names.push('');
@@ -1296,6 +1380,10 @@ console.log(view);
 							names.push(legends[i].name);
 							bounds.push(legends[i].endValue);
 						}
+						
+						view.legendSet.names = names;
+						view.legendSet.bounds = bounds;
+						view.legendSet.colors = colors;
 
 						fn();
 					}
@@ -1426,12 +1514,17 @@ console.log(view);
 		};
 
 		loadOrganisationUnits = function(view) {
+			var items = view.rows[0].items,
+				idParamString = '';
+			
+			for (var i = 0; i < items.length; i++) {
+				idParamString += 'ids=' + items[i].id;
+				idParamString += i !== items.length - 1 ? '&' : '';
+			}
+			
 			Ext.data.JsonP.request({
-				url: gis.init.contextPath + gis.conf.url.path_gis + 'getGeoJsonFacilities.action',
-				params: {
-					parentId: view.parentOrganisationUnit.id,
-					level: view.organisationUnitLevel.id
-				},
+				url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJsonFacilities.action?' + idParamString,
+				scope: this,
 				disableCaching: false,
 				success: function(r) {
 					var geojson = layer.core.decode(r),
@@ -1478,15 +1571,14 @@ console.log(view);
 		loadLegend = function(view) {
 			view = view || layer.core.view;
 
-			var store = gis.store.groupsByGroupSet,
-				options;
+			var store = gis.store.groupsByGroupSet;
 
-			store.proxy.url = gis.init.contextPath + gis.conf.url.path_gis + 'getOrganisationUnitGroupsByGroupSet.action?id=' + view.organisationUnitGroupSet.id;
+			store.proxy.url = gis.init.contextPath + gis.conf.finals.url.path_module + 'getOrganisationUnitGroupsByGroupSet.action?id=' + view.organisationUnitGroupSet.id;
 			store.load({
 				scope: this,
 				callback: function() {
-					options = {
-						indicator: view.organisationUnitGroupSet.name
+					var options = {
+						indicator: view.organisationUnitGroupSet.id
 					};
 
 					layer.core.view = view;
@@ -1578,14 +1670,22 @@ console.log(view);
 	GIS.core.getInstance = function(init) {
 		var conf = {},
 			util = {},
+			api = {},
 			store = {},
-		
-			gis = {},
-			layers = [];
-			
+			layers = [],
+			gis = {};
+
 		// conf
 		(function() {
 			conf.finals = {
+				url: {
+					path_api: '/api/',
+					path_module: '/dhis-web-mapping/',
+					path_commons: '/dhis-web-commons-ajax-json/',
+					organisationunitchildren_get: 'getOrganisationUnitChildren.action',
+					organisationunitgroup_getall: 'organisationUnitGroups.json?paging=false&links=false',
+					dataset_get: 'dataSets.json?paging=false&links=false'
+				},
 				layer: {
 					type_base: 'base',
 					type_vector: 'vector'
@@ -1597,6 +1697,11 @@ console.log(view);
 						param: 'dx',
 						dimensionName: 'dx',
 						objectName: 'dx'
+					},
+					category: {
+						name: GIS.i18n.categories,
+						dimensionName: 'co',
+						objectName: 'co',
 					},
 					indicator: {
 						id: 'indicator',
@@ -1618,6 +1723,11 @@ console.log(view);
 						param: 'dc',
 						dimensionName: 'dx',
 						objectName: 'dc'
+					},
+					dataSet: {
+						value: 'dataSets',
+						dimensionName: 'dx',
+						objectName: 'ds'
 					},
 					period: {
 						id: 'period',
@@ -1658,15 +1768,12 @@ console.log(view);
 					classify_with_bounds: 1,
 					classify_by_equal_intervals: 2,
 					classify_by_quantils: 3
+				},
+				root: {
+					id: 'root'
 				}
 			};
-			
-			conf.url = {
-				path_api: '/api/',
-				path_gis: '/dhis-web-mapping/',
-				path_commons: '../../dhis-web-commons-ajax-json/'
-			};
-			
+
 			conf.layout = {
 				widget: {
 					item_width: 288,
@@ -1674,7 +1781,7 @@ console.log(view);
 					window_width: 310
 				},
 				tool: {
-					item_width: 222,
+					item_width: 228,
 					itemlabel_width: 95,
 					window_width: 250
 				},
@@ -1682,9 +1789,10 @@ console.log(view);
 					row_height: 27
 				}
 			};
-			
+
 			conf.period = {
 				periodTypes: [
+					{id: 'relativePeriods', name: 'Relative'},
 					{id: 'Daily', name: 'Daily'},
 					{id: 'Weekly', name: 'Weekly'},
 					{id: 'Monthly', name: 'Monthly'},
@@ -1695,14 +1803,24 @@ console.log(view);
 					{id: 'FinancialOct', name: 'FinancialOct'},
 					{id: 'FinancialJuly', name: 'FinancialJuly'},
 					{id: 'FinancialApril', name: 'FinancialApril'}
+				],
+				relativePeriods: [
+					{id: 'LAST_WEEK', name: GIS.i18n.last_week},
+					{id: 'LAST_MONTH', name: GIS.i18n.last_month},
+					{id: 'LAST_BIMONTH', name: GIS.i18n.last_bimonth},
+					{id: 'LAST_QUARTER', name: GIS.i18n.last_quarter},
+					{id: 'LAST_SIX_MONTH', name: GIS.i18n.last_sixmonth},
+					{id: 'LAST_FINANCIAL_YEAR', name: GIS.i18n.last_financial_year},
+					{id: 'THIS_YEAR', name: GIS.i18n.this_year},
+					{id: 'LAST_YEAR', name: GIS.i18n.last_year}
 				]
-			};		
+			};
 		}());
-		
+
 		// util
 		(function() {
 			util.map = {};
-			
+
 			util.map.getVisibleVectorLayers = function() {
 				var layers = [];
 
@@ -1745,7 +1863,7 @@ console.log(view);
 			};
 
 			util.geojson = {};
-			
+
 			util.geojson.decode = function(doc) {
 				var geojson = {};
 				geojson.type = 'FeatureCollection';
@@ -1767,11 +1885,14 @@ console.log(view);
 							id: doc.geojson[i].uid,
 							internalId: doc.geojson[i].iid,
 							name: doc.geojson[i].na,
-							hcwc: doc.geojson[i].hc,
+							hasCoordinatesDown: doc.geojson[i].hcd,
+							hasCoordinatesUp: doc.geojson[i].hcu,
+							level: doc.geojson[i].le,
+							grandParentParentGraph: doc.geojson[i].gppg,
+							grandParentId: doc.geojson[i].gpuid,
 							path: doc.geojson[i].path,
 							parentId: doc.geojson[i].pi,
-							parentName: doc.geojson[i].pn,
-							hasCoordinatesUp: doc.properties.hasCoordinatesUp
+							parentName: doc.geojson[i].pn
 						}
 					});
 				}
@@ -1787,19 +1908,436 @@ console.log(view);
 					cmpArray[i].queryMode = mode;
 				}
 			};
+			
+			util.object = {};
+			
+			util.object.sortObjectsByString = function(array, key) {
+				key = key || 'name';
+				array.sort( function(a, b) {
+					var nameA = a[key].toLowerCase(),
+						nameB = b[key].toLowerCase();
+
+					if (nameA < nameB) {
+						return -1;
+					}
+					if (nameA > nameB) {
+						return 1;
+					}
+					return 0;
+				});
+				return array;
+			};
+			
+			util.object.getLength = function(object) {
+				var size = 0;
+
+				for (var key in object) {
+					if (object.hasOwnProperty(key)) {
+						size++;
+					}
+				}
+
+				return size;
+			};
 		}());
-				
+
 		gis.init = init;
 		gis.conf = conf;
 		gis.util = util;
-		
+
+		// api
+		(function() {
+			api.layout = {};
+			api.response = {};
+
+			api.layout.Record = function(config) {
+				var record = {};
+
+				// id: string
+
+				return function() {
+					if (!Ext.isObject(config)) {
+						console.log('Record config is not an object: ' + config);
+						return;
+					}
+
+					if (!Ext.isString(config.id)) {
+						alert('Record id is not text: ' + config);
+						return;
+					}
+
+					record.id = config.id.replace('.', '-');
+
+					if (Ext.isString(config.name)) {
+						record.name = config.name;
+					}
+
+					return Ext.clone(record);
+				}();
+			};
+
+			api.layout.Dimension = function(config) {
+				var dimension = {};
+
+				// dimension: string
+
+				// items: [Record]
+
+				return function() {
+					if (!Ext.isObject(config)) {
+						console.log('Dimension config is not an object: ' + config);
+						return;
+					}
+
+					if (!Ext.isString(config.dimension)) {
+						console.log('Dimension name is not text: ' + config);
+						return;
+					}
+
+					if (config.dimension !== conf.finals.dimension.category.objectName) {
+						var records = [];
+
+						if (!Ext.isArray(config.items)) {
+							console.log('Dimension items is not an array: ' + config);
+							return;
+						}
+
+						for (var i = 0; i < config.items.length; i++) {
+							record = api.layout.Record(config.items[i]);
+
+							if (record) {
+								records.push(record);
+							}
+						}
+
+						config.items = records;
+
+						if (!config.items.length) {
+							console.log('Dimension has no valid items: ' + config);
+							return;
+						}
+					}
+
+					dimension.dimension = config.dimension;
+					dimension.items = config.items;
+
+					return Ext.clone(dimension);
+				}();
+			};
+
+			api.layout.Layout = function(config) {
+				var layout = {},
+					getValidatedDimensionArray,
+					validateSpecialCases;
+					
+				// layer: string
+
+				// columns: [Dimension]
+
+				// rows: [Dimension]
+
+				// filters: [Dimension]
+
+				// classes: integer (5) - 1-7
+
+				// method: integer (2) - 2, 3 // 2=equal intervals, 3=equal counts
+
+				// colorLow: string ('ff0000')
+
+				// colorHigh: string ('00ff00')
+
+				// radiusLow: integer (5)
+
+				// radiusHigh: integer (15)
+
+				// opacity: integer (0.8) - 0-1
+				
+				// legendSet: object
+
+				getValidatedDimensionArray = function(dimensionArray) {
+					var dimensions = [];
+
+					if (!(dimensionArray && Ext.isArray(dimensionArray) && dimensionArray.length)) {
+						return;
+					}
+
+					for (var i = 0, dimension; i < dimensionArray.length; i++) {
+						dimension = api.layout.Dimension(dimensionArray[i]);
+
+						if (dimension) {
+							dimensions.push(dimension);
+						}
+					}
+
+					dimensionArray = dimensions;
+
+					return dimensionArray.length ? dimensionArray : null;
+				};
+
+				validateSpecialCases = function() {
+					var dimConf = conf.finals.dimension,
+						dimensions,
+						objectNameDimensionMap = {};
+
+					if (!layout) {
+						return;
+					}
+
+					dimensions = Ext.Array.clean([].concat(layout.columns, layout.rows, layout.filters));
+
+					for (var i = 0; i < dimensions.length; i++) {
+						objectNameDimensionMap[dimensions[i].dimension] = dimensions[i];
+					}
+
+					if (layout.filters && layout.filters.length) {
+						for (var i = 0; i < layout.filters.length; i++) {
+
+							// Indicators as filter
+							if (layout.filters[i].dimension === dimConf.indicator.objectName) {
+								util.message.alert(GIS.i18n.indicators_cannot_be_specified_as_filter || 'Indicators cannot be specified as filter');
+								return;
+							}
+
+							// Categories as filter
+							if (layout.filters[i].dimension === dimConf.category.objectName) {
+								util.message.alert(GIS.i18n.categories_cannot_be_specified_as_filter || 'Categories cannot be specified as filter');
+								return;
+							}
+
+							// Data sets as filter
+							if (layout.filters[i].dimension === dimConf.dataSet.objectName) {
+								util.message.alert(GIS.i18n.data_sets_cannot_be_specified_as_filter || 'Data sets cannot be specified as filter');
+								return;
+							}
+						}
+					}
+
+					// dc and in
+					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.indicator.objectName]) {
+						util.message.alert('Indicators and detailed data elements cannot be specified together');
+						return;
+					}
+
+					// dc and de
+					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataElement.objectName]) {
+						util.message.alert('Detailed data elements and totals cannot be specified together');
+						return;
+					}
+
+					// dc and ds
+					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.dataSet.objectName]) {
+						util.message.alert('Data sets and detailed data elements cannot be specified together');
+						return;
+					}
+
+					// dc and co
+					if (objectNameDimensionMap[dimConf.operand.objectName] && objectNameDimensionMap[dimConf.category.objectName]) {
+						util.message.alert('Categories and detailed data elements cannot be specified together');
+						return;
+					}
+
+					// Degs and datasets in the same query
+					//if (Ext.Array.contains(dimensionNames, dimConf.data.dimensionName) && store.dataSetSelected.data.length) {
+						//for (var i = 0; i < init.degs.length; i++) {
+							//if (Ext.Array.contains(dimensionNames, init.degs[i].id)) {
+								//alert(GIS.i18n.data_element_group_sets_cannot_be_specified_together_with_data_sets);
+								//return;
+							//}
+						//}
+					//}
+
+					return true;
+				};
+
+				return function() {
+					var a = [],
+						objectNames = [],
+						dimConf = conf.finals.dimension,
+						isOu = false,
+						isOuc = false,
+						isOugc = false;
+
+					config.columns = getValidatedDimensionArray(config.columns);
+					config.rows = getValidatedDimensionArray(config.rows);
+					config.filters = getValidatedDimensionArray(config.filters);
+
+					// Config must be an object
+					if (!(config && Ext.isObject(config))) {
+						alert(init.el + ': Layout config is not an object');
+						return;
+					}
+
+					// Columns, rows, filter
+					if (!config.columns) {
+						alert('No data specified');
+						return;
+					}
+					if (!config.rows) {
+						alert('No organisation units specified');
+						return;
+					}
+					if (!config.filters) {
+						alert('No periods specified');
+						return;
+					}
+
+					// Collect object names and user orgunits
+					for (var i = 0, dim, dims = [].concat(config.columns, config.rows, config.filters); i < dims.length; i++) {
+						dim = dims[i];
+
+						if (dim) {
+
+							// Object names
+							if (Ext.isString(dim.dimension)) {
+								objectNames.push(dim.dimension);
+							}
+
+							// user orgunits
+							if (dim.dimension === dimConf.organisationUnit.objectName && Ext.isArray(dim.items)) {
+								for (var j = 0; j < dim.items.length; j++) {
+									if (dim.items[j].id === 'USER_ORGUNIT') {
+										isOu = true;
+									}
+									else if (dim.items[j].id === 'USER_ORGUNIT_CHILDREN') {
+										isOuc = true;
+									}
+									else if (dim.items[j].id === 'USER_ORGUNIT_GRANDCHILDREN') {
+										isOugc = true;
+									}
+								}
+							}
+						}
+					}
+
+					// At least one period
+					if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
+						alert(GIS.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
+						return;
+					}
+
+					// Layout
+					layout.columns = config.columns;
+					layout.rows = config.rows;
+					layout.filters = config.filters;
+
+					// Properties
+					layout.layer = Ext.isString(config.layer) && !Ext.isEmpty(config.layer) ? config.layer : 'thematic1';
+					layout.classes = Ext.isNumber(config.classes) && !Ext.isEmpty(config.classes) ? config.classes : 5;
+					layout.method = Ext.isNumber(config.method) && !Ext.isEmpty(config.method) ? config.method : 2;
+					layout.colorLow = Ext.isString(config.colorLow) && !Ext.isEmpty(config.colorLow) ? config.colorLow : 'ff0000';
+					layout.colorHigh = Ext.isString(config.colorHigh) && !Ext.isEmpty(config.colorHigh) ? config.colorHigh : '00ff00';
+					layout.radiusLow = Ext.isNumber(config.radiusLow) && !Ext.isEmpty(config.radiusLow) ? config.radiusLow : 5;
+					layout.radiusHigh = Ext.isNumber(config.radiusHigh) && !Ext.isEmpty(config.radiusHigh) ? config.radiusHigh : 15;
+					layout.opacity = Ext.isNumber(config.opacity) && !Ext.isEmpty(config.opacity) ? config.opacity : 80;
+
+					layout.userOrganisationUnit = isOu;
+					layout.userOrganisationUnitChildren = isOuc;
+					layout.userOrganisationUnitGrandChildren = isOugc;
+
+					layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
+					
+					layout.legendSet = config.legendSet;
+
+					if (!validateSpecialCases()) {
+						return;
+					}
+
+					return Ext.clone(layout);
+				}();
+			};
+
+			api.response.Header = function(config) {
+				var header = {};
+
+				// name: string
+
+				// meta: boolean
+
+				return function() {
+					if (!Ext.isObject(config)) {
+						console.log('Header is not an object: ' + config);
+						return;
+					}
+
+					if (!Ext.isString(config.name)) {
+						console.log('Header name is not text: ' + config);
+						return;
+					}
+
+					if (!Ext.isBoolean(config.meta)) {
+						console.log('Header meta is not boolean: ' + config);
+						return;
+					}
+
+					header.name = config.name;
+					header.meta = config.meta;
+
+					return Ext.clone(header);
+				}();
+			};
+
+			api.response.Response = function(config) {
+				var response = {};
+
+				// headers: [Header]
+
+				return function() {
+					var headers = [];
+
+					if (!(config && Ext.isObject(config))) {
+						alert('Data response invalid');
+						return false;
+					}
+
+					if (!(config.headers && Ext.isArray(config.headers))) {
+						alert('Data response invalid');
+						return false;
+					}
+
+					for (var i = 0, header; i < config.headers.length; i++) {
+						header = api.response.Header(config.headers[i]);
+
+						if (header) {
+							headers.push(header);
+						}
+					}
+
+					config.headers = headers;
+
+					if (!config.headers.length) {
+						alert('No valid response headers');
+						return;
+					}
+
+					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
+						alert('No values found');
+						return false;
+					}
+
+					if (config.headers.length !== config.rows[0].length) {
+						alert('Data invalid');
+						return false;
+					}
+
+					response.headers = config.headers;
+					response.metaData = config.metaData;
+					response.width = config.width;
+					response.height = config.height;
+					response.rows = config.rows;
+
+					return response;
+				}();
+			};
+		}());
+
 		// store
 		(function() {
 			store.organisationUnitLevels = GIS.core.OrganisationUnitLevelStore(gis);
 		}());
-		
+
+		gis.api = api;
 		gis.store = store;
-		
+
 		gis.olmap = GIS.core.getOLMap(gis);
 		gis.layer = GIS.core.getLayers(gis);
 

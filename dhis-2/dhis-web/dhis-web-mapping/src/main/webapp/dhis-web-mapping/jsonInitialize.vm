@@ -1,46 +1,21 @@
-#set( $baseLayersSize = $baseLayers.size() )
-#set( $overlaysSize = $overlays.size() )
-#set( $rootNodesSize = $rootNodes.size() )
+#set($oucSize = $currentUser.getOrganisationUnit().getSortedChildren().size())
 #if($callback)$!{callback}
 (
 #end
 {
-  "contextPath":"$!{contextPath}",
-  "systemSettings": {
-    "infrastructuralDataElementGroup": "$!{infrastructuralDataElementGroup.uid}",
-    "infrastructuralPeriodType": "$!{infrastructuralPeriodType.name}"
-  },
-  "overlays": [
-#foreach( $overlay in $overlays )
-    {
-      "data": {
-        "id": "$!{overlay.id}",
-        "name": "$!encoder.jsonEncode( ${overlay.name} )",
-        "url": "$!encoder.jsonEncode( ${overlay.url} )",
-        "fillColor": "$!encoder.jsonEncode( ${overlay.fillColor} )",
-        "fillOpacity": "$!{overlay.fillOpacity}",
-        "strokeColor": "$!encoder.jsonEncode( ${overlay.strokeColor} )",
-        "strokeWidth": "$!{overlay.strokeWidth}"
-      }
-    }#if( $velocityCount < $overlaysSize ),#end
-#end
-  ],
-  "user": {
-  	"id":"$!currentUser.uid",
-  	"name":"$currentUser.name",
-    "isAdmin": $auth.hasAccess( "dhis-web-mapping", "deleteMapLegendSet" )
-  },
-  "rootNodes": [
-#foreach( $node in $rootNodes )  
-	{
-	  "id": "$!{node.uid}",
-	  "text": "$!encoder.jsonEncode( ${node.name} )",
-	  "level": 1,
-	  "hasChildrenWithCoordinates": $!{node.hasChildrenWithCoordinates()},
-	  "expanded": true
-    }#if( $velocityCount < $rootNodesSize ),#end
-#end
-  ]
+"contextPath":"$!{contextPath}",
+"systemSettings":{"infrastructuralDataElementGroup":"$!{infrastructuralDataElementGroup.uid}","infrastructuralPeriodType": "$!{infrastructuralPeriodType.name}"},
+"user":{
+  "id":"$!currentUser.uid",
+  "name":"$currentUser.name",
+  "isAdmin": $auth.hasAccess( "dhis-web-mapping", "deleteMapLegendSet" ),
+  "ou":"$currentUser.getOrganisationUnit().uid",
+  "ouc":[#foreach($ou in $currentUser.getOrganisationUnit().getSortedChildren())"$ou.uid"#if($velocityCount < $oucSize),#end#end]
+},
+"rootNodes":[#foreach( $node in $rootNodes ){"id": "$!{node.uid}", "text": "$!encoder.jsonEncode( ${node.name} )", "level": 1, "hasChildrenWithCoordinates": $!{node.hasChildrenWithCoordinates()}, "expanded": true}#if( $velocityCount < $rootNodesSize ),#end#end],
+"organisationUnitLevels":[#foreach($level in $levels){"id":"$!{level.uid}","name":"$!encoder.jsonEncode($!{level.name})","level":"$!{level.level}"}#if($velocityCount<$levels.size()),#end#end],
+"indicatorGroups":[#foreach($group in $indicatorGroups){"id":"$!{group.uid}","name":"$!encoder.jsonEncode($!{group.name})"}#if($velocityCount<$indicatorGroups.size()),#end#end],
+"dataElementGroups":[#foreach($group in $dataElementGroups){"id":"$!{group.uid}","name":"$!encoder.jsonEncode($!{group.name})"}#if($velocityCount<$dataElementGroups.size()),#end#end]
 }
 #if($callback)
 )
