@@ -46,6 +46,7 @@ public interface ResourceTableStore
     final String TABLE_NAME_ORGANISATION_UNIT_STRUCTURE = "_orgunitstructure";
     final String TABLE_NAME_DATA_ELEMENT_STRUCTURE = "_dataelementstructure";
     final String TABLE_NAME_PERIOD_STRUCTURE = "_periodstructure";
+    final String TABLE_NAME_DATE_PERIOD_STRUCTURE = "_dateperiodstructure";
     final String TABLE_NAME_DATA_ELEMENT_CATEGORY_OPTION_COMBO = "_dataelementcategoryoptioncombo";
     
     /**
@@ -99,6 +100,11 @@ public interface ResourceTableStore
      * Creates table.
      */
     void createDataElementStructure();
+
+    /**
+     * Creates table.
+     */
+    void createDatePeriodStructure();
     
     /**
      * Creates table.

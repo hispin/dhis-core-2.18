@@ -30,6 +30,7 @@ package org.hisp.dhis.resourcetable;
 
 import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_CATEGORY_OPTION_COMBO_NAME;
 import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_DATA_ELEMENT_STRUCTURE;
+import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_DATE_PERIOD_STRUCTURE;
 import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_ORGANISATION_UNIT_STRUCTURE;
 import static org.hisp.dhis.resourcetable.ResourceTableStore.TABLE_NAME_PERIOD_STRUCTURE;
 
@@ -62,6 +63,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -71,6 +74,7 @@ import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStateme
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
 import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 /**
  * @author Lars Helge Overland
@@ -172,6 +176,9 @@ public class DefaultResourceTableService
         
         generatePeriodTable();
         log.info( "Period table generated" );
+        
+        generateDatePeriodTable();
+        log.info( "Date period table generated" );
         
         generateDataElementCategoryOptionComboTable();
         log.info( "Data element category option combo table generated" );
@@ -487,6 +494,48 @@ public class DefaultResourceTableService
     // PeriodTable
     // -------------------------------------------------------------------------
 
+    public void generateDatePeriodTable()
+    {
+        // ---------------------------------------------------------------------
+        // Create table
+        // ---------------------------------------------------------------------
+
+        resourceTableStore.createDatePeriodStructure();
+
+        // ---------------------------------------------------------------------
+        // Populate table
+        // ---------------------------------------------------------------------
+
+        List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes();
+        
+        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        
+        Date startDate = new Cal( 1970, 1, 1 ).time(); //TODO
+        Date endDate = new Cal( 2030, 1 , 1 ).time();
+        
+        List<Period> days = new DailyPeriodType().generatePeriods( startDate, endDate );
+        
+        for ( Period day : days )
+        {
+            List<Object> values = new ArrayList<Object>();
+            
+            values.add( day.getStartDate() );
+            
+            for ( PeriodType periodType : periodTypes )
+            {
+                Period period = periodType.createPeriod( day.getStartDate() );
+                
+                Assert.notNull( period );
+                
+                values.add( period.getIsoDate() );
+            }
+            
+            batchArgs.add( values.toArray() );
+        }
+        
+        resourceTableStore.batchUpdate( PeriodType.PERIOD_TYPES.size() + 1, TABLE_NAME_DATE_PERIOD_STRUCTURE, batchArgs );
+    }    
+    
     public void generatePeriodTable()
     {
         // ---------------------------------------------------------------------

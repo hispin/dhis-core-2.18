@@ -259,6 +259,31 @@ public class JdbcResourceTableStore
     // PeriodTable
     // -------------------------------------------------------------------------
 
+    public void createDatePeriodStructure()
+    {
+        try
+        {
+            jdbcTemplate.execute( "DROP TABLE IF EXISTS " + TABLE_NAME_DATE_PERIOD_STRUCTURE );            
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        String sql = "CREATE TABLE " + TABLE_NAME_DATE_PERIOD_STRUCTURE + " (dateperiod DATE NOT NULL PRIMARY KEY";
+        
+        for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
+        {
+            sql += ", " + periodType.getName().toLowerCase() + " VARCHAR(10)";
+        }
+        
+        sql += ")";
+        
+        log.info( "Create date period structure SQL: " + sql );
+        
+        jdbcTemplate.execute( sql );
+    }
+
     public void createPeriodStructure()
     {
         try
