@@ -46,7 +46,7 @@
 					  #end
 					  
 					  #if( $auth.hasAccess( "dhis-web-maintenance-patient", "programIndicator" ) && $program.type !='3' )
-						<a href="programIndicator.action?programId=$program.id" title="$i18n.getString( 'program_indicator_management_form' )"><img src="images/program_indicator.png" ></a>
+						<a href="programIndicator.action?programId=$program.id" title="$i18n.getString( 'program_indicator_management_form' )"><img src="../images/indicator.png" ></a>
 					  #else
 						<img src="images/program_indicator_disabled.png">
 					  #end
