@@ -51,6 +51,7 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.user.UserService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -210,6 +211,29 @@ public class RegistrationMultiEventsServiceTest
     }
 
     @Test
+    public void testSaveSameEventMultipleTimesShouldOnlyGive1Event()
+    {
+        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementA.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementA.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementA.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 1, eventService.getEvents( programA, programStageA, organisationUnitA ).getEvents().size() );
+    }
+
+    @Test
+    @Ignore
     public void testSaveWithEnrollmentShouldNotFail()
     {
         Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
@@ -220,7 +244,7 @@ public class RegistrationMultiEventsServiceTest
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
-        event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementB.getUid() );
+        event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementB.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
     }
