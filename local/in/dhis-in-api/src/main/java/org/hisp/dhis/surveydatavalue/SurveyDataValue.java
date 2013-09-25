@@ -41,6 +41,12 @@ import org.hisp.dhis.survey.Survey;
 public class SurveyDataValue implements Serializable
 {
     /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6551567526188061690L;
+    
+    
+    /**
      * Part of the SurveyDataValue's composite ID
      */
     private Survey survey;

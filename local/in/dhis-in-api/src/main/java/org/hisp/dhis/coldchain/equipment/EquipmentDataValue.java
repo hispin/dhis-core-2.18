@@ -8,6 +8,11 @@ import org.hisp.dhis.period.Period;
 
 public class EquipmentDataValue  implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6551567526188061690L;
+    
     private Equipment equipment;
 
     private DataElement dataElement;

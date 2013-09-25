@@ -9,9 +9,9 @@ import org.hisp.dhis.coldchain.model.Model;
 import org.hisp.dhis.coldchain.model.ModelStore;
 import org.hisp.dhis.coldchain.model.ModelType;
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 
-public class HibernateModelStore extends HibernateGenericStore<Model> implements ModelStore
+public class HibernateModelStore extends HibernateIdentifiableObjectStore<Model> implements ModelStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -22,12 +22,6 @@ public class HibernateModelStore extends HibernateGenericStore<Model> implements
     // Model
     // -------------------------------------------------------------------------
     
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<Model> getAllModels()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( Model.class ).list();
-    }
     
     @Override
     public Model getModel( int id )
@@ -39,6 +33,13 @@ public class HibernateModelStore extends HibernateGenericStore<Model> implements
     public Model getModelByName( String name )
     {
         return (Model) getCriteria( Restrictions.eq( "name", name ) ).uniqueResult();
+    }
+    
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<Model> getAllModels()
+    {
+        return sessionFactory.getCurrentSession().createCriteria( Model.class ).list();
     }
     
     @Override
@@ -60,6 +61,9 @@ public class HibernateModelStore extends HibernateGenericStore<Model> implements
     {
         return getCriteria( Restrictions.eq( "modelType", modelType ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
+    
+    
+    
     
     //public int getCountModel( ModelType modelType, ModelTypeAttribute modelTypeAttribute, String searchText )
     public int getCountModel( ModelType modelType, ModelTypeAttribute modelTypeAttribute, String searchText, String searchBy )

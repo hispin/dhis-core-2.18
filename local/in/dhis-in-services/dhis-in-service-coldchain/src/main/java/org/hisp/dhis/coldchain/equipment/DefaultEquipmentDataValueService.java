@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DefaultEquipmentDataValueService implements EquipmentDataValueService
 {
+    @SuppressWarnings( "unused" )
     private static final Log log = LogFactory.getLog( DefaultEquipmentDataValueService.class );
     
     // -------------------------------------------------------------------------
