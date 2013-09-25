@@ -233,9 +233,9 @@ public class ProgramStage
         this.description = description;
     }
 
-    @JsonProperty
+    @JsonProperty("repeatable")
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "repeatable", namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getIrregular()
     {
         return irregular;
