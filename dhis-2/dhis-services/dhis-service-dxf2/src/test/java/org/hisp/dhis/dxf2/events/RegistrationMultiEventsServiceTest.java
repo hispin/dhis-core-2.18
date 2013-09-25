@@ -232,7 +232,7 @@ public class RegistrationMultiEventsServiceTest
     }
 
     @Test
-    public void testSaveWithoutEventIdShouldCreateNewRepeatableEvent()
+    public void testSaveRepeatableStageWithoutEventIdShouldCreateNewEvent()
     {
         Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
@@ -256,7 +256,7 @@ public class RegistrationMultiEventsServiceTest
     }
 
     @Test
-    public void testSaveWithEventIdShouldNotCreateAdditionalRepeatableEvents()
+    public void testSaveRepeatableStageWithEventIdShouldNotCreateAdditionalEvents()
     {
         Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );

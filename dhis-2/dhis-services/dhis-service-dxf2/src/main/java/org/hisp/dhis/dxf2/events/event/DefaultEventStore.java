@@ -117,7 +117,6 @@ public class DefaultEventStore implements EventStore
             {
                 event = new Event();
 
-                event.setCompleted( rowSet.getBoolean( "psi_completed" ) );
                 event.setEvent( rowSet.getString( "psi_uid" ) );
                 event.setStatus( EventStatus.fromInt( rowSet.getInt( "psi_status" ) ) );
                 event.setProgram( rowSet.getString( "p_uid" ) );
@@ -144,7 +143,7 @@ public class DefaultEventStore implements EventStore
     private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds, Date startDate, Date endDate )
     {
         String sql = "select p.uid as p_uid, ps.uid as ps_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, psi.executiondate as psi_executiondate," +
-            " psi.completeduser as psi_completeduser, psi.completed as psi_completed," +
+            " psi.completeduser as psi_completeduser," +
             " pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid" +
             " from program p" +
             " left join programstage ps on ps.programid=p.programid" +
