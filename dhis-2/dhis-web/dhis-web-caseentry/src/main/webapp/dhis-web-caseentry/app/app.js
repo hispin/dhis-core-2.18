@@ -45,12 +45,12 @@ TR.conf = {
             path_api: '../../api/',
             path_images: 'images/',
 			initialize: 'tabularInitialize.action',
-			programstages_get: '../api/programs/',
+			programstages_get: 'programs/',
 			programstagesections_get: 'loadProgramStageSections.action',
 			dataelements_get: 'loadDataElements.action',
 			organisationunitchildren_get: 'getOrganisationUnitChildren.action',
 			organisationunit_getbygroup: 'getOrganisationUnitPathsByGroup.action',
-			generatetabularreport_get: '../api/analytics/events/query/',
+			generatetabularreport_get: 'analytics/events/query/',
 			casebasedfavorite_getall: 'getTabularReports.action',
 			casebasedfavorite_get: 'getTabularReport.action',
 			casebasedfavorite_rename: 'updateTabularReportName.action',
@@ -512,6 +512,7 @@ Ext.onReady( function() {
 				params.valueField = 'value';
 				params.displayField = 'name';
 				params.editable = false;
+				valueType = valueType.split('_')[0];
 				if( filterOperator != undefined || filterOperator!= '')
 				{
 					params.value = filterOperator;
@@ -574,7 +575,7 @@ Ext.onReady( function() {
 			},
 			createFilterField: function( valueType, id, filterValue ){
 				var params = {};
-				var xtype = TR.value.covertXType(valueType);
+				var xtype = TR.value.covertXType(valueType.split('_')[0]);
 				params.xtype = xtype;
 				params.id = 'filter_' + id;
 				params.cls = 'tr-textfield-alt1';
@@ -588,52 +589,20 @@ Ext.onReady( function() {
 				else if( xtype == 'combobox' )
 				{
 					var deId = id.split('_')[0];
-					var fixedId = id.substring(0, id.lastIndexOf('_') );
 					params.typeAhead = true;
 					params.editable = true;
-					if( valueType == 'bool' || fixedId=='fixedAttr_gender' || fixedId=='fixedAttr_dobType')
-					{
+					if( valueType == 'bool' ){
 						params.queryMode = 'local';
 						params.valueField = 'value';
 						params.displayField = 'name';
 						params.editable = false;
-						if( fixedId=='fixedAttr_gender')
-						{
-							params.multiSelect = true;
-							params.delimiter = ';';
-							params.forceSelection = true;
-							params.store = new Ext.data.ArrayStore({
-								fields: ['value', 'name'],
-								data: [['', TR.i18n.please_select], 
-									['M', TR.i18n.male], 
-									['F', TR.i18n.female],
-									['T', TR.i18n.transgender]]
-							});
-						}
-						else if( fixedId=='fixedAttr_dobType')
-						{
-							params.forceSelection = true;
-							params.multiSelect = true;
-							params.delimiter = ';';
-							params.editable = false;
-							params.store = new Ext.data.ArrayStore({
-								fields: ['value', 'name'],
-								data: [['', TR.i18n.please_select],
-									['V', TR.i18n.verified], 
-									['D', TR.i18n.declared],
-									['A', TR.i18n.approximated]]
-							});
-						}
-						else if (valueType == 'bool')
-						{
-							params.forceSelection = true;
-							params.store = new Ext.data.ArrayStore({
-								fields: ['value', 'name'],
-								data: [['', TR.i18n.please_select], 
-									['true', TR.i18n.yes], 
-									['false', TR.i18n.no]]
-							});
-						}
+						params.forceSelection = true;
+						params.store = new Ext.data.ArrayStore({
+							fields: ['value', 'name'],
+							data: [['', TR.i18n.please_select], 
+								['true', TR.i18n.yes], 
+								['false', TR.i18n.no]]
+						});
 					}
 					else if( valueType == 'trueOnly'){
 						params.queryMode = 'local';
@@ -676,7 +645,7 @@ Ext.onReady( function() {
 							proxy: {
 								type: 'ajax',
 								url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.suggested_dataelement_get,
-								extraParams:{id: deId},
+								extraParams:{id: valueType.split('_')[1]},
 								reader: {
 									type: 'json',
 									root: 'options'
@@ -685,6 +654,7 @@ Ext.onReady( function() {
 						});
 					}					
 				}
+				
 				if( filterValue != undefined )
 				{
 					params.value = filterValue;
@@ -1483,7 +1453,7 @@ Ext.onReady( function() {
 			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
-				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.programstages_get,
+				url: TR.conf.finals.ajax.path_api + TR.conf.finals.ajax.programstages_get,
 				reader: {
 					type: 'json',
 					root: 'programStages'
@@ -1587,6 +1557,7 @@ Ext.onReady( function() {
                 proxy: {
                     type: 'ajax',
                     url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.dataelements_get,
+					disableCaching: false,
                     reader: {
                         type: 'json',
                         root: 'items'
@@ -1789,8 +1760,8 @@ Ext.onReady( function() {
     
     TR.state = {
         currentPage: 1,
-		total: 1,
-		totalRecords: 0,
+		pageCount: 1,
+		total: 0,
 		asc: "",
 		desc: "",
 		orgunitIds: [],
@@ -1839,7 +1810,7 @@ Ext.onReady( function() {
 				// Get url
 				var programId = Ext.getCmp('programCombobox').getValue(); 
 				var programStageId = TR.cmp.params.programStage.getValue();
-				var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
+				var url = TR.conf.finals.ajax.path_api + TR.conf.finals.ajax.generatetabularreport_get;
 				
 				// Export to XLS 
 				
@@ -1852,14 +1823,9 @@ Ext.onReady( function() {
 						completedEvent = "&completedEventsOpt=true";
 					}
 					
-					var displayOrgunitCode='';
-					if ( Ext.getCmp('displayOrgunitCode').getValue() == true )
-					{
-						displayOrgunitCode = "&displayOrgunitCode=true";
-					}
 					
   				    var exportForm = document.getElementById('exportForm');
-					exportForm.action = url + programId + ".xls?stage=" + programStageId + completedEvent + displayOrgunitCode;
+					exportForm.action = url + programId + ".xls?stage=" + programStageId + completedEvent;
 					exportForm.submit();
 				}
 				// Show report on grid
@@ -1882,8 +1848,8 @@ Ext.onReady( function() {
 							else{
 								TR.value.columns = json.headers;
 								TR.value.values = json.rows;
-								TR.state.totalRecords = json.metaData.pager.total;
-								TR.state.total = json.metaData.pager.pageCount;
+								TR.state.total = json.metaData.pager.total;
+								TR.state.pageCount = json.metaData.pager.pageCount;
 								
 								// Get fields
 								
@@ -1914,7 +1880,7 @@ Ext.onReady( function() {
 					p.ouMode = TR.cmp.settings.facilityLB.getValue();
 				}
 				
-				// order-by
+				// Order-by
 				
 				if(TR.state.asc!=""){				
 					p.asc = TR.state.asc;
@@ -1923,7 +1889,9 @@ Ext.onReady( function() {
 					p.desc= TR.state.desc;
 				}
 				
-				p.currentPage = TR.state.currentPage;
+				// Paging
+				
+				p.page = TR.state.currentPage;
 				
 				// organisation unit
 				
@@ -1943,11 +1911,6 @@ Ext.onReady( function() {
 				if( Ext.getCmp('completedEventsOpt').getValue() == true )
 				{
 					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
-				}
-				
-				if( Ext.getCmp('displayOrgunitCode').getValue()== true )
-				{
-					p.displayOrgunitCode = Ext.getCmp('displayOrgunitCode').getValue();
 				}
 				
 				// Get searching values
@@ -1977,12 +1940,7 @@ Ext.onReady( function() {
 							filter += ';' + filterOpt + ';';
 							if( filterOpt == 'IN' )
 							{
-								var filterValues = filterValue.split(";");
-								for(var i=0;i<filterValues.length;i++)
-								{
-									filter += filterValues[i] +":";
-								}
-								filter = filter.substr(0,filter.length - 1);
+								filter +=filterValue.replace(/;/g,":"); 
 							}
 							else
 							{
@@ -2860,7 +2818,7 @@ Ext.onReady( function() {
 					{
 						xtype: 'label',
 						id:'totalPageLbl',
-						text: ' of ' + TR.state.total + ' | '
+						text: ' of ' + TR.state.pageCount + ' | '
 					},
 					{
 						xtype: 'button',
@@ -2875,7 +2833,7 @@ Ext.onReady( function() {
 						icon: 'images/arrowrightdouble.png',
 						id:'lastPageBtn',
 						handler: function() {
-							TR.exe.paging( TR.state.total );
+							TR.exe.paging( TR.state.pageCount );
 						}
 					},
 					{
@@ -2896,7 +2854,7 @@ Ext.onReady( function() {
 						xtype: 'label',
 						id: 'totalEventLbl',
 						style: 'margin-right:18px;',
-						text: TR.state.totalRecords + ' ' + TR.i18n.events
+						text: TR.state.total + ' ' + TR.i18n.events
 					},
 				], 
 				store: TR.store.datatable
@@ -2996,9 +2954,9 @@ Ext.onReady( function() {
         setPagingToolbarStatus: function() {
 			TR.datatable.showPagingBar();
 			Ext.getCmp('currentPage').enable();
-			Ext.getCmp('totalEventLbl').setText( TR.state.totalRecords + ' ' + TR.i18n.events );
-			Ext.getCmp('totalPageLbl').setText( ' of ' + TR.state.total + ' | ' );
-			if( TR.state.totalRecords== 0 )
+			Ext.getCmp('totalEventLbl').setText( TR.state.total + ' ' + TR.i18n.events );
+			Ext.getCmp('totalPageLbl').setText( ' of ' + TR.state.pageCount + ' | ' );
+			if( TR.state.total== 0 )
 			{
 				Ext.getCmp('currentPage').setValue('');
 				Ext.getCmp('currentPage').setValue('');
@@ -3015,15 +2973,15 @@ Ext.onReady( function() {
 				Ext.getCmp('btnClean').enable();
 				Ext.getCmp('currentPage').setValue(TR.state.currentPage);
 				
-				if( TR.state.currentPage == TR.state.total 
-					&& TR.state.total== 1 )
+				if( TR.state.currentPage == TR.state.pageCount 
+					&& TR.state.pageCount== 1 )
 				{
 					Ext.getCmp('firstPageBtn').disable();
 					Ext.getCmp('previousPageBtn').disable();
 					Ext.getCmp('nextPageBtn').disable();
 					Ext.getCmp('lastPageBtn').disable();
 				}
-				else if( TR.state.currentPage == TR.state.total )
+				else if( TR.state.currentPage == TR.state.pageCount )
 				{
 					Ext.getCmp('firstPageBtn').enable();
 					Ext.getCmp('previousPageBtn').enable();
@@ -4110,16 +4068,6 @@ Ext.onReady( function() {
 			labelWidth: 135
 		});
 		
-		var displayOrgunitCodeField = Ext.create('Ext.form.field.Checkbox', {
-			xtype: 'checkbox',
-			cls: 'tr-checkbox',
-			id: 'displayOrgunitCode',
-			style:'padding-left: 20px;',
-			boxLabel: TR.i18n.display_orgunit_code,
-			boxLabelAlign: 'before',
-			labelWidth: 135
-		});
-		
 		var facilityLBField = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'tr-combo',
 			id: 'facilityLBCombobox',
@@ -4263,8 +4211,7 @@ Ext.onReady( function() {
 							bodyStyle: 'border-style:none; background-color:transparent;',
 							items:[
 								completedEventsField,
-								displayTotalsOptField,
-								displayOrgunitCodeField
+								displayTotalsOptField
 							]
 						},
 						facilityLBField,
@@ -4879,7 +4826,6 @@ Ext.onReady( function() {
 													Ext.getCmp('layoutBtn').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
 													Ext.getCmp('levelCombobox').setVisible(true);
-													Ext.getCmp('displayOrgunitCode').setVisible(true);
 													
 													var level = Ext.getCmp('levelCombobox').getValue();
 													if( level==null || level!='' ){
@@ -4914,7 +4860,6 @@ Ext.onReady( function() {
 													Ext.getCmp('dateRangeDiv').setVisible(false);
 													Ext.getCmp('levelCombobox').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(false);
-													Ext.getCmp('displayOrgunitCode').setVisible(false);
 													
 													Ext.getCmp('datePeriodRangeDiv').setVisible(true);
 													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
@@ -4966,7 +4911,6 @@ Ext.onReady( function() {
 										},
 										select: function(cb) {
 											var pid = cb.getValue();
-											
 											TR.store.programStageSection.loadData([],false);
 										
 											// Program-stage
