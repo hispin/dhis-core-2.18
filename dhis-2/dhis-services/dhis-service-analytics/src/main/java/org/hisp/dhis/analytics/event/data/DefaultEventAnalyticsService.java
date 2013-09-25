@@ -211,7 +211,7 @@ public class DefaultEventAnalyticsService
                 {
                     params.getItems().add( new QueryItem( getItem( it, pr ) ) );
                 }
-                else if ( it != null )
+                else if ( it != null ) // Filter
                 {
                     String[] split = it.split( OPTION_SEP );
                     
