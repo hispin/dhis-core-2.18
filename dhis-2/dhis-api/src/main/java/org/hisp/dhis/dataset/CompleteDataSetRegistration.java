@@ -30,6 +30,7 @@ package org.hisp.dhis.dataset;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
@@ -177,6 +178,7 @@ public class CompleteDataSetRegistration
 
     @JsonProperty
     @JsonSerialize(as = BaseIdentifiableObject.class)
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public DataSet getDataSet()
     {
         return dataSet;
@@ -189,6 +191,7 @@ public class CompleteDataSetRegistration
 
     @JsonProperty
     @JsonSerialize(as = BaseIdentifiableObject.class)
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Period getPeriod()
     {
         return period;
@@ -199,8 +202,9 @@ public class CompleteDataSetRegistration
         this.period = period;
     }
 
-    @JsonProperty(value = "organisationUnit")
+    @JsonProperty( value = "organisationUnit" )
     @JsonSerialize(as = BaseIdentifiableObject.class)
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public OrganisationUnit getSource()
     {
         return source;
@@ -212,6 +216,7 @@ public class CompleteDataSetRegistration
     }
 
     @JsonProperty
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Date getDate()
     {
         return date;
@@ -223,6 +228,7 @@ public class CompleteDataSetRegistration
     }
 
     @JsonProperty
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getStoredBy()
     {
         return storedBy;
@@ -234,6 +240,7 @@ public class CompleteDataSetRegistration
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getPeriodName()
     {
         return periodName;
