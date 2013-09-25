@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.webdomain;
+package org.hisp.dhis.dataset;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -33,7 +33,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,21 +40,25 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "dataValueSets", namespace = DxfNamespaces.DXF_2_0 )
-public class DataValueSets
+@JacksonXmlRootElement( localName = "completeDataSetRegistrations", namespace = DxfNamespaces.DXF_2_0 )
+public class CompleteDataSetRegistrations
 {
-    private List<DataValueSet> dataValueSets = new ArrayList<DataValueSet>();
+    private List<CompleteDataSetRegistration> completeDataSetRegistrationList = new ArrayList<CompleteDataSetRegistration>();
 
-    @JsonProperty
-    @JacksonXmlElementWrapper( localName = "dataValueSets", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "dataValueSet", namespace = DxfNamespaces.DXF_2_0 )
-    public List<DataValueSet> getDataValueSets()
+    public CompleteDataSetRegistrations()
     {
-        return dataValueSets;
     }
 
-    public void setDataValueSets( List<DataValueSet> dataValueSets )
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "completeDataSetRegistrationList", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "completeDataSetRegistration", namespace = DxfNamespaces.DXF_2_0 )
+    public List<CompleteDataSetRegistration> getCompleteDataSetRegistrationList()
     {
-        this.dataValueSets = dataValueSets;
+        return completeDataSetRegistrationList;
+    }
+
+    public void setCompleteDataSetRegistrationList( List<CompleteDataSetRegistration> completeDataSetRegistrationList )
+    {
+        this.completeDataSetRegistrationList = completeDataSetRegistrationList;
     }
 }
