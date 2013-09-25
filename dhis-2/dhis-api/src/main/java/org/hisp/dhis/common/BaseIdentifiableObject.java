@@ -37,7 +37,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.SharingView;
+import org.hisp.dhis.common.view.SharingBasicView;
+import org.hisp.dhis.common.view.SharingDetailedView;
+import org.hisp.dhis.common.view.SharingExportView;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroupAccess;
 
@@ -251,7 +253,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { SharingView.class, DetailedView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getPublicAccess()
     {
@@ -265,7 +267,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { SharingView.class, DetailedView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean getExternalAccess()
     {
@@ -279,7 +281,7 @@ public class BaseIdentifiableObject
 
     @Override
     @JsonProperty
-    @JsonView( { SharingView.class, DetailedView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public User getUser()
@@ -293,7 +295,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { SharingView.class, DetailedView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
     @JacksonXmlElementWrapper( localName = "userGroupAccesses", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "userGroupAccess", namespace = DxfNamespaces.DXF_2_0 )
     public Set<UserGroupAccess> getUserGroupAccesses()
@@ -307,7 +309,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { SharingView.class, DetailedView.class } )
+    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
     @JacksonXmlProperty( localName = "access", namespace = DxfNamespaces.DXF_2_0 )
     public Access getAccess()
     {
