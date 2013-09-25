@@ -147,7 +147,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         postProcessEntity( entity, options, parameters );
 
         model.addAttribute( "model", entity );
-        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+        model.addAttribute( "viewClass", options.getViewClass( "sharingDetailed" ) );
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
