@@ -31,6 +31,7 @@ package org.hisp.dhis.caseentry.action.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageService;
 
@@ -81,10 +82,13 @@ public class GetProgramStageSectionsAction
     public String execute()
         throws Exception
     {
-        sections = new ArrayList<ProgramStageSection>( programStageService.getProgramStage( programStageId )
-            .getProgramStageSections() );
+        ProgramStage programStage = programStageService.getProgramStage( programStageId );
+        
+        if ( programStage.getProgramStageSections() != null )
+        {
+            sections = new ArrayList<ProgramStageSection>( programStage.getProgramStageSections() );
+        }
 
         return SUCCESS;
     }
-
 }

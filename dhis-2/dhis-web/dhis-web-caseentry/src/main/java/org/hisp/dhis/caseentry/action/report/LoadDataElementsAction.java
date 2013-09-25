@@ -37,6 +37,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageSectionService;
@@ -95,13 +96,6 @@ public class LoadDataElementsAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private String programId;
-
-    public void setProgramId( String programId )
-    {
-        this.programId = programId;
-    }
-
     private String programStageId;
 
     public void setProgramStageId( String programStageId )
@@ -145,36 +139,36 @@ public class LoadDataElementsAction
     public String execute()
         throws Exception
     {
-        if ( programId != null )
-        {
-            Program program = programService.getProgram( programId );
-            if ( program.isRegistration() )
-            {
-                Collection<PatientIdentifierType> identifierTypes = identifierTypeService
-                    .getAllPatientIdentifierTypes();
-                Collection<PatientAttribute> patientAttributes = attributeService.getAllPatientAttributes();
-
-                Collection<Program> programs = programService.getAllPrograms();
-                programs.remove( program );
-
-                for ( Program _program : programs )
-                {
-                    identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
-                    patientAttributes.removeAll( _program.getPatientAttributes() );
-                }
-            }
-        }
+        Program program = null;
 
         if ( programStageId != null )
         {
-            psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
+            ProgramStage programStage = programStageService.getProgramStage( programStageId );
+            psDataElements = programStage.getProgramStageDataElements();
+            program = programStage.getProgram();
         }
         else if ( sectionId != null )
         {
             ProgramStageSection section = programStageSectionService.getProgramStageSection( sectionId );
             psDataElements = section.getProgramStageDataElements();
+            program = section.getProgramStageDataElements().iterator().next().getProgramStage().getProgram();
         }
 
+        if ( program != null && program.isRegistration() )
+        {
+            Collection<PatientIdentifierType> identifierTypes = identifierTypeService.getAllPatientIdentifierTypes();
+            Collection<PatientAttribute> patientAttributes = attributeService.getAllPatientAttributes();
+
+            Collection<Program> programs = programService.getAllPrograms();
+            programs.remove( program );
+
+            for ( Program _program : programs )
+            {
+                identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
+                patientAttributes.removeAll( _program.getPatientAttributes() );
+            }
+        }
+        
         return SUCCESS;
     }
 }
