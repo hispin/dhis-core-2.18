@@ -29,6 +29,7 @@ package org.hisp.dhis.user;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -281,6 +282,35 @@ public class DefaultUserService
     public int getUsersWithoutOrganisationUnitCountByName( String userName )
     {
         return userCredentialsStore.getUsersWithoutOrganisationUnitCountByName( userName );
+    }
+    
+    public User searchForUser( String query )
+    {
+        User user = userStore.getByUid( query );
+        
+        if ( user == null )
+        {
+            UserCredentials credentials = userCredentialsStore.getUserCredentialsByUsername( query );
+            user = credentials != null ? credentials.getUser() : null;
+        }
+        
+        return user;
+    }
+    
+    public List<User> queryForUsers( String query )
+    {
+        List<User> users = new ArrayList<User>();
+        
+        User uidUser = userStore.getByUid( query );
+        
+        if ( uidUser != null )
+        {
+            users.add( uidUser );
+        }
+                
+        users.addAll( userStore.getAllLikeNameOrderedName( query, 0, 1000 ) ); //TODO
+        
+        return users;
     }
 
     // -------------------------------------------------------------------------

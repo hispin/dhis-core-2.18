@@ -146,6 +146,10 @@ public interface UserService
     int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name );
     
     List<User> getUsersByUid( List<String> uids );
+    
+    User searchForUser( String query );
+    
+    List<User> queryForUsers( String query );
 
     // -------------------------------------------------------------------------
     // UserCredentials
