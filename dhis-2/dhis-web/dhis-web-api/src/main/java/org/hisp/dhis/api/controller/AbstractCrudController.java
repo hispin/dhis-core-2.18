@@ -295,21 +295,14 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     protected List<T> queryForEntityList( WebMetaData metaData, WebOptions options, String query )
     {
-        List<T> entityList;
+        List<T> entityList = new ArrayList<T>( manager.filter( getEntityClass(), query ) );
 
         if ( options.hasPaging() )
         {
-            entityList = new ArrayList<T>( manager.filter( getEntityClass(), query ) );
-
             Pager pager = new Pager( options.getPage(), entityList.size(), options.getPageSize() );
             metaData.setPager( pager );
 
             entityList = PagerUtils.pageCollection( entityList, pager );
-
-        }
-        else
-        {
-            entityList = new ArrayList<T>( manager.filter( getEntityClass(), query ) );
         }
 
         return entityList;
