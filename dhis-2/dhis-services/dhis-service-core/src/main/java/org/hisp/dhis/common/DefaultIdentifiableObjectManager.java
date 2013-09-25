@@ -227,18 +227,18 @@ public class DefaultIdentifiableObjectManager
     {
         Set<T> uniqueObjects = new HashSet<T>();
 
-        T object = get( clazz, query );
+        T uidObject = get( clazz, query );
 
-        if ( object != null )
+        if ( uidObject != null )
         {
-            uniqueObjects.add( object );
+            uniqueObjects.add( uidObject );
         }
 
-        object = getByCode( clazz, query );
+        T codeObject = getByCode( clazz, query );
 
-        if ( object != null )
+        if ( codeObject != null )
         {
-            uniqueObjects.add( object );
+            uniqueObjects.add( codeObject );
         }
 
         uniqueObjects.addAll( getLikeName( clazz, query ) );

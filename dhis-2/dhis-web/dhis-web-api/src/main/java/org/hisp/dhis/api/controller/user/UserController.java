@@ -110,4 +110,20 @@ public class UserController
     {
         return userService.getUser( uid );
     }
+
+    //--------------------------------------------------------------------------
+    // Overrides
+    //--------------------------------------------------------------------------
+
+    @Override
+    public User searchForEntity( Class<User> clazz, String query )
+    {
+        return userService.searchForUser( query );
+    }
+    
+    @Override
+    public List<User> queryForList( Class<User> clazz, String query )
+    {
+        return userService.queryForUsers( query );
+    }
 }
