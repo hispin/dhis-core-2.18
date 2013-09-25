@@ -219,19 +219,20 @@ public class JdbcEventAnalyticsManager
             return null;
         }
         
-        filter = statementBuilder.encode( filter, false );
+        operator = operator.toLowerCase();
+        filter = statementBuilder.encode( filter, false ).toLowerCase();
         
         if ( operator.equals( "like" ) )
         {
-            return "'%" + filter.toLowerCase() + "%'";
+            return "'%" + filter + "%'";
         }
         else if ( operator.equals( "in" ) )
         {
-            String[] split = filter.toLowerCase().split( ":" );
+            String[] split = filter.split( ":" );
                         
             return "(" + TextUtils.getQuotedCommaDelimitedString( Arrays.asList( split ) ) + ")";
         }
         
-        return "'" + filter.toLowerCase() + "'";
+        return "'" + filter + "'";
     }    
 }
