@@ -6,7 +6,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.model.ModelType;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeGroup;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeGroupStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 
 /**
  * @author Mithilesh Kumar Thakur
@@ -14,7 +14,7 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
  * @version HibernateModelTypeAttributeGroupStore.javaOct 9, 2012 3:56:11 PM	
  */
 
-public class HibernateModelTypeAttributeGroupStore extends HibernateGenericStore<ModelTypeAttributeGroup> implements ModelTypeAttributeGroupStore
+public class HibernateModelTypeAttributeGroupStore extends HibernateIdentifiableObjectStore<ModelTypeAttributeGroup> implements ModelTypeAttributeGroupStore
 {
     // -------------------------------------------------------------------------
     // Dependencies

@@ -6,6 +6,11 @@ import java.util.Date;
 public class EquipmentStatus
     implements Serializable
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6551567526188061690L;
+    
     public static final String STATUS_WORKING = "WORKING";
 
     public static final String STATUS_NOTWORKING = "NOTWORKING";

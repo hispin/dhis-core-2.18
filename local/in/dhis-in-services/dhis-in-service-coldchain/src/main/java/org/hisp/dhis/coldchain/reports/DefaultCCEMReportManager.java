@@ -1397,11 +1397,12 @@ public class DefaultCCEMReportManager
             }
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-            Integer count = 1;
-            String eValue = null;
+            
+            //Integer count = 1;
+            //String eValue = null;
             while ( rs.next() )
             {
-                String eqValue = rs.getString( 2 );               
+                //String eqValue = rs.getString( 2 );               
                 System.out.println( "EQUIPMENT VALUE IS: " + rs.getString( 1 ) );
             }
         }
@@ -1409,7 +1410,9 @@ public class DefaultCCEMReportManager
         {
             throw new RuntimeException( "Exception: ", e );
         }
+        
         System.out.println( "Size is: " + countMap.size() );
+        
         return countMap;
     }
 

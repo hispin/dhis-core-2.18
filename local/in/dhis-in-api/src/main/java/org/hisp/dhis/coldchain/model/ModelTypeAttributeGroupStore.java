@@ -36,5 +36,4 @@ public interface ModelTypeAttributeGroupStore extends GenericNameableObjectStore
     
     Collection<ModelTypeAttributeGroup> getModelTypeAttributeGroupsByModelType( ModelType modelType );
     
-    
 }

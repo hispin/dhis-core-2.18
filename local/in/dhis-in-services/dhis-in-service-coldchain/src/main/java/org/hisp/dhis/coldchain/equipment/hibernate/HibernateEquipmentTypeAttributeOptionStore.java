@@ -43,6 +43,7 @@ public class HibernateEquipmentTypeAttributeOptionStore implements EquipmentType
         session.delete( equipmentTypeAttributeOption );
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<EquipmentTypeAttributeOption> getAllEquipmentTypeAttributeOptions()
     {
@@ -66,6 +67,7 @@ public class HibernateEquipmentTypeAttributeOptionStore implements EquipmentType
         return (EquipmentTypeAttributeOption) session.get( EquipmentTypeAttributeOption.class, id );
     }
 
+    @SuppressWarnings( "unchecked" )
     public Collection<EquipmentTypeAttributeOption> get( EquipmentTypeAttribute equipmentTypeAttribute )
     {
         Session session = sessionFactory.getCurrentSession();

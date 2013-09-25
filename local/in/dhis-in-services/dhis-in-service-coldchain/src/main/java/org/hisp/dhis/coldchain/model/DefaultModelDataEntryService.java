@@ -1296,6 +1296,7 @@ public class DefaultModelDataEntryService implements ModelDataEntryService
      * Returns a Map of all DataElements in the given ProgramStage where the key
      * is the DataElement identifier and the value is the DataElement.
      */
+    @SuppressWarnings( "unused" )
     private Map<Integer, ModelTypeAttribute> getModelTypeAttributeMap( ModelType modelType )
     {
         Collection<ModelTypeAttribute> modelTypeAttributes =  modelType.getModelTypeAttributes();
@@ -1313,8 +1314,4 @@ public class DefaultModelDataEntryService implements ModelDataEntryService
 
         return map;
     }
-    
-    
-    
-    
 }

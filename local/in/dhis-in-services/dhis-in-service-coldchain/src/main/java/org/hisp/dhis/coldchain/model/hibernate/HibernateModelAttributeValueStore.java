@@ -75,7 +75,6 @@ public class HibernateModelAttributeValueStore implements ModelAttributeValueSto
     }
     
     @Override
-    @SuppressWarnings( "unchecked" )
     public ModelAttributeValue modelAttributeValue( Model model ,ModelTypeAttribute modelTypeAttribute )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -88,7 +87,6 @@ public class HibernateModelAttributeValueStore implements ModelAttributeValueSto
     }
     
     @Override
-    @SuppressWarnings( "unchecked" )
     public ModelAttributeValue modelAttributeValue( Model model ,ModelTypeAttribute modelTypeAttribute, ModelTypeAttributeOption modelTypeAttributeOption )
     {
         Session session = sessionFactory.getCurrentSession();

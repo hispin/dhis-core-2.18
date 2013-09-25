@@ -45,6 +45,7 @@ public class HibernateModelTypeAttributeOptionStore implements ModelTypeAttribut
         session.delete( modelTypeAttributeOption );
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<ModelTypeAttributeOption> getAllModelTypeAttributeOptions()
     {

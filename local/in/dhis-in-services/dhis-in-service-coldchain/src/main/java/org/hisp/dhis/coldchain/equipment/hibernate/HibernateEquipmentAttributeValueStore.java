@@ -44,6 +44,7 @@ public class HibernateEquipmentAttributeValueStore implements EquipmentAttribute
         session.delete( equipmentAttributeValue );
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<EquipmentAttributeValue> getAllEquipmentAttributeValues()
     {
@@ -61,6 +62,7 @@ public class HibernateEquipmentAttributeValueStore implements EquipmentAttribute
     }
     
     
+    @SuppressWarnings( "unchecked" )
     public Collection<EquipmentAttributeValue> getEquipmentAttributeValues( Equipment equipment )
     {
         Session session = sessionFactory.getCurrentSession();
