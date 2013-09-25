@@ -277,7 +277,7 @@ public class GeoToolsMapGenerationService
         {
             if ( row != null && row.size() >= 3 )
             {
-                String ou = (String) row.get( 0 );
+                String ou = (String) row.get( 1 );
                 Double value = (Double) row.get( ( row.size() - 1 ) );
                 
                 mapValues.add( new MapValue( ou, value ) );
