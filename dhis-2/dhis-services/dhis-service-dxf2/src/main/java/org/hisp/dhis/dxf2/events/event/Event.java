@@ -58,8 +58,6 @@ public class Event extends BaseLinkableObject
 
     private String eventDate;
 
-    private Boolean completed = false;
-
     private String storedBy;
 
     private Coordinate coordinate;
@@ -156,18 +154,6 @@ public class Event extends BaseLinkableObject
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public Boolean getCompleted()
-    {
-        return completed;
-    }
-
-    public void setCompleted( Boolean completed )
-    {
-        this.completed = completed;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
     public String getStoredBy()
     {
         return storedBy;
@@ -211,7 +197,6 @@ public class Event extends BaseLinkableObject
 
         Event event1 = (Event) o;
 
-        if ( completed != null ? !completed.equals( event1.completed ) : event1.completed != null ) return false;
         if ( coordinate != null ? !coordinate.equals( event1.coordinate ) : event1.coordinate != null ) return false;
         if ( dataValues != null ? !dataValues.equals( event1.dataValues ) : event1.dataValues != null ) return false;
         if ( event != null ? !event.equals( event1.event ) : event1.event != null ) return false;
@@ -236,7 +221,6 @@ public class Event extends BaseLinkableObject
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
         result = 31 * result + (person != null ? person.hashCode() : 0);
         result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
-        result = 31 * result + (completed != null ? completed.hashCode() : 0);
         result = 31 * result + (storedBy != null ? storedBy.hashCode() : 0);
         result = 31 * result + (coordinate != null ? coordinate.hashCode() : 0);
         result = 31 * result + (dataValues != null ? dataValues.hashCode() : 0);
@@ -254,7 +238,6 @@ public class Event extends BaseLinkableObject
             ", orgUnit='" + orgUnit + '\'' +
             ", person='" + person + '\'' +
             ", eventDate='" + eventDate + '\'' +
-            ", completed=" + completed +
             ", storedBy='" + storedBy + '\'' +
             ", coordinate=" + coordinate +
             ", dataValues=" + dataValues +
