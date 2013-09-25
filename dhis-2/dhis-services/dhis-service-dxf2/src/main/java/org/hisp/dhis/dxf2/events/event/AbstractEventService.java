@@ -233,9 +233,18 @@ public abstract class AbstractEventService implements EventService
                 {
                     programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
                 }
+
                 else
                 {
-                    return new ImportSummary( ImportStatus.ERROR, "ERROR!" );
+                    if ( event.getEvent() != null )
+                    {
+                        programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
+
+                        if ( programStageInstance == null )
+                        {
+                            return new ImportSummary( ImportStatus.ERROR, "Event.event did not point to a valid event" );
+                        }
+                    }
                 }
             }
         }

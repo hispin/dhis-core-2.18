@@ -51,7 +51,6 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.user.UserService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -146,7 +145,6 @@ public class RegistrationMultiEventsServiceTest
         programStageA = createProgramStage( 'A', 0 );
         programStageB = createProgramStage( 'B', 0 );
         programStageB.setIrregular( true );
-        programStageB.setAutoGenerateEvent( true );
 
         manager.save( programStageA );
         manager.save( programStageB );
@@ -170,6 +168,7 @@ public class RegistrationMultiEventsServiceTest
 
         programStageB.getProgramStageDataElements().add( programStageDataElement );
         programStageB.setProgram( programA );
+        programStageB.setMinDaysFromStart( 2 );
 
         programA.getProgramStages().add( programStageA );
         programA.getProgramStages().add( programStageB );
@@ -233,8 +232,7 @@ public class RegistrationMultiEventsServiceTest
     }
 
     @Test
-    @Ignore
-    public void testSaveWithEnrollmentShouldNotFail()
+    public void testSaveWithoutEventIdShouldCreateNewRepeatableEvent()
     {
         Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
@@ -247,6 +245,45 @@ public class RegistrationMultiEventsServiceTest
         event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementB.getUid() );
         importSummary = eventService.saveEvent( event );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+
+        event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementB.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 3, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+    }
+
+    @Test
+    public void testSaveWithEventIdShouldNotCreateAdditionalRepeatableEvents()
+    {
+        Enrollment enrollment = createEnrollment( programA.getUid(), personMaleA.getPerson() );
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        Event event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementA.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementB.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+
+        event = createEvent( programA.getUid(), programStageB.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementB.getUid() );
+        event.setEvent( importSummary.getReference() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
+
+        event = createEvent( programA.getUid(), programStageA.getUid(), organisationUnitA.getUid(), personMaleA.getPerson(), dataElementA.getUid() );
+        importSummary = eventService.saveEvent( event );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        assertEquals( 2, eventService.getEvents( programA, organisationUnitA ).getEvents().size() );
     }
 
     private Enrollment createEnrollment( String program, String person )
