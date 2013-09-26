@@ -61,13 +61,6 @@ public class AppListAction
         return appList;
     }
 
-    private List<String> appFolderNames = new ArrayList<String>();
-
-    public List<String> getAppFolderNames()
-    {
-        return appFolderNames;
-    }
-
     //TODO create settings to set for external server like Apache2/nginx
     //TODO Should be a per-app setting
     
@@ -90,11 +83,6 @@ public class AppListAction
         
         appsRootUrl = appManagerService.getAppBaseUrl();
         
-        for ( App app : getAppList() )
-        {
-            appFolderNames.add( appManagerService.getAppFolderName( app ) );
-        }
-
         return SUCCESS;
     }
 }

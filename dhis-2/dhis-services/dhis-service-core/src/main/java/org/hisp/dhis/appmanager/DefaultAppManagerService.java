@@ -28,13 +28,10 @@ package org.hisp.dhis.appmanager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -48,6 +45,9 @@ import org.hisp.dhis.datavalue.DefaultDataValueService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * @author Saptarshi Purkayastha
  */
@@ -55,8 +55,6 @@ public class DefaultAppManagerService
     implements AppManagerService
 {
     private static final Log log = LogFactory.getLog( DefaultDataValueService.class );
-
-    private HashMap<App, String> appFolderNames;
 
     @Autowired
     private SystemSettingManager appSettingManager;
@@ -76,7 +74,6 @@ public class DefaultAppManagerService
     @Override
     public List<App> getInstalledApps()
     {
-        this.appFolderNames = new HashMap<App, String>();
         List<App> appList = new ArrayList<App>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
@@ -97,8 +94,8 @@ public class DefaultAppManagerService
                             try
                             {
                                 App app = mapper.readValue( appManifest, App.class );
+                                app.setFolderName( folder.getName() );
                                 appList.add( app );
-                                appFolderNames.put( app, folder.getName() );
                             }
                             catch ( IOException ex )
                             {
@@ -128,8 +125,7 @@ public class DefaultAppManagerService
         
         if ( getInstalledApps().contains( app ) )
         {
-            String folderPath = getAppFolderPath() + File.separator
-                + getAppFolderName( app );
+            String folderPath = getAppFolderPath() + File.separator + app.getFolderName();
             FileUtils.forceDelete( new File( folderPath ) );
         }
 
@@ -161,7 +157,7 @@ public class DefaultAppManagerService
             {
                 try
                 {
-                    String folderPath = getAppFolderPath() + File.separator + getAppFolderName( app );                
+                    String folderPath = getAppFolderPath() + File.separator + app.getFolderName();                
                     FileUtils.forceDelete( new File( folderPath ) );
                     return true;
                 }
@@ -202,17 +198,6 @@ public class DefaultAppManagerService
     public void setAppStoreUrl( String appStoreUrl )
     {
         appSettingManager.saveSystemSetting( KEY_APP_STORE_URL, appStoreUrl );
-    }
-
-    @Override
-    public String getAppFolderName( App app )
-    {
-        if ( null == appFolderNames )
-        {
-            getInstalledApps();
-        }
-
-        return appFolderNames.get( app );
     }
 
     @Override
