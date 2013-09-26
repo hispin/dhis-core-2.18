@@ -32,9 +32,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -106,6 +111,46 @@ public class DefaultAppManagerService
         }
 
         return appList;
+    }
+    
+    public void installApp( File file, String fileName, String rootPath )
+        throws IOException
+    {
+        ZipFile zip = new ZipFile( file );
+        ZipEntry entry = zip.getEntry( "manifest.webapp" );
+
+        InputStream inputStream = zip.getInputStream( entry );
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+        App app = mapper.readValue( inputStream, App.class );
+
+        // Delete if app is already installed
+        
+        if ( getInstalledApps().contains( app ) )
+        {
+            String folderPath = getAppFolderPath() + File.separator
+                + getAppFolderName( app );
+            FileUtils.forceDelete( new File( folderPath ) );
+        }
+
+        String dest = getAppFolderPath() + File.separator + fileName.substring( 0, fileName.lastIndexOf( '.' ) );
+        Unzip unzip = new Unzip();
+        unzip.setSrc( file );
+        unzip.setDest( new File( dest ) );
+        unzip.execute();
+
+        // Updating dhis server location
+        
+        File updateManifest = new File( dest + File.separator + "manifest.webapp" );
+        App installedApp = mapper.readValue( updateManifest, App.class );
+
+        if ( installedApp.getActivities().getDhis().getHref().equals( "*" ) )
+        {
+            installedApp.getActivities().getDhis().setHref( rootPath );
+            mapper.writeValue( updateManifest, installedApp );
+        }
+
+        zip.close();
     }
     
     public boolean deleteApp( String name )

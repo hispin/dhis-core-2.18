@@ -573,6 +573,11 @@
         <version>2.4</version>
         <classifier>jdk15</classifier>
       </dependency>
+      <dependency>
+        <groupId>org.apache.ant</groupId>
+        <artifactId>ant-compress</artifactId>
+        <version>1.2</version>
+      </dependency>
       <!-- Apache Commons -->
       <dependency>
         <groupId>commons-collections</groupId>
