@@ -28,6 +28,8 @@ package org.hisp.dhis.appmanager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -67,6 +69,16 @@ public interface AppManagerService
      * @return list of installed apps
      */
     List<App> getInstalledApps();
+    
+    /**
+     * Installs the app.
+     * @param file the app file.
+     * @param fileName the name of the app file.
+     * @param rootPath the root path of the instance.
+     * @throws IOException if the app manifest file could not be read.
+     */
+    void installApp( File file, String fileName, String rootPath )
+        throws IOException;
     
     /**
      * Deletes the app with the given name.
