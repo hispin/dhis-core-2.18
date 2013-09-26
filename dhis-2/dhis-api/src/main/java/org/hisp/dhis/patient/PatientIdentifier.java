@@ -28,12 +28,19 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
 
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
  */
+@JacksonXmlRootElement( localName = "personIdentifier", namespace = DxfNamespaces.DXF_2_0 )
 public class PatientIdentifier
     extends BaseIdentifiableObject
 {
@@ -59,6 +66,10 @@ public class PatientIdentifier
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Patient getPatient()
     {
         return patient;
@@ -69,6 +80,9 @@ public class PatientIdentifier
         this.patient = patient;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getIdentifier()
     {
         return identifier;
@@ -79,14 +93,17 @@ public class PatientIdentifier
         this.identifier = identifier;
     }
 
-    public void setIdentifierType( PatientIdentifierType identifierType )
-    {
-        this.identifierType = identifierType;
-    }
-
+    @JsonProperty( "personIdentifier" )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( localName ="personIdentifier", namespace = DxfNamespaces.DXF_2_0 )
     public PatientIdentifierType getIdentifierType()
     {
         return identifierType;
     }
 
+    public void setIdentifierType( PatientIdentifierType identifierType )
+    {
+        this.identifierType = identifierType;
+    }
 }

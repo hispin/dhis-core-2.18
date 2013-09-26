@@ -30,12 +30,13 @@ package org.hisp.dhis.patient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.ExportView;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +44,7 @@ import java.util.Set;
 /**
  * @author Abyot Asalefew
  */
-@JacksonXmlRootElement( localName = "patientAttribute", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0)
 public class PatientAttribute
     extends BaseIdentifiableObject
 {
@@ -74,9 +75,9 @@ public class PatientAttribute
     private Set<PatientAttributeOption> attributeOptions;
 
     private String expression;
-    
+
     private Boolean displayOnVisitSchedule;
-    
+
     private Integer sortOrderInVisitSchedule;
 
     // -------------------------------------------------------------------------
@@ -92,6 +93,10 @@ public class PatientAttribute
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty( "personAttributeOptions" )
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlElementWrapper( localName = "personAttributeOptions", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "personAttributeOption", namespace = DxfNamespaces.DXF_2_0 )
     public Set<PatientAttributeOption> getAttributeOptions()
     {
         return attributeOptions == null ? new HashSet<PatientAttributeOption>() : attributeOptions;
@@ -105,12 +110,15 @@ public class PatientAttribute
     public void addAttributeOptions( PatientAttributeOption option )
     {
         if ( attributeOptions == null )
+        {
             attributeOptions = new HashSet<PatientAttributeOption>();
+        }
+
         attributeOptions.add( option );
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getInherit()
     {
@@ -123,8 +131,8 @@ public class PatientAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Boolean getGroupBy()
     {
         return groupBy;
@@ -136,8 +144,8 @@ public class PatientAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isMandatory()
     {
         return mandatory;
@@ -149,8 +157,8 @@ public class PatientAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getDescription()
     {
         return description;
@@ -162,8 +170,8 @@ public class PatientAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getValueType()
     {
         return valueType;
@@ -174,6 +182,10 @@ public class PatientAttribute
         this.valueType = valueType;
     }
 
+    @JsonProperty( "personAttributeGroup" )
+    @JsonView( { DetailedView.class } )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( localName = "personAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
     public PatientAttributeGroup getPatientAttributeGroup()
     {
         return patientAttributeGroup;
@@ -185,8 +197,8 @@ public class PatientAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getExpression()
     {
         return expression;
@@ -198,8 +210,8 @@ public class PatientAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Boolean getDisplayOnVisitSchedule()
     {
         return displayOnVisitSchedule;
@@ -211,8 +223,8 @@ public class PatientAttribute
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Integer getSortOrderInVisitSchedule()
     {
         return sortOrderInVisitSchedule;
@@ -222,5 +234,4 @@ public class PatientAttribute
     {
         this.sortOrderInVisitSchedule = sortOrderInVisitSchedule;
     }
-
 }

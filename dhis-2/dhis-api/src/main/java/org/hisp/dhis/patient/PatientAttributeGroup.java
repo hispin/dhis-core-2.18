@@ -33,20 +33,19 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Chau Thu Tran
- * @version $Id$
  */
-@XmlRootElement(name = "patientAttributeGroup", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement(localName = "personAttributeGroup", namespace = DxfNamespaces.DXF_2_0)
 public class PatientAttributeGroup
     extends BaseIdentifiableObject
 {
@@ -73,6 +72,9 @@ public class PatientAttributeGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -83,11 +85,11 @@ public class PatientAttributeGroup
         this.description = description;
     }
 
-    @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "patientAttributes", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "patientAttribute", namespace = DxfNamespaces.DXF_2_0 )
+    @JsonProperty("personAttributes")
+    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "personAttributes", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0)
     public List<PatientAttribute> getAttributes()
     {
         return attributes;

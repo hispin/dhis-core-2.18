@@ -62,6 +62,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -160,6 +163,9 @@ final public class ExchangeClasses
         allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( ProgramStage.class, "programStages" );
         allExportClasses.put( RelationshipType.class, "relationshipTypes" );
+        allExportClasses.put( PatientIdentifier.class, "personIdentifiers" );
+        allExportClasses.put( PatientAttribute.class, "personAttributes" );
+        allExportClasses.put( PatientAttributeGroup.class, "personAttributeGroups" );
 
         allExportClasses.put( BaseDimensionalObject.class, "dimensions" );
 
@@ -184,9 +190,15 @@ final public class ExchangeClasses
         exportClasses.remove( Program.class );
         exportClasses.remove( ProgramStage.class );
         exportClasses.remove( RelationshipType.class );
+        exportClasses.remove( PatientIdentifier.class );
+        exportClasses.remove( PatientAttribute.class );
+        exportClasses.remove( PatientAttributeGroup.class );
         importClasses.remove( Program.class );
         importClasses.remove( ProgramStage.class );
         importClasses.remove( RelationshipType.class );
+        importClasses.remove( PatientIdentifier.class );
+        importClasses.remove( PatientAttribute.class );
+        importClasses.remove( PatientAttributeGroup.class );
 
         // special class which is created on demand in association with other objects
         exportClasses.remove( DataElementOperand.class );
