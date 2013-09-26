@@ -608,6 +608,7 @@ public class StreamUtils
      * @param inputStream the InputStream
      * @return String after reading the InputStream
      */
+    @Deprecated
     public static String convertStreamToString( InputStream inputStream )
     {
         Scanner s = new Scanner( inputStream, ENCODING_UTF8 ).useDelimiter( "\\A" );
