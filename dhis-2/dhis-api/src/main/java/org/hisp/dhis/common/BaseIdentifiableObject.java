@@ -309,7 +309,6 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { SharingBasicView.class, SharingDetailedView.class, SharingExportView.class } )
     @JacksonXmlProperty( localName = "access", namespace = DxfNamespaces.DXF_2_0 )
     public Access getAccess()
     {
