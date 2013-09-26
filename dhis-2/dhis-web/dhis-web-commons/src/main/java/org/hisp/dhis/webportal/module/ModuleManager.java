@@ -45,6 +45,8 @@ public interface ModuleManager
     
     List<Module> getMenuModules();
     
+    List<Module> getAccessibleMenuModules();
+    
     List<Module> getMaintenanceMenuModules();
     
     List<Module> getAccessibleMaintenanceModules();
