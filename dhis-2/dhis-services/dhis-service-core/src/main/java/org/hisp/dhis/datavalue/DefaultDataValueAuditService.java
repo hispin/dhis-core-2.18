@@ -52,6 +52,10 @@ public class DefaultDataValueAuditService
         this.dataValueAuditStore = dataValueAuditStore;
     }
 
+    // -------------------------------------------------------------------------
+    // DataValueAuditService implementation
+    // -------------------------------------------------------------------------
+
     public void addDataValueAudit( DataValueAudit dataValueAudit )
     {
         dataValueAuditStore.addDataValueAudit( dataValueAudit );
