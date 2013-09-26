@@ -166,7 +166,7 @@ public class EventController
         model.addAttribute( "model", events );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
-        return "event";
+        return "events";
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
