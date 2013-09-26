@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.appmanager.App;
-import org.hisp.dhis.appmanager.AppManagerService;
+import org.hisp.dhis.appmanager.AppManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -48,7 +48,7 @@ public class AppListAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private AppManagerService appManagerService;
+    private AppManager appManager;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -79,9 +79,9 @@ public class AppListAction
     public String execute()
         throws Exception
     {
-        appList = appManagerService.getInstalledApps();
+        appList = appManager.getInstalledApps();
         
-        appsRootUrl = appManagerService.getAppBaseUrl();
+        appsRootUrl = appManager.getAppBaseUrl();
         
         return SUCCESS;
     }

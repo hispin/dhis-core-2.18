@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.appmanager.App;
-import org.hisp.dhis.appmanager.AppManagerService;
+import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class AppSettingsAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private AppManagerService appManagerService;
+    private AppManager appManager;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -65,7 +65,7 @@ public class AppSettingsAction
 
     public String getAppFolderPath()
     {
-        appFolderPath = appManagerService.getAppFolderPath();
+        appFolderPath = appManager.getAppFolderPath();
 
         if ( null == appFolderPath || appFolderPath.isEmpty() )
         {
@@ -79,7 +79,7 @@ public class AppSettingsAction
                 appFolderPath = realPath + File.separatorChar + "apps";
             }
             
-            appManagerService.setAppFolderPath( appFolderPath );
+            appManager.setAppFolderPath( appFolderPath );
         }
 
         return appFolderPath;
@@ -88,20 +88,20 @@ public class AppSettingsAction
     public void setAppFolderPath( String appFolderPath )
     {
         isSaved = true;
-        appManagerService.setAppFolderPath( appFolderPath );
+        appManager.setAppFolderPath( appFolderPath );
     }
 
     private String appBaseUrl;
 
     public String getAppBaseUrl()
     {
-        appBaseUrl = appManagerService.getAppBaseUrl();
+        appBaseUrl = appManager.getAppBaseUrl();
 
         if ( null == appBaseUrl || appBaseUrl.isEmpty() )
         {
             HttpServletRequest request = ServletActionContext.getRequest();
             String realPath = ServletActionContext.getServletContext().getRealPath( "/" );
-            String appsPath = appManagerService.getAppFolderPath();
+            String appsPath = appManager.getAppFolderPath();
             String baseUrl = ContextUtils.getBaseUrl( request );
             String contextPath = request.getContextPath();
 
@@ -116,7 +116,7 @@ public class AppSettingsAction
                     + ((appsPath.replace( "//", "/" )).replace( realPath, "" )).replace( '\\', '/' );
             }
 
-            appManagerService.setAppBaseUrl( appBaseUrl );
+            appManager.setAppBaseUrl( appBaseUrl );
         }
 
         return appBaseUrl;
@@ -124,26 +124,26 @@ public class AppSettingsAction
 
     public void setAppBaseUrl( String appBaseUrl )
     {
-        appManagerService.setAppBaseUrl( appBaseUrl );
+        appManager.setAppBaseUrl( appBaseUrl );
     }
 
     private String appStoreUrl;
 
     public String getAppStoreUrl()
     {
-        return appManagerService.getAppStoreUrl();
+        return appManager.getAppStoreUrl();
     }
 
     public void setAppStoreUrl( String appStoreUrl )
     {
-        appManagerService.setAppStoreUrl( appStoreUrl );
+        appManager.setAppStoreUrl( appStoreUrl );
     }
 
     private List<App> appList;
 
     public List<App> getAppList()
     {
-        return appManagerService.getInstalledApps();
+        return appManager.getInstalledApps();
     }
 
     private I18n i18n;

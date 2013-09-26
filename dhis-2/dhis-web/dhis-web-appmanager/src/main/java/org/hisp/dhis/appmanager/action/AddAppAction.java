@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.appmanager.AppManagerService;
+import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.ContextUtils;
@@ -63,7 +63,7 @@ public class AddAppAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private AppManagerService appManagerService;
+    private AppManager appManager;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -139,7 +139,7 @@ public class AddAppAction
         
         try
         {
-            appManagerService.installApp( file, fileName, getRootPath() );
+            appManager.installApp( file, fileName, getRootPath() );
             
             message = i18n.getString( "appmanager_install_success" );
         }

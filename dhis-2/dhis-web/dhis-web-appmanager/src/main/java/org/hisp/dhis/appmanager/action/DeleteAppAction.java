@@ -28,7 +28,7 @@ package org.hisp.dhis.appmanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.appmanager.AppManagerService;
+import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.i18n.I18n;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,7 +45,7 @@ public class DeleteAppAction
     // -------------------------------------------------------------------------
     
     @Autowired
-    private AppManagerService appManagerService;
+    private AppManager appManager;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -80,7 +80,7 @@ public class DeleteAppAction
     public String execute()
         throws Exception
     {
-        if ( appName != null && appManagerService.deleteApp( appName ) )
+        if ( appName != null && appManager.deleteApp( appName ) )
         {
             message = i18n.getString( "appmanager_delete_success" );
         }

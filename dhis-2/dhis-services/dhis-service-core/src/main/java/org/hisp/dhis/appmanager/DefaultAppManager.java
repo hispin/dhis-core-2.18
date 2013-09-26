@@ -53,8 +53,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * @author Saptarshi Purkayastha
  */
-public class DefaultAppManagerService
-    implements AppManagerService
+public class DefaultAppManager
+    implements AppManager
 {
     private static final Log log = LogFactory.getLog( DefaultDataValueService.class );
 
