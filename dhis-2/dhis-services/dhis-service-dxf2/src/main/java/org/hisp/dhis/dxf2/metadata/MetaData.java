@@ -66,6 +66,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -177,6 +180,12 @@ public class MetaData
     private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
 
     private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+
+    private List<PatientIdentifier> personIdentifiers = new ArrayList<PatientIdentifier>();
+
+    private List<PatientAttribute> personAttributes = new ArrayList<PatientAttribute>();
+
+    private List<PatientAttributeGroup> personAttributeGroups = new ArrayList<PatientAttributeGroup>();
 
     public MetaData()
     {
@@ -754,6 +763,45 @@ public class MetaData
     }
 
     @JsonProperty
+    @JacksonXmlElementWrapper( localName = "personIdentifiers", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "personIdentifier", namespace = DxfNamespaces.DXF_2_0 )
+    public List<PatientIdentifier> getPersonIdentifiers()
+    {
+        return personIdentifiers;
+    }
+
+    public void setPersonIdentifiers( List<PatientIdentifier> personIdentifiers )
+    {
+        this.personIdentifiers = personIdentifiers;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "personAttributes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0 )
+    public List<PatientAttribute> getPersonAttributes()
+    {
+        return personAttributes;
+    }
+
+    public void setPersonAttributes( List<PatientAttribute> personAttributes )
+    {
+        this.personAttributes = personAttributes;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "personAttributeGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "personAttributeGroup", namespace = DxfNamespaces.DXF_2_0 )
+    public List<PatientAttributeGroup> getPersonAttributeGroups()
+    {
+        return personAttributeGroups;
+    }
+
+    public void setPersonAttributeGroups( List<PatientAttributeGroup> personAttributeGroups )
+    {
+        this.personAttributeGroups = personAttributeGroups;
+    }
+
+    @JsonProperty
     @JacksonXmlElementWrapper( localName = "dimensions", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "dimension", namespace = DxfNamespaces.DXF_2_0 )
     public List<DimensionalObject> getDimensions()
@@ -770,9 +818,9 @@ public class MetaData
     public String toString()
     {
         return "MetaData{" +
-            "attributeTypes=" + attributeTypes +
+            "created=" + created +
+            ", attributeTypes=" + attributeTypes +
             ", documents=" + documents +
-            ", dashboards=" + dashboards +
             ", constants=" + constants +
             ", concepts=" + concepts +
             ", users=" + users +
@@ -785,9 +833,11 @@ public class MetaData
             ", categoryOptions=" + categoryOptions +
             ", categoryCombos=" + categoryCombos +
             ", categoryOptionCombos=" + categoryOptionCombos +
+            ", dashboards=" + dashboards +
             ", dataElements=" + dataElements +
             ", dataElementGroups=" + dataElementGroups +
             ", dataElementGroupSets=" + dataElementGroupSets +
+            ", dimensions=" + dimensions +
             ", indicators=" + indicators +
             ", indicatorGroups=" + indicatorGroups +
             ", indicatorGroupSets=" + indicatorGroupSets +
@@ -811,7 +861,11 @@ public class MetaData
             ", sections=" + sections +
             ", dataSets=" + dataSets +
             ", programs=" + programs +
-            ", dimensions=" + dimensions +
+            ", programStages=" + programStages +
+            ", relationshipTypes=" + relationshipTypes +
+            ", personIdentifiers=" + personIdentifiers +
+            ", personAttributes=" + personAttributes +
+            ", personAttributeGroups=" + personAttributeGroups +
             '}';
     }
 }

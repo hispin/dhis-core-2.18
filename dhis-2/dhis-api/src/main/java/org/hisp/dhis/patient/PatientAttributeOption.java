@@ -28,11 +28,19 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+
 import java.io.Serializable;
 
 /**
  * @author Viet
  */
+@JacksonXmlRootElement( localName = "personAttributeOption", namespace = DxfNamespaces.DXF_2_0 )
 public class PatientAttributeOption implements Serializable
 {
     /**
@@ -108,6 +116,8 @@ public class PatientAttributeOption implements Serializable
         this.id = id;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getName()
     {
         return name;
@@ -118,6 +128,9 @@ public class PatientAttributeOption implements Serializable
         this.name = name;
     }
 
+    @JsonProperty
+    @JsonDeserialize( as = BaseIdentifiableObject.class )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public PatientAttribute getPatientAttribute()
     {
         return patientAttribute;
