@@ -146,10 +146,9 @@ public class AddAppAction
         try
         {
             InputStream inputStream = zip.getInputStream( entry );
-            String appManifest = StreamUtils.convertStreamToString( inputStream );
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-            App app = mapper.readValue( appManifest, App.class );
+            App app = mapper.readValue( inputStream, App.class );
 
             // Delete if app is already installed
             if ( appManagerService.getInstalledApps().contains( app ) )
