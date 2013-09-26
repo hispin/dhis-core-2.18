@@ -18,6 +18,7 @@
   </mvc:annotation-driven>
 
   <context:component-scan base-package="org.hisp.dhis.api" />
+  <context:annotation-config />
 
   <bean id="fixedContentNegotiationStrategy" class="org.springframework.web.accept.FixedContentNegotiationStrategy">
     <constructor-arg name="defaultContentType" value="application/json" />
