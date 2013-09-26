@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -56,8 +58,25 @@ public class DefaultAppManagerService
 {
     private static final Log log = LogFactory.getLog( DefaultDataValueService.class );
 
+    /**
+     * In-memory singleton list holding state for apps.
+     */
+    private List<App> apps = new ArrayList<App>();
+
+    @PostConstruct
+    private void init()
+    {
+        reloadAppsInternal();
+        
+        log.info( "Detecting apps: " + apps );
+    }
+        
     @Autowired
     private SystemSettingManager appSettingManager;
+
+    // -------------------------------------------------------------------------
+    // AppManagerService implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public String getAppFolderPath()
@@ -74,42 +93,10 @@ public class DefaultAppManagerService
     @Override
     public List<App> getInstalledApps()
     {
-        List<App> appList = new ArrayList<App>();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-
-        if ( null != getAppFolderPath() )
-        {
-            File appFolderPath = new File( getAppFolderPath() );
-            if ( appFolderPath.isDirectory() )
-            {
-                File[] listFiles = appFolderPath.listFiles();
-                for ( File folder : listFiles )
-                {
-                    if ( folder.isDirectory() )
-                    {
-                        File appManifest = new File( folder, "manifest.webapp" );
-                        if ( appManifest.exists() )
-                        {
-                            try
-                            {
-                                App app = mapper.readValue( appManifest, App.class );
-                                app.setFolderName( folder.getName() );
-                                appList.add( app );
-                            }
-                            catch ( IOException ex )
-                            {
-                                log.error( ex.getLocalizedMessage(), ex );
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return appList;
+        return apps;
     }
     
+    @Override
     public void installApp( File file, String fileName, String rootPath )
         throws IOException
     {
@@ -147,8 +134,13 @@ public class DefaultAppManagerService
         }
 
         zip.close();
+        
+        // Reload app state
+        
+        reloadAppsInternal();
     }
-    
+
+    @Override
     public boolean deleteApp( String name )
     {
         for ( App app : getInstalledApps() )
@@ -159,6 +151,11 @@ public class DefaultAppManagerService
                 {
                     String folderPath = getAppFolderPath() + File.separator + app.getFolderName();                
                     FileUtils.forceDelete( new File( folderPath ) );
+
+                    // Reload app state
+                    
+                    reloadAppsInternal();
+                    
                     return true;
                 }
                 catch ( IOException ex )
@@ -168,7 +165,7 @@ public class DefaultAppManagerService
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -210,5 +207,50 @@ public class DefaultAppManagerService
     public void setAppBaseUrl( String appBaseUrl )
     {
         appSettingManager.saveSystemSetting( KEY_APP_BASE_URL, appBaseUrl );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Sets the list of apps with detected apps from the file system.
+     */
+    private void reloadAppsInternal()
+    {
+        List<App> appList = new ArrayList<App>();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+
+        if ( null != getAppFolderPath() )
+        {
+            File appFolderPath = new File( getAppFolderPath() );
+            if ( appFolderPath.isDirectory() )
+            {
+                File[] listFiles = appFolderPath.listFiles();
+                for ( File folder : listFiles )
+                {
+                    if ( folder.isDirectory() )
+                    {
+                        File appManifest = new File( folder, "manifest.webapp" );
+                        if ( appManifest.exists() )
+                        {
+                            try
+                            {
+                                App app = mapper.readValue( appManifest, App.class );
+                                app.setFolderName( folder.getName() );
+                                appList.add( app );
+                            }
+                            catch ( IOException ex )
+                            {
+                                log.error( ex.getLocalizedMessage(), ex );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        this.apps = appList;
     }
 }

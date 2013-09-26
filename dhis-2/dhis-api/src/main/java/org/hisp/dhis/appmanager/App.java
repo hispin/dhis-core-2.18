@@ -204,7 +204,7 @@ public class App
     }
     
     // -------------------------------------------------------------------------
-    // Hashcode & Equals
+    // hashCode, equals, toString
     // -------------------------------------------------------------------------
     
     @Override
@@ -222,6 +222,7 @@ public class App
         {
             return false;
         }
+        
         if ( getClass() != obj.getClass() )
         {
             return false;
@@ -235,5 +236,11 @@ public class App
         }
         
         return true;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "[" + name + " " + version + "]";
     }
 }
