@@ -78,6 +78,7 @@ public class AppSettingsAction
             {
                 appFolderPath = realPath + File.separatorChar + "apps";
             }
+            
             appManagerService.setAppFolderPath( appFolderPath );
         }
 
