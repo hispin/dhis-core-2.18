@@ -98,7 +98,7 @@ public class EventController
     // Controller
     // -------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping( value = "", method = RequestMethod.GET )
     public String getEvents(
         @RequestParam(value = "program", required = false) String programUid,
         @RequestParam(value = "programStage", required = false) String programStageUid,
