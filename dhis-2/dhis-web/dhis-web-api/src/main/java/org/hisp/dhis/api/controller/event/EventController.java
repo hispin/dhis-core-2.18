@@ -99,7 +99,7 @@ public class EventController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.GET )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public String getEvents(
         @RequestParam(value = "program", required = false) String programUid,
         @RequestParam(value = "programStage", required = false) String programStageUid,
@@ -167,6 +167,7 @@ public class EventController
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public String getEvent( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
