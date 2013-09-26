@@ -40,8 +40,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManagerService;
 import org.hisp.dhis.i18n.I18n;
@@ -172,11 +172,7 @@ public class AddAppAction
             if ( installedApp.getActivities().getDhis().getHref().equals( "*" ) )
             {
                 // TODO: Check why ContextUtils.getContextPath is not working
-                // String rootPath = ContextUtils.getContextPath(ServletActionContext.getRequest());
-                HttpServletRequest req = ServletActionContext.getRequest();
-                StringBuffer fullUrl = req.getRequestURL();
-                String baseUrl = ContextUtils.getBaseUrl( req );
-                String rootPath = fullUrl.substring( 0, fullUrl.indexOf( "/", baseUrl.length() ) );
+                String rootPath = getRootPath();
 
                 installedApp.getActivities().getDhis().setHref( rootPath );
                 mapper.writeValue( updateManifest, installedApp );
@@ -197,5 +193,15 @@ public class AddAppAction
         }
 
         return SUCCESS;
+    }
+    
+    private String getRootPath()
+    {
+        HttpServletRequest req = ServletActionContext.getRequest();
+        StringBuffer fullUrl = req.getRequestURL();
+        String baseUrl = ContextUtils.getBaseUrl( req );
+        String rootPath = fullUrl.substring( 0, fullUrl.indexOf( "/", baseUrl.length() ) );
+        
+        return rootPath;
     }
 }
