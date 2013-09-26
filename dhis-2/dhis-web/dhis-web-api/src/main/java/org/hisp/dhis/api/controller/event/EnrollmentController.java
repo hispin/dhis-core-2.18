@@ -144,7 +144,7 @@ public class EnrollmentController
         model.addAttribute( "model", enrollment );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
-        return "person";
+        return "enrollment";
     }
 
     // -------------------------------------------------------------------------
