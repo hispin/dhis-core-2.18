@@ -45,7 +45,7 @@ public class DataValueAudit
 
     private String storedBy;
 
-    private Date timeStamp;
+    private Date timestamp;
 
     private String comment;
 
@@ -57,12 +57,12 @@ public class DataValueAudit
 
     }
 
-    public DataValueAudit( DataValue dataValue, String value, String storedBy, Date timeStamp, String comment )
+    public DataValueAudit( DataValue dataValue, String value, String storedBy, Date timestamp, String comment )
     {
         this.dataValue = dataValue;
         this.value = value;
         this.storedBy = storedBy;
-        this.timeStamp = timeStamp;
+        this.timestamp = timestamp;
         this.comment = comment;
     }
 
@@ -110,14 +110,14 @@ public class DataValueAudit
         this.storedBy = storedBy;
     }
 
-    public Date getTimeStamp()
+    public Date getTimestamp()
     {
-        return timeStamp;
+        return timestamp;
     }
 
-    public void setTimeStamp( Date timeStamp )
+    public void setTimestamp( Date timeStamp )
     {
-        this.timeStamp = timeStamp;
+        this.timestamp = timeStamp;
     }
 
     public String getComment()
@@ -129,5 +129,4 @@ public class DataValueAudit
     {
         this.comment = comment;
     }
-
 }

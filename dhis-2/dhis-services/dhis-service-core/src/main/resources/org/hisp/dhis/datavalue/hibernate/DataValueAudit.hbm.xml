@@ -21,7 +21,7 @@
 
     <property name="storedBy" column="storedby" length="31" />
 
-    <property name="timeStamp" column="lastupdated" type="date" />
+    <property name="timestamp" column="lastupdated" type="timestamp" />
 
     <property name="comment" length="360" />
 
