@@ -1,25 +1,5 @@
-<table cellspacing="0" cellpadding="0">
-<tr>
-
-#if( $maintenanceModules && $maintenanceModules.size() > 0 )
-<td valign="top">
-<ul class="introList introTwoColList" style="margin-right:15px;">
-#foreach( $module in $maintenanceModules )
+<ul class="moduleList">
+#foreach( $module in $menuModules )
 	#introListImgItem( "${module.defaultAction}" "${module.name}" "${module.name}" )
 #end
 </ul>
-</td>
-#end
-
-#if( $serviceModules && $serviceModules.size() > 0 )
-<td valign="top">
-<ul class="introList introTwoColList">
-#foreach( $module in $serviceModules )
-	#introListImgItem( "${module.defaultAction}" "${module.name}" "${module.name}" )
-#end
-</ul>
-</td>
-#end
-
-</tr>
-</table>

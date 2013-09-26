@@ -104,14 +104,14 @@ public class DefaultAppManagerService
                 }
             }
         }
-        
+
         return appList;
     }
 
     @Override
     public void setAppFolderPath( String appFolderPath )
     {
-        if(!appFolderPath.isEmpty())
+        if ( !appFolderPath.isEmpty() )
         {
             try
             {
@@ -126,6 +126,7 @@ public class DefaultAppManagerService
                 log.error( ex.getLocalizedMessage(), ex );
             }
         }
+
         appSettingManager.saveSystemSetting( KEY_APP_FOLDER_PATH, appFolderPath );
     }
 
@@ -142,17 +143,19 @@ public class DefaultAppManagerService
         {
             getInstalledApps();
         }
-        
+
         return appFolderNames.get( app );
     }
 
     @Override
-    public String getAppBaseUrl() {
+    public String getAppBaseUrl()
+    {
         return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_BASE_URL ) );
     }
 
     @Override
-    public void setAppBaseUrl(String appBaseUrl) {
+    public void setAppBaseUrl( String appBaseUrl )
+    {
         appSettingManager.saveSystemSetting( KEY_APP_BASE_URL, appBaseUrl );
     }
 }
