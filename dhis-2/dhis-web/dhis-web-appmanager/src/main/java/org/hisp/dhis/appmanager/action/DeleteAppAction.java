@@ -28,11 +28,6 @@ package org.hisp.dhis.appmanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManagerService;
 import org.hisp.dhis.i18n.I18n;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,13 +58,20 @@ public class DeleteAppAction
         this.i18n = i18n;
     }
 
+    private String appName;
+    
+    public void setAppName( String appName )
+    {
+        this.appName = appName;
+    }
+
     private String message;
 
     public String getMessage()
     {
         return message;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -78,21 +80,9 @@ public class DeleteAppAction
     public String execute()
         throws Exception
     {
-        String appName = ServletActionContext.getRequest().getParameter( "appName" );
-
-        if ( null != appName )
+        if ( appName != null && appManagerService.deleteApp( appName ) )
         {
-            // TODO: Move to AppManagerService
-            for ( App app : appManagerService.getInstalledApps() )
-            {
-                if ( app.getName().equals( appName ) )
-                {
-                    String folderPath = appManagerService.getAppFolderPath() + File.separator
-                        + appManagerService.getAppFolderName( app );
-                    FileUtils.forceDelete( new File( folderPath ) );
-                    message = i18n.getString( "appmanager_delete_success" );
-                }
-            }
+            message = i18n.getString( "appmanager_delete_success" );
         }
 
         return SUCCESS;

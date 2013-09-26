@@ -107,6 +107,29 @@ public class DefaultAppManagerService
 
         return appList;
     }
+    
+    public boolean deleteApp( String name )
+    {
+        for ( App app : getInstalledApps() )
+        {
+            if ( app.getName().equals( name ) )
+            {
+                try
+                {
+                    String folderPath = getAppFolderPath() + File.separator + getAppFolderName( app );                
+                    FileUtils.forceDelete( new File( folderPath ) );
+                    return true;
+                }
+                catch ( IOException ex )
+                {
+                    log.error( "Could not delete app: " + name, ex );
+                    return false;
+                }
+            }
+        }
+        
+        return false;
+    }
 
     @Override
     public void setAppFolderPath( String appFolderPath )
