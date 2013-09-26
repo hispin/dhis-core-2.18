@@ -45,6 +45,7 @@ import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,6 +65,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping( value = PersonController.RESOURCE_PATH )
+@PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_LIST')")
 public class PersonController
 {
     public static final String RESOURCE_PATH = "/persons";
@@ -154,6 +156,7 @@ public class PersonController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_ADD')")
     public void postPersonXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = personService.savePersonXml( request.getInputStream() );
@@ -178,6 +181,7 @@ public class PersonController
     }
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_ADD')")
     public void postPersonJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = personService.savePersonJson( request.getInputStream() );
@@ -207,6 +211,7 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_ADD')")
     public void updatePersonXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummary importSummary = personService.updatePersonXml( id, request.getInputStream() );
@@ -215,6 +220,7 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_ADD')")
     public void updatePersonJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummary importSummary = personService.updatePersonJson( id, request.getInputStream() );
@@ -227,6 +233,7 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DELETE')")
     public void deletePerson( @PathVariable String id ) throws NotFoundException
     {
         Person person = getPerson( id );
