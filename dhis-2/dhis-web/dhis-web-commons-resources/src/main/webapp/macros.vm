@@ -64,7 +64,7 @@
   $i18n.getString( "yes_no" )
 #elseif ( $type == "int" )
   $i18n.getString( "number" )
-#else	   
+#else
   $i18n.getString( "unknown" )
 #end
 #end
@@ -77,6 +77,13 @@
 <li class="introItem" onclick="window.location.href='${action}'">
   <img src="../icons/${image}.png" class="introIcon">
   <div class="introItemText"><div class="introItemHeader">$i18n.getString( "${objectKey}" )</div><div>$i18n.getString( "intro_${objectKey}" )</div></div>
+</li>
+#end
+
+#macro( introListImgApp $module )
+<li class="introItem" onclick="window.location.href='${appBaseUrl}/${module.defaultAction}'">
+  <img src="${appBaseUrl}/${module.icon}" class="introIcon">
+  <div class="introItemText"><div class="introItemHeader">${module.name}</div><div>${module.description}</div></div>
 </li>
 #end
 
