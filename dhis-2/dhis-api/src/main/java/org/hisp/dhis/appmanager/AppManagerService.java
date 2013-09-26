@@ -90,13 +90,6 @@ public interface AppManagerService
     boolean deleteApp( String name );
 
     /**
-     * Returns the name of the specfic app folder
-     * @param app
-     * @return folder name of where app is installed
-     */
-    String getAppFolderName( App app );
-
-    /**
      * Saves the folder in which apps will be expanded 
      * @param appFolderPath
      */
