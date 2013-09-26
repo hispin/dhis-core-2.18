@@ -54,7 +54,7 @@ public class AppStoreAction
 
     public String getAppStoreUrl()
     {
-        return appManagerService.getAppStoreUrl();
+        return appStoreUrl;
     }
 
     // -------------------------------------------------------------------------
@@ -65,6 +65,8 @@ public class AppStoreAction
     public String execute()
         throws Exception
     {
+        appStoreUrl = appManagerService.getAppStoreUrl();
+        
         return SUCCESS;
     }
 }

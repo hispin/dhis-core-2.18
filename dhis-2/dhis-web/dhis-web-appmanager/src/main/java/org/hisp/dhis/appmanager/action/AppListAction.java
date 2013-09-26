@@ -58,7 +58,7 @@ public class AppListAction
 
     public List<App> getAppList()
     {
-        return appManagerService.getInstalledApps();
+        return appList;
     }
 
     private List<String> appFolderNames = new ArrayList<String>();
@@ -68,13 +68,14 @@ public class AppListAction
         return appFolderNames;
     }
 
-    //TODO: create settings to set for external server like Apache2/nginx
-    // Should be a per-app setting
-    private String appsRootUrl = new String();
+    //TODO create settings to set for external server like Apache2/nginx
+    //TODO Should be a per-app setting
+    
+    private String appsRootUrl;
 
     public String getAppsRootUrl()
     {
-        return appManagerService.getAppBaseUrl();
+        return appsRootUrl;
     }
 
     // -------------------------------------------------------------------------
@@ -85,6 +86,10 @@ public class AppListAction
     public String execute()
         throws Exception
     {
+        appList = appManagerService.getInstalledApps();
+        
+        appsRootUrl = appManagerService.getAppBaseUrl();
+        
         for ( App app : getAppList() )
         {
             appFolderNames.add( appManagerService.getAppFolderName( app ) );
