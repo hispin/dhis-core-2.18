@@ -27,14 +27,17 @@ package org.hisp.dhis.appmanager;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  *
@@ -75,7 +78,7 @@ public class DefaultAppManagerServiceTest
     public void testGetAppFolderPath()
     {
         System.out.println( "getAppFolderPath" );
-        DefaultAppManagerService instance = new DefaultAppManagerService();
+        DefaultAppManager instance = new DefaultAppManager();
         String expResult = "";
         String result = instance.getAppFolderPath();
         assertEquals( expResult, result );
@@ -91,7 +94,7 @@ public class DefaultAppManagerServiceTest
     public void testGetAppStoreUrl()
     {
         System.out.println( "getAppStoreUrl" );
-        DefaultAppManagerService instance = new DefaultAppManagerService();
+        DefaultAppManager instance = new DefaultAppManager();
         String expResult = "";
         String result = instance.getAppStoreUrl();
         assertEquals( expResult, result );
@@ -107,7 +110,7 @@ public class DefaultAppManagerServiceTest
     public void testGetInstalledApps()
     {
         System.out.println( "getInstalledApps" );
-        DefaultAppManagerService instance = new DefaultAppManagerService();
+        DefaultAppManager instance = new DefaultAppManager();
         List<App> expResult = null;
         List<App> result = instance.getInstalledApps();
         assertEquals( expResult, result );
@@ -124,7 +127,7 @@ public class DefaultAppManagerServiceTest
     {
         System.out.println( "setAppFolderPath" );
         String appFolderPath = "";
-        DefaultAppManagerService instance = new DefaultAppManagerService();
+        DefaultAppManager instance = new DefaultAppManager();
         instance.setAppFolderPath( appFolderPath );
         // TODO review the generated test code and remove the default call to fail.
         fail( "The test case is a prototype." );
@@ -139,25 +142,8 @@ public class DefaultAppManagerServiceTest
     {
         System.out.println( "setAppStoreUrl" );
         String appStoreUrl = "";
-        DefaultAppManagerService instance = new DefaultAppManagerService();
+        DefaultAppManager instance = new DefaultAppManager();
         instance.setAppStoreUrl( appStoreUrl );
-        // TODO review the generated test code and remove the default call to fail.
-        fail( "The test case is a prototype." );
-    }
-
-    /**
-     * Test of getAppFolderName method, of class DefaultAppManagerService.
-     */
-    @Test
-    @Ignore
-    public void testGetAppFolderName()
-    {
-        System.out.println( "getAppFolderName" );
-        App app = null;
-        DefaultAppManagerService instance = new DefaultAppManagerService();
-        String expResult = "";
-        String result = instance.getAppFolderName( app );
-        assertEquals( expResult, result );
         // TODO review the generated test code and remove the default call to fail.
         fail( "The test case is a prototype." );
     }

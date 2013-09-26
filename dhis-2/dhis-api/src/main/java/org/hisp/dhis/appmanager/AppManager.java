@@ -35,10 +35,9 @@ import java.util.List;
 /**
  * @author Saptarshi Purkayastha
  */
-public interface AppManagerService
+public interface AppManager
 {
-
-    String ID = AppManagerService.class.getName();
+    final String ID = AppManager.class.getName();
 
     final String KEY_APP_FOLDER_PATH = "appFolderPath";
     
