@@ -28,6 +28,7 @@ package org.hisp.dhis.webportal.module;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,7 +40,11 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.dispatcher.Dispatcher;
+import org.hisp.dhis.appmanager.App;
+import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.security.ActionAccessResolver;
+import org.hisp.dhis.system.util.TextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.config.Configuration;
 import com.opensymphony.xwork2.config.entities.PackageConfig;
@@ -53,6 +58,8 @@ public class DefaultModuleManager
 {
     private static final Log LOG = LogFactory.getLog( DefaultModuleManager.class );
 
+    private static final String APP_MANAGER_NAME = "dhis-web-appmanager";
+    
     private boolean modulesDetected = false;
 
     private Map<String, Module> modulesByName = new HashMap<String, Module>();
@@ -71,6 +78,9 @@ public class DefaultModuleManager
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
+    private AppManager appManager;
+    
     private ActionAccessResolver actionAccessResolver;
 
     public void setActionAccessResolver( ActionAccessResolver actionAccessResolver )
@@ -134,6 +144,30 @@ public class DefaultModuleManager
         detectModules();
         
         return getAccessibleModules( menuModules );
+    }
+    
+    public List<Module> getAccessibleMenuModulesAndApps()
+    {
+        List<Module> modules = getAccessibleMenuModules();
+        
+        modules.remove( new Module( APP_MANAGER_NAME ) );
+        
+        List<App> apps = appManager.getInstalledApps();
+        
+        for ( App app : apps )
+        {
+            String defaultAction = app.getFolderName() + File.separator + app.getLaunchPath();
+            String icon = app.getFolderName() + File.separator + app.getIcons().getIcon48();
+            String description = TextUtils.subString( app.getDescription(), 0, 80 );
+            
+            Module module = new Module( app.getName(), app.getName(), defaultAction );
+            module.setIcon( icon );
+            module.setDescription( description );
+            
+            modules.add( module );
+        }
+        
+        return modules;
     }
 
     public List<Module> getMaintenanceMenuModules()

@@ -64,11 +64,11 @@ public class AppListAction
     //TODO create settings to set for external server like Apache2/nginx
     //TODO Should be a per-app setting
     
-    private String appsRootUrl;
+    private String appBaseUrl;
 
-    public String getAppsRootUrl()
+    public String getAppBaseUrl()
     {
-        return appsRootUrl;
+        return appBaseUrl;
     }
 
     // -------------------------------------------------------------------------
@@ -81,7 +81,7 @@ public class AppListAction
     {
         appList = appManager.getInstalledApps();
         
-        appsRootUrl = appManager.getAppBaseUrl();
+        appBaseUrl = appManager.getAppBaseUrl();
         
         return SUCCESS;
     }

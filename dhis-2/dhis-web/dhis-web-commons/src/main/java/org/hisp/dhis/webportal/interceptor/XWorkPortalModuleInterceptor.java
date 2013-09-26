@@ -86,7 +86,7 @@ public class XWorkPortalModuleInterceptor
 
         handle.put( KEY_MAINTENANCE_MODULES, moduleManager.getAccessibleMaintenanceModules() );
         handle.put( KEY_SERVICE_MODULES, moduleManager.getAccessibleServiceModules() );
-        handle.put( KEY_MENU_MODULES, moduleManager.getAccessibleMenuModules() );
+        handle.put( KEY_MENU_MODULES, moduleManager.getAccessibleMenuModulesAndApps() );
 
         actionInvocation.getStack().push( handle );
         

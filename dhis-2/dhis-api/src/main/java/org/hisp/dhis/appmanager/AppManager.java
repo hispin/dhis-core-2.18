@@ -39,12 +39,10 @@ public interface AppManager
 {
     final String ID = AppManager.class.getName();
 
-    final String KEY_APP_FOLDER_PATH = "appFolderPath";
-    
+    final String KEY_APP_FOLDER_PATH = "appFolderPath";    
     final String KEY_APP_BASE_URL = "appBaseUrl";
-
     final String KEY_APP_STORE_URL = "appStoreUrl";
-    
+        
     /**
      * Gets the Base URL for accessing the apps
      * @return the apps baseurl

@@ -39,6 +39,12 @@ public class Module
     private String namespace;
 
     private String defaultAction;
+    
+    // Apps only
+    
+    private String icon;
+    
+    private String description;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -46,6 +52,11 @@ public class Module
 
     public Module()
     {
+    }
+    
+    public Module( String name )
+    {
+        this.name = name;
     }
 
     public Module( String name, String namespace )
@@ -93,4 +104,57 @@ public class Module
     {
         this.defaultAction = defaultAction;
     }
+
+    public String getIcon()
+    {
+        return icon;
+    }
+
+    public void setIcon( String icon )
+    {
+        this.icon = icon;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( ( name == null ) ? 0 : name.hashCode() );
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        final Module other = (Module) object;
+        
+        return name.equals( other.getName() );
+    }
+    
 }

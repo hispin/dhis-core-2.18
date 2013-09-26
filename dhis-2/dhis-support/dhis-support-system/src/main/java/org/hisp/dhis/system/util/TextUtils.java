@@ -112,7 +112,7 @@ public class TextUtils
      * Gets the sub string of the given string. If the beginIndex is larger than
      * the length of the string, the empty string is returned. If the beginIndex +
      * the length is larger than the length of the string, the part of the string
-     * following the beginIndex is returned.
+     * following the beginIndex is returned. Method is out-of-range safe.
      * 
      * @param string the string.
      * @param beginIndex the zero-based begin index.
