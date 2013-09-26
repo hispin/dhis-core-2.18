@@ -99,13 +99,14 @@ public class EventController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public String getEvents(
         @RequestParam(value = "program", required = false) String programUid,
         @RequestParam(value = "programStage", required = false) String programStageUid,
         @RequestParam(value = "orgUnit") String orgUnitUid,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
-        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Program program = manager.get( Program.class, programUid );

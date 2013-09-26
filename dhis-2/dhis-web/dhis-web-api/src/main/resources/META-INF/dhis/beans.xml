@@ -5,4 +5,5 @@
 	
   <bean id="contextUtils" class="org.hisp.dhis.api.utils.ContextUtils"/>
   <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+
 </beans>
