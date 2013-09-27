@@ -55,7 +55,6 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -302,19 +301,9 @@ public class SaveMobileProgramEnrollmentAction
     {
         patient = patientService.getPatient( patientId );
         program = programService.getProgram( programId );
-        
-        for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
-        {
-            if ( programPatientProperty.isIdentifierType() )
-            {
-                patientIdentifierTypes.add( programPatientProperty.getPatientIdentifierType() );
-            }
-            else if(programPatientProperty.isAttribute() )
-            {
-                patientAttributes.add( programPatientProperty.getPatientAttribute() );
-            }
-        }
-        
+        patientAttributes = program.getPatientAttributes();
+        patientIdentifierTypes = program.getPatientIdentifierTypes();
+
         List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
 
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get( StrutsStatics.HTTP_REQUEST );

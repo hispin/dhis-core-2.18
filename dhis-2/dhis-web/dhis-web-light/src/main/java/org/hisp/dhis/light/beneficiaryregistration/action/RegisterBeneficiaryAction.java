@@ -35,7 +35,6 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
 
@@ -182,17 +181,8 @@ public class RegisterBeneficiaryAction
 
         for ( Program program : programs )
         {
-            for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
-            {
-                if ( programPatientProperty.isIdentifierType() )
-                {
-                    patientIdentifierTypes.remove( programPatientProperty.getPatientIdentifierType() );
-                }
-                else if ( programPatientProperty.isAttribute() )
-                {
-                    patientAttributes.remove( programPatientProperty.getPatientAttribute() );
-                }
-            }
+            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientAttributes.removeAll( program.getPatientAttributes() );
         }
         return SUCCESS;
     }

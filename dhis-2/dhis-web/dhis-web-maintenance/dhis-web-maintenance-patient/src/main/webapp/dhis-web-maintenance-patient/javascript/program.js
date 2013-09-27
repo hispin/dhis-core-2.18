@@ -137,9 +137,7 @@ function selectProperties()
 	jQuery("#availablePropertyIds").children().each(function(i, item){
 		if( item.selected ){
 			html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectProperties( this )'><td onmousedown='select(event,this)'>" + item.text + "</td>";
-			html += "<td align='center'><input type='textbox' name='defaultValue' /></td>";
-			html += "<td align='center'><input type='checkbox' name='hidden' /></td>";
-			html += "<td align='center'><input type='checkbox' name='displayed' ";
+			html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'";
 			if( item.value.match("^attr_")=="attr_" )
 			{
 				html += " style='display:none' ";
@@ -161,9 +159,7 @@ function selectAllProperties()
 	var selectedList = jQuery("#selectedList");
 	jQuery("#availablePropertyIds").children().each(function(i, item){
 		html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onmousedown='select(this)'>" + item.text + "</td>";
-		html += "<td align='center'><input type='textbox' name='defaultValue' /></td>";
-		html += "<td align='center'><input type='checkbox' name='hidden' /></td>";
-		html += "<td align='center'><input type='checkbox' name='displayed' ";
+		html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'";
 		if( item.value.match("^attr_")=="attr_" )
 		{
 			html += " style='display:none' ";

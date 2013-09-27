@@ -35,7 +35,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -173,13 +172,7 @@ public class SearchPatientAction
                 for ( Integer programId : programIds )
                 {
                     Program program = programService.getProgram( programId );
-                    for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
-                    {
-                        if ( programPatientProperty.isIdentifierType() )
-                        {
-                            identifierTypes.add( programPatientProperty.getPatientIdentifierType() );
-                        }
-                    }
+                    identifierTypes.addAll( program.getPatientIdentifierTypes() );
                 }
             }
         }

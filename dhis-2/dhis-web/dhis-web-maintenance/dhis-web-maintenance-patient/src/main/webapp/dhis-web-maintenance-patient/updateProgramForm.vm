@@ -65,33 +65,16 @@
 					userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 				});
 				
-				// Identifier-types && Attributes
-				
 				var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
 				selectedPropertyIds.empty();
-				
 				var personDisplayNames = jQuery( "#personDisplayNames" );
 				personDisplayNames.empty();
-				
-				var defaultValues = jQuery( "#defaultValues" );
-				defaultValues.empty();
-				
-				var hiddens = jQuery( "#hiddens" );
-				hiddens.empty();
-				
 				if(getFieldValue('type')!=3){
 					jQuery("#selectedList").find("tr").each( function( i, item ){ 
 						selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
-						
 						var displayed = jQuery( item ).find( "input[name='displayed']:first");
 						var checked = displayed.attr('checked') ? true : false;
 						personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-						
-						var defaultValue = jQuery( item ).find( "input[name='defaultValue']:first").attr('value');
-						defaultValues.append( "<option value='" + defaultValue + "' selected='true'>" + defaultValue + "</option>" );
-						
-						checked = jQuery( item ).find( "input[name='hidden']:first").attr('checked') ? true : false;
-						hiddens.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 					});
 				};
 			});
@@ -99,7 +82,7 @@
 });
 
 </script>
-		
+
 <h3>$i18n.getString( "edit_program" )</h3>
 
 <form id="updateProgramForm" name="updateProgramForm" action="updateProgram.action" method="post" onsubmit="selectAllById('selectedPropertyIds');" >
@@ -108,7 +91,7 @@
   <select id='datesToCompare' name="datesToCompare" multiple="multiple" class="hidden"></select>
   <select id='sendTo' name="sendTo" multiple="multiple" class="hidden"></select>
   <select id='whenToSend' name="whenToSend" multiple="multiple" class="hidden"></select>
-  <select id='messageType' name="messageType" multiple="multiple" class="hidden"></select>
+	<select id='messageType' name="messageType" multiple="multiple" class="hidden"></select>
   <select id='userGroup' name="userGroup" multiple="multiple" class="hidden"></select>
 
   <input type="hidden" id="id" name="id" value="$program.id">
@@ -287,8 +270,6 @@
 			<th></th>
 			<th>$i18n.getString( "select_identifiers_and_attributes" )							
 				<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
-				<select style='display:none;' multiple id="hiddens" name="hiddens" ></select>
-				<select style='display:none;' multiple id="defaultValues" name="defaultValues" ></select>
 				<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
 			</th>
 		  </tr>
@@ -297,89 +278,12 @@
 		<tr>
 			<td>
 				<select size="15" style="width:100%;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();" #if( $program.type=='3' ) disabled #end>
-					#set($hasRegistrationDate = false)
-				#set($hasFullName = false)
-				#set($hasGender = false)
-				#set($hasDobType = false)
-				#set($hasBirthDate = false)
-				#set($hasAge = false)
-				#set($hasPhoneNumber = false)
-				#set($hasDeathDate = false)
-				#set($hasIsDead = false) 
-				#set($hasHealthWorker = false)
-				#foreach( $programPatientProperty in $program.programPatientProperties ) 
-					#if( $programPatientProperty.isProperty() )
-						#set($fixedAttribute = $programPatientProperty.propertyName)
-						#if($fixedAttribute =='registrationDate')
-							#set($hasRegistrationDate = true)
-						#end
-						#if($fixedAttribute=='fullName')
-							#set($hasFullName = true)
-						#end
-						#if($fixedAttribute=='gender')
-							#set($hasGender = true)
-						#end
-						#if($fixedAttribute=='dobType')
-							#set($hasDobType = true)
-						#end
-						#if($fixedAttribute=='birthDate')
-							#set($hasBirthDate = true)
-						#end
-						#if($fixedAttribute=='age')
-							#set($hasAge = true)
-						#end
-						#if($fixedAttribute=='phoneNumber')
-							#set($hasPhoneNumber = true)
-						#end
-						#if($fixedAttribute=='deathDate')
-							#set($hasDeathDate = true)
-						#end
-						#if($fixedAttribute=='isDead')
-							#set($hasIsDead = true)
-						#end
-						#if($fixedAttribute=='healthWorker')
-							#set($hasHealthWorker = true)
-						#end
+					#foreach( $identifier in $availableIdentifierTypes )
+						<option value="iden_$identifier.id">$identifier.displayName</option>
 					#end
-				#end
-				
-				#if($hasRegistrationDate==false)
-					<option value="prop_registrationDate">$i18n.getString('registration_date')</option>
-				#end
-				#if($hasFullName==false)
-					<option value="prop_fullName">$i18n.getString('full_name')</option>
-				#end
-				#if($hasGender==false)
-					<option value="prop_gender">$i18n.getString('gender')</option>
-				#end
-				#if($hasDobType==false)
-					<option value="prop_dobType">$i18n.getString('dob_type')</option>
-				#end
-				#if($hasBirthDate==false)
-					<option value="prop_birthDate">$i18n.getString('birth_date')</option>
-				#end
-				#if($hasAge==false)
-					<option value="prop_age">$i18n.getString('age_years')</option>
-				#end
-				#if($hasPhoneNumber==false)
-					<option value="prop_phoneNumber">$i18n.getString('phone_number')</option>
-				#end
-				#if($hasDeathDate==false)
-					<option value="prop_deathDate">$i18n.getString('death_date')</option>
-				#end
-				#if($hasIsDead==false)
-					<option value="prop_isDead">$i18n.getString('is_dead')</option>
-				#end
-				#if($hasHealthWorker==false)
-					<option value="prop_healthWorker">$i18n.getString('health_worker')</option>
-				#end
-				
-				#foreach( $identifier in $availableIdentifierTypes )
-					<option value="iden_$identifier.id">$identifier.displayName</option>
-				#end
-				#foreach( $attribute in $availableAttributes )
-					<option value="attr_$attribute.id">$attribute.displayName</option>
-				#end
+					#foreach( $attribute in $availableAttributes )
+						<option value="attr_$attribute.id">$attribute.displayName</option>
+					#end
 				</select>
 			</td>
 			<td style="text-align:center">
@@ -398,34 +302,20 @@
 						<thead>
 							<tr>
 								<th style="width:180px;">$i18n.getString( "identifiers_and_attributes" )</th>
-								<th style="width:20px;">$i18n.getString( "default_value" )</th>
-								<th style="width:20px;">$i18n.getString( "hidden" )</th>
 								<th style="width:20px;">$i18n.getString( "displayed_in_list" )</th>
 						</thead>
-						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end> 
-							#foreach( $programPatientProperty in $program.programPatientProperties )
-								#if($programPatientProperty.isIdentifierType())
-								<tr ondblclick="unSelectProperties( this )" id="iden_$programPatientProperty.patientIdentifierType.id">
-									<td onmousedown="select(event, this)">$encoder.htmlEncode( $programPatientProperty.patientIdentifierType.displayName )</td>
-									<td align="center"><input type="textbox" name="defaultValue" value="$!programPatientProperty.defaultValue" /></td>
-									<td align="center"><input type="checkbox" name="hidden" #if($programPatientProperty.hidden == 'true' ) checked #end #if($program.type==3) disabled #end /></td>
-									<td align="center"><input type="checkbox" name="displayed" #if($programPatientProperty.patientIdentifierType.personDisplayName == true ) checked #end #if($program.type==3) disabled #end /></td>
+						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end>
+							#foreach( $identifier in $program.patientIdentifierTypes )
+								<tr ondblclick="unSelectProperties( this )" id="iden_$identifier.id">
+									<td onmousedown="select(event, this)">$encoder.htmlEncode( $identifier.name )</td>
+									<td align="center"><input type="checkbox" name="displayed" value="iden_$identifier.id" #if($identifier.personDisplayName == true ) checked #end #if($program.type==3) disabled #end /></td>
 								</tr>
-								#elseif( $programPatientProperty.isAttribute())
-								<tr ondblclick="unSelectProperties( this )" id="attr_$programPatientProperty.patientAttribute.id">
-									<td onmousedown="select(event, this)">$encoder.htmlEncode( $programPatientProperty.patientAttribute.displayName )</td>
-									<td align="center"><input type="textbox" name="defaultValue" value="$!programPatientProperty.defaultValue" /></td>
-									<td align="center"><input type="checkbox" name="hidden" #if($programPatientProperty.hidden == 'true' ) checked #end #if($program.type==3) disabled #end /></td>
+							#end
+							#foreach( $attribute in $program.patientAttributes )
+								<tr ondblclick="unSelectProperties( this )" id="attr_$attribute.id">
+									<td onmousedown="select(event, this)">$encoder.htmlEncode( $attribute.name )</td>
 									<td align="center"><input type="checkbox" name="displayed" style='display:none' /></td>
 								</tr>
-								#else
-								<tr ondblclick="unSelectProperties( this )" id="prop_$programPatientProperty.propertyName">
-									<td onmousedown="select(event, this)">$i18n.getString( $programPatientProperty.propertyName )</td>
-									<td align="center"><input type="textbox" name="defaultValue" value="$!programPatientProperty.defaultValue" /></td>
-									<td align="center"><input type="checkbox" name="hidden" #if($programPatientProperty.hidden == 'true' ) checked #end #if($program.type==3) disabled #end /></td>
-									<td align="center"><input type="checkbox" name="displayed" style='display:none' /></td>
-								</tr>
-								#end
 							#end
 						</tbody>
 					</table>

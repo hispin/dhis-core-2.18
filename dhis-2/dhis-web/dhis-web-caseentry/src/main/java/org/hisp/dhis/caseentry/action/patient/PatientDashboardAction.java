@@ -41,6 +41,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -49,7 +50,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
@@ -84,7 +84,7 @@ public class PatientDashboardAction
     private ProgramIndicatorService programIndicatorService;
 
     private PatientAttributeValueService patientAttributeValueService;
-
+    
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -224,7 +224,7 @@ public class PatientDashboardAction
         relationships = relationshipService.getRelationshipsForPatient( patient );
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
-
+        
         // ---------------------------------------------------------------------
         // Get patient-attribute-values
         // ---------------------------------------------------------------------
@@ -235,16 +235,12 @@ public class PatientDashboardAction
 
         for ( Program program : programs )
         {
-            Collection<ProgramPatientProperty> programAtttributes = program.getProgramPatientProperties();
+            Collection<PatientAttribute> atttributes = program.getPatientAttributes();
             for ( PatientAttributeValue attributeValue : _attributeValues )
             {
-                for ( ProgramPatientProperty programAtttribute : programAtttributes )
+                if ( atttributes.contains( attributeValue.getPatientAttribute() ) )
                 {
-                    if ( programAtttribute.isAttribute()
-                        && programAtttribute.getPatientAttribute().equals( attributeValue.getPatientAttribute() ) )
-                    {
-                        attributeValues.add( attributeValue );
-                    }
+                    attributeValues.add( attributeValue );
                 }
             }
         }
@@ -258,20 +254,15 @@ public class PatientDashboardAction
 
         for ( Program program : programs )
         {
-            Collection<ProgramPatientProperty> programIdentifierTypes = program.getProgramPatientProperties();
+            Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
             for ( PatientIdentifier identifier : _identifiers )
             {
-                for ( ProgramPatientProperty programIdentifierType : programIdentifierTypes )
+                if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
                 {
-                    if ( programIdentifierType.isIdentifierType()
-                        && programIdentifierType.getPatientIdentifierType().equals( identifier.getIdentifierType() ) )
-                    {
-                        identifiers.add( identifier );
-                    }
+                    identifiers.add( identifier );
                 }
             }
         }
-
         // ---------------------------------------------------------------------
         // Get program enrollment
         // ---------------------------------------------------------------------

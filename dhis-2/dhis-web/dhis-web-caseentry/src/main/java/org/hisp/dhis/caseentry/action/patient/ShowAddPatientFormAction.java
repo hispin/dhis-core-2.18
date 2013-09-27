@@ -30,8 +30,8 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -40,13 +40,16 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
+import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.User;
 
@@ -98,11 +101,18 @@ public class ShowAddPatientFormAction
         this.attributeService = attributeService;
     }
 
-    private ProgramPatientPropertyService programPatientPropertyService;
+    private PatientService patientService;
 
-    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
+    public void setPatientService( PatientService patientService )
     {
-        this.programPatientPropertyService = programPatientPropertyService;
+        this.patientService = patientService;
+    }
+
+    private PatientAttributeGroupService attributeGroupService;
+
+    public void setAttributeGroupService( PatientAttributeGroupService attributeGroupService )
+    {
+        this.attributeGroupService = attributeGroupService;
     }
 
     private I18n i18n;
@@ -156,11 +166,18 @@ public class ShowAddPatientFormAction
         return healthWorkers;
     }
 
-    private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
+    private Collection<PatientIdentifierType> identifierTypes;
 
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
+    }
+
+    private Map<String, List<PatientAttribute>> attributesMap = new HashMap<String, List<PatientAttribute>>();
+
+    public Map<String, List<PatientAttribute>> getAttributesMap()
+    {
+        return attributesMap;
     }
 
     private OrganisationUnit organisationUnit;
@@ -191,6 +208,27 @@ public class ShowAddPatientFormAction
         return program;
     }
 
+    private List<PatientAttributeGroup> attributeGroups;
+
+    public List<PatientAttributeGroup> getAttributeGroups()
+    {
+        return attributeGroups;
+    }
+
+    private String orgunitCountIdentifier;
+
+    public String getOrgunitCountIdentifier()
+    {
+        return orgunitCountIdentifier;
+    }
+
+    private PatientRegistrationForm patientRegistrationForm;
+
+    public PatientRegistrationForm getPatientRegistrationForm()
+    {
+        return patientRegistrationForm;
+    }
+
     private Program relatedProgram;
 
     public Program getRelatedProgram()
@@ -209,8 +247,7 @@ public class ShowAddPatientFormAction
 
         if ( programId == null )
         {
-            PatientRegistrationForm patientRegistrationForm = patientRegistrationFormService
-                .getCommonPatientRegistrationForm();
+            patientRegistrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
 
             if ( patientRegistrationForm != null && patientRegistrationForm.getDataEntryForm() != null )
             {
@@ -222,8 +259,7 @@ public class ShowAddPatientFormAction
         else
         {
             program = programService.getProgram( programId );
-            PatientRegistrationForm patientRegistrationForm = patientRegistrationFormService
-                .getPatientRegistrationForm( program );
+            patientRegistrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
 
             if ( patientRegistrationForm != null && patientRegistrationForm.getDataEntryForm() != null )
             {
@@ -235,17 +271,49 @@ public class ShowAddPatientFormAction
 
         List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
-        if ( customRegistrationForm == null && program == null )
+        if ( customRegistrationForm == null )
         {
-            identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-            attributes = new ArrayList<PatientAttribute>( attributeService.getAllPatientAttributes() );
-            Collection<Program> programs = programService.getAllPrograms();
-            for ( Program p : programs )
+            attributeGroups = new ArrayList<PatientAttributeGroup>(
+                attributeGroupService.getAllPatientAttributeGroups() );
+            Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
+
+            if ( program == null )
             {
-                identifierTypes.removeAll( programPatientPropertyService.getPatientIdentifierTypes( p ) );
-                attributes.removeAll( programPatientPropertyService.getPatientAttributes( p ) );
+                identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+                attributes = new ArrayList<PatientAttribute>( attributeService.getAllPatientAttributes() );
+                Collection<Program> programs = programService.getAllPrograms();
+                for ( Program p : programs )
+                {
+                    identifierTypes.removeAll( p.getPatientIdentifierTypes() );
+                    attributes.removeAll( p.getPatientAttributes() );
+                }
             }
+            else
+            {
+                identifierTypes = program.getPatientIdentifierTypes();
+                attributes = program.getPatientAttributes();
+            }
+
+            for ( PatientAttribute attribute : attributes )
+            {
+                PatientAttributeGroup patientAttributeGroup = attribute.getPatientAttributeGroup();
+                String groupName = (patientAttributeGroup == null) ? "" : patientAttributeGroup.getDisplayName();
+                if ( attributesMap.containsKey( groupName ) )
+                {
+                    List<PatientAttribute> attrs = attributesMap.get( groupName );
+                    attrs.add( attribute );
+                }
+                else
+                {
+                    List<PatientAttribute> attrs = new ArrayList<PatientAttribute>();
+                    attrs.add( attribute );
+                    attributesMap.put( groupName, attrs );
+                }
+            }
+
         }
+
+        orgunitCountIdentifier = generateOrgunitIdentifier( organisationUnit );
 
         if ( relatedProgramId != null )
         {
@@ -253,5 +321,30 @@ public class ShowAddPatientFormAction
         }
 
         return SUCCESS;
+    }
+
+    private String generateOrgunitIdentifier( OrganisationUnit organisationUnit )
+    {
+        String value = organisationUnit.getCode();
+        value = (value == null) ? "" : value;
+
+        int totalPatient = patientService.countGetPatientsByOrgUnit( organisationUnit );
+        if ( totalPatient < 10 )
+        {
+            value += "000" + totalPatient;
+        }
+        else if ( totalPatient < 100 )
+        {
+            value += "00" + totalPatient;
+        }
+        else if ( totalPatient < 1000 )
+        {
+            value += "0" + totalPatient;
+        }
+        else
+        {
+            value += totalPatient;
+        }
+        return value;
     }
 }

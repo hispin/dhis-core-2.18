@@ -48,7 +48,6 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
@@ -81,8 +80,6 @@ public class ShowAddRelationshipPatientAction
     private ProgramService programService;
 
     private OrganisationUnitSelectionManager selectionManager;
-
-    private ProgramPatientPropertyService programPatientPropertyService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -127,8 +124,8 @@ public class ShowAddRelationshipPatientAction
 
         for ( Program program : programs )
         {
-            identifierTypes.removeAll( programPatientPropertyService.getPatientIdentifierTypes( program ) );
-            patientAttributes.remove( programPatientPropertyService.getPatientAttributes( program ) );
+            identifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientAttributes.removeAll( program.getPatientAttributes() );
         }
 
         for ( PatientAttribute patientAttribute : patientAttributes )
@@ -194,11 +191,6 @@ public class ShowAddRelationshipPatientAction
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
-
-    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
-    {
-        this.programPatientPropertyService = programPatientPropertyService;
-    }
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {

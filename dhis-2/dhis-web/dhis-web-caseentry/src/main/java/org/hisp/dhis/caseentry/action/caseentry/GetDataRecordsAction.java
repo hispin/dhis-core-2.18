@@ -51,7 +51,6 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -103,13 +102,6 @@ public class GetDataRecordsAction
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
-    }
-
-    private ProgramPatientPropertyService programPatientPropertyService;
-    
-    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
-    {
-        this.programPatientPropertyService = programPatientPropertyService;
     }
 
     private I18n i18n;
@@ -165,9 +157,9 @@ public class GetDataRecordsAction
         return programStageInstances;
     }
 
-    private Collection<PatientIdentifierType> identifierTypes;
+    private List<PatientIdentifierType> identifierTypes;
 
-    public Collection<PatientIdentifierType> getIdentifierTypes()
+    public List<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
     }
@@ -237,7 +229,7 @@ public class GetDataRecordsAction
         {
             program = programService.getProgram( programId );
 
-            identifierTypes = programPatientPropertyService.getPatientIdentifierTypes( program );
+            identifierTypes = program.getPatientIdentifierTypes();
         }
 
         if ( searchTexts.size() > 0 )

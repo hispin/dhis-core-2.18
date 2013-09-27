@@ -31,14 +31,12 @@ package org.hisp.dhis.light.beneficiaryenrollment.action;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
@@ -128,7 +126,7 @@ public class GetProgramEnrollmentFormAction
         this.now = now;
     }
 
-    private Collection<PatientIdentifierType> patientIdentifierTypes = new HashSet<PatientIdentifierType>();
+    private Collection<PatientIdentifierType> patientIdentifierTypes;
 
     public Collection<PatientIdentifierType> getPatientIdentifierTypes()
     {
@@ -140,7 +138,7 @@ public class GetProgramEnrollmentFormAction
         this.patientIdentifierTypes = patientIdentifierTypes;
     }
 
-    private Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+    private Collection<PatientAttribute> patientAttributes;
 
     public Collection<PatientAttribute> getPatientAttributes()
     {
@@ -166,18 +164,8 @@ public class GetProgramEnrollmentFormAction
             return REDIRECT;
         }
 
-        for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
-        {
-            if ( programPatientProperty.isIdentifierType() )
-            {
-                patientIdentifierTypes.add( programPatientProperty.getPatientIdentifierType() );
-            }
-            else if(programPatientProperty.isAttribute() )
-            {
-                patientAttributes.add( programPatientProperty.getPatientAttribute() );
-            }
-        }
-        
+        patientAttributes = program.getPatientAttributes();
+        patientIdentifierTypes = program.getPatientIdentifierTypes();
         now = new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date() );
 
         return SUCCESS;
