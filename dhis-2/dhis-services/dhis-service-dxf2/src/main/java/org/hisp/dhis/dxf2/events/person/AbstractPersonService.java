@@ -556,11 +556,11 @@ public abstract class AbstractPersonService implements PersonService
         Collection<PatientAttribute> patientAttributes = manager.getAll( PatientAttribute.class );
         Set<String> cache = new HashSet<String>();
 
-        for ( Identifier identifier : person.getIdentifiers() )
+        for ( Attribute attribute : person.getAttributes() )
         {
-            if ( identifier.getValue() != null )
+            if ( attribute.getValue() != null )
             {
-                cache.add( identifier.getType() );
+                cache.add( attribute.getType() );
             }
         }
 
