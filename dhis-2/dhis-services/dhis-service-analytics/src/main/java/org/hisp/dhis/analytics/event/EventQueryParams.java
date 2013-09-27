@@ -72,6 +72,14 @@ public class EventQueryParams
     private Integer pageSize;
 
     // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+    
+    private String periodType;
+    
+    private int organisationUnitLevel;
+    
+    // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
@@ -89,9 +97,12 @@ public class EventQueryParams
         this.asc = new ArrayList<String>( params.getAsc() );
         this.desc = new ArrayList<String>( params.getDesc() );
         this.organisationUnits = new ArrayList<OrganisationUnit>( params.getOrganisationUnits() );
+        this.organisationUnitMode = params.getOrganisationUnitMode();
         this.tableName = params.getTableName();
         this.page = params.getPage();
         this.pageSize = params.getPageSize();
+        this.periodType = params.getPeriodType();
+        this.organisationUnitLevel = params.getOrganisationUnitLevel();
     }
 
     // -------------------------------------------------------------------------
@@ -262,5 +273,25 @@ public class EventQueryParams
     public void setPageSize( Integer pageSize )
     {
         this.pageSize = pageSize;
+    }
+
+    public String getPeriodType()
+    {
+        return periodType;
+    }
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+
+    public int getOrganisationUnitLevel()
+    {
+        return organisationUnitLevel;
+    }
+
+    public void setOrganisationUnitLevel( int organisationUnitLevel )
+    {
+        this.organisationUnitLevel = organisationUnitLevel;
     }
 }

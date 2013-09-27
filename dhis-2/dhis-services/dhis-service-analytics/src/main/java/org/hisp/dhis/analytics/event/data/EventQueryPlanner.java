@@ -32,7 +32,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.event.EventQueryParams;
+import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.program.Program;
 
@@ -41,14 +46,53 @@ import org.hisp.dhis.program.Program;
  */
 public class EventQueryPlanner
 {
+    private static final Log log = LogFactory.getLog( EventQueryPlanner.class );
+    
     private static final String TABLE_BASE_NAME = "analytics_event_";
+    
+    public static void validate( EventQueryParams params )
+        throws IllegalQueryException
+    {
+        String violation = null;
+
+        if ( params == null )
+        {
+            throw new IllegalQueryException( "Params cannot be null" );
+        }
+        
+        if ( params.getOrganisationUnits().isEmpty() )
+        {
+            violation = "At least one organisation unit must be specified";
+        }
+        
+        if ( params.getStartDate() == null || params.getEndDate() == null )
+        {
+            violation = "Start and end date or at least one period must be specified";
+        }
+
+        if ( violation != null )
+        {
+            log.warn( "Validation failed: " + violation );
+            
+            throw new IllegalQueryException( violation );
+        }
+    }
     
     public static List<EventQueryParams> planQuery( EventQueryParams params )
     {
-        return splitByPartition( params );
+        List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
+        
+        List<EventQueryParams> groupedByPartition = groupByPartition( params );
+        
+        for ( EventQueryParams byPartition : groupedByPartition )
+        {
+            queries.addAll( groupByOrgUnitLevel( byPartition ) );
+        }
+        
+        return queries;
     }
     
-    private static List<EventQueryParams> splitByPartition( EventQueryParams params )
+    private static List<EventQueryParams> groupByPartition( EventQueryParams params )
     {
         List<EventQueryParams> list = new ArrayList<EventQueryParams>();
         
@@ -83,6 +127,28 @@ public class EventQueryPlanner
         }
         
         return list;
+    }
+    
+    private static List<EventQueryParams> groupByOrgUnitLevel( EventQueryParams params )
+    {
+        ListMap<Integer, OrganisationUnit> levelOrgUnitMap = new ListMap<Integer, OrganisationUnit>();
+        
+        for ( OrganisationUnit unit : params.getOrganisationUnits() )
+        {
+            levelOrgUnitMap.putValue( unit.getLevel(), unit );
+        }
+        
+        List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
+        
+        for ( Integer level : levelOrgUnitMap.keySet() )
+        {
+            EventQueryParams query = new EventQueryParams( params );
+            query.setOrganisationUnits( levelOrgUnitMap.get( level ) );
+            query.setOrganisationUnitLevel( level );
+            queries.add( query );
+        }
+        
+        return queries;
     }
     
     private static EventQueryParams getQuery( EventQueryParams params, Date startDate, Date endDate, Program program )

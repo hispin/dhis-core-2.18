@@ -45,6 +45,7 @@ public interface DimensionalObject
     final String CATEGORYOPTIONCOMBO_DIM_ID = "co";
     final String PERIOD_DIM_ID = "pe";
     final String ORGUNIT_DIM_ID = "ou";
+    final String ITEM_DIM_ID = "item";
     
     final String DIMENSION_SEP = "-";
 
