@@ -52,6 +52,11 @@ public class WebUtils
 
     public static void generateLinks( WebMetaData metaData )
     {
+        generateLinks( metaData, true );
+    }
+
+    public static void generateLinks( WebMetaData metaData, boolean deep )
+    {
         Class<?> baseType = null;
         Collection<Field> fields = ReflectionUtils.collectFields( metaData.getClass(), alwaysTrue );
 
@@ -73,7 +78,7 @@ public class WebUtils
 
                     for ( Object object : objects )
                     {
-                        generateLinks( object );
+                        generateLinks( object, deep );
                     }
                 }
             }
@@ -116,8 +121,13 @@ public class WebUtils
         }
     }
 
-    @SuppressWarnings( "unchecked" )
     public static void generateLinks( Object object )
+    {
+        generateLinks( object, true );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public static void generateLinks( Object object, boolean deep )
     {
         if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
         {
@@ -126,6 +136,11 @@ public class WebUtils
         }
 
         Collection<Field> fields = ReflectionUtils.collectFields( object.getClass(), alwaysTrue );
+
+        if ( !deep )
+        {
+            return;
+        }
 
         for ( Field field : fields )
         {

@@ -90,7 +90,14 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
 
-        handleLinksAndAccess( options, metaData, entityList );
+        if ( options.getViewClass( "basic" ).equals( "basic" ) )
+        {
+            handleLinksAndAccess( options, metaData, entityList, false );
+        }
+        else
+        {
+            handleLinksAndAccess( options, metaData, entityList, true );
+        }
 
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
@@ -110,13 +117,22 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         ReflectionUtils.invokeSetterMethod( ExchangeClasses.getAllExportMap().get( getEntityClass() ), metaData, entityList );
 
-        handleLinksAndAccess( options, metaData, entityList );
+        String viewClass = options.getViewClass( "basic" );
+
+        if ( viewClass.equals( "basic" ) || viewClass.equals( "sharingBasic" ) )
+        {
+            handleLinksAndAccess( options, metaData, entityList, false );
+        }
+        else
+        {
+            handleLinksAndAccess( options, metaData, entityList, true );
+        }
 
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
         model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+        model.addAttribute( "viewClass", viewClass );
 
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
@@ -177,7 +193,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
-    
+
     //--------------------------------------------------------------------------
     // POST
     //--------------------------------------------------------------------------
@@ -312,7 +328,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         return entityList;
     }
-    
+
     protected List<T> queryForList( Class<T> clazz, String query )
     {
         return new ArrayList<T>( manager.filter( getEntityClass(), query ) );
@@ -336,11 +352,11 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         ((BaseIdentifiableObject) object).setAccess( access );
     }
 
-    protected void handleLinksAndAccess( WebOptions options, WebMetaData metaData, List<T> entityList )
+    protected void handleLinksAndAccess( WebOptions options, WebMetaData metaData, List<T> entityList, boolean deep )
     {
         if ( options != null && options.hasLinks() )
         {
-            WebUtils.generateLinks( metaData );
+            WebUtils.generateLinks( metaData, deep );
         }
 
         if ( entityList != null && SharingUtils.isSupported( getEntityClass() ) )

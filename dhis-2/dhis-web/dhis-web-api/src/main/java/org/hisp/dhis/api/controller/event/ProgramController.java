@@ -45,7 +45,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = ProgramController.RESOURCE_PATH)
+@RequestMapping( value = ProgramController.RESOURCE_PATH )
 public class ProgramController
     extends AbstractCrudController<Program>
 {
