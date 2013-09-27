@@ -98,7 +98,7 @@ public class PersonController
             Identifier id = new Identifier( identifierType, identifier );
             persons.getPersons().add( personService.getPerson( id ) );
         }
-        if ( programUid != null && gender != null )
+        else if ( programUid != null && gender != null )
         {
             OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
             Program program = getProgram( programUid );

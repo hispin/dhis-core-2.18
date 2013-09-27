@@ -28,9 +28,6 @@ package org.hisp.dhis.patient.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -44,6 +41,9 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -85,20 +85,20 @@ public class HibernatePatientIdentifierStore
             Restrictions.eq( "identifier", identifier ) ).uniqueResult();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientIdentifier> getAll( PatientIdentifierType type, String identifier )
     {
         return getCriteria( Restrictions.eq( "identifierType", type ), Restrictions.eq( "identifier", identifier ) )
             .list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientIdentifier> getByIdentifier( String identifier )
     {
         return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType )
     {
         return getCriteria( Restrictions.eq( "identifierType", identifierType ) ).list();
@@ -116,7 +116,7 @@ public class HibernatePatientIdentifierStore
             Restrictions.eq( "patient", patient ) ).uniqueResult();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientIdentifier> getPatientIdentifiers( Patient patient )
     {
         return getCriteria( Restrictions.eq( "patient", patient ) ).list();
@@ -124,6 +124,14 @@ public class HibernatePatientIdentifierStore
 
     public Patient getPatient( PatientIdentifierType idenType, String value )
     {
+        if ( idenType == null )
+        {
+            // assume system identifier
+            return (Patient) getCriteria(
+                Restrictions.and( Restrictions.eq( "identifier", value ), Restrictions.isNull( "identifierType" ) ) )
+                .setProjection( Projections.property( "patient" ) ).uniqueResult();
+        }
+
         return (Patient) getCriteria(
             Restrictions.and( Restrictions.eq( "identifierType", idenType ), Restrictions.eq( "identifier", value ) ) )
             .setProjection( Projections.property( "patient" ) ).uniqueResult();
@@ -131,16 +139,16 @@ public class HibernatePatientIdentifierStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsByIdentifier( String identifier, Integer min, Integer max )
-    {       
-        if( min != null & max != null )
+    {
+        if ( min != null & max != null )
         {
             return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) )
-            .setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
+                .setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
         }
         else
         {
             return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) )
-            .setProjection( Projections.property( "patient" ) ).list();
+                .setProjection( Projections.property( "patient" ) ).list();
         }
     }
 
@@ -151,14 +159,14 @@ public class HibernatePatientIdentifierStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientIdentifier> get( Collection<PatientIdentifierType> identifierTypes, Patient patient )
     {
         return getCriteria( Restrictions.in( "identifierType", identifierTypes ), Restrictions.eq( "patient", patient ) )
             .list();
     }
 
-    @SuppressWarnings( "deprecation" )
+    @SuppressWarnings("deprecation")
     public boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
         Integer patientId, OrganisationUnit orgunit, Program program, PeriodType periodType )
     {
