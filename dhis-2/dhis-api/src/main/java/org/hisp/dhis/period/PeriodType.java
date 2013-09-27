@@ -355,6 +355,7 @@ public abstract class PeriodType
      * @param externalId the external identifier.
      * @return the period.
      */
+    @Deprecated
     public static Period createPeriodExternalId( String externalId )
     {
         if ( externalId == null || externalId.split( "_" ).length <= 1 )

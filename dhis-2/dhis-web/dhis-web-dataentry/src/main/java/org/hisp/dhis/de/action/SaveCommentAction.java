@@ -142,7 +142,7 @@ public class SaveCommentAction
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = PeriodType.createPeriodExternalId( periodId );
+        Period period = PeriodType.getPeriodFromIsoString( periodId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 

@@ -133,7 +133,7 @@ public class MarkForFollowupAction
     {
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
-        Period period = PeriodType.createPeriodExternalId( periodId );
+        Period period = PeriodType.getPeriodFromIsoString( periodId );
         OrganisationUnit source = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
