@@ -265,6 +265,7 @@ public abstract class AbstractEventService implements EventService
             }
 
             programInstance = programInstances.get( 0 );
+            programStageInstance = programInstance.getProgramStageInstanceByStage( 1 );
         }
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
