@@ -104,6 +104,7 @@ public class DefaultEventAnalyticsService
     // -------------------------------------------------------------------------
 
     //TODO order the event analytics tables up front to avoid default sorting in queries
+    //TODO filter items support
     
     public Grid getAggregatedEventData( EventQueryParams params )
     {
@@ -115,7 +116,11 @@ public class DefaultEventAnalyticsService
         // Headers
         // ---------------------------------------------------------------------
 
-        grid.addHeader( new GridHeader( ITEM_DIM_ID, "Item" ) );
+        for ( QueryItem item : params.getItems() )
+        {
+            grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName() ) );
+        }
+        
         grid.addHeader( new GridHeader( PERIOD_DIM_ID, "Period" ) );
         grid.addHeader( new GridHeader( ORGUNIT_DIM_ID, "Organisation unit" ) );
         grid.addHeader( new GridHeader( "value", "Value" ) );

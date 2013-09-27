@@ -98,13 +98,15 @@ public class JdbcEventAnalyticsManager
             int value = rowSet.getInt( "value" );
             String ou = rowSet.getString( params.getOrganisationUnitLevel() );
             
+            grid.addRow();
+            
             for ( QueryItem queryItem : params.getItems() )
             {
-                String itemValue = rowSet.getString( queryItem.getItem().getUid() );
-                String item = queryItem.getItem().getName() + ": " + itemValue;
-                
-                grid.addRow().addValue( item ).addValue( null ).addValue( ou ).addValue( value );
+                String item = rowSet.getString( queryItem.getItem().getUid() );                
+                grid.addValue( item );
             }
+            
+            grid.addValue( null ).addValue( ou ).addValue( value );
         }
 
         return grid;
