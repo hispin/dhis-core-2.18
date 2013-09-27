@@ -68,7 +68,7 @@ public interface PatientIdentifierService
 
     Collection<PatientIdentifier> getAll( PatientIdentifierType type, String identifier );
 
-    Patient getPatient( PatientIdentifierType idenType, String value );
+    Patient getPatient( PatientIdentifierType identifierType, String value );
 
     Collection<Patient> getPatientsByIdentifier( String identifier, Integer min, Integer max );
 
@@ -78,5 +78,5 @@ public interface PatientIdentifierService
         Patient patient );
 
     boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        Integer patientId, OrganisationUnit orgunit, Program program, PeriodType periodType );
+        Integer patientId, OrganisationUnit organisationUnit, Program program, PeriodType periodType );
 }

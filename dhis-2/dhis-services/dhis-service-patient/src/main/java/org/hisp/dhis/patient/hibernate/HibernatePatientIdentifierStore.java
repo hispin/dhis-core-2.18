@@ -168,7 +168,7 @@ public class HibernatePatientIdentifierStore
 
     @SuppressWarnings("deprecation")
     public boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        Integer patientId, OrganisationUnit orgunit, Program program, PeriodType periodType )
+        Integer patientId, OrganisationUnit organisationUnit, Program program, PeriodType periodType )
     {
         String sql = "select count(*) from patientidentifier pi inner join patient p on pi.patientid=p.patientid "
             + "inner join programinstance pis on pis.patientid=pi.patientid where pi.patientidentifiertypeid="
@@ -179,9 +179,9 @@ public class HibernatePatientIdentifierStore
             sql += " and pi.patientid!=" + patientId;
         }
 
-        if ( patientIdentifierType.getType().equals( PatientIdentifierType.VALUE_TYPE_LOCAL_ID ) && orgunit != null )
+        if ( patientIdentifierType.getType().equals( PatientIdentifierType.VALUE_TYPE_LOCAL_ID ) && organisationUnit != null )
         {
-            sql += " and p.organisationunitid=" + orgunit.getId();
+            sql += " and p.organisationunitid=" + organisationUnit.getId();
         }
 
         if ( patientIdentifierType.getType().equals( PatientIdentifierType.VALUE_TYPE_LOCAL_ID ) && program != null )

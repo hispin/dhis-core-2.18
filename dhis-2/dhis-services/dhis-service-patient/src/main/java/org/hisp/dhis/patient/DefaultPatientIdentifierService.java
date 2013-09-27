@@ -123,9 +123,9 @@ public class DefaultPatientIdentifierService
         return patientIdentifierStore.getAll( type, identifier );
     }
 
-    public Patient getPatient( PatientIdentifierType idenType, String value )
+    public Patient getPatient( PatientIdentifierType identifierType, String value )
     {
-        return patientIdentifierStore.getPatient( idenType, value );
+        return patientIdentifierStore.getPatient( identifierType, value );
     }
 
     public Collection<Patient> getPatientsByIdentifier( String identifier, Integer min, Integer max )
@@ -146,9 +146,9 @@ public class DefaultPatientIdentifierService
 
     @Override
     public boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        Integer patientId, OrganisationUnit orgunit, Program program, PeriodType periodType )
+        Integer patientId, OrganisationUnit organisationUnit, Program program, PeriodType periodType )
     {
-        return patientIdentifierStore.checkDuplicateIdentifier( patientIdentifierType, identifier, patientId, orgunit,
+        return patientIdentifierStore.checkDuplicateIdentifier( patientIdentifierType, identifier, patientId, organisationUnit,
             program, periodType );
     }
 }
