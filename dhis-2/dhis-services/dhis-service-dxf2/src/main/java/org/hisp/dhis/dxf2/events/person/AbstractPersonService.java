@@ -152,6 +152,13 @@ public abstract class AbstractPersonService implements PersonService
     }
 
     @Override
+    public Persons getPersons( OrganisationUnit organisationUnit, String nameLike )
+    {
+        List<Patient> patients = new ArrayList<Patient>( patientService.getPatientsLikeName( organisationUnit, nameLike, 0, Integer.MAX_VALUE ) );
+        return getPersons( patients );
+    }
+
+    @Override
     public Persons getPersons( Gender gender )
     {
         List<Patient> patients = new ArrayList<Patient>( patientService.getPatiensByGender( gender.getValue() ) );
