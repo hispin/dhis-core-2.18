@@ -1528,10 +1528,6 @@ Ext.onReady( function() {
                         label: {
                             rotate: {
                                 degrees: 330
-                            },
-                            style: {
-                                fontSize: 30,
-                                fill: '#00ff00'
                             }
                         }
                     };
