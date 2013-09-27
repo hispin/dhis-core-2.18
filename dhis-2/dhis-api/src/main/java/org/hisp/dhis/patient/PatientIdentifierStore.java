@@ -66,7 +66,7 @@ public interface PatientIdentifierStore
 
     Collection<PatientIdentifier> getPatientIdentifiers( Patient patient );
 
-    Patient getPatient( PatientIdentifierType idenType, String value );
+    Patient getPatient( PatientIdentifierType identifierType, String value );
 
     Collection<Patient> getPatientsByIdentifier( String identifier, Integer min, Integer max );
 
