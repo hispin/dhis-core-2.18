@@ -248,11 +248,6 @@ public class TableAlteror
 
         executeSql( "update patientidentifiertype set orgunitScope=false where orgunitScope is null" );
         executeSql( "update patientidentifiertype set programScope=false where programScope is null" );
-
-        int index = updateProgramPatientAttribue();
-        updateProgramPatientIdentifierType( index );
-        executeSql( "DROP TABLE program_patientattributes" );
-        executeSql( "DROP TABLE program_patientidentifiertypes" );
     }
 
     // -------------------------------------------------------------------------
@@ -385,73 +380,6 @@ public class TableAlteror
 
         // Drop the column with name as completed
         executeSql( "ALTER TABLE programinstance DROP COLUMN completed" );
-    }
-
-    private int updateProgramPatientAttribue()
-    {
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement
-                .executeQuery( "select programid, patientattributeid, sort_order from program_patientattributes" );
-            int i = 1;
-            while ( resultSet.next() )
-            {
-                executeSql( "insert into programpatientproperty( programpatientpropertyid, programid, patientattributeid, hidden, sortOrder) "
-                    + "values ("
-                    + i
-                    + ", "
-                    + resultSet.getInt( "programid" )
-                    + ","
-                    + resultSet.getInt( "patientattributeid" ) + ", false, " + resultSet.getInt( "sort_order" ) + ") " );
-                i++;
-            }
-            return i;
-        }
-        catch ( Exception ex )
-        {
-            log.debug( ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-        return 0;
-    }
-
-    private void updateProgramPatientIdentifierType( int index )
-    {
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement
-                .executeQuery( "select programid, patientidentifiertypeid, sort_order from program_patientidentifiertypes" );
-            while ( resultSet.next() )
-            {
-                executeSql( "insert into programpatientproperty( programpatientpropertyid, programid, patientidentifiertypeid, hidden, sortOrder) "
-                    + "values ("
-                    + index
-                    + ", "
-                    + resultSet.getInt( "programid" )
-                    + ","
-                    + resultSet.getInt( "patientidentifiertypeid" ) + ", false, " + resultSet.getInt( "sort_order" ) + ") " );
-                index++;
-            }
-        }
-        catch ( Exception ex )
-        {
-            log.debug( ex );
-        }
-        finally
-        {
-            holder.close();
-        }
     }
 
     private int executeSql( String sql )
