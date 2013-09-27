@@ -133,6 +133,13 @@ public class ViewPatientRegistrationFormAction
         return identifierTypes;
     }
 
+    private Collection<String> fixedProperties;
+
+    public Collection<String> getFixedProperties()
+    {
+        return fixedProperties;
+    }
+
     private PatientRegistrationForm registrationForm;
 
     public PatientRegistrationForm getRegistrationForm()
@@ -187,10 +194,15 @@ public class ViewPatientRegistrationFormAction
         else
         {
             program = programService.getProgram( programId );
-            
+
             identifierTypes.addAll( programPatientPropertyService.getPatientIdentifierTypes( program ) );
             attributes.addAll( programPatientPropertyService.getPatientAttributes( program ) );
-            
+            fixedProperties = programPatientPropertyService.getPatientProperties( program );
+            if ( fixedProperties == null )
+            {
+                fixedProperties = new HashSet<String>();
+            }
+
             registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
         }
 
