@@ -54,7 +54,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class EventAnalyticsController
 {
-    private static final String RESOURCE_PATH = "/analytics/events/query";
+    private static final String RESOURCE_PATH = "/analytics/events";
 
     @Autowired
     private EventAnalyticsService analyticsService;
@@ -63,11 +63,55 @@ public class EventAnalyticsController
     private ContextUtils contextUtils;
 
     // -------------------------------------------------------------------------
-    // Resources
+    // Aggregate
     // -------------------------------------------------------------------------
     
-    @RequestMapping( value = RESOURCE_PATH + "/{program}", method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
-    public String getJson( // JSON, JSONP
+    @RequestMapping( value = RESOURCE_PATH + "/aggregate/{program}", method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
+    public String getAggregateJson( // JSON, JSONP
+        @PathVariable String program,
+        @RequestParam(required=false) String stage,
+        @RequestParam String startDate,
+        @RequestParam String endDate,
+        @RequestParam String ou,
+        @RequestParam(required=false) String ouMode,
+        @RequestParam Set<String> item,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, ouMode, item );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
+        Grid grid = analyticsService.getAggregatedEventData( params );
+        model.addAttribute( "model", grid );
+        model.addAttribute( "viewClass", "detailed" );
+        return "grid";
+    }
+
+    @RequestMapping( value = RESOURCE_PATH + "/aggregate/{program}.xls", method = RequestMethod.GET )
+    public void getAggregateXls(
+        @PathVariable String program,
+        @RequestParam(required=false) String stage,
+        @RequestParam String startDate,
+        @RequestParam String endDate,
+        @RequestParam String ou,
+        @RequestParam(required=false) String ouMode,
+        @RequestParam Set<String> item,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, ou, ouMode, item );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
+        Grid grid = analyticsService.getAggregatedEventData( params );
+        GridUtils.toXls( grid, response.getOutputStream() );
+    }
+    
+    // -------------------------------------------------------------------------
+    // Query
+    // -------------------------------------------------------------------------
+    
+    @RequestMapping( value = RESOURCE_PATH + "/query/{program}", method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
+    public String getQueryJson( // JSON, JSONP
         @PathVariable String program,
         @RequestParam(required=false) String stage,
         @RequestParam String startDate,
@@ -91,8 +135,8 @@ public class EventAnalyticsController
         return "grid";
     }
 
-    @RequestMapping( value = RESOURCE_PATH + "/{program}.xls", method = RequestMethod.GET )
-    public void getXls(
+    @RequestMapping( value = RESOURCE_PATH + "/query/{program}.xls", method = RequestMethod.GET )
+    public void getQueryXls(
         @PathVariable String program,
         @RequestParam(required=false) String stage,
         @RequestParam String startDate,

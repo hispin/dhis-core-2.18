@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics.event.data;
  */
 
 import static org.hisp.dhis.analytics.DataQueryParams.OPTION_SEP;
+import static org.hisp.dhis.common.DimensionalObject.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -104,19 +105,60 @@ public class DefaultEventAnalyticsService
 
     //TODO order the event analytics tables up front to avoid default sorting in queries
     
-    public Grid getEvents( EventQueryParams params )
+    public Grid getAggregatedEventData( EventQueryParams params )
     {
+        EventQueryPlanner.validate( params );
+        
         Grid grid = new ListGrid();
-                
-        grid.addHeader( new GridHeader( "Event", ITEM_EVENT ) );
-        grid.addHeader( new GridHeader( "Program stage", ITEM_PROGRAM_STAGE ) );
-        grid.addHeader( new GridHeader( "Execution date", ITEM_EXECUTION_DATE ) );
-        grid.addHeader( new GridHeader( "Organisation unit", ITEM_ORG_UNIT ) );
-        grid.addHeader( new GridHeader( "Organisation unit name", ITEM_ORG_UNIT_NAME ) );
 
         // ---------------------------------------------------------------------
         // Headers
         // ---------------------------------------------------------------------
+
+        grid.addHeader( new GridHeader( ITEM_DIM_ID, "Item" ) );
+        grid.addHeader( new GridHeader( PERIOD_DIM_ID, "Period" ) );
+        grid.addHeader( new GridHeader( ORGUNIT_DIM_ID, "Organisation unit" ) );
+        grid.addHeader( new GridHeader( "value", "Value" ) );
+
+        // ---------------------------------------------------------------------
+        // Data
+        // ---------------------------------------------------------------------
+
+        //TODO relative periods
+                
+        List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
+        
+        for ( EventQueryParams query : queries )
+        {
+            analyticsManager.getAggregatedEventData( query, grid );
+        }        
+
+        // ---------------------------------------------------------------------
+        // Meta-data
+        // ---------------------------------------------------------------------
+
+        Map<Object, Object> metaData = new HashMap<Object, Object>();        
+        metaData.put( AnalyticsService.NAMES_META_KEY, getUidNameMap( params ) );
+        grid.setMetaData( metaData );
+        
+        return grid;        
+    }
+    
+    public Grid getEvents( EventQueryParams params )
+    {
+        EventQueryPlanner.validate( params );
+        
+        Grid grid = new ListGrid();
+
+        // ---------------------------------------------------------------------
+        // Headers
+        // ---------------------------------------------------------------------
+
+        grid.addHeader( new GridHeader( ITEM_EVENT, "Event" ) );
+        grid.addHeader( new GridHeader( ITEM_PROGRAM_STAGE, "Program stage" ) );
+        grid.addHeader( new GridHeader( ITEM_EXECUTION_DATE, "Execution date" ) );
+        grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit" ) );
+        grid.addHeader( new GridHeader( ITEM_ORG_UNIT_NAME, "Organisation unit name" ) );
 
         for ( QueryItem queryItem : params.getItems() )
         {
@@ -160,9 +202,15 @@ public class DefaultEventAnalyticsService
         
         return grid;
     }
+
+    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
+        String ou, String ouMode, Set<String> item )
+    {
+        return getFromUrl( program, stage, startDate, endDate, ou, ouMode, item, null, null, null, null );
+    }
     
-    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, String ouMode,
-        Set<String> item, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
+    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
+        String ou, String ouMode, Set<String> item, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
     {
         EventQueryParams params = new EventQueryParams();
         

@@ -66,22 +66,53 @@ public class JdbcEventAnalyticsManager
     // EventAnalyticsManager implementation
     // -------------------------------------------------------------------------
 
+    public Grid getAggregatedEventData( EventQueryParams params, Grid grid )
+    {
+        String sql = "select count(psi) as value, uidlevel" +
+            params.getOrganisationUnitLevel() + getItemColumns( params ) + " ";
+
+        // ---------------------------------------------------------------------
+        // Criteria
+        // ---------------------------------------------------------------------
+
+        sql += getFromWhereClause( params );
+        
+        // ---------------------------------------------------------------------
+        // Group by
+        // ---------------------------------------------------------------------
+
+        sql += "group by uidlevel" + params.getOrganisationUnitLevel() + getItemColumns( params );
+
+        // ---------------------------------------------------------------------
+        // Grid
+        // ---------------------------------------------------------------------
+
+        Timer t = new Timer().start();
+        
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+
+        t.getTime( "Analytics event aggregate SQL: " + sql );
+        
+        while ( rowSet.next() )
+        {
+            int value = rowSet.getInt( "value" );
+            String ou = rowSet.getString( params.getOrganisationUnitLevel() );
+            
+            for ( QueryItem queryItem : params.getItems() )
+            {
+                String itemValue = rowSet.getString( queryItem.getItem().getUid() );
+                String item = queryItem.getItem().getName() + ": " + itemValue;
+                
+                grid.addRow().addValue( item ).addValue( null ).addValue( ou ).addValue( value );
+            }
+        }
+
+        return grid;
+    }
+    
     public Grid getEvents( EventQueryParams params, Grid grid )
     {
-        String sql = "select psi,ps,executiondate,ou,ouname,";
-
-        // ---------------------------------------------------------------------
-        // Items
-        // ---------------------------------------------------------------------
-
-        for ( QueryItem queryItem : params.getItems() )
-        {
-            IdentifiableObject item = queryItem.getItem();
-            
-            sql += item.getUid() + ",";
-        }
-        
-        sql = removeLast( sql, 1 ) + " ";
+        String sql = "select psi,ps,executiondate,ou,ouname" + getItemColumns( params ) + " ";
 
         // ---------------------------------------------------------------------
         // Criteria
@@ -129,7 +160,7 @@ public class JdbcEventAnalyticsManager
         
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
-        t.getTime( "Analytics event SQL: " + sql );
+        t.getTime( "Analytics event query SQL: " + sql );
         
         while ( rowSet.next() )
         {
@@ -165,13 +196,31 @@ public class JdbcEventAnalyticsManager
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    private String getItemColumns( EventQueryParams params )
+    {
+        String sql = params.getItems().isEmpty() ? "" : ",";
+        
+        for ( QueryItem queryItem : params.getItems() )
+        {
+            IdentifiableObject item = queryItem.getItem();
+            
+            sql += item.getUid() + ",";
+        }
+        
+        return removeLast( sql, 1 );
+    }
+    
     private String getFromWhereClause( EventQueryParams params )
     {
         String sql = "";
         
         sql += "from " + params.getTableName() + " ";
-        sql += "where executiondate >= '" + getMediumDateString( params.getStartDate() ) + "' ";
-        sql += "and executiondate <= '" + getMediumDateString( params.getEndDate() ) + "' ";
+        
+        if ( params.getStartDate() != null && params.getEndDate() != null )
+        {        
+            sql += "where executiondate >= '" + getMediumDateString( params.getStartDate() ) + "' ";
+            sql += "and executiondate <= '" + getMediumDateString( params.getEndDate() ) + "' ";
+        }
         
         if ( params.isOrganisationUnitMode( EventQueryParams.OU_MODE_SELECTED ) )
         {
