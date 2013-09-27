@@ -40,6 +40,7 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserSettingService;
@@ -98,6 +99,13 @@ public class ViewPatientRegistrationFormAction
     public void setUserSettingService( UserSettingService userSettingService )
     {
         this.userSettingService = userSettingService;
+    }
+
+    private ProgramPatientPropertyService programPatientPropertyService;
+
+    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
+    {
+        this.programPatientPropertyService = programPatientPropertyService;
     }
 
     // -------------------------------------------------------------------------
@@ -172,18 +180,20 @@ public class ViewPatientRegistrationFormAction
             attributes = patientAttributeService.getAllPatientAttributes();
             for ( Program p : programs )
             {
-                identifierTypes.remove( p.getPatientIdentifierTypes() );
-                attributes.remove( p.getPatientAttributes() );
+                identifierTypes.removeAll( programPatientPropertyService.getPatientIdentifierTypes( p ) );
+                attributes.removeAll( programPatientPropertyService.getPatientAttributes( p ) );
             }
         }
         else
         {
             program = programService.getProgram( programId );
-            identifierTypes = program.getPatientIdentifierTypes();
-            attributes = program.getPatientAttributes();
+            
+            identifierTypes.addAll( programPatientPropertyService.getPatientIdentifierTypes( program ) );
+            attributes.addAll( programPatientPropertyService.getPatientAttributes( program ) );
+            
             registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
         }
-        
+
         // ---------------------------------------------------------------------
         // Get images
         // ---------------------------------------------------------------------

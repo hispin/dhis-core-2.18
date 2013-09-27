@@ -28,12 +28,10 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -44,17 +42,17 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Abyot Asalefew
@@ -76,6 +74,14 @@ public class Program
     public static final int SINGLE_EVENT_WITH_REGISTRATION = 2;
 
     public static final int SINGLE_EVENT_WITHOUT_REGISTRATION = 3;
+
+    public static final String SEPARATE_CHARACTOR = "_";
+
+    public static final String PREFIX_IDENTIFIER_TYPE = "iden";
+
+    public static final String PREFIX_ATTRIBUTE = "attr";
+    
+    public static final String PREFIX_PROPERTY = "prop";
 
     private String description;
 
@@ -106,10 +112,6 @@ public class Program
     private Boolean displayIncidentDate = true;
 
     private Boolean ignoreOverdueEvents = false;
-
-    private List<PatientIdentifierType> patientIdentifierTypes;
-
-    private List<PatientAttribute> patientAttributes;
 
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
 
@@ -143,8 +145,10 @@ public class Program
     private Boolean relationshipFromA;
 
     private Program relatedProgram;
-    
+
     private Boolean dataEntryMethod = false;
+
+    private Set<ProgramPatientProperty> programPatientProperties;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -365,36 +369,6 @@ public class Program
     public void setPatientValidationCriteria( Set<ValidationCriteria> patientValidationCriteria )
     {
         this.patientValidationCriteria = patientValidationCriteria;
-    }
-
-    @JsonProperty( value = "identifierTypes" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "identifierTypes", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "identifierType", namespace = DxfNamespaces.DXF_2_0 )
-    public List<PatientIdentifierType> getPatientIdentifierTypes()
-    {
-        return patientIdentifierTypes;
-    }
-
-    public void setPatientIdentifierTypes( List<PatientIdentifierType> patientIdentifierTypes )
-    {
-        this.patientIdentifierTypes = patientIdentifierTypes;
-    }
-
-    @JsonProperty( value = "attributes" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "attributes", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
-    public List<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
-
-    public void setPatientAttributes( List<PatientAttribute> patientAttributes )
-    {
-        this.patientAttributes = patientAttributes;
     }
 
     @JsonProperty
@@ -631,6 +605,16 @@ public class Program
     public void setDataEntryMethod( Boolean dataEntryMethod )
     {
         this.dataEntryMethod = dataEntryMethod;
+    }
+
+    public Set<ProgramPatientProperty> getProgramPatientProperties()
+    {
+        return programPatientProperties;
+    }
+
+    public void setProgramPatientProperties( Set<ProgramPatientProperty> programPatientProperties )
+    {
+        this.programPatientProperties = programPatientProperties;
     }
 
 }

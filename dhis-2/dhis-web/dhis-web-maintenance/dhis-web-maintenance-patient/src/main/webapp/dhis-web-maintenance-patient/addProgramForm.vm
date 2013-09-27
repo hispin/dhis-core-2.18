@@ -64,14 +64,27 @@
 		
 		var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
 		selectedPropertyIds.empty();
+		
 		var personDisplayNames = jQuery( "#personDisplayNames" );
 		personDisplayNames.empty();
+		
+		var defaultValues = jQuery( "#defaultValues" );
+		defaultValues.empty();
+		
+		var hiddens = jQuery( "#hiddens" );
+		hiddens.empty();
 		
 		if(getFieldValue('type')!=3){
 			jQuery("#selectedList").find("tr").each( function( i, item ){ 
 				
 				selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
 				
+				var defaultValue = jQuery( item ).find( "input[name='defaultValue']:first").attr('value');
+				defaultValues.append( "<option value='" + defaultValue + "' selected='true'>" + defaultValue + "</option>" );
+				
+				checked = jQuery( item ).find( "input[name='hidden']:first").attr('checked') ? true : false;
+				hiddens.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+						
 				var displayed = jQuery( item ).find( "input[name='displayed']:first");
 				var checked = displayed.attr('checked') ? true : false;
 				personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
@@ -258,6 +271,8 @@
 		<th></th>
 		<th>$i18n.getString( "select_identifiers_and_attributes" )							
 			<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
+			<select style='display:none;' multiple id="hiddens" name="hiddens" ></select>
+			<select style='display:none;' multiple id="defaultValues" name="defaultValues" ></select>
 			<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
 		</th>
 	  </tr>
@@ -265,6 +280,16 @@
 	<tr>
 		<td>
 			<select style="width:100%;" size="15" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();">
+				<option value="prop_registrationDate">$i18n.getString('registration_date')</option>
+				<option value="prop_fullName">$i18n.getString('full_name')</option>
+				<option value="prop_gender">$i18n.getString('gender')</option>
+				<option value="prop_dobType">$i18n.getString('dob_type')</option>
+				<option value="prop_birthDate">$i18n.getString('birth_date')</option>
+				<option value="prop_age">$i18n.getString('age_years')</option>
+				<option value="prop_phoneNumber">$i18n.getString('phone_number')</option>
+				<option value="prop_deathDate">$i18n.getString('death_date')</option>
+				<option value="prop_isDead">$i18n.getString('is_dead')</option>
+				<option value="prop_healthWorker">$i18n.getString('health_worker')</option>
 				#foreach( $identifier in $availableIdentifierTypes )
 					<option value="iden_$identifier.id">$identifier.displayName</option>
 				#end
@@ -289,6 +314,8 @@
 					<thead>
 						<tr>
 							<th>$i18n.getString( "identifiers_and_attributes" )</th>
+							<th style="width:20px;">$i18n.getString( "default_value" )</th>
+							<th style="width:20px;">$i18n.getString( "hidden" )</th>
 							<th>$i18n.getString( "displayed_in_list" )</th>
 					</thead>
 					<tbody id="selectedList"></tbody>

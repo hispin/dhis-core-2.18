@@ -42,6 +42,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -64,6 +65,8 @@ public class SearchPatientAction
 
     private CurrentUserService currentUserService;
 
+    private ProgramPatientPropertyService programPatientPropertyService;
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -81,6 +84,11 @@ public class SearchPatientAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+
+    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
+    {
+        this.programPatientPropertyService = programPatientPropertyService;
+    }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
@@ -214,8 +222,8 @@ public class SearchPatientAction
             {
                 for ( Integer programId : programIds )
                 {
-                    Program progam = programService.getProgram( programId );
-                    identifierTypes.addAll( progam.getPatientIdentifierTypes() );
+                    Program program = programService.getProgram( programId );
+                    identifierTypes.addAll( programPatientPropertyService.getPatientIdentifierTypes( program ) );
                 }
             }
         }

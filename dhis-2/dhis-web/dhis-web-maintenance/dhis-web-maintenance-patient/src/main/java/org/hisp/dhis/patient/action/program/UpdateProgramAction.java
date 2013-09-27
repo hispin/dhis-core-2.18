@@ -29,17 +29,19 @@ package org.hisp.dhis.patient.action.program;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientProperty;
+import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
@@ -92,6 +94,13 @@ public class UpdateProgramAction
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
+    }
+
+    private ProgramPatientPropertyService programPatientPropertyService;
+
+    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
+    {
+        this.programPatientPropertyService = programPatientPropertyService;
     }
 
     // -------------------------------------------------------------------------
@@ -164,13 +173,6 @@ public class UpdateProgramAction
     public void setDisplayIncidentDate( Boolean displayIncidentDate )
     {
         this.displayIncidentDate = displayIncidentDate;
-    }
-
-    private List<String> selectedPropertyIds = new ArrayList<String>();
-
-    public void setSelectedPropertyIds( List<String> selectedPropertyIds )
-    {
-        this.selectedPropertyIds = selectedPropertyIds;
     }
 
     private List<Boolean> personDisplayNames = new ArrayList<Boolean>();
@@ -334,6 +336,27 @@ public class UpdateProgramAction
         this.dataEntryMethod = dataEntryMethod;
     }
 
+    private List<String> selectedPropertyIds = new ArrayList<String>();
+
+    public void setSelectedPropertyIds( List<String> selectedPropertyIds )
+    {
+        this.selectedPropertyIds = selectedPropertyIds;
+    }
+
+    private List<Boolean> hiddens;
+
+    public void setHiddens( List<Boolean> hiddens )
+    {
+        this.hiddens = hiddens;
+    }
+
+    private List<String> defaultValues;
+
+    public void setDefaultValues( List<String> defaultValues )
+    {
+        this.defaultValues = defaultValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -393,36 +416,10 @@ public class UpdateProgramAction
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
-        List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
-        List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
-        int index = 0;
-        for ( String selectedPropertyId : selectedPropertyIds )
-        {
-            String[] ids = selectedPropertyId.split( "_" );
+        // ---------------------------------------------------------------------
+        // Template messages
+        // ---------------------------------------------------------------------
 
-            if ( ids[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
-            {
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
-                    .parseInt( ids[1] ) );
-
-                identifierType.setPersonDisplayName( personDisplayNames.get( index ) );
-                patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
-
-                identifierTypes.add( identifierType );
-            }
-            else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
-            {
-                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
-                    .parseInt( ids[1] ) );
-                patientAttributes.add( patientAttribute );
-            }
-            index++;
-        }
-
-        program.setPatientIdentifierTypes( identifierTypes );
-        program.setPatientAttributes( patientAttributes );
-
-        // Template messasges
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
         {
@@ -455,6 +452,102 @@ public class UpdateProgramAction
 
         programService.updateProgram( program );
 
+        // ---------------------------------------------------------------------
+        // Create Program - Identifier-typse and Attributes association
+        // ---------------------------------------------------------------------
+
+        int index = 0;
+
+        Collection<ProgramPatientProperty> removeProgramProperties = program.getProgramPatientProperties();
+
+        for ( String patientProperty : selectedPropertyIds )
+        {
+            String[] property = patientProperty.split( Program.SEPARATE_CHARACTOR );
+          
+            if ( property[0].equals( Program.PREFIX_IDENTIFIER_TYPE ) )
+            {
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
+                    .parseInt( property[1] ) );
+                identifierType.setPersonDisplayName( personDisplayNames.get( index ) );
+                patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
+
+                ProgramPatientProperty programPatientProperty = programPatientPropertyService
+                    .getProgramPatientProperty( program, identifierType );
+
+                if ( programPatientProperty == null )
+                {
+                    programPatientProperty = new ProgramPatientProperty( program, identifierType,
+                        defaultValues.get( index ), hiddens.get( index ), index );
+
+                    programPatientPropertyService.addProgramPatientProperty( programPatientProperty );
+                }
+                else
+                {
+                    programPatientProperty.setProgram( program );
+                    programPatientProperty.setHidden( hiddens.get( index ) );
+                    programPatientProperty.setDefaultValue( defaultValues.get( index ) );
+                    programPatientProperty.setSortOrder( index );
+                    programPatientPropertyService.updateProgramPatientProperty( programPatientProperty );
+
+                    removeProgramProperties.remove( programPatientProperty );
+                }
+            }
+            else if ( property[0].equals( Program.PREFIX_ATTRIBUTE ) )
+            {
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
+                    .parseInt( property[1] ) );
+
+                ProgramPatientProperty programPatientProperty = programPatientPropertyService
+                    .getProgramPatientProperty( program, patientAttribute );
+
+                if ( programPatientProperty == null )
+                {
+                    programPatientProperty = new ProgramPatientProperty( program, patientAttribute,
+                        defaultValues.get( index ), hiddens.get( index ), index );
+
+                    programPatientPropertyService.addProgramPatientProperty( programPatientProperty );
+                }
+                else
+                {
+                    programPatientProperty.setProgram( program );
+                    programPatientProperty.setHidden( hiddens.get( index ) );
+                    programPatientProperty.setDefaultValue( defaultValues.get( index ) );
+                    programPatientProperty.setSortOrder( index );
+                    programPatientPropertyService.updateProgramPatientProperty( programPatientProperty );
+
+                    removeProgramProperties.remove( programPatientProperty );
+                }
+            }
+            else if ( property[0].equals( Program.PREFIX_PROPERTY ) )
+            {
+                ProgramPatientProperty programPatientProperty = programPatientPropertyService
+                    .getProgramPatientProperty( program, property[1] );
+                
+                if ( programPatientProperty == null )
+                {
+                    programPatientProperty = new ProgramPatientProperty( program, property[1],
+                        defaultValues.get( index ), hiddens.get( index ), index );
+                    programPatientPropertyService.addProgramPatientProperty( programPatientProperty );
+                }
+                else
+                {
+                    programPatientProperty.setProgram( program );
+                    programPatientProperty.setHidden( hiddens.get( index ) );
+                    programPatientProperty.setDefaultValue( defaultValues.get( index ) );
+                    programPatientProperty.setSortOrder( index );
+                    programPatientPropertyService.updateProgramPatientProperty( programPatientProperty );
+
+                    removeProgramProperties.remove( programPatientProperty );
+                }
+            }
+
+            index++;
+        }
+
+        for ( ProgramPatientProperty programProperty : removeProgramProperties )
+        {
+            programPatientPropertyService.deleteProgramPatientProperty( programProperty );
+        }
         return SUCCESS;
     }
 }

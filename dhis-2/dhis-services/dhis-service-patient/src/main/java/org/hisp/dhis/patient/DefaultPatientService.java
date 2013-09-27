@@ -28,6 +28,14 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -37,20 +45,13 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -260,7 +261,7 @@ public class DefaultPatientService
     public Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId )
     {
         Set<Patient> patients = new HashSet<Patient>();
-        patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE) );
+        patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE ) );
         patients.addAll( getPatientsByNames( searchText, null, null ) );
         patients.addAll( getPatientsByPhone( searchText, null, null ) );
 
@@ -671,10 +672,15 @@ public class DefaultPatientService
         grid.addHeader( new GridHeader( i18n.getString( "gender" ), true, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
 
-        Collection<PatientIdentifierType> patientIdentifierTypes = program.getPatientIdentifierTypes();
-        for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
+        Collection<ProgramPatientProperty> programPatientIdentifierTypes = program.getProgramPatientProperties();
+        Collection<PatientIdentifierType> patientIdentifierTypes = new HashSet<PatientIdentifierType>();
+        for ( ProgramPatientProperty programPatientIdentifierType : programPatientIdentifierTypes )
         {
-            grid.addHeader( new GridHeader( patientIdentifierType.getDisplayName(), false, true ) );
+            if ( programPatientIdentifierType.isIdentifierType() )
+            {
+                grid.addHeader( new GridHeader( programPatientIdentifierType.getPatientIdentifierType()
+                    .getDisplayName(), false, true ) );
+            }
         }
         grid.addHeader( new GridHeader( "programstageinstanceid", true, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
@@ -683,7 +689,6 @@ public class DefaultPatientService
 
         return patientStore.getPatientEventReport( grid, searchKeys, orgunits, followup, null, patientIdentifierTypes,
             null, null );
-
     }
 
     @Override

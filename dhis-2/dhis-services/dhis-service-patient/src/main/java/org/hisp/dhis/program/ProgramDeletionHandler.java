@@ -75,7 +75,7 @@ public class ProgramDeletionHandler
             programService.updateProgram( program );
         }
     }
-    
+
     @Override
     public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
     {
@@ -83,11 +83,18 @@ public class ProgramDeletionHandler
 
         for ( Program program : programs )
         {
-            program.getPatientIdentifierTypes().clear();
-            programService.updateProgram( program );
+            for ( ProgramPatientProperty programPatientIdentifierType : program
+                .getProgramPatientProperties() )
+            {
+                if ( programPatientIdentifierType.getPatientIdentifierType().equals( patientIdentifierType ) )
+                {
+                    program.getProgramPatientProperties().remove( programPatientIdentifierType );
+                    programService.updateProgram( program );
+                }
+            }
         }
     }
-    
+
     @Override
     public void deletePatientAttribute( PatientAttribute patientAttribute )
     {
@@ -95,18 +102,25 @@ public class ProgramDeletionHandler
 
         for ( Program program : programs )
         {
-            program.getPatientAttributes().clear();
-            programService.updateProgram( program );
+            for ( ProgramPatientProperty programPatientAttribute : program
+                .getProgramPatientProperties())
+            {
+                if ( programPatientAttribute.getPatientAttribute().equals( patientAttribute ) )
+                {
+                    program.getProgramPatientProperties().remove( programPatientAttribute );
+                    programService.updateProgram( program );
+                }
+            }
         }
     }
-    
+
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        //TODO improve performance
-        
+        // TODO improve performance
+
         Collection<Program> programs = programService.getAllPrograms();
-        
+
         for ( Program program : programs )
         {
             if ( program.getOrganisationUnits().remove( unit ) )

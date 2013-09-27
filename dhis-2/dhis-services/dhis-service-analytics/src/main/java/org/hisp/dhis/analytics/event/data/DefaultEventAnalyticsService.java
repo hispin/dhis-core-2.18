@@ -56,6 +56,7 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -70,31 +71,37 @@ public class DefaultEventAnalyticsService
     implements EventAnalyticsService
 {
     private static final String ITEM_EVENT = "psi";
+
     private static final String ITEM_PROGRAM_STAGE = "ps";
+
     private static final String ITEM_EXECUTION_DATE = "executiondate";
+
     private static final String ITEM_ORG_UNIT = "ou";
+
     private static final String ITEM_ORG_UNIT_NAME = "ouname";
+
     private static final String ITEM_GENDER = "gender";
+
     private static final String ITEM_ISDEAD = "isdead";
-    
+
     @Autowired
     private ProgramService programService;
-    
+
     @Autowired
     private ProgramStageService programStageService;
 
     @Autowired
     private DataElementService dataElementService;
-    
+
     @Autowired
     private PatientAttributeService attributeService;
 
     @Autowired
     private PatientIdentifierTypeService identifierTypeService;
-    
+
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
+
     @Autowired
     private EventAnalyticsManager analyticsManager;
 
@@ -102,12 +109,13 @@ public class DefaultEventAnalyticsService
     // EventAnalyticsService implementation
     // -------------------------------------------------------------------------
 
-    //TODO order the event analytics tables up front to avoid default sorting in queries
-    
+    // TODO order the event analytics tables up front to avoid default sorting
+    // in queries
+
     public Grid getEvents( EventQueryParams params )
     {
         Grid grid = new ListGrid();
-                
+
         grid.addHeader( new GridHeader( "Event", ITEM_EVENT ) );
         grid.addHeader( new GridHeader( "Program stage", ITEM_PROGRAM_STAGE ) );
         grid.addHeader( new GridHeader( "Execution date", ITEM_EXECUTION_DATE ) );
@@ -121,7 +129,7 @@ public class DefaultEventAnalyticsService
         for ( QueryItem queryItem : params.getItems() )
         {
             IdentifiableObject item = queryItem.getItem();
-            
+
             grid.addHeader( new GridHeader( item.getName(), item.getUid() ) );
         }
 
@@ -130,24 +138,24 @@ public class DefaultEventAnalyticsService
         // ---------------------------------------------------------------------
 
         List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
-        
+
         int count = 0;
-        
+
         for ( EventQueryParams query : queries )
         {
             if ( params.isPaging() )
             {
                 count += analyticsManager.getEventCount( query );
             }
-            
+
             analyticsManager.getEvents( query, grid );
         }
-        
+
         // ---------------------------------------------------------------------
         // Meta-data
         // ---------------------------------------------------------------------
 
-        Map<Object, Object> metaData = new HashMap<Object, Object>();        
+        Map<Object, Object> metaData = new HashMap<Object, Object>();
         metaData.put( AnalyticsService.NAMES_META_KEY, getUidNameMap( params ) );
 
         if ( params.isPaging() )
@@ -155,34 +163,34 @@ public class DefaultEventAnalyticsService
             Pager pager = new Pager( params.getPageWithDefault(), count, params.getPageSizeWithDefault() );
             metaData.put( AnalyticsService.PAGER_META_KEY, pager );
         }
-        
+
         grid.setMetaData( metaData );
-        
+
         return grid;
     }
-    
-    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou, String ouMode,
-        Set<String> item, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
+
+    public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, String ou,
+        String ouMode, Set<String> item, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
     {
         EventQueryParams params = new EventQueryParams();
-        
+
         Program pr = programService.getProgram( program );
-        
+
         if ( pr == null )
         {
             throw new IllegalQueryException( "Program does not exist: " + program );
         }
-        
+
         ProgramStage ps = programStageService.getProgramStage( stage );
-        
+
         if ( stage != null && !stage.isEmpty() && ps == null )
         {
             throw new IllegalQueryException( "Program stage is specified but does not exist: " + stage );
         }
-        
+
         Date start = null;
         Date end = null;
-        
+
         try
         {
             start = DateUtils.getMediumDate( startDate );
@@ -192,17 +200,17 @@ public class DefaultEventAnalyticsService
         {
             throw new IllegalQueryException( "Start date or end date is invalid: " + startDate + " - " + endDate );
         }
-        
+
         if ( start == null || end == null )
         {
             throw new IllegalQueryException( "Start date or end date is invalid: " + startDate + " - " + endDate );
         }
-        
+
         if ( start.after( end ) )
         {
             throw new IllegalQueryException( "Start date is after end date: " + startDate + " - " + endDate );
         }
-        
+
         if ( item != null )
         {
             for ( String it : item )
@@ -214,17 +222,17 @@ public class DefaultEventAnalyticsService
                 else if ( it != null ) // Filter
                 {
                     String[] split = it.split( OPTION_SEP );
-                    
+
                     if ( split == null || split.length != 3 )
                     {
                         throw new IllegalQueryException( "Item filter has invalid format: " + it );
                     }
-                    
+
                     params.getItems().add( new QueryItem( getItem( split[0], pr ), split[1], split[2] ) );
                 }
             }
         }
-        
+
         if ( asc != null )
         {
             for ( String sort : asc )
@@ -240,118 +248,129 @@ public class DefaultEventAnalyticsService
                 params.getDesc().add( getSortItem( sort, pr ) );
             }
         }
-        
+
         if ( ou != null )
         {
             String[] split = ou.split( OPTION_SEP );
-            
+
             for ( String ouId : split )
             {
                 OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouId );
-                
+
                 if ( orgUnit != null )
                 {
                     orgUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) );
-                    
+
                     params.getOrganisationUnits().add( orgUnit );
                 }
             }
         }
-        
+
         if ( params.getOrganisationUnits().isEmpty() )
         {
             throw new IllegalQueryException( "At least one organisation unit must be specified" );
         }
-        
+
         if ( page != null && page <= 0 )
         {
             throw new IllegalQueryException( "Page number must be positive: " + page );
         }
-        
+
         if ( pageSize != null && pageSize < 0 )
         {
             throw new IllegalQueryException( "Page size must be zero or positive: " + pageSize );
         }
-        
+
         params.setProgram( pr );
         params.setProgramStage( ps );
         params.setStartDate( start );
         params.setEndDate( end );
         params.setOrganisationUnitMode( ouMode );
         params.setPage( page );
-        
+
         if ( pageSize != null )
         {
             params.setPageSize( pageSize );
         }
-        
+
         return params;
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     private Map<String, String> getUidNameMap( EventQueryParams params )
     {
         Map<String, String> map = new HashMap<String, String>();
-        
+
         Program program = params.getProgram();
         ProgramStage stage = params.getProgramStage();
-        
+
         map.put( program.getUid(), program.getName() );
-        
+
         if ( stage != null )
         {
             map.put( stage.getUid(), stage.getName() );
         }
-        
+
         return map;
     }
-    
+
     private String getSortItem( String item, Program program )
     {
         if ( !ITEM_EXECUTION_DATE.equals( item ) && getItem( item, program ) == null )
         {
             throw new IllegalQueryException( "Descending sort item is invalid: " + item );
         }
-        
+
         return item;
     }
-    
+
     private IdentifiableObject getItem( String item, Program program )
     {
         if ( ITEM_GENDER.equalsIgnoreCase( item ) )
         {
             return new BaseIdentifiableObject( ITEM_GENDER, ITEM_GENDER, ITEM_GENDER );
         }
-        
+
         if ( ITEM_ISDEAD.equalsIgnoreCase( item ) )
         {
             return new BaseIdentifiableObject( ITEM_ISDEAD, ITEM_ISDEAD, ITEM_ISDEAD );
         }
-        
+
         DataElement de = dataElementService.getDataElement( item );
-        
+
         if ( de != null && program.getAllDataElements().contains( de ) )
         {
             return de;
         }
-        
+
         PatientAttribute at = attributeService.getPatientAttribute( item );
-        
-        if ( at != null && program.getPatientAttributes().contains( at ) )
+
+        if ( at != null )
         {
-            return at;
+            for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
+            {
+                if ( programPatientProperty.isIdentifierType()
+                    && at.equals( programPatientProperty.getPatientAttribute() ) )
+                {
+                    return at;
+                }
+            }
         }
-        
+
         PatientIdentifierType it = identifierTypeService.getPatientIdentifierType( item );
-        
-        if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
+
+        if ( it != null )
         {
-            return it;
+            for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
+            {
+                if ( programPatientProperty.isAttribute() && at.equals( programPatientProperty.getPatientIdentifierType() ) )
+                    return at;
+            }
         }
-        
-        throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );           
+
+        throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );
     }
 }

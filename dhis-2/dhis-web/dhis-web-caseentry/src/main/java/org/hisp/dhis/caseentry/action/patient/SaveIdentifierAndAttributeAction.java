@@ -47,6 +47,7 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
@@ -173,40 +174,45 @@ public class SaveIdentifierAndAttributeAction
 
         String value = null;
 
-        Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
+        Collection<ProgramPatientProperty> programPatientProperties = program.getProgramPatientProperties();
 
         PatientIdentifier identifier = null;
 
-        if ( identifierTypes != null )
+        if ( programPatientProperties != null )
         {
-            for ( PatientIdentifierType identifierType : identifierTypes )
+            for ( ProgramPatientProperty programPatientProperty : programPatientProperties )
             {
-                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
-
-                identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
-
-                if ( StringUtils.isNotBlank( value ) )
+                if ( programPatientProperty.isIdentifierType() )
                 {
-                    value = value.trim();
+                    PatientIdentifierType identifierType = programPatientProperty.getPatientIdentifierType();
 
-                    if ( identifier == null )
+                    value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
+
+                    identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
+
+                    if ( StringUtils.isNotBlank( value ) )
                     {
-                        identifier = new PatientIdentifier();
-                        identifier.setIdentifierType( identifierType );
-                        identifier.setPatient( patient );
-                        identifier.setIdentifier( value );
-                        patient.getIdentifiers().add( identifier );
+                        value = value.trim();
+
+                        if ( identifier == null )
+                        {
+                            identifier = new PatientIdentifier();
+                            identifier.setIdentifierType( identifierType );
+                            identifier.setPatient( patient );
+                            identifier.setIdentifier( value );
+                            patient.getIdentifiers().add( identifier );
+                        }
+                        else
+                        {
+                            identifier.setIdentifier( value );
+                            patient.getIdentifiers().add( identifier );
+                        }
                     }
-                    else
+                    else if ( identifier != null )
                     {
-                        identifier.setIdentifier( value );
-                        patient.getIdentifiers().add( identifier );
+                        patient.getIdentifiers().remove( identifier );
+                        patientIdentifierService.deletePatientIdentifier( identifier );
                     }
-                }
-                else if ( identifier != null )
-                {
-                    patient.getIdentifiers().remove( identifier );
-                    patientIdentifierService.deletePatientIdentifier( identifier );
                 }
             }
         }
