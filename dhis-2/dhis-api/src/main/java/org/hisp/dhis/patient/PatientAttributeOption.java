@@ -29,7 +29,7 @@ package org.hisp.dhis.patient;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -40,7 +40,7 @@ import java.io.Serializable;
 /**
  * @author Viet
  */
-@JacksonXmlRootElement( localName = "personAttributeOption", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "personAttributeOption", namespace = DxfNamespaces.DXF_2_0)
 public class PatientAttributeOption implements Serializable
 {
     /**
@@ -117,7 +117,7 @@ public class PatientAttributeOption implements Serializable
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getName()
     {
         return name;
@@ -129,8 +129,8 @@ public class PatientAttributeOption implements Serializable
     }
 
     @JsonProperty
-    @JsonDeserialize( as = BaseIdentifiableObject.class )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonSerialize(as = BaseIdentifiableObject.class)
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public PatientAttribute getPatientAttribute()
     {
         return patientAttribute;
