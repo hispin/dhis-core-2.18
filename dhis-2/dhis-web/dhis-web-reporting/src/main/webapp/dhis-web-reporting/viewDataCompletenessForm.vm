@@ -33,15 +33,15 @@
     
     <!-- PeriodType -->
 
-	<select id="periodTypeId" style="width:174px" onchange="getPeriods( 'periodTypeId', 'periodId', 'periodId', '0' )">
+	<select id="periodTypeId" style="width:174px" onchange="displayPeriods()">
 		<option value="0">[ $i18n.getString( "select_period_type" ) ]</option>
 		#foreach ( $type in $periodTypes )
 			<option value="$type.name">$i18n.getString( $type.name )</option>
 		#end
 	</select>
 
-	<input type="button" style="width:75px" value="$i18n.getString( 'prev_year' )" onclick="getPeriods( 'periodTypeId', 'periodId', 'periodId', '-1' )" />
-	<input type="button" style="width:75px" value="$i18n.getString( 'next_year' )" onclick="getPeriods( 'periodTypeId', 'periodId', 'periodId', '1' )" /><br>
+	<input type="button" style="width:75px" value="$i18n.getString( 'prev_year' )" onclick="displayPreviousPeriods()" />
+	<input type="button" style="width:75px" value="$i18n.getString( 'next_year' )" onclick="displayNextPeriods()" /><br>
 
 	<!-- Period -->
 	

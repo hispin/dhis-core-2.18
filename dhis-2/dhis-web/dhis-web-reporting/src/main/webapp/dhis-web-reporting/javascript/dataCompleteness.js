@@ -1,9 +1,40 @@
 
-function getPeriods( periodTypeList, availableList, selectedList, timespan )
-{
-    $( "#periodId" ).removeAttr( "disabled" );
+var currentPeriodOffset = 0;
+var periodTypeFactory = new PeriodType();
 
-    getAvailablePeriods( periodTypeList, availableList, selectedList, timespan );
+//------------------------------------------------------------------------------
+// Period
+//------------------------------------------------------------------------------
+
+function displayPeriods()
+{
+  var periodType = $( "#periodTypeId" ).val();
+  var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
+  periods = periodTypeFactory.reverse( periods );
+  periods = periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
+
+  $( "#periodId" ).removeAttr( "disabled" );
+  clearListById( "periodId" );
+
+  for ( i in periods )
+  {
+      addOptionById( "periodId", periods[i].iso, periods[i].name );
+  }
+}
+
+function displayNextPeriods()
+{
+  if ( currentPeriodOffset < 0 ) // Cannot display future periods
+  {
+      currentPeriodOffset++;
+      displayPeriods();
+  }
+}
+
+function displayPreviousPeriods()
+{
+  currentPeriodOffset--;
+  displayPeriods();
 }
 
 function displayCompleteness()
