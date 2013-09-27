@@ -483,6 +483,7 @@ public class UpdateProgramAction
                 }
                 else
                 {
+                    programPatientProperty.setProgram( program );
                     programPatientProperty.setHidden( hiddens.get( index ) );
                     programPatientProperty.setDefaultValue( defaultValues.get( index ) );
                     programPatientProperty.setSortOrder( index );
@@ -508,6 +509,7 @@ public class UpdateProgramAction
                 }
                 else
                 {
+                    programPatientProperty.setProgram( program );
                     programPatientProperty.setHidden( hiddens.get( index ) );
                     programPatientProperty.setDefaultValue( defaultValues.get( index ) );
                     programPatientProperty.setSortOrder( index );
@@ -529,11 +531,12 @@ public class UpdateProgramAction
                 }
                 else
                 {
+                    programPatientProperty.setProgram( program );
                     programPatientProperty.setHidden( hiddens.get( index ) );
                     programPatientProperty.setDefaultValue( defaultValues.get( index ) );
                     programPatientProperty.setSortOrder( index );
                     programPatientPropertyService.updateProgramPatientProperty( programPatientProperty );
-                    
+
                     removeProgramProperties.remove( programPatientProperty );
                 }
             }

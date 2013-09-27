@@ -39,8 +39,6 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramPatientProperty;
-import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,13 +96,6 @@ public class DefaultPatientRegistrationFormService
     public void setAttributeValueService( PatientAttributeValueService attributeValueService )
     {
         this.attributeValueService = attributeValueService;
-    }
-
-    private ProgramPatientPropertyService programPatientPropertyService;
-
-    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
-    {
-        this.programPatientPropertyService = programPatientPropertyService;
     }
 
     // -------------------------------------------------------------------------
@@ -174,6 +165,8 @@ public class DefaultPatientRegistrationFormService
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
             Matcher dynamicAttrMatcher = DYNAMIC_ATTRIBUTE_PATTERN.matcher( inputHtml );
             Matcher programMatcher = PROGRAM_PATTERN.matcher( inputHtml );
+            Matcher suggestedMarcher = SUGGESTED_VALUE_PATTERN.matcher( inputHtml );
+            Matcher classMarcher = CLASS_PATTERN.matcher( inputHtml );
 
             index++;
 
@@ -184,14 +177,6 @@ public class DefaultPatientRegistrationFormService
                 // Get value
                 String value = "";
                 String hidden = "";
-               
-                ProgramPatientProperty programPatientProperty = programPatientPropertyService.getProgramPatientProperty( program, fixedAttr );
-                if (programPatientProperty != null)
-                {
-                    hidden = programPatientProperty.isHidden() ? "hidden" : "";
-                    value = programPatientProperty.getDefaultValue();
-                }
-                
                 if ( patient != null )
                 {
                     Object object = getValueFromPatient( fixedAttr, patient );
@@ -211,6 +196,15 @@ public class DefaultPatientRegistrationFormService
                         }
                     }
                 }
+                else if ( suggestedMarcher.find() )
+                {
+                    value = suggestedMarcher.group( 2 );
+                }
+
+                if ( classMarcher.find() )
+                {
+                    hidden = classMarcher.group( 1 );
+                }
 
                 inputHtml = getFixedAttributeField( inputHtml, fixedAttr, value.toString(), hidden, healthWorkers,
                     i18n, index );
@@ -229,15 +223,6 @@ public class DefaultPatientRegistrationFormService
                     int id = identifierType.getId();
                     // Get value
                     String value = "";
-                    String hidden = "";
-                   
-                    ProgramPatientProperty programPatientProperty = programPatientPropertyService.getProgramPatientProperty( program, identifierType );
-                    if (programPatientProperty != null)
-                    {
-                        hidden = programPatientProperty.isHidden() ? "hidden" : "";
-                        value = programPatientProperty.getDefaultValue();
-                    }
-                    
                     if ( patient != null )
                     {
                         PatientIdentifier patientIdentifier = identifierService.getPatientIdentifier( identifierType,
@@ -252,7 +237,7 @@ public class DefaultPatientRegistrationFormService
                     inputHtml = "<input id=\"iden" + id + "\" name=\"iden" + id + "\" tabindex=\"" + index
                         + "\" value=\"" + value + "\" ";
 
-                    inputHtml += "class=\" " + hidden + " {validate:{required:" + identifierType.isMandatory() + ",";
+                    inputHtml += "class=\"{validate:{required:" + identifierType.isMandatory() + ",";
                     if ( identifierType.getNoChars() != null )
                     {
                         inputHtml += "maxlength:" + identifierType.getNoChars() + ",";
@@ -273,16 +258,7 @@ public class DefaultPatientRegistrationFormService
             {
                 String uid = dynamicAttrMatcher.group( 1 );
                 PatientAttribute attribute = attributeService.getPatientAttribute( uid );
-                String value = "";
-                String hidden = "";
-               
-                ProgramPatientProperty programPatientProperty = programPatientPropertyService.getProgramPatientProperty( program, attribute );
-                if (programPatientProperty != null)
-                {
-                    hidden = programPatientProperty.isHidden() ? "hidden" : "";
-                    value = programPatientProperty.getDefaultValue();
-                }
-                
+
                 if ( attribute == null )
                 {
                     inputHtml = "<input value='[" + i18n.getString( "missing_patient_attribute" ) + " " + uid
@@ -290,6 +266,8 @@ public class DefaultPatientRegistrationFormService
                 }
                 else
                 {
+                    // Get value
+                    String value = "";
                     if ( patient != null )
                     {
                         PatientAttributeValue attributeValue = attributeValueService.getPatientAttributeValue( patient,
@@ -300,7 +278,7 @@ public class DefaultPatientRegistrationFormService
                         }
                     }
 
-                    inputHtml = getAttributeField( inputHtml, attribute, value, i18n, index, hidden );
+                    inputHtml = getAttributeField( inputHtml, attribute, value, i18n, index );
                 }
 
             }
@@ -354,12 +332,12 @@ public class DefaultPatientRegistrationFormService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String getAttributeField( String inputHtml, PatientAttribute attribute, String value, I18n i18n, int index, String hidden )
+    private String getAttributeField( String inputHtml, PatientAttribute attribute, String value, I18n i18n, int index )
     {
         inputHtml = TAG_OPEN + "input id=\"attr" + attribute.getId() + "\" name=\"attr" + attribute.getId()
             + "\" tabindex=\"" + index + "\" ";
 
-        inputHtml += "\" class=\" " + hidden + " {validate:{required:" + attribute.isMandatory();
+        inputHtml += "\" class=\"{validate:{required:" + attribute.isMandatory();
         if ( PatientAttribute.TYPE_INT.equals( attribute.getValueType() ) )
         {
             inputHtml += ",number:true";

@@ -465,8 +465,6 @@
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="attributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="programPatientPropertyService"
-			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientRegistrationFormStore"

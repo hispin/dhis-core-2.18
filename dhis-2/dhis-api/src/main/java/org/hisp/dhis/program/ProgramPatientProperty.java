@@ -54,7 +54,7 @@ public class ProgramPatientProperty
 
     private String defaultValue;
 
-    private boolean hidden = false;
+    private boolean hidden;
 
     private int sortOrder;
 
