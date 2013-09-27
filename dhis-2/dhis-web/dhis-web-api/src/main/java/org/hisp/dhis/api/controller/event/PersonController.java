@@ -83,7 +83,7 @@ public class PersonController
 
     @RequestMapping( value = "", method = RequestMethod.GET )
     public String getPersons(
-        @RequestParam( value = "orgUnit" ) String orgUnitUid,
+        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( required = false ) Gender gender,
         @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam( required = false ) String identifierType,
@@ -98,33 +98,31 @@ public class PersonController
             Identifier id = new Identifier( identifierType, identifier );
             persons.getPersons().add( personService.getPerson( id ) );
         }
-        else if ( programUid != null && gender != null )
+        else if ( orgUnitUid != null )
         {
-            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-            Program program = getProgram( programUid );
-            persons = personService.getPersons( organisationUnit, program, gender );
-        }
-        else if ( orgUnitUid != null && gender != null )
-        {
-            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-            persons = personService.getPersons( organisationUnit, gender );
-        }
-        else if ( orgUnitUid != null && programUid != null )
-        {
-            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-            Program program = getProgram( programUid );
+            if ( programUid != null && gender != null )
+            {
+                OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+                Program program = getProgram( programUid );
+                persons = personService.getPersons( organisationUnit, program, gender );
+            }
+            else if ( gender != null )
+            {
+                OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+                persons = personService.getPersons( organisationUnit, gender );
+            }
+            else if ( programUid != null )
+            {
+                OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+                Program program = getProgram( programUid );
 
-            persons = personService.getPersons( organisationUnit, program );
-        }
-        else if ( programUid != null )
-        {
-            Program program = getProgram( programUid );
-            persons = personService.getPersons( program );
-        }
-        else
-        {
-            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-            persons = personService.getPersons( organisationUnit );
+                persons = personService.getPersons( organisationUnit, program );
+            }
+            else
+            {
+                OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+                persons = personService.getPersons( organisationUnit );
+            }
         }
 
         model.addAttribute( "model", persons );
