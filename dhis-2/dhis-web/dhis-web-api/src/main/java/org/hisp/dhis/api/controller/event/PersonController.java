@@ -32,13 +32,14 @@ import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.importsummary.ImportStatus;
-import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.events.person.Gender;
+import org.hisp.dhis.dxf2.events.person.Identifier;
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.events.person.Persons;
+import org.hisp.dhis.dxf2.importsummary.ImportStatus;
+import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
@@ -65,7 +66,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping( value = PersonController.RESOURCE_PATH )
-@PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_LIST')")
+@PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_LIST')" )
 public class PersonController
 {
     public static final String RESOURCE_PATH = "/persons";
@@ -82,20 +83,22 @@ public class PersonController
 
     @RequestMapping( value = "", method = RequestMethod.GET )
     public String getPersons(
-        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
+        @RequestParam( value = "orgUnit" ) String orgUnitUid,
         @RequestParam( required = false ) Gender gender,
         @RequestParam( value = "program", required = false ) String programUid,
+        @RequestParam( required = false ) String identifierType,
+        @RequestParam( required = false ) String identifier,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        Persons persons;
+        Persons persons = new Persons();
 
-        // it will be required in the future to have at least orgUnitUid, but for now, we allow no parameters
-        if ( gender == null && orgUnitUid == null && programUid == null )
+        if ( identifier != null )
         {
-            persons = personService.getPersons();
+            Identifier id = new Identifier( identifierType, identifier );
+            persons.getPersons().add( personService.getPerson( id ) );
         }
-        else if ( orgUnitUid != null && programUid != null && gender != null )
+        if ( programUid != null && gender != null )
         {
             OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
             Program program = getProgram( programUid );
@@ -113,16 +116,6 @@ public class PersonController
 
             persons = personService.getPersons( organisationUnit, program );
         }
-        else if ( programUid != null && gender != null )
-        {
-            Program program = getProgram( programUid );
-            persons = personService.getPersons( program, gender );
-        }
-        else if ( orgUnitUid != null )
-        {
-            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-            persons = personService.getPersons( organisationUnit );
-        }
         else if ( programUid != null )
         {
             Program program = getProgram( programUid );
@@ -130,7 +123,8 @@ public class PersonController
         }
         else
         {
-            persons = new Persons();
+            OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+            persons = personService.getPersons( organisationUnit );
         }
 
         model.addAttribute( "model", persons );
@@ -156,7 +150,7 @@ public class PersonController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_ADD')")
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
     public void postPersonXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = personService.savePersonXml( request.getInputStream() );
@@ -181,7 +175,7 @@ public class PersonController
     }
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_ADD')")
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
     public void postPersonJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = personService.savePersonJson( request.getInputStream() );
@@ -211,7 +205,7 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_ADD')")
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
     public void updatePersonXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummary importSummary = personService.updatePersonXml( id, request.getInputStream() );
@@ -220,7 +214,7 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_ADD')")
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
     public void updatePersonJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummary importSummary = personService.updatePersonJson( id, request.getInputStream() );
@@ -233,7 +227,7 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DELETE')")
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DELETE')" )
     public void deletePerson( @PathVariable String id ) throws NotFoundException
     {
         Person person = getPerson( id );

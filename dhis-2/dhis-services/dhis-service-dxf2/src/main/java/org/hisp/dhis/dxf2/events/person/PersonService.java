@@ -44,13 +44,15 @@ import java.util.Collection;
  */
 public interface PersonService
 {
-    public void setFormat(I18nFormat format);
+    public void setFormat( I18nFormat format );
 
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
 
     Persons getPersons();
+
+    Person getPerson( Identifier identifier );
 
     Persons getPersons( OrganisationUnit organisationUnit );
 

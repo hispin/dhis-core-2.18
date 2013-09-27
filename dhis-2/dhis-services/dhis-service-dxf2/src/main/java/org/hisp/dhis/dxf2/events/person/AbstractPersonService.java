@@ -41,6 +41,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -79,6 +80,9 @@ public abstract class AbstractPersonService implements PersonService
 
     @Autowired
     private PatientIdentifierService patientIdentifierService;
+
+    @Autowired
+    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     @Autowired
     private PatientAttributeValueService patientAttributeValueService;
@@ -130,6 +134,14 @@ public abstract class AbstractPersonService implements PersonService
     {
         List<Patient> patients = new ArrayList<Patient>( patientService.getAllPatients() );
         return getPersons( patients );
+    }
+
+    @Override
+    public Person getPerson( Identifier identifier )
+    {
+        PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierTypeByUid( identifier.getType() );
+        Patient patient = patientIdentifierService.getPatient( patientIdentifierType, identifier.getValue() );
+        return getPerson( patient );
     }
 
     @Override

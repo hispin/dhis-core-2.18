@@ -64,7 +64,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -163,8 +163,8 @@ final public class ExchangeClasses
         allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( ProgramStage.class, "programStages" );
         allExportClasses.put( RelationshipType.class, "relationshipTypes" );
-        allExportClasses.put( PatientIdentifier.class, "personIdentifiers" );
-        allExportClasses.put( PatientAttribute.class, "personAttributes" );
+        allExportClasses.put( PatientIdentifierType.class, "personIdentifierTypes" );
+        allExportClasses.put( PatientAttribute.class, "personAttributeTypes" );
         allExportClasses.put( PatientAttributeGroup.class, "personAttributeGroups" );
 
         allExportClasses.put( BaseDimensionalObject.class, "dimensions" );
@@ -190,13 +190,13 @@ final public class ExchangeClasses
         exportClasses.remove( Program.class );
         exportClasses.remove( ProgramStage.class );
         exportClasses.remove( RelationshipType.class );
-        exportClasses.remove( PatientIdentifier.class );
+        exportClasses.remove( PatientIdentifierType.class );
         exportClasses.remove( PatientAttribute.class );
         exportClasses.remove( PatientAttributeGroup.class );
         importClasses.remove( Program.class );
         importClasses.remove( ProgramStage.class );
         importClasses.remove( RelationshipType.class );
-        importClasses.remove( PatientIdentifier.class );
+        importClasses.remove( PatientIdentifierType.class );
         importClasses.remove( PatientAttribute.class );
         importClasses.remove( PatientAttributeGroup.class );
 

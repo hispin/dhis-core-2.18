@@ -47,13 +47,12 @@ public interface PatientIdentifierTypeService
     PatientIdentifierType getPatientIdentifierType( int id );
 
     Collection<PatientIdentifierType> getAllPatientIdentifierTypes();
-    
+
     PatientIdentifierType getPatientIdentifierType( String name );
-    
-    PatientIdentifierType  getPatientIdentifierTypeByUid ( String uid );
-    
+
+    PatientIdentifierType getPatientIdentifierTypeByUid( String uid );
+
     Collection<PatientIdentifierType> getPatientIdentifierTypes( boolean mandatory );
-    
+
     Collection<PatientIdentifierType> getDisplayedPatientIdentifierTypes( boolean personDisplayName );
-    
 }

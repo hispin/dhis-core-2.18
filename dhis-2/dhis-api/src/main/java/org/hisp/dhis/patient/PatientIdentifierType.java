@@ -36,8 +36,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement( name = "patientIdentifierType", namespace = DxfNamespaces.DXF_2_0 )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@XmlRootElement(name = "patientIdentifierType", namespace = DxfNamespaces.DXF_2_0)
+@XmlAccessorType(value = XmlAccessType.NONE)
 public class PatientIdentifierType
     extends BaseIdentifiableObject
 {
@@ -66,13 +66,13 @@ public class PatientIdentifierType
 
     private String type;
 
-    private Boolean personDisplayName = false;;
+    private Boolean personDisplayName = false;
 
     // For Local ID type
 
     private Boolean orgunitScope = false;
 
-    private Boolean programScope = false;;
+    private Boolean programScope = false;
 
     private PeriodType periodType;
 
