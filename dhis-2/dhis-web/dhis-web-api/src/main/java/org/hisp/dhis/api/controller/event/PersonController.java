@@ -88,6 +88,7 @@ public class PersonController
         @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam( required = false ) String identifierType,
         @RequestParam( required = false ) String identifier,
+        @RequestParam( required = false ) String nameLike,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -100,7 +101,12 @@ public class PersonController
         }
         else if ( orgUnitUid != null )
         {
-            if ( programUid != null && gender != null )
+            if ( nameLike != null )
+            {
+                OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
+                persons = personService.getPersons( organisationUnit, nameLike );
+            }
+            else if ( programUid != null && gender != null )
             {
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
                 Program program = getProgram( programUid );
@@ -123,6 +129,10 @@ public class PersonController
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
                 persons = personService.getPersons( organisationUnit );
             }
+        }
+        else
+        {
+            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Missing required orgUnit parameter." );
         }
 
         model.addAttribute( "model", persons );

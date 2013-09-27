@@ -260,7 +260,7 @@ public class DefaultPatientService
     public Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId )
     {
         Set<Patient> patients = new HashSet<Patient>();
-        patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE) );
+        patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE ) );
         patients.addAll( getPatientsByNames( searchText, null, null ) );
         patients.addAll( getPatientsByPhone( searchText, null, null ) );
 
@@ -349,19 +349,9 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min,
-        Integer max )
+    public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min, Integer max )
     {
-        Collection<Patient> patients = new ArrayList<Patient>();
-
-        Collection<Patient> allPatients = getPatientsByNames( name, min, max );
-
-        if ( allPatients.retainAll( getPatients( organisationUnit, min, max ) ) )
-        {
-            patients = allPatients;
-        }
-
-        return patients;
+        return patientStore.getByOrgUnitAndNameLike( organisationUnit, name, min, max );
     }
 
     @Override
@@ -377,10 +367,11 @@ public class DefaultPatientService
         }
         else if ( identifierTypeId != null )
         {
-            PatientIdentifierType idenType = patientIdentifierTypeService.getPatientIdentifierType( identifierTypeId );
-            if ( idenType != null )
+            PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( identifierTypeId );
+
+            if ( identifierType != null )
             {
-                Patient p = patientIdentifierService.getPatient( idenType, value );
+                Patient p = patientIdentifierService.getPatient( identifierType, value );
                 if ( p != null )
                 {
                     Set<Patient> set = new HashSet<Patient>();

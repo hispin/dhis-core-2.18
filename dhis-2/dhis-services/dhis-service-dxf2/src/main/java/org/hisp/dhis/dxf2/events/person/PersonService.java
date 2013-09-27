@@ -56,6 +56,8 @@ public interface PersonService
 
     Persons getPersons( OrganisationUnit organisationUnit );
 
+    Persons getPersons( OrganisationUnit organisationUnit, String nameLike );
+
     Persons getPersons( Gender gender );
 
     Persons getPersons( Program program );
