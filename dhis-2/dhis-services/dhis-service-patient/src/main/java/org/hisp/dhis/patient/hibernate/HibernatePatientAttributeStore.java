@@ -28,16 +28,15 @@ package org.hisp.dhis.patient.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeStore;
 
+import java.util.Collection;
+
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
  */
 public class HibernatePatientAttributeStore
     extends HibernateIdentifiableObjectStore<PatientAttribute>
@@ -46,20 +45,20 @@ public class HibernatePatientAttributeStore
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-    
-    @SuppressWarnings( "unchecked" )
+
+    @SuppressWarnings("unchecked")
     public Collection<PatientAttribute> getByValueType( String valueType )
     {
         return getCriteria( Restrictions.eq( "valueType", valueType ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientAttribute> getByMandatory( boolean mandatory )
     {
         return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
     {
         return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) )
@@ -71,17 +70,15 @@ public class HibernatePatientAttributeStore
         return (PatientAttribute) getCriteria( Restrictions.eq( "groupBy", groupBy ) ).uniqueResult();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientAttribute> getWithoutGroup()
     {
         return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<PatientAttribute> getByDisplayOnVisitSchedule( boolean displayOnVisitSchedule )
     {
         return getCriteria( Restrictions.eq( "displayOnVisitSchedule", displayOnVisitSchedule ) ).list();
     }
-
-    
 }

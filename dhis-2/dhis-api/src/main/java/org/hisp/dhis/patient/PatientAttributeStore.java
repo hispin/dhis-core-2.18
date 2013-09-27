@@ -28,29 +28,28 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericNameableObjectStore;
+
+import java.util.Collection;
 
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
  */
 public interface PatientAttributeStore
     extends GenericNameableObjectStore<PatientAttribute>
 {
-    String ID = PatientAttributeStore.class.getName(); 
-    
+    String ID = PatientAttributeStore.class.getName();
+
     Collection<PatientAttribute> getByValueType( String valueType );
-    
+
     Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
-    
-    Collection<PatientAttribute> getByMandatory(boolean mandatory);
-    
+
+    Collection<PatientAttribute> getByMandatory( boolean mandatory );
+
     Collection<PatientAttribute> getWithoutGroup();
 
     PatientAttribute getByGroupBy( boolean groupBy );
-    
+
     Collection<PatientAttribute> getByDisplayOnVisitSchedule( boolean displayOnVisitSchedule );
-    
+
 }

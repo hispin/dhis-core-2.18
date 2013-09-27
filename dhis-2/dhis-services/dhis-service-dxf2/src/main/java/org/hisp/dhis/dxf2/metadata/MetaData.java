@@ -68,7 +68,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -181,9 +181,9 @@ public class MetaData
 
     private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
 
-    private List<PatientIdentifier> personIdentifiers = new ArrayList<PatientIdentifier>();
+    private List<PatientIdentifierType> personIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
-    private List<PatientAttribute> personAttributes = new ArrayList<PatientAttribute>();
+    private List<PatientAttribute> personAttributeTypes = new ArrayList<PatientAttribute>();
 
     private List<PatientAttributeGroup> personAttributeGroups = new ArrayList<PatientAttributeGroup>();
 
@@ -763,29 +763,29 @@ public class MetaData
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "personIdentifiers", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "personIdentifier", namespace = DxfNamespaces.DXF_2_0 )
-    public List<PatientIdentifier> getPersonIdentifiers()
+    @JacksonXmlElementWrapper( localName = "personIdentifierTypes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "personIdentifierType", namespace = DxfNamespaces.DXF_2_0 )
+    public List<PatientIdentifierType> getPersonIdentifierTypes()
     {
-        return personIdentifiers;
+        return personIdentifierTypes;
     }
 
-    public void setPersonIdentifiers( List<PatientIdentifier> personIdentifiers )
+    public void setPersonIdentifierTypes( List<PatientIdentifierType> personIdentifierTypes )
     {
-        this.personIdentifiers = personIdentifiers;
+        this.personIdentifierTypes = personIdentifierTypes;
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "personAttributes", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0 )
-    public List<PatientAttribute> getPersonAttributes()
+    @JacksonXmlElementWrapper( localName = "personAttributeTypes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "personAttributeType", namespace = DxfNamespaces.DXF_2_0 )
+    public List<PatientAttribute> getPersonAttributeTypes()
     {
-        return personAttributes;
+        return personAttributeTypes;
     }
 
-    public void setPersonAttributes( List<PatientAttribute> personAttributes )
+    public void setPersonAttributeTypes( List<PatientAttribute> personAttributeTypes )
     {
-        this.personAttributes = personAttributes;
+        this.personAttributeTypes = personAttributeTypes;
     }
 
     @JsonProperty
@@ -863,8 +863,8 @@ public class MetaData
             ", programs=" + programs +
             ", programStages=" + programStages +
             ", relationshipTypes=" + relationshipTypes +
-            ", personIdentifiers=" + personIdentifiers +
-            ", personAttributes=" + personAttributes +
+            ", personIdentifierTypes=" + personIdentifierTypes +
+            ", personAttributeTypes=" + personAttributeTypes +
             ", personAttributeGroups=" + personAttributeGroups +
             '}';
     }

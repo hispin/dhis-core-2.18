@@ -29,7 +29,7 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
-import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,8 +37,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = PersonIdentifierController.RESOURCE_PATH )
-public class PersonIdentifierController extends AbstractCrudController<PatientIdentifier>
+@RequestMapping( value = PersonIdentifierTypeController.RESOURCE_PATH )
+public class PersonIdentifierTypeController extends AbstractCrudController<PatientIdentifierType>
 {
-    public static final String RESOURCE_PATH = "/personsIdentifiers";
+    public static final String RESOURCE_PATH = "/personIdentifierTypes";
 }
