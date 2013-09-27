@@ -928,7 +928,7 @@ function displayPeriodsInternal()
     
     $.safeEach( periods, function( idx, item ) 
     {
-        addOptionById( 'selectedPeriodId', item.id, item.name );
+        addOptionById( 'selectedPeriodId', item.iso, item.name );
     } );
 }
 
@@ -970,7 +970,7 @@ function dataSetSelected()
         
         $.safeEach( periods, function( idx, item )
         {
-            addOptionById( 'selectedPeriodId', item.id, item.name );
+            addOptionById( 'selectedPeriodId', item.iso, item.name );
         } );
 
         var previousPeriodType = currentDataSetId ? dataSets[currentDataSetId].periodType : null;

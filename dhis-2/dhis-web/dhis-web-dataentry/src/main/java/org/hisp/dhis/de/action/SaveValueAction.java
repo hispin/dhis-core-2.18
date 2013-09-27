@@ -141,7 +141,7 @@ public class SaveValueAction
     {
         this.periodId = periodId;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -159,7 +159,7 @@ public class SaveValueAction
 
     public String execute()
     {
-        Period period = PeriodType.createPeriodExternalId( periodId );
+        Period period = PeriodType.getPeriodFromIsoString( periodId );
 
         if ( period == null )
         {

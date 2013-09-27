@@ -186,14 +186,13 @@ public class ValidationAction
     public String execute()
         throws Exception
     {
-        System.out.println("ou " + organisationUnitId);
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        Period selectedPeriod = PeriodType.createPeriodExternalId( periodId );
+        Period selectedPeriod = PeriodType.getPeriodFromIsoString( periodId );
 
-        if ( selectedPeriod == null || orgUnit == null || (multiOrganisationUnit && !orgUnit.hasChild()) )
+        if ( selectedPeriod == null || orgUnit == null || ( multiOrganisationUnit && !orgUnit.hasChild() ) )
         {
             return SUCCESS;
         }
@@ -234,9 +233,10 @@ public class ValidationAction
         return dataValues.size() == 0 && validationResults.size() == 0 ? SUCCESS : INPUT;
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Min-max and outlier analysis
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    
     private List<DeflatedDataValue> outlierAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
         List<DeflatedDataValue> deflatedDataValues = new ArrayList<DeflatedDataValue>( minMaxOutlierAnalysisService.analyse( getCollection( organisationUnit ),
@@ -247,9 +247,10 @@ public class ValidationAction
         return deflatedDataValues;
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Validation rule analysis
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    
     private List<ValidationResult> validationRuleAnalysis( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
         List<ValidationResult> validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, organisationUnit ) );

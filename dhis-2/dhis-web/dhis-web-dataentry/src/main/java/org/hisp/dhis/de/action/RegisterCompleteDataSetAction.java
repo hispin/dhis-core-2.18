@@ -138,7 +138,7 @@ public class RegisterCompleteDataSetAction
     public String execute()
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        Period period = PeriodType.createPeriodExternalId( periodId );
+        Period period = PeriodType.getPeriodFromIsoString( periodId );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Set<OrganisationUnit> children = organisationUnit.getChildren();
 

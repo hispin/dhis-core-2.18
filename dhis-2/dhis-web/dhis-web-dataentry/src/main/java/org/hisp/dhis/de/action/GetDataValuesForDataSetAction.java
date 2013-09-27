@@ -185,7 +185,8 @@ public class GetDataValuesForDataSetAction
         Set<OrganisationUnit> children = organisationUnit.getChildren();
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        Period period = PeriodType.createPeriodExternalId( periodId );
+        
+        Period period = PeriodType.getPeriodFromIsoString( periodId );
 
         // TODO null-checks
         

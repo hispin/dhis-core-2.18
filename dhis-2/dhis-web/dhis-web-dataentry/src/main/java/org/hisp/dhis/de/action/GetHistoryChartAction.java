@@ -154,7 +154,7 @@ public class GetHistoryChartAction
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
 
-        Period period = PeriodType.createPeriodExternalId( periodId );
+        Period period = PeriodType.getPeriodFromIsoString( periodId );
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 

@@ -231,7 +231,7 @@ public class HistoryAction
             throw new IllegalArgumentException( "DataElement doesn't exist: " + dataElementId );
         }
 
-        Period period = PeriodType.createPeriodExternalId( periodId );
+        Period period = PeriodType.getPeriodFromIsoString( periodId );
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
