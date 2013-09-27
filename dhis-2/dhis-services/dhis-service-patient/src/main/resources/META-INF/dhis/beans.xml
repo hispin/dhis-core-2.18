@@ -6,11 +6,6 @@
 
 	<!-- Store definitions -->
 
-	<bean id="org.hisp.dhis.program.ProgramPatientPropertyStore"
-		class="org.hisp.dhis.program.hibernate.HibernateProgramPatientPropertyStore">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
 	<bean id="org.hisp.dhis.program.ProgramIndicatorStore"
 		class="org.hisp.dhis.program.hibernate.HibernateProgramIndicatorStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramIndicator" />
@@ -148,12 +143,6 @@
 	</bean>
 
 	<!-- Service definitions -->
-
-	<bean id="org.hisp.dhis.program.ProgramPatientPropertyService"
-		class="org.hisp.dhis.program.DefaultProgramPatientPropertyService">
-		<property name="programPatientPropertyStore"
-			ref="org.hisp.dhis.program.ProgramPatientPropertyStore" />
-	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService" class="org.hisp.dhis.program.DefaultProgramDataEntryService">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />

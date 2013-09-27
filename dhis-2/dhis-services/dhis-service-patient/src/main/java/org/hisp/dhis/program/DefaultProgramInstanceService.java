@@ -338,17 +338,13 @@ public class DefaultProgramInstanceService
 
         for ( Program program : programs )
         {
-            Collection<ProgramPatientProperty> programAtttributes = program.getProgramPatientProperties();
+            Collection<PatientAttribute> atttributes = program.getPatientAttributes();
             while ( iterAttribute.hasNext() )
             {
                 PatientAttributeValue attributeValue = iterAttribute.next();
-                for ( ProgramPatientProperty programAtttribute : programAtttributes )
+                if ( !atttributes.contains( attributeValue.getPatientAttribute() ) )
                 {
-                    if ( programAtttribute.isAttribute()
-                        && !programAtttribute.getPatientAttribute().equals( attributeValue.getPatientAttribute() ) )
-                    {
-                        iterAttribute.remove();
-                    }
+                    iterAttribute.remove();
                 }
             }
         }
@@ -375,17 +371,13 @@ public class DefaultProgramInstanceService
 
         for ( Program program : programs )
         {
-            Collection<ProgramPatientProperty> identifierTypes = program.getProgramPatientProperties();
+            Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
             while ( iterIdentifier.hasNext() )
             {
-                for ( ProgramPatientProperty identifierType : identifierTypes )
+                PatientIdentifier identifier = iterIdentifier.next();
+                if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
                 {
-                    if ( identifierType.isIdentifierType()
-                        && !identifierType.getPatientIdentifierType()
-                            .equals( iterIdentifier.next().getIdentifierType() ) )
-                    {
-                        iterIdentifier.remove();
-                    }
+                    iterIdentifier.remove();
                 }
             }
         }
@@ -460,33 +452,28 @@ public class DefaultProgramInstanceService
 
         Patient patient = programInstance.getPatient();
 
-        Collection<ProgramPatientProperty> programPatientProperties = programInstance.getProgram()
-            .getProgramPatientProperties();
+        Collection<PatientIdentifierType> identifierTypes = programInstance.getProgram().getPatientIdentifierTypes();
 
         Collection<PatientIdentifier> identifiers = patient.getIdentifiers();
 
-        if ( programPatientProperties != null && programPatientProperties.size() > 0 )
+        if ( identifierTypes != null && identifiers.size() > 0 )
         {
-            for ( ProgramPatientProperty programIdentifierType : programPatientProperties )
+            for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                if ( programIdentifierType.isIdentifierType() )
+                for ( PatientIdentifier identifier : identifiers )
                 {
-                    for ( PatientIdentifier identifier : identifiers )
+                    if ( identifier.getIdentifierType() != null
+                        && identifier.getIdentifierType().equals( identifierType ) )
                     {
-
-                        if ( identifier.getIdentifierType() != null
-                            && identifier.getIdentifierType().equals( programIdentifierType.getPatientIdentifierType() ) )
-                        {
-                            grid.addRow();
-                            grid.addValue( programIdentifierType.getPatientIdentifierType().getDisplayName() );
-                            grid.addValue( identifier.getIdentifier() );
-                        }
-                        else if ( identifier.getIdentifierType() == null )
-                        {
-                            grid.addRow();
-                            grid.addValue( i18n.getString( "system_identifier" ) );
-                            grid.addValue( identifier.getIdentifier() );
-                        }
+                        grid.addRow();
+                        grid.addValue( identifierType.getDisplayName() );
+                        grid.addValue( identifier.getIdentifier() );
+                    }
+                    else if ( identifier.getIdentifierType() == null )
+                    {
+                        grid.addRow();
+                        grid.addValue( i18n.getString( "system_identifier" ) );
+                        grid.addValue( identifier.getIdentifier() );
                     }
                 }
             }
@@ -494,18 +481,16 @@ public class DefaultProgramInstanceService
 
         // Get patient-attribute-values which belong to the program
 
-        for ( ProgramPatientProperty programAttrtibute : programPatientProperties )
+        Collection<PatientAttribute> attrtibutes = programInstance.getProgram().getPatientAttributes();
+        for ( PatientAttribute attrtibute : attrtibutes )
         {
-            if ( programAttrtibute.isAttribute() )
+            PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
+                attrtibute );
+            if ( attributeValue != null )
             {
-                PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
-                    programAttrtibute.getPatientAttribute() );
-                if ( attributeValue != null )
-                {
-                    grid.addRow();
-                    grid.addValue( programAttrtibute.getPatientAttribute().getDisplayName() );
-                    grid.addValue( attributeValue.getValue() );
-                }
+                grid.addRow();
+                grid.addValue( attrtibute.getDisplayName() );
+                grid.addValue( attributeValue.getValue() );
             }
         }
 

@@ -30,7 +30,6 @@ package org.hisp.dhis.light.beneficiaryregistration.action;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
-
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.StrutsStatics;
 import org.hisp.dhis.light.utils.FormUtils;
@@ -48,7 +47,6 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.util.ContextUtils;
 import org.joda.time.DateTime;
@@ -56,7 +54,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -346,17 +343,8 @@ public class SaveBeneficiaryAction
 
         for ( Program program : programs )
         {
-            for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
-            {
-                if ( programPatientProperty.isIdentifierType() )
-                {
-                    patientIdentifierTypes.remove( programPatientProperty.getPatientIdentifierType() );
-                }
-                else if(programPatientProperty.isAttribute() )
-                {
-                    patientAttributes.remove( programPatientProperty.getPatientAttribute() );
-                }
-            }
+            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientAttributes.removeAll( program.getPatientAttributes() );
         }
 
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
@@ -420,17 +408,8 @@ public class SaveBeneficiaryAction
 
         for ( Program program : programs )
         {
-            for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
-            {
-                if ( programPatientProperty.isIdentifierType() )
-                {
-                    patientIdentifierTypes.remove( programPatientProperty.getPatientIdentifierType() );
-                }
-                else if(programPatientProperty.isAttribute() )
-                {
-                    patientAttributes.remove( programPatientProperty.getPatientAttribute() );
-                }
-            }
+            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientAttributes.removeAll( program.getPatientAttributes() );
         }
 
         for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )

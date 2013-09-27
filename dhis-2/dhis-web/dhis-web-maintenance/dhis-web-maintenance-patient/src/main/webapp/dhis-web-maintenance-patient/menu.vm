@@ -5,7 +5,7 @@
 	<li><a href="patientAttributeGroup.action">$i18n.getString( "patient_attribute_group" )</a></li>
 	<li><a href="patientIdentifierType.action">$i18n.getString( "patient_identifier_type" )</a></li>
 	<li><a href="relationshipType.action">$i18n.getString( "relationship_type" )</a></li>
-	<!-- <li><a href="patientRegistrationForm.action">$i18n.getString( "patient_registration_form" )</a></li> -->
+	<li><a href="patientRegistrationForm.action">$i18n.getString( "patient_registration_form" )</a></li>
 </ul>
 
 <h2>$i18n.getString( "programs" )</h2>

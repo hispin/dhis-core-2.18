@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
@@ -42,8 +43,6 @@ import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramPatientProperty;
-import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -118,30 +117,9 @@ public class AddProgramAction
         this.relationshipTypeService = relationshipTypeService;
     }
 
-    private ProgramPatientPropertyService programPatientPropertyService;
-
-    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
-    {
-        this.programPatientPropertyService = programPatientPropertyService;
-    }
-
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-
-    private List<Boolean> hiddens;
-
-    public void setHiddens( List<Boolean> hiddens )
-    {
-        this.hiddens = hiddens;
-    }
-
-    private List<String> defaultValues;
-
-    public void setDefaultValues( List<String> defaultValues )
-    {
-        this.defaultValues = defaultValues;
-    }
 
     private String name;
 
@@ -389,10 +367,37 @@ public class AddProgramAction
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
-        // ---------------------------------------------------------------------
-        // Template messages
-        // ---------------------------------------------------------------------
+        List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
+        List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
+        int index = 0;
+        for ( String selectedPropertyId : selectedPropertyIds )
+        {
+            String[] ids = selectedPropertyId.split( "_" );
 
+            if ( ids[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
+            {
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
+                    .parseInt( ids[1] ) );
+
+                identifierType.setPersonDisplayName( personDisplayNames.get( index ) );
+                patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
+
+                identifierTypes.add( identifierType );
+            }
+            else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
+            {
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
+                    .parseInt( ids[1] ) );
+                patientAttributes.add( patientAttribute );
+            }
+
+            index++;
+        }
+
+        program.setPatientIdentifierTypes( identifierTypes );
+        program.setPatientAttributes( patientAttributes );
+
+        // Template messasges
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
         {
@@ -415,54 +420,7 @@ public class AddProgramAction
         }
         program.setPatientReminders( patientReminders );
 
-        int id = programService.saveProgram( program );
-        program.setId( id );
-
-        // ---------------------------------------------------------------------
-        // Create Program - Identifier-typse and Attributes association
-        // ---------------------------------------------------------------------
-
-        int index = 0;
-
-        for ( String patientProperty : selectedPropertyIds )
-        {
-            String[] property = patientProperty.split( Program.SEPARATE_CHARACTOR );
-            if ( property[0].equals( Program.PREFIX_IDENTIFIER_TYPE ) )
-            {
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
-                    .parseInt( property[1] ) );
-                identifierType.setPersonDisplayName( personDisplayNames.get( index ) );
-                patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
-
-                ProgramPatientProperty programPatientProperty = new ProgramPatientProperty( program, identifierType,
-                    defaultValues.get( index ), hiddens.get( index ), index );
-
-                programPatientPropertyService.addProgramPatientProperty( programPatientProperty );
-            }
-            else if ( property[0].equals( Program.PREFIX_ATTRIBUTE ) )
-            {
-                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
-                    .parseInt( property[1] ) );
-
-                ProgramPatientProperty programPatientProperty = new ProgramPatientProperty( program,
-                    patientAttribute, defaultValues.get( index ), hiddens.get( index ), index );
-
-                programPatientPropertyService.addProgramPatientProperty( programPatientProperty );
-            }
-            else if ( property[0].equals( Program.PREFIX_PROPERTY ) )
-            {
-                ProgramPatientProperty programPatientProperty = new ProgramPatientProperty( program, property[1],
-                    defaultValues.get( index ), hiddens.get( index ), index );
-
-                programPatientPropertyService.addProgramPatientProperty( programPatientProperty );
-            }
-
-            index++;
-        }
-        
-        // ---------------------------------------------------------------------
-        // Create program-stage for single event program autocalically
-        // ---------------------------------------------------------------------
+        programService.saveProgram( program );
 
         if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION )
             || program.getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )

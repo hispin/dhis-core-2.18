@@ -51,7 +51,6 @@ import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
-import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -188,17 +187,8 @@ public class ShowEventWithRegistrationFormAction
             programs.remove( program );
             for ( Program p : programs )
             {
-                for ( ProgramPatientProperty programPatientProperty : p.getProgramPatientProperties() )
-                {
-                    if ( programPatientProperty.isIdentifierType() )
-                    {
-                        identifierTypes.remove( programPatientProperty.getPatientIdentifierType() );
-                    }
-                    else if ( programPatientProperty.isAttribute() )
-                    {
-                        patientAttributesInProgram.remove( programPatientProperty.getPatientAttribute() );
-                    }
-                }
+                identifierTypes.removeAll( p.getPatientIdentifierTypes() );
+                patientAttributesInProgram.addAll( p.getPatientAttributes() );
             }
 
             attributeGroups = new ArrayList<PatientAttributeGroup>(

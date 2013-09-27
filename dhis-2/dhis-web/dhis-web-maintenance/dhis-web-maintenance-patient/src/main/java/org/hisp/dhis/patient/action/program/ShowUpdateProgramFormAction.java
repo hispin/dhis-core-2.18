@@ -31,6 +31,7 @@ package org.hisp.dhis.patient.action.program;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -41,7 +42,6 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
@@ -94,13 +94,6 @@ public class ShowUpdateProgramFormAction
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
-    }
-
-    private ProgramPatientPropertyService programPatientPropertyService;
-
-    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
-    {
-        this.programPatientPropertyService = programPatientPropertyService;
     }
 
     // -------------------------------------------------------------------------
@@ -209,19 +202,18 @@ public class ShowUpdateProgramFormAction
         program = programService.getProgram( id );
 
         availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        availableAttributes = patientAttributeService.getAllPatientAttributes();
 
+        availableAttributes = patientAttributeService.getAllPatientAttributes();
+        availableAttributes.removeAll( new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
+        
         programs = new ArrayList<Program>( programService.getAllPrograms() );
 
         for ( Program p : programs )
         {
-            Collection<PatientIdentifierType> identifierTypes = programPatientPropertyService
-                .getPatientIdentifierTypes( p );
-            availableIdentifierTypes.removeAll( identifierTypes );
-
-            Collection<PatientAttribute> atttributes = programPatientPropertyService.getPatientAttributes( p );
-            availableAttributes.removeAll( atttributes );
+            availableIdentifierTypes
+                .removeAll( new HashSet<PatientIdentifierType>( p.getPatientIdentifierTypes() ) );
         }
+
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
         programs.remove( program );

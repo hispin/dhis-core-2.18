@@ -36,7 +36,6 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -91,13 +90,6 @@ public class LoadDataElementsAction
     public void setAttributeService( PatientAttributeService attributeService )
     {
         this.attributeService = attributeService;
-    }
-
-    private ProgramPatientPropertyService programPatientPropertyService;
-
-    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
-    {
-        this.programPatientPropertyService = programPatientPropertyService;
     }
 
     // -------------------------------------------------------------------------
@@ -172,11 +164,11 @@ public class LoadDataElementsAction
 
             for ( Program _program : programs )
             {
-                identifierTypes.removeAll( programPatientPropertyService.getPatientIdentifierTypes( _program ) );
-                patientAttributes.remove( programPatientPropertyService.getPatientAttributes( _program ) );
+                identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
+                patientAttributes.removeAll( _program.getPatientAttributes() );
             }
         }
-
+        
         return SUCCESS;
     }
 }

@@ -182,8 +182,6 @@
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="programPatientPropertyService"
-			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramListAction"
@@ -227,8 +225,6 @@
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="programPatientPropertyService"
-			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean
@@ -243,10 +239,7 @@
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="programPatientPropertyService"
-			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
-
 	<bean id="org.hisp.dhis.patient.action.program.UpdateProgramAction"
 		class="org.hisp.dhis.patient.action.program.UpdateProgramAction"
 		scope="prototype">
@@ -258,8 +251,6 @@
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="programPatientPropertyService"
-			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.ValidateProgramAction"
@@ -647,8 +638,6 @@
 		<property name="userSettingService">
 			<ref bean="org.hisp.dhis.user.UserSettingService" />
 		</property>
-		<property name="programPatientPropertyService"
-			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean
@@ -844,8 +833,6 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="attributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="programPatientPropertyService"
-			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean

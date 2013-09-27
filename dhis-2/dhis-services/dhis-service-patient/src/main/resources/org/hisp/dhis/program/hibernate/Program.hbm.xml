@@ -11,8 +11,7 @@
 		<id name="id" column="programid">
 			<generator class="native" />
 		</id>
-    	
-    	&identifiableProperties;
+    &identifiableProperties;
 
 		<property name="name" column="name" not-null="true" length="230" />
 
@@ -47,6 +46,19 @@
 
 		<property name="onlyEnrollOnce" />
 
+		<list name="patientIdentifierTypes" table="program_patientIdentifierTypes">
+			<key column="programid" foreign-key="fk_program_patientIdentifierTypes_programid" />
+			<list-index column="sort_order" base="0" />
+			<many-to-many column="patientidentifiertypeid"
+				class="org.hisp.dhis.patient.PatientIdentifierType" foreign-key="fk_program_patientIdentifierTypes_patientidentifiertypeid" />
+		</list>
+
+		<list name="patientAttributes" table="program_patientAttributes">
+			<key column="programid" foreign-key="fk_program_patientAttributes_programid" />
+			<list-index column="sort_order" base="0" />
+			<many-to-many column="patientattributeid"
+				class="org.hisp.dhis.patient.PatientAttribute" foreign-key="fk_program_patientAttributes_patientattributeid" />
+		</list>
 		<property name="ignoreOverdueEvents" />
 
 		<set name="userRoles" table="program_userroles">
@@ -76,7 +88,7 @@
 		<property name="selectEnrollmentDatesInFuture" />
 
 		<property name="selectIncidentDatesInFuture" />
-
+		
 		<property name="relationshipText" />
 
 		<many-to-one name="relationshipType"
@@ -84,17 +96,11 @@
 			foreign-key="fk_program_relationshipid" />
 
 		<property name="relationshipFromA" />
-
+		
 		<many-to-one name="relatedProgram" class="org.hisp.dhis.program.Program"
 			column="relatedprogramid" foreign-key="fk_program_relatedprogram" />
-
+			
 		<property name="dataEntryMethod" />
-		
-		<set name="programPatientProperties" order-by="sortOrder">
-			<key column="programid" />
-			<one-to-many class="org.hisp.dhis.program.ProgramPatientProperty" />
-		</set>
-		
 
 		<!-- Access properties -->
 
