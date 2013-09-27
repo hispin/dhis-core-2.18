@@ -49,6 +49,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.util.SessionUtils;
 
@@ -191,7 +192,7 @@ public class GetDataCompletenessAction
             }
             else
             {
-                Period period = periodService.getPeriodByExternalId( periodId );
+                Period period = periodService.reloadPeriod( PeriodType.getPeriodFromIsoString( periodId ) );
                 Integer _periodId = period.getId();
 
                 DataSet dataSet = null;
