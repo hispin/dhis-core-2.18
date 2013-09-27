@@ -122,9 +122,9 @@ public class HibernatePatientIdentifierStore
         return getCriteria( Restrictions.eq( "patient", patient ) ).list();
     }
 
-    public Patient getPatient( PatientIdentifierType idenType, String value )
+    public Patient getPatient( PatientIdentifierType identifierType, String value )
     {
-        if ( idenType == null )
+        if ( identifierType == null )
         {
             // assume system identifier
             return (Patient) getCriteria(
@@ -133,7 +133,7 @@ public class HibernatePatientIdentifierStore
         }
 
         return (Patient) getCriteria(
-            Restrictions.and( Restrictions.eq( "identifierType", idenType ), Restrictions.eq( "identifier", value ) ) )
+            Restrictions.and( Restrictions.eq( "identifierType", identifierType ), Restrictions.eq( "identifier", value ) ) )
             .setProjection( Projections.property( "patient" ) ).uniqueResult();
     }
 
