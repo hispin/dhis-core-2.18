@@ -38,6 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -110,7 +111,7 @@ public class AddLockExceptionAction
         }
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        Period period = periodService.getPeriodByExternalId( periodId );
+        Period period = periodService.reloadPeriod( PeriodType.getPeriodFromIsoString( periodId ) );
 
         if ( dataSet == null || period == null )
         {

@@ -39,7 +39,7 @@ function dataSetChanged( e ) {
                 resetPeriods();
             } else {
                 for ( var n in data.periods ) {
-                    var option = jQuery("<option />").attr("value", data.periods[n].externalId).text(data.periods[n].name);
+                    var option = jQuery("<option />").attr("value", data.periods[n].id).text(data.periods[n].name);
                     jQuery("#periods").append(option);
                 }
 
