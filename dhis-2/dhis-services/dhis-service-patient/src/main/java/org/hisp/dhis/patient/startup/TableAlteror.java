@@ -382,11 +382,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE programinstance DROP COLUMN completed" );
     }
 
-    private void updateProgramPatientProperties()
-    {
-        
-    }
-    
     private int executeSql( String sql )
     {
         try
