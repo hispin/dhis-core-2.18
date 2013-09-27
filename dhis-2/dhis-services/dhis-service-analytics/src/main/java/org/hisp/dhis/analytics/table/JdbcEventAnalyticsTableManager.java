@@ -44,6 +44,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,80 +61,80 @@ public class JdbcEventAnalyticsTableManager
 {
     @Autowired
     private ProgramService programService;
-        
+
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
-    
+
     @Override
     @Transactional
     public List<AnalyticsTable> getTables( Date earliest, Date latest )
     {
         String baseName = getTableName();
-        
+
         List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
 
         List<AnalyticsTable> tables = new ArrayList<AnalyticsTable>();
-        
+
         for ( Period period : periods )
         {
             for ( Program program : programService.getAllPrograms() )
             {
                 AnalyticsTable table = new AnalyticsTable( baseName, null, period, program );
                 List<String[]> dimensionColumns = getDimensionColumns( table );
-                table.setDimensionColumns( dimensionColumns );                
+                table.setDimensionColumns( dimensionColumns );
                 tables.add( table );
             }
         }
-        
+
         return tables;
-    }    
-    
+    }
+
     public boolean validState()
     {
         return jdbcTemplate.queryForRowSet( "select dataelementid from patientdatavalue limit 1" ).next();
     }
-    
+
     public String getTableName()
     {
         return "analytics_event";
     }
-    
+
     public void createTable( AnalyticsTable table )
     {
         final String tableName = table.getTempTableName();
-        
+
         final String sqlDrop = "drop table " + tableName;
-        
+
         executeSilently( sqlDrop );
-        
+
         String sqlCreate = "create table " + tableName + " (";
-        
+
         for ( String[] col : getDimensionColumns( table ) )
         {
             sqlCreate += col[0] + " " + col[1] + ",";
         }
-        
+
         sqlCreate = removeLast( sqlCreate, 1 ) + ")";
-        
+
         log.info( "Create SQL: " + sqlCreate );
-        
+
         executeSilently( sqlCreate );
     }
-    
+
     @Async
     @Override
     public Future<?> populateTableAsync( ConcurrentLinkedQueue<AnalyticsTable> tables )
     {
-        taskLoop : while ( true )
+        taskLoop: while ( true )
         {
             AnalyticsTable table = tables.poll();
-                
+
             if ( table == null )
             {
                 break taskLoop;
             }
-            
+
             final String start = DateUtils.getMediumDateString( table.getPeriod().getStartDate() );
             final String end = DateUtils.getMediumDateString( table.getPeriod().getEndDate() );
 
@@ -143,44 +144,41 @@ public class JdbcEventAnalyticsTableManager
             {
                 sql += col[0] + ",";
             }
-            
+
             sql = removeLast( sql, 1 ) + ") select ";
 
             for ( String[] col : getDimensionColumns( table ) )
             {
                 sql += col[2] + ",";
             }
-            
-            sql = removeLast( sql, 1 ) + " ";
-            
-            sql += 
-                "from programstageinstance psi " +
-                "left join programinstance pi on psi.programinstanceid=pi.programinstanceid " +
-                "left join programstage ps on psi.programstageid=ps.programstageid " +
-                "left join program pr on pi.programid=pr.programid " +
-                "left join patient pa on pi.patientid=pa.patientid " +
-                "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid " +
-                "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid " +
-                "left join _dateperiodstructure dps on psi.executiondate=dps.dateperiod " +
-                "where psi.executiondate >= '" + start + "' " +
-                "and psi.executiondate <= '" + end + "' " +
-                "and pr.programid=" + table.getProgram().getId() + ";";
 
-            log.info( "Populate SQL: "+ sql );
-            
+            sql = removeLast( sql, 1 ) + " ";
+
+            sql += "from programstageinstance psi "
+                + "left join programinstance pi on psi.programinstanceid=pi.programinstanceid "
+                + "left join programstage ps on psi.programstageid=ps.programstageid "
+                + "left join program pr on pi.programid=pr.programid "
+                + "left join patient pa on pi.patientid=pa.patientid "
+                + "left join organisationunit ou on psi.organisationunitid=ou.organisationunitid "
+                + "left join _orgunitstructure ous on psi.organisationunitid=ous.organisationunitid "
+                + "left join _dateperiodstructure dps on psi.executiondate=dps.dateperiod "
+                + "where psi.executiondate >= '" + start + "' " + "and psi.executiondate <= '" + end + "' "
+                + "and pr.programid=" + table.getProgram().getId() + ";";
+
+            log.info( "Populate SQL: " + sql );
+
             jdbcTemplate.execute( sql );
         }
-    
+
         return null;
     }
-    
+
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
         List<String[]> columns = new ArrayList<String[]>();
 
-        Collection<OrganisationUnitLevel> levels =
-            organisationUnitService.getOrganisationUnitLevels();
-        
+        Collection<OrganisationUnitLevel> levels = organisationUnitService.getOrganisationUnitLevels();
+
         for ( OrganisationUnitLevel level : levels )
         {
             String column = PREFIX_ORGUNITLEVEL + level.getLevel();
@@ -189,70 +187,76 @@ public class JdbcEventAnalyticsTableManager
         }
 
         List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes();
-        
+
         for ( PeriodType periodType : periodTypes )
         {
             String column = periodType.getName().toLowerCase();
             String[] col = { column, "character varying(10)", "dps." + column };
             columns.add( col );
         }
-        
+
         for ( DataElement dataElement : table.getProgram().getAllDataElements() )
         {
-            String select = "(select value from patientdatavalue where programstageinstanceid=" +
-                "psi.programstageinstanceid and dataelementid=" + dataElement.getId() + ") as " + dataElement.getUid();
-            
+            String select = "(select value from patientdatavalue where programstageinstanceid="
+                + "psi.programstageinstanceid and dataelementid=" + dataElement.getId() + ") as "
+                + dataElement.getUid();
+
             String[] col = { dataElement.getUid(), "character varying(255)", select };
             columns.add( col );
         }
-        
-        for ( PatientAttribute attribute : table.getProgram().getPatientAttributes() )
+
+        for ( ProgramPatientProperty programPatientProperty : table.getProgram().getProgramPatientProperties() )
         {
-            String select = "(select value from patientattributevalue where patientid=pi.patientid and " +
-                "patientattributeid=" + attribute.getId() + ") as " + attribute.getUid();
-            
-            String[] col = { attribute.getUid(), "character varying(255)", select };
-            columns.add( col );
-        }
-        
-        for ( PatientIdentifierType identifierType : table.getProgram().getPatientIdentifierTypes() )
-        {
-            String select = "(select identifier from patientidentifier where patientid=pi.patientid and " +
-                "patientidentifiertypeid=" + identifierType.getId() + ") as " + identifierType.getUid();
-            
-            String[] col = { identifierType.getUid() + "character varying(31)", select };
-            columns.add( col );
+            if ( programPatientProperty.isAttribute() )
+            {
+                PatientAttribute attribute = programPatientProperty.getPatientAttribute();
+                String select = "(select value from patientattributevalue where patientid=pi.patientid and "
+                    + "patientattributeid=" + attribute.getId() + ") as " + attribute.getUid();
+
+                String[] col = { attribute.getUid(), "character varying(255)", select };
+                columns.add( col );
+            }
+            if( programPatientProperty.isIdentifierType())
+            {
+                PatientIdentifierType identifierType = programPatientProperty.getPatientIdentifierType();
+                String select = "(select identifier from patientidentifier where patientid=pi.patientid and "
+                    + "patientidentifiertypeid=" + identifierType.getId() + ") as " + identifierType.getUid();
+
+                String[] col = { identifierType.getUid() + "character varying(31)", select };
+                columns.add( col );
+            }
         }
         
         String[] gender = { "gender", "character varying(5)", "pa.gender" };
-        String[] isdead = { "isdead", "boolean", "pa.isdead" };            
+        String[] isdead = { "isdead", "boolean", "pa.isdead" };
         String[] psi = { "psi", "character(11) not null", "psi.uid" };
         String[] ps = { "ps", "character(11) not null", "ps.uid" };
         String[] ed = { "executiondate", "date", "psi.executiondate" };
         String[] ou = { "ou", "character(11) not null", "ou.uid" };
         String[] oun = { "ouname", "character varying(160) not null", "ou.name" };
-        
+
         columns.addAll( Arrays.asList( gender, isdead, psi, ps, ed, ou, oun ) );
-        
+
         return columns;
     }
-    
+
     public Date getEarliestData()
     {
         final String sql = "select min(pdv.timestamp) from patientdatavalue pdv";
-        
+
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
 
     public Date getLatestData()
     {
         final String sql = "select max(pdv.timestamp) from patientdatavalue pdv";
-        
+
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
-    
+
     @Async
-    public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables, Collection<String> dataElements, int aggregationLevel )
+    public Future<?> applyAggregationLevels( ConcurrentLinkedQueue<AnalyticsTable> tables,
+        Collection<String> dataElements, int aggregationLevel )
     {
         return null; // Not relevant
     }

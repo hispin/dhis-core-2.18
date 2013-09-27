@@ -77,6 +77,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramPatientProperty;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -1664,7 +1665,13 @@ public class ActivityReportingServiceImpl
         Collection<Program> programs = programService.getAllPrograms();
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
+            {
+                if ( programPatientProperty.isIdentifierType() )
+                {
+                    patientIdentifierTypes.remove( programPatientProperty.getPatientIdentifierType() );
+                }
+            }
         }
         return patientIdentifierTypes;
     }
@@ -1674,7 +1681,13 @@ public class ActivityReportingServiceImpl
         if ( programId != null && !programId.trim().equals( "" ) )
         {
             Program program = programService.getProgram( Integer.parseInt( programId ) );
-            patientAttributes = program.getPatientAttributes();
+            for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
+            {
+                if ( programPatientProperty.isAttribute() )
+                {
+                    patientAttributes.add( programPatientProperty.getPatientAttribute() );
+                }
+            }
         }
         else
         {
@@ -1689,7 +1702,13 @@ public class ActivityReportingServiceImpl
         if ( programId != null && !programId.trim().equals( "" ) )
         {
             Program program = programService.getProgram( Integer.parseInt( programId ) );
-            patientIdentifierTypes = program.getPatientIdentifierTypes();
+            for ( ProgramPatientProperty programPatientProperty : program.getProgramPatientProperties() )
+            {
+                if ( programPatientProperty.isIdentifierType() )
+                {
+                    patientIdentifierTypes.add( programPatientProperty.getPatientIdentifierType() );
+                }
+            }
         }
         else
         {

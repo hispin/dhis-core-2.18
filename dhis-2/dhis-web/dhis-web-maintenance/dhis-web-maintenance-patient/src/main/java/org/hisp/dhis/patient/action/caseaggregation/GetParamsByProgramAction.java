@@ -36,6 +36,7 @@ import java.util.List;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 
@@ -66,6 +67,13 @@ public class GetParamsByProgramAction
     public void setAttributeService( PatientAttributeService attributeService )
     {
         this.attributeService = attributeService;
+    }
+
+    private ProgramPatientPropertyService programPatientPropertyService;
+
+    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
+    {
+        this.programPatientPropertyService = programPatientPropertyService;
     }
 
     // -------------------------------------------------------------------------
@@ -107,13 +115,13 @@ public class GetParamsByProgramAction
 
             Collection<Program> programs = programService.getAllPrograms();
             programs.remove( program );
-            
+
             for ( Program _program : programs )
             {
-                patientAttributes.remove( _program.getPatientAttributes() );
+                patientAttributes.removeAll( programPatientPropertyService.getPatientAttributes( _program ) );
             }
         }
-        
+
         return SUCCESS;
     }
 }

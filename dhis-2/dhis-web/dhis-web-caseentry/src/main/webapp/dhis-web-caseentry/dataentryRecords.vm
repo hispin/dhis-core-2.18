@@ -61,9 +61,9 @@
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 			<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">
 				#set($value="")
-				#foreach( $identifierType in $identifierTypes)
+				#foreach( $programIdentifierType in $identifierTypes)
 					#foreach( $identifier in $patient.identifiers)
-						#if($identifier.identifierType.id==$identifierType.id)
+						#if($identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
 							#set($value=$identifier.identifier)
 						#end
 					#end

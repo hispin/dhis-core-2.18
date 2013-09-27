@@ -48,6 +48,7 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramPatientPropertyService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
 
@@ -71,6 +72,8 @@ public class ProgramEnrollmentAction
 
     private SelectedStateManager selectedStateManager;
 
+    private ProgramPatientPropertyService programPatientPropertyService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -81,7 +84,7 @@ public class ProgramEnrollmentAction
 
     private List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
-    private List<PatientIdentifierType> identifierTypes;
+    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
 
     private Collection<PatientAttribute> noGroupAttributes = new HashSet<PatientAttribute>();
 
@@ -91,13 +94,18 @@ public class ProgramEnrollmentAction
 
     private Boolean hasDataEntry;
 
-    private List<PatientAttribute> patientAttributes;
+    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
     private ProgramInstance programInstance;
 
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
+
+    public void setProgramPatientPropertyService( ProgramPatientPropertyService programPatientPropertyService )
+    {
+        this.programPatientPropertyService = programPatientPropertyService;
+    }
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
@@ -190,7 +198,7 @@ public class ProgramEnrollmentAction
 
         loadIdentifierTypes( programInstance );
 
-        loadPatientAttributes( programInstance );
+        loadPatientAttributes( programInstance.getProgram() );
 
         hasDataEntry = showDataEntry( orgunit, programInstance.getProgram(), programInstance );
 
@@ -207,7 +215,13 @@ public class ProgramEnrollmentAction
         // Load identifier types of the selected program
         // ---------------------------------------------------------------------
 
-        identifierTypes = programInstance.getProgram().getPatientIdentifierTypes();
+        Collection<PatientIdentifierType> idenTypes = programPatientPropertyService
+            .getPatientIdentifierTypes( programInstance.getProgram() );
+        if ( idenTypes != null )
+        {
+            identifierTypes.addAll( idenTypes );
+        }
+
         identiferMap = new HashMap<Integer, String>();
 
         if ( identifierTypes != null && identifierTypes.size() > 0 )
@@ -222,26 +236,28 @@ public class ProgramEnrollmentAction
         }
     }
 
-    private void loadPatientAttributes( ProgramInstance programInstance )
+    private void loadPatientAttributes( Program program )
     {
         // ---------------------------------------------------------------------
         // Load patient-attributes of the selected program
         // ---------------------------------------------------------------------
 
-        patientAttributes = programInstance.getProgram().getPatientAttributes();
-
-        if ( patientAttributes != null )
+        Collection<PatientAttribute> attrTypes = programPatientPropertyService.getPatientAttributes( program );
+        if ( attrTypes != null )
         {
-            Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-                .getPatientAttributeValues( programInstance.getPatient() );
+            patientAttributes.addAll( attrTypes );
 
-            for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+        }
+
+        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
+            .getPatientAttributeValues( programInstance.getPatient() );
+
+        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+        {
+            if ( patientAttributes.contains( patientAttributeValue.getPatientAttribute() ) )
             {
-                if ( patientAttributes.contains( patientAttributeValue.getPatientAttribute() ) )
-                {
-                    patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                        patientAttributeValue.getValue() );
-                }
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                    patientAttributeValue.getValue() );
             }
         }
     }

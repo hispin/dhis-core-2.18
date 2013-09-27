@@ -31,6 +31,9 @@
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="programPatientPropertyService"
+			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean
@@ -218,6 +221,8 @@
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="programPatientPropertyService"
+			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<!-- Single-event DataEntry -->
@@ -462,9 +467,8 @@
 		<property name="patientRegistrationFormService"
 			ref="org.hisp.dhis.patient.PatientRegistrationFormService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="attributeGroupService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeGroupService" />
-		</property>
+		<property name="programPatientPropertyService"
+			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.AddPatientAction"
@@ -521,7 +525,6 @@
 	<bean id="org.hisp.dhis.caseentry.action.patient.ShowAddPatientFormAction"
 		class="org.hisp.dhis.caseentry.action.patient.ShowAddPatientFormAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="attributeService">
@@ -536,9 +539,8 @@
 		<property name="patientRegistrationFormService">
 			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
 		</property>
-		<property name="attributeGroupService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeGroupService" />
-		</property>
+		<property name="programPatientPropertyService"
+			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.ValidatePatientAction"
@@ -656,6 +658,9 @@
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="programPatientPropertyService"
+			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
+			
 	</bean>
 
 	<bean
@@ -834,6 +839,8 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programPatientPropertyService"
+			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean
@@ -908,6 +915,8 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="attributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="programPatientPropertyService"
+			ref="org.hisp.dhis.program.ProgramPatientPropertyService" />
 	</bean>
 
 	<bean
