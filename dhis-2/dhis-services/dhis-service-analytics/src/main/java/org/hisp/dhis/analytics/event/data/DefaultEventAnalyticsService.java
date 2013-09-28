@@ -28,8 +28,9 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.analytics.DataQueryParams.OPTION_SEP;
-import static org.hisp.dhis.common.DimensionalObject.*;
+import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_NAME_SEP;
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -263,13 +264,13 @@ public class DefaultEventAnalyticsService
         {
             for ( String it : item )
             {
-                if ( it != null && !it.contains( OPTION_SEP ) )
+                if ( !it.contains( DIMENSION_NAME_SEP ) )
                 {
                     params.getItems().add( getItem( pr, it, null, null ) );
                 }
-                else if ( it != null ) // Filter
+                else // Filter
                 {
-                    String[] split = it.split( OPTION_SEP );
+                    String[] split = it.split( DIMENSION_NAME_SEP );
                     
                     if ( split == null || split.length != 3 )
                     {
@@ -299,7 +300,7 @@ public class DefaultEventAnalyticsService
         
         if ( ou != null )
         {
-            String[] split = ou.split( OPTION_SEP );
+            String[] split = ou.split( DIMENSION_NAME_SEP );
             
             for ( String ouId : split )
             {
