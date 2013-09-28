@@ -35,6 +35,7 @@ import static org.hisp.dhis.system.util.TextUtils.removeLast;
 
 import java.util.Arrays;
 
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.QueryItem;
@@ -279,7 +280,7 @@ public class JdbcEventAnalyticsManager
         }
         else if ( operator.equals( "in" ) )
         {
-            String[] split = filter.split( ":" );
+            String[] split = filter.split( DataQueryParams.OPTION_SEP );
                         
             return "(" + TextUtils.getQuotedCommaDelimitedString( Arrays.asList( split ) ) + ")";
         }

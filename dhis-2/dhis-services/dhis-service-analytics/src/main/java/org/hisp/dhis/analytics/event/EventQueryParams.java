@@ -34,6 +34,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.BaseDimensionalObject;
+import org.hisp.dhis.common.DimensionType;
+import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -56,13 +61,13 @@ public class EventQueryParams
     private Date endDate;
     
     private List<QueryItem> items = new ArrayList<QueryItem>();
+
+    private List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
     
     private List<String> asc = new ArrayList<String>();
     
     private List<String> desc = new ArrayList<String>();
     
-    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-
     private String organisationUnitMode;
     
     private String tableName;
@@ -94,9 +99,9 @@ public class EventQueryParams
         this.startDate = params.getStartDate();
         this.endDate = params.getEndDate();
         this.items = new ArrayList<QueryItem>( params.getItems() );
+        this.dimensions = new ArrayList<DimensionalObject>( params.getDimensions() );            
         this.asc = new ArrayList<String>( params.getAsc() );
         this.desc = new ArrayList<String>( params.getDesc() );
-        this.organisationUnits = new ArrayList<OrganisationUnit>( params.getOrganisationUnits() );
         this.organisationUnitMode = params.getOrganisationUnitMode();
         this.tableName = params.getTableName();
         this.page = params.getPage();
@@ -113,12 +118,39 @@ public class EventQueryParams
     {
         return organisationUnitMode != null && organisationUnitMode.equalsIgnoreCase( mode );
     }
+
+    public List<OrganisationUnit> getOrganisationUnits()
+    {
+        int index = dimensions.indexOf( new BaseDimensionalObject( DimensionalObject.ORGUNIT_DIM_ID ) );
+        return NameableObjectUtils.asTypedList( dimensions.get( index ).getItems() );
+    }
+
+    public void setOrganisationUnits( List<OrganisationUnit> organisationUnits )
+    {
+        setDimensionOptions( DimensionalObject.ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, organisationUnits );
+    }
+    
+    private EventQueryParams setDimensionOptions( String dimension, DimensionType type, String dimensionName, List<? extends NameableObject> options )
+    {
+        int index = dimensions.indexOf( new BaseDimensionalObject( dimension ) );
+        
+        if ( index != -1 )
+        {
+            dimensions.set( index, new BaseDimensionalObject( dimension, type, dimensionName, options ) );
+        }
+        else
+        {
+            dimensions.add( new BaseDimensionalObject( dimension, type, dimensionName, options ) );
+        }
+        
+        return this;
+    }
     
     public Set<OrganisationUnit> getOrganisationUnitChildren()
     {
         Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
         
-        for ( OrganisationUnit unit : organisationUnits )
+        for ( OrganisationUnit unit : getOrganisationUnits() )
         {
             children.addAll( unit.getChildren() );
         }
@@ -210,6 +242,16 @@ public class EventQueryParams
         return asc;
     }
 
+    public List<DimensionalObject> getDimensions()
+    {
+        return dimensions;
+    }
+
+    public void setDimensions( List<DimensionalObject> dimensions )
+    {
+        this.dimensions = dimensions;
+    }
+
     public void setAsc( List<String> asc )
     {
         this.asc = asc;
@@ -223,16 +265,6 @@ public class EventQueryParams
     public void setDesc( List<String> desc )
     {
         this.desc = desc;
-    }
-
-    public List<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    public void setOrganisationUnits( List<OrganisationUnit> organisationUnits )
-    {
-        this.organisationUnits = organisationUnits;
     }
 
     public String getOrganisationUnitMode()

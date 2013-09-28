@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.analytics.AnalyticsService;
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
@@ -100,6 +101,9 @@ public class DefaultEventAnalyticsService
     
     @Autowired
     private EventAnalyticsManager analyticsManager;
+    
+    @Autowired
+    private AnalyticsService analyticsService;
 
     // -------------------------------------------------------------------------
     // EventAnalyticsService implementation
@@ -213,13 +217,13 @@ public class DefaultEventAnalyticsService
     }
 
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        String ou, String ouMode, Set<String> item )
+        Set<String> dimension, String ouMode )
     {
-        return getFromUrl( program, stage, startDate, endDate, ou, ouMode, item, null, null, null, null );
+        return getFromUrl( program, stage, startDate, endDate, dimension, ouMode, null, null, null, null );
     }
     
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        String ou, String ouMode, Set<String> item, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
+        Set<String> dimension, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
     {
         EventQueryParams params = new EventQueryParams();
         
@@ -260,26 +264,35 @@ public class DefaultEventAnalyticsService
             throw new IllegalQueryException( "Start date is after end date: " + startDate + " - " + endDate );
         }
         
-        if ( item != null )
+        for ( String it : dimension )
         {
-            for ( String it : item )
+            String dim = DataQueryParams.getDimensionFromParam( it );
+            
+            if ( ORGUNIT_DIM_ID.equals( dim ) || PERIOD_DIM_ID.equals( dim ) )
             {
-                if ( !it.contains( DIMENSION_NAME_SEP ) )
-                {
-                    params.getItems().add( getItem( pr, it, null, null ) );
-                }
-                else // Filter
-                {
-                    String[] split = it.split( DIMENSION_NAME_SEP );
-                    
-                    if ( split == null || split.length != 3 )
-                    {
-                        throw new IllegalQueryException( "Item filter has invalid format: " + it );
-                    }
-                    
-                    params.getItems().add( getItem( pr, split[0], split[1], split[2] ) );
-                }
+                List<String> items = DataQueryParams.getDimensionItemsFromParam( it );
+                params.getDimensions().addAll( analyticsService.getDimension( dim, items, null, null ) );
             }
+            else if ( !it.contains( DIMENSION_NAME_SEP ) )
+            {
+                params.getItems().add( getItem( pr, it, null, null ) );
+            }
+            else // Filter
+            {
+                String[] split = it.split( DIMENSION_NAME_SEP );
+                
+                if ( split == null || split.length != 3 )
+                {
+                    throw new IllegalQueryException( "Item filter has invalid format: " + it );
+                }
+                
+                params.getItems().add( getItem( pr, split[0], split[1], split[2] ) );
+            }
+        }
+        
+        for ( OrganisationUnit unit : params.getOrganisationUnits() )
+        {
+            unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getUid() ) );
         }
         
         if ( asc != null )
@@ -297,24 +310,7 @@ public class DefaultEventAnalyticsService
                 params.getDesc().add( getSortItem( sort, pr ) );
             }
         }
-        
-        if ( ou != null )
-        {
-            String[] split = ou.split( DIMENSION_NAME_SEP );
-            
-            for ( String ouId : split )
-            {
-                OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouId );
                 
-                if ( orgUnit != null )
-                {
-                    orgUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) );
-                    
-                    params.getOrganisationUnits().add( orgUnit );
-                }
-            }
-        }
-        
         if ( params.getOrganisationUnits().isEmpty() )
         {
             throw new IllegalQueryException( "At least one organisation unit must be specified" );

@@ -1892,16 +1892,22 @@ Ext.onReady( function() {
 				// Paging
 				
 				p.page = TR.state.currentPage;
+
+				// Get searching values
 				
-				// organisation unit
+				p.dimension = [];
 				
-				p.ou = "";
+				// Organisation unit
+				
+				var ou = "ou:";
 				for( var i in TR.state.orgunitIds){
-					p.ou += TR.state.orgunitIds[i];
+					ou += TR.state.orgunitIds[i];
 					if( i<TR.state.orgunitIds.length - 1 ){
-						p.ou +=":"
+						ou +=";"
 					}
 				}
+				p.dimension.push( ou );
+				
 				if( Ext.getCmp('userOrgunit').getValue() == "true" ){
 					p.userOrganisationUnit = Ext.getCmp('userOrgunit').getValue();
 				}
@@ -1912,10 +1918,6 @@ Ext.onReady( function() {
 				{
 					p.useCompletedEvents = Ext.getCmp('completedEventsOpt').getValue();
 				}
-				
-				// Get searching values
-				
-				p.item = [];
 				
 				// Filter
 				
@@ -1948,7 +1950,7 @@ Ext.onReady( function() {
 							}
 						}
 						
-						p.item.push( filter );
+						p.dimension.push( filter );
 					}
 				});
 					
