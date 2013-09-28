@@ -11,7 +11,7 @@
 					 "id":  "${orgunit.uid}" ,
 					 "localid": "$orgunit.id",
 					 "name": "$!encoder.jsonEncode( ${orgunit.name} )",
-					 "leaf": !$orgunit.hasChild()
+					 "leaf": "${orgunit.isLeaf()}"
 			   }#if( $velocityCount < $currentUser.organisationUnits.size() ),#end
 			#end
 		]
