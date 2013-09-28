@@ -164,6 +164,7 @@ public class DefaultEventAnalyticsService
         grid.addHeader( new GridHeader( ITEM_EXECUTION_DATE, "Execution date" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_NAME, "Organisation unit name" ) );
+        grid.addHeader( new GridHeader( ITEM_ORG_UNIT_NAME, "Organisation unit code" ) );
 
         for ( QueryItem queryItem : params.getItems() )
         {
