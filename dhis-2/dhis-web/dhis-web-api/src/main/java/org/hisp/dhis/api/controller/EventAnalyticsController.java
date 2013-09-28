@@ -70,8 +70,8 @@ public class EventAnalyticsController
     public String getAggregateJson( // JSON, JSONP
         @PathVariable String program,
         @RequestParam(required=false) String stage,
-        @RequestParam String startDate,
-        @RequestParam String endDate,
+        @RequestParam(required=false) String startDate,
+        @RequestParam(required=false) String endDate,
         @RequestParam Set<String> dimension,
         @RequestParam(required=false) String ouMode,
         Model model,
@@ -90,8 +90,8 @@ public class EventAnalyticsController
     public void getAggregateXls(
         @PathVariable String program,
         @RequestParam(required=false) String stage,
-        @RequestParam String startDate,
-        @RequestParam String endDate,
+        @RequestParam(required=false) String startDate,
+        @RequestParam(required=false) String endDate,
         @RequestParam Set<String> dimension,
         @RequestParam(required=false) String ouMode,
         Model model,
@@ -112,8 +112,8 @@ public class EventAnalyticsController
     public String getQueryJson( // JSON, JSONP
         @PathVariable String program,
         @RequestParam(required=false) String stage,
-        @RequestParam String startDate,
-        @RequestParam String endDate,
+        @RequestParam(required=false) String startDate,
+        @RequestParam(required=false) String endDate,
         @RequestParam Set<String> dimension,
         @RequestParam(required=false) String ouMode,
         @RequestParam(required=false) Set<String> asc,
@@ -136,8 +136,8 @@ public class EventAnalyticsController
     public void getQueryXls(
         @PathVariable String program,
         @RequestParam(required=false) String stage,
-        @RequestParam String startDate,
-        @RequestParam String endDate,
+        @RequestParam(required=false) String startDate,
+        @RequestParam(required=false) String endDate,
         @RequestParam Set<String> dimension,
         @RequestParam(required=false) String ouMode,
         @RequestParam(required=false) Set<String> asc,

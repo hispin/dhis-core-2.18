@@ -40,6 +40,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 
@@ -122,12 +123,28 @@ public class EventQueryParams
     public List<OrganisationUnit> getOrganisationUnits()
     {
         int index = dimensions.indexOf( new BaseDimensionalObject( DimensionalObject.ORGUNIT_DIM_ID ) );
-        return NameableObjectUtils.asTypedList( dimensions.get( index ).getItems() );
+        return index != -1 ? NameableObjectUtils.asTypedList( dimensions.get( index ).getItems(), OrganisationUnit.class ) : null;
     }
 
     public void setOrganisationUnits( List<OrganisationUnit> organisationUnits )
     {
         setDimensionOptions( DimensionalObject.ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, organisationUnits );
+    }
+    
+    public List<Period> getPeriods()
+    {
+        int index = dimensions.indexOf( new BaseDimensionalObject( DimensionalObject.PERIOD_DIM_ID ) );
+        return index != -1 ? NameableObjectUtils.asTypedList( dimensions.get( index ).getItems(), Period.class ) : null;
+    }
+    
+    public void setPeriods( List<Period> periods )
+    {
+        setDimensionOptions( DimensionalObject.PERIOD_DIM_ID, DimensionType.PERIOD, null, periods );
+    }
+    
+    public boolean hasStartEndDate()
+    {
+        return startDate != null && endDate != null;
     }
     
     private EventQueryParams setDimensionOptions( String dimension, DimensionType type, String dimensionName, List<? extends NameableObject> options )
@@ -181,6 +198,17 @@ public class EventQueryParams
     public int getOffset()
     {
         return ( getPageWithDefault() - 1 ) * getPageSizeWithDefault();
+    }
+    
+    public String toString()
+    {
+        return "[" +
+            "Program: " + program + ", " +
+            "Stage: " + programStage + ", " +
+            "Start date: " + startDate + ", " +
+            "End date: " + endDate + ", " +
+            "Items " + items + ", " +
+            "Dimensions " + dimensions + "]";
     }
     
     // -------------------------------------------------------------------------

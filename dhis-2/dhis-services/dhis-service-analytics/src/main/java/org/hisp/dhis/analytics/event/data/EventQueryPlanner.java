@@ -65,9 +65,17 @@ public class EventQueryPlanner
             violation = "At least one organisation unit must be specified";
         }
         
-        if ( params.getStartDate() == null || params.getEndDate() == null )
+        if ( params.getPeriods() == null && ( params.getStartDate() == null || params.getEndDate() == null ) )
         {
             violation = "Start and end date or at least one period must be specified";
+        }
+        
+        if ( params.getStartDate() != null && params.getEndDate() != null )
+        {
+            if ( params.getStartDate().after( params.getEndDate() ) )
+            {
+                throw new IllegalQueryException( "Start date is after end date: " + params.getStartDate() + " - " + params.getEndDate() );
+            }            
         }
 
         if ( violation != null )
@@ -98,32 +106,42 @@ public class EventQueryPlanner
         
         Program program = params.getProgram();
         
-        Date startDate = params.getStartDate();
-        Date endDate = params.getEndDate();
-        
-        Date currentStartDate = startDate;
-        Date currentEndDate = endDate;
-        
-        while ( true )
+        if ( params.hasStartEndDate() )
         {
-            if ( year( currentStartDate ) < year( endDate ) ) // Spans multiple
+            Date startDate = params.getStartDate();
+            Date endDate = params.getEndDate();
+            
+            Date currentStartDate = startDate;
+            Date currentEndDate = endDate;
+            
+            while ( true )
             {
-                // Set end date to max of current year
-                
-                currentEndDate = maxOfYear( currentStartDate ); 
-                
-                list.add( getQuery( params, currentStartDate, currentEndDate, program ) );
-                
-                // Set start date to start of next year
-                
-                currentStartDate = new Cal( ( year( currentStartDate ) + 1 ), 1, 1 ).time();                 
+                if ( year( currentStartDate ) < year( endDate ) ) // Spans multiple
+                {
+                    // Set end date to max of current year
+                    
+                    currentEndDate = maxOfYear( currentStartDate ); 
+                    
+                    list.add( getQuery( params, currentStartDate, currentEndDate, program ) );
+                    
+                    // Set start date to start of next year
+                    
+                    currentStartDate = new Cal( ( year( currentStartDate ) + 1 ), 1, 1 ).time();                 
+                }
+                else
+                {
+                    list.add( getQuery( params, currentStartDate, endDate, program ) );
+                    
+                    break;
+                }
             }
-            else
-            {
-                list.add( getQuery( params, currentStartDate, endDate, program ) );
-                
-                break;
-            }
+        }
+        else
+        {
+            //TODO implement properly 
+            params.setTableName( TABLE_BASE_NAME + year( params.getPeriods().get( 0 ).getStartDate() ) + "_" + program.getUid() );
+            params.setPeriodType( params.getPeriods().get( 0 ).getPeriodType().getName() );
+            list.add( params );
         }
         
         return list;
