@@ -1899,7 +1899,7 @@ Ext.onReady( function() {
 				for( var i in TR.state.orgunitIds){
 					p.ou += TR.state.orgunitIds[i];
 					if( i<TR.state.orgunitIds.length - 1 ){
-						p.ou +=";"
+						p.ou +=":"
 					}
 				}
 				if( Ext.getCmp('userOrgunit').getValue() == "true" ){
@@ -1937,10 +1937,10 @@ Ext.onReady( function() {
 							&& Ext.getCmp('filter_' + id).getValue()!=''){
 							
 							filterValue = filterValue.toLowerCase();
-							filter += ';' + filterOpt + ';';
+							filter += ':' + filterOpt + ':';
 							if( filterOpt == 'IN' )
 							{
-								filter +=filterValue.replace(/;/g,":"); 
+								filter +=filterValue.replace(/:/g,";"); 
 							}
 							else
 							{
