@@ -75,6 +75,7 @@ public class DefaultEventAnalyticsService
     private static final String ITEM_EXECUTION_DATE = "executiondate";
     private static final String ITEM_ORG_UNIT = "ou";
     private static final String ITEM_ORG_UNIT_NAME = "ouname";
+    private static final String ITEM_ORG_UNIT_CODE = "oucode";
     private static final String ITEM_GENDER = "gender";
     private static final String ITEM_ISDEAD = "isdead";
     
@@ -105,6 +106,7 @@ public class DefaultEventAnalyticsService
 
     //TODO order the event analytics tables up front to avoid default sorting in queries
     //TODO filter items support
+    //TODO relative and fixed periods support
     
     public Grid getAggregatedEventData( EventQueryParams params )
     {
@@ -164,7 +166,7 @@ public class DefaultEventAnalyticsService
         grid.addHeader( new GridHeader( ITEM_EXECUTION_DATE, "Execution date" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_NAME, "Organisation unit name" ) );
-        grid.addHeader( new GridHeader( ITEM_ORG_UNIT_NAME, "Organisation unit code" ) );
+        grid.addHeader( new GridHeader( ITEM_ORG_UNIT_CODE, "Organisation unit code" ) );
 
         for ( QueryItem queryItem : params.getItems() )
         {
@@ -263,7 +265,7 @@ public class DefaultEventAnalyticsService
             {
                 if ( it != null && !it.contains( OPTION_SEP ) )
                 {
-                    params.getItems().add( new QueryItem( getItem( it, pr ) ) );
+                    params.getItems().add( getItem( pr, it, null, null ) );
                 }
                 else if ( it != null ) // Filter
                 {
@@ -274,7 +276,7 @@ public class DefaultEventAnalyticsService
                         throw new IllegalQueryException( "Item filter has invalid format: " + it );
                     }
                     
-                    params.getItems().add( new QueryItem( getItem( split[0], pr ), split[1], split[2] ) );
+                    params.getItems().add( getItem( pr, split[0], split[1], split[2] ) );
                 }
             }
         }
@@ -365,7 +367,7 @@ public class DefaultEventAnalyticsService
     
     private String getSortItem( String item, Program program )
     {
-        if ( !ITEM_EXECUTION_DATE.equals( item ) && getItem( item, program ) == null )
+        if ( !ITEM_EXECUTION_DATE.equals( item ) && getItem( program, item, null, null ) == null )
         {
             throw new IllegalQueryException( "Descending sort item is invalid: " + item );
         }
@@ -373,37 +375,37 @@ public class DefaultEventAnalyticsService
         return item;
     }
     
-    private IdentifiableObject getItem( String item, Program program )
+    private QueryItem getItem( Program program, String item, String operator, String filter )
     {
         if ( ITEM_GENDER.equalsIgnoreCase( item ) )
         {
-            return new BaseIdentifiableObject( ITEM_GENDER, ITEM_GENDER, ITEM_GENDER );
+            return new QueryItem( new BaseIdentifiableObject( ITEM_GENDER, ITEM_GENDER, ITEM_GENDER ), operator, filter );
         }
         
         if ( ITEM_ISDEAD.equalsIgnoreCase( item ) )
         {
-            return new BaseIdentifiableObject( ITEM_ISDEAD, ITEM_ISDEAD, ITEM_ISDEAD );
+            return new QueryItem( new BaseIdentifiableObject( ITEM_ISDEAD, ITEM_ISDEAD, ITEM_ISDEAD ), operator, filter );
         }
         
         DataElement de = dataElementService.getDataElement( item );
         
         if ( de != null && program.getAllDataElements().contains( de ) )
         {
-            return de;
+            return new QueryItem( de, operator, filter );
         }
         
         PatientAttribute at = attributeService.getPatientAttribute( item );
         
         if ( at != null && program.getPatientAttributes().contains( at ) )
         {
-            return at;
+            return new QueryItem( at, operator, filter );
         }
         
         PatientIdentifierType it = identifierTypeService.getPatientIdentifierType( item );
         
         if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
         {
-            return it;
+            return new QueryItem( it, operator, filter );
         }
         
         throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );           
