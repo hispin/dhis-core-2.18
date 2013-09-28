@@ -71,7 +71,7 @@ public class EventQueryPlannerTest
         params.setProgram( prA );
         params.setStartDate( new Cal( 2010, 6, 1 ).time() );
         params.setEndDate( new Cal( 2012, 3, 20 ).time() );
-        params.getOrganisationUnits().add( ouA );
+        params.setOrganisationUnits( Arrays.asList( ouA ) );
         
         List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
         
@@ -96,7 +96,7 @@ public class EventQueryPlannerTest
         params.setProgram( prA );
         params.setStartDate( new Cal( 2010, 3, 1 ).time() );
         params.setEndDate( new Cal( 2010, 9, 20 ).time() );
-        params.getOrganisationUnits().add( ouA );
+        params.setOrganisationUnits( Arrays.asList( ouA ) );
         
         List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
 
@@ -106,8 +106,7 @@ public class EventQueryPlannerTest
         assertEquals( new Cal( 2010, 9, 20 ).time(), queries.get( 0 ).getEndDate() );
 
         assertEquals( "analytics_event_2010_programuidA", queries.get( 0 ).getTableName() );
-    }
-    
+    }    
 
     @Test
     public void testPlanQueryC()

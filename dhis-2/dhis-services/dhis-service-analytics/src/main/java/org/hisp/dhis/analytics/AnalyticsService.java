@@ -28,11 +28,13 @@ package org.hisp.dhis.analytics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
 
@@ -160,4 +162,24 @@ public interface AnalyticsService
      * @return a data query parameter object created based on the given BaseAnalyticalObject.
      */
     DataQueryParams getFromAnalyticalObject( BaseAnalyticalObject object, I18nFormat format );
+    
+    /**
+     * Returns a list of persisted DimensionalObjects generated from the given 
+     * dimension identifier and list of dimension options. The dx dimension
+     * will be exploded into concrete in|de|ds object identifiers and returned
+     * as separate DimensionalObjects. 
+     * 
+     * For the pe dimension items, relative periods represented by enums will be 
+     * replaced by real ISO periods relative to the current date. For the ou 
+     * dimension items, the user  organisation unit enums 
+     * USER_ORG_UNIT|USER_ORG_UNIT_CHILDREN will be replaced by the persisted 
+     * organisation units for the current user.
+     * 
+     * @param dimension the dimension identifier.
+     * @param items the dimension items.
+     * @param relativePeriodDate the date to use for generating relative periods, can be null.
+     * @parma format the I18nFormat, can be null.
+     * @return list of DimensionalObjects.
+     */
+    List<DimensionalObject> getDimension( String dimension, List<String> items, Date relativePeriodDate, I18nFormat format );
 }
