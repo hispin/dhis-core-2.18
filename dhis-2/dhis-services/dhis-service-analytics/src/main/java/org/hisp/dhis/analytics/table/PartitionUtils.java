@@ -29,6 +29,7 @@ package org.hisp.dhis.analytics.table;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -103,6 +104,23 @@ public class PartitionUtils
         for ( NameableObject period : periods )
         {
             map.putValue( getPartitions( (Period) period, tableName ), period );
+        }
+        
+        return map;
+    }
+
+    /**
+     * Creates a mapping between period type name and period for the given periods.
+     */
+    public static ListMap<String, NameableObject> getPeriodTypePeriodMap( Collection<NameableObject> periods )
+    {
+        ListMap<String, NameableObject> map = new ListMap<String, NameableObject>();
+        
+        for ( NameableObject period : periods )
+        {
+            String periodTypeName = ((Period) period).getPeriodType().getName();
+            
+            map.putValue( periodTypeName, period );
         }
         
         return map;

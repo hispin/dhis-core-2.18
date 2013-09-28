@@ -219,10 +219,14 @@ public class JdbcEventAnalyticsManager
         
         sql += "from " + params.getTableName() + " ";
         
-        if ( params.getStartDate() != null && params.getEndDate() != null )
+        if ( params.hasStartEndDate() )
         {        
             sql += "where executiondate >= '" + getMediumDateString( params.getStartDate() ) + "' ";
             sql += "and executiondate <= '" + getMediumDateString( params.getEndDate() ) + "' ";
+        }
+        else // Periods
+        {
+            sql += "where " + params.getPeriodType() + " in (" + getQuotedCommaDelimitedString( getUids( params.getPeriods() ) ) + ") ";
         }
         
         if ( params.isOrganisationUnitMode( EventQueryParams.OU_MODE_SELECTED ) )
@@ -282,7 +286,7 @@ public class JdbcEventAnalyticsManager
         {
             String[] split = filter.split( DataQueryParams.OPTION_SEP );
                         
-            return "(" + TextUtils.getQuotedCommaDelimitedString( Arrays.asList( split ) ) + ")";
+            return "(" + getQuotedCommaDelimitedString( Arrays.asList( split ) ) + ")";
         }
         
         return "'" + filter + "'";

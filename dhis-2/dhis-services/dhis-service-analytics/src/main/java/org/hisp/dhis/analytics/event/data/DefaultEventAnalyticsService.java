@@ -64,6 +64,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -116,7 +117,7 @@ public class DefaultEventAnalyticsService
     public Grid getAggregatedEventData( EventQueryParams params )
     {
         EventQueryPlanner.validate( params );
-        
+
         Grid grid = new ListGrid();
 
         // ---------------------------------------------------------------------
@@ -139,7 +140,7 @@ public class DefaultEventAnalyticsService
         //TODO relative periods
                 
         List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
-        
+
         for ( EventQueryParams query : queries )
         {
             analyticsManager.getAggregatedEventData( query, grid );
@@ -152,14 +153,14 @@ public class DefaultEventAnalyticsService
         Map<Object, Object> metaData = new HashMap<Object, Object>();        
         metaData.put( AnalyticsService.NAMES_META_KEY, getUidNameMap( params ) );
         grid.setMetaData( metaData );
-        
+
         return grid;        
     }
     
     public Grid getEvents( EventQueryParams params )
     {
         EventQueryPlanner.validate( params );
-        
+
         Grid grid = new ListGrid();
 
         // ---------------------------------------------------------------------
@@ -184,7 +185,11 @@ public class DefaultEventAnalyticsService
         // Data
         // ---------------------------------------------------------------------
 
+        Timer t = new Timer().start();
+        
         List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
+        
+        t.getSplitTime( "Planned query, got: " + queries.size() );
         
         int count = 0;
         
@@ -197,6 +202,8 @@ public class DefaultEventAnalyticsService
             
             analyticsManager.getEvents( query, grid );
         }
+        
+        t.getTime( "Queried events, got: " + grid.getHeight() );
         
         // ---------------------------------------------------------------------
         // Meta-data
@@ -244,24 +251,17 @@ public class DefaultEventAnalyticsService
         Date start = null;
         Date end = null;
         
-        try
+        if ( startDate != null && endDate != null )
         {
-            start = DateUtils.getMediumDate( startDate );
-            end = DateUtils.getMediumDate( endDate );
-        }
-        catch ( RuntimeException ex )
-        {
-            throw new IllegalQueryException( "Start date or end date is invalid: " + startDate + " - " + endDate );
-        }
-        
-        if ( start == null || end == null )
-        {
-            throw new IllegalQueryException( "Start date or end date is invalid: " + startDate + " - " + endDate );
-        }
-        
-        if ( start.after( end ) )
-        {
-            throw new IllegalQueryException( "Start date is after end date: " + startDate + " - " + endDate );
+            try
+            {
+                start = DateUtils.getMediumDate( startDate );
+                end = DateUtils.getMediumDate( endDate );
+            }
+            catch ( RuntimeException ex )
+            {
+                throw new IllegalQueryException( "Start date or end date is invalid: " + startDate + " - " + endDate );
+            }
         }
         
         for ( String it : dimension )
@@ -337,7 +337,7 @@ public class DefaultEventAnalyticsService
         {
             params.setPageSize( pageSize );
         }
-        
+
         return params;
     }
 
