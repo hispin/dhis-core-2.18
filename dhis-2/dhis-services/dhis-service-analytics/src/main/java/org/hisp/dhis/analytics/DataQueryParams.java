@@ -377,7 +377,7 @@ public class DataQueryParams
     {
         return CollectionUtils.intersection( dimensions, filters );
     }
-        
+    
     /**
      * Indicates whether periods are present as a dimension or as a filter. If
      * not this object is in an illegal state.
@@ -386,6 +386,17 @@ public class DataQueryParams
     {
         List<NameableObject> dimOpts = getDimensionOptions( PERIOD_DIM_ID );
         List<NameableObject> filterOpts = getFilterOptions( PERIOD_DIM_ID );
+        
+        return ( dimOpts != null && !dimOpts.isEmpty() ) || ( filterOpts != null && !filterOpts.isEmpty() );
+    }
+    
+    /**
+     * Indicates whether organisation units are present as dimensio or filter.
+     */
+    public boolean hasOrganisationUnits()
+    {
+        List<NameableObject> dimOpts = getDimensionOptions( ORGUNIT_DIM_ID );
+        List<NameableObject> filterOpts = getFilterOptions( ORGUNIT_DIM_ID );
         
         return ( dimOpts != null && !dimOpts.isEmpty() ) || ( filterOpts != null && !filterOpts.isEmpty() );
     }

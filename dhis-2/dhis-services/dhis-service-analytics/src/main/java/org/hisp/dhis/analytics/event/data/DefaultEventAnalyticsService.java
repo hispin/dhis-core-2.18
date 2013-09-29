@@ -309,7 +309,7 @@ public class DefaultEventAnalyticsService
             }
         }
         
-        for ( NameableObject object : params.getOrganisationUnits() )
+        for ( NameableObject object : params.getDimensionOrFilter( ORGUNIT_DIM_ID ) )
         {
             OrganisationUnit unit = (OrganisationUnit) object;
             unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getUid() ) );
@@ -329,21 +329,6 @@ public class DefaultEventAnalyticsService
             {
                 params.getDesc().add( getSortItem( sort, pr ) );
             }
-        }
-                
-        if ( params.getOrganisationUnits().isEmpty() )
-        {
-            throw new IllegalQueryException( "At least one organisation unit must be specified" );
-        }
-        
-        if ( page != null && page <= 0 )
-        {
-            throw new IllegalQueryException( "Page number must be positive: " + page );
-        }
-        
-        if ( pageSize != null && pageSize < 0 )
-        {
-            throw new IllegalQueryException( "Page size must be zero or positive: " + pageSize );
         }
         
         params.setProgram( pr );

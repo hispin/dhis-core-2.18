@@ -32,6 +32,7 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.removeLast;
+import static org.hisp.dhis.common.DimensionalObject.*;
 
 import java.util.Arrays;
 
@@ -237,12 +238,12 @@ public class JdbcEventAnalyticsManager
         }
         else // Periods
         {
-            sql += "where " + params.getPeriodType() + " in (" + getQuotedCommaDelimitedString( getUids( params.getPeriods() ) ) + ") ";
+            sql += "where " + params.getPeriodType() + " in (" + getQuotedCommaDelimitedString( getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) ) + ") ";
         }
         
         if ( params.isOrganisationUnitMode( EventQueryParams.OU_MODE_SELECTED ) )
         {
-            sql += "and ou in (" + getQuotedCommaDelimitedString( getUids( params.getOrganisationUnits() ) ) + ") ";
+            sql += "and ou in (" + getQuotedCommaDelimitedString( getUids( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ) ) + ") ";
         }
         else if ( params.isOrganisationUnitMode( EventQueryParams.OU_MODE_CHILDREN ) )
         {
@@ -252,7 +253,7 @@ public class JdbcEventAnalyticsManager
         {
             sql += "and (";
             
-            for ( NameableObject object : params.getOrganisationUnits() )
+            for ( NameableObject object : params.getDimensionOrFilter( ORGUNIT_DIM_ID ) )
             {
                 OrganisationUnit unit = (OrganisationUnit) object;
                 sql += "uidlevel" + unit.getLevel() + " = '" + unit.getUid() + "' or ";
