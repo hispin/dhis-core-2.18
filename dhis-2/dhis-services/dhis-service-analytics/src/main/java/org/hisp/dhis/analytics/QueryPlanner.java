@@ -92,4 +92,13 @@ public interface QueryPlanner
      * names and filter names respectively.
      */
     List<DataQueryParams> groupByOrgUnitLevel( DataQueryParams params );
+
+    /**
+     * If periods appear as dimensions in the given query; groups the query into 
+     * sub queries based on the period type of the periods. Sets the period type 
+     * name on each query. If periods appear as filters; replaces the period filter
+     * with one filter for each period type. Sets the dimension names and filter
+     * names respectively.
+     */
+    List<DataQueryParams> groupByPeriodType( DataQueryParams params );
 }
