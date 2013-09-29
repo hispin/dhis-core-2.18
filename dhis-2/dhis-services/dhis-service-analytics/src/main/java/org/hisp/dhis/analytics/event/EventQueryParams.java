@@ -34,13 +34,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.common.BaseDimensionalObject;
-import org.hisp.dhis.common.DimensionType;
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.common.NameableObjectUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 
@@ -48,6 +45,7 @@ import org.hisp.dhis.program.ProgramStage;
  * @author Lars Helge Overland
  */
 public class EventQueryParams
+    extends DataQueryParams
 {
     public static final String OU_MODE_SELECTED = "selected";
     public static final String OU_MODE_CHILDREN = "children";
@@ -63,8 +61,6 @@ public class EventQueryParams
     
     private List<QueryItem> items = new ArrayList<QueryItem>();
 
-    private List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
-    
     private List<String> asc = new ArrayList<String>();
     
     private List<String> desc = new ArrayList<String>();
@@ -93,16 +89,23 @@ public class EventQueryParams
     {
     }
     
+    @Override
     public EventQueryParams instance()
     {
         EventQueryParams params = new EventQueryParams();
+
+        params.dimensions = new ArrayList<DimensionalObject>( this.dimensions );
+        params.filters = new ArrayList<DimensionalObject>( this.filters );
+        params.aggregationType = this.aggregationType;
+
+        params.partitions = this.partitions;
+        params.periodType = this.periodType;
         
         params.program = this.program;
         params.programStage = this.programStage;
         params.startDate = this.startDate;
         params.endDate = this.endDate;
         params.items = new ArrayList<QueryItem>( this.items );
-        params.dimensions = new ArrayList<DimensionalObject>( this.dimensions );            
         params.asc = new ArrayList<String>( this.asc );
         params.desc = new ArrayList<String>( this.desc );
         params.organisationUnitMode = this.organisationUnitMode;
@@ -123,56 +126,19 @@ public class EventQueryParams
     {
         return organisationUnitMode != null && organisationUnitMode.equalsIgnoreCase( mode );
     }
-
-    public List<OrganisationUnit> getOrganisationUnits()
-    {
-        int index = dimensions.indexOf( new BaseDimensionalObject( DimensionalObject.ORGUNIT_DIM_ID ) );
-        return index != -1 ? NameableObjectUtils.asTypedList( dimensions.get( index ).getItems(), OrganisationUnit.class ) : null;
-    }
-
-    public void setOrganisationUnits( List<OrganisationUnit> organisationUnits )
-    {
-        setDimensionOptions( DimensionalObject.ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, organisationUnits );
-    }
-    
-    public List<Period> getPeriods()
-    {
-        int index = dimensions.indexOf( new BaseDimensionalObject( DimensionalObject.PERIOD_DIM_ID ) );
-        return index != -1 ? NameableObjectUtils.asTypedList( dimensions.get( index ).getItems(), Period.class ) : null;
-    }
-    
-    public void setPeriods( List<Period> periods )
-    {
-        setDimensionOptions( DimensionalObject.PERIOD_DIM_ID, DimensionType.PERIOD, null, periods );
-    }
     
     public boolean hasStartEndDate()
     {
         return startDate != null && endDate != null;
     }
-    
-    private EventQueryParams setDimensionOptions( String dimension, DimensionType type, String dimensionName, List<? extends NameableObject> options )
-    {
-        int index = dimensions.indexOf( new BaseDimensionalObject( dimension ) );
         
-        if ( index != -1 )
-        {
-            dimensions.set( index, new BaseDimensionalObject( dimension, type, dimensionName, options ) );
-        }
-        else
-        {
-            dimensions.add( new BaseDimensionalObject( dimension, type, dimensionName, options ) );
-        }
-        
-        return this;
-    }
-    
     public Set<OrganisationUnit> getOrganisationUnitChildren()
     {
         Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
         
-        for ( OrganisationUnit unit : getOrganisationUnits() )
+        for ( NameableObject object : getOrganisationUnits() )
         {
+            OrganisationUnit unit = (OrganisationUnit) object;            
             children.addAll( unit.getChildren() );
         }
         

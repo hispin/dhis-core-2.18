@@ -50,6 +50,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -294,8 +295,9 @@ public class DefaultEventAnalyticsService
             }
         }
         
-        for ( OrganisationUnit unit : params.getOrganisationUnits() )
+        for ( NameableObject object : params.getOrganisationUnits() )
         {
+            OrganisationUnit unit = (OrganisationUnit) object;
             unit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( unit.getUid() ) );
         }
         

@@ -41,6 +41,7 @@ import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.QueryItem;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.TextUtils;
@@ -241,8 +242,9 @@ public class JdbcEventAnalyticsManager
         {
             sql += "and (";
             
-            for ( OrganisationUnit unit : params.getOrganisationUnits() )
+            for ( NameableObject object : params.getOrganisationUnits() )
             {
+                OrganisationUnit unit = (OrganisationUnit) object;
                 sql += "uidlevel" + unit.getLevel() + " = '" + unit.getUid() + "' or ";
             }
             

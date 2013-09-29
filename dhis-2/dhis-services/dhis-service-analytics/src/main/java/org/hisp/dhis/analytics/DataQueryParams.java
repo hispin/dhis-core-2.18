@@ -103,11 +103,11 @@ public class DataQueryParams
     private static final DimensionItem[] DIM_OPT_ARR = new DimensionItem[0];
     private static final DimensionItem[][] DIM_OPT_2D_ARR = new DimensionItem[0][];
     
-    private List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
+    protected List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
     
-    private List<DimensionalObject> filters = new ArrayList<DimensionalObject>();
+    protected List<DimensionalObject> filters = new ArrayList<DimensionalObject>();
 
-    private AggregationType aggregationType;
+    protected AggregationType aggregationType;
     
     private Map<MeasureFilter, Double> measureCriteria = new HashMap<MeasureFilter, Double>();
     
@@ -119,9 +119,9 @@ public class DataQueryParams
     // Transient properties
     // -------------------------------------------------------------------------
     
-    private transient Partitions partitions;
+    protected transient Partitions partitions;
 
-    private transient String periodType;
+    protected transient String periodType;
         
     private transient PeriodType dataPeriodType;
     
