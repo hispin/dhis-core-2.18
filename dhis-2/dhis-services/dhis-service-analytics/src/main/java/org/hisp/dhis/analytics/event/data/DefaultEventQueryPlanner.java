@@ -28,6 +28,8 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -67,12 +69,12 @@ public class DefaultEventQueryPlanner
             throw new IllegalQueryException( "Params cannot be null" );
         }
         
-        if ( params.getOrganisationUnits().isEmpty() )
+        if ( !params.hasOrganisationUnits() )
         {
             violation = "At least one organisation unit must be specified";
         }
         
-        if ( params.getPeriods() == null && ( params.getStartDate() == null || params.getEndDate() == null ) )
+        if ( !params.hasPeriods() && ( params.getStartDate() == null || params.getEndDate() == null ) )
         {
             violation = "Start and end date or at least one period must be specified";
         }
@@ -81,10 +83,20 @@ public class DefaultEventQueryPlanner
         {
             if ( params.getStartDate().after( params.getEndDate() ) )
             {
-                throw new IllegalQueryException( "Start date is after end date: " + params.getStartDate() + " - " + params.getEndDate() );
+                violation = "Start date is after end date: " + params.getStartDate() + " - " + params.getEndDate();
             }            
         }
 
+        if ( params.getPage() != null && params.getPage() <= 0 )
+        {
+            violation = "Page number must be positive: " + params.getPage();
+        }
+        
+        if ( params.getPageSize() != null && params.getPageSize() < 0 )
+        {
+            violation = "Page size must be zero or positive: " + params.getPageSize();
+        }
+        
         if ( violation != null )
         {
             log.warn( "Validation failed: " + violation );
@@ -151,7 +163,7 @@ public class DefaultEventQueryPlanner
         else
         {
             //TODO implement properly 
-            Period period = (Period) params.getPeriods().get( 0 );
+            Period period = (Period) params.getDimensionOrFilter( PERIOD_DIM_ID ).get( 0 );
             params.setTableName( TABLE_BASE_NAME + year( period.getStartDate() ) + "_" + program.getUid() );
             params.setPeriodType( period.getPeriodType().getName() );
             list.add( params );

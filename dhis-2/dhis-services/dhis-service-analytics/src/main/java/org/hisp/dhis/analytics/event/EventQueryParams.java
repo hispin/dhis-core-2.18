@@ -136,7 +136,7 @@ public class EventQueryParams
     {
         Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
         
-        for ( NameableObject object : getOrganisationUnits() )
+        for ( NameableObject object : getDimensionOrFilter( DimensionalObject.ORGUNIT_DIM_ID ) )
         {
             OrganisationUnit unit = (OrganisationUnit) object;            
             children.addAll( unit.getChildren() );
