@@ -434,14 +434,7 @@ public class DefaultQueryPlanner
         return queries;        
     }
     
-    /**
-     * If organisation units appear as dimensions; groups the given query into 
-     * sub queries based on the level of the organisation units. Sets the organisation 
-     * unit level on each query. If organisation units appear as filter; replaces
-     * the organisation unit filter with one filter for each level. Sets the dimension
-     * names and filter names respectively.
-     */
-    private List<DataQueryParams> groupByOrgUnitLevel( DataQueryParams params )
+    public List<DataQueryParams> groupByOrgUnitLevel( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
