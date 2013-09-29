@@ -57,6 +57,8 @@ public interface ModuleManager
 
     List<Module> getAccessibleServiceModules();
     
+    List<Module> getAccessibleServiceModulesAndApps();
+    
     Collection<Module> getAllModules();
 
     Module getCurrentModule();

@@ -230,7 +230,7 @@
   left: 411px;
   width: 498px;
   max-height: 520px;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
   border-left: 1px solid #bbb;
