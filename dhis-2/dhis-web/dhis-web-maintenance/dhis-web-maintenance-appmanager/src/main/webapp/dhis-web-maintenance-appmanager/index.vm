@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "dhis-web-appmanager" ) #*openHelp( "appManager" )*#</h3>
+<h3>$i18n.getString( "dhis-web-maintenance-appmanager" ) #*openHelp( "appManager" )*#</h3>
 
 <ul class="introList">
 #if( $appList.isEmpty() )

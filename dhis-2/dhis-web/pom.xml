@@ -30,7 +30,6 @@
     <module>dhis-web-light</module>
     <module>dhis-web-mobile</module>
     <module>dhis-web-sms</module>
-    <module>dhis-web-appmanager</module>
     <module>dhis-web-portal</module>
   </modules>
   <build>
