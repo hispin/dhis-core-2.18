@@ -79,8 +79,6 @@ public class EventQueryParams
     
     private String periodType;
     
-    private int organisationUnitLevel;
-    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -113,7 +111,6 @@ public class EventQueryParams
         params.page = this.page;
         params.pageSize = this.pageSize;
         params.periodType = this.periodType;
-        params.organisationUnitLevel = this.organisationUnitLevel;
         
         return params;
     }
@@ -313,15 +310,5 @@ public class EventQueryParams
     public void setPeriodType( String periodType )
     {
         this.periodType = periodType;
-    }
-
-    public int getOrganisationUnitLevel()
-    {
-        return organisationUnitLevel;
-    }
-
-    public void setOrganisationUnitLevel( int organisationUnitLevel )
-    {
-        this.organisationUnitLevel = organisationUnitLevel;
     }
 }
