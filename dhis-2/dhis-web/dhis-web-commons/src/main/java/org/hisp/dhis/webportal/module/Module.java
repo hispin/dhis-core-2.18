@@ -1,5 +1,10 @@
 package org.hisp.dhis.webportal.module;
 
+import java.io.File;
+
+import org.hisp.dhis.appmanager.App;
+import org.hisp.dhis.system.util.TextUtils;
+
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -71,6 +76,23 @@ public class Module
         this.defaultAction = defaultAction;
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public static Module getModule( App app )
+    {
+        String defaultAction = app.getBaseUrl() + File.separator + app.getFolderName() + File.separator + app.getLaunchPath();
+        String icon = app.getFolderName() + File.separator + app.getIcons().getIcon48();
+        String description = TextUtils.subString( app.getDescription(), 0, 80 );
+        
+        Module module = new Module( app.getName(), app.getName(), defaultAction );
+        module.setIcon( icon );
+        module.setDescription( description );
+        
+        return module;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

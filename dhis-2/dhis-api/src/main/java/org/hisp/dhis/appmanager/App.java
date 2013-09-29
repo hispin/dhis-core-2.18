@@ -79,6 +79,9 @@ public class App
     @JsonIgnore
     private String folderName;
 
+    @JsonIgnore
+    private String baseUrl;
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -202,7 +205,17 @@ public class App
     {
         this.folderName = folderName;
     }
-    
+
+    public String getBaseUrl()
+    {
+        return baseUrl;
+    }
+
+    public void setBaseUrl( String baseUrl )
+    {
+        this.baseUrl = baseUrl;
+    }
+
     // -------------------------------------------------------------------------
     // hashCode, equals, toString
     // -------------------------------------------------------------------------

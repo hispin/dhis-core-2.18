@@ -166,6 +166,8 @@ a.menuLink:hover
   padding-left: 4px;
   padding-right: 4px;
   width: 189px;
+  max-heigth: 610px;
+  overflow-y: auto;
   background-color: #b91010;
   display: none;
   z-index: 10;

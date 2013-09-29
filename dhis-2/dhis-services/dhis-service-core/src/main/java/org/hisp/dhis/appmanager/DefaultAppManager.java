@@ -93,6 +93,13 @@ public class DefaultAppManager
     @Override
     public List<App> getInstalledApps()
     {
+        String baseUrl = getAppBaseUrl();
+        
+        for ( App app : apps )
+        {
+            app.setBaseUrl( baseUrl );
+        }
+        
         return apps;
     }
     
@@ -134,10 +141,8 @@ public class DefaultAppManager
         }
 
         zip.close();
-        
-        // Reload app state
-        
-        reloadAppsInternal();
+                
+        reloadAppsInternal(); // Reload app state
     }
 
     @Override
@@ -152,16 +157,16 @@ public class DefaultAppManager
                     String folderPath = getAppFolderPath() + File.separator + app.getFolderName();                
                     FileUtils.forceDelete( new File( folderPath ) );
 
-                    // Reload app state
-                    
-                    reloadAppsInternal();
-                    
                     return true;
                 }
                 catch ( IOException ex )
                 {
                     log.error( "Could not delete app: " + name, ex );
                     return false;
+                }
+                finally
+                {
+                    reloadAppsInternal(); // Reload app state
                 }
             }
         }

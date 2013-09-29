@@ -28,7 +28,6 @@ package org.hisp.dhis.webportal.module;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +42,6 @@ import org.apache.struts2.dispatcher.Dispatcher;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.security.ActionAccessResolver;
-import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.config.Configuration;
@@ -155,16 +153,8 @@ public class DefaultModuleManager
         List<App> apps = appManager.getInstalledApps();
         
         for ( App app : apps )
-        {
-            String defaultAction = app.getFolderName() + File.separator + app.getLaunchPath();
-            String icon = app.getFolderName() + File.separator + app.getIcons().getIcon48();
-            String description = TextUtils.subString( app.getDescription(), 0, 80 );
-            
-            Module module = new Module( app.getName(), app.getName(), defaultAction );
-            module.setIcon( icon );
-            module.setDescription( description );
-            
-            modules.add( module );
+        {   
+            modules.add( Module.getModule( app ) );
         }
         
         return modules;
@@ -196,6 +186,20 @@ public class DefaultModuleManager
         detectModules();
         
         return getAccessibleModules( serviceMenuModules );
+    }
+
+    public List<Module> getAccessibleServiceModulesAndApps()
+    {
+        List<Module> modules = getAccessibleServiceModules();
+
+        List<App> apps = appManager.getInstalledApps();
+        
+        for ( App app : apps )
+        {   
+            modules.add( Module.getModule( app ) );
+        }
+        
+        return modules;
     }
     
     public Collection<Module> getAllModules()

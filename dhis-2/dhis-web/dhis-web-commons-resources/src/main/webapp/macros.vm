@@ -81,7 +81,7 @@
 #end
 
 #macro( introListImgApp $module )
-<li class="introItem" onclick="window.location.href='${appBaseUrl}/${module.defaultAction}'">
+<li class="introItem" onclick="window.location.href='${module.defaultAction}'">
   <img src="${appBaseUrl}/${module.icon}" class="introIcon">
   <div class="introItemText"><div class="introItemHeader">${module.name}</div><div>${module.description}</div></div>
 </li>
