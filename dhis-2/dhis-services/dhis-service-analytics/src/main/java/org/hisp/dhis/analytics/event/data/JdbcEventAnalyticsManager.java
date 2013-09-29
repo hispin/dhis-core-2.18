@@ -273,6 +273,14 @@ public class JdbcEventAnalyticsManager
                 sql += "and lower(" + filter.getItem().getUid() + ") " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
             }
         }
+        
+        for ( QueryItem filter : params.getItemFilters() )
+        {
+            if ( filter.hasFilter() )
+            {                
+                sql += "and lower(" + filter.getItem().getUid() + ") " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
+            }
+        }
 
         return sql;
     }
