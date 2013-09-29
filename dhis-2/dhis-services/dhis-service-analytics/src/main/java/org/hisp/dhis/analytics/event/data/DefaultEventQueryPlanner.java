@@ -34,13 +34,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
-import org.hisp.dhis.common.ListMap;
-import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
@@ -103,7 +101,7 @@ public class DefaultEventQueryPlanner
         
         for ( EventQueryParams byPartition : groupedByPartition )
         {
-            queries.addAll( groupByOrgUnitLevel( byPartition ) );
+            queries.addAll( convert( queryPlanner.groupByOrgUnitLevel( byPartition ) ) );
         }
         
         return queries;
@@ -157,28 +155,6 @@ public class DefaultEventQueryPlanner
         return list;
     }
     
-    private List<EventQueryParams> groupByOrgUnitLevel( EventQueryParams params )
-    {
-        ListMap<Integer, OrganisationUnit> levelOrgUnitMap = new ListMap<Integer, OrganisationUnit>();
-        
-        for ( NameableObject object : params.getOrganisationUnits() )
-        {
-            OrganisationUnit unit = (OrganisationUnit) object;
-            levelOrgUnitMap.putValue( unit.getLevel(), unit );
-        }
-        
-        List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
-        
-        for ( Integer level : levelOrgUnitMap.keySet() )
-        {
-            EventQueryParams query = params.instance();
-            query.setOrganisationUnits( levelOrgUnitMap.get( level ) );
-            queries.add( query );
-        }
-        
-        return queries;
-    }
-    
     private static EventQueryParams getQuery( EventQueryParams params, Date startDate, Date endDate, Program program )
     {
         EventQueryParams query = params.instance();
@@ -197,4 +173,16 @@ public class DefaultEventQueryPlanner
     {
         return new Cal( year( date ), 12, 31 ).time();
     }
+
+    private static List<EventQueryParams> convert( List<DataQueryParams> params )
+    {
+        List<EventQueryParams> eventParams = new ArrayList<EventQueryParams>();
+        
+        for ( DataQueryParams param : params )
+        {
+            eventParams.add( (EventQueryParams) param );
+        }
+        
+        return eventParams;
+    }    
 }
