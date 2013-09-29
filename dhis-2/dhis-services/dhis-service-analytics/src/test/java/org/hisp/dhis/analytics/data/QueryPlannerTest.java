@@ -221,7 +221,7 @@ public class QueryPlannerTest
         paramsA.setOrganisationUnits( ousA );
         paramsA.setPeriods( pesA );
         
-        DataQueryParams paramsB = new DataQueryParams( paramsA );
+        DataQueryParams paramsB = paramsA.instance();
         paramsB.setOrganisationUnits( ousB );
         paramsB.setPeriods( pesB );
         

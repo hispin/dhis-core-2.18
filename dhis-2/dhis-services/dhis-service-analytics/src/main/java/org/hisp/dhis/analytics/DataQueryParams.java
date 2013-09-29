@@ -134,18 +134,24 @@ public class DataQueryParams
     public DataQueryParams()
     {
     }
-    
-    public DataQueryParams( DataQueryParams params )
+
+    public DataQueryParams instance()
     {
-        this.dimensions = new ArrayList<DimensionalObject>( params.getDimensions() );
-        this.filters = new ArrayList<DimensionalObject>( params.getFilters() );
-        this.aggregationType = params.getAggregationType();
-        this.measureCriteria = params.getMeasureCriteria();
+        DataQueryParams params = new DataQueryParams();
         
-        this.partitions = params.getPartitions();
-        this.periodType = params.getPeriodType();
-        this.dataPeriodType = params.getDataPeriodType();
-        this.skipPartitioning = params.isSkipPartitioning();
+        params.dimensions = new ArrayList<DimensionalObject>( this.dimensions );
+        params.filters = new ArrayList<DimensionalObject>( this.filters );
+        params.aggregationType = this.aggregationType;
+        params.measureCriteria = this.measureCriteria;
+        params.skipMeta = this.skipMeta;
+        params.ignoreLimit = this.ignoreLimit;
+        
+        params.partitions = this.partitions;
+        params.periodType = this.periodType;
+        params.dataPeriodType = this.dataPeriodType;
+        params.skipPartitioning = this.skipPartitioning;
+        
+        return params;
     }
 
     // -------------------------------------------------------------------------
@@ -424,7 +430,7 @@ public class DataQueryParams
     {
         int total = 1;
         
-        DataQueryParams query = new DataQueryParams( this );
+        DataQueryParams query = this.instance();
         
         query.getDimensions().add( new BaseDimensionalObject( DATA_X_DIM_ID ) );
         
