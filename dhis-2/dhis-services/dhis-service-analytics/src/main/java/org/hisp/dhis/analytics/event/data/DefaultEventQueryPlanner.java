@@ -35,6 +35,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.IllegalQueryException;
+import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.ListMap;
@@ -43,6 +44,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -53,6 +55,9 @@ public class DefaultEventQueryPlanner
     private static final Log log = LogFactory.getLog( DefaultEventQueryPlanner.class );
     
     private static final String TABLE_BASE_NAME = "analytics_event_";
+    
+    @Autowired
+    private QueryPlanner queryPlanner;
     
     public void validate( EventQueryParams params )
         throws IllegalQueryException
@@ -168,7 +173,6 @@ public class DefaultEventQueryPlanner
         {
             EventQueryParams query = params.instance();
             query.setOrganisationUnits( levelOrgUnitMap.get( level ) );
-            query.setOrganisationUnitLevel( level );
             queries.add( query );
         }
         

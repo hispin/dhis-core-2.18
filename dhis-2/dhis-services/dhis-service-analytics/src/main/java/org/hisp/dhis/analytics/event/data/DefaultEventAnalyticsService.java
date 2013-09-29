@@ -47,6 +47,7 @@ import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.analytics.event.QueryItem;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -129,13 +130,16 @@ public class DefaultEventAnalyticsService
         // Headers
         // ---------------------------------------------------------------------
 
+        for ( DimensionalObject dimension : params.getDimensions() )
+        {
+            grid.addHeader( new GridHeader( dimension.getDimension(), dimension.getDisplayName() ) );
+        }
+        
         for ( QueryItem item : params.getItems() )
         {
             grid.addHeader( new GridHeader( item.getItem().getUid(), item.getItem().getName() ) );
         }
         
-        grid.addHeader( new GridHeader( PERIOD_DIM_ID, "Period" ) );
-        grid.addHeader( new GridHeader( ORGUNIT_DIM_ID, "Organisation unit" ) );
         grid.addHeader( new GridHeader( "value", "Value" ) );
 
         // ---------------------------------------------------------------------
@@ -175,9 +179,9 @@ public class DefaultEventAnalyticsService
         grid.addHeader( new GridHeader( ITEM_EVENT, "Event" ) );
         grid.addHeader( new GridHeader( ITEM_PROGRAM_STAGE, "Program stage" ) );
         grid.addHeader( new GridHeader( ITEM_EXECUTION_DATE, "Execution date" ) );
-        grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_NAME, "Organisation unit name" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_CODE, "Organisation unit code" ) );
+        grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit" ) );
 
         for ( QueryItem queryItem : params.getItems() )
         {

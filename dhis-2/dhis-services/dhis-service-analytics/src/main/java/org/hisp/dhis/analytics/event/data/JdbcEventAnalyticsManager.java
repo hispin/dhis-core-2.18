@@ -39,6 +39,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.QueryItem;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
@@ -70,8 +71,7 @@ public class JdbcEventAnalyticsManager
 
     public Grid getAggregatedEventData( EventQueryParams params, Grid grid )
     {
-        String sql = "select count(psi) as value, uidlevel" +
-            params.getOrganisationUnitLevel() + getItemColumns( params ) + " ";
+        String sql = "select count(psi) as value," + getSelectColumns( params ) + " ";
 
         // ---------------------------------------------------------------------
         // Criteria
@@ -83,7 +83,7 @@ public class JdbcEventAnalyticsManager
         // Group by
         // ---------------------------------------------------------------------
 
-        sql += "group by uidlevel" + params.getOrganisationUnitLevel() + getItemColumns( params );
+        sql += "group by " + getSelectColumns( params );
 
         // ---------------------------------------------------------------------
         // Grid
@@ -98,17 +98,22 @@ public class JdbcEventAnalyticsManager
         while ( rowSet.next() )
         {
             int value = rowSet.getInt( "value" );
-            String ou = rowSet.getString( params.getOrganisationUnitLevel() );
             
             grid.addRow();
             
-            for ( QueryItem queryItem : params.getItems() )
+            for ( DimensionalObject dimension : params.getDimensions() )
             {
-                String item = rowSet.getString( queryItem.getItem().getUid() );                
-                grid.addValue( item );
+                String dimensionValue = rowSet.getString( dimension.getDimensionName() );
+                grid.addValue( dimensionValue );
             }
             
-            grid.addValue( null ).addValue( ou ).addValue( value );
+            for ( QueryItem queryItem : params.getItems() )
+            {
+                String itemValue = rowSet.getString( queryItem.getItem().getUid() );                
+                grid.addValue( itemValue );
+            }
+            
+            grid.addValue( value );
         }
 
         return grid;
@@ -116,7 +121,7 @@ public class JdbcEventAnalyticsManager
     
     public Grid getEvents( EventQueryParams params, Grid grid )
     {
-        String sql = "select psi,ps,executiondate,ou,ouname,oucode" + getItemColumns( params ) + " ";
+        String sql = "select psi,ps,executiondate,ouname,oucode," + getSelectColumns( params ) + " ";
 
         // ---------------------------------------------------------------------
         // Criteria
@@ -200,9 +205,14 @@ public class JdbcEventAnalyticsManager
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String getItemColumns( EventQueryParams params )
+    private String getSelectColumns( EventQueryParams params )
     {
-        String sql = params.getItems().isEmpty() ? "" : ",";
+        String sql = "";
+        
+        for ( DimensionalObject dimension : params.getDimensions() )
+        {
+            sql += dimension.getDimensionName() + ",";
+        }
         
         for ( QueryItem queryItem : params.getItems() )
         {
