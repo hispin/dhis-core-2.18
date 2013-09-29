@@ -93,22 +93,26 @@ public class EventQueryParams
     {
     }
     
-    public EventQueryParams( EventQueryParams params )
+    public EventQueryParams instance()
     {
-        this.program = params.getProgram();
-        this.programStage = params.getProgramStage();
-        this.startDate = params.getStartDate();
-        this.endDate = params.getEndDate();
-        this.items = new ArrayList<QueryItem>( params.getItems() );
-        this.dimensions = new ArrayList<DimensionalObject>( params.getDimensions() );            
-        this.asc = new ArrayList<String>( params.getAsc() );
-        this.desc = new ArrayList<String>( params.getDesc() );
-        this.organisationUnitMode = params.getOrganisationUnitMode();
-        this.tableName = params.getTableName();
-        this.page = params.getPage();
-        this.pageSize = params.getPageSize();
-        this.periodType = params.getPeriodType();
-        this.organisationUnitLevel = params.getOrganisationUnitLevel();
+        EventQueryParams params = new EventQueryParams();
+        
+        params.program = this.program;
+        params.programStage = this.programStage;
+        params.startDate = this.startDate;
+        params.endDate = this.endDate;
+        params.items = new ArrayList<QueryItem>( this.items );
+        params.dimensions = new ArrayList<DimensionalObject>( this.dimensions );            
+        params.asc = new ArrayList<String>( this.asc );
+        params.desc = new ArrayList<String>( this.desc );
+        params.organisationUnitMode = this.organisationUnitMode;
+        params.tableName = this.tableName;
+        params.page = this.page;
+        params.pageSize = this.pageSize;
+        params.periodType = this.periodType;
+        params.organisationUnitLevel = this.organisationUnitLevel;
+        
+        return params;
     }
 
     // -------------------------------------------------------------------------
