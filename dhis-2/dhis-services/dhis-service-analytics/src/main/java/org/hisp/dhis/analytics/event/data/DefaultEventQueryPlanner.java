@@ -36,6 +36,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.event.EventQueryParams;
+import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Cal;
@@ -44,13 +45,14 @@ import org.hisp.dhis.program.Program;
 /**
  * @author Lars Helge Overland
  */
-public class EventQueryPlanner
+public class DefaultEventQueryPlanner
+    implements EventQueryPlanner
 {
-    private static final Log log = LogFactory.getLog( EventQueryPlanner.class );
+    private static final Log log = LogFactory.getLog( DefaultEventQueryPlanner.class );
     
     private static final String TABLE_BASE_NAME = "analytics_event_";
     
-    public static void validate( EventQueryParams params )
+    public void validate( EventQueryParams params )
         throws IllegalQueryException
     {
         String violation = null;
@@ -86,7 +88,7 @@ public class EventQueryPlanner
         }
     }
     
-    public static List<EventQueryParams> planQuery( EventQueryParams params )
+    public List<EventQueryParams> planQuery( EventQueryParams params )
     {
         List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
         
@@ -100,7 +102,7 @@ public class EventQueryPlanner
         return queries;
     }
     
-    private static List<EventQueryParams> groupByPartition( EventQueryParams params )
+    private List<EventQueryParams> groupByPartition( EventQueryParams params )
     {
         List<EventQueryParams> list = new ArrayList<EventQueryParams>();
         
@@ -147,7 +149,7 @@ public class EventQueryPlanner
         return list;
     }
     
-    private static List<EventQueryParams> groupByOrgUnitLevel( EventQueryParams params )
+    private List<EventQueryParams> groupByOrgUnitLevel( EventQueryParams params )
     {
         ListMap<Integer, OrganisationUnit> levelOrgUnitMap = new ListMap<Integer, OrganisationUnit>();
         

@@ -44,6 +44,7 @@ import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
+import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.analytics.event.QueryItem;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Grid;
@@ -104,6 +105,9 @@ public class DefaultEventAnalyticsService
     private EventAnalyticsManager analyticsManager;
     
     @Autowired
+    private EventQueryPlanner queryPlanner;
+    
+    @Autowired
     private AnalyticsService analyticsService;
 
     // -------------------------------------------------------------------------
@@ -116,7 +120,7 @@ public class DefaultEventAnalyticsService
     
     public Grid getAggregatedEventData( EventQueryParams params )
     {
-        EventQueryPlanner.validate( params );
+        queryPlanner.validate( params );
 
         Grid grid = new ListGrid();
 
@@ -139,7 +143,7 @@ public class DefaultEventAnalyticsService
 
         //TODO relative periods
                 
-        List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params );
 
         for ( EventQueryParams query : queries )
         {
@@ -159,7 +163,7 @@ public class DefaultEventAnalyticsService
     
     public Grid getEvents( EventQueryParams params )
     {
-        EventQueryPlanner.validate( params );
+        queryPlanner.validate( params );
 
         Grid grid = new ListGrid();
 
@@ -187,7 +191,7 @@ public class DefaultEventAnalyticsService
 
         Timer t = new Timer().start();
         
-        List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params );
         
         t.getSplitTime( "Planned query, got: " + queries.size() );
         
