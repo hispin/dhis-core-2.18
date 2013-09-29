@@ -8,12 +8,12 @@
     <version>2.13-SNAPSHOT</version>
   </parent>
 
-  <artifactId>dhis-web-appmanager</artifactId>
+  <artifactId>dhis-web-maintenance-appmanager</artifactId>
   <packaging>war</packaging>
   <name>DHIS App Manager</name>
 
   <build>
-    <finalName>dhis-web-appmanager</finalName>
+    <finalName>dhis-web-maintenance-appmanager</finalName>
   </build>
 
   <dependencies>
