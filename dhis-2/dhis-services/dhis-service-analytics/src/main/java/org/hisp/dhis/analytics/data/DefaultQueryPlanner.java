@@ -386,7 +386,7 @@ public class DefaultQueryPlanner
      * with one filter for each period type. Sets the dimension names and filter
      * names respectively.
      */
-    private List<DataQueryParams> groupByPeriodType( DataQueryParams params )
+    public List<DataQueryParams> groupByPeriodType( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<DataQueryParams>();
 
@@ -423,7 +423,8 @@ public class DefaultQueryPlanner
         }
         else
         {
-            throw new IllegalQueryException( "Query does not contain any period dimension items" );
+            queries.add( params.instance() );
+            return queries;
         }
 
         if ( queries.size() > 1 )

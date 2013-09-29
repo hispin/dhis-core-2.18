@@ -101,7 +101,12 @@ public class DefaultEventQueryPlanner
         
         for ( EventQueryParams byPartition : groupedByPartition )
         {
-            queries.addAll( convert( queryPlanner.groupByOrgUnitLevel( byPartition ) ) );
+            List<EventQueryParams> groupedByOrgUnitLevel = convert( queryPlanner.groupByOrgUnitLevel( byPartition ) );
+            
+            for ( EventQueryParams byOrgUnitLevel : groupedByOrgUnitLevel )
+            {
+                queries.addAll( convert( queryPlanner.groupByPeriodType( byOrgUnitLevel ) ) );
+            }
         }
         
         return queries;
