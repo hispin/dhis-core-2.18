@@ -32,6 +32,7 @@ import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_NAME_SEP;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -118,7 +119,6 @@ public class DefaultEventAnalyticsService
 
     //TODO order the event analytics tables up front to avoid default sorting in queries
     //TODO filter items support
-    //TODO relative and fixed periods support
     
     public Grid getAggregatedEventData( EventQueryParams params )
     {
@@ -233,13 +233,13 @@ public class DefaultEventAnalyticsService
     }
 
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, String ouMode )
+        Set<String> dimension, Set<String> filter, String ouMode )
     {
-        return getFromUrl( program, stage, startDate, endDate, dimension, ouMode, null, null, null, null );
+        return getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode, null, null, null, null );
     }
     
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
+        Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
     {
         EventQueryParams params = new EventQueryParams();
         
@@ -273,29 +273,39 @@ public class DefaultEventAnalyticsService
             }
         }
         
-        for ( String it : dimension )
+        if ( dimension != null )
         {
-            String dim = DataQueryParams.getDimensionFromParam( it );
-            
-            if ( ORGUNIT_DIM_ID.equals( dim ) || PERIOD_DIM_ID.equals( dim ) )
+            for ( String dim : dimension )
             {
-                List<String> items = DataQueryParams.getDimensionItemsFromParam( it );
-                params.getDimensions().addAll( analyticsService.getDimension( dim, items, null, null ) );
-            }
-            else if ( !it.contains( DIMENSION_NAME_SEP ) )
-            {
-                params.getItems().add( getItem( pr, it, null, null ) );
-            }
-            else // Filter
-            {
-                String[] split = it.split( DIMENSION_NAME_SEP );
+                String dimensionId = DataQueryParams.getDimensionFromParam( dim );
                 
-                if ( split == null || split.length != 3 )
+                if ( ORGUNIT_DIM_ID.equals( dimensionId ) || PERIOD_DIM_ID.equals( dimensionId ) )
                 {
-                    throw new IllegalQueryException( "Item filter has invalid format: " + it );
+                    List<String> items = DataQueryParams.getDimensionItemsFromParam( dim );
+                    params.getDimensions().addAll( analyticsService.getDimension( dimensionId, items, null, null ) );
                 }
+                else
+                {
+                    params.getItems().addAll( getQueryItems( dim, pr ) );
+                }
+            }
+        }
+        
+        if ( filter != null )
+        {
+            for ( String dim : filter )
+            {
+                String dimensionId = DataQueryParams.getDimensionFromParam( dim );
                 
-                params.getItems().add( getItem( pr, split[0], split[1], split[2] ) );
+                if ( ORGUNIT_DIM_ID.equals( dimensionId ) || PERIOD_DIM_ID.equals( dimensionId ) )
+                {
+                    List<String> items = DataQueryParams.getDimensionItemsFromParam( dim );
+                    params.getFilters().addAll( analyticsService.getDimension( dimensionId, items, null, null ) );
+                }
+                else
+                {
+                    params.getItemFilters().addAll( getQueryItems( dim, pr ) );
+                }            
             }
         }
         
@@ -354,6 +364,29 @@ public class DefaultEventAnalyticsService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+    
+    private List<QueryItem> getQueryItems( String dimension, Program program )
+    {
+        List<QueryItem> items = new ArrayList<QueryItem>();
+        
+        if ( !dimension.contains( DIMENSION_NAME_SEP ) )
+        {
+            items.add( getItem( program, dimension, null, null ) );
+        }
+        else // Filter
+        {
+            String[] split = dimension.split( DIMENSION_NAME_SEP );
+            
+            if ( split == null || split.length != 3 )
+            {
+                throw new IllegalQueryException( "Item filter has invalid format: " + dimension );
+            }
+            
+            items.add( getItem( program, split[0], split[1], split[2] ) );
+        }
+        
+        return items;
+    }
     
     private Map<String, String> getUidNameMap( EventQueryParams params )
     {

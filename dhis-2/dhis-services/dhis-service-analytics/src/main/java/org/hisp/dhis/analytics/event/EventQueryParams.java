@@ -60,6 +60,8 @@ public class EventQueryParams
     private Date endDate;
     
     private List<QueryItem> items = new ArrayList<QueryItem>();
+    
+    private List<QueryItem> itemFilters = new ArrayList<QueryItem>();
 
     private List<String> asc = new ArrayList<String>();
     
@@ -104,6 +106,7 @@ public class EventQueryParams
         params.startDate = this.startDate;
         params.endDate = this.endDate;
         params.items = new ArrayList<QueryItem>( this.items );
+        params.itemFilters = new ArrayList<QueryItem>( this.itemFilters );
         params.asc = new ArrayList<String>( this.asc );
         params.desc = new ArrayList<String>( this.desc );
         params.organisationUnitMode = this.organisationUnitMode;
@@ -175,6 +178,7 @@ public class EventQueryParams
             "Start date: " + startDate + ", " +
             "End date: " + endDate + ", " +
             "Items " + items + ", " +
+            "Item filters: " + itemFilters + ", " +
             "Dimensions " + dimensions + "]";
     }
     
@@ -230,6 +234,16 @@ public class EventQueryParams
     public void setItems( List<QueryItem> items )
     {
         this.items = items;
+    }
+
+    public List<QueryItem> getItemFilters()
+    {
+        return itemFilters;
+    }
+
+    public void setItemFilters( List<QueryItem> itemFilters )
+    {
+        this.itemFilters = itemFilters;
     }
 
     public List<String> getAsc()
