@@ -160,7 +160,7 @@ public class EventQueryPlanner
         
         for ( Integer level : levelOrgUnitMap.keySet() )
         {
-            EventQueryParams query = new EventQueryParams( params );
+            EventQueryParams query = params.instance();
             query.setOrganisationUnits( levelOrgUnitMap.get( level ) );
             query.setOrganisationUnitLevel( level );
             queries.add( query );
@@ -171,7 +171,7 @@ public class EventQueryPlanner
     
     private static EventQueryParams getQuery( EventQueryParams params, Date startDate, Date endDate, Program program )
     {
-        EventQueryParams query = new EventQueryParams( params );
+        EventQueryParams query = params.instance();
         query.setStartDate( startDate );
         query.setEndDate( endDate );
         query.setTableName( TABLE_BASE_NAME + year( startDate ) + "_" + program.getUid() );
