@@ -33,26 +33,30 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hisp.dhis.DhisConvenienceTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.event.EventQueryParams;
+import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.program.Program;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
  */
 public class EventQueryPlannerTest
-    extends DhisConvenienceTest
+    extends DhisSpringTest
 {
     private Program prA;
     private OrganisationUnit ouA;
     private OrganisationUnit ouB;
     
-    @Before
-    public void before()
+    @Autowired
+    private EventQueryPlanner queryPlanner;
+    
+    @Override
+    public void setUpTest()
     {
         prA = new Program();
         prA.setUid( "programuidA" );
@@ -73,7 +77,7 @@ public class EventQueryPlannerTest
         params.setEndDate( new Cal( 2012, 3, 20 ).time() );
         params.setOrganisationUnits( Arrays.asList( ouA ) );
         
-        List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params );
         
         assertEquals( 3, queries.size() );
         
@@ -98,7 +102,7 @@ public class EventQueryPlannerTest
         params.setEndDate( new Cal( 2010, 9, 20 ).time() );
         params.setOrganisationUnits( Arrays.asList( ouA ) );
         
-        List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params );
 
         assertEquals( 1, queries.size() );
         
@@ -117,7 +121,7 @@ public class EventQueryPlannerTest
         params.setEndDate( new Cal( 2012, 3, 20 ).time() );
         params.setOrganisationUnits( Arrays.asList( ouA, ouB ) );
         
-        List<EventQueryParams> queries = EventQueryPlanner.planQuery( params );
+        List<EventQueryParams> queries = queryPlanner.planQuery( params );
         
         assertEquals( 6, queries.size() );
     }

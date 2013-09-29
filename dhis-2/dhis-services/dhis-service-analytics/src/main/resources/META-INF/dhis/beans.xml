@@ -42,6 +42,8 @@
 
   <bean id="org.hisp.dhis.analytics.event.EventAnalyticsService" class="org.hisp.dhis.analytics.event.data.DefaultEventAnalyticsService" />
 
+  <bean id="org.hisp.dhis.analytics.event.EventQueryPlanner" class="org.hisp.dhis.analytics.event.data.DefaultEventQueryPlanner" />
+
   <!-- Scheduled tasks -->
   
   <bean id="analyticsAllTask" class="org.hisp.dhis.analytics.scheduling.AnalyticsTableTask">
