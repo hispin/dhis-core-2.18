@@ -38,8 +38,10 @@ import org.hisp.dhis.analytics.IllegalQueryException;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
 import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 
 /**
@@ -141,8 +143,9 @@ public class DefaultEventQueryPlanner
         else
         {
             //TODO implement properly 
-            params.setTableName( TABLE_BASE_NAME + year( params.getPeriods().get( 0 ).getStartDate() ) + "_" + program.getUid() );
-            params.setPeriodType( params.getPeriods().get( 0 ).getPeriodType().getName() );
+            Period period = (Period) params.getPeriods().get( 0 );
+            params.setTableName( TABLE_BASE_NAME + year( period.getStartDate() ) + "_" + program.getUid() );
+            params.setPeriodType( period.getPeriodType().getName() );
             list.add( params );
         }
         
@@ -153,8 +156,9 @@ public class DefaultEventQueryPlanner
     {
         ListMap<Integer, OrganisationUnit> levelOrgUnitMap = new ListMap<Integer, OrganisationUnit>();
         
-        for ( OrganisationUnit unit : params.getOrganisationUnits() )
+        for ( NameableObject object : params.getOrganisationUnits() )
         {
+            OrganisationUnit unit = (OrganisationUnit) object;
             levelOrgUnitMap.putValue( unit.getLevel(), unit );
         }
         
