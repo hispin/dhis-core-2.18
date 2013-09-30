@@ -165,7 +165,8 @@ public class JdbcEventAnalyticsTableManager
                 "where psi.executiondate >= '" + start + "' " +
                 "and psi.executiondate <= '" + end + "' " +
                 "and pr.programid=" + table.getProgram().getId() + " " +
-                "and psi.organisationunitid is not null";
+                "and psi.organisationunitid is not null " +
+                "and psi.executiondate is not null";
 
             log.info( "Populate SQL: "+ sql );
             
