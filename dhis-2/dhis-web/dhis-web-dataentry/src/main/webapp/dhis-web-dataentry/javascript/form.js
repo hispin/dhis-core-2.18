@@ -1033,15 +1033,12 @@ function loadDataValues()
 
     currentOrganisationUnitId = selection.getSelected()[0];
 
-    insertDataValues();
+    getAndInsertDataValues();
     displayEntryFormCompleted();
 }
 
-function insertDataValues()
+function getAndInsertDataValues()
 {
-    var dataValueMap = [];
-	currentMinMaxValueMap = []; // Reset
-
     var periodId = $( '#selectedPeriodId' ).val();
     var dataSetId = $( '#selectedDataSetId' ).val();
 
@@ -1075,124 +1072,159 @@ function insertDataValues()
 	    dataType: 'json',
 	    error: function() // offline
 	    {
-	    	$( '#contentDiv' ).show();
 	    	$( '#completenessDiv' ).show();
 	    	$( '#infoDiv' ).hide();
+	    	
+	    	var json = getOfflineDataValueJson( periodId );
+	    	
+	    	insertDataValues( json );
 	    },
 	    success: function( json ) // online
 	    {
-	    	if ( json.locked )
-	    	{
-	            $( '#contentDiv input').attr( 'readonly', 'readonly' );
-	            $( '.entryoptionset').autocomplete( 'disable' );
-                $( '.sectionFilter').removeAttr( 'disabled' );
-                $( '#completenessDiv' ).hide();
-	    		setHeaderDelayMessage( i18n_dataset_is_locked );
-	    	}
-	    	else
-	    	{
-                $( '.entryoptionset' ).autocomplete( 'enable' );
-                $( '#contentDiv input' ).removeAttr( 'readonly' );
-	    		$( '#completenessDiv' ).show();
-	    	}
-	    	
-	        // Set data values, works for selects too as data value=select value
-
-	        $.safeEach( json.dataValues, function( i, value )
-	        {
-	            var fieldId = '#' + value.id + '-val';
-	            var commentId = '#' + value.id + '-comment';
-
-	            if ( $( fieldId ).length > 0 ) // Set values
-	            {
-                    if ( $( fieldId ).attr( 'name' ) == 'entrytrueonly' && 'true' == value.val ) 
-                    {
-                        $( fieldId ).attr( 'checked', true );
-                    } 
-                    else 
-                    {
-                        $( fieldId ).val( value.val );
-                    }
-                }
-	            
-	            if ( 'true' == value.com ) // Set active comments
-	            {
-	                if ( $( commentId ).length > 0 )
-	                {
-	                    $( commentId ).attr( 'src', '../images/comment_active.png' );
-	                }
-	                else if ( $( fieldId ).length > 0 )
-	                {
-	                    $( fieldId ).css( 'border-color', COLOR_BORDER_ACTIVE )
-	                }	            		
-	            }
-	            
-	            dataValueMap[value.id] = value.val;
-	        } );
-
-	        // Set min-max values and colorize violation fields
-
-            if( !json.locked ) 
-            {
-                $.safeEach( json.minMaxDataElements, function( i, value )
-                {
-                    var minId = value.id + '-min';
-                    var maxId = value.id + '-max';
-
-                    var valFieldId = '#' + value.id + '-val';
-
-                    var dataValue = dataValueMap[value.id];
-
-                    if ( dataValue && ( ( value.min && new Number( dataValue ) < new Number(
-                        value.min ) ) || ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
-                    {
-                        $( valFieldId ).css( 'background-color', COLOR_ORANGE );
-                    }
-
-                    currentMinMaxValueMap[minId] = value.min;
-                    currentMinMaxValueMap[maxId] = value.max;
-                } );
-            }
-
-	        // Update indicator values in form
-
-	        updateIndicators();
-	        updateDataElementTotals();
-
-	        // Set completeness button
-
-	        if ( json.complete && !json.locked)
-	        {
-	            $( '#completeButton' ).attr( 'disabled', 'disabled' );
-	            $( '#undoButton' ).removeAttr( 'disabled' );
-
-	            if ( json.storedBy )
-	            {
-	                $( '#infoDiv' ).show();
-	                $( '#completedBy' ).html( json.storedBy );
-	                $( '#completedDate' ).html( json.date );
-
-	                currentCompletedByUser = json.storedBy;
-	            }
-	        }
-	        else
-	        {
-	            $( '#completeButton' ).removeAttr( 'disabled' );
-	            $( '#undoButton' ).attr( 'disabled', 'disabled' );
-	            $( '#infoDiv' ).hide();
-	        }
-
-            if ( json.locked ) 
-            {
-                $( '#contentDiv input' ).css( 'backgroundColor', '#eee' );
-                $( '.sectionFilter' ).css( 'backgroundColor', '#fff' );
-            }
+	    	insertDataValues( json );
         },
         complete: function()
         {
 	    	$( '.indicator' ).attr( 'readonly', 'readonly' );	    	
         }
 	} );
+}
+
+function getOfflineDataValueJson( periodId )
+{
+	var dataValues = storageManager.getDataValuesInForm( periodId, getCurrentOrganisationUnit() );
+	
+	var json = {};
+	json.dataValues = new Array();
+	json.locked = false;
+	json.complete = false;
+	json.date = "";
+	json.storedBy = "";
+		
+	for ( var i = 0; i < dataValues.length; i++ )
+	{
+		var dataValue = dataValues[i];
+		
+		json.dataValues.push( { 
+			'id': dataValue.dataElementId + '-' + dataValue.optionComboId,
+			'val': dataValue.value
+		} );
+	}
+	
+	return json;
+}
+
+function insertDataValues( json )
+{
+    var dataValueMap = []; // Reset
+    currentMinMaxValueMap = []; // Reset
+    
+	if ( json.locked )
+	{
+        $( '#contentDiv input').attr( 'readonly', 'readonly' );
+        $( '.entryoptionset').autocomplete( 'disable' );
+        $( '.sectionFilter').removeAttr( 'disabled' );
+        $( '#completenessDiv' ).hide();
+		setHeaderDelayMessage( i18n_dataset_is_locked );
+	}
+	else
+	{
+        $( '.entryoptionset' ).autocomplete( 'enable' );
+        $( '#contentDiv input' ).removeAttr( 'readonly' );
+		$( '#completenessDiv' ).show();
+	}
+	
+    // Set data values, works for selects too as data value=select value
+
+    $.safeEach( json.dataValues, function( i, value )
+    {
+        var fieldId = '#' + value.id + '-val';
+        var commentId = '#' + value.id + '-comment';
+
+        if ( $( fieldId ).length > 0 ) // Set values
+        {
+            if ( $( fieldId ).attr( 'name' ) == 'entrytrueonly' && 'true' == value.val ) 
+            {
+                $( fieldId ).attr( 'checked', true );
+            } 
+            else 
+            {
+                $( fieldId ).val( value.val );
+            }
+        }
+        
+        if ( 'true' == value.com ) // Set active comments
+        {
+            if ( $( commentId ).length > 0 )
+            {
+                $( commentId ).attr( 'src', '../images/comment_active.png' );
+            }
+            else if ( $( fieldId ).length > 0 )
+            {
+                $( fieldId ).css( 'border-color', COLOR_BORDER_ACTIVE )
+            }	            		
+        }
+        
+        dataValueMap[value.id] = value.val;
+    } );
+
+    // Set min-max values and colorize violation fields
+
+    if( !json.locked ) 
+    {
+        $.safeEach( json.minMaxDataElements, function( i, value )
+        {
+            var minId = value.id + '-min';
+            var maxId = value.id + '-max';
+
+            var valFieldId = '#' + value.id + '-val';
+
+            var dataValue = dataValueMap[value.id];
+
+            if ( dataValue && ( ( value.min && new Number( dataValue ) < new Number(
+                value.min ) ) || ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
+            {
+                $( valFieldId ).css( 'background-color', COLOR_ORANGE );
+            }
+
+            currentMinMaxValueMap[minId] = value.min;
+            currentMinMaxValueMap[maxId] = value.max;
+        } );
+    }
+
+    // Update indicator values in form
+
+    updateIndicators();
+    updateDataElementTotals();
+
+    // Set completeness button
+
+    if ( json.complete && !json.locked)
+    {
+        $( '#completeButton' ).attr( 'disabled', 'disabled' );
+        $( '#undoButton' ).removeAttr( 'disabled' );
+
+        if ( json.storedBy )
+        {
+            $( '#infoDiv' ).show();
+            $( '#completedBy' ).html( json.storedBy );
+            $( '#completedDate' ).html( json.date );
+
+            currentCompletedByUser = json.storedBy;
+        }
+    }
+    else
+    {
+        $( '#completeButton' ).removeAttr( 'disabled' );
+        $( '#undoButton' ).attr( 'disabled', 'disabled' );
+        $( '#infoDiv' ).hide();
+    }
+
+    if ( json.locked ) 
+    {
+        $( '#contentDiv input' ).css( 'backgroundColor', '#eee' );
+        $( '.sectionFilter' ).css( 'backgroundColor', '#fff' );
+    }
 }
 
 function displayEntryFormCompleted()
@@ -1866,7 +1898,8 @@ function StorageManager()
             localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
 
             log( 'Successfully stored form version: ' + dataSetId );
-        } catch ( e )
+        } 
+        catch ( e )
         {
             log( 'Max local storage quota reached, ignored form version: ' + dataSetId );
         }
@@ -1970,6 +2003,31 @@ function StorageManager()
 
         return null;
     };
+    
+    /**
+     * Returns the data values for the given period and organisation unit 
+     * identifiers as an array.
+     * 
+     * @param periodId the period identifier.
+     * @param organisationUnitId the organisation unit identifier.
+     */
+    this.getDataValuesInForm = function( periodId, organisationUnitId )
+    {
+    	var dataValues = this.getDataValuesAsArray();
+    	var valuesInForm = new Array();
+    	
+		for ( var i = 0; i < dataValues.length; i++ )
+		{
+			var val = dataValues[i];
+			
+			if ( val.periodId == periodId && val.organisationUnitId == organisationUnitId )
+			{
+				valuesInForm.push( val );
+			}
+		}
+    	
+    	return valuesInForm;
+    }
 
     /**
      * Removes the given dataValue from localStorage.
@@ -2013,9 +2071,34 @@ function StorageManager()
     {
         return localStorage[KEY_DATAVALUES] != null ? JSON.parse( localStorage[KEY_DATAVALUES] ) : null;
     };
+    
+    /**
+     * Returns all data value objects in an array. Returns an empty array if no
+     * data values exist. Items in array are guaranteed not to be undefined.
+     */
+    this.getDataValuesAsArray = function()
+    {
+    	var values = new Array();
+    	var dataValues = this.getAllDataValues();
+    	
+    	if ( undefined === dataValues )
+    	{
+    		return values;
+    	}
+    	
+    	for ( i in dataValues )
+    	{
+    		if ( dataValues.hasOwnProperty( i ) && undefined !== dataValues[i] )
+    		{
+    			values.push( dataValues[i] );
+    		}
+    	}
+    	
+    	return values;
+    }
 
     /**
-     * Supportive method.
+     * Generates an identifier.
      */
     this.getDataValueIdentifier = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
     {
@@ -2023,7 +2106,15 @@ function StorageManager()
     };
 
     /**
-     * Supportive method.
+     * Generates an identifier based on the given data value object.
+     */
+    this.getDataValueId = function( dv )
+    {
+    	return dv.dataElementId + '-' + dv.categoryOptionComboId + '-' + dv.periodId + '-' + dv.organisationUnitId;
+    }
+    
+    /**
+     * Generates an identifier.
      */
     this.getCompleteDataSetId = function( json )
     {
