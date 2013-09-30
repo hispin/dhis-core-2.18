@@ -72,7 +72,7 @@ public interface ActivityReportingService
 
     public Collection<PatientIdentifierType> getIdentifierTypes();
 
-    public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts(String programId);
+    public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts( String programId );
 
     public Collection<PatientIdentifierType> getIdentifiers( String programId );
 
@@ -97,4 +97,6 @@ public interface ActivityReportingService
     public Integer savePatient( Patient patient, int orgUnitId, String programId )
         throws NotAllowedException;
 
+    public String findLostToFollowUp( int orgUnitId, String programId )
+        throws NotAllowedException;
 }

@@ -84,6 +84,8 @@ public class MobileOrgUnitLinks
     private String findLatestPersonUrl;
     
     private String findPatientInAdvancedUrl;
+    
+    private String findLostToFollowUpUrl;
 
     @XmlAttribute
     public int getId()
@@ -307,6 +309,16 @@ public class MobileOrgUnitLinks
         this.findPatientInAdvancedUrl = findPatientInAdvancedUrl;
     }
 
+    public String getFindLostToFollowUpUrl()
+    {
+        return findLostToFollowUpUrl;
+    }
+
+    public void setFindLostToFollowUpUrl( String findLostToFollowUpUrl )
+    {
+        this.findLostToFollowUpUrl = findLostToFollowUpUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
 
         throws IOException
@@ -332,6 +344,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.findProgramUrl );
         dataOutputStream.writeUTF( this.findLatestPersonUrl );
         dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
+        dataOutputStream.writeUTF( this.findLostToFollowUpUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -358,6 +371,7 @@ public class MobileOrgUnitLinks
         this.findProgramUrl = dataInputStream.readUTF();
         this.findLatestPersonUrl = dataInputStream.readUTF();
         this.findPatientInAdvancedUrl = dataInputStream.readUTF();
+        this.findLostToFollowUpUrl = dataInputStream.readUTF();
     }
 
     @Override
@@ -417,5 +431,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.findProgramUrl );
         dataOutputStream.writeUTF( this.findLatestPersonUrl );
         dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
+        dataOutputStream.writeUTF( this.findLostToFollowUpUrl );
     }
 }
