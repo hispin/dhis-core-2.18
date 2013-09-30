@@ -28,10 +28,10 @@ package org.hisp.dhis.completeness.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
+
+import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
@@ -46,9 +46,9 @@ public class RegistrationDataSetCompletenessService
     }
 
     @Override
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods, int completenessOffset )
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
     {
-        return completenessStore.getCompleteDataSetRegistrations( dataSet, periods, relevantSources, completenessOffset );
+        return completenessStore.getCompleteDataSetRegistrations( dataSet, periods, relevantSources );
     }
 
     @Override

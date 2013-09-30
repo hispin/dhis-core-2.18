@@ -82,6 +82,10 @@
         <td><input type="text" id="expiryDays" name="expiryDays" value="$!encoder.htmlEncode( $dataSet.expiryDays )"/></td>
       </tr>
       <tr>
+        <td><label>$i18n.getString( "timely_days" )</label></td>
+        <td><input type="text" id="timelyDays" name="timelyDays" value="$!encoder.htmlEncode( $dataSet.timelyDays )"/></td>
+      </tr>
+      <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
           <select id="frequencySelect" name="frequencySelect">

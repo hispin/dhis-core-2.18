@@ -45,7 +45,7 @@ public interface DataSetCompletenessService
     String ID = DataSetCompletenessService.class.getName();
 
     Future<?> exportDataSetCompleteness( Collection<DataSet> dataSets, Collection<Period> periods,
-        Collection<OrganisationUnit> units, int days );
+        Collection<OrganisationUnit> units );
 
     /**
      * Returns a Collection of DataSetCompletenessResults. The

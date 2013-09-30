@@ -408,6 +408,10 @@ public class TableAlteror
         executeSql( "update dataset set expirydays = 0 where expirydays is null" );
         executeSql( "update expression set nullifblank = true where nullifblank is null" );
 
+        // move timelydays from system setting => dataset property
+        executeSql( "update dataset set timelydays = 15 where timelydays is null" );
+        executeSql( "delete from systemsetting where name='completenessOffset'" );
+
         executeSql( "update reporttable set reportingmonth = false where reportingmonth is null" );
         executeSql( "update reporttable set reportingbimonth = false where reportingbimonth is null" );
         executeSql( "update reporttable set reportingquarter = false where reportingquarter is null" );

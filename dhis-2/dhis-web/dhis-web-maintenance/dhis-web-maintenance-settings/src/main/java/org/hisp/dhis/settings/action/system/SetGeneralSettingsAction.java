@@ -147,13 +147,6 @@ public class SetGeneralSettingsAction
         this.offlineOrganisationUnitLevel = offlineOrganisationUnitLevel;
     }
 
-    private Integer completenessOffset;
-
-    public void setCompletenessOffset( Integer completenessOffset )
-    {
-        this.completenessOffset = completenessOffset;
-    }
-
     private String phoneNumberAreaCode;
     
     public void setPhoneNumberAreaCode( String phoneNumberAreaCode )
@@ -191,7 +184,6 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
-        systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
         systemSettingManager.saveSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );
         systemSettingManager.saveSystemSetting( KEY_MULTI_ORGANISATION_UNIT_FORMS, multiOrganisationUnitForms );
 

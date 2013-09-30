@@ -129,6 +129,13 @@ public class AddDataSetAction
         this.expiryDays = expiryDays;
     }
 
+    private int timelyDays;
+
+    public void setTimelyDays( int timelyDays )
+    {
+        this.timelyDays = timelyDays;
+    }
+
     private int notificationRecipients;
 
     public void setNotificationRecipients( int notificationRecipients )
@@ -240,6 +247,7 @@ public class AddDataSetAction
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
 
         dataSet.setExpiryDays( expiryDays );
+        dataSet.setTimelyDays( timelyDays );
         dataSet.setSkipAggregation( skipAggregation );
 
         for ( String id : dataElementsSelectedList )
@@ -264,7 +272,7 @@ public class AddDataSetAction
         dataSet.setValidCompleteOnly( validCompleteOnly );
         dataSet.setNotifyCompletingUser( notifyCompletingUser );
         dataSet.setSkipOffline( skipOffline );
-        dataSet.setDataElementDecoration( dataElementDecoration );		
+        dataSet.setDataElementDecoration( dataElementDecoration );
         dataSet.setRenderAsTabs( renderAsTabs );
         dataSet.setRenderHorizontally( renderHorizontally );
 
