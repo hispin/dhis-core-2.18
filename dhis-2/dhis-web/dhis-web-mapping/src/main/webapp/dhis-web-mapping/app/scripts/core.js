@@ -6,7 +6,13 @@ Ext.onReady( function() {
 	// namespace
 	if (!('GIS' in window)) {
 		GIS = {
-			i18n: {}
+			i18n: {
+				thematic_layer_1_legend: 'Thematic layer 1 legend',
+				thematic_layer_2_legend: 'Thematic layer 2 legend',
+				thematic_layer_3_legend: 'Thematic layer 3 legend',
+				thematic_layer_4_legend: 'Thematic layer 4 legend',
+				facility_layer_legend: 'Facility layer legend'				
+			}
 		};
 	}
 

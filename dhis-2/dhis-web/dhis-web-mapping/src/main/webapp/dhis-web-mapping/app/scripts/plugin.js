@@ -24,6 +24,31 @@ Ext.onReady( function() {
 	radiusLow						number			5					(Optional) Automatic legend set, low radius for points.
 	radiusHigh						number			15					(Optional) Automatic legend set, high radius for points.
 	*/
+	
+	// css	
+	var css = 'body { \n font-family: arial, sans-serif, liberation sans, consolas !important; \n font-size: 11px; \n } \n';
+	css += '.x-panel-body { \n font-size: 11px; \n } \n';
+	css += '.x-panel-header { \n height: 30px; \n padding: 7px 4px 4px 7px; \n border: 0 none; \n } \n';
+	css += '.olControlPanel { \n position: absolute; \n top: 0; \n right: 0; \n border: 0 none; \n } \n';
+	css += '.olControlButtonItemActive { \n background: #556; \n color: #fff; \n width: 24px; \n height: 24px; \n opacity: 0.75; \n filter: alpha(opacity=75); \n -ms-filter: "alpha(opacity=75)"; \n cursor: pointer; \n cursor: hand; \n text-align: center; \n font-size: 21px !important; \n text-shadow: 0 0 1px #ddd; \n } \n';
+	css += '.olControlPanel.zoomIn { \n right: 72px; \n } \n';
+	css += '.olControlPanel.zoomIn .olControlButtonItemActive { \n border-bottom-left-radius: 2px; \n } \n';
+	css += '.olControlPanel.zoomOut { \n right: 48px; \n } \n';
+	css += '.olControlPanel.zoomVisible { \n right: 24px; \n } \n';
+	css += '.olControlPermalink { \n display: none !important; \n } \n';
+	css += '.olControlMousePosition { \n background: #fff !important; \n opacity: 0.8 !important; \n filter: alpha(opacity=80) !important; \n -ms-filter: "alpha(opacity=80)" !important; \n right: 0 !important; \n bottom: 0 !important; \n border-top-left-radius: 2px !important; \n padding: 2px 2px 2px 5px !important; \n color: #000 !important; \n -webkit-text-stroke-width: 0.2px; \n -webkit-text-stroke-color: #555; \n } \n';
+	css += '.olControlMousePosition * { \n font-size: 10px !important; \n } \n';
+	css += '.text-mouseposition-lonlat { \n color: #555; \n } \n';
+	css += '.olLayerGoogleCopyright, .olLayerGoogleV3.olLayerGooglePoweredBy { \n display: none; \n } \n';
+	css += '#google-logo { \n background: url("../images/google-logo.png") no-repeat; \n width: 40px; \n height: 13px; \n margin-left: 6px; \n display: inline-block; \n vertical-align: bottom; \n cursor: pointer; \n cursor: hand; \n } \n';
+	css += '.olControlScaleLine { \n left: 5px !important; \n bottom: 5px !important; \n } \n';
+	css += '.olControlScaleLineBottom { \n display: none; \n } \n';
+	css += '.olControlScaleLineTop { \n font-weight: bold; \n } \n';
+	css += '.x-mask-msg { \n padding: 0; \n border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
+	css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
+	css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';
+
+	Ext.util.CSS.createStyleSheet(css);
 
 	GIS.plugin = {};
 
@@ -190,6 +215,7 @@ Ext.onReady( function() {
 						items: [
 							{
 								title: GIS.i18n.thematic_layer_1_legend,
+								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
 										gis.layer.thematic1.legendPanel = this;
@@ -198,6 +224,7 @@ Ext.onReady( function() {
 							},
 							{
 								title: GIS.i18n.thematic_layer_2_legend,
+								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
 										gis.layer.thematic2.legendPanel = this;
@@ -206,6 +233,7 @@ Ext.onReady( function() {
 							},
 							{
 								title: GIS.i18n.thematic_layer_3_legend,
+								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
 										gis.layer.thematic3.legendPanel = this;
@@ -214,6 +242,7 @@ Ext.onReady( function() {
 							},
 							{
 								title: GIS.i18n.thematic_layer_4_legend,
+								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
 										gis.layer.thematic4.legendPanel = this;
@@ -222,6 +251,7 @@ Ext.onReady( function() {
 							},
 							{
 								title: GIS.i18n.facility_layer_legend,
+								bodyStyle: 'padding:3px 0 4px 5px; border-width:1px 0 1px 0; border-color:#d0d0d0;',
 								listeners: {
 									added: function() {
 										gis.layer.facility.legendPanel = this;
