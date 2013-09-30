@@ -180,7 +180,7 @@ public class PeriodUtil
         {
             return null;
         }
-
+        
         return date;
     }
 

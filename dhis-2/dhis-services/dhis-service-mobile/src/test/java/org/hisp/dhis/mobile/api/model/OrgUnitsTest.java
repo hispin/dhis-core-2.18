@@ -94,6 +94,7 @@ public class OrgUnitsTest
         unit.setFindProgramUrl( "findProgramUrl" );
         unit.setFindLatestPersonUrl( "findLatestPersonUrl" );
         unit.setFindPatientInAdvancedUrl( "findPatientInAdvancedUrl" );
+        unit.setFindLostToFollowUpUrl( "findLostToFollowUpUrl" );
         return unit;
     }
 }
