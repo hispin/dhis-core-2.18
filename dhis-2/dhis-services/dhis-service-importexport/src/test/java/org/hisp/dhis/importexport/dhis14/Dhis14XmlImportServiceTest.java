@@ -34,8 +34,10 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.ImportType;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore //TODO reimplement, takes too long
 public class Dhis14XmlImportServiceTest
     extends DhisSpringTest
 {
