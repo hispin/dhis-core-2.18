@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -59,7 +59,7 @@ import org.junit.Test;
  */
 @SuppressWarnings( "unused" )
 public class StdDevOutlierAnalysisServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private DataAnalysisService stdDevOutlierAnalysisService;
 
@@ -143,12 +143,6 @@ public class StdDevOutlierAnalysisServiceTest
 
         organisationUnitService.addOrganisationUnit( organisationUnitA );
     }
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
     
     // ----------------------------------------------------------------------
     // Business logic tests
@@ -186,8 +180,7 @@ public class StdDevOutlierAnalysisServiceTest
         DeflatedDataValue valueA = new DeflatedDataValue( dataValueA );
         DeflatedDataValue valueB = new DeflatedDataValue( dataValueB );
         
-        assertEquals( 2, values.size() );
+        assertEquals( 1, values.size() );
         assertTrue( values.contains( valueA ) );
-        assertTrue( values.contains( valueB ) );        
     }
 }

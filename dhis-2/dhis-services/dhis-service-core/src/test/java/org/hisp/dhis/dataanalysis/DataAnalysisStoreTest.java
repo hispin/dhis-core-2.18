@@ -28,10 +28,13 @@ package org.hisp.dhis.dataanalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -46,13 +49,11 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Lars Helge Overland
  */
 public class DataAnalysisStoreTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private DataAnalysisStore dataAnalysisStore;
     
@@ -132,12 +133,6 @@ public class DataAnalysisStoreTest
         organisationUnits.add( organisationUnitB.getId() );
     }
 
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-    
     // ----------------------------------------------------------------------
     // Business logic tests
     // ----------------------------------------------------------------------
@@ -156,7 +151,7 @@ public class DataAnalysisStoreTest
         dataValueService.addDataValue( createDataValue( dataElementA, periodI, organisationUnitA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodJ, organisationUnitA, "15", categoryOptionCombo ) );
         
-        assertEquals( 14.49, dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), DELTA );
+        assertEquals( 15.26, dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), DELTA );
         assertNull( dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitB.getId() ) );
     }
 
@@ -174,7 +169,7 @@ public class DataAnalysisStoreTest
         dataValueService.addDataValue( createDataValue( dataElementA, periodI, organisationUnitA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodJ, organisationUnitA, "15", categoryOptionCombo ) );
         
-        assertEquals( 13, dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), DELTA );
+        assertEquals( 12.78, dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), DELTA );
         assertNull( dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitB.getId() ) );
     }
 }

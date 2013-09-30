@@ -37,7 +37,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -52,7 +52,7 @@ import org.junit.Test;
  */
 @SuppressWarnings( "unchecked" )
 public class ExpressionStoreTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private GenericStore<Expression> expressionStore;
 
@@ -115,12 +115,6 @@ public class ExpressionStoreTest
         dataElements.add( dataElementB );
         dataElements.add( dataElementC );
         dataElements.add( dataElementD );
-    }
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
     }
 
     // -------------------------------------------------------------------------

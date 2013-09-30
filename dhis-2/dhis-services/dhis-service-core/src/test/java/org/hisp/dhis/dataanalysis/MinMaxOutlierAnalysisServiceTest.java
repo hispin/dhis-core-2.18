@@ -35,7 +35,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -60,7 +60,7 @@ import org.junit.Test;
  * @version $Id: MinMaxOutlierAnalysisServiceTest.java 883 2009-05-15 00:42:45Z daghf $
  */
 public class MinMaxOutlierAnalysisServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private DataAnalysisService minMaxOutlierAnalysisService;
 
@@ -157,12 +157,6 @@ public class MinMaxOutlierAnalysisServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitA );
     }
 
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-    
     // ----------------------------------------------------------------------
     // Business logic tests
     // ----------------------------------------------------------------------
