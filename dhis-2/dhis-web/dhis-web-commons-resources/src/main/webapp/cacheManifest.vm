@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.13-SNAPSHOT V12
+# 2.13-SNAPSHOT V13
 NETWORK:
 *
 CACHE:
@@ -53,5 +53,7 @@ fonts/LiberationSans-Bold-webfont.svg
 ../images/transparent.gif
 ../images/ajax-loader-circle.gif
 ../images/ajax-loader-bar.gif
+../images/warning_small.png
+../images/success_small.png
 ../dhis-web-dataentry/javascript/form.js
 ../dhis-web-dataentry/javascript/entry.js

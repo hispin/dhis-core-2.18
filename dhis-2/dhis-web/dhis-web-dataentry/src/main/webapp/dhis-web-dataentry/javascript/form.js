@@ -1060,22 +1060,23 @@ function getAndInsertDataValues()
 
     $( '.entryfield' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
     
+    var params = {
+		periodId : periodId,
+        dataSetId : dataSetId,
+        organisationUnitId : getCurrentOrganisationUnit(),
+        multiOrganisationUnit: multiOrganisationUnit
+    };
+    
     $.ajax( {
     	url: 'getDataValues.action',
-    	data:
-	    {
-	        periodId : periodId,
-	        dataSetId : dataSetId,
-	        organisationUnitId : getCurrentOrganisationUnit(),
-            multiOrganisationUnit: multiOrganisationUnit
-	    },
+    	data: params,
 	    dataType: 'json',
 	    error: function() // offline
 	    {
 	    	$( '#completenessDiv' ).show();
 	    	$( '#infoDiv' ).hide();
 	    	
-	    	var json = getOfflineDataValueJson( periodId );
+	    	var json = getOfflineDataValueJson( params );
 	    	
 	    	insertDataValues( json );
 	    },
@@ -1090,14 +1091,15 @@ function getAndInsertDataValues()
 	} );
 }
 
-function getOfflineDataValueJson( periodId )
+function getOfflineDataValueJson( params )
 {
-	var dataValues = storageManager.getDataValuesInForm( periodId, getCurrentOrganisationUnit() );
+	var dataValues = storageManager.getDataValuesInForm( params );
+	var complete = storageManager.hasCompleteDataSet( params );
 	
 	var json = {};
 	json.dataValues = new Array();
 	json.locked = false;
-	json.complete = false;
+	json.complete = complete;
 	json.date = "";
 	json.storedBy = "";
 		
@@ -2008,10 +2010,9 @@ function StorageManager()
      * Returns the data values for the given period and organisation unit 
      * identifiers as an array.
      * 
-     * @param periodId the period identifier.
-     * @param organisationUnitId the organisation unit identifier.
+     * @param json object with periodId and organisationUnitId properties.
      */
-    this.getDataValuesInForm = function( periodId, organisationUnitId )
+    this.getDataValuesInForm = function( json )
     {
     	var dataValues = this.getDataValuesAsArray();
     	var valuesInForm = new Array();
@@ -2020,7 +2021,7 @@ function StorageManager()
 		{
 			var val = dataValues[i];
 			
-			if ( val.periodId == periodId && val.organisationUnitId == organisationUnitId )
+			if ( val.periodId == json.periodId && val.organisationUnitId == json.organisationUnitId )
 			{
 				valuesInForm.push( val );
 			}
@@ -2106,14 +2107,6 @@ function StorageManager()
     };
 
     /**
-     * Generates an identifier based on the given data value object.
-     */
-    this.getDataValueId = function( dv )
-    {
-    	return dv.dataElementId + '-' + dv.categoryOptionComboId + '-' + dv.periodId + '-' + dv.organisationUnitId;
-    }
-    
-    /**
      * Generates an identifier.
      */
     this.getCompleteDataSetId = function( json )
@@ -2183,6 +2176,25 @@ function StorageManager()
         	log( 'Max local storage quota reached, not storing complete registration locally' );
         }
     };
+    
+    /**
+     * Indicates whether a complete data set registration exists for the given
+     * argument.
+     * 
+     * @param json object with periodId, dataSetId, organisationUnitId properties.
+     */
+    this.hasCompleteDataSet = function( json )
+    {
+    	var id = this.getCompleteDataSetId( json );
+    	var registrations = this.getCompleteDataSets();
+    	
+        if ( null != registrations && undefined !== registrations && undefined !== registrations[id] )
+        {
+            return true;
+        }
+    	
+    	return false;    	
+    }
 
     /**
      * Removes the given complete data set registration.
