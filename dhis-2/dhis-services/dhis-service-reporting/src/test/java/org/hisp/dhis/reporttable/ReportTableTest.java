@@ -38,7 +38,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -62,7 +62,7 @@ import org.junit.Test;
  * @author Lars Helge Overland
  */
 public class ReportTableTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private List<DataElement> dataElements;
     private List<DataElementCategoryOptionCombo> categoryOptionCombos;

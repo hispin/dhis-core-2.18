@@ -32,7 +32,7 @@ import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.CODE;
 import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 import static org.junit.Assert.assertNotNull;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -52,7 +52,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 
 public class RoutesTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     @Autowired
     private DataElementService dataElementService;
@@ -86,12 +86,6 @@ public class RoutesTest
     private OrganisationUnit ouB;
     private Period peA;
     private Period peB;
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
 
     @Override
     public void setUpTest()
