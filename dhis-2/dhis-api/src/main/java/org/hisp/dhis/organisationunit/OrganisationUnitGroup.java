@@ -65,6 +65,7 @@ public class OrganisationUnitGroup
     @Scanned
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
 
+    @Scanned
     private Set<DataSet> dataSets = new HashSet<DataSet>();
 
     private OrganisationUnitGroupSet groupSet;
