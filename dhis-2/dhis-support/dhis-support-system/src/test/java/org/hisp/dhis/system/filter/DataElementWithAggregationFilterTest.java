@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -46,7 +46,7 @@ import org.junit.Test;
  * @version $Id$
  */
 public class DataElementWithAggregationFilterTest
-    extends DhisTest
+    extends DhisConvenienceTest
 {
     @Test
     public void filter()
