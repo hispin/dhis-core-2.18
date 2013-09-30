@@ -58,6 +58,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
+ * TODO remove this class and its usage, too slow.
+ * 
  * @author Lars Helge Overland
  * @version $Id$
  */
