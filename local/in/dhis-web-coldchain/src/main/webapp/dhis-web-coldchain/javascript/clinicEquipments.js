@@ -331,7 +331,7 @@ function hideOrgClear()
 	hideById('searchingOrgUnitAttributeTD');
 	
 	hideById('searchingOrgUnitGroupSetMemberTD');
-	
+	hideById('searchingOrgUnitOwnerShipGroupSetMemberTD');
 	hideById('selectOrgUnitDiv');
 	//hideById('orgUnitDetailsDiv');
 	
@@ -361,21 +361,35 @@ function searchingOrgUnitFilterOptionOnChange()
 	
 	var orgUnitFilterOption = document.getElementById('searchingOrgUnitFilterOptionId');
 	
-	var orgUnitFilterOptionName = orgUnitFilterOption.options[ orgUnitFilterOption.selectedIndex ].text;
+	var orgUnitFilterOptionName = orgUnitFilterOption.options[ orgUnitFilterOption.selectedIndex ].value;
 	
+	//alert( orgUnitFilterOptionName );
 	
 	if( orgUnitFilterOptionName ==  "Facility Type" )
 	{
 		hideById('filterOrgDiv');
 		showById('searchingOrgUnitGroupSetMemberTD');
+		hideById('searchingOrgUnitOwnerShipGroupSetMemberTD');
 		hideById('searchingOrgTextTD');
 		hideById('searchOrgDiv');
 		showById('clearOrgDiv');
 	}
+	
+	else if( orgUnitFilterOptionName ==  "Ownership" )
+	{
+		hideById('filterOrgDiv');
+		showById('searchingOrgUnitOwnerShipGroupSetMemberTD');
+		hideById('searchingOrgUnitGroupSetMemberTD');
+		hideById('searchingOrgTextTD');
+		hideById('searchOrgDiv');
+		showById('clearOrgDiv');
+	}
+	
 	else
 	{
 		hideById('filterOrgDiv');
 		hideById('searchingOrgUnitGroupSetMemberTD');
+		hideById('searchingOrgUnitOwnerShipGroupSetMemberTD');
 		showById('searchingOrgTextTD');
 		showById('searchOrgDiv');
 		showById('clearOrgDiv');
@@ -491,10 +505,25 @@ function loadOrgUnitsByFilter()
 	var searchingOrgUnitFilterOptionId = orgUnitAttribute.options[ orgUnitAttribute.selectedIndex ].value;
 	
 	
+	if( searchingOrgUnitFilterOptionId ==  "Facility Type" )
+	{
+		var orgUnitGroup = document.getElementById('searchingOrgUnitGroupId');
+		var searchingOrgUnitGroupId = orgUnitGroup.options[ orgUnitGroup.selectedIndex ].value;
+		
+	}
+	
+	else if( searchingOrgUnitFilterOptionId ==  "Ownership" )
+	{
+		var orgUnitGroup = document.getElementById('searchingOrgUnitGroupSetOwnerShipId');
+		var searchingOrgUnitGroupId = orgUnitGroup.options[ orgUnitGroup.selectedIndex ].value;
+	}
+	
+	/*
 	var orgUnitGroup = document.getElementById('searchingOrgUnitGroupId');
 	var searchingOrgUnitGroupId = orgUnitGroup.options[ orgUnitGroup.selectedIndex ].value;
+	*/
 	
-	//alert( searchingOrgUnitFilterOptionId );
+	//alert( searchingOrgUnitFilterOptionId + " -- "  + searchingOrgUnitGroupId );
 	
 	
 	hideById('selectOrgUnitDiv');
@@ -523,7 +552,8 @@ function loadOrgUnitsByFilter()
 		hideById('filterOrgDiv');
 		
 		showById('searchingOrgUnitAttributeTD');
-		showById('searchingOrgUnitGroupSetMemberTD');
+		showById('searchingOrgUnitOwnerShipGroupSetMemberTD');
+		//showById('searchingOrgUnitGroupSetMemberTD');
 		//showById('searchingOrgTextTD');
 		//showById('searchOrgDiv');
 		showById('clearOrgDiv');

@@ -288,6 +288,29 @@ public class HibernateEquipmentStore
         
     }
     
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<OrganisationUnit> searchOrgUnitListByCode( String searchText )
+    {
+        String hql = "SELECT orgUnit FROM OrganisationUnit AS orgUnit WHERE orgUnit.code like '%" + searchText + "%'";
+        
+        Query query = getQuery( hql );
+        
+        return query.list();
+
+        /*
+        Criteria criteria = getCriteria();
+        
+        criteria.add(Restrictions.like( "OrganisationUnit.name", "%" + searchText + "%"));
+        
+        return criteria.list();
+        */
+        
+    }
+    
+    
+    
+    
     // for orgUnit list according to orGUnit Attribute values for paging purpose
     public int countOrgUnitByAttributeValue( Collection<Integer> orgunitIds, Attribute attribute, String searchText )
     {

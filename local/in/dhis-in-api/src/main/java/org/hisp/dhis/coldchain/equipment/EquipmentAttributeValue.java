@@ -13,6 +13,8 @@ public class EquipmentAttributeValue implements Serializable
     
     public static String PREFIX_ORGANISATIONUNIT_NAME = "orgunitname";
     
+    public static String PREFIX_ORGANISATIONUNIT_CODE = "code";
+    
     public static final String HEALTHFACILITY = "Health Facility";
     
     private Equipment equipment;
