@@ -164,7 +164,8 @@ public class JdbcEventAnalyticsTableManager
                 "left join _dateperiodstructure dps on psi.executiondate=dps.dateperiod " +
                 "where psi.executiondate >= '" + start + "' " +
                 "and psi.executiondate <= '" + end + "' " +
-                "and pr.programid=" + table.getProgram().getId() + ";";
+                "and pr.programid=" + table.getProgram().getId() + " " +
+                "and psi.organisationunitid is not null";
 
             log.info( "Populate SQL: "+ sql );
             
