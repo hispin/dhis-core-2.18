@@ -411,6 +411,7 @@ GIS.i18n = {
     user_organisation_units: '$encoder.jsEscape($i18n.getString( 'user_organisation_units' ) , "'")',
     dataset: '$encoder.jsEscape($i18n.getString( 'dataset' ) , "'")',
     select_all_children: '$encoder.jsEscape($i18n.getString( 'select_all_children' ) , "'")',
-    select_groupset: '$encoder.jsEscape($i18n.getString( 'select_groupset' ) , "'")'
+    select_groupset: '$encoder.jsEscape($i18n.getString( 'select_groupset' ) , "'")',
+    allow_external_access: '$encoder.jsEscape($i18n.getString( 'allow_external_access' ) , "'")'
     
 };

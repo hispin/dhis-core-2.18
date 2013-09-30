@@ -1695,6 +1695,7 @@ Ext.onReady( function() {
 			userGroupField,
 			userGroupButton,
 			userGroupRowContainer,
+			externalAccess,
 			publicGroup,
 			window;
 
@@ -1791,6 +1792,7 @@ Ext.onReady( function() {
 					id: sharing.object.id,
 					name: sharing.object.name,
 					publicAccess: publicGroup.down('combobox').getValue(),
+					externalAccess: externalAccess ? externalAccess.getValue() : false,
 					user: {
 						id: dv.init.user.id,
 						name: dv.init.user.name
@@ -1866,6 +1868,16 @@ Ext.onReady( function() {
 		userGroupRowContainer = Ext.create('Ext.container.Container', {
 			bodyStyle: 'border:0 none'
 		});
+		
+		if (sharing.meta.allowExternalAccess) {
+			externalAccess = userGroupRowContainer.add({
+				xtype: 'checkbox',
+				fieldLabel: DV.i18n.allow_external_access,
+				labelSeparator: '',
+				labelWidth: 250,
+				checked: !!sharing.object.externalAccess
+			});
+		}
 
 		publicGroup = userGroupRowContainer.add(UserGroupRow({
 			id: sharing.object.id,
@@ -3539,12 +3551,18 @@ Ext.onReady( function() {
                 }
             },
             multipleExpand: function(id, path, doUpdate) {
-                this.expandPath('/' + dv.conf.finals.root.id + path, 'id', '/', function() {
-                    var record = this.getRootNode().findChild('id', id, true);
-                    this.recordsToSelect.push(record);
-                    this.multipleSelectIf(doUpdate);
-                }, this);
-            },
+				var rootId = dv.conf.finals.root.id;
+				
+				if (path.substr(0, rootId.length + 1) !== ('/' + rootId)) {
+					path = '/' + rootId + path;
+				}
+				
+				this.expandPath('/' + path, 'id', '/', function() {
+					var record = this.getRootNode().findChild('id', id, true);
+					this.recordsToSelect.push(record);
+					this.multipleSelectIf(doUpdate);
+				}, this);
+			},
             select: function(url, params) {
                 if (!params) {
                     params = {};
@@ -3562,32 +3580,6 @@ Ext.onReady( function() {
                         }
                     }
                 });
-            },
-            selectByGroup: function(id) {
-                if (id) {
-                    var url = dv.conf.finals.ajax.path_module + dv.conf.finals.ajax.organisationunit_getbygroup,
-                        params = {id: id};
-                    this.select(url, params);
-                }
-            },
-            selectByLevel: function(level) {
-                if (level) {
-                    var url = dv.conf.finals.ajax.path_module + dv.conf.finals.ajax.organisationunit_getbylevel,
-                        params = {level: level};
-                    this.select(url, params);
-                }
-            },
-            selectByIds: function(ids) {
-                if (ids) {
-                    var url = dv.conf.finals.ajax.path_module + dv.conf.finals.ajax.organisationunit_getbyids;
-                    Ext.Array.each(ids, function(item) {
-                        url = Ext.String.urlAppend(url, 'ids=' + item);
-                    });
-                    if (!this.rendered) {
-                        dv.cmp.dimension.organisationUnit.panel.expand();
-                    }
-                    this.select(url);
-                }
             },
             store: Ext.create('Ext.data.TreeStore', {
                 proxy: {
@@ -4526,7 +4518,7 @@ Ext.onReady( function() {
                                     },
                                     '-',
                                     {
-                                        text: 'View chart as table' + '&nbsp;&nbsp;', //i18n
+                                        text: 'Open this chart as table' + '&nbsp;&nbsp;', //i18n
                                         cls: 'dv-menu-item-noicon',
                                         disabled: !DV.isSessionStorage || !dv.layout,
                                         handler: function() {
@@ -4536,7 +4528,7 @@ Ext.onReady( function() {
                                         }
                                     },
                                     {
-                                        text: 'View last table' + '&nbsp;&nbsp;', //i18n
+                                        text: 'Open last table' + '&nbsp;&nbsp;', //i18n
                                         cls: 'dv-menu-item-noicon',
                                         disabled: !(DV.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
                                         handler: function() {

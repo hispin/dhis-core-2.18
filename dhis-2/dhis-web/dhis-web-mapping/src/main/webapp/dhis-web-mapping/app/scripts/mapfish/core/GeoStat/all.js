@@ -304,32 +304,20 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
 			child = document.createElement("div"),
 			items = this.gis.store.groupsByGroupSet.data.items;
 
-        //child.style.height = "14px";
-		//child.style.overflow = "hidden";
-		//child.title = config.where;
-        //child.innerHTML = config.where;
-        //element.appendChild(child);
-
-        //child = document.createElement("div");
-        //child.style.clear = "left";
-        //element.appendChild(child);
-
-        //child = document.createElement("div");
-        //child.style.width = "1px";
-        //child.style.height = "5px";
-        //element.appendChild(child);
-
         for (var i = 0; i < items.length; i++) {
             child = document.createElement("div");
             child.style.backgroundImage = 'url(../../images/orgunitgroup/' + items[i].data.symbol + ')';
             child.style.backgroundRepeat = 'no-repeat';
             child.style.width = "21px";
-            child.style.height = "18px";
+            child.style.height = "16px";
+            child.style.marginBottom = "2px";
             child.style.cssFloat = "left";
             element.appendChild(child);
 
             child = document.createElement("div");
             child.innerHTML = items[i].data.name;
+            child.style.height = "16px";
+            child.style.lineHeight = "17px";
             element.appendChild(child);
 
             child = document.createElement("div");
