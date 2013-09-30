@@ -85,7 +85,6 @@
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="notifier" ref="notifier" />
   </bean>
 
@@ -97,7 +96,6 @@
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="completenessStore" ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
   <bean id="registrationDataCompletenessService" class="org.hisp.dhis.completeness.impl.RegistrationDataSetCompletenessService"

@@ -28,6 +28,14 @@ package org.hisp.dhis.completeness.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.Future;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.collections.CollectionUtils;
@@ -47,18 +55,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.Future;
-
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 /**
  * @author Lars Helge Overland
@@ -119,13 +118,6 @@ public abstract class AbstractDataSetCompletenessService
     public void setCompletenessStore( DataSetCompletenessStore completenessStore )
     {
         this.completenessStore = completenessStore;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------

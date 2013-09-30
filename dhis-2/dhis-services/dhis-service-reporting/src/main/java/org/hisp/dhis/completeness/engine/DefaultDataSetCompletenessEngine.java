@@ -28,6 +28,13 @@ package org.hisp.dhis.completeness.engine;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Future;
+
 import org.hisp.dhis.completeness.DataSetCompletenessEngine;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
@@ -38,7 +45,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.scheduling.TaskId;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.DataSetWithOrganisationUnitsFilter;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.Clock;
@@ -48,13 +54,6 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Future;
-
-import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
 /**
  * @author Lars Helge Overland
@@ -99,13 +98,6 @@ public class DefaultDataSetCompletenessEngine
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
     }
 
     private Notifier notifier;
