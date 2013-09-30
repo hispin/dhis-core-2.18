@@ -261,8 +261,8 @@ public class DefaultPatientService
     {
         Set<Patient> patients = new HashSet<Patient>();
         patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE ) );
-        patients.addAll( getPatientsByNames( searchText, null, null ) );
-        patients.addAll( getPatientsByPhone( searchText, null, null ) );
+        patients.addAll( getPatientsByNames( searchText, 0, Integer.MAX_VALUE ) );
+        patients.addAll( getPatientsByPhone( searchText, 0, Integer.MAX_VALUE ) );
 
         // if an org-unit has been selected, filter out every patient that has a
         // different org-unit
