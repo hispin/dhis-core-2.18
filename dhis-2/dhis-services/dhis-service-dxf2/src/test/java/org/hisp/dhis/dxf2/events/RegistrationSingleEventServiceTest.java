@@ -82,16 +82,7 @@ public class RegistrationSingleEventServiceTest
     private EnrollmentService enrollmentService;
 
     @Autowired
-    private ProgramInstanceService programInstanceService;
-
-    @Autowired
-    private ProgramStageInstanceService programStageInstanceService;
-
-    @Autowired
     private IdentifiableObjectManager manager;
-
-    @Autowired
-    private UserService userService;
 
     private Patient maleA;
     private Patient maleB;
