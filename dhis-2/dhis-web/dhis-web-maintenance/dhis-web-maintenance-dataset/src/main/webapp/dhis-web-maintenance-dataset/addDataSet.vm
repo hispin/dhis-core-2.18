@@ -83,7 +83,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "timely_days" )</label></td>
-        <td><input type="text" id="timelyDays" name="timelyDays" value="0"></td>
+        <td><input type="text" id="timelyDays" name="timelyDays" value="15"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
