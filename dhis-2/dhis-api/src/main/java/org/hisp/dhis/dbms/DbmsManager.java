@@ -39,4 +39,6 @@ public interface DbmsManager
     void emptyDatabase();
     
     void clearSession();
+    
+    void emptyTable( String table );
 }
