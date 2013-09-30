@@ -312,7 +312,9 @@ public class DataSetServiceTest
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
         dataSetA.setExpiryDays( 20 );
+        dataSetA.setTimelyDays( 15 );
         dataSetB.setExpiryDays( 10 );
+        dataSetB.setTimelyDays( 15 );
 
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
@@ -360,7 +362,9 @@ public class DataSetServiceTest
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
         dataSetA.setExpiryDays( 10 );
+        dataSetA.setTimelyDays( 15 );
         dataSetB.setExpiryDays( 15 );
+        dataSetB.setTimelyDays( 15 );
 
         organisationUnitService.addOrganisationUnit( unit );
         periodService.addPeriod( period );
