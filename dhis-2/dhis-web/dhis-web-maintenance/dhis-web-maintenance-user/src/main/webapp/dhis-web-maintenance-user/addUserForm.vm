@@ -3,8 +3,13 @@
 	    validation2( 'addUserForm', function( form )
 	    {
 	        jQuery( "#selectedList" ).children().attr( "selected", true );
-	        form.submit();
-	    }, {
+
+            if( $('#selectionTree').find('.selected').size() == 0 ) {
+                setHeaderDelayMessage('$i18n.getString( "organisation_unit_required_for_user" )');
+            } else {
+                form.submit();
+            }
+        }, {
 	        'beforeValidateHandler' : function()
 	        {
 	            listValidator( 'roleValidator', 'selectedList' );
@@ -141,7 +146,7 @@
 
 	<tr>
 		<td colspan="3">
-			#organisationUnitSelectionTree( true, true, true )
+			#organisationUnitSelectionTree( true, true, false )
 		</td>
 
 	</tr>

@@ -7,7 +7,12 @@
 	    validation2( 'updateUserForm', function( form )
 	    {
 	        jQuery( "#selectedList" ).children().attr( "selected", true );
-	        form.submit();
+
+            if( $('#selectionTree').find('.selected').size() == 0 ) {
+                setHeaderDelayMessage('$i18n.getString( "organisation_unit_required_for_user" )');
+            } else {
+                form.submit();
+            }
 	    }, {
 	        'beforeValidateHandler' : function()
 	        {
@@ -155,7 +160,7 @@
 
 	<tr>
 		<td colspan="3">
-			#organisationUnitSelectionTree( false, true, true )
+			#organisationUnitSelectionTree( false, true, false )
 		</td>
 	</tr>
 </table>
