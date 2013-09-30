@@ -43,7 +43,7 @@ import java.util.Set;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.analytics.AnalyticsService;
@@ -80,7 +80,7 @@ import org.junit.Test;
  * @author Lars Helge Overland
  */
 public class ReportTableGridTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private ReportTableService reportTableService;
     
@@ -336,12 +336,6 @@ public class ReportTableGridTest
         completenessBatchHandler.addObject( new DataSetCompletenessResult( dataSetIdB, periodIdB, null, unitIdB, null, 100, 18, 18 ) );
         
         completenessBatchHandler.flush();
-    }
-    
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
     }
     
     private Set<DataElementCategoryOptionCombo> getSet( DataElementCategoryOptionCombo c )

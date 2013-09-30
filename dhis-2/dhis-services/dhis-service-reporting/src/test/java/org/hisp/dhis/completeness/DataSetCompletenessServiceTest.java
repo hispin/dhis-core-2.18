@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -65,9 +65,9 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@Ignore //TODO this test takes too long to run, reimplement
+@Ignore //TODO rewrite this test, takes too long
 public class DataSetCompletenessServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private LocationManager locationManager;
     
@@ -237,12 +237,6 @@ public class DataSetCompletenessServiceTest
     //   B       C
     // E   F   G   H
     // -------------------------------------------------------------------------
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
     
     // -------------------------------------------------------------------------
     // Tests

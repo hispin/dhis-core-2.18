@@ -28,13 +28,13 @@ package org.hisp.dhis.completeness;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -53,9 +53,9 @@ import org.junit.Test;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@Ignore //TODO this test takes too long to run, reimplement
+@Ignore //TODO rewrite this test, takes too long
 public class DataSetCompletenessServiceExportTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private DataSetCompletenessEngine completenessEngine;
     
@@ -147,12 +147,6 @@ public class DataSetCompletenessServiceExportTest
         dataSets.add( dataSetA );
     }
     
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
-    }
-
     @Test
     public void testExportDataSetCompleteness()
     {
