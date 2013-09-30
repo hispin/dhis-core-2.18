@@ -752,13 +752,22 @@ Ext.onReady( function() {
 		};
 
 		setMap = function() {
-			var view,
-				views = gis.map.mapViews,
+			var views = gis.map.mapViews,
 				loader;
 
 			if (!(Ext.isArray(views) && views.length)) {
 				gis.olmap.mask.hide();
 				alert(GIS.i18n.favorite_outdated_create_new);
+				return;
+			}
+			
+			for (var i = 0; i < views.length; i++) {
+				views[i] = gis.api.layout.Layout(views[i]);
+			}
+			
+			views = Ext.Array.clean(views);
+			
+			if (!views.length) {
 				return;
 			}
 
@@ -768,13 +777,13 @@ Ext.onReady( function() {
 
 			gis.olmap.closeAllLayers();
 
-			for (var i = 0; i < views.length; i++) {
-				view = views[i];
+			for (var i = 0, layout; i < views.length; i++) {
+				layout = views[i];
 				
-				loader = gis.layer[view.layer].core.getLoader();
+				loader = gis.layer[layout.layer].core.getLoader();
 				loader.updateGui = !gis.el;
 				loader.callBack = callBack;
-				loader.load(view);
+				loader.load(layout);
 			}
 		};
 
@@ -2100,8 +2109,22 @@ Ext.onReady( function() {
 						}
 					}
 					
-					if (!(dxDim && peDim && ouDim)) {
+					if (!dxDim) {
 						return;
+					}
+					
+					if (!peDim) {
+						peDim = {
+							dimension: 'pe',
+							items: [{id: 'LAST_MONTH'}]
+						};
+					}
+					
+					if (!ouDim) {
+						ouDim = {
+							dimension: 'ou',
+							items: [{id: 'LEVEL-2'}]
+						};
 					}
 					
 					config.columns = [dxDim];
@@ -2127,7 +2150,7 @@ Ext.onReady( function() {
 
 					// Config must be an object
 					if (!(config && Ext.isObject(config))) {
-						alert(init.el + ': Data, period and organisation unit dimensions required');
+						alert(gis.el + ': Data required');
 						return;
 					}
 
