@@ -72,9 +72,6 @@ public class NoRegistrationSingleEventServiceTest
     private ProgramStageDataElementService programStageDataElementService;
 
     @Autowired
-    private EnrollmentService enrollmentService;
-
-    @Autowired
     private ProgramInstanceService programInstanceService;
 
     @Autowired
@@ -82,9 +79,6 @@ public class NoRegistrationSingleEventServiceTest
 
     @Autowired
     private IdentifiableObjectManager manager;
-
-    @Autowired
-    private UserService userService;
 
     private OrganisationUnit organisationUnitA;
     private DataElement dataElementA;
