@@ -32,7 +32,7 @@
 
 		<many-to-one name="organisationUnit"
 			class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
-			foreign-key="fk_programstageinstance_organisationunitid" />
+			 not-null="true" foreign-key="fk_programstageinstance_organisationunitid" />
 
 		<list name="outboundSms" table="programstageinstance_outboundsms">
 			<key column="programstageinstanceid" />
