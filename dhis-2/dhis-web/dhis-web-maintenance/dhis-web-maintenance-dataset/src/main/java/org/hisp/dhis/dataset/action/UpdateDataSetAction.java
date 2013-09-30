@@ -140,6 +140,13 @@ public class UpdateDataSetAction
         this.expiryDays = expiryDays;
     }
 
+    private int timelyDays;
+
+    public void setTimelyDays( int timelyDays )
+    {
+        this.timelyDays = timelyDays;
+    }
+
     private int notificationRecipients;
 
     public void setNotificationRecipients( int notificationRecipients )
@@ -272,6 +279,7 @@ public class UpdateDataSetAction
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         dataSet.setExpiryDays( expiryDays );
+        dataSet.setTimelyDays( timelyDays );
         dataSet.setSkipAggregation( skipAggregation );
 
         if ( !( equalsNullSafe( name, dataSet.getName() ) && 

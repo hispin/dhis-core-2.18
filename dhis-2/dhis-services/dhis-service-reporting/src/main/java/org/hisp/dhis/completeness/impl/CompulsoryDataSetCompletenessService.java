@@ -46,9 +46,9 @@ public class CompulsoryDataSetCompletenessService
     }
 
     @Override
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods, int completenessOffset )
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
     {
-        return completenessStore.getCompulsoryDataElementRegistrations( dataSet, relevantSources, periods, completenessOffset );
+        return completenessStore.getCompulsoryDataElementRegistrations( dataSet, relevantSources, periods );
     }
 
     @Override

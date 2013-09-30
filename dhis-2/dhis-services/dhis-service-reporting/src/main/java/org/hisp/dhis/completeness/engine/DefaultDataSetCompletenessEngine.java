@@ -28,15 +28,6 @@ package org.hisp.dhis.completeness.engine;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_COMPLETENESS_OFFSET;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
-import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Future;
-
 import org.hisp.dhis.completeness.DataSetCompletenessEngine;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
@@ -58,6 +49,13 @@ import org.hisp.dhis.system.util.PaginatedList;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Future;
+
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+
 /**
  * @author Lars Helge Overland
  */
@@ -69,7 +67,7 @@ public class DefaultDataSetCompletenessEngine
     // -------------------------------------------------------------------------
 
     private DataSetCompletenessService completenessService;
-    
+
     public void setCompletenessService( DataSetCompletenessService completenessService )
     {
         this.completenessService = completenessService;
@@ -126,25 +124,22 @@ public class DefaultDataSetCompletenessEngine
     {
         Collection<Integer> dataSetIds = ConversionUtils.getIdentifiers( DataSet.class, dataSetService.getAllDataSets() );
         Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
-        
+
         exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds, id );
     }
-    
+
     @Transactional
     public void exportDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds, TaskId id )
     {
         final int cpuCores = SystemUtils.getCpuCores();
-        
+
         Clock clock = new Clock().startClock().logTime( "Data completeness export process started, number of CPU cores: " + cpuCores + ", " + SystemUtils.getMemoryString() );
         notifier.notify( id, "Completeness export process started" );
 
         completenessStore.dropIndex();
 
         clock.logTime( "Dropped potential index" );
-
-        int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET,
-            DEFAULT_COMPLETENESS_OFFSET );
 
         completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
 
@@ -158,18 +153,18 @@ public class DefaultDataSetCompletenessEngine
         dataSets = completenessStore.getDataSetsWithRegistrations( dataSets );
 
         FilterUtils.filter( dataSets, new DataSetWithOrganisationUnitsFilter() );
-        
+
         List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<OrganisationUnit>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
-        
+
         List<Future<?>> futures = new ArrayList<Future<?>>();
-        
+
         for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
         {
-            futures.add( completenessService.exportDataSetCompleteness( dataSets, periods, organisationUnitPage, days ) );
+            futures.add( completenessService.exportDataSetCompleteness( dataSets, periods, organisationUnitPage ) );
         }
-        
+
         ConcurrentUtils.waitForCompletion( futures );
-        
+
         completenessStore.createIndex();
 
         clock.logTime( "Created index" );

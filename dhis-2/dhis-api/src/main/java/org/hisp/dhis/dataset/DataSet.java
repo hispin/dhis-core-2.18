@@ -145,6 +145,11 @@ public class DataSet
     private int expiryDays;
 
     /**
+     * Days after period end to qualify for timely data submission
+     */
+    private int timelyDays;
+
+    /**
      * Indicating whether aggregation should be skipped.
      */
     private boolean skipAggregation;
@@ -604,6 +609,19 @@ public class DataSet
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public int getTimelyDays()
+    {
+        return timelyDays;
+    }
+
+    public void setTimelyDays( int timelyDays )
+    {
+        this.timelyDays = timelyDays;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isSkipAggregation()
     {
         return skipAggregation;
@@ -729,8 +747,8 @@ public class DataSet
     public void setDataElementDecoration( boolean dataElementDecoration )
     {
         this.dataElementDecoration = dataElementDecoration;
-    }    
-	
+    }
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -755,7 +773,7 @@ public class DataSet
             renderHorizontally = dataSet.isRenderHorizontally();
 
             dataElementDecoration = dataSet.isDataElementDecoration();
- 
+
             removeAllDataElements();
 
             for ( DataElement dataElement : dataSet.getDataElements() )

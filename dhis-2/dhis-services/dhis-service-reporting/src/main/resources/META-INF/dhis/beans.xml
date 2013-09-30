@@ -52,7 +52,7 @@
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	<property name="analyticsService" ref="org.hisp.dhis.analytics.AnalyticsService" />
+    <property name="analyticsService" ref="org.hisp.dhis.analytics.AnalyticsService" />
   </bean>
 
   <!-- Document -->
@@ -78,19 +78,20 @@
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.completeness.DataSetCompletenessEngine" class="org.hisp.dhis.completeness.engine.DefaultDataSetCompletenessEngine">
-	<property name="completenessService" ref="registrationDataCompletenessService"/>
+  <bean id="org.hisp.dhis.completeness.DataSetCompletenessEngine"
+    class="org.hisp.dhis.completeness.engine.DefaultDataSetCompletenessEngine">
+    <property name="completenessService" ref="registrationDataCompletenessService" />
     <property name="completenessStore" ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-	<property name="notifier" ref="notifier" />
+    <property name="notifier" ref="notifier" />
   </bean>
 
   <bean id="compulsoryDataCompletenessService" class="org.hisp.dhis.completeness.impl.CompulsoryDataSetCompletenessService">
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
-	<property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
+    <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -105,20 +106,20 @@
 
   <bean id="org.hisp.dhis.completeness.DataSetCompletenessStore" class="org.hisp.dhis.completeness.jdbc.JDBCDataSetCompletenessStore">
     <property name="statementManager" ref="statementManager" />
-	<property name="statementBuilder" ref="statementBuilder" />
+    <property name="statementBuilder" ref="statementBuilder" />
   </bean>
 
   <!-- DataSetReport -->
 
   <bean id="org.hisp.dhis.datasetreport.DataSetReportService" class="org.hisp.dhis.datasetreport.impl.DefaultDataSetReportService">
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-	<property name="dataSetReportStore" ref="org.hisp.dhis.datasetreport.DataSetReportStore" />
+    <property name="dataSetReportStore" ref="org.hisp.dhis.datasetreport.DataSetReportStore" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.datasetreport.DataSetReportStore" class="org.hisp.dhis.datasetreport.jdbc.AnalyticsDataSetReportStore">
     <property name="analyticsService" ref="org.hisp.dhis.analytics.AnalyticsService" />
   </bean>
-  
+
   <!-- Dashboard -->
 
   <bean id="org.hisp.dhis.dashboard.DashboardStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
@@ -133,22 +134,23 @@
 
   <!-- Organisation Unit Distribution -->
 
-  <bean id="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService" class="org.hisp.dhis.orgunitdistribution.impl.DefaultOrgUnitDistributionService">
+  <bean id="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService"
+    class="org.hisp.dhis.orgunitdistribution.impl.DefaultOrgUnitDistributionService">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
-  
+
   <!-- Interpretation -->
-  
+
   <bean id="org.hisp.dhis.interpretation.InterpretationService" class="org.hisp.dhis.interpretation.impl.DefaultInterpretationService">
-	<property name="interpretationStore" ref="org.hisp.dhis.interpretation.InterpretationStore" />
-	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	<property name="userService" ref="org.hisp.dhis.user.UserService" />
-	<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="interpretationStore" ref="org.hisp.dhis.interpretation.InterpretationStore" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
   <bean id="org.hisp.dhis.interpretation.InterpretationStore" class="org.hisp.dhis.interpretation.hibernate.HibernateInterpretationStore">
-	<property name="clazz" value="org.hisp.dhis.interpretation.Interpretation" />
+    <property name="clazz" value="org.hisp.dhis.interpretation.Interpretation" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
@@ -162,10 +164,10 @@
       <map>
         <entry key="resourceTableTask" value-ref="resourceTableTask" />
         <entry key="dataMartLast12MonthsTask" value-ref="dataMartLast12MonthsTask" />
-		<entry key="dataMartLast6MonthsTask" value-ref="dataMartLast6MonthsTask" />
-		<entry key="dataMartFrom6To12MonthsTask" value-ref="dataMartFrom6To12MonthsTask" />
-		<entry key="analyticsAllTask" value-ref="analyticsAllTask" />
-		<entry key="analyticsLast3YearsTask" value-ref="analyticsLast3YearsTask" />
+        <entry key="dataMartLast6MonthsTask" value-ref="dataMartLast6MonthsTask" />
+        <entry key="dataMartFrom6To12MonthsTask" value-ref="dataMartFrom6To12MonthsTask" />
+        <entry key="analyticsAllTask" value-ref="analyticsAllTask" />
+        <entry key="analyticsLast3YearsTask" value-ref="analyticsLast3YearsTask" />
       </map>
     </property>
   </bean>
@@ -173,18 +175,18 @@
   <!-- Scheduled tasks -->
 
   <bean id="dataMartLast12MonthsTask" class="org.hisp.dhis.scheduling.DataMartTask">
-    <property name="last6Months" value="true"/>
-    <property name="last6To12Months" value="true"/>
+    <property name="last6Months" value="true" />
+    <property name="last6To12Months" value="true" />
   </bean>
-    
+
   <bean id="dataMartLast6MonthsTask" class="org.hisp.dhis.scheduling.DataMartTask">
-    <property name="last6Months" value="true"/>
+    <property name="last6Months" value="true" />
   </bean>
-  
+
   <bean id="dataMartFrom6To12MonthsTask" class="org.hisp.dhis.scheduling.DataMartTask">
-    <property name="last6To12Months" value="true"/>
-  </bean>      
-      
+    <property name="last6To12Months" value="true" />
+  </bean>
+
   <!-- DeletionHandler -->
 
   <bean id="org.hisp.dhis.report.ReportDeletionHandler" class="org.hisp.dhis.report.ReportDeletionHandler">
@@ -199,7 +201,8 @@
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
 
-  <bean id="org.hisp.dhis.interpretation.InterpretationDeletionHandler" class="org.hisp.dhis.interpretation.InterpretationDeletionHandler" />
+  <bean id="org.hisp.dhis.interpretation.InterpretationDeletionHandler"
+    class="org.hisp.dhis.interpretation.InterpretationDeletionHandler" />
 
   <!-- DeletionManager -->
 

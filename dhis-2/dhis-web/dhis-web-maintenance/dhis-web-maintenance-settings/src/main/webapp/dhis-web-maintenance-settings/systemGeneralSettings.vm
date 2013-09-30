@@ -9,7 +9,6 @@
                 offlineOrganisationUnitLevel: getFieldValue( 'offlineOrganisationUnitLevel' ),
 				omitIndicatorsZeroNumeratorDataMart: jQuery( '#omitIndicatorsZeroNumeratorDataMart' ).is( ':checked' ),
 				factorDeviation: getFieldValue( 'factorDeviation' ),
-				completenessOffset: getFieldValue( 'completenessOffset' ),
 				phoneNumberAreaCode: getFieldValue( 'phoneNumberAreaCode' ),
                 multiOrganisationUnitForms: jQuery( '#multiOrganisationUnitForms' ).is( ':checked' )
 			}, function( json ) {
@@ -80,12 +79,6 @@
 <div class="settingLabel">$i18n.getString( "data_analysis_factor" )</div>
 <div class="setting">
 	<input type="text" id="factorDeviation" name="factorDeviation" value="$!factorDeviation"/>	
-</div>
-
-<div class="settingLabel">$i18n.getString( "days_after_period_timeliness" )</div>
-
-<div class="setting">
-    <input type="text" id="completenessOffset" name="completenessOffset" value="$!completenessOffset"/>
 </div>
 
 <div class="settingLabel">$i18n.getString( "phone_number_area_code" )</div>
