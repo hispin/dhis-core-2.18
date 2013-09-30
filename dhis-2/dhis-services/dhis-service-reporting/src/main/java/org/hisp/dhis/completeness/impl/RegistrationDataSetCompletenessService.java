@@ -48,7 +48,7 @@ public class RegistrationDataSetCompletenessService
     @Override
     public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
     {
-        return completenessStore.getCompleteDataSetRegistrations( dataSet, periods, relevantSources );
+        return completenessStore.getCompleteDataSetRegistrationsWithTimeliness( dataSet, periods, relevantSources );
     }
 
     @Override
