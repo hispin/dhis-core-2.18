@@ -15,8 +15,8 @@
 
     <property name="value" />
 
-    <many-to-one name="equipmentTypeAttributeOption" class="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOption" column="equipmenttypeattributeoptionid"
-      foreign-key="fk_equipment_equipmenttypeattributeoptionid" />
+    <!--  <many-to-one name="equipmentTypeAttributeOption" class="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOption" column="equipmenttypeattributeoptionid"
+      foreign-key="fk_equipment_equipmenttypeattributeoptionid" /> -->
 
   </class>
 </hibernate-mapping>

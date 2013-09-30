@@ -6,6 +6,8 @@ import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeOption;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeService;
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 
 import com.opensymphony.xwork2.Action;
 
@@ -28,6 +30,13 @@ public class AddModelTypeAttributeAction implements Action
     {
         this.modelTypeAttributeOptionService = modelTypeAttributeOptionService;
     }
+    
+    private OptionService optionService;
+    
+    public void setOptionService(OptionService optionService) 
+    {
+		this.optionService = optionService;
+	}
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -82,11 +91,18 @@ public class AddModelTypeAttributeAction implements Action
         this.display = display;
     }
 
+    private Integer optionSetId;
+    
+    public void setOptionSetId(Integer optionSetId) 
+    {
+		this.optionSetId = optionSetId;
+	}
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
     
-    public String execute() throws Exception
+	public String execute() throws Exception
     {
         ModelTypeAttribute modelTypeAttribute = new ModelTypeAttribute();
         
@@ -97,8 +113,18 @@ public class AddModelTypeAttributeAction implements Action
         modelTypeAttribute.setNoChars( noChars );
         modelTypeAttribute.setDisplay( display );
         
+        if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
+        {
+        	if( optionSetId != -1 )
+        	{
+        		OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        		modelTypeAttribute.setOptionSet( optionSet );
+        	}
+        }
+        
         modelTypeAttributeService.addModelTypeAttribute( modelTypeAttribute );
         
+        /*
         if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
         {
             ModelTypeAttributeOption option = null;
@@ -111,6 +137,7 @@ public class AddModelTypeAttributeAction implements Action
                 modelTypeAttributeOptionService.addModelTypeAttributeOption( option );
             }
         }
+        */
         
         return SUCCESS;
     }

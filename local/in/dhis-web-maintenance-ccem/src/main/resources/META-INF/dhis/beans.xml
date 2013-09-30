@@ -24,6 +24,7 @@
 	<bean id="org.hisp.dhis.ccem.model.action.AddColdChainModelTypeAttributeForm"
 		class="org.hisp.dhis.ccem.model.action.AddColdChainModelTypeAttributeForm"
 		scope="prototype">
+		<property name="optionService" ref="org.hisp.dhis.option.OptionService" />    
 	</bean>
 	
 	<!-- Add -->
@@ -33,7 +34,8 @@
 		<property name="modelTypeAttributeService"
 			ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />
 		<property name="modelTypeAttributeOptionService"
-			ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeOptionService" />		
+			ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeOptionService" />
+        <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
 	</bean>	
 	
 	<!-- show details -->
@@ -63,18 +65,17 @@
 	<bean id="org.hisp.dhis.ccem.model.action.ShowUpdateModelTypeAttributeFormAction"
 		class="org.hisp.dhis.ccem.model.action.ShowUpdateModelTypeAttributeFormAction"
 		scope="prototype">
-		<property name="modelTypeAttributeService"
-			ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />		
+		<property name="modelTypeAttributeService" ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />
+		<property name="optionService" ref="org.hisp.dhis.option.OptionService" />
 	</bean>
 	
 	<!-- Update -->
 	<bean id="org.hisp.dhis.ccem.model.action.UpdateModelTypeAttributeAction"
 		class="org.hisp.dhis.ccem.model.action.UpdateModelTypeAttributeAction"
 		scope="prototype">
-		<property name="modelTypeAttributeService"
-			ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />
-		<property name="modelTypeAttributeOptionService"
-			ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeOptionService" />	
+		<property name="modelTypeAttributeService" ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />
+		<property name="modelTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeOptionService" />
+		<property name="optionService" ref="org.hisp.dhis.option.OptionService" />	
 	</bean>	
 
 	<!-- Validation --> 
@@ -365,6 +366,7 @@
         scope="prototype">
         <property name="equipmentTypeAttributeService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService" />
 		<property name="equipmentTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOptionService" />
+		<property name="optionService" ref="org.hisp.dhis.option.OptionService" />
     </bean>
     <bean id="org.hisp.dhis.ccem.equipmenttype.action.ValidateEquipmentTypeAttributeAction"
         class="org.hisp.dhis.ccem.equipmenttype.action.ValidateEquipmentTypeAttributeAction"
@@ -375,12 +377,14 @@
         class="org.hisp.dhis.ccem.equipmenttype.action.ShowUpdateEquipmentTypeAttributeAction"
         scope="prototype">
         <property name="equipmentTypeAttributeService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService" />
+        <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
     </bean>
     <bean id="org.hisp.dhis.ccem.equipmenttype.action.UpdateEquipmentTypeAttributeAction"
         class="org.hisp.dhis.ccem.equipmenttype.action.UpdateEquipmentTypeAttributeAction"
         scope="prototype">
         <property name="equipmentTypeAttributeService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService" />
 		<property name="equipmentTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOptionService" />
+		<property name="optionService" ref="org.hisp.dhis.option.OptionService" />
     </bean>
     <bean id="org.hisp.dhis.ccem.equipmenttype.action.RemoveEquipmentTypeAttributeAction"
         class="org.hisp.dhis.ccem.equipmenttype.action.RemoveEquipmentTypeAttributeAction"

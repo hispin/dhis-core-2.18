@@ -11,6 +11,9 @@ import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOption;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService;
+import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 
 import com.opensymphony.xwork2.Action;
 
@@ -30,12 +33,18 @@ public class UpdateEquipmentTypeAttributeAction implements Action
 
     private EquipmentTypeAttributeOptionService equipmentTypeAttributeOptionService;
 
-    public void setEquipmentTypeAttributeOptionService(
-        EquipmentTypeAttributeOptionService equipmentTypeAttributeOptionService )
+    public void setEquipmentTypeAttributeOptionService( EquipmentTypeAttributeOptionService equipmentTypeAttributeOptionService )
     {
         this.equipmentTypeAttributeOptionService = equipmentTypeAttributeOptionService;
     }
     
+    private OptionService optionService;
+    
+    public void setOptionService(OptionService optionService) 
+    {
+		this.optionService = optionService;
+	}
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -95,6 +104,12 @@ public class UpdateEquipmentTypeAttributeAction implements Action
         this.display = display;
     }
     
+    private Integer optionSetId;
+    
+    public void setOptionSetId(Integer optionSetId) 
+    {
+		this.optionSetId = optionSetId;
+	}
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -110,7 +125,22 @@ public class UpdateEquipmentTypeAttributeAction implements Action
         equipmentTypeAttribute.setNoChars( noChars );
         equipmentTypeAttribute.setValueType( valueType );
         //equipmentTypeAttribute.setDisplay( display );
+        
+        if ( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
+        {
+        	if( optionSetId != -1 )
+        	{
+        		OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        		equipmentTypeAttribute.setOptionSet( optionSet );
+        	}
+        	else
+        	{
+        		equipmentTypeAttribute.setOptionSet( null );
+        	}
+        }
+        
 
+        /*
         HttpServletRequest request = ServletActionContext.getRequest();
         Collection<EquipmentTypeAttributeOption> attributeOptions = equipmentTypeAttributeOptionService.get( equipmentTypeAttribute );
         
@@ -145,6 +175,7 @@ public class UpdateEquipmentTypeAttributeAction implements Action
                 }
             }
         }
+        */
         
         equipmentTypeAttributeService.updateEquipmentTypeAttribute( equipmentTypeAttribute );
         

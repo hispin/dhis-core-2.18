@@ -3,6 +3,7 @@ package org.hisp.dhis.coldchain.model;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.option.OptionSet;
 
 public class ModelTypeAttribute extends BaseNameableObject
 {
@@ -39,6 +40,8 @@ public class ModelTypeAttribute extends BaseNameableObject
     private boolean display = false;
  
     private Set<ModelTypeAttributeOption> attributeOptions;
+    
+    private OptionSet optionSet;
     
     // -------------------------------------------------------------------------
     // Default Constructors
@@ -170,4 +173,15 @@ public class ModelTypeAttribute extends BaseNameableObject
     {
         this.display = display;
     }
+
+	public OptionSet getOptionSet() 
+	{
+		return optionSet;
+	}
+
+	public void setOptionSet(OptionSet optionSet) 
+	{
+		this.optionSet = optionSet;
+	}    
+    
 }

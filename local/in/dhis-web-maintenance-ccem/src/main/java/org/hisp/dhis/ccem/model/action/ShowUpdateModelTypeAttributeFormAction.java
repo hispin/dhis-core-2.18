@@ -1,7 +1,12 @@
 package org.hisp.dhis.ccem.model.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeService;
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 
 import com.opensymphony.xwork2.Action;
 
@@ -19,6 +24,12 @@ implements Action
         this.modelTypeAttributeService = modelTypeAttributeService;
     }
 
+    private OptionService optionService;
+    
+    public void setOptionService(OptionService optionService) 
+    {
+		this.optionService = optionService;
+	}
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -38,6 +49,13 @@ implements Action
         return modelTypeAttribute;
     }
 
+    private List<OptionSet> optionSets;
+
+	public List<OptionSet> getOptionSets() 
+	{
+		return optionSets;
+	}
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -46,6 +64,8 @@ implements Action
         throws Exception
     {
         modelTypeAttribute = modelTypeAttributeService.getModelTypeAttribute( id );
+        
+        optionSets = new ArrayList<OptionSet>( optionService.getAllOptionSets() );
         
         return SUCCESS;
     }

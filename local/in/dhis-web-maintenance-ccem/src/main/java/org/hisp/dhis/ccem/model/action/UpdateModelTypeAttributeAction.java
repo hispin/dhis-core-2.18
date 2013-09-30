@@ -7,10 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeOption;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeService;
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 
 import com.opensymphony.xwork2.Action;
 
@@ -35,6 +38,14 @@ public class UpdateModelTypeAttributeAction implements Action
     {
         this.modelTypeAttributeOptionService = modelTypeAttributeOptionService;
     }
+    
+    private OptionService optionService;
+    
+    public void setOptionService(OptionService optionService) 
+    {
+		this.optionService = optionService;
+	}
+
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -75,8 +86,6 @@ public class UpdateModelTypeAttributeAction implements Action
         this.mandatory = mandatory;
     }
 
-
-
     private List<String> attrOptions;
 
     public void setAttrOptions( List<String> attrOptions )
@@ -98,14 +107,19 @@ public class UpdateModelTypeAttributeAction implements Action
         this.display = display;
     }
 
+    private Integer optionSetId;
+    
+    public void setOptionSetId(Integer optionSetId) 
+    {
+		this.optionSetId = optionSetId;
+	}
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
-        throws Exception
-    {
-        
+    public String execute() throws Exception
+    {        
         ModelTypeAttribute modelTypeAttribute = modelTypeAttributeService.getModelTypeAttribute( id );
 
         modelTypeAttribute.setName( name );
@@ -116,7 +130,20 @@ public class UpdateModelTypeAttributeAction implements Action
         modelTypeAttribute.setNoChars( noChars );
         modelTypeAttribute.setDisplay( display );
         
-       
+        if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
+        {
+        	if( optionSetId != -1 )
+        	{
+        		OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        		modelTypeAttribute.setOptionSet( optionSet );
+        	}
+        	else
+        	{
+        		modelTypeAttribute.setOptionSet( null );
+        	}
+        }
+
+        /*
         HttpServletRequest request = ServletActionContext.getRequest();
         
         Collection<ModelTypeAttributeOption> attributeOptions = modelTypeAttributeOptionService.getModelTypeAttributeOptions( modelTypeAttribute );
@@ -153,6 +180,7 @@ public class UpdateModelTypeAttributeAction implements Action
                 }
             }
         }
+        */
         
         modelTypeAttributeService.updateModelTypeAttribute( modelTypeAttribute );
     

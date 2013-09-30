@@ -3,9 +3,24 @@ package org.hisp.dhis.coldchain.equipment;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.option.OptionSet;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 //public class EquipmentTypeAttribute implements Serializable
+
+@JacksonXmlRootElement( localName = "equipmentTypeAttribute", namespace = DxfNamespaces.DXF_2_0 )
 public class EquipmentTypeAttribute extends BaseNameableObject
 {
     /**
@@ -25,11 +40,11 @@ public class EquipmentTypeAttribute extends BaseNameableObject
 
     public static final String TYPE_MODEL = "MODEL";
     
-    private int id;
+    //private int id;
     
-    private String name;
+    //private String name;
     
-    private String description;
+    //private String description;
 
     private String valueType;
     
@@ -43,6 +58,8 @@ public class EquipmentTypeAttribute extends BaseNameableObject
     private Integer noChars;
 
     private Set<EquipmentTypeAttributeOption> attributeOptions;
+    
+    private OptionSet optionSet;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -94,7 +111,11 @@ public class EquipmentTypeAttribute extends BaseNameableObject
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
+    
+    /*
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getId()
     {
         return id;
@@ -105,6 +126,9 @@ public class EquipmentTypeAttribute extends BaseNameableObject
         this.id = id;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getName()
     {
         return name;
@@ -115,6 +139,9 @@ public class EquipmentTypeAttribute extends BaseNameableObject
         this.name = name;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -124,7 +151,10 @@ public class EquipmentTypeAttribute extends BaseNameableObject
     {
         this.description = description;
     }
-
+*/
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getValueType()
     {
         return valueType;
@@ -135,6 +165,9 @@ public class EquipmentTypeAttribute extends BaseNameableObject
         this.valueType = valueType;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isMandatory()
     {
         return mandatory;
@@ -145,6 +178,9 @@ public class EquipmentTypeAttribute extends BaseNameableObject
         this.mandatory = mandatory;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getNoChars()
     {
         return noChars;
@@ -172,6 +208,16 @@ public class EquipmentTypeAttribute extends BaseNameableObject
         attributeOptions.add( option );
     }
     
+    public OptionSet getOptionSet() 
+	{
+		return optionSet;
+	}
+
+	public void setOptionSet(OptionSet optionSet) 
+	{
+		this.optionSet = optionSet;
+	}   
+	
     /*
     public boolean isDisplay()
     {
@@ -183,4 +229,27 @@ public class EquipmentTypeAttribute extends BaseNameableObject
         this.display = display;
     }
     */
+    
+    /*
+    public void mergeWith(IdentifiableObject other )
+    {
+    	
+    	super.mergeWith( other );
+    	if ( other.getClass().isInstance( this ) )
+        {
+    		EquipmentTypeAttribute equipmentTypeAttribute= (EquipmentTypeAttribute) other;
+    		
+    		id = equipmentTypeAttribute.getId();
+    		mandatory = equipmentTypeAttribute.isMandatory();
+    		noChars = equipmentTypeAttribute.getNoChars();
+    		valueType = equipmentTypeAttribute.getValueType() == null ? valueType : equipmentTypeAttribute.getValueType();
+    		name =equipmentTypeAttribute.getName() == null ? name : equipmentTypeAttribute.getName();
+    		description = equipmentTypeAttribute.getDescription() == null ? description : equipmentTypeAttribute.getDescription();
+    		
+    		attributeOptions.clear();
+    		attributeOptions.addAll(equipmentTypeAttribute.getAttributeOptions());
+    		
+        }
+   }
+   */
 }

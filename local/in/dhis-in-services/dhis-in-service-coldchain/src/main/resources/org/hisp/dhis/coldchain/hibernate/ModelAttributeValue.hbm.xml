@@ -15,8 +15,8 @@
 
     <property name="value" />
 
-    <many-to-one name="modelTypeAttributeOption" class="org.hisp.dhis.coldchain.model.ModelTypeAttributeOption" column="modeltypeattributeoptionid"
-      foreign-key="fk_modeldatavlaue_modeltypeattributeoptionid" />
+    <!-- <many-to-one name="modelTypeAttributeOption" class="org.hisp.dhis.coldchain.model.ModelTypeAttributeOption" column="modeltypeattributeoptionid"
+      foreign-key="fk_modeldatavlaue_modeltypeattributeoptionid" /> -->
 
   </class>
 </hibernate-mapping>

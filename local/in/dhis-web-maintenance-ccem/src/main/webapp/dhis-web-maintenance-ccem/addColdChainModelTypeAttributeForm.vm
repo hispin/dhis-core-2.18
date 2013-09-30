@@ -62,11 +62,24 @@
         </td>
         <td></td>
     </tr>  
+    <!--
 	<tr id="attributeComboRow"> 
 		<td><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td ><table id="attrOptionContainer"></table><a href="#" style="text-decoration: none;margin-top: 0.5em" onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a>
 		</td>
 		<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
+	</tr>
+	-->
+	<tr id="attributeComboRow">
+        <td><label for="optionSetId">$i18n.getString( "option_set" )</label></td>
+        <td>
+            <select id="optionSetId" name="optionSetId">
+                <option value="-1">Please Select</option>
+                #foreach( $optionSet in $optionSets )
+                    <option value="$optionSet.id">$optionSet.name</option>
+                #end
+            </select>
+        </td>
 	</tr>
 	
     </tbody>
