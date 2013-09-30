@@ -58,6 +58,7 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_G
 import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
 import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
 import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
+import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -250,8 +251,10 @@ public class DefaultAnalyticsService
                     if ( valueMap != null )
                     {
                         Period period = filterPeriod != null ? filterPeriod : (Period) DimensionItem.getPeriodItem( options );
+
+                        int days = daysBetween( period.getStartDate(), period.getEndDate() );
                         
-                        Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null );
+                        Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, days );
                         
                         if ( value != null )
                         {
