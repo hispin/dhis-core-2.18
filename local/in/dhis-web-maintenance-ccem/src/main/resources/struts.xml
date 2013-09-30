@@ -299,7 +299,7 @@
             <param name="javascripts">javascript/equipmentTypeAttribute.js</param>
         </action>
 		
-        <action name="showAddEquipmentTypeAttributeForm" class="org.hisp.dhis.ccem.action.NoAction">
+        <action name="showAddEquipmentTypeAttributeForm" class="org.hisp.dhis.ccem.model.action.AddColdChainModelTypeAttributeForm">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-maintenance-ccem/addEquipmentTypeAttributeForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
