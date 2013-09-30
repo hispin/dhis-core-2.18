@@ -266,9 +266,35 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
         return total;
     }
     
+    private OrganisationUnitGroupSet organisationUnitOwnershipGroupSet;
+    
+    public OrganisationUnitGroupSet getOrganisationUnitOwnershipGroupSet()
+    {
+        return organisationUnitOwnershipGroupSet;
+    }
+    
+    private List<OrganisationUnitGroup> orgUnitOwnershipGroupSetMember;
+    
+    public List<OrganisationUnitGroup> getOrgUnitOwnershipGroupSetMember()
+    {
+        return orgUnitOwnershipGroupSetMember;
+    }
+    
+    private Map<Integer, String> orgUnitGroupSetOwnerShipNameMap = new HashMap<Integer, String>();
+    
+    public Map<Integer, String> getOrgUnitGroupSetOwnerShipNameMap()
+    {
+        return orgUnitGroupSetOwnerShipNameMap;
+    }
+    
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
+
+
+
+
+
 
 
     public String execute()
@@ -302,23 +328,62 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
             orgUnitList.retainAll( ouGroup.getMembers() );
         }
         
+        
         List<OrganisationUnitGroupSet> organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetByName( Model.NAME_FACILITY_TYPE ) );
         organisationUnitGroupSet = organisationUnitGroupSets.get(0);
         orgUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSet.getOrganisationUnitGroups() );
         
+        
+        
+        List<OrganisationUnitGroupSet> orgUnitOwnerShipGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetByName( Model.NAME_OWNERSHIP_GROUP_SET ) );
+        organisationUnitOwnershipGroupSet = orgUnitOwnerShipGroupSets.get(0);
+        orgUnitOwnershipGroupSetMember = new ArrayList<OrganisationUnitGroup>( organisationUnitOwnershipGroupSet.getOrganisationUnitGroups() );
+        
+        /*
+        if ( organisationUnitOwnershipGroupSet != null )
+        {
+            orgUnitGroups.addAll( orgUnitOwnershipGroupSetMember );
+        }
+        
+        orgUnitGroups.addAll( orgUnitOwnershipGroupSetMember );
+        */
+        
+        Collections.sort( orgUnitOwnershipGroupSetMember, new IdentifiableObjectNameComparator() );
+        
         Collections.sort( orgUnitGroups, new IdentifiableObjectNameComparator() );
+        
+        /*
+        for ( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
+        {
+            System.out.println( organisationUnitGroup.getName() );
+        }
+        */
         
         //for ( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
         //{
             for( OrganisationUnit orgUnit : orgUnitList )
             {
-                for ( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
+                for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
                 {
                     if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
                     {
                         if( orgUnit.getGroups().contains( organisationUnitGroup ) )
                         {
+                            
                             orgUnitGroupNameMap.put( orgUnit.getId(), organisationUnitGroup.getName() );
+                            break;
+                        }
+                    }
+                }
+                
+                for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitOwnershipGroupSet.getOrganisationUnitGroups() )
+                {
+                    if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
+                    {
+                        if( orgUnit.getGroups().contains( organisationUnitGroup ) )
+                        {
+                            
+                            orgUnitGroupSetOwnerShipNameMap.put( orgUnit.getId(), organisationUnitGroup.getName() );
                             break;
                         }
                     }
@@ -358,7 +423,7 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
         if ( listFilterOrgUnit != null && listFilterOrgUnit )
         {
             
-            if( searchingOrgUnitFilterOptionId.equalsIgnoreCase(  Model.NAME_FACILITY_TYPE ) )
+            if( searchingOrgUnitFilterOptionId.equalsIgnoreCase(  Model.NAME_FACILITY_TYPE ) || searchingOrgUnitFilterOptionId.equalsIgnoreCase(  Model.NAME_OWNERSHIP_GROUP_SET ) )
             {
                 OrganisationUnitGroup filterOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( searchingOrgUnitGroupId );
                 
@@ -368,7 +433,7 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
                 
                 for( OrganisationUnit orgUnit : orgUnitList )
                 {
-                    for ( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
+                    for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
                     {
                         if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
                         {
@@ -379,6 +444,20 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
                             }
                         }
                     }
+                    
+                    for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitOwnershipGroupSet.getOrganisationUnitGroups() )
+                    {
+                        if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
+                        {
+                            if( orgUnit.getGroups().contains( organisationUnitGroup ) )
+                            {
+                                
+                                orgUnitGroupSetOwnerShipNameMap.put( orgUnit.getId(), organisationUnitGroup.getName() );
+                                break;
+                            }
+                        }
+                    }
+                    
                     orgunitHierarchyMap.put( orgUnit.getId(), getHierarchyOrgunit( orgUnit ) );
                 }
                 
@@ -400,7 +479,7 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
                 
                 for( OrganisationUnit orgUnit : orgUnitList )
                 {
-                    for ( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
+                    for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
                     {
                         if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
                         {
@@ -411,6 +490,66 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
                             }
                         }
                     }
+                    
+                    for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitOwnershipGroupSet.getOrganisationUnitGroups() )
+                    {
+                        if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
+                        {
+                            if( orgUnit.getGroups().contains( organisationUnitGroup ) )
+                            {
+                                
+                                orgUnitGroupSetOwnerShipNameMap.put( orgUnit.getId(), organisationUnitGroup.getName() );
+                                break;
+                            }
+                        }
+                    }
+                    
+                    orgunitHierarchyMap.put( orgUnit.getId(), getHierarchyOrgunit( orgUnit ) );
+                }
+                
+                getOrganisationUnitAttributeData( );
+                
+                return SUCCESS;
+            }
+            
+            else if( searchingOrgUnitFilterOptionId.equalsIgnoreCase(  EquipmentAttributeValue.PREFIX_ORGANISATIONUNIT_CODE ) )
+            {
+                //orgUnitList = new ArrayList<OrganisationUnit>();
+                
+                //orgUnitList = new ArrayList<OrganisationUnit>( equipmentService.searchOrgUnitListByName( searchOrgText ));
+                
+                orgUnitList.retainAll( equipmentService.searchOrgUnitListByCode( searchOrgText ) );
+                
+                filteredOrgUnitList.addAll( orgUnitList ); 
+                
+                for( OrganisationUnit orgUnit : orgUnitList )
+                {
+                    for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
+                    {
+                        if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
+                        {
+                            if( orgUnit.getGroups().contains( organisationUnitGroup ) )
+                            {
+                                orgUnitGroupNameMap.put( orgUnit.getId(), organisationUnitGroup.getName() );
+                                break;
+                            }
+                        }
+                    }
+                    
+                    
+                    for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitOwnershipGroupSet.getOrganisationUnitGroups() )
+                    {
+                        if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
+                        {
+                            if( orgUnit.getGroups().contains( organisationUnitGroup ) )
+                            {
+                                
+                                orgUnitGroupSetOwnerShipNameMap.put( orgUnit.getId(), organisationUnitGroup.getName() );
+                                break;
+                            }
+                        }
+                    }
+                    
                     orgunitHierarchyMap.put( orgUnit.getId(), getHierarchyOrgunit( orgUnit ) );
                 }
                 
@@ -437,7 +576,7 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
                    
                    orgunitHierarchyMap.put( orgUnit.getId(), getHierarchyOrgunit( orgUnit ) );
                    
-                   for ( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
+                   for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
                    {
                        if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
                        {
@@ -448,6 +587,20 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
                            }
                        }
                    }
+                   
+                   for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitOwnershipGroupSet.getOrganisationUnitGroups() )
+                   {
+                       if( orgUnit.getGroups() != null && orgUnit.getGroups().size() > 0 )
+                       {
+                           if( orgUnit.getGroups().contains( organisationUnitGroup ) )
+                           {
+                               
+                               orgUnitGroupSetOwnerShipNameMap.put( orgUnit.getId(), organisationUnitGroup.getName() );
+                               break;
+                           }
+                       }
+                   }
+                   
                 }
                 
                 listOrganisationUnitByFilter( orgUnitIdsByComma, attribute, searchOrgText );
@@ -554,21 +707,6 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
     
     }
      
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private String getHierarchyOrgunit( OrganisationUnit orgunit )
     {
         //String hierarchyOrgunit = orgunit.getName();
@@ -588,7 +726,7 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
             orgunit = orgunit.getParent();
         }
         
-        hierarchyOrgunit = hierarchyOrgunit.substring( hierarchyOrgunit.indexOf( "/" ) +1 );
+        hierarchyOrgunit = hierarchyOrgunit.substring( hierarchyOrgunit.indexOf( "/" ) + 1 );
         
         return hierarchyOrgunit;
     }

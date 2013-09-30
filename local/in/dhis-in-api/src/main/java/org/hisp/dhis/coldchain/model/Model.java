@@ -12,7 +12,9 @@ public class Model extends BaseNameableObject
     public static final String DEFAULT_CCEMFOLDER = "CCEMIMAGES";
     public static String PREFIX_MODEL_NAME = "modelname";
     
+    public static final String NAME_OWNERSHIP_GROUP_SET = "Ownership";
     public static final String NAME_FACILITY_TYPE = "Facility Type";
+    //public static final String NAME_FACILITY_TYPE = "Type";
     
     
     private int id;

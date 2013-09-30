@@ -43,13 +43,28 @@
 			<td id='searchingOrgUnitAttributeTD' style='display:none'>
                 	<select id="searchingOrgUnitFilterOptionId" name="searchingOrgUnitFilterOptionId" onchange="searchingOrgUnitFilterOptionOnChange()">
                   		<!--<option value="">[$i18n.getString( "please_select" )]</option>-->
-                  		<option value="$organisationUnitGroupSet.name">$organisationUnitGroupSet.name</option>
-                  		<option value="orgunitname">$i18n.getString( "orunit_name" )</option>
-                  		#foreach( $orgUniAttribute in $attributes )
+                  		<!--<option value="$organisationUnitGroupSet.name">$organisationUnitGroupSet.name</option>-->
+                  		<option value="$organisationUnitOwnershipGroupSet.name">$i18n.getString( "ownership" )</option>
+						<option value="$organisationUnitGroupSet.name">$i18n.getString( "type" )</option>
+						<option value="orgunitname">$i18n.getString( "orunit_name" )</option>
+						<option value="code">$i18n.getString( "code" )</option>
+                  		<!--
+						#foreach( $orgUniAttribute in $attributes )
                   			<option value="$orgUniAttribute.id">$orgUniAttribute.name</option>
+		                #end
+						-->
+                  	</select>
+			</td>
+			
+			<td id='searchingOrgUnitOwnerShipGroupSetMemberTD' style='display:none'>
+                	<select id="searchingOrgUnitGroupSetOwnerShipId" name="searchingOrgUnitGroupSetOwnerShipId" #if( $orgUnitOwnershipGroupSetMember.size() == 0 ) disabled="disabled" #end onchange="loadOrgUnitsByFilter()">
+                  		<option value="">[$i18n.getString( "please_select" )]</option>
+                  		#foreach( $orgUniGroupOwnerShip in $orgUnitOwnershipGroupSetMember )
+                  			<option value="$orgUniGroupOwnerShip.id">$orgUniGroupOwnerShip.name</option>
 		                  #end
                   	</select>
 			</td>
+			
 			
 			<td id='searchingOrgUnitGroupSetMemberTD' style='display:none'>
                 	<select id="searchingOrgUnitGroupId" name="searchingOrgUnitGroupId" #if( $orgUnitGroups.size() == 0 ) disabled="disabled" #end onchange="loadOrgUnitsByFilter()">
@@ -59,7 +74,6 @@
 		                  #end
                   	</select>
 			</td>			
-			
 			
 			<td id='searchingOrgTextTD' style='display:none'>
             	<input type="text" id="searchOrgText" name="searchOrgText" maxlength="30" style="width:12.5em" value="$!searchOrgText" onkeypress="isOrgUnitEnter( event )">
@@ -87,10 +101,16 @@
 		<tr bgcolor="#285C91">
 			<td><font color="#FFFFFF"><strong>$i18n.getString( "orgunit_hierarchy" )</strong></font></td>
 			<td><font color="#FFFFFF"><strong>$i18n.getString( "health_facility_name" )</strong></font></td>
+			<td><font color="#FFFFFF"><strong>$i18n.getString( "code" )</strong></font></td> 
+			 <!--
 			 #foreach( $attribute in $attributes )
 			 	<td><font color="#FFFFFF"><strong>$attribute.name</strong></font></td>
- 			#end
- 			<td><font color="#FFFFFF"><strong>$organisationUnitGroupSet.name</strong></font></td>
+			 #end
+			-->	
+			<td><font color="#FFFFFF"><strong>$i18n.getString( "ownership" )</strong></font></td> 
+ 			<td><font color="#FFFFFF"><strong>$i18n.getString( "type" )</strong></font></td>
+			<!--<td><font color="#FFFFFF"><strong>$organisationUnitGroupSet.name</strong></font></td>-->
+			
  			<td>&nbsp;&nbsp;</td>
 		</tr>
 		
@@ -100,11 +120,15 @@
 			 	<tr #alternate($mark)>
 			 		<td>$!orgunitHierarchyMap.get( $orgUnit.id )</td>
 			 		<td>$encoder.htmlEncode( $orgUnit.name )</td>
-			 		 #foreach( $attribute in $attributes )
+					<td>$!orgUnit.code</td>
+			 		 <!--
+					 #foreach( $attribute in $attributes )
 			 		 	#set( $valueMapId = $orgUnit.id + ':' + $attribute.id )
 			 		 	<td>$!orgUnitAttribDataValueMap.get( $valueMapId )</td>
- 		 			#end
- 		 			<td>$!orgUnitGroupNameMap.get( $orgUnit.id )</td>
+					 #end
+					-->
+ 		 			<td>$!orgUnitGroupSetOwnerShipNameMap.get( $orgUnit.id )</td>
+					<td>$!orgUnitGroupNameMap.get( $orgUnit.id )</td>
 			 		<td><a href="javascript:showFullOrgUnitDetails( '$orgUnit.id','$orgUnit.name'); " title='$i18n.getString( "Clinic Detail" )'>Details</a></td>
  			 	</tr>
 			#set( $mark = !$mark)
@@ -129,7 +153,7 @@
 							</select>
 						</td>
 						<td id='filterDiv'><a href="javascript:hideFilter()" >Filter</a></td>
-						<td id='searchingAttributeIdTD'>
+						<td id='searchingAttributeIdTD'></td>
                		 	<td id='searchingAttributeTD' style='display:none'>
                 			<select id="searchingAttributeId" name="searchingAttributeId" #if( $equipmentTypeAttributes.size() == 0 ) disabled="disabled" #end onchange="searchingAttributeOnChange( this.value )">
                   			<!--<option value="modelname">$i18n.getString( "Model Name" )</option>-->

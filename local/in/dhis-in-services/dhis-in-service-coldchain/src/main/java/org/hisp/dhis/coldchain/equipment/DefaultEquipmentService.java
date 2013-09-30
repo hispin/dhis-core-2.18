@@ -168,6 +168,12 @@ public class DefaultEquipmentService implements EquipmentService
         return equipmentStore.searchOrgUnitListByName( searchText );
     }
     
+    public Collection<OrganisationUnit> searchOrgUnitListByCode( String searchText )
+    {
+        return equipmentStore.searchOrgUnitListByCode( searchText );
+    }
+    
+    
     // for orgUnit list according to orGUnit Attribute values for paging purpose
     public int countOrgUnitByAttributeValue( Collection<Integer> orgunitIds, Attribute attribute, String searchText )
     {

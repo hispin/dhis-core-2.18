@@ -31,7 +31,7 @@
 				#set( $mark = !$mark)	
 				#end
 				<tr bgcolor="#285C91">
-					<td colspan="2"><font color="#FFFFFF"><strong>Contact</strong></font>
+					<td colspan="2"><font color="#FFFFFF"><strong>Contact</strong></font></td>
 				</tr>				
 				<tr>
 					<td>Contact Person</td>
@@ -52,7 +52,7 @@
 				</tr>
 				
 				<tr bgcolor="#285C91">$i18n.getString( "equipment_manager" )
-					<td><font color="#FFFFFF"><strong>$i18n.getString( "equipmentAttributeValue" )</strong></font>
+					<td><font color="#FFFFFF"><strong>$i18n.getString( "equipmentAttributeValue" )</strong></font></td>
 					<!--<td align="left"><a href="javascript:closeFullOrgDetailsWindow(); " title='$i18n.getString( "EquipmentAttributeValue Detail" )'><font color="#FFFFFF"><u>equipmentAttributeValue details</u></font></a></td>-->
 					<td align="left"><font color="#FFFFFF">$i18n.getString( "equipment_count" )</font></td>
 				</tr>				
