@@ -52,8 +52,6 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ValidationRuleStoreTest.java 3679 2007-10-22 18:25:18Z larshelg
- *          $
  */
 @SuppressWarnings( "unchecked" )
 public class ValidationRuleGroupStoreTest

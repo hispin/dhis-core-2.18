@@ -28,18 +28,18 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.expression.Operator.equal_to;
+import static org.hisp.dhis.expression.Operator.greater_than;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.hisp.dhis.expression.Operator.equal_to;
-import static org.hisp.dhis.expression.Operator.greater_than;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -52,11 +52,9 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ValidationRuleStoreTest.java 3679 2007-10-22 18:25:18Z larshelg
- *          $
  */
 public class ValidationRuleStoreTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     private ValidationRuleStore validationRuleStore;
 
@@ -127,12 +125,6 @@ public class ValidationRuleStoreTest
         expressionService.addExpression( expressionA );
 
         periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
-    }
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
     }
 
     // -------------------------------------------------------------------------
