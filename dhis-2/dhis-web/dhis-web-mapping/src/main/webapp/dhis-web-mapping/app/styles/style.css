@@ -299,6 +299,7 @@ gis-combo .x-form-item-label {
 .x-panel-header	{ /* Panel header */
 	height: 30px;
 	padding: 7px 4px 4px 7px;
+    border: 0 none;
 }
 
 

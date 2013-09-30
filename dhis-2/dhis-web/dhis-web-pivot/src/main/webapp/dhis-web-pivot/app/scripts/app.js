@@ -1822,6 +1822,7 @@ Ext.onReady( function() {
 			userGroupField,
 			userGroupButton,
 			userGroupRowContainer,
+			externalAccess,
 			publicGroup,
 			window;
 
@@ -1917,6 +1918,7 @@ Ext.onReady( function() {
 					id: sharing.object.id,
 					name: sharing.object.name,
 					publicAccess: publicGroup.down('combobox').getValue(),
+					externalAccess: externalAccess ? externalAccess.getValue() : false,
 					user: {
 						id: pt.init.user.id,
 						name: pt.init.user.name
@@ -1992,6 +1994,16 @@ Ext.onReady( function() {
 		userGroupRowContainer = Ext.create('Ext.container.Container', {
 			bodyStyle: 'border:0 none'
 		});
+		
+		if (sharing.meta.allowExternalAccess) {
+			externalAccess = userGroupRowContainer.add({
+				xtype: 'checkbox',
+				fieldLabel: PT.i18n.allow_external_access,
+				labelSeparator: '',
+				labelWidth: 250,
+				checked: !!sharing.object.externalAccess
+			});
+		}
 
 		publicGroup = userGroupRowContainer.add(UserGroupRow({
 			id: sharing.object.id,
@@ -2009,7 +2021,6 @@ Ext.onReady( function() {
 		window = Ext.create('Ext.window.Window', {
 			title: PT.i18n.sharing_settings,
 			bodyStyle: 'padding:6px 6px 0px; background-color:#fff',
-			width: 434,
 			resizable: false,
 			modal: true,
 			destroyOnBlur: true,
@@ -3353,55 +3364,48 @@ Ext.onReady( function() {
 				}
 			},
 			multipleExpand: function(id, path, doUpdate) {
-				this.expandPath('/' + pt.conf.finals.root.id + path, 'id', '/', function() {
+				var rootId = pt.conf.finals.root.id;
+				
+				if (path.substr(0, rootId.length + 1) !== ('/' + rootId)) {
+					path = '/' + rootId + path;
+				}
+				
+				this.expandPath('/' + path, 'id', '/', function() {
 					var record = this.getRootNode().findChild('id', id, true);
 					this.recordsToSelect.push(record);
 					this.multipleSelectIf(doUpdate);
 				}, this);
 			},
-			select: function(url, params) {
-				if (!params) {
-					params = {};
-				}
-				Ext.Ajax.request({
-					url: url,
-					method: 'GET',
-					params: params,
-					scope: this,
-					success: function(r) {
-						var a = Ext.decode(r.responseText).organisationUnits;
-						this.numberOfRecords = a.length;
-						for (var i = 0; i < a.length; i++) {
-							this.multipleExpand(a[i].id, a[i].path);
-						}
+            select: function(url, params) {
+                if (!params) {
+                    params = {};
+                }
+                Ext.Ajax.request({
+                    url: url,
+                    method: 'GET',
+                    params: params,
+                    scope: this,
+                    success: function(r) {
+                        var a = Ext.decode(r.responseText).organisationUnits;
+                        this.numberOfRecords = a.length;
+                        for (var i = 0; i < a.length; i++) {
+                            this.multipleExpand(a[i].id, a[i].path);
+                        }
+                    }
+                });
+            },
+			getParentGraphMap: function() {
+				var selection = this.getSelectionModel().getSelection(),
+					map = {};
+				
+				if (Ext.isArray(selection) && selection.length) {
+					for (var i = 0, pathArray, key; i < selection.length; i++) {
+						pathArray = selection[i].getPath().split('/');
+						map[pathArray.pop()] = pathArray.join('/');
 					}
-				});
-			},
-			selectByGroup: function(id) {
-				if (id) {
-					var url = pt.init.contextPath + pt.conf.finals.url.path_module + pt.conf.finals.url.organisationunit_getbygroup,
-						params = {id: id};
-					this.select(url, params);
 				}
-			},
-			selectByLevel: function(level) {
-				if (level) {
-					var url = pt.init.contextPath + pt.conf.finals.url.path_module + pt.conf.finals.url.organisationunit_getbylevel,
-						params = {level: level};
-					this.select(url, params);
-				}
-			},
-			selectByIds: function(ids) {
-				if (ids) {
-					var url = pt.init.contextPath + pt.conf.finals.url.path_module + pt.conf.finals.url.organisationunit_getbyids;
-					Ext.Array.each(ids, function(item) {
-						url = Ext.String.urlAppend(url, 'ids=' + item);
-					});
-					if (!this.rendered) {
-						pt.cmp.dimension.organisationUnit.panel.expand();
-					}
-					this.select(url);
-				}
+				
+				return map;
 			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
@@ -4279,17 +4283,18 @@ Ext.onReady( function() {
 									},
 									'-',
 									{
-										text: 'View table as chart' + '&nbsp;&nbsp;', //i18n
+										text: 'Open this table as chart' + '&nbsp;&nbsp;', //i18n
 										cls: 'pt-menu-item-noicon',
 										disabled: !PT.isSessionStorage || !pt.layout,
 										handler: function() {
 											if (PT.isSessionStorage) {
+												pt.layout.parentGraphMap = treePanel.getParentGraphMap();
 												pt.engine.setSessionStorage(pt.layout, 'analytical', pt.init.contextPath + '/dhis-web-visualizer/app/index.html?s=analytical');
 											}
 										}
 									},
 									{
-										text: 'View last chart' + '&nbsp;&nbsp;', //i18n
+										text: 'Open last chart' + '&nbsp;&nbsp;', //i18n
 										cls: 'pt-menu-item-noicon',
 										disabled: !(PT.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['chart']),
 										handler: function() {
@@ -4318,9 +4323,55 @@ Ext.onReady( function() {
 						text: PT.i18n.map,
 						iconCls: 'pt-button-icon-map',
 						toggleGroup: 'module',
-						//menu: {},
+						menu: {},
 						handler: function(b) {
-							window.location.href = pt.init.contextPath + '/dhis-web-mapping/app/index.html';
+							b.menu = Ext.create('Ext.menu.Menu', {
+								closeAction: 'destroy',
+								shadow: false,
+								showSeparator: false,
+								items: [
+									{
+										text: 'Go to maps' + '&nbsp;&nbsp;', //i18n
+										cls: 'pt-menu-item-noicon',
+										handler: function() {
+											window.location.href = pt.init.contextPath + '/dhis-web-mapping/app/index.html';
+										}
+									},
+									'-',
+									{
+										text: 'Open this table as map' + '&nbsp;&nbsp;', //i18n
+										cls: 'pt-menu-item-noicon',
+										disabled: !PT.isSessionStorage || !pt.layout,
+										handler: function() {
+											if (PT.isSessionStorage) {
+												pt.engine.setSessionStorage(pt.layout, 'analytical', pt.init.contextPath + '/dhis-web-mapping/app/index.html?s=analytical');
+											}
+										}
+									},
+									{
+										text: 'Open last chart' + '&nbsp;&nbsp;', //i18n
+										cls: 'pt-menu-item-noicon',
+										disabled: !(PT.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['map']),
+										handler: function() {
+											window.location.href = pt.init.contextPath + '/dhis-web-mapping/app/index.html?s=chart';
+										}
+									}
+								],
+								listeners: {
+									show: function() {
+										pt.util.window.setAnchorPosition(b.menu, b);
+									},
+									hide: function() {
+										b.menu.destroy();
+										defaultButton.toggle();
+									},
+									destroy: function(m) {
+										b.menu = null;
+									}
+								}
+							});
+
+							b.menu.show();
 						}
 					},
 					{

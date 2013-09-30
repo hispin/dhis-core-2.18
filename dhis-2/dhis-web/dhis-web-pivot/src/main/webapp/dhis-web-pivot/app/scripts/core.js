@@ -2601,7 +2601,7 @@ Ext.onReady( function() {
 					showSeparator: false,
 					items: [
 						{
-							text: 'View selection as chart' + '&nbsp;&nbsp;', //i18n
+							text: 'Open selection as chart' + '&nbsp;&nbsp;', //i18n
 							iconCls: 'pt-button-icon-chart',
 							param: 'chart',
 							handler: function() {
@@ -2620,12 +2620,23 @@ Ext.onReady( function() {
 							}
 						},
 						{
-							text: 'View selection as map' + '&nbsp;&nbsp;', //i18n
+							text: 'Open selection as map' + '&nbsp;&nbsp;', //i18n
 							iconCls: 'pt-button-icon-map',
 							param: 'map',
 							disabled: true,
 							handler: function() {
-								that.setSessionStorage(layoutConfig, pt.init.contextPath + '/dhis-web-mapping/app/index.html');
+								that.setSessionStorage(layoutConfig, pt.init.contextPath + '/dhis-web-mapping/app/index.html?s=analytical');
+							},
+							listeners: {
+								render: function() {
+									this.getEl().on('mouseover', function() {
+										that.onMouseHover(uuid, 'mouseover', 'map', pt);
+									});
+
+									this.getEl().on('mouseout', function() {
+										that.onMouseHover(uuid, 'mouseout', 'map', pt);
+									});
+								}
 							}
 						}
 					]
