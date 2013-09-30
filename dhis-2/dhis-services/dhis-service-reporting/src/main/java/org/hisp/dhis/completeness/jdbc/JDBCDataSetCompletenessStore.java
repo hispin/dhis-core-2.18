@@ -92,7 +92,7 @@ public class JDBCDataSetCompletenessStore
         return statementManager.getHolder().queryForInteger( sql );
     }
 
-    public Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources, int completenessOffset )
+    public Integer getCompleteDataSetRegistrationsWithTimeliness( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources )
     {
         if ( relevantSources == null || relevantSources.isEmpty() || periods == null || periods.isEmpty() )
         {
@@ -106,7 +106,7 @@ public class JDBCDataSetCompletenessStore
             "WHERE cr.datasetid = " + dataSet.getId() + " " +
             "AND cr.periodid IN ( " + getCommaDelimitedString( periods ) + " ) " +
             "AND cr.sourceid IN ( " + getCommaDelimitedString( relevantSources ) + " ) " +
-            "AND cr.date <= " + statementBuilder.getAddDate( "pe.enddate", completenessOffset );
+            "AND cr.date <= " + statementBuilder.getAddDate( "pe.enddate", dataSet.getTimelyDays() );
         
         return statementManager.getHolder().queryForInteger( sql );
     }

@@ -28,9 +28,9 @@ package org.hisp.dhis.completeness;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.dataset.DataSet;
+
+import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
@@ -39,42 +39,42 @@ import org.hisp.dhis.dataset.DataSet;
 public interface DataSetCompletenessStore
 {
     String ID = DataSetCompletenessStore.class.getName();
-    
+
     Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources );
-    
-    Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources, int completenessOffset );
+
+    Integer getCompleteDataSetRegistrationsWithTimeliness( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources );
 
     Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods );
-    
+
     Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, int completenessOffset );
 
     Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets );
-    
+
     /**
      * Gets the percentage value for the datasetcompleteness with the given parameters.
-     * 
+     *
      * @param dataSetId the DataSet identifier.
-     * @param periodId the Period identifier.
-     * @param sourceId the Source identifier.
+     * @param periodId  the Period identifier.
+     * @param sourceId  the Source identifier.
      * @return the percentage value for the datasetcompleteness result with the given parameters.
      */
     Double getPercentage( int dataSetId, int periodId, int sourceId );
-    
+
     /**
      * Deletes the datasetcompleteness entries with the given parameters.
-     * 
+     *
      * @param dataSetIds the DataSet identifiers.
-     * @param periodIds the Period identifiers.
-     * @param sourceIds the Source identifiers.
+     * @param periodIds  the Period identifiers.
+     * @param sourceIds  the Source identifiers.
      */
     void deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> sourceIds );
-    
+
     /**
      * Deletes all datasetcompleteness entries.
      */
     void deleteDataSetCompleteness();
-    
+
     void createIndex();
-    
+
     void dropIndex();
 }
