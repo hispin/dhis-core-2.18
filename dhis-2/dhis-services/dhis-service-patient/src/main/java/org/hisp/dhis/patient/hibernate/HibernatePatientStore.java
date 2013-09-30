@@ -98,7 +98,7 @@ public class HibernatePatientStore
     // Implementation methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Patient> getByGender( String gender )
     {
@@ -106,7 +106,7 @@ public class HibernatePatientStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByBirthDate( Date birthDate )
     {
         return getCriteria( Restrictions.eq( "birthDate", birthDate ) ).list();
@@ -115,11 +115,16 @@ public class HibernatePatientStore
     @Override
     public Collection<Patient> getByNames( String fullName, Integer min, Integer max )
     {
+        if ( min == null || max == null )
+        {
+            return getAllLikeNameOrderedName( fullName, 0, Integer.MAX_VALUE );
+        }
+
         return getAllLikeNameOrderedName( fullName, min, max );
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> get( String name, Date birthdate, String gender )
 
     {
@@ -152,7 +157,7 @@ public class HibernatePatientStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByOrgUnitAndNameLike( OrganisationUnit organisationUnit, String nameLike, Integer min, Integer max )
     {
         String hql = "select p from Patient p where p.organisationUnit = :organisationUnit "
@@ -171,7 +176,7 @@ public class HibernatePatientStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByOrgUnitAndGender( OrganisationUnit organisationUnit, String gender, Integer min,
         Integer max )
     {
@@ -344,7 +349,7 @@ public class HibernatePatientStore
     }
 
     @Override
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings( "deprecation" )
     public int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program )
     {
         String sql = "select count(p.patientid) from patient p join programinstance pi on p.patientid=pi.patientid "
@@ -355,7 +360,7 @@ public class HibernatePatientStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getRepresentatives( Patient patient )
     {
         String hql = "select distinct p from Patient p where p.representative = :representative order by p.id DESC";
@@ -824,7 +829,7 @@ public class HibernatePatientStore
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max )
     {
         String hql = "select p from Patient p where p.phoneNumber like '%" + phoneNumber + "%'";
@@ -870,7 +875,7 @@ public class HibernatePatientStore
         return patients;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate )
     {
         Criteria criteria = getCriteria();
