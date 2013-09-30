@@ -101,6 +101,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "allowfutureperiods" );
         statementBuilder.setColumn( "dataentryform" );
         statementBuilder.setColumn( "expirydays" );
+        statementBuilder.setColumn( "timelydays" );
         statementBuilder.setColumn( "notifycompletinguser" );
         statementBuilder.setColumn( "skipaggregation" );
         statementBuilder.setColumn( "fieldcombinationrequired" );
@@ -123,6 +124,7 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.isAllowFuturePeriods() );
         statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );
         statementBuilder.setValue( dataSet.getExpiryDays() );
+        statementBuilder.setValue( dataSet.getTimelyDays() );
         statementBuilder.setValue( dataSet.isNotifyCompletingUser() );
         statementBuilder.setValue( dataSet.isSkipAggregation() );
         statementBuilder.setValue( dataSet.isFieldCombinationRequired() );
