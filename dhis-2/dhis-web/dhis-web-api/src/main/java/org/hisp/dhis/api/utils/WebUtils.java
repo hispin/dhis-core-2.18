@@ -35,6 +35,7 @@ import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.system.util.ReflectionUtils;
+import org.hisp.dhis.user.UserCredentials;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -126,7 +127,7 @@ public class WebUtils
         generateLinks( object, true );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static void generateLinks( Object object, boolean deep )
     {
         if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
@@ -148,7 +149,7 @@ public class WebUtils
             {
                 Object fieldObject = ReflectionUtils.getFieldObject( field, object );
 
-                if ( fieldObject != null )
+                if ( fieldObject != null && !UserCredentials.class.isAssignableFrom( fieldObject.getClass() ) )
                 {
                     IdentifiableObject idObject = (IdentifiableObject) fieldObject;
                     idObject.setHref( ContextUtils.getPathWithUid( idObject ) );

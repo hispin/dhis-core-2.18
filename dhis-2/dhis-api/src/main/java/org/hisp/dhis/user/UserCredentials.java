@@ -61,6 +61,7 @@ public class UserCredentials
 
     /**
      * Required and unique.
+     * TODO: This must be renamed before we start using idObjectStore for UserCredentials
      */
     //private User user;
 
@@ -110,11 +111,6 @@ public class UserCredentials
      * be authenticated.
      */
     private boolean disabled;
-
-    /**
-     * The date this credentials was created.
-     */
-    private Date created;
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -381,16 +377,6 @@ public class UserCredentials
         this.password = password;
     }
 
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser( User user )
-    {
-        this.user = user;
-    }
-
     @JsonProperty
     @JsonSerialize(contentAs = BaseIdentifiableObject.class)
     @JsonView({ DetailedView.class, ExportView.class })
@@ -486,15 +472,5 @@ public class UserCredentials
     public void setDisabled( boolean disabled )
     {
         this.disabled = disabled;
-    }
-
-    public Date getCreated()
-    {
-        return created;
-    }
-
-    public void setCreated( Date created )
-    {
-        this.created = created;
     }
 }
