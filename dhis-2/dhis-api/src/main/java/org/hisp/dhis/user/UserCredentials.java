@@ -361,19 +361,15 @@ public class UserCredentials
         return "[" + username + "]";
     }
 
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
 
     public String getPassword()
     {

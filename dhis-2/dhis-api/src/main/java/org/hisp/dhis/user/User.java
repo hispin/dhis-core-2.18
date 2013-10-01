@@ -96,7 +96,6 @@ public class User
 
     private Date lastCheckedInterpretations;
 
-    @Scanned
     private UserCredentials userCredentials;
 
     private Set<UserGroup> groups = new HashSet<UserGroup>();
@@ -214,6 +213,12 @@ public class User
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    @Override
+    public boolean haveUniqueNames()
+    {
+        return false;
+    }
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
