@@ -415,6 +415,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( object instanceof User )
         {
             userCredentials = ((User) object).getUserCredentials();
+
+            if ( userCredentials == null )
+            {
+                summaryType.getImportConflicts().add(
+                    new ImportConflict( ImportUtils.getDisplayName( object ), "User is missing userCredentials part." ) );
+
+                return false;
+            }
         }
 
         Map<Field, Object> fields = detachFields( object );
@@ -433,7 +441,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( object instanceof User )
         {
             userCredentials.setUser( (User) object );
-            userCredentials.setId( ((User) object).getId() );
+            userCredentials.setId( object.getId() );
 
             Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
 
@@ -445,7 +453,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             ((User) object).setUserCredentials( userCredentials );
 
-            objectBridge.updateObject( (User) object );
+            objectBridge.updateObject( object );
         }
 
         if ( !options.isDryRun() )
@@ -493,6 +501,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( object instanceof User )
         {
             userCredentials = ((User) object).getUserCredentials();
+
+            if ( userCredentials == null )
+            {
+                summaryType.getImportConflicts().add(
+                    new ImportConflict( ImportUtils.getDisplayName( object ), "User is missing userCredentials part." ) );
+
+                return false;
+            }
         }
 
         Map<Field, Object> fields = detachFields( object );
