@@ -112,7 +112,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -398,7 +398,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
 
             log.warn( "You do have create access to class type." );
-            
+
             return false;
         }
 
@@ -411,8 +411,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         nonIdentifiableObjects.extract( object );
 
         UserCredentials userCredentials = null;
-        if (object instanceof User) {
-            userCredentials = ((User)object).getUserCredentials();
+        if ( object instanceof User )
+        {
+            userCredentials = ((User) object).getUserCredentials();
         }
 
         Map<Field, Object> fields = detachFields( object );
@@ -428,21 +429,22 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         objectBridge.updateObject( object );
 
-        if (object instanceof User) {
-            userCredentials.setUser((User)object);
-            userCredentials.setId( ((User)object).getId());
+        if ( object instanceof User )
+        {
+            userCredentials.setUser( (User) object );
+            userCredentials.setId( ((User) object).getId() );
 
             Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
 
-            sessionFactory.getCurrentSession().save(userCredentials);
+            sessionFactory.getCurrentSession().save( userCredentials );
 
             reattachCollectionFields( userCredentials, collectionFieldsUserCredentials );
 
-            sessionFactory.getCurrentSession().saveOrUpdate(userCredentials);
+            sessionFactory.getCurrentSession().saveOrUpdate( userCredentials );
 
-            ((User) object).setUserCredentials(userCredentials);
+            ((User) object).setUserCredentials( userCredentials );
 
-            objectBridge.updateObject( (User)object );
+            objectBridge.updateObject( (User) object );
         }
 
         if ( !options.isDryRun() )
@@ -486,8 +488,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         nonIdentifiableObjects.delete( persistedObject );
 
         UserCredentials userCredentials = null;
-        if (object instanceof User) {
-            userCredentials = ((User)object).getUserCredentials();
+        if ( object instanceof User )
+        {
+            userCredentials = ((User) object).getUserCredentials();
         }
 
         Map<Field, Object> fields = detachFields( object );
@@ -505,13 +508,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         objectBridge.updateObject( persistedObject );
 
-        if (object instanceof User) {
-
+        if ( object instanceof User )
+        {
             Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
 
-            reattachCollectionFields( ((User)persistedObject).getUserCredentials(), collectionFieldsUserCredentials );
-            sessionFactory.getCurrentSession().saveOrUpdate(((User)persistedObject).getUserCredentials());
-
+            reattachCollectionFields( ((User) persistedObject).getUserCredentials(), collectionFieldsUserCredentials );
+            sessionFactory.getCurrentSession().saveOrUpdate( ((User) persistedObject).getUserCredentials() );
         }
 
         if ( !options.isDryRun() )
