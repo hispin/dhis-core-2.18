@@ -32,7 +32,6 @@
     <module>dhis-service-analytics</module>
     <module>dhis-service-mobile</module>
     <!-- Level 4 -->
-    <module>dhis-service-integration</module>
     <module>dhis-service-mapgeneration</module>
     <module>dhis-service-eventreporting</module>
     <!-- Level 5 -->

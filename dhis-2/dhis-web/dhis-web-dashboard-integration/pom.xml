@@ -54,6 +54,11 @@
       <artifactId>dhis-service-mapgeneration</artifactId>
     </dependency>
         
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+  
   </dependencies>
   
   <properties>
