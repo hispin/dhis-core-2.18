@@ -206,6 +206,10 @@ public class JdbcEventAnalyticsManager
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns the dynamic select columns. Dimensions come first and query items
+     * second.
+     */
     private String getSelectColumns( EventQueryParams params )
     {
         String sql = "";
@@ -267,11 +271,11 @@ public class JdbcEventAnalyticsManager
             sql += "and ps = '" + params.getProgramStage().getUid() + "' ";
         }
 
-        for ( QueryItem filter : params.getItems() )
+        for ( QueryItem item : params.getItems() )
         {
-            if ( filter.hasFilter() )
+            if ( item.hasFilter() )
             {                
-                sql += "and lower(" + filter.getItem().getUid() + ") " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
+                sql += "and lower(" + item.getItem().getUid() + ") " + item.getSqlOperator() + " " + getSqlFilter( item ) + " ";
             }
         }
         
@@ -286,6 +290,9 @@ public class JdbcEventAnalyticsManager
         return sql;
     }
     
+    /**
+     * Returns the filter value for the given query item.
+     */
     private String getSqlFilter( QueryItem item )
     {
         String operator = item.getOperator();

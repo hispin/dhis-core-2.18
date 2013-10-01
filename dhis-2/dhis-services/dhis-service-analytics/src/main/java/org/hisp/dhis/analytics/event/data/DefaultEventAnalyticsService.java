@@ -187,7 +187,7 @@ public class DefaultEventAnalyticsService
         {
             IdentifiableObject item = queryItem.getItem();
             
-            grid.addHeader( new GridHeader( item.getName(), item.getUid() ) );
+            grid.addHeader( new GridHeader( item.getUid(), item.getName() ) );
         }
 
         // ---------------------------------------------------------------------
