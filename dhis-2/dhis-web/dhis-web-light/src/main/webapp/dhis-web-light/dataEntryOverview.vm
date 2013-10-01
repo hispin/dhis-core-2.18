@@ -29,11 +29,11 @@
     #if( $dataSet.sections.size() > 0 )
         #foreach( $section in $dataSet.sections )
             <li>
-                <a href="dataEntrySection.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$periodId&sectionId=$section.id">$i18n.getString( $section.displayName )</a>
+                <a href="dataEntrySection.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&isoPeriod=$isoPeriod&sectionId=$section.id">$i18n.getString( $section.displayName )</a>
             </li>
         #end
     #else
-        <a href="dataEntrySection.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$periodId">$i18n.getString( "Default" )</a>
+        <a href="dataEntrySection.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&isoPeriod=$isoPeriod">$i18n.getString( "Default" )</a>
     #end
     </ul>
 </p>
@@ -41,8 +41,7 @@
 <form method="GET" action=#if($completed == true) "inComplete.action" #else "markComplete.action" #end>
 <input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnitId" />
 <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSetId" />
-<input type="hidden" id="periodId" name="periodId" value="$periodId" />
-
+<input type="hidden" id="isoPeriod" name="isoPeriod" value="$isoPeriod" />
 <div class="header-box" align="center">
     <p>
         <input type="hidden" name="formComplete" value="true" />

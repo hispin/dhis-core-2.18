@@ -69,7 +69,7 @@
     <action name="saveSectionForm"
         class="org.hisp.dhis.light.dataentry.action.SaveSectionFormAction">
       <result name="success" type="redirect">
-        /light/dataEntry.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}&amp;sectionId=${sectionId}&amp;validated=${validated}
+        /light/dataEntry.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;isoPeriod=${isoPeriod}&amp;sectionId=${sectionId}&amp;validated=${validated}
       </result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/dataEntrySection.vm</param>
@@ -79,7 +79,7 @@
     <action name="markComplete"
         class="org.hisp.dhis.light.dataentry.action.MarkComplete">
       <result name="success" type="redirect">
-        /light/index.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}&amp;complete=true
+        /light/index.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;isoPeriod=${isoPeriod}&amp;complete=true
       </result>
       <param name="requiredAuthorities">F_DATAVALUE_ADD</param>
     </action>
@@ -87,7 +87,7 @@
 	<action name="inComplete"
         class="org.hisp.dhis.light.dataentry.action.UndoCompleteAction">
       <result name="success" type="redirect">
-        /light/dataEntry.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}
+        /light/dataEntry.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;isoPeriod=${isoPeriod}
       </result>
       <param name="requiredAuthorities">F_DATAVALUE_DELETE</param>
     </action>

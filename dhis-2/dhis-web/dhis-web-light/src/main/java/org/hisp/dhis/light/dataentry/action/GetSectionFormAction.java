@@ -104,16 +104,16 @@ public class GetSectionFormAction
         return organisationUnitId;
     }
 
-    private String periodId;
+    private String isoPeriod;
 
-    public void setPeriodId( String periodId )
+    public String getIsoPeriod()
     {
-        this.periodId = periodId;
+        return isoPeriod;
     }
 
-    public String getPeriodId()
+    public void setIsoPeriod( String isoPeriod )
     {
-        return periodId;
+        this.isoPeriod = isoPeriod;
     }
 
     private Integer dataSetId;
@@ -205,12 +205,12 @@ public class GetSectionFormAction
     public String execute()
     {
         Validate.notNull( organisationUnitId );
-        Validate.notNull( periodId );
+        Validate.notNull( isoPeriod );
         Validate.notNull( dataSetId );
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = periodService.getPeriodByExternalId( periodId );
+        Period period = periodService.getPeriod( isoPeriod );
 
         dataSet = dataSetService.getDataSet( dataSetId );
 

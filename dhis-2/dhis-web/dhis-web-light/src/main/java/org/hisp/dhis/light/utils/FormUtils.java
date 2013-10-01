@@ -44,6 +44,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.OrganisationUnitWithDataSetsFilter;
@@ -396,5 +397,13 @@ public class FormUtils
         }
 
         return false;
+    }
+    
+    public static String getIsoPeriod( PeriodType periodType )
+    {
+        if ( periodType.getName().equals( "" ) )
+        {}
+        String result = "";
+        return result;
     }
 }

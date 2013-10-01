@@ -1976,6 +1976,26 @@ public class ActivityReportingServiceImpl
     public String findLostToFollowUp( int orgUnitId, String programId )
         throws NotAllowedException
     {
-        return "";
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        List<String> searchTextList = new ArrayList<String>();
+        List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
+
+        Calendar toCalendar = new GregorianCalendar();
+        toCalendar.add( Calendar.DATE, -1 );
+        toCalendar.add( Calendar.YEAR, 100 );
+        Date toDate = toCalendar.getTime();
+        
+        Calendar fromCalendar = new GregorianCalendar();
+        fromCalendar.add( Calendar.DATE, -1 );
+        fromCalendar.add( Calendar.YEAR, -100 );
+        Date fromDate = toCalendar.getTime();
+        
+        String searchText = Patient.PREFIX_PROGRAM_EVENT_BY_STATUS+"_"+programId+"_"+formatter.format( fromDate )+"_"+formatter.format( toDate )+"_"+orgUnitId+"_"+true+"_"+ProgramStageInstance.LATE_VISIT_STATUS;
+        
+        searchTextList.add( searchText );
+        orgUnitList.add( organisationUnitService.getOrganisationUnit( orgUnitId ) );
+        
+        List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTextList, orgUnitList, true, null, null );
+        return searchText;
     }
 }

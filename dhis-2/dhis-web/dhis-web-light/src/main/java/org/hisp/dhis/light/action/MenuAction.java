@@ -115,11 +115,11 @@ public class MenuAction
         return organisationUnit;
     }
 
-    private String periodId;
+    private String isoPeriod;
 
-    public void setPeriodId( String periodId )
+    public void setIsoPeriod( String isoPeriod )
     {
-        this.periodId = periodId;
+        this.isoPeriod = isoPeriod;
     }
 
     private Period period;
@@ -177,7 +177,7 @@ public class MenuAction
         {
             organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-            period = periodService.getPeriodByExternalId( periodId );
+            period = periodService.getPeriod( isoPeriod );
             period.setName( format.formatPeriod( period ) );
 
             dataSet = dataSetService.getDataSet( dataSetId );
