@@ -1,7 +1,7 @@
 Ext.onReady( function() {
 	
-	// css	
-	var css = 'body { font-family: arial, sans-serif, liberation sans, consolas !important; font-size: 11px; } \n';
+	// css
+	var css = 'body { font-family: arial, sans-serif, liberation sans, consolas; font-size: 11px; } \n';
 	css += '.x-panel-body { font-size: 11px; } \n';
 	css += '.x-panel-header { height: 30px; padding: 7px 4px 4px 7px; border: 0 none; } \n';
 	css += '.olControlPanel { position: absolute; top: 0; right: 0; border: 0 none; } \n';
@@ -248,7 +248,7 @@ Ext.onReady( function() {
 			}
 
 			Ext.data.JsonP.request({
-				url: '../initialize.action',
+				url: config.url + '/dhis-web-mapping/initialize.action',
 				success: function(r) {
 					gis = GIS.core.getInstance(r);
 					
