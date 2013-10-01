@@ -28,6 +28,14 @@ package org.hisp.dhis.light.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -44,7 +52,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.OrganisationUnitWithDataSetsFilter;
@@ -59,14 +66,6 @@ import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -399,11 +398,4 @@ public class FormUtils
         return false;
     }
     
-    public static String getIsoPeriod( PeriodType periodType )
-    {
-        if ( periodType.getName().equals( "" ) )
-        {}
-        String result = "";
-        return result;
-    }
 }
