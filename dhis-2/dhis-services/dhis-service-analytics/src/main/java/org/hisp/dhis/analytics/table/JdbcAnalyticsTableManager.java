@@ -40,6 +40,7 @@ import java.util.concurrent.Future;
 
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -126,9 +127,11 @@ public class JdbcAnalyticsTableManager
             
             populateTable( table, "cast(dv.value as " + dbl + ")", "int", intClause );
             
-            populateTable( table, "1" , "bool", "dv.value = 'true'" );
+            populateTable( table, "1" , DataElement.VALUE_TYPE_BOOL, "dv.value = 'true'" );
     
-            populateTable( table, "0" , "bool", "dv.value = 'false'" );
+            populateTable( table, "0" , DataElement.VALUE_TYPE_BOOL, "dv.value = 'false'" );
+            
+            populateTable( table, "1" , DataElement.VALUE_TYPE_TRUE_ONLY, "dv.value = 'true'" );
         }
     
         return null;
