@@ -124,16 +124,16 @@ public class GetDataSetOverviewAction
         return organisationUnit;
     }
 
-    private String periodId;
+    private String isoPeriod;
 
-    public void setPeriodId( String periodId )
+    public String getIsoPeriod()
     {
-        this.periodId = periodId;
+        return isoPeriod;
     }
 
-    public String getPeriodId()
+    public void setIsoPeriod( String isoPeriod )
     {
-        return periodId;
+        this.isoPeriod = isoPeriod;
     }
 
     private Period period;
@@ -215,12 +215,12 @@ public class GetDataSetOverviewAction
     public String execute()
     {
         Validate.notNull( organisationUnitId );
-        Validate.notNull( periodId );
+        Validate.notNull( isoPeriod );
         Validate.notNull( dataSetId );
-
+        
         organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        period = periodService.getPeriodByExternalId( periodId );
+        period = periodService.getPeriod ( isoPeriod );
 
         period.setName( format.formatPeriod( period ) );
 

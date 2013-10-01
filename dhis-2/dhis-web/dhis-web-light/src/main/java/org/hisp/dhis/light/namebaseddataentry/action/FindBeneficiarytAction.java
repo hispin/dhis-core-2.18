@@ -136,18 +136,7 @@ public class FindBeneficiarytAction
     @Override
     public String execute()
         throws Exception
-    {
-        if ( keyword != null )
-        {
-            int index = keyword.indexOf( ' ' );
-
-            if ( index != -1 && index == keyword.lastIndexOf( ' ' ) )
-            {
-                String[] keys = keyword.split( " " );
-                keyword = keys[0] + "  " + keys[1];
-            }
-        }
-
+    {   
         patients = patientService.getPatientsForMobile( keyword, organisationUnitId );
 
         if ( patients.size() == 1 )

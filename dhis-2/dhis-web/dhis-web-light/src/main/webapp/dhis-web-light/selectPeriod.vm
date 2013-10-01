@@ -17,9 +17,11 @@
 #foreach( $period in $periods )
 <li>
     #if( ! $lockedPeriods.contains( $period ) && ! $periodCompletedMap.get($period) )
-        <a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>
+        <!--<a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>-->
+		<a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&isoPeriod=$period.periodType.getIsoDate($period)">$!encoder.htmlEncode( ${period.name} )</a>
     #elseif( $periodCompletedMap.get($period) )
-        <a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>
+        <!--<a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>-->
+		<a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&isoPeriod=$period.periodType.getIsoDate($period)">$!encoder.htmlEncode( ${period.name} )</a>
     #end
 
 	#if( $periodCompletedMap.get($period) )<img src="../dhis-web-light/images/checkmark.jpg" />#end
