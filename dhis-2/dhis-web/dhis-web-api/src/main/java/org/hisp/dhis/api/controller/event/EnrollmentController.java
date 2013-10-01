@@ -47,6 +47,7 @@ import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -88,7 +89,7 @@ public class EnrollmentController
         @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam( value = "person", required = false ) String personUid,
         @RequestParam( value = "status", required = false ) EnrollmentStatus status,
-        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
+        @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Enrollments enrollments;
@@ -152,6 +153,7 @@ public class EnrollmentController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PROGRAM_ENROLLMENT')")
     public void postEnrollmentXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = enrollmentService.saveEnrollmentsXml( request.getInputStream() );
@@ -176,6 +178,7 @@ public class EnrollmentController
     }
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PROGRAM_ENROLLMENT')")
     public void postEnrollmentJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummaries importSummaries = enrollmentService.saveEnrollmentsJson( request.getInputStream() );
@@ -205,6 +208,7 @@ public class EnrollmentController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')")
     public void updateEnrollmentXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummary importSummary = enrollmentService.updateEnrollmentXml( id, request.getInputStream() );
@@ -213,6 +217,7 @@ public class EnrollmentController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')")
     public void updateEnrollmentJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         ImportSummary importSummary = enrollmentService.updateEnrollmentJson( id, request.getInputStream() );
@@ -221,7 +226,8 @@ public class EnrollmentController
 
     @RequestMapping( value = "/{id}/cancelled", method = RequestMethod.PUT )
     @ResponseStatus( HttpStatus.NO_CONTENT )
-    public void cancelEnrollment( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')")
+    public void cancelEnrollment( @PathVariable String id ) throws NotFoundException
     {
         Enrollment enrollment = getEnrollment( id );
         enrollmentService.cancelEnrollment( enrollment );
@@ -229,7 +235,8 @@ public class EnrollmentController
 
     @RequestMapping( value = "/{id}/completed", method = RequestMethod.PUT )
     @ResponseStatus( HttpStatus.NO_CONTENT )
-    public void completedEnrollment( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')")
+    public void completedEnrollment( @PathVariable String id ) throws NotFoundException
     {
         Enrollment enrollment = getEnrollment( id );
         enrollmentService.completeEnrollment( enrollment );
@@ -241,7 +248,8 @@ public class EnrollmentController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     @ResponseStatus( HttpStatus.NO_CONTENT )
-    public void deleteEnrollment( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PROGRAM_UNENROLLMENT')")
+    public void deleteEnrollment( @PathVariable String id ) throws NotFoundException
     {
         Enrollment enrollment = getEnrollment( id );
         enrollmentService.deleteEnrollment( enrollment );
