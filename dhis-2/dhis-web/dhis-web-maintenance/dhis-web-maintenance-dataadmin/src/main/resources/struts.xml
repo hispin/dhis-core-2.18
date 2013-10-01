@@ -44,6 +44,79 @@
 	  <param name="requiredAuthorities">F_PERFORM_MAINTENANCE</param>
     </action>
 
+    <action name="generateResourceTable" class="org.hisp.dhis.dataadmin.action.resourcetable.GenerateResourceTableAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+	  <param name="requiredAuthorities">F_PERFORM_MAINTENANCE</param>
+    </action>
+
+	<!-- Locale -->
+
+	<action name="locale"
+		class="org.hisp.dhis.dataadmin.action.locale.GetLocaleListAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-dataadmin/localeList.vm</param>
+		<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+		<param name="javascripts">javascript/locale.js</param>
+		 <param name="requiredAuthorities">F_LOCALE_MANAGEMENT</param>
+	</action>
+
+
+	<action name="getLocale"
+		class="org.hisp.dhis.dataadmin.action.locale.GetLocaleAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-maintenance-dataadmin/jsonLocale.vm
+		</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>
+
+
+	<action name="removeLocale"
+		class="org.hisp.dhis.dataadmin.action.locale.RemoveLocaleAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-commons/ajax/jsonResponseSuccess.vm
+		</result>
+		<result name="error" type="velocity-json">
+			/dhis-web-commons/ajax/jsonResponseError.vm
+		</result>
+		<param name="requiredAuthorities">F_LOCALE_DELETE</param>
+	</action>
+
+	<action name="addLocale"
+		class="org.hisp.dhis.dataadmin.action.locale.AddLocaleAction">
+		<result name="success" type="redirect">locale.action
+		</result>
+		<param name="requiredAuthorities">F_LOCALE_ADD</param>
+	</action>
+
+	<action name="showAddLocaleForm"
+		class="org.hisp.dhis.dataadmin.action.locale.ShowAddLocaleFormAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-dataadmin/addLocaleForm.vm</param>
+		<param name="javascripts">javascript/localeForm.js</param>
+		<param name="requiredAuthorities">F_LOCALE_ADD</param>
+	</action>
+
+	<action name="showUpdateLocaleForm"
+		class="org.hisp.dhis.dataadmin.action.locale.ShowUpdateLocaleFormAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-dataadmin/updateLocaleForm.vm</param>
+		<param name="javascripts">javascript/localeForm.js</param>
+		<param name="requiredAuthorities">F_LOCALE_UPDATE</param>
+	</action>
+
+	<action name="updateLocale"
+		class="org.hisp.dhis.dataadmin.action.locale.UpdateLocaleAction">
+		<result name="success" type="redirect">locale.action
+		</result>
+		<param name="requiredAuthorities">F_LOCALE_UPDATE</param>
+	</action>
+
+    <action name="validateLocale" class="org.hisp.dhis.dataadmin.action.locale.ValidateLocaleAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <!-- Cache -->
 
     <action name="showCache" class="org.hisp.dhis.dataadmin.action.cache.ShowCacheAction">

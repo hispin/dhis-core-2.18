@@ -76,7 +76,7 @@ public class DefaultI18nService
     {
         this.userSettingService = userSettingService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
