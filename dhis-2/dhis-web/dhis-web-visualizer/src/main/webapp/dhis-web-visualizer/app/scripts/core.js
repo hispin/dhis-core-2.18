@@ -1063,6 +1063,7 @@ Ext.onReady( function() {
                     getDefaultStore,
                     getDefaultNumericAxis,
                     getDefaultCategoryAxis,
+                    getDefaultSeriesTitle,
                     getDefaultSeries,
                     getDefaultTrendLines,
                     getDefaultTargetLine,
