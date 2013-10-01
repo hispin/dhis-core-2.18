@@ -342,8 +342,13 @@
   
    <bean id="org.hisp.dhis.sms.hibernate.OutboundSmsStore"
     class="org.hisp.dhis.sms.hibernate.HibernateOutboundSmsStore">
-     <property name="clazz" value="org.hisp.dhis.sms.outbound.OutboundSms" />	
-     <property name="sessionFactory" ref="sessionFactory" />
+    <property name="clazz" value="org.hisp.dhis.sms.outbound.OutboundSms" />	
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.i18n.I18nLocaleStore" class="org.hisp.dhis.i18n.hibernate.HibernateI18nLocaleStore">
+    <property name="clazz" value="org.hisp.dhis.i18n.locale.I18nLocale" />
+    <property name="sessionFactory" ref="sessionFactory" />
   </bean>
   
   <!-- Service definitions -->
@@ -822,6 +827,10 @@
         <value>zh</value>
       </list>
     </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.i18n.118nLocaleService" class="org.hisp.dhis.i18n.DefaultI18nLocaleService">
+    <property name="localeStore" ref="org.hisp.dhis.i18n.I18nLocaleStore" />
   </bean>
 
   <!-- Startup routine definitions -->

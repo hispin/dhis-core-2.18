@@ -82,6 +82,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
+  <!-- I18nLocale -->
+
+  <bean id="org.hisp.dhis.dataadmin.action.locale.GetLocaleListAction"
+      class="org.hisp.dhis.dataadmin.action.locale.GetLocaleListAction"
+      scope="prototype" />
+  
+  <bean id="org.hisp.dhis.dataadmin.action.locale.GetLocaleAction"
+      class="org.hisp.dhis.dataadmin.action.locale.GetLocaleAction" 
+      scope="prototype" />
+	
+  <bean id="org.hisp.dhis.dataadmin.action.locale.AddLocaleAction"
+		class="org.hisp.dhis.dataadmin.action.locale.AddLocaleAction"
+	 scope="prototype" />	
+		
+  <bean id="org.hisp.dhis.dataadmin.action.locale.RemoveLocaleAction"
+		class="org.hisp.dhis.dataadmin.action.locale.RemoveLocaleAction"
+		scope="prototype" />
+			
+  <bean id="org.hisp.dhis.dataadmin.action.locale.ShowAddLocaleFormAction"
+		class="org.hisp.dhis.dataadmin.action.locale.ShowAddLocaleFormAction"
+		scope="prototype" />
+		
+  <bean id="org.hisp.dhis.dataadmin.action.locale.ValidateLocaleAction"
+      class="org.hisp.dhis.dataadmin.action.locale.ValidateLocaleAction"
+      scope="prototype" />  
+  
   <!-- Duplicate data elimination -->
 
   <bean id="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction"

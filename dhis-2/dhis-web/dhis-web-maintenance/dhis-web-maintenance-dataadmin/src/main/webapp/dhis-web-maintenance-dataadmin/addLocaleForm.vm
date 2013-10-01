@@ -1,0 +1,45 @@
+<h3>$i18n.getString( "create_new_locale" )</h3>
+									
+<form id="addLocaleForm" name="addLocaleForm" action="addLocale.action" method="post" class="inputForm">
+
+<table>	 
+	<thead>
+      <tr>
+        <th colspan="2">$i18n.getString( "locale_details" )</th>
+      </tr>
+    </thead>
+    
+	<tbody>
+		<tr>
+			<td><label>$i18n.getString( "language" ) </label></td>
+			<td>
+				<select id="language" name="language" onchange="setName()" class="{validate:{required:true}}">
+					<option value="">[$i18n.getString( "locale_language_no_translation" )]</option>
+				#foreach( $language in $availableLanguages.entrySet() )
+					<option value="$language.value">$language.key</option>
+				#end
+				</select>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><label>$i18n.getString( "country" ) </label></td>
+			<td>
+				<select id="country" name="country" onchange="setName()">
+				#foreach( $country in $availableCountries.entrySet() )
+					<option value="$country.value">$country.key</option>
+				#end
+				</select>
+			</td>
+			<td></td>
+		</tr>		
+	<tbody>
+</table>
+
+
+<p>
+	<input type="submit" name="save" value="$i18n.getString( 'add' )" style="width: 10em;" />
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='locale.action'" style="width: 10em;" />
+</p>
+
+</form>
