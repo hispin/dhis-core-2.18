@@ -52,13 +52,13 @@ import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.integration.IntegrationService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,9 +75,6 @@ public class DataValueSetController
     @Autowired
     private DataValueSetService dataValueSetService;
 
-    @Autowired
-    private IntegrationService integrationService;
-    
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
@@ -195,14 +192,18 @@ public class DataValueSetController
     @RequestMapping(method = RequestMethod.POST, consumes = "application/sdmx+xml")
     @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
     public void postSDMXDataValueSet( ImportOptions importOptions,
-        HttpServletResponse response, InputStream in, Model model ) throws IOException
+        HttpServletResponse response, InputStream in, Model model ) throws IOException, HttpRequestMethodNotSupportedException
     {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        /* TODO: reimplement without using integration service
         ImportSummary summary = integrationService.importSDMXDataValueSet( in, importOptions );
 
         log.info( "Data values set saved " + importOptions );
 
         response.setContentType( CONTENT_TYPE_XML );
         JacksonUtils.toXml( response.getOutputStream(), summary );
+        * 
+        */
     }
 
     // -------------------------------------------------------------------------
