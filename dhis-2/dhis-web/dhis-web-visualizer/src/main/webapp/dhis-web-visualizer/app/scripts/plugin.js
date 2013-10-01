@@ -6,13 +6,14 @@ Ext.onReady(function() {
     Ext.require('regression.simpleRegression');
 
 	// chart tips css
-	var css = '.dv-chart-tips { \n border-radius: 2px; \n padding: 0px 3px 1px; \n border: 2px solid #777; \n background-color: #f1f1f1; \n } \n';
-	css += '.dv-chart-tips .x-tip-body { \n background-color: #f1f1f1; \n font-size: 13px; \n font-weight: normal; \n color: #444; \n -webkit-text-stroke: 0; \n } \n';
+	var css = '.dv-chart-tips { border-radius: 2px; padding: 0px 3px 1px; border: 2px solid #777; background-color: #f1f1f1; } \n';
+	css += '.dv-chart-tips .x-tip-body { background-color: #f1f1f1; font-size: 13px; font-weight: normal; color: #444; -webkit-text-stroke: 0; } \n';
+	css += '.dv-chart-tips .x-tip-body div { font-family: arial,sans-serif,ubuntu,consolas !important; } \n';
 
 	// load mask css
-	css += '.x-mask-msg { \n padding: 0; \n	border: 0 none; \n background-image: none; \n background-color: transparent; \n } \n';
-	css += '.x-mask-msg div { \n background-position: 11px center; \n } \n';
-	css += '.x-mask-msg .x-mask-loading { \n border: 0 none; \n	background-color: #000; \n color: #fff; \n border-radius: 2px; \n padding: 12px 14px 12px 30px; \n opacity: 0.65; \n } \n';
+	css += '.x-mask-msg { padding: 0; \n	border: 0 none; background-image: none; background-color: transparent; } \n';
+	css += '.x-mask-msg div { background-position: 11px center; } \n';
+	css += '.x-mask-msg .x-mask-loading { border: 0 none; \n background-color: #000; color: #fff; border-radius: 2px; padding: 12px 14px 12px 30px; opacity: 0.65; } \n';
 
 	Ext.util.CSS.createStyleSheet(css);
 
