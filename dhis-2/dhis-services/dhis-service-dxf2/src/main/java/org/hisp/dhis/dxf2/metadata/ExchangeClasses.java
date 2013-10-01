@@ -173,7 +173,7 @@ final public class ExchangeClasses
         importClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>( allExportClasses );
 
         // for now, do not allow user/userGroup to be imported
-        importClasses.remove( User.class );
+        //importClasses.remove( User.class );
         importClasses.remove( UserGroup.class );
 
         // this is considered data, and is not available for meta-data export/import

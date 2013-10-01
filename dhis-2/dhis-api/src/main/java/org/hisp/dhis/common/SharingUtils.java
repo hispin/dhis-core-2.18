@@ -209,9 +209,14 @@ public final class SharingUtils
      */
     public static boolean canWrite( User user, IdentifiableObject object )
     {
+        Set<String> authorities = user != null ? user.getUserCredentials().getAllAuthorities() : new HashSet<String>();
+
+        //TODO ( (object instanceof User) && canCreatePrivate( user, object ) ): review possible security breaches and best way to give update access upon user import
         if ( sharingOverrideAuthority( user )
             || (object.getUser() == null && canCreatePublic( user, object ) && PRIVATE_AUTHORITIES.get( object.getClass() ) != null)
             || user.equals( object.getUser() )
+            //|| authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) )
+            || ( (object instanceof User) && canCreatePrivate( user, object ) )
             || AccessStringHelper.canWrite( object.getPublicAccess() ) )
         {
             return true;

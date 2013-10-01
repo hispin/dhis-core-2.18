@@ -62,6 +62,7 @@ import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -409,6 +410,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects();
         nonIdentifiableObjects.extract( object );
 
+        UserCredentials userCredentials = null;
+        if (object instanceof User) {
+            userCredentials = ((User)object).getUserCredentials();
+        }
+
         Map<Field, Object> fields = detachFields( object );
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
@@ -421,6 +427,23 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         reattachCollectionFields( object, collectionFields );
 
         objectBridge.updateObject( object );
+
+        if (object instanceof User) {
+            userCredentials.setUser((User)object);
+            userCredentials.setId( ((User)object).getId());
+
+            Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
+
+            sessionFactory.getCurrentSession().save(userCredentials);
+
+            reattachCollectionFields( userCredentials, collectionFieldsUserCredentials );
+
+            sessionFactory.getCurrentSession().saveOrUpdate(userCredentials);
+
+            ((User) object).setUserCredentials(userCredentials);
+
+            objectBridge.updateObject( (User)object );
+        }
 
         if ( !options.isDryRun() )
         {
@@ -462,6 +485,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         nonIdentifiableObjects.extract( object );
         nonIdentifiableObjects.delete( persistedObject );
 
+        UserCredentials userCredentials = null;
+        if (object instanceof User) {
+            userCredentials = ((User)object).getUserCredentials();
+        }
+
         Map<Field, Object> fields = detachFields( object );
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
@@ -476,6 +504,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             .getSimpleName() + ")" );
 
         objectBridge.updateObject( persistedObject );
+
+        if (object instanceof User) {
+
+            Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
+
+            reattachCollectionFields( ((User)persistedObject).getUserCredentials(), collectionFieldsUserCredentials );
+            sessionFactory.getCurrentSession().saveOrUpdate(((User)persistedObject).getUserCredentials());
+
+        }
 
         if ( !options.isDryRun() )
         {

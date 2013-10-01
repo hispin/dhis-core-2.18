@@ -37,6 +37,7 @@ import java.util.Set;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -53,19 +54,19 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement( localName = "userCredentials", namespace = DxfNamespaces.DXF_2_0)
 public class UserCredentials
-    implements Serializable
+        extends BaseIdentifiableObject implements Serializable
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = -8919501679702302098L;
 
-    private int id;
+    //private int id;
 
     /**
      * Required and unique.
      */
-    private User user;
+    //private User user;
 
     /**
      * Required and unique.
@@ -80,6 +81,7 @@ public class UserCredentials
     /**
      * Set of user roles.
      */
+    @Scanned
     private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
 
     /**
@@ -284,6 +286,11 @@ public class UserCredentials
     public String getName()
     {
         return user != null ? user.getName() : username;
+    }
+
+    public String getCode()
+    {
+        return username;
     }
 
     /**

@@ -623,7 +623,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataelement ALTER COLUMN domaintype SET NOT NULL" );
         executeSql( "update dataelementcategory set datadimension = false where datadimension is null" );
         
-	executeSql( "UPDATE dataset SET dataelementdecoration=false WHERE dataelementdecoration is null" );
+		executeSql( "UPDATE dataset SET dataelementdecoration=false WHERE dataelementdecoration is null" );
 
         executeSql( "alter table validationrulegroup rename column validationgroupid to validationrulegroupid" );
         executeSql( "alter table sqlview rename column viewid to sqlviewid" );
@@ -640,6 +640,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE interpretation ALTER COLUMN userid DROP NOT NULL" );
 
         upgradeMapViewsToAnalyticalObject();
+
+		executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );
         
         log.info( "Tables updated" );
     }
