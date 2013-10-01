@@ -876,7 +876,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     }
                     else
                     {
-                        if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null )
+                        if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null || UserCredentials.class.isAssignableFrom( idObject.getClass() ) )
                         {
                             reportReferenceError( idObject, object );
                         }
