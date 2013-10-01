@@ -97,6 +97,7 @@ public class User
 
     private Date lastCheckedInterpretations;
 
+    @Scanned
     private UserCredentials userCredentials;
 
     private Set<UserGroup> groups = new HashSet<UserGroup>();
