@@ -59,7 +59,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -83,6 +82,7 @@ public class PersonController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.GET )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')")
     public String getPersons(
         @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( required = false ) Gender gender,
@@ -90,7 +90,7 @@ public class PersonController
         @RequestParam( required = false ) String identifierType,
         @RequestParam( required = false ) String identifier,
         @RequestParam( required = false ) String nameLike,
-        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
+        @RequestParam Map<String, String> parameters, Model model ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Persons persons = new Persons();
@@ -143,6 +143,7 @@ public class PersonController
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')")
     public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );

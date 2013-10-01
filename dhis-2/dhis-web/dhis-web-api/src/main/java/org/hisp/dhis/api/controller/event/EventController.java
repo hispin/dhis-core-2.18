@@ -95,11 +95,11 @@ public class EventController
     private EventService eventService;
 
     // -------------------------------------------------------------------------
-    // Controller
+    // READ
     // -------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
     public String getEvents(
         @RequestParam(value = "program", required = false) String programUid,
         @RequestParam(value = "programStage", required = false) String programStageUid,
@@ -167,7 +167,7 @@ public class EventController
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
     public String getEvent( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
@@ -190,6 +190,10 @@ public class EventController
 
         return "event";
     }
+
+    // -------------------------------------------------------------------------
+    // CREATE
+    // -------------------------------------------------------------------------
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
     @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
@@ -282,21 +286,9 @@ public class EventController
 
     }
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.DELETE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_DELETE')")
-    public void deleteEvent( HttpServletResponse response, @PathVariable("uid") String uid )
-    {
-        Event event = eventService.getEvent( uid );
-
-        if ( event == null )
-        {
-            ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
-            return;
-        }
-
-        eventService.deleteEvent( event );
-    }
+    // -------------------------------------------------------------------------
+    // UPDATE
+    // -------------------------------------------------------------------------
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" })
     @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
@@ -334,5 +326,25 @@ public class EventController
 
         eventService.updateEvent( updatedEvent );
         ContextUtils.okResponse( response, "Event updated: " + uid );
+    }
+
+    // -------------------------------------------------------------------------
+    // DELETE
+    // -------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_DELETE')" )
+    public void deleteEvent( HttpServletResponse response, @PathVariable( "uid" ) String uid )
+    {
+        Event event = eventService.getEvent( uid );
+
+        if ( event == null )
+        {
+            ContextUtils.notFoundResponse( response, "Event not found for uid: " + uid );
+            return;
+        }
+
+        eventService.deleteEvent( event );
     }
 }
