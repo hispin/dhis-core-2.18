@@ -411,6 +411,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         nonIdentifiableObjects.extract( object );
 
         UserCredentials userCredentials = null;
+
         if ( object instanceof User )
         {
             userCredentials = ((User) object).getUserCredentials();
@@ -488,6 +489,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         nonIdentifiableObjects.delete( persistedObject );
 
         UserCredentials userCredentials = null;
+
         if ( object instanceof User )
         {
             userCredentials = ((User) object).getUserCredentials();
