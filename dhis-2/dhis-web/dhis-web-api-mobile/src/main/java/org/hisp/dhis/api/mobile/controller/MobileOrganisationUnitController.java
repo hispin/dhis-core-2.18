@@ -397,7 +397,6 @@ public class MobileOrganisationUnitController
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findLostToFollowUp" )
     @ResponseBody
     public String findLostToFollowUp( @PathVariable int id, @RequestHeader( "programId" ) String programId )
-        throws NotAllowedException
     {
         return "";
     }
