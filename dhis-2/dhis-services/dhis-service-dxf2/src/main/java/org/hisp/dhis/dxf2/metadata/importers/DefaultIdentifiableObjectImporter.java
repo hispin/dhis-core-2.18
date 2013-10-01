@@ -412,7 +412,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         UserCredentials userCredentials = null;
 
-        /*
         if ( object instanceof User )
         {
             userCredentials = ((User) object).getUserCredentials();
@@ -425,7 +424,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 return false;
             }
         }
-        */
 
         Map<Field, Object> fields = detachFields( object );
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
@@ -440,8 +438,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         objectBridge.updateObject( object );
 
-        /*
-        if ( object instanceof User )
+        if ( object instanceof User && !options.isDryRun() )
         {
             userCredentials.setUser( (User) object );
             userCredentials.setId( object.getId() );
@@ -458,7 +455,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             objectBridge.updateObject( object );
         }
-        */
 
         if ( !options.isDryRun() )
         {
@@ -530,7 +526,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         objectBridge.updateObject( persistedObject );
 
-        if ( object instanceof User )
+        if ( object instanceof User && !options.isDryRun() )
         {
             Map<Field, Collection<Object>> collectionFieldsUserCredentials = detachCollectionFields( userCredentials );
 
