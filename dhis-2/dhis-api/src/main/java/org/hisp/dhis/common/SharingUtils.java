@@ -216,7 +216,7 @@ public final class SharingUtils
             || (object.getUser() == null && canCreatePublic( user, object ) && PRIVATE_AUTHORITIES.get( object.getClass() ) != null)
             || user.equals( object.getUser() )
             //|| authorities.contains( PRIVATE_AUTHORITIES.get( object.getClass() ) )
-            || ( (object instanceof User) && canCreatePrivate( user, object ) )
+            || ((object instanceof User) && canCreatePrivate( user, object ))
             || AccessStringHelper.canWrite( object.getPublicAccess() ) )
         {
             return true;

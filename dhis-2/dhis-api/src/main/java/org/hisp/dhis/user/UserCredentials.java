@@ -28,11 +28,12 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
@@ -41,19 +42,17 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Nguyen Hong Duc
  */
-@JacksonXmlRootElement( localName = "userCredentials", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement(localName = "userCredentials", namespace = DxfNamespaces.DXF_2_0)
 public class UserCredentials
-        extends BaseIdentifiableObject
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -85,7 +84,7 @@ public class UserCredentials
      * Date of the user's last login.
      */
     private Date lastLogin;
-    
+
     /**
      * The token used for a user account restore. Will be stored as a hash.
      */
@@ -95,23 +94,23 @@ public class UserCredentials
      * The code used for a user account restore. Will be stored as a hash.
      */
     private String restoreCode;
-    
+
     /**
      * The timestamp representing when the restore window expires.
      */
     private Date restoreExpiry;
-    
+
     /**
      * Indicates whether this user was originally self registered.
      */
     private boolean selfRegistered;
-    
+
     /**
      * Indicates whether this is user is disabled, which means the user cannot
      * be authenticated.
      */
     private boolean disabled;
-    
+
     /**
      * The date this credentials was created.
      */
@@ -126,7 +125,7 @@ public class UserCredentials
         this.lastLogin = new Date();
         this.created = new Date();
     }
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -139,7 +138,7 @@ public class UserCredentials
     {
         return IdentifiableObjectUtils.join( userAuthorityGroups );
     }
-    
+
     /**
      * Returns a set of the aggregated authorities for all user authority groups
      * of this user credentials.
@@ -155,11 +154,11 @@ public class UserCredentials
 
         return authorities;
     }
-    
+
     /**
      * Tests whether this user credentials has any of the authorities in the
      * given set.
-     * 
+     *
      * @param auths the authorities to compare with.
      * @return true or false.
      */
@@ -229,12 +228,12 @@ public class UserCredentials
 
         return !userAuthorityGroups.contains( group ) && authorities.containsAll( group.getAuthorities() );
     }
-    
+
     /**
-     * Indicates whether this user credentials can modify the given user 
+     * Indicates whether this user credentials can modify the given user
      * credentials. This user credentials must have the ALL authority or possess
      * all user authorities of the other user credentials to do so.
-     * 
+     *
      * @param other the user credentials to modify.
      */
     public boolean canModify( UserCredentials other )
@@ -243,14 +242,14 @@ public class UserCredentials
         {
             return false;
         }
-        
+
         final Set<String> authorities = getAllAuthorities();
 
         if ( authorities.contains( UserAuthorityGroup.AUTHORITY_ALL ) )
         {
             return true;
-        }      
-        
+        }
+
         return authorities.containsAll( other.getAllAuthorities() );
     }
 
@@ -297,10 +296,10 @@ public class UserCredentials
      * if the expiry date arguement is after the expiry date of the credentials.
      * Returns false if any of the given token or code arguments are not equal to
      * the respective properties the the credentials. Returns true otherwise.
-     * 
-     * @param token the restore token.
-     * @param code the restore code.
-     * @param expiry the expiry date.
+     *
+     * @param token  the restore token.
+     * @param code   the restore code.
+     * @param date the expiry date.
      * @return true or false.
      */
     public boolean canRestore( String token, String code, Date date )
@@ -309,20 +308,20 @@ public class UserCredentials
         {
             return false;
         }
-        
+
         if ( token == null || code == null || date == null )
         {
             return false;
         }
-        
+
         if ( date.after( this.restoreExpiry ) )
         {
             return false;
         }
-        
+
         return token.equals( this.restoreToken ) && code.equals( this.restoreCode );
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -397,10 +396,10 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "userAuthorityGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "userAuthorityGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlElementWrapper(localName = "userAuthorityGroups", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "userAuthorityGroup", namespace = DxfNamespaces.DXF_2_0)
     public Set<UserAuthorityGroup> getUserAuthorityGroups()
     {
         return userAuthorityGroups;
@@ -412,8 +411,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getUsername()
     {
         return username;
@@ -425,8 +424,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public Date getLastLogin()
     {
         return lastLogin;
@@ -468,8 +467,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isSelfRegistered()
     {
         return selfRegistered;
@@ -481,8 +480,8 @@ public class UserCredentials
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public boolean isDisabled()
     {
         return disabled;
