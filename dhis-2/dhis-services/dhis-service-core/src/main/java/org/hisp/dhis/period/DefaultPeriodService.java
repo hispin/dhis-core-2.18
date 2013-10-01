@@ -120,12 +120,6 @@ public class DefaultPeriodService
         } );
     }
 
-    @Deprecated
-    public Period getPeriodByExternalId( String externalId )
-    {
-        return periodStore.reloadForceAddPeriod( new Period( externalId ) );
-    }
-    
     public Collection<Period> getPeriodsByPeriodType( PeriodType periodType )
     {
         return periodStore.getPeriodsByPeriodType( periodType );
