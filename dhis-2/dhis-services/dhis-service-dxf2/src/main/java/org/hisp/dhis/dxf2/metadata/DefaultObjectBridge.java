@@ -34,6 +34,9 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -63,6 +66,9 @@ public class DefaultObjectBridge
     @Autowired
     private PeriodStore periodStore;
 
+    @Autowired
+    private UserService userService;
+
     //-------------------------------------------------------------------------------------------------------
     // Internal and Semi-Public maps
     //-------------------------------------------------------------------------------------------------------
@@ -79,6 +85,8 @@ public class DefaultObjectBridge
 
     private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> nameMap;
 
+    private Map<String, UserCredentials> usernameMap;
+
     private boolean writeEnabled = true;
 
     //-------------------------------------------------------------------------------------------------------
@@ -88,6 +96,7 @@ public class DefaultObjectBridge
     static
     {
         registeredTypes.add( PeriodType.class );
+        registeredTypes.add( UserCredentials.class );
 
         for ( Class<?> clazz : ExchangeClasses.getImportClasses() )
         {
@@ -105,9 +114,11 @@ public class DefaultObjectBridge
         uidMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
         codeMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
         nameMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
+        usernameMap = new HashMap<String, UserCredentials>();
 
         for ( Class<?> type : registeredTypes )
         {
+            populateUsernameMap( type );
             populatePeriodTypeMap( type );
             populateIdentifiableObjectMap( type );
             populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.UID );
@@ -216,6 +227,26 @@ public class DefaultObjectBridge
         }
 
         masterMap.put( clazz, new HashSet<Object>( periodTypes ) );
+    }
+
+    private void populateUsernameMap( Class<?> clazz )
+    {
+        if ( UserCredentials.class.isAssignableFrom( clazz ) )
+        {
+            Collection<UserCredentials> allUserCredentials = userService.getAllUserCredentials();
+
+            System.err.println( "allUser: " + allUserCredentials );
+
+            for ( UserCredentials userCredentials : allUserCredentials )
+            {
+                if ( userCredentials.getUsername() != null )
+                {
+                    usernameMap.put( userCredentials.getUsername(), userCredentials );
+                }
+            }
+
+            System.err.println( "usernameMap:" + usernameMap );
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -338,6 +369,17 @@ public class DefaultObjectBridge
             if ( periodType != null )
             {
                 objects.add( (T) periodType );
+            }
+        }
+
+        if ( User.class.isInstance( object ) )
+        {
+            User user = (User) object;
+            UserCredentials userCredentials = usernameMap.get( user.getUsername() );
+
+            if ( userCredentials != null && userCredentials.getUser() != null )
+            {
+                objects.add( (T) userCredentials.getUser() );
             }
         }
 
