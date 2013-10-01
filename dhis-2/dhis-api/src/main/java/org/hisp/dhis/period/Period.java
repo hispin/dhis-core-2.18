@@ -167,17 +167,6 @@ public class Period
     }
 
     /**
-     * Generates an String which uniquely identifies this Period based on its
-     * core properties.
-     *
-     * @return an identifier String.
-     */
-    public String getExternalId()
-    {
-        return periodType.getName() + SEPARATOR + getMediumDateString( startDate ) + SEPARATOR + getMediumDateString( endDate );
-    }
-
-    /**
      * Returns the frequency order of the period type of the period.
      *
      * @return the frequency order.
