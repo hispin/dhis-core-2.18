@@ -24,5 +24,4 @@
 
 <ul>
   <li><a href="displayConfigDhis14Form.action">$i18n.getString( "dhis14_file_configuration" )&nbsp;</a></li>
-  <li><a href="displayRoutes.action">$i18n.getString( "integration_configuration" )&nbsp;</a></li>
 </ul>

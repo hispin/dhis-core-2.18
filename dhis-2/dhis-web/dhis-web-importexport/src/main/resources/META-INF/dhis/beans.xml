@@ -191,21 +191,6 @@
     <property name="configurationManager" ref="org.hisp.dhis.importexport.IbatisConfigurationManager" />
   </bean>
 
-  <bean id="org.hisp.dhis.importexport.action.integration.DisplayRoutesAction"
-    class="org.hisp.dhis.importexport.action.integration.DisplayRoutesAction">
-    <property name="builtinCamelContext" ref="camel-builtin" />
-  </bean>
-
-  <bean id="org.hisp.dhis.importexport.action.integration.AddRouteAction"
-    class="org.hisp.dhis.importexport.action.integration.AddRouteAction">
-    <property name="builtinCamelContext" ref="camel-builtin" />
-  </bean>
-
-  <bean id="org.hisp.dhis.importexport.action.integration.RouteOperationAction"
-    class="org.hisp.dhis.importexport.action.integration.RouteOperationAction">
-    <property name="builtinCamelContext" ref="camel-builtin" />
-  </bean>
-
   <!-- DXF2 MetaData import/export -->
 
   <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataExportFormAction"
