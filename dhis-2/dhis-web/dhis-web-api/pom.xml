@@ -25,10 +25,6 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-dxf2</artifactId>
     </dependency>
-        <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-integration</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
