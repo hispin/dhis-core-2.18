@@ -87,6 +87,7 @@ public class AddSqlViewAction
         {
             return ERROR;
         }
+
         if ( (sqlquery == null) || (sqlquery.trim().isEmpty()) )
         {
             return ERROR;
