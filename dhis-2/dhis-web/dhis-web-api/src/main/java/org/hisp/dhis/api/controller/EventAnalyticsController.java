@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.analytics.IllegalQueryException;
+import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.api.utils.ContextUtils;
@@ -79,10 +80,11 @@ public class EventAnalyticsController
         @RequestParam Set<String> dimension,
         @RequestParam(required=false) Set<String> filter,
         @RequestParam(required=false) Integer limit,
+        @RequestParam(required=false) SortOrder sortOrder,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, limit, i18nManager.getI18nFormat() );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, sortOrder, limit, i18nManager.getI18nFormat() );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedEventData( params );
@@ -100,10 +102,11 @@ public class EventAnalyticsController
         @RequestParam Set<String> dimension,
         @RequestParam(required=false) Set<String> filter,
         @RequestParam(required=false) Integer limit,
+        @RequestParam(required=false) SortOrder sortOrder,
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, limit, i18nManager.getI18nFormat() );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, sortOrder, limit, i18nManager.getI18nFormat() );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
         Grid grid = analyticsService.getAggregatedEventData( params );
