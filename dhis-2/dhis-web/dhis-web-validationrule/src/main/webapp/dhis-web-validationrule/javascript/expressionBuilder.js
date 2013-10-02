@@ -52,7 +52,7 @@ function getConstantsPage()
 	
 	jQuery.get( '../api/constants.json?paging=false&links=false', {}, function( json ) 
 	{
-		if ( json.constants.length == 0 )
+		if ( !json.constants || json.constants.length == 0 )
 		{
 			setInnerHTML( 'constantHeader', "<i style='color:red'>"+i18n_no_constant_to_select+"</i>" );
 			return;
