@@ -38,6 +38,7 @@ import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,6 +63,9 @@ public class EventAnalyticsController
     @Autowired
     private ContextUtils contextUtils;
 
+    @Autowired
+    private I18nManager i18nManager;
+    
     // -------------------------------------------------------------------------
     // Aggregate
     // -------------------------------------------------------------------------
@@ -78,7 +82,7 @@ public class EventAnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode, i18nManager.getI18nFormat() );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getAggregatedEventData( params );
@@ -99,7 +103,7 @@ public class EventAnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode, i18nManager.getI18nFormat() );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
         Grid grid = analyticsService.getAggregatedEventData( params );
@@ -126,7 +130,8 @@ public class EventAnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode, asc, desc, page, pageSize );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode, 
+            asc, desc, page, pageSize, i18nManager.getI18nFormat() );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         Grid grid = analyticsService.getEvents( params );
@@ -151,7 +156,8 @@ public class EventAnalyticsController
         Model model,
         HttpServletResponse response ) throws Exception
     {
-        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode, asc, desc, page, pageSize );
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, 
+            ouMode, asc, desc, page, pageSize, i18nManager.getI18nFormat() );
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
         Grid grid = analyticsService.getEvents( params );
