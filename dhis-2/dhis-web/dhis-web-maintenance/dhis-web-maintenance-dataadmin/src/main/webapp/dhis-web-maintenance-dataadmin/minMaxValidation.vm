@@ -1,4 +1,3 @@
-<script type="text/javascript" src="javascript/minMaxValidationForm.js"></script>
 <script type="text/javascript">
 	var i18n_not_choose_dataset = '$encoder.jsEncode( $i18n.getString( "not_choose_dataset" ) )';
 	var i18n_not_choose_organisation = '$encoder.jsEncode( $i18n.getString( "not_choose_organisation" ) )';
