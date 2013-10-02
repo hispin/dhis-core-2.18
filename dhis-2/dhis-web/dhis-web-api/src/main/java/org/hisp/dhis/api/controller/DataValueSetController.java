@@ -209,6 +209,11 @@ public class DataValueSetController
 
         StringWriter dxf2 = new StringWriter();
         transformer.transform( new StreamSource( in ), new StreamResult( dxf2 ) );
+        
+        // override id scheme 
+        importOptions.setOrgUnitIdScheme( "CODE");
+        importOptions.setDataElementIdScheme( "CODE");
+        
         ImportSummary summary = dataValueSetService.saveDataValueSetJson( 
             new ByteArrayInputStream(dxf2.toString().getBytes( "UTF-8") ), importOptions );
     }
