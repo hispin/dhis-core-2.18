@@ -56,6 +56,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -233,15 +234,17 @@ public class DefaultEventAnalyticsService
     }
 
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, String ouMode )
+        Set<String> dimension, Set<String> filter, String ouMode, I18nFormat format )
     {
-        return getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode, null, null, null, null );
+        return getFromUrl( program, stage, startDate, endDate, dimension, filter, ouMode, null, null, null, null, format );
     }
     
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize )
+        Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize, I18nFormat format )
     {
         EventQueryParams params = new EventQueryParams();
+        
+        Date date = new Date();
         
         Program pr = programService.getProgram( program );
         
@@ -282,7 +285,7 @@ public class DefaultEventAnalyticsService
                 if ( ORGUNIT_DIM_ID.equals( dimensionId ) || PERIOD_DIM_ID.equals( dimensionId ) )
                 {
                     List<String> items = DataQueryParams.getDimensionItemsFromParam( dim );
-                    params.getDimensions().addAll( analyticsService.getDimension( dimensionId, items, null, null ) );
+                    params.getDimensions().addAll( analyticsService.getDimension( dimensionId, items, date, format ) );
                 }
                 else
                 {
@@ -300,7 +303,7 @@ public class DefaultEventAnalyticsService
                 if ( ORGUNIT_DIM_ID.equals( dimensionId ) || PERIOD_DIM_ID.equals( dimensionId ) )
                 {
                     List<String> items = DataQueryParams.getDimensionItemsFromParam( dim );
-                    params.getFilters().addAll( analyticsService.getDimension( dimensionId, items, null, null ) );
+                    params.getFilters().addAll( analyticsService.getDimension( dimensionId, items, date, format ) );
                 }
                 else
                 {

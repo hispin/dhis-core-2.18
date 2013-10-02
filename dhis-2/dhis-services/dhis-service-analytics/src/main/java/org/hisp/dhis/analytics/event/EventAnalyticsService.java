@@ -31,6 +31,7 @@ package org.hisp.dhis.analytics.event;
 import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nFormat;
 
 /**
  * @author Lars Helge Overland
@@ -42,8 +43,8 @@ public interface EventAnalyticsService
     Grid getEvents( EventQueryParams params );
 
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, String ouMode );
+        Set<String> dimension, Set<String> filter, String ouMode, I18nFormat format );
     
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize );
+        Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize, I18nFormat format );
 }

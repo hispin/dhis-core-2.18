@@ -349,26 +349,6 @@ public abstract class PeriodType
     }
 
     /**
-     * Creates a period based on the given external identifier, which is on the
-     * format [PeriodType]_[StartDate]. The start date is on the form yyyy-MM-dd.
-     *
-     * @param externalId the external identifier.
-     * @return the period.
-     */
-    @Deprecated
-    public static Period createPeriodExternalId( String externalId )
-    {
-        if ( externalId == null || externalId.split( "_" ).length <= 1 )
-        {
-            return null;
-        }
-
-        final String[] id = externalId.split( "_" );
-        final PeriodType periodType = getPeriodTypeByName( id[0] );
-        return periodType.createPeriod( getMediumDate( id[1] ) );
-    }
-
-    /**
      * Return the potential number of periods of the given period type which is
      * spanned by this period.
      *
