@@ -71,7 +71,7 @@ public interface PatientStore
 
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 
-    int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup );
+    int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup, Integer statusEnrollment );
 
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
 
@@ -80,17 +80,17 @@ public interface PatientStore
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
     Collection<Patient> search( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
+        Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max );
 
     Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
+        Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max );
 
     Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer min,
+        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min,
         Integer max );
 
     List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer min,
+        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min,
         Integer max );
 
     Collection<Patient> getByOrgUnitProgramGender( OrganisationUnit organisationUnit, Program program, String gender, Integer min, Integer max );

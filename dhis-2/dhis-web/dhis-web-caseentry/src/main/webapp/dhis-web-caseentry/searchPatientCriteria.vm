@@ -11,10 +11,10 @@
 		<td>
 			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 		</td>
-		<td rowspan='5' valign='bottom'>
+		<td rowspan='4' valign='bottom' id='criteriaBtnTD'>
 			<input type="button" style='width:130px' id='listPatientBtn' style='260px;' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" >
 			<input type="button" style='width:130px' id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm(getFieldValue('programIdAddPatient'),'', '');" >
-			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" >
+			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();" >
 		</td>
 	</tr>
 	<tr id='programAddPatientTR'>
@@ -67,6 +67,11 @@
 			<input type='checkbox' id='followup' name='followup' />
 		</td>
 	</tr>
+	<tr id='searchByIdTR'>
+		<td colspan='2' ><input type='text' id='searchPatientByIds' name='searchPatientByIds' onchange='searchByIdsOnclick();' style='width:350px;' placeholder='$i18n.getString("search_by_name_identifier")' /></td>
+		<td><input type='button' value='$i18n.getString("search")' onclick='searchByIdsOnclick();' ></td>
+	</tr>
+	
 </table>
 <div id='advanced-search' name='advanced-search' class='hidden advanced-search'>
 	<table>	
@@ -85,6 +90,16 @@
 				<input type='checkbox' id='searchByUserOrgunits' name='searchByUserOrgunits' />&nbsp;&nbsp;&nbsp;
 			</td>
 		
+		</tr>
+		<tr id='enrollmentSelectTR' class='hidden' >
+			<td>$i18n.getString('show')</td>
+			<td>
+				<select id='statusEnrollment'>
+					<option value='0'>$i18n.getString('active_enrollments_only')</option>
+					<option value='1'>$i18n.getString('completed_enrollments_only')</option>
+					<option value=''>$i18n.getString('both')</option>
+				</select>
+			</td>
 		</tr>
 		<tr id='dueDateTR' class='hidden'>
 			<td>$i18n.getString('due_date_from_to')</td>

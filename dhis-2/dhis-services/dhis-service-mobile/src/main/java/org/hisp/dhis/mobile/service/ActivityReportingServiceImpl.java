@@ -1995,7 +1995,7 @@ public class ActivityReportingServiceImpl
         searchTextList.add( searchText );
         orgUnitList.add( organisationUnitService.getOrganisationUnit( orgUnitId ) );
         
-        List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTextList, orgUnitList, true, null, null );
+        List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTextList, orgUnitList, true, ProgramInstance.STATUS_ACTIVE, null, null );
         return searchText;
     }
 }
