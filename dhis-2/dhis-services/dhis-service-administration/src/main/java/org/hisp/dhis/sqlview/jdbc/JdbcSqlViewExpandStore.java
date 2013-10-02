@@ -28,8 +28,6 @@ package org.hisp.dhis.sqlview.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
@@ -41,6 +39,8 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import java.util.Map;
+
 /**
  * @author Dang Duy Hieu
  * @version $Id JdbcSqlViewExpandStore.java July 06, 2010$
@@ -49,7 +49,7 @@ public class JdbcSqlViewExpandStore
     implements SqlViewExpandStore
 {
     private static final Log log = LogFactory.getLog( JdbcSqlViewExpandStore.class );
-    
+
     private static final String PREFIX_CREATEVIEW_QUERY = "CREATE VIEW ";
     private static final String PREFIX_SELECT_QUERY = "SELECT * FROM ";
 
@@ -63,7 +63,7 @@ public class JdbcSqlViewExpandStore
     {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     private StatementBuilder statementBuilder;
 
     public void setStatementBuilder( StatementBuilder statementBuilder )
@@ -80,8 +80,8 @@ public class JdbcSqlViewExpandStore
     {
         try
         {
-            jdbcTemplate.queryForRowSet( "select * from " + statementBuilder.columnQuote( viewTableName.toLowerCase() ) + " limit 1" );
-            
+            jdbcTemplate.queryForRowSet( "select * from " + statementBuilder.columnQuote( viewTableName ) + " limit 1" );
+
             return true;
         }
         catch ( BadSqlGrammarException ex )
@@ -98,9 +98,9 @@ public class JdbcSqlViewExpandStore
         dropViewTable( viewName );
 
         final String sql = PREFIX_CREATEVIEW_QUERY + statementBuilder.columnQuote( viewName ) + " AS " + sqlViewInstance.getSqlQuery();
-        
+
         log.debug( "Create view SQL: " + sql );
-        
+
         try
         {
             jdbcTemplate.execute( sql );
@@ -117,21 +117,21 @@ public class JdbcSqlViewExpandStore
     public void setUpDataSqlViewTable( Grid grid, String viewTableName, Map<String, String> criteria )
     {
         String sql = PREFIX_SELECT_QUERY + statementBuilder.columnQuote( viewTableName );
-        
+
         if ( criteria != null && !criteria.isEmpty() )
         {
             SqlHelper helper = new SqlHelper();
-            
+
             for ( String filter : criteria.keySet() )
             {
                 sql += " " + helper.whereAnd() + " " + filter + "='" + criteria.get( filter ) + "'";
             }
         }
-        
+
         log.info( "Get view SQL: " + sql );
-        
+
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
-        
+
         grid.addHeaders( rs );
         grid.addRows( rs );
     }
@@ -142,9 +142,9 @@ public class JdbcSqlViewExpandStore
         String viewNameCheck = SqlView.PREFIX_VIEWNAME + System.currentTimeMillis();
 
         sql = PREFIX_CREATEVIEW_QUERY + viewNameCheck + " AS " + sql;
-        
+
         log.debug( "Test view SQL: " + sql );
-        
+
         try
         {
             jdbcTemplate.execute( sql );
