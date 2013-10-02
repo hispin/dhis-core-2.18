@@ -16,6 +16,7 @@
     class="org.hisp.dhis.webportal.module.ConfigurableModuleComparator">
     <property name="order">
       <list>
+        <value>dhis-web-maintenance-appmanager</value>
         <value>dhis-web-maintenance-dataadmin</value>
         <value>dhis-web-maintenance-datadictionary</value>
         <value>dhis-web-maintenance-dataset</value>
