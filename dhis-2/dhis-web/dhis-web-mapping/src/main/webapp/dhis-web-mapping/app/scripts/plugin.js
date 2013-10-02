@@ -258,7 +258,7 @@ Ext.onReady( function() {
 					gis = GIS.core.getInstance(r);
 					gis.el = config.el;
 					
-					
+					applyCss();
 
 					GIS.core.createSelectHandlers(gis, gis.layer.boundary);
 					GIS.core.createSelectHandlers(gis, gis.layer.thematic1);
