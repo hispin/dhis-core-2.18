@@ -63,6 +63,10 @@ Ext.onReady( function() {
 				alert('Invalid url (' + config.el + ')');
 				return;
 			}
+			
+			if (config.url.split('').pop() === '/') {
+				config.url = config.url.substr(0, config.url.length - 1);
+			}
 
 			if (!Ext.isString(config.el)) {
 				alert('Invalid html element id (' + config.el + ')');
