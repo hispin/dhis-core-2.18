@@ -254,7 +254,7 @@ public abstract class AbstractJdbcTableManager
         }
         catch ( BadSqlGrammarException ex )
         {
-            log.warn( ex.getMessage() );
+            log.debug( ex.getMessage() );
         }
     }
 }
