@@ -38,6 +38,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -176,10 +177,10 @@ public class SendSmsToListAction
         }
 
         Collection<Integer> programStageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunits,
-            followup, null, null );
+            followup, ProgramInstance.STATUS_ACTIVE, null, null );
 
         Set<String> phoneNumberList = new HashSet<String>( patientService.getPatientPhoneNumbers( searchTexts,
-            orgunits, followup, null, null ) );
+            orgunits, followup, ProgramInstance.STATUS_ACTIVE, null, null ) );
         try
         {
             OutboundSms outboundSms = new OutboundSms();

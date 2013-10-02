@@ -224,7 +224,7 @@ public class GetDataRecordsAction
 
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
         orgunits.add( orgunit );
-        
+
         if ( programId != null )
         {
             program = programService.getProgram( programId );
@@ -241,11 +241,12 @@ public class GetDataRecordsAction
 
                 Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
-                total = patientService.countSearchPatients( searchTexts, orgunits, followup );
+                total = patientService.countSearchPatients( searchTexts, orgunits, followup,
+                    ProgramInstance.STATUS_ACTIVE );
                 this.paging = createPaging( total );
 
                 List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunits,
-                    followup, paging.getStartPos(), paging.getPageSize() );
+                    followup, ProgramInstance.STATUS_ACTIVE, paging.getStartPos(), paging.getPageSize() );
 
                 for ( Integer stageInstanceId : stageInstanceIds )
                 {
@@ -272,13 +273,15 @@ public class GetDataRecordsAction
                     }
                 }
             }
-            else if(trackingReport != null && trackingReport )
+            else if ( trackingReport != null && trackingReport )
             {
-                grid = patientService.getTrackingEventsReport( program, searchTexts, orgunits, followup, i18n );
+                grid = patientService.getTrackingEventsReport( program, searchTexts, orgunits, followup,
+                    ProgramInstance.STATUS_ACTIVE, i18n );
             }
             else
             {
-                grid = patientService.getScheduledEventsReport( searchTexts, orgunits, followup, null, null, i18n );
+                grid = patientService.getScheduledEventsReport( searchTexts, orgunits, followup,
+                    ProgramInstance.STATUS_ACTIVE, null, null, i18n );
             }
         }
 

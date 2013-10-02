@@ -264,17 +264,17 @@ public interface PatientService
     Object getObjectValue( String property, String value, I18nFormat format );
     
     Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
-        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer min, Integer max );
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max );
 
-    int countSearchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup );
+    int countSearchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup, Integer statusEnrollment );
 
     Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
-        Boolean followup, Integer min, Integer max );
+        Boolean followup, Integer statusEnrollment, Integer min, Integer max );
 
     List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
-        Boolean followup, Integer min, Integer max );
+        Boolean followup, Integer statusEnrollment, Integer min, Integer max );
 
-    Grid getScheduledEventsReport( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
+    Grid getScheduledEventsReport( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup, Integer statusEnrollment,
         Integer min, Integer max, I18n i18n );
 
     Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max );
@@ -284,5 +284,5 @@ public interface PatientService
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
     Grid getTrackingEventsReport( Program program, List<String> searchKeys, Collection<OrganisationUnit> orgunit,
-        Boolean followup, I18n i18n );
+        Boolean followup, Integer statusEnrollment, I18n i18n );
 }

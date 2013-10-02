@@ -70,6 +70,8 @@ public class SearchPatientAction
 
     private List<String> searchTexts = new ArrayList<String>();
 
+    private Integer statusEnrollment;
+
     private Boolean searchBySelectedOrgunit;
 
     private Boolean searchByUserOrgunits;
@@ -85,6 +87,11 @@ public class SearchPatientAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    public void setStatusEnrollment( Integer statusEnrollment )
+    {
+        this.statusEnrollment = statusEnrollment;
     }
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
@@ -197,10 +204,10 @@ public class SearchPatientAction
                 orgunits = null;
             }
 
-            total = patientService.countSearchPatients( searchTexts, orgunits, null );
+            total = patientService.countSearchPatients( searchTexts, orgunits, null, statusEnrollment );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, orgunits, null, null, paging.getStartPos(),
-                paging.getPageSize() );
+            patients = patientService.searchPatients( searchTexts, orgunits, null, null, statusEnrollment,
+                paging.getStartPos(), paging.getPageSize() );
 
             if ( !searchBySelectedOrgunit || searchByUserOrgunits )
             {

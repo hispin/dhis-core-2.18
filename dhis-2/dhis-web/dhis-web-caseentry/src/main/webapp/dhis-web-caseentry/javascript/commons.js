@@ -301,7 +301,7 @@ function getSearchParams()
 	
 	var searchByUserOrgunits = byId('searchByUserOrgunits').checked ? true : false;
 	params += '&searchByUserOrgunits=' + searchByUserOrgunits;
-	
+	params += '&statusEnrollment=' + getFieldValue('statusEnrollment');
 	if( getFieldValue('searchByProgramStage') == "false"){
 		var searchInAllFacility = byId('searchInAllFacility').checked;
 		params += '&searchBySelectedOrgunit=' + !searchInAllFacility;
@@ -2354,4 +2354,22 @@ function addCustomPhoneNumberField( phoneNumber )
 function removeCustomPhoneNumberField(idx)
 {
 	$('.idxPhoneNumber' + idx).remove();
+}
+
+function searchByIdsOnclick()
+{
+	var value = getFieldValue('searchPatientByIds');
+	jQuery("#advSearchBox0").find('input[id=searchText]').val(value);
+	jQuery("#searchPatientBtn").click();
+}
+
+function advancedSearchOnclick()
+{
+	jQuery('#advanced-search').toggle();
+	if(jQuery('#advanced-search').is(':visible')){
+		hideById('searchByIdTR');
+	}
+	else{
+		showById('searchByIdTR');
+	}
 }

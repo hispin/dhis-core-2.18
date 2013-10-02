@@ -1,3 +1,10 @@
+<script>
+jQuery(document).ready(	function(){
+		jQuery('#criteriaBtnTD').attr('rowspan', 2);
+		showById('enrollmentSelectTR');
+	});
+</script>
+	
 <h3 id='mainLinkLbl'>$i18n.getString( "patient_management" ) #openHelp( "patient" )</a></h3>
 
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
