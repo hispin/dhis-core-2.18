@@ -56,8 +56,6 @@ public class DefaultModuleManager
 {
     private static final Log LOG = LogFactory.getLog( DefaultModuleManager.class );
 
-    private static final String APP_MANAGER_NAME = "dhis-web-appmanager";
-    
     private boolean modulesDetected = false;
 
     private Map<String, Module> modulesByName = new HashMap<String, Module>();
@@ -147,8 +145,6 @@ public class DefaultModuleManager
     public List<Module> getAccessibleMenuModulesAndApps()
     {
         List<Module> modules = getAccessibleMenuModules();
-        
-        modules.remove( new Module( APP_MANAGER_NAME ) );
         
         List<App> apps = appManager.getInstalledApps();
         
