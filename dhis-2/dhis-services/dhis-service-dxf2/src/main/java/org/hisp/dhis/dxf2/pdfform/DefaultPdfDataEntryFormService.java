@@ -748,7 +748,7 @@ public class DefaultPdfDataEntryFormService
 
         for ( int i = 0; i < periods.size(); i++ )
         {
-            periodValues[i] = periods.get( i ).getIsoDate(); //TODO update forms
+            periodValues[i] = periods.get( i ).getIsoDate();
         }
 
         return periodValues;

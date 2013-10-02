@@ -224,13 +224,13 @@ public class PdfDataEntryFormUtil
                     throw new IllegalArgumentException( ERROR_EMPTY_ORG_UNIT );
                 }
 
-                Period period = PeriodType.createPeriodExternalId( periodID );
-
+                Period period = PeriodType.getPeriodFromIsoString( periodID );
+                
                 if ( period == null )
                 {
                     throw new IllegalArgumentException( ERROR_INVALID_PERIOD + periodID );
                 }
-
+                
                 // Loop Through the Fields and get data.
 
                 @SuppressWarnings( "unchecked" )
@@ -238,6 +238,7 @@ public class PdfDataEntryFormUtil
 
                 for ( String fldName : fldNames )
                 {
+                    
                     if ( fldName.startsWith( PdfDataEntryFormUtil.LABELCODE_DATAENTRYTEXTFIELD ) )
                     {
                         String[] strArrFldName = fldName.split( "_" );
@@ -248,7 +249,7 @@ public class PdfDataEntryFormUtil
                         dataValue.setCategoryOptionCombo( strArrFldName[2] );
                         dataValue.setOrgUnit( orgUnitUID );
                         dataValue.setPeriod( period.getIsoDate() );
-
+                        
                         dataValue.setValue( form.getField( fldName ) );
 
                         dataValue.setStoredBy( DATAVALUE_IMPORT_STOREBY );
