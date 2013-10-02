@@ -28,18 +28,16 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.sqlview.ResourceTableNameMap.getIgnoredNameMap;
-
-import java.util.Map;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Map;
+
+import static org.hisp.dhis.sqlview.ResourceTableNameMap.getIgnoredNameMap;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id ValidateAddUpdateSqlViewAction.java July 07, 2010$
  */
 public class ValidateAddUpdateSqlViewAction
     implements Action
@@ -47,13 +45,13 @@ public class ValidateAddUpdateSqlViewAction
     private static final String ADD = "add";
 
     private static final String SEMICOLON = ";";
-    
+
     private static final String SEPERATE = "|";
-    
+
     private static final String SPACE = " ";
 
     private static final String INTO = " into ";
-    
+
     private static final String REGEX_SELECT_QUERY = "^(?i)\\s*select\\s{1,}.+$";
 
     private static final String PREFIX_REGEX_IGNORE_TABLES_QUERY = "^(?i).+((?<=[^\\d\\w])(";
@@ -148,7 +146,7 @@ public class ValidateAddUpdateSqlViewAction
         }
 
         final String ignoredRegex = this.setUpIgnoredRegex();
-        
+
         sqlquery = sqlViewService.makeUpForQueryStatement( sqlquery );
 
         for ( String s : sqlquery.split( SEMICOLON ) )
@@ -185,19 +183,19 @@ public class ValidateAddUpdateSqlViewAction
     // -------------------------------------------------------------------------
 
     private String setUpIgnoredRegex()
-    {   
+    {
         int i = 0;
         int len = getIgnoredNameMap().size();
-        
+
         StringBuffer ignoredRegex = new StringBuffer( PREFIX_REGEX_IGNORE_TABLES_QUERY );
 
         for ( Map.Entry<String, String> entry : getIgnoredNameMap().entrySet() )
-        {            
+        {
             ignoredRegex.append( entry.getValue() );
-            
+
             if ( ++i < len )
             {
-                ignoredRegex.append( SEPERATE );                
+                ignoredRegex.append( SEPERATE );
             }
         }
 

@@ -28,16 +28,14 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * Removes a existing regular expression from the database.
- * 
+ *
  * @author Dang Duy Hieu
- * @version $Id GetSqlViewObjectAction.java July 06, 2010$
  */
 public class GetSqlViewObjectAction
     implements Action

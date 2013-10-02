@@ -27,10 +27,10 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.hisp.dhis.sqlview.SqlView;
-import org.hisp.dhis.sqlview.SqlViewService;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.sqlview.SqlViewService;
 
 /**
  * @author Dang Duy Hieu

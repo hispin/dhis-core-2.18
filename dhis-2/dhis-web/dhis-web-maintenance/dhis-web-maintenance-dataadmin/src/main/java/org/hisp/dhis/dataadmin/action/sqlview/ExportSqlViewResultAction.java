@@ -37,7 +37,6 @@ import org.hisp.dhis.sqlview.SqlViewService;
  * Updates a existing sqlview in database.
  *
  * @author Dang Duy Hieu
- * @version $Id ExportSqlViewResultAction.java July 12, 2010$
  */
 public class ExportSqlViewResultAction
     extends ActionPagingSupport<Grid>

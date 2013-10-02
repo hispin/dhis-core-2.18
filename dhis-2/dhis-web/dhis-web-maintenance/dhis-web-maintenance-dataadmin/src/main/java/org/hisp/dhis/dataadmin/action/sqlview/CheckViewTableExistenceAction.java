@@ -28,16 +28,14 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * Updates a existing sqlview in database.
- * 
+ *
  * @author Dang Duy Hieu
- * @version $Id CheckViewTableExistenceAction.java July 16, 2010$
  */
 public class CheckViewTableExistenceAction
     implements Action
@@ -112,5 +110,4 @@ public class CheckViewTableExistenceAction
 
         return SUCCESS;
     }
-
 }
