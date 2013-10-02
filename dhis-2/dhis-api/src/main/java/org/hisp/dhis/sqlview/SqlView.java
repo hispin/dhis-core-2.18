@@ -97,7 +97,7 @@ public class SqlView
             input += s.isEmpty() ? "" : ("_" + s);
         }
 
-        return PREFIX_VIEWNAME + input;
+        return PREFIX_VIEWNAME + input.toLowerCase();
     }
 
     public static Map<String, String> getCriteria( Set<String> params )
