@@ -292,12 +292,12 @@ public class UpdatePatientAction
                             if ( option != null )
                             {
                                 attributeValue.setPatientAttributeOption( option );
-                                attributeValue.setValue( option.getName() );
                             }
                             else
                             {
                                 // This option was deleted ???
                             }
+                            attributeValue.setValue( value );
                         }
                         else
                         {
