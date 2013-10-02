@@ -215,8 +215,8 @@ public class SqlViewServiceTest
         SqlView sqlViewC = createSqlView( 'C', SQL3 );
         SqlView sqlViewD = createSqlView( 'D', SQL4 );
 
-        assertEquals( "_view_SqlViewC", sqlViewC.getViewName() );
-        assertNotSame( "_view_SqlViewC", sqlViewD.getViewName() );
+        assertEquals( "_view_sqlviewc", sqlViewC.getViewName() );
+        assertNotSame( "_view_sqlviewc", sqlViewD.getViewName() );
 
     }
 
