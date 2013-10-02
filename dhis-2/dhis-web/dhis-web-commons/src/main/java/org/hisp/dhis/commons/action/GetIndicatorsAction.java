@@ -28,11 +28,8 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -41,7 +38,10 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.util.ContextUtils;
-import org.hisp.dhis.common.IdentifiableObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -129,13 +129,18 @@ public class GetIndicatorsAction
         else
         {
             indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-            
+
             ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), indicators );
         }
 
         if ( key != null )
         {
             indicators = IdentifiableObjectUtils.filterNameByKey( indicators, key, true );
+        }
+
+        if ( indicators == null )
+        {
+            indicators = new ArrayList<Indicator>();
         }
 
         Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
