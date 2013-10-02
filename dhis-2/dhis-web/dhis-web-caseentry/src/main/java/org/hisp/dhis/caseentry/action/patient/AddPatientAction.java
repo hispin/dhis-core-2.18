@@ -311,7 +311,8 @@ public class AddPatientAction
                     attributeValue = new PatientAttributeValue();
                     attributeValue.setPatient( patient );
                     attributeValue.setPatientAttribute( attribute );
-
+                    attributeValue.setValue(value);
+                    
                     if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                     {
                         PatientAttributeOption option = patientAttributeOptionService
@@ -319,7 +320,6 @@ public class AddPatientAction
                         if ( option != null )
                         {
                             attributeValue.setPatientAttributeOption( option );
-                            attributeValue.setValue( option.getName() );
                         }
                         else
                         {
