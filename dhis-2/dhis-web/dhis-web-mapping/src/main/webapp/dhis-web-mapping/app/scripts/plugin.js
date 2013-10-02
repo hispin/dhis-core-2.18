@@ -86,10 +86,10 @@ Ext.onReady( function() {
 			var len = Ext.query('.zoomInButton').length;
 
 			for (var i = 0; i < len; i++) {
-				Ext.query('.zoomInButton')[i].innerHTML = '<img src="images/zoomin_24.png" />';
-				Ext.query('.zoomOutButton')[i].innerHTML = '<img src="images/zoomout_24.png" />';
-				Ext.query('.zoomVisibleButton')[i].innerHTML = '<img src="images/zoomvisible_24.png" />';
-				Ext.query('.measureButton')[i].innerHTML = '<img src="images/measure_24.png" />';
+				Ext.query('.zoomInButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/app/images/zoomin_24.png" />';
+				Ext.query('.zoomOutButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/app/images/zoomout_24.png" />';
+				Ext.query('.zoomVisibleButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/app/images/zoomvisible_24.png" />';
+				Ext.query('.measureButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/app/images/measure_24.png" />';
 			}
 		};
 		
