@@ -35,6 +35,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -154,9 +155,9 @@ public class SearchPatientAction
                 orgunits.add( organisationUnit );
             }
 
-            total = patientService.countSearchPatients( searchTexts, orgunits, null );
+            total = patientService.countSearchPatients( searchTexts, orgunits, null, ProgramInstance.STATUS_ACTIVE );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, orgunits, null, null, paging.getStartPos(), paging
+            patients = patientService.searchPatients( searchTexts, orgunits, null, null, ProgramInstance.STATUS_ACTIVE, paging.getStartPos(), paging
                 .getPageSize() );
 
             if ( !searchBySelectedOrgunit )

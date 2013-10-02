@@ -689,7 +689,6 @@ public class JdbcCaseAggregationConditionManager
             {
                 int attributeId = Integer.parseInt( info[1] );
                 condition = getConditionForPatientAttribute( attributeId, orgunitIds );
-                condition += ")";
             }
             else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE_DATAELEMENT ) )
             {
@@ -1116,7 +1115,8 @@ public class JdbcCaseAggregationConditionManager
             String[] info = match.split( SEPARATOR_OBJECT );
 
             if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT )
-                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_PROPERTY ) )
+                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_PROPERTY )
+                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE) )
             {
                 return true;
             }
