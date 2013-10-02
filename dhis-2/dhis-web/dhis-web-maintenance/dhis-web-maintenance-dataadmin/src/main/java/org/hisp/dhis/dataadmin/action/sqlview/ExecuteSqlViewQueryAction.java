@@ -28,17 +28,15 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * Updates a existing sqlview to the database.
- * 
+ *
  * @author Dang Duy Hieu
- * @version $Id ExecuteSqlViewQueryAction.java July 06, 2010$
  */
 public class ExecuteSqlViewQueryAction
     implements Action
@@ -97,7 +95,7 @@ public class ExecuteSqlViewQueryAction
         }
 
         SqlView sqlViewInstance = sqlViewService.getSqlView( id );
-        
+
         String viewName = sqlViewInstance.getViewName();
 
         message = sqlViewService.createViewTable( sqlViewInstance );
