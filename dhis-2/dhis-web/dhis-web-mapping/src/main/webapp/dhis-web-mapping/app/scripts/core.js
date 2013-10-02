@@ -2109,24 +2109,6 @@ Ext.onReady( function() {
 						}
 					}
 					
-					if (!dxDim) {
-						return;
-					}
-					
-					if (!peDim) {
-						peDim = {
-							dimension: 'pe',
-							items: [{id: 'LAST_MONTH'}]
-						};
-					}
-					
-					if (!ouDim) {
-						ouDim = {
-							dimension: 'ou',
-							items: [{id: 'LEVEL-2'}]
-						};
-					}
-					
 					config.columns = [dxDim];
 					config.rows = [ouDim];
 					config.filters = [peDim];
@@ -2141,21 +2123,21 @@ Ext.onReady( function() {
 						isOu = false,
 						isOuc = false,
 						isOugc = false;
+					
+					config = validateSpecialCases(config);
 
 					config.columns = getValidatedDimensionArray(config.columns);
 					config.rows = getValidatedDimensionArray(config.rows);
 					config.filters = getValidatedDimensionArray(config.filters);
-					
-					config = validateSpecialCases(config);
 
-					// Config must be an object
-					if (!(config && Ext.isObject(config))) {
-						alert(gis.el + ': Data required');
+					// At least one dimension
+					if (!(config.columns || config.rows || config.filters)) {
+						alert(gis.el + ': At least one dimension required');
 						return;
 					}
 
 					// Collect object names and user orgunits
-					for (var i = 0, dim, dims = [].concat(config.columns, config.rows, config.filters); i < dims.length; i++) {
+					for (var i = 0, dim, dims = Ext.Array.clean([].concat(config.columns, config.rows, config.filters)); i < dims.length; i++) {
 						dim = dims[i];
 
 						if (dim) {
@@ -2182,12 +2164,6 @@ Ext.onReady( function() {
 						}
 					}
 
-					// At least one period
-					if (!Ext.Array.contains(objectNames, dimConf.period.objectName)) {
-						alert(GIS.i18n.at_least_one_period_must_be_specified_as_column_row_or_filter);
-						return;
-					}
-
 					// Layout
 					layout.columns = config.columns;
 					layout.rows = config.rows;
@@ -2210,6 +2186,9 @@ Ext.onReady( function() {
 					layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
 					
 					layout.legendSet = config.legendSet;
+					
+					layout.organisationUnitGroupSet = config.organisationUnitGroupSet;
+					layout.areaRadius = config.areaRadius;
 
 					return Ext.clone(layout);
 				}();

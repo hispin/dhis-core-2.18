@@ -104,7 +104,7 @@ public class GetGeoJsonFacilitiesAction
         return callback;
     }
 
-    private Collection<OrganisationUnit> object;
+    private Collection<OrganisationUnit> object = new ArrayList<OrganisationUnit>();
 
     public Collection<OrganisationUnit> getObject()
     {
@@ -127,10 +127,6 @@ public class GetGeoJsonFacilitiesAction
     {
         groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
 
-        // ---------------------------------------------------------------------
-        // Check if modified for caching purposes
-        // ---------------------------------------------------------------------
-
         Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
         
         for ( OrganisationUnitGroupSet groupSet : groupSets )
@@ -139,9 +135,9 @@ public class GetGeoJsonFacilitiesAction
         }
         
         // ---------------------------------------------------------------------
-        // Retrieve list of organisation units and populate group names
+        // Retrieve list of organisation units with valid coordinates
         // ---------------------------------------------------------------------
-        
+
         String paramString = "ou:";
         
         for ( String id : ids )
@@ -170,7 +166,7 @@ public class GetGeoJsonFacilitiesAction
         cachingCollection.addAll( organisationUnits );
         
         boolean modified = !clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), cachingCollection );
-        
+
         if ( !modified )
         {
             return SUCCESS;
