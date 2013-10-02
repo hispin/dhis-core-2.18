@@ -234,9 +234,12 @@ public class DefaultEventAnalyticsService
     }
 
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, I18nFormat format )
+        Set<String> dimension, Set<String> filter, Integer limit, I18nFormat format )
     {
-        return getFromUrl( program, stage, startDate, endDate, dimension, filter, null, null, null, null, null, format );
+        EventQueryParams params = getFromUrl( program, stage, startDate, endDate, dimension, filter, null, null, null, null, null, format );
+        params.setLimit( limit );
+        
+        return params;
     }
     
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
