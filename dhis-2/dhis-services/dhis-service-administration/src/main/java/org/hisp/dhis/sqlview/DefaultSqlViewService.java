@@ -28,17 +28,17 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dang Duy Hieu
@@ -152,9 +152,9 @@ public class DefaultSqlViewService
         boolean success = true;
 
         List<SqlView> sqlViews = new ArrayList<SqlView>( getAllSqlViews() );
-        
+
         Collections.sort( sqlViews, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         for ( SqlView sqlView : sqlViews )
         {
             if ( createViewTable( sqlView ) != null )
@@ -198,10 +198,10 @@ public class DefaultSqlViewService
     public void dropAllSqlViewTables()
     {
         List<SqlView> views = sqlViewStore.getAllOrderedName();
-        
+
         Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
         Collections.reverse( views );
-        
+
         for ( SqlView view : views )
         {
             dropViewTable( view.getViewName() );
