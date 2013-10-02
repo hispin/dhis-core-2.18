@@ -1,4 +1,4 @@
-package org.hisp.dhis.analytics.event;
+package org.hisp.dhis.analytics;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,24 +28,11 @@ package org.hisp.dhis.analytics.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Set;
-
-import org.hisp.dhis.analytics.SortOrder;
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.i18n.I18nFormat;
-
 /**
  * @author Lars Helge Overland
  */
-public interface EventAnalyticsService
+public enum SortOrder
 {
-    Grid getAggregatedEventData( EventQueryParams params );
-    
-    Grid getEvents( EventQueryParams params );
-
-    EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, SortOrder sortOrder, Integer limit, I18nFormat format );
-    
-    EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize, I18nFormat format );
+    ASC,
+    DESC
 }

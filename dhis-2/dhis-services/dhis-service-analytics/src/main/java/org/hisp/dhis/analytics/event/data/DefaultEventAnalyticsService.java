@@ -42,6 +42,7 @@ import java.util.Set;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.IllegalQueryException;
+import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
@@ -146,8 +147,6 @@ public class DefaultEventAnalyticsService
         // ---------------------------------------------------------------------
         // Data
         // ---------------------------------------------------------------------
-
-        //TODO relative periods
                 
         List<EventQueryParams> queries = queryPlanner.planQuery( params );
 
@@ -234,9 +233,10 @@ public class DefaultEventAnalyticsService
     }
 
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, Integer limit, I18nFormat format )
+        Set<String> dimension, Set<String> filter, SortOrder sortOrder, Integer limit, I18nFormat format )
     {
         EventQueryParams params = getFromUrl( program, stage, startDate, endDate, dimension, filter, null, null, null, null, null, format );
+        params.setSortOrder( sortOrder );
         params.setLimit( limit );
         
         return params;
