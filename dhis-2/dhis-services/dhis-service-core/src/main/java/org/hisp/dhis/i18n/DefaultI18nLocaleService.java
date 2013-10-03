@@ -29,6 +29,7 @@ package org.hisp.dhis.i18n;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.locale.I18nLocale;
@@ -49,10 +50,34 @@ public class DefaultI18nLocaleService
         this.localeStore = localeStore;
     }
 
+    private Map<String, String> languages;
+    
+    public void setLanguages( Map<String, String> languages )
+    {
+        this.languages = languages;
+    }
+
+    private Map<String, String> countries;
+
+    public void setCountries( Map<String, String> countries )
+    {
+        this.countries = countries;
+    }
+
     // -------------------------------------------------------------------------
     // I18nLocaleService implementation
     // -------------------------------------------------------------------------
 
+    public Map<String, String> getAvailableLanguages()
+    {
+        return languages;
+    }
+    
+    public Map<String, String> getAvailableCountries()
+    {
+        return countries;
+    }
+    
     public void saveI18nLocale( I18nLocale locale )
     {
         localeStore.save( locale );
