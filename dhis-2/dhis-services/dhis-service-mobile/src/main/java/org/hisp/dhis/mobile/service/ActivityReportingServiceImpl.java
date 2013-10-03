@@ -2015,9 +2015,10 @@ public class ActivityReportingServiceImpl
                 ProgramStageInstance programStageInstance = programStageInstanceService
                     .getProgramStageInstance( stageInstanceId );
                 Patient patient = programStageInstance.getProgramInstance().getPatient();
-                eventsInfo += programStageInstance.getId() + "/" + patient.getName() + "/"
-                    + programStageInstance.getProgramStage().getName() + "/" + programStageInstance.getDueDate() + "$";
+                eventsInfo += programStageInstance.getId() + "/" + patient.getName() + ", "
+                    + programStageInstance.getProgramStage().getName() + "(" + formatter.format(programStageInstance.getDueDate()) + ")" + "$";
             }
+
             throw new NotAllowedException( eventsInfo );
         }
         else
