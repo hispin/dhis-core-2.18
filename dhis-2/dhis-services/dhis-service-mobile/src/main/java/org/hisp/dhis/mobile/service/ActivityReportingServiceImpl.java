@@ -660,9 +660,9 @@ public class ActivityReportingServiceImpl
     public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient enrollProgram( String enrollInfo )
         throws NotAllowedException
     {
-        String[] enrollProgramInfos = enrollInfo.split( "-" );
-        int patientId = Integer.parseInt( enrollProgramInfos[0] );
-        int programId = Integer.parseInt( enrollProgramInfos[1] );
+        String[] enrollProgramInfo = enrollInfo.split( "-" );
+        int patientId = Integer.parseInt( enrollProgramInfo[0] );
+        int programId = Integer.parseInt( enrollProgramInfo[1] );
 
         Patient patient = patientService.getPatient( patientId );
         Program program = programService.getProgram( programId );
@@ -839,7 +839,7 @@ public class ActivityReportingServiceImpl
         List<org.hisp.dhis.patient.PatientAttribute> atts;
 
         patientModel.setId( patient.getId() );
-        
+
         if ( patient.getName() != null )
         {
             patientModel.setName( patient.getName() );
@@ -871,7 +871,7 @@ public class ActivityReportingServiceImpl
             {
                 patientModel.setDobType( patient.getDobType() );
             }
-            if ( setting.getBirthdate() && patient.getBirthDate()!=null )
+            if ( setting.getBirthdate() && patient.getBirthDate() != null )
             {
                 DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
                 patientModel.setBirthDate( dateFormat.format( patient.getBirthDate() ) );
@@ -1327,16 +1327,18 @@ public class ActivityReportingServiceImpl
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
 
         List<Program> tempPrograms = null;
-        
-        if ( Integer.valueOf( programType )==( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
+
+        if ( Integer.valueOf( programType ) == (Program.SINGLE_EVENT_WITHOUT_REGISTRATION) )
         {
-            tempPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+            tempPrograms = new ArrayList<Program>(
+                programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         }
-        else if ( Integer.valueOf( programType )==( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) )
+        else if ( Integer.valueOf( programType ) == (Program.MULTIPLE_EVENTS_WITH_REGISTRATION) )
         {
-            tempPrograms = new ArrayList<Program>( programService.getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
+            tempPrograms = new ArrayList<Program>(
+                programService.getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
         }
-            
+
         List<Program> programs = new ArrayList<Program>();
 
         for ( Program program : tempPrograms )
@@ -1433,9 +1435,9 @@ public class ActivityReportingServiceImpl
         mobileProgramStage.setRepeatable( false );
         mobileProgramStage.setSingleEvent( true );
         mobileProgramStage.setSections( new ArrayList<Section>() );
-        
+
         // get report date
-        mobileProgramStage.setReportDate( PeriodUtil.dateToString( new Date()) );
+        mobileProgramStage.setReportDate( PeriodUtil.dateToString( new Date() ) );
 
         if ( programStage.getReportDateDescription() == null )
         {
@@ -1933,7 +1935,7 @@ public class ActivityReportingServiceImpl
                 {
                     break;
                 }
-                
+
                 if ( each.getName() != null )
                 {
                     name = each.getName();
@@ -1976,26 +1978,51 @@ public class ActivityReportingServiceImpl
     public String findLostToFollowUp( int orgUnitId, String programId )
         throws NotAllowedException
     {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String eventsInfo = "";
+        Boolean followUp = false;
+        DateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd" );
         List<String> searchTextList = new ArrayList<String>();
-        List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
+        Collection<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>();
 
         Calendar toCalendar = new GregorianCalendar();
         toCalendar.add( Calendar.DATE, -1 );
         toCalendar.add( Calendar.YEAR, 100 );
         Date toDate = toCalendar.getTime();
-        
+
         Calendar fromCalendar = new GregorianCalendar();
         fromCalendar.add( Calendar.DATE, -1 );
         fromCalendar.add( Calendar.YEAR, -100 );
-        Date fromDate = toCalendar.getTime();
-        
-        String searchText = Patient.PREFIX_PROGRAM_EVENT_BY_STATUS+"_"+programId+"_"+formatter.format( fromDate )+"_"+formatter.format( toDate )+"_"+orgUnitId+"_"+true+"_"+ProgramStageInstance.LATE_VISIT_STATUS;
-        
+        Date fromDate = fromCalendar.getTime();
+
+        String searchText = Patient.PREFIX_PROGRAM_EVENT_BY_STATUS + "_" + programId + "_"
+            + formatter.format( fromDate ) + "_" + formatter.format( toDate ) + "_" + orgUnitId + "_" + true + "_"
+            + ProgramStageInstance.LATE_VISIT_STATUS;
+
         searchTextList.add( searchText );
         orgUnitList.add( organisationUnitService.getOrganisationUnit( orgUnitId ) );
-        
-        List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTextList, orgUnitList, true, ProgramInstance.STATUS_ACTIVE, null, null );
-        return searchText;
+
+        List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTextList, orgUnitList,
+            followUp, ProgramInstance.STATUS_ACTIVE, null, null );
+
+        if ( stageInstanceIds.size() == 0 )
+        {
+            throw NotAllowedException.NO_EVENT_FOUND;
+        }
+        else if ( stageInstanceIds.size() > 0 )
+        {
+            for ( Integer stageInstanceId : stageInstanceIds )
+            {
+                ProgramStageInstance programStageInstance = programStageInstanceService
+                    .getProgramStageInstance( stageInstanceId );
+                Patient patient = programStageInstance.getProgramInstance().getPatient();
+                eventsInfo += programStageInstance.getId() + "/" + patient.getName() + "/"
+                    + programStageInstance.getProgramStage().getName() + "/" + programStageInstance.getDueDate() + "$";
+            }
+            throw new NotAllowedException( eventsInfo );
+        }
+        else
+        {
+            return "";
+        }
     }
 }
