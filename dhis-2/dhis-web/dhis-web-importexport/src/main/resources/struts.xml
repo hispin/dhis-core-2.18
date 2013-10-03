@@ -310,33 +310,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <!-- Camel configuration -->
-
-    <action name="showAddRouteForm" class="org.hisp.dhis.importexport.action.integration.ShowAddRouteFormAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-importexport/showAddRouteForm.vm</param>
-      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="requiredAuthorities">F_MANAGE_INTEGRATION_ROUTES</param>
-    </action>
-
-    <action name="addRoute" class="org.hisp.dhis.importexport.action.integration.AddRouteAction">
-      <result name="success" type="redirect">displayRoutes.action</result>
-      <result name="error" type="redirect">showAddRouteForm.action</result>
-      <interceptor-ref name="fileUploadStack" />
-      <param name="requiredAuthorities">F_MANAGE_INTEGRATION_ROUTES</param>
-    </action>
-
-    <action name="displayRoutes" class="org.hisp.dhis.importexport.action.integration.DisplayRoutesAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-importexport/displayRoutes.vm</param>
-      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="requiredAuthorities">F_MANAGE_INTEGRATION_ROUTES</param>
-    </action>
-
-    <action name="routeOperation" class="org.hisp.dhis.importexport.action.integration.RouteOperationAction">
-      <result name="success" type="redirect">displayRoutes.action</result>
-      <param name="requiredAuthorities">F_MANAGE_INTEGRATION_ROUTES</param>
-    </action>
   </package>
 
 </struts>
