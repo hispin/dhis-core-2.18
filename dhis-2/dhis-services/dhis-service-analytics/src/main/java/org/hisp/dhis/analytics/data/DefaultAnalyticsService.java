@@ -386,12 +386,13 @@ public class DefaultAnalyticsService
             
             Map<String, String> uidNameMap = getUidNameMap( params );
             Map<String, String> cocNameMap = getCocNameMap( grid, cocIndex );
+            Map<String, String> ouParentGraphMap = getParentGrapMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) );
             
             uidNameMap.putAll( cocNameMap );
             
             metaData.put( NAMES_META_KEY, uidNameMap );
             metaData.put( PERIOD_DIM_ID, getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) );
-            metaData.put( ORGUNIT_DIM_ID, getUids( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ) );
+            metaData.put( ORGUNIT_DIM_ID, ouParentGraphMap );
             
             if ( cocIndex != null )
             {
@@ -403,7 +404,7 @@ public class DefaultAnalyticsService
         
         return grid;
     }
-
+    
     @Override
     public Grid getAggregatedDataValues( DataQueryParams params, boolean tableLayout, List<String> columns, List<String> rows )
     {
@@ -491,7 +492,7 @@ public class DefaultAnalyticsService
         
         return getAggregatedDataValueMapping( params );
     }
-    
+
     /**
      * Generates aggregated values for the given query. Creates a mapping between 
      * a dimension key and the aggregated value. The dimension key is a 
@@ -584,7 +585,7 @@ public class DefaultAnalyticsService
     
     @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean ignoreLimit, I18nFormat format )
+        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean hierarchyMeta, boolean ignoreLimit, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
@@ -625,6 +626,7 @@ public class DefaultAnalyticsService
         }
         
         params.setSkipMeta( skipMeta );
+        params.setHierarchyMeta( hierarchyMeta );
 
         return params;
     }
@@ -915,17 +917,37 @@ public class DefaultAnalyticsService
         return params;
     }
     
+    /**
+     * Returns a mapping between the uid and the name of all dimension and filter
+     * items for the given params.
+     */
     private Map<String, String> getUidNameMap( DataQueryParams params )
     {
         Map<String, String> map = new HashMap<String, String>();
-        map.putAll( getUidNameMap( params.getDimensions() ) );
-        map.putAll( getUidNameMap( params.getFilters() ) );
+        map.putAll( getUidNameMap( params.getDimensions(), params.isHierarchyMeta() ) );
+        map.putAll( getUidNameMap( params.getFilters(), params.isHierarchyMeta() ) );
         map.put( DATA_X_DIM_ID, DISPLAY_NAME_DATA_X );
         
         return map;
     }
-    
-    private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions )
+
+    /**
+     * Returns a mapping between the uid and the uid parent graph of the given
+     * organisation units.
+     */
+    private Map<String, String> getParentGrapMap( List<OrganisationUnit> organisationUnits )
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            map.put( unit.getUid(), unit.getParentGraph() );
+        }
+        
+        return map;
+    }
+
+    private Map<String, String> getUidNameMap( List<DimensionalObject> dimensions, boolean hierarchyMeta )
     {
         Map<String, String> map = new HashMap<String, String>();
         
@@ -933,6 +955,8 @@ public class DefaultAnalyticsService
         {
             List<NameableObject> options = new ArrayList<NameableObject>( dimension.getItems() );
 
+            boolean hierarchy = hierarchyMeta && DimensionType.ORGANISATIONUNIT.equals( dimension.getType() );
+            
             // -----------------------------------------------------------------
             // If dimension is not fixed and has no options, insert all options
             // -----------------------------------------------------------------
@@ -960,6 +984,13 @@ public class DefaultAnalyticsService
             for ( IdentifiableObject idObject : options )
             {
                 map.put( idObject.getUid(), idObject.getDisplayName() );
+                
+                if ( hierarchy )
+                {
+                    OrganisationUnit unit = (OrganisationUnit) idObject;
+                    
+                    map.putAll( IdentifiableObjectUtils.getUidNameMap( unit.getAncestors() ) );
+                }
             }
             
             if ( dimension.getDisplayName() != null )
