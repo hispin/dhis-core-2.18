@@ -44,8 +44,8 @@ public interface EventAnalyticsService
     Grid getEvents( EventQueryParams params );
 
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, SortOrder sortOrder, Integer limit, I18nFormat format );
+        Set<String> dimension, Set<String> filter, boolean hierarchyMeta, SortOrder sortOrder, Integer limit, I18nFormat format );
     
-    EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
-        Set<String> dimension, Set<String> filter, String ouMode, Set<String> asc, Set<String> desc, Integer page, Integer pageSize, I18nFormat format );
+    EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> dimension, Set<String> filter, 
+        String ouMode, Set<String> asc, Set<String> desc, boolean hierarchyMeta, Integer page, Integer pageSize, I18nFormat format );
 }

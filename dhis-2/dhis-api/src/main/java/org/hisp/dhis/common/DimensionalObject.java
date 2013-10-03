@@ -36,6 +36,7 @@ import java.util.Map;
 * @author Lars Helge Overland
 */
 public interface DimensionalObject
+    extends NameableObject
 {
     final String DATA_X_DIM_ID = "dx"; // in, de, ds, do
     final String INDICATOR_DIM_ID = "in";
