@@ -820,15 +820,14 @@ function getValueFormula( value ) {
 function removeEvent( programStageId ) {
     var s = "" + programStageId;
 
-    if( s.indexOf("local") != -1 ) {
-        if( confirm(i18n_comfirm_delete_event) ) {
-            DAO.store.delete('dataValues', programStageId).always(function() {
+    if( s.indexOf("local") != -1) {
+        if ( confirm( i18n_comfirm_delete_event ) ) {
+            DAO.store.delete( 'dataValues', programStageId ).always( function () {
                 updateOfflineEvents();
-                setTimeout(updateOfflineEvents, 200);
-            });
+            } );
         }
     } else {
-        removeItem(programStageId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action');
+        removeItem( programStageId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action' );
     }
 }
 
