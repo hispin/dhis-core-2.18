@@ -46,14 +46,11 @@ public class GetInterpretationsAction
     implements Action
 {
     private static final int PAGE_SIZE = 5;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
-    private UserService userService;
-    
     @Autowired
     private InterpretationService interpretationService;
 
@@ -67,48 +64,30 @@ public class GetInterpretationsAction
     {
         this.page = page;
     }
-    
-    private String userId;
-
-    public void setUserId( String userId )
-    {
-        this.userId = userId;
-    }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
     private List<Interpretation> interpretations;
-    
+
     public List<Interpretation> getInterpretations()
     {
         return interpretations;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        userId = StringUtils.trimToNull( userId );
-        
         int first = page != null ? ( page * PAGE_SIZE ) : 0;
-        
-        if ( userId != null )
-        {
-            User user = userService.getUser( userId );
-            
-            interpretations = interpretationService.getInterpretations( user, first, PAGE_SIZE );
-        }
-        else
-        {
-            interpretationService.updateCurrentUserLastChecked();
-            
-            interpretations = interpretationService.getInterpretations( first, PAGE_SIZE );
-        }
-        
+
+        interpretationService.updateCurrentUserLastChecked();
+
+        interpretations = interpretationService.getInterpretations( first, PAGE_SIZE );
+
         return SUCCESS;
     }
 }

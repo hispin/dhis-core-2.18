@@ -28,11 +28,11 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -42,7 +42,7 @@ public class InterpretationDeletionHandler
 {
     @Autowired
     private InterpretationService interpretationService;
-    
+
     @Override
     protected String getClassName()
     {
@@ -51,8 +51,8 @@ public class InterpretationDeletionHandler
 
     public void deleteUser( User user )
     {
-        List<Interpretation> interpretations = interpretationService.getInterpretations( user );
-        
+        List<Interpretation> interpretations = interpretationService.getInterpretations();
+
         for ( Interpretation interpretation : interpretations )
         {
             if ( interpretation.getUser() != null && interpretation.getUser().equals( user ) )

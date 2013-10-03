@@ -28,10 +28,7 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -39,7 +36,4 @@ import org.hisp.dhis.user.User;
 public interface InterpretationStore
     extends GenericIdentifiableObjectStore<Interpretation>
 {
-    List<Interpretation> getInterpretations( User user );
-    
-    List<Interpretation> getInterpretations( User user, int first, int max );
 }

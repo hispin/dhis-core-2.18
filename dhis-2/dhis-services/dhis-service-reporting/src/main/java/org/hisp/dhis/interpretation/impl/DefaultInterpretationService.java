@@ -89,14 +89,19 @@ public class DefaultInterpretationService
     {
         User user = currentUserService.getCurrentUser();
 
-        if ( user != null )
+        if ( interpretation != null )
         {
-            interpretation.setUser( user );
-        }
+            if ( user != null )
+            {
+                interpretation.setUser( user );
+            }
 
-        if ( interpretation != null && interpretation.getPeriod() != null )
-        {
-            interpretation.setPeriod( periodService.reloadPeriod( interpretation.getPeriod() ) );
+            if ( interpretation.getPeriod() != null )
+            {
+                interpretation.setPeriod( periodService.reloadPeriod( interpretation.getPeriod() ) );
+            }
+
+            interpretation.updateSharing();
         }
 
         return interpretationStore.save( interpretation );
@@ -122,19 +127,20 @@ public class DefaultInterpretationService
         interpretationStore.delete( interpretation );
     }
 
+    public List<Interpretation> getInterpretations()
+    {
+        return interpretationStore.getAll();
+    }
+
+    @Override
+    public List<Interpretation> getInterpretations( Date lastUpdated )
+    {
+        return interpretationStore.getAllGeLastUpdated( lastUpdated );
+    }
+
     public List<Interpretation> getInterpretations( int first, int max )
     {
         return interpretationStore.getAllOrderedLastUpdated( first, max );
-    }
-
-    public List<Interpretation> getInterpretations( User user, int first, int max )
-    {
-        return interpretationStore.getInterpretations( user, first, max );
-    }
-
-    public List<Interpretation> getInterpretations( User user )
-    {
-        return interpretationStore.getInterpretations( user );
     }
 
     public void addInterpretationComment( String uid, String text )
@@ -170,7 +176,7 @@ public class DefaultInterpretationService
     {
         User user = currentUserService.getCurrentUser();
 
-        long count = 0;
+        long count;
 
         if ( user != null && user.getLastCheckedInterpretations() != null )
         {

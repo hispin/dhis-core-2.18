@@ -280,6 +280,8 @@
   
   <cache name="org.hisp.dhis.option.OptionSet.options" maxElementsInMemory="2000" />
 
+  <cache name="org.hisp.dhis.interpretation.Interpretation.userGroupAccesses" maxElementsInMemory="200" />
+
   <cache name="org.hisp.dhis.user.User.organisationUnits" maxElementsInMemory="20000" />
 
   <cache name="org.hisp.dhis.user.User.attributeValues" maxElementsInMemory="1000" />

@@ -28,9 +28,8 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.List;
-
-import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -38,24 +37,24 @@ import org.hisp.dhis.user.User;
 public interface InterpretationService
 {
     int saveInterpretation( Interpretation interpretation );
-    
+
     Interpretation getInterpretation( int id );
-    
+
     Interpretation getInterpretation( String uid );
-    
+
     void updateInterpretation( Interpretation interpretation );
-    
+
     void deleteInterpretation( Interpretation interpretation );
-    
+
+    List<Interpretation> getInterpretations();
+
+    List<Interpretation> getInterpretations( Date lastUpdated );
+
     List<Interpretation> getInterpretations( int first, int max );
 
-    List<Interpretation> getInterpretations( User user );
-    
-    List<Interpretation> getInterpretations( User user, int first, int max );
-    
     void addInterpretationComment( String uid, String text );
-    
+
     void updateCurrentUserLastChecked();
-    
+
     long getNewInterpretationCount();
 }
