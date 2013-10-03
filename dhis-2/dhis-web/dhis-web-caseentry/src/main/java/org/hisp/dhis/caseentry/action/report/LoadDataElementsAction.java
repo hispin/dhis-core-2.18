@@ -140,7 +140,6 @@ public class LoadDataElementsAction
         throws Exception
     {
         Program program = null;
-
         if ( programStageId != null )
         {
             ProgramStage programStage = programStageService.getProgramStage( programStageId );
