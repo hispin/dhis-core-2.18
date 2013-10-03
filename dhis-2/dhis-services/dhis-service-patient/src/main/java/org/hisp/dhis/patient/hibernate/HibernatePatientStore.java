@@ -804,7 +804,8 @@ public class HibernatePatientStore
                 + " inner join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) "
                 + " inner join programstage pgs on (pgs.programstageid=psi.programstageid) ";
 
-            patientGroupBy += ",psi.programstageinstanceid, pgs.name ";
+            //patientGroupBy += ",psi.programstageinstanceid, pgs.name ";
+            patientGroupBy += ",psi.programstageinstanceid, pgs.name, psi.duedate ";
 
             from = " ";
         }

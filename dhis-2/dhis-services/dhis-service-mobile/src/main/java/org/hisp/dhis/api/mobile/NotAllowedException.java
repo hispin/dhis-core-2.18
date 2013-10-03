@@ -54,6 +54,8 @@ public class NotAllowedException
     
     public static final NotAllowedException NO_PROGRAM_BELONG_ORGUNIT = new NotAllowedException( "NO_PROGRAM_BELONG_ORGUNIT");
     
+    public static final NotAllowedException NO_EVENT_FOUND = new NotAllowedException( "NO_EVENT_FOUND");
+    
     private String reason;
 
     public NotAllowedException( String reason )
