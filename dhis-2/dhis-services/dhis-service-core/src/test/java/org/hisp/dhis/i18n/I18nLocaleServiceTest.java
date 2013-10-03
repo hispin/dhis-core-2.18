@@ -27,30 +27,30 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.i18n.locale.I18nLocale;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public interface I18nLocaleService
+import static org.junit.Assert.*;
+
+public class I18nLocaleServiceTest
+    extends DhisSpringTest
 {
-    Map<String, String> getAvailableLanguages();
+    @Autowired
+    private I18nLocaleService localeService;
     
-    Map<String, String> getAvailableCountries();
-    
-    void saveI18nLocale( I18nLocale locale );
-    
-    I18nLocale getI18nLocale( int id );
-    
-    I18nLocale getI18nLocaleByUid( String uid );
-    
-    void deleteI18nLocale( I18nLocale locale );
-    
-    int getI18nLocaleCount();
-    
-    int getI18nLocaleCountByName( String name );
-    
-    Collection<I18nLocale> getI18nLocalesBetween( int first, int max );
-    
-    Collection<I18nLocale> getI18nLocalesBetweenLikeName( String name, int first, int max );
+    @Test
+    public void testAvailable()
+    {
+        Map<String, String> languages = localeService.getAvailableLanguages();
+        
+        Map<String, String> countries = localeService.getAvailableCountries();
+        
+        assertNotNull( languages );
+        assertNotNull( countries );
+        assertFalse( languages.isEmpty() );
+        assertFalse( countries.isEmpty() );
+    }
 }
