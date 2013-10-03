@@ -490,6 +490,15 @@ public class DefaultExpressionService
                 indicator.setExplodedDenominator( substituteExpression( indicator.getDenominator(), days ) );
             }
 
+            explodeExpressions( indicators );
+        }
+    }
+
+    @Transactional
+    public void explodeExpressions( Collection<Indicator> indicators )
+    {
+        if ( indicators != null && !indicators.isEmpty() )
+        {
             Set<String> dataElementTotals = new HashSet<String>();
             
             for ( Indicator indicator : indicators )
@@ -631,7 +640,7 @@ public class DefaultExpressionService
         {
             return null;
         }
-
+        
         // ---------------------------------------------------------------------
         // Operands
         // ---------------------------------------------------------------------
@@ -683,7 +692,7 @@ public class DefaultExpressionService
         matcher = DAYS_PATTERN.matcher( expression );
         
         while ( matcher.find() )
-        {            
+        {
             String replacement = days != null ? String.valueOf( days ) : NULL_REPLACEMENT;
             
             matcher.appendReplacement( sb, replacement );

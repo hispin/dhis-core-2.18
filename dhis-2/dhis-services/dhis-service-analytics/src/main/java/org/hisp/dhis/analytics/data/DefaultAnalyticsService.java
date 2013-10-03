@@ -222,7 +222,7 @@ public class DefaultAnalyticsService
             int indicatorIndex = params.getIndicatorDimensionIndex();
             List<Indicator> indicators = asTypedList( params.getIndicators() );
             
-            expressionService.explodeAndSubstituteExpressions( indicators, null );
+            expressionService.explodeExpressions( indicators );
             
             DataQueryParams dataSourceParams = params.instance();
             dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
