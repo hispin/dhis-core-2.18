@@ -28,9 +28,6 @@ package org.hisp.dhis.interpretation.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-import java.util.List;
-
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationComment;
@@ -41,6 +38,9 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -59,21 +59,21 @@ public class DefaultInterpretationService
     {
         this.interpretationStore = interpretationStore;
     }
-    
+
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-    
+
     private UserService userService;
 
     public void setUserService( UserService userService )
     {
         this.userService = userService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -88,90 +88,90 @@ public class DefaultInterpretationService
     public int saveInterpretation( Interpretation interpretation )
     {
         User user = currentUserService.getCurrentUser();
-        
+
         if ( user != null )
         {
             interpretation.setUser( user );
         }
-        
+
         if ( interpretation != null && interpretation.getPeriod() != null )
         {
             interpretation.setPeriod( periodService.reloadPeriod( interpretation.getPeriod() ) );
         }
-        
+
         return interpretationStore.save( interpretation );
     }
-    
+
     public Interpretation getInterpretation( int id )
     {
         return interpretationStore.get( id );
     }
-    
+
     public Interpretation getInterpretation( String uid )
     {
         return interpretationStore.getByUid( uid );
     }
-    
+
     public void updateInterpretation( Interpretation interpretation )
     {
         interpretationStore.update( interpretation );
     }
-    
+
     public void deleteInterpretation( Interpretation interpretation )
     {
         interpretationStore.delete( interpretation );
     }
-    
+
     public List<Interpretation> getInterpretations( int first, int max )
     {
         return interpretationStore.getAllOrderedLastUpdated( first, max );
     }
-    
+
     public List<Interpretation> getInterpretations( User user, int first, int max )
     {
         return interpretationStore.getInterpretations( user, first, max );
     }
-    
+
     public List<Interpretation> getInterpretations( User user )
     {
         return interpretationStore.getInterpretations( user );
     }
-    
+
     public void addInterpretationComment( String uid, String text )
     {
         Interpretation interpretation = getInterpretation( uid );
 
         User user = currentUserService.getCurrentUser();
-        
+
         InterpretationComment comment = new InterpretationComment( text );
         comment.setLastUpdated( new Date() );
         comment.setUid( CodeGenerator.generateCode() );
-        
+
         if ( user != null )
         {
             comment.setUser( user );
         }
-        
+
         interpretation.addComment( comment );
-        
+
         interpretationStore.update( interpretation );
     }
-    
+
     public void updateCurrentUserLastChecked()
     {
         User user = currentUserService.getCurrentUser();
-        
+
         user.setLastCheckedInterpretations( new Date() );
-        
+
         userService.updateUser( user );
     }
-    
+
     public long getNewInterpretationCount()
     {
         User user = currentUserService.getCurrentUser();
-        
+
         long count = 0;
-        
+
         if ( user != null && user.getLastCheckedInterpretations() != null )
         {
             count = interpretationStore.getCountGeLastUpdated( user.getLastCheckedInterpretations() );
@@ -180,7 +180,7 @@ public class DefaultInterpretationService
         {
             count = interpretationStore.getCount();
         }
-        
+
         return count;
     }
 }
