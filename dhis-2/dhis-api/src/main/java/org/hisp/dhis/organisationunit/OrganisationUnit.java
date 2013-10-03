@@ -620,9 +620,12 @@ public class OrganisationUnit
     {
         Map<String, String> map = new HashMap<String, String>();
         
-        for ( OrganisationUnit unit : organisationUnits )
+        if ( organisationUnits != null )
         {
-            map.put( unit.getUid(), unit.getParentGraph() );
+            for ( OrganisationUnit unit : organisationUnits )
+            {
+                map.put( unit.getUid(), unit.getParentGraph() );
+            }
         }
         
         return map;
