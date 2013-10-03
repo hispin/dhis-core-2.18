@@ -494,30 +494,28 @@ Ext.onReady( function() {
 					params.value = 'EQ';
 				}
 				
-				if(valueType == 'string' || valueType == 'list' || valueType == 'username' ){
-					var fixedId = id.substring(0, id.lastIndexOf('_') );
-					if( fixedId=='fixedAttr_gender' || fixedId=='fixedAttr_dobType')
-					{
-						params.store = new Ext.data.ArrayStore({
-							fields: ['value','name'],
-							data: [ ['EQ','='],['IN',TR.i18n.in] ]
-						});
-						params.value = 'IN';
-					}
-					else
-					{
-						params.store = new Ext.data.ArrayStore({
-							fields: ['value','name'],
-							data: [ ['EQ','='],['LIKE',TR.i18n.like],['IN',TR.i18n.in] ]
-						});
-						params.value = 'IN';
-					}
+				if( valueType=='GENDER' )
+				{
+					params.store = new Ext.data.ArrayStore({
+						fields: ['value','name'],
+						data: [ ['EQ','='] ]
+					});
+					params.value = 'EQ';
+				}
+				else if(valueType == 'string' || valueType == 'list' || valueType == 'username' )
+				{
+					params.store = new Ext.data.ArrayStore({
+						fields: ['value','name'],
+						data: [ ['EQ','='],['LIKE',TR.i18n.like],['IN',TR.i18n.in] ]
+					});
+					params.value = 'IN';
 				}
 				else if( valueType == 'trueOnly' || valueType == 'bool' ){
 					params.store = new Ext.data.ArrayStore({
 						fields: ['value','name'],
 						data: [ ['EQ','='] ]
 					});
+					params.value = 'EQ';
 				}
 				else
 				{
@@ -530,6 +528,7 @@ Ext.onReady( function() {
 								['LE','<='],
 								['NE','!=' ] ]
 					});
+					params.value = 'EQ';
 				}
 				
 				params.listeners={};
@@ -554,8 +553,20 @@ Ext.onReady( function() {
 				params.emptyText = TR.i18n.filter_value;
 				params.width = (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 50;
 				xtype = xtype.toLowerCase();
-				if( xtype == 'datefield' )
-				{
+				if( valueType=='GENDER'){
+					params.xtype = 'combobox';
+					params.queryMode = 'local';
+					params.valueField = 'value';
+					params.displayField = 'name';
+					params.editable = false;
+					params.store = new Ext.data.ArrayStore({
+						fields: ['value', 'name'],
+						data: [['F', TR.i18n.female], 
+							['M', TR.i18n.male], 
+							['T', TR.i18n.transgender]]
+					});
+				}
+				else if( xtype == 'datefield' ){
 					params.format = TR.i18n.format_date;
 				}
 				else if( xtype == 'combobox' )
@@ -1734,21 +1745,24 @@ Ext.onReady( function() {
 				{
 					var id = deId + '_' + idx;
 					
-					var filterOpt = Ext.getCmp('filter_opt_' + id).getValue();						
-					var filterValue = Ext.getCmp('filter_' + id).rawValue;
+					var filterOpt = Ext.getCmp('filter_opt_' + id).getValue();
+					var filterValue = Ext.getCmp('filter_' + id).rawValue.toLowerCase();;
+					if(deId=='GENDER'){	
+						filterValue = Ext.getCmp('filter_' + id).getValue();
+					}					
 					var filter = deId;
 					if( Ext.getCmp('filter_' + id).getValue()!=null 
 						&& Ext.getCmp('filter_' + id).getValue()!=''){
 						
-						filterValue = filterValue.toLowerCase();
+						filterValue = filterValue
 						filter += ':' + filterOpt + ':';
 						if( filterOpt == 'IN' )
 						{
-							filter +=filterValue.replace(/:/g,";"); 
+							filter += filterValue.replace(/:/g,";"); 
 						}
 						else
 						{
-							filter += Ext.getCmp('filter_' + id).getValue();
+							filter += filterValue;
 						}
 					}
 					
@@ -2076,7 +2090,18 @@ Ext.onReady( function() {
 							var json = Ext.JSON.decode(r.responseText);
 							
 							TR.value.columns = json.headers;
-							TR.value.values = json.rows;
+							var rows = json.rows;
+							for( var i in rows ){
+								var cols = rows[i];
+								for( var j in cols ){
+									var value = json.metaData.names[cols[j]];
+									if(value!=undefined){
+										rows[i][j] = value;
+									}
+								}
+							}
+							
+							TR.value.values = rows;
 							
 							// Get fields
 							
@@ -2454,7 +2479,7 @@ Ext.onReady( function() {
 		getDataTable: function() {
 			var cols = [];
 			var reportType = Ext.getCmp('reportTypeGroup').getValue().reportType;
-			if( reportType===true ){
+			if( reportType=='true' ){
 				cols = this.createCaseColTable();
 			}
 			else{

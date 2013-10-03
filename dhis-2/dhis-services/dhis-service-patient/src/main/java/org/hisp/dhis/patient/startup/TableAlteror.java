@@ -248,6 +248,8 @@ public class TableAlteror
 
         executeSql( "update patientidentifiertype set orgunitScope=false where orgunitScope is null" );
         executeSql( "update patientidentifiertype set programScope=false where programScope is null" );
+        
+        executeSql( "update programstageinstance set status=0 where status is null" );
     }
 
     // -------------------------------------------------------------------------
