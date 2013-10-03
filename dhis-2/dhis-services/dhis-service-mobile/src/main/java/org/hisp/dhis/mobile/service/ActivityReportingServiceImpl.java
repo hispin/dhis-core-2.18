@@ -1952,7 +1952,7 @@ public class ActivityReportingServiceImpl
                 {
                     DOB = "unknown";
                 }
-                patientsInfo += each.getId() + "/" + name + "/" + DOB + "$";
+                patientsInfo += each.getId() + "/" + name + ", DOB: " + DOB + "$";
                 i++;
             }
 
