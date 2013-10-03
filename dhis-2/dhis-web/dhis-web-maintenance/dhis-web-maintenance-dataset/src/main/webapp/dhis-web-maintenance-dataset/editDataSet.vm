@@ -2,7 +2,7 @@
 <script type="text/javascript">
 	jQuery(function() {
 		jQuery("#availableDataElementsList").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getDataElements.action",
+			source: "../dhis-web-commons-ajax-json/getDataElements.action?domain=aggregate",
 			iterator: "dataElements",
 			connectedTo: 'dataElementsSelectedList',
 			handler: function(item) {
