@@ -195,8 +195,16 @@ public class GetDataElementsAction
         }
         else if ( domain != null )
         {
-            dataElements = new ArrayList<DataElement>(
-                dataElementService.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
+            if ( domain.equals( DataElement.DOMAIN_TYPE_AGGREGATE ) )
+            {
+                dataElements = new ArrayList<DataElement>(
+                    dataElementService.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_AGGREGATE ) );
+            }
+            else
+            {
+                dataElements = new ArrayList<DataElement>(
+                    dataElementService.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
+            }
         }
         else
         {
