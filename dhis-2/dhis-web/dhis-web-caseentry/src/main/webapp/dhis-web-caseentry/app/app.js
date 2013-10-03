@@ -109,32 +109,6 @@ TR.conf = {
 			urlparam: 'id'
         }
     },
-	period: {
-		relativeperiodunits: {
-			reportingMonth: 1,
-			last3Months: 3,
-			last12Months: 12,
-			reportingQuarter: 1,
-			last4Quarters: 4,
-			lastSixMonth: 1,
-			last2SixMonths: 2,
-			thisYear: 1,
-			lastYear: 1,
-			last5Years: 5
-		},
-		periodtypes: [
-			{id: 'Daily', name: 'Daily'},
-			{id: 'Weekly', name: 'Weekly'},
-			{id: 'Monthly', name: 'Monthly'},
-			{id: 'BiMonthly', name: 'BiMonthly'},
-			{id: 'Quarterly', name: 'Quarterly'},
-			{id: 'SixMonthly', name: 'SixMonthly'},
-			{id: 'Yearly', name: 'Yearly'},
-			{id: 'FinancialOct', name: 'FinancialOct'},
-			{id: 'FinancialJuly', name: 'FinancialJuly'},
-			{id: 'FinancialApril', name: 'FinancialApril'}
-		]
-	},
 	reportPosition: {
 		POSITION_ROW_ORGUNIT_COLUMN_PERIOD: 1,
 		POSITION_ROW_PERIOD_COLUMN_ORGUNIT: 2,
@@ -266,7 +240,6 @@ Ext.onReady( function() {
 			relativeperiod: {
 				checkbox: []
 			},
-			fixedperiod: {},
 			dataElementGroupBy:{}
         },
         options: {},
@@ -1269,15 +1242,10 @@ Ext.onReady( function() {
 								TR.store.programStage.removeAll();
 								TR.store.programStage.add({'id': f.programStageId, 'localid': f.programStageLocalid, 'name': f.programStageName});
 								
-								// Date period range
+								// Date range
 								
-								TR.store.dateRange.removeAll();
-								for( var i=0;i<f.startDates.length;i++)
-								{
-									TR.store.dateRange.add(
-										{'startDate': f.startDates[i],'endDate': f.endDates[i]}
-									);
-								}						
+								Ext.getCmp('startDate').setValue( f.startDate );
+								Ext.getCmp('endDate').setValue( f.endDate );
 								
 								// Relative periods
 								
@@ -1289,19 +1257,6 @@ Ext.onReady( function() {
 								for (var i = 0; i < f.relativePeriods.length; i++) {
 									TR.util.getCmp('checkbox[paramName="' + f.relativePeriods[i] + '"]').setValue(true);
 								}
-								
-								// Fixed periods
-								
-								TR.store.fixedperiod.selected.removeAll();
-								
-								var periods = [];
-								for (var i = 0; i < f.fixedPeriods.length; i++) {
-									periods[i]={
-										id: f.fixedPeriods[i],
-										name: f.fixedPeriodNames[i]
-									};
-								}
-								TR.store.fixedperiod.selected.loadData(periods);
 								
 								// Orgunits
 								
@@ -1366,8 +1321,6 @@ Ext.onReady( function() {
 								
 								TR.util.positionFilter.convert( f.position );
 								
-								Ext.getCmp('completedEventsOpt').setValue(f.useCompletedEvents);
-								Ext.getCmp('displayTotalsOpt').setValue(f.displayTotalsOpt);
 								Ext.getCmp('ouModeCombobox').setValue( f.ouMode );
 								Ext.getCmp('limitOption').setValue( f.limitRecords );
 								Ext.getCmp('aggregateType').setValue( f.aggregateType );
@@ -1717,32 +1670,6 @@ Ext.onReady( function() {
                 }
             }
 		}),
-		periodtype: Ext.create('Ext.data.Store', {
-			fields: ['id', 'name'],
-			data: TR.conf.period.periodtypes
-		}),
-        fixedperiod: {
-            available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 'index'],
-                data: [],
-                setIndex: function(periods) {
-					for (var i = 0; i < periods.length; i++) {
-						periods[i].index = i;
-					}
-				},
-                sortStore: function() {
-					this.sort('index', 'ASC');
-				}
-            }),
-            selected: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
-                data: []
-            })
-        },
-		dateRange: Ext.create('Ext.data.Store', {
-			fields: ['startDate', 'endDate'],
-			data: []
-		}),
 		aggregateDataelement: Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
 			data: []
@@ -1759,6 +1686,7 @@ Ext.onReady( function() {
 		total: 0,
 		asc: "",
 		desc: "",
+		sortOrder: "",
 		orgunitIds: [],
 		generateReport: function( type ) {
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
@@ -1779,16 +1707,13 @@ Ext.onReady( function() {
 		getParams: function(){
 			
 			var p = {};
+			
+			// Start-date && End-date
+			p.startDate = TR.cmp.settings.startDate.rawValue;
+			p.endDate = TR.cmp.settings.endDate.rawValue;
+			
 			if(TR.cmp.settings.ouMode.getValue()!="" ){
 				p.ouMode = TR.cmp.settings.ouMode.getValue();
-			}
-			
-			// Order-by
-			if(TR.state.asc!=""){				
-				p.asc = TR.state.asc;
-			}
-			else if(TR.state.desc!=""){
-				p.desc= TR.state.desc;
 			}
 			
 			// Paging
@@ -1859,12 +1784,17 @@ Ext.onReady( function() {
 			var reportType = Ext.getCmp('reportTypeGroup').getValue().reportType;
 			if(reportType=='true')
 			{
-				p.startDate = TR.cmp.settings.startDate.rawValue;
-				p.endDate = TR.cmp.settings.endDate.rawValue;
+				// Order-by
+				if(TR.state.asc!=""){				
+					p.asc = TR.state.asc;
+				}
+				else if(TR.state.desc!=""){
+					p.desc= TR.state.desc;
+				}
 			}
 			else{
-				if(Ext.getCmp('limitOption').getValue()===null){
-					p.pageSize = Ext.getCmp('limitOption').getValue();
+				if(Ext.getCmp('limitOption').getValue()!==null){
+					p.limit = Ext.getCmp('limitOption').getValue();
 				}
 				
 				p.position = TR.state.aggregateReport.getPosition();
@@ -1872,43 +1802,23 @@ Ext.onReady( function() {
 					p.deGroupBy = Ext.getCmp('dataElementGroupByCbx').getValue().split('_')[1];
 				}
 				
-				// Period range
-				
-				/* p.startDates = [];
-				p.endDates = [];
-				TR.store.dateRange.data.each( function(r) {
-					p.startDates.push(r.data.startDate);
-					p.endDates.push(r.data.endDate);
-				}); */
-				
-				TR.store.dateRange.data.each( function(r) {
-					p.startDate = r.data.startDate;
-					p.endDate = r.data.endDate;
-				});
-				
-				// Fixed periods
-				var period = '';
-				var fperiod = TR.cmp.params.fixedperiod.selected;
-				
-				if( fperiod.length > 0 ){
-					var prefix = '';
-					fperiod.store.each( function(r) {
-						period += r.data.id + ";";
-					});
-				}
-				
 				// Relative periods
 				var rperiod = TR.cmp.params.relativeperiod.checkbox;
+				var period = '';
 				p.relativePeriods = [];
 				Ext.Array.each(rperiod, function(item) {
 					if(item.getValue() && !item.hidden){
 						period += item.paramName + ";";
 					}
 				});
-				
 				if( period.length > 0 ){
 					period = period.substr(0,period.length-1);
 					p.dimension.push('pe:' + period);
+				}
+				
+				// Sort-order
+				if( TR.state.sortOrder!= '' ){
+					p.sortOrder = TR.state.sortOrder
 				}
 			}
 			
@@ -1916,30 +1826,16 @@ Ext.onReady( function() {
 		},
 		getURLParams: function( type ){
 			var params = "";
+			
 			params += '&startDate=' + TR.cmp.settings.startDate.rawValue;
 			params += '&endDate=' + TR.cmp.settings.endDate.rawValue;
 			if(TR.cmp.settings.ouMode.getValue()!="" ){
 				params += '&ouMode=' + TR.cmp.settings.ouMode.getValue();
 			}
 			
-			// Order-by
-			
-			if(TR.state.asc!=""){				
-				params += '&asc=' + TR.state.asc;
-			}
-			else if(TR.state.desc!=""){
-				params += '&desc=' + TR.state.desc;
-			}
-			
 			// Paging
 			
 			params += '&page=' + TR.state.currentPage;
-			
-			// Get searching values
-			
-			params ;
-			
-			// Organisation unit
 			
 			// User orgunits
 			
@@ -1998,7 +1894,48 @@ Ext.onReady( function() {
 					params += '&dimension=' + filter;
 				}
 			});
+			
+			var reportType = Ext.getCmp('reportTypeGroup').getValue().reportType;
+			if(reportType=='true')
+			{
+				// Order-by
 				
+				if(TR.state.asc!=""){				
+					params += '&asc=' + TR.state.asc;
+				}
+				else if(TR.state.desc!=""){
+					params += '&desc=' + TR.state.desc;
+				}
+			}
+			else{
+				if(Ext.getCmp('limitOption').getValue()!==null){
+					params += '&limit=' + Ext.getCmp('limitOption').getValue();
+				}
+				
+				params += '&position=' + TR.state.aggregateReport.getPosition();
+				if( Ext.getCmp('dataElementGroupByCbx').getValue() != null ){
+					params += '&deGroupBy=' + Ext.getCmp('dataElementGroupByCbx').getValue().split('_')[1];
+				}
+				
+				// Relative periods
+				var rperiod = TR.cmp.params.relativeperiod.checkbox;
+				var period = '';
+				Ext.Array.each(rperiod, function(item) {
+					if(item.getValue() && !item.hidden){
+						period += item.paramName + ";";
+					}
+				});
+				if( period.length > 0 ){
+					period = period.substr(0,period.length-1);
+					params += '&dimension=pe:' + period;
+				}
+				
+				// Sort-order
+				if( TR.state.sortOrder!= '' ){
+					params += '&sortOrder=' + TR.state.sortOrder;
+				}
+			}
+			
 			return params;
 		},
 		
@@ -2020,13 +1957,7 @@ Ext.onReady( function() {
 				
 				if( type)
 				{
-					var completedEvent='';
-					if( Ext.getCmp('completedEventsOpt').getValue() == true)
-					{
-						completedEvent = "&completedEventsOpt=true";
-					}
-					
-					document.location =  url + programId + ".xls?stage=" + programStageId + completedEvent + TR.state.getURLParams();
+					document.location =  url + programId + ".xls?stage=" + programStageId + TR.state.getURLParams();
 				}
 				// Show report on grid
 				else
@@ -2146,34 +2077,22 @@ Ext.onReady( function() {
 		
 		aggregateReport: {
 			generate: function( type ) {
+				
 				// Validation
 				if( !TR.state.aggregateReport.validation.objects() )
 				{
 					return;
 				}
+				
 				// Get url
 				var programId = Ext.getCmp('programCombobox').getValue(); 
 				var programStageId = TR.cmp.params.programStage.getValue();
 				var url = TR.conf.finals.ajax.path_api + TR.conf.finals.ajax.generateaggregatereport_get;
-				// Export to XLS 
+				
+				// Export to XLS
 				if( type)
 				{
-					TR.state.aggregateReport.getURLParams();
-  				    var completedEvent='';
-					if( Ext.getCmp('completedEventsOpt').getValue() == true )
-					{
-						completedEvent = "&completedEventsOpt=true";
-					}
-					
-					var displayTotals='&displayTotals=false';
-					if( Ext.getCmp('displayTotalsOpt').getValue() == true )
-					{
-						displayTotals = "&displayTotals=true";
-					}
-					
-  				    var exportForm = document.getElementById('exportForm');
-					exportForm.action = url + "?type=" + type + completedEvent + "&" + displayTotals;
-					exportForm.submit();
+					document.location =  url + programId + ".xls?stage=" + programStageId + TR.state.getURLParams();
 				}
 				// Show report on grid
 				else
@@ -2421,13 +2340,6 @@ Ext.onReady( function() {
 					TR.util.list.addOptionToList(endDateList, r.data.endDate, '');
 				});
 				
-				// Fixed periods
-				
-				var fixedPeriodList = document.getElementById('fixedPeriods');
-				TR.util.list.clearList(fixedPeriodList);
-				TR.cmp.params.fixedperiod.selected.store.each( function(r) {
-					TR.util.list.addOptionToList(fixedPeriodList, r.data.id, '');
-				});
 				
 				// Relative periods
 				
@@ -2452,6 +2364,8 @@ Ext.onReady( function() {
 						return false;
 					}
 					
+					// Validate date
+					
 					if( TR.cmp.settings.startDate.rawValue != "" 
 						&& !TR.cmp.settings.startDate.isValid() )
 					{
@@ -2467,19 +2381,12 @@ Ext.onReady( function() {
 						TR.util.notification.error( message, message);
 						return false;
 					}
-				
-					if (TR.state.orgunitIds.length == 0 
-						&& TR.cmp.aggregateFavorite.userorganisationunit.getValue() == 'false'
-						&& TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue() == 'false' ) {
-						TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
-						return false;
-					}
 					
-					if( TR.store.dateRange.data.length==0
-						&& TR.cmp.params.fixedperiod.selected.store.data.items.length == 0 )
+					if( TR.cmp.settings.startDate.rawValue==""
+						&& TR.cmp.settings.startDate.rawValue == "" )
 					{
-						var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
 						var flag = false;
+						var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
 						Ext.Array.each(relativePeriodList, function(item) {
 							if(item.getValue()){
 								flag = true;
@@ -2492,6 +2399,17 @@ Ext.onReady( function() {
 							return false;
 						}
 					}
+					
+					// Validate orgunit
+					
+					if (TR.state.orgunitIds.length == 0 
+						&& TR.cmp.aggregateFavorite.userorganisationunit.getValue() == 'false'
+						&& TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue() == 'false' ) {
+						TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
+						return false;
+					}
+					
+					// Validate data element
 					
 					var isValid = true;
 					TR.cmp.params.dataelement.selected.store.each( function(r) {
@@ -2523,10 +2441,7 @@ Ext.onReady( function() {
 					{
 						periodInt++;
 					}
-					if( TR.cmp.params.fixedperiod.selected.store.data.items.length > 0 )
-					{
-						periodInt++;
-					}
+					
 					var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
 					Ext.Array.each(relativePeriodList, function(item) {
 						if(item.getValue()){
@@ -2571,7 +2486,11 @@ Ext.onReady( function() {
 					// Check filter by period
 					if( p == 3 )
 					{
-						var noPeriod = TR.store.dateRange.data.length + TR.cmp.params.fixedperiod.selected.store.data.length;
+						var noPeriod = 0;
+						if( TR.cmp.settings.startDate.rawValue!="" && TR.cmp.settings.startDate.rawValue!="" ){
+							noPeriod++;
+						}
+						
 						var relativePeriodList = TR.cmp.params.relativeperiod.checkbox;
 						Ext.Array.each(relativePeriodList, function(item) {
 							if(item.getValue() && !item.hidden 
@@ -2662,12 +2581,18 @@ Ext.onReady( function() {
     TR.datatable = {
         datatable: null,
 		getDataTable: function() {
-			var cols = this.createColTable();
+			var cols = [];
+			var reportType = Ext.getCmp('reportTypeGroup').getValue().reportType;
+			if( reportType===true ){
+				cols = this.createCaseColTable();
+			}
+			else{
+				cols = this.createAggColTable();
+			}
 
 			// title
 			var title = TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report;
-			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='false')
-			{
+			if(reportType===false){
 				title = TR.value.title;
 			}
 			
@@ -2679,15 +2604,19 @@ Ext.onReady( function() {
 					items: cols,
 					listeners: {
 						headerclick: function(container, column, e) {
-							if( column.sortable )
-							{
-								if(column.sortState=='ASC'){
-									TR.state.asc = column.dataIndex;
-									TR.state.desc = "";
+							if( column.sortable ){
+								if( reportType === true ){
+									if(column.sortState=='ASC'){
+										TR.state.asc = column.dataIndex;
+										TR.state.desc = "";
+									}
+									else{
+										TR.state.asc = "";
+										TR.state.desc = column.dataIndex;
+									}
 								}
 								else{
-									TR.state.asc = "";
-									TR.state.desc = column.dataIndex;
+									TR.state.sortOrder = column.sortState;
 								}
 								TR.exe.execute(false, true );
 							}
@@ -2793,7 +2722,7 @@ Ext.onReady( function() {
             return this.datatable;
             
         },
-		createColTable: function(){
+		createCaseColTable: function(){
 			var cols = [];
 			
 			for( var i =0; i <TR.value.columns.length; i++ )
@@ -2826,6 +2755,25 @@ Ext.onReady( function() {
 					}
 				}
 				
+			}
+				
+			return cols;
+		},
+		createAggColTable: function(){
+			var cols = [];
+			
+			for( var i =0; i <TR.value.columns.length; i++ )
+			{
+				cols[i] = {
+					header: TR.value.columns[i].column, 
+					dataIndex: TR.value.columns[i].column,
+					height: TR.conf.layout.east_gridcolumn_height,
+					name: TR.value.columns[i].column,
+					sortable: true,
+					draggable: false,
+					hideable: false,
+					menuDisabled: true
+				}
 			}
 				
 			return cols;
@@ -3863,33 +3811,6 @@ Ext.onReady( function() {
 		return favoriteWindow;
 	};
 	
-	Ext.apply(Ext.form.VTypes, {
-		daterange : function(val, field) {
-			var date = field.parseDate(val);
-	 
-			if(!date){
-				return;
-			}
-			if (field.startDateField && (!this.dateRangeMax || (date.getTime() != this.dateRangeMax.getTime()))) {
-				var start = Ext.getCmp(field.startDateField);
-				start.setMaxValue(date);
-				start.validate();
-				this.dateRangeMax = date;
-			}
-			else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
-				var end = Ext.getCmp(field.endDateField);
-				end.setMinValue(date);
-				end.validate();
-				this.dateRangeMin = date;
-			}
-			/*
-			 * Always return true since we're only using this vtype to set the
-			 * min/max allowed values (these are tested for after the vtype test)
-			 */
-			return true;
-		}
-	});
-	
 	TR.app.OptionsWindow = function() {
 		var optionsWindow;
 		
@@ -3952,25 +3873,6 @@ Ext.onReady( function() {
 					TR.cmp.settings.aggregateDataelement = this;
 				}
 			}
-		});
-		
-		var completedEventsField = Ext.create('Ext.form.field.Checkbox', {
-			cls: 'tr-checkbox',
-			id: 'completedEventsOpt',
-			style:'padding: 0px 0px 0px 3px;',
-			boxLabel: TR.i18n.use_completed_events,
-			boxLabelAlign: 'before',
-			labelWidth: 135
-		});
-		
-		var displayTotalsOptField = Ext.create('Ext.form.field.Checkbox', {
-			xtype: 'checkbox',
-			cls: 'tr-checkbox',
-			id: 'displayTotalsOpt',
-			style:'padding-left: 20px;',
-			boxLabel: TR.i18n.display_totals,
-			boxLabelAlign: 'before',
-			labelWidth: 135
 		});
 		
 		var ouModeField = Ext.create('Ext.form.field.ComboBox', {
@@ -4085,15 +3987,6 @@ Ext.onReady( function() {
 					items: [
 						aggregateTypeField,
 						deSumField,
-						{
-							xtype: 'panel',
-							layout: 'column',
-							bodyStyle: 'border-style:none; background-color:transparent;',
-							items:[
-								completedEventsField,
-								displayTotalsOptField
-							]
-						},
 						ouModeField,
 						dataElementGroupByField,
 						limitOptionField
@@ -4699,15 +4592,10 @@ Ext.onReady( function() {
 													Ext.getCmp('downloadPdfIcon').setVisible(false);
 													Ext.getCmp('downloadCvsIcon').setVisible(false);
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
-													Ext.getCmp('datePeriodRangeDiv').setVisible(false);
 													Ext.getCmp('deSumCbx').setVisible(false);
-													Ext.getCmp('displayTotalsOpt').setVisible(false);
 													Ext.getCmp('layoutBtn').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
-													Ext.getCmp('dateRangeDiv').setVisible(true);
-													Ext.getCmp('relativePeriodsDiv').setVisible(false); 
-													Ext.getCmp('fixedPeriodsDiv').setVisible(false);
-													Ext.getCmp('dateRangeDiv').expand();
+													Ext.getCmp('relativePeriodsDiv').setVisible(false);
 													Ext.getCmp('filterPanel').setHeight(155);
 													
 												}
@@ -4730,25 +4618,12 @@ Ext.onReady( function() {
 													Ext.getCmp('downloadCvsIcon').setVisible(true);
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(true);
 													Ext.getCmp('deSumCbx').setVisible(true);
-													Ext.getCmp('dateRangeDiv').setVisible(false);
 													Ext.getCmp('caseBasedFavoriteBtn').setVisible(false);
 													
-													Ext.getCmp('datePeriodRangeDiv').setVisible(true);
-													Ext.getCmp('fixedPeriodsDiv').setVisible(true);
 													Ext.getCmp('relativePeriodsDiv').setVisible(true);
-													Ext.getCmp('displayTotalsOpt').setVisible(true);
 													Ext.getCmp('layoutBtn').setVisible(true);
-													Ext.getCmp('datePeriodRangeDiv').expand();
 													Ext.getCmp('filterPanel').setHeight(105);
-													
-													TR.store.dateRange.loadData([],false);
-													TR.store.dateRange.add(
-														{
-															'startDate': Ext.getCmp('startDate').rawValue,
-															'endDate': Ext.getCmp('endDate').rawValue
-														}
-													);
-													
+													Ext.getCmp('dateRangeDiv').expand();
 												}
 											}
 										}
@@ -4884,7 +4759,6 @@ Ext.onReady( function() {
 										id: 'dateRangeDiv',
 										hideCollapseTool: true,
 										autoScroll: true,
-										hidden: true,
 										items: [
 											{
 												xtype: 'datefield',
@@ -4933,137 +4807,6 @@ Ext.onReady( function() {
 													}
 												}
 											}
-										]
-									},
-									
-									// DATE-PERIOD RANGE
-									{
-										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.date_period_range + '</div>',
-										id: 'datePeriodRangeDiv',
-										hideCollapseTool: true,
-										autoScroll: true,
-										items: [
-											{
-												xtype: 'datefield',
-												cls: 'tr-textfield-alt1',
-												id: 'startDateRange',
-												fieldLabel: TR.i18n.start_date,
-												labelWidth: 90,
-												editable: true,
-												allowBlank:true,
-												emptyText: TR.i18n.select_from_date,
-												invalidText: TR.i18n.the_date_is_not_valid,
-												style: 'margin-right:8px',
-												width: TR.conf.layout.west_fieldset_width - 20,
-												format: TR.i18n.format_date,
-												maxValue: new Date(),
-												listeners: {
-													added: function() {
-														TR.cmp.settings.startDateRange = this;
-													},
-													change:function(){
-														var startDate =  TR.cmp.settings.startDate.getValue();
-														Ext.getCmp('endDate').setMinValue(startDate);
-													}
-												}
-											},
-											{
-												xtype: 'datefield',
-												cls: 'tr-textfield-alt1',
-												id: 'endDateRange',
-												fieldLabel: TR.i18n.end_date,
-												labelWidth: 90,
-												editable: true,
-												allowBlank:true,
-												emptyText: TR.i18n.select_to_date,
-												invalidText: TR.i18n.the_date_is_not_valid,
-												width: TR.conf.layout.west_fieldset_width - 20,
-												format: TR.i18n.format_date,
-												maxValue: new Date(),
-												listeners: {
-													added: function() {
-														TR.cmp.settings.startDateRange = this;
-													},
-													change:function(){
-														var endDate =  TR.cmp.settings.endDate.getValue();
-														Ext.getCmp('startDate').setMaxValue( endDate );
-													}
-												}
-											},
-											{
-												xtype: 'button',
-												text: TR.i18n.add,
-												style: 'margin-left:95px; margin-bottom: 10px;',
-												width: 130,
-												height: 24,
-												handler: function() {	
-													var startDate = Ext.getCmp('startDateRange').rawValue;
-													var endDate = Ext.getCmp('endDateRange').rawValue;
-													if( startDate != '' && endDate != '' 
-														&& Ext.getCmp('startDateRange').isValid() 
-														&& Ext.getCmp('endDateRange').isValid() )
-													{
-														TR.store.dateRange.add({
-															'startDate': startDate,
-															'endDate': endDate
-														});
-													}
-												}
-											},
-											{
-												xtype: 'button',
-												text: TR.i18n.clear,
-												style: 'margin-left:4px; margin-bottom: 10px;',
-												width: 130,
-												height: 24,
-												handler: function() {
-													if( TR.store.dateRange.data.items.length > 0 )
-													{
-														var result = window.confirm( TR.i18n.confirm_delete_date_range_list );
-														if ( result )
-														{
-															TR.store.dateRange.loadData([],false);
-														}
-													}
-												}
-											},
-											Ext.create('Ext.grid.Panel', {
-												style: 'border: solid 1px #D0D0D0',
-												width: TR.conf.layout.west_fieldset_width - 18,
-												store: TR.store.dateRange,
-												height: 205,
-												columns: [
-													{ 
-														text: TR.i18n.start_date,  
-														dataIndex: 'startDate', 
-														width: 150, 
-														menuDisabled: true,
-														sortable: false,
-														draggable: false
-													},
-													{ 
-														text: TR.i18n.end_date, 
-														dataIndex: 'endDate', 
-														width: 150,
-														menuDisabled: true,
-														sortable: false,
-														draggable: false 
-													},
-													{
-														menuDisabled: true,
-														sortable: false,
-														xtype: 'actioncolumn',
-														width: 40,
-														items: [{
-															icon: 'images/remove.png',
-															tooltip: TR.i18n.remove,
-															handler: function(grid, rowIndex, colIndex) {
-																TR.store.dateRange.removeAt(rowIndex);
-															}
-														}]
-													}
-												]
-											})
 										]
 									},
 									
@@ -5347,182 +5090,6 @@ Ext.onReady( function() {
 										listeners: {
 											added: function() {
 												TR.cmp.params.relativeperiod.panel = this;
-											}
-										}
-									},
-									
-									// FIXED PERIODS
-									{
-										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.fixed_periods + '</div>',
-										id: 'fixedPeriodsDiv',
-										hideCollapseTool: true,
-										items: [
-											{
-												xtype: 'panel',
-												layout: 'column',
-												bodyStyle: 'border-style:none',
-												items: [
-													{
-														xtype: 'combobox',
-														cls: 'tr-combo',
-														style: 'margin-bottom:8px',
-														width: 253,
-														valueField: 'id',
-														displayField: 'name',
-														fieldLabel: TR.i18n.select_type,
-														labelStyle: 'padding-left:7px;',
-														labelWidth: 90,
-														editable: false,
-														queryMode: 'remote',
-														store: TR.store.periodtype,
-														periodOffset: 0,
-														listeners: {
-															select: function() {
-																var pt = new PeriodType(),
-																	periodType = this.getValue();
-																var periods = pt.get(periodType).generatePeriods({
-																	offset: this.periodOffset,
-																	filterFuturePeriods: true,
-																	reversePeriods: true
-																});
-
-																TR.store.fixedperiod.available.setIndex(periods);
-																TR.store.fixedperiod.available.loadData(periods);
-																TR.util.multiselect.filterAvailable(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
-															}
-														}
-													},
-													{
-														xtype: 'button',
-														text: 'Prev year',
-														style: 'margin-left:4px',
-														height: 24,
-														handler: function() {
-															var cb = this.up('panel').down('combobox');
-															if (cb.getValue()) {
-																cb.periodOffset--;
-																cb.fireEvent('select');
-															}
-														}
-													},
-													{
-														xtype: 'button',
-														text: 'Next year',
-														style: 'margin-left:3px',
-														height: 24,
-														handler: function() {
-															var cb = this.up('panel').down('combobox');
-															if (cb.getValue() && cb.periodOffset < 0) {
-																cb.periodOffset++;
-																cb.fireEvent('select');
-															}
-														}
-													}
-												]
-											},
-											{
-												xtype: 'panel',
-												layout: 'column',
-												bodyStyle: 'border-style:none',
-												items: [
-													{
-														xtype: 'multiselect',
-														name: 'availableFixedPeriods',
-														cls: 'tr-toolbar-multiselect-left',
-														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 245,
-														valueField: 'id',
-														displayField: 'name',
-														store: TR.store.fixedperiod.available,
-														tbar: [
-															{
-																xtype: 'label',
-																text: TR.i18n.available,
-																cls: 'tr-toolbar-multiselect-left-label'
-															},
-															'->',
-															{
-																xtype: 'button',
-																icon: 'images/arrowright.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.select(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
-																}
-															},
-															{
-																xtype: 'button',
-																icon: 'images/arrowrightdouble.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.selectAll(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
-																}
-															},
-															' '
-														],
-														listeners: {
-															added: function() {
-																TR.cmp.params.fixedperiod.available = this;
-															},
-															afterrender: function() {
-																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.select(this, TR.cmp.params.fixedperiod.selected);
-																}, this);
-															}
-														}
-													},
-													{
-														xtype: 'multiselect',
-														name: 'selectedFixedPeriods',
-														cls: 'tr-toolbar-multiselect-right',
-														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 245,
-														displayField: 'name',
-														valueField: 'id',
-														ddReorder: false,
-														queryMode: 'local',
-														store: TR.store.fixedperiod.selected,
-														tbar: [
-															' ',
-															{
-																xtype: 'button',
-																icon: 'images/arrowleftdouble.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.unselectAll(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
-																}
-															},
-															{
-																xtype: 'button',
-																icon: 'images/arrowleft.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.fixedperiod.available, TR.cmp.params.fixedperiod.selected);
-																}
-															},
-															'->',
-															{
-																xtype: 'label',
-																text: TR.i18n.selected,
-																cls: 'tr-toolbar-multiselect-right-label'
-															}
-														],
-														listeners: {
-															added: function() {
-																TR.cmp.params.fixedperiod.selected = this;
-															},
-															afterrender: function() {
-																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.fixedperiod.available, this);
-																}, this);
-															}
-														}
-													}
-												]
-											}
-										],
-										listeners: {
-											added: function() {
-												TR.cmp.params.fixedperiod.panel = this;
 											}
 										}
 									},
@@ -6428,13 +5995,8 @@ Ext.onReady( function() {
 				Ext.getCmp('downloadPdfIcon').setVisible(false);
 				Ext.getCmp('downloadCvsIcon').setVisible(false);
 				Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
-				Ext.getCmp('datePeriodRangeDiv').setVisible(false);
-				Ext.getCmp('displayTotalsOpt').setVisible(false);
 				Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
-				Ext.getCmp('dateRangeDiv').setVisible(true);
 				Ext.getCmp('relativePeriodsDiv').setVisible(false); 
-				Ext.getCmp('fixedPeriodsDiv').setVisible(false);
-				Ext.getCmp('dateRangeDiv').expand();
 				
 				TR.state.orgunitIds = [];
 				for( var i in TR.init.system.rootnodes){
