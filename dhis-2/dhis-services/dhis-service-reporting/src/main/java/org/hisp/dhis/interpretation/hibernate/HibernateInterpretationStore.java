@@ -28,43 +28,43 @@ package org.hisp.dhis.interpretation.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationStore;
 import org.hisp.dhis.user.User;
 
+import java.util.List;
+
 /**
  * @author Lars Helge Overland
  */
 public class HibernateInterpretationStore
     extends HibernateIdentifiableObjectStore<Interpretation> implements InterpretationStore
-{    
-    @SuppressWarnings("unchecked")
+{
+    @SuppressWarnings( "unchecked" )
     public List<Interpretation> getInterpretations( User user )
     {
         String hql = "select distinct i from Interpretation i left join i.comments c " +
             "where i.user = :user or c.user = :user order by i.lastUpdated desc";
-        
+
         Query query = getQuery( hql );
         query.setEntity( "user", user );
-        
+
         return query.list();
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<Interpretation> getInterpretations( User user, int first, int max )
     {
         String hql = "select distinct i from Interpretation i left join i.comments c " +
             "where i.user = :user or c.user = :user order by i.lastUpdated desc";
-        
+
         Query query = getQuery( hql );
         query.setEntity( "user", user );
         query.setMaxResults( first );
         query.setMaxResults( max );
-        
+
         return query.list();
     }
 }

@@ -28,9 +28,6 @@ package org.hisp.dhis.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -56,6 +53,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.CollectionUtils;
+
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -126,14 +126,14 @@ public class HibernateGenericStore<T>
 
     /**
      * Returns the current session.
-     * 
+     *
      * @return the current session.
      */
     protected final Session getSession()
     {
         return sessionFactory.getCurrentSession();
     }
-    
+
     /**
      * Creates a Query.
      *
@@ -198,7 +198,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final T getObject( Criterion... expressions )
     {
         return (T) getCriteria( expressions ).uniqueResult();
@@ -210,7 +210,7 @@ public class HibernateGenericStore<T>
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected final List<T> getList( Criterion... expressions )
     {
         return getCriteria( expressions ).list();
@@ -282,7 +282,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T get( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
@@ -297,7 +297,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final T load( int id )
     {
         T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
@@ -325,7 +325,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final List<T> getAll()
     {
         Query query = sharingEnabled() ? getQueryAllAcl() : getQueryAll();
