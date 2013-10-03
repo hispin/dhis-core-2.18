@@ -112,6 +112,8 @@ public class DataQueryParams
     private Map<MeasureFilter, Double> measureCriteria = new HashMap<MeasureFilter, Double>();
     
     private boolean skipMeta;
+
+    private boolean hierarchyMeta;
     
     private boolean ignoreLimit;
     
@@ -144,6 +146,7 @@ public class DataQueryParams
         params.aggregationType = this.aggregationType;
         params.measureCriteria = this.measureCriteria;
         params.skipMeta = this.skipMeta;
+        params.hierarchyMeta = this.hierarchyMeta;
         params.ignoreLimit = this.ignoreLimit;
         
         params.partitions = this.partitions;
@@ -1028,6 +1031,16 @@ public class DataQueryParams
     public void setSkipMeta( boolean skipMeta )
     {
         this.skipMeta = skipMeta;
+    }
+
+    public boolean isHierarchyMeta()
+    {
+        return hierarchyMeta;
+    }
+
+    public void setHierarchyMeta( boolean hierarchyMeta )
+    {
+        this.hierarchyMeta = hierarchyMeta;
     }
 
     public boolean isIgnoreLimit()

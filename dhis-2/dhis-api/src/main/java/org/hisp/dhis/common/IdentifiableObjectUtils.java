@@ -32,9 +32,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -257,5 +259,24 @@ public class IdentifiableObjectUtils
         }
 
         return integers;
+    }
+    
+    /**
+     * Returns a mapping between the uid and the name of the given identifiable
+     * objects.
+     * 
+     * @param objects the identifiable objects.
+     * @return mapping between the uid and the name of the given objects.
+     */
+    public static Map<String, String> getUidNameMap( Collection<? extends IdentifiableObject> objects )
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        
+        for ( IdentifiableObject object : objects )
+        {
+            map.put( object.getUid(), object.getDisplayName() );
+        }
+        
+        return map;
     }
 }
