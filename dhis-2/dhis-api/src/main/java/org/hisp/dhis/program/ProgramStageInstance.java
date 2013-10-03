@@ -314,7 +314,7 @@ public class ProgramStageInstance
 
     public Integer getEventStatus()
     {
-        if ( this.status != null )
+        if ( this.status != 0 )
         {
             return status;
         }

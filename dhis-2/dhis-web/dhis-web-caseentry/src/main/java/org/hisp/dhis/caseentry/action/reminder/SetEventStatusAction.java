@@ -96,17 +96,17 @@ public class SetEventStatusAction
             break;
         case ProgramStageInstance.VISITED_STATUS:
             programStageInstance.setCompleted( false );
-            programStageInstance.setStatus( null );
+            programStageInstance.setStatus( ProgramStageInstance.ACTIVE_STATUS );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
             break;
         case ProgramStageInstance.LATE_VISIT_STATUS:
             programStageInstance.setCompleted( false );
-            programStageInstance.setStatus( null );
+            programStageInstance.setStatus(  ProgramStageInstance.ACTIVE_STATUS );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
             break;
         case ProgramStageInstance.FUTURE_VISIT_STATUS:
             programStageInstance.setCompleted( false );
-            programStageInstance.setStatus( null );
+            programStageInstance.setStatus(  ProgramStageInstance.ACTIVE_STATUS );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
             break;
         case ProgramStageInstance.SKIPPED_STATUS:

@@ -1,38 +1,50 @@
 { "items": [
-	#foreach( $iden in $identifierTypes )
-	{
-		"id": "$iden.uid",
-		"name": "$encoder.xmlEncode(${iden.displayName} )",
-		"valueType": #if( $iden.optionSet )
-						"list"
-					 #else
-						"${iden.type}"
-					 #end
-	},
-	#end
-	
-	#foreach( $attr in $patientAttributes )
-	{
-		"id": "$attr.uid",
-		"name": "$encoder.xmlEncode(${attr.displayName} )",
-		"valueType": #if( $attr.optionSet )
-						"list"
-					 #else
-						"${attr.type}"
-					 #end
-	},
-	#end
-    
-	#foreach( $psDataElement in $psDataElements )
-	{
-		"id": "$psDataElement.dataElement.uid",
-		"name": "$encoder.xmlEncode(${psDataElement.dataElement.getFormNameFallback()} )",
-		"valueType": #if( $psDataElement.dataElement.optionSet )
-						"list_$psDataElement.dataElement.optionSet.uid"
-					 #else
-						"${psDataElement.dataElement.type}"
-					 #end
-	}#if( $velocityCount < $psDataElements.size() ),#end
+	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
+		{
+			"id": "GENDER",
+			"name": "$i18n.getString('gender')",
+			"valueType":"GENDER"
+		},
+		{
+			"id": "ISDEAD",
+			"name": "$i18n.getString('is_dead')",
+			"valueType": "bool"
+		},
+		#foreach( $iden in $identifierTypes )
+		{
+			"id": "$iden.uid",
+			"name": "$encoder.xmlEncode(${iden.displayName} )",
+			"valueType": #if( $iden.optionSet )
+							"list"
+						 #else
+							"${iden.type}"
+						 #end
+		},
+		#end
+		
+		#foreach( $attr in $patientAttributes )
+		{
+			"id": "$attr.uid",
+			"name": "$encoder.xmlEncode(${attr.displayName} )",
+			"valueType": #if( $attr.optionSet )
+							"list"
+						 #else
+							"${attr.type}"
+						 #end
+		},
+		#end
+		
+		#foreach( $psDataElement in $psDataElements )
+		{
+			"id": "$psDataElement.dataElement.uid",
+			"name": "$encoder.xmlEncode(${psDataElement.dataElement.getFormNameFallback()} )",
+			"valueType": #if( $psDataElement.dataElement.optionSet )
+							"list_$psDataElement.dataElement.optionSet.uid"
+						 #else
+							"${psDataElement.dataElement.type}"
+						 #end
+		}#if( $velocityCount < $psDataElements.size() ),#end
+		#end
 	#end
   ]
 }
