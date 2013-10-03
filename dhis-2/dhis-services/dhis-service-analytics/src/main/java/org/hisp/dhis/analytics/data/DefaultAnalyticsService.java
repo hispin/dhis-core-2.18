@@ -60,6 +60,7 @@ import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
 import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
 import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGrapMap;
+import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -387,7 +388,8 @@ public class DefaultAnalyticsService
             
             Map<String, String> uidNameMap = getUidNameMap( params );
             Map<String, String> cocNameMap = getCocNameMap( grid, cocIndex );
-            Map<String, String> ouParentGraphMap = getParentGrapMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) );
+            Map<String, String> ouParentGraphMap = getParentGrapMap( asTypedList( 
+                emptyIfNull( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ), OrganisationUnit.class ) );
             
             uidNameMap.putAll( cocNameMap );
             
