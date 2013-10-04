@@ -35,8 +35,10 @@ import java.util.Locale;
  */
 public class LocaleUtils
 {
+    private static final String SEP = "_";
+    
     /**
-     * Creates a Locale object based on the input String
+     * Creates a Locale object based on the input string.
      *
      * @param localeStr String to parse
      * @return A locale object or null if not valid
@@ -48,7 +50,7 @@ public class LocaleUtils
             return null;
         }
                 
-        String[] parts = localeStr.split( "_" );
+        String[] parts = localeStr.split( SEP );
 
         Locale thisLocale;
 
@@ -70,5 +72,35 @@ public class LocaleUtils
         }
 
         return thisLocale;        
+    }
+    
+    /**
+     * Createa a locale string based on the given language, country and varient.
+     * 
+     * @param language the language, cannot be null.
+     * @param country the country, can be null.
+     * @param variant the variant, can be null.
+     * @return a locale string.
+     */
+    public static String getLocaleString( String language, String country, String variant )
+    {
+        if ( language == null )
+        {
+            return null;
+        }
+        
+        String locale = language;
+        
+        if ( country != null )
+        {
+            locale += SEP + country;
+        }
+        
+        if ( variant != null )
+        {
+            locale += SEP + variant;
+        }
+        
+        return locale;
     }
 }
