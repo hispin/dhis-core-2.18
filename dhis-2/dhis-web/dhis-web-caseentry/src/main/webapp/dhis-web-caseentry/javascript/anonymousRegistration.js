@@ -70,54 +70,75 @@ function loadOptionSets( metaData ) {
         return;
     }
 
-    var deferred1 = $.Deferred();
-    var deferred2 = $.Deferred();
-    var promise = deferred2.promise();
+    var def = $.Deferred();
+    var promise = def.promise();
 
-    _.each( metaData.optionSets, function ( item, idx ) {
-        DAO.store.get('optionSets', item.uid).done(function(obj) {
-            if(!obj || obj.optionSet.version !== item.v) {
-                promise = promise.then(function() {
-                    return $.ajax({
-                        url: 'getOptionSet.action',
-                        data: {
-                            id: item.uid
-                        },
-                        dataType: 'json',
-                        cache: false
-                    }).done(function(data) {
-                        var obj = {};
-                        obj.id = item.uid;
-                        obj.optionSet = data.optionSet;
-                        DAO.store.set('optionSets', obj);
-                    });
-                });
-            }
+    var builder = $.Deferred();
+    var build = builder.promise();
+
+    _.each( metaData.optionSets, function ( item ) {
+        build = build.then(function() {
+            var d = $.Deferred();
+            var p = d.promise();
+            DAO.store.get('optionSets', item.uid).done(function(obj) {
+                if(!obj || obj.optionSet.version !== item.v) {
+                    promise = promise.then( makeOptionSetRequest(item.uid) );
+                }
+
+                d.resolve();
+            });
+
+            return p;
         });
     } );
 
     if ( metaData.usernames ) {
-        promise = promise.then( function () {
-            return $.ajax( {
-                url: 'getUsernames.action',
-                dataType: 'json',
-                cache: false
-            } ).done( function ( data ) {
-                    var obj = {};
-                    obj.id = 'usernames';
-                    obj.usernames = data.usernames;
-                    DAO.store.set( 'usernames', obj );
-                } )
-        } );
+        promise = promise.then( makeUsernameRequest() );
     }
 
-    promise = promise.then( function () {
-        deferred1.resolve( metaData );
-    } );
+    build.done(function() {
+        def.resolve( metaData );
 
-    deferred2.resolve();
+        promise = promise.done( function () {
+            console.log(promise);
+            console.log('done');
+        } );
+    });
 
-    return deferred1.promise();
+    builder.resolve();
+
+    return promise;
+}
+
+function makeUsernameRequest() {
+    return function() {
+        return $.ajax( {
+            url: 'getUsernames.action',
+            dataType: 'json',
+            cache: false
+        }).done(function( data ) {
+            var obj = {};
+            obj.id = 'usernames';
+            obj.usernames = data.usernames;
+            DAO.store.set( 'usernames', obj );
+        });
+    }
+}
+
+function makeOptionSetRequest( id ) {
+    return function() {
+        return $.ajax({
+            url: 'getOptionSet.action',
+            data: { id: id },
+            dataType: 'json',
+            cache: false
+        }).done(function(data) {
+            var obj = {};
+            obj.id = id;
+            obj.optionSet = data.optionSet;
+            DAO.store.set('optionSets', obj);
+        });
+    }
 }
 
 function updateOfflineEvents() {
@@ -231,9 +252,12 @@ $( document ).ready( function () {
         cache: false
     } );
 
+    $("#programId").attr('disabled', true);
+
     $( "#orgUnitTree" ).one( "ouwtLoaded", function () {
         var def = $.Deferred();
         var promise = def.promise();
+
         promise = promise.then( DAO.store.open );
         promise = promise.then( loadPrograms );
         promise = promise.then( loadProgramStages );
@@ -241,6 +265,8 @@ $( document ).ready( function () {
         promise = promise.then( updateOfflineEvents );
         promise = promise.then( checkOfflineData );
         promise = promise.then( function () {
+            $("#programId").removeAttr('disabled');
+
             selection.setListenerFunction( organisationUnitSelected );
 
             dhis2.availability.startAvailabilityCheck();
