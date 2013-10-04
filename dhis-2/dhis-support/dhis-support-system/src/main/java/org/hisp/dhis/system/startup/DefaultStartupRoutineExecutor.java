@@ -36,9 +36,14 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import static org.hisp.dhis.datavalue.DataValue.TRUE;
+
 /**
  * Default implementation of StartupRoutineExecutor. The execute method will
- * execute the added StartupRoutines ordered by their runlevels.
+ * execute the added StartupRoutines ordered by their runlevels. Startup routines
+ * can be ignored from the command line by appending the below.
+ * 
+ * <code>-Ddhis.skip.startup=true</code>
  * 
  * @author <a href="mailto:torgeilo@gmail.com">Torgeir Lorange Ostby</a>
  * @version $Id: DefaultStartupRoutineExecutor.java 5781 2008-10-01 12:12:48Z larshelg $
@@ -49,6 +54,8 @@ public class DefaultStartupRoutineExecutor
 {
     private static final Log LOG = LogFactory.getLog( DefaultStartupRoutineExecutor.class );
 
+    private static final String SKIP_PROP = "dhis.skip.startup";
+    
     private List<StartupRoutine> routines = new ArrayList<StartupRoutine>();
 
     // -------------------------------------------------------------------------
@@ -87,6 +94,12 @@ public class DefaultStartupRoutineExecutor
     private void execute( boolean testing )
         throws Exception
     {
+        if ( TRUE.equalsIgnoreCase( System.getProperty( SKIP_PROP ) ) )
+        {
+            LOG.info( "Skipping startup routines" );
+            return;
+        }
+        
         Collections.sort( routines, new StartupRoutineComparator() );
 
         int total = routines.size();
