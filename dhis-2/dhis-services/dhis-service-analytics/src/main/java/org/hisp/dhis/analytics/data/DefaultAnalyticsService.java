@@ -55,7 +55,7 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_ORGUNIT_GROUP;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGrapMap;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
 import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
 import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
@@ -249,24 +249,26 @@ public class DefaultAnalyticsService
 
                     Map<DataElementOperand, Double> valueMap = permutationOperandValueMap.get( permKey );
                     
-                    if ( valueMap != null )
+                    if ( valueMap == null )
                     {
-                        Period period = filterPeriod != null ? filterPeriod : (Period) DimensionItem.getPeriodItem( options );
+                        continue;
+                    }
+                    
+                    Period period = filterPeriod != null ? filterPeriod : (Period) DimensionItem.getPeriodItem( options );
 
-                        int days = daysBetween( period.getStartDate(), period.getEndDate() );
+                    int days = daysBetween( period.getStartDate(), period.getEndDate() );
+                    
+                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, days );
+
+                    if ( value != null )
+                    {
+                        List<DimensionItem> row = new ArrayList<DimensionItem>( options );
                         
-                        Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, days );
-                        
-                        if ( value != null )
-                        {
-                            List<DimensionItem> row = new ArrayList<DimensionItem>( options );
-                            
-                            row.add( indicatorIndex, new DimensionItem( INDICATOR_DIM_ID, indicator ) );
-                                                        
-                            grid.addRow();
-                            grid.addValues( DimensionItem.getItemIdentifiers( row ) );
-                            grid.addValue( MathUtils.getRounded( value ) );
-                        }
+                        row.add( indicatorIndex, new DimensionItem( INDICATOR_DIM_ID, indicator ) );
+                                                    
+                        grid.addRow();
+                        grid.addValues( DimensionItem.getItemIdentifiers( row ) );
+                        grid.addValue( MathUtils.getRounded( value ) );
                     }
                 }
             }
@@ -386,19 +388,17 @@ public class DefaultAnalyticsService
             Map<Object, Object> metaData = new HashMap<Object, Object>();
             
             Map<String, String> uidNameMap = getUidNameMap( params );
-            Map<String, String> cocNameMap = getCocNameMap( grid, cocIndex );
-            Map<String, String> ouParentGraphMap = getParentGrapMap( asTypedList( 
-                params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) );
-            
+            Map<String, String> cocNameMap = getCocNameMap( grid, cocIndex );            
             uidNameMap.putAll( cocNameMap );
             
             metaData.put( NAMES_META_KEY, uidNameMap );
             metaData.put( PERIOD_DIM_ID, getUids( params.getDimensionOrFilter( PERIOD_DIM_ID ) ) );
-            metaData.put( ORGUNIT_DIM_ID, ouParentGraphMap );
+            metaData.put( ORGUNIT_DIM_ID, getUids( params.getDimensionOrFilter( ORGUNIT_DIM_ID ) ) );
+            metaData.put( CATEGORYOPTIONCOMBO_DIM_ID, cocNameMap.keySet() );
             
-            if ( cocIndex != null )
+            if ( params.isHierarchyMeta() )
             {
-                metaData.put( CATEGORYOPTIONCOMBO_DIM_ID, cocNameMap.keySet() );
+                metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
             }
             
             grid.setMetaData( metaData );
@@ -988,6 +988,11 @@ public class DefaultAnalyticsService
         return map;
     }
     
+    /**
+     * Returns a mapping between the category option combo identifiers and names
+     * in the given grid. Returns an empty map if the grid or cocIndex parameters
+     * are null.
+     */
     private Map<String, String> getCocNameMap( Grid grid, Integer cocIndex )
     {
         Map<String, String> metaData = new HashMap<String, String>();

@@ -616,7 +616,7 @@ public class OrganisationUnit
      * Returns a mapping between the uid and the uid parent graph of the given
      * organisation units.
      */
-    public static Map<String, String> getParentGrapMap( List<OrganisationUnit> organisationUnits )
+    public static Map<String, String> getParentGraphMap( List<OrganisationUnit> organisationUnits )
     {
         Map<String, String> map = new HashMap<String, String>();
         

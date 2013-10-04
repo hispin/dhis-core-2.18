@@ -33,7 +33,7 @@ import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_NAME_SEP;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
-import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGrapMap;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -168,11 +168,13 @@ public class DefaultEventAnalyticsService
         Map<Object, Object> metaData = new HashMap<Object, Object>();        
         
         Map<String, String> uidNameMap = getUidNameMap( params );
-        Map<String, String> ouParentGraphMap = getParentGrapMap( asTypedList( 
-            params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) );
         
         metaData.put( NAMES_META_KEY, uidNameMap );
-        metaData.put( ORGUNIT_DIM_ID, ouParentGraphMap );
+        
+        if ( params.isHierarchyMeta() )
+        {
+            metaData.put( ORGUNIT_DIM_ID, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
+        }
         
         grid.setMetaData( metaData );
 
@@ -234,11 +236,13 @@ public class DefaultEventAnalyticsService
         Map<Object, Object> metaData = new HashMap<Object, Object>();
         
         Map<String, String> uidNameMap = getUidNameMap( params );
-        Map<String, String> ouParentGraphMap = getParentGrapMap( asTypedList( 
-            params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) );
         
         metaData.put( NAMES_META_KEY, uidNameMap );
-        metaData.put( ORGUNIT_DIM_ID, ouParentGraphMap );
+        
+        if ( params.isHierarchyMeta() )
+        {        
+            metaData.put( ORGUNIT_DIM_ID, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
+        }
 
         if ( params.isPaging() )
         {

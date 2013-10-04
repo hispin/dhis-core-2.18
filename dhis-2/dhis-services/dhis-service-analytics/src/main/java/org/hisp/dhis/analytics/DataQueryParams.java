@@ -68,6 +68,7 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -102,7 +103,7 @@ public class DataQueryParams
     
     private static final DimensionItem[] DIM_OPT_ARR = new DimensionItem[0];
     private static final DimensionItem[][] DIM_OPT_2D_ARR = new DimensionItem[0][];
-    
+
     protected List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
     
     protected List<DimensionalObject> filters = new ArrayList<DimensionalObject>();
@@ -111,23 +112,53 @@ public class DataQueryParams
     
     private Map<MeasureFilter, Double> measureCriteria = new HashMap<MeasureFilter, Double>();
     
+    /**
+     * Indicates if the meta data part of the query response should be omitted.
+     */
     private boolean skipMeta;
 
+    /**
+     * Indicates i) if the names of all ancestors of the organisation units part
+     * of the query should be included in the "names" key and ii) if the hierarchy 
+     * path of all organisation units part of the query should be included as a
+     * "ouHierarchy" key in the meta-data part of the response.
+     */
     private boolean hierarchyMeta;
     
+    /**
+     * Indicates whether the maximum number of records to include the response
+     * should be ignored.
+     */
     private boolean ignoreLimit;
     
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
     
+    /**
+     * The partitions containing data relevant to this query.
+     */
     protected transient Partitions partitions;
 
+    /**
+     * The aggregation period type for this query.
+     */
     protected transient String periodType;
-        
+    
+    /**
+     * The period type of the data values to query.
+     */
     private transient PeriodType dataPeriodType;
     
+    /**
+     * Indicates whether to skip partitioning during query planning.
+     */
     private transient boolean skipPartitioning;
+    
+    /**
+     * Organisation units which were explicitly part of the original request.
+     */
+    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -153,6 +184,7 @@ public class DataQueryParams
         params.periodType = this.periodType;
         params.dataPeriodType = this.dataPeriodType;
         params.skipPartitioning = this.skipPartitioning;
+        params.organisationUnits = new ArrayList<OrganisationUnit>( this.organisationUnits );
         
         return params;
     }
