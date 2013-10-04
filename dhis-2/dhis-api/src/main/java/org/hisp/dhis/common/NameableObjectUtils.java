@@ -47,9 +47,12 @@ public class NameableObjectUtils
     {
         List<NameableObject> list = new ArrayList<NameableObject>();
         
-        for ( NameableObject object : objects )
+        if ( objects != null )
         {
-            list.add( object );
+            for ( NameableObject object : objects )
+            {
+                list.add( object );
+            }
         }
         
         return list;
@@ -81,9 +84,12 @@ public class NameableObjectUtils
     {
         List<T> list = new ArrayList<T>();
         
-        for ( NameableObject object : collection )
+        if ( collection != null )
         {
-            list.add( (T) object );
+            for ( NameableObject object : collection )
+            {
+                list.add( (T) object );
+            }
         }
         
         return list;

@@ -253,9 +253,12 @@ public class IdentifiableObjectUtils
     {
         List<Integer> integers = new ArrayList<Integer>();
 
-        for ( IdentifiableObject identifiableObject : identifiableObjects )
+        if ( identifiableObjects != null )
         {
-            integers.add( identifiableObject.getId() );
+            for ( IdentifiableObject identifiableObject : identifiableObjects )
+            {
+                integers.add( identifiableObject.getId() );
+            }
         }
 
         return integers;
@@ -272,9 +275,12 @@ public class IdentifiableObjectUtils
     {
         Map<String, String> map = new HashMap<String, String>();
         
-        for ( IdentifiableObject object : objects )
+        if ( objects != null )
         {
-            map.put( object.getUid(), object.getDisplayName() );
+            for ( IdentifiableObject object : objects )
+            {
+                map.put( object.getUid(), object.getDisplayName() );
+            }
         }
         
         return map;
