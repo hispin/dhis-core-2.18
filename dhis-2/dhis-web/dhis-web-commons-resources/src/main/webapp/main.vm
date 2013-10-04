@@ -2,6 +2,9 @@
 <html#if( $manifest ) manifest="$manifest"#end>
   <head>
     <title>$encoder.htmlEncode( $applicationTitle )</title>
+    <meta name="description" content="DHIS 2">
+    <meta name="keywords" content="DHIS 2">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css" />
     <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/${stylesheet}" />
     <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/widgets.css" />
@@ -10,7 +13,6 @@
     <link type="text/css" rel="stylesheet" href="$style">
     #end
     <link rel="shortcut icon" href="../favicon.ico" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript">
       var dateFormat = 'yy-mm-dd';
@@ -51,7 +53,7 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.ls.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
-      <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action"></script>
     <script type="text/javascript" src="../main.js"></script>
     <script type="text/javascript" src="../request.js"></script>

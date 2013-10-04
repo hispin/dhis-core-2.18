@@ -28,10 +28,20 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.i18n.locale.I18nLocale;
 import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.system.util.TextUtils;
@@ -53,19 +63,42 @@ public class DefaultI18nLocaleService
     {
         this.localeStore = localeStore;
     }
-
-    private Map<String, String> languages;
     
-    public void setLanguages( Map<String, String> languages )
-    {
-        this.languages = languages;
-    }
+    private Map<String, String> languages = new LinkedHashMap<String, String>();
 
-    private Map<String, String> countries;
-
-    public void setCountries( Map<String, String> countries )
-    {
-        this.countries = countries;
+    private Map<String, String> countries = new LinkedHashMap<String, String>();
+    
+    /**
+     * Load all ISO languages and countries into mappings.
+     */
+    @PostConstruct
+    public void init()
+    {   
+        List<IdentifiableObject> langs = new ArrayList<IdentifiableObject>();
+        List<IdentifiableObject> countrs = new ArrayList<IdentifiableObject>();
+        
+        for ( String lang : Locale.getISOLanguages() )
+        {
+            langs.add( new BaseIdentifiableObject( lang, lang, new Locale( lang ).getDisplayLanguage() ) );
+        }
+        
+        for ( String country : Locale.getISOCountries() )
+        {
+            countrs.add( new BaseIdentifiableObject( country, country, new Locale( "en", country ).getDisplayCountry() ) );
+        }
+        
+        Collections.sort( langs, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( countrs, IdentifiableObjectNameComparator.INSTANCE );
+        
+        for ( IdentifiableObject lang : langs )
+        {
+            languages.put( lang.getCode(), lang.getName() );
+        }
+        
+        for ( IdentifiableObject countr : countrs )
+        {
+            countries.put( countr.getCode(), countr.getName() );
+        }
     }
 
     // -------------------------------------------------------------------------
