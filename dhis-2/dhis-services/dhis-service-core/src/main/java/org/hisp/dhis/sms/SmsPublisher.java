@@ -60,7 +60,11 @@ public class SmsPublisher
 
     public void stop()
     {
-        thread.stopFetching();
+        if ( thread != null )
+        {
+            thread.stopFetching();
+        }
+        
         thread = null;
     }
 
@@ -115,7 +119,7 @@ public class SmsPublisher
                             return;
                         }
                     }
-                    // No Command found
+                    
                     smsSender.sendMessage( "No command found", message.getOriginator() );
                 }
                 catch ( Exception e )
@@ -124,7 +128,6 @@ public class SmsPublisher
                     smsSender.sendMessage( e.getMessage(), message.getOriginator() );
                 }
 
-                // remove for error case
                 messageQueue.remove( message );
                 message = messageQueue.get();
                 log.info( "Queue Size: " + messageQueue.get() );
