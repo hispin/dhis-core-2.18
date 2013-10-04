@@ -61,7 +61,6 @@
       <param name="requiredAuthorities">F_LOCALE_MANAGEMENT</param>
     </action>
 
-
     <action name="getLocale"
       class="org.hisp.dhis.dataadmin.action.locale.GetLocaleAction">
       <result name="success" type="velocity-json">
@@ -69,7 +68,6 @@
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-
 
     <action name="removeLocale"
       class="org.hisp.dhis.dataadmin.action.locale.RemoveLocaleAction">
@@ -93,6 +91,7 @@
       class="org.hisp.dhis.dataadmin.action.locale.ShowAddLocaleFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/addLocaleForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="requiredAuthorities">F_LOCALE_ADD</param>
     </action>
 
@@ -100,6 +99,7 @@
       class="org.hisp.dhis.dataadmin.action.locale.ShowUpdateLocaleFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/updateLocaleForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="requiredAuthorities">F_LOCALE_UPDATE</param>
     </action>
 
