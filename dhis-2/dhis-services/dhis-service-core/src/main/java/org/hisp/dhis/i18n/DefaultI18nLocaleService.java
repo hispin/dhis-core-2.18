@@ -33,12 +33,16 @@ import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.locale.I18nLocale;
+import org.hisp.dhis.system.util.LocaleUtils;
+import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class DefaultI18nLocaleService
     implements I18nLocaleService
 {
+    private static final String NAME_SEP = ", ";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -76,6 +80,32 @@ public class DefaultI18nLocaleService
     public Map<String, String> getAvailableCountries()
     {
         return countries;
+    }
+    
+    public boolean addI18nLocale( String language, String country )
+    {
+        String languageName = languages.get( language );
+        String countryName = countries.get( country );
+        
+        if ( language == null || languageName == null )
+        {
+            return false; // Language is required
+        }
+        
+        if ( country != null && countryName == null )
+        {
+            return false; // Country not valid
+        }
+        
+        String loc = LocaleUtils.getLocaleString( language, country, null );
+        
+        String name = languageName + ( countryName != null ? ( NAME_SEP + countryName ) : TextUtils.EMPTY );
+        
+        I18nLocale locale = new I18nLocale( name, loc );
+        
+        saveI18nLocale( locale );
+        
+        return true;
     }
     
     public void saveI18nLocale( I18nLocale locale )

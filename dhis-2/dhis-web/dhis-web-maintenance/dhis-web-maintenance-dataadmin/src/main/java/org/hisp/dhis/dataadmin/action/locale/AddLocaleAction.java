@@ -27,10 +27,7 @@ package org.hisp.dhis.dataadmin.action.locale;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Locale;
-
 import org.hisp.dhis.i18n.I18nLocaleService;
-import org.hisp.dhis.i18n.locale.I18nLocale;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -51,13 +48,6 @@ public class AddLocaleAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-
-    private String name;
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     private String language;
 
@@ -80,9 +70,7 @@ public class AddLocaleAction
     public String execute()
         throws Exception
     {
-        I18nLocale i18nLocale = new I18nLocale( name, (new Locale( language, country )).toString() );
-
-        localeService.saveI18nLocale( i18nLocale );
+        localeService.addI18nLocale( language, country );
 
         return SUCCESS;
     }

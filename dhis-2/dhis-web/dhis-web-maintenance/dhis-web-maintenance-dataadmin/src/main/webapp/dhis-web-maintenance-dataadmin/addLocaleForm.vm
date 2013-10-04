@@ -15,9 +15,9 @@
 			<td>
 				<select id="language" name="language" onchange="setName()" class="{validate:{required:true}}">
 					<option value="">[$i18n.getString( "locale_language_no_translation" )]</option>
-				#foreach( $language in $availableLanguages.entrySet() )
-					<option value="$language.value">$language.key</option>
-				#end
+				    #foreach( $language in $availableLanguages.entrySet() )
+					<option value="$language.key">$language.value</option>
+				    #end
 				</select>
 			</td>
 			<td></td>
@@ -26,9 +26,10 @@
 			<td><label>$i18n.getString( "country" ) </label></td>
 			<td>
 				<select id="country" name="country" onchange="setName()">
-				#foreach( $country in $availableCountries.entrySet() )
-					<option value="$country.value">$country.key</option>
-				#end
+					<option value="">[$i18n.getString( "locale_country_no_translation" )]</option>
+				    #foreach( $country in $availableCountries.entrySet() )
+					<option value="$country.key">$country.value</option>
+				    #end
 				</select>
 			</td>
 			<td></td>

@@ -34,9 +34,17 @@ import org.hisp.dhis.i18n.locale.I18nLocale;
 
 public interface I18nLocaleService
 {
+    /**
+     * Returns available languages in a mapping between code and name.
+     */
     Map<String, String> getAvailableLanguages();
     
+    /**
+     * Returns available countries in a mapping between code and name.
+     */
     Map<String, String> getAvailableCountries();
+    
+    boolean addI18nLocale( String language, String country );
     
     void saveI18nLocale( I18nLocale locale );
     
