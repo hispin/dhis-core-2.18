@@ -76,7 +76,7 @@ public class DefaultI18nManager
     public I18n getI18n( Class<?> clazz, Locale locale )
         throws I18nManagerException
     {
-        return new I18n( getGlobalResourceBundle(), getSpecificResourceBundle( clazz.getName() ) );
+        return new I18n( getGlobalResourceBundle( locale ), getSpecificResourceBundle( clazz.getName(), locale ) );
     }
 
     @Override
@@ -103,9 +103,15 @@ public class DefaultI18nManager
     private ResourceBundle getGlobalResourceBundle()
         throws I18nManagerException
     {
+        return getGlobalResourceBundle( getCurrentLocale() );
+    }
+    
+    private ResourceBundle getGlobalResourceBundle( Locale locale )
+        throws I18nManagerException
+    {
         try
         {
-            return resourceBundleManager.getGlobalResourceBundle( getCurrentLocale() );
+            return resourceBundleManager.getGlobalResourceBundle( locale );
         }
         catch ( ResourceBundleManagerException e )
         {
@@ -116,6 +122,11 @@ public class DefaultI18nManager
     private ResourceBundle getSpecificResourceBundle( String clazzName )
     {
         return resourceBundleManager.getSpecificResourceBundle( clazzName, getCurrentLocale() );
+    }
+    
+    private ResourceBundle getSpecificResourceBundle( String clazzName, Locale locale )
+    {
+        return resourceBundleManager.getSpecificResourceBundle( clazzName, locale );
     }
 
     private Locale getCurrentLocale()

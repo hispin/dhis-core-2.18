@@ -135,6 +135,11 @@ input[type=text],input[type=password]
   color: #6b90b8;
   width: 100%;
 }
+
+#localeSelect
+{
+  width: 160px;
+}
 	
 .greenButtonLink
 {
