@@ -70,6 +70,9 @@ function loadOptionSets( metaData ) {
         return;
     }
 
+    var mainDef = $.Deferred();
+    var mainPromise = mainDef.promise();
+
     var def = $.Deferred();
     var promise = def.promise();
 
@@ -97,17 +100,16 @@ function loadOptionSets( metaData ) {
     }
 
     build.done(function() {
-        def.resolve( metaData );
+        def.resolve();
 
         promise = promise.done( function () {
-            console.log(promise);
-            console.log('done');
+            mainDef.resolve( metaData );
         } );
     });
 
     builder.resolve();
 
-    return promise;
+    return mainPromise;
 }
 
 function makeUsernameRequest() {
@@ -251,6 +253,8 @@ $( document ).ready( function () {
         type: 'POST',
         cache: false
     } );
+
+    setHeaderWaitMessage(i18n_please_wait_loading);
 
     $("#programId").attr('disabled', true);
 
