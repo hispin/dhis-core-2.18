@@ -33,36 +33,35 @@ function loadProgramStages( metaData ) {
         return;
     }
 
-    var deferred1 = $.Deferred();
-    var deferred2 = $.Deferred();
-    var promise = deferred2.promise();
+    var def = $.Deferred();
+    var promise = def.promise();
 
-    _.each( _.values( metaData.programs ), function ( el, idx ) {
-        var psid = el.programStages[0].id;
-        var data = createProgramStage( psid );
+    _.each( _.values( metaData.programs ), function ( el ) {
+        var id = el.programStages[0].id;
+        promise = promise.then( makeProgramStageRequest( id ));
+    } );
 
-        promise = promise.then( function () {
-            return $.ajax( {
-                url: 'dataentryform.action',
-                data: data,
-                dataType: 'html',
-                cache: false
-            } ).done( function ( data ) {
-                    var obj = {};
-                    obj.id = psid;
-                    obj.form = data;
-                    DAO.store.set( 'programStages', obj );
-                } );
+    def.resolve( metaData );
+
+    return promise;
+}
+
+function makeProgramStageRequest( id ) {
+    return function() {
+        var data = createProgramStage( id );
+
+        return $.ajax( {
+            url: 'dataentryform.action',
+            data: data,
+            dataType: 'html',
+            cache: false
+        } ).done( function ( data ) {
+            var obj = {};
+            obj.id = id;
+            obj.form = data;
+            DAO.store.set( 'programStages', obj );
         } );
-    } );
-
-    promise = promise.then( function () {
-        deferred1.resolve( metaData );
-    } );
-
-    deferred2.resolve();
-
-    return deferred1.promise();
+    }
 }
 
 function loadOptionSets( metaData ) {
@@ -854,6 +853,9 @@ function removeEvent( programStageId ) {
         if ( confirm( i18n_comfirm_delete_event ) ) {
             DAO.store.delete( 'dataValues', programStageId ).always( function () {
                 updateOfflineEvents();
+
+                // needed, seemed that from time-to-time the events are updated too early, could be idb related
+                setTimeout(updateOfflineEvents, 400);
             } );
         }
     } else {
