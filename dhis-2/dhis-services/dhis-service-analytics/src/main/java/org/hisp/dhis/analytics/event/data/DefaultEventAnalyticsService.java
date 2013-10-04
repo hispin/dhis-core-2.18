@@ -29,9 +29,10 @@ package org.hisp.dhis.analytics.event.data;
  */
 
 import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
+import static org.hisp.dhis.analytics.AnalyticsService.OU_HIERARCHY_KEY;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_NAME_SEP;
-import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 
@@ -173,7 +174,7 @@ public class DefaultEventAnalyticsService
         
         if ( params.isHierarchyMeta() )
         {
-            metaData.put( ORGUNIT_DIM_ID, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
+            metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
         }
         
         grid.setMetaData( metaData );
@@ -241,7 +242,7 @@ public class DefaultEventAnalyticsService
         
         if ( params.isHierarchyMeta() )
         {        
-            metaData.put( ORGUNIT_DIM_ID, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
+            metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
         }
 
         if ( params.isPaging() )
