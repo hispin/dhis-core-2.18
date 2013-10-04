@@ -235,8 +235,6 @@ public class DefaultObjectBridge
         {
             Collection<UserCredentials> allUserCredentials = userService.getAllUserCredentials();
 
-            System.err.println( "allUser: " + allUserCredentials );
-
             for ( UserCredentials userCredentials : allUserCredentials )
             {
                 if ( userCredentials.getUsername() != null )
@@ -244,8 +242,6 @@ public class DefaultObjectBridge
                     usernameMap.put( userCredentials.getUsername(), userCredentials );
                 }
             }
-
-            System.err.println( "usernameMap:" + usernameMap );
         }
     }
 
