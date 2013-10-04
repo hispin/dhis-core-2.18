@@ -1,7 +1,7 @@
 {
 "create_an_account": "$!i18nObject.getString( "create_an_account" )",
-"login_password": "$!i18nObject.getString( "login_password" )",
 "login_username": "$!i18nObject.getString( "login_username" )",
+"login_password": "$!i18nObject.getString( "login_password" )",
 "forgot_password": "$!i18nObject.getString( "forgot_password" )",
 "create_an_account": "$!i18nObject.getString( "create_an_account" )",
 "wrong_username_or_password": "$!i18nObject.getString( "wrong_username_or_password" )",

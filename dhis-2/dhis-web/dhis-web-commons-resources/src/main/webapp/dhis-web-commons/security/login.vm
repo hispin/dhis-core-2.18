@@ -26,7 +26,7 @@
         </div>
         #if ( $keyConfig.selfRegistrationAllowed() )
         <div id="accountArea">
-        	<a id="createAccountButton" class="greenButtonLink" href="account.action">$i18n.getString( "create_an_account" )</a>
+        	<a id="createAccountButton" class="greenButtonLink" href="account.action">Create an account</a>
         </div>
         #end
         <div id="loginField">
@@ -35,11 +35,11 @@
             <form id="loginForm" action="../../dhis-web-commons-security/login.action" method="post">
                 <table>
                     <tr>
-                        <td><label id="usernameLabel" for="j_username">$i18n.getString( "login_username" )</label></td>
+                        <td><label id="usernameLabel" for="j_username">Username</label></td>
                         <td><input type="text" id="j_username" name="j_username"></td>
                     </tr>
                     <tr>
-                        <td><label id="passwordLabel" for="j_password">$i18n.getString( "login_password" )</label></td>
+                        <td><label id="passwordLabel" for="j_password">Password</label></td>
                         <td><input type="password" id="j_password" name="j_password" autocomplete="off"></td>
                     </tr>
                     <tr>
@@ -54,10 +54,10 @@
                         <td style="padding-top:8px">
                         	<span id="loginFormFooter">
                         	#if( $keyAccountRecovery )
-                        	<a id="forgotPasswordLink" href="recovery.action">$i18n.getString( "forgot_password" )</a>&nbsp;
+                        	<a id="forgotPasswordLink" href="recovery.action">Forgot password?</a>&nbsp;
                         	#end
                         	#if( $keyConfig.selfRegistrationAllowed() )
-                        	<a id="createAccountLink" href="account.action">$i18n.getString( "create_an_account" )</a>	
+                        	<a id="createAccountLink" href="account.action">Create an account</a>	
 	                        #end
 	                        </span>
                         </td>
@@ -65,16 +65,24 @@
                 </table>
             </form>
             #if( $failed == true )
-            <span id="loginMessage">$i18n.getString( "wrong_username_or_password" )</span>
+            <span id="loginMessage">Wrong username or password</span>
             #end
             #if ( $keyApplicationNotification )
             <div id="notificationArea">$!{keyApplicationNotification}</div>
             #end
         </div>
         <div id="footerArea">
-        	<span id="poweredByLabel">$i18n.getString( "powered_by" )</span>
+        	<span id="poweredByLabel">Powered by</span>
         	<a href="http://www.dhis2.org">DHIS 2</a>&nbsp;
-        	$!{keyApplicationFooter}
+        	$!{keyApplicationFooter}&nbsp;
+
+        	<select id="localeSelect" onchange="login.localeChanged()">
+        		<option value="">[ Change language ]</option>
+        		#foreach( $locale in $availableLocales )
+        		<option value="${locale.language}">${locale.displayLanguage}</option>
+		        #end
+	        </select>
+
         </div>
     </body>
 </html>
