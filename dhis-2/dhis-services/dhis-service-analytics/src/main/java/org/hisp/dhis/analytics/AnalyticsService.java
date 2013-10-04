@@ -95,6 +95,7 @@ public interface AnalyticsService
 {
     final String NAMES_META_KEY = "names";
     final String PAGER_META_KEY = "pager";
+    final String OU_HIERARCHY_KEY = "ouHierarchy";
     
     /**
      * Generates aggregated values for the given query.
