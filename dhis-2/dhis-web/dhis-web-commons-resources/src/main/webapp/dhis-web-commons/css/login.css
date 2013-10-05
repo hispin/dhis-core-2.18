@@ -184,6 +184,11 @@ input[type=text],input[type=password]
   border: 1px solid #333333;
 }
 
+.noWrap
+{
+  white-space: nowrap;
+}
+
 @font-face {
     font-family: 'LiberationSansRegular';
     src: url('../fonts/LiberationSans-Regular-webfont.eot');
