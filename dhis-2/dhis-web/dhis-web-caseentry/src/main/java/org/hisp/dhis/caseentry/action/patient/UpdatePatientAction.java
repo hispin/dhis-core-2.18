@@ -314,17 +314,13 @@ public class UpdatePatientAction
                             if ( option != null )
                             {
                                 attributeValue.setPatientAttributeOption( option );
-                                attributeValue.setValue( option.getName() );
                             }
                             else
                             {
                                 // This option was deleted ???
                             }
                         }
-                        else
-                        {
-                            attributeValue.setValue( value.trim() );
-                        }
+                        attributeValue.setValue( value.trim() );
                         valuesForUpdate.add( attributeValue );
                         valuesForDelete.remove( attributeValue );
                     }

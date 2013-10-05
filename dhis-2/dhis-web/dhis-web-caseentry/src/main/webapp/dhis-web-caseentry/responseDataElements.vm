@@ -33,18 +33,18 @@
 						 #end
 		},
 		#end
-		
-		#foreach( $psDataElement in $psDataElements )
-		{
-			"id": "$psDataElement.dataElement.uid",
-			"name": "$encoder.xmlEncode(${psDataElement.dataElement.getFormNameFallback()} )",
-			"valueType": #if( $psDataElement.dataElement.optionSet )
-							"list_$psDataElement.dataElement.optionSet.uid"
-						 #else
-							"${psDataElement.dataElement.type}"
-						 #end
-		}#if( $velocityCount < $psDataElements.size() ),#end
-		#end
+	#end
+	
+	#foreach( $psDataElement in $psDataElements )
+	{
+		"id": "$psDataElement.dataElement.uid",
+		"name": "$encoder.xmlEncode(${psDataElement.dataElement.getFormNameFallback()} )",
+		"valueType": #if( $psDataElement.dataElement.optionSet )
+						"list_$psDataElement.dataElement.optionSet.uid"
+					 #else
+						"${psDataElement.dataElement.type}"
+					 #end
+	}#if( $velocityCount < $psDataElements.size() ),#end
 	#end
   ]
 }

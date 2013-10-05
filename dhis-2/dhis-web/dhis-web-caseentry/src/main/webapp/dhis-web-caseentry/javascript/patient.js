@@ -16,6 +16,9 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	enable('addPatientBtn');
 	enable('advancedSearchBtn');
 	enable('searchObjectId');
+	setInnerHTML('patientDashboard','');
+	setInnerHTML('editPatientDiv','');
+	
 	setFieldValue("orgunitName", orgUnitNames[0]);
 	
 	clearListById('programIdAddPatient');
@@ -156,8 +159,9 @@ Patient.listAll = function()
 				listAll:false,
 				searchByUserOrgunits: false,
 				searchBySelectedOrgunit: true,
-				programIds: getFieldValue('programIdAddPatient'),
-				searchTexts: 'prg_' + getFieldValue('programIdAddPatient')
+				programId: getFieldValue('programIdAddPatient'),
+				searchTexts: 'prg_' + getFieldValue('programIdAddPatient'),
+				statusEnrollment: getFieldValue('statusEnrollment')
 			},
 			function(){
 				setTableStyles();
@@ -333,7 +337,9 @@ function loadPatientList()
 	hideById('dataRecordingSelectDiv');
 	hideById('dataEntryFormDiv');
 	hideById('migrationPatientDiv');
-	
+	setInnerHTML('patientDashboard','');
+	setInnerHTML('editPatientDiv','');
+
 	showById('mainLinkLbl');
 	showById('selectDiv');
 	showById('searchDiv');
