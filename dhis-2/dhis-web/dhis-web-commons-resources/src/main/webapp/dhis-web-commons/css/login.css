@@ -2,7 +2,7 @@
 *
 {
   font-family: LiberationSansRegular, sans-serif;
-  line-height: 125%;
+  line-height: 130%;
   overflow: hidden;
 }
 
@@ -61,8 +61,9 @@ input[type=text],input[type=password]
 
 #bannerArea
 {
-  margin-bottom: 35px;
+  margin-bottom: 15px;
   border: none;
+  text-align: center;
 }
 
 #loginFormFooter
@@ -81,19 +82,25 @@ input[type=text],input[type=password]
 #loginField
 {
   position: relative;
-  margin: 130px auto 0 auto;
-  width: 350px;
-  text-align: center;
+  margin: 120px auto 0 auto;
+  width: 280px;
 }
 
-#loginField td
+#usernameLabel, #passwordLabel
 {
-  padding-right: 5px;
+  padding: 8px 0 3px 0;
+  display: block;
+  font-size: 13px;
+}
+
+#submitDiv
+{
+  padding: 8px 0 7px 0;
 }
 
 #loginField input[type=text],input[type=password]
 {
-  width: 240px;
+  width: 100%;
   height: 20px;
 }
 
@@ -104,9 +111,9 @@ input[type=text],input[type=password]
   border-width: 1px;
   border-color: #D0D0D0;
   padding: 11px;
-  margin: 20px 15px 0 40px;
+  margin: 20px 1286px5px 0 40px;
   display: block;
-  width: 286px;
+  width: 100%;
   border-radius: 2px;
 }
 
@@ -114,7 +121,7 @@ input[type=text],input[type=password]
 {
   background-color: #D0E6FD;
   color: #1D5288;
-  margin: 40px 0 0 40px;
+  margin-top: 30px;
   padding: 15px;
   border-radius: 3px;
 }
@@ -168,7 +175,7 @@ input[type=text],input[type=password]
   background: -moz-linear-gradient(top, #f1f1f1, #d1d1d1);
   background: -ms-linear-gradient(top, #f1f1f1, #d1d1d1);
   background: -o-linear-gradient(top, #f1f1f1, #d1d1d1);
-  height: 26px;
+  height: 28px;
   border: 1px solid #444;
   border-radius: 3px;
   color: #222;
@@ -182,11 +189,6 @@ input[type=text],input[type=password]
   background: -ms-linear-gradient(top, #fafafa, #dadada);
   background: -o-linear-gradient(top, #fafafa, #dadada);
   border: 1px solid #333333;
-}
-
-.noWrap
-{
-  white-space: nowrap;
 }
 
 @font-face {

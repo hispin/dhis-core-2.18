@@ -10,7 +10,6 @@ $( document ).ready( function()
     $( '#loginForm').bind( 'submit', function() 
     {
         $( '#submit' ).attr( 'disabled', 'disabled' );
-        $( '#reset' ).attr( 'disabled', 'disabled' );
 
         sessionStorage.removeItem( 'orgUnitSelected' );
     } );
@@ -41,5 +40,6 @@ login.changeLocale = function( locale )
 		$( '#createAccountLink' ).html( json.create_an_account );
 		$( '#loginMessage' ).html( json.wrong_username_or_password );
 		$( '#poweredByLabel' ).html( json.powered_by );
+		$( '#submit' ).val( json.login );
 	} );	
 }

@@ -5,5 +5,6 @@
 "forgot_password": "$!i18nObject.getString( "forgot_password" )",
 "create_an_account": "$!i18nObject.getString( "create_an_account" )",
 "wrong_username_or_password": "$!i18nObject.getString( "wrong_username_or_password" )",
-"powered_by": "$!i18nObject.getString( "powered_by" )"
+"powered_by": "$!i18nObject.getString( "powered_by" )",
+"login": "$!i18nObject.getString( "login" )"
 }
