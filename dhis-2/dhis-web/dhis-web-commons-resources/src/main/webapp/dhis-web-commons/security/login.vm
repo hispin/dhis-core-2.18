@@ -34,36 +34,25 @@
             <div id="bannerArea"><a href="http://www.dhis2.org"><img src="logo_front.png" style="border:none"></a></div>
             
             <form id="loginForm" action="../../dhis-web-commons-security/login.action" method="post">
-                <table>
-                    <tr>
-                        <td><label id="usernameLabel" for="j_username">Username</label></td>
-                        <td><input type="text" id="j_username" name="j_username"></td>
-                    </tr>
-                    <tr>
-                        <td><label id="passwordLabel" for="j_password">Password</label></td>
-                        <td><input type="password" id="j_password" name="j_password" autocomplete="off"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input id="submit" class="button" type="submit" value="Login">
-                            <input id="reset" class="button" type="reset" value="Clear">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td style="padding-top:8px">
-                        	<span id="loginFormFooter">
-                        	#if( $keyAccountRecovery )
-                        	<a id="forgotPasswordLink" href="recovery.action">Forgot password?</a>&nbsp;
-                        	#end
-                        	#if( $keyConfig.selfRegistrationAllowed() )
-                        	<a id="createAccountLink" href="account.action">Create an account</a>	
-	                        #end
-	                        </span>
-                        </td>
-                    </tr>
-                </table>
+                <div>
+                    <div><label id="usernameLabel" for="j_username">Username</label></div>
+                    <div><input type="text" id="j_username" name="j_username"></div>
+                    <div><label id="passwordLabel" for="j_password">Password</label></div>
+                    <div><input type="password" id="j_password" name="j_password" autocomplete="off"></div>
+                </div>
+                <div id="submitDiv">
+                	<input id="submit" class="button" type="submit" value="Login">
+                </div>
+                <div style="padding-top:8px">
+                	<span id="loginFormFooter">
+                	#if( $keyAccountRecovery )
+                	<a id="forgotPasswordLink" href="recovery.action">Forgot password?</a>&nbsp;
+                	#end
+                	#if( $keyConfig.selfRegistrationAllowed() )
+                	<a id="createAccountLink" href="account.action">Create an account</a>	
+                    #end
+                    </span>
+                </div>
             </form>
             #if( $failed == true )
             <span id="loginMessage">Wrong username or password</span>
