@@ -102,11 +102,7 @@ function searchObjectOnChange( this_ )
 	
 	$( '#searchText_' + container ).datepicker("destroy");
 	$('#' + container + ' [id=dateOperator]').replaceWith("");
-	if( attributeId == 'prg' )
-	{
-		element.replaceWith( programComboBox );
-	}
-	else if ( attributeId=='fixedAttr_gender' )
+	if ( attributeId=='fixedAttr_gender' )
 	{
 		element.replaceWith( getGenderSelector() );
 	}
@@ -224,10 +220,10 @@ var followup = false;
 function getSearchParams()
 {
 	var params = "";
-	var programIds = "";
+	var programId = "";
 	if(getFieldValue('programIdAddPatient')!='')
 	{
-		programIds += "&programIds=" + getFieldValue('programIdAddPatient');
+		params += "&programId=" + getFieldValue('programIdAddPatient');
 		params += "searchTexts=prg_" + getFieldValue('programIdAddPatient');
 	}
 	var programStageId = jQuery('#programStageAddPatient').val();
@@ -246,7 +242,6 @@ function getSearchParams()
 	}
 	
 	var flag = false;
-	var addProgramId = false;
 	jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
 		var dateOperator = "";
 		var p = "";
@@ -254,10 +249,6 @@ function getSearchParams()
 			if(item.type!="button"){
 				if( idx == 0){
 					p = "&searchTexts=" + item.value;
-					if(item.value=='prg' || item.value=='pi_enrollmentDate'){
-						flag = true;
-						addProgramId = true;
-					}
 				}
 				else if( item.name == 'dateOperator'){
 					dateOperator = item.value;
@@ -272,11 +263,6 @@ function getSearchParams()
 						else{
 							p += htmlEncode( item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "") );
 						}
-						
-						if( flag ){
-							programIds += item.value;
-							flag = false;
-						}
 					}
 					else {
 						p = "";
@@ -290,27 +276,22 @@ function getSearchParams()
 			p += "_" + getFieldValue('orgunitId');
 		}
 		
-		if( addProgramId ){
-			p += "_" + getFieldValue('programIdAddPatient');
-		}
-		
 		params += p;
 	});
 		
 	params += '&listAll=false';
-	
-	var searchByUserOrgunits = byId('searchByUserOrgunits').checked ? true : false;
-	params += '&searchByUserOrgunits=' + searchByUserOrgunits;
 	params += '&statusEnrollment=' + getFieldValue('statusEnrollment');
-	if( getFieldValue('searchByProgramStage') == "false"){
-		var searchInAllFacility = byId('searchInAllFacility').checked;
-		params += '&searchBySelectedOrgunit=' + !searchInAllFacility;
+	
+	params += '&facilityLB=';
+	if(byId('searchInAllFacility').checked){
+		params += getFieldValue('searchInAllFacility');
 	}
-	else
-	{
-		params += '&searchBySelectedOrgunit=false';
+	else if(byId('searchInUserOrgunits').checked){
+		params += getFieldValue('searchInUserOrgunits');
 	}
-	params += programIds;
+	else if(byId('searchBelowOrgunit').checked){
+		params += getFieldValue('searchBelowOrgunit');
+	}
 	
 	return params;
 }
@@ -505,9 +486,9 @@ function checkDuplicateCompleted( messageElement, divname )
 }
 
 function enableBtn(){
+	var programIdAddPatient = getFieldValue('programIdAddPatient');
 	if(registration==undefined || !registration)
 	{
-		var programIdAddPatient = getFieldValue('programIdAddPatient');
 		if( programIdAddPatient!='' ){
 			enable('listPatientBtn');
 			enable('addPatientBtn');
@@ -516,6 +497,7 @@ function enableBtn(){
 			jQuery('#advanced-search :input').each( function( idx, item ){
 				enable(this.id);
 			});
+			
 		}
 		else
 		{
@@ -527,6 +509,12 @@ function enableBtn(){
 				disable(this.id);
 			});
 		}
+	}
+	else if(programIdAddPatient!=''){
+		showById('enrollmentSelectTR');
+	}
+	else{
+		hideById('enrollmentSelectTR');
 	}
 }
 
@@ -2356,10 +2344,23 @@ function removeCustomPhoneNumberField(idx)
 	$('.idxPhoneNumber' + idx).remove();
 }
 
+// --------------------------------------------------------------------------
+// Advanced-search person
+// --------------------------------------------------------------------------
+
 function searchByIdsOnclick()
 {
 	var value = getFieldValue('searchPatientByIds');
-	jQuery("#advSearchBox0").find('input[id=searchText]').val(value);
+	
+	if(jQuery("#advSearchBox0").find('input[id=searchObjectId]').val()=='iden'
+		&& jQuery("#advSearchBox0").find('input[id=searchText]').val()=='' ){
+		jQuery("#advSearchBox0").find('input[id=searchText]').val(value);
+	}
+	else
+	{
+		addAttributeOption();
+		jQuery("input[id=searchText]").last().val(value);
+	}
 	jQuery("#searchPatientBtn").click();
 }
 
@@ -2373,3 +2374,16 @@ function advancedSearchOnclick()
 		showById('searchByIdTR');
 	}
 }
+
+function clearAndCloseSearch()
+{
+	jQuery('#advancedSearchTB tr').each( function()
+	{
+		if(jQuery(this).id==undefined){
+			jQuery(this).remove();
+		}
+	});
+	addAttributeOption();
+	hideById('advanced-search');
+}
+

@@ -1,7 +1,7 @@
 <script>
-jQuery(document).ready(	function(){
+	jQuery(document).ready(	function(){
 		jQuery('#criteriaBtnTD').attr('rowspan', 2);
-		showById('enrollmentSelectTR');
+		showById('searchByIdTR');
 	});
 </script>
 	
