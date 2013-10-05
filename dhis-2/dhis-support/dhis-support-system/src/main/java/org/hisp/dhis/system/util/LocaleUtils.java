@@ -45,35 +45,9 @@ public class LocaleUtils
      */
     public static Locale getLocale( String localeStr ) 
     {
-        if ( localeStr == null || localeStr.trim().isEmpty() )
-        {
-            return null;
-        }
-                
-        String[] parts = localeStr.split( SEP );
-
-        Locale thisLocale;
-
-        if ( parts.length == 1 )
-        {
-            thisLocale = new Locale( parts[0] );
-        }
-        else if ( parts.length == 2 )
-        {
-            thisLocale = new Locale( parts[0], parts[1] );
-        }
-        else if ( parts.length == 3 )
-        {
-            thisLocale = new Locale( parts[0], parts[1], parts[2] );
-        }
-        else
-        {
-            return null;
-        }
-
-        return thisLocale;        
+        return org.apache.commons.lang.LocaleUtils.toLocale( localeStr );
     }
-    
+        
     /**
      * Createa a locale string based on the given language, country and varient.
      * 

@@ -1,3 +1,8 @@
+
+var login = {};
+
+login.localeCookie = "dhis2.locale";
+
 $( document ).ready( function() 
 {
     $( '#j_username' ).focus();
@@ -9,14 +14,21 @@ $( document ).ready( function()
 
         sessionStorage.removeItem( 'orgUnitSelected' );
     } );
+    
+    var locale = $.cookie( login.localeCookie );
+    
+    if ( undefined !== locale )
+    {
+    	login.changeLocale( locale );
+    	$( '#localeSelect option[value="' + locale + '"]' ).attr( 'selected', 'selected' );
+    }
 } );
-
-var login = {};
 
 login.localeChanged = function()
 {
 	var locale = $( '#localeSelect :selected' ).val();
-	login.changeLocale( locale );
+	login.changeLocale( locale );	
+	$.cookie( login.localeCookie, locale );
 }
 
 login.changeLocale = function( locale )

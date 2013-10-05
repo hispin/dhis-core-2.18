@@ -35,11 +35,11 @@ import java.util.ResourceBundle;
  * @author Pham Thi Thuy
  * @author Nguyen Dang Quang
  * @author Anders Gjendem
- * @version $Id: I18n.java 3252 2007-04-23 08:31:48Z andegje $
  */
 public class I18n
 {
-    String ID = I18n.class.getName();
+    final String ID = I18n.class.getName();
+    
     private ResourceBundle globalResourceBundle;
 
     private ResourceBundle specificResourceBundle;
