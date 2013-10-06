@@ -28,6 +28,8 @@ package org.hisp.dhis.i18n;
  */
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.hisp.dhis.i18n.locale.I18nLocale;
@@ -61,4 +63,6 @@ public interface I18nLocaleService
     Collection<I18nLocale> getI18nLocalesBetween( int first, int max );
     
     Collection<I18nLocale> getI18nLocalesBetweenLikeName( String name, int first, int max );
+    
+    List<Locale> getAllLocales();
 }

@@ -37,7 +37,6 @@ import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -46,9 +45,7 @@ import java.util.Map;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.common.comparator.LocaleNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
 import org.hisp.dhis.user.UserSettingService;
@@ -69,6 +66,13 @@ public class DefaultI18nService
     {
         this.translationService = translationService;
     }
+    
+    private I18nLocaleService localeService;
+
+    public void setLocaleService( I18nLocaleService localeService )
+    {
+        this.localeService = localeService;
+    }
 
     private UserSettingService userSettingService;
 
@@ -77,27 +81,6 @@ public class DefaultI18nService
         this.userSettingService = userSettingService;
     }
     
-    // -------------------------------------------------------------------------
-    // Properties
-    // -------------------------------------------------------------------------
-
-    private List<Locale> locales = new ArrayList<Locale>();
-
-    public void setLocales( List<String> localeStrings )
-    {
-        for ( String string : localeStrings )
-        {
-            Locale locale = LocaleUtils.getLocale( string );
-
-            if ( locale != null )
-            {
-                locales.add( locale );
-            }
-        }
-
-        Collections.sort( locales, LocaleNameComparator.INSTANCE );
-    }
-
     // -------------------------------------------------------------------------
     // Internationalise
     // -------------------------------------------------------------------------
@@ -289,7 +272,7 @@ public class DefaultI18nService
 
     public List<Locale> getAvailableLocales()
     {
-        return locales;
+        return localeService.getAllLocales();
     }
 
     // -------------------------------------------------------------------------

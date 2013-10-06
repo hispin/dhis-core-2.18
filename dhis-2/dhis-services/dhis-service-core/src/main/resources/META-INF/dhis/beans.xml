@@ -794,39 +794,8 @@
 
   <bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
     <property name="translationService" ref="org.hisp.dhis.translation.TranslationService" />
+    <property name="localeService" ref="org.hisp.dhis.i18n.118nLocaleService" />
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-    <property name="locales">
-      <list>
-        <value>af</value>
-        <value>ar</value>
-        <value>bi</value>
-        <value>am</value>
-        <value>de</value>
-        <value>dz</value>
-        <value>en</value>
-        <value>es</value>
-        <value>fa</value>
-        <value>fr</value>
-        <value>gu</value>
-        <value>hi</value>
-        <value>id</value>
-        <value>it</value>
-        <value>km</value>
-        <value>lo</value>
-        <value>my</value>
-        <value>ne</value>
-        <value>nl</value>
-        <value>no</value>
-        <value>ps</value>
-        <value>pt</value>
-        <value>ru</value>
-        <value>rw</value>
-        <value>sw</value>
-        <value>tg</value>
-        <value>vi</value>
-        <value>zh</value>
-      </list>
-    </property>
   </bean>
   
   <bean id="org.hisp.dhis.i18n.118nLocaleService" class="org.hisp.dhis.i18n.DefaultI18nLocaleService">

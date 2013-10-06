@@ -42,17 +42,15 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.common.comparator.LocaleNameComparator;
 import org.hisp.dhis.i18n.locale.I18nLocale;
 import org.hisp.dhis.system.util.LocaleUtils;
-import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class DefaultI18nLocaleService
     implements I18nLocaleService
-{
-    private static final String NAME_SEP = ", ";
-    
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -132,7 +130,7 @@ public class DefaultI18nLocaleService
         
         String loc = LocaleUtils.getLocaleString( language, country, null );
         
-        String name = languageName + ( countryName != null ? ( NAME_SEP + countryName ) : TextUtils.EMPTY );
+        String name = new Locale( language, country ).toString();
         
         I18nLocale locale = new I18nLocale( name, loc );
         
@@ -179,5 +177,19 @@ public class DefaultI18nLocaleService
     public Collection<I18nLocale> getI18nLocalesBetweenLikeName( String name, int first, int max )
     {
         return localeStore.getAllLikeNameOrderedName( name, first, max );
+    }
+    
+    public List<Locale> getAllLocales()
+    {
+        List<Locale> locales = new ArrayList<Locale>();
+        
+        for ( I18nLocale locale : localeStore.getAll() )
+        {
+            locales.add( LocaleUtils.getLocale( locale.getLocale() ) );
+        }
+        
+        Collections.sort( locales, LocaleNameComparator.INSTANCE );
+        
+        return locales;
     }
 }

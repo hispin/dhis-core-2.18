@@ -37,6 +37,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationStore;
 
@@ -75,6 +76,7 @@ public class HibernateTranslationStore
         session.update( translation );
     }
 
+    @SuppressWarnings( "unchecked" )
     public Translation getTranslation( String className, int id, Locale locale, String property )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -83,12 +85,14 @@ public class HibernateTranslationStore
 
         criteria.add( Restrictions.eq( "className", className ) );
         criteria.add( Restrictions.eq( "id", id ) );
-        criteria.add( Restrictions.eq( "locale", locale.toString() ) );
+        criteria.add( Restrictions.in( "locale", LocaleUtils.getLocaleFallbacks( locale ) ) );
         criteria.add( Restrictions.eq( "property", property ) );
 
         criteria.setCacheable( true );
 
-        return (Translation) criteria.uniqueResult();
+        List<Translation> translations = LocaleUtils.getTranslationsHighestSpecifity( criteria.list() );
+        
+        return !translations.isEmpty() ? translations.get( 0 ) : null;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -100,11 +104,13 @@ public class HibernateTranslationStore
 
         criteria.add( Restrictions.eq( "className", className ) );
         criteria.add( Restrictions.eq( "id", id ) );
-        criteria.add( Restrictions.eq( "locale", locale.toString() ) );
+        criteria.add( Restrictions.in( "locale", LocaleUtils.getLocaleFallbacks( locale ) ) );
 
         criteria.setCacheable( true );
 
-        return criteria.list();
+        List<Translation> translations = criteria.list();
+        
+        return LocaleUtils.getTranslationsHighestSpecifity( translations );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -115,11 +121,13 @@ public class HibernateTranslationStore
         Criteria criteria = session.createCriteria( Translation.class );
 
         criteria.add( Restrictions.eq( "className", className ) );
-        criteria.add( Restrictions.eq( "locale", locale.toString() ) );
+        criteria.add( Restrictions.in( "locale", LocaleUtils.getLocaleFallbacks( locale ) ) );
 
         criteria.setCacheable( true );
 
-        return criteria.list();
+        List<Translation> translations = criteria.list();
+        
+        return LocaleUtils.getTranslationsHighestSpecifity( translations );
     }
 
     @SuppressWarnings( "unchecked" )
