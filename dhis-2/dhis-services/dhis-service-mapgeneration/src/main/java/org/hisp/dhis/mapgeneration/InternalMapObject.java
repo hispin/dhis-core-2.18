@@ -46,7 +46,7 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
- * An internal representation of a map object in a map layer.
+ * An internal representation of a map object (feature) in a map layer.
  * 
  * It encapsulates all the information of an atomic object on a map, i.e. its
  * name, value, fill color, fill opacity, stroke color, stroke width, and
