@@ -83,14 +83,14 @@ input[type=text],input[type=password]
 
 #usernameLabel, #passwordLabel
 {
-  padding: 8px 0 3px 0;
+  padding: 10px 0 3px 0;
   display: block;
   font-size: 13px;
 }
 
 #submitDiv
 {
-  padding: 8px 0 7px 0;
+  padding: 10px 0 7px 0;
 }
 
 #loginField input[type=text],input[type=password]
