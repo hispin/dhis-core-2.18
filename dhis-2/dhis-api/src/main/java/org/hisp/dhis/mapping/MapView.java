@@ -152,7 +152,17 @@ public class MapView
         DimensionalObject object = getDimensionalObject( ORGUNIT_DIM_ID, relativePeriodDate, user, true, organisationUnitsAtLevel, organisationUnitsInGroups, format );
 
         return object != null ? NameableObjectUtils.asTypedList( object.getItems(), OrganisationUnit.class ) : null;
-    }    
+    }
+    
+    public boolean hasLegendSet()
+    {
+        return legendSet != null;
+    }
+    
+    public boolean hasColors()
+    {
+        return colorLow != null && !colorLow.trim().isEmpty() && colorHigh != null && !colorHigh.trim().isEmpty();
+    }
     
     // -------------------------------------------------------------------------
     // Getters and setters
