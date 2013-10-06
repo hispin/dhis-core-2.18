@@ -66,6 +66,8 @@ public class InternalMapLayer
     protected Color colorLow;
 
     protected float opacity;
+    
+    protected Integer classes;
 
     protected Color strokeColor;
 
@@ -207,6 +209,16 @@ public class InternalMapLayer
     public void setOpacity( float opacity )
     {
         this.opacity = opacity;
+    }
+
+    public Integer getClasses()
+    {
+        return classes;
+    }
+
+    public void setClasses( Integer classes )
+    {
+        this.classes = classes;
     }
 
     public Color getStrokeColor()

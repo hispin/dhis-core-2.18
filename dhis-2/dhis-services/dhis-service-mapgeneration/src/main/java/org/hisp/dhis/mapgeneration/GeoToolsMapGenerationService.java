@@ -233,6 +233,7 @@ public class GeoToolsMapGenerationService
         mapLayer.setColorLow( colorLow );
         mapLayer.setColorHigh( colorHigh );
         mapLayer.setOpacity( opacity );
+        mapLayer.setClasses( mapView.getClasses() );
         mapLayer.setStrokeColor( strokeColor );
         mapLayer.setStrokeWidth( strokeWidth );
 
@@ -252,7 +253,7 @@ public class GeoToolsMapGenerationService
         // Create an interval set for this map layer that distributes its map
         // objects into their respective intervals
         // TODO Make interval length a parameter
-        IntervalSet.applyIntervalSetToMapLayer( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer, 5 ); //TODO
+        IntervalSet.applyIntervalSetToMapLayer( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer, mapLayer.getClasses() );
 
         // Update the radius of each map object in this map layer according to
         // its map object's highest and lowest values

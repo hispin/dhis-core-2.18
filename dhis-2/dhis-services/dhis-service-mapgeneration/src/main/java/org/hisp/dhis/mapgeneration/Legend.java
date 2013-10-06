@@ -59,7 +59,7 @@ public class Legend
         this.mapLayer = mapLayer;
         this.legendItems = new LinkedList<LegendItem>();
 
-        for ( Interval interval : mapLayer.getIntervalSet().getAllIntervals() )
+        for ( Interval interval : mapLayer.getIntervalSet().getIntervals() )
         {
             addLegendItem( new LegendItem( interval ) );
         }

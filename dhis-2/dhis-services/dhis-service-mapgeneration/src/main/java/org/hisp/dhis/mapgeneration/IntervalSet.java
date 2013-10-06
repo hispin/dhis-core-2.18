@@ -29,7 +29,7 @@ package org.hisp.dhis.mapgeneration;
  */
 
 import java.awt.Color;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.util.Assert;
@@ -47,15 +47,16 @@ import org.springframework.util.Assert;
  */
 public class IntervalSet
 {
-    // The intervals in this set
-    private List<Interval> intervals;
+    private List<Interval> intervals = new ArrayList<Interval>();
 
-    // The map object in this interval set with the lowest and highest values
     private InternalMapObject objectLow;
     
     private InternalMapObject objectHigh;
 
-    // The interval distrubution strategies
+    public IntervalSet()
+    {
+    }
+    
     public enum DistributionStrategy
     {
         STRATEGY_EQUAL_RANGE, STRATEGY_EQUAL_SIZE
@@ -132,20 +133,16 @@ public class IntervalSet
         Assert.isTrue( mapLayer.getMapObjects().size() > 0 );
 
         IntervalSet intervalSet = new IntervalSet();
-        intervalSet.intervals = new LinkedList<Interval>();
-
-        intervalSet.objectLow = null;
-        intervalSet.objectHigh = null;
 
         // Determine the objects with the min and max values
         for ( InternalMapObject mapObject : mapLayer.getMapObjects() )
         {
-            if ( intervalSet.objectLow == null || mapObject.getValue() < intervalSet.objectLow.getValue() )
+            if ( intervalSet.getObjectLow() == null || mapObject.getValue() < intervalSet.getObjectLow().getValue() )
             {
                 intervalSet.objectLow = mapObject;
             }
             
-            if ( intervalSet.objectHigh == null || mapObject.getValue() > intervalSet.objectHigh.getValue() )
+            if ( intervalSet.getObjectHigh() == null || mapObject.getValue() > intervalSet.getObjectHigh().getValue() )
             {
                 intervalSet.objectHigh = mapObject;
             }
@@ -156,8 +153,8 @@ public class IntervalSet
         for ( int i = 0; i < length; i++ )
         {
             // Determine the boundaries the interval covers
-            double low = MapUtils.lerp( intervalSet.objectLow.getValue(), intervalSet.objectHigh.getValue(), (i + 0.0) / length );
-            double high = MapUtils.lerp( intervalSet.objectLow.getValue(), intervalSet.objectHigh.getValue(), (i + 1.0) / length );
+            double low = MapUtils.lerp( intervalSet.getObjectLow().getValue(), intervalSet.getObjectHigh().getValue(), (i + 0.0) / length );
+            double high = MapUtils.lerp( intervalSet.getObjectLow().getValue(), intervalSet.getObjectHigh().getValue(), (i + 1.0) / length );
 
             // Determine the color of the interval
             Color color = MapUtils.lerp( mapLayer.getColorLow(), mapLayer.getColorHigh(), (i + 0.5) / length );
@@ -167,7 +164,7 @@ public class IntervalSet
             interval.setColor( color );
 
             // Add it to the set
-            intervalSet.intervals.add( interval );
+            intervalSet.getIntervals().add( interval );
         }
 
         // Distribute this map layer's objects among the intervals in the set
@@ -190,11 +187,6 @@ public class IntervalSet
      */
     private static IntervalSet applyEqualSizeIntervalSetToMapLayer( InternalMapLayer mapLayer, int length )
     {
-        Assert.isTrue( mapLayer != null );
-        Assert.isTrue( length > 0 );
-        Assert.isTrue( mapLayer.getMapObjects() != null );
-        Assert.isTrue( mapLayer.getMapObjects().size() > 0 );
-
         throw new RuntimeException( "This distribution strategy is not implemented yet!" );
     }
 
@@ -203,21 +195,19 @@ public class IntervalSet
      * update each map object with its interval.
      * 
      * @param mapLayer the map layer whose objects to distribute
-     * @param set the interval set
+     * @param intervalSet the interval set
      */
-    private static void distributeAndUpdateMapObjectsForMapLayer( InternalMapLayer mapLayer, IntervalSet set )
+    private static void distributeAndUpdateMapObjectsForMapLayer( InternalMapLayer mapLayer, IntervalSet intervalSet )
     {
-        // For each map object, determine in which interval it belongs
         for ( InternalMapObject mapObject : mapLayer.getMapObjects() )
         {
-            for ( Interval interval : set.intervals )
+            for ( Interval interval : intervalSet.getIntervals() )
             {
                 // If the map object's value is within this interval's
                 // boundaries, add it to this interval
                 if ( mapObject.getValue() >= interval.getValueLow() && mapObject.getValue() <= interval.getValueHigh() )
                 {
-                    // Add map object to interval and set interval for map
-                    // object
+                    // Add map object to interval and set interval for map object
                     interval.addMember( mapObject );
                     mapObject.setInterval( interval );
 
@@ -225,8 +215,6 @@ public class IntervalSet
                     break;
                 }
             }
-
-            Assert.isTrue( mapObject.getInterval() != null );
         }
     }
 
@@ -235,9 +223,9 @@ public class IntervalSet
      * 
      * @return the list of intervals
      */
-    public List<Interval> getAllIntervals()
+    public List<Interval> getIntervals()
     {
-        return this.intervals;
+        return intervals;
     }
 
     /**
@@ -247,7 +235,7 @@ public class IntervalSet
      */
     public InternalMapObject getObjectLow()
     {
-        return this.objectLow;
+        return objectLow;
     }
 
     /**
@@ -257,6 +245,6 @@ public class IntervalSet
      */
     public InternalMapObject getObjectHigh()
     {
-        return this.objectHigh;
+        return objectHigh;
     }
 }
