@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n.locale;
+package org.hisp.dhis.translation.comparator;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,40 +28,27 @@ package org.hisp.dhis.i18n.locale;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
+import java.util.Comparator;
 
-public class I18nLocale
-    extends BaseIdentifiableObject
-{    
-    private String locale;
+import org.hisp.dhis.translation.Translation;
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public I18nLocale()
-    {
-        this.name = "English (United Kingdom)";
-        this.locale = "en_GB";
-    }
-
-    public I18nLocale( String name, String locale )
-    {
-        this.name = name;
-        this.locale = locale;
-    }
-
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public String getLocale()
-    {
-        return locale;
-    }
+/**
+ * Compares two Translation objects based on how specific the Locales are. The
+ * Translation with least specific Locale appears first.
+ * 
+ * @author Lars Helge Overland
+ */
+public class TranslationLocaleSpecificityComparator
+    implements Comparator<Translation>
+{
+    public static final TranslationLocaleSpecificityComparator INSTANCE = new TranslationLocaleSpecificityComparator();
     
-    public void setLocale( String locale )
+    @Override
+    public int compare( Translation t1, Translation t2 )
     {
-        this.locale = locale;
+        Integer l1 = Integer.valueOf( t1.getLocale().length() );
+        Integer l2 = Integer.valueOf( t2.getLocale().length() );
+        
+        return l1.compareTo( l2 );
     }
 }

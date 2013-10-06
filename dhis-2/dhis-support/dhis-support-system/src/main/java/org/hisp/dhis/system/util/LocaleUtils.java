@@ -28,7 +28,16 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import org.hisp.dhis.translation.Translation;
+import org.hisp.dhis.translation.comparator.TranslationLocaleSpecificityComparator;
 
 /**
  * @author Oyvind Brucker
@@ -49,7 +58,7 @@ public class LocaleUtils
     }
         
     /**
-     * Createa a locale string based on the given language, country and varient.
+     * Createa a locale string based on the given language, country and variant.
      * 
      * @param language the language, cannot be null.
      * @param country the country, can be null.
@@ -76,5 +85,55 @@ public class LocaleUtils
         }
         
         return locale;
+    }
+    
+    /**
+     * Creates a list of locales of all possible specifities based on the given
+     * Locale. As an example, for the given locale "en_UK", the locales "en" and
+     * "en_UK" are returned.
+     * 
+     * @param locale the Locale.
+     * @return a list of locale strings.
+     */
+    public static List<String> getLocaleFallbacks( Locale locale )
+    {
+        List<String> locales = new ArrayList<String>();
+        
+        locales.add( locale.getLanguage() );
+        
+        if ( !locale.getCountry().isEmpty() )
+        {
+            locales.add( locale.getLanguage() + SEP + locale.getCountry() );
+        }
+        
+        if ( !locale.getVariant().isEmpty() )
+        {
+            locales.add( locale.toString() );
+        }
+        
+        return locales;
+    }
+    
+    /**
+     * Filters the given list of translations in a way where only the most specific
+     * locales are kept for every base locale.
+     * 
+     * @param translations the list of translations.
+     * @return a list of translations.
+     */
+    public static List<Translation> getTranslationsHighestSpecifity( Collection<Translation> translations )
+    {
+        Map<String, Translation> translationMap = new HashMap<String, Translation>();
+        
+        List<Translation> trans = new ArrayList<Translation>( translations );
+        
+        Collections.sort( trans, TranslationLocaleSpecificityComparator.INSTANCE );
+        
+        for ( Translation tr : trans )
+        {
+            translationMap.put( tr.getClassIdPropKey(), tr );
+        }
+        
+        return new ArrayList<Translation>( translationMap.values() );
     }
 }

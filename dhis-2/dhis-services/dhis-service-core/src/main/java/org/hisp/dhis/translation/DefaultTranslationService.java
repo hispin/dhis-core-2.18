@@ -31,9 +31,6 @@ package org.hisp.dhis.translation;
 import java.util.Collection;
 import java.util.Locale;
 
-import org.hisp.dhis.translation.Translation;
-import org.hisp.dhis.translation.TranslationService;
-import org.hisp.dhis.translation.TranslationStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

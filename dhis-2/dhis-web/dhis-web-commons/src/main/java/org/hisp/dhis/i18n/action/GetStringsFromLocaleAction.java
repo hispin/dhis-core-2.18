@@ -66,10 +66,10 @@ public class GetStringsFromLocaleAction
     public String execute()
         throws Exception
     {
-        Locale locale = LocaleUtils.getLocale( loc );
-
         if ( loc != null )
-        {        
+        {
+            Locale locale = LocaleUtils.getLocale( loc );
+    
             i18nObject = manager.getI18n( this.getClass(), locale );
         }
         
