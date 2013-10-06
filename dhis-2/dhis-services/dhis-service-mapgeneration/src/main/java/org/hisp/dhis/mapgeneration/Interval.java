@@ -29,7 +29,7 @@ package org.hisp.dhis.mapgeneration;
  */
 
 import java.awt.Color;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,9 +49,14 @@ public class Interval
     private Color color;
 
     /**
-     * The low and high boundaries of values this interval covers.
+     * The low boundary of values this interval covers.
      */
-    private double valueLow, valueHigh;
+    private double valueLow;
+
+    /**
+     * The high boundary of values this interval covers.
+     */
+    private double valueHigh;
 
     /**
      * The map object members that fall into this interval category.
@@ -62,8 +67,15 @@ public class Interval
     {
         this.valueLow = valueLow;
         this.valueHigh = valueHigh;
+        this.members = new ArrayList<InternalMapObject>();
+    }
 
-        this.members = new LinkedList<InternalMapObject>();
+    public Interval( Color color, double valueLow, double valueHigh )
+    {
+        this.color = color;
+        this.valueLow = valueLow;
+        this.valueHigh = valueHigh;
+        this.members = new ArrayList<InternalMapObject>();
     }
 
     /**

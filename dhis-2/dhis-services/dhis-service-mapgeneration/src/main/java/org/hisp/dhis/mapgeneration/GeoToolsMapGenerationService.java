@@ -43,6 +43,8 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.mapgeneration.IntervalSet.DistributionStrategy;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.mapping.MapLegend;
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -144,17 +146,13 @@ public class GeoToolsMapGenerationService
     // -------------------------------------------------------------------------
 
     private static final String DEFAULT_COLOR_HIGH = "#ff0000";
-
     private static final String DEFAULT_COLOR_LOW = "#ffff00";
 
     private static final float DEFAULT_OPACITY = 0.75f;
-
     private static final String DEFAULT_STROKE_COLOR = "#ffffff";
 
     private static final int DEFAULT_STROKE_WIDTH = 1;
-
     private static final int DEFAULT_RADIUS_HIGH = 35;
-
     private static final int DEFAULT_RADIUS_LOW = 15;
 
     private InternalMapLayer getSingleInternalMapLayer( MapView mapView )
@@ -254,7 +252,7 @@ public class GeoToolsMapGenerationService
         // Create an interval set for this map layer that distributes its map
         // objects into their respective intervals
         // TODO Make interval length a parameter
-        IntervalSet.applyIntervalSetToMapLayer( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer, 5 );
+        IntervalSet.applyIntervalSetToMapLayer( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer, 5 ); //TODO
 
         // Update the radius of each map object in this map layer according to
         // its map object's highest and lowest values
@@ -264,6 +262,20 @@ public class GeoToolsMapGenerationService
         }
 
         return mapLayer;
+    }
+    
+    private IntervalSet getIntervalSet( MapLegendSet legendSet )
+    {
+        IntervalSet intervalSet = new IntervalSet();
+        
+        for ( MapLegend legend : legendSet.getMapLegends() )
+        {
+            Color color = MapUtils.createColorFromString( legend.getColor() );
+            
+            Interval interval = new Interval( color, legend.getStartValue(), legend.getEndValue() );
+        }
+        
+        return intervalSet;
     }
 
     /**
