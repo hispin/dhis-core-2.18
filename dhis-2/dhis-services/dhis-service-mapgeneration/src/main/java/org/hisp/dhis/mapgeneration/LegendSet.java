@@ -32,7 +32,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,18 +55,18 @@ public class LegendSet
 
     public LegendSet()
     {
-        legends = new LinkedList<Legend>();
+        legends = new ArrayList<Legend>();
     }
 
     public LegendSet( InternalMapLayer mapLayer )
     {
-        legends = new LinkedList<Legend>();
+        legends = new ArrayList<Legend>();
         addMapLayer( mapLayer );
     }
 
     public LegendSet( List<InternalMapLayer> mapLayers )
     {
-        legends = new LinkedList<Legend>();
+        legends = new ArrayList<Legend>();
         addMapLayers( mapLayers );
     }
 
