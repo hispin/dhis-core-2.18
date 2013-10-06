@@ -42,16 +42,10 @@
                 </div>
                 <div id="submitDiv">
                 	<input id="submit" class="button" type="submit" value="Login">
+                	#if( $keyAccountRecovery )<a id="forgotPasswordLink" href="recovery.action" style="padding-left: 18px">Forgot password?</a>#end
                 </div>
-                <div style="padding-top:8px">
-                	<span id="loginFormFooter">
-                	#if( $keyAccountRecovery )
-                	<a id="forgotPasswordLink" href="recovery.action">Forgot password?</a>&nbsp;
-                	#end
-                	#if( $keyConfig.selfRegistrationAllowed() )
-                	<a id="createAccountLink" href="account.action">Create an account</a>	
-                    #end
-                    </span>
+                <div style="padding-top: 10px">                	
+                	#if( $keyConfig.selfRegistrationAllowed() )<a id="createAccountLink" href="account.action">Create an account</a>#end
                 </div>
             </form>
             #if( $failed == true )
@@ -64,9 +58,9 @@
         <div id="footerArea">
         	<span id="poweredByLabel">Powered by</span>
         	<a href="http://www.dhis2.org">DHIS 2</a>&nbsp;
-        	$!{keyApplicationFooter}&nbsp;
+        	$!{keyApplicationFooter}
 
-        	<select id="localeSelect" onchange="login.localeChanged()">
+        	<select id="localeSelect" onchange="login.localeChanged()" style="margin-left: 30px">
         		<option value="">[ Change language ]</option>
         		#foreach( $locale in $availableLocales )
         		<option value="${locale.language}">${locale.displayLanguage}</option>
