@@ -246,7 +246,7 @@ public class GeoToolsMapGenerationService
             
             if ( orgUnit != null && orgUnit.hasCoordinates() && orgUnit.hasFeatureType() )
             {
-                buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue.getValue(), orgUnit );
+                mapLayer.addSingleGeoToolsMapObject( mapValue.getValue(), orgUnit );
             }
         }
 
@@ -255,11 +255,13 @@ public class GeoToolsMapGenerationService
         
         if ( hasLegendSet )
         {
-            IntervalSet.getIntervalSet( mapLayer, mapView.getLegendSet() );
+            mapLayer.setIntervalSetFromLegendSet( mapView.getLegendSet() );
+            mapLayer.distributeAndUpdateMapObjectsInIntervalSet();
         }
         else
         {
-            IntervalSet.applyIntervalSetToMapLayer( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer, mapLayer.getClasses() );
+            mapLayer.applyIntervalSetToMapLayer( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer.getClasses() );
+            mapLayer.distributeAndUpdateMapObjectsInIntervalSet();
         }
         
         // Update the radius of each map object in this map layer according to
@@ -294,30 +296,6 @@ public class GeoToolsMapGenerationService
         return mapValues;
     }
     
-    private InternalMapObject buildSingleGeoToolsMapObjectForMapLayer( InternalMapLayer mapLayer,
-        double mapValue, OrganisationUnit orgUnit )
-    {
-        // Create and setup an internal map object
-        InternalMapObject mapObject = new InternalMapObject();
-        mapObject.setName( orgUnit.getName() );
-        mapObject.setValue( mapValue );
-        mapObject.setFillOpacity( mapLayer.getOpacity() );
-        mapObject.setStrokeColor( mapLayer.getStrokeColor() );
-        mapObject.setStrokeWidth( mapLayer.getStrokeWidth() );
-
-        // Build and set the GeoTools-specific geometric primitive that outlines
-        // the org unit on the map
-        mapObject.setGeometry( InternalMapObject.buildAndApplyGeometryForOrganisationUnit( orgUnit ) );
-
-        // Add the map object to the map layer
-        mapLayer.addMapObject( mapObject );
-
-        // Set the map layer for the map object
-        mapObject.setMapLayer( mapLayer );
-
-        return mapObject;
-    }
-
     private BufferedImage combineLegendAndMapImages( BufferedImage legendImage, BufferedImage mapImage )
     {
         Assert.isTrue( legendImage != null );
