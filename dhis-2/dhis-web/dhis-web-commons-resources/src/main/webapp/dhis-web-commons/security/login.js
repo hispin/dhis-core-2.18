@@ -26,8 +26,12 @@ $( document ).ready( function()
 login.localeChanged = function()
 {
 	var locale = $( '#localeSelect :selected' ).val();
-	login.changeLocale( locale );	
-	$.cookie( login.localeCookie, locale );
+	
+	if ( locale )
+	{
+		login.changeLocale( locale );	
+		$.cookie( login.localeCookie, locale );
+	}
 }
 
 login.changeLocale = function( locale )
