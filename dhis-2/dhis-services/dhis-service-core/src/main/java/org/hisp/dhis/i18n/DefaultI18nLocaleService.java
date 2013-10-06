@@ -128,13 +128,12 @@ public class DefaultI18nLocaleService
             return false; // Country not valid
         }
         
-        String loc = LocaleUtils.getLocaleString( language, country, null );
+        String localeStr = LocaleUtils.getLocaleString( language, country, null );
+        Locale locale = LocaleUtils.getLocale( localeStr );
         
-        String name = new Locale( language, country ).toString();
+        I18nLocale i18nLocale = new I18nLocale( locale );
         
-        I18nLocale locale = new I18nLocale( name, loc );
-        
-        saveI18nLocale( locale );
+        saveI18nLocale( i18nLocale );
         
         return true;
     }

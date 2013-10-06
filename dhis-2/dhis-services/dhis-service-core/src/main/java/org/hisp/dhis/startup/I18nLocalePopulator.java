@@ -1,4 +1,4 @@
-package org.hisp.dhis.i18n.locale;
+package org.hisp.dhis.startup;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,47 +28,50 @@ package org.hisp.dhis.i18n.locale;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.i18n.I18nLocaleService;
+import org.hisp.dhis.i18n.locale.I18nLocale;
+import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Wrapper for java.util.Locale for persistence purposes.
+ * Populates default I18nLocales if none exists.
  * 
- * @author larshelg
+ * @author Lars Helge Overland
  */
-public class I18nLocale
-    extends BaseIdentifiableObject
-{    
-    private String locale;
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public I18nLocale()
-    {
-        this.name = "English (United Kingdom)";
-        this.locale = "en_GB";
-    }
-
-    public I18nLocale( Locale locale )
-    {
-        this.name = locale.getDisplayName();
-        this.locale = locale.toString();
-    }
+public class I18nLocalePopulator
+    extends AbstractStartupRoutine
+{
+    private static final Log log = LogFactory.getLog( I18nLocalePopulator.class );
     
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public String getLocale()
-    {
-        return locale;
-    }
+    @Autowired
+    private I18nLocaleService localeService;
     
-    public void setLocale( String locale )
+    private static final List<String> DEFAULT_LOCALES = Arrays.asList( 
+        "af","ar","bi","am","de","dz","en","es","fa","fr","gu","hi","id","it",
+        "km","lo","my","ne","nl","no","ps","pt","ru","rw","sw","tg","vi","zh" );
+    
+    @Override
+    public void execute()
+        throws Exception
     {
-        this.locale = locale;
+        int count = localeService.getI18nLocaleCount();
+        
+        if ( count > 0 )
+        {
+            return;
+        }
+        
+        for ( String locale : DEFAULT_LOCALES )
+        {
+            localeService.saveI18nLocale( new I18nLocale( new Locale( locale ) ) );
+        }
+
+        log.info( "Populated default locales" );
     }
 }

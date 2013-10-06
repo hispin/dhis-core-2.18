@@ -16,7 +16,7 @@ $( document ).ready( function()
     
     var locale = $.cookie( login.localeCookie );
     
-    if ( undefined !== locale && locale != null )
+    if ( undefined !== locale && locale )
     {
     	login.changeLocale( locale );
     	$( '#localeSelect option[value="' + locale + '"]' ).attr( 'selected', 'selected' );
