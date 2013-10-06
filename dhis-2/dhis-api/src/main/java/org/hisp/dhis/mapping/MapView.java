@@ -31,6 +31,7 @@ package org.hisp.dhis.mapping;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -65,12 +66,12 @@ public class MapView
     extends BaseAnalyticalObject
 {
     public static final String LAYER_BOUNDARY = "boundary";
+    public static final String LAYER_FACILITY = "facility";
+    public static final String LAYER_SYMBOL = "symbol";
     public static final String LAYER_THEMATIC1 = "thematic1";
     public static final String LAYER_THEMATIC2 = "thematic2";
     public static final String LAYER_THEMATIC3 = "thematic3";
     public static final String LAYER_THEMATIC4 = "thematic4";
-    public static final String LAYER_FACILITY = "facility";
-    public static final String LAYER_SYMBOL = "symbol";
 
     public static final String VALUE_TYPE_INDICATOR = "indicator";
     public static final String VALUE_TYPE_DATAELEMENT = "dataelement";
@@ -78,8 +79,9 @@ public class MapView
     public static final String LEGEND_TYPE_AUTOMATIC = "automatic";
     public static final String LEGEND_TYPE_PREDEFINED = "predefined";
 
-    private static final long serialVersionUID = 1866358818802275436L;
-
+    public static final List<String> DATA_LAYERS = Arrays.asList( 
+        LAYER_THEMATIC1, LAYER_THEMATIC2, LAYER_THEMATIC3, LAYER_THEMATIC4 );
+    
     private String layer;
 
     private String valueType;

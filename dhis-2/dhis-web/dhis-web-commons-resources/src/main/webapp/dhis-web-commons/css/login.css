@@ -106,9 +106,10 @@ input[type=text],input[type=password]
   border-width: 1px;
   border-color: #D0D0D0;
   padding: 11px;
-  margin: 20px 1286px5px 0 40px;
+  margin: 20px 0;
   display: block;
-  width: 100%;
+  width: auto;
+  text-align: center;
   border-radius: 2px;
 }
 

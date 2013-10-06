@@ -49,7 +49,7 @@
                 </div>
             </form>
             #if( $failed == true )
-            <span id="loginMessage">Wrong username or password</span>
+            <div id="loginMessage">Wrong username or password</div>
             #end
             #if ( $keyApplicationNotification )
             <div id="notificationArea">$!{keyApplicationNotification}</div>
