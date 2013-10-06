@@ -30,11 +30,8 @@ package org.hisp.dhis.dashboard.interpretation.action;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
