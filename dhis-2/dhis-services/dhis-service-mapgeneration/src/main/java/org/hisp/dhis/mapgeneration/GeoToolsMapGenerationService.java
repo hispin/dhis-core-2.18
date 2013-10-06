@@ -188,6 +188,8 @@ public class GeoToolsMapGenerationService
         
         List<OrganisationUnit> organisationUnits = mapView.getAllOrganisationUnits();
 
+        FilterUtils.filter( organisationUnits, new OrganisationUnitWithCoordinatesFilter() );
+        
         java.util.Map<String, OrganisationUnit> uidOuMap = new HashMap<String, OrganisationUnit>();
         
         for ( OrganisationUnit ou : organisationUnits )
@@ -237,11 +239,7 @@ public class GeoToolsMapGenerationService
 
         if ( !mapView.isDataLayer() ) // Boundary (and facility) layer
         {
-            List<OrganisationUnit> units = mapView.getAllOrganisationUnits();
-            
-            FilterUtils.filter( units, new OrganisationUnitWithCoordinatesFilter() );
-            
-            for ( OrganisationUnit unit : units )
+            for ( OrganisationUnit unit : organisationUnits )
             {
                 mapLayer.addBoundaryMapObject( unit );
             }
@@ -262,7 +260,7 @@ public class GeoToolsMapGenerationService
                 // Get the org unit for this map value
                 OrganisationUnit orgUnit = uidOuMap.get( mapValue.getOu() );
                 
-                if ( orgUnit != null && orgUnit.hasCoordinates() && orgUnit.hasFeatureType() )
+                if ( orgUnit != null )
                 {
                     mapLayer.addDataMapObject( mapValue.getValue(), orgUnit );
                 }
