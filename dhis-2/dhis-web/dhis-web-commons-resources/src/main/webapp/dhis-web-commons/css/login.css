@@ -2,7 +2,7 @@
 *
 {
   font-family: LiberationSansRegular, sans-serif;
-  line-height: 130%;
+  line-height: 125%;
   overflow: hidden;
 }
 
@@ -64,11 +64,6 @@ input[type=text],input[type=password]
   margin-bottom: 15px;
   border: none;
   text-align: center;
-}
-
-#loginFormFooter
-{
-  font-size: 14px;
 }
 
 #accountArea
@@ -179,7 +174,7 @@ input[type=text],input[type=password]
   border: 1px solid #444;
   border-radius: 3px;
   color: #222;
-  width: 120px;
+  width: 100px;
 }
 
 .button:hover 
