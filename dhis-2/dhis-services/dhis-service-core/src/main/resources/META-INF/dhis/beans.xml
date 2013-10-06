@@ -867,6 +867,11 @@
     <property name="skipInTests" value="true" />
   </bean>
   
+  <bean id="org.hisp.dhis.startup.I18nLocalePopulator" class="org.hisp.dhis.startup.I18nLocalePopulator">
+    <property name="runlevel" value="7" />
+    <property name="skipInTests" value="true" />
+  </bean>
+  
   <!--<bean id="org.hisp.dhis.user.UserDefaultPopulator" class="org.hisp.dhis.user.UserDefaultPopulator">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="runlevel" value="5" />
@@ -889,6 +894,7 @@
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
           <ref local="org.hisp.dhis.startup.ExpressionUpgrader" />
           <ref local="org.hisp.dhis.startup.ConfigurationPopulator" />
+          <ref local="org.hisp.dhis.startup.I18nLocalePopulator" />
           <!--<ref local="org.hisp.dhis.user.UserDefaultPopulator" />-->
         </list>
       </list>

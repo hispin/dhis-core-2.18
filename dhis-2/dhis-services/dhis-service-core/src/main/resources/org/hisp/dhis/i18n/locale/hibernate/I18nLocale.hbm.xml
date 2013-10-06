@@ -17,7 +17,5 @@
 
     <property name="locale" column="locale" length="15" not-null="true" />
 
-	<!-- Form properties -->
-
   </class>
 </hibernate-mapping>
