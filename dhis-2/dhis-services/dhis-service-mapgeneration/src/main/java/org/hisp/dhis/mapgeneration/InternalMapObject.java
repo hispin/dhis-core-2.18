@@ -29,6 +29,7 @@ package org.hisp.dhis.mapgeneration;
  */
 
 import java.awt.Color;
+import java.io.IOException;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
@@ -154,9 +155,9 @@ public class InternalMapObject
             JsonParser parser = new ObjectMapper().getJsonFactory().createJsonParser( coords );
             root = parser.readValueAsTree();
         }
-        catch ( Exception ex )
+        catch ( IOException ex )
         {
-            throw new RuntimeException( ex );
+            throw new RuntimeException( "Failed to parse JSON", ex );
         }
 
         // Use the factory to build the correct type based on the feature type

@@ -166,9 +166,10 @@ public class MapView
         return colorLow != null && !colorLow.trim().isEmpty() && colorHigh != null && !colorHigh.trim().isEmpty();
     }
     
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
+    public boolean isDataLayer()
+    {
+        return DATA_LAYERS.contains( layer );
+    }
 
     @Override
     public boolean haveUniqueNames()
@@ -182,6 +183,10 @@ public class MapView
         return ( indicators != null && !indicators.isEmpty() ) ? indicators.get( 0 ).getName() : 
             ( dataElements != null && !dataElements.isEmpty() ) ? dataElements.get( 0 ).getName() : uid;
     }
+    
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, DimensionalView.class } )

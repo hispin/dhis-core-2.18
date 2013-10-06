@@ -61,9 +61,9 @@ public class InternalMapLayer
 
     protected Period period;
 
-    protected int radiusHigh;
+    protected Integer radiusHigh;
 
-    protected int radiusLow;
+    protected Integer radiusLow;
 
     protected Color colorHigh;
 
@@ -144,29 +144,42 @@ public class InternalMapLayer
      * on the map object.
      * 
      * @param mapValue the map values to set on the map object.
-     * @param orgUnit the organisation unit which name to set on the map object.
+     * @param unit the organisation unit which name to set on the map object.
      */
-    public void addSingleGeoToolsMapObject( double mapValue, OrganisationUnit orgUnit )
+    public void addDataMapObject( double mapValue, OrganisationUnit unit )
     {
-        // Create and setup an internal map object
         InternalMapObject mapObject = new InternalMapObject();
-        mapObject.setName( orgUnit.getName() );
+        
+        mapObject.setName( unit.getName() );
         mapObject.setValue( mapValue );
         mapObject.setFillOpacity( opacity );
         mapObject.setStrokeColor( strokeColor );
         mapObject.setStrokeWidth( strokeWidth );
 
-        // Build and set the GeoTools-specific geometric primitive that outlines
-        // the org unit on the map
-        mapObject.setGeometry( InternalMapObject.buildAndApplyGeometryForOrganisationUnit( orgUnit ) );
+        // Build and set the geometric primitive that outlines org unit on the map
+        mapObject.setGeometry( InternalMapObject.buildAndApplyGeometryForOrganisationUnit( unit ) );
 
         // Add the map object to the map layer
-        this.addMapObject( mapObject );
+        addMapObject( mapObject );
 
         // Set the map layer for the map object
         mapObject.setMapLayer( this );
     }
+    
+    public void addBoundaryMapObject( OrganisationUnit unit )
+    {
+        InternalMapObject mapObject = new InternalMapObject();
+        
+        mapObject.setName( unit.getName() );
+        mapObject.setFillOpacity( opacity );
+        mapObject.setStrokeColor( Color.BLACK );
+        mapObject.setStrokeWidth( 1 );
 
+        mapObject.setGeometry( InternalMapObject.buildAndApplyGeometryForOrganisationUnit( unit ) );
+        addMapObject( mapObject );
+        mapObject.setMapLayer( this );
+    }
+    
     /**
      * Sets an interval set on this map layer based on the given legend set.
      * 
@@ -349,22 +362,22 @@ public class InternalMapLayer
         this.period = period;
     }
 
-    public int getRadiusHigh()
+    public Integer getRadiusHigh()
     {
         return radiusHigh;
     }
 
-    public void setRadiusHigh( int radiusHigh )
+    public void setRadiusHigh( Integer radiusHigh )
     {
         this.radiusHigh = radiusHigh;
     }
 
-    public int getRadiusLow()
+    public Integer getRadiusLow()
     {
         return radiusLow;
     }
 
-    public void setRadiusLow( int radiusLow )
+    public void setRadiusLow( Integer radiusLow )
     {
         this.radiusLow = radiusLow;
     }
