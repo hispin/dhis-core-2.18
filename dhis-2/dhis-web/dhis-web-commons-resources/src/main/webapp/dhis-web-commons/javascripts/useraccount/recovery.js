@@ -1,4 +1,11 @@
 
+var login = {};
+login.localeCookie = "dhis2.locale";
+
+$( document ).ready( function() {
+	
+} );
+
 function recoverAccount()
 {
 	var username = $.trim( $( "#username" ).val() );
