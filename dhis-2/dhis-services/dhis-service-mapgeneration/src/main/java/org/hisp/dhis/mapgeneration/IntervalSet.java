@@ -32,6 +32,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.mapping.MapLegend;
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.springframework.util.Assert;
 
 /**
@@ -176,6 +178,26 @@ public class IntervalSet
         return intervalSet;
     }
 
+    public static IntervalSet getIntervalSet( InternalMapLayer mapLayer, MapLegendSet legendSet )
+    {
+        IntervalSet intervalSet = new IntervalSet();
+        
+        for ( MapLegend legend : legendSet.getMapLegends() )
+        {
+            Color color = MapUtils.createColorFromString( legend.getColor() );
+            
+            Interval interval = new Interval( color, legend.getStartValue(), legend.getEndValue() );
+            
+            intervalSet.getIntervals().add( interval );
+        }
+        
+        distributeAndUpdateMapObjectsForMapLayer( mapLayer, intervalSet );
+        
+        mapLayer.setIntervalSet( intervalSet );
+        
+        return intervalSet;
+    }
+    
     /**
      * Creates and applies to the given map layer a fixed length interval set
      * distributing map objects into intervals that has (optimally) the same
