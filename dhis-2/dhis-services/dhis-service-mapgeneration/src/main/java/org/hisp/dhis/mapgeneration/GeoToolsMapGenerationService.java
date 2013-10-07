@@ -34,6 +34,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -96,10 +97,10 @@ public class GeoToolsMapGenerationService
 
     public BufferedImage generateMapImage( Map map )
     {
-        return generateMapImage( map, 512, null );
+        return generateMapImage( map, new Date(), 512, null );
     }
     
-    public BufferedImage generateMapImage( Map map, Integer width, Integer height )
+    public BufferedImage generateMapImage( Map map, Date date, Integer width, Integer height )
     {
         Assert.isTrue( map != null );
         
@@ -115,7 +116,7 @@ public class GeoToolsMapGenerationService
         
         for ( MapView mapView : mapViews )
         {        
-            InternalMapLayer mapLayer = getSingleInternalMapLayer( mapView );
+            InternalMapLayer mapLayer = getSingleInternalMapLayer( mapView, date );
             
             if ( mapLayer != null )
             {
@@ -162,7 +163,7 @@ public class GeoToolsMapGenerationService
     private static final Integer DEFAULT_RADIUS_HIGH = 35;
     private static final Integer DEFAULT_RADIUS_LOW = 15;
 
-    private InternalMapLayer getSingleInternalMapLayer( MapView mapView )
+    private InternalMapLayer getSingleInternalMapLayer( MapView mapView, Date date )
     {
         if ( mapView == null )
         {
@@ -184,7 +185,9 @@ public class GeoToolsMapGenerationService
             inGroups.addAll( organisationUnitService.getOrganisationUnits( mapView.getItemOrganisationUnitGroups(), mapView.getOrganisationUnits() ) );
         }
 
-        mapView.init( null, null, null, atLevels, inGroups, null );
+        date = date != null ? date : new Date();
+        
+        mapView.init( null, date, null, atLevels, inGroups, null );
         
         List<OrganisationUnit> organisationUnits = mapView.getAllOrganisationUnits();
 
