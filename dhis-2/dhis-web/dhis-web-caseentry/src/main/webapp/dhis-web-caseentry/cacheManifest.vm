@@ -15,6 +15,7 @@ CACHE:
 ../dhis-web-commons/css/print.css
 ../favicon.ico
 ../dhis-web-commons/javascripts/jQuery/jquery.min.js
+../dhis-web-commons/javascripts/jQuery/jquery.plugins.js
 ../dhis-web-commons/javascripts/jQuery/jquery.metadata.js
 ../dhis-web-commons/javascripts/jQuery/jquery.glob.js
 ../dhis-web-commons/javascripts/jQuery/jquery.date.js
