@@ -217,83 +217,89 @@ function validateAdvancedSearch()
 }
 
 var followup = false;
-function getSearchParams()
-{
-	var params = "";
-	var programId = "";
-	if(getFieldValue('programIdAddPatient')!='')
-	{
-		params += "&programId=" + getFieldValue('programIdAddPatient');
-		params += "searchTexts=prg_" + getFieldValue('programIdAddPatient');
-	}
-	var programStageId = jQuery('#programStageAddPatient').val();
-	if( getFieldValue('searchByProgramStage') == "true" ){
-		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
-		var startDueDate = getFieldValue('startDueDate');
-		var orgunitid = getFieldValue('orgunitId');
-		if( byId('searchInAllFacility').checked ){
-			orgunitid = 0;
-		}
-		var endDueDate = getFieldValue('endDueDate');
-		params += '&searchTexts=stat_' + getFieldValue('programIdAddPatient') 
-			   + '_' + startDueDate + '_' + endDueDate
-			   + "_" + orgunitid
-			   + '_' + followup + '_' + statusEvent;
-	}
-	
-	var flag = false;
-	jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
-		var dateOperator = "";
-		var p = "";
-		jQuery( this ).find(':input').each( function( idx, item ){
-			if(item.type!="button"){
-				if( idx == 0){
-					p = "&searchTexts=" + item.value;
-				}
-				else if( item.name == 'dateOperator'){
-					dateOperator = item.value;
-				}
-				else if( item.name == 'searchText'){
-					if( item.value!='')
-					{
-						p += "_";
-						if ( dateOperator.length >0 ) {
-							p += dateOperator + "'" +  item.value.toLowerCase() + "'";
-						}
-						else{
-							p += htmlEncode( item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "") );
-						}
-					}
-					else {
-						p = "";
-					}
-				}
-			}
-		});
-		
-		var searchInAllFacility = byId('searchInAllFacility').checked;
-		if( getFieldValue('searchByProgramStage') == "false" && !searchInAllFacility ){
-			p += "_" + getFieldValue('orgunitId');
-		}
-		
-		params += p;
-	});
-		
-	params += '&listAll=false';
-	params += '&statusEnrollment=' + getFieldValue('statusEnrollment');
-	
-	params += '&facilityLB=';
-	if(byId('searchInAllFacility').checked){
-		params += getFieldValue('searchInAllFacility');
-	}
-	else if(byId('searchInUserOrgunits').checked){
-		params += getFieldValue('searchInUserOrgunits');
-	}
-	else if(byId('searchBelowOrgunit').checked){
-		params += getFieldValue('searchBelowOrgunit');
-	}
-	
-	return params;
+
+function getSearchParams() {
+    var params = "";
+    var programId = "";
+
+    if( getFieldValue('programIdAddPatient') != '' ) {
+        params += "&programId=" + getFieldValue('programIdAddPatient');
+        params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
+    }
+
+    var programStageId = jQuery('#programStageAddPatient').val();
+
+    if( getFieldValue('searchByProgramStage') == "true" ) {
+        var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
+        var startDueDate = getFieldValue('startDueDate');
+        var orgunitid = getFieldValue('orgunitId');
+
+        if( byId('searchInAllFacility').checked ) {
+            orgunitid = 0;
+        }
+
+        var endDueDate = getFieldValue('endDueDate');
+
+        params += '&searchTexts=stat_' + getFieldValue('programIdAddPatient')
+            + '_' + startDueDate + '_' + endDueDate
+            + "_" + orgunitid
+            + '_' + followup + '_' + statusEvent;
+    }
+
+    var flag = false;
+
+    jQuery('#advancedSearchTB tr').each(function( i, row ) {
+        var dateOperator = "";
+        var p = "";
+        jQuery(this).find(':input').each(function( idx, item ) {
+            if( item.type != "button" ) {
+                if( idx == 0 ) {
+                    p = "&searchTexts=" + item.value;
+                }
+                else if( item.name == 'dateOperator' ) {
+                    dateOperator = item.value;
+                }
+                else if( item.name == 'searchText' ) {
+                    if( item.value != '' ) {
+                        p += "_";
+                        if( dateOperator.length > 0 ) {
+                            p += dateOperator + "'" + item.value.toLowerCase() + "'";
+                        }
+                        else {
+                            p += htmlEncode(item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, ""));
+                        }
+                    }
+                    else {
+                        p = "";
+                    }
+                }
+            }
+        });
+
+        var searchInAllFacility = byId('searchInAllFacility').checked;
+
+        if( getFieldValue('searchByProgramStage') == "false" && !searchInAllFacility ) {
+            p += "_" + getFieldValue('orgunitId');
+        }
+
+        params += p;
+    });
+
+    params += '&listAll=false';
+    params += '&statusEnrollment=' + getFieldValue('statusEnrollment');
+
+    params += '&facilityLB=';
+    if( byId('searchInAllFacility').checked ) {
+        params += getFieldValue('searchInAllFacility');
+    }
+    else if( byId('searchInUserOrgunits').checked ) {
+        params += getFieldValue('searchInUserOrgunits');
+    }
+    else if( byId('searchBelowOrgunit').checked ) {
+        params += getFieldValue('searchBelowOrgunit');
+    }
+
+    return params;
 }
 
 // ----------------------------------------------------------------------------
