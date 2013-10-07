@@ -29,9 +29,6 @@ package org.hisp.dhis.mapping.action;
  */
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
@@ -52,13 +49,6 @@ public class GetOrganisationUnitInfoFacilityAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -92,10 +82,7 @@ public class GetOrganisationUnitInfoFacilityAction
     {
         object = organisationUnitService.getOrganisationUnit( id );
 
-        OrganisationUnitGroupSet typeGroupSet = organisationUnitGroupService
-            .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE ).get( 0 );
-
-        object.setType( object.getGroupNameInGroupSet( typeGroupSet ) );
+        object.setType( "" ); // TODO use web api and remove this class
 
         return SUCCESS;
     }

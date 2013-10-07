@@ -405,7 +405,6 @@ public class MobileOrganisationUnitController
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findLostToFollowUpDetail" )
     @ResponseBody
     public Patient findLostToFollowUpDetail( @PathVariable int id, @RequestHeader( "programStageInstanceId" ) String programStageInstanceId )
-        throws NotAllowedException
     {
         return null;
     }
