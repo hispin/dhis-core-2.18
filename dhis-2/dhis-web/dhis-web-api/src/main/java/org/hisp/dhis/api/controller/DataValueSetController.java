@@ -28,13 +28,16 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.*;
 import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_CSV;
 import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_HTML;
 import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
 import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_TEXT;
 import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_XML;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -214,7 +217,7 @@ public class DataValueSetController
         importOptions.setOrgUnitIdScheme( "CODE");
         importOptions.setDataElementIdScheme( "CODE");
         
-        ImportSummary summary = dataValueSetService.saveDataValueSetJson( 
+        dataValueSetService.saveDataValueSetJson( 
             new ByteArrayInputStream(dxf2.toString().getBytes( "UTF-8") ), importOptions );
     }
 
