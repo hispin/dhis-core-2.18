@@ -256,7 +256,6 @@ public class GeoToolsMapGenerationService
             
             for ( MapValue mapValue : mapValues )
             {
-                // Get the org unit for this map value
                 OrganisationUnit orgUnit = uidOuMap.get( mapValue.getOu() );
                 
                 if ( orgUnit != null )
@@ -265,6 +264,11 @@ public class GeoToolsMapGenerationService
                 }
             }
     
+            if ( !mapLayer.hasMapObjects() )
+            {
+                return null;
+            }
+            
             // Create an interval set for this map layer that distributes its map
             // objects into their respective intervals
             

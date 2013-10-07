@@ -138,7 +138,15 @@ public class InternalMapLayer
      */
     public void addMapObject( InternalMapObject mapObject )
     {
-        this.mapObjects.add( mapObject );
+        mapObjects.add( mapObject );
+    }
+    
+    /**
+     * Indicates whether this map layer has any map objects.
+     */
+    public boolean hasMapObjects()
+    {
+        return mapObjects != null && !mapObjects.isEmpty();
     }
 
     /**
@@ -285,7 +293,7 @@ public class InternalMapLayer
         }
         else
         {
-            throw new RuntimeException( "The interval distribution strategy " + strategy + " is not implemented (yet)!" );
+            throw new RuntimeException( "Unsupported distribution strategy: " + strategy );
         }
     }
 
