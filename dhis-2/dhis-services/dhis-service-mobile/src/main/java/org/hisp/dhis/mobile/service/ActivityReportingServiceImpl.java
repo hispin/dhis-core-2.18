@@ -1043,14 +1043,12 @@ public class ActivityReportingServiceImpl
         /*for ( ProgramStage eachProgramStage : programInstance.getProgram().getProgramStages() )*/
         for ( ProgramStageInstance eachProgramStageInstance : programInstance.getProgramStageInstances() )
         {
-            /*ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
-                programInstance, eachProgramStage );*/
-            ProgramStage programStage = eachProgramStageInstance.getProgramStage();
-
             // only for Mujhu database, because there is null program stage
             // instance. This condition should be removed in the future
             if ( eachProgramStageInstance != null )
             {
+                ProgramStage programStage = eachProgramStageInstance.getProgramStage();
+                
                 org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
                 List<org.hisp.dhis.api.mobile.model.LWUITmodel.Section> mobileSections = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Section>();
                 mobileProgramStage.setId( eachProgramStageInstance.getId() );

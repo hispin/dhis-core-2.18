@@ -28,10 +28,16 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import javax.xml.xpath.XPathExpressionException;
+
 import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
@@ -47,12 +53,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.xml.xpath.XPathExpressionException;
-import java.io.IOException;
-import java.util.HashMap;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author bobj
@@ -113,8 +113,6 @@ public class DefaultExportServiceTest
 
     private Period peB;
 
-    private DataElementCategoryOptionCombo optionComboA;
-
     @Override
     public boolean emptyDatabaseAfterTest()
     {
@@ -132,7 +130,6 @@ public class DefaultExportServiceTest
         ouB = DhisConvenienceTest.createOrganisationUnit( 'B' );
         peA = DhisConvenienceTest.createPeriod( DhisConvenienceTest.getDate( 2012, 1, 1 ), DhisConvenienceTest.getDate( 2012, 1, 31 ) );
         peB = DhisConvenienceTest.createPeriod( DhisConvenienceTest.getDate( 2012, 2, 1 ), DhisConvenienceTest.getDate( 2012, 2, 29 ) );
-        optionComboA = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         deA.setUid( "f7n9E0hX8qk" );
         deB.setUid( "Ix2HsbDMLea" );

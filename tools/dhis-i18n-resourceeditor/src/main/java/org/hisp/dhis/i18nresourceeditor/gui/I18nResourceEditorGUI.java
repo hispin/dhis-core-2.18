@@ -65,8 +65,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -275,10 +277,10 @@ public class I18nResourceEditorGUI extends JFrame {
         FlowLayout refFlowLayout = new FlowLayout();
         refFlowLayout.setAlignment(FlowLayout.LEFT);
         panelMainReferencesTop.setLayout(refFlowLayout);
-        lblReferenceTop.setAlignmentX(JLabel.LEFT);
+        lblReferenceTop.setAlignmentX(SwingConstants.LEFT);
         lblMainTop.setPreferredSize(new Dimension(50, 50));
         lblMainTop.setText("No data is saved until you hit the save button on the toolbar (top menu)");
-        lblMainTop.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        lblMainTop.setAlignmentX(Component.CENTER_ALIGNMENT);
         cmdSave.setIcon(getIcon("save.gif"));
         cmdSetLocale.setIcon(getIcon("locale.gif"));
 
@@ -334,7 +336,7 @@ public class I18nResourceEditorGUI extends JFrame {
         cmdDialogStartOkS.setEnabled(false);
         cmdDialogStartOk.addActionListener(new UpdateDHIS2dirListener());
         cmdDialogStartOkS.addActionListener(new UpdateDHIS2dirListener());
-        dialogStart.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialogStart.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // Help
         txtHelp.setContentType("text/html");
@@ -374,7 +376,7 @@ public class I18nResourceEditorGUI extends JFrame {
         panelDialogAdvancedLookup.setBorder(new TitledBorder("Automatically updated lookups from the Java API:"));
         lblDialogAdvancedHeader.setFont(headerFont2);
         lblDialogAdvancedHeader.setPreferredSize(new Dimension(40, 40));
-        lblDialogAdvancedHeader.setHorizontalAlignment(JLabel.CENTER);
+        lblDialogAdvancedHeader.setHorizontalAlignment(SwingConstants.CENTER);
         cmdDialogAdvancedSelect.setEnabled(false);
 
         // Global
