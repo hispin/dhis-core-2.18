@@ -253,6 +253,10 @@ public class FormUtils
             {
                 return InputType.INTEGER_POSITIVE;
             }
+            else if ( DataElement.VALUE_TYPE_ZERO_OR_POSITIVE_INT.equals( dataElement.getNumberType() ) )
+            {
+                return InputType.INTEGER_ZERO_OR_POSITIVE;
+            }
             else if ( DataElement.VALUE_TYPE_NEGATIVE_INT.equals( dataElement.getNumberType() ) )
             {
                 return InputType.INTEGER_NEGATIVE;

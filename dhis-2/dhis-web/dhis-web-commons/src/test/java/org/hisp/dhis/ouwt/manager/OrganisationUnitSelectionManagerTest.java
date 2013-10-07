@@ -42,7 +42,6 @@ import static org.junit.Assert.*;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: OrganisationUnitSelectionManagerTest.java 6335 2008-11-20 11:11:26Z larshelg $
  */
 public class OrganisationUnitSelectionManagerTest
     extends DhisSpringTest

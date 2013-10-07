@@ -432,6 +432,10 @@ jQuery.validator.addMethod("negative_integer", function(value, element, param) {
     return this.optional(element) || isNegativeInt(value);
 });
 
+jQuery.validator.addMethod("zero_positive_int", function(value, element, param) {
+    return this.optional(element) || isZeroOrPositiveInt(value);
+});
+
 // Support method for date
 //Parse a string and convert it to a Date object.
 //If string cannot be parsed, return null.

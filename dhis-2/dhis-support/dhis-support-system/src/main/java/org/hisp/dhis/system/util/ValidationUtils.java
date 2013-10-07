@@ -243,7 +243,8 @@ public class ValidationUtils
             return "data_element_or_type_null_or_empty";
         }
 
-        List<String> types = Arrays.asList( VALUE_TYPE_STRING, VALUE_TYPE_INT, VALUE_TYPE_NUMBER, VALUE_TYPE_POSITIVE_INT, VALUE_TYPE_NEGATIVE_INT );
+        List<String> types = Arrays.asList( VALUE_TYPE_STRING, VALUE_TYPE_INT, VALUE_TYPE_NUMBER, 
+            VALUE_TYPE_POSITIVE_INT, VALUE_TYPE_NEGATIVE_INT, VALUE_TYPE_ZERO_OR_POSITIVE_INT);
 
         String type = dataElement.getDetailedNumberType();
 
@@ -270,6 +271,11 @@ public class ValidationUtils
         if ( VALUE_TYPE_NEGATIVE_INT.equals( type ) && !MathUtils.isNegativeInteger( value ) )
         {
             return "value_not_negative_integer";
+        }
+        
+        if ( VALUE_TYPE_ZERO_OR_POSITIVE_INT.equals( type ) && !MathUtils.isZeroOrPositiveInteger( value ) )
+        {
+            return "value_not_zero_or_positive_integer";
         }
 
         if ( VALUE_TYPE_INT.equals( dataElement.getType() ) && MathUtils.isZero( value ) &&

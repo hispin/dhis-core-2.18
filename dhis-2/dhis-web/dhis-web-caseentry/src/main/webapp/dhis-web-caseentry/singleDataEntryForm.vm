@@ -91,6 +91,8 @@
 												#set($validate="positive_integer:true") 
 											#elseif( $type=='negativeNumber' )
 												#set($validate="negative_integer:true")
+											#elseif( $type=='zeroPositiveInt' )
+												#set($validate="zeroPositiveInt:true")
 											#elseif( $type=='int' )
 												#set($validate="integer:true")
 											#end
@@ -194,6 +196,8 @@
 				#set($validate="positive_integer:true") 
 			#elseif( $type=='negativeNumber' )
 				#set($validate="negative_integer:true")
+			#elseif( $type=='zeroPositiveInt' )
+				#set($validate="zeroPositiveInt:true")
 			#elseif( $type=='int' )
 				#set($validate="integer:true")
 			#end

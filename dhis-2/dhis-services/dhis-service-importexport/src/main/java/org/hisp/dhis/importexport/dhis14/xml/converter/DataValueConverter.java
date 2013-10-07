@@ -326,7 +326,8 @@ public class DataValueConverter
             else if ( dataElementType.equals( DataElement.VALUE_TYPE_NUMBER )
                 || dataElementType.equals( DataElement.VALUE_TYPE_INT )
                 || dataElementType.equals( DataElement.VALUE_TYPE_NEGATIVE_INT )
-                || dataElementType.equals( DataElement.VALUE_TYPE_POSITIVE_INT ) )
+                || dataElementType.equals( DataElement.VALUE_TYPE_POSITIVE_INT ) 
+                || dataElementType.equals( DataElement.VALUE_TYPE_ZERO_OR_POSITIVE_INT) )
             {
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );

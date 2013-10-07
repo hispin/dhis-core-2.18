@@ -130,6 +130,12 @@ public class ValidationUtilsTest
         
         assertNull( dataValueIsValid( "3", de ) );
         assertNotNull( dataValueIsValid( "-4", de ) );
+        
+        de.setNumberType( DataElement.VALUE_TYPE_ZERO_OR_POSITIVE_INT );
+        
+        assertNull( dataValueIsValid( "3", de ) );
+        assertNotNull( dataValueIsValid( "-4", de ) );
+
 
         de.setNumberType( DataElement.VALUE_TYPE_NEGATIVE_INT );
         

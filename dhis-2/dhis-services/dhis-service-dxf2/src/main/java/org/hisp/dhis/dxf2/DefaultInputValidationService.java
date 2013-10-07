@@ -178,6 +178,13 @@ public class DefaultInputValidationService implements InputValidationService
                     return new Status( false, value + " is not a valid negative integer." );
                 }
             }
+            else if ( dataElement.getNumberType().equals( DataElement.VALUE_TYPE_ZERO_OR_POSITIVE_INT) )
+            {
+                if ( !MathUtils.isZeroOrPositiveInteger( value ) )
+                {
+                    return new Status( false, value + " is not a valid zero or positive integer." );
+                }
+            }
         }
 
         return new Status();
