@@ -69,21 +69,22 @@ function getPatientList(searchTexts)
 	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
 	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
 	var programId = getFieldValue('programIdAddPatient');
-	
-	showLoader();
-	jQuery('#listPatientDiv').load('getDataRecords.action',
-		{
-			programId:programId,
-			listAll:false,
-			searchTexts: searchTexts
-		}, 
-		function()
-		{
-			setInnerHTML('searchInforLbl',i18n_list_all_patients);
-			showById('listPatientDiv');
-			setTableStyles();
-			hideLoader();
-		});
+
+    var data = {};
+    data.listAll = false;
+    data.searchTexts = searchTexts;
+
+    if( !isNaN(programId) || programId == null) {
+        data.programId = parseInt(programId);
+    }
+
+    showLoader();
+    jQuery('#listPatientDiv').load('getDataRecords.action', data, function() {
+        setInnerHTML('searchInforLbl', i18n_list_all_patients);
+        showById('listPatientDiv');
+        setTableStyles();
+        hideLoader();
+    });
 }
 
 // --------------------------------------------------------------------
@@ -92,28 +93,39 @@ function getPatientList(searchTexts)
 
 function advancedSearch( params )
 {
-	hideById('contentDataRecord');
-	hideById('listPatientDiv');
-	showLoader();
-	params += "&programId=" + getFieldValue('programIdAddPatient');
-	$.ajax({
-		url: 'getDataRecords.action',
-		type:"POST",
-		data: params,
-		success: function( html ){
-			setTableStyles();
-			jQuery('#listPatientDiv').html(html);
-			showById('listPatientDiv');
-			hideLoader();
-		}
-	});
-}
+    hideById('contentDataRecord');
+    hideById('listPatientDiv');
+    showLoader();
 
+    var programId = getFieldValue('programIdAddPatient');
+
+    if( !isNaN(programId) || programId == null) {
+        params += "&programId=" + parseInt(programId);
+    }
+
+    $.ajax({
+        url: 'getDataRecords.action',
+        type: "POST",
+        data: params,
+        success: function( html ) {
+            setTableStyles();
+            jQuery('#listPatientDiv').html(html);
+            showById('listPatientDiv');
+            hideLoader();
+        }
+    });
+}
 
 function advancedSearch( params )
 {
 	params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
-	params += "&programId=" + getFieldValue('programIdAddPatient');
+
+    var programId = getFieldValue('programIdAddPatient');
+
+    if( !isNaN(programId) || programId == null) {
+        params += "&programId=" + parseInt(programId);
+    }
+
 	$.ajax({
 		url: 'getDataRecords.action',
 		type:"POST",
