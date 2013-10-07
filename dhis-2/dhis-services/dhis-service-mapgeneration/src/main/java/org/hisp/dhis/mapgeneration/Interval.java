@@ -63,6 +63,10 @@ public class Interval
      */
     private List<InternalMapObject> members;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public Interval( double valueLow, double valueHigh )
     {
         this.valueLow = valueLow;
@@ -78,6 +82,30 @@ public class Interval
         this.members = new ArrayList<InternalMapObject>();
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    /**
+     * Adds a map object to this interval category.
+     * 
+     * @param member the member to add
+     */
+    public void addMember( InternalMapObject member )
+    {
+        this.members.add( member );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[Low value: " + valueLow + ", high value: " + valueHigh + ", color: " + color + "]";
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
     /**
      * Gets the low value of this interval.
      * 
@@ -85,7 +113,7 @@ public class Interval
      */
     public double getValueLow()
     {
-        return this.valueLow;
+        return valueLow;
     }
 
     /**
@@ -105,7 +133,7 @@ public class Interval
      */
     public double getValueHigh()
     {
-        return this.valueHigh;
+        return valueHigh;
     }
 
     /**
@@ -125,7 +153,7 @@ public class Interval
      */
     public Color getColor()
     {
-        return this.color;
+        return color;
     }
 
     /**
@@ -139,16 +167,6 @@ public class Interval
     }
 
     /**
-     * Adds a map object to this interval category.
-     * 
-     * @param member the member to add
-     */
-    public void addMember( InternalMapObject member )
-    {
-        this.members.add( member );
-    }
-
-    /**
      * Returns a list of the members that have fallen into this interval
      * category, or null if none.
      * 
@@ -156,6 +174,6 @@ public class Interval
      */
     public List<InternalMapObject> getMembers()
     {
-        return this.members;
+        return members;
     }
 }
