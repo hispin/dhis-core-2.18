@@ -267,7 +267,7 @@ public class Patient
         DataOutputStream dout = new DataOutputStream( bout );
 
         dout.writeInt( this.getId() );
-        
+
         if ( name != null )
         {
             dout.writeBoolean( true );
@@ -411,7 +411,15 @@ public class Patient
         throws IOException, EOFException
     {
         this.setId( din.readInt() );
-        this.setName( din.readUTF() );
+
+        if ( din.readBoolean() )
+        {
+            this.setName( din.readUTF() );
+        }
+        else
+        {
+            this.setName( null );
+        }
 
         // Org Name
         if ( din.readBoolean() )
