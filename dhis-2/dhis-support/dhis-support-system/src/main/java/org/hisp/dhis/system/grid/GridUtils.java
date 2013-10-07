@@ -82,6 +82,8 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.OrFilter;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.nodes.TagNode;
+import org.htmlparser.tags.CompositeTag;
+import org.htmlparser.tags.Span;
 import org.htmlparser.tags.TableRow;
 import org.htmlparser.tags.TableTag;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -568,11 +570,27 @@ public class GridUtils
     }
     
     /**
-     * Retrieves the value of a table cell.
+     * Retrieves the value of a table cell. Appends the text of child nodes of
+     * the cell. In case of composite tags like span or div the inner text is
+     * appended.
      */
     public static String getValue( TagNode cell )
     {
-        return cell.getFirstChild() != null ? cell.getFirstChild().getText().trim().replaceAll( "&nbsp;", EMPTY ) : EMPTY;
+        String value = EMPTY;
+
+        for ( Node child : cell.getChildren().toNodeArray() )
+        {
+            if ( child instanceof CompositeTag )
+            {
+                value += ((CompositeTag) child).getStringText();
+            }
+            else
+            {
+                value = value + child.getText();
+            }
+        }
+        
+        return value.trim().replaceAll( "&nbsp;", EMPTY );
     }
     
     // -------------------------------------------------------------------------
