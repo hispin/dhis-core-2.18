@@ -21,47 +21,47 @@
 
 <div id="accountInput">
 
-<h3>$i18n.getString( "create_new_account" )</h3>
+<h3><span id="create_new_account">$i18n.getString( "create_new_account" )</span></h3>
 
 <form id="accountForm">
 
 <table>
     <tr>
-        <td style="width:140px"><label for="firstName">$i18n.getString( "name" )</label></td>
+        <td style="width:140px"><label id="label_firstName" for="firstName">$i18n.getString( "name" )</label></td>
         <td><input type="text" id="firstName" name="firstName" autocomplete="off" style="width:11.7em; margin-right:7px;" placeholder="First">
             <input type="text" id="surname" name="surname" autocomplete="off" style="width:11.7em" placeholder="Last"></td>
     </tr>
     <tr>
-        <td><label for="username">$i18n.getString( "user_name" )</label></td>
+        <td><label id="label_username" for="username">$i18n.getString( "user_name" )</label></td>
         <td><input type="text" id="username" name="username" autocomplete="off"></td>
     </tr>
     <tr>
-        <td><label for="password">$i18n.getString( "password" )</label></td>
+        <td><label id="label_password" for="password">$i18n.getString( "password" )</label></td>
         <td><input type="password" id="password" name="password" autocomplete="off" placeholder="$i18n.getString( 'password_hint' )"></td>
     </tr>
     <tr>
-        <td><label for="retypePassword">$i18n.getString( "confirm_password" )</label></td>
+        <td><label id="label_retypePassword" for="retypePassword">$i18n.getString( "confirm_password" )</label></td>
         <td><input type="password" id="retypePassword" name="retypePassword" autocomplete="off"></td>
     </tr>
     <tr>
-        <td><label for="email">$i18n.getString( "email" )</label></td>
+        <td><label id="label_email" for="email">$i18n.getString( "email" )</label></td>
         <td><input type="text" id="email" name="email"></td>
     </tr>
     <tr>
-        <td><label for="phoneNumber">$i18n.getString( "mobile_phone" )</label></td>
+        <td><label id="label_phoneNumber" for="phoneNumber">$i18n.getString( "mobile_phone" )</label></td>
         <td style="padding-bottom: 5px"><input type="text" id="phoneNumber" name="phoneNumber"></td>
     </tr>
     <tr>
-        <td><label for="employer">$i18n.getString( "employer" )</label></td>
+        <td><label id="label_employer" for="employer">$i18n.getString( "employer" )</label></td>
         <td style="padding-bottom: 5px"><input type="text" id="employer" name="employer"></td>
     </tr>
     <tr>
-    	<td><label>$i18n.getString( "prove_you_are_not_a_robot" )</label></td>
+    	<td><label id="label_recaptchaDiv">$i18n.getString( "prove_you_are_not_a_robot" )</label></td>
     	<td style="padding-bottom: 5px"><div id="recaptchaDiv"></div></td>
 	</tr>
     <tr>
         <td></td>
-        <td><a href="javascript:reloadRecaptcha()">$i18n.getString( "cant_read_the_words_try_another_one" )</a></span></td>
+        <td><a id="cant_read_words" href="javascript:reloadRecaptcha()">$i18n.getString( "cant_read_the_words_try_another_one" )</a></span></td>
     </tr>
 	<tr>
 		<td></td>

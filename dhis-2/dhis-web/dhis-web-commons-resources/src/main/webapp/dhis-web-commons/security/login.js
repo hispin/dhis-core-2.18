@@ -29,13 +29,13 @@ login.localeChanged = function()
 	if ( locale )
 	{
 		login.changeLocale( locale );	
-		$.cookie( login.localeCookie, locale );
+		$.cookie( login.localeCookie, locale, { expires : 356*10 } );
 	}
 }
 
 login.changeLocale = function( locale )
 {	
-	$.get( 'loginStrings.action?loc=' + locale, function( json ) {
+	$.get( 'loginStrings.action?keyApplication=Y&loc=' + locale, function( json ) {
 		$( '#createAccountButton' ).html( json.create_an_account );
 		$( '#usernameLabel' ).html( json.login_username );
 		$( '#passwordLabel' ).html( json.login_password );
