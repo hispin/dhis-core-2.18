@@ -224,6 +224,24 @@ public class MathUtilsTest
         assertFalse( MathUtils.isNegativeInteger( "2 " ) );
         assertFalse( MathUtils.isNegativeInteger( "6.1345" ) );
     }
+        
+    @Test
+    public void testIsZeroOrPositiveInteger()
+    {
+        assertTrue( MathUtils.isZeroOrPositiveInteger( "0" ) );
+        assertTrue( MathUtils.isZeroOrPositiveInteger( "123" ) );
+
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "012" ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "+20" ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "-2" ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "-2232" ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "-2.17" ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "1.1" ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "-0" ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "Hey" ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "1 " ) );
+        assertFalse( MathUtils.isZeroOrPositiveInteger( "1.2345" ) );
+    }
 
     @Test
     public void testIsZero()

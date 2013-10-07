@@ -360,17 +360,4 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
 
         return program;
     }
-
-    private OrganisationUnit getOrganisationUnit( String id )
-    {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
-
-        if ( organisationUnit == null )
-        {
-            throw new IllegalArgumentException( "OrganisationUnit does not exist." );
-        }
-
-        return organisationUnit;
-    }
-
 }

@@ -327,9 +327,16 @@ public class FormUtils
         return true;
     }
 
+    //TODO re-use ValidationUtils
+    
     public static boolean isPositiveInteger( String value )
     {
         return valueHigher( value, 0 );
+    }
+    
+    public static boolean isZeroOrPositiveInteger( String value )
+    {
+        return valueHigherOrEqual( value, 0 );
     }
 
     public static boolean isNegativeInteger( String value )
@@ -346,6 +353,26 @@ public class FormUtils
             integerValue = Integer.parseInt( value );
 
             if ( integerValue > max )
+            {
+                return true;
+            }
+        }
+        catch ( NumberFormatException ignored )
+        {
+        }
+
+        return false;
+    }
+    
+    public static boolean valueHigherOrEqual( String value, int max )
+    {
+        int integerValue;
+
+        try
+        {
+            integerValue = Integer.parseInt( value );
+
+            if ( integerValue >= max )
             {
                 return true;
             }

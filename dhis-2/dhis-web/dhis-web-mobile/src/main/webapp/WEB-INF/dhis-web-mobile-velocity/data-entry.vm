@@ -346,6 +346,8 @@
                         <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'INTEGER_NEGATIVE' ) { %>
                         <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
+					<% } else if( field.type == 'INTEGER_ZERO_OR_POSITIVE' ) { %>
+                        <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'NUMBER' ) { %>
                         <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } %>

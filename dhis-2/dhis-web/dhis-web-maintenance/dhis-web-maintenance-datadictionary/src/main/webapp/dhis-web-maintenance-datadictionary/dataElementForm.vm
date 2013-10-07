@@ -125,6 +125,7 @@
 				<option value="int" #if( $!dataElement.numberType == 'int' ) selected="selected" #end>$i18n.getString( "int" )</option>
 				<option value="positiveNumber" #if( $!dataElement.numberType == 'positiveNumber' ) selected="selected" #end>$i18n.getString( "positiveNumber" )</option>
 				<option value="negativeNumber" #if( $!dataElement.numberType == 'negativeNumber' ) selected="selected" #end>$i18n.getString( "negativeNumber" )</option>
+				<option value="zeroPositiveInt" #if( $!dataElement.numberType == 'zeroPositiveInt' ) selected="selected" #end>$i18n.getString( "zeroPositiveInt" )</option>
 			</select>
 			<script>
 			</script>
