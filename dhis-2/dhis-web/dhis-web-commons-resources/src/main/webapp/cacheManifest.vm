@@ -10,7 +10,7 @@ css/print.css
 ../dhis-web-dataentry/style/dhis-web-dataentry.css
 ../favicon.ico
 javascripts/jQuery/jquery.min.js
-javascripts/jQuery/jquery.plugins.js
+javascripts/jQuery/jquery.utils.js
 javascripts/jQuery/jquery.metadata.js
 javascripts/jQuery/jquery.glob.js
 javascripts/jQuery/jquery.date.js
