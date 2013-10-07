@@ -97,10 +97,10 @@ public class GeoToolsMapGenerationService
 
     public BufferedImage generateMapImage( Map map )
     {
-        return generateMapImage( map, new Date(), 512, null );
+        return generateMapImage( map, new Date(), null, 512, null );
     }
     
-    public BufferedImage generateMapImage( Map map, Date date, Integer width, Integer height )
+    public BufferedImage generateMapImage( Map map, Date date, OrganisationUnit unit, Integer width, Integer height )
     {
         Assert.isTrue( map != null );
         

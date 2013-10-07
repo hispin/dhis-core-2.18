@@ -106,6 +106,8 @@ public interface MappingService
     
     Map getMap( String uid );
     
+    Map getMapNoAcl( String uid );
+    
     void deleteMap( Map map );
         
     List<Map> getMapsBetweenLikeName( String name, int first, int max );
