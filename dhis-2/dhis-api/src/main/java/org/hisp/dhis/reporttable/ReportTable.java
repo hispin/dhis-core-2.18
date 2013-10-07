@@ -199,6 +199,11 @@ public class ReportTable
      */
     private MapLegendSet legendSet;
     
+    /**
+     * Indicates showing organisation unit hierarchy names.
+     */
+    private boolean showHierarchy;
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -942,6 +947,19 @@ public class ReportTable
     public void setLegendSet( MapLegendSet legendSet )
     {
         this.legendSet = legendSet;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public boolean isShowHierarchy()
+    {
+        return showHierarchy;
+    }
+
+    public void setShowHierarchy( boolean showHierarchy )
+    {
+        this.showHierarchy = showHierarchy;
     }
 
     // -------------------------------------------------------------------------

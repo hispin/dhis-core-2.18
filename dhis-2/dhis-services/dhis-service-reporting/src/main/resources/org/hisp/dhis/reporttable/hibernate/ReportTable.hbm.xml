@@ -162,6 +162,8 @@
     <many-to-one name="legendSet" class="org.hisp.dhis.mapping.MapLegendSet" column="legendsetid"
       foreign-key="fk_reporttable_legendsetid" />
 
+    <property name="showHierarchy" />
+
     <!-- Access properties -->
     <property name="externalAccess" />
 

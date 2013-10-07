@@ -4800,6 +4800,8 @@ Ext.onReady( function() {
         return viewport;
     };
 
+	
+	
 	initialize = function(r) {
 
 		// ext configuration
@@ -4819,7 +4821,11 @@ Ext.onReady( function() {
         Ext.Ajax.request({
             url: '../initialize.action',
             success: function(r) {
-                dv = DV.core.getInstance(Ext.decode(r.responseText));
+				var init = Ext.decode(r.responseText);
+				
+				DV.i18n = init.i18n;
+				
+                dv = DV.core.getInstance(init);
 
                 DV.app.extendInstance(dv);
 
