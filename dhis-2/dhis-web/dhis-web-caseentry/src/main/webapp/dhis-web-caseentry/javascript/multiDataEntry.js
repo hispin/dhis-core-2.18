@@ -14,49 +14,49 @@ function multiDataEntryOrgunitSelected( orgUnits, orgUnitNames )
 	hideById("listPatientDiv");
 	clearListById('programIdAddPatient');
 	$('#contentDataRecord').html('');
-	jQuery.get("getPrograms.action",{}, 
-		function(json)
-		{
-			var count = 0;
-			for ( i in json.programs ) {
-				if(json.programs[i].type==1){
-					count ++;
-					jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
-				}
-			}
-			if(count==0){
-				jQuery( '#programIdAddPatient').prepend( '<option value="" >' + i18n_none_program + '</option>' );
-			}
-			else if(count>1){
-				jQuery( '#programIdAddPatient').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
-			}
-			enableBtn();
-			hideById('programLoader');
-			jQuery('#programIdAddPatient').width(width);
-			enable('programIdAddPatient');
-		});
+
+	jQuery.get("getPrograms.action",{}, function(json) {
+        var count = 0;
+
+        for( i in json.programs ) {
+            if( json.programs[i].type == 1 ) {
+                count++;
+                jQuery('#programIdAddPatient').append('<option value="' + json.programs[i].id + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>');
+            }
+        }
+
+        if( count == 0 ) {
+            jQuery('#programIdAddPatient').prepend('<option value="" >' + i18n_none_program + '</option>');
+        } else if( count > 1 ) {
+            jQuery('#programIdAddPatient').prepend('<option value="" selected>' + i18n_please_select + '</option>');
+        }
+
+        enableBtn();
+        hideById('programLoader');
+        jQuery('#programIdAddPatient').width(width);
+        enable('programIdAddPatient');
+    });
 }
 
 selection.setListenerFunction( multiDataEntryOrgunitSelected );
 
 function listAllPatient()
 {
-	var scheduledVisitDays = getFieldValue('scheduledVisitDays');
-	if( scheduledVisitDays != '' )
-	{
-		var today = getCurrentDate();
-		var date = new Date();
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y= date.getFullYear();
-		var lastDays = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d - eval(scheduledVisitDays)) ) ;
-	
-		var searchTexts = "stat_" + getFieldValue('programIdAddPatient') + "_" 
-					+ lastDays + "_" + today + "_" 
-					+ getFieldValue('orgunitId') + "_false_4_3";
-					
-		getPatientList(searchTexts);
-	}
+    var scheduledVisitDays = getFieldValue('scheduledVisitDays');
+
+    if( scheduledVisitDays != '' ) {
+        var today = getCurrentDate();
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+        var lastDays = jQuery.datepicker.formatDate(dateFormat, new Date(y, m, d - eval(scheduledVisitDays)));
+
+        var searchTexts = "stat_" + getFieldValue('programIdAddPatient') + "_" + lastDays + "_" + today + "_"
+            + getFieldValue('orgunitId') + "_false_4_3";
+
+        getPatientList(searchTexts);
+    }
 }
 
 function getPatientList(searchTexts)
@@ -64,11 +64,8 @@ function getPatientList(searchTexts)
 	hideById('listPatientDiv');
 	hideById('advanced-search');
 	hideById('contentDataRecord');
-	contentDiv = 'listPatientDiv';
 	setFieldValue('statusEvent', "4");
-	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
-	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
-	var programId = getFieldValue('programIdAddPatient');
+    var programId = getFieldValue('programIdAddPatient');
 
     var data = {};
     data.listAll = false;
@@ -146,33 +143,29 @@ function loadDataEntryDialog( programStageInstanceId )
 	});
 	jQuery( '#' + prefixId + programStageInstanceId ).addClass('stage-object-selected');
 	
-	$('#contentDataRecord' ).load("viewProgramStageRecords.action",
-		{
-			programStageInstanceId: programStageInstanceId
-		},function()
-		{
-			setFieldValue( 'programStageInstanceId', programStageInstanceId );
-			showById('patientInforTB');
-		}).dialog(
-		{
-			title:i18n_program_stage,
-			maximize:true, 
-			closable:true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width:850,
-			height:500
-		});
+	$('#contentDataRecord' ).load("viewProgramStageRecords.action", {
+        programStageInstanceId: programStageInstanceId
+    },function() {
+        setFieldValue( 'programStageInstanceId', programStageInstanceId );
+        showById('patientInforTB');
+    }).dialog({
+        title:i18n_program_stage,
+        maximize:true,
+        closable:true,
+        modal:false,
+        overlay:{background:'#000000', opacity:0.1},
+        width:850,
+        height:500
+    });
 }
 
 function loadProgramStageRecords( programStageInstanceId ) 
 {
 	setInnerHTML('dataEntryFormDiv', '');
 	showLoader();
-    $('#dataEntryFormDiv' ).load("loadProgramStageRecords.action",
-		{
-			programStageInstanceId: programStageInstanceId
-		}, function() {
-			hideLoader();
-		});
+    $('#dataEntryFormDiv').load("loadProgramStageRecords.action", {
+            programStageInstanceId: programStageInstanceId
+    }, function() {
+        hideLoader();
+    });
 }
