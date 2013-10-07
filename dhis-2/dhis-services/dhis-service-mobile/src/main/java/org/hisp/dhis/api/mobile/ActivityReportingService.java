@@ -99,4 +99,7 @@ public interface ActivityReportingService
 
     public String findLostToFollowUp( int orgUnitId, String programId )
         throws NotAllowedException;
+    
+    public Patient findLostToFollowUpDetail( String programStageIntanceId )
+        throws NotAllowedException;
 }

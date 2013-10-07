@@ -1355,6 +1355,7 @@ public class ActivityReportingServiceImpl
             {
                 Program program = programs.get( 0 );
 
+                //ERROR
                 return getMobileAnonymousProgram( program );
             }
             else
@@ -2025,5 +2026,14 @@ public class ActivityReportingServiceImpl
         {
             return "";
         }
+    }
+
+    @Override
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLostToFollowUpDetail( String programStageIntanceId )
+        throws NotAllowedException
+    {
+        org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientLWUIT = new org.hisp.dhis.api.mobile.model.LWUITmodel.Patient();
+        
+        return patientLWUIT;
     }
 }
