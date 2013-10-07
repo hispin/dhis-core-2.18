@@ -33,6 +33,7 @@ import java.util.Date;
 
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * The MapGenerationService interface generates map images from Map objects.
@@ -71,9 +72,10 @@ public interface MapGenerationService
      * 
      * @param map the map that will be rendered.
      * @param date the date for relative periods.
+     * @param unit the organisation unit.
      * @param width the maximum width of the map image.
      * @param height the maxium height of the map image.
      * @return the rendered map image or null if there is no data for the map view.
      */
-    BufferedImage generateMapImage( Map map, Date date, Integer width, Integer height );
+    BufferedImage generateMapImage( Map map, Date date, OrganisationUnit unit, Integer width, Integer height );
 }

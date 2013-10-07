@@ -259,6 +259,11 @@ public class DefaultMappingService
         return mapStore.getByUid( uid );
     }
 
+    public Map getMapNoAcl( String uid )
+    {
+        return mapStore.getByUidNoAcl( uid );
+    }
+
     public void deleteMap( Map map )
     {
         mapStore.delete( map );

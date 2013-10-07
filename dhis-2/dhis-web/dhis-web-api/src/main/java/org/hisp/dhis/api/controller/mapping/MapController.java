@@ -229,13 +229,22 @@ public class MapController
     public void getMapData( 
         @PathVariable String uid, 
         @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date date,
+        @RequestParam( value = "ou", required = false ) String ou,
         @RequestParam( required = false ) Integer width, 
         @RequestParam( required = false ) Integer height, 
         HttpServletResponse response ) throws Exception
     {
-        Map map = mappingService.getMap( uid );
+        Map map = mappingService.getMapNoAcl( uid );
 
-        renderMapViewPng( map, date, width, height, response );
+        if ( map == null )
+        {
+            ContextUtils.notFoundResponse( response, "Map does not exist: " + uid );
+            return;
+        }
+
+        OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
+        
+        renderMapViewPng( map, date, unit, width, height, response );
     }
 
     //--------------------------------------------------------------------------
@@ -269,10 +278,10 @@ public class MapController
         }
     }
 
-    private void renderMapViewPng( Map map, Date date, Integer width, Integer height, HttpServletResponse response )
+    private void renderMapViewPng( Map map, Date date, OrganisationUnit unit, Integer width, Integer height, HttpServletResponse response )
         throws Exception
     {
-        BufferedImage image = mapGenerationService.generateMapImage( map, date, width, height );
+        BufferedImage image = mapGenerationService.generateMapImage( map, date, unit, width, height );
 
         if ( image != null )
         {
