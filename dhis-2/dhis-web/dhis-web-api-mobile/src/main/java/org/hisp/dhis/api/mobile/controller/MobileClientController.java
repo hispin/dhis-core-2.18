@@ -158,6 +158,7 @@ public class MobileClientController
         orgUnit.setFindLatestPersonUrl( getUrl( request, unit.getId(), "findLatestPerson" ) );
         orgUnit.setFindPatientInAdvancedUrl( getUrl( request, unit.getId(), "findPatientInAdvanced" ) );
         orgUnit.setFindLostToFollowUpUrl( getUrl( request, unit.getId(), "findLostToFollowUp" ) );
+        orgUnit.setFindLostToFollowUpDetailUrl( getUrl( request, unit.getId(), "findLostToFollowUpDetail" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );
