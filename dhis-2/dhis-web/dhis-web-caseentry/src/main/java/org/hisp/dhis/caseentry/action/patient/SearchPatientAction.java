@@ -204,7 +204,7 @@ public class SearchPatientAction
         else if ( searchTexts.size() > 0 )
         {
             // selected orgunit
-            if ( facilityLB == null )
+            if ( facilityLB == null || facilityLB.trim().isEmpty() )
             {
                 orgunits.add( organisationUnit );
             }
