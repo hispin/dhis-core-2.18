@@ -393,13 +393,13 @@ Ext.onReady( function() {
                     layout;
 
                 if (id) {
-                    engine.loadChart(id, dv);
+                    engine.loadChart(id, dv, true, true);
                 }
                 else if (Ext.isString(session) && DV.isSessionStorage && Ext.isObject(JSON.parse(sessionStorage.getItem('dhis2'))) && session in JSON.parse(sessionStorage.getItem('dhis2'))) {
                     layout = api.layout.Layout(engine.analytical2layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]));
 
                     if (layout) {
-                        dv.viewport.setFavorite(layout);
+						dv.engine.createChart(layout, dv, true);
                     }
                 }
 
@@ -1427,7 +1427,7 @@ Ext.onReady( function() {
 								element.addClsOnOver('link');
 								element.load = function() {
 									favoriteWindow.hide();
-									dv.engine.loadChart(record.data.id, dv);
+									dv.engine.loadChart(record.data.id, dv, true, true);
 								};
 								element.dom.setAttribute('onclick', 'Ext.get(this).load();');
 							}
@@ -2123,7 +2123,7 @@ Ext.onReady( function() {
             westRegion,
             centerRegion,
 
-            setFavorite,
+            setGui,
 
             viewport,
             addListeners;
@@ -4584,33 +4584,30 @@ Ext.onReady( function() {
             }
         });
 
-        setFavorite = function(layout) {
-            var xLayout,
-                dimMap,
-                recMap,
-                graphMap,
+        setGui = function(layout, xLayout, updateGui, isFavorite) {
+			var dimensions = [].concat(layout.columns || [], layout.rows || [], layout.filters || []),
+				dimMap = dv.service.layout.getObjectNameDimensionMap(dimensions),
+				recMap = dv.service.layout.getObjectNameDimensionItemsMap(dimensions),
+				graphMap = layout.parentGraphMap,
                 objectName,
                 periodRecords,
                 fixedPeriodRecords = [],
-                isOu = false,
-                isOuc = false,
+				dimNames = [],
+				isOu = false,
+				isOuc = false,
 				isOugc = false,
-                isLevel = false,
 				levels = [],
-				groups = [];
+				groups = [],
+				orgunits = [];
 
-            // State
-            dv.viewport.interpretationButton.enable();
-
-            // Create chart
-            dv.engine.createChart(layout, dv);
+			// State
+			downloadButton.enable();
+			
+			if (isFavorite) {
+				interpretationButton.enable();
+			}
 
             // Set gui
-
-            xLayout = dv.engine.getExtendedLayout(layout);
-            dimMap = xLayout.objectNameDimensionsMap;
-            recMap = xLayout.objectNameItemsMap;
-            graphMap = layout.parentGraphMap;
 
             // Indicators
             dv.store.indicatorSelected.removeAll();
@@ -4680,7 +4677,7 @@ Ext.onReady( function() {
             }
 
             // Layout
-            dv.viewport.chartType.setChartType(xLayout.type);
+            dv.viewport.chartType.setChartType(layout.type);
 
             dv.viewport.series.setValue(xLayout.columnDimensionNames[0]);
             dv.viewport.series.filterNext();
@@ -4695,26 +4692,29 @@ Ext.onReady( function() {
                 dv.viewport.optionsWindow.setOptions(layout);
             }
 
-            // Organisation units
-            if (recMap[dimConf.organisationUnit.objectName]) {
-                for (var i = 0, ouRecords = recMap[dimConf.organisationUnit.objectName]; i < ouRecords.length; i++) {
-                    if (ouRecords[i].id === 'USER_ORGUNIT') {
-                        isOu = true;
-                    }
-                    if (ouRecords[i].id === 'USER_ORGUNIT_CHILDREN') {
-                        isOuc = true;
-                    }
-					if (ouRecords[i].id === 'USER_ORGUNIT_GRANDCHILDREN') {
+			// Organisation units
+			if (recMap[dimConf.organisationUnit.objectName]) {
+				for (var i = 0, ouRecords = recMap[dimConf.organisationUnit.objectName]; i < ouRecords.length; i++) {
+					if (ouRecords[i].id === 'USER_ORGUNIT') {
+						isOu = true;
+					}
+					else if (ouRecords[i].id === 'USER_ORGUNIT_CHILDREN') {
+						isOuc = true;
+					}
+					else if (ouRecords[i].id === 'USER_ORGUNIT_GRANDCHILDREN') {
 						isOugc = true;
 					}
-                    if (ouRecords[i].id.substr(0,5) === 'LEVEL') {
-                        isLevel = true;
-                    }
-					if (ouRecords[i].id.substr(0,8) === 'OU_GROUP') {
+					else if (ouRecords[i].id.substr(0,5) === 'LEVEL') {
+						levels.push(parseInt(ouRecords[i].id.split('-')[1]));
+					}
+					else if (ouRecords[i].id.substr(0,8) === 'OU_GROUP') {
 						groups.push(parseInt(ouRecords[i].id.split('-')[1]));
 					}
-                }
-            }
+					else {
+						orgunits.push(ouRecords[i].id);
+					}
+				}
+			}
 
 			if (levels.length) {
 				toolMenu.clickHandler('level');
@@ -4730,20 +4730,23 @@ Ext.onReady( function() {
 				userOrganisationUnitChildren.setValue(isOuc);
 				userOrganisationUnitGrandChildren.setValue(isOugc);
 			}
+			
+			if (!(isOu || isOuc || isOugc)) {
 
-            // If fav has organisation units, wait for tree callback before update
-            if (recMap[dimConf.organisationUnit.objectName] && Ext.isObject(graphMap)) {
-                treePanel.numberOfRecords = dv.util.object.getLength(graphMap);
+				// If fav has organisation units, wait for tree callback before update
+				if (Ext.isObject(graphMap)) {
+					treePanel.numberOfRecords = dv.util.object.getLength(graphMap);
 
-                for (var i = 0, a = xLayout.objectNameItemsMap[dimConf.organisationUnit.objectName]; i < a.length; i++) {
-                    if (graphMap.hasOwnProperty(a[i].id)) {
-                        treePanel.multipleExpand(a[i].id, graphMap[a[i].id], false);
-                    }
-                }
-            }
-            else {
-                treePanel.reset();
-            }
+					for (var key in graphMap) {						
+						if (graphMap.hasOwnProperty(key)) {
+							treePanel.multipleExpand(key, graphMap[key], false);
+						}
+					}
+				}
+			}
+			else {
+				treePanel.reset();
+			}
         };
 
         viewport = Ext.create('Ext.container.Viewport', {
@@ -4764,7 +4767,7 @@ Ext.onReady( function() {
             userOrganisationUnit: userOrganisationUnit,
             userOrganisationUnitChildren: userOrganisationUnitChildren,
             dataElementDetailLevel: dataElementDetailLevel,
-            setFavorite: setFavorite,
+            setGui: setGui,
             items: [
                 westRegion,
                 centerRegion
@@ -4800,8 +4803,6 @@ Ext.onReady( function() {
         return viewport;
     };
 
-	
-	
 	initialize = function(r) {
 
 		// ext configuration

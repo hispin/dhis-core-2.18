@@ -27,7 +27,7 @@ a:hover
 input[type=text],input[type=password]
 {
   border: 1px solid #888;
-  padding: 4px 7px;
+  padding: 4px 6px;
 }
 
 #flagArea
@@ -95,7 +95,7 @@ input[type=text],input[type=password]
 
 #loginField input[type=text],input[type=password]
 {
-  width: 264px;
+  width: 266px;
   height: 20px;
 }
 

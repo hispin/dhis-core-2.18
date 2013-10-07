@@ -723,7 +723,7 @@ Ext.onReady( function() {
 					}
 
 					// Get object names and user orgunits
-					for (var i = 0, dim, dims = [].concat(config.columns, config.rows, config.filters); i < dims.length; i++) {
+					for (var i = 0, dim, dims = [].concat(config.columns || [], config.rows || [], config.filters || []); i < dims.length; i++) {
 						dim = dims[i];
 
 						if (dim) {
@@ -1167,6 +1167,10 @@ Ext.onReady( function() {
 						paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
 					}
 				}
+				
+				if (xLayout.showHierarchy) {
+					paramString += '&hierarchyMeta=true';
+				}
 
 				return paramString;
 			};
@@ -1185,6 +1189,7 @@ Ext.onReady( function() {
 
 			engine.createTable = function(layout, pt, updateGui, isFavorite) {
 				var legendSet = layout.legendSet ? pt.init.idLegendSetMap[layout.legendSet.id] : null,
+					isHierarchy,
 					getItemName,
 					getSyncronizedXLayout,
 					getExtendedResponse,
@@ -1198,11 +1203,15 @@ Ext.onReady( function() {
 					uuidDimUuidsMap = {},
 					uuidObjectMap = {};
 
+				isHierarchy = function(id, response) {					
+					return layout.showHierarchy && Ext.isObject(response.metaData.ouHierarchy) && response.metaData.ouHierarchy.hasOwnProperty(id);
+				};						
+					
 				getItemName = function(id, response, isHtml) {
 					var metaData = response.metaData,
 						name = '';
 					
-					if (layout.showHierarchy && Ext.isObject(metaData.ouHierarchy) && metaData.ouHierarchy.hasOwnProperty(id)) {
+					if (isHierarchy(id, response)) {
 						var a = Ext.clean(metaData.ouHierarchy[id].split('/'));
 						
 						for (var i = 0; i < a.length; i++) {
@@ -1218,7 +1227,7 @@ Ext.onReady( function() {
 				getSyncronizedXLayout = function(xLayout, response) {
 					var removeDimensionFromXLayout,
 						getHeaderNames,
-						dimensions = [].concat(xLayout.columns, xLayout.rows, xLayout.filters);
+						dimensions = [].concat(xLayout.columns || [], xLayout.rows || [], xLayout.filters || []);
 
 					removeDimensionFromXLayout = function(objectName) {
 						var getUpdatedAxis;
@@ -1330,8 +1339,8 @@ Ext.onReady( function() {
 
 										userOugc = [];
 										
-										for (var i = 0, id; i < responseOu.length; i++) {
-											id = responseOu[i];
+										for (var j = 0, id; j < responseOu.length; j++) {
+											id = responseOu[j];
 											
 											if (!Ext.Array.contains(userOuOuc, id)) {
 												userOugc.push({
@@ -1347,8 +1356,8 @@ Ext.onReady( function() {
 									dim.items = [].concat(userOu || [], userOuc || [], userOugc || []);
 								}
 								else if (isLevel || isGroup) {
-									for (var i = 0, responseOu = response.metaData[ou], id; i < responseOu.length; i++) {
-										id = responseOu[i];
+									for (var j = 0, responseOu = response.metaData[ou], id; j < responseOu.length; j++) {
+										id = responseOu[j];
 										
 										dim.items.push({
 											id: id,
@@ -1364,7 +1373,7 @@ Ext.onReady( function() {
 							}
 							else {
 								// Items: get ids from metadata -> items
-								if (metaDataDim) {
+								if (Ext.isArray(metaDataDim) && metaDataDim.length) {
 									var ids = Ext.clone(response.metaData[dim.dimensionName]);
 									for (var j = 0; j < ids.length; j++) {
 										dim.items.push({
@@ -1408,7 +1417,7 @@ Ext.onReady( function() {
 								}
 							}
 
-							return pt.engine.getExtendedLayout(layout);
+							return engine.getExtendedLayout(layout);
 						}
 
 						return null;
@@ -1992,7 +2001,7 @@ Ext.onReady( function() {
 								for (var j = 0, obj, newObj; j < xRowAxis.dims; j++) {
 									obj = xRowAxis.objects.all[j][i];
 									obj.type = 'dimension';
-									obj.cls = 'pivot-dim td-nobreak';
+									obj.cls = 'pivot-dim td-nobreak' + (isHierarchy(obj.id, xResponse) ? ' align-left' : '');
 									obj.noBreak = true;
 									obj.hidden = !(obj.rowSpan || obj.colSpan);
 									obj.htmlValue = getItemName(obj.id, xResponse, true);
@@ -2447,7 +2456,7 @@ Ext.onReady( function() {
 						}
 						
 						if (updateGui) {
-							pt.viewport.setGui(layout, updateGui, isFavorite);
+							pt.viewport.setGui(layout, xLayout, updateGui, isFavorite);
 						}
 					}
 
@@ -2481,7 +2490,7 @@ Ext.onReady( function() {
 
 					// Param string
 					pt.paramString = engine.getParamString(xLayout, true);
-					url = pt.init.contextPath + '/api/analytics.json' + pt.paramString + '&hierarchyMeta=true';
+					url = pt.init.contextPath + '/api/analytics.json' + pt.paramString;
 
 					// Validate request size
 					if (!validateUrl(url)) {
