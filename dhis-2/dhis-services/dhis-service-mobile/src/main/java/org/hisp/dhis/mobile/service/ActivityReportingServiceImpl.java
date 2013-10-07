@@ -928,7 +928,7 @@ public class ActivityReportingServiceImpl
         {
             for ( ProgramInstance each : listOfProgramInstance )
             {
-                mobileProgramList.add( getMobileProgram( patient, each ) );
+                mobileProgramList.add( getMobileProgram( each ) );
             }
         }
         patientModel.setPrograms( mobileProgramList );
@@ -941,7 +941,7 @@ public class ActivityReportingServiceImpl
         {
             for ( ProgramInstance each : listOfCompletedProgramInstance )
             {
-                mobileCompletedProgramList.add( getMobileProgram( patient, each ) );
+                mobileCompletedProgramList.add( getMobileProgram( each ) );
             }
         }
         patientModel.setCompletedPrograms( mobileCompletedProgramList );
@@ -1026,8 +1026,7 @@ public class ActivityReportingServiceImpl
         return patientModel;
     }
 
-    private org.hisp.dhis.api.mobile.model.LWUITmodel.Program getMobileProgram( Patient patient,
-        ProgramInstance programInstance )
+    private org.hisp.dhis.api.mobile.model.LWUITmodel.Program getMobileProgram( ProgramInstance programInstance )
     {
         org.hisp.dhis.api.mobile.model.LWUITmodel.Program mobileProgram = new org.hisp.dhis.api.mobile.model.LWUITmodel.Program();
 
@@ -1035,66 +1034,70 @@ public class ActivityReportingServiceImpl
         mobileProgram.setId( programInstance.getId() );
         mobileProgram.setName( programInstance.getProgram().getName() );
         mobileProgram.setStatus( programInstance.getStatus() );
-        mobileProgram.setProgramStages( getMobileProgramStages( patient, programInstance ) );
+        mobileProgram.setProgramStages( getMobileProgramStages( programInstance ) );
         return mobileProgram;
     }
 
-    private List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> getMobileProgramStages( Patient patient,
-        ProgramInstance programInstance )
+    private List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> getMobileProgramStages( ProgramInstance programInstance )
     {
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStages = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
-        for ( ProgramStage eachProgramStage : programInstance.getProgram().getProgramStages() )
+        
+        /*for ( ProgramStage eachProgramStage : programInstance.getProgram().getProgramStages() )*/
+        for ( ProgramStageInstance eachProgramStageInstance : programInstance.getProgramStageInstances() )
         {
-            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
-                programInstance, eachProgramStage );
+            /*ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
+                programInstance, eachProgramStage );*/
+            ProgramStage programStage = eachProgramStageInstance.getProgramStage();
 
             // only for Mujhu database, because there is null program stage
             // instance. This condition should be removed in the future
-            if ( programStageInstance != null )
+            if ( eachProgramStageInstance != null )
             {
                 org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
                 List<org.hisp.dhis.api.mobile.model.LWUITmodel.Section> mobileSections = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Section>();
-                mobileProgramStage.setId( programStageInstance.getId() );
-                mobileProgramStage.setName( eachProgramStage.getName() );
+                mobileProgramStage.setId( eachProgramStageInstance.getId() );
+                /*mobileProgramStage.setName( eachProgramStage.getName() );*/
+                mobileProgramStage.setName( programStage.getName() );
 
                 // get report date
-                if ( programStageInstance.getExecutionDate() != null )
+                if ( eachProgramStageInstance.getExecutionDate() != null )
                 {
                     mobileProgramStage
-                        .setReportDate( PeriodUtil.dateToString( programStageInstance.getExecutionDate() ) );
+                        .setReportDate( PeriodUtil.dateToString( eachProgramStageInstance.getExecutionDate() ) );
                 }
                 else
                 {
                     mobileProgramStage.setReportDate( "" );
                 }
 
-                if ( programStageInstance.getProgramStage().getReportDateDescription() == null )
+                if ( eachProgramStageInstance.getProgramStage().getReportDateDescription() == null )
                 {
                     mobileProgramStage.setReportDateDescription( "Report Date" );
                 }
                 else
                 {
-                    mobileProgramStage.setReportDateDescription( programStageInstance.getProgramStage()
+                    mobileProgramStage.setReportDateDescription( eachProgramStageInstance.getProgramStage()
                         .getReportDateDescription() );
                 }
 
                 // is repeatable
-                mobileProgramStage.setRepeatable( eachProgramStage.getIrregular() );
+                mobileProgramStage.setRepeatable( programStage.getIrregular() );
 
                 // is completed
-                mobileProgramStage.setCompleted( checkIfProgramStageCompleted( patient, programInstance.getProgram(),
-                    eachProgramStage ) );
+                /*mobileProgramStage.setCompleted( checkIfProgramStageCompleted( patient, programInstance.getProgram(),
+                    programStage ) );*/
+                mobileProgramStage.setCompleted( eachProgramStageInstance.isCompleted() );
 
                 // is single event
                 mobileProgramStage.setSingleEvent( programInstance.getProgram().isSingleEvent() );
 
                 // Set all data elements
-                mobileProgramStage.setDataElements( getDataElementsForMobile( eachProgramStage, programStageInstance ) );
+                mobileProgramStage.setDataElements( getDataElementsForMobile( programStage, eachProgramStageInstance ) );
 
                 // Set all program sections
-                if ( eachProgramStage.getProgramStageSections().size() > 0 )
+                if ( programStage.getProgramStageSections().size() > 0 )
                 {
-                    for ( ProgramStageSection eachSection : eachProgramStage.getProgramStageSections() )
+                    for ( ProgramStageSection eachSection : programStage.getProgramStageSections() )
                     {
                         org.hisp.dhis.api.mobile.model.LWUITmodel.Section mobileSection = new org.hisp.dhis.api.mobile.model.LWUITmodel.Section();
                         mobileSection.setId( eachSection.getId() );
@@ -1119,21 +1122,6 @@ public class ActivityReportingServiceImpl
             }
         }
         return mobileProgramStages;
-    }
-
-    private boolean checkIfProgramStageCompleted( Patient patient, Program program, ProgramStage programstage )
-    {
-        Collection<ProgramInstance> programIntances = programInstanceService.getProgramInstances( patient, program,
-            ProgramInstance.STATUS_ACTIVE );
-        ProgramStageInstance programStageInstance = new ProgramStageInstance();
-        if ( programIntances != null && programIntances.size() == 1 )
-        {
-            for ( ProgramInstance each : programIntances )
-            {
-                programStageInstance = programStageInstanceService.getProgramStageInstance( each, programstage );
-            }
-        }
-        return programStageInstance.isCompleted();
     }
 
     private List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> getDataElementsForMobile(
@@ -1323,17 +1311,19 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         String programsInfo = "";
+        
+        int programTypeInt = Integer.valueOf( programType );
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
 
         List<Program> tempPrograms = null;
 
-        if ( Integer.valueOf( programType ) == (Program.SINGLE_EVENT_WITHOUT_REGISTRATION) )
+        if ( programTypeInt == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
         {
             tempPrograms = new ArrayList<Program>(
                 programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         }
-        else if ( Integer.valueOf( programType ) == (Program.MULTIPLE_EVENTS_WITH_REGISTRATION) )
+        else if ( programTypeInt == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             tempPrograms = new ArrayList<Program>(
                 programService.getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
@@ -1354,9 +1344,8 @@ public class ActivityReportingServiceImpl
             if ( programs.size() == 1 )
             {
                 Program program = programs.get( 0 );
-
-                //ERROR
-                return getMobileAnonymousProgram( program );
+                
+                return getMobileProgramWithoutData( program );
             }
             else
             {
@@ -1389,7 +1378,7 @@ public class ActivityReportingServiceImpl
             Program program = programService.getProgram( Integer.parseInt( programInfo ) );
             if ( program.isSingleEvent() )
             {
-                return getMobileAnonymousProgram( program );
+                return getMobileProgramWithoutData( program );
             }
             else
             {
@@ -1398,7 +1387,9 @@ public class ActivityReportingServiceImpl
         }
     }
 
-    private org.hisp.dhis.api.mobile.model.LWUITmodel.Program getMobileAnonymousProgram( Program anonymousProgram )
+    //If the return program is anonymous, the client side will show the entry form as normal
+    //If the return program is not anonymous, it is still OK because in client side, we only need name and id
+    private org.hisp.dhis.api.mobile.model.LWUITmodel.Program getMobileProgramWithoutData( Program program )
     {
         Comparator<ProgramStageDataElement> OrderBySortOrder = new Comparator<ProgramStageDataElement>()
         {
@@ -1410,81 +1401,84 @@ public class ActivityReportingServiceImpl
 
         org.hisp.dhis.api.mobile.model.LWUITmodel.Program anonymousProgramMobile = new org.hisp.dhis.api.mobile.model.LWUITmodel.Program();
 
-        anonymousProgramMobile.setId( anonymousProgram.getId() );
+        anonymousProgramMobile.setId( program.getId() );
 
-        anonymousProgramMobile.setName( anonymousProgram.getName() );
+        anonymousProgramMobile.setName( program.getName() );
 
-        anonymousProgramMobile.setVersion( anonymousProgram.getVersion() );
-
-        anonymousProgramMobile.setStatus( ProgramInstance.STATUS_ACTIVE );
-
-        ProgramStage programStage = anonymousProgram.getProgramStages().iterator().next();
-
-        List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>(
-            programStage.getProgramStageDataElements() );
-        Collections.sort( programStageDataElements, OrderBySortOrder );
-
-        List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStages = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
-
-        org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
-
-        List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> mobileProgramStageDataElements = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement>();
-
-        mobileProgramStage.setId( programStage.getId() );
-        mobileProgramStage.setName( programStage.getName() );
-        mobileProgramStage.setCompleted( false );
-        mobileProgramStage.setRepeatable( false );
-        mobileProgramStage.setSingleEvent( true );
-        mobileProgramStage.setSections( new ArrayList<Section>() );
-
-        // get report date
-        mobileProgramStage.setReportDate( PeriodUtil.dateToString( new Date() ) );
-
-        if ( programStage.getReportDateDescription() == null )
+        if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
         {
-            mobileProgramStage.setReportDateDescription( "Report Date" );
-        }
-        else
-        {
-            mobileProgramStage.setReportDateDescription( programStage.getReportDateDescription() );
-        }
-
-        for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
-        {
-            org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement mobileDataElement = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement();
-            mobileDataElement.setId( programStageDataElement.getDataElement().getId() );
-            mobileDataElement.setName( programStageDataElement.getDataElement().getName() );
-            mobileDataElement.setType( programStageDataElement.getDataElement().getType() );
-
-            // problem
-            mobileDataElement.setCompulsory( programStageDataElement.isCompulsory() );
-
-            mobileDataElement.setNumberType( programStageDataElement.getDataElement().getNumberType() );
-
-            mobileDataElement.setValue( "" );
-
-            if ( programStageDataElement.getDataElement().getOptionSet() != null )
+            anonymousProgramMobile.setVersion( program.getVersion() );
+    
+            anonymousProgramMobile.setStatus( ProgramInstance.STATUS_ACTIVE );
+    
+            ProgramStage programStage = program.getProgramStages().iterator().next();
+    
+            List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>(
+                programStage.getProgramStageDataElements() );
+            Collections.sort( programStageDataElements, OrderBySortOrder );
+    
+            List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStages = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
+    
+            org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
+    
+            List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> mobileProgramStageDataElements = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement>();
+    
+            mobileProgramStage.setId( programStage.getId() );
+            mobileProgramStage.setName( programStage.getName() );
+            mobileProgramStage.setCompleted( false );
+            mobileProgramStage.setRepeatable( false );
+            mobileProgramStage.setSingleEvent( true );
+            mobileProgramStage.setSections( new ArrayList<Section>() );
+    
+            // get report date
+            mobileProgramStage.setReportDate( PeriodUtil.dateToString( new Date() ) );
+    
+            if ( programStage.getReportDateDescription() == null )
             {
-                mobileDataElement.setOptionSet( modelMapping.getOptionSet( programStageDataElement.getDataElement() ) );
+                mobileProgramStage.setReportDateDescription( "Report Date" );
             }
             else
             {
-                mobileDataElement.setOptionSet( null );
+                mobileProgramStage.setReportDateDescription( programStage.getReportDateDescription() );
             }
-            if ( programStageDataElement.getDataElement().getCategoryCombo() != null )
+    
+            for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
-                mobileDataElement.setCategoryOptionCombos( modelMapping
-                    .getCategoryOptionCombos( programStageDataElement.getDataElement() ) );
+                org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement mobileDataElement = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement();
+                mobileDataElement.setId( programStageDataElement.getDataElement().getId() );
+                mobileDataElement.setName( programStageDataElement.getDataElement().getName() );
+                mobileDataElement.setType( programStageDataElement.getDataElement().getType() );
+    
+                // problem
+                mobileDataElement.setCompulsory( programStageDataElement.isCompulsory() );
+    
+                mobileDataElement.setNumberType( programStageDataElement.getDataElement().getNumberType() );
+    
+                mobileDataElement.setValue( "" );
+    
+                if ( programStageDataElement.getDataElement().getOptionSet() != null )
+                {
+                    mobileDataElement.setOptionSet( modelMapping.getOptionSet( programStageDataElement.getDataElement() ) );
+                }
+                else
+                {
+                    mobileDataElement.setOptionSet( null );
+                }
+                if ( programStageDataElement.getDataElement().getCategoryCombo() != null )
+                {
+                    mobileDataElement.setCategoryOptionCombos( modelMapping
+                        .getCategoryOptionCombos( programStageDataElement.getDataElement() ) );
+                }
+                else
+                {
+                    mobileDataElement.setCategoryOptionCombos( null );
+                }
+                mobileProgramStageDataElements.add( mobileDataElement );
             }
-            else
-            {
-                mobileDataElement.setCategoryOptionCombos( null );
-            }
-            mobileProgramStageDataElements.add( mobileDataElement );
+            mobileProgramStage.setDataElements( mobileProgramStageDataElements );
+            mobileProgramStages.add( mobileProgramStage );
+            anonymousProgramMobile.setProgramStages( mobileProgramStages );
         }
-        mobileProgramStage.setDataElements( mobileProgramStageDataElements );
-        mobileProgramStages.add( mobileProgramStage );
-        anonymousProgramMobile.setProgramStages( mobileProgramStages );
 
         return anonymousProgramMobile;
     }
