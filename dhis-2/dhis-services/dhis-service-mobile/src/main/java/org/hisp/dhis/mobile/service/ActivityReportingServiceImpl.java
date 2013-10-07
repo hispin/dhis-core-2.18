@@ -113,8 +113,6 @@ public class ActivityReportingServiceImpl
 
     private ProgramStageInstanceService programStageInstanceService;
 
-    // private ActivityPlanService activityPlanService;
-
     private PatientService patientService;
 
     private PatientAttributeValueService patientAttValueService;
@@ -1327,6 +1325,7 @@ public class ActivityReportingServiceImpl
         {
             tempPrograms = new ArrayList<Program>(
                 programService.getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
+            System.out.println("Program size: " +  tempPrograms.size());
         }
 
         List<Program> programs = new ArrayList<Program>();
@@ -1784,7 +1783,9 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
-
+        
+        System.out.println("Name: " + patient.getName());
+        
         patientWeb.setName( patient.getName() );
         patientWeb.setGender( patient.getGender() );
         patientWeb.setDobType( patient.getDobType() );
@@ -1939,6 +1940,7 @@ public class ActivityReportingServiceImpl
                 {
                     name = "unknown";
                 }
+
                 if ( each.getBirthDate() != null )
                 {
                     DOB = dateFormat.format( each.getBirthDate() );
@@ -1976,6 +1978,7 @@ public class ActivityReportingServiceImpl
         String eventsInfo = "";
         Boolean followUp = false;
         DateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd" );
+
         List<String> searchTextList = new ArrayList<String>();
         Collection<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>();
 
@@ -1987,6 +1990,7 @@ public class ActivityReportingServiceImpl
         Calendar fromCalendar = new GregorianCalendar();
         fromCalendar.add( Calendar.DATE, -1 );
         fromCalendar.add( Calendar.YEAR, -100 );
+
         Date fromDate = fromCalendar.getTime();
 
         String searchText = Patient.PREFIX_PROGRAM_EVENT_BY_STATUS + "_" + programId + "_"
@@ -1995,7 +1999,6 @@ public class ActivityReportingServiceImpl
 
         searchTextList.add( searchText );
         orgUnitList.add( organisationUnitService.getOrganisationUnit( orgUnitId ) );
-
         List<Integer> stageInstanceIds = patientService.getProgramStageInstances( searchTextList, orgUnitList,
             followUp, ProgramInstance.STATUS_ACTIVE, null, null );
 
@@ -2011,7 +2014,8 @@ public class ActivityReportingServiceImpl
                     .getProgramStageInstance( stageInstanceId );
                 Patient patient = programStageInstance.getProgramInstance().getPatient();
                 eventsInfo += programStageInstance.getId() + "/" + patient.getName() + ", "
-                    + programStageInstance.getProgramStage().getName() + "(" + formatter.format(programStageInstance.getDueDate()) + ")" + "$";
+                    + programStageInstance.getProgramStage().getName() + "("
+                    + formatter.format( programStageInstance.getDueDate() ) + ")" + "$";
             }
 
             throw new NotAllowedException( eventsInfo );
@@ -2020,6 +2024,7 @@ public class ActivityReportingServiceImpl
         {
             return "";
         }
+
     }
 
     @Override
