@@ -43,6 +43,7 @@
   width: auto;
   height: 29px;
   padding: 0;
+  margin-right: 9px;
   overflow: hidden;
   box-shadow: #f1f1f1 0 1px 1px 0;
 }
@@ -229,11 +230,12 @@
   margin-top: 29px;
   left: 411px;
   width: 498px;
-  max-height: 520px;
+  max-height: 518px;
   overflow-y: auto;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
   border-left: 1px solid #bbb;
+  padding-bottom: 4px;
   background-color: #fff;
   display: none;
   z-index: 5;
