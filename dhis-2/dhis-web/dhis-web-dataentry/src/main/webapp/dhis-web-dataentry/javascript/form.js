@@ -2424,3 +2424,14 @@ function autocompleteOptionSetField( idField, optionSetUid ) {
             input.focus();
         } );
 }
+
+// -----------------------------------------------------------------------------
+// Various
+// -----------------------------------------------------------------------------
+
+function printBlankForm()
+{
+	$( '#contentDiv input, select' ).css( 'display', 'none' );
+	window.print();
+	$( '#contentDiv input, select' ).css( 'display', '' );	
+}
