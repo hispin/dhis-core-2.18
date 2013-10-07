@@ -197,13 +197,10 @@ public class GeoToolsMapGenerationService
             uidOuMap.put( ou.getUid(), ou );
         }
         
-        // Get the name from the external layer
         String name = mapView.getName();
 
-        // Get the period
         Period period = !mapView.getPeriods().isEmpty() ? mapView.getPeriods().get( 0 ) : null;
 
-        // Get the low and high radii
         Integer radiusLow = !isIndicator ? mapView.getRadiusLow() : DEFAULT_RADIUS_LOW;
         Integer radiusHigh = !isIndicator ? mapView.getRadiusHigh() : DEFAULT_RADIUS_HIGH;
 
@@ -213,8 +210,7 @@ public class GeoToolsMapGenerationService
         Color colorHigh = MapUtils.createColorFromString( StringUtils.trimToNull( mapView.getColorHigh() ) != null ? mapView.getColorHigh()
             : DEFAULT_COLOR_HIGH );
 
-        // TODO MapView should be extended to feature opacity
-        float opacity = DEFAULT_OPACITY;
+        Float opacity = mapView.getOpacity() != null ? mapView.getOpacity().floatValue() : DEFAULT_OPACITY;
 
         // TODO MapView should be extended to feature stroke color
         Color strokeColor = MapUtils.createColorFromString( DEFAULT_STROKE_COLOR );
