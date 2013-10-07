@@ -3,7 +3,14 @@ var login = {};
 login.localeCookie = "dhis2.locale";
 
 $( document ).ready( function() {
-	
+
+    var locale = $.cookie( login.localeCookie );
+    
+    if ( undefined !== locale && locale )
+    {
+    	login.changeLocale( locale );
+    }
+    
 } );
 
 function recoverAccount()
@@ -30,4 +37,16 @@ function recoverAccount()
 			$( "#recoveryErrorMessage" ).fadeIn();
 		}
 	} );
+}
+
+
+login.changeLocale = function( locale )
+{		
+	$.get( 'recoveryStrings.action?loc=' + locale, function( json ) {				
+		$('#account_recovery').html( json.account_recovery );
+		$('#label_username').html( json.user_name );
+		$('#recoveryButton').val( json.recover );
+		$('#recoverySuccessMessage').html( json.recover_success_message );
+		$('#recoveryErrorMessage').html( json.recover_error_message );
+	} );	
 }

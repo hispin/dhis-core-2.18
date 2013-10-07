@@ -52,6 +52,13 @@ public class GetStringsFromLocaleAction
         this.loc = loc;
     }
 
+//    private String type;
+//
+//    public void setType( String type )
+//    {
+//        this.type = type;
+//    }
+
     private I18n i18nObject;
 
     public I18n getI18nObject()

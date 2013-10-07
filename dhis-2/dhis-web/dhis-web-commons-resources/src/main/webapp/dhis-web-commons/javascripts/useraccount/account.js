@@ -39,8 +39,19 @@ var validationRules = {
 	}
 };
 
+
+var login = {};
+login.localeCookie = "dhis2.locale";
+
 $( document ).ready( function() {
-	
+
+    var locale = $.cookie( login.localeCookie );
+    
+    if ( undefined !== locale && locale )
+    {
+    	login.changeLocale( locale );
+    }
+    
 	Recaptcha.create( "6LcM6tcSAAAAANwYsFp--0SYtcnze_WdYn8XwMMk", "recaptchaDiv", {
 		theme: "white"
 	} );
@@ -83,4 +94,23 @@ function accountSubmitHandler()
 function reloadRecaptcha()
 {
 	Recaptcha.reload();
+}
+
+login.changeLocale = function( locale )
+{	
+	$.get( 'accountStrings.action?loc=' + locale, function( json ) {
+		$('#create_new_account').html( json.create_new_account );
+		$('#label_firstName').html( json.name );
+		$('#firstName').attr( "placeholder", json.first_name );
+		$('#surname').attr( "placeholder", json.last_name );
+		$('#label_username').html( json.user_name );
+		$('#label_password').html( json.password );
+		$('#label_retypePassword').html( json.confirm_password );
+		$('#label_email').html( json.email );
+		$('#label_mobile_phone').html( json.mobile_phone );
+		$('#label_employer').html( json.employer );
+		$('#label_recaptchaDiv').html( json.prove_not_robot );
+		$('#cant_read_words').html( json.cant_read_words );
+		$('#submitButton').val( json.create );
+	} );	
 }

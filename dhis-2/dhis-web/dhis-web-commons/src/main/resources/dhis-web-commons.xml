@@ -122,6 +122,14 @@
       <result name="success" type="velocity-json">/dhis-web-commons/security/loginStrings.vm</result>
     </action>
 
+    <action name="accountStrings" class="org.hisp.dhis.i18n.action.GetStringsFromLocaleAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/useraccount/accountStrings.vm</result>
+    </action>
+
+    <action name="recoveryStrings" class="org.hisp.dhis.i18n.action.GetStringsFromLocaleAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/useraccount/recoveryStrings.vm</result>
+    </action>
+
     <action name="account" class="org.hisp.dhis.useraccount.action.IsSelfRegistrationAllowedAction">
       <result name="success" type="velocity">/dhis-web-commons/useraccount/account.vm</result>
       <result name="error" type="redirect">login.action</result>

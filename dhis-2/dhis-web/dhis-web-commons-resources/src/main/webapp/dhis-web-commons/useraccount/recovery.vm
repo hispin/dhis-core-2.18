@@ -17,13 +17,13 @@
 
 <div id="accountInput">
 
-<h3>$i18n.getString( "account_recovery" )</h3>
+<h3><span id="account_recovery">$i18n.getString( "account_recovery" )</span></h3>
 
 <form id="recoveryForm">
 
 <table>
     <tr>
-        <td style="width:100px"><label for="username">$i18n.getString( "user_name" )</label></td>
+        <td style="width:100px"><label id="label_username" for="username">$i18n.getString( "user_name" )</label></td>
         <td><input type="text" id="username" name="username" autocomplete="off"></td>
     </tr>
     <tr>
@@ -34,16 +34,10 @@
 
 </form>
 
-<div id="recoverySuccessMessage" style="display:none">
-Please check the email account which you registered for this username. We have 
-sent you instructions on how to restore your password.	
-</div>
+<div id="recoverySuccessMessage" style="display:none">$i18n.getString( 'recover_success_message' )</div>
 
-<div id="recoveryErrorMessage" style="display:none">
-Sorry, we were not able to restore your account. The user name might be invalid, 
-your account might not permit restore or you might have entered an invalid email 
-address for your account.
-</div>
+<div id="recoveryErrorMessage" style="display:none">$i18n.getString( 'recover_error_message' )</div>
+
 
 </div>
 
