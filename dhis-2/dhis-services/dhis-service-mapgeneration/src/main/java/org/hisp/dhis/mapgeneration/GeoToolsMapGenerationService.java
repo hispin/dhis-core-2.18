@@ -272,7 +272,7 @@ public class GeoToolsMapGenerationService
             }
             else
             {
-                mapLayer.applyIntervalSetToMapLayer( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer.getClasses() );
+                mapLayer.setAutomaticIntervalSet( DistributionStrategy.STRATEGY_EQUAL_RANGE, mapLayer.getClasses() );
                 mapLayer.distributeAndUpdateMapObjectsInIntervalSet();
             }
             
