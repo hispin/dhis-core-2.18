@@ -232,9 +232,10 @@ Ext.onReady( function() {
 					pt.viewport.westRegion.hasScrollbar = true;
 				}
 
+                // Expand first panel
 				cmp.dimension.panels[0].expand();
 
-				// Load favorite from url
+                // Look for url params
 				var id = util.url.getUrlParam('id'),
 					session = util.url.getUrlParam('s'),
 					layout;
@@ -2217,7 +2218,9 @@ Ext.onReady( function() {
 	};
 
 	createViewport = function() {
-		var indicatorAvailable,
+        var dimConf = pt.conf.finals.dimension,
+        
+			indicatorAvailable,
 			indicatorSelected,
 			indicator,
 			dataElementAvailable,
@@ -4440,9 +4443,8 @@ Ext.onReady( function() {
 			}
 		});
 
-		setGui = function(layout, updateGui, isFavorite) {
-			var dimConf = pt.conf.finals.dimension,
-				dimensions = [].concat(layout.columns || [], layout.rows || [], layout.filters || []),
+		setGui = function(layout, xLayout, updateGui, isFavorite) {
+			var dimensions = [].concat(layout.columns || [], layout.rows || [], layout.filters || []),
 				dimMap = pt.service.layout.getObjectNameDimensionMap(dimensions),
 				recMap = pt.service.layout.getObjectNameDimensionItemsMap(dimensions),
 				graphMap = layout.parentGraphMap,

@@ -3,7 +3,7 @@ Ext.onReady( function() {
 	// ext config
 	Ext.Ajax.method = 'GET';
 	
-	// pt	
+	// dv	
 	DV = {
 		core: {
 			instances: []
@@ -17,6 +17,7 @@ Ext.onReady( function() {
         var conf = {},
             util = {},
             api = {},
+            service = {},
             engine = {},
             dimConf;
 
@@ -772,6 +773,45 @@ Ext.onReady( function() {
                 }();
             };
         }());
+		
+		// service
+		(function() {
+			service.layout = {};
+			
+			service.layout.getObjectNameDimensionMap = function(dimensionArray) {
+				var map = {};
+				
+				if (Ext.isArray(dimensionArray) && dimensionArray.length) {					
+					for (var i = 0, dim; i < dimensionArray.length; i++) {
+						dim = api.layout.Dimension(dimensionArray[i]);
+						
+						if (dim) {
+							map[dim.dimension] = dim;
+						}
+					}
+				}
+				
+				return map;
+			};				
+			
+			service.layout.getObjectNameDimensionItemsMap = function(dimensionArray) {
+				var map = {};
+				
+				if (Ext.isArray(dimensionArray) && dimensionArray.length) {					
+					for (var i = 0, dim; i < dimensionArray.length; i++) {
+						dim = api.layout.Dimension(dimensionArray[i]);
+						
+						if (dim) {
+							map[dim.dimension] = dim.items;
+						}
+					}
+				}
+				
+				return map;
+			};
+							
+			service.response = {};
+		}());
 
         // engine
         (function() {
@@ -1045,9 +1085,11 @@ Ext.onReady( function() {
                 }
             };
 
-            engine.createChart = function(layout, dv) {
+            engine.createChart = function(layout, dv, updateGui, isFavorite) {
                 var getSyncronizedXLayout,
                     getExtendedResponse,
+                    validateUrl,
+                    
                     getDefaultStore,
                     getDefaultNumericAxis,
                     getDefaultCategoryAxis,
@@ -1057,10 +1099,15 @@ Ext.onReady( function() {
                     getDefaultTargetLine,
                     getDefaultBaseLine,
                     getDefaultTips,
+                    setDefaultTheme,
+                    getDefaultLegend,                    
                     getDefaultChartTitle,
+                    getDefaultChartSizeHandler,
+                    getDefaultChartTitlePositionHandler,
                     getDefaultChart,
-                    validateUrl,
+                    
                     generator = {},
+                    afterLoad,
                     initialize;
 
                 getSyncronizedXLayout = function(xLayout, response) {
@@ -1126,71 +1173,58 @@ Ext.onReady( function() {
                                     userOuc = dv.util.array.sortObjectsByString(userOuc);
                                 }
                                 if (isUserOrgunitGrandChildren) {
-										var userOuOuc = [].concat(dv.init.user.ou, dv.init.user.ouc),
-											responseOu = response.metaData[ou];
+									var userOuOuc = [].concat(dv.init.user.ou, dv.init.user.ouc),
+										responseOu = response.metaData[ou];
 
-										userOugc = [];
+									userOugc = [];
+									
+									for (var j = 0, id; j < responseOu.length; j++) {
+										id = responseOu[j];
 										
-										for (var key in responseOu) {
-											if (responseOu.hasOwnProperty(key) && !Ext.Array.contains(userOuOuc, key)) {
-												userOugc.push({
-													id: key,
-													name: response.metaData.names[key]
-												});
-											}
+										if (!Ext.Array.contains(userOuOuc, id)) {
+											userOugc.push({
+												id: id,
+												name: response.metaData.names[id]
+											});
 										}
-
-										userOugc = dv.util.array.sortObjectsByString(userOugc);
 									}
+
+									userOugc = dv.util.array.sortObjectsByString(userOugc);
+								}
 
                                 dim.items = [].concat(userOu || [], userOuc || [], userOugc || []);
                             }
                             else if (isLevel || isGroup) {
-									var responseOu = response.metaData[ou];
-
-									for (var key in responseOu) {
-										if (responseOu.hasOwnProperty(key)) {
-											dim.items.push({
-												id: key,
-												name: response.metaData.names[key]
-											});
-										}
-									}
-
-									dim.items = dv.util.array.sortObjectsByString(dim.items);
+								for (var j = 0, responseOu = response.metaData[ou], id; j < responseOu.length; j++) {
+									id = responseOu[j];
+									
+									dim.items.push({
+										id: id,
+										name: response.metaData.names[id]
+									});
 								}
-                            else {
-                                dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
-                            }
+
+								dim.items = pt.util.array.sortObjectsByString(dim.items);
+							}
+							else {
+								dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
+							}
                         }
                         else {
                             // Items: get ids from metadata -> items
-                            if (metaDataDim) {
-									var ids = Ext.clone(response.metaData[dim.dimensionName]);
-									
-									if (dim.dimensionName === ou) {
-										for (var key in ids) {
-											if (ids.hasOwnProperty(key)) {
-												dim.items.push({
-													id: key,
-													name: response.metaData.names[key]
-												});
-											}
-										}
-									}
-									else {
-										for (var j = 0; j < ids.length; j++) {
-											dim.items.push({
-												id: ids[j],
-												name: response.metaData.names[ids[j]]
-											});
-										}
-									}
+                            if (Ext.isArray(metaDataDim) && metaDataDim.length) {
+								var ids = Ext.clone(response.metaData[dim.dimensionName]);
+								for (var j = 0; j < ids.length; j++) {
+									dim.items.push({
+										id: ids[j],
+										name: response.metaData.names[ids[j]]
+									});
 								}
-                            // Items: get items from xLayout
-                            else {
-                                dim.items = Ext.clone(xLayout.objectNameItemsMap[dim.objectName]);
-                            }
+							}
+							// Items: get items from xLayout
+							else {
+								dim.items = Ext.clone(xLayout.objectNameItemsMap[dim.objectName]);
+							}
                         }
                     }
 
@@ -1198,7 +1232,7 @@ Ext.onReady( function() {
                     layout = dv.api.layout.Layout(xLayout);
 
                     if (layout) {
-                        dimensions = [].concat(layout.columns, layout.rows, layout.filters);
+                        dimensions = [].concat(layout.columns || [], layout.rows || [], layout.filters || []);
 
                         for (var i = 0, idNameMap = response.metaData.names, dimItems; i < dimensions.length; i++) {
                             dimItems = dimensions[i].items;
@@ -1218,32 +1252,6 @@ Ext.onReady( function() {
                     }
 
                     return null;
-                };
-
-                validateResponse = function(response) {
-                    if (!(response && Ext.isObject(response))) {
-                        alert('Data response invalid');
-                        return false;
-                    }
-
-                    if (!(response.headers && Ext.isArray(response.headers) && response.headers.length)) {
-                        alert('Data response invalid');
-                        return false;
-                    }
-
-                    if (!(Ext.isNumber(response.width) && response.width > 0 &&
-                          Ext.isNumber(response.height) && response.height > 0 &&
-                          Ext.isArray(response.rows) && response.rows.length > 0)) {
-                        alert('No values found');
-                        return false;
-                    }
-
-                    if (response.headers.length !== response.rows[0].length) {
-                        alert('Data response invalid');
-                        return false;
-                    }
-
-                    return true;
                 };
 
                 getExtendedResponse = function(response, xLayout) {
@@ -2196,21 +2204,54 @@ Ext.onReady( function() {
                     return chart;
                 };
 
+				afterLoad = function(layout, xLayout, xResponse) {
+					
+					if (dv.isPlugin) {
+						
+					}
+					else {
+						if (DV.isSessionStorage) {
+							engine.setSessionStorage(layout, 'chart');
+						}
+						
+						if (updateGui) {
+							dv.viewport.setGui(layout, xLayout, updateGui, isFavorite);
+						}
+					}
+
+					// Hide mask
+					util.mask.hideMask(dv.viewport.centerRegion);
+
+					// Add objects to instance
+					dv.layout = layout;
+					dv.xLayout = xLayout;
+					dv.xResponse = xResponse;
+
+					if (DV.isDebug) {
+						console.log("xResponse", xResponse);
+						console.log("xLayout", xLayout);
+						console.log("layout", layout);
+					}
+				};
+
                 initialize = function() {
                     var url,
                         xLayout,
                         xResponse,
                         chart;
 
+					// Extended layout
                     xLayout = engine.getExtendedLayout(layout);
 
                     dv.paramString = engine.getParamString(xLayout, true);
                     url = init.contextPath + '/api/analytics.json' + dv.paramString;
 
+					// Validate request size
                     if (!validateUrl(url)) {
                         return;
                     }
 
+					// Show load mask
                     util.mask.showMask(dv.viewport.centerRegion);
 
                     Ext.Ajax.request({
@@ -2229,56 +2270,39 @@ Ext.onReady( function() {
                         },
                         success: function(r) {
                             var html,
-                                response = Ext.decode(r.responseText);
+								response = dv.api.response.Response(Ext.decode(r.responseText));
 
-                            if (!validateResponse(response)) {
-                                util.mask.hideMask(dv.viewport.centerRegion);
-                                return;
-                            }
+							if (!response) {
+								dv.util.mask.hideMask(dv.viewport.centerRegion);
+								return;
+							}
 
+							// Synchronize xLayout
                             xLayout = getSyncronizedXLayout(xLayout, response);
 
                             if (!xLayout) {
-                                util.mask.hideMask(dv.viewport.centerRegion);
+                                dv.util.mask.hideMask(dv.viewport.centerRegion);
                                 return;
                             }
 
+							// Extended response
                             xResponse = getExtendedResponse(response, xLayout);
 
+							// Create chart
                             chart = generator[xLayout.type](xResponse, xLayout);
 
+							// Update viewport
                             dv.viewport.centerRegion.removeAll(true);
                             dv.viewport.centerRegion.add(chart);
-
-                            // After table success
-                            util.mask.hideMask(dv.viewport.centerRegion);
-
-                            if (dv.viewport.downloadButton) {
-                                dv.viewport.downloadButton.enable();
-                            }
-
-                            // Set session storage
-                            if (DV.isSessionStorage) {
-                                engine.setSessionStorage(layout, 'chart');
-                            }
-
-                            dv.chart = chart;
-                            dv.layout = layout;
-                            dv.xLayout = xLayout;
-                            dv.xResponse = xResponse;
-
-                            if (DV.isDebug) {
-                                console.log("xResponse", xResponse);
-                                console.log("xLayout", xLayout);
-                                console.log("layout", layout);
-                            }
+                            
+                            afterLoad(layout, xLayout, xResponse);
                         }
                     });
 
                 }();
             };
 
-            engine.loadChart = function(id, dv) {
+            engine.loadChart = function(id, dv, updateGui, isFavorite) {
                 var url = init.contextPath + '/api/charts/' + id,
                     params = '?viewClass=dimensional&links=false',
                     method = 'GET',
@@ -2298,7 +2322,7 @@ Ext.onReady( function() {
                         dv.favorite.id = layoutConfig.id;
                         dv.favorite.name = layoutConfig.name;
 
-                        dv.viewport.setFavorite(layout);
+						engine.createChart(layout, dv, updateGui, isFavorite);
                     }
                 };
 
@@ -2405,6 +2429,7 @@ Ext.onReady( function() {
             util: util,
             init: init,
             api: api,
+            service: service,
             engine: engine
         });
 
