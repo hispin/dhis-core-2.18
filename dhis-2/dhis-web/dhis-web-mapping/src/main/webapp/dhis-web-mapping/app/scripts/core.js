@@ -1043,6 +1043,8 @@ Ext.onReady( function() {
 				viewDim,
 				srcIds,
 				srcDim;
+				
+			loader.zoomToVisibleExtent = true;
 
 			if (!src) {
 				if (doExecute) {
@@ -1081,6 +1083,8 @@ Ext.onReady( function() {
 			}
 			
 			// data
+			loader.zoomToVisibleExtent = false;
+			
 			viewIds = [];
 			viewDim = view.columns[0];
 			srcIds = [];
@@ -1139,25 +1143,32 @@ Ext.onReady( function() {
 			}
 			
 			// legend			
-			if (typeof view.legendSet !== typeof src.legendSet) {
-				if (doExecute) {
-					loadLegend(view);
-				}
+			//if (typeof view.legendSet !== typeof src.legendSet) {
+				//if (doExecute) {
+					//loadLegend(view);
+				//}
+				//return gis.conf.finals.widget.loadtype_legend;
+			//}
+			//else if (view.classes !== src.classes ||
+				//view.method !== src.method ||
+				//view.colorLow !== src.colorLow ||
+				//view.radiusLow !== src.radiusLow ||
+				//view.colorHigh !== src.colorHigh ||
+				//view.radiusHigh !== src.radiusHigh) {
+					//if (doExecute) {
+						//loadLegend(view);
+					//}
+					//return gis.conf.finals.widget.loadtype_legend;
+			//}
+			
+			// if no changes - reload legend but do not zoom
+			if (doExecute) {
+				loader.zoomToVisibleExtent = false;
+				loadLegend(view);
 				return gis.conf.finals.widget.loadtype_legend;
 			}
-			else if (view.classes !== src.classes ||
-				view.method !== src.method ||
-				view.colorLow !== src.colorLow ||
-				view.radiusLow !== src.radiusLow ||
-				view.colorHigh !== src.colorHigh ||
-				view.radiusHigh !== src.radiusHigh) {
-					if (doExecute) {
-						loadLegend(view);
-					}
-					return gis.conf.finals.widget.loadtype_legend;
-			}
 
-			gis.olmap.mask.hide();
+			//gis.olmap.mask.hide();
 		};
 
 		loadOrganisationUnits = function(view) {
@@ -1335,7 +1346,7 @@ Ext.onReady( function() {
 				}
 								
 				// Period name without changing the id
-				view.filters[0].items[0].name = metaData.names[gis.response.metaData['pe'][0]];
+				view.filters[0].items[0].name = metaData.names[gis.response.metaData[dimConf.period.objectName][0]];
 			};
 			
 			fn = function() {
@@ -1482,7 +1493,13 @@ Ext.onReady( function() {
 			loader;
 
 		compareView = function(view, doExecute) {
-			var src = layer.core.view;
+			var src = layer.core.view,
+				viewIds,
+				viewDim,
+				srcIds,
+				srcDim;
+				
+			loader.zoomToVisibleExtent = true;
 
 			if (!src) {
 				if (doExecute) {
@@ -1490,6 +1507,38 @@ Ext.onReady( function() {
 				}
 				return gis.conf.finals.widget.loadtype_organisationunit;
 			}
+			
+			// organisation units
+			viewIds = [];
+			viewDim = view.rows[0];
+			srcIds = [];
+			srcDim = src.rows[0];
+				
+			if (viewDim.items.length === srcDim.items.length) {
+				for (var i = 0; i < viewDim.items.length; i++) {
+					viewIds.push(viewDim.items[i].id);
+				}
+				
+				for (var i = 0; i < srcDim.items.length; i++) {
+					srcIds.push(srcDim.items[i].id);
+				}
+				
+				if (Ext.Array.difference(viewIds, srcIds).length !== 0) {
+					if (doExecute) {
+						loadOrganisationUnits(view);
+					}
+					return gis.conf.finals.widget.loadtype_organisationunit;
+				}
+			}
+			else {
+				if (doExecute) {
+					loadOrganisationUnits(view);
+				}
+				return gis.conf.finals.widget.loadtype_organisationunit;
+			}
+			
+			// Group set
+			loader.zoomToVisibleExtent = false;
 
 			if (view.organisationUnitGroupSet.id !== src.organisationUnitGroupSet.id) {
 				if (doExecute) {
@@ -1498,28 +1547,20 @@ Ext.onReady( function() {
 				return gis.conf.finals.widget.loadtype_organisationunit;
 			}
 
-			if (view.organisationUnitLevel.id !== src.organisationUnitLevel.id) {
-				if (doExecute) {
-					loadOrganisationUnits(view);
-				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
-			}
-
-			if (view.parentOrganisationUnit.id !== src.parentOrganisationUnit.id) {
-				if (doExecute) {
-					loadOrganisationUnits(view);
-				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
-			}
-
-			if (view.areaRadius !== src.areaRadius) {
-				if (doExecute) {
-					loadLegend(view);
-				}
+			//if (view.areaRadius !== src.areaRadius) {
+				//if (doExecute) {
+					//loadLegend(view);
+				//}
+				//return gis.conf.finals.widget.loadtype_legend;
+			//}
+			
+			// always reload legend			
+			if (doExecute) {
+				loadLegend(view);
 				return gis.conf.finals.widget.loadtype_legend;
 			}
 
-			gis.olmap.mask.hide();
+			//gis.olmap.mask.hide();
 		};
 
 		loadOrganisationUnits = function(view) {

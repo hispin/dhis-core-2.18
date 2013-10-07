@@ -2,28 +2,16 @@ Ext.onReady( function() {
 
 	// ext config
 	Ext.Ajax.method = 'GET';
-
-	// namespace
-	if (!('DV' in window)) {
-		DV = {
-			i18n: {
-                trend: 'Trend',
-                target: 'Target',
-                base: 'Base'
-            }
-		};
-	}
-
-	// mode
-	DV.isDebug = false;
-
-	// html5
-	DV.isSessionStorage = 'sessionStorage' in window && window['sessionStorage'] !== null;
-
-	// core
-
-	DV.core = {};
-	DV.core.instances = [];
+	
+	// pt	
+	DV = {
+		core: {
+			instances: []
+		},		
+		i18n: {},		
+		isDebug: false,		
+		isSessionStorage: 'sessionStorage' in window && window['sessionStorage'] !== null
+	};
 
 	DV.core.getInstance = function(init) {
         var conf = {},
@@ -1138,51 +1126,67 @@ Ext.onReady( function() {
                                     userOuc = dv.util.array.sortObjectsByString(userOuc);
                                 }
                                 if (isUserOrgunitGrandChildren) {
-                                    var userOuOuc = [].concat(dv.init.user.ou, dv.init.user.ouc),
-                                        responseOu = response.metaData.ou;
+										var userOuOuc = [].concat(dv.init.user.ou, dv.init.user.ouc),
+											responseOu = response.metaData[ou];
 
-                                    userOugc = [];
+										userOugc = [];
+										
+										for (var key in responseOu) {
+											if (responseOu.hasOwnProperty(key) && !Ext.Array.contains(userOuOuc, key)) {
+												userOugc.push({
+													id: key,
+													name: response.metaData.names[key]
+												});
+											}
+										}
 
-                                    for (var j = 0; j < responseOu.length; j++) {
-                                        if (!Ext.Array.contains(userOuOuc, responseOu[j])) {
-                                            userOugc.push({
-                                                id: responseOu[j],
-                                                name: response.metaData.names[responseOu[j]]
-                                            });
-                                        }
-                                    }
-
-                                    userOugc = dv.util.array.sortObjectsByString(userOugc);
-                                }
+										userOugc = dv.util.array.sortObjectsByString(userOugc);
+									}
 
                                 dim.items = [].concat(userOu || [], userOuc || [], userOugc || []);
                             }
                             else if (isLevel || isGroup) {
-                                var responseOu = response.metaData.ou;
+									var responseOu = response.metaData[ou];
 
-                                for (var j = 0; j < responseOu.length; j++) {
-                                    dim.items.push({
-                                        id: responseOu[j],
-                                        name: response.metaData.names[responseOu[j]]
-                                    });
-                                }
+									for (var key in responseOu) {
+										if (responseOu.hasOwnProperty(key)) {
+											dim.items.push({
+												id: key,
+												name: response.metaData.names[key]
+											});
+										}
+									}
 
-                                dim.items = dv.util.array.sortObjectsByString(dim.items);
-                            }
+									dim.items = dv.util.array.sortObjectsByString(dim.items);
+								}
                             else {
                                 dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
                             }
                         }
                         else {
                             // Items: get ids from metadata -> items
-                            if (Ext.isArray(metaDataDim)) {
-                                for (var j = 0, ids = Ext.clone(response.metaData[dim.dimensionName]); j < ids.length; j++) {
-                                    dim.items.push({
-                                        id: ids[j],
-                                        name: response.metaData.names[ids[j]]
-                                    });
-                                }
-                            }
+                            if (metaDataDim) {
+									var ids = Ext.clone(response.metaData[dim.dimensionName]);
+									
+									if (dim.dimensionName === ou) {
+										for (var key in ids) {
+											if (ids.hasOwnProperty(key)) {
+												dim.items.push({
+													id: key,
+													name: response.metaData.names[key]
+												});
+											}
+										}
+									}
+									else {
+										for (var j = 0; j < ids.length; j++) {
+											dim.items.push({
+												id: ids[j],
+												name: response.metaData.names[ids[j]]
+											});
+										}
+									}
+								}
                             // Items: get items from xLayout
                             else {
                                 dim.items = Ext.clone(xLayout.objectNameItemsMap[dim.objectName]);

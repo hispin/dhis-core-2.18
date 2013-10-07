@@ -103,6 +103,8 @@ Ext.onReady(function() {
 			Ext.data.JsonP.request({
 				url: config.url + '/dhis-web-pivot/initialize.action',
 				success: function(r) {
+					PT.i18n = r.i18n;
+					
 					pt = PT.core.getInstance(r);
                     extendInstance(pt);
 
