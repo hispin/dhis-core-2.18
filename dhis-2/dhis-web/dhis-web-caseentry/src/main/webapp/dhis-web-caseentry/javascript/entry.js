@@ -15,15 +15,12 @@ function saveVal( dataElementUid )
 
     var fieldValue = jQuery.trim( field.value );
     var arrData = jQuery( "#" + fieldId ).attr( 'data' ).replace( '{', '' ).replace( '}', '' ).replace( /'/g, "" ).split( ',' );
-    var data = new Array();
+    var data = [];
 
-    for ( var i in arrData ) {
-        var values = arrData[i].split( ':' );
-        var key = jQuery.trim( values[0] );
-        var value = jQuery.trim( values[1] );
-
-        data[key] = value;
-    }
+    $.each(arrData, function() {
+        var values = $.trimArray(this.split(':'));
+        data[values[0]] = values[1];
+    });
 
     var dataElementName = data['deName'];
     var type = data['deType'];
