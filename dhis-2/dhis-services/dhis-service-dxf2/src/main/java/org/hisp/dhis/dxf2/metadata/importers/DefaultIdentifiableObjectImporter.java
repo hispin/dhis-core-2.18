@@ -808,10 +808,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
             }
 
-            if ( !options.isDryRun() )
-            {
-                ReflectionUtils.invokeSetterMethod( field.getName(), object, reference );
-            }
+            // if ( !options.isDryRun() ) { }
+            // TODO why do we have to invoke the setter on dryRun?
+            ReflectionUtils.invokeSetterMethod( field.getName(), object, reference );
         }
     }
 
