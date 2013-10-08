@@ -138,8 +138,13 @@ final public class ExchangeClasses
 
         allExportClasses.put( DataDictionary.class, "dataDictionaries" );
 
+        allExportClasses.put( User.class, "users" );
+        allExportClasses.put( UserGroup.class, "userGroups" );
+
         allExportClasses.put( DataSet.class, "dataSets" );
         allExportClasses.put( Section.class, "sections" );
+
+        allExportClasses.put( UserAuthorityGroup.class, "userRoles" );
 
         allExportClasses.put( ReportTable.class, "reportTables" );
         allExportClasses.put( Report.class, "reports" );
@@ -152,10 +157,6 @@ final public class ExchangeClasses
 
         allExportClasses.put( MapView.class, "mapViews" );
         allExportClasses.put( org.hisp.dhis.mapping.Map.class, "maps" );
-
-        allExportClasses.put( UserAuthorityGroup.class, "userRoles" );
-        allExportClasses.put( User.class, "users" );
-        allExportClasses.put( UserGroup.class, "userGroups" );
 
         allExportClasses.put( MessageConversation.class, "messageConversations" );
         allExportClasses.put( Interpretation.class, "interpretations" );

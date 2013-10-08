@@ -61,9 +61,7 @@ import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;

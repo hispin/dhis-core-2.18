@@ -200,16 +200,6 @@ public class User
         return userCredentials != null ? userCredentials.getUsername() : null;
     }
 
-    public void removeAllOrganisationUnits()
-    {
-        organisationUnits.clear();
-    }
-
-    public void removeAllAttributeValues()
-    {
-        attributeValues.clear();
-    }
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -474,10 +464,10 @@ public class User
             phoneNumber = user.getPhoneNumber() == null ? phoneNumber : user.getPhoneNumber();
             userCredentials = user.getUserCredentials() == null ? userCredentials : user.getUserCredentials();
 
-            removeAllAttributeValues();
+            attributeValues.clear();
             attributeValues.addAll( user.getAttributeValues() );
 
-            removeAllOrganisationUnits();
+            organisationUnits.clear();
             organisationUnits.addAll( user.getOrganisationUnits() );
         }
     }
