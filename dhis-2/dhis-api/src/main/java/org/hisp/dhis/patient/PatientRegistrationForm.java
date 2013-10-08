@@ -28,8 +28,6 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.program.Program;
@@ -43,25 +41,28 @@ public class PatientRegistrationForm
     private static final long serialVersionUID = -6000530171659755186L;
 
     public static String FIXED_ATTRIBUTE_FULLNAME = "fullName";
+
     public static String FIXED_ATTRIBUTE_GENDER = "gender";
+
     public static String FIXED_ATTRIBUTE_BIRTHDATE = "birthDate";
+
     public static String FIXED_ATTRIBUTE_AGE = "age";
+
     public static String FIXED_ATTRIBUTE_PHONE_NUMBER = "phoneNumber";
+
     public static String FIXED_ATTRIBUTE_DEATH_DATE = "deathDate";
+
     public static String FIXED_ATTRIBUTE_REGISTRATION_DATE = "registrationDate";
+
     public static String FIXED_ATTRIBUTE_IS_DEAD = "isDead";
+
     public static String FIXED_ATTRIBUTE_DOB_TYPE = "dobType";
+
     public static String FIXED_ATTRIBUTE_HEALTH_WORKER = "healthWorker";
 
     private Program program;
 
     private DataEntryForm dataEntryForm;
-
-    private List<String> fixedAttributes;
-
-    private List<PatientAttribute> dynamicAttributes;
-
-    private List<PatientIdentifierType> identifierTypes;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -77,8 +78,8 @@ public class PatientRegistrationForm
         this.dataEntryForm = dataEntryForm;
     }
 
-    //TODO implement hashcode and equals
-    
+    // TODO implement hashcode and equals
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -101,36 +102,6 @@ public class PatientRegistrationForm
     public void setDataEntryForm( DataEntryForm dataEntryForm )
     {
         this.dataEntryForm = dataEntryForm;
-    }
-
-    public List<String> getFixedAttributes()
-    {
-        return fixedAttributes;
-    }
-
-    public void setFixedAttributes( List<String> fixedAttributes )
-    {
-        this.fixedAttributes = fixedAttributes;
-    }
-
-    public List<PatientAttribute> getDynamicAttributes()
-    {
-        return dynamicAttributes;
-    }
-
-    public void setDynamicAttributes( List<PatientAttribute> dynamicAttributes )
-    {
-        this.dynamicAttributes = dynamicAttributes;
-    }
-
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
-
-    public void setIdentifierTypes( List<PatientIdentifierType> identifierTypes )
-    {
-        this.identifierTypes = identifierTypes;
     }
 
 }

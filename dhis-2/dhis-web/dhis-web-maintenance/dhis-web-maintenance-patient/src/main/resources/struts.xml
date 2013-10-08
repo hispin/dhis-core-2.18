@@ -623,24 +623,6 @@
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
-
-		<action name="showDefaultPatientRegistrationForm"
-			class="org.hisp.dhis.patient.action.dataentryform.ShowDefaultPatientRegistrationFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/defaultPatientRegistationForm.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/ckeditor/ckeditor.js,
-				../dhis-web-commons/ckeditor/adapters/jquery.js,
-				javascript/patientRegistationForm.js
-			</param>
-			<param name="stylesheets">style/basic.css</param>
-		</action>
-		
-		<action name="saveDefaultPatientRegistrationForm"
-			class="org.hisp.dhis.patient.action.dataentryform.SaveDefaultPatientRegistrationFormAcion">
-			<result name="success" type="redirect">patientRegistrationForm.action
-			</result>
-		</action>
 		
 		<!-- Patient Attribute Group -->
 
