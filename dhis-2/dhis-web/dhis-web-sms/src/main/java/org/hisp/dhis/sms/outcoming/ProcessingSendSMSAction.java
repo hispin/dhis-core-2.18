@@ -198,7 +198,6 @@ public class ProcessingSendSMSAction
         }
         else if ( sendTarget.equals( "userGroup" ) )
         {
-
             UserGroup group = userGroupService.getUserGroup( userGroup );
 
             if ( group == null )
@@ -271,6 +270,11 @@ public class ProcessingSendSMSAction
         {
             message = i18n.getString( message );
 
+            return ERROR;
+        }
+        if ( message == null )
+        {
+            message = "An inter error occurs, please contact your administration";
             return ERROR;
         }
 
