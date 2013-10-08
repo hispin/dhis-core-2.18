@@ -50,7 +50,8 @@ import org.junit.Test;
  */
 public class GridTest
 {
-    private Grid grid;
+    private Grid gridA;
+    private Grid gridB;
     
     private GridHeader headerA;
     private GridHeader headerB;
@@ -59,35 +60,49 @@ public class GridTest
     @Before
     public void setUp()
     {
-        grid = new ListGrid();
+        gridA = new ListGrid();
+        gridB = new ListGrid();
         
         headerA = new GridHeader( "ColA", "colA", String.class.getName(), false, true );
         headerB = new GridHeader( "ColB", "colB", String.class.getName(), false, true );
         headerC = new GridHeader( "ColC", "colC", String.class.getName(), true, false );
         
-        grid.addHeader( headerA );
-        grid.addHeader( headerB );
-        grid.addHeader( headerC );
+        gridA.addHeader( headerA );
+        gridA.addHeader( headerB );
+        gridA.addHeader( headerC );
         
-        grid.addRow();        
-        grid.addValue( 11 );
-        grid.addValue( 12 );
-        grid.addValue( 13 );
+        gridA.addRow();        
+        gridA.addValue( 11 );
+        gridA.addValue( 12 );
+        gridA.addValue( 13 );
 
-        grid.addRow();        
-        grid.addValue( 21 );
-        grid.addValue( 22 );
-        grid.addValue( 23 );
+        gridA.addRow();        
+        gridA.addValue( 21 );
+        gridA.addValue( 22 );
+        gridA.addValue( 23 );
 
-        grid.addRow();        
-        grid.addValue( 31 );
-        grid.addValue( 32 );
-        grid.addValue( 33 );
+        gridA.addRow();        
+        gridA.addValue( 31 );
+        gridA.addValue( 32 );
+        gridA.addValue( 33 );
 
-        grid.addRow();        
-        grid.addValue( 41 );
-        grid.addValue( 42 );
-        grid.addValue( 43 );
+        gridA.addRow();        
+        gridA.addValue( 41 );
+        gridA.addValue( 42 );
+        gridA.addValue( 43 );
+
+        gridB.addRow();        
+        gridB.addValue( 11 );
+        gridB.addValue( 12 );
+        gridB.addValue( 13 );
+    }
+    
+    @Test
+    public void testAddGrid()
+    {
+        gridA.addRows( gridB );
+        
+        assertEquals( 5, gridA.getHeight() );
     }
     
     @Test
@@ -99,42 +114,42 @@ public class GridTest
         metaData.put( 21, "TwentyOne" );
         metaData.put( 22, "TwentyTwo" );
                 
-        assertEquals( 11, grid.getValue( 0, 0 ) );
-        assertEquals( 12, grid.getValue( 0, 1 ) );
-        assertEquals( 21, grid.getValue( 1, 0 ) );
-        assertEquals( 22, grid.getValue( 1, 1 ) );
+        assertEquals( 11, gridA.getValue( 0, 0 ) );
+        assertEquals( 12, gridA.getValue( 0, 1 ) );
+        assertEquals( 21, gridA.getValue( 1, 0 ) );
+        assertEquals( 22, gridA.getValue( 1, 1 ) );
         
-        grid.substituteMetaData( metaData );
+        gridA.substituteMetaData( metaData );
 
-        assertEquals( "Eleven", grid.getValue( 0, 0 ) );
-        assertEquals( "Twelve", grid.getValue( 0, 1 ) );
-        assertEquals( "TwentyOne", grid.getValue( 1, 0 ) );
-        assertEquals( "TwentyTwo", grid.getValue( 1, 1 ) );
+        assertEquals( "Eleven", gridA.getValue( 0, 0 ) );
+        assertEquals( "Twelve", gridA.getValue( 0, 1 ) );
+        assertEquals( "TwentyOne", gridA.getValue( 1, 0 ) );
+        assertEquals( "TwentyTwo", gridA.getValue( 1, 1 ) );
     }
     
     @Test
     public void testGetHeight()
     {
-        assertEquals( 4, grid.getHeight() );
+        assertEquals( 4, gridA.getHeight() );
     }
     
     @Test
     public void testGetWidth()
     {
-        assertEquals( 3, grid.getWidth() );
+        assertEquals( 3, gridA.getWidth() );
     }
         
     @Test
     public void testGetRow()
     {
-        List<Object> rowA = grid.getRow( 0 );
+        List<Object> rowA = gridA.getRow( 0 );
         
         assertTrue( rowA.size() == 3 );
         assertTrue( rowA.contains( 11 ) );
         assertTrue( rowA.contains( 12 ) );
         assertTrue( rowA.contains( 13 ) );
         
-        List<Object> rowB = grid.getRow( 1 );
+        List<Object> rowB = gridA.getRow( 1 );
         
         assertTrue( rowB.size() == 3 );
         assertTrue( rowB.contains( 21 ) );
@@ -145,38 +160,38 @@ public class GridTest
     @Test
     public void testGetHeaders()
     {
-        assertEquals( 3, grid.getHeaders().size() );
+        assertEquals( 3, gridA.getHeaders().size() );
     }
     
     @Test
     public void tetsGetVisibleHeaders()
     {
-        assertEquals( 2, grid.getVisibleHeaders().size() );
-        assertTrue( grid.getVisibleHeaders().contains( headerA ) );
-        assertTrue( grid.getVisibleHeaders().contains( headerB ) );
+        assertEquals( 2, gridA.getVisibleHeaders().size() );
+        assertTrue( gridA.getVisibleHeaders().contains( headerA ) );
+        assertTrue( gridA.getVisibleHeaders().contains( headerB ) );
     }
 
     @Test
     public void testGetRows()
     {
-        assertEquals( 4, grid.getRows().size() );
-        assertEquals( 3, grid.getWidth() );
+        assertEquals( 4, gridA.getRows().size() );
+        assertEquals( 3, gridA.getWidth() );
     }
 
     @Test
     public void testGetGetVisibleRows()
     {
-        assertEquals( 4, grid.getVisibleRows().size() );
-        assertEquals( 2, grid.getVisibleRows().get( 0 ).size() );
-        assertEquals( 2, grid.getVisibleRows().get( 1 ).size() );
-        assertEquals( 2, grid.getVisibleRows().get( 2 ).size() );
-        assertEquals( 2, grid.getVisibleRows().get( 3 ).size() );
+        assertEquals( 4, gridA.getVisibleRows().size() );
+        assertEquals( 2, gridA.getVisibleRows().get( 0 ).size() );
+        assertEquals( 2, gridA.getVisibleRows().get( 1 ).size() );
+        assertEquals( 2, gridA.getVisibleRows().get( 2 ).size() );
+        assertEquals( 2, gridA.getVisibleRows().get( 3 ).size() );
     }
     
     @Test
     public void testGetColumn()
     {        
-        List<Object> column1 = grid.getColumn( 1 );
+        List<Object> column1 = gridA.getColumn( 1 );
         
         assertEquals( 4, column1.size() );
         assertTrue( column1.contains( 12 ) );
@@ -184,7 +199,7 @@ public class GridTest
         assertTrue( column1.contains( 32 ) );
         assertTrue( column1.contains( 42 ) );
 
-        List<Object> column2 = grid.getColumn( 2 );
+        List<Object> column2 = gridA.getColumn( 2 );
         
         assertEquals( 4, column2.size() );
         assertTrue( column2.contains( 13 ) );
@@ -202,9 +217,9 @@ public class GridTest
         columnValues.add( 34 );
         columnValues.add( 44 );
         
-        grid.addColumn( columnValues );
+        gridA.addColumn( columnValues );
         
-        List<Object> column3 = grid.getColumn( 3 );
+        List<Object> column3 = gridA.getColumn( 3 );
         
         assertEquals( 4, column3.size() );
         assertTrue( column3.contains( 14 ) );
@@ -212,7 +227,7 @@ public class GridTest
         assertTrue( column3.contains( 34 ) );
         assertTrue( column3.contains( 44 ) );
         
-        List<Object> row2 = grid.getRow( 1 );
+        List<Object> row2 = gridA.getRow( 1 );
         
         assertEquals( 4, row2.size() );
         assertTrue( row2.contains( 21 ) );
@@ -224,70 +239,70 @@ public class GridTest
     @Test
     public void testRemoveColumn()
     {
-        assertEquals( 3, grid.getWidth() );
+        assertEquals( 3, gridA.getWidth() );
         
-        grid.removeColumn( 2 );
+        gridA.removeColumn( 2 );
         
-        assertEquals( 2, grid.getWidth() );
+        assertEquals( 2, gridA.getWidth() );
     }
     
     @Test
     public void testRemoveColumnByHeader()
     {
-        assertEquals( 3, grid.getWidth() );
+        assertEquals( 3, gridA.getWidth() );
         
-        grid.removeColumn( headerB );
+        gridA.removeColumn( headerB );
         
-        assertEquals( 2, grid.getWidth() );
+        assertEquals( 2, gridA.getWidth() );
     }
 
     @Test
     public void testLimit()
     {
-        assertEquals( 4, grid.getRows().size() );
+        assertEquals( 4, gridA.getRows().size() );
         
-        grid.limitGrid( 2 );
+        gridA.limitGrid( 2 );
         
-        assertEquals( 2, grid.getRows().size() );
+        assertEquals( 2, gridA.getRows().size() );
         
-        List<Object> rowA = grid.getRow( 0 );
+        List<Object> rowA = gridA.getRow( 0 );
         assertTrue( rowA.contains( 11 ) );
 
-        List<Object> rowB = grid.getRow( 1 );        
+        List<Object> rowB = gridA.getRow( 1 );        
         assertTrue( rowB.contains( 21 ) );
         
-        grid.limitGrid( 0 );
+        gridA.limitGrid( 0 );
         
-        assertEquals( 2, grid.getRows().size() );
+        assertEquals( 2, gridA.getRows().size() );
     }
     
     @Test
     public void testLimitShortList()
     {
-        assertEquals( 4, grid.getRows().size() );
+        assertEquals( 4, gridA.getRows().size() );
         
-        grid.limitGrid( 6 );
+        gridA.limitGrid( 6 );
         
-        assertEquals( 4, grid.getRows().size() );
+        assertEquals( 4, gridA.getRows().size() );
 
-        grid.limitGrid( 4 );
+        gridA.limitGrid( 4 );
         
-        assertEquals( 4, grid.getRows().size() );
+        assertEquals( 4, gridA.getRows().size() );
     }
     
     @Test
     public void testLimits()
     {
-        assertEquals( 4, grid.getRows().size() );
+        assertEquals( 4, gridA.getRows().size() );
         
-        grid.limitGrid( 1, 3 );
+        gridA.limitGrid( 1, 3 );
         
-        assertEquals( 2, grid.getRows().size() );
+        assertEquals( 2, gridA.getRows().size() );
 
-        List<Object> rowA = grid.getRow( 0 );
+        List<Object> rowA = gridA.getRow( 0 );
         assertTrue( rowA.contains( 21 ) );
 
-        List<Object> rowB = grid.getRow( 1 );        
+        List<Object> rowB = gridA.getRow( 1 );        
         assertTrue( rowB.contains( 31 ) );        
     }
     
@@ -451,20 +466,20 @@ public class GridTest
     @Test
     public void testAddRegressionColumn()
     {
-        grid = new ListGrid();
+        gridA = new ListGrid();
 
-        grid.addRow();        
-        grid.addValue( 10.0 );
-        grid.addRow();        
-        grid.addValue( 50.0 );
-        grid.addRow();        
-        grid.addValue( 20.0 );
-        grid.addRow();        
-        grid.addValue( 60.0 );
+        gridA.addRow();        
+        gridA.addValue( 10.0 );
+        gridA.addRow();        
+        gridA.addValue( 50.0 );
+        gridA.addRow();        
+        gridA.addValue( 20.0 );
+        gridA.addRow();        
+        gridA.addValue( 60.0 );
         
-        grid.addRegressionColumn( 0, true );
+        gridA.addRegressionColumn( 0, true );
         
-        List<Object> column = grid.getColumn( 1 );
+        List<Object> column = gridA.getColumn( 1 );
         
         assertTrue( column.size() == 4 );
         assertTrue( column.contains( 17.0 ) );
@@ -476,20 +491,20 @@ public class GridTest
     @Test
     public void testAddCumulativeColumn()
     {
-        grid = new ListGrid();
+        gridA = new ListGrid();
 
-        grid.addRow();        
-        grid.addValue( 10.0 );
-        grid.addRow();        
-        grid.addValue( 50.0 );
-        grid.addRow();        
-        grid.addValue( 20.0 );
-        grid.addRow();        
-        grid.addValue( 60.0 );
+        gridA.addRow();        
+        gridA.addValue( 10.0 );
+        gridA.addRow();        
+        gridA.addValue( 50.0 );
+        gridA.addRow();        
+        gridA.addValue( 20.0 );
+        gridA.addRow();        
+        gridA.addValue( 60.0 );
         
-        grid.addCumulativeColumn( 0, true );
+        gridA.addCumulativeColumn( 0, true );
 
-        List<Object> column = grid.getColumn( 1 );
+        List<Object> column = gridA.getColumn( 1 );
         
         assertTrue( column.size() == 4 );
         assertTrue( column.contains( 10.0 ) );
@@ -501,27 +516,27 @@ public class GridTest
     @Test
     public void testJRDataSource() throws Exception
     {
-        assertTrue( grid.next() );
-        assertEquals( 11, grid.getFieldValue( new MockJRField( "colA" ) ) );
-        assertEquals( 12, grid.getFieldValue( new MockJRField( "colB" ) ) );
-        assertEquals( 13, grid.getFieldValue( new MockJRField( "colC" ) ) );
+        assertTrue( gridA.next() );
+        assertEquals( 11, gridA.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( 12, gridA.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( 13, gridA.getFieldValue( new MockJRField( "colC" ) ) );
 
-        assertTrue( grid.next() );
-        assertEquals( 21, grid.getFieldValue( new MockJRField( "colA" ) ) );
-        assertEquals( 22, grid.getFieldValue( new MockJRField( "colB" ) ) );
-        assertEquals( 23, grid.getFieldValue( new MockJRField( "colC" ) ) );
+        assertTrue( gridA.next() );
+        assertEquals( 21, gridA.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( 22, gridA.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( 23, gridA.getFieldValue( new MockJRField( "colC" ) ) );
 
-        assertTrue( grid.next() );
-        assertEquals( 31, grid.getFieldValue( new MockJRField( "colA" ) ) );
-        assertEquals( 32, grid.getFieldValue( new MockJRField( "colB" ) ) );
-        assertEquals( 33, grid.getFieldValue( new MockJRField( "colC" ) ) );
+        assertTrue( gridA.next() );
+        assertEquals( 31, gridA.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( 32, gridA.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( 33, gridA.getFieldValue( new MockJRField( "colC" ) ) );
 
-        assertTrue( grid.next() );
-        assertEquals( 41, grid.getFieldValue( new MockJRField( "colA" ) ) );
-        assertEquals( 42, grid.getFieldValue( new MockJRField( "colB" ) ) );
-        assertEquals( 43, grid.getFieldValue( new MockJRField( "colC" ) ) );
+        assertTrue( gridA.next() );
+        assertEquals( 41, gridA.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( 42, gridA.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( 43, gridA.getFieldValue( new MockJRField( "colC" ) ) );
         
-        assertFalse( grid.next() );
+        assertFalse( gridA.next() );
     }
     
     private static List<Object> getList( Object... items )
