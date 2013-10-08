@@ -44,6 +44,8 @@ public interface PatientAggregateReportService
     void updatePatientAggregateReport( PatientAggregateReport patientAggregateReport );
 
     PatientAggregateReport getPatientAggregateReport( int id );
+    
+    PatientAggregateReport getPatientAggregateReportByUid( String uid );
 
     PatientAggregateReport getPatientAggregateReport( String name );
     

@@ -31,16 +31,13 @@ package org.hisp.dhis.patientreport;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -60,23 +57,9 @@ public class PatientTabularReport
 {
     private static final long serialVersionUID = -2880334669266185058L;
 
-    public static String PREFIX_EXECUTION_DATE = "executiondate";
+    public static String CASE_BASED_REPORT = "caseBasedReport";
 
-    public static String PREFIX_ORGUNIT = "orgunit";
-
-    public static String PREFIX_META_DATA = "meta";
-
-    public static String PREFIX_IDENTIFIER_TYPE = "iden";
-
-    public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";
-
-    public static String PREFIX_PATIENT_ATTRIBUTE = "attr";
-
-    public static String PREFIX_DATA_ELEMENT = "de";
-
-    public static String PREFIX_NUMBER_DATA_ELEMENT = "numberDe";
-
-    public static String VALUE_TYPE_OPTION_SET = "optionSet";
+    public static String AGGREGATE_REPORT = "aggregateReport";
 
     private Program program;
 
@@ -86,19 +69,9 @@ public class PatientTabularReport
 
     private Date endDate;
 
-    private Set<OrganisationUnit> organisationUnits;
+    private List<String> dimension = new ArrayList<String>();
 
-    private List<String> items = new ArrayList<String>();
-
-    private String sortByAsc;
-
-    private String sortByDesc;
-
-    private User user;
-
-    private int level;
-
-    private String facilityLB;
+    private String ouMode;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -143,33 +116,17 @@ public class PatientTabularReport
         this.endDate = endDate;
     }
 
-    @JsonProperty( value = "organisationUnits" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
-    public Set<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
-    {
-        this.organisationUnits = organisationUnits;
-    }
-
-    @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
-    public List<String> getItems()
+    public List<String> getDimension()
     {
-        return items;
+        return dimension;
     }
 
-    public void setItems( List<String> items )
+    public void setDimension( List<String> dimension )
     {
-        this.items = items;
+        this.dimension = dimension;
     }
 
     @JsonProperty
@@ -184,47 +141,6 @@ public class PatientTabularReport
     public void setProgram( Program program )
     {
         this.program = program;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getSortByAsc()
-    {
-        return sortByAsc;
-    }
-
-    public void setSortByAsc( String sortByAsc )
-    {
-        this.sortByAsc = sortByAsc;
-    }
-    
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getSortByDesc()
-    {
-        return sortByDesc;
-    }
-
-    public void setSortByDesc( String sortByDesc )
-    {
-        this.sortByDesc = sortByDesc;
-    }
-
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "users", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "user", namespace = DxfNamespaces.DXF_2_0 )
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser( User user )
-    {
-        this.user = user;
     }
 
     @JsonProperty
@@ -244,27 +160,14 @@ public class PatientTabularReport
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public int getLevel()
+    public String getOuMode()
     {
-        return level;
+        return ouMode;
     }
 
-    public void setLevel( int level )
+    public void setOuMode( String ouMode )
     {
-        this.level = level;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getFacilityLB()
-    {
-        return facilityLB;
-    }
-
-    public void setFacilityLB( String facilityLB )
-    {
-        this.facilityLB = facilityLB;
+        this.ouMode = ouMode;
     }
 
 }

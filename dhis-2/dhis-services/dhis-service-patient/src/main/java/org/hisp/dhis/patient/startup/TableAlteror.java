@@ -250,6 +250,23 @@ public class TableAlteror
         executeSql( "update patientidentifiertype set programScope=false where programScope is null" );
         
         executeSql( "update programstageinstance set status=0 where status is null" );
+        executeSql( "ALTER TABLE patienttabularreport RENAME level TO ouMode" ); 
+        executeSql( "ALTER TABLE program DROP COLUMN facilityLB" );
+        executeSql( "DROP TABLE patienttabularreport_attributes" );
+        executeSql( "DROP TABLE patienttabularreport_filtervalues" );
+        executeSql( "DROP TABLE patienttabularreport_fixedattribute" );
+        executeSql( "DROP TABLE patienttabularreport_programstagedataelements" );
+        executeSql( "DROP TABLE patienttabularreport_organisationunits" );
+        executeSql( "DROP TABLE patienttabularreport_identifiers" );
+        executeSql( "DROP TABLE patienttabularreport_organisationUnits" );
+        executeSql( "DROP TABLE patientaggregatereport_enddates" );
+        executeSql( "DROP TABLE patientaggregatereport_filtervalues" );
+        executeSql( "DROP TABLE patientaggregatereport_fixedperiods" );
+        executeSql( "DROP TABLE patientaggregatereport_organisationunits" );
+        executeSql( "DROP TABLE patientaggregatereport_relativeperiods" );
+        executeSql( "DROP TABLE patientaggregatereport_startdates" );
+        executeSql( "ALTER TABLE patientaggregatereport RENAME level TO ouMode" );  
+        executeSql( "ALTER TABLE patientaggregatereport DROP COLUMN facilityLB" );
     }
 
     // -------------------------------------------------------------------------

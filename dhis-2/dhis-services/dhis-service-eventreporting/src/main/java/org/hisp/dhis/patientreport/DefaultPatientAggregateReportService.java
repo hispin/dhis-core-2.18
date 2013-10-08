@@ -66,6 +66,12 @@ public class DefaultPatientAggregateReportService
     {
         return patientAggregateReportStore.get( id );
     }
+    
+    @Override
+    public PatientAggregateReport getPatientAggregateReportByUid( String uid )
+    {
+        return patientAggregateReportStore.getByUid( uid );
+    }
 
     @Override
     public void deletePatientAggregateReport( PatientAggregateReport patientAggregateReport )

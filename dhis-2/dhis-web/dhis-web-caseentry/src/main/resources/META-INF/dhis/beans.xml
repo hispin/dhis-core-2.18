@@ -31,7 +31,8 @@
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean
@@ -912,23 +913,6 @@
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
-		class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
-		scope="prototype">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
 		class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
 		scope="prototype">
@@ -949,8 +933,6 @@
 		scope="prototype">
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -961,6 +943,13 @@
 		scope="prototype">
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean
@@ -995,27 +984,13 @@
 
 	<!-- Patient Aggregate Report -->
 
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction"
-		class="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction"
-		scope="prototype">
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	</bean>
-
-
 	<bean id="org.hisp.dhis.caseentry.action.report.SaveAggregateReportAction"
 		class="org.hisp.dhis.caseentry.action.report.SaveAggregateReportAction"
 		scope="prototype">
 		<property name="aggregateReportService"
 			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
@@ -1049,7 +1024,13 @@
 		scope="prototype">
 		<property name="aggregateReportService"
 			ref="org.hisp.dhis.patientreport.PatientAggregateReportService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean
