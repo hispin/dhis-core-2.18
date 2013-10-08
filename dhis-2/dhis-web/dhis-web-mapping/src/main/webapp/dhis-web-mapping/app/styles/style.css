@@ -17,7 +17,7 @@
  * GIS Menu
  *
  * GIS Treepanel
- * 
+ *
  * Colorpicker
  *
  * GIS Window
@@ -595,14 +595,6 @@ gis-combo .x-form-item-label {
 	/* Hover row background */
 .gis-tree .x-grid-cell {
     border-radius: 2px 2px 2px 2px;
-}
-
-	/* Treepanel contextmenu */
-#treepanel-contextmenu {
-    border-radius: 3px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #ddd;
 }
 
 
