@@ -4319,11 +4319,11 @@ Ext.onReady( function() {
 									{
 										text: 'Open this table as chart' + '&nbsp;&nbsp;', //i18n
 										cls: 'pt-menu-item-noicon',
-										disabled: !PT.isSessionStorage || !pt.layout,
+										disabled: !(PT.isSessionStorage && pt.layout),
 										handler: function() {
 											if (PT.isSessionStorage) {
 												pt.layout.parentGraphMap = treePanel.getParentGraphMap();
-												pt.engine.setSessionStorage(pt.layout, 'analytical', pt.init.contextPath + '/dhis-web-visualizer/app/index.html?s=analytical');
+												pt.engine.setSessionStorage('analytical', pt.layout, pt.init.contextPath + '/dhis-web-visualizer/app/index.html?s=analytical');
 											}
 										}
 									},
@@ -4375,15 +4375,16 @@ Ext.onReady( function() {
 									{
 										text: 'Open this table as map' + '&nbsp;&nbsp;', //i18n
 										cls: 'pt-menu-item-noicon',
-										disabled: !PT.isSessionStorage || !pt.layout,
+										disabled: !(PT.isSessionStorage && pt.layout),
 										handler: function() {
 											if (PT.isSessionStorage) {
-												pt.engine.setSessionStorage(pt.layout, 'analytical', pt.init.contextPath + '/dhis-web-mapping/app/index.html?s=analytical');
+												pt.layout.parentGraphMap = treePanel.getParentGraphMap();
+												pt.engine.setSessionStorage('analytical', pt.layout, pt.init.contextPath + '/dhis-web-mapping/app/index.html?s=analytical');
 											}
 										}
 									},
 									{
-										text: 'Open last chart' + '&nbsp;&nbsp;', //i18n
+										text: 'Open last map' + '&nbsp;&nbsp;', //i18n
 										cls: 'pt-menu-item-noicon',
 										disabled: !(PT.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['map']),
 										handler: function() {

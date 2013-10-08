@@ -349,7 +349,15 @@ public class OrganisationUnit
     
     public boolean hasCoordinatesUp()
     {
-        return parent != null && parent.parent != null && parent.parent.hasChildrenWithCoordinates();
+        if ( parent != null )
+        {
+            if ( parent.getParent() != null )
+            {
+                return parent.getParent().hasChildrenWithCoordinates();
+            }
+        }
+        
+        return false;
     }
 
     public boolean hasCoordinates()

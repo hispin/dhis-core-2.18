@@ -1868,7 +1868,7 @@ Ext.onReady( function() {
 		userGroupRowContainer = Ext.create('Ext.container.Container', {
 			bodyStyle: 'border:0 none'
 		});
-		
+
 		if (sharing.meta.allowExternalAccess) {
 			externalAccess = userGroupRowContainer.add({
 				xtype: 'checkbox',
@@ -3552,11 +3552,11 @@ Ext.onReady( function() {
             },
             multipleExpand: function(id, path, doUpdate) {
 				var rootId = dv.conf.finals.root.id;
-				
+
 				if (path.substr(0, rootId.length + 1) !== ('/' + rootId)) {
 					path = '/' + rootId + path;
 				}
-				
+
 				this.expandPath('/' + path, 'id', '/', function() {
 					var record = this.getRootNode().findChild('id', id, true);
 					this.recordsToSelect.push(record);
@@ -3581,6 +3581,19 @@ Ext.onReady( function() {
                     }
                 });
             },
+			getParentGraphMap: function() {
+				var selection = this.getSelectionModel().getSelection(),
+					map = {};
+
+				if (Ext.isArray(selection) && selection.length) {
+					for (var i = 0, pathArray, key; i < selection.length; i++) {
+						pathArray = selection[i].getPath().split('/');
+						map[pathArray.pop()] = pathArray.join('/');
+					}
+				}
+
+				return map;
+			},
             store: Ext.create('Ext.data.TreeStore', {
                 proxy: {
                     type: 'ajax',
@@ -3712,7 +3725,7 @@ Ext.onReady( function() {
 				if (!param) {
 					return;
 				}
-				
+
 				var items = this.items.items;
 				this.menuValue = param;
 
@@ -4523,7 +4536,8 @@ Ext.onReady( function() {
                                         disabled: !DV.isSessionStorage || !dv.layout,
                                         handler: function() {
                                             if (DV.isSessionStorage) {
-                                                dv.engine.setSessionStorage(dv.layout, 'analytical', dv.init.contextPath + '/dhis-web-pivot/app/index.html?s=analytical');
+												dv.layout.parentGraphMap = treePanel.getParentGraphMap();
+                                                dv.engine.setSessionStorage('analytical', dv.layout, dv.init.contextPath + '/dhis-web-pivot/app/index.html?s=analytical');
                                             }
                                         }
                                     },
@@ -4555,14 +4569,61 @@ Ext.onReady( function() {
                     },
                     defaultButton,
                     {
-                        text: DV.i18n.map,
-                        iconCls: 'dv-button-icon-map',
-                        toggleGroup: 'module',
-                        //menu: {},
-                        handler: function(b) {
-                            window.location.href = dv.init.contextPath + '/dhis-web-mapping/app/index.html';
-                        }
-                    },
+						text: DV.i18n.map,
+						iconCls: 'dv-button-icon-map',
+						toggleGroup: 'module',
+						menu: {},
+						handler: function(b) {
+							b.menu = Ext.create('Ext.menu.Menu', {
+								closeAction: 'destroy',
+								shadow: false,
+								showSeparator: false,
+								items: [
+									{
+										text: 'Go to maps' + '&nbsp;&nbsp;', //i18n
+										cls: 'dv-menu-item-noicon',
+										handler: function() {
+											window.location.href = dv.init.contextPath + '/dhis-web-mapping/app/index.html';
+										}
+									},
+									'-',
+									{
+										text: 'Open this chart as map' + '&nbsp;&nbsp;', //i18n
+										cls: 'dv-menu-item-noicon',
+										disabled: !DV.isSessionStorage || !dv.layout,
+										handler: function() {
+											if (DV.isSessionStorage) {
+												dv.layout.parentGraphMap = treePanel.getParentGraphMap();
+												dv.engine.setSessionStorage('analytical', dv.layout, dv.init.contextPath + '/dhis-web-mapping/app/index.html?s=analytical');
+											}
+										}
+									},
+									{
+										text: 'Open last map' + '&nbsp;&nbsp;', //i18n
+										cls: 'dv-menu-item-noicon',
+										disabled: !(DV.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['map']),
+										handler: function() {
+											window.location.href = dv.init.contextPath + '/dhis-web-mapping/app/index.html?s=chart';
+										}
+									}
+								],
+								listeners: {
+									show: function() {
+										dv.util.window.setAnchorPosition(b.menu, b);
+									},
+									hide: function() {
+										b.menu.destroy();
+										defaultButton.toggle();
+									},
+									destroy: function(m) {
+										b.menu = null;
+									}
+								}
+							});
+
+							b.menu.show();
+						}
+					},
                     getSeparator(),
                     {
                         xtype: 'button',
@@ -4602,7 +4663,7 @@ Ext.onReady( function() {
 
 			// State
 			downloadButton.enable();
-			
+
 			if (isFavorite) {
 				interpretationButton.enable();
 			}
@@ -4730,14 +4791,14 @@ Ext.onReady( function() {
 				userOrganisationUnitChildren.setValue(isOuc);
 				userOrganisationUnitGrandChildren.setValue(isOugc);
 			}
-			
+
 			if (!(isOu || isOuc || isOugc)) {
 
 				// If fav has organisation units, wait for tree callback before update
 				if (Ext.isObject(graphMap)) {
 					treePanel.numberOfRecords = dv.util.object.getLength(graphMap);
 
-					for (var key in graphMap) {						
+					for (var key in graphMap) {
 						if (graphMap.hasOwnProperty(key)) {
 							treePanel.multipleExpand(key, graphMap[key], false);
 						}
@@ -4823,9 +4884,9 @@ Ext.onReady( function() {
             url: '../initialize.action',
             success: function(r) {
 				var init = Ext.decode(r.responseText);
-				
+
 				DV.i18n = init.i18n;
-				
+
                 dv = DV.core.getInstance(init);
 
                 DV.app.extendInstance(dv);
