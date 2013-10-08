@@ -36,6 +36,8 @@ import static org.hisp.dhis.common.DimensionalObject.*;
 
 import java.util.Arrays;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventQueryParams;
@@ -46,9 +48,11 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -60,7 +64,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class JdbcEventAnalyticsManager
     implements EventAnalyticsManager
 {
+    private static final Log log = LogFactory.getLog( JdbcEventAnalyticsManager.class );
+    
     private static final int MAX_LIMIT = 10000;
+    
+    private static final String QUERY_ERR_MSG = "Query failed, likely because the requested analytics table does not exist";
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -114,7 +122,23 @@ public class JdbcEventAnalyticsManager
         // Grid
         // ---------------------------------------------------------------------
 
+        try
+        {
+            grid.addRows( getAggregatedEventData( params, sql ) );
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            log.info( QUERY_ERR_MSG, ex );
+        }
+        
+        return grid;
+    }
+    
+    private Grid getAggregatedEventData( EventQueryParams params, String sql )
+    {
         Timer t = new Timer().start();
+        
+        Grid grid = new ListGrid();
         
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -190,7 +214,23 @@ public class JdbcEventAnalyticsManager
 
         int rowLength = grid.getHeaders().size();
 
+        try
+        {
+            grid.addRows( getEvents( params, sql, rowLength ) );
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            log.info( QUERY_ERR_MSG, ex );
+        }
+        
+        return grid;
+    }
+
+    private Grid getEvents( EventQueryParams params, String sql, int rowLength )
+    {
         Timer t = new Timer().start();
+
+        Grid grid = new ListGrid();
         
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -210,13 +250,29 @@ public class JdbcEventAnalyticsManager
         
         return grid;
     }
-
+    
     public int getEventCount( EventQueryParams params )
     {
         String sql = "select count(psi) ";
         
         sql += getFromWhereClause( params );
         
+        int count = 0;
+        
+        try
+        {
+            count = getEventCount( sql );          
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            log.info( QUERY_ERR_MSG, ex );
+        }
+
+        return count;
+    }
+    
+    private int getEventCount( String sql )
+    {
         Timer t = new Timer().start();
         
         int count = jdbcTemplate.queryForObject( sql, Integer.class );
