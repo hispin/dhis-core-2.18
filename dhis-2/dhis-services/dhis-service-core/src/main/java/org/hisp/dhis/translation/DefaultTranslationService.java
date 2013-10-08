@@ -81,6 +81,11 @@ public class DefaultTranslationService
         return translationStore.getTranslations( className, locale );
     }
 
+    public Collection<Translation> getTranslations( Locale locale )
+    {
+        return translationStore.getTranslations( locale );
+    }
+
     public Collection<Translation> getAllTranslations()
     {
         return translationStore.getAllTranslations();

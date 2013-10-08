@@ -53,7 +53,7 @@ public interface I18nLocaleService
     I18nLocale getI18nLocale( int id );
     
     I18nLocale getI18nLocaleByUid( String uid );
-    
+        
     I18nLocale getI18nLocale( Locale locale );
     
     void deleteI18nLocale( I18nLocale locale );
@@ -67,4 +67,5 @@ public interface I18nLocaleService
     Collection<I18nLocale> getI18nLocalesBetweenLikeName( String name, int first, int max );
     
     List<Locale> getAllLocales();
+
 }

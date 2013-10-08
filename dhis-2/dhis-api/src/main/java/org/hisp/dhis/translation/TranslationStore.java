@@ -83,6 +83,14 @@ public interface TranslationStore
     Collection<Translation> getTranslations( String className, Locale locale );
 
     /**
+     * Retrieves a Collection of Translations.
+     * 
+     * @param locale the locale.
+     * @return a Collection of Translations.
+     */
+    Collection<Translation> getTranslations( Locale locale );
+
+    /**
      * Retrieves a Collection of all Translations.
      * 
      * @return a Collection of all Translations.

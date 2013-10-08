@@ -70,6 +70,10 @@ public class AddLocaleAction
     public String execute()
         throws Exception
     {
+        // Pass 'addI18nLocale' nulls if the value is empty
+        if ( language.isEmpty() ) { language = null; }
+        if ( country.isEmpty() ) { country = null; }
+                        
         localeService.addI18nLocale( language, country );
 
         return SUCCESS;

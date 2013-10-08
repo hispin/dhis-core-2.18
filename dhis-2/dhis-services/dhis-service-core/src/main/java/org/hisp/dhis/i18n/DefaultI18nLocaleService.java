@@ -126,7 +126,7 @@ public class DefaultI18nLocaleService
         {
             return false; // Country not valid
         }
-        
+
         String localeStr = LocaleUtils.getLocaleString( language, country, null );
         Locale locale = LocaleUtils.getLocale( localeStr );
         
@@ -151,7 +151,7 @@ public class DefaultI18nLocaleService
     {
         return localeStore.getByUid( uid );
     }
-    
+        
     public I18nLocale getI18nLocale( Locale locale )
     {
         return localeStore.getI18nLocaleByLocale( locale );
@@ -195,4 +195,5 @@ public class DefaultI18nLocaleService
         
         return locales;
     }
+    
 }

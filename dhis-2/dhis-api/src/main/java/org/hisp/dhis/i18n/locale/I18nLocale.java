@@ -47,7 +47,7 @@ public class I18nLocale
     // -------------------------------------------------------------------------
 
     public I18nLocale()
-    {
+    {        
         this.name = "English (United Kingdom)";
         this.locale = "en_GB";
     }
