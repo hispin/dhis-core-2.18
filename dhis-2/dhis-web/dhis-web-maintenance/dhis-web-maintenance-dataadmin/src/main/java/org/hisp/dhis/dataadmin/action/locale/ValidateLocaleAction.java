@@ -30,6 +30,7 @@ package org.hisp.dhis.dataadmin.action.locale;
 import java.util.Locale;
 
 import org.hisp.dhis.i18n.I18nLocaleService;
+import org.hisp.dhis.i18n.locale.I18nLocale;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -82,7 +83,12 @@ public class ValidateLocaleAction
 
     public String execute()
     {
-        localeService.getI18nLocale( new Locale( language, country ) );
+        I18nLocale locale = localeService.getI18nLocale( new Locale( language, country ) );
+        
+        if ( locale != null )
+        {
+            return INPUT;
+        }
         
         return SUCCESS;
     }
