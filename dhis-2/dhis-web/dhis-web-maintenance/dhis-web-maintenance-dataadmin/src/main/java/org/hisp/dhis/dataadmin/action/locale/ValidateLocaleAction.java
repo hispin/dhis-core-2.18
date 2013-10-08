@@ -29,6 +29,7 @@ package org.hisp.dhis.dataadmin.action.locale;
 
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nLocaleService;
 import org.hisp.dhis.i18n.locale.I18nLocale;
@@ -89,8 +90,9 @@ public class ValidateLocaleAction
 
     public String execute()
     {
-
-        if ( localeCode != null && localeCode != "" )
+        localeCode = StringUtils.trimToNull( localeCode );
+        
+        if ( localeCode != null )
         {
             Locale locale = LocaleUtils.getLocale( localeCode );
             

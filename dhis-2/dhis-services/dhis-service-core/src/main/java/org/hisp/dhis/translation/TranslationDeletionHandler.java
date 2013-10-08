@@ -157,16 +157,6 @@ public class TranslationDeletionHandler
     {
         Collection<Translation> translations = translationService.getTranslations( LocaleUtils.getLocale( i18nLocale.getLocale() ) );
 
-        if ( translations.size() == 0 )
-        {
-            return null;
-        }
-        else
-        {
-            Translation translation = translations.iterator().next();
-
-            return translation.getLocale();
-        }
+        return translations.isEmpty() ? null : translations.iterator().next().getLocale();
     }
-
 }

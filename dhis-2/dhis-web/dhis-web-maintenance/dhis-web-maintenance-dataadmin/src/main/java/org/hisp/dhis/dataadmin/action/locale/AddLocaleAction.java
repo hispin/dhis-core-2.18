@@ -27,6 +27,7 @@ package org.hisp.dhis.dataadmin.action.locale;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18nLocaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -70,9 +71,8 @@ public class AddLocaleAction
     public String execute()
         throws Exception
     {
-        // Pass 'addI18nLocale' nulls if the value is empty
-        if ( language.isEmpty() ) { language = null; }
-        if ( country.isEmpty() ) { country = null; }
+        language = StringUtils.trimToNull( language );
+        country = StringUtils.trimToNull( country );
                         
         localeService.addI18nLocale( language, country );
 
