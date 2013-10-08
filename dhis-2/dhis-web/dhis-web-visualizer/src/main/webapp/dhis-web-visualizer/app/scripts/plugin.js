@@ -1,10 +1,5 @@
 Ext.onReady(function() {
 
-    // load trend line lib
-    Ext.Loader.setConfig({enabled: true});
-    Ext.Loader.setPath('regression', '../../dhis-web-commons/javascripts');
-    Ext.require('regression.simpleRegression');
-
 	// chart tips css
 	var css = '.dv-chart-tips { border-radius: 2px; padding: 0px 3px 1px; border: 2px solid #777; background-color: #f1f1f1; } \n';
 	css += '.dv-chart-tips .x-tip-body { background-color: #f1f1f1; font-size: 13px; font-weight: normal; color: #444; -webkit-text-stroke: 0; } \n';
@@ -78,11 +73,15 @@ Ext.onReady(function() {
 			Ext.data.JsonP.request({
 				url: config.url + '/dhis-web-visualizer/initialize.action',
 				success: function(r) {
-                    dv = DV.core.getInstance(r);
+					var init = r;
 
-                    dv.init.el = config.el;
-                    dv.isPlugin = true;
-                    dv.viewport = createViewport();
+					DV.i18n = init.i18n;
+
+					dv = DV.core.getInstance(init);
+
+					dv.init.el = config.el;
+					dv.isPlugin = true;
+					dv.viewport = createViewport();
 
 					if (config.uid) {
 						dv.engine.loadChart(config.uid, dv);
