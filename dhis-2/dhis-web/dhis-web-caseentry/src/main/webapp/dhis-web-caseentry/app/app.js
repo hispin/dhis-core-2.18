@@ -1104,15 +1104,10 @@ Ext.onReady( function() {
 									for (var i = 0; i < f.items.length; i++) {
 										var filter = f.items[i].id.split(';');
 										var id = filter[0];
-										var filterVal = "";
-										if( filter.length == 3 ){
-											filterVal = filter[1] + ";" + filter[2];
-										}
-										
 										var name = TR.util.string.getEncodedString(f.items[i].name);
 										var valueType = f.items[i].valueType;
 										TR.store.dataelement.selected.add({id: id, name: name, valueType: valueType});
-										TR.util.multiselect.addFilterField( 'filterPanel', id, name, valueType, filterVal );
+										TR.util.multiselect.addFilterField( 'filterPanel', id, name, valueType, f.filters[id] );
 									}
 									
 									if( f.singleEvent == 'false' )
@@ -1130,7 +1125,6 @@ Ext.onReady( function() {
 								}
 								
 								TR.exe.execute();
-								
 							}
 						});
 					}				
@@ -1244,11 +1238,6 @@ Ext.onReady( function() {
 									for (var i = 0; i < f.items.length; i++) {
 										var filter = f.items[i].id.split(';');
 										var id = filter[0];
-										var filterVal = "";
-										if( filter.length == 3 ){
-											filterVal = filter[1] + ";" + filter[2];
-										}
-										
 										var name = TR.util.string.getEncodedString(f.items[i].name);
 										var valueType = f.items[i].valueType;
 										TR.store.dataelement.selected.add({id: id, name: name, valueType: valueType});

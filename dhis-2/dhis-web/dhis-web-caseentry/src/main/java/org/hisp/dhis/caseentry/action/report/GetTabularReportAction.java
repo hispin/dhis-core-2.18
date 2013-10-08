@@ -32,8 +32,10 @@ import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.dataelement.DataElement;
@@ -143,7 +145,7 @@ public class GetTabularReportAction
     {
         return dataElements;
     }
-    
+
     private Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
 
     public Collection<OrganisationUnit> getOrgunits()
@@ -165,6 +167,13 @@ public class GetTabularReportAction
         return userOrgunitChildren;
     }
 
+    private Map<String, String> mapFilters = new HashMap<String, String>();
+
+    public Map<String, String> getMapFilters()
+    {
+        return mapFilters;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -182,6 +191,12 @@ public class GetTabularReportAction
         for ( String dimension : tabularReport.getDimension() )
         {
             String dimensionId = DataQueryParams.getDimensionFromParam( dimension );
+            
+            String[] filters = dimension.split( DataQueryParams.DIMENSION_NAME_SEP );
+            if ( filters.length > 1 )
+            {
+                mapFilters.put( dimensionId, dimension.substring( dimensionId.length() + 1, dimension.length() ) );
+            }
 
             if ( ORGUNIT_DIM_ID.equals( dimensionId ) )
             {
