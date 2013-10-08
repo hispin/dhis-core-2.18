@@ -1,23 +1,92 @@
-
 function showValidationRuleDetails( validationId )
 {
     jQuery.post( 'getValidationRule.action', { id: validationId }, function ( json ) {
-		setInnerHTML( 'nameField', json.validationRule.name );
+		setText( 'nameField', json.validationRule.name );
 		
 		var description = json.validationRule.description;
-		setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+		setText( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+		
+		var importance = json.validationRule.importance;
+		setText( 'importanceField', i18nalizeImportance( importance ) );
+		
+		var ruleType = json.validationRule.ruleType;
+		setText( 'ruleTypeField', i18nalizeRuleType( ruleType ) );
+		
+		if ( ruleType == 'monitoring' ) 
+		{
+			var organisationUnitLevel = string( json.validationRule.organisationUnitLevel );
+			setText( 'organisationUnitLevelField', organisationUnitLevel ? organisationUnitLevel : '[' + i18n_none + ']' );
+			
+			var sequentialSampleCount = string( json.validationRule.sequentialSampleCount );
+			setText( 'sequentialSampleCountField', sequentialSampleCount ? sequentialSampleCount : '[' + i18n_none + ']' );
+			
+			var annualSampleCount = json.validationRule.annualSampleCount;
+			setText( 'annualSampleCountField', annualSampleCount ? annualSampleCount : '[' + i18n_none + ']' );
+			
+			var highOutliers = string( json.validationRule.highOutliers );
+			setText( 'highOutliersField', highOutliers ? highOutliers : '[' + i18n_none + ']' );
+			
+			var lowOutliers = string( json.validationRule.lowOutliers );
+			setText( 'lowOutliersField', lowOutliers ? lowOutliers : '[' + i18n_none + ']' );
+
+			document.getElementById('organisationUnitLevelP').style.display = '';
+			document.getElementById('sequentialSampleCountP').style.display = '';
+			document.getElementById('annualSampleCountP').style.display = '';
+			document.getElementById('highOutliersP').style.display = '';
+			document.getElementById('lowOutliersP').style.display = '';
+		} 
+		else
+		{
+			document.getElementById('organisationUnitLevelP').style.display = 'none';
+			document.getElementById('sequentialSampleCountP').style.display = 'none';
+			document.getElementById('annualSampleCountP').style.display = 'none';
+			document.getElementById('highOutliersP').style.display = 'none';
+			document.getElementById('lowOutliersP').style.display = 'none';
+		}
 		
 		var leftSideDescription = json.validationRule.leftSideDescription;
-		setInnerHTML( 'leftSideDescriptionField', leftSideDescription ? leftSideDescription : '[' + i18n_none + ']' );
+		setText( 'leftSideDescriptionField', leftSideDescription ? leftSideDescription : '[' + i18n_none + ']' );
 		
 		var operator = json.validationRule.operator;
-		setInnerHTML( 'operatorField', i18nalizeOperator( operator ) );
+		setText( 'operatorField', i18nalizeOperator( operator ) );
 		
 		var rightSideDescription = json.validationRule.rightSideDescription;
-		setInnerHTML( 'rightSideDescriptionField', rightSideDescription ? rightSideDescription : '[' + i18n_none + ']' );
+		setText( 'rightSideDescriptionField', rightSideDescription ? rightSideDescription : '[' + i18n_none + ']' );
 
 		showDetails();
 	});
+}
+
+function i18nalizeImportance ( importance )
+{
+	if ( importance == "high" )
+	{
+		return i18n_high;
+	}
+	else if ( importance == "medium" )
+	{
+		return i18n_medium;
+	}
+	if ( importance == "low" )
+	{
+		return i18n_low;
+	}
+	
+	return null;
+}
+
+function i18nalizeRuleType ( ruleType )
+{
+	if ( ruleType == "validation" )
+	{
+		return i18n_validation;
+	}
+	else if ( ruleType == "monitoring" )
+	{
+		return i18n_monitoring;
+	}
+	
+	return null;
 }
 
 function i18nalizeOperator( operator )

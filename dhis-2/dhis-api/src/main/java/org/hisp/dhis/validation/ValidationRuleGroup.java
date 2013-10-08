@@ -34,12 +34,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.user.UserAuthorityGroup;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -60,6 +62,10 @@ public class ValidationRuleGroup
 
     @Scanned
     private Set<ValidationRule> members = new HashSet<ValidationRule>();
+    
+    private Set<UserAuthorityGroup> userAuthorityGroupsToAlert = new HashSet<UserAuthorityGroup>();
+    
+    
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -127,6 +133,21 @@ public class ValidationRuleGroup
     public void setMembers( Set<ValidationRule> members )
     {
         this.members = members;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlElementWrapper( localName = "userRolesToAlert", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "userRoleToAlert", namespace = DxfNamespaces.DXF_2_0)
+    public Set<UserAuthorityGroup> getUserAuthorityGroupsToAlert()
+    {
+        return userAuthorityGroupsToAlert;
+    }
+
+    public void setUserAuthorityGroupsToAlert( Set<UserAuthorityGroup> userAuthorityGroupsToAlert )
+    {
+        this.userAuthorityGroupsToAlert = userAuthorityGroupsToAlert;
     }
 
     @Override

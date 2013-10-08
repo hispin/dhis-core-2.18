@@ -30,6 +30,7 @@ package org.hisp.dhis.validationrule.action.validationrulegroup;
 
 import java.util.Collection;
 
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -51,6 +52,13 @@ public class UpdateValidationRuleGroupAction
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
+    }
+    
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -85,6 +93,13 @@ public class UpdateValidationRuleGroupAction
         this.groupMembers = groupMembers;
     }
 
+    private Collection<String> selectedUserRolesToAlert;
+    
+    public void setSelectedUserRolesToAlert( Collection<String> selectedUserRolesToAlert )
+    {
+    	this.selectedUserRolesToAlert = selectedUserRolesToAlert;
+    }
+   
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -102,6 +117,16 @@ public class UpdateValidationRuleGroupAction
             for ( String id : groupMembers )
             {
                 group.getMembers().add( validationRuleService.getValidationRule( Integer.valueOf( id ) ) );
+            }
+        }
+        
+        group.getUserAuthorityGroupsToAlert().clear();
+
+        if ( selectedUserRolesToAlert != null )
+        {
+            for ( String id : selectedUserRolesToAlert )
+            {
+                group.getUserAuthorityGroupsToAlert().add( userService.getUserAuthorityGroup( Integer.valueOf( id ) ) );
             }
         }
         

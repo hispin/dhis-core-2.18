@@ -29,10 +29,13 @@ package org.hisp.dhis.validationrule.action;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,7 +56,14 @@ public class GetPeriodTypesAction
     {
         this.periodService = periodService;
     }
-
+    
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -67,10 +77,16 @@ public class GetPeriodTypesAction
     
     private String monthlyPeriodTypeName;
     
-
     public String getMonthlyPeriodTypeName()
     {
         return monthlyPeriodTypeName;
+    }
+
+    private List<OrganisationUnitLevel> organisationUnitLevels;
+    
+    public List<OrganisationUnitLevel> getOrganisationUnitLevels()
+    {
+    	return organisationUnitLevels;
     }
 
     // -------------------------------------------------------------------------
@@ -83,6 +99,7 @@ public class GetPeriodTypesAction
     {
         periodTypes = periodService.getAllPeriodTypes();
         monthlyPeriodTypeName =  MonthlyPeriodType.NAME ;
+        organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;
     }

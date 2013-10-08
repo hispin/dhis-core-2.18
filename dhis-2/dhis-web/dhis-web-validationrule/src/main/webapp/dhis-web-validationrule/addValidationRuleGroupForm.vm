@@ -12,6 +12,18 @@
 				return option;
 			}
 		});
+		jQuery("#availableUserRolesToAlert").dhisAjaxSelect({
+			source: "../dhis-web-commons-ajax-json/getUserRoles.action",
+			iterator: "userRoles",
+			connectedTo: 'selectedUserRolesToAlert',
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			}
+		});
 	});
 </script>
 
@@ -37,18 +49,21 @@
 
 <table style="margin-top: 15px;">
     <colgroup>
+      <col style="width: 120px"/>
       <col style="width: 500px;"/>
       <col/>
       <col style="width: 500px;"/>
     </colgroup>
 
     <tr>
-        <th>$i18n.getString( "available_validation_rules" )</th>
         <th></th>
-        <th>$i18n.getString( "group_members" )</th>
+        <th>$i18n.getString( "available" )</th>
+        <th></th>
+        <th>$i18n.getString( "selected" )</th>
     </tr>
 
     <tr>
+		<td><label>$i18n.getString( "validation_rules" )</label></td>		
     	<td>
             <select id="availableValidationRules" name="availableValidationRules" multiple="multiple" style="height: 200px; width: 100%;"></select>
         </td>
@@ -62,6 +77,24 @@
 
         <td>
             <select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px" />
+        </td>      
+    </tr>
+
+    <tr>
+		<td><label>$i18n.getString( "user_roles_to_alert" )</label></td>		
+    	<td>
+            <select id="availableUserRolesToAlert" name="availableUserRolesToAlert" multiple="multiple" style="height: 200px; width: 100%;"></select>
+        </td>
+
+        <td style="text-align:center">
+        	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableUserRolesToAlert' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedUserRolesToAlert' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableUserRolesToAlert' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedUserRolesToAlert' );"/>
+        </td>
+
+        <td>
+            <select id="selectedUserRolesToAlert" name="selectedUserRolesToAlert" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px" />
         </td>      
     </tr>
 </table>

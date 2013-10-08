@@ -140,6 +140,13 @@ public class ExportValidationResultAction
 
         grid.addHeader( new GridHeader( i18n.getString( "source" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "period" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "importance" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "rule_type" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "organisation_unit_level" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "sequential_sample_count" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "annual_sample_count" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "high_outliers" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "low_outliers" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "left_side_description" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "operator" ), false, false ) );
@@ -154,6 +161,13 @@ public class ExportValidationResultAction
             grid.addRow();
             grid.addValue( unit.getName() );
             grid.addValue( format.formatPeriod( period ) );
+            grid.addValue( i18n.getString( validationResult.getValidationRule().getImportance() ) );
+            grid.addValue( i18n.getString( validationResult.getValidationRule().getRuleType() ) );
+            grid.addValue( validationResult.getValidationRule().getOrganisationUnitLevel() );
+            grid.addValue( validationResult.getValidationRule().getSequentialSampleCount() );
+            grid.addValue( validationResult.getValidationRule().getAnnualSampleCount() );
+            grid.addValue( validationResult.getValidationRule().getHighOutliers() );
+            grid.addValue( validationResult.getValidationRule().getLowOutliers() );
             grid.addValue( validationResult.getValidationRule().getLeftSide().getDescription() ); //TODO lazy prone
             grid.addValue( String.valueOf( validationResult.getLeftsideValue() ) );
             grid.addValue( i18n.getString( validationResult.getValidationRule().getOperator().toString() ) );

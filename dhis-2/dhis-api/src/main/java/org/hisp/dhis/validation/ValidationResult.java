@@ -38,7 +38,7 @@ import java.io.Serializable;
  * @version $Id: ValidationResult.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public class ValidationResult
-    implements Serializable
+    implements Serializable, Comparable<ValidationResult>
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -74,7 +74,7 @@ public class ValidationResult
     }
 
     // -------------------------------------------------------------------------
-    // Equals, hashCode and toString
+    // Equals, compareTo, hashCode and toString
     // -------------------------------------------------------------------------     
 
     @Override
@@ -150,6 +150,39 @@ public class ValidationResult
         return true;
     }
 
+    public int compareTo( ValidationResult other )
+    {
+        int result = source.getName().compareTo( other.source.getName() );
+
+        if ( result == 0 )
+        {
+            result = period.getStartDate().compareTo( other.period.getStartDate() );
+
+            if ( result == 0 )
+            {
+                result = period.getEndDate().compareTo( other.period.getEndDate() );
+
+                if ( result == 0 )
+                {
+                    result = validationImportanceOrder( validationRule.getImportance() )
+                        - validationImportanceOrder( other.validationRule.getImportance() );
+
+                    if ( result == 0 )
+                    {
+                        result = validationRule.getLeftSide().getDescription()
+                            .compareTo( other.validationRule.getLeftSide().getDescription() );
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
+    private int validationImportanceOrder ( String importance )
+    {
+    	return ( importance.equals("high") ? 0 : importance.equals("medium") ? 1 : 2 );
+    }
+    
     @Override
     public String toString()
     {

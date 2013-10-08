@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -46,6 +47,7 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.UuidView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.User;
 
 import java.util.ArrayList;
@@ -534,6 +536,26 @@ public class OrganisationUnit
         }
 
         return dataElements;
+    }
+
+    public Map<PeriodType, Set<DataElement>> getDataElementsInDataSetsByPeriodType()
+    {
+    	Map<PeriodType,Set<DataElement>> map = new HashMap<PeriodType,Set<DataElement>>();
+    	
+        for ( DataSet dataSet : dataSets )
+        {
+            Set<DataElement> dataElements = map.get( dataSet.getPeriodType() );
+            
+            if ( dataElements == null )
+            {
+                dataElements = new HashSet<DataElement>();
+                map.put( dataSet.getPeriodType(), dataElements );
+            }
+            
+            dataElements.addAll( dataSet.getDataElements() );
+        }
+        
+        return map;
     }
 
     public void updateParent( OrganisationUnit newParent )
