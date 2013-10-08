@@ -39,7 +39,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class OrganisationUnitObjectHandler
-    extends AbstractObjectHandler<OrganisationUnit>
+    extends ObjectHandlerAdapter<OrganisationUnit>
 {
     @Override
     public void preImportObjects( List<OrganisationUnit> objects )
