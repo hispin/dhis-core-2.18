@@ -58,7 +58,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class ListGrid
     implements Grid
@@ -257,6 +256,20 @@ public class ListGrid
 
         currentRowWriteIndex++;
 
+        return this;
+    }
+    
+    public Grid addRows( Grid grid )
+    {
+        List<List<Object>> rows = grid.getRows();
+        
+        for ( List<Object> row : rows )
+        {
+            this.grid.add( row );
+            
+            currentRowWriteIndex++;
+        }
+        
         return this;
     }
 

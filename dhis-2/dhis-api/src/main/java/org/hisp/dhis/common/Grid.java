@@ -128,6 +128,13 @@ public interface Grid
      * Adds a new row the the grid and moves the cursor accordingly.
      */
     Grid addRow();
+    
+    /**
+     * Adds all rows of the given grid to this grid.
+     * 
+     * @param grid the grid to add to this grid.
+     */
+    Grid addRows( Grid grid );
 
     /**
      * Adds the value to the end of the current row.
