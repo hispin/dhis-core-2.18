@@ -411,6 +411,11 @@ public class DataElement
     {
         return url != null && !url.trim().isEmpty();
     }
+    
+    public boolean hasOptionSet()
+    {
+        return optionSet != null;
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
