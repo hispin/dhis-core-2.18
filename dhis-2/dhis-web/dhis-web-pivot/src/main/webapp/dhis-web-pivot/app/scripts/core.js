@@ -1175,9 +1175,9 @@ Ext.onReady( function() {
 				return paramString;
 			};
 
-			engine.setSessionStorage = function(obj, session, url) {
+			engine.setSessionStorage = function(session, obj, url) {
 				if (PT.isSessionStorage) {
-					dhis2 = JSON.parse(sessionStorage.getItem('dhis2')) || {};
+					var dhis2 = JSON.parse(sessionStorage.getItem('dhis2')) || {};
 					dhis2[session] = obj;
 					sessionStorage.setItem('dhis2', JSON.stringify(dhis2));
 
@@ -1203,7 +1203,7 @@ Ext.onReady( function() {
 					uuidDimUuidsMap = {},
 					uuidObjectMap = {};
 
-				isHierarchy = function(id, response) {					
+				isHierarchy = function(id, response) {
 					return layout.showHierarchy && Ext.isObject(response.metaData.ouHierarchy) && response.metaData.ouHierarchy.hasOwnProperty(id);
 				};						
 					
@@ -2452,7 +2452,7 @@ Ext.onReady( function() {
 					else {
 						if (PT.isSessionStorage) {
 							setMouseHandlers();
-							engine.setSessionStorage(layout, 'table');
+							engine.setSessionStorage('table', layout);
 						}
 						
 						if (updateGui) {
@@ -2635,7 +2635,6 @@ Ext.onReady( function() {
 					uuids = pt.uuidDimUuidsMap[uuid],
 					layoutConfig = Ext.clone(pt.layout),
 					objects = [],
-					dhis2,
 					menu;
 
 				// modify layout dimension items based on uuid objects
@@ -2674,7 +2673,7 @@ Ext.onReady( function() {
 							iconCls: 'pt-button-icon-chart',
 							param: 'chart',
 							handler: function() {
-								that.setSessionStorage(layoutConfig, 'analytical', pt.init.contextPath + '/dhis-web-visualizer/app/index.html?s=analytical');
+								that.setSessionStorage('analytical', layoutConfig, pt.init.contextPath + '/dhis-web-visualizer/app/index.html?s=analytical');
 							},
 							listeners: {
 								render: function() {
@@ -2694,7 +2693,7 @@ Ext.onReady( function() {
 							param: 'map',
 							disabled: true,
 							handler: function() {
-								that.setSessionStorage(layoutConfig, pt.init.contextPath + '/dhis-web-mapping/app/index.html?s=analytical');
+								that.setSessionStorage('analytical', layoutConfig, pt.init.contextPath + '/dhis-web-mapping/app/index.html?s=analytical');
 							},
 							listeners: {
 								render: function() {

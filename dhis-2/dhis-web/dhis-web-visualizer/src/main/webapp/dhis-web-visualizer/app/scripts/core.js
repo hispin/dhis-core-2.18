@@ -2,14 +2,14 @@ Ext.onReady( function() {
 
 	// ext config
 	Ext.Ajax.method = 'GET';
-	
-	// dv	
+
+	// dv
 	DV = {
 		core: {
 			instances: []
-		},		
-		i18n: {},		
-		isDebug: false,		
+		},
+		i18n: {},
+		isDebug: false,
 		isSessionStorage: 'sessionStorage' in window && window['sessionStorage'] !== null
 	};
 
@@ -773,43 +773,43 @@ Ext.onReady( function() {
                 }();
             };
         }());
-		
+
 		// service
 		(function() {
 			service.layout = {};
-			
+
 			service.layout.getObjectNameDimensionMap = function(dimensionArray) {
 				var map = {};
-				
-				if (Ext.isArray(dimensionArray) && dimensionArray.length) {					
+
+				if (Ext.isArray(dimensionArray) && dimensionArray.length) {
 					for (var i = 0, dim; i < dimensionArray.length; i++) {
 						dim = api.layout.Dimension(dimensionArray[i]);
-						
+
 						if (dim) {
 							map[dim.dimension] = dim;
 						}
 					}
 				}
-				
+
 				return map;
-			};				
-			
+			};
+
 			service.layout.getObjectNameDimensionItemsMap = function(dimensionArray) {
 				var map = {};
-				
-				if (Ext.isArray(dimensionArray) && dimensionArray.length) {					
+
+				if (Ext.isArray(dimensionArray) && dimensionArray.length) {
 					for (var i = 0, dim; i < dimensionArray.length; i++) {
 						dim = api.layout.Dimension(dimensionArray[i]);
-						
+
 						if (dim) {
 							map[dim.dimension] = dim.items;
 						}
 					}
 				}
-				
+
 				return map;
 			};
-							
+
 			service.response = {};
 		}());
 
@@ -1073,9 +1073,9 @@ Ext.onReady( function() {
                 return paramString;
             };
 
-            engine.setSessionStorage = function(obj, session, url) {
+            engine.setSessionStorage = function(session, obj, url) {
                 if (DV.isSessionStorage) {
-                    dhis2 = JSON.parse(sessionStorage.getItem('dhis2')) || {};
+                    var dhis2 = JSON.parse(sessionStorage.getItem('dhis2')) || {};
                     dhis2[session] = obj;
                     sessionStorage.setItem('dhis2', JSON.stringify(dhis2));
 
@@ -1089,7 +1089,7 @@ Ext.onReady( function() {
                 var getSyncronizedXLayout,
                     getExtendedResponse,
                     validateUrl,
-                    
+
                     getDefaultStore,
                     getDefaultNumericAxis,
                     getDefaultCategoryAxis,
@@ -1100,12 +1100,12 @@ Ext.onReady( function() {
                     getDefaultBaseLine,
                     getDefaultTips,
                     setDefaultTheme,
-                    getDefaultLegend,                    
+                    getDefaultLegend,
                     getDefaultChartTitle,
                     getDefaultChartSizeHandler,
                     getDefaultChartTitlePositionHandler,
                     getDefaultChart,
-                    
+
                     generator = {},
                     afterLoad,
                     initialize;
@@ -1177,10 +1177,10 @@ Ext.onReady( function() {
 										responseOu = response.metaData[ou];
 
 									userOugc = [];
-									
+
 									for (var j = 0, id; j < responseOu.length; j++) {
 										id = responseOu[j];
-										
+
 										if (!Ext.Array.contains(userOuOuc, id)) {
 											userOugc.push({
 												id: id,
@@ -1197,14 +1197,14 @@ Ext.onReady( function() {
                             else if (isLevel || isGroup) {
 								for (var j = 0, responseOu = response.metaData[ou], id; j < responseOu.length; j++) {
 									id = responseOu[j];
-									
+
 									dim.items.push({
 										id: id,
 										name: response.metaData.names[id]
 									});
 								}
 
-								dim.items = pt.util.array.sortObjectsByString(dim.items);
+								dim.items = dv.util.array.sortObjectsByString(dim.items);
 							}
 							else {
 								dim.items = Ext.clone(xLayout.dimensionNameItemsMap[dim.dimensionName]);
@@ -2205,15 +2205,15 @@ Ext.onReady( function() {
                 };
 
 				afterLoad = function(layout, xLayout, xResponse) {
-					
+
 					if (dv.isPlugin) {
-						
+
 					}
 					else {
 						if (DV.isSessionStorage) {
-							engine.setSessionStorage(layout, 'chart');
+							engine.setSessionStorage('chart', layout);
 						}
-						
+
 						if (updateGui) {
 							dv.viewport.setGui(layout, xLayout, updateGui, isFavorite);
 						}
@@ -2294,7 +2294,7 @@ Ext.onReady( function() {
 							// Update viewport
                             dv.viewport.centerRegion.removeAll(true);
                             dv.viewport.centerRegion.add(chart);
-                            
+
                             afterLoad(layout, xLayout, xResponse);
                         }
                     });
