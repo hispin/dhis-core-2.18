@@ -131,6 +131,20 @@ public class HibernateTranslationStore
     }
 
     @SuppressWarnings( "unchecked" )
+    public Collection<Translation> getTranslations( Locale locale )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Translation.class );
+
+        criteria.add( Restrictions.eq( "locale", locale.toString() ) );
+
+        criteria.setCacheable( true );
+        
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
     public Collection<Translation> getAllTranslations()
     {
         Session session = sessionFactory.getCurrentSession();

@@ -58,6 +58,8 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/localeList.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+	  <param name="javascripts">javascript/locale.js</param>
+	  <param name="requiredAuthorities">F_LOCALE_MANAGEMENT</param>	  
     </action>
 
     <action name="getLocale"
@@ -91,21 +93,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/addLocaleForm.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="requiredAuthorities">F_LOCALE_ADD</param>
-    </action>
-
-    <action name="showUpdateLocaleForm"
-      class="org.hisp.dhis.dataadmin.action.locale.ShowUpdateLocaleFormAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataadmin/updateLocaleForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="requiredAuthorities">F_LOCALE_ADD</param>
-    </action>
-
-    <action name="updateLocale"
-      class="org.hisp.dhis.dataadmin.action.locale.UpdateLocaleAction">
-      <result name="success" type="redirect">locale.action
-      </result>
+	  <param name="javascripts">javascript/localeForm.js</param>
       <param name="requiredAuthorities">F_LOCALE_ADD</param>
     </action>
 

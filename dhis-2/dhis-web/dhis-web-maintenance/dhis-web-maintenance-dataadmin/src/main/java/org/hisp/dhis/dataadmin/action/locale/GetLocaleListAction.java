@@ -27,6 +27,7 @@ package org.hisp.dhis.dataadmin.action.locale;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -100,14 +101,27 @@ public class GetLocaleListAction
     public String execute()
         throws Exception
     {
-        total = localeService.getI18nLocaleCount();
-        
-        this.paging = createPaging( total );
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            total = localeService.getI18nLocaleCountByName( key );
 
-        i18nlocales = new ArrayList<I18nLocale>( localeService.getI18nLocalesBetween( paging.getStartPos(), paging.getPageSize() ));
-        
+            this.paging = createPaging( total );
+
+            i18nlocales = new ArrayList<I18nLocale>( localeService.getI18nLocalesBetweenLikeName( key, paging.getStartPos(),
+                paging.getPageSize() ) );
+        }
+        else
+        {
+            total = localeService.getI18nLocaleCount();
+
+            this.paging = createPaging( total );
+
+            i18nlocales = new ArrayList<I18nLocale>( localeService.getI18nLocalesBetween( paging.getStartPos(),
+                paging.getPageSize() ) );
+        }
+
         Collections.sort( i18nlocales, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         return SUCCESS;
     }
 }

@@ -29,8 +29,10 @@ package org.hisp.dhis.dataadmin.action.locale;
 
 import java.util.Locale;
 
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nLocaleService;
 import org.hisp.dhis.i18n.locale.I18nLocale;
+import org.hisp.dhis.system.util.LocaleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -47,23 +49,27 @@ public class ValidateLocaleAction
 
     @Autowired
     private I18nLocaleService localeService;
+           
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private String language;
+    private String localeCode;
 
-    public void setLanguage( String language )
+    public void setLocaleCode( String localeCode )
     {
-        this.language = language;
-    }
-
-    private String country;
-
-    public void setCountry( String country )
-    {
-        this.country = country;
+        this.localeCode = localeCode;
     }
 
     // -------------------------------------------------------------------------
@@ -83,11 +89,22 @@ public class ValidateLocaleAction
 
     public String execute()
     {
-        I18nLocale locale = localeService.getI18nLocale( new Locale( language, country ) );
-        
-        if ( locale != null )
+
+        if ( localeCode != null && localeCode != "" )
         {
-            return INPUT;
+            Locale locale = LocaleUtils.getLocale( localeCode );
+            
+            if ( locale != null )
+            {
+                I18nLocale i18nLocale = localeService.getI18nLocale( locale );
+                
+                if ( i18nLocale != null )
+                {
+                    message = i18n.getString( "language_country_in_use" );
+    
+                    return ERROR;
+                }
+            }
         }
         
         return SUCCESS;
