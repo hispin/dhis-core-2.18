@@ -155,18 +155,14 @@ public class DefaultSmsSender
                     {
                         if ( !currentUserService.getCurrentUser().equals( user ) )
                         {
-                            if ( isQualifiedReceiver( user ) )
-                            {
-                                toSendList.add( user );
-                            }
+                            //if ( isQualifiedReceiver( user ) )
+                            toSendList.add( user );
                         }
                     }
                     else if ( currentUserService.getCurrentUser() == null )
                     {
-                        if ( isQualifiedReceiver( user ) )
-                        {
-                            toSendList.add( user );
-                        }
+                        //if ( isQualifiedReceiver( user ) )
+                        toSendList.add( user );
                     }
                 }
             }
