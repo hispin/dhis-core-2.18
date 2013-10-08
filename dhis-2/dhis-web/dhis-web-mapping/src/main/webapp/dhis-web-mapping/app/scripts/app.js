@@ -1920,65 +1920,66 @@ Ext.onReady( function() {
 						view,
 						map;
 
-					if (layers.length) {
-						if (name) {
-							for (var i = 0; i < layers.length; i++) {
-								layer = layers[i];
-								view = layer.widget.getView();
+					if (!layers.length) {
+						alert('Please create a map first');
+						return;
+					}
 
-								// Operand
-								if (Ext.isArray(view.columns) && view.columns.length) {
-									for (var j = 0; j < view.columns.length; j++) {
-										for (var k = 0, item; k < view.columns[j].items.length; k++) {
-											item = view.columns[j].items[k];
+					if (!name) {
+						alert('Please enter a name');
+						return;
+					}
 
-											if (item.id.indexOf('-') !== -1) {
-												item.id = item.id.replace('-', '.');
-											}
-										}
+					for (var i = 0; i < layers.length; i++) {
+						layer = layers[i];
+						//view = layer.widget.getView();
+						view = Ext.clone(layer.core.view);
+
+						// Operand
+						if (Ext.isArray(view.columns) && view.columns.length) {
+							for (var j = 0; j < view.columns.length; j++) {
+								for (var k = 0, item; k < view.columns[j].items.length; k++) {
+									item = view.columns[j].items[k];
+
+									if (item.id.indexOf('-') !== -1) {
+										item.id = item.id.replace('-', '.');
 									}
 								}
-
-								// add
-								view.layer = layer.id;
-
-								views.push(view);
 							}
-
-							map = {
-								name: name,
-								longitude: lonlat.lon,
-								latitude: lonlat.lat,
-								zoom: gis.olmap.getZoom(),
-								mapViews: views,
-								user: {
-									id: 'currentUser'
-								}
-							};
-
-							Ext.Ajax.request({
-								url: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/',
-								method: 'POST',
-								headers: {'Content-Type': 'application/json'},
-								params: Ext.encode(map),
-								success: function(r) {
-									var id = r.getAllResponseHeaders().location.split('/').pop();
-
-									gis.store.maps.loadStore();
-
-									gis.viewport.interpretationButton.enable();
-
-									window.destroy();
-								}
-							});
 						}
-						else {
-							alert('Please enter a name');
+
+						// add
+						view.layer = layer.id;
+
+						views.push(view);
+					}
+
+					map = {
+						name: name,
+						longitude: lonlat.lon,
+						latitude: lonlat.lat,
+						zoom: gis.olmap.getZoom(),
+						mapViews: views,
+						user: {
+							id: 'currentUser'
 						}
-					}
-					else {
-						alert('Please create a map first');
-					}
+					};
+
+					Ext.Ajax.request({
+						url: gis.init.contextPath + gis.conf.finals.url.path_api + 'maps/',
+						method: 'POST',
+						headers: {'Content-Type': 'application/json'},
+						params: Ext.encode(map),
+						success: function(r) {
+							var id = r.getAllResponseHeaders().location.split('/').pop();
+
+							gis.store.maps.loadStore();
+
+							gis.viewport.interpretationButton.enable();
+
+							window.destroy();
+						}
+					});
 				}
 			});
 
@@ -3438,6 +3439,15 @@ Ext.onReady( function() {
 
 				return map;
 			},
+			selectGraphMap: function(map, doUpdate) {
+				this.numberOfRecords = gis.util.object.getLength(map);
+
+				for (var key in map) {
+					if (map.hasOwnProperty(key)) {
+						treePanel.multipleExpand(key, map[key], doUpdate);
+					}
+				}
+			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
@@ -3531,6 +3541,14 @@ Ext.onReady( function() {
 				return config.items.length ? config : null;
 			},
             listeners: {
+				load: function() {
+					if (treePanel.tmpSelection) {
+						treePanel.selectGraphMap(treePanel.tmpSelection);
+					}
+				},
+				beforeitemexpand: function() {
+					treePanel.tmpSelection = treePanel.getParentGraphMap();
+				},
 				render: function() {
 					this.rendered = true;
 				},
@@ -3821,13 +3839,7 @@ Ext.onReady( function() {
 					userOrganisationUnitGrandChildren.setValue(isOugc);
 				}
 
-				treePanel.numberOfRecords = gis.util.object.getLength(view.parentGraphMap);
-
-				for (var key in view.parentGraphMap) {
-					if (view.parentGraphMap.hasOwnProperty(key)) {
-						treePanel.multipleExpand(key, view.parentGraphMap[key], false);
-					}
-				}
+				treePanel.selectGraphMap(view.parentGraphMap);
 			}();
 
 			setLayerGui = function() {
@@ -4731,6 +4743,15 @@ Ext.onReady( function() {
 
 				return map;
 			},
+			selectGraphMap: function(map, doUpdate) {
+				this.numberOfRecords = gis.util.object.getLength(map);
+
+				for (var key in map) {
+					if (map.hasOwnProperty(key)) {
+						treePanel.multipleExpand(key, map[key], doUpdate);
+					}
+				}
+			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
@@ -4824,6 +4845,14 @@ Ext.onReady( function() {
 				return config.items.length ? config : null;
 			},
             listeners: {
+				load: function() {
+					if (treePanel.tmpSelection) {
+						treePanel.selectGraphMap(treePanel.tmpSelection);
+					}
+				},
+				beforeitemexpand: function() {
+					treePanel.tmpSelection = treePanel.getParentGraphMap();
+				},
 				render: function() {
 					this.rendered = true;
 				},
@@ -5247,13 +5276,7 @@ Ext.onReady( function() {
 					userOrganisationUnitGrandChildren.setValue(isOugc);
 				}
 
-				treePanel.numberOfRecords = gis.util.object.getLength(view.parentGraphMap);
-
-				for (var key in view.parentGraphMap) {
-					if (view.parentGraphMap.hasOwnProperty(key)) {
-						treePanel.multipleExpand(key, view.parentGraphMap[key], false);
-					}
-				}
+				treePanel.selectGraphMap(view.parentGraphMap);
 			}();
 
 			setLayerGui = function() {
@@ -5541,6 +5564,15 @@ Ext.onReady( function() {
 
 				return map;
 			},
+			selectGraphMap: function(map, doUpdate) {
+				this.numberOfRecords = gis.util.object.getLength(map);
+
+				for (var key in map) {
+					if (map.hasOwnProperty(key)) {
+						treePanel.multipleExpand(key, map[key], doUpdate);
+					}
+				}
+			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
@@ -5634,6 +5666,14 @@ Ext.onReady( function() {
 				return config.items.length ? config : null;
 			},
             listeners: {
+				load: function() {
+					if (treePanel.tmpSelection) {
+						treePanel.selectGraphMap(treePanel.tmpSelection);
+					}
+				},
+				beforeitemexpand: function() {
+					treePanel.tmpSelection = treePanel.getParentGraphMap();
+				},
 				render: function() {
 					this.rendered = true;
 				},
@@ -5947,13 +5987,7 @@ Ext.onReady( function() {
 					userOrganisationUnitGrandChildren.setValue(isOugc);
 				}
 
-				treePanel.numberOfRecords = gis.util.object.getLength(view.parentGraphMap);
-
-				for (var key in view.parentGraphMap) {
-					if (view.parentGraphMap.hasOwnProperty(key)) {
-						treePanel.multipleExpand(key, view.parentGraphMap[key], false);
-					}
-				}
+				treePanel.selectGraphMap(view.parentGraphMap);
 
 				// Area radius
 				areaRadius.setValue(!!view.areaRadius, !!view.areaRadius ? view.areaRadius : null);

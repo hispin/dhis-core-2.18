@@ -3441,6 +3441,15 @@ Ext.onReady( function() {
 				
 				return map;
 			},
+			selectGraphMap: function(map, doUpdate) {
+				this.numberOfRecords = pt.util.object.getLength(map);
+
+				for (var key in map) {
+					if (map.hasOwnProperty(key)) {
+						treePanel.multipleExpand(key, map[key], doUpdate);
+					}
+				}
+			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
 					type: 'ajax',
@@ -3463,6 +3472,14 @@ Ext.onReady( function() {
 				this.enable();
 			},
 			listeners: {
+				load: function() {
+					if (treePanel.tmpSelection) {
+						treePanel.selectGraphMap(treePanel.tmpSelection);
+					}
+				},
+				beforeitemexpand: function() {
+					treePanel.tmpSelection = treePanel.getParentGraphMap();
+				},
 				added: function() {
 					pt.cmp.dimension.organisationUnit.treepanel = this;
 				},
@@ -4643,18 +4660,10 @@ Ext.onReady( function() {
 				userOrganisationUnitChildren.setValue(isOuc);
 				userOrganisationUnitGrandChildren.setValue(isOugc);
 			}
-			
+
 			if (!(isOu || isOuc || isOugc)) {
-
-				// If fav has organisation units, wait for tree callback before update
 				if (Ext.isObject(graphMap)) {
-					treePanel.numberOfRecords = pt.util.object.getLength(graphMap);
-
-					for (var key in graphMap) {						
-						if (graphMap.hasOwnProperty(key)) {
-							treePanel.multipleExpand(key, graphMap[key], false);
-						}
-					}
+					treePanel.selectGraphMap(graphMap);
 				}
 			}
 			else {
