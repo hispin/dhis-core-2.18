@@ -60,6 +60,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class JdbcEventAnalyticsManager
     implements EventAnalyticsManager
 {
+    private static final int MAX_LIMIT = 10000;
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
@@ -102,6 +104,10 @@ public class JdbcEventAnalyticsManager
         if ( params.hasLimit() )
         {
             sql += "limit " + params.getLimit();
+        }
+        else
+        {
+            sql += "limit " + MAX_LIMIT;
         }
         
         // ---------------------------------------------------------------------
