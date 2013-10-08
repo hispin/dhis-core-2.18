@@ -372,8 +372,39 @@ var validationRules = {
         "description" : {
             "rangelength" : [ 2, 160 ]
         },
+        "importance" : {
+            "required" : true
+        },
+        "ruleType" : {
+            "required" : true
+        },
+        "organisationUnitLevel" : {
+        	"number" : true,
+        	"min": 1,
+        	"max": 999
+        },
         "periodTypeName" : {
             "required" : true
+        },
+        "sequentialSampleCount" : {
+        	"number" : true,
+        	"min": 0,
+        	"max": 10
+        },
+        "annualSampleCount" : {
+        	"number" : true,
+        	"min": 0,
+        	"max": 10
+        },
+        "highOutliers" : {
+        	"number" : true,
+        	"min": 0,
+        	"max": 99
+        },
+        "lowOutliers" : {
+        	"number" : true,
+        	"min": 0,
+        	"max": 99
         },
         "operator" : {
             "required" : true

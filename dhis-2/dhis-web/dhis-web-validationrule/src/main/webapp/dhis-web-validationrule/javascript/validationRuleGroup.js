@@ -38,6 +38,17 @@ function initLists()
         $( "#availableValidationRules" ).append(
                 $( "<option></option>" ).attr( "value", id ).text( availableValidationRules[id] ) );
     }
+
+    for ( var id in availableUserRolesToAlert )
+    {
+        $( "#availableUserRolesToAlert" ).append( $( "<option></option>" ).attr( "value", id ).text( availableUserRolesToAlert[id] ) );
+    }
+
+    for ( var id in selectedUserRolesToAlert )
+    {
+        $( "#availableValidationRules" ).append(
+                $( "<option></option>" ).attr( "value", id ).text( selectedUserRolesToAlert[id] ) );
+    }
 }
 
 function filterGroupMembers()
@@ -112,4 +123,78 @@ function removeGroupMembers()
 
     filterGroupMembers();
     filterAvailableValidationRules();
+}
+
+function filterAvailableUserRolesToAlert()
+{
+    var filter = document.getElementById( 'availableUserRolesToAlertFilter' ).value;
+    var list = document.getElementById( 'availableUserRolesToAlert' );
+
+    list.options.length = 0;
+
+    for ( var id in availableUserRolesToAlert )
+    {
+        var value = availableUserRolesToAlert[id];
+
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
+        {
+            list.add( new Option( value, id ), null );
+        }
+    }
+}
+
+function filterSelectedUserRolesToAlert()
+{
+    var filter = document.getElementById( 'selectedUserRolesToAlertFilter' ).value;
+    var list = document.getElementById( 'selectedUserRolesToAlert' );
+
+    list.options.length = 0;
+
+    for ( var id in selectedUserRolesToAlert )
+    {
+        var value = selectedUserRolesToAlert[id];
+
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 )
+        {
+            list.add( new Option( value, id ), null );
+        }
+    }
+}
+
+function addSelectedUserRolesToAlert()
+{
+    var list = document.getElementById( 'selectedUserRolesToAlert' );
+
+    while ( list.selectedIndex != -1 )
+    {
+        var id = list.options[list.selectedIndex].value;
+
+        list.options[list.selectedIndex].selected = false;
+
+        selectedUserRolesToAlert[id] = availableUserRolesToAlert[id];
+
+        delete availableUserRolesToAlert[id];
+    }
+
+    filterAvailableUserRolesToAlert();
+    filterSelectedUserRolesToAlert();
+}
+
+function removeSelectedUserRolesToAlert()
+{
+    var list = document.getElementById( 'selectedUserRolesToAlert' );
+
+    while ( list.selectedIndex != -1 )
+    {
+        var id = list.options[list.selectedIndex].value;
+
+        list.options[list.selectedIndex].selected = false;
+
+        availableUserRolesToAlert[id] = selectedUserRolesToAlert[id];
+
+        delete selectedUserRolesToAlert[id];
+    }
+
+    filterAvailableUserRolesToAlert();
+    filterSelectedUserRolesToAlert();
 }

@@ -184,12 +184,20 @@ public class DefaultExpressionService
     }
     
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Integer days )
-    {
-        final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, days, expression.isNullIfBlank() );
+            Map<String, Double> constantMap, Integer days )
+        {
+            final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, days, expression.isNullIfBlank() );
 
-        return expressionString != null ? calculateExpression( expressionString ) : null;
-    }
+            return expressionString != null ? calculateExpression( expressionString ) : null;
+        }
+
+    public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
+            Map<String, Double> constantMap, Integer days, Set<DataElementOperand> incompleteValues )
+        {
+            final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, days, expression.isNullIfBlank(), incompleteValues );
+
+            return expressionString != null ? calculateExpression( expressionString ) : null;
+        }
 
     @Transactional
     public Set<DataElement> getDataElementsInExpression( String expression )
@@ -636,6 +644,12 @@ public class DefaultExpressionService
     @Transactional
     public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<String, Double> constantMap, Integer days, boolean nullIfNoValues )
     {
+    	return generateExpression( expression, valueMap, constantMap, days, nullIfNoValues, null );
+    }
+
+    private String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<String, Double> constantMap, Integer days, boolean nullIfNoValues,
+    		Set<DataElementOperand> incompleteValues )
+    {
         if ( expression == null || expression.isEmpty() )
         {
             return null;
@@ -654,7 +668,7 @@ public class DefaultExpressionService
 
             final Double value = valueMap.get( operand );
             
-            if ( value == null && nullIfNoValues )
+            if ( nullIfNoValues && ( value == null || ( incompleteValues != null && incompleteValues.contains( operand ) ) ) )
             {
                 return null;
             }

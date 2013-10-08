@@ -785,6 +785,43 @@ public abstract class DhisConvenienceTest
     }
 
     /**
+     * Creates a ValidationRule of RULE_TYPE_MONITORING
+     * 
+     * @param uniqueCharacter A unique character to identify the object.
+     * @param operator               The operator.
+     * @param leftSide               The left side expression.
+     * @param rightSide              The right side expression.
+     * @param periodType             The period-type.
+     * @param organisationUnitLevel  The unit level of organisations to be evaluated by this rule.
+     * @param sequentialSampleCount  How many sequential past periods to sample.
+     * @param annualSampleCount      How many years of past periods to sample.
+     * @param highOutliers           How many high outlying past samples to discard before averaging.
+     * @param lowOutliers            How many low outlying past samples to discard before averaging.
+     */
+    public static ValidationRule createMonitoringRule( char uniqueCharacter, Operator operator, Expression leftSide,
+        Expression rightSide, PeriodType periodType, int organisationUnitLevel, int sequentialSampleCount,
+        int annualSampleCount, int highOutliers, int lowOutliers )
+    {
+        ValidationRule validationRule = new ValidationRule();
+
+        validationRule.setName( "MonitoringRule" + uniqueCharacter );
+        validationRule.setDescription( "Description" + uniqueCharacter );
+        validationRule.setType( ValidationRule.TYPE_ABSOLUTE );
+        validationRule.setRuleType( ValidationRule.RULE_TYPE_MONITORING );
+        validationRule.setOperator( operator );
+        validationRule.setLeftSide( leftSide );
+        validationRule.setRightSide( rightSide );
+        validationRule.setPeriodType( periodType );
+        validationRule.setOrganisationUnitLevel( organisationUnitLevel );
+        validationRule.setSequentialSampleCount( sequentialSampleCount );
+        validationRule.setAnnualSampleCount( annualSampleCount );
+        validationRule.setHighOutliers( highOutliers );
+        validationRule.setLowOutliers( lowOutliers );
+
+        return validationRule;
+    }
+
+    /**
      * @param uniqueCharacter A unique character to identify the object.
      * @return ValidationRuleGroup
      */
@@ -1100,7 +1137,6 @@ public abstract class DhisConvenienceTest
     protected class Dxf2NamespaceResolver
         implements NamespaceContext
     {
-
         @Override
         public String getNamespaceURI( String prefix )
         {

@@ -32,6 +32,7 @@ import static org.hisp.dhis.system.util.ValidationUtils.dataValueIsValid;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -190,9 +191,15 @@ public class DefaultDataValueService
         return dataValueStore.getDataValueCount( cal.getTime() );
     }
     
-    public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit unit )
+    public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit source )
     {
-        return dataValueStore.getDataValueMap( dataElements, period, unit );
+        return dataValueStore.getDataValueMap( dataElements, period, source );
+    }
+    
+    public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Date date, OrganisationUnit source,
+    		Collection<PeriodType> periodTypes, Map<DataElementOperand, Date> lastUpdatedMap )
+    {
+    	return dataValueStore.getDataValueMap( dataElements, date, source, periodTypes, lastUpdatedMap );
     }
     
     public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )

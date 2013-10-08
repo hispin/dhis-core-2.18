@@ -46,9 +46,9 @@
 	#foreach( $value in $dataValues )	
 	#set( $count = $count + 1 )	
 	<tr>	
-		<td><span id="value-${count}-name">$value.dataElementName $value.categoryOptionComboNameParsed</span></td>
+		<td><span id="value-${count}-name">$encoder.htmlEncode( $value.dataElementName ) $encoder.htmlEncode( $value.categoryOptionComboNameParsed )</span></td>
 		
-		<td>$value.sourceName</td>
+		<td>$encoder.htmlEncode( $value.sourceName )</td>
 		
 		<td value="$format.formatDate($value.period.startDate)">$format.formatPeriod( $value.period )</td>
 		

@@ -31,9 +31,12 @@ package org.hisp.dhis.validationrule.action;
 import static org.hisp.dhis.expression.ExpressionService.VALID;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
@@ -74,6 +77,13 @@ public class ShowUpdateValidationRuleFormAction
         this.periodService = periodService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -120,6 +130,13 @@ public class ShowUpdateValidationRuleFormAction
         return periodTypes;
     }
 
+    private List<OrganisationUnitLevel> organisationUnitLevels;
+    
+    public List<OrganisationUnitLevel> getOrganisationUnitLevels()
+    {
+    	return organisationUnitLevels;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -132,6 +149,12 @@ public class ShowUpdateValidationRuleFormAction
         // ---------------------------------------------------------------------
         
         periodTypes = periodService.getAllPeriodTypes();
+        
+        // ---------------------------------------------------------------------
+        // Get organisationUnitLevels
+        // ---------------------------------------------------------------------
+
+        organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
         
         // ---------------------------------------------------------------------
         // Get validationRule

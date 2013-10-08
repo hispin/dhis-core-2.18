@@ -1,4 +1,20 @@
 <script type="text/javascript">
+	// add jquery.tablesorter parser for sorting the importance column:
+	// high => 3 medium => 2 low => 1
+	jQuery.tablesorter.addParser({
+	    id: 'importanceSorter',
+	    is: function(s) {
+			// return false so this parser is not auto-detected
+	        return false;
+	    },
+	    format: function(s) {
+	        return s
+	            .replace( '$i18n.getString( "high" )', 3 )
+	            .replace( '$i18n.getString( "medium" )', 2 )
+	            .replace( '$i18n.getString( "low" )', 1 );
+	    },
+	    type: 'numeric'
+	});
 	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );	
 	});
@@ -9,6 +25,13 @@
 		
 		exportPdfByType( type, params );
 	}
+	
+	var i18n_high = '$encoder.jsEscape( $i18n.getString( "high" ) , "'")';
+	var i18n_medium = '$encoder.jsEscape( $i18n.getString( "medium" ) , "'")';
+	var i18n_low = '$encoder.jsEscape( $i18n.getString( "low" ) , "'")';
+	
+	var i18n_validation = '$encoder.jsEscape( $i18n.getString( "validation" ) , "'")';
+	var i18n_monitoring = '$encoder.jsEscape( $i18n.getString( "monitoring" ) , "'")';
 	
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_validation_rule" ) , "'")';
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
@@ -29,7 +52,7 @@
 				<tr>
 					<td>#filterDiv( "validationRule" )</td>
 					<td style="text-align:right">
-						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'validationRule' );" style="width:80px"/>
+						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'validationRule' );" style="width:140px"/>
 						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddValidationRuleForm.action'">
 					</td>
 				</tr>	
@@ -37,19 +60,23 @@
 			<table class="listTable" id="listTable"> 
 				<col/>
 				<col/>
+				<col/>
 				<col width="120px">				
 				<thead>							
 				<tr>
-					<th>$i18n.getString( "name" )</th>
-					<th  width="100px">$i18n.getString('periodtype')</th>
-					<th class="{sorter: false}">$i18n.getString( "operations" )</th>	
+					<th>$encoder.htmlEncode( $i18n.getString( "name" ) )&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					<!-- Note: column-level sortInitialOrder only works in tablesorter 2.0.8 and later (an earlier version in use as of this writing.) --->
+					<th class="{sorter: 'importanceSorter', sortInitialOrder: 'desc'}">$encoder.htmlEncode( $i18n.getString("importance") )&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					<th>$encoder.htmlEncode( $i18n.getString("period_type") )&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					<th class="{sorter: false}">$encoder.htmlEncode( $i18n.getString( "operations" ) )</th>	
 				</tr>
 				</thead>			
 				<tbody id="list">
 				#foreach( $validationRule in $validationRulesList )
 				<tr id="tr${validationRule.id}">
 					<td onclick="showValidationRuleDetails( $validationRule.id )">$!encoder.htmlEncode( $validationRule.displayName )</td>
-					<td onclick="showValidationRuleDetails( $validationRule.id )">$i18n.getString($!validationRule.periodType.name) </td>
+					<td onclick="showValidationRuleDetails( $validationRule.id )">$encoder.htmlEncode( $i18n.getString($!validationRule.importance) ) </td>
+					<td onclick="showValidationRuleDetails( $validationRule.id )">$encoder.htmlEncode( $i18n.getString($!validationRule.periodType.name) ) </td>
 					<td style="text-align:right">
 						<a href="showUpdateValidationRuleForm.action?id=$validationRule.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 						<a href="javascript:translate( 'ValidationRule', '$validationRule.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
@@ -74,6 +101,12 @@
 				</div>				
 				<p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
+				<p><label>$i18n.getString( "rule_type" ):</label><br><span id="ruleTypeField"></span></p>
+				<p id="organisationUnitLevelP"><label>$i18n.getString( "organisation_unit_level" ):</label><br><span id="organisationUnitLevelField"></span></p>
+				<p id="sequentialSampleCountP"><label>$i18n.getString( "sequential_sample_count" ):</label><br><span id="sequentialSampleCountField"></span></p>
+				<p id="annualSampleCountP"><label>$i18n.getString( "annual_sample_count" ):</label><br><span id="annualSampleCountField"></span></p>
+				<p id="highOutliersP"><label>$i18n.getString( "high_outliers" ):</label><br><span id="highOutliersField"></span></p>
+				<p id="lowOutliersP"><label>$i18n.getString( "low_outliers" ):</label><br><span id="lowOutliersField"></span></p>
 				<p><label>$i18n.getString( "left_side_description" ):</label><br><span id="leftSideDescriptionField"></span></p>
 				<p><label>$i18n.getString( "operator" ):</label><br><span id="operatorField"></span></p>
 				<p><label>$i18n.getString( "right_side_description" ):</label><br><span id="rightSideDescriptionField"></span></p>

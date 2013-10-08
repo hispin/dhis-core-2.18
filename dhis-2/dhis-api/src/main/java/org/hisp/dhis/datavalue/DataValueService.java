@@ -29,6 +29,7 @@ package org.hisp.dhis.datavalue;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -257,7 +258,32 @@ public interface DataValueService
      */
     int getDataValueCount( int days );
     
-    Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit unit );
+    /**
+     * Returns a map of values indexed by DataElementOperand.
+     * 
+     * @param dataElements collection of DataElements to fetch for
+     * @param period period for which to fetch the values
+     * @param unit OrganisationUnit for which to fetch the values
+     * @return
+     */
+    Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit source );
+
+    /**
+     * Returns a map of values indexed by DataElementOperand.
+     * 
+     * In the (unlikely) event that the same dataElement/optionCombo is found in
+     * more than one period for the same organisationUnit and date, the value
+     * is returned from the period with the shortest duration.
+     * 
+     * @param dataElements collection of DataElements to fetch for
+     * @param date date which must be present in the period
+     * @param unit OrganisationUnit for which to fetch the values
+     * @param periodTypes allowable period types in which to find the data
+     * @param lastUpdatedMap map in which to return the lastUpdated date for each value
+     * @return
+     */
+    Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Date date, OrganisationUnit source,
+    		Collection<PeriodType> periodTypes, Map<DataElementOperand, Date> lastUpdatedMap );
 
     /**
      * Gets a Collection of DeflatedDataValues.

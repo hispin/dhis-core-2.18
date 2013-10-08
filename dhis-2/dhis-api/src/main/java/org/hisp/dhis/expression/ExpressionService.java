@@ -137,6 +137,24 @@ public interface ExpressionService
         Map<String, Double> constantMap, Integer days );
     
     /**
+     * Generates the calculated value for the given expression base on the values
+     * supplied in the value map, constant map and days.
+     * 
+     * @param expression the expression which holds the formula for the calculation.
+     * @param valueMap the mapping between data element operands and values to
+     *        use in the calculation.
+     * @param constantMap the mapping between the constant uid and value to use
+     *        in the calculation.
+     * @param days the number of days to use in the calculation.
+     * @param set of data element operands that have values but they are incomplete
+     *        (for example due to aggregation from organisationUnit children where
+     *        not all children had a value.)
+     * @return the calculated value as a double.
+     */
+    Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
+        Map<String, Double> constantMap, Integer days, Set<DataElementOperand> incompleteValues );
+    
+    /**
      * Returns the uids of the data element totals in the given expression.
      * 
      * @param expression the expression.
