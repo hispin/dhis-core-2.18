@@ -474,7 +474,7 @@ function addEventListeners()
         }
     } );
 
-    $( '[name="commentlink"]' ).each( function( i )
+    $( '.commentlink' ).each( function( i )
     {
         var id = $( this ).attr( 'id' );
         var split = splitFieldId( id );

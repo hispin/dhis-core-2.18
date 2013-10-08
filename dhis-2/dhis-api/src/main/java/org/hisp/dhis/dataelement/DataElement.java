@@ -85,7 +85,6 @@ public class DataElement
     public static final String VALUE_TYPE_INT = "int";
     public static final String VALUE_TYPE_NUMBER = "number";    
     public static final String VALUE_TYPE_USER_NAME = "username";
-    public static final String VALUE_TYPE_TEXT = "text";
     public static final String VALUE_TYPE_BOOL = "bool";
     public static final String VALUE_TYPE_TRUE_ONLY = "trueOnly";
     public static final String VALUE_TYPE_DATE = "date";
@@ -93,6 +92,7 @@ public class DataElement
     public static final String VALUE_TYPE_ZERO_OR_POSITIVE_INT = "zeroPositiveInt";
     public static final String VALUE_TYPE_POSITIVE_INT = "positiveNumber";
     public static final String VALUE_TYPE_NEGATIVE_INT = "negativeNumber";
+    public static final String VALUE_TYPE_TEXT = "text";
     public static final String VALUE_TYPE_LONG_TEXT = "longText";
 
     public static final String DOMAIN_TYPE_AGGREGATE = "aggregate";
@@ -130,12 +130,12 @@ public class DataElement
     private String type;
 
     /**
-     * The number type. Is relevant when type is INT.
+     * The number type. Is relevant when type is VALUE_TYPE_INT.
      */
     private String numberType;
 
     /**
-     * The text type. Is relevant when type is TEXT.
+     * The text type. Is relevant when type is VALUE_TYPE_STRING.
      */
     private String textType;
 
