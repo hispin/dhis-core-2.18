@@ -34,6 +34,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.FredSpringWebTest;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.OrganisationUnitToFacilityConverter;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@Ignore //TODO Enable as integration test
 public class FacilityControllerTest extends FredSpringWebTest
 {
     @Autowired
