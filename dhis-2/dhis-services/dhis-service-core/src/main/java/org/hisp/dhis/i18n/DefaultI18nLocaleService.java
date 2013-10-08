@@ -39,7 +39,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.comparator.LocaleNameComparator;
@@ -55,9 +54,9 @@ public class DefaultI18nLocaleService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<I18nLocale> localeStore;
+    private I18nLocaleStore localeStore;
 
-    public void setLocaleStore( GenericIdentifiableObjectStore<I18nLocale> localeStore )
+    public void setLocaleStore( I18nLocaleStore localeStore )
     {
         this.localeStore = localeStore;
     }
@@ -137,7 +136,7 @@ public class DefaultI18nLocaleService
         
         return true;
     }
-    
+        
     public void saveI18nLocale( I18nLocale locale )
     {
         localeStore.save( locale );
@@ -151,6 +150,11 @@ public class DefaultI18nLocaleService
     public I18nLocale getI18nLocaleByUid( String uid )
     {
         return localeStore.getByUid( uid );
+    }
+    
+    public I18nLocale getI18nLocale( Locale locale )
+    {
+        return localeStore.getI18nLocaleByLocale( locale );
     }
     
     public void deleteI18nLocale( I18nLocale locale )

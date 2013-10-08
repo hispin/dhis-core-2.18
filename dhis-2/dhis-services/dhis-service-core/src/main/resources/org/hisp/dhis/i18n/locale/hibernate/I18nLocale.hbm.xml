@@ -15,7 +15,7 @@
 
     <property name="name" column="name" length="250" not-null="true" unique="true" />
 
-    <property name="locale" column="locale" length="15" not-null="true" />
+    <property name="locale" column="locale" length="15" not-null="true" unique="true" />
 
   </class>
 </hibernate-mapping>
