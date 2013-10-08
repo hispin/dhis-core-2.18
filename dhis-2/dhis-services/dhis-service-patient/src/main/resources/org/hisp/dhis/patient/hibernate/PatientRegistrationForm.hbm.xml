@@ -21,26 +21,6 @@
 
     <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm"
       foreign-key="fk_patientregistrationform_dataentryformid" cascade="all" />
-      
-    <list name="fixedAttributes" table="patientregistrationform_fixedAttributes">
-      <key column="patientregistrationformid" foreign-key="fk_patientregistrationform_fixedAttributes_patientregistrationformid" />
-      <list-index column="sort_order" />
-      <element type="text" column="fixedattribute" />
-    </list>
-     
-    <list name="dynamicAttributes" table="patientregistrationform_attributes">
-      <key column="patientregistrationformid" foreign-key="fk_attributes_patientregistrationformid" />
-      <list-index column="sort_order" base="1" />
-      <many-to-many class="org.hisp.dhis.patient.PatientAttribute" column="patientattributeid" 
-      	foreign-key="fk_patientregistrationform_attributes_patientregistrationformid" />
-    </list>
-    
-    <list name="identifierTypes" table="patientregistrationform_identifierTypes">
-      <key column="patientregistrationformid" foreign-key="fk_identifierTypes_patientregistrationformid" />
-      <list-index column="sort_order" base="1" />
-      <many-to-many class="org.hisp.dhis.patient.PatientIdentifierType" column="patientidentifiertypeid"
-      	foreign-key="fk_patientregistrationform_identifiertype_patientregistrationformid" />
-    </list>
     
   </class>
 </hibernate-mapping>

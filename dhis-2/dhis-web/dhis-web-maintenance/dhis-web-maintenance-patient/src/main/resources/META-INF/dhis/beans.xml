@@ -572,42 +572,6 @@
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.patient.action.dataentryform.ShowDefaultPatientRegistrationFormAction"
-		class="org.hisp.dhis.patient.action.dataentryform.ShowDefaultPatientRegistrationFormAction"
-		scope="prototype">
-		<property name="programService">
-			<ref bean="org.hisp.dhis.program.ProgramService" />
-		</property>
-		<property name="patientRegistrationFormService">
-			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-		<property name="identifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.dataentryform.SaveDefaultPatientRegistrationFormAcion"
-		class="org.hisp.dhis.patient.action.dataentryform.SaveDefaultPatientRegistrationFormAcion"
-		scope="prototype">
-		<property name="programService">
-			<ref bean="org.hisp.dhis.program.ProgramService" />
-		</property>
-		<property name="patientRegistrationFormService">
-			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
-		</property>
-		<property name="identifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.patient.action.dataentryform.ShowPatientRegistrationFormAction"
 		class="org.hisp.dhis.patient.action.dataentryform.ShowPatientRegistrationFormAction"
 		scope="prototype">

@@ -10,17 +10,12 @@
 	#end
   <tr>
     <td style="vertical-align:top" colspan='2'>
-		
 		<table class="listTable" id='formList'>
 			  <col>   
-			  <col> 
-			  <col>
 			  <col width="100">
 			<thead>			  
 			  <tr>  
 				<th>$i18n.getString( "program" )</th>
-				<th>$i18n.getString( "default_form_name" )</th>
-				<th>$i18n.getString( "custom_form_name" )</th>
 				<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 			  </tr>
 			</thead>
@@ -35,31 +30,12 @@
 							$i18n.getString('no_program')
 							#set($hasCommonForm = 'true')
 						#end	
-					</td>  
-					<td>
-						#if($!registrationForm.name)
-							$!encoder.htmlEncode( $registrationForm.name )
-						#else
-							[$i18n.getString('none')]
-						#end
-					</td> 
-					<td>
-						#if($!registrationForm.dataEntryForm)
-							$!encoder.htmlEncode( $registrationForm.dataEntryForm.name )
-						#else
-							[$i18n.getString('none')]
-						#end
-					</td>   					
+					</td>					
 					<td style="text-align:center">
 					  <a href="javascript:showDefaultRegistrationForm('$!registrationForm.program.id');" title="$i18n.getString( 'edit' )"><img src='../images/edit.png' alt="$i18n.getString( 'edit' )"></a>
-					  
-					  <a id='update_$registrationForm.program.id' href="javascript:updateNewForm($registrationForm.id, '$!registrationForm.program.id')" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
-					  <a id='add_$registrationForm.program.id' href="javascript:addNewForm($registrationForm.program.id)" title="$i18n.getString( 'design_data_entry_form' )" style='display:none;'><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )" ></a>
-					 
 					  <a href="javascript:removeRegistrationForm( '$!registrationForm.program.id', '$!encoder.jsEncode( $registrationForm.program.name )')" title="$i18n.getString( "remove" )"><img id='active_$registrationForm.program.id' src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 					  <img id='define_$registrationForm.program.id' style='display:none;' src='../images/delete-denied.png' title='$i18n.getString("remove")'>
 					</td>
-					
 				  </tr>
 				#end
 				
@@ -73,11 +49,8 @@
 					
 					#if($hasForm == false)
 						<tr id="tr${registrationForm.id}">
-							<td>$encoder.htmlEncode( $program.name )</td>  
-							<td>[$i18n.getString('none')]</td>   
-							<td>[$i18n.getString('none')]</td> 					
+							<td>$encoder.htmlEncode( $program.name )</td> 	
 							<td style="text-align:center">
-								<a href="javascript:showDefaultRegistrationForm($program.id);" title="$i18n.getString( 'edit' )"><img src='../images/edit.png' alt="$i18n.getString( 'edit' )"></a>
 								<a href="javascript:addNewForm($program.id)" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
 								<img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
 							</td>
@@ -86,11 +59,8 @@
 				#end
 				#if($hasCommonForm=='false')
 				 <tr id="tr${registrationForm.id}">
-					<td>$i18n.getString('no_program')</td>  
-					<td>[$i18n.getString('none')]</td>  
-					<td>[$i18n.getString('none')]</td> 					
+					<td>$i18n.getString('no_program')</td> 			
 					<td style="text-align:center">
-					  <a href="javascript:showDefaultRegistrationForm('');" title="$i18n.getString( 'edit' )"><img src='../images/edit.png' alt="$i18n.getString( 'edit' )"></a>
 					  <a href="javascript:addNewForm('')" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
 					  <img src='../images/delete-denied.png' title='$i18n.getString("remove")'>
 					</td>

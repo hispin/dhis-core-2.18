@@ -22,8 +22,3 @@ function removeRegistrationForm( programId, programName )
 		});
 	}
 }
-
-function showDefaultRegistrationForm( programId )
-{
-	window.location.href='showDefaultPatientRegistrationForm.action?programId=' + programId;
-}
