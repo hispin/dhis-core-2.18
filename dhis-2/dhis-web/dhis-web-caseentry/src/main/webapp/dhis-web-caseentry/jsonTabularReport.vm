@@ -57,7 +57,6 @@
 			},
 		#end
 		
-		
 		#foreach( $attr in $attributes )
 		{
 			"id": "$attr.uid",
@@ -82,5 +81,10 @@
 		}#if( $velocityCount < $dataElements.size() ),#end
 		#end
 		
-	]
+	],
+	filters:{
+		#foreach( $de in $mapFilters.keySet() )
+			"$de": "$mapFilters.get($de)" #if( $velocityCount < $mapFilters.keySet().size() ),#end
+		#end
+	}
 }

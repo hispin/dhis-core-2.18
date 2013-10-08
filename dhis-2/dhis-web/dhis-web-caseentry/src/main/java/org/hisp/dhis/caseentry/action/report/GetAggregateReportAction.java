@@ -192,6 +192,7 @@ public class GetAggregateReportAction
         for ( String dimension : aggregateReport.getDimension() )
         {
             String dimensionId = DataQueryParams.getDimensionFromParam( dimension );
+           
             String[] filters = dimension.split( DataQueryParams.DIMENSION_NAME_SEP );
             if ( filters.length > 1 )
             {
