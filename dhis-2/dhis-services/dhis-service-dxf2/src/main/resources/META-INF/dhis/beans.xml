@@ -29,8 +29,6 @@
   <bean id="organisationUnitObjectHandler"
     class="org.hisp.dhis.dxf2.metadata.handlers.OrganisationUnitObjectHandler" scope="prototype" />
 
-  <!-- register field handlers -->
-
   <!-- register importers -->
 
   <bean id="attributeTypeImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter" scope="prototype">

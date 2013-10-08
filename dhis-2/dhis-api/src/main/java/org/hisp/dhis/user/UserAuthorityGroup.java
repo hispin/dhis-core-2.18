@@ -161,7 +161,7 @@ public class UserAuthorityGroup
             description = userAuthorityGroup.getDescription() == null ? description : userAuthorityGroup.getDescription();
 
             removeAllAuthorities();
-            authorities.addAll( authorities );
+            authorities.addAll( ((UserAuthorityGroup) other).getAuthorities() );
 
             removeAllDataSets();
             dataSets.addAll( userAuthorityGroup.getDataSets() );

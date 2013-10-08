@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractObjectHandler<T> implements ObjectHandler<T>
+public abstract class ObjectHandlerAdapter<T> implements ObjectHandler<T>
 {
     @Override
     public void preImportObject( T object )

@@ -175,6 +175,19 @@ public class DataElementCategory
     // Getters and setters
     // ------------------------------------------------------------------------
 
+    @Override
+    public String getShortName()
+    {
+        if ( getName().length() <= 50 )
+        {
+            return getName();
+        }
+        else
+        {
+            return getName().substring( 0, 49 );
+        }
+    }
+
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
