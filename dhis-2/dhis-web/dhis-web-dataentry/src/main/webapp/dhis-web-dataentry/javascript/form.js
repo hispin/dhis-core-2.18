@@ -53,8 +53,9 @@ var storageManager = new StorageManager();
 // Is this form a multiOrg form?
 var multiOrganisationUnit = false;
 
-// local cache of organisationUnits (used for name lookup)
-// var organisationUnits = [];
+// "organisationUnits" object inherited from ouwt.js
+
+// TODO remove all usage of name="entryfield" etc and migrate to class="entryfield" etc
 
 var COLOR_GREEN = '#b9ffb9';
 var COLOR_YELLOW = '#fffe8c';
@@ -82,7 +83,8 @@ var DAO = DAO || {};
 
 function getCurrentOrganisationUnit() 
 {
-    if ( $.isArray( currentOrganisationUnitId ) ) {
+    if ( $.isArray( currentOrganisationUnitId ) ) 
+    {
         return currentOrganisationUnitId[0];
     }
 
@@ -392,7 +394,6 @@ function addEventListeners()
 		if ( formType != FORMTYPE_CUSTOM )
 		{
         	$( this ).css( 'width', '100%' );
-        	$( this ).css( 'text-align', 'center' );
 		}
 
         if ( type == 'date' )
@@ -400,6 +401,20 @@ function addEventListeners()
             $( this ).css( 'width', '100%' );
             datePicker( id );
         }
+    } );
+    
+    $( '.entryfield' ).not( '.entryarea' ).each( function( i )
+    {
+		if ( formType != FORMTYPE_CUSTOM )
+		{
+        	$( this ).css( 'text-align', 'center' );
+		}
+    } );
+
+    $( '.entryarea' ).each( function( i )
+    {
+    	$( this ).css( 'min-width', '264px' );
+    	$( this ).css( 'min-height', '45px' );
     } );
 
     $( '.entryselect' ).each( function( i )
