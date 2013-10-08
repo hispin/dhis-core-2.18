@@ -56,7 +56,6 @@ import static org.hisp.dhis.dataelement.DataElement.*;
 
 /**
  * @author Bharath Kumar
- * @version $Id$
  */
 @Transactional
 public class DefaultDataEntryFormService
@@ -319,13 +318,19 @@ public class DefaultDataEntryFormService
                 {
                     appendCode += " name=\"entryoptionset\" class=\"entryoptionset\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
+                else if ( VALUE_TYPE_LONG_TEXT.equals( dataElement.getTextType() ) )
+                {
+                    inputHtml = inputHtml.replace( "input", "textarea" );
+                    
+                    appendCode += " name=\"entryfield\" class=\"entryfield entryarea\" tabindex=\"" + i++ + "\"" + "></textarea>";
+                }
                 else
                 {
                     appendCode += " name=\"entryfield\" class=\"entryfield\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
-
-                inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
                 
+                inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
+
                 inputHtml += "<span id=\"" + dataElement.getUid() + "-dataelement\" style=\"display:none\">" + dataElement.getFormNameFallback() + "</span>";
                 inputHtml += "<span id=\"" + categoryOptionCombo.getUid() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
             }
