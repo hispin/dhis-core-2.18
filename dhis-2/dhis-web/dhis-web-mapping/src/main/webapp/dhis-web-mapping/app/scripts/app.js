@@ -6639,7 +6639,11 @@ Ext.onReady( function() {
 		Ext.Ajax.request({
 			url: '../initialize.action',
 			success: function(r) {
-				gis = GIS.core.getInstance(Ext.decode(r.responseText));
+				var init = Ext.decode(r.responseText);
+
+				GIS.i18n = init.i18n;
+
+				gis = GIS.core.getInstance(init);
 
 				GIS.app.createExtensions();
 

@@ -3,32 +3,16 @@ Ext.onReady( function() {
 	// ext config
 	Ext.Ajax.method = 'GET';
 
-	// namespace
-	if (!('GIS' in window)) {
-		GIS = {
-			i18n: {
-				thematic_layer_1_legend: 'Thematic layer 1 legend',
-				thematic_layer_2_legend: 'Thematic layer 2 legend',
-				thematic_layer_3_legend: 'Thematic layer 3 legend',
-				thematic_layer_4_legend: 'Thematic layer 4 legend',
-				facility_layer_legend: 'Facility layer legend'
-			}
-		};
-	}
-
-	// mode
-	GIS.isDebug = false;
-
-	// html5
-	GIS.isSessionStorage = 'sessionStorage' in window && window['sessionStorage'] !== null;
-
-	// log
-	GIS.logg = [];
-
-	// core
-
-	GIS.core = {};
-	GIS.core.instances = [];
+	// gis
+	GIS = {
+		core: {
+			instances: []
+		},
+		i18n: {},
+		isDebug: false,
+		isSessionStorage: 'sessionStorage' in window && window['sessionStorage'] !== null,
+		logg: []
+	};
 
 	GIS.core.getOLMap = function(gis) {
 		var olmap,
@@ -2348,6 +2332,8 @@ console.log(view.parentGraphMap);
 		);
 
 		gis.olmap.addLayers(layers);
+
+		GIS.core.instances.push(gis);
 
 		return gis;
 	};
