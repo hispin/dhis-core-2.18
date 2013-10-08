@@ -218,6 +218,111 @@ public class ActivityReportingServiceImpl
         this.patientId = patientId;
     }
 
+    @Required
+    public void setProgramStageInstanceService(
+        org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
+    @Required
+    public void setPatientAttValueService( PatientAttributeValueService patientAttValueService )
+    {
+        this.patientAttValueService = patientAttValueService;
+    }
+
+    @Required
+    public void setPatientAttService( PatientAttributeService patientAttService )
+    {
+        this.patientAttService = patientAttService;
+    }
+
+    @Required
+    public void setDataValueService( org.hisp.dhis.patientdatavalue.PatientDataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+
+    @Required
+    public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
+    {
+        this.patientMobileSettingService = patientMobileSettingService;
+    }
+
+    @Required
+    public void setModelMapping( org.hisp.dhis.mobile.service.ModelMapping modelMapping )
+    {
+        this.modelMapping = modelMapping;
+    }
+
+    public PatientMobileSetting getSetting()
+    {
+        return setting;
+    }
+
+    public void setSetting( PatientMobileSetting setting )
+    {
+        this.setting = setting;
+    }
+
+    public org.hisp.dhis.patient.PatientAttribute getGroupByAttribute()
+    {
+        return groupByAttribute;
+    }
+
+    public void setGroupByAttribute( org.hisp.dhis.patient.PatientAttribute groupByAttribute )
+    {
+        this.groupByAttribute = groupByAttribute;
+    }
+
+    @Required
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    {
+        this.patientIdentifierService = patientIdentifierService;
+    }
+
+    @Required
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+
+    @Required
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
+    @Required
+    public void setRelationshipService( RelationshipService relationshipService )
+    {
+        this.relationshipService = relationshipService;
+    }
+
+    @Required
+    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
+    {
+        this.programStageSectionService = programStageSectionService;
+    }
+
+    @Required
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    @Required
+    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    {
+        this.patientDataValueService = patientDataValueService;
+    }
+
+    @Required
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     // -------------------------------------------------------------------------
     // MobileDataSetService
     // -------------------------------------------------------------------------
@@ -1546,112 +1651,6 @@ public class ActivityReportingServiceImpl
         }
     }
 
-    // Setters...
-
-    @Required
-    public void setProgramStageInstanceService(
-        org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
-    @Required
-    public void setPatientAttValueService( PatientAttributeValueService patientAttValueService )
-    {
-        this.patientAttValueService = patientAttValueService;
-    }
-
-    @Required
-    public void setPatientAttService( PatientAttributeService patientAttService )
-    {
-        this.patientAttService = patientAttService;
-    }
-
-    @Required
-    public void setDataValueService( org.hisp.dhis.patientdatavalue.PatientDataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    @Required
-    public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
-    {
-        this.patientMobileSettingService = patientMobileSettingService;
-    }
-
-    @Required
-    public void setModelMapping( org.hisp.dhis.mobile.service.ModelMapping modelMapping )
-    {
-        this.modelMapping = modelMapping;
-    }
-
-    public PatientMobileSetting getSetting()
-    {
-        return setting;
-    }
-
-    public void setSetting( PatientMobileSetting setting )
-    {
-        this.setting = setting;
-    }
-
-    public org.hisp.dhis.patient.PatientAttribute getGroupByAttribute()
-    {
-        return groupByAttribute;
-    }
-
-    public void setGroupByAttribute( org.hisp.dhis.patient.PatientAttribute groupByAttribute )
-    {
-        this.groupByAttribute = groupByAttribute;
-    }
-
-    @Required
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
-    }
-
-    @Required
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
-    @Required
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
-
-    @Required
-    public void setRelationshipService( RelationshipService relationshipService )
-    {
-        this.relationshipService = relationshipService;
-    }
-
-    @Required
-    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
-    {
-        this.programStageSectionService = programStageSectionService;
-    }
-
-    @Required
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    @Required
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
-    {
-        this.patientDataValueService = patientDataValueService;
-    }
-
-    @Required
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
 
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
@@ -1781,8 +1780,6 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
-        
-        System.out.println("Name: " + patient.getName());
         
         patientWeb.setName( patient.getName() );
         patientWeb.setGender( patient.getGender() );
