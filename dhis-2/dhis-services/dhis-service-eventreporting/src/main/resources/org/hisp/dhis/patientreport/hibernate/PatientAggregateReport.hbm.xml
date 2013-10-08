@@ -6,87 +6,54 @@
   >
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.patientreport.PatientAggregateReport"
-    table="patientaggregatereport">
+	<class name="org.hisp.dhis.patientreport.PatientAggregateReport"
+		table="patientaggregatereport">
 
-    <id name="id" column="patientaggregatereportid">
-      <generator class="native" />
-    </id>
-    &identifiableProperties;
+		<id name="id" column="patientaggregatereportid">
+			<generator class="native" />
+		</id>
+   
+   		&identifiableProperties;
 
-    <property name="name" column="name" not-null="true" unique="true" length="230" />
+		<property name="name" column="name" not-null="true" unique="true"
+			length="230" />
 
-    <many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
-      column="programstageid" foreign-key="fk_patientaggregatereport_programstage" />
+		<many-to-one name="program" class="org.hisp.dhis.program.Program"
+			column="programid" foreign-key="fk_patientaggregatereport_program" />
 
-    <list name="startDates" table="patientaggregatereport_startdates">
-      <key column="patientaggregatereportid" />
-      <list-index column="sort_order" />
-      <element type="date" column="startdate" />
-    </list>
+		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
+			column="programstageid" foreign-key="fk_patientaggregatereport_programstage" />
 
+		<property name="startDate" />
 
-    <list name="endDates" table="patientaggregatereport_enddates">
-      <key column="patientaggregatereportid" />
-      <list-index column="sort_order" />
-      <element type="date" column="enddate" />
-    </list>
+		<property name="endDate" />
+		
+		<list name="dimension" table="patientaggregatereportmembers">
+	      <key column="patientaggregatereportid" foreign-key="fk_patientaggregatereportid_items" />
+	      <list-index column="sort_order" />
+	      <element type="text" column="itemvalue" />
+	    </list>
+		
+		<property name="ouMode" />
+		
+		<property name="aggregateType" />
+		
+		<property name="limit" column="limitOption" />
+		
+		<property name="sortOrder" />
 
-    <set name="relativePeriods" table="patientaggregatereport_relativeperiods">
-      <key column="patientaggregatereportid"
-        foreign-key="fk_patientaggregatereportid_relativeperiods" />
-      <element type="text" column="relativeperiod" />
-    </set>
+		<!-- Access properties -->
 
-    <list name="fixedPeriods" table="patientaggregatereport_fixedperiods">
-      <key column="patientaggregatereportid" />
-      <list-index column="sort_order" />
-      <element type="text" column="fixedperiod" />
-    </list>
+		<many-to-one name="user" class="org.hisp.dhis.user.User"
+			column="userid" foreign-key="fk_patientaggregatereport_userid" />
 
-    <set name="organisationUnits" table="patientaggregatereport_organisationUnits">
-      <key column="patientaggregatereportid" foreign-key="fk_patientaggregatereport_organisationunitid" />
-      <many-to-many column="organisationunitid"
-        class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_patientaggregatereportid_organisationunit" />
-    </set>
+		<property name="publicAccess" length="8" />
 
-    <set name="filterValues" table="patientaggregatereport_filtervalues">
-      <key column="patientaggregatereportid"
-        foreign-key="fk_patientaggregatereportid_filtervalues" />
-      <element type="text" column="filtervalue" />
-    </set>
+		<set name="userGroupAccesses" table="patientaggregatereportusergroupaccesses">
+			<key column="patientaggregatereportid" />
+			<many-to-many class="org.hisp.dhis.user.UserGroupAccess"
+				column="usergroupaccessid" unique="true" />
+		</set>
 
-    <property name="facilityLB" />
-
-    <property name="limitRecords" />
-
-    <property name="position" />
-
-    <many-to-one name="deGroupBy" class="org.hisp.dhis.dataelement.DataElement"
-      column="dataelementid" foreign-key="fk_patientaggregatereport_dataelementid" />
-
-    <property name="aggregateType" />
-
-    <property name="useCompletedEvents" />
-
-    <property name="userOrganisationUnit" />
-
-    <property name="userOrganisationUnitChildren" />
-
-    <many-to-one name="deSum" class="org.hisp.dhis.dataelement.DataElement"
-      column="desumid" foreign-key="fk_patientaggregatereport_dataelementsumtid" />
-
-    <!-- Access properties -->
-	
-    <many-to-one name="user" class="org.hisp.dhis.user.User"
-      column="userid" foreign-key="fk_patientaggregatereport_userid" />
-	
-    <property name="publicAccess" length="8" />
-
-    <set name="userGroupAccesses" table="patientaggregatereportusergroupaccesses">
-      <key column="patientaggregatereportid" />
-      <many-to-many class="org.hisp.dhis.user.UserGroupAccess" column="usergroupaccessid" unique="true" />
-    </set>
-    
-  </class>
+	</class>
 </hibernate-mapping>

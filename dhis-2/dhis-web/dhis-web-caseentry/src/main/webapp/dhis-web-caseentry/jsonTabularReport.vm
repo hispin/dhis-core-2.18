@@ -28,36 +28,58 @@
 	],
 	"startDate": "$!format.formatDate( $tabularReport.startDate )",
 	"endDate": "$!format.formatDate( ${tabularReport.endDate} )",
-	"asc": "${tabularReport.sortByAsc}",
-	"desc": "${tabularReport.sortByDesc}",
-	"level": "${tabularReport.level}",
-	"facilityLB": "${tabularReport.facilityLB}",
+	"ouMode": "${tabularReport.ouMode}",
+	"userOrgunits": "$!userOrgunits",
+	"userOrgunitChildren": "$!userOrgunitChildren",
 	"orgunitIds": [
-		#set( $size = $tabularReport.organisationUnits.size() )
-		#set( $organisationUnits = ${tabularReport.organisationUnits} )
-		#foreach( ${organisationUnit} in $!{organisationUnits} )
+		#set( $size = $orgunits.size() )
+		#foreach( $orgunit in $!orgunits )
 			{
-				"id": "$organisationUnit.uid",
-				"localid": "$organisationUnit.id",
-				"path":"#foreach($anc in $organisationUnit.getAncestors())/${anc.uid}#end"
+				"id": "$orgunit.uid",
+				"localid": "$orgunit.id",
+				"path":"#foreach($anc in $orgunit.getAncestors())/${anc.uid}#end"
 			}
 			#if( $velocityCount < $size ),#end
 		#end
 	],
 	"items": [
-		#set( $size = $tabularReport.items.size() )
-		#foreach( $item in $!{tabularReport.items} )
+		#set( $size = $identifierTypes.size() )
+		#foreach( $item in $identifierTypes )
 			{
 				"id": "$item",
 				"name": "",
 				"compulsory": "",
-				"valueType": #if( $!dataElement.optionSet )
+				"valueType": #if( $iden.optionSet )
 								"list"
 							 #else
-								"${!dataElement.type}"
+								"${iden.type}"
 							 #end
-			}
-			#if( $velocityCount < $size ),#end
+			},
+		#end
+		
+		
+		#foreach( $attr in $attributes )
+		{
+			"id": "$attr.uid",
+			"name": "$encoder.xmlEncode(${attr.displayName} )",
+			"valueType": #if( $attr.optionSet )
+							"list"
+						 #else
+							"${attr.type}"
+						 #end
+		},
+		#end
+		
+		#foreach( $de in $dataElements )
+		{
+			"id": "$de.uid",
+			"name": "$encoder.xmlEncode(${de.getFormNameFallback()} )",
+			"valueType": #if( $de.optionSet )
+							"list_$de.optionSet.uid"
+						 #else
+							"$de.type"
+						 #end
+		}#if( $velocityCount < $dataElements.size() ),#end
 		#end
 		
 	]

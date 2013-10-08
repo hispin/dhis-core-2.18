@@ -28,6 +28,11 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -35,13 +40,7 @@ import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientreport.TabularReportColumn;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.sms.outbound.OutboundSms;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Abyot Asalefew
@@ -126,12 +125,7 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
         Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer max, Integer min );
-
-    Grid getAggregateReport( int position, ProgramStage programStage, Collection<Integer> orgunitIds,
-        String facilityLB, Integer deGroupBy, Integer deSum, Map<Integer, Collection<String>> deFilters,
-        List<Period> periods, String aggregateType, Integer limit, Boolean useCompletedEvents, Boolean displayTotals,
-        Boolean useFormNameDataElement, I18nFormat format, I18n i18n );
-
+    
     // -------------------------------------------------------------------------
     // Statistical
     // -------------------------------------------------------------------------

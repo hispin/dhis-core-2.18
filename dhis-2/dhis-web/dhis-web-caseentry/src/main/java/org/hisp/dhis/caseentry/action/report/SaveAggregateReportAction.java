@@ -29,18 +29,14 @@ package org.hisp.dhis.caseentry.action.report;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.PatientAggregateReportService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -64,25 +60,18 @@ public class SaveAggregateReportAction
         this.aggregateReportService = aggregateReportService;
     }
 
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     private ProgramStageService programStageService;
 
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
     }
 
     private CurrentUserService currentUserService;
@@ -100,135 +89,76 @@ public class SaveAggregateReportAction
     }
 
     // -------------------------------------------------------------------------
-    // Setters
+    // Input
     // -------------------------------------------------------------------------
 
     private String name;
+
+    private String programId;
+
+    private String programStageId;
+
+    private String startDate;
+
+    private String endDate;
+
+    private List<String> dimension = new ArrayList<String>();
+
+    private String ouMode;
+
+    private Integer limit;
+
+    private String sortOrder;
+
+    // -------------------------------------------------------------------------
+    // Setters
+    // -------------------------------------------------------------------------
 
     public void setName( String name )
     {
         this.name = name;
     }
 
-    private Integer programStageId;
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
+    }
 
-    public void setProgramStageId( Integer programStageId )
+    public void setLimit( Integer limit )
+    {
+        this.limit = limit;
+    }
+
+    public void setSortOrder( String sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
+    public void setOuMode( String ouMode )
+    {
+        this.ouMode = ouMode;
+    }
+
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    public void setProgramId( String programId )
+    {
+        this.programId = programId;
+    }
+
+    public void setProgramStageId( String programStageId )
     {
         this.programStageId = programStageId;
     }
 
-    private String aggregateType;
-
-    public void setAggregateType( String aggregateType )
+    public void setDimension( List<String> dimension )
     {
-        this.aggregateType = aggregateType;
+        this.dimension = dimension;
     }
 
-    private Collection<Integer> orgunitIds;
-
-    public void setOrgunitIds( Collection<Integer> orgunitIds )
-    {
-        this.orgunitIds = orgunitIds;
-    }
-
-    private Set<String> deFilters;
-
-    public void setDeFilters( Set<String> deFilters )
-    {
-        this.deFilters = deFilters;
-    }
-
-    private List<String> fixedPeriods = new ArrayList<String>();
-
-    public void setFixedPeriods( List<String> fixedPeriods )
-    {
-        this.fixedPeriods = fixedPeriods;
-    }
-
-    private Set<String> relativePeriods = new HashSet<String>();
-
-    public void setRelativePeriods( Set<String> relativePeriods )
-    {
-        this.relativePeriods = relativePeriods;
-    }
-
-    private List<String> startDates;
-
-    public void setStartDates( List<String> startDates )
-    {
-        this.startDates = startDates;
-    }
-
-    private List<String> endDates;
-
-    public void setEndDates( List<String> endDates )
-    {
-        this.endDates = endDates;
-    }
-
-    private String facilityLB; // All, children, current
-
-    public void setFacilityLB( String facilityLB )
-    {
-        this.facilityLB = facilityLB;
-    }
-
-    private Integer position;
-
-    public void setPosition( Integer position )
-    {
-        this.position = position;
-    }
-
-    private Integer limitRecords;
-
-    public void setLimitRecords( Integer limitRecords )
-    {
-        this.limitRecords = limitRecords;
-    }
-
-    private Integer deGroupBy;
-
-    public void setDeGroupBy( Integer deGroupBy )
-    {
-        this.deGroupBy = deGroupBy;
-    }
-
-    private Integer deSum;
-
-    public void setDeSum( Integer deSum )
-    {
-        this.deSum = deSum;
-    }
-
-    private Boolean useCompletedEvents;
-
-    public void setUseCompletedEvents( Boolean useCompletedEvents )
-    {
-        this.useCompletedEvents = useCompletedEvents;
-    }
-
-    private Boolean userOrganisationUnit;
-
-    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
-    {
-        this.userOrganisationUnit = userOrganisationUnit;
-    }
-
-    private Boolean userOrganisationUnitChildren;
-
-    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
-    {
-        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
-    }
-    
-    private Boolean useFormNameDataElement;
-    
-    public void setUseFormNameDataElement( Boolean useFormNameDataElement )
-    {
-        this.useFormNameDataElement = useFormNameDataElement;
-    }
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -237,61 +167,21 @@ public class SaveAggregateReportAction
     public String execute()
         throws Exception
     {
-        userOrganisationUnit = (userOrganisationUnit == null) ? false : userOrganisationUnit;
-        userOrganisationUnitChildren = (userOrganisationUnitChildren == null) ? false : userOrganisationUnitChildren;
+        Program program = programService.getProgram( programId );
+        ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        PatientAggregateReport aggregateReport = new PatientAggregateReport();
-
-        aggregateReport.setName( name );
-        aggregateReport.setProgramStage( programStageService.getProgramStage( programStageId ) );
-
-        if ( startDates != null && endDates != null )
-        {
-            List<Date> start = new ArrayList<Date>();
-            List<Date> end = new ArrayList<Date>();
-
-            for ( int i = 0; i < startDates.size(); i++ )
-            {
-                start.add( format.parseDate( startDates.get( i ) ) );
-                end.add( format.parseDate( endDates.get( i ) ) );
-            }
-            aggregateReport.setStartDates( start );
-            aggregateReport.setEndDates( end );
-        }
-
-        aggregateReport.setRelativePeriods( relativePeriods );
-        aggregateReport.setFixedPeriods( fixedPeriods );
-        aggregateReport.setOrganisationUnits( new HashSet<OrganisationUnit>( organisationUnitService
-            .getOrganisationUnits( orgunitIds ) ) );
-
-        aggregateReport.setFilterValues( deFilters );
-        aggregateReport.setFacilityLB( facilityLB );
-        aggregateReport.setLimitRecords( limitRecords );
-        aggregateReport.setPosition( position );
-        aggregateReport.setUseFormNameDataElement( useFormNameDataElement );
-        
-        if ( deGroupBy != null )
-        {
-            aggregateReport.setDeGroupBy( dataElementService.getDataElement( deGroupBy ) );
-        }
-
-        if ( deSum != null )
-        {
-            aggregateReport.setDeSum( dataElementService.getDataElement( deSum ) );
-        }
-
-        if ( useCompletedEvents != null )
-        {
-            aggregateReport.setUseCompletedEvents( useCompletedEvents );
-        }
-
-
-        aggregateReport.setUserOrganisationUnit( userOrganisationUnit );
-        aggregateReport.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
-
-        aggregateReport.setAggregateType( aggregateType );
+        PatientAggregateReport aggregateReport = new PatientAggregateReport( name );
+        aggregateReport.setStartDate( format.parseDate( startDate ) );
+        aggregateReport.setEndDate( format.parseDate( endDate ) );
+        aggregateReport.setOuMode( ouMode );
         aggregateReport.setUser( currentUserService.getCurrentUser() );
-
+        aggregateReport.setDimension( dimension );
+        aggregateReport.setProgramStage( programStage );
+        aggregateReport.setProgram( program );
+        aggregateReport.setLimit( limit );
+        aggregateReport.setSortOrder( sortOrder );
+        aggregateReport.setUser( currentUserService.getCurrentUser() );
+        
         aggregateReportService.addPatientAggregateReport( aggregateReport );
 
         return SUCCESS;

@@ -225,13 +225,7 @@
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStageDataElements.vm
 			</result>
 		</action>
-
-		<action name="searchProgramStageInstances"
-			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/programStageInstancesList.vm</param>
-		</action>
-
+		
 		<action name="removeEmptyEvents"
 			class="org.hisp.dhis.caseentry.action.caseentry.RemoveEmptyEventsAction">
 			<result name="success" type="velocity-json">
@@ -873,6 +867,12 @@
 		</action>
 
 		<!-- Tabular report -->
+		
+		<action name="generateTabularReport" class="org.hisp.dhis.caseentry.action.NoAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
 
 		<action name="getOrganisationUnitChildren"
 			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction">
@@ -928,15 +928,6 @@
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
-		<action name="generateTabularReport"
-			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularReportResult.vm
-			</result>
-			<result name="xls" type="gridXlsResult" />
-			<result name="pdf" type="gridPdfResult" />
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
 		<action name="saveTabularReport"
 			class="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction">
 			<result name="success" type="velocity-json">
@@ -984,18 +975,6 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonTabularReportList.vm
 			</result>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-
-		<action name="generateAggregateReport"
-			class="org.hisp.dhis.caseentry.action.report.GenerateAggregateReportAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularAggregateReportResult.vm
-			</result>
-			<result name="xls" type="gridXlsResult" />
-			<result name="pdf" type="gridPdfResult" />
-			<result name="csv" type="gridCsvResult" />
-			<result name="jasper" type="gridJasperResult" />
-			<result name="jrxml" type="gridJrxmlResult" />
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 

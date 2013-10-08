@@ -30,15 +30,11 @@ package org.hisp.dhis.patientreport;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.user.User;
 
 /**
  * @author Chau Thu Tran
@@ -50,58 +46,29 @@ public class PatientAggregateReport
 {
     private static final long serialVersionUID = 3261142704777097572L;
 
-    public static final int POSITION_ROW_ORGUNIT_COLUMN_PERIOD = 1;
-    public static final int POSITION_ROW_PERIOD_COLUMN_ORGUNIT = 2;
-    public static final int POSITION_ROW_ORGUNIT_ROW_PERIOD = 3;
-    public static final int POSITION_ROW_PERIOD = 4;
-    public static final int POSITION_ROW_ORGUNIT = 5;
-    public static final int POSITION_ROW_PERIOD_COLUMN_DATA = 6;
-    public static final int POSITION_ROW_ORGUNIT_COLUMN_DATA = 7;
-    public static final int POSITION_ROW_DATA = 8;
-    public static final int POSITION_ROW_DATA_COLUMN_PERIOD = 9; // PIVOT FROM 6
-    public static final int POSITION_ROW_DATA_COLUMN_ORGUNIT = 10; // PIVOT FROM 7
-    
     public static final String AGGREGATE_TYPE_COUNT = "count";
+
     public static final String AGGREGATE_TYPE_SUM = "sum";
+
     public static final String AGGREGATE_TYPE_AVG = "avg";
-    
-    public static final String SEPARATE_FILTER = "_";
+
+    private Program program;
 
     private ProgramStage programStage;
 
-    private List<Date> startDates;
+    private Date startDate;
 
-    private List<Date> endDates;
+    private Date endDate;
 
-    private Set<String> relativePeriods = new HashSet<String>();
+    private List<String> dimension = new ArrayList<String>();
 
-    private List<String> fixedPeriods = new ArrayList<String>();
+    private String ouMode;
 
-    private Set<OrganisationUnit> organisationUnits;
+    private String aggregateType = "count";
 
-    private Set<String> filterValues = new HashSet<String>();
+    private Integer limit;
 
-    private String facilityLB;
-
-    private Integer limitRecords;
-
-    private int position;
-
-    private DataElement deGroupBy;
-    
-    private DataElement deSum;
-
-    private String aggregateType;
-
-    private Boolean useCompletedEvents;
-
-    private Boolean userOrganisationUnit;
-
-    private Boolean userOrganisationUnitChildren;
-
-    private Boolean useFormNameDataElement;
-    
-    private User user;
+    private String sortOrder;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -110,6 +77,11 @@ public class PatientAggregateReport
     public PatientAggregateReport()
     {
 
+    }
+
+    public PatientAggregateReport( String name )
+    {
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -126,106 +98,6 @@ public class PatientAggregateReport
         this.programStage = programStage;
     }
 
-    public List<Date> getStartDates()
-    {
-        return startDates;
-    }
-
-    public void setStartDates( List<Date> startDates )
-    {
-        this.startDates = startDates;
-    }
-
-    public List<Date> getEndDates()
-    {
-        return endDates;
-    }
-
-    public void setEndDates( List<Date> endDates )
-    {
-        this.endDates = endDates;
-    }
-
-    public Set<String> getRelativePeriods()
-    {
-        return relativePeriods;
-    }
-
-    public void setRelativePeriods( Set<String> relativePeriods )
-    {
-        this.relativePeriods = relativePeriods;
-    }
-
-    public List<String> getFixedPeriods()
-    {
-        return fixedPeriods;
-    }
-
-    public void setFixedPeriods( List<String> fixedPeriods )
-    {
-        this.fixedPeriods = fixedPeriods;
-    }
-
-    public Set<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
-    {
-        this.organisationUnits = organisationUnits;
-    }
-
-    public Set<String> getFilterValues()
-    {
-        return filterValues;
-    }
-
-    public void setFilterValues( Set<String> filterValues )
-    {
-        this.filterValues = filterValues;
-    }
-
-    public String getFacilityLB()
-    {
-        return facilityLB;
-    }
-
-    public void setFacilityLB( String facilityLB )
-    {
-        this.facilityLB = facilityLB;
-    }
-
-    public Integer getLimitRecords()
-    {
-        return limitRecords;
-    }
-
-    public void setLimitRecords( Integer limitRecords )
-    {
-        this.limitRecords = limitRecords;
-    }
-
-    public int getPosition()
-    {
-        return position;
-    }
-
-    public void setPosition( int position )
-    {
-        this.position = position;
-    }
-
-    public DataElement getDeGroupBy()
-    {
-        return deGroupBy;
-    }
-
-    public void setDeGroupBy( DataElement deGroupBy )
-    {
-        this.deGroupBy = deGroupBy;
-    }
-
     public String getAggregateType()
     {
         return aggregateType;
@@ -235,64 +107,75 @@ public class PatientAggregateReport
     {
         this.aggregateType = aggregateType;
     }
-
-    public User getUser()
+    
+    public Program getProgram()
     {
-        return user;
+        return program;
     }
 
-    public void setUser( User user )
+    public void setProgram( Program program )
     {
-        this.user = user;
+        this.program = program;
     }
 
-    public Boolean getUseCompletedEvents()
+    public Date getStartDate()
     {
-        return useCompletedEvents;
+        return startDate;
     }
 
-    public void setUseCompletedEvents( Boolean useCompletedEvents )
+    public void setStartDate( Date startDate )
     {
-        this.useCompletedEvents = useCompletedEvents;
+        this.startDate = startDate;
     }
 
-    public Boolean getUserOrganisationUnit()
+    public Date getEndDate()
     {
-        return userOrganisationUnit;
+        return endDate;
     }
 
-    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    public void setEndDate( Date endDate )
     {
-        this.userOrganisationUnit = userOrganisationUnit;
+        this.endDate = endDate;
     }
 
-    public Boolean getUserOrganisationUnitChildren()
+    public List<String> getDimension()
     {
-        return userOrganisationUnitChildren;
+        return dimension;
     }
 
-    public void setUserOrganisationUnitChildren( Boolean userOrganisationUnitChildren )
+    public void setDimension( List<String> dimension )
     {
-        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
+        this.dimension = dimension;
     }
 
-    public DataElement getDeSum()
+    public String getOuMode()
     {
-        return deSum;
+        return ouMode;
     }
 
-    public void setDeSum( DataElement deSum )
+    public void setOuMode( String ouMode )
     {
-        this.deSum = deSum;
+        this.ouMode = ouMode;
     }
 
-    public Boolean getUseFormNameDataElement()
+    public Integer getLimit()
     {
-        return useFormNameDataElement;
+        return limit;
     }
 
-    public void setUseFormNameDataElement( Boolean useFormNameDataElement )
+    public void setLimit( Integer limit )
     {
-        this.useFormNameDataElement = useFormNameDataElement;
+        this.limit = limit;
     }
+
+    public String getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( String sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
 }

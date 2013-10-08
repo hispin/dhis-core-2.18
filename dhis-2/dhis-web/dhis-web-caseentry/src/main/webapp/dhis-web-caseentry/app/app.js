@@ -54,7 +54,7 @@ TR.conf = {
             casebasedfavorite_delete: 'deleteTabularReport.action',
 			suggested_dataelement_get: 'getOptions.action',
 			aggregatefavorite_getall: 'getAggregateReportList.action',
-			aggregatefavorite_get: 'analytics/events/query/',
+			aggregatefavorite_get: 'getAggregateReport.action',
 			aggregatefavorite_rename: 'updateAggregateReportName.action',
 			aggregatefavorite_save: 'saveAggregateReport.action',
             aggregatefavorite_delete: 'deleteAggregateReport.action',
@@ -455,7 +455,7 @@ Ext.onReady( function() {
 				var filter = "";
 				if( filterValue!=undefined && filterValue != "" )
 				{
-					var arrFilter = filterValue.split(";");
+					var arrFilter = filterValue.split(":");
 					opt = arrFilter[0];
 					filter = arrFilter[1];
 				}
@@ -1010,7 +1010,6 @@ Ext.onReady( function() {
 				},			
 				
 				caseBasedReport:{
-					
 					updateName: function(id, name) {
 						if (TR.store.caseBasedFavorite.findExact('name', name) != -1) {
 							return;
@@ -1080,6 +1079,13 @@ Ext.onReady( function() {
 								
 								// Orgunits
 								
+								if( f.userOrgunits!=""){
+									Ext.getCmp('userOrgunit').setValue(true);
+								}
+								else if( f.userOrgunitChildren!=""){
+									Ext.getCmp('userOrgunitChildren').setValue(true)
+								}
+								
 								var treepanel = TR.cmp.params.organisationunit.treepanel;
 								treepanel.getSelectionModel().deselectAll();
 								TR.state.orgunitIds = [];
@@ -1123,7 +1129,6 @@ Ext.onReady( function() {
 									}
 								}
 								
-								
 								TR.exe.execute();
 								
 							}
@@ -1132,55 +1137,6 @@ Ext.onReady( function() {
 				},
 				
 				aggregateReport:{
-					create: function(fn, isupdate) {
-						// Validation
-						
-						if( !TR.state.aggregateReport.validation.objects() )
-						{
-							return;
-						}
-						
-						// Save favorite
-						
-						TR.util.mask.showMask(TR.cmp.aggregateFavorite.window, TR.i18n.saving + '...');
-						var p = TR.state.getParams();
-						p.name = TR.cmp.aggregateFavorite.name.getValue();
-						
-						if (isupdate) {
-							p.id = TR.store.aggregateFavorite.getAt(TR.store.aggregateFavorite.findExact('name', p.name)).data.id;
-						}
-						
-						Ext.Ajax.request({
-							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_validate,
-							method: 'POST',
-							disableCaching: false,
-							params: {name:name},
-							success: function(r) {
-									var json = Ext.JSON.decode(r.responseText);
-									if(json.response=='success'){
-										Ext.Ajax.request({
-											url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_save,
-											disableCaching: false,
-											method: 'POST',
-											params: p,
-											success: function() {
-												TR.store.aggregateFavorite.load({callback: function() {
-													TR.util.mask.hideMask();
-													if (fn) {
-														fn();
-													}
-												}});
-											}
-										});  
-									}
-									else{
-										TR.util.notification.error(TR.i18n.error, json.message);
-										window.destroy();
-										TR.util.mask.hideMask();
-									}
-								}
-							});
-					},
 					updateName: function(id, name) {
 						TR.util.mask.showMask(TR.cmp.aggregateFavorite.window, TR.i18n.renaming + '...');
 						
@@ -1245,30 +1201,30 @@ Ext.onReady( function() {
 							success: function(r) {
 								var f = Ext.JSON.decode(r.responseText);
 								
-								Ext.getCmp('programCombobox').setValue( f.programId );
-								
-								// Program-Stage
-								
-								TR.store.programStage.removeAll();
-								TR.store.programStage.add({'id': f.programStageId, 'localid': f.programStageLocalid, 'name': f.programStageName});
-								
-								// Date range
-								
 								Ext.getCmp('startDate').setValue( f.startDate );
 								Ext.getCmp('endDate').setValue( f.endDate );
 								
-								// Relative periods
-								
-								Ext.Array.each(TR.cmp.params.relativeperiod.checkbox, function(item) {
-									if(item.getValue() && !item.hidden){
-										item.setValue(false);
-									}
-								});
-								for (var i = 0; i < f.relativePeriods.length; i++) {
-									TR.util.getCmp('checkbox[paramName="' + f.relativePeriods[i] + '"]').setValue(true);
+								Ext.getCmp('programCombobox').setValue( f.programId );
+								TR.store.programStage.parent = f.programStageId;
+								TR.store.programStage.isLoadFromFavorite = true;
+								TR.store.programStage.removeAll();
+								for (var i = 0; i < f.programStages.length; i++)
+								{
+									TR.store.programStage.add(
+										{'id': f.programStages[i].id,'name': f.programStages[i].name}
+									);
 								}
+								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+								Ext.getCmp('ouModeCombobox').setValue( f.ouMode );
 								
 								// Orgunits
+								
+								if( f.userOrgunits!=""){
+									Ext.getCmp('userOrgunit').setValue(true);
+								}
+								else if( f.userOrgunitChildren!=""){
+									Ext.getCmp('userOrgunitChildren').setValue(true)
+								}
 								
 								var treepanel = TR.cmp.params.organisationunit.treepanel;
 								treepanel.getSelectionModel().deselectAll();
@@ -1278,88 +1234,41 @@ Ext.onReady( function() {
 								}
 								treepanel.selectByIds(TR.state.orgunitIds);
 								
-								// Selected data elements
+								// Data element
 								
 								Ext.getCmp('filterPanel').removeAll();
 								Ext.getCmp('filterPanel').doLayout();
-				
-								TR.cmp.params.dataelement.objects = [];
+	
 								TR.store.dataelement.selected.removeAll();
-								for (var i = 0; i < f.selectedDEs.length; i++) {
-									var id = f.selectedDEs[i].id;
-									TR.cmp.params.dataelement.objects.push({id: id, name: TR.util.string.getEncodedString(f.selectedDEs[i].name), valueType:f.selectedDEs[i].valueType });
+								if (f.items) {
+									for (var i = 0; i < f.items.length; i++) {
+										var filter = f.items[i].id.split(';');
+										var id = filter[0];
+										var filterVal = "";
+										if( filter.length == 3 ){
+											filterVal = filter[1] + ";" + filter[2];
+										}
+										
+										var name = TR.util.string.getEncodedString(f.items[i].name);
+										var valueType = f.items[i].valueType;
+										TR.store.dataelement.selected.add({id: id, name: name, valueType: valueType});
+										
+										TR.util.multiselect.addFilterField( 'filterPanel', id, name, valueType, f.filters[id] );
+									}
 									
-									// Add filter field
-									TR.util.multiselect.addFilterField( 'filterPanel', id, f.selectedDEs[i].name, f.selectedDEs[i].valueType );
-								}
-								TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
-								
-								var availableStore = TR.store.dataelement.available;
-								availableStore.parent = f.programStageId;
-								if (TR.util.store.containsParent(availableStore)) {
-									TR.util.store.loadFromStorage(availableStore);
-									TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
-								}
-								else {
-									availableStore.load({params: {programStageId: f.programStageId}});
-								}
-								
-								// Filter values
-								
-								Ext.getCmp('filterPanel').removeAll();
-								for (var j = 0; j < f.selectedDEs.length; j++) {
-									var id = f.selectedDEs[j].id;
-									var name = TR.util.string.getEncodedString(f.selectedDEs[j].name);
-									var valueType = f.selectedDEs[j].valueType;
-									
-									for (var i = 0; i < f.filterValues.length; i++) {
-										var filter = f.filterValues[i].split('_');
-										var fitlerId = 'de_' + filter[0];
-										if(id==fitlerId){
-											TR.util.multiselect.addFilterField( 'filterPanel', fitlerId, name, valueType );
-											var idx = Ext.getCmp('filterPanel_' + fitlerId).items.length/4 - 1;
-											var value = filter[2].replace('(','').replace(')','').replace(/,/g, ';').replace(/'/g, '');
-											
-											if(valueType=='list'){
-												Ext.getCmp('filter_' + fitlerId + '_' + idx ).store.add({o:value});
-											}
-											Ext.getCmp('filter_opt_' + fitlerId + '_' + idx ).setValue(filter[1]);
-											Ext.getCmp('filter_' + fitlerId + '_' + idx ).setValue(value);
+									if( f.singleEvent == 'false' )
+									{
+										var store = TR.store.dataelement.available;
+										store.parent = f.programStageId;
+										if (TR.util.store.containsParent(store)) {
+											TR.util.store.loadFromStorage(store);
+											TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+										}
+										else {
+											store.load({params: {programStageId: f.programStageId}});
 										}
 									}
 								}
-								
-								TR.util.positionFilter.convert( f.position );
-								
-								Ext.getCmp('ouModeCombobox').setValue( f.ouMode );
-								Ext.getCmp('limitOption').setValue( f.limitRecords );
-								Ext.getCmp('aggregateType').setValue( f.aggregateType );
-								
-								if(f.aggregateType=='sum' ){
-									Ext.getCmp('aggregateType').items.items[1].setValue(true);
-								}else if(f.aggregateType=='avg' ){
-									Ext.getCmp('aggregateType').items.items[2].setValue(true);
-								}
-								else{
-									Ext.getCmp('aggregateType').items.items[0].setValue(true);
-								}
-								
-								if( TR.store.aggregateDataelement.data.items.length == 0 )
-								{
-									TR.store.aggregateDataelement.add(
-										{'id': f.deSumId,'name': f.deSumName}
-									);
-								}
-								Ext.getCmp('deSumCbx').setValue( f.deSumId );
-
-								// Program stage									
-								var storeProgramStage = TR.store.programStage;
-								storeProgramStage.parent = f.programStageId;
-								storeProgramStage.isLoadFromFavorite = true;
-								
-								var url = storeProgramStage.getProxy().url + f.programId + ".json";
-								storeProgramStage.load({url:url});
-								Ext.getCmp('programStageCombobox').setValue( f.programStageId );
 								
 								TR.exe.execute();
 							}
@@ -1698,7 +1607,7 @@ Ext.onReady( function() {
 			p.startDate = TR.cmp.settings.startDate.rawValue;
 			p.endDate = TR.cmp.settings.endDate.rawValue;
 			
-			if(TR.cmp.settings.ouMode.getValue()!="" ){
+			if( TR.cmp.settings.ouMode.getValue()!== null ){
 				p.ouMode = TR.cmp.settings.ouMode.getValue();
 			}
 			
@@ -1789,7 +1698,6 @@ Ext.onReady( function() {
 				// Relative periods
 				var rperiod = TR.cmp.params.relativeperiod.checkbox;
 				var period = '';
-				p.relativePeriods = [];
 				Ext.Array.each(rperiod, function(item) {
 					if(item.getValue() && !item.hidden){
 						period += item.paramName + ";";
@@ -2888,6 +2796,8 @@ Ext.onReady( function() {
 						TR.util.mask.showMask(TR.cmp.caseBasedFavorite.window, TR.i18n.saving + '...');
 						var p = TR.state.getParams(false);
 						p.name = name;
+						p.programId = Ext.getCmp('programCombobox').getValue(); 
+						p.programStageId = TR.cmp.params.programStage.getValue();
 						
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.casebasedfavorite_validate,
@@ -3344,6 +3254,8 @@ Ext.onReady( function() {
 						TR.util.mask.showMask(TR.cmp.aggregateFavorite.window, TR.i18n.saving + '...');
 						var p = TR.state.getParams();
 						p.name = name;
+						p.programId = Ext.getCmp('programCombobox').getValue(); 
+						p.programStageId = TR.cmp.params.programStage.getValue();
 						
 						Ext.Ajax.request({
 							url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.aggregatefavorite_validate,
@@ -3361,9 +3273,6 @@ Ext.onReady( function() {
 											success: function() {
 												TR.store.aggregateFavorite.load({callback: function() {
 													TR.util.mask.hideMask();
-													if (fn) {
-														fn();
-													}
 												}});
 											}
 										});  
@@ -3784,7 +3693,8 @@ Ext.onReady( function() {
 			width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 40,
 			store:  new Ext.data.ArrayStore({
 				fields: ['value', 'name'],
-				data: [['', TR.i18n.all], ['CHILDREN', TR.i18n.children_only], ['SELECTED', TR.i18n.selected]],
+				data: [['', TR.i18n.all], ['DESCENDANTS', TR.i18n.children_only],
+					['CHILDREN', TR.i18n.immediate_children], ['SELECTED', TR.i18n.selected]],
 			}),
 			value: '',
 			listeners: {
@@ -4707,7 +4617,7 @@ Ext.onReady( function() {
 														xtype: 'panel',
 														layout: 'anchor',
 														columnWidth: 0.32,
-														bodyStyle: 'border-style:none; padding:0 0 0 20px',
+														bodyStyle: 'border-style:none; padding:0 0 0 10px',
 														defaults: {
 															labelSeparator: '',
 															listeners: {
@@ -4727,8 +4637,7 @@ Ext.onReady( function() {
 															{
 																xtype: 'checkbox',
 																paramName: 'LAST_MONTH',
-																boxLabel: TR.i18n.last_month,
-																checked: true
+																boxLabel: TR.i18n.last_month
 															},
 															{
 																xtype: 'checkbox',
@@ -4756,7 +4665,7 @@ Ext.onReady( function() {
 														xtype: 'panel',
 														layout: 'anchor',
 														columnWidth: 0.32,
-														bodyStyle: 'border-style:none; padding:0 0 0 32px',
+														bodyStyle: 'border-style:none; padding:0 0 0 10px',
 														defaults: {
 															labelSeparator: '',
 															listeners: {
@@ -4805,7 +4714,7 @@ Ext.onReady( function() {
 												{
 													xtype: 'panel',
 													columnWidth: 0.32,
-													bodyStyle: 'border-style:none; padding:0 0 0 8px',
+													bodyStyle: 'border-style:none; padding:0 0 0 2px',
 													defaults: {
 														labelSeparator: '',
 														style: 'margin-bottom:2px',
@@ -4838,7 +4747,7 @@ Ext.onReady( function() {
 												{
 													xtype: 'panel',
 													columnWidth: 0.32,
-													bodyStyle: 'border-style:none; padding:0 0 0 8px',
+													bodyStyle: 'border-style:none; padding:0 0 0 10px',
 													defaults: {
 														labelSeparator: '',
 														style: 'margin-bottom:2px',
@@ -4887,7 +4796,7 @@ Ext.onReady( function() {
 														{
 															xtype: 'panel',
 															layout: 'anchor',
-															bodyStyle: 'border-style:none; padding:5px 0 0 10px',
+															bodyStyle: 'border-style:none; padding:5px 0 0 5px',
 															defaults: {
 																labelSeparator: '',
 																listeners: {

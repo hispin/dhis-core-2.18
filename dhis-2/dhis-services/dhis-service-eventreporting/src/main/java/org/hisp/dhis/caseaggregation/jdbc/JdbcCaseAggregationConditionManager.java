@@ -1064,10 +1064,12 @@ public class JdbcCaseAggregationConditionManager
     {
         String sql = "(select organisationunitid from programstageinstance where executiondate>= '" + startDate
             + "' and executiondate<='" + endDate + "')";
-        sql += " UNION ALL ";
+        sql += " UNION ";
         sql += "( select distinct organisationunitid from patient where registrationdate BETWEEN '" + startDate
             + "' AND '" + endDate + "')";
-
+        sql += " UNION ";
+        sql += "( select distinct organisationunitid from patient p INNER JOIN programinstance pi ON p.patientid=pi.patientid "
+            + "  where pi.enrollmentdate BETWEEN '" + startDate + "' AND '" + endDate + "')";
         Collection<Integer> orgunitIds = new HashSet<Integer>();
         orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
         {
@@ -1116,7 +1118,7 @@ public class JdbcCaseAggregationConditionManager
 
             if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT )
                 || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_PROPERTY )
-                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE) )
+                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE ) )
             {
                 return true;
             }

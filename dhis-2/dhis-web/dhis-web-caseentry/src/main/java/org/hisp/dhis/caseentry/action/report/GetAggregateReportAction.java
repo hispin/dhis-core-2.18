@@ -28,17 +28,29 @@ package org.hisp.dhis.caseentry.action.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.PatientAggregateReportService;
-import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,6 +73,20 @@ public class GetAggregateReportAction
         this.aggregateReportService = aggregateReportService;
     }
 
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -68,20 +94,20 @@ public class GetAggregateReportAction
         this.dataElementService = dataElementService;
     }
 
-    private I18nFormat format;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setFormat( I18nFormat format )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.format = format;
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String id;
 
-    public void setId( Integer id )
+    public void setId( String id )
     {
         this.id = id;
     }
@@ -93,18 +119,60 @@ public class GetAggregateReportAction
         return aggregateReport;
     }
 
-    private Collection<DataElement> selectedDataElements = new HashSet<DataElement>();
+    private ProgramStage programStage;
 
-    public Collection<DataElement> getSelectedDataElements()
+    public ProgramStage getProgramStage()
     {
-        return selectedDataElements;
+        return programStage;
     }
 
-    private List<String> fixedPeriodNames = new ArrayList<String>();
+    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
 
-    public List<String> getFixedPeriodNames()
+    public List<PatientIdentifierType> getIdentifierTypes()
     {
-        return fixedPeriodNames;
+        return identifierTypes;
+    }
+
+    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+
+    public List<PatientAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    private Map<String, String> mapFilters = new HashMap<String, String>();
+
+    public Map<String, String> getMapFilters()
+    {
+        return mapFilters;
+    }
+
+    private Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+
+    public Collection<OrganisationUnit> getOrgunits()
+    {
+        return orgunits;
+    }
+
+    private Boolean userOrgunits;
+
+    public Boolean getUserOrgunits()
+    {
+        return userOrgunits;
+    }
+
+    private Boolean userOrgunitChildren;
+
+    public Boolean getUserOrgunitChildren()
+    {
+        return userOrgunitChildren;
     }
 
     // -------------------------------------------------------------------------
@@ -115,20 +183,78 @@ public class GetAggregateReportAction
     public String execute()
         throws Exception
     {
-        aggregateReport = aggregateReportService.getPatientAggregateReport( id );
+        aggregateReport = aggregateReportService.getPatientAggregateReportByUid( id );
 
-        for ( String fixedPeriodId : aggregateReport.getFixedPeriods() )
-        {
-            fixedPeriodNames.add( format.formatPeriod( PeriodType.getPeriodFromIsoString( fixedPeriodId ) ) );
-        }
+        Program program = aggregateReport.getProgram();
 
-        for ( String deFilter : aggregateReport.getFilterValues() )
+        programStage = aggregateReport.getProgramStage();
+        
+        for ( String dimension : aggregateReport.getDimension() )
         {
-            int id = Integer.parseInt( deFilter.split( "_" )[0] );
-            selectedDataElements.add( dataElementService.getDataElement( id ) );
+            String dimensionId = DataQueryParams.getDimensionFromParam( dimension );
+            String[] filters = dimension.split( DataQueryParams.DIMENSION_NAME_SEP );
+            if ( filters.length > 1 )
+            {
+                mapFilters.put( dimensionId, dimension.substring( dimensionId.length() + 1, dimension.length() ) );
+            }
+
+            if ( ORGUNIT_DIM_ID.equals( dimensionId ) )
+            {
+                List<String> items = DataQueryParams.getDimensionItemsFromParam( dimension );
+                for ( String item : items )
+                {
+                    if ( item.equals( "USER_ORGUNIT" ) )
+                    {
+                        userOrgunits = true;
+                    }
+                    else if ( item.equals( "USER_ORGUNIT_CHILDREN" ) )
+                    {
+                        userOrgunitChildren = true;
+                    }
+                    orgunits.add( organisationUnitService.getOrganisationUnit( item ) );
+                }
+            }
+            else if ( PERIOD_DIM_ID.equals( dimensionId ) )
+            {
+                List<String> items = DataQueryParams.getDimensionItemsFromParam( dimension );
+                for ( String item : items )
+                {
+                    if ( item.equals( "USER_ORGUNIT" ) )
+                    {
+                        userOrgunits = true;
+                    }
+                    else if ( item.equals( "USER_ORGUNIT_CHILDREN" ) )
+                    {
+                        userOrgunitChildren = true;
+                    }
+                    orgunits.add( organisationUnitService.getOrganisationUnit( item ) );
+                }
+            }
+            else
+            {
+                PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( dimensionId );
+
+                if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
+                {
+                    identifierTypes.add( it );
+                }
+
+                PatientAttribute at = patientAttributeService.getPatientAttribute( dimensionId );
+
+                if ( at != null && program.getPatientAttributes().contains( at ) )
+                {
+                    attributes.add( at );
+                }
+
+                DataElement de = dataElementService.getDataElement( dimensionId );
+
+                if ( de != null && program.getAllDataElements().contains( de ) )
+                {
+                    dataElements.add( de );
+                }
+            }
         }
 
         return SUCCESS;
     }
-
 }

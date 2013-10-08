@@ -28,14 +28,25 @@ package org.hisp.dhis.caseentry.action.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
+import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 
 import com.opensymphony.xwork2.Action;
@@ -57,6 +68,34 @@ public class GetTabularReportAction
     public void setTabularReportService( PatientTabularReportService tabularReportService )
     {
         this.tabularReportService = tabularReportService;
+    }
+
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -84,60 +123,46 @@ public class GetTabularReportAction
         return programStage;
     }
 
-    private List<String> selectedFixedAttributes = new ArrayList<String>();
+    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
 
-    public List<String> getSelectedFixedAttributes()
+    public List<PatientIdentifierType> getIdentifierTypes()
     {
-        return selectedFixedAttributes;
+        return identifierTypes;
     }
 
-    private List<DataElement> selectedDataElements = new ArrayList<DataElement>();
+    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
-    public List<DataElement> getSelectedDataElements()
+    public List<PatientAttribute> getAttributes()
     {
-        return selectedDataElements;
+        return attributes;
     }
 
-    private List<PatientAttribute> selectedAttributes = new ArrayList<PatientAttribute>();
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
 
-    public List<PatientAttribute> getSelectedAttributes()
+    public List<DataElement> getDataElements()
     {
-        return selectedAttributes;
+        return dataElements;
+    }
+    
+    private Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+
+    public Collection<OrganisationUnit> getOrgunits()
+    {
+        return orgunits;
     }
 
-    private List<PatientIdentifierType> selectedIdentifierTypes = new ArrayList<PatientIdentifierType>();
+    private Boolean userOrgunits;
 
-    public List<PatientIdentifierType> getSelectedIdentifierTypes()
+    public Boolean getUserOrgunits()
     {
-        return selectedIdentifierTypes;
+        return userOrgunits;
     }
 
-    private List<String> fixedAttributeFilters = new ArrayList<String>();
+    private Boolean userOrgunitChildren;
 
-    public List<String> getFixedAttributeFilters()
+    public Boolean getUserOrgunitChildren()
     {
-        return fixedAttributeFilters;
-    }
-
-    private List<String> patientAttributeFilters = new ArrayList<String>();
-
-    public List<String> getPatientAttributeFilters()
-    {
-        return patientAttributeFilters;
-    }
-
-    private List<String> identifierTypeFilters = new ArrayList<String>();
-
-    public List<String> getIdentifierTypeFilters()
-    {
-        return identifierTypeFilters;
-    }
-
-    private List<String> dataelementFilters = new ArrayList<String>();
-
-    public List<String> getDataelementFilters()
-    {
-        return dataelementFilters;
+        return userOrgunitChildren;
     }
 
     // -------------------------------------------------------------------------
@@ -150,43 +175,54 @@ public class GetTabularReportAction
     {
         tabularReport = tabularReportService.getPatientTabularReportByUid( id );
 
+        Program program = tabularReport.getProgram();
+
         programStage = tabularReport.getProgramStage();
 
-//        for ( String filterValue : tabularReport.getItems() )
-//        {
-//            String[] values = filterValue.split( "_" );
-//            String filter = "";
-//            if ( values.length == 5 )
-//            {
-//                filter =  values[3] + "_" + values[4].trim().substring( 1, values[4].length() - 1 );
-//            }
-//
-//            if ( values[0].equals( PatientTabularReport.PREFIX_FIXED_ATTRIBUTE ) )
-//            {
-//                selectedFixedAttributes.add( values[1] );
-//                fixedAttributeFilters.add( filter );
-//            }
-//            else
-//            {
-//                int id = Integer.parseInt( values[1] );
-//
-//                if ( values[0].equals( PatientTabularReport.PREFIX_IDENTIFIER_TYPE ) )
-//                {
-//                    selectedIdentifierTypes.add( patientIdentifierTypeService.getPatientIdentifierType( id ) );
-//                    identifierTypeFilters.add( filter );
-//                }
-//                else if ( values[0].equals( PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE ) )
-//                {
-//                    selectedAttributes.add( patientAttributeService.getPatientAttribute( id ) );
-//                    patientAttributeFilters.add( filter );
-//                }
-//                else if ( values[0].equals( PatientTabularReport.PREFIX_DATA_ELEMENT ) )
-//                {
-//                    selectedDataElements.add( dataElementService.getDataElement( id ) );
-//                    dataelementFilters.add( filter );
-//                }
-//            }
-//        }
+        for ( String dimension : tabularReport.getDimension() )
+        {
+            String dimensionId = DataQueryParams.getDimensionFromParam( dimension );
+
+            if ( ORGUNIT_DIM_ID.equals( dimensionId ) )
+            {
+                List<String> items = DataQueryParams.getDimensionItemsFromParam( dimension );
+                for ( String item : items )
+                {
+                    if ( item.equals( "USER_ORGUNIT" ) )
+                    {
+                        userOrgunits = true;
+                    }
+                    else if ( item.equals( "USER_ORGUNIT_CHILDREN" ) )
+                    {
+                        userOrgunitChildren = true;
+                    }
+                    orgunits.add( organisationUnitService.getOrganisationUnit( item ) );
+                }
+            }
+            else
+            {
+                PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( dimensionId );
+
+                if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
+                {
+                    identifierTypes.add( it );
+                }
+
+                PatientAttribute at = patientAttributeService.getPatientAttribute( dimensionId );
+
+                if ( at != null && program.getPatientAttributes().contains( at ) )
+                {
+                    attributes.add( at );
+                }
+
+                DataElement de = dataElementService.getDataElement( dimensionId );
+
+                if ( de != null && program.getAllDataElements().contains( de ) )
+                {
+                    dataElements.add( de );
+                }
+            }
+        }
 
         return SUCCESS;
     }

@@ -29,13 +29,9 @@ package org.hisp.dhis.caseentry.action.report;
  */
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.Program;
@@ -70,13 +66,6 @@ public class SaveTabularReportAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     private ProgramStageService programStageService;
@@ -114,17 +103,9 @@ public class SaveTabularReportAction
 
     private String endDate;
 
-    private List<String> orgunitIds;
+    private List<String> dimension = new ArrayList<String>();
 
-    private List<String> item = new ArrayList<String>();
-
-    private String asc;
-
-    private String desc;
-
-    private int level;
-
-    private String facilityLB;
+    private String ouMode;
 
     // -------------------------------------------------------------------------
     // Setters
@@ -135,14 +116,19 @@ public class SaveTabularReportAction
         this.name = name;
     }
 
+    public void setOuMode( String ouMode )
+    {
+        this.ouMode = ouMode;
+    }
+
     public void setStartDate( String startDate )
     {
         this.startDate = startDate;
     }
 
-    public void setOrgunitIds( List<String> orgunitIds )
+    public void setEndDate( String endDate )
     {
-        this.orgunitIds = orgunitIds;
+        this.endDate = endDate;
     }
 
     public void setProgramId( String programId )
@@ -155,34 +141,9 @@ public class SaveTabularReportAction
         this.programStageId = programStageId;
     }
 
-    public void setEndDate( String endDate )
+    public void setDimension( List<String> dimension )
     {
-        this.endDate = endDate;
-    }
-
-    public void setItem( List<String> item )
-    {
-        this.item = item;
-    }
-
-    public void setAsc( String asc )
-    {
-        this.asc = asc;
-    }
-
-    public void setDesc( String desc )
-    {
-        this.desc = desc;
-    }
-    
-    public void setLevel( int level )
-    {
-        this.level = level;
-    }
-
-    public void setFacilityLB( String facilityLB )
-    {
-        this.facilityLB = facilityLB;
+        this.dimension = dimension;
     }
 
     // -------------------------------------------------------------------------
@@ -193,29 +154,19 @@ public class SaveTabularReportAction
     public String execute()
         throws Exception
     {
-        Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>(
-            organisationUnitService.getOrganisationUnitsByUid( orgunitIds ) );
-
         Program program = programService.getProgram( programId );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
-
-        // ---------------------------------------------------------------------
-        // Get fixed-attributes
-        // ---------------------------------------------------------------------
 
         PatientTabularReport tabularReport = new PatientTabularReport( name );
         tabularReport.setStartDate( format.parseDate( startDate ) );
         tabularReport.setEndDate( format.parseDate( endDate ) );
-        tabularReport.setOrganisationUnits( orgunits );
-        tabularReport.setLevel( level );
-        tabularReport.setFacilityLB( facilityLB );
+        tabularReport.setOuMode( ouMode );
         tabularReport.setUser( currentUserService.getCurrentUser() );
-        tabularReport.setItems( item );
-        tabularReport.setSortByAsc( asc );
-        tabularReport.setSortByDesc( desc );
+        tabularReport.setDimension( dimension );
         tabularReport.setProgramStage( programStage );
         tabularReport.setProgram( program );
 
+        tabularReport.setUser( currentUserService.getCurrentUser() );
         tabularReportService.saveOrUpdate( tabularReport );
 
         return SUCCESS;
