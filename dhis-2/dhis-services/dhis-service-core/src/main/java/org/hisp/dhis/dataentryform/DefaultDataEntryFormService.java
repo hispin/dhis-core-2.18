@@ -52,6 +52,8 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hisp.dhis.dataelement.DataElement.*;
+
 /**
  * @author Bharath Kumar
  * @version $Id$
@@ -297,7 +299,7 @@ public class DefaultDataEntryFormService
                 
                 String appendCode = "";
 
-                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
+                if ( VALUE_TYPE_BOOL.equals( dataElement.getType() ) )
                 {
                     inputHtml = inputHtml.replace( "input", "select" );
                     inputHtml = inputHtml.replaceAll( "value=\".*?\"", "" );
@@ -309,11 +311,11 @@ public class DefaultDataEntryFormService
                     appendCode += "<option value=\"false\">" + i18n.getString( "no" ) + "</option>";
                     appendCode += "</select>";
                 }
-                else if ( dataElement.getType().equals( DataElement.VALUE_TYPE_TRUE_ONLY ) )
+                else if ( VALUE_TYPE_TRUE_ONLY.equals( dataElement.getType() ) )
                 {
                     appendCode += " name=\"entrytrueonly\" class=\"entrytrueonly\" type=\"checkbox\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
-                else if ( dataElement.getOptionSet() != null )
+                else if ( dataElement.hasOptionSet() )
                 {
                     appendCode += " name=\"entryoptionset\" class=\"entryoptionset\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
