@@ -89,11 +89,6 @@ public class UserGroup
     // Logic
     // -------------------------------------------------------------------------
 
-    public void removeAllUsers()
-    {
-        members.clear();
-    }
-
     public void addUser( User user )
     {
         members.add( user );
@@ -182,7 +177,7 @@ public class UserGroup
         {
             UserGroup userGroup = (UserGroup) other;
 
-            removeAllUsers();
+            members.clear();
             members.addAll( userGroup.getMembers() );
 
             attributeValues.clear();
