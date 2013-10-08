@@ -27,6 +27,8 @@ package org.hisp.dhis.dataadmin.action.locale;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Locale;
+
 import org.hisp.dhis.i18n.I18nLocaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,12 +48,22 @@ public class ValidateLocaleAction
     private I18nLocaleService localeService;
 
     // -------------------------------------------------------------------------
-    // I18n
-    // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+
+    private String language;
+
+    public void setLanguage( String language )
+    {
+        this.language = language;
+    }
+
+    private String country;
+
+    public void setCountry( String country )
+    {
+        this.country = country;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -70,6 +82,8 @@ public class ValidateLocaleAction
 
     public String execute()
     {
+        localeService.getI18nLocale( new Locale( language, country ) );
+        
         return SUCCESS;
     }
 }

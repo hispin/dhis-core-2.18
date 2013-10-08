@@ -54,6 +54,8 @@ public interface I18nLocaleService
     
     I18nLocale getI18nLocaleByUid( String uid );
     
+    I18nLocale getI18nLocale( Locale locale );
+    
     void deleteI18nLocale( I18nLocale locale );
     
     int getI18nLocaleCount();
