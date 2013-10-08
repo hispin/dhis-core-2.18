@@ -317,12 +317,8 @@
     </action>
 
     <action name="validateAddUpdateSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.ValidateAddUpdateSqlViewAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
