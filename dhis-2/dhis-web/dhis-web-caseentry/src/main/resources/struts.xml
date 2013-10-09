@@ -868,6 +868,12 @@
 
 		<!-- Tabular report -->
 		
+	    <action name="searchProgramStageInstances"
+	      class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
+	      <result name="success" type="velocity">/content.vm</result>
+	      <param name="page">/dhis-web-caseentry/programStageInstancesList.vm</param>
+	    </action>
+    
 		<action name="generateTabularReport" class="org.hisp.dhis.caseentry.action.NoAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>

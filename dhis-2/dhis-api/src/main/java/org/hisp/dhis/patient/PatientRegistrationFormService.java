@@ -62,6 +62,8 @@ public interface PatientRegistrationFormService
     final Pattern SUGGESTED_VALUE_PATTERN = Pattern.compile( "suggested=('|\")(\\w*)('|\")" );
     
     final Pattern CLASS_PATTERN = Pattern.compile( "class='(\\w*)'" );
+    
+    final Pattern STYLE_PATTERN = Pattern.compile( "style=\"([\\w|\\d\\:\\;]+)\"" );
 
     // --------------------------------------------------------------------------
     // ProgramDataEntryService

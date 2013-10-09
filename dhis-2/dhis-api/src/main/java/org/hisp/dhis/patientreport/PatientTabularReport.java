@@ -61,6 +61,12 @@ public class PatientTabularReport
 
     public static String AGGREGATE_REPORT = "aggregateReport";
 
+    public static String PREFIX_DATA_ELEMENT = "de";
+
+    public static String VALUE_TYPE_OPTION_SET = "optionSet";
+
+    public static String PREFIX_NUMBER_DATA_ELEMENT = "numberDe";
+
     private Program program;
 
     private ProgramStage programStage;

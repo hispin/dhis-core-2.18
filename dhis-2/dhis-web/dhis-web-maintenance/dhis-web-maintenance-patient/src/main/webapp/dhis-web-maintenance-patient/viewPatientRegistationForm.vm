@@ -124,7 +124,6 @@
 					<option value="registrationDate">$i18n.getString('registration_date')</option>
 					<option value="fullName">$i18n.getString('full_name')</option>
 					<option value="gender">$i18n.getString('gender')</option>
-					<option value="dobType">$i18n.getString('dob_type')</option>
 					<option value="birthDate">$i18n.getString('birth_date')</option>
 					<option value="age">$i18n.getString('age_years')</option>
 					<option value="phoneNumber">$i18n.getString('phone_number')</option>
