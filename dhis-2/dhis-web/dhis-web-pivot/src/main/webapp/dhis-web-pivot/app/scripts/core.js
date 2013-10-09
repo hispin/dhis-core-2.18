@@ -1213,6 +1213,7 @@ Ext.onReady( function() {
 					
 					if (isHierarchy(id, response)) {
 						var a = Ext.clean(metaData.ouHierarchy[id].split('/'));
+						a.shift();
 						
 						for (var i = 0; i < a.length; i++) {
 							name += (isHtml ? '<span class="text-weak">' : '') + metaData.names[a[i]] + (isHtml ? '</span>' : '') + ' / ';
