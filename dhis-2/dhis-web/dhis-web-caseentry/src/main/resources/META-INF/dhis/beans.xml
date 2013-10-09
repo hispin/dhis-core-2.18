@@ -874,6 +874,19 @@
 	</bean>
 
 	<!-- Tabular report -->
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
+		class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
 		class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
