@@ -28,29 +28,25 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-import java.util.Locale;
-import java.util.SortedMap;
+import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_APPLICATION_TITLE;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_FOOTER;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_INTRO;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_NOTIFICATION;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_TITLE;
 
-import org.hisp.dhis.i18n.locale.LocaleManager;
+import java.util.Hashtable;
+import java.util.Map;
+
 import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.setting.StyleManager;
-import org.hisp.dhis.system.util.Filter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.webportal.module.Module;
-import org.hisp.dhis.webportal.module.ModuleManager;
-import org.hisp.dhis.webportal.module.StartableModuleFilter;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author James Chang
  */
-public class GetAppearanceSettingsAction
+public class GetAppearanceSettingsStringAction
     implements Action
 {
-    private static final Filter<Module> startableFilter = new StartableModuleFilter();
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -62,72 +58,27 @@ public class GetAppearanceSettingsAction
         this.systemSettingManager = systemSettingManager;
     }
 
-    private ModuleManager moduleManager;
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+    
+    private String localeCode;
 
-    public void setModuleManager( ModuleManager moduleManager )
+    public void setLocaleCode( String localeCode )
     {
-        this.moduleManager = moduleManager;
-    }
-
-    private StyleManager styleManager;
-
-    public void setStyleManager( StyleManager styleManager )
-    {
-        this.styleManager = styleManager;
-    }
-
-    private LocaleManager localeManager;
-
-    public void setLocaleManager( LocaleManager localeManager )
-    {
-        this.localeManager = localeManager;
+        this.localeCode = localeCode;
     }
     
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<String> flags;
+    private Map<String, Object> translations = new Hashtable<String, Object>();
 
-    public List<String> getFlags()
+    public Map<String, Object> getTranslations()
     {
-        return flags;
+        return translations;
     }
-
-    private List<Module> modules;
-
-    public List<Module> getModules()
-    {
-        return modules;
-    }
-
-    private SortedMap<String, String> styles;
-
-    public SortedMap<String, String> getStyles()
-    {
-        return styles;
-    }
-
-    private String currentStyle;
-
-    public String getCurrentStyle()
-    {
-        return currentStyle;
-    }
-
-    private List<Locale> availableLocales;
-
-    public List<Locale> getAvailableLocales()
-    {
-        return availableLocales;
-    }
-
-//    private Locale currentLocale;
-//
-//    public Locale getCurrentLocale()
-//    {
-//        return currentLocale;
-//    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -135,27 +86,12 @@ public class GetAppearanceSettingsAction
 
     public String execute()
     {
-        // ---------------------------------------------------------------------
-        // Get available UI locales
-        // ---------------------------------------------------------------------
-        availableLocales = localeManager.getAvailableLocales();
-
-        //currentLocale = localeManager.getCurrentLocale();
+        // Add the key application data (with localeCode name) into translations map object
+        translations.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE + localeCode, DEFAULT_APPLICATION_TITLE ) );
+        translations.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO + localeCode, "" ) );
+        translations.put( KEY_APPLICATION_NOTIFICATION, systemSettingManager.getSystemSetting( KEY_APPLICATION_NOTIFICATION + localeCode, "" ) );
+        translations.put( KEY_APPLICATION_FOOTER, systemSettingManager.getSystemSetting( KEY_APPLICATION_FOOTER + localeCode, "" ) );
         
-        // ---------------------------------------------------------------------
-        // Others
-        // ---------------------------------------------------------------------
-        
-        styles = styleManager.getStyles();
-        
-        currentStyle = styleManager.getSystemStyle();
-        
-        flags = systemSettingManager.getFlags();
-
-        modules = moduleManager.getMenuModules();
-
-        FilterUtils.filter( modules, startableFilter );
-
         return SUCCESS;
     }
 }

@@ -133,7 +133,14 @@ public class SetAppearanceSettingsAction
     {
         this.i18n = i18n;
     }
+    
+    private String localeSelect;
 
+    public void setLocaleSelect( String localeSelect )
+    {
+        this.localeSelect = localeSelect;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -154,11 +161,11 @@ public class SetAppearanceSettingsAction
         {
             startModule = null;
         }
-
-        systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
-        systemSettingManager.saveSystemSetting( KEY_APPLICATION_INTRO, applicationIntro );
-        systemSettingManager.saveSystemSetting( KEY_APPLICATION_NOTIFICATION, applicationNotification );
-        systemSettingManager.saveSystemSetting( KEY_APPLICATION_FOOTER, applicationFooter );
+        
+        systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE + localeSelect, applicationTitle );
+        systemSettingManager.saveSystemSetting( KEY_APPLICATION_INTRO + localeSelect, applicationIntro );
+        systemSettingManager.saveSystemSetting( KEY_APPLICATION_NOTIFICATION + localeSelect, applicationNotification );
+        systemSettingManager.saveSystemSetting( KEY_APPLICATION_FOOTER + localeSelect, applicationFooter );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         styleManager.setSystemStyle( currentStyle );

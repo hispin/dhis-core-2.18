@@ -31,6 +31,7 @@
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="moduleManager" ref="org.hisp.dhis.webportal.module.ModuleManager" />
     <property name="styleManager" ref="org.hisp.dhis.setting.StyleManager" />
+    <property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
   </bean>
 
   <bean id="org.hisp.dhis.settings.action.system.SetAppearanceSettingsAction"
@@ -39,6 +40,13 @@
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="styleManager" ref="org.hisp.dhis.setting.StyleManager" />
   </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.GetAppearanceSettingsStringAction"
+      class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsStringAction"
+      scope="prototype">
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+  </bean>
+
 
   <bean id="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction"
       class="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction"

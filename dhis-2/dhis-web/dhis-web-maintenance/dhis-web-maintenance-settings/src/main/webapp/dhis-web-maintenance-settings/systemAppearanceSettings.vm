@@ -8,7 +8,8 @@
                 applicationFooter: getFieldValue( 'applicationFooter' ),
                 currentStyle: getFieldValue( 'currentStyle' ),
 				flag: getFieldValue( 'flag' ),
-				startModule: getFieldValue( 'startModule' )
+				startModule: getFieldValue( 'startModule' ),
+				localeSelect: getFieldValue( 'localeSelect' )
 			}, function( json ) {
 				if ( json.response == "success" ) {
 					setHeaderDelayMessage( json.message );
@@ -17,6 +18,17 @@
 		});
 	});
 </script>
+
+<div style="width:370px;">
+	<div style="float:right;">
+		<select id="localeSelect" name="localeSelect" onchange="changeLocale()" style="width:auto !important;">
+	    <option value="">[ Select locale ]</option>
+		#foreach( $locale in $availableLocales )
+			<option value="$locale.toString()">$locale.getDisplayName()</option>
+		#end
+		</select>
+	</div>	
+</div>
 
 <h3>$i18n.getString( "appearance_settings" ) #openHelp( "systemAppearanceSettings" )</h3>
 
