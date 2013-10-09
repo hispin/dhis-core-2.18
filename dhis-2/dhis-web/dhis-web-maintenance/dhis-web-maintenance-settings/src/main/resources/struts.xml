@@ -36,6 +36,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/systemAppearanceSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
+      <param name="javascripts">/dhis-web-maintenance-settings/javascripts/systemAppearanceSettings.js</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
@@ -46,6 +47,10 @@
 	  <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 	
+    <action name="systemAppearanceSettingsString" class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsStringAction">
+      <result name="success" type="velocity-json">/dhis-web-maintenance-settings/systemAppearanceSettingsString.vm</result>
+    </action>
+
 	<!-- Email settings -->
 
     <action name="systemEmailSettings" class="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction">
