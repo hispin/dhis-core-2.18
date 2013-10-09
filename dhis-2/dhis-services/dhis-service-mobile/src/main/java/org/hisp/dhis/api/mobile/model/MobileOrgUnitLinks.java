@@ -87,7 +87,7 @@ public class MobileOrgUnitLinks
     
     private String findLostToFollowUpUrl;
     
-    private String findLostToFollowUpDetailUrl;
+    private String handleLostToFollowUpUrl;
 
     @XmlAttribute
     public int getId()
@@ -321,14 +321,14 @@ public class MobileOrgUnitLinks
         this.findLostToFollowUpUrl = findLostToFollowUpUrl;
     }
 
-    public String getFindLostToFollowUpDetailUrl()
+    public String getHandleLostToFollowUpUrl()
     {
-        return findLostToFollowUpDetailUrl;
+        return handleLostToFollowUpUrl;
     }
 
-    public void setFindLostToFollowUpDetailUrl( String findLostToFollowUpDetailUrl )
+    public void setHandleLostToFollowUpUrl( String handleLostToFollowUpUrl )
     {
-        this.findLostToFollowUpDetailUrl = findLostToFollowUpDetailUrl;
+        this.handleLostToFollowUpUrl = handleLostToFollowUpUrl;
     }
 
     public void serialize( DataOutputStream dataOutputStream )
@@ -357,7 +357,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.findLatestPersonUrl );
         dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
         dataOutputStream.writeUTF( this.findLostToFollowUpUrl );
-        dataOutputStream.writeUTF( this.findLostToFollowUpDetailUrl );
+        dataOutputStream.writeUTF( this.handleLostToFollowUpUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -385,7 +385,7 @@ public class MobileOrgUnitLinks
         this.findLatestPersonUrl = dataInputStream.readUTF();
         this.findPatientInAdvancedUrl = dataInputStream.readUTF();
         this.findLostToFollowUpUrl = dataInputStream.readUTF();
-        this.findLostToFollowUpDetailUrl = dataInputStream.readUTF();
+        this.handleLostToFollowUpUrl = dataInputStream.readUTF();
     }
 
     @Override
@@ -446,6 +446,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.findLatestPersonUrl );
         dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
         dataOutputStream.writeUTF( this.findLostToFollowUpUrl );
-        dataOutputStream.writeUTF( this.findLostToFollowUpDetailUrl );
+        dataOutputStream.writeUTF( this.handleLostToFollowUpUrl );
     }
 }
