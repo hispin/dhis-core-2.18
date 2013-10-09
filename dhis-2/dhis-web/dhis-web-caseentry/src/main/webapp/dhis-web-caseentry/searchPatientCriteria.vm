@@ -73,10 +73,13 @@
 	</tr>
 	
 </table>
+
+<div id='showSearchCriteriaDiv' class='hidden green-background'><img src='../images/move_bottom.png' onclick='showSearchCriteria();' >&nbsp;&nbsp; $i18n.getString("there_are_active_search_filter_click_on_arrow_to_show_them")</div>
 <div id='advanced-search' name='advanced-search' class='hidden advanced-search'>
+	<div id='hideSearchCriteriaDiv' class='hidden'><img src='../images/move_top.png' onclick='hideSearchCriteria();' >&nbsp;&nbsp; $i18n.getString("hide_search_criteria")</div>
 	<table>	
 		<tr>
-			<td colspan='3'>
+			<td colspan='4'>
 				$i18n.getString('select_orgunit_for_search'): <span id='orgunitForSearch'>$!organisationUnit.name</span>
 				<input type='button' id='selectOtherOrgunitBtn' value='$i18n.getString("select_other_orgunit")' />
 				<input type='button' id='clearAndCloseSearchBtn' value='$i18n.getString("clear_and_close")' onclick='clearAndCloseSearch();'/>
@@ -92,7 +95,7 @@
 					 <input type='checkbox' class='hidden' id='searchInAllFacility' name='searchInAllFacility' value='searchInAllOrgunits' />
 			 #end
 			 
-			<td>
+			<td class='hidden'>
 				$i18n.getString('search_by_user_orgunits') 
 				<input type='checkbox' id='searchInUserOrgunits' name='searchInUserOrgunits' value='searchInUserOrgunits' />&nbsp;&nbsp;&nbsp;
 			</td>
@@ -109,7 +112,7 @@
 				<select id='statusEnrollment'>
 					<option value='0'>$i18n.getString('active_enrollments_only')</option>
 					<option value='1'>$i18n.getString('completed_enrollments_only')</option>
-					<option value=''>$i18n.getString('both')</option>
+					<option value=''>$i18n.getString('active_and_completed_enrolments')</option>
 				</select>
 			</td>
 		</tr>
@@ -143,11 +146,11 @@
 			<tr>
 				<td></td>
 				<td></td>
-				<td name='addAndSearchBtn' rowspan='2' style='padding-bottom:2px;' valign='bottom'>
-					<input type="button" class='normal-button' value='$i18n.getString( "add" )' onclick='addAttributeOption();'>
-				</td>
 				<td name='addAndSearchBtn' rowspan='2' style='padding-bottom:2px;' valign='bottom' align="right" align="bottom">
 					<input type="button" class='normal-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
+				</td>
+				<td name='addAndSearchBtn' rowspan='2' style='padding-bottom:2px;' valign='bottom'>
+					<input type="button" class='normal-button' value='$i18n.getString( "add" )' onclick='addAttributeOption();'>
 				</td>
 				<td name='addAndSearchBtn' rowspan='2' style='padding-bottom:2px;' valign='bottom' align="right" align="bottom">
 					<input type="button" class='normal-button hidden' id='sendSmsToListBtn' value="$i18n.getString('sms')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" >
@@ -173,7 +176,7 @@
 				</td>		
 				<td>
 					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='width:200px;'>
-					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" align='bottom'>
+					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' disabled onclick="removeAttributeOption('advSearchBox0');" align='bottom'>
 				</td>
 			</tr>
 		</tbody>

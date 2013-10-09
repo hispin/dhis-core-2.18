@@ -15,7 +15,7 @@
 					setInnerHTML('enrollmentInfor', title);
 				}
 			</script>
-			<input type="button" style='width:130px' value='$i18n.getString( "change" )' onclick="advancedSearchOnclick();" >
+			&nbsp;&nbsp;&nbsp;<input type="button" class="normal-button" value='$i18n.getString( "change" )' onclick="advancedSearchOnclick();" >
 		</td>
 	</tr>
 	<tr>

@@ -2384,15 +2384,10 @@ function searchByIdsOnclick()
 				addAttributeOption();
 				jQuery("input[id=searchText]").last().val(value);
 			}
-			
+			showById('hideSearchCriteriaDiv');
 			jQuery( "#loaderDiv" ).hide();
 		}
 	});
-			
-			
-	
-	
-	
 }
 
 function advancedSearchOnclick()
@@ -2416,5 +2411,17 @@ function clearAndCloseSearch()
 	});
 	addAttributeOption();
 	hideById('advanced-search');
+	hideById('listPatientDiv');
 }
 
+function hideSearchCriteria()
+{
+	hideById('advanced-search');
+	showById('showSearchCriteriaDiv');
+}
+
+function showSearchCriteria()
+{
+	showById('advanced-search');
+	hideById('showSearchCriteriaDiv');
+}
