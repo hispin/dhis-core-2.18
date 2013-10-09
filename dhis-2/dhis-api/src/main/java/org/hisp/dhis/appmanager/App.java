@@ -65,6 +65,7 @@ public class App
     /**
      * Optional.
      */
+    @JsonProperty
     private String description;
 
     private AppIcons icons;
