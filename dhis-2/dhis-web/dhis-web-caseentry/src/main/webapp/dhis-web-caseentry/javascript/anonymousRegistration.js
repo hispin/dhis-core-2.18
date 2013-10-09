@@ -461,7 +461,7 @@ function getDataElements() {
     hideById( 'listDiv' );
     $( '#searchingAttributeIdTD [id=searchObjectId] option' ).remove();
     $( '#advancedSearchTB [id=searchObjectId] option' ).remove();
-    programStageId = $( '#programId option:selected' ).attr( 'psid' );
+    var programStageId = $( '#programId option:selected' ).attr( 'psid' );
     setFieldValue( 'programStageId', programStageId );
     setInnerHTML( 'reportDateDescriptionField', $( '#programId option:selected' ).attr( 'reportDateDes' ) );
     setInnerHTML( 'reportDateDescriptionField2', $( '#programId option:selected' ).attr( 'reportDateDes' ) );
@@ -477,61 +477,59 @@ function getDataElements() {
         return;
     }
 
-    $.getJSON( "getProgramStageDataElementList.action",
-        {
-            programStageId: getFieldValue( 'programStageId' )
-        },
-        function ( json ) {
-            $( '#advancedSearchTB [name=searchText]' ).val( '' );
-            $( '.stage-object-selected' ).attr( 'psid', $( '#programId option:selected' ).attr( "psid" ) );
+    $.getJSON( "getProgramStageDataElementList.action", {
+        programStageId: getFieldValue( 'programStageId' )
+    }, function ( json ) {
+        $( '#advancedSearchTB [name=searchText]' ).val( '' );
+        $( '.stage-object-selected' ).attr( 'psid', $( '#programId option:selected' ).attr( "psid" ) );
 
-            clearListById( 'searchObjectId' );
-            clearListById( 'displayInReports' );
+        clearListById( 'searchObjectId' );
+        clearListById( 'displayInReports' );
 
-            $('[name=searchObjectId]').append('<option value="" >[' + i18n_please_select + ']</option>');
-            for( i in json.programStageDataElements ) {
-                $('[name=searchObjectId]').append('<option value="' + json.programStageDataElements[i].id + '" uid="' + json.programStageDataElements[i].uid + '" type="' + json.programStageDataElements[i].type + '">' + json.programStageDataElements[i].name + '</option>');
+        $('[name=searchObjectId]').append('<option value="" >[' + i18n_please_select + ']</option>');
 
-                if( json.programStageDataElements[i].displayInReports == 'true' ) {
-                    $('#displayInReports').append('<option value="' + json.programStageDataElements[i].id + '" uid="' + json.programStageDataElements[i].uid + '" ></option>');
-                }
+        $.each(json.programStageDataElements, function() {
+            $('[name=searchObjectId]').append('<option value="' + this.id + '" uid="' + this.uid + '" type="' + this.type + '">' + this.name + '</option>');
+
+            if( this.displayInReports == 'true' ) {
+                $('#displayInReports').append('<option value="' + this.id + '" uid="' + this.uid + '" ></option>');
             }
-
-            enableCriteriaDiv();
-            validateSearchEvents( true );
-        } ).fail(function() {
-            enable( 'addBtn' );
         });
+
+        enableCriteriaDiv();
+        validateSearchEvents( true );
+    } ).fail(function() {
+        enable( 'addBtn' );
+    });
 
     updateOfflineEvents();
 }
 
 function dataElementOnChange( this_ ) {
-    var container = $( this_ ).parent().parent().attr( 'id' );
-    var element = $( '#' + container + ' [id=searchText]' );
-    var valueType = $( '#' + container + ' [id=searchObjectId] option:selected' ).attr( 'type' );
+    var container = $(this_).parent().parent().attr('id');
+    var element = $('#' + container + ' [id=searchText]');
+    var valueType = $('#' + container + ' [id=searchObjectId] option:selected').attr('type');
 
-    if ( valueType == 'date' ) {
-        element.replaceWith( getDateField( container ) );
-        datePickerValid( 'searchText_' + container );
-        return;
+    if( valueType == 'date' ) {
+        element.replaceWith(getDateField(container));
+        datePickerValid('searchText_' + container);
     }
     else {
-        $( '#searchText_' + container ).datepicker( "destroy" );
-        $( '#' + container + ' [id=dateOperator]' ).replaceWith( "" );
+        $('#searchText_' + container).datepicker("destroy");
+        $('#' + container + ' [id=dateOperator]').replaceWith("");
 
-        if ( valueType == 'bool' ) {
-            element.replaceWith( getTrueFalseBox() );
+        if( valueType == 'bool' ) {
+            element.replaceWith(getTrueFalseBox());
         }
-        else if ( valueType == 'optionset' ) {
-            element.replaceWith( searchTextBox );
-            autocompletedFilterField( container + " [id=searchText]", $(this_).find("option:selected").attr('uid') );
+        else if( valueType == 'optionset' ) {
+            element.replaceWith(searchTextBox);
+            autocompletedFilterField(container + " [id=searchText]", $(this_).find("option:selected").attr('uid'));
         }
-        else if ( valueType == 'username' ) {
-            autocompletedUsernameField( $( this_ ).attr( 'id' ) );
+        else if( valueType == 'username' ) {
+            autocompletedUsernameField($(this_).attr('id'));
         }
         else {
-            element.replaceWith( searchTextBox );
+            element.replaceWith(searchTextBox);
         }
     }
 }
@@ -620,7 +618,6 @@ function autocompletedUsernameField( idField ) {
                 }
             } );
         },
-        minLength: 0,
         select: function ( event, ui ) {
             var fieldValue = ui.item.value;
 
@@ -826,24 +823,20 @@ function getValueFormula( value ) {
     if ( value.indexOf( '"' ) != value.lastIndexOf( '"' ) ) {
         value = value.replace( /"/g, "'" );
     }
-    // if key is [xyz] && [=xyz]
-    if ( value.indexOf( "'" ) == -1 ) {
-        var flag = value.match( /[>|>=|<|<=|=|!=]+[ ]*/ );
 
-        if ( flag == null ) {
+    var flag = value.match( /[>|>=|<|<=|=|!=]+[ ]*/ );
+
+    if( value.indexOf("'") == -1 ) {
+        if( flag == null ) {
             value = "='" + value + "'";
         }
         else {
-            value = value.replace( flag, flag + "'" );
+            value = value.replace(flag, flag + "'");
             value += "'";
         }
     }
-    // if key is ['xyz'] && [='xyz']
-    // if( value.indexOf("'") != value.lastIndexOf("'") )
     else {
-        var flag = value.match( /[>|>=|<|<=|=|!=]+[ ]*/ );
-
-        if ( flag == null ) {
+        if( flag == null ) {
             value = "=" + value;
         }
     }
@@ -975,19 +968,21 @@ function showFilterForm() {
 
 function removeAllOption() {
     enable( 'filterBtn' );
-    $( '#advancedSearchTB tr' ).each( function ( i, row ) {
-        if ( i > 2 ) {
-            $( this ).remove();
+
+    $( '#advancedSearchTB tr' ).each( function ( idx ) {
+        if( idx > 2 ) {
+            $(this).remove();
         }
-        else if ( i == 2 ) {
-            $( this ).find( ':input' ).each( function ( idx, item ) {
-                var input = $( item );
-                if ( input.attr( 'type' ) != 'button' ) {
-                    input.val( '' );
+        else if( idx == 2 ) {
+            $(this).find(':input').each(function( idx, item ) {
+                var input = $(item);
+                if( input.attr('type') != 'button' ) {
+                    input.val('');
                 }
-            } );
+            });
         }
     } );
+
     $( '#searchObjectId' ).val( "" );
     $( '#searchText' ).val( "" );
     searchEvents( eval( getFieldValue( "listAll" ) ) );
