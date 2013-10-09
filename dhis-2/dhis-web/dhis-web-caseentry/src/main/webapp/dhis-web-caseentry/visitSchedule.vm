@@ -130,7 +130,7 @@
 			<th>$i18n.getString( "events" )</th>                   
 			<th>$i18n.getString( "due_date" )</th>       
 			<th>$i18n.getString( "status" )</th>
-			<th colspan='2'>$i18n.getString( "message" )</th>
+			<th colspan='2'>$i18n.getString( "comment" )</th>
 			#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
 			<th>$i18n.getString( "operation" )</th>
 			#end
@@ -177,10 +177,10 @@
 				</script>
 			</td>
 			<td>
-				<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}" style="width:100%" onchange="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" >
+				<input type='text' value='$!programStageInstance.patientComment.commentText' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}" style="width:100%" onchange="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" >
 			</td>
 			<td>
-				<input type='button' class='normal-button' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" value="$i18n.getString('add')" >
+				<input type='button' class='normal-button' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" value="$i18n.getString('save')" >
 			</td>
 			<td>
 				#if(($auth.hasAccess( "dhis-web-caseentry", "sendSMS" ) ) 

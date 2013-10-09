@@ -107,9 +107,10 @@ public class SavePatientCommentAction
                 patientComment = new PatientComment();
             }
 
-            patientComment = new PatientComment( commentText, currentUserService.getCurrentUsername(), new Date() );
+            patientComment.setCommentText( commentText );
+            patientComment.setCreator( currentUserService.getCurrentUsername() );
+            patientComment.setCreatedDate( new Date() );
             programStageInstance.setPatientComment( patientComment );
-
         }
         else if ( patientComment != null )
         {
