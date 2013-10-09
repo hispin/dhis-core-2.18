@@ -29,6 +29,8 @@ package org.hisp.dhis.appmanager;
  */
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -37,7 +39,6 @@ import java.io.Serializable;
 public class App
     implements Serializable
 {
-
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -46,8 +47,10 @@ public class App
     /**
      * Required.
      */
+    @JsonProperty
     private String version;
 
+    @JsonProperty
     private String name;
 
     @JsonProperty( "launch_path" )
@@ -85,6 +88,12 @@ public class App
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+    
+    @JsonProperty
+    public String getLaunchUrl()
+    {
+        return getBaseUrl() + File.separator + getFolderName() + File.separator + getLaunchPath();
+    }
     
     public String getVersion()
     {

@@ -41,15 +41,17 @@ public class AppActivities
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 7530768303537807631L;
-    
-    @JsonProperty("dhis")
+
+    @JsonProperty( "dhis" )
     private AppDhis dhis;
 
-    public AppDhis getDhis() {
+    public AppDhis getDhis()
+    {
         return dhis;
     }
 
-    public void setDhis(AppDhis dhis) {
+    public void setDhis( AppDhis dhis )
+    {
         this.dhis = dhis;
     }
 }

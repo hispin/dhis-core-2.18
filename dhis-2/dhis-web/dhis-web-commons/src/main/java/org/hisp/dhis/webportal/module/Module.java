@@ -82,7 +82,7 @@ public class Module
 
     public static Module getModule( App app )
     {
-        String defaultAction = app.getBaseUrl() + File.separator + app.getFolderName() + File.separator + app.getLaunchPath();
+        String defaultAction = app.getLaunchUrl();
         String icon = app.getFolderName() + File.separator + app.getIcons().getIcon48();
         String description = TextUtils.subString( app.getDescription(), 0, 80 );
         

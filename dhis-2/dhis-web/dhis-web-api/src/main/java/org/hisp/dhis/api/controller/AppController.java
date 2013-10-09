@@ -1,7 +1,4 @@
-package org.hisp.dhis.appmanager;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.Serializable;
+package org.hisp.dhis.api.controller;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -31,56 +28,35 @@ import java.io.Serializable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
+import org.hisp.dhis.appmanager.App;
+import org.hisp.dhis.appmanager.AppManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 /**
- * @author Saptarshi
+ * @author Lars Helge Overland
  */
-public class AppIcons
-    implements Serializable
+@Controller
+@RequestMapping( value = AppController.RESOURCE_PATH )
+public class AppController
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 5041924160867190242L;
-
-    /**
-     * Optional.
-     */
-    @JsonProperty( "16" )
-    private String icon16;
-
-    @JsonProperty( "48" )
-    private String icon48;
-
-    @JsonProperty( "128" )
-    private String icon128;
-
-    public String getIcon16()
+    public static final String RESOURCE_PATH = "/apps";
+    
+    @Autowired
+    private AppManager appManager;
+    
+    @RequestMapping( method = RequestMethod.GET )
+    public String getApps( Model model )
     {
-        return icon16;
-    }
-
-    public void setIcon16( String icon16 )
-    {
-        this.icon16 = icon16;
-    }
-
-    public String getIcon48()
-    {
-        return icon48;
-    }
-
-    public void setIcon48( String icon48 )
-    {
-        this.icon48 = icon48;
-    }
-
-    public String getIcon128()
-    {
-        return icon128;
-    }
-
-    public void setIcon128( String icon128 )
-    {
-        this.icon128 = icon128;
+        List<App> apps = appManager.getInstalledApps();
+        
+        model.addAttribute( "model", apps );
+        
+        return "apps";
     }
 }
