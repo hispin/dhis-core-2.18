@@ -852,8 +852,6 @@ function getValueFormula( value ) {
 }
 
 function removeEvent( programStageId ) {
-    var s = "" + programStageId;
-
     DAO.store.get('dataValues', programStageId).done(function(obj) {
         if(obj) {
             if( confirm(i18n_comfirm_delete_event) ) {
