@@ -208,8 +208,8 @@ public class MobileOrganisationUnitController
         MobileModel mobileModel = new MobileModel();
         mobileModel.setClientVersion( clientVersion );
         OrganisationUnit unit = getUnit( id );
-        mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( unit, locale ) );
-        mobileModel.setPrograms( programService.getPrograms( unit, locale ) );
+//        mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( unit, locale ) );
+//        mobileModel.setPrograms( programService.getPrograms( unit, locale ) );
         mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale ) );
         mobileModel.setServerCurrentDate( new Date() );
         mobileModel.setLocales( getLocalStrings( i18nService.getAvailableLocales() ) );
