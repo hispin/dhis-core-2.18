@@ -103,5 +103,4 @@ public interface AppManager
      * @param appBaseUrl 
      */
     void setAppBaseUrl( String appBaseUrl );
-
 }

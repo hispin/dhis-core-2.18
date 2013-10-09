@@ -70,7 +70,7 @@ public class DefaultAppManager
         
         log.info( "Detecting apps: " + apps );
     }
-        
+    
     @Autowired
     private SystemSettingManager appSettingManager;
 

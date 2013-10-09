@@ -42,7 +42,7 @@ public class AppDhis
      */
     private static final long serialVersionUID = -8854371580010728182L;
 
-    @JsonProperty("href")
+    @JsonProperty( "href" )
     private String href;
 
     public String getHref()
@@ -50,7 +50,8 @@ public class AppDhis
         return href;
     }
 
-    public void setHref(String href) {
+    public void setHref( String href )
+    {
         this.href = href;
     }
 }
