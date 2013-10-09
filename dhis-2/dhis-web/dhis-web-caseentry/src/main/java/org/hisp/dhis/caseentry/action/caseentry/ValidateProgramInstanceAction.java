@@ -28,18 +28,18 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationResult;
 import org.hisp.dhis.program.ProgramValidationService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Chau Thu Tran
@@ -54,7 +54,17 @@ public class ValidateProgramInstanceAction
 
     private SelectedStateManager selectedStateManager;
 
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     private ProgramValidationService programValidationService;
+
+    public void setProgramValidationService( ProgramValidationService programValidationService )
+    {
+        this.programValidationService = programValidationService;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -69,11 +79,6 @@ public class ValidateProgramInstanceAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
 
     public Map<Integer, String> getLeftsideFormulaMap()
     {
@@ -90,28 +95,22 @@ public class ValidateProgramInstanceAction
         return programValidationResults;
     }
 
-    public void setProgramValidationService( ProgramValidationService programValidationService )
-    {
-        this.programValidationService = programValidationService;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public String execute()
-        throws Exception
+    public String execute() throws Exception
     {
         programValidationResults = new ArrayList<ProgramValidationResult>();
 
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
 
-        Collection<ProgramValidation> validation = programValidationService.getProgramValidation( programStageInstance
-            .getProgramStage() );
+        List<ProgramValidation> validation = new ArrayList<ProgramValidation>(
+            programValidationService.getProgramValidation( programStageInstance.getProgramStage() ) );
+
         programValidationResults = programValidationService.validate( validation, programStageInstance );
 
         return SUCCESS;
     }
-
 }
