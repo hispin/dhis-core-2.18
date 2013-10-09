@@ -1,5 +1,10 @@
+#set($program = '')
+#foreach( $psDataElement in $psDataElements )
+	#set($program = $psDataElement.programStage.program )
+#end
+
 { "items": [
-	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
+	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) && $program!='' )
 		{
 			"id": "GENDER",
 			"name": "$i18n.getString('gender')",
