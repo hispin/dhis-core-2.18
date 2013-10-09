@@ -41,6 +41,10 @@ function loadProgramStages( metaData ) {
         promise = promise.then( makeProgramStageRequest( id ));
     } );
 
+    promise = promise.then(function() {
+        return $.Deferred().resolve(metaData);
+    });
+
     def.resolve( metaData );
 
     return promise;
