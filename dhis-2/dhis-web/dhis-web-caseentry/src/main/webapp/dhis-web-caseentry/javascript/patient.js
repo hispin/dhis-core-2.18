@@ -60,6 +60,7 @@ function Patient()
 					setInnerHTML( 'listPatientDiv', html );
 					showById('listPatientDiv');
 					setFieldValue('listAll',false);
+					showById('hideSearchCriteriaDiv');
 					jQuery( "#loaderDiv" ).hide();
 				}
 			});
