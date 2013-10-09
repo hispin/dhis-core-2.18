@@ -481,84 +481,83 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 //
 //-----------------------------------------------------------------
 
-function toggleContentForReportDate(show)
-{
-    if( show ){
+function toggleContentForReportDate( show ) {
+    if( show ) {
         jQuery("#entryForm").show();
-		showById('entryPostComment');
-    }else {
+        showById('entryPostComment');
+    } else {
         jQuery("#entryForm").hide();
-		hideById('entryPostComment');
+        hideById('entryPostComment');
     }
 }
 
-function doComplete(isCreateEvent){
-	
-	if(getFieldValue('validCompleteOnly')=="true")
-	{
+function doComplete( isCreateEvent ) {
+    if( getFieldValue('validCompleteOnly') == "true" ) {
 		$('#loading-bar').show();
 		$('#loading-bar').dialog({
 			modal:true,
 			width: 330
 		});
-		$("#loading-bar").siblings(".ui-dialog-titlebar").hide(); 
+
+		$("#loading-bar").siblings(".ui-dialog-titlebar").hide();
 		
-		jQuery.get( 'validateProgram.action'
-			, function(html){ 
-				$( "#loading-bar" ).dialog( "close" );
-				$('#validateProgramDiv').html(html);
-				if(getFieldValue('violateValidation')=='true'){
-					$('#validateProgramDiv' ).dialog({
-						title: i18n_violate_validation,
-						maximize: true, 
-						closable: true,
-						modal:true,
-						overlay:{background:'#000000', opacity:0.1},
-						width: 800,
-						height: 450
-					});
-				}
-				else{
-					hideById('validateProgramDiv');
-					runCompleteEvent( isCreateEvent );
-				}
-		});
-	}
-	else
-	{
-		runCompleteEvent( isCreateEvent );
-	}
+		$.get( 'validateProgram.action').done(function(html){
+            $("#loading-bar").dialog("close");
+            $('#validateProgramDiv').html(html);
+            if( getFieldValue('violateValidation') == 'true' ) {
+                $('#validateProgramDiv').dialog({
+                    title: i18n_violate_validation,
+                    maximize: true,
+                    closable: true,
+                    modal: true,
+                    overlay: {background: '#000000', opacity: 0.1},
+                    width: 800,
+                    height: 450
+                });
+            }
+            else {
+                hideById('validateProgramDiv');
+                runCompleteEvent(isCreateEvent);
+            }
+        }).fail(function() {
+            $("#loading-bar").dialog("close");
+            hideById('validateProgramDiv');
+            runCompleteEvent(isCreateEvent);
+        });
+    }
+    else {
+        runCompleteEvent(isCreateEvent);
+    }
 }
 
-function runCompleteEvent( isCreateEvent )
-{
+function runCompleteEvent( isCreateEvent ) {
     var flag = false;
-    jQuery("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect']").each(function(){
-        jQuery(this).parent().removeClass("errorCell");
-        
-		var arrData = jQuery( this ).attr('data').replace('{','').replace('}','').replace(/'/g,"").split(',');
-		var data = new Array();
-		for( var i in arrData )
-		{	
-			var values = arrData[i].split(':');
-			var key = jQuery.trim( values[0] );
-			var value = jQuery.trim( values[1] )
-			data[key] = value;
-		}
-		var compulsory = data['compulsory']; 
-		if( compulsory == 'true' && 
-			( !jQuery(this).val() || jQuery(this).val() == "undefined" ) ){
-                flag = true;
-                jQuery(this).parent().addClass("errorCell");
-            }
+
+    $("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect']").each(function() {
+        $(this).parent().removeClass("errorCell");
+
+        var arrData = $(this).attr('data').replace('{', '').replace('}', '').replace(/'/g, "").split(',');
+        var data = [];
+
+        $.each(arrData, function() {
+            var values = this.split(':');
+            values = $.trimArray(values);
+            data[values[0]] = values[1];
+        });
+
+        var compulsory = data['compulsory'];
+
+        if( compulsory == 'true' && ( !$(this).val() || $(this).val() == "undefined" ) ) {
+            flag = true;
+            $(this).parent().addClass("errorCell");
+        }
     });
-	
-    if( flag ){
+
+    if( flag ) {
         alert(i18n_error_required_field);
         return;
-    }else {
-        if( confirm(i18n_complete_confirm_message) )
-		{
+    } else {
+        if( confirm(i18n_complete_confirm_message) ) {
             $.ajax({
                 url: 'completeDataEntry.action',
                 dataType: 'json',
@@ -568,74 +567,74 @@ function runCompleteEvent( isCreateEvent )
                 },
                 type: 'POST'
             } ).done(function(json) {
-                jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
-                jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
+                $(".stage-object-selected").css('border-color', COLOR_GREEN);
+                $(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
 
-                var irregular = jQuery('#entryFormContainer [name=irregular]').val();
-                var displayGenerateEventBox = jQuery('#entryFormContainer [name=displayGenerateEventBox]').val();
-                var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
+                var irregular = $('#entryFormContainer [name=irregular]').val();
+                var displayGenerateEventBox = $('#entryFormContainer [name=displayGenerateEventBox]').val();
+                var programInstanceId = $('#entryFormContainer [id=programInstanceId]').val();
 
-                if( ( irregular == 'true' && displayGenerateEventBox=="true" ) 
-					|| getFieldValue('allowGenerateNextVisit')=='true') {
+                if( ( irregular == 'true' && displayGenerateEventBox == "true" )
+                    || getFieldValue('allowGenerateNextVisit') == 'true' ) {
                     var programStageUid = getProgramStageUid();
-                    showCreateNewEvent( programInstanceId, programStageUid );
+                    showCreateNewEvent(programInstanceId, programStageUid);
                 }
 
-                if( getProgramType()=='2' || json.response == 'programcompleted' ) {
-                    var completedRow = jQuery('#td_' + programInstanceId).html();
-                    jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
+                if( getProgramType() == '2' || json.response == 'programcompleted' ) {
+                    var completedRow = $('#td_' + programInstanceId).html();
+                    $('#completedList').append('<option value="' + programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId) + '</option>');
                 }
 
-                var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
-				if( blocked=='true' ) {
+                var blocked = $('#entryFormContainer [id=blockEntryForm]').val();
+                if( blocked == 'true' ) {
                     blockEntryForm();
                 }
 
-                var remindCompleted = jQuery('#entryFormContainer [id=remindCompleted]').val();
+                var remindCompleted = $('#entryFormContainer [id=remindCompleted]').val();
 
-                if( remindCompleted=='true' ) {
+                if( remindCompleted == 'true' ) {
                     unenrollmentForm(programInstanceId, 1);
                 }
 
                 disableCompletedButton(true);
 
                 var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
-                eventBox.attr('status',1);
-                resetActiveEvent( eventBox.attr("pi") );
+                eventBox.attr('status', 1);
+                resetActiveEvent(eventBox.attr("pi"));
 
                 hideLoader();
 
-                if ( isCreateEvent) {
+                if( isCreateEvent ) {
                     showAddEventForm(isCreateEvent);
                 }
             } ).fail(function() {
                 if ( getProgramType() == 3 ) {
-                    var programStageInstanceId = getFieldValue( 'programStageInstanceId' );
+                    var programStageInstanceId = getFieldValue('programStageInstanceId');
 
-                    if ( window.DAO && window.DAO.store ) {
-                        jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
-                        jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
+                    if( window.DAO && window.DAO.store ) {
+                        $(".stage-object-selected").css('border-color', COLOR_GREEN);
+                        $(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
 
-                        DAO.store.get( 'dataValues', programStageInstanceId ).done( function ( obj ) {
-                            if ( !obj ) {
+                        DAO.store.get('dataValues', programStageInstanceId).done(function( obj ) {
+                            if( !obj ) {
                                 return;
                             }
 
                             obj.executionDate.completed = 'true';
                             DAO.store.set('dataValues', obj);
-                        } );
+                        });
 
-                        var blocked = jQuery('#entryFormContainer [id=blockEntryForm]').val();
+                        var blocked = $('#entryFormContainer [id=blockEntryForm]').val();
 
-                        if( blocked=='true' ) {
+                        if( blocked == 'true' ) {
                             blockEntryForm();
                         }
 
                         disableCompletedButton(true);
                         hideLoader();
 
-                        if ( isCreateEvent ) {
-                            showAddEventForm( isCreateEvent );
+                        if( isCreateEvent ) {
+                            showAddEventForm(isCreateEvent);
                         }
                     }
                 }
@@ -685,7 +684,6 @@ function doUnComplete( isCreateEvent )
         });
 	}
 }
-
 
 function blockEntryForm()
 {
