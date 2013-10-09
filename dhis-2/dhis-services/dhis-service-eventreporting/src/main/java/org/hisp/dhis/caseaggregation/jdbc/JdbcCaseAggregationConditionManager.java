@@ -358,10 +358,13 @@ public class JdbcCaseAggregationConditionManager
 
                 if ( hasDataelement )
                 {
-                    sql += innerJoin + "programstageinstance as psi ";
-                    if ( !hasProgramInstances )
+                    if ( hasPatients || hasProgramInstances )
                     {
                         sql += " ON pi.programinstanceid=psi.programinstanceid ";
+                    }
+                    else
+                    {
+                        sql += " INNER JOIN programinstance pi on pi.programinstanceid=pi.programinstanceid ";
                     }
                     sql += "INNER JOIN organisationunit ou on ou.organisationunitid=psi.organisationunitid ";
                 }
@@ -454,7 +457,7 @@ public class JdbcCaseAggregationConditionManager
         }
         else if ( (hasProgramInstances && !hasPatients) || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
         {
-            sql += "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
+            sql += innerJoin + " programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
             innerJoin = " INNER JOIN ";
         }
 
@@ -842,9 +845,8 @@ public class JdbcCaseAggregationConditionManager
      */
     private String getConditionForPatientAttribute( int attributeId, Collection<Integer> orgunitIds )
     {
-        String sql = " EXISTS ( SELECT _pav.patientid FROM patientattributevalue _pav "
-            + "WHERE _pav.patientid = pi.patientid AND _pav.patientattributeid=" + attributeId
-            + "  AND p.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds ) + ") AND _pav.value ";
+        String sql = " EXISTS ( SELECT * FROM patientattributevalue _pav "
+            + " WHERE _pav.patientid=pi.patientid AND _pav.patientattributeid=" + attributeId + "  AND _pav.value ";
 
         return sql;
     }
