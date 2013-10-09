@@ -2356,18 +2356,43 @@ function removeCustomPhoneNumberField(idx)
 
 function searchByIdsOnclick()
 {
-	var value = getFieldValue('searchPatientByIds');
+	var params = "searchText=" + getFieldValue("searchByIds");
+	params += "&listAll=false";
 	
-	if(jQuery("#advSearchBox0").find('input[id=searchObjectId]').val()=='iden'
-		&& jQuery("#advSearchBox0").find('input[id=searchText]').val()=='' ){
-		jQuery("#advSearchBox0").find('input[id=searchText]').val(value);
+	if( getFieldValue('programIdAddPatient')=="" ){
+		params += "&programIds=" + getFieldValue('programIdAddPatient');
+		params += "&searchText=prg_" + getFieldValue('programIdAddPatient');
 	}
-	else
-	{
-		addAttributeOption();
-		jQuery("input[id=searchText]").last().val(value);
-	}
-	jQuery("#searchPatientBtn").click();
+	
+	$.ajax({
+		url: 'searchRegistrationPatient.action',
+		type:"POST",
+		data: params,
+		success: function( html ){
+			setTableStyles();
+			statusSearching = 1;
+			setInnerHTML( 'listPatientDiv', html );
+			showById('listPatientDiv');
+			setFieldValue('listAll',false);
+			
+			var value = getFieldValue('searchPatientByIds');
+			var searchObject = jQuery("[name=searchObjectId]")[1];
+			if(searchObject.value=='iden'){
+				jQuery("[name=searchText]")[0].value = value;
+			}
+			else{
+				addAttributeOption();
+				jQuery("input[id=searchText]").last().val(value);
+			}
+			
+			jQuery( "#loaderDiv" ).hide();
+		}
+	});
+			
+			
+	
+	
+	
 }
 
 function advancedSearchOnclick()
