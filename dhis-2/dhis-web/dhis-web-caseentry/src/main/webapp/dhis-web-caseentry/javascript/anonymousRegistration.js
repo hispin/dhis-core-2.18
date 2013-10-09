@@ -207,7 +207,7 @@ function uploadOfflineData( event ) {
         data: JSON.stringify( event ),
         cache: false
     } ).done( function ( json ) {
-        if ( json.response == 'success' ) {
+        if ( json.response === 'success' ) {
             DAO.store.delete( 'dataValues', event.id ).done( function () {
                 updateOfflineEvents();
                 searchEvents( eval( getFieldValue( 'listAll' ) ) );
@@ -271,7 +271,7 @@ $( document ).ready( function () {
         promise = promise.then( loadOptionSets );
         promise = promise.then( updateOfflineEvents );
         promise = promise.then( checkOfflineData );
-        promise = promise.then( function () {
+        promise.then( function () {
             $("#programId").removeAttr('disabled');
 
             selection.setListenerFunction( organisationUnitSelected );
@@ -854,18 +854,19 @@ function getValueFormula( value ) {
 function removeEvent( programStageId ) {
     var s = "" + programStageId;
 
-    if( s.indexOf("local") != -1) {
-        if ( confirm( i18n_comfirm_delete_event ) ) {
-            DAO.store.delete( 'dataValues', programStageId ).always( function () {
-                updateOfflineEvents();
-
-                // needed, seemed that from time-to-time the events are updated too early, could be idb related
-                setTimeout(updateOfflineEvents, 400);
-            } );
+    DAO.store.get('dataValues', programStageId).done(function(obj) {
+        if(obj) {
+            if( confirm(i18n_comfirm_delete_event) ) {
+                DAO.store.delete('dataValues', programStageId).always(function() {
+                    updateOfflineEvents();
+                    // needed, seemed that from time-to-time the events are updated too early, could be idb related
+                    setTimeout(updateOfflineEvents, 100);
+                });
+            }
+        } else {
+            removeItem( programStageId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action' );
         }
-    } else {
-        removeItem( programStageId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action' );
-    }
+    });
 }
 
 function showUpdateEvent( programStageInstanceId ) {

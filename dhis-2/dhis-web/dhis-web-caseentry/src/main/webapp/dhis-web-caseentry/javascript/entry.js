@@ -743,8 +743,6 @@ TOGGLE = {
 };
 
 function loadProgramStageInstance( programStageInstanceId, always ) {
-    console.log('loading: ' + programStageInstanceId);
-
     $( "#programStageInstanceId" ).val( programStageInstanceId );
     $( "#entryFormContainer input[id='programStageInstanceId']" ).val( programStageInstanceId );
 
