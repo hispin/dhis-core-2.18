@@ -66,7 +66,7 @@
     #parse( "macros.vm" )
     <div id="header">
       <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png"
-        onclick="window.location.href='../dhis-web-dashboard-integration/interpretation.action'" style="cursor:pointer" title="$i18n.getString( 'view_intepretations' )">
+        onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'view_intepretations' )">
 
       <ul id="menuLinkArea">
       #if( $maintenanceModules.size() > 0 )
