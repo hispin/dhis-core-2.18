@@ -54,6 +54,8 @@ import org.hisp.dhis.api.mobile.model.Beneficiary;
 import org.hisp.dhis.api.mobile.model.DataValue;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.Task;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.dataelement.DataElement;
@@ -2023,11 +2025,11 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLostToFollowUpDetail( String programStageIntanceId )
+    public Notification handleLostToFollowUp( LostEvent lostEvent )
         throws NotAllowedException
     {
-        org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientLWUIT = new org.hisp.dhis.api.mobile.model.LWUITmodel.Patient();
+        Notification notification = new Notification();
         
-        return patientLWUIT;
+        return notification;
     }
 }

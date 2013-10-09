@@ -70,7 +70,7 @@ public class OrgUnitTest
         unit.setFindLatestPersonUrl( "findLatestPersonUrl" );
         unit.setFindPatientInAdvancedUrl( "findPatientInAdvanced" );
         unit.setFindLostToFollowUpUrl( "findLostToFollowUpUrl" );
-        unit.setFindLostToFollowUpDetailUrl( "findLostToFollowUpDetailUrl" );
+        unit.setHandleLostToFollowUpUrl( "handleLostToFollowUpUrl" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );

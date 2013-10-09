@@ -48,6 +48,7 @@ import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.SMSCode;
 import org.hisp.dhis.api.mobile.model.SMSCommand;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.PatientIdentifierAndAttribute;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
@@ -402,10 +403,11 @@ public class MobileOrganisationUnitController
         return activityReportingService.findLostToFollowUp( id, programId );
     }
     
-    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findLostToFollowUpDetail" )
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/handleLostToFollowUpUrl" )
     @ResponseBody
-    public Patient findLostToFollowUpDetail( @PathVariable int id, @RequestHeader( "programStageInstanceId" ) String programStageInstanceId )
+    public Patient handleLostToFollowUp( @PathVariable int id, @RequestBody LostEvent lostEvent )
     {
+        System.out.println(lostEvent);
         return null;
     }
 

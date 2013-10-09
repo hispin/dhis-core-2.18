@@ -33,6 +33,8 @@ import java.util.Collection;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.LostEvent;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.Notification;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
@@ -100,6 +102,6 @@ public interface ActivityReportingService
     public String findLostToFollowUp( int orgUnitId, String programId )
         throws NotAllowedException;
     
-    public Patient findLostToFollowUpDetail( String programStageIntanceId )
+    public Notification handleLostToFollowUp( LostEvent lostEvent )
         throws NotAllowedException;
 }
