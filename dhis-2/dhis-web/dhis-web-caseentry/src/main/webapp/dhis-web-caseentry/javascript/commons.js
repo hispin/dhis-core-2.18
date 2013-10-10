@@ -2403,9 +2403,9 @@ function advancedSearchOnclick()
 
 function clearAndCloseSearch()
 {
-	jQuery('#advancedSearchTB tr').each( function()
+	jQuery('#advancedSearchTB tr').each( function(i, item)
 	{
-		if(jQuery(this).id==undefined){
+		if( i>0 && jQuery(this).id==undefined){
 			jQuery(this).remove();
 		}
 	});
