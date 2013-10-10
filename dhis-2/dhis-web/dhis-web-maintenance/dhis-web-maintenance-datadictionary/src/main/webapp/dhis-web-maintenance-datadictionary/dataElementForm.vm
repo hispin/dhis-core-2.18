@@ -39,6 +39,7 @@
 <h3>$i18n.getString( "edit_data_element" )</h3>
 #else
 <h3>$i18n.getString( "create_new_data_element" )</h3>
+#sharingCreateNotification( "dataElement" )
 #end
 
 #if( $update )

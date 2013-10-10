@@ -37,10 +37,15 @@
 				<tr id="tr${organisationUnit.id}">
 					<td onclick="showOrganisationUnitDetails( $organisationUnit.id )">$encoder.htmlEncode( $organisationUnit.name )</td>
 					<td style="text-align:right">
+
 						<a href="showUpdateOrganisationUnitForm.action?id=$organisationUnit.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+
 						#if( $organisationUnit.children.size() == 0 && $auth.hasAccess( "dhis-web-maintenance-organisationunit", "removeOrganisationUnit" ) )
 						<a href="javascript:removeOrganisationUnit( $organisationUnit.id, '$encoder.jsEncode( $organisationUnit.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-						#else <img src="../images/delete-denied.png" alt="$i18n.getString( 'remove' )"/> #end
+						#else
+                        <img src="../images/delete-denied.png" alt="$i18n.getString( 'remove' )"/>
+                        #end
+
 						<a href="javascript:showOrganisationUnitDetails( $organisationUnit.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
 				</tr>

@@ -36,6 +36,8 @@ jQuery( document ).ready( function()
 
 <h3>$i18n.getString( "crease_new_org_unit_group" ) #openHelp( "ou_groups_edit" )</h3>
 
+#sharingCreateNotification( "organisationUnitGroup" )
+
 <form name="addOrganisationUnitGroupForm" id="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="post" class="inputForm">
 
 <input type="hidden" id="symbol" name="symbol">
