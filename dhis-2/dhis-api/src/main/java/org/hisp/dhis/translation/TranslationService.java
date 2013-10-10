@@ -75,6 +75,17 @@ public interface TranslationService
     Collection<Translation> getTranslations( String className, int id, Locale locale );
 
     /**
+     * Retrieves a Collection of Translations. Only exact matches on the given
+     * Locale will be returned.
+     * 
+     * @param className the class name.
+     * @param id the id.
+     * @param locale the locale.
+     * @return a Collection of Translations.
+     */
+    Collection<Translation> getTranslationsNoFallback( String className, int id, Locale locale );
+
+    /**
      * Retrieves a Collection of Translations.
      * 
      * @param className the class name.

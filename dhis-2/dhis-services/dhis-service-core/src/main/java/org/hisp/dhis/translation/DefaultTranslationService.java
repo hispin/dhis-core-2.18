@@ -76,6 +76,11 @@ public class DefaultTranslationService
         return translationStore.getTranslations( className, id, locale );
     }
 
+    public Collection<Translation> getTranslationsNoFallback( String className, int id, Locale locale )
+    {
+        return translationStore.getTranslationsNoFallback( className, id, locale );
+    }
+
     public Collection<Translation> getTranslations( String className, Locale locale )
     {
         return translationStore.getTranslations( className, locale );

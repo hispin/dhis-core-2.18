@@ -114,6 +114,22 @@ public class HibernateTranslationStore
     }
 
     @SuppressWarnings( "unchecked" )
+    public Collection<Translation> getTranslationsNoFallback( String className, int id, Locale locale )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Translation.class );
+
+        criteria.add( Restrictions.eq( "className", className ) );
+        criteria.add( Restrictions.eq( "id", id ) );
+        criteria.add( Restrictions.eq( "locale", locale.toString() ) );
+
+        criteria.setCacheable( true );
+
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
     public Collection<Translation> getTranslations( String className, Locale locale )
     {
         Session session = sessionFactory.getCurrentSession();
