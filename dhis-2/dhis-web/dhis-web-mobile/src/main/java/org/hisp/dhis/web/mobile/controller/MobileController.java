@@ -48,7 +48,7 @@ import java.io.InputStream;
 @Controller
 public class MobileController
 {
-    @RequestMapping(value = "/mobile")
+    @RequestMapping( value = "/mobile" )
     public String base()
     {
         return "redirect:/mobile/index";
@@ -60,7 +60,7 @@ public class MobileController
         return "redirect:/mobile/index";
     }
 
-    @RequestMapping( value = "/index" )
+    @RequestMapping(value = "/index")
     public String index( Model model, HttpServletRequest request )
     {
         populateContextPath( model, request );

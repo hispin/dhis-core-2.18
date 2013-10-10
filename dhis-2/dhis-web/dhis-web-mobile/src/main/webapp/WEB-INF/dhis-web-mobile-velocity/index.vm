@@ -26,12 +26,37 @@
 
     function getDashboard() {
         return $.ajax({
-            url: '$contextPath/api/currentUser/dashboard',
+            url: '$contextPath/api/me/dashboard',
             dataType: 'json'
         }).success(function(data) {
             if( data.unreadMessageConversation > 0 ) {
                 $( '#messages a' ).append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
+        });
+    }
+
+    function getApps() {
+        return $.ajax({
+            url: '$contextPath/api/apps',
+            dataType: 'json'
+        }).success(function(data) {
+            var tmpl = $('#app-template').html();
+
+            $.each(data, function(idx) {
+                var html = _.template(tmpl, {
+                    'idx': idx,
+                    'name': this.name,
+                    'launchUrl': this.launchUrl
+                });
+
+                if( $('#app-' + idx).length === 0 ) {
+                    $('#user-account').after(html);
+                } else {
+                    $('#app-' + idx).html(html);
+                }
+
+                $('#listview').listview('refresh');
+            });
         });
     }
 
@@ -41,7 +66,7 @@
         getDashboard().always(function() {
             $('section[data-role="content"] ul').listview('refresh');
 
-            $.when( fm.getMetaData(), fm.uploadDataValueSets()).always(function() {
+            $.when( getApps(), fm.getMetaData(), fm.uploadDataValueSets()).always(function() {
                 updateMenu();
                 renderOfflineStatus();
                 $.mobile.loading( 'hide' );
@@ -73,9 +98,11 @@
         if( onlineStatus ) {
             $( '#messages').removeClass('ui-disabled');
             $( '#user-account').removeClass('ui-disabled');
+            $( '.app').removeClass('ui-disabled');
         } else {
             $( '#messages').addClass('ui-disabled');
             $( '#user-account').addClass('ui-disabled');
+            $( '.app').addClass('ui-disabled');
         }
     }
 
@@ -122,6 +149,10 @@
     <% } %>
 </script>
 
+<script id="app-template" type="text/template">
+    <li class="app" id="app-<%= idx %>"><a href="<%= launchUrl %>"><%= name %></a></li>
+</script>
+
 <section data-role="page" id="index-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
@@ -129,10 +160,11 @@
 	</header>
 
 	<section data-role="content">
-        <ul data-role="listview" data-inset="true">
+        <ul id="listview" data-role="listview" data-inset="true">
             <li id="data-entry"><a href="data-entry">$i18n.getString("aggregate_reporting")</a></li>
             <li id="messages"><a href="messages">$i18n.getString("messages")</a></li>
             <li id="user-account"><a href="user-account">$i18n.getString("user_account")</a></li>
+
             <li id="offline-status">
                 <h3></h3>
                 <p>&nbsp;</p>
