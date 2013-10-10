@@ -1,7 +1,23 @@
 
 dhis2.util.namespace( 'dhis2.db' );
 
-dhis2.db.current;
+dhis2.db.currentKey = "dhis2.dashboard.current";
+
+dhis2.db.current = function() 
+{
+	return localStorage[dhis2.db.currentKey];
+}
+
+dhis2.db.setCurrent = function( id )
+{
+	localStorage[dhis2.db.currentKey] = id;
+}
+
+dhis2.db.clearCurrent = function()
+{
+	localStorage.removeItem( dhis2.db.currentKey );
+}
+
 dhis2.db.currentItem;
 dhis2.db.currentItemPos;
 dhis2.db.currentShareType;
@@ -110,13 +126,15 @@ dhis2.db.dashboardReady = function( id )
 	} );	
 }
 
-dhis2.db.dragStart = function( event, ui ) {
+dhis2.db.dragStart = function( event, ui ) 
+{
 	$( this ).hide();
 	dhis2.db.currentItem = $( this ).attr( "id" );
 	dhis2.db.currentItemPos = dhis2.db.getIndex( dhis2.db.currentItem );
 }
 
-dhis2.db.dragStop = function( event, ui ) {
+dhis2.db.dragStop = function( event, ui ) 
+{
 	$( this ).show();
 	$( ".dropItem" ).not( ".lastDropItem" ).hide();
 	$( ".lastDropItem" ).removeClass( "blankDropItem" ).addClass( "blankDropItem" );
@@ -124,19 +142,22 @@ dhis2.db.dragStop = function( event, ui ) {
 	dhis2.db.currentItemPos = undefined;
 }
 
-dhis2.db.dropOver = function( event, ui ) {
+dhis2.db.dropOver = function( event, ui ) 
+{
 	var itemId = $( this ).attr( "id" );
 	var dropItemId = "drop-" + itemId;
 	$( "#" + dropItemId ).show();
 }
 
-dhis2.db.dropOut = function( event, ui ) {
+dhis2.db.dropOut = function( event, ui ) 
+{
 	var itemId = $( this ).attr( "id" );
 	var dropItemId = "drop-" + itemId;
 	$( "#" + dropItemId ).hide();
 }
 
-dhis2.db.lastDropOver = function( event, ui ) {
+dhis2.db.lastDropOver = function( event, ui ) 
+{
 	$( this ).removeClass( "blankDropItem" ).css( "display", "block" );
 }
 
@@ -179,9 +200,9 @@ dhis2.db.openAddDashboardForm = function()
 
 dhis2.db.openManageDashboardForm = function()
 {
-	if ( undefined !== dhis2.db.current )
+	if ( undefined !== dhis2.db.current() )
 	{
-		$.getJSON( "../api/dashboards/" + dhis2.db.current, function( data )
+		$.getJSON( "../api/dashboards/" + dhis2.db.current(), function( data )
 		{
 			var name = data.name;
 			$( "#dashboardRename" ).val( name );
@@ -216,7 +237,7 @@ dhis2.db.addDashboard = function()
 			if ( location !== undefined && location.lastIndexOf( "/" ) != -1 )
 			{
 				var itemId = location.substring( ( location.lastIndexOf( "/" ) + 1 ) );
-				dhis2.db.current = itemId;				
+				dhis2.db.setCurrent( itemId );				
 			}
 			
 			dhis2.db.renderDashboardListLoadFirst();
@@ -230,13 +251,13 @@ dhis2.db.renameDashboard = function()
 	
 	$( "#manageDashboardForm" ).dialog( "destroy" );
 	
-	if ( undefined !== dhis2.db.current && undefined !== name && name.trim().length > 0 )
+	if ( undefined !== dhis2.db.current() && undefined !== name && name.trim().length > 0 )
 	{
 		var data = "{ \"name\": \"" + name + "\"}";
 		
 		$.ajax( {
 	    	type: "put",
-	    	url: "../api/dashboards/" + dhis2.db.current,
+	    	url: "../api/dashboards/" + dhis2.db.current(),
 	    	contentType: "application/json",
 	    	data: data,
 	    	success: function() {
@@ -249,21 +270,22 @@ dhis2.db.renameDashboard = function()
 
 dhis2.db.removeDashboard = function()
 {
-	if ( undefined !== dhis2.db.current )
+	if ( undefined !== dhis2.db.current() )
 	{
 		$.ajax( {
 			type: "delete",
-			url: "../api/dashboards/" + dhis2.db.current,
+			url: "../api/dashboards/" + dhis2.db.current(),
 	    	success: function() {
 	    		$( "#manageDashboardForm" ).dialog( "destroy" );
-	    		dhis2.db.current = undefined;
+	    		dhis2.db.clearCurrent();
 	    		dhis2.db.renderDashboardListLoadFirst();
 	    	}
 		} );
 	}
 }
 
-function updateSharing( dashboard ) {
+function updateSharing( dashboard ) 
+{
     $( '#dashboardMenu' ).data( 'canManage', dashboard.access.manage );
 
     if ( dashboard.access.manage ) {
@@ -325,12 +347,12 @@ dhis2.db.renderDashboardListLoadFirst = function()
 				}
 			} );
 
-			if ( undefined == dhis2.db.current )
+			if ( undefined == dhis2.db.current() )
 			{
-				dhis2.db.current = first;
+				dhis2.db.setCurrent( first );
 			}
 			
-			dhis2.db.renderDashboard( dhis2.db.current );		
+			dhis2.db.renderDashboard( dhis2.db.current() );		
 		}
 		else
 		{
@@ -347,11 +369,11 @@ dhis2.db.clearDashboard = function()
 
 dhis2.db.renderDashboard = function( id )
 {
-	$( "#dashboard-" + dhis2.db.current ).removeClass( "currentDashboard" );
+	$( "#dashboard-" + dhis2.db.current() ).removeClass( "currentDashboard" );
 	
-	dhis2.db.current = id;
+	dhis2.db.setCurrent( id );
 	
-	$( "#dashboard-" + dhis2.db.current ).addClass( "currentDashboard" );
+	$( "#dashboard-" + dhis2.db.current() ).addClass( "currentDashboard" );
 	
 	$.getJSON( "../api/dashboards/" + id, function( data )
 	{
@@ -481,7 +503,7 @@ dhis2.db.moveItem = function( id, destItemId, position )
 	$targetDropLi.insertBefore( $destLi );
 	$targetLi.insertBefore( $destLi );
 		
-	var url = "../api/dashboards/" + dhis2.db.current + "/items/" + id + "/position/" + position;
+	var url = "../api/dashboards/" + dhis2.db.current() + "/items/" + id + "/position/" + position;
 	
 	$.post( url, function() {
 	} );
@@ -489,17 +511,17 @@ dhis2.db.moveItem = function( id, destItemId, position )
 
 dhis2.db.addItemContent = function( type, id )
 {
-	if ( undefined !== dhis2.db.current )
+	if ( undefined !== dhis2.db.current() )
 	{
 		$.ajax( {
 	    	type: "post",
-	    	url: "../api/dashboards/" + dhis2.db.current + "/items/content",
+	    	url: "../api/dashboards/" + dhis2.db.current() + "/items/content",
 	    	data: {
 	    		type: type,
 	    		id: id
 	    	},
 	    	success: function() {
-	    		dhis2.db.renderDashboard( dhis2.db.current );
+	    		dhis2.db.renderDashboard( dhis2.db.current() );
 	    	},
 	    	error: function( xhr ) {
 	    		setHeaderDelayMessage( xhr.responseText );
@@ -512,10 +534,10 @@ dhis2.db.removeItem = function( id )
 {
 	$.ajax( {
     	type: "delete",
-    	url: "../api/dashboards/" + dhis2.db.current + "/items/" + id,
+    	url: "../api/dashboards/" + dhis2.db.current() + "/items/" + id,
     	success: function() {
     		dhis2.db.currentItem = undefined;
-    		dhis2.db.renderDashboard( dhis2.db.current );
+    		dhis2.db.renderDashboard( dhis2.db.current() );
     	}
     } );
 }
@@ -524,9 +546,9 @@ dhis2.db.removeItemContent = function( itemId, contentId )
 {
 	$.ajax( {
     	type: "delete",
-    	url: "../api/dashboards/" + dhis2.db.current + "/items/" + itemId + "/content/" + contentId,
+    	url: "../api/dashboards/" + dhis2.db.current() + "/items/" + itemId + "/content/" + contentId,
     	success: function() {
-    		dhis2.db.renderDashboard( dhis2.db.current );
+    		dhis2.db.renderDashboard( dhis2.db.current() );
     	}
     } );
 }
