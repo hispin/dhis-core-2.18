@@ -81,7 +81,7 @@ public class SystemController
     // UID Generator
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/uid", method = RequestMethod.GET )
+    @RequestMapping( value = { "/uid", "/id" }, method = RequestMethod.GET )
     public void getUid( @RequestParam(required = false) Integer n, HttpServletResponse response ) throws IOException
     {
         response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
