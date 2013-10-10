@@ -302,7 +302,7 @@
 						<thead>
 							<tr>
 								<th style="width:180px;">$i18n.getString( "identifiers_and_attributes" )</th>
-								<th style="width:20px;">$i18n.getString( "displayed_in_list" )</th>
+								<th style="width:20px;">$i18n.getString( "displayed_in_patient_list" )</th>
 						</thead>
 						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end>
 							#foreach( $identifier in $program.patientIdentifierTypes )
