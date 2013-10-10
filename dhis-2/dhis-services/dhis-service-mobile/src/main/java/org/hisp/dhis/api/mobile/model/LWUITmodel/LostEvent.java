@@ -69,8 +69,23 @@ public class LostEvent extends Model
         dueDate = dint.readUTF();
         status = dint.readInt();
         isRiskCase = dint.readBoolean();
-        comment = dint.readUTF();
-        SMS = dint.readUTF();
+        if ( dint.readBoolean() == true )
+        {
+            comment = dint.readUTF();
+        }
+        else
+        {
+            comment = null;
+        }
+        
+        if ( dint.readBoolean() == true )
+        {
+            SMS = dint.readUTF();
+        }
+        else
+        {
+            SMS = null;
+        }
     }
 
     @Override
