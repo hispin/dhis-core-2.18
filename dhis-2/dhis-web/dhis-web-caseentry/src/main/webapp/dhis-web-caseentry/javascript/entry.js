@@ -500,7 +500,7 @@ function doComplete( isCreateEvent ) {
 		});
 
 		$("#loading-bar").siblings(".ui-dialog-titlebar").hide();
-		
+
 		$.get( 'validateProgram.action').done(function(html){
             $("#loading-bar").dialog("close");
             $('#validateProgramDiv').html(html);
@@ -621,21 +621,22 @@ function runCompleteEvent( isCreateEvent ) {
                             }
 
                             obj.executionDate.completed = 'true';
-                            DAO.store.set('dataValues', obj);
+
+                            DAO.store.set('dataValues', obj).done(function() {
+                                var blocked = $('#entryFormContainer [id=blockEntryForm]').val();
+
+                                if( blocked == 'true' ) {
+                                    blockEntryForm();
+                                }
+
+                                disableCompletedButton(true);
+                                hideLoader();
+
+                                if( isCreateEvent ) {
+                                    showAddEventForm(isCreateEvent);
+                                }
+                            });
                         });
-
-                        var blocked = $('#entryFormContainer [id=blockEntryForm]').val();
-
-                        if( blocked == 'true' ) {
-                            blockEntryForm();
-                        }
-
-                        disableCompletedButton(true);
-                        hideLoader();
-
-                        if( isCreateEvent ) {
-                            showAddEventForm(isCreateEvent);
-                        }
                     }
                 }
             });

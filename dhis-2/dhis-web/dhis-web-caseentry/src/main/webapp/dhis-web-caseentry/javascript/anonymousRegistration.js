@@ -1041,16 +1041,16 @@ var service = (function () {
 
                         programStageInstanceId = "local"+i;
 
-                        setFieldValue( 'programStageInstanceId', programStageInstanceId );
-                        $( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
-                        showUpdateEvent( programStageInstanceId );
-
                         var data = {};
                         data.id = programStageInstanceId;
                         data.executionDate = createExecutionDate(programId, programStageInstanceId, executionDate, organisationUnitId);
                         data.executionDate.completed = 'false';
 
-                        this.set( 'dataValues', data );
+                        this.set( 'dataValues', data).done(function() {
+                            setFieldValue( 'programStageInstanceId', programStageInstanceId );
+                            $( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
+                            showUpdateEvent( programStageInstanceId );
+                        });
                     });
                 } else {
                     // if we have a programStageInstanceId, just reuse that one
