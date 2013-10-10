@@ -3547,7 +3547,7 @@ Ext.onReady( function() {
 							el = deleteArray[i];
 							Ext.create('Ext.tip.ToolTip', {
 								target: el,
-								html: 'Delete', //i18n
+								html: tr.i18n.delete,
 								'anchor': 'bottom',
 								anchorOffset: -14,
 								showDelay: 1000
@@ -5592,6 +5592,9 @@ Ext.onReady( function() {
 						menu: {},
 						hidden: true,
 						handler: function() {
+							if (TR.cmp.caseBasedFavorite.window) {
+								TR.cmp.caseBasedFavorite.window.destroy();
+							}
 							TR.cmp.caseBasedFavorite.window = TR.app.CaseFavoriteWindow();
 							TR.cmp.caseBasedFavorite.window.show();
 						},
@@ -5613,7 +5616,6 @@ Ext.onReady( function() {
 							if (TR.cmp.aggregateFavorite.window) {
 								TR.cmp.aggregateFavorite.window.destroy();
 							}
-							
 							TR.cmp.aggregateFavorite.window = TR.app.AggregateFavoriteWindow();
 							TR.cmp.aggregateFavorite.window.show();
 						},
