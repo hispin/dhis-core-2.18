@@ -15,7 +15,7 @@ Ext.onReady( function() {
 				alert('Invalid url (' + config.el + ')');
 				return;
 			}
-			
+
 			if (config.url.split('').pop() === '/') {
 				config.url = config.url.substr(0, config.url.length - 1);
 			}
@@ -24,18 +24,18 @@ Ext.onReady( function() {
 				alert('Invalid html element id (' + config.el + ')');
 				return;
 			}
-			
+
 			config.id = config.id || config.uid;
-			
+
 			if (config.id && !Ext.isString(config.id)) {
 				alert('Invalid map id (' + config.el + ')');
 				return;
 			}
-			
+
 			return true;
 		};
 
-		applyCss = function() {
+		applyCss = function(contextPath) {
 			var css = 'body { font-family: arial, sans-serif, liberation sans, consolas; font-size: 11px; } \n';
 			css += '.x-panel-body { font-size: 11px; } \n';
 			css += '.x-panel-header { height: 30px; padding: 7px 4px 4px 7px; border: 0 none; } \n';
@@ -50,7 +50,7 @@ Ext.onReady( function() {
 			css += '.olControlMousePosition * { font-size: 10px !important; } \n';
 			css += '.text-mouseposition-lonlat { color: #555; } \n';
 			css += '.olLayerGoogleCopyright, .olLayerGoogleV3.olLayerGooglePoweredBy { display: none; } \n';
-			css += '#google-logo { background: url("' + gis.init.contextPath + '/dhis-web-mapping/app/images/google-logo.png") no-repeat; width: 40px; height: 13px; margin-left: 6px; display: inline-block; vertical-align: bottom; cursor: pointer; cursor: hand; } \n';
+			css += '#google-logo { background: url("' + contextPath + '/dhis-web-mapping/app/images/google-logo.png") no-repeat; width: 40px; height: 13px; margin-left: 6px; display: inline-block; vertical-align: bottom; cursor: pointer; cursor: hand; } \n';
 			css += '.olControlScaleLine { left: 5px !important; bottom: 5px !important; } \n';
 			css += '.olControlScaleLineBottom { display: none; } \n';
 			css += '.olControlScaleLineTop { font-weight: bold; } \n';
@@ -75,11 +75,11 @@ Ext.onReady( function() {
 			css += '.gis-menu-item-icon-drill, .gis-menu-item-icon-float { left: 6px; } \n';
 			css += '.gis-menu-item-first.x-menu-item-active .x-menu-item-link {	border-radius: 0; border-top-left-radius: 2px; border-top-right-radius: 2px; } \n';
 			css += '.gis-menu-item-last.x-menu-item-active .x-menu-item-link { border-radius: 0; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; } \n';
-			css += '.gis-menu-item-icon-drill { \n background: url("' + gis.init.contextPath + '/dhis-web-mapping/app/images/drill_16.png") no-repeat; } \n';
-			css += '.gis-menu-item-icon-float { background: url("' + gis.init.contextPath + '/dhis-web-mapping/app/images/float_16.png") no-repeat; } \n';
+			css += '.gis-menu-item-icon-drill { \n background: url("' + contextPath + '/dhis-web-mapping/app/images/drill_16.png") no-repeat; } \n';
+			css += '.gis-menu-item-icon-float { background: url("' + contextPath + '/dhis-web-mapping/app/images/float_16.png") no-repeat; } \n';
 			css += '.x-color-picker a { padding: 0; } \n';
 			css += '.x-color-picker em span { width: 14px; height: 14px; } \n';
-			
+
 			Ext.util.CSS.createStyleSheet(css);
 		};
 
@@ -93,7 +93,7 @@ Ext.onReady( function() {
 				Ext.query('.measureButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/app/images/measure_24.png" />';
 			}
 		};
-		
+
 		createViewport = function() {
 			var viewport,
 				eastRegion,
@@ -208,10 +208,14 @@ Ext.onReady( function() {
 			Ext.data.JsonP.request({
 				url: config.url + '/dhis-web-mapping/initialize.action',
 				success: function(r) {
-					gis = GIS.core.getInstance(r);
+					var init = r;
+
+					GIS.i18n = init.i18n;
+
+					gis = GIS.core.getInstance(init);
 					gis.el = config.el;
-					
-					applyCss();
+
+					applyCss(gis.init.contextPath);
 
 					GIS.core.createSelectHandlers(gis, gis.layer.boundary);
 					GIS.core.createSelectHandlers(gis, gis.layer.thematic1);
