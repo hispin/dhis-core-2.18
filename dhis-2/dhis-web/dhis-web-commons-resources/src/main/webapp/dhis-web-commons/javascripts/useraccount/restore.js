@@ -1,7 +1,4 @@
 
-var login = {};
-login.localeCookie = "dhis2.locale";
-
 var validationRules = {
 	rules: {
 		code: {

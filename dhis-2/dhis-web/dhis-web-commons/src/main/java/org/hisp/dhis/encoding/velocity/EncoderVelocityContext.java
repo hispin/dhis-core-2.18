@@ -33,8 +33,6 @@ import org.hisp.dhis.system.util.Encoder;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: EncoderVelocityContext.java 5824 2008-10-07 18:00:24Z larshelg
- *          $
  */
 public class EncoderVelocityContext
     extends VelocityContext

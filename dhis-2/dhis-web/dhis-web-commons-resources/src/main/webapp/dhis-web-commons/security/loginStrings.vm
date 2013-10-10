@@ -1,24 +1,14 @@
 {
-"create_an_account": "$!i18nObject.getString( "create_an_account" )",
-"login_username": "$!i18nObject.getString( "login_username" )",
-"login_password": "$!i18nObject.getString( "login_password" )",
-"forgot_password": "$!i18nObject.getString( "forgot_password" )",
-"create_an_account": "$!i18nObject.getString( "create_an_account" )",
-"wrong_username_or_password": "$!i18nObject.getString( "wrong_username_or_password" )",
-"powered_by": "$!i18nObject.getString( "powered_by" )",
-"login": "$!i18nObject.getString( "login" )",
-
-"applicationTitle": "$!encoder.htmlEncode( $!translations.get( "applicationTitle" ) )",
-
-#set($strKeyApplicationIntro =  $!translations.get( "keyApplicationIntro" ) )
-#set($strKeyApplicationIntro = $strKeyApplicationIntro.replaceAll( "'", '&#39;' ) )
-"keyApplicationIntro": "$!encoder.jsEncode( $strKeyApplicationIntro )",
-
-#set($strKeyApplicationNotification =  $!translations.get( "keyApplicationNotification" ) )
-#set($strKeyApplicationNotification = $strKeyApplicationNotification.replaceAll( "'", '&#39;' ) )
-"keyApplicationNotification": "$!encoder.jsEncode( $strKeyApplicationNotification )",
-
-#set($strKeyApplicationFooter =  $!translations.get( "keyApplicationFooter" ) )
-#set($strKeyApplicationFooter = $strKeyApplicationFooter.replaceAll("'", '&#39;') )
-"keyApplicationFooter": "$!encoder.jsEncode( $strKeyApplicationFooter )"
+"create_an_account": "$!encoder.jsonEncode( $i18nObject.getString( "create_an_account" ) )",
+"login_username": "$!encoder.jsonEncode( $i18nObject.getString( "login_username" ) )",
+"login_password": "$!encoder.jsonEncode( $i18nObject.getString( "login_password" ) )",
+"forgot_password": "$!encoder.jsonEncode( $i18nObject.getString( "forgot_password" ) )",
+"create_an_account": "$!encoder.jsonEncode( $i18nObject.getString( "create_an_account" ) )",
+"wrong_username_or_password": "$!encoder.jsonEncode( $i18nObject.getString( "wrong_username_or_password" ) )",
+"powered_by": "$!encoder.jsonEncode( $i18nObject.getString( "powered_by" ) )",
+"login": "$!encoder.jsonEncode( $i18nObject.getString( "login" ) )",
+"applicationTitle": "$!encoder.jsonEncode( $!translations.get( "applicationTitle" ) )",
+"keyApplicationIntro": "$!encoder.jsonEncode( $translations.get( "keyApplicationIntro" ) )",
+"keyApplicationNotification": "$!encoder.jsonEncode( $translations.get( "keyApplicationNotification" ) )",
+"keyApplicationFooter": "$!encoder.jsonEncode( $translations.get( "keyApplicationFooter" ) )"
 }

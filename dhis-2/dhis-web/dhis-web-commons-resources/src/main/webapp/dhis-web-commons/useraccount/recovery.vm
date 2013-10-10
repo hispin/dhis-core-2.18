@@ -3,7 +3,6 @@
 <head>
     <title>$encoder.htmlEncode( $applicationTitle )</title>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
-    <script type="text/javascript" src="../javascripts/jQuery/jquery.cookie.js"></script>
     <script type="text/javascript" src="../javascripts/useraccount/recovery.js"></script>
     <link type="text/css" rel="stylesheet" href="../css/account.css">
 </head>
@@ -17,13 +16,13 @@
 
 <div id="accountInput">
 
-<h3><span id="account_recovery">$i18n.getString( "account_recovery" )</span></h3>
+<h3><span id="accountRecovery">$i18n.getString( "account_recovery" )</span></h3>
 
 <form id="recoveryForm">
 
 <table>
     <tr>
-        <td style="width:100px"><label id="label_username" for="username">$i18n.getString( "user_name" )</label></td>
+        <td style="width:100px"><label id="labelUsername" for="username">$i18n.getString( "user_name" )</label></td>
         <td><input type="text" id="username" name="username" autocomplete="off"></td>
     </tr>
     <tr>

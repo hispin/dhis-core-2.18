@@ -41,11 +41,11 @@ var validationRules = {
 
 
 var login = {};
-login.localeCookie = "dhis2.locale";
+login.localeKey = "dhis2.locale.ui";
 
 $( document ).ready( function() {
 
-    var locale = $.cookie( login.localeCookie );
+    var locale = localStorage[login.localeKey];
     
     if ( undefined !== locale && locale )
     {
