@@ -1,3 +1,6 @@
+
+#sharingDialog()
+
 <script type="text/javascript">
 	jQuery(document).ready(function(){	
 		tableSorter( 'listTable' );	
@@ -19,7 +22,7 @@
 			</table>
 			<table class="listTable" id="listTable">
 				<col/>
-				<col width="120px"/>				
+				<col width="145px"/>
                 <thead>				
 				<tr>
 					<th>$i18n.getString( "name" )</th>
@@ -31,11 +34,31 @@
 				<tr id="tr${organisationUnitGroup.id}">
 					<td onclick="showOrganisationUnitGroupDetails( $organisationUnitGroup.id )">$encoder.htmlEncode( $organisationUnitGroup.displayName )</td>
 					<td style="text-align:right">
-						<a href="openUpdateOrganisationUnitGroup.action?id=$organisationUnitGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-						<a href="javascript:translate( 'OrganisationUnitGroup', '$organisationUnitGroup.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-						#if( $auth.hasAccess( "dhis-web-maintenance-organisationunit", "removeOrganisationUnitGroup" ) )
-						<a href="javascript:removeOrganisationUnitGroup( $organisationUnitGroup.id, '$encoder.jsEncode( $organisationUnitGroup.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-						#else <img src="../images/delete-denied.png" alt="$i18n.getString( 'remove' )"/> #end
+
+                        #if ( $security.canManage( $organisationUnitGroup ) )
+                        <a href="javascript:showSharingDialog('organisationUnitGroup', '$organisationUnitGroup.uid');" title="$i18n.getString( 'sharing_settings' )"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
+                        #else
+                        <img src="../images/relationship-denied.png">
+                        #end
+
+                        #if( $security.canUpdate( $organisationUnitGroup ) )
+                        <a href="openUpdateOrganisationUnitGroup.action?id=$organisationUnitGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+                        #else
+                        <img src="../images/edit-denied.png">
+                        #end
+
+                        #if( $security.canUpdate( $organisationUnitGroup ) )
+                        <a href="javascript:translate( 'OrganisationUnitGroup', '$organisationUnitGroup.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+                        #else
+                        <img src="../images/edit-denied.png">
+                        #end
+
+                        #if( $security.canDelete( $organisationUnitGroup ) )
+                        <a href="javascript:removeOrganisationUnitGroup( $organisationUnitGroup.id, '$encoder.jsEncode( $organisationUnitGroup.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+                        #else
+                        <img src="../images/delete-denied.png">
+                        #end
+
 						<a href="javascript:showOrganisationUnitGroupDetails( $organisationUnitGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
 				</tr>
