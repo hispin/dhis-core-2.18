@@ -430,7 +430,7 @@ function loadDataEntry( programStageInstanceId )
 			hideById('contentDiv');
 			
 			var reportDateToUse = selectedProgramStageInstance.attr('reportDateToUse');
-			if(reportDateToUse!='' && $('#executionDate').val() == '' ){
+			if(reportDateToUse != "undefined" && reportDateToUse!='' && $('#executionDate').val() == '' ){
 				$('#executionDate').val(reportDateToUse);
 				$('#executionDate').change();
 			}

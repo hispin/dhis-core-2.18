@@ -113,29 +113,6 @@ function advancedSearch( params )
     });
 }
 
-function advancedSearch( params )
-{
-	params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
-
-    var programId = getFieldValue('programIdAddPatient');
-
-    if( !isNaN(programId) || programId == null) {
-        params += "&programId=" + parseInt(programId);
-    }
-
-	$.ajax({
-		url: 'getDataRecords.action',
-		type:"POST",
-		data: params,
-		success: function( html ){
-			jQuery('#listPatientDiv').html(html);
-			showById('colorHelpLink');
-			showById('listPatientDiv');
-			hideLoader();
-		}
-	});
-}
-
 function loadDataEntryDialog( programStageInstanceId ) 
 {
 	jQuery("#patientList input[name='programStageBtn']").each(function(i,item){
