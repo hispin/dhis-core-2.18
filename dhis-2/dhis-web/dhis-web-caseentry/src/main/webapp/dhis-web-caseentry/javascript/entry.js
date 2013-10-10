@@ -775,20 +775,24 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                 $('#commentInput').attr('disabled', true);
                 $('#commentButton').attr('disabled', true);
                 $('#validateBtn').attr('disabled', true);
+
+                if( always ) always();
             } else {
-                loadProgramStageFromServer( programStageInstanceId );
+                loadProgramStageFromServer(programStageInstanceId).done(function() {
+                    if( always ) always();
+                });
             }
 
         });
     } else {
-        loadProgramStageFromServer( programStageInstanceId );
+        loadProgramStageFromServer(programStageInstanceId).done(function() {
+            if( always ) always();
+        });
     }
-
-    if( always ) always();
 }
 
 function loadProgramStageFromServer( programStageInstanceId ) {
-    $.ajax({
+    return $.ajax({
         url: 'getProgramStageInstance.action',
         cache: false,
         data: {
