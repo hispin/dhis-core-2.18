@@ -208,11 +208,11 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<th colspan="2">$i18n.getString( "program_management" )</th>
+			<th colspan="2">$i18n.getString( "dashboard_shortcut_to_add_relative" )</th>
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("relationship_text")</td>
+			<td>$i18n.getString("shortcut_link_label_eg_add_child")</td>
 			<td><input type='text' id='relationshipText' name='relationshipText' value='$!program.relationshipText' ></td>
 		</tr>
 		
