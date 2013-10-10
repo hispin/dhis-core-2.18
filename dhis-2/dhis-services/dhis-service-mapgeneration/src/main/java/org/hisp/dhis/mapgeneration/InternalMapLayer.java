@@ -167,7 +167,7 @@ public class InternalMapLayer
         mapObject.setStrokeWidth( strokeWidth );
 
         // Build and set the geometric primitive that outlines org unit on the map
-        mapObject.setGeometry( InternalMapObject.buildAndApplyGeometryForOrganisationUnit( unit ) );
+        mapObject.buildGeometryForOrganisationUnit( unit );
 
         // Add the map object to the map layer
         addMapObject( mapObject );
@@ -190,7 +190,7 @@ public class InternalMapLayer
         mapObject.setStrokeColor( Color.BLACK );
         mapObject.setStrokeWidth( 1 );
 
-        mapObject.setGeometry( InternalMapObject.buildAndApplyGeometryForOrganisationUnit( unit ) );
+        mapObject.buildGeometryForOrganisationUnit( unit );
         addMapObject( mapObject );
         mapObject.setMapLayer( this );
     }
