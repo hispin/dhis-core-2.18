@@ -672,6 +672,10 @@
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.setting.TranslateSystemSettingManager" class="org.hisp.dhis.setting.DefaultTranslateSystemSettingManager">
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+  </bean>
+
   <bean id="org.hisp.dhis.setting.StyleManager" class="org.hisp.dhis.setting.DefaultStyleManager">
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
