@@ -138,7 +138,7 @@ public class InternalMapObject
      * 
      * @param orgUnit the organisation unit
      */
-    public static Geometry buildAndApplyGeometryForOrganisationUnit( OrganisationUnit orgUnit )
+    public void buildGeometryForOrganisationUnit( OrganisationUnit orgUnit )
     {
         // The final GeoTools primitive
         Geometry primitive = null;
@@ -179,7 +179,7 @@ public class InternalMapObject
             throw new RuntimeException( "Not sure what to do with the feature type '" + orgUnit.getFeatureType() + "'" );
         }
 
-        return primitive;
+        this.geometry = primitive;
     }
 
     public Style getStyle()
