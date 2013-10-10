@@ -58,7 +58,7 @@
         <div id="footerArea">
         	<span id="poweredByLabel">Powered by</span>
         	<a href="http://www.dhis2.org">DHIS 2</a>&nbsp;
-        	$!{keyApplicationFooter}
+        	<span id="applicationFooter">$!{keyApplicationFooter}</span>
 
         	<select id="localeSelect" onchange="login.localeChanged()" style="margin-left: 30px">
         		<option value="">[ Change language ]</option>

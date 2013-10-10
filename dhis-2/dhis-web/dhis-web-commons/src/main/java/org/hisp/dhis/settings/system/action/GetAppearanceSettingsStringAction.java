@@ -1,4 +1,4 @@
-package org.hisp.dhis.settings.action.system;
+package org.hisp.dhis.settings.system.action;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,16 +28,10 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_APPLICATION_TITLE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_FOOTER;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_INTRO;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_NOTIFICATION;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_TITLE;
-
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.setting.TranslateSystemSettingManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -51,11 +45,11 @@ public class GetAppearanceSettingsStringAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
+    private TranslateSystemSettingManager translateSystemSettingManager;
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    public void setTranslateSystemSettingManager( TranslateSystemSettingManager translateSystemSettingManager )
     {
-        this.systemSettingManager = systemSettingManager;
+        this.translateSystemSettingManager = translateSystemSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -73,9 +67,9 @@ public class GetAppearanceSettingsStringAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Map<String, Object> translations = new Hashtable<String, Object>();
+    private Map<String, String> translations = new Hashtable<String, String>();
 
-    public Map<String, Object> getTranslations()
+    public Map<String, String> getTranslations()
     {
         return translations;
     }
@@ -86,11 +80,7 @@ public class GetAppearanceSettingsStringAction
 
     public String execute()
     {
-        // Add the key application data (with localeCode name) into translations map object
-        translations.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE + localeCode, DEFAULT_APPLICATION_TITLE ) );
-        translations.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO + localeCode, "" ) );
-        translations.put( KEY_APPLICATION_NOTIFICATION, systemSettingManager.getSystemSetting( KEY_APPLICATION_NOTIFICATION + localeCode, "" ) );
-        translations.put( KEY_APPLICATION_FOOTER, systemSettingManager.getSystemSetting( KEY_APPLICATION_FOOTER + localeCode, "" ) );
+        translations = translateSystemSettingManager.getTranslation_SystemAppearanceSetting( localeCode );
         
         return SUCCESS;
     }

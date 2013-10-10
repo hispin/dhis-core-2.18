@@ -18,6 +18,7 @@
 
   <package name="dhis-web-commons" extends="struts-default" namespace="/dhis-web-commons">
 
+	
     <result-types>
       <result-type name="plainTextErrorResult" class="org.hisp.dhis.result.PlainTextErrorResult" />
       <result-type name="chart" class="org.hisp.dhis.result.ChartResult" />
@@ -466,6 +467,11 @@
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+    <action name="systemAppearanceSettingsString" class="org.hisp.dhis.settings.system.action.GetAppearanceSettingsStringAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/settings/systemAppearanceSettingsString.vm</result>
+    </action>
+    
 
   </package>
 

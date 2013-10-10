@@ -54,7 +54,14 @@ public class LocaleUtils
      */
     public static Locale getLocale( String localeStr ) 
     {
-        return org.apache.commons.lang.LocaleUtils.toLocale( localeStr );
+        if ( localeStr == null || localeStr.isEmpty() )
+        {
+            return null;
+        }
+        else
+        {
+            return org.apache.commons.lang.LocaleUtils.toLocale( localeStr );
+        }
     }
         
     /**
