@@ -746,105 +746,114 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
     $( "#programStageInstanceId" ).val( programStageInstanceId );
     $( "#entryFormContainer input[id='programStageInstanceId']" ).val( programStageInstanceId );
 
-    DAO.store.get( 'dataValues', programStageInstanceId ).done( function ( obj ) {
-        if(obj ) {
-            if(obj.values !== undefined) {
-                _.each( _.keys(obj.values), function(key, idx) {
-                    var fieldId = getProgramStageUid() + '-' + key + '-val';
-                    var field = $('#' + fieldId);
+    if(window.DAO !== undefined && window.DAO.store !== undefined ) {
+        DAO.store.get( 'dataValues', programStageInstanceId ).done( function ( obj ) {
+            if(obj ) {
+                if(obj.values !== undefined) {
+                    _.each( _.keys(obj.values), function(key, idx) {
+                        var fieldId = getProgramStageUid() + '-' + key + '-val';
+                        var field = $('#' + fieldId);
 
-                    if ( field ) {
-                        field.val( decodeURI( obj.values[key].value ) );
-                    }
-                });
-            }
-
-            if ( obj.coordinate !== undefined ) {
-                $( '#longitude' ).val( obj.coordinate.longitude );
-                $( '#latitude' ).val( obj.coordinate.latitude );
-            }
-
-            if(obj.executionDate) {
-                $( "input[id='executionDate']" ).val( obj.executionDate.executionDate );
-                $("#entryFormContainer input[id='completed']").val(obj.executionDate.completed);
-                $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
-                $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
-            }
-
-            $('#commentInput').attr('disabled', true);
-            $('#commentButton').attr('disabled', true);
-            $('#validateBtn').attr('disabled', true);
-        } else {
-            $.ajax({
-                url: 'getProgramStageInstance.action',
-                cache: false,
-                data: {
-                    'programStageInstanceId': programStageInstanceId
-                },
-                type: 'GET',
-                dataType: 'json'
-            } ).done(function(data) {
-                $( "#programStageInstanceId" ).val( data.id );
-                $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
-                $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
-                $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
-                $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
-                $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
-                $( "#entryFormContainer input[id='completed']" ).val( data.completed );
-                $( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
-                $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
-                $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
-                $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
-                $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
-                $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
-                $( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
-                $( "#entryFormContainer input[id='displayOptionSetAsRadioButton']" ).val( data.displayOptionSetAsRadioButton );
-                $( "#entryFormContainer input[id='allowGenerateNextVisit']" ).val( data.programStage.allowGenerateNextVisit );
-
-                $( "input[id='dueDate']" ).val( data.dueDate );
-                $( "input[id='executionDate']" ).val( data.executionDate );
-                $( "#commentInput" ).val( data.comment );
-                $( "#commentInput" ).height(data.comment.split('\n').length * 15  + 12);
-
-                if ( data.program.type != '1' ) {
-                    hideById( 'newEncounterBtn' );
+                        if ( field ) {
+                            field.val( decodeURI( obj.values[key].value ) );
+                        }
+                    });
                 }
 
-                if ( data.program.type == '1' && data.programInstance.status == '1' ) {
-                    var blockEntryForm = getFieldValue('blockEntryForm');
-                    if( blockEntryForm == 'true' ){
-                        blockEntryForm();
-                    }
+                if ( obj.coordinate !== undefined ) {
+                    $( '#longitude' ).val( obj.coordinate.longitude );
+                    $( '#latitude' ).val( obj.coordinate.latitude );
                 }
 
-                if(data.executionDate) {
-                    $( '#executionDate' ).val(data.executionDate);
+                if(obj.executionDate) {
+                    $( "input[id='executionDate']" ).val( obj.executionDate.executionDate );
+                    $("#entryFormContainer input[id='completed']").val(obj.executionDate.completed);
                     $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
                     $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
                 }
 
-                if ( data.programStage.captureCoordinates ) {
-                    $( '#longitude' ).val( data.longitude );
-                    $( '#latitude' ).val( data.latitude );
-                }
+                $('#commentInput').attr('disabled', true);
+                $('#commentButton').attr('disabled', true);
+                $('#validateBtn').attr('disabled', true);
+            } else {
+                loadProgramStageFromServer( programStageInstanceId );
+            }
 
-                _.each( data.dataValues, function ( value, key ) {
-                    var fieldId = getProgramStageUid() + '-' + key + '-val';
-                    var field = $('#' + fieldId);
+        });
+    } else {
+        loadProgramStageFromServer( programStageInstanceId );
+    }
 
-                    if ( field ) {
-                        field.val( decodeURI( value.value ));
-                    }
-                } );
+    if( always ) always();
+}
 
-                $('#commentInput').removeAttr('disabled');
-                $('#commentButton').removeAttr('disabled');
-                $('#validateBtn').removeAttr('disabled');
-            } );
+function loadProgramStageFromServer( programStageInstanceId ) {
+    $.ajax({
+        url: 'getProgramStageInstance.action',
+        cache: false,
+        data: {
+            'programStageInstanceId': programStageInstanceId
+        },
+        type: 'GET',
+        dataType: 'json'
+    } ).done(function(data) {
+        $( "#programStageInstanceId" ).val( data.id );
+        $( "#entryFormContainer input[id='programStageInstanceId']" ).val( data.id );
+        $( "#entryFormContainer input[id='incidentDate']" ).val( data.programInstance.dateOfIncident );
+        $( "#entryFormContainer input[id='programInstanceId']" ).val( data.programInstance.id );
+        $( "#entryFormContainer input[id='irregular']" ).val( data.programStage.irregular );
+        $( "#entryFormContainer input[id='displayGenerateEventBox']" ).val( data.programStage.displayGenerateEventBox );
+        $( "#entryFormContainer input[id='completed']" ).val( data.completed );
+        $( "#entryFormContainer input[id='programStageId']" ).val( data.programStage.id  );
+        $( "#entryFormContainer input[id='programStageUid']" ).val( data.programStage.uid  );
+        $( "#entryFormContainer input[id='programId']" ).val( data.program.id );
+        $( "#entryFormContainer input[id='validCompleteOnly']" ).val( data.programStage.validCompleteOnly );
+        $( "#entryFormContainer input[id='currentUsername']" ).val( data.currentUsername );
+        $( "#entryFormContainer input[id='blockEntryForm']" ).val( data.programStage.blockEntryForm );
+        $( "#entryFormContainer input[id='remindCompleted']" ).val( data.programStage.remindCompleted );
+        $( "#entryFormContainer input[id='displayOptionSetAsRadioButton']" ).val( data.displayOptionSetAsRadioButton );
+        $( "#entryFormContainer input[id='allowGenerateNextVisit']" ).val( data.programStage.allowGenerateNextVisit );
+
+        $( "input[id='dueDate']" ).val( data.dueDate );
+        $( "input[id='executionDate']" ).val( data.executionDate );
+        $( "#commentInput" ).val( data.comment );
+        $( "#commentInput" ).height(data.comment.split('\n').length * 15  + 12);
+
+        if ( data.program.type != '1' ) {
+            hideById( 'newEncounterBtn' );
         }
 
-        if( always ) always();
-    });
+        if ( data.program.type == '1' && data.programInstance.status == '1' ) {
+            var blockEntryForm = getFieldValue('blockEntryForm');
+            if( blockEntryForm == 'true' ){
+                blockEntryForm();
+            }
+        }
+
+        if(data.executionDate) {
+            $( '#executionDate' ).val(data.executionDate);
+            $( '#entryForm' ).removeClass( 'hidden' ).addClass( 'visible' );
+            $( '#inputCriteriaDiv' ).removeClass( 'hidden' );
+        }
+
+        if ( data.programStage.captureCoordinates ) {
+            $( '#longitude' ).val( data.longitude );
+            $( '#latitude' ).val( data.latitude );
+        }
+
+        _.each( data.dataValues, function ( value, key ) {
+            var fieldId = getProgramStageUid() + '-' + key + '-val';
+            var field = $('#' + fieldId);
+
+            if ( field ) {
+                field.val( decodeURI( value.value ));
+            }
+        } );
+
+        $('#commentInput').removeAttr('disabled');
+        $('#commentButton').removeAttr('disabled');
+        $('#validateBtn').removeAttr('disabled');
+    } );
 }
 
 function entryFormContainerOnReady()
