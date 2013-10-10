@@ -213,4 +213,5 @@ female: '$encoder.jsEscape($i18n.getString( 'female' ) , "'")',
 male: '$encoder.jsEscape($i18n.getString( 'male' ) , "'")',
 transgender: '$encoder.jsEscape($i18n.getString( 'transgender' ) , "'")',
 immediate_children: '$encoder.jsEscape($i18n.getString( 'immediate_children' ) , "'")',
+delete: '$encoder.jsEscape($i18n.getString( 'delete' ) , "'")',
 };
