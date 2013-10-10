@@ -341,34 +341,21 @@ public class JdbcCaseAggregationConditionManager
                 }
 
                 sql += "FROM ";
-                String innerJoin = "";
-                boolean hasPatients = hasPatientCriteria( caseExpression );
-                boolean hasProgramInstances = hasProgramInstanceCriteria( caseExpression );
                 boolean hasDataelement = hasDataelementCriteria( caseExpression );
 
-                if ( hasPatients || hasProgramInstances )
+                if( hasDataelement)
                 {
-                    sql += innerJoin + "programinstance as pi INNER JOIN patient p on p.patientid=pi.patientid ";
-                    if ( !hasDataelement )
-                    {
-                        sql += "INNER JOIN organisationunit ou on ou.organisationunitid=p.organisationunitid ";
-                    }
-                    innerJoin = " INNER JOIN ";
+                    sql += " programinstance as pi ";
+                    sql += " INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
+                    sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
                 }
-
-                if ( hasDataelement )
+                else
                 {
-                    if ( hasPatients || hasProgramInstances )
-                    {
-                        sql += " ON pi.programinstanceid=psi.programinstanceid ";
-                    }
-                    else
-                    {
-                        sql += " INNER JOIN programinstance pi on pi.programinstanceid=pi.programinstanceid ";
-                    }
-                    sql += "INNER JOIN organisationunit ou on ou.organisationunitid=psi.organisationunitid ";
+                    sql += " programinstance as pi INNER JOIN patient p on p.patientid=pi.patientid ";
+                    sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=p.organisationunitid ";
                 }
-
+               
+                
                 sql += " WHERE "
                     + createSQL( caseExpression, operator, orgunitIds,
                         DateUtils.getMediumDateString( period.getStartDate() ),
@@ -402,7 +389,7 @@ public class JdbcCaseAggregationConditionManager
         }
 
         sql = sql.replaceAll( "COMBINE", "" );
-
+        
         return sql;
     }
 
@@ -412,7 +399,6 @@ public class JdbcCaseAggregationConditionManager
         String sql = "SELECT ";
 
         boolean hasPatients = hasPatientCriteria( caseExpression );
-        boolean hasProgramInstances = hasProgramInstanceCriteria( caseExpression );
         boolean hasDataelement = hasDataelementCriteria( caseExpression );
 
         Collection<Integer> orgunitIds = new HashSet<Integer>();
@@ -429,45 +415,39 @@ public class JdbcCaseAggregationConditionManager
         {
             if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
             {
-                sql += "p.name, p.gender, p.birthDate, p.phoneNumber, ";
+                sql += "p.name, p.gender, p.birthDate, p.phoneNumber,";
             }
 
             if ( hasDataelement )
             {
-                sql += "pdv.value,pgs.name as program_stage, psi.executiondate as report_date, ";
+                sql += "pdv.value,pgs.name as program_stage, psi.executiondate as report_date,";
             }
         }
 
-        sql += "1";
-        sql += "FROM ";
-        String innerJoin = "";
+        sql = sql.substring( 0, sql.length() - 1 );
+        sql += " FROM ";
 
-        if ( hasDataelement )
+        if( hasDataelement)
         {
-            sql += innerJoin + "programstageinstance as psi ";
-            sql += "INNER JOIN programstage as pgs ON pgs.programstageid = psi.programstageid ";
-            sql += "INNER JOIN patientdatavalue as pdv ON psi.programstageinstanceid = pdv.programstageinstanceid ";
-            innerJoin = " INNER JOIN ";
+            sql += " programinstance as pi INNER JOIN patient p on p.patientid=pi.patientid";
+            sql += " INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
+            sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
+            sql += " INNER JOIN patientdatavalue pdv ON pdv.programstageinstanceid=psi.programstageinstanceid ";
+            sql += " INNER JOIN program pg ON pg.programid=pi.programid ";
+            sql += " INNER JOIN programstage pgs ON pgs.programid=pg.programid ";
         }
-        else if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
+        else
         {
-            sql += innerJoin + "programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
-            sql += "INNER JOIN patient p on p.patientid=pi.patientid  ";
-            innerJoin = " INNER JOIN ";
-        }
-        else if ( (hasProgramInstances && !hasPatients) || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
-        {
-            sql += innerJoin + " programinstance as pi ON pi.programinstanceid = psi.programinstanceid ";
-            innerJoin = " INNER JOIN ";
+            sql += " programinstance as pi INNER JOIN patient p on p.patientid=pi.patientid";
+            sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=p.organisationunitid ";
         }
 
-        sql += innerJoin
-            + "organisationunit ou on ou.organisationunitid=psi.organisationunitid WHERE "
+        sql += " WHERE "
             + createSQL( caseExpression, operator, orgunitIds, DateUtils.getMediumDateString( period.getStartDate() ),
                 DateUtils.getMediumDateString( period.getEndDate() ) );
 
         sql = sql.replaceAll( "COMBINE", "" );
-
+        
         return sql;
     }
 
@@ -899,7 +879,7 @@ public class JdbcCaseAggregationConditionManager
         String sql = " EXISTS ( SELECT _psi.programstageinstanceid from programstageinstance _psi "
             + "WHERE _psi.programstageinstanceid=psi.programstageinstanceid AND ( _psi.executionDate BETWEEN '"
             + startDate + "' AND '" + endDate + "') AND " + propertyName;
-
+        
         return sql;
     }
 
@@ -911,10 +891,10 @@ public class JdbcCaseAggregationConditionManager
      */
     private String getConditionForProgramProperty( String operator, String startDate, String endDate, String property )
     {
-        String sql = " EXISTS ( SELECT _pi.programinstanceid FROM programinstance as _pi WHERE psi.programinstanceid=_pi.programsinstanceid AND "
-            + "psi.executionDate >= '"
+        String sql = " EXISTS ( SELECT _pi.programinstanceid FROM programinstance as _pi WHERE _pi.programinstanceid=pi.programsinstanceid AND "
+            + "pi.enrollmentdate >= '"
             + startDate
-            + "' AND psi.executionDate <= '"
+            + "' AND pi.enrollmentdate <= '"
             + endDate
             + "' AND "
             + property
@@ -951,8 +931,8 @@ public class JdbcCaseAggregationConditionManager
     private String getConditionForProgramStage( String programStageId, String operator, Collection<Integer> orgunitIds,
         String startDate, String endDate )
     {
-        String sql = " EXISTS ( SELECT _psi.programstageinstanceid FROM programinstance as _pi INNER JOIN programstageinstance _psi "
-            + "ON _pi.programinstanceid = _psi.programinstanceid WHERE _psi.programstageinstanceid=psi.programstageinstanceid "
+        String sql = " EXISTS ( SELECT _psi.programstageinstanceid FROM programstageinstance _psi "
+            + "WHERE _psi.programstageinstanceid=psi.programstageinstanceid "
             + "AND _psi.programstageid="
             + programStageId
             + "  AND _psi.executiondate >= '"

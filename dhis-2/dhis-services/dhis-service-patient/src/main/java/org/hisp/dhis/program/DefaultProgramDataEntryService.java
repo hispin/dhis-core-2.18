@@ -561,7 +561,7 @@ public class DefaultProgramDataEntryService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
+        
     private String populateCustomDataEntryForTextBox( DataElement dataElement, String inputHTML )
     {
         if ( dataElement != null )
