@@ -3,7 +3,6 @@
 <head>
     <title>$encoder.htmlEncode( $applicationTitle )</title>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
-    <script type="text/javascript" src="../javascripts/jQuery/jquery.cookie.js"></script>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.validate.js"></script>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.validate.ext.js"></script>
     <script type="text/javascript" src="../javascripts/useraccount/account.js"></script>

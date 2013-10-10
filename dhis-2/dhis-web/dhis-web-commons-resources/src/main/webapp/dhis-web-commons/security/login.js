@@ -1,6 +1,6 @@
 
 var login = {};
-login.localeCookie = "dhis2.locale";
+login.localeKey = "dhis2.locale.ui";
 
 $( document ).ready( function() 
 {
@@ -13,7 +13,7 @@ $( document ).ready( function()
         sessionStorage.removeItem( 'orgUnitSelected' );
     } );
     
-    var locale = $.cookie( login.localeCookie );
+    var locale = localStorage[login.localeKey];
     
     if ( undefined !== locale && locale )
     {
@@ -28,8 +28,8 @@ login.localeChanged = function()
 	
 	if ( locale )
 	{
-		login.changeLocale( locale );	
-		$.cookie( login.localeCookie, locale, { expires : 356*10 } );
+		login.changeLocale( locale );
+		localStorage[login.localeKey] = locale;
 	}
 }
 

@@ -1,10 +1,10 @@
 
 var login = {};
-login.localeCookie = "dhis2.locale";
+login.localeKey = "dhis2.locale.ui";
 
 $( document ).ready( function() {
 
-    var locale = $.cookie( login.localeCookie );
+	var locale = localStorage[login.localeKey];
     
     if ( undefined !== locale && locale )
     {
@@ -43,8 +43,8 @@ function recoverAccount()
 login.changeLocale = function( locale )
 {		
 	$.get( 'recoveryStrings.action?loc=' + locale, function( json ) {				
-		$('#account_recovery').html( json.account_recovery );
-		$('#label_username').html( json.user_name );
+		$('#accountRecovery').html( json.account_recovery );
+		$('#labelUsername').html( json.user_name );
 		$('#recoveryButton').val( json.recover );
 		$('#recoverySuccessMessage').html( json.recover_success_message );
 		$('#recoveryErrorMessage').html( json.recover_error_message );
