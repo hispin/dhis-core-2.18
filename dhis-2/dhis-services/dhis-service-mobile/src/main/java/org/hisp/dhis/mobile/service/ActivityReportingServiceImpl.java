@@ -2060,46 +2060,57 @@ public class ActivityReportingServiceImpl
         }
     }
 
+    @SuppressWarnings( "finally" )
     @Override
     public Notification handleLostToFollowUp( LostEvent lostEvent )
         throws NotAllowedException
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( lostEvent.getId() );
-        programStageInstance.setDueDate( PeriodUtil.stringToDate( lostEvent.getDueDate() ) );
-        programStageInstance.setStatus( lostEvent.getStatus() );
-
-        List<MessageConversation> conversationList = new ArrayList<MessageConversation>();
-
-        MessageConversation conversation = new MessageConversation( lostEvent.getName(), currentUserService.getCurrentUser() );
-
-        conversation.addMessage( new Message( lostEvent.getComment(), null, currentUserService.getCurrentUser() ) );
-        
-        conversation.setRead( true );
-        
-        conversationList.add( conversation );
-
-        programStageInstance.setMessageConversations( conversationList );
-        
-        messageService.saveMessageConversation( conversation );
-
-        programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
         Notification notification = new Notification();
-        
-        String message = "";
-        
-        //send SMS
-        if ( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() != null && lostEvent.getSMS() != null )
+        try
         {
-            User user = new User();
-            user.setPhoneNumber( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() );
-            List<User> recipientsList = new ArrayList<User>();
-            recipientsList.add( user );
+            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( lostEvent.getId() );
+            programStageInstance.setDueDate( PeriodUtil.stringToDate( lostEvent.getDueDate() ) );
+            programStageInstance.setStatus( lostEvent.getStatus() );
+    
+            if ( lostEvent.getComment() != null )
+            {
+                List<MessageConversation> conversationList = new ArrayList<MessageConversation>();
+        
+                MessageConversation conversation = new MessageConversation( lostEvent.getName(), currentUserService.getCurrentUser() );
+        
+                conversation.addMessage( new Message( lostEvent.getComment(), null, currentUserService.getCurrentUser() ) );
+                
+                conversation.setRead( true );
+                
+                conversationList.add( conversation );
+        
+                programStageInstance.setMessageConversations( conversationList );
+                
+                messageService.saveMessageConversation( conversation );
+            }
+    
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
             
-            message = smsSender.sendMessage( lostEvent.getName(), lostEvent.getSMS(), currentUserService.getCurrentUser(), recipientsList, false );
+            //send SMS
+            if ( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() != null && lostEvent.getSMS() != null )
+            {
+                User user = new User();
+                user.setPhoneNumber( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() );
+                List<User> recipientsList = new ArrayList<User>();
+                recipientsList.add( user );
+                
+                smsSender.sendMessage( lostEvent.getName(), lostEvent.getSMS(), currentUserService.getCurrentUser(), recipientsList, false );
+            }
+            
+            notification.setMessage( "Success" );
         }
-        notification.setMessage( message );
-
-        return notification;
+        catch (Exception e) {
+            e.printStackTrace();
+            notification.setMessage( "Fail" );
+        }
+        finally
+        {
+            return notification;
+        }
     }
 }
