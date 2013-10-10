@@ -94,6 +94,8 @@ public class DefaultEventAnalyticsService
     private static final String ITEM_GENDER = "gender";
     private static final String ITEM_ISDEAD = "isdead";
     
+    private static final String COL_NAME_EVENTDATE = "executiondate";
+    
     @Autowired
     private ProgramService programService;
     
@@ -462,10 +464,12 @@ public class DefaultEventAnalyticsService
     
     private String getSortItem( String item, Program program )
     {
-        if ( !ITEM_EXECUTION_DATE.equals( item ) && getItem( program, item, null, null ) == null )
+        if ( !ITEM_EXECUTION_DATE.equalsIgnoreCase( item ) && getItem( program, item, null, null ) == null )
         {
             throw new IllegalQueryException( "Descending sort item is invalid: " + item );
         }
+        
+        item = ITEM_EXECUTION_DATE.equalsIgnoreCase( item ) ? COL_NAME_EVENTDATE : item;
         
         return item;
     }
