@@ -60,6 +60,9 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.Section;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.message.Message;
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
@@ -92,7 +95,10 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,6 +166,29 @@ public class ActivityReportingServiceImpl
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
+    private CurrentUserService currentUserService;
+
+    @Required
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+    
+    private MessageService messageService;
+    
+    @Required
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
+    }
+
+    private SmsSender smsSender;
+
+    public void setSmsSender( SmsSender smsSender )
+    {
+        this.smsSender = smsSender;
+    }
+    
     public PatientIdentifierTypeService getPatientIdentifierTypeService()
     {
         return patientIdentifierTypeService;
@@ -1143,11 +1172,15 @@ public class ActivityReportingServiceImpl
         return mobileProgram;
     }
 
-    private List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> getMobileProgramStages( ProgramInstance programInstance )
+    private List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> getMobileProgramStages(
+        ProgramInstance programInstance )
     {
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStages = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
-        
-        /*for ( ProgramStage eachProgramStage : programInstance.getProgram().getProgramStages() )*/
+
+        /*
+         * for ( ProgramStage eachProgramStage :
+         * programInstance.getProgram().getProgramStages() )
+         */
         for ( ProgramStageInstance eachProgramStageInstance : programInstance.getProgramStageInstances() )
         {
             // only for Mujhu database, because there is null program stage
@@ -1155,18 +1188,18 @@ public class ActivityReportingServiceImpl
             if ( eachProgramStageInstance != null )
             {
                 ProgramStage programStage = eachProgramStageInstance.getProgramStage();
-                
+
                 org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
                 List<org.hisp.dhis.api.mobile.model.LWUITmodel.Section> mobileSections = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Section>();
                 mobileProgramStage.setId( eachProgramStageInstance.getId() );
-                /*mobileProgramStage.setName( eachProgramStage.getName() );*/
+                /* mobileProgramStage.setName( eachProgramStage.getName() ); */
                 mobileProgramStage.setName( programStage.getName() );
 
                 // get report date
                 if ( eachProgramStageInstance.getExecutionDate() != null )
                 {
-                    mobileProgramStage
-                        .setReportDate( PeriodUtil.dateToString( eachProgramStageInstance.getExecutionDate() ) );
+                    mobileProgramStage.setReportDate( PeriodUtil.dateToString( eachProgramStageInstance
+                        .getExecutionDate() ) );
                 }
                 else
                 {
@@ -1187,8 +1220,11 @@ public class ActivityReportingServiceImpl
                 mobileProgramStage.setRepeatable( programStage.getIrregular() );
 
                 // is completed
-                /*mobileProgramStage.setCompleted( checkIfProgramStageCompleted( patient, programInstance.getProgram(),
-                    programStage ) );*/
+                /*
+                 * mobileProgramStage.setCompleted(
+                 * checkIfProgramStageCompleted( patient,
+                 * programInstance.getProgram(), programStage ) );
+                 */
                 mobileProgramStage.setCompleted( eachProgramStageInstance.isCompleted() );
 
                 // is single event
@@ -1414,7 +1450,7 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         String programsInfo = "";
-        
+
         int programTypeInt = Integer.valueOf( programType );
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
@@ -1430,7 +1466,6 @@ public class ActivityReportingServiceImpl
         {
             tempPrograms = new ArrayList<Program>(
                 programService.getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION ) );
-            System.out.println("Program size: " +  tempPrograms.size());
         }
 
         List<Program> programs = new ArrayList<Program>();
@@ -1448,7 +1483,7 @@ public class ActivityReportingServiceImpl
             if ( programs.size() == 1 )
             {
                 Program program = programs.get( 0 );
-                
+
                 return getMobileProgramWithoutData( program );
             }
             else
@@ -1491,8 +1526,10 @@ public class ActivityReportingServiceImpl
         }
     }
 
-    //If the return program is anonymous, the client side will show the entry form as normal
-    //If the return program is not anonymous, it is still OK because in client side, we only need name and id
+    // If the return program is anonymous, the client side will show the entry
+    // form as normal
+    // If the return program is not anonymous, it is still OK because in client
+    // side, we only need name and id
     private org.hisp.dhis.api.mobile.model.LWUITmodel.Program getMobileProgramWithoutData( Program program )
     {
         Comparator<ProgramStageDataElement> OrderBySortOrder = new Comparator<ProgramStageDataElement>()
@@ -1512,31 +1549,31 @@ public class ActivityReportingServiceImpl
         if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
         {
             anonymousProgramMobile.setVersion( program.getVersion() );
-    
+
             anonymousProgramMobile.setStatus( ProgramInstance.STATUS_ACTIVE );
-    
+
             ProgramStage programStage = program.getProgramStages().iterator().next();
-    
+
             List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>(
                 programStage.getProgramStageDataElements() );
             Collections.sort( programStageDataElements, OrderBySortOrder );
-    
+
             List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStages = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
-    
+
             org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage mobileProgramStage = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage();
-    
+
             List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement> mobileProgramStageDataElements = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement>();
-    
+
             mobileProgramStage.setId( programStage.getId() );
             mobileProgramStage.setName( programStage.getName() );
             mobileProgramStage.setCompleted( false );
             mobileProgramStage.setRepeatable( false );
             mobileProgramStage.setSingleEvent( true );
             mobileProgramStage.setSections( new ArrayList<Section>() );
-    
+
             // get report date
             mobileProgramStage.setReportDate( PeriodUtil.dateToString( new Date() ) );
-    
+
             if ( programStage.getReportDateDescription() == null )
             {
                 mobileProgramStage.setReportDateDescription( "Report Date" );
@@ -1545,24 +1582,25 @@ public class ActivityReportingServiceImpl
             {
                 mobileProgramStage.setReportDateDescription( programStage.getReportDateDescription() );
             }
-    
+
             for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
             {
                 org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement mobileDataElement = new org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement();
                 mobileDataElement.setId( programStageDataElement.getDataElement().getId() );
                 mobileDataElement.setName( programStageDataElement.getDataElement().getName() );
                 mobileDataElement.setType( programStageDataElement.getDataElement().getType() );
-    
+
                 // problem
                 mobileDataElement.setCompulsory( programStageDataElement.isCompulsory() );
-    
+
                 mobileDataElement.setNumberType( programStageDataElement.getDataElement().getNumberType() );
-    
+
                 mobileDataElement.setValue( "" );
-    
+
                 if ( programStageDataElement.getDataElement().getOptionSet() != null )
                 {
-                    mobileDataElement.setOptionSet( modelMapping.getOptionSet( programStageDataElement.getDataElement() ) );
+                    mobileDataElement
+                        .setOptionSet( modelMapping.getOptionSet( programStageDataElement.getDataElement() ) );
                 }
                 else
                 {
@@ -1652,7 +1690,6 @@ public class ActivityReportingServiceImpl
             }
         }
     }
-
 
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
@@ -1782,7 +1819,7 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
-        
+
         patientWeb.setName( patient.getName() );
         patientWeb.setGender( patient.getGender() );
         patientWeb.setDobType( patient.getDobType() );
@@ -2021,15 +2058,48 @@ public class ActivityReportingServiceImpl
         {
             return "";
         }
-
     }
 
     @Override
     public Notification handleLostToFollowUp( LostEvent lostEvent )
         throws NotAllowedException
     {
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( lostEvent.getId() );
+        programStageInstance.setDueDate( PeriodUtil.stringToDate( lostEvent.getDueDate() ) );
+        programStageInstance.setStatus( lostEvent.getStatus() );
+
+        List<MessageConversation> conversationList = new ArrayList<MessageConversation>();
+
+        MessageConversation conversation = new MessageConversation( lostEvent.getName(), currentUserService.getCurrentUser() );
+
+        conversation.addMessage( new Message( lostEvent.getComment(), null, currentUserService.getCurrentUser() ) );
+        
+        conversation.setRead( true );
+        
+        conversationList.add( conversation );
+
+        programStageInstance.setMessageConversations( conversationList );
+        
+        messageService.saveMessageConversation( conversation );
+
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+
         Notification notification = new Notification();
         
+        String message = "";
+        
+        //send SMS
+        if ( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() != null && lostEvent.getSMS() != null )
+        {
+            User user = new User();
+            user.setPhoneNumber( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() );
+            List<User> recipientsList = new ArrayList<User>();
+            recipientsList.add( user );
+            
+            message = smsSender.sendMessage( lostEvent.getName(), lostEvent.getSMS(), currentUserService.getCurrentUser(), recipientsList, false );
+        }
+        notification.setMessage( message );
+
         return notification;
     }
 }

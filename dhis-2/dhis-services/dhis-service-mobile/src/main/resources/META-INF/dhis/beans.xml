@@ -36,6 +36,9 @@
 	<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService"></property>
 	<property name="relationshipTypeService" ref="org.hisp.dhis.relationship.RelationshipTypeService"></property>
 	<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+	<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
   </bean>
 
   <bean id="org.hisp.dhis.mobile.api.IProgramService" class="org.hisp.dhis.mobile.service.DefaultProgramService">
