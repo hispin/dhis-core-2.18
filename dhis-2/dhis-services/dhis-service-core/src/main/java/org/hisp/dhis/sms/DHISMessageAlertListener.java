@@ -131,7 +131,7 @@ public class DHISMessageAlertListener
 
                 Set<User> receivers = new HashSet<User>( userGroup.getMembers() );
 
-                // forward to user group by SMS
+                // forward to user group by SMS,Dhis2 message, Email
                 messageService.sendMessage( smsCommand.getName(), message, null, receivers, sender, false, false );
 
                 // confirm SMS was received and forwarded completely

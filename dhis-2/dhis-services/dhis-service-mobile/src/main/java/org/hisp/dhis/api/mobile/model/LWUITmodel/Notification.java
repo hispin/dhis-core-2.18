@@ -31,6 +31,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
+import org.hisp.dhis.api.mobile.model.Model;
 
  /**
  * @author Nguyen Kim Lai
@@ -46,9 +47,8 @@ public class Notification implements DataStreamSerializable
         throws IOException
     {
         dataOutputStream.writeUTF( message );
-        
     }
-
+    
     @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
