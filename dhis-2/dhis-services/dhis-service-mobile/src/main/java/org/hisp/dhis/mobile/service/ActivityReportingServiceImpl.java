@@ -1929,7 +1929,7 @@ public class ActivityReportingServiceImpl
         if ( programId != 0 )
         {
             Program program = programService.getProgram( programId );
-            List<Patient> tempPatients = (List<Patient>) patientService.getPatients( orgUnit, program, null, null );
+            List<Patient> tempPatients = (List<Patient>) patientService.getPatients( program );
             patients.retainAll( tempPatients );
         }
 
