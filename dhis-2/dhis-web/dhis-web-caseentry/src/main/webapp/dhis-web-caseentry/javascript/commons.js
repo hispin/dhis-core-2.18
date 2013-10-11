@@ -225,6 +225,7 @@ function getSearchParams() {
     if( getFieldValue('programIdAddPatient') != '' ) {
         params += "&programId=" + getFieldValue('programIdAddPatient');
         params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
+		params += '&statusEnrollment=' + getFieldValue('statusEnrollment');
     }
 
     var programStageId = jQuery('#programStageAddPatient').val();
@@ -286,7 +287,6 @@ function getSearchParams() {
     });
 
     params += '&listAll=false';
-    params += '&statusEnrollment=' + getFieldValue('statusEnrollment');
 
     params += '&facilityLB=';
     if( byId('searchInAllFacility').checked ) {
@@ -2356,14 +2356,17 @@ function removeCustomPhoneNumberField(idx)
 
 function searchByIdsOnclick()
 {
-	var params = "searchText=" + getFieldValue("searchByIds");
+	var params = "searchTexts=iden_" + getFieldValue("searchPatientByIds") + "_" + getFieldValue("orgunitId");
 	params += "&listAll=false";
+	params += "&facilityLB=";
 	
-	if( getFieldValue('programIdAddPatient')=="" ){
+	if( getFieldValue('programIdAddPatient')!="" ){
 		params += "&programIds=" + getFieldValue('programIdAddPatient');
 		params += "&searchText=prg_" + getFieldValue('programIdAddPatient');
 	}
 	
+	hideById( 'listPatientDiv');
+	jQuery( "#loaderDiv" ).show();
 	$.ajax({
 		url: 'searchRegistrationPatient.action',
 		type:"POST",

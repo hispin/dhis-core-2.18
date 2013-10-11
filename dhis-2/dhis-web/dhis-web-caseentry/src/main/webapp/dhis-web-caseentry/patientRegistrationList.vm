@@ -71,6 +71,7 @@
 							#set($personDisplayName='true')
 						#end
 					#end
+					
 					#if( $personDisplayName=='false' )
 						<th>$i18n.getString( "full_name" )</th>          
 					#end
@@ -98,69 +99,55 @@
 					$nr
 				</td>
 				
-				#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-		
-					#foreach( $attribute in $patientAttributes )
-						#if( $attribute )
-							#set ( $key = $patient.id + '-' + $attribute.id )
-							<td>
-								#if( $attribute.valueType == 'bool')
-									$i18n.getString( $mapPatientPatientAttr.get($key) )
-								#else
-									$mapPatientPatientAttr.get($key)
-								#end
-							</td>
-						#end
-					#end
-						
-					#set($value="")
-					#foreach( $identifierType in $identifierTypes)
-						#set($value="")
-						#if($identifierType.personDisplayName=='true')
-							<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
-								#foreach( $identifier in $patient.identifiers)
-									#if($!identifier.identifierType.id==$identifierType.id)
-										#set($value=$identifier.identifier)
-									#else
-										#set($systemId=$identifier.identifier)
-									#end
+				#foreach( $attribute in $patientAttributes )
+					#if( $attribute )
+						#set ( $key = $patient.id + '-' + $attribute.id )
+						<td>
+							#if( $attribute.valueType == 'bool')
+								$i18n.getString( $mapPatientPatientAttr.get($key) )
+							#else
+								$mapPatientPatientAttr.get($key)
 							#end
-							<a>$encoder.htmlEncode($value)</a>
-						</td>
-						#end
-					#end
-					
-					#if($value=="")
-						#set($value=$!patient.name)
-					#end
-					#if($value=="")
-						#set($value=$systemId)
-					#end
-					#if($personDisplayName=='false')
-						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
-							<a>$encoder.htmlEncode($value)</a>
 						</td>
 					#end
+				#end
 					
-					<td>#if($!patient.gender) $i18n.getString($!patient.gender) #end</td>
-					
-					<td>#if($!patient.birthDate) $format.formatDate( $!patient.birthDate) #end</td>
-					
-					<td>#if($!patient.birthDate) $!patient.getAge() #end</td>
-					
-					<td>$!patient.phoneNumber</td>
-				#else
+				#set($value="")
+				#foreach( $identifierType in $identifierTypes)
 					#set($value="")
-					#foreach( $identifier in $patient.identifiers)
-						#if($!identifier.identifierType)
-						#else
-							#set($value=$identifier.identifier)
+					#if($identifierType.personDisplayName=='true')
+						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
+							#foreach( $identifier in $patient.identifiers)
+								#if($!identifier.identifierType.id==$identifierType.id)
+									#set($value=$identifier.identifier)
+								#else
+									#set($systemId=$identifier.identifier)
+								#end
 						#end
+						<a>$encoder.htmlEncode($value)</a>
+					</td>
 					#end
+				#end
+				
+				#if($value=="")
+					#set($value=$!patient.name)
+				#end
+				#if($value=="")
+					#set($value=$systemId)
+				#end
+				#if($personDisplayName=='false')
 					<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
-						<a>$value</a>
+						<a>$encoder.htmlEncode($value)</a>
 					</td>
 				#end
+				
+				<td>#if($!patient.gender) $i18n.getString($!patient.gender) #end</td>
+				
+				<td>#if($!patient.birthDate) $format.formatDate( $!patient.birthDate) #end</td>
+				
+				<td>#if($!patient.birthDate) $!patient.getAge() #end</td>
+				
+				<td>$!patient.phoneNumber</td>
 				
 				#if($mapPatientOrgunit.size()!=0)
 					<td>$!mapPatientOrgunit.get($patient.id)</td>
