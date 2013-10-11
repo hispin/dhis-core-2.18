@@ -38,6 +38,7 @@ import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,6 +69,9 @@ public class OrganisationUnitController
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
+    @Autowired
+    private CurrentUserService currentUserService;
+
     @Override
     protected List<OrganisationUnit> getEntityList( WebMetaData metaData, WebOptions options )
     {
@@ -84,7 +88,11 @@ public class OrganisationUnitController
             level = Integer.parseInt( options.getOptions().get( "level" ) );
         }
 
-        if ( lastUpdated != null )
+        if ( options.getOptions().get( "userOnly" ).equals( "true" ) )
+        {
+            entityList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
+        }
+        else if ( lastUpdated != null )
         {
             entityList = new ArrayList<OrganisationUnit>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
 
