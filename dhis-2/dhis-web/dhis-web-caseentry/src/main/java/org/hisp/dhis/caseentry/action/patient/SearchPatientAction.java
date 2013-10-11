@@ -204,7 +204,7 @@ public class SearchPatientAction
         else if ( searchTexts.size() > 0 )
         {
             // selected orgunit
-            if ( facilityLB == null || facilityLB.trim().isEmpty() )
+            if ( facilityLB == null || facilityLB.isEmpty() )
             {
                 orgunits.add( organisationUnit );
             }
@@ -230,7 +230,7 @@ public class SearchPatientAction
             patients = patientService.searchPatients( searchTexts, orgunits, null, null, statusEnrollment,
                 paging.getStartPos(), paging.getPageSize() );
 
-            if ( facilityLB != null )
+            if ( facilityLB != null && !facilityLB.isEmpty())
             {
                 for ( Patient patient : patients )
                 {
