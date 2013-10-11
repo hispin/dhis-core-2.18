@@ -19,7 +19,13 @@
 		</td>
 	</tr>
 	<tr>
-		<td class='text-column' >$i18n.getString( "total_result" ): $!total</td>
+		<td class='text-column' >
+			#if( $!total != 0) 
+				$i18n.getString( "total_result" ): $!total 
+			#else 
+				$i18n.getString("no_result_found") 
+			#end
+		</td>
 	</tr>
 </table>
 
