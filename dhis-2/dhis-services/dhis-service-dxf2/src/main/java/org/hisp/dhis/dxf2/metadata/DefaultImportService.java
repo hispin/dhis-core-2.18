@@ -149,7 +149,7 @@ public class DefaultImportService
                         ImportTypeSummary importTypeSummary = doImport( user, objects, importOptions );
 
                         // TODO do we need this?
-                        sessionFactory.getCurrentSession().flush();
+                        // sessionFactory.getCurrentSession().flush();
 
                         if ( importTypeSummary != null )
                         {
@@ -174,7 +174,7 @@ public class DefaultImportService
             sessionFactory.getCurrentSession().clear();
         }
 
-        cacheManager.clearCache();
+        // cacheManager.clearCache();
         objectBridge.destroy();
 
         if ( taskId != null )
