@@ -104,6 +104,8 @@ public class SaveTabularReportAction
     private String endDate;
 
     private List<String> dimension = new ArrayList<String>();
+    
+    private List<String> filter = new ArrayList<String>();
 
     private String ouMode;
 
@@ -141,6 +143,11 @@ public class SaveTabularReportAction
         this.programStageId = programStageId;
     }
 
+    public void setFilter( List<String> filter )
+    {
+        this.filter = filter;
+    }
+
     public void setDimension( List<String> dimension )
     {
         this.dimension = dimension;
@@ -163,6 +170,7 @@ public class SaveTabularReportAction
         tabularReport.setOuMode( ouMode );
         tabularReport.setUser( currentUserService.getCurrentUser() );
         tabularReport.setDimension( dimension );
+        tabularReport.setFilter( filter );
         tabularReport.setProgramStage( programStage );
         tabularReport.setProgram( program );
 

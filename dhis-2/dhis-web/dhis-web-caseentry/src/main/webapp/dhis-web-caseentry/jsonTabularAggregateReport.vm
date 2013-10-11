@@ -46,8 +46,7 @@
 		#end
 	],
 	"items": [
-		#set( $size = $identifierTypes.size() )
-		#foreach( $item in $identifierTypes )
+		#foreach( $item in $dimensionIdentifierTypes )
 			{
 				"id": "$item",
 				"name": "",
@@ -56,12 +55,13 @@
 								"list"
 							 #else
 								"${iden.type}"
-							 #end
+							 #end,
+				"dimension": "true"
 			},
 		#end
 		
 		
-		#foreach( $attr in $attributes )
+		#foreach( $attr in $dimensionAttributes )
 		{
 			"id": "$attr.uid",
 			"name": "$encoder.xmlEncode(${attr.displayName} )",
@@ -69,11 +69,12 @@
 							"list"
 						 #else
 							"${attr.type}"
-						 #end
+						 #end,
+			"dimension": "true"
 		},
 		#end
 		
-		#foreach( $de in $dataElements )
+		#foreach( $de in $dimensionDataElements )
 		{
 			"id": "$de.uid",
 			"name": "$encoder.xmlEncode(${de.getFormNameFallback()} )",
@@ -81,10 +82,50 @@
 							"list_$de.optionSet.uid"
 						 #else
 							"$de.type"
-						 #end
-		}#if( $velocityCount < $dataElements.size() ),#end
+						 #end,
+			"dimension": "true"
+		},
 		#end
 		
+		#foreach( $item in $filterIdentifierTypes )
+			{
+				"id": "$item",
+				"name": "",
+				"compulsory": "",
+				"valueType": #if( $iden.optionSet )
+								"list"
+							 #else
+								"${iden.type}"
+							 #end,
+			"dimension": "false"
+			},
+		#end
+		
+		#foreach( $attr in $filterAttributes )
+		{
+			"id": "$attr.uid",
+			"name": "$encoder.xmlEncode(${attr.displayName} )",
+			"valueType": #if( $attr.optionSet )
+							"list"
+						 #else
+							"${attr.type}"
+						 #end,
+			"dimension": "false"
+		},
+		#end
+		
+		#foreach( $de in $filterDataElements )
+		{
+			"id": "$de.uid",
+			"name": "$encoder.xmlEncode(${de.getFormNameFallback()} )",
+			"valueType": #if( $de.optionSet )
+							"list_$de.optionSet.uid"
+						 #else
+							"$de.type"
+						 #end,
+			"dimension": "false"
+		}#if( $velocityCount < $filterDataElements.size() ),#end
+		#end
 	],
 	filters:{
 		#foreach( $de in $mapFilters.keySet() )

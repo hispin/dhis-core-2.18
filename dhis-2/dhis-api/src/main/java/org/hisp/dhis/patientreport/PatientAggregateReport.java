@@ -62,6 +62,8 @@ public class PatientAggregateReport
 
     private List<String> dimension = new ArrayList<String>();
 
+    private List<String> filter = new ArrayList<String>();
+
     private String ouMode;
 
     private String aggregateType = "count";
@@ -107,7 +109,7 @@ public class PatientAggregateReport
     {
         this.aggregateType = aggregateType;
     }
-    
+
     public Program getProgram()
     {
         return program;
@@ -178,4 +180,13 @@ public class PatientAggregateReport
         this.sortOrder = sortOrder;
     }
 
+    public List<String> getFilter()
+    {
+        return filter;
+    }
+
+    public void setFilter( List<String> filter )
+    {
+        this.filter = filter;
+    }
 }

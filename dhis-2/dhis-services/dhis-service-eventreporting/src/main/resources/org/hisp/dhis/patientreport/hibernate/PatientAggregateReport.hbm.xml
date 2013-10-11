@@ -28,8 +28,14 @@
 
 		<property name="endDate" />
 		
-		<list name="dimension" table="patientaggregatereportmembers">
-	      <key column="patientaggregatereportid" foreign-key="fk_patientaggregatereportid_items" />
+		<list name="dimension" table="patientaggregatereport_dimension">
+	      <key column="patientaggregatereportid" foreign-key="fk_patientaggregatereportid_dimensions" />
+	      <list-index column="sort_order" />
+	      <element type="text" column="itemvalue" />
+	    </list>
+	    
+	    <list name="filter" table="patientaggregatereport_filters">
+	      <key column="patientaggregatereportid" foreign-key="fk_patientaggregatereportid_filters" />
 	      <list-index column="sort_order" />
 	      <element type="text" column="itemvalue" />
 	    </list>

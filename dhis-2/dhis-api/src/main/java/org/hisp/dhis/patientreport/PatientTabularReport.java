@@ -77,6 +77,8 @@ public class PatientTabularReport
 
     private List<String> dimension = new ArrayList<String>();
 
+    private List<String> filter = new ArrayList<String>();
+
     private String ouMode;
 
     // -------------------------------------------------------------------------
@@ -123,8 +125,8 @@ public class PatientTabularReport
     }
 
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper( localName = "dimension", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "dimension", namespace = DxfNamespaces.DXF_2_0 )
     public List<String> getDimension()
     {
         return dimension;
@@ -133,6 +135,19 @@ public class PatientTabularReport
     public void setDimension( List<String> dimension )
     {
         this.dimension = dimension;
+    }
+
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "filter", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "filter", namespace = DxfNamespaces.DXF_2_0 )
+    public List<String> getFilter()
+    {
+        return filter;
+    }
+
+    public void setFilter( List<String> filter )
+    {
+        this.filter = filter;
     }
 
     @JsonProperty

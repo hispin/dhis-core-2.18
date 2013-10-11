@@ -439,7 +439,7 @@ Ext.onReady( function() {
 					subPanel = Ext.getCmp(panelid);
 				}
 				else {
-					idx = subPanel.items.length/4;
+					idx = subPanel.items.length/5;
 				}
 				
 				var items = [];
@@ -468,6 +468,7 @@ Ext.onReady( function() {
 				else
 				{
 					items[3] = this.removeFieldBtn( panelid, fieldid );
+					items[4] = {};
 				}
 				
 				subPanel.add(items);
@@ -1128,6 +1129,10 @@ Ext.onReady( function() {
 										var valueType = f.items[i].valueType;
 										TR.store.dataelement.selected.add({id: id, name: name, valueType: valueType});
 										TR.util.multiselect.addFilterField( 'filterPanel', id, name, valueType, f.filters[id] );
+										var dimension = f.items[i].dimension;
+										if(dimension=='false'){
+											Ext.getCmp('filter_dimension_' + id).setValue( 'filter' );
+										}
 									}
 									
 									if( f.singleEvent == 'false' )
@@ -1137,6 +1142,10 @@ Ext.onReady( function() {
 										if (TR.util.store.containsParent(store)) {
 											TR.util.store.loadFromStorage(store);
 											TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+											var dimension = f.items[i].dimension;
+											if(dimension=='false'){
+												Ext.getCmp('filter_dimension_' + id).setValue( 'filter' );
+											}
 										}
 										else {
 											store.load({params: {programStageId: f.programStageId}});
@@ -1263,6 +1272,10 @@ Ext.onReady( function() {
 										TR.store.dataelement.selected.add({id: id, name: name, valueType: valueType});
 										
 										TR.util.multiselect.addFilterField( 'filterPanel', id, name, valueType, f.filters[id] );
+										var dimension = f.items[i].dimension;
+										if(dimension=='false'){
+											Ext.getCmp('filter_dimension_' + id).setValue( 'filter' );
+										}
 									}
 									
 									if( f.singleEvent == 'false' )
@@ -1272,6 +1285,10 @@ Ext.onReady( function() {
 										if (TR.util.store.containsParent(store)) {
 											TR.util.store.loadFromStorage(store);
 											TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+											var dimension = f.items[i].dimension;
+											if(dimension=='false'){
+												Ext.getCmp('filter_dimension_' + id).setValue( 'filter' );
+											}
 										}
 										else {
 											store.load({params: {programStageId: f.programStageId}});
@@ -1616,11 +1633,14 @@ Ext.onReady( function() {
 			p.startDate = TR.cmp.settings.startDate.rawValue;
 			p.endDate = TR.cmp.settings.endDate.rawValue;
 			
-			if( TR.cmp.settings.ouMode.getValue()!== null ){
+			if( TR.cmp.settings.ouMode.getValue()!== null ||  TR.cmp.settings.ouMode.getValue()!='' ){
 				p.ouMode = TR.cmp.settings.ouMode.getValue();
 			}
 			
 			// Paging
+			if(TR.state.currentPage==undefined){
+				TR.state.currentPage = 1;
+			}
 			p.page = TR.state.currentPage;
 			
 			// Get searching values
@@ -1657,7 +1677,7 @@ Ext.onReady( function() {
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
 				var valueType = r.data.valueType;
 				var deId = r.data.id;
-				var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
+				var length = Ext.getCmp('filterPanel_' + deId).items.length/5;
 				var hidden = TR.state.caseBasedReport.isColHidden(deId);
 				var dimensionOption = 'dimension';
 				
@@ -1778,12 +1798,17 @@ Ext.onReady( function() {
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
 				var valueType = r.data.valueType;
 				var deId = r.data.id;
-				var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
+				var length = Ext.getCmp('filterPanel_' + deId).items.length/45;
 				var hidden = TR.state.caseBasedReport.isColHidden(deId);
-				
+				var dimensionOption = 'dimension';
+
 				for(var idx=0;idx<length;idx++)
 				{
 					var id = deId + '_' + idx;
+					if( idx==0 )
+					{
+						dimensionOption = Ext.getCmp('filter_dimension_' + deId ).getValue();
+					}
 					
 					var filterOpt = Ext.getCmp('filter_opt_' + id).getValue();						
 					var filterValue = Ext.getCmp('filter_' + id).rawValue;
@@ -1803,7 +1828,12 @@ Ext.onReady( function() {
 						}
 					}
 					
-					params += '&dimension=' + filter;
+					if( dimensionOption=='dimension' ){
+						params += '&dimension=' + filter;
+					}
+					else{
+						params += '&filter=' + filter;
+					}
 				}
 			});
 			

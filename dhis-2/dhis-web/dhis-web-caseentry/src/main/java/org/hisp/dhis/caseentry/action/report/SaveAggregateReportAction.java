@@ -104,6 +104,8 @@ public class SaveAggregateReportAction
 
     private List<String> dimension = new ArrayList<String>();
 
+    private List<String> filter = new ArrayList<String>();
+
     private String ouMode;
 
     private Integer limit;
@@ -154,6 +156,11 @@ public class SaveAggregateReportAction
         this.programStageId = programStageId;
     }
 
+    public void setFilter( List<String> filter )
+    {
+        this.filter = filter;
+    }
+
     public void setDimension( List<String> dimension )
     {
         this.dimension = dimension;
@@ -176,12 +183,13 @@ public class SaveAggregateReportAction
         aggregateReport.setOuMode( ouMode );
         aggregateReport.setUser( currentUserService.getCurrentUser() );
         aggregateReport.setDimension( dimension );
+        aggregateReport.setFilter( filter );
         aggregateReport.setProgramStage( programStage );
         aggregateReport.setProgram( program );
         aggregateReport.setLimit( limit );
         aggregateReport.setSortOrder( sortOrder );
         aggregateReport.setUser( currentUserService.getCurrentUser() );
-        
+
         aggregateReportService.addPatientAggregateReport( aggregateReport );
 
         return SUCCESS;
