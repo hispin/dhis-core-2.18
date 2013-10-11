@@ -41,9 +41,9 @@
 		
 		addEventForPatientForm('patientForm');
 		if("$!patient.dobType" == 'A'){ 
-			var i18n_please_select_relationshipType = '$encoder.jsEscape( $i18n.getString( "please_verify_birthday" ) , "'")';
+			var i18n_please_please_verify_birthday = '$encoder.jsEscape( $i18n.getString( "please_verify_birthday" ) , "'")';
 			jQuery('#patientForm [id=birthDate]').css("display","none");
-			alert(i18n_please_select_relationshipType);
+			alert(i18n_please_please_verify_birthday);
 		}
 		else{
 			#if($!customRegistrationForm)
@@ -72,23 +72,22 @@
 <input type="hidden" id="relationshipTypeId" name='relationshipTypeId' value="$!relationship.relationshipType.id"/>
 <input type="hidden" id="id" name="id" value="$patient.id">
 
+
 <table>	
 	#if($!customRegistrationForm)
+		<div id='barcodePatient'></div>
 	#elseif($!systemIdentifier)
 		<tr>
 			<th colspan="2" class="heading-column">$i18n.getString( "system_identifier" )</th>
 		</tr>	
 		<tr>
 			<td colspan='2'><br><div id='barcodePatient'></div></td>
-			<script>
-					$("#barcodePatient").barcode("$!systemIdentifier", "ean13",{barWidth:2, barHeight:30});
-			</script>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
 		</tr>	
 	#end
-
+	
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
 	
 	<tr>
@@ -143,3 +142,14 @@
 		</tr>
 	</table>
 </div>
+
+<script>
+	#foreach ( $idValue in $patient.identifiers )
+		#if( $!idValue.identifierType)
+		#else
+			systemIdentifier = "$idValue.identifier";
+		#end
+	#end
+	$("#barcodePatient").barcode(systemIdentifier, "ean13",{barWidth:2, barHeight:30});
+</script>
+
