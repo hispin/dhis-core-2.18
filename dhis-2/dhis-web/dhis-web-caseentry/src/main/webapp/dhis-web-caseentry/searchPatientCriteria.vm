@@ -81,24 +81,25 @@
 		<tr>
 			<td colspan='4'>
 				$i18n.getString('select_orgunit_for_search'): <span id='orgunitForSearch'>$!organisationUnit.name</span>
-				<input type='button' id='selectOtherOrgunitBtn' value='$i18n.getString("select_other_orgunit")' />
-				<input type='button' id='clearAndCloseSearchBtn' value='$i18n.getString("clear_and_close")' onclick='clearAndCloseSearch();'/>
+				&nbsp;&nbsp;&nbsp;<input type='button' id='clearAndCloseSearchBtn' value='$i18n.getString("clear_and_close")' onclick='clearAndCloseSearch();'/>
 			</td>
 		</tr>
-		<tr id='searchBySelectedUnitTD'>
+		<tr>
 			<td>$i18n.getString('orgunit_search_type')</td>
 			<td>
 				<select id='facilityLB' name='facilityLB'>
 					<option value='' />$i18n.getString('selected')</option>
-					#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
-						<option value='searchInAllOrgunits' />$i18n.getString('all_orgunits')</option>
+					#if( $auth.hasAccess( "dhis-web-caseentry", "searchInOtherOrgunits" ) )
+						<option value='searchInBelowSelectedOrgunit' />$i18n.getString('selected_and_all_below')</option>
 					#end
-					<option value='searchInUserOrgunits' />$i18n.getString('user_orgunits')</option>
-					<option value='searchBelowOrgunit' />$i18n.getString('selected_and_all_below')</option>
+					<option value='searchInUserOrgunits' />$i18n.getString('all_visible')</option>
+					#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
+						<option value='searchInAllOrgunits' />$i18n.getString('all_in_system')</option>
+					#end
 				</select>
 			</td>
 		</tr>
-		<tr id='enrollmentSelectTR' class='hidden' >
+		<tr id="enrollmentSelectTR" class='hidden' >
 			<td>$i18n.getString('show')</td>
 			<td>
 				<select id='statusEnrollment'>
