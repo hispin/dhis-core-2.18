@@ -39,8 +39,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
@@ -67,6 +70,7 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
+ * @author Jim Grace
  * @version $Id$
  */
 public class ValidationRuleServiceTest
@@ -134,9 +138,25 @@ public class ValidationRuleServiceTest
 
     private Period periodI;
 
+    private Period periodJ;
+
+    private Period periodK;
+
+    private Period periodL;
+
+    private Period periodM;
+
+    private Period periodN;
+
+    private Period periodO;
+
+    private Period periodW;
+
     private Period periodX;
 
     private Period periodY;
+
+    private Period periodZ;
 
     private OrganisationUnit sourceA;
 
@@ -176,6 +196,8 @@ public class ValidationRuleServiceTest
 
     private ValidationRule monitoringRuleK;
 
+    private ValidationRule monitoringRuleL;
+
     private ValidationRuleGroup group;
 
     private PeriodType periodTypeWeekly;
@@ -188,6 +210,12 @@ public class ValidationRuleServiceTest
     // Fixture
     // -------------------------------------------------------------------------
 
+    private void joinDataSetToSource ( DataSet dataSet, OrganisationUnit source )
+    {
+    	source.getDataSets().add( dataSet );
+    	dataSet.getSources().add( source );
+    }
+    
     @Override
     public void setUpTest()
         throws Exception
@@ -248,10 +276,10 @@ public class ValidationRuleServiceTest
             "descriptionB", dataElementsB , optionCombos);
         expressionC = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 2", "descriptionC", dataElementsC, optionCombos );
         expressionD = new Expression( "#{" + dataElementB.getUid() + suffix + "}", "descriptionD", dataElementsC, optionCombos );
-        expressionE = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 1.25", "descriptionE", dataElementsC, optionCombos );
+        expressionE = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 1.5", "descriptionE", dataElementsC, optionCombos );
         expressionF = new Expression( "#{" + dataElementB.getUid() + suffix + "} / #{" + dataElementE.getUid() + suffix + "}",
         		"descriptionF", dataElementsD, optionCombos );
-        expressionG = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 1.25 / #{" + dataElementE.getUid() + suffix + "}",
+        expressionG = new Expression( "#{" + dataElementB.getUid() + suffix + "} * 1.5 / #{" + dataElementE.getUid() + suffix + "}",
         		"descriptionG", dataElementsD, optionCombos );
 
         expressionService.addExpression( expressionA );
@@ -265,14 +293,26 @@ public class ValidationRuleServiceTest
         periodA = createPeriod( periodTypeMonthly, getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
         periodB = createPeriod( periodTypeMonthly, getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) );
         periodC = createPeriod( periodTypeMonthly, getDate( 2000, 5, 1 ), getDate( 2000, 5, 31 ) );
-        periodD = createPeriod( periodTypeMonthly, getDate( 2000, 6, 1 ), getDate( 2000, 6, 31 ) );
-        periodE = createPeriod( periodTypeMonthly, getDate( 2001, 2, 1 ), getDate( 2001, 2, 28 ) );
+        periodD = createPeriod( periodTypeMonthly, getDate( 2000, 6, 1 ), getDate( 2000, 6, 30 ) );
+        periodE = createPeriod( periodTypeMonthly, getDate( 2000, 7, 1 ), getDate( 2000, 7, 31 ) );
+        
         periodF = createPeriod( periodTypeMonthly, getDate( 2001, 3, 1 ), getDate( 2001, 3, 31 ) );
         periodG = createPeriod( periodTypeMonthly, getDate( 2001, 4, 1 ), getDate( 2001, 4, 30 ) );
         periodH = createPeriod( periodTypeMonthly, getDate( 2001, 5, 1 ), getDate( 2001, 5, 31 ) );
-        periodI = createPeriod( periodTypeWeekly, getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) );
+        periodI = createPeriod( periodTypeMonthly, getDate( 2001, 6, 1 ), getDate( 2001, 6, 30 ) );
+        periodJ = createPeriod( periodTypeMonthly, getDate( 2001, 7, 1 ), getDate( 2001, 7, 31 ) );
+        
+        periodK = createPeriod( periodTypeMonthly, getDate( 2002, 3, 1 ), getDate( 2002, 3, 31 ) );
+        periodL = createPeriod( periodTypeMonthly, getDate( 2002, 4, 1 ), getDate( 2002, 4, 30 ) );
+        periodM = createPeriod( periodTypeMonthly, getDate( 2002, 5, 1 ), getDate( 2002, 5, 31 ) );
+        periodN = createPeriod( periodTypeMonthly, getDate( 2002, 6, 1 ), getDate( 2002, 6, 30 ) );
+        periodO = createPeriod( periodTypeMonthly, getDate( 2002, 7, 1 ), getDate( 2002, 7, 31 ) );
+        
+        periodW = createPeriod( periodTypeWeekly, getDate( 2002, 4, 1 ), getDate( 2000, 4, 7 ) );
+        
         periodX = createPeriod( periodTypeYearly, getDate( 2000, 1, 1 ), getDate( 2000, 12, 31 ) );
         periodY = createPeriod( periodTypeYearly, getDate( 2001, 1, 1 ), getDate( 2001, 12, 31 ) );
+        periodZ = createPeriod( periodTypeYearly, getDate( 2002, 1, 1 ), getDate( 2002, 12, 31 ) );
 
         dataSetWeekly = createDataSet( 'W', periodTypeWeekly );
         dataSetMonthly = createDataSet( 'M', periodTypeMonthly );
@@ -286,17 +326,28 @@ public class ValidationRuleServiceTest
         sourceF = createOrganisationUnit( 'F', sourceD );
         sourceG = createOrganisationUnit( 'G' );
 
-        sourceA.getDataSets().add( dataSetMonthly );
-        sourceB.getDataSets().add( dataSetMonthly );
-        sourceC.getDataSets().add( dataSetWeekly );
-        sourceC.getDataSets().add( dataSetMonthly );
-        sourceC.getDataSets().add( dataSetYearly );
-        sourceD.getDataSets().add( dataSetMonthly );
-        sourceD.getDataSets().add( dataSetYearly );
-        sourceE.getDataSets().add( dataSetMonthly );
-        sourceE.getDataSets().add( dataSetYearly );
-        sourceF.getDataSets().add( dataSetMonthly );
-        sourceF.getDataSets().add( dataSetYearly );
+        sourcesA.add( sourceA );
+        sourcesA.add( sourceB );
+
+        joinDataSetToSource( dataSetMonthly, sourceA );
+        joinDataSetToSource( dataSetMonthly, sourceB );
+        joinDataSetToSource( dataSetMonthly, sourceC );
+        joinDataSetToSource( dataSetMonthly, sourceD );
+        joinDataSetToSource( dataSetMonthly, sourceE );
+        joinDataSetToSource( dataSetMonthly, sourceF );
+        
+        joinDataSetToSource( dataSetWeekly, sourceB );
+        joinDataSetToSource( dataSetWeekly, sourceC );
+        joinDataSetToSource( dataSetWeekly, sourceD );
+        joinDataSetToSource( dataSetWeekly, sourceE );
+        joinDataSetToSource( dataSetWeekly, sourceF );
+        joinDataSetToSource( dataSetWeekly, sourceG );
+
+        joinDataSetToSource( dataSetYearly, sourceB );
+        joinDataSetToSource( dataSetYearly, sourceC );
+        joinDataSetToSource( dataSetYearly, sourceD );
+        joinDataSetToSource( dataSetYearly, sourceE );
+        joinDataSetToSource( dataSetYearly, sourceF );
 
         organisationUnitService.addOrganisationUnit( sourceA );
         organisationUnitService.addOrganisationUnit( sourceB );
@@ -304,70 +355,64 @@ public class ValidationRuleServiceTest
         organisationUnitService.addOrganisationUnit( sourceD );
         organisationUnitService.addOrganisationUnit( sourceE );
         organisationUnitService.addOrganisationUnit( sourceF );
+        organisationUnitService.addOrganisationUnit( sourceG );
         
-        sourcesA.add( sourceA );
-        sourcesA.add( sourceB );
-
         dataSetMonthly.getDataElements().add( dataElementA );
         dataSetMonthly.getDataElements().add( dataElementB );
         dataSetMonthly.getDataElements().add( dataElementC );
         dataSetMonthly.getDataElements().add( dataElementD );
 
-        dataSetMonthly.getSources().add( sourceA );
-        dataSetMonthly.getSources().add( sourceB );
-        dataSetMonthly.getSources().add( sourceC );
-        dataSetMonthly.getSources().add( sourceD );
-        dataSetMonthly.getSources().add( sourceE );
-        dataSetMonthly.getSources().add( sourceF );
-        dataSetWeekly.getSources().add( sourceB );
-        dataSetWeekly.getSources().add( sourceC );
-        dataSetWeekly.getSources().add( sourceD );
-        dataSetWeekly.getSources().add( sourceE );
-        dataSetWeekly.getSources().add( sourceF );
-        dataSetWeekly.getSources().add( sourceG );
-        dataSetYearly.getSources().add( sourceB );
-        dataSetYearly.getSources().add( sourceC );
-        dataSetYearly.getSources().add( sourceD );
-        dataSetYearly.getSources().add( sourceE );
-        dataSetYearly.getSources().add( sourceF );
+        dataSetWeekly.getDataElements().add( dataElementE );
+
+        dataSetYearly.getDataElements().add( dataElementE );
 
         dataElementA.getDataSets().add( dataSetMonthly );
         dataElementB.getDataSets().add( dataSetMonthly );
         dataElementC.getDataSets().add( dataSetMonthly );
         dataElementD.getDataSets().add( dataSetMonthly );
+        
+        dataElementE.getDataSets().add( dataSetWeekly );
 
+        dataElementE.getDataSets().add( dataSetYearly );
+
+        dataSetService.addDataSet( dataSetWeekly );
         dataSetService.addDataSet( dataSetMonthly );
+        dataSetService.addDataSet( dataSetYearly );
 
         dataElementService.updateDataElement( dataElementA );
         dataElementService.updateDataElement( dataElementB );
         dataElementService.updateDataElement( dataElementC );
         dataElementService.updateDataElement( dataElementD );
+        dataElementService.updateDataElement( dataElementE );
 
         validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodTypeMonthly );
         validationRuleB = createValidationRule( 'B', greater_than, expressionB, expressionC, periodTypeMonthly );
         validationRuleC = createValidationRule( 'C', less_than_or_equal_to, expressionB, expressionA, periodTypeMonthly );
         validationRuleD = createValidationRule( 'D', less_than, expressionA, expressionC, periodTypeMonthly );
         
-        // Compare dataElementB with 1.25 times itself for one previous sequential period.
-        monitoringRuleE = createMonitoringRule( 'E', less_than, expressionD, expressionE, periodTypeMonthly, 1, 1, 0, 0, 0 );
+        // Compare dataElementB with 1.5 times itself for one sequential previous period.
+        monitoringRuleE = createMonitoringRule( 'E', less_than_or_equal_to, expressionD, expressionE, periodTypeMonthly, 1, 1, 0, 0, 0 );
 
-        // Compare dataElementB with 1.25 times itself for one previous annual period.
-        monitoringRuleF = createMonitoringRule( 'F', less_than, expressionD, expressionE, periodTypeMonthly, 1, 0, 1, 0, 0 );
+        // Compare dataElementB with 1.5 times itself for one annual previous period.
+        monitoringRuleF = createMonitoringRule( 'F', less_than_or_equal_to, expressionD, expressionE, periodTypeMonthly, 1, 0, 1, 0, 0 );
         
-        // Compare dataElementB with 1.25 times itself for two previous and two annual sequential periods.
-        monitoringRuleG = createMonitoringRule( 'G', less_than, expressionD, expressionE, periodTypeMonthly, 1, 2, 2, 0, 0 );
+        // Compare dataElementB with 1.5 times itself for one sequential and two annual previous periods.
+        monitoringRuleG = createMonitoringRule( 'G', less_than_or_equal_to, expressionD, expressionE, periodTypeMonthly, 1, 1, 2, 0, 0 );
         
-        // Compare dataElementB with 1.25 times itself for two previous and two annual sequential periods, discarding 2 high outliers.
-        monitoringRuleH = createMonitoringRule( 'H', less_than, expressionD, expressionE, periodTypeMonthly, 1, 2, 2, 2, 0 );
+        // Compare dataElementB with 1.5 times itself for two sequential and two annual previous periods.
+        monitoringRuleH = createMonitoringRule( 'H', less_than_or_equal_to, expressionD, expressionE, periodTypeMonthly, 1, 2, 2, 0, 0 );
         
-        // Compare dataElementB with 1.25 times itself for two previous and two annual sequential periods, discarding 2 low outliers.
-        monitoringRuleI = createMonitoringRule( 'I', less_than, expressionD, expressionE, periodTypeMonthly, 1, 2, 2, 2, 0 );
+        // Compare dataElementB with 1.5 times itself for two sequential and two annual previous periods, discarding 2 high outliers.
+        monitoringRuleI = createMonitoringRule( 'I', less_than_or_equal_to, expressionD, expressionE, periodTypeMonthly, 1, 2, 2, 2, 0 );
         
-        // Compare dataElementB with 1.25 times itself for two previous and two annual sequential periods, discarding 2 high & 2 low outliers.
-        monitoringRuleJ = createMonitoringRule( 'J', less_than, expressionD, expressionE, periodTypeMonthly, 1, 2, 2, 2, 2 );
+        // Compare dataElementB with 1.5 times itself for two sequential and two annual previous periods, discarding 2 low outliers.
+        monitoringRuleJ = createMonitoringRule( 'J', less_than_or_equal_to, expressionD, expressionE, periodTypeMonthly, 1, 2, 2, 0, 2 );
         
-        // Compare dataElements B/E with 1.25 * B/E for two previous and two annual sequential periods, no outlier discarding
-        monitoringRuleK = createMonitoringRule( 'K', less_than, expressionF, expressionG, periodTypeMonthly, 1, 2, 2, 0, 0 );
+        // Compare dataElementB with 1.5 times itself for two sequential and two annual previous periods, discarding 2 high & 2 low outliers.
+        monitoringRuleK = createMonitoringRule( 'K', less_than_or_equal_to, expressionD, expressionE, periodTypeMonthly, 1, 2, 2, 2, 2 );
+        
+        // Compare dataElements B/E with 1.5 * B/E for one annual period, no outlier discarding.
+        monitoringRuleL = createMonitoringRule( 'L', less_than_or_equal_to, expressionF, expressionG, periodTypeMonthly, 1, 0, 1, 0, 0 );
 
         group = createValidationRuleGroup( 'A' );
     }
@@ -378,6 +423,32 @@ public class ValidationRuleServiceTest
         return true;
     }
 
+    // -------------------------------------------------------------------------
+    // Local convenience routines
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns a naturally ordered list of ValidationResults.
+     * 
+     * When comparing two collections, this assures that all the items
+     * are in the same order for comparison. It also means that when there
+     * are different values for the same period/rule/source, etc., the
+     * results are more likely to be in the same order to make it easier
+     * to see the difference.
+     * 
+     * By making this a List instead of, say a TreeSet, duplicate values
+     * (if any should exist by mistake!) are preserved.
+     * 
+     * @param results collection of ValidationResult to order
+     * @return ValidationResults in their natural order
+     */
+    private List<ValidationResult> orderedList( Collection<ValidationResult> results )
+    {
+    	List<ValidationResult> resultList = new ArrayList<ValidationResult>( results );
+    	Collections.sort( resultList );
+    	return resultList;
+    }
+    
     // -------------------------------------------------------------------------
     // Business logic tests
     // -------------------------------------------------------------------------
@@ -413,8 +484,8 @@ public class ValidationRuleServiceTest
         // Note: in this and subsequent tests we insert the validation results collection into a new HashSet. This
         // insures that if they are the same as the reference results, they will appear in the same order.
         
-        Collection<ValidationResult> results = new HashSet<ValidationResult>( validationRuleService.validate( getDate( 2000, 2, 1 ),
-        		getDate( 2000, 6, 1 ), sourcesA ) );
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
@@ -435,7 +506,7 @@ public class ValidationRuleServiceTest
         }
 
         assertEquals( 8, results.size() );
-        assertEquals( reference, results );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
@@ -471,8 +542,8 @@ public class ValidationRuleServiceTest
 
         validationRuleService.addValidationRuleGroup( group );
 
-        Collection<ValidationResult> results = new HashSet<ValidationResult>( validationRuleService.validate( getDate( 2000, 2, 1 ),
-        		getDate( 2000, 6, 1 ), sourcesA, group ) );
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, group );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
@@ -488,7 +559,7 @@ public class ValidationRuleServiceTest
         }
 
         assertEquals( 4, results.size() );
-        assertEquals( reference, results );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
@@ -509,8 +580,8 @@ public class ValidationRuleServiceTest
         validationRuleService.saveValidationRule( validationRuleC );
         validationRuleService.saveValidationRule( validationRuleD );
 
-        Collection<ValidationResult> results = new HashSet<ValidationResult>( validationRuleService.validate( getDate( 2000, 2, 1 ),
-        		getDate( 2000, 6, 1 ), sourceA ) );
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourceA );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
@@ -526,7 +597,7 @@ public class ValidationRuleServiceTest
         }
 
         assertEquals( 4, results.size() );
-        assertEquals( reference, results );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
@@ -542,7 +613,8 @@ public class ValidationRuleServiceTest
         validationRuleService.saveValidationRule( validationRuleC );
         validationRuleService.saveValidationRule( validationRuleD );
 
-        Collection<ValidationResult> results = new HashSet<ValidationResult>( validationRuleService.validate( dataSetMonthly, periodA, sourceA ) );
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		dataSetMonthly, periodA, sourceA );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
@@ -556,64 +628,389 @@ public class ValidationRuleServiceTest
         }
 
         assertEquals( 2, results.size() );
-        assertEquals( reference, results );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
     public void testValidateMonitoringSequential()
     {
+    	// System.out.println("\ntestValidateMonitoring1Sequential");
+    	// Note: for some monitoring tests, we enter more data than needed, to be sure the extra data *isn't* used.
     	
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "30", categoryOptionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "35", categoryOptionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "40", categoryOptionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "45", categoryOptionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "50", categoryOptionCombo ) ); // Jul 2001
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+    	
+        validationRuleService.saveValidationRule( monitoringRuleE );
+        
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2002, 1, 15 ), getDate( 2002, 8, 15 ), sourceA );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleE, 200.0, 150.0 /* 1.5 * 100 */ ) );
+        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleE, 400.0, 300.0 /* 1.5 * 200 */ ) );
+        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleE, 700.0, 600.0 /* 1.5 * 400 */ ) );
+
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 3, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
     public void testValidateMonitoringAnnual()
     {
+    	// System.out.println("\ntestValidateMonitoring1Annual");
+
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
     	
+        validationRuleService.saveValidationRule( monitoringRuleF );
+        
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2002, 1, 15 ), getDate( 2002, 8, 15 ), sourceA );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodK, sourceA, monitoringRuleF, 100.0, 75.0 /* 1.5 * 50 */ ) );
+        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleF, 400.0, 300.0 /* 1.5 * 200 */ ) );
+        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleF, 800.0, 600.0 /* 1.5 * 400 */ ) );
+
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 3, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
-    public void testValidateMonitoringSequentialAndAnnual()
+    public void testValidateMonitoring1Sequential2Annual()
     {
+    	// System.out.println("\ntestValidateMonitoring1Sequential2Annual");
+
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
     	
+        validationRuleService.saveValidationRule( monitoringRuleG ); // 1 sequential and 2 annual periods
+        
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2002, 1, 15 ), getDate( 2002, 8, 15 ), sourceA );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodK, sourceA, monitoringRuleG, 100.0, 83.6 /* 1.5 * ( 11 + 12 + 50 + 150 ) / 4 */  ) );
+        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleG, 200.0, 114.9 /* 1.5 * ( 11 + 12 + 13 + 50 + 150 + 200 + 100 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleG, 400.0, 254.8 /* 1.5 * ( 12 + 13 + 14 + 150 + 200 + 600 + 200 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleG, 700.0, 351.9 /* 1.5 * ( 13 + 14 + 15 + 200 + 600 + 400 + 400 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleG, 800.0, 518.7 /* 1.5 * ( 14 + 15 + 600 + 400 + 700 ) / 5 */  ) );
+
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 5, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
+    }
+    
+    @Test
+    public void testValidateMonitoring2Sequential2Annual()
+    {
+    	// System.out.println("\ntestValidateMonitoring2Sequential2Annual");
+
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+    	
+        validationRuleService.saveValidationRule( monitoringRuleH ); // 2 sequential and 2 annual periods
+        
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2002, 1, 15 ), getDate( 2002, 8, 15 ), sourceA );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        // Not in results: reference.add( new ValidationResult( periodK, sourceA, monitoringRuleH, 100.0, 109.0 /* 1.5 * ( 11 + 12 + 13 + 50 + 150 + 200 ) / 6 */  ) );
+        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleH, 200.0, 191.7 /* 1.5 * ( 11 + 12 + 13 + 14 + 50 + 150 + 200 + 600 + 100 ) / 9 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleH, 400.0, 220.6 /* 1.5 * ( 11 + 12 + 13 + 14 + 15 + 50 + 150 + 200 + 600 + 400 + 100 + 200 ) / 12 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleH, 700.0, 300.6 /* 1.5 * ( 12 + 13 + 14 + 15 + 150 + 200 + 600 + 400 + 200 + 400 ) / 10 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleH, 800.0, 439.1 /* 1.5 * ( 13 + 14 + 15 + 200 + 600 + 400 + 400 + 700 ) / 8 */  ) );
+        
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 4, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
-    public void testValidateMonitoringTwoSequentialAndAnnual()
+    public void testValidateMonitoring2HighOutliers()
     {
+    	// System.out.println("\ntestValidateMonitoring2HighOutliers");
+
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
     	
+        validationRuleService.saveValidationRule( monitoringRuleI ); // discard 2 highest outliers
+        
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2002, 1, 15 ), getDate( 2002, 8, 15 ), sourceA );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodK, sourceA, monitoringRuleI, 100.0, 32.3 /* 1.5 * ( 11 + 12 + 13 + 50 ) / 4 */  ) );
+        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleI, 200.0, 75.0 /* 1.5 * ( 11 + 12 + 13 + 14 + 50 + 150 + 100 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleI, 400.0, 114.8 /* 1.5 * ( 11 + 12 + 13 + 14 + 15 + 50 + 150 + 200 + 100 + 200 ) / 10 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleI, 700.0, 188.3 /* 1.5 * ( 12 + 13 + 14 + 15 + 150 + 200 + 200 + 400 ) / 8 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleI, 800.0, 260.5 /* 1.5 * ( 13 + 14 + 15 + 200 + 400 + 400 ) / 6 */  ) );
+        
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 5, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
-    public void testValidateMonitoringHighOutliers()
+    public void testValidateMonitoring2LowOutliers()
     {
+    	// System.out.println("\ntestValidateMonitoring2LowOutliers");
+
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
     	
+        validationRuleService.saveValidationRule( monitoringRuleJ ); // 2 sequential and 2 annual periods
+        
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2002, 1, 15 ), getDate( 2002, 8, 15 ), sourceA );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        // Not in results: reference.add( new ValidationResult( periodK, sourceA, monitoringRuleH, 100.0, 154.9 /* 1.5 * ( 13 + 50 + 150 + 200 ) / 4 */  ) );
+        // Not in results: reference.add( new ValidationResult( periodL, sourceA, monitoringRuleJ, 200.0, 241.5 /* 1.5 * ( 13 + 14 + 50 + 150 + 200 + 600 + 100 ) / 7 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleJ, 400.0, 261.3 /* 1.5 * ( 13 + 14 + 15 + 50 + 150 + 200 + 600 + 400 + 100 + 200 ) / 10 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleJ, 700.0, 371.1 /* 1.5 * ( 14 + 15 + 150 + 200 + 600 + 400 + 200 + 400 ) / 8 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleJ, 800.0, 578.8 /* 1.5 * ( 15 + 200 + 600 + 400 + 400 + 700 ) / 6 */  ) );
+        
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 3, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
-    public void testValidateMonitoringLowOutliers()
+    public void testValidateMonitoring2High2LowOutliers()
     {
-    	
-    }
+    	// System.out.println("\ntestValidateMonitoring2High2LowOutliers");
 
-    @Test
-    public void testValidateMonitoringHighAndLowOutliers()
-    {
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
     	
+        validationRuleService.saveValidationRule( monitoringRuleK ); // discard 2 highest outliers
+        
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2002, 1, 15 ), getDate( 2002, 8, 15 ), sourceA );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodK, sourceA, monitoringRuleK, 100.0, 47.3 /* 1.5 * ( 13 + 50 ) / 2 */  ) );
+        reference.add( new ValidationResult( periodL, sourceA, monitoringRuleK, 200.0, 98.1 /* 1.5 * ( 13 + 14 + 50 + 150 + 100 ) / 5 */  ) );
+        reference.add( new ValidationResult( periodM, sourceA, monitoringRuleK, 400.0, 139.1 /* 1.5 * ( 13 + 14 + 15 + 50 + 150 + 200 + 100 + 200 ) / 8 */  ) );
+        reference.add( new ValidationResult( periodN, sourceA, monitoringRuleK, 700.0, 244.8 /* 1.5 * ( 14 + 15 + 150 + 200 + 200 + 400 ) / 6 */  ) );
+        reference.add( new ValidationResult( periodO, sourceA, monitoringRuleK, 800.0, 380.6 /* 1.5 * ( 15 + 200 + 400 + 400 ) / 4 */  ) );
+        
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 5, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     @Test
     public void testValidateMonitoringWithBaseline()
     {
-    	
+    	// System.out.println("\ntestValidateMonitoringWithBaseline");
+
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "11", categoryOptionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "12", categoryOptionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceB, "13", categoryOptionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceB, "14", categoryOptionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceB, "15", categoryOptionCombo ) ); // Jul 2000
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceB, "50", categoryOptionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceB, "150", categoryOptionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceB, "200", categoryOptionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceB, "600", categoryOptionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceB, "400", categoryOptionCombo ) ); // Jul 2001
+
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceB, "100", categoryOptionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceB, "200", categoryOptionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceB, "400", categoryOptionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceB, "700", categoryOptionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceB, "800", categoryOptionCombo ) ); // Jul 2002
+        
+        // This weekly baseline data should be ignored because the period length is less than monthly:
+        dataValueService.addDataValue( createDataValue( dataElementE, periodW, sourceB, "1000", categoryOptionCombo ) ); // Week: 1-7 Apr 2002
+
+        dataValueService.addDataValue( createDataValue( dataElementE, periodX, sourceB, "40", categoryOptionCombo ) ); // Year: 2000
+        dataValueService.addDataValue( createDataValue( dataElementE, periodY, sourceB, "50", categoryOptionCombo ) ); // Year: 2001
+        dataValueService.addDataValue( createDataValue( dataElementE, periodZ, sourceB, "10", categoryOptionCombo ) ); // Year: 2002
+        
+        validationRuleService.saveValidationRule( monitoringRuleL );
+        
+        Collection<ValidationResult> results = validationRuleService.validate(
+        		getDate( 2002, 1, 15 ), getDate( 2002, 8, 15 ), sourceB );
+        
+        Collection<ValidationResult> reference = new HashSet<ValidationResult>();
+
+        reference.add( new ValidationResult( periodK, sourceB, monitoringRuleL, 10.0 /* 100 / 10 */, 1.5 /* 1.5 * 50 / 50 */ ) );
+        reference.add( new ValidationResult( periodL, sourceB, monitoringRuleL, 20.0 /* 200 / 10 */, 4.5 /* 1.5 * 150 / 50 */ ) );
+        reference.add( new ValidationResult( periodM, sourceB, monitoringRuleL, 40.0 /* 400 / 10 */, 6.0 /* 1.5 * 200 / 50 */ ) );
+        reference.add( new ValidationResult( periodN, sourceB, monitoringRuleL, 70.0 /* 700 / 10 */, 18.0 /* 1.5 * 600 / 50 */ ) );
+        reference.add( new ValidationResult( periodO, sourceB, monitoringRuleL, 80.0 /* 800 / 10 */, 12.0 /* 1.5 * 400 / 50 */ ) );
+
+        for ( ValidationResult result : results )
+        {
+            assertFalse( MathUtils.expressionIsTrue( result.getLeftsideValue(), result.getValidationRule()
+                .getOperator(), result.getRightsideValue() ) );
+        }
+
+        assertEquals( 5, results.size() );
+        assertEquals( orderedList( reference ), orderedList( results ) );
     }
 
     // -------------------------------------------------------------------------
     // CURD functionality tests
     // -------------------------------------------------------------------------
 
-    //@Test
+    @Test
     public void testSaveValidationRule()
     {
+    	// System.out.println("\ntestSaveValidationRule");
         int id = validationRuleService.saveValidationRule( validationRuleA );
 
         validationRuleA = validationRuleService.getValidationRule( id );
@@ -677,7 +1074,7 @@ public class ValidationRuleServiceTest
         assertNull( validationRuleService.getValidationRule( idB ) );
     }
 
-    //@Test
+    @Test
     public void testGetAllValidationRules()
     {
         validationRuleService.saveValidationRule( validationRuleA );

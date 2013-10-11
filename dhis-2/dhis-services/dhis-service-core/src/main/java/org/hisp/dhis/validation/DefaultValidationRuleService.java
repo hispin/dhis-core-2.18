@@ -175,7 +175,7 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources )
     {
-        log.info( "validate( startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "] )" );
+        log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "]" );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = getAllValidationRules();
         return validateInternal( sources, periods, rules, ValidationRunType.INTERACTIVE, null );
@@ -184,8 +184,8 @@ public class DefaultValidationRuleService
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
         ValidationRuleGroup group )
     {
-        log.info( "validate( startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size()
-            + "] group=" + group.getName() + " )" );
+    	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size()
+            + "] group=" + group.getName() );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = group.getMembers();
         return validateInternal( sources, periods, rules, ValidationRunType.INTERACTIVE, null );
@@ -193,7 +193,7 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source )
     {
-        log.info( "validate( startDate=" + startDate + " endDate=" + endDate + " source=" + source.getName() + " )" );
+    	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " source=" + source.getName() );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = getAllValidationRules();
         return validateInternal( source, periods, rules, ValidationRunType.INTERACTIVE, null );
@@ -201,8 +201,8 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source )
     {
-        log.info( "validate( dataSet=" + dataSet.getName() + " period=[" + period.getPeriodType().getName() + " "
-            + period.getStartDate() + " " + period.getEndDate() + "]" + " source=" + source.getName() + " )" );
+    	log.info( "Validate dataSet=" + dataSet.getName() + " period=[" + period.getPeriodType().getName() + " "
+            + period.getStartDate() + " " + period.getEndDate() + "]" + " source=" + source.getName() );
         Collection<Period> periods = new ArrayList<Period>();
         periods.add( period );
 
@@ -241,11 +241,13 @@ public class DefaultValidationRuleService
         
         Date thisAlertRun = new Date();
         
-        log.info( "alertRun() sources[" + sources.size() + "] periods[" + periods.size() + "] rules[" + rules.size()
+        log.info( "alertRun sources[" + sources.size() + "] periods[" + periods.size() + "] rules[" + rules.size()
             + "] last run " + lastAlertRun == null ? "(none)" : lastAlertRun );
+        
         Collection<ValidationResult> results = validateInternal( sources, periods, rules, ValidationRunType.ALERT,
             lastAlertRun );
-        log.info( "alertRun() results[" + results.size() + "]" );
+        
+        log.trace( "alertRun() results[" + results.size() + "]" );
         
         if ( !results.isEmpty() )
         {

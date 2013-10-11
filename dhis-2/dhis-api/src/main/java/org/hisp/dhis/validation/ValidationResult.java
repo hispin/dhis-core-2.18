@@ -145,42 +145,77 @@ public class ValidationResult
         {
             return false;
         }
+        
+        if ( leftsideValue == null )
+        {
+            if ( other.leftsideValue != null )
+            {
+                return false;
+            }
+        }
+        else if ( other.leftsideValue == null )
+        {
+            return false;
+        }
+        else if ( Math.round( 100.0 * leftsideValue ) != Math.round( 100 * other.leftsideValue ) )
+        {
+            return false;
+        }
+
+        if ( rightsideValue == null )
+        {
+            if ( other.rightsideValue != null )
+            {
+                return false;
+            }
+        }
+        else if ( other.rightsideValue == null )
+        {
+            return false;
+        }
+        else if ( Math.round( 100.0 * leftsideValue ) != Math.round( 100 * other.leftsideValue ) )
+        {
+            return false;
+        }
 
         return true;
     }
 
     public int compareTo( ValidationResult other )
     {
-        if ( source.getName().compareTo( other.source.getName() ) != 0 )
-        {
-            return source.getName().compareTo( other.source.getName() );
-        }
-        else if ( period.getStartDate().compareTo( other.period.getStartDate() ) != 0 )
-        {
-            return period.getStartDate().compareTo( other.period.getStartDate() );
-        }
-        else if ( source.getName().compareTo( other.source.getName() ) != 0 )
-        {
-            return source.getName().compareTo( other.source.getName() );
-        }
-        else if ( period.getStartDate().compareTo( other.period.getStartDate() ) != 0 )
-        {
-            return period.getStartDate().compareTo( other.period.getStartDate() );
-        }
-        else if ( period.getEndDate().compareTo( other.period.getEndDate() ) != 0 )
-        {
-            return period.getEndDate().compareTo( other.period.getEndDate() );
-        }
-        else if ( validationRule.getImportance().compareTo( other.validationRule.getImportance() ) != 0 )
-        {
-            return validationImportanceOrder( validationRule.getImportance() )
-                - validationImportanceOrder( other.validationRule.getImportance() );
-        }
-        else
-        {
-            return validationRule.getLeftSide().getDescription()
-                .compareTo( other.validationRule.getLeftSide().getDescription() );
-        }
+    	int result;
+    	
+    	result = source.getName().compareTo( other.source.getName() );
+    	if ( result != 0 ) return result;
+    	
+    	result = period.getStartDate().compareTo( other.period.getStartDate() );
+    	if ( result != 0 ) return result;
+
+    	result = period.getEndDate().compareTo( other.period.getEndDate() );
+    	if ( result != 0 ) return result;
+
+    	result = validationImportanceOrder( validationRule.getImportance() )
+				- validationImportanceOrder( other.validationRule.getImportance() );
+    	if ( result != 0 ) return result;
+
+    	result = validationRule.getLeftSide().getDescription()
+				.compareTo( other.validationRule.getLeftSide().getDescription() );
+    	if ( result != 0 ) return result;
+
+    	result = validationRule.getOperator().compareTo( other.validationRule.getOperator() );
+    	if ( result != 0 ) return result;
+
+    	result = validationRule.getRightSide().getDescription()
+				.compareTo( other.validationRule.getRightSide().getDescription() );
+    	if ( result != 0 ) return result;
+
+    	result = ( int ) Math.signum( Math.round( 100.0 * leftsideValue ) - Math.round( 100.0 * other.leftsideValue ) );
+    	if ( result != 0 ) return result;
+    	
+    	result = ( int ) Math.signum( Math.round( 100.0 * rightsideValue ) - Math.round( 100.0 * other.rightsideValue ) );
+    	if ( result != 0 ) return result;
+    	
+    	return 0;
     }
 
     private int validationImportanceOrder( String importance )
