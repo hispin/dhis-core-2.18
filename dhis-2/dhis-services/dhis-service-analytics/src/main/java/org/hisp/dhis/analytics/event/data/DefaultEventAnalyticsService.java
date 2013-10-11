@@ -37,6 +37,7 @@ import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -95,6 +96,8 @@ public class DefaultEventAnalyticsService
     private static final String ITEM_ISDEAD = "isdead";
     
     private static final String COL_NAME_EVENTDATE = "executiondate";
+
+    private static final List<String> SORTABLE_ITEMS = Arrays.asList( ITEM_EXECUTION_DATE, ITEM_ORG_UNIT_NAME, ITEM_ORG_UNIT_CODE );
     
     @Autowired
     private ProgramService programService;
@@ -464,14 +467,14 @@ public class DefaultEventAnalyticsService
     
     private String getSortItem( String item, Program program )
     {
-        if ( !ITEM_EXECUTION_DATE.equalsIgnoreCase( item ) && getItem( program, item, null, null ) == null )
+        if ( !SORTABLE_ITEMS.contains( item.toLowerCase() ) && getItem( program, item, null, null ) == null )
         {
             throw new IllegalQueryException( "Descending sort item is invalid: " + item );
         }
         
         item = ITEM_EXECUTION_DATE.equalsIgnoreCase( item ) ? COL_NAME_EVENTDATE : item;
         
-        return item;
+        return item.toLowerCase();
     }
     
     private QueryItem getItem( Program program, String item, String operator, String filter )
