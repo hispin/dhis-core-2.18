@@ -2379,14 +2379,12 @@ function searchByIdsOnclick()
 function advancedSearchOnclick()
 {
 	jQuery('#advanced-search').toggle();
-	if( getFieldValue('showSearchIdField')=='true' )
-	{
-		if(jQuery('#advanced-search').is(':visible')){
-			hideById('searchByIdTR');
-		}
-		else{
-			showById('searchByIdTR');
-		}
+	
+	if(jQuery('#advanced-search').is(':visible')){
+		hideById('searchByIdTR');
+	}
+	else{
+		showById('searchByIdTR');
 	}
 }
 
@@ -2400,16 +2398,13 @@ function clearAndCloseSearch()
 	});
 	addAttributeOption();
 	hideById('advanced-search');
-	hideById('listPatientDiv');
+	showById('searchByIdTR');
 }
 
 function hideSearchCriteria()
 {
 	hideById('advanced-search');
-	if( getFieldValue('showSearchIdField')=='true' )
-	{
-		showById('showSearchCriteriaDiv');
-	}
+	showById('showSearchCriteriaDiv');
 }
 
 function showSearchCriteria()
