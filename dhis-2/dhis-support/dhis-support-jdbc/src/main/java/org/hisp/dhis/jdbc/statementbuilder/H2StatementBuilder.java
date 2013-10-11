@@ -156,12 +156,6 @@ public class H2StatementBuilder
     }
 
     @Override
-    public String limitRecord( int min, int max )
-    {
-        return " LIMIT " + max + " OFFSET " + min;
-    }
-
-    @Override
     public String getAddDate( String dateField, int days )
     {
         return "DATEADD('DAY'," + days + "," + dateField + ")";
