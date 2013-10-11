@@ -36,6 +36,12 @@
 			</result>
 			<param name="requiredAuthorities">F_SEARCH_PATIENT_IN_ALL_FACILITIES</param>
 		</action>
+		
+		<action name="searchInOtherOrgunits" class="org.hisp.dhis.caseentry.action.NoAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<param name="requiredAuthorities">F_SEARCH_PATIENT_IN_OTHER_ORGUNITS</param>
+		</action>
 
 		<action name="searchPatient"
 			class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
