@@ -39,6 +39,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -66,6 +68,8 @@ import org.hisp.dhis.period.PeriodType;
  */
 public class ValidationRunContext
 {
+    private static final Log log = LogFactory.getLog( ValidationRunContext.class );
+
     private Map<PeriodType, PeriodTypeExtended> periodTypeExtendedMap;
 
     private ValidationRunType runType;
@@ -141,6 +145,8 @@ public class ValidationRunContext
     private void initialize( Collection<OrganisationUnit> sources, Collection<Period> periods,
         Collection<ValidationRule> rules )
     {
+    	boolean monitoringRulesPresent = false;
+
         // Group the periods by period type.
         for ( Period period : periods )
         {
@@ -150,6 +156,17 @@ public class ValidationRunContext
 
         for ( ValidationRule rule : rules )
         {
+        	if ( ValidationRule.RULE_TYPE_MONITORING.equals( rule.getRuleType() ) )
+        	{
+        		if ( rule.getOrganisationUnitLevel() == null )
+        		{
+        			log.error( "monitoring-type validationRule '" + ( rule.getName() == null ? "" : rule.getName() )
+        					+ "' has no organisationUnitLevel." );
+        			continue; // Ignore rule, avoid null reference later.
+        		}
+        		monitoringRulesPresent = true;
+        	}
+
             // Find the period type extended for this rule
             PeriodTypeExtended periodTypeX = getOrCreatePeriodTypeExtended( rule.getPeriodType() );
             periodTypeX.getRules().add( rule ); // Add this rule to the period
@@ -183,29 +200,59 @@ public class ValidationRunContext
             }
         }
 
+        // If we have some monitoring rules, then make sure that we add all
+        // the descendants of each source to our collection of sources.
+        // This is so we can recurse if needed to find monitoring rule values.
+        if ( monitoringRulesPresent )
+        {
+	        for ( OrganisationUnit source : new HashSet<OrganisationUnit>( sources ) )
+	        {
+	        	addSourceRecursive ( sources, source );
+	        }
+        }
+        
+        // Get the information we need for each source.
         for ( OrganisationUnit source : sources )
         {
             OrganisationUnitExtended sourceX = new OrganisationUnitExtended( source );
             sourceXs.add( sourceX );
 
-            Map<PeriodType, Set<DataElement>> sourceDataElementsByPeriodType = source
+            Map<PeriodType, Set<DataElement>> sourceElementsMap = source
                 .getDataElementsInDataSetsByPeriodType();
             for ( PeriodTypeExtended periodTypeX : periodTypeExtendedMap.values() )
             {
-                Collection<DataElement> sourceDataElements = sourceDataElementsByPeriodType.get( periodTypeX
-                    .getPeriodType() );
-                if ( sourceDataElements != null )
-                {
-                    periodTypeX.getSourceDataElements().put( source, sourceDataElements );
-                }
-                else
-                {
-                    periodTypeX.getSourceDataElements().put( source, new HashSet<DataElement>() );
-                }
+            	periodTypeX.getSourceDataElements().put( source, new HashSet<DataElement>() );
+            	for ( PeriodType allowedType : periodTypeX.getAllowedPeriodTypes() )
+            	{
+	                Collection<DataElement> sourceDataElements = sourceElementsMap.get( allowedType );
+	                if ( sourceDataElements != null )
+	                {
+	                    periodTypeX.getSourceDataElements().get( source ).addAll( sourceDataElements );
+	                }
+            	}
             }
         }
     }
 
+    /**
+     * If the children of this organisation unit are not in the collection,
+     * then add them and all their descendants if needed.
+     * 
+     * @param sources organisation units to test and add to
+     * @param source organisation unit whose children to check
+     */
+    private void addSourceRecursive( Collection<OrganisationUnit> sources, OrganisationUnit source )
+    {
+    	for ( OrganisationUnit child : source.getChildren() )
+    	{
+    		if ( !sources.contains( child ) )
+			{
+				sources.add( child );
+				addSourceRecursive( sources, child );
+			}
+    	}
+    }
+    
     /**
      * Gets the PeriodTypeExtended from the context object. If not found,
      * creates a new PeriodTypeExtended object, puts it into the context object,

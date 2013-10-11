@@ -181,6 +181,54 @@ public class MathUtils
     }
 
     /**
+     * Rounds a number, keeping at least 3 significant digits.
+     * 
+     * <ul>
+     * <li>If value is >= 10 or <= -10 it will have 1 decimal.</li>
+     * <li>If value is between -10 and 10 it will have three significant digits.</li>
+     * </ul>
+     * 
+     * @param value the value to round off.
+     * @return a rounded off number.
+     */
+    public static double roundSignificant( double value )
+    {
+        if ( value >= 10.0 || value <= -10.0 )
+        {
+            return getRounded( value, 1 );
+        }
+        else
+        {
+            return roundToSignificantDigits( value, 3 );
+        }
+    }
+
+    /**
+     * Rounds a number to a given number of significant decimal digits.
+     * Note that the number will be left with *only* this number of
+     * significant digits regardless of magnitude, e.g. 12345 to 3 digits
+     * will be 12300, whereas 0.12345 will be 0.123.
+     * 
+     * @param value the value to round off.
+     * @param n the number of significant decimal digits desired.
+     * @return a rounded off number.
+     */
+    public static double roundToSignificantDigits( double value, int n )
+    {
+        if( value == 0.0 )
+        {
+            return 0.0;
+        }
+
+        final double d = Math.ceil( Math.log10( value < 0.0 ? - value: value ) );
+        final int power = n - (int) d;
+
+        final double magnitude = Math.pow( 10.0, power );
+        final long shifted = Math.round( value * magnitude );
+        return shifted / magnitude;
+    }
+    
+    /**
      * Returns a string representation of number rounded to given number of
      * significant figures
      * 

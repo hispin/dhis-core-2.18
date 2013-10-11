@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -70,6 +72,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class HibernateDataValueStore
     implements DataValueStore
 {
+    private static final Log log = LogFactory.getLog( HibernateDataValueStore.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -489,6 +493,8 @@ public class HibernateDataValueStore
             "and p.enddate >= '" + DateUtils.getMediumDateString( date ) + "' " +
         	"and p.periodtypeid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( PeriodType.class, periodTypes ) ) + ") ";
 
+        log.trace( "getDataValueMap sql = " + sql );
+        
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
         
         Map<DataElementOperand, Long> checkForDuplicates = new HashMap<DataElementOperand, Long>();
@@ -502,6 +508,8 @@ public class HibernateDataValueStore
             Date periodStartDate = rowSet.getDate( 5 );
             Date periodEndDate = rowSet.getDate( 6 );
             long periodInterval = periodEndDate.getTime() - periodStartDate.getTime();
+
+            log.trace( "row: " + dataElement + " = " + value + " [" + periodStartDate + " : " + periodEndDate + "]");
 
             if ( value != null )
             {

@@ -29,7 +29,7 @@ package org.hisp.dhis.validation;
  */
 
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
-import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import static org.hisp.dhis.system.util.MathUtils.roundSignificant;
 import static org.hisp.dhis.system.util.MathUtils.zeroIfNull;
 
 import java.util.ArrayList;
@@ -65,12 +65,6 @@ public class ValidationWorkerThread
     implements Runnable
 {
     private static final Log log = LogFactory.getLog( ValidationWorkerThread.class );
-
-    /**
-     * Defines how many decimal places for rounding the left and right side
-     * evaluation values in the report of results.
-     */
-    private static final int DECIMALS = 1;
 
     private OrganisationUnitExtended sourceX;
 
@@ -117,12 +111,12 @@ public class ValidationWorkerThread
                         Map<DataElementOperand, Double> currentValueMap = getDataValueMapRecursive( periodTypeX,
                             periodTypeX.getDataElements(), sourceDataElements, recursiveCurrentDataElements,
                             periodTypeX.getAllowedPeriodTypes(), period, sourceX.getSource(), lastUpdatedMap, incompleteValues );
-                        log.trace( "currentValueMap[" + currentValueMap.size() + "]" );
+                        log.trace( "\nsource " + sourceX.getSource().getName()
+                        		+ " [" + period.getStartDate() + " - " + period.getEndDate() + "]"
+                        		+ " valueMap[" + currentValueMap.size() + "]" );
 
                         for ( ValidationRule rule : rules )
                         {
-                            CalendarPeriodType calendarPeriodType = ( CalendarPeriodType ) rule.getPeriodType(); //TODO: remove
-
                             if ( evaluateCheck( lastUpdatedMap, rule, context ) )
                             {
                                 Double leftSide = context.getExpressionService().getExpressionValue( rule.getLeftSide(),
@@ -149,9 +143,10 @@ public class ValidationWorkerThread
 
                                         if ( violation )
                                         {
-                                            context.getValidationResults().add( new ValidationResult( period,
-                                                sourceX.getSource(), rule, getRounded( zeroIfNull( leftSide ), DECIMALS ),
-                                                getRounded( zeroIfNull( rightSide ), DECIMALS ) ) );
+                                            context.getValidationResults().add( new ValidationResult(
+                                            		period, sourceX.getSource(), rule,
+                                            		roundSignificant( zeroIfNull( leftSide ) ),
+                                            		roundSignificant( zeroIfNull( rightSide ) ) ) );
                                         }
 
                                         log.trace( "-->Evaluated " + rule.getName() + ": "
@@ -388,9 +383,9 @@ public class ValidationWorkerThread
     }
 
     /**
-     * Evaluates the right side of a monitoring-type validation rule for a given
-     * organisation unit and period, and adds the value to a list of sample
-     * values.
+     * Evaluates the right side of a monitoring-type validation rule for
+     * a given organisation unit and period, and adds the value to a list
+     * of sample values.
      * 
      * Note that for a monitoring-type rule, evaluating the right side
      * expression can result in sampling multiple periods and/or child
@@ -426,6 +421,13 @@ public class ValidationWorkerThread
             {
                 sampleValues.add( value );
             }
+
+            log.trace("ValidationRightSide[" + dataValueMap.size()+ "] - sample "
+            		+ (value == null ? "(null)" : value) + " [" + period.getStartDate() + " - " + period.getEndDate() + "]" );
+        }
+        else
+        {
+        	log.trace("ValidationRightSide - no period [" + period.getStartDate() + " - " + period.getEndDate() + "]" );
         }
     }
 
@@ -507,8 +509,12 @@ public class ValidationWorkerThread
     {
         Set<DataElement> dataElementsToGet = new HashSet<DataElement>( ruleDataElements );
         dataElementsToGet.retainAll( sourceDataElements );
-        log.trace( "getDataValueMapRecursive: source:" + source.getName() + " elementsToGet["
-            + dataElementsToGet.size() + "] allowedPeriodTypes[" + allowedPeriodTypes.size() + "]" );
+        log.trace( "getDataValueMapRecursive: source:" + source.getName()
+        		+ " ruleDataElements[" + ruleDataElements.size() // + Arrays.toString( ruleDataElements.toArray() )
+        		+ "] sourceDataElements[" + sourceDataElements.size() // + Arrays.toString( sourceDataElements.toArray() )
+        		+ "] elementsToGet[" + dataElementsToGet.size() // + Arrays.toString( sourceDataElements.toArray() )
+        		+ "] recursiveDataElements[" + recursiveDataElements.size()
+        		+ "] allowedPeriodTypes[" + allowedPeriodTypes.size() + "]" );
 
         Map<DataElementOperand, Double> dataValueMap;
         
