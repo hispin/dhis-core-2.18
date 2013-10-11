@@ -75,7 +75,7 @@
 						<tr>
 							<td>
 					<input id='$id' name="$id" options='no' type='radio' optionset='$programStageDataElement.dataElement.optionSet.uid'
-						data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
+						data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }"
 						#if( $patientDataValue.value == $option) checked #end
 						onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option' )" tabindex="$tabIndex" />$i18n.getString("non_value")
 						</td>
@@ -88,7 +88,7 @@
 						<td>
 						<input id='$id' name="$id" type='radio' options='no' optionset='$programStageDataElement.dataElement.optionSet.uid'
 							data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
-						#if( $patientDataValue.value == $option) checked #end
+						#if( $patientDataValue.value == $option) checked #end value="$encoder.htmlEncode($option)"
 						onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option' )" tabindex="$tabIndex" />$encoder.htmlEncode($option)
 						</td>
 						#set($index=$index + 1)

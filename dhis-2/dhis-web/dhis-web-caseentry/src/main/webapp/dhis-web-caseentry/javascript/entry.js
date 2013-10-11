@@ -743,6 +743,25 @@ TOGGLE = {
     }
 };
 
+function checkAndSetCheckbox( $field, value ) {
+    if( $field.attr('type') === 'checkbox' ) {
+        if( value === "true" || value === true ) {
+            $field.attr('checked', true);
+        } else {
+            $field.removeAttr('checked');
+        }
+    }
+}
+
+function checkAndSetRadio( $field, value ) {
+    if( $field.attr('type') === 'radio' ) {
+        if( $.trim(value) === $.trim($field.val()) ) {
+            $field.attr('checked', true);
+            $field[0].checked = true;
+        }
+    }
+}
+
 function loadProgramStageInstance( programStageInstanceId, always ) {
     $( "#programStageInstanceId" ).val( programStageInstanceId );
     $( "#entryFormContainer input[id='programStageInstanceId']" ).val( programStageInstanceId );
@@ -756,11 +775,9 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                         var field = $('#' + fieldId);
 
                         if ( field ) {
+                            checkAndSetCheckbox(field, obj.values[key].value);
+                            checkAndSetRadio(field, obj.values[key].value);
                             field.val( decodeURI( obj.values[key].value ) );
-
-                            if( obj.values[key].value === "true" && field.attr('type') === 'checkbox' ) {
-                                field.attr('checked', true);
-                            }
                         }
                     });
                 }
@@ -855,11 +872,9 @@ function loadProgramStageFromServer( programStageInstanceId ) {
             var field = $('#' + fieldId);
 
             if ( field ) {
+                checkAndSetCheckbox(field, value.value);
+                checkAndSetRadio(field, value.value);
                 field.val( decodeURI( value.value ));
-
-                if( value.value === "true" && field.attr('type') === 'checkbox' ) {
-                    field.attr('checked', true);
-                }
             }
         } );
 
