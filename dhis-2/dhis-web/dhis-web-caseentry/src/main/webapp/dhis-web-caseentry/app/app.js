@@ -1604,7 +1604,7 @@ Ext.onReady( function() {
 			
 			// Paging
 			p.page = TR.state.currentPage;
-
+			
 			// Get searching values
 			
 			p.dimension = [];
@@ -1853,29 +1853,25 @@ Ext.onReady( function() {
 						success: function(r) {
 							var json = Ext.JSON.decode(r.responseText);
 							
-							if( TR.state.asc != "" || TR.state.desc != "" ){
-								TR.store.datatable.loadData(TR.value.values,false);
+							TR.value.columns = json.headers;
+							TR.value.values = json.rows;
+							TR.state.total = json.metaData.pager.total;
+							TR.state.pageCount = json.metaData.pager.pageCount;
+							
+							// Get fields
+							
+							var fields = [];
+							for( var index=0; index < TR.value.columns.length; index++ )
+							{
+								fields[index] = TR.value.columns[index].name;
 							}
-							else{
-								TR.value.columns = json.headers;
-								TR.value.values = json.rows;
-								TR.state.total = json.metaData.pager.total;
-								TR.state.pageCount = json.metaData.pager.pageCount;
-								
-								// Get fields
-								
-								var fields = [];
-								for( var index=0; index < TR.value.columns.length; index++ )
-								{
-									fields[index] = TR.value.columns[index].name;
-								}
-								TR.value.fields = fields;
-								
-								// Set data for grid
-								
-								TR.store.getDataTableStore();
-								TR.datatable.getDataTable();
-							}
+							TR.value.fields = fields;
+							
+							// Set data for grid
+							
+							TR.store.getDataTableStore();
+							TR.datatable.getDataTable();
+							
 							TR.datatable.setPagingToolbarStatus();
 							TR.util.mask.hideMask();
 						}
