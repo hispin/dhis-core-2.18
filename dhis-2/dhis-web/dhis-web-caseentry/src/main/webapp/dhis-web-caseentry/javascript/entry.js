@@ -755,11 +755,20 @@ function checkAndSetCheckbox( $field, value ) {
 
 function checkAndSetRadio( $field, value ) {
     if( $field.attr('type') === 'radio' ) {
-        if( $.trim(value) === $.trim($field.val()) ) {
-            $field.attr('checked', true);
-            $field[0].checked = true;
-        }
+        var $fields = $("." + $field.attr('id'));
+
+        $.each($fields, function() {
+            var $f = $(this);
+
+            if( $.trim(value) === $.trim($f.val()) ) {
+                $f.attr("checked", true);
+            }
+        });
+
+        return true;
     }
+
+    return false;
 }
 
 function loadProgramStageInstance( programStageInstanceId, always ) {
@@ -775,9 +784,12 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
                         var field = $('#' + fieldId);
 
                         if ( field ) {
-                            checkAndSetCheckbox(field, obj.values[key].value);
-                            checkAndSetRadio(field, obj.values[key].value);
-                            field.val( decodeURI( obj.values[key].value ) );
+                            var value = obj.values[key].value;
+
+                            if( !checkAndSetRadio(field, value) ) {
+                                field.val(decodeURI(value));
+                                checkAndSetCheckbox(field, value);
+                            }
                         }
                     });
                 }
@@ -872,9 +884,12 @@ function loadProgramStageFromServer( programStageInstanceId ) {
             var field = $('#' + fieldId);
 
             if ( field ) {
-                checkAndSetCheckbox(field, value.value);
-                checkAndSetRadio(field, value.value);
-                field.val( decodeURI( value.value ));
+                var value = value.value;
+
+                if( !checkAndSetRadio(field, value) ) {
+                    field.val(decodeURI(value));
+                    checkAndSetCheckbox(field, value);
+                }
             }
         } );
 

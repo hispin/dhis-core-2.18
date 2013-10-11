@@ -74,10 +74,10 @@
 					<table style='width:100%'>
 						<tr>
 							<td>
-					<input id='$id' name="$id" options='no' type='radio' optionset='$programStageDataElement.dataElement.optionSet.uid'
+					<input id='$id' class='$id' name="$id" options='no' type='radio' optionset='$programStageDataElement.dataElement.optionSet.uid'
 						data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }"
 						#if( $patientDataValue.value == $option) checked #end
-						onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option' )" tabindex="$tabIndex" />$i18n.getString("non_value")
+						onclick="saveRadio( '$programStageDataElement.dataElement.uid', '' )" tabindex="$tabIndex" />$i18n.getString("non_value")
 						</td>
 					#set($index=1)
 					#foreach($option in $programStageDataElement.dataElement.optionSet.options)
@@ -86,7 +86,7 @@
 							#set($index=0)
 						#end
 						<td>
-						<input id='$id' name="$id" type='radio' options='no' optionset='$programStageDataElement.dataElement.optionSet.uid'
+						<input id='$id' class='$id' name="$id" type='radio' options='no' optionset='$programStageDataElement.dataElement.optionSet.uid'
 							data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
 						#if( $patientDataValue.value == $option) checked #end value="$encoder.htmlEncode($option)"
 						onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option' )" tabindex="$tabIndex" />$encoder.htmlEncode($option)
