@@ -841,7 +841,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-
+        
         return sql;
     }
 

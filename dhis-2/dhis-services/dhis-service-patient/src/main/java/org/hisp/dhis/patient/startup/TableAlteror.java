@@ -267,6 +267,7 @@ public class TableAlteror
         executeSql( "DROP TABLE patientaggregatereport_startdates" );
         executeSql( "ALTER TABLE patientaggregatereport RENAME level TO ouMode" );  
         executeSql( "ALTER TABLE patientaggregatereport DROP COLUMN facilityLB" );
+        executeSql( "update programstage_dataelements set allowDateInFuture=false where allowDateInFuture is null" );
     }
 
     // -------------------------------------------------------------------------
