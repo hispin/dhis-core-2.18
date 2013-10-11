@@ -63,6 +63,12 @@ public abstract class AbstractStatementBuilder
     }
 
     @Override
+    public String limitRecord( int limit, int offset )
+    {
+        return " LIMIT " + limit + " OFFSET " + offset;
+    }
+
+    @Override
     public String getPeriodIdentifierStatement( Period period )
     {
         return

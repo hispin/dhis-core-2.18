@@ -76,6 +76,15 @@ public interface StatementBuilder
     String columnQuote( String column );
     
     /**
+     * Returns a limit and offset clause.
+     * 
+     * @param limit the limit on max number of records to return.
+     * @param offset the offset for the records to return.
+     * @return a limit and offset clause.
+     */
+    String limitRecord( int limit, int offset );
+    
+    /**
      * Returns statement for vacuum and analyze operations for a table. Returns
      * null if such statement is not relevant.
      * 
@@ -159,8 +168,6 @@ public interface StatementBuilder
     
     String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
     	String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound );
-    
-    String limitRecord( int min, int max );
     
     String getAddDate( String dateField, int days );
     

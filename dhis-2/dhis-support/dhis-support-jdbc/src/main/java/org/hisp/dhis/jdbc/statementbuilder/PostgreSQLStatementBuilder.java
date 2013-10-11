@@ -159,12 +159,6 @@ public class PostgreSQLStatementBuilder
     }
 
     @Override
-    public String limitRecord( int min, int max )
-    {
-        return " LIMIT " + max + " OFFSET " + min;
-    }
-
-    @Override
     public String getAddDate( String dateField, int days )
     {
         return "(" + dateField + "+" + days + ")";
