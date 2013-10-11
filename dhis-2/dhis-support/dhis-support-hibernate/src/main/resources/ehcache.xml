@@ -16,6 +16,8 @@
 
   <cache name="org.hisp.dhis.dataelement.DataElement" maxElementsInMemory="4000" />
 
+  <cache name="org.hisp.dhis.dataelement.DataElement.userGroupAccesses" maxElementsInMemory="200" />
+
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo" maxElementsInMemory="100" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategory" maxElementsInMemory="200" />
@@ -63,6 +65,8 @@
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit" maxElementsInMemory="60000" />
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroup" maxElementsInMemory="100" />
+
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroup.userGroupAccesses" maxElementsInMemory="100" />
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" maxElementsInMemory="50" />
 
