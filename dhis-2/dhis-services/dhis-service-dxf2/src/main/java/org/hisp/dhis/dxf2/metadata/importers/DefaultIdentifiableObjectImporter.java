@@ -110,7 +110,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -810,7 +810,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             // if ( !options.isDryRun() ) { }
             // TODO why do we have to invoke the setter on dryRun?
-            ReflectionUtils.invokeSetterMethod( field.getName(), object, reference );
+            if ( !options.isDryRun() )
+            {
+                ReflectionUtils.invokeSetterMethod( field.getName(), object, reference );
+            }
         }
     }
 
