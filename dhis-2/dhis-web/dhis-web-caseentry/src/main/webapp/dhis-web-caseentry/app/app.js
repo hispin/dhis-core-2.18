@@ -2454,6 +2454,9 @@ Ext.onReady( function() {
 						listeners: {
 							added: function() {
 								TR.cmp.settings.currentPage = this;
+							},
+							change: function(textfield,newValue,oldValue){
+								TR.exe.paging( eval(newValue));
 							}
 						},
 					},
@@ -2519,20 +2522,7 @@ Ext.onReady( function() {
 			for( var i =0; i <TR.value.columns.length; i++ )
 			{
 				// Sortable columns
-				if( TR.value.columns[i].name=='ouname')
-				{
-					cols[i] = {
-						header: TR.value.columns[i].column, 
-						dataIndex: TR.value.columns[i].name,
-						height: TR.conf.layout.east_gridcolumn_height,
-						name: TR.value.columns[i].column,
-						sortable: false,
-						draggable: false,
-						hideable: false,
-						menuDisabled: true
-					}
-				}
-				else if( i==2 || i== 3 || i>= 6 ){
+				if( i==2 || i== 3 || i>= 6 ){
 					cols[i] = {
 						header: TR.value.columns[i].column, 
 						dataIndex: TR.value.columns[i].name,
