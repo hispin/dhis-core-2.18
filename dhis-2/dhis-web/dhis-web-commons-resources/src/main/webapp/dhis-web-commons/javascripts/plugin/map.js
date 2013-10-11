@@ -575,7 +575,7 @@ Ext.onReady( function() {
 				window.destroy();
 			}
 			window = Ext.create('Ext.window.Window', {
-				cls: 'gis-window-widget-feature',
+				cls: 'gis-window-widget-feature gis-plugin',
 				preventHeader: true,
 				shadow: false,
 				resizable: false,
@@ -834,6 +834,7 @@ console.log(view.parentGraphMap);
 				Ext.create('Ext.menu.Item', {
 					text: 'Float up',
 					iconCls: 'gis-menu-item-icon-float',
+					cls: 'gis-plugin',
 					disabled: !att.hasCoordinatesUp,
 					handler: function() {
 						drill(att.grandParentId, att.grandParentParentGraph, parseInt(att.level) - 1);
@@ -842,7 +843,7 @@ console.log(view.parentGraphMap);
 				Ext.create('Ext.menu.Item', {
 					text: 'Drill down',
 					iconCls: 'gis-menu-item-icon-drill',
-					cls: 'gis-menu-item-first',
+					cls: 'gis-menu-item-first gis-plugin',
 					disabled: !att.hasCoordinatesDown,
 					handler: function() {
 						drill(att.id, att.parentGraph, parseInt(att.level) + 1);
@@ -891,6 +892,7 @@ console.log(view.parentGraphMap);
 			menuItems[menuItems.length - 1].addCls('gis-menu-item-last');
 
 			menu = new Ext.menu.Menu({
+				baseCls: 'gis-plugin',
 				shadow: false,
 				showSeparator: false,
 				defaults: {
@@ -1061,7 +1063,7 @@ console.log(view.parentGraphMap);
 		window = Ext.create('Ext.window.Window', {
 			title: GIS.i18n.measure_distance,
 			layout: 'fit',
-			cls: 'gis-container-default',
+			cls: 'gis-container-default gis-plugin',
 			bodyStyle: 'text-align: center',
 			width: 130,
 			minWidth: 130,
@@ -1069,8 +1071,8 @@ console.log(view.parentGraphMap);
 			items: label,
 			listeners: {
 				show: function() {
-					var x = gis.viewport.eastRegion.x - this.getWidth() - 5,
-						y = 60;
+					var x = gis.viewport.eastRegion.getPosition()[0] - this.getWidth() - 3,
+						y = gis.viewport.centerRegion.getPosition()[1] + 26;
 					this.setPosition(x, y);
 				},
 				destroy: function() {
@@ -4073,10 +4075,11 @@ console.log(view.parentGraphMap);
 			return true;
 		};
 
-		applyCss = function(contextPath) {			
-			var css = 'body { font-family: arial, sans-serif, liberation sans, consolas; font-size: 11px; } \n';
+		applyCss = function(contextPath) {
+			var css = '.gis-plugin, .gis-plugin * { font-family: arial, sans-serif, liberation sans, consolas; } \n';
 			css += '.x-panel-body { font-size: 11px; } \n';
 			css += '.x-panel-header { height: 30px; padding: 7px 4px 4px 7px; border: 0 none; } \n';
+			css += '.gis-container-default .x-window-body { padding: 5px; background: #fff; } \n';
 			css += '.olControlPanel { position: absolute; top: 0; right: 0; border: 0 none; } \n';
 			css += '.olControlButtonItemActive { background: #556; color: #fff; width: 24px; height: 24px; opacity: 0.75; filter: alpha(opacity=75); -ms-filter: "alpha(opacity=75)"; cursor: pointer; cursor: hand; text-align: center; font-size: 21px !important; text-shadow: 0 0 1px #ddd; } \n';
 			css += '.olControlPanel.zoomIn { right: 72px; } \n';
@@ -4098,7 +4101,7 @@ console.log(view.parentGraphMap);
 			css += '.gis-window-widget-feature { padding: 0; border: 0 none; border-radius: 0; background: transparent; box-shadow: none; } \n';
 			css += '.gis-window-widget-feature .x-window-body-default { border: 0 none; background: transparent; } \n';
 			css += '.gis-window-widget-feature .x-window-body-default .x-panel-body-default { border: 0 none; background: #556; opacity: 0.92; filter: alpha(opacity=92); -ms-filter: "alpha(opacity=92)"; padding: 5px 8px 5px 8px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; color: #fff; font-weight: bold; letter-spacing: 1px; } \n';
-			css += '.x-menu-body { border-color: #bbb; border-radius: 2px; padding: 0; background-color: #fff !important; } \n';
+			css += '.x-menu-body { border:1px solid #bbb; border-radius: 2px; padding: 0; background-color: #fff !important; } \n';
 			css += '.x-menu-item-active .x-menu-item-link {	border-radius: 0; border-color: #e1e1e1; background-color: #e1e1e1; background-image: none; } \n';
 			css += '.x-menu-item-link { padding: 4px 5px 4px 26px; } \n';
 			css += '.x-menu-item-text { color: #111; } \n';
@@ -4142,6 +4145,7 @@ console.log(view.parentGraphMap);
 				renderTo: el,
 				width: el.getWidth(),
 				height: el.getHeight(),
+				cls: 'gis-plugin',
 				layout: {
 					type: 'hbox',
 					align: 'stretch'
@@ -4277,6 +4281,10 @@ console.log(view.parentGraphMap);
 	};
 
 	GIS.getMap = GIS.plugin.getMap;
+
+	DHIS = Ext.isObject(DHIS) ? DHIS : {};
+
+	DHIS.getMap = GIS.plugin.getMap;
 
 })();
 

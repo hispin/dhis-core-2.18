@@ -183,7 +183,7 @@ Ext.onReady( function() {
 				window.destroy();
 			}
 			window = Ext.create('Ext.window.Window', {
-				cls: 'gis-window-widget-feature',
+				cls: 'gis-window-widget-feature gis-plugin',
 				preventHeader: true,
 				shadow: false,
 				resizable: false,
@@ -442,6 +442,7 @@ console.log(view.parentGraphMap);
 				Ext.create('Ext.menu.Item', {
 					text: 'Float up',
 					iconCls: 'gis-menu-item-icon-float',
+					cls: 'gis-plugin',
 					disabled: !att.hasCoordinatesUp,
 					handler: function() {
 						drill(att.grandParentId, att.grandParentParentGraph, parseInt(att.level) - 1);
@@ -450,7 +451,7 @@ console.log(view.parentGraphMap);
 				Ext.create('Ext.menu.Item', {
 					text: 'Drill down',
 					iconCls: 'gis-menu-item-icon-drill',
-					cls: 'gis-menu-item-first',
+					cls: 'gis-menu-item-first gis-plugin',
 					disabled: !att.hasCoordinatesDown,
 					handler: function() {
 						drill(att.id, att.parentGraph, parseInt(att.level) + 1);
@@ -499,6 +500,7 @@ console.log(view.parentGraphMap);
 			menuItems[menuItems.length - 1].addCls('gis-menu-item-last');
 
 			menu = new Ext.menu.Menu({
+				baseCls: 'gis-plugin',
 				shadow: false,
 				showSeparator: false,
 				defaults: {
@@ -669,7 +671,7 @@ console.log(view.parentGraphMap);
 		window = Ext.create('Ext.window.Window', {
 			title: GIS.i18n.measure_distance,
 			layout: 'fit',
-			cls: 'gis-container-default',
+			cls: 'gis-container-default gis-plugin',
 			bodyStyle: 'text-align: center',
 			width: 130,
 			minWidth: 130,
@@ -677,8 +679,8 @@ console.log(view.parentGraphMap);
 			items: label,
 			listeners: {
 				show: function() {
-					var x = gis.viewport.eastRegion.x - this.getWidth() - 5,
-						y = 60;
+					var x = gis.viewport.eastRegion.getPosition()[0] - this.getWidth() - 3,
+						y = gis.viewport.centerRegion.getPosition()[1] + 26;
 					this.setPosition(x, y);
 				},
 				destroy: function() {
