@@ -126,25 +126,46 @@ public class GetAggregateReportAction
         return programStage;
     }
 
-    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
+    private List<PatientIdentifierType> dimensionIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
-    public List<PatientIdentifierType> getIdentifierTypes()
+    public List<PatientIdentifierType> getDimensionIdentifierTypes()
     {
-        return identifierTypes;
+        return dimensionIdentifierTypes;
     }
 
-    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+    private List<PatientIdentifierType> filterIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
-    public List<PatientAttribute> getAttributes()
+    public List<PatientIdentifierType> getFilterIdentifierTypes()
     {
-        return attributes;
+        return filterIdentifierTypes;
     }
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<PatientAttribute> dimensionAttributes = new ArrayList<PatientAttribute>();
 
-    public List<DataElement> getDataElements()
+    public List<PatientAttribute> getDimensionAttributes()
     {
-        return dataElements;
+        return dimensionAttributes;
+    }
+
+    private List<PatientAttribute> filterAttributes = new ArrayList<PatientAttribute>();
+
+    public List<PatientAttribute> getFilterAttributes()
+    {
+        return filterAttributes;
+    }
+
+    private List<DataElement> dimensionDataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getDimensionDataElements()
+    {
+        return dimensionDataElements;
+    }
+
+    private List<DataElement> filterDataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getFilterDataElements()
+    {
+        return filterDataElements;
     }
 
     private Map<String, String> mapFilters = new HashMap<String, String>();
@@ -188,11 +209,15 @@ public class GetAggregateReportAction
         Program program = aggregateReport.getProgram();
 
         programStage = aggregateReport.getProgramStage();
-        
+
+        // ---------------------------------------------------------------------
+        // Get dimensions
+        // ---------------------------------------------------------------------
+
         for ( String dimension : aggregateReport.getDimension() )
         {
             String dimensionId = DataQueryParams.getDimensionFromParam( dimension );
-           
+
             String[] filters = dimension.split( DataQueryParams.DIMENSION_NAME_SEP );
             if ( filters.length > 1 )
             {
@@ -237,22 +262,58 @@ public class GetAggregateReportAction
 
                 if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
                 {
-                    identifierTypes.add( it );
+                    dimensionIdentifierTypes.add( it );
                 }
 
                 PatientAttribute at = patientAttributeService.getPatientAttribute( dimensionId );
 
                 if ( at != null && program.getPatientAttributes().contains( at ) )
                 {
-                    attributes.add( at );
+                    dimensionAttributes.add( at );
                 }
 
                 DataElement de = dataElementService.getDataElement( dimensionId );
 
                 if ( de != null && program.getAllDataElements().contains( de ) )
                 {
-                    dataElements.add( de );
+                    dimensionDataElements.add( de );
                 }
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Get filters
+        // ---------------------------------------------------------------------
+
+        for ( String filter : aggregateReport.getFilter() )
+        {
+            String filterId = DataQueryParams.getDimensionFromParam( filter );
+
+            String[] filters = filter.split( DataQueryParams.DIMENSION_NAME_SEP );
+            if ( filters.length > 1 )
+            {
+                mapFilters.put( filterId, filter.substring( filterId.length() + 1, filter.length() ) );
+            }
+
+            PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( filterId );
+
+            if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
+            {
+                filterIdentifierTypes.add( it );
+            }
+
+            PatientAttribute at = patientAttributeService.getPatientAttribute( filterId );
+
+            if ( at != null && program.getPatientAttributes().contains( at ) )
+            {
+                filterAttributes.add( at );
+            }
+
+            DataElement de = dataElementService.getDataElement( filterId );
+
+            if ( de != null && program.getAllDataElements().contains( de ) )
+            {
+                filterDataElements.add( de );
             }
         }
 
