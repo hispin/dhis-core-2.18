@@ -562,46 +562,42 @@ public class DefaultValidationRuleService
 
         // Construct the text of the message.
         messageBuilder
-        	.append( "<html>\n" )
-        	.append( "<head>\n" )
-            .append( "</head>\n" )
-            .append( "<body>\n" )
-            .append( subject )
-            .append( "\n" )
-            .append( "<br />\n" )
-            .append( "<table>\n" )
-            .append( " <tr>\n" )
-            .append( "  <th>Organisation Unit</th>\n" )
-            .append( "  <th>Period</th>\n" )
-            .append( "  <th>Importance</th>\n" )
-            .append( "  <th>Left side description</th>\n" )
-            .append( "  <th>Value</th>\n" )
-            .append( "  <th>Operator</th>\n" )
-            .append( "  <th>Value</th>\n" )
-            .append( "  <th>Right side description</th>\n" )
-            .append( " </tr>\n" );
+            .append( "<html>" )
+            .append( "<head>" ).append( "</head>" )
+            .append( "<body>" ).append( subject ).append( "<br />" )
+            .append( "<table>" )
+            .append( "<tr>" )
+            .append( "<th>Organisation Unit</th>" )
+            .append( "<th>Period</th>" )
+            .append( "<th>Importance</th>" )
+            .append( "<th>Left side description</th>" )
+            .append( "<th>Value</th>" )
+            .append( "<th>Operator</th>" )
+            .append( "<th>Value</th>" )
+            .append( "<th>Right side description</th>" )
+            .append( "</tr>" );
 
         for ( ValidationResult result : results )
         {
             ValidationRule rule = result.getValidationRule();
 
             messageBuilder
-            	.append( " <tr>\n" )
-            	.append( "  <td>" ).append( result.getSource().getName() ).append( "<\td>\n" )
-                .append( "  <td>" ).append( result.getPeriod().getName() ).append( "<\td>\n" )
-                .append( "  <td>" ).append( rule.getImportance() ).append( "<\td>\n" )
-                .append( "  <td>" ).append( rule.getLeftSide().getDescription() ).append( "<\td>\n" )
-                .append( "  <td>" ).append( result.getLeftsideValue() ).append( "<\td>\n" )
-                .append( "  <td>" ).append( rule.getOperator().toString() ).append( "<\td>\n" )
-                .append( "  <td>" ).append( result.getRightsideValue() ).append( "<\td>\n" )
-                .append( "  <td>" ).append( rule.getRightSide().getDescription() ).append( "<\td>\n" )
-                .append( " </tr>\n" );
+            	.append( "<tr>" )
+            	.append( "<td>" ).append( result.getSource().getName() ).append( "<\td>" )
+                .append( "<td>" ).append( result.getPeriod().getName() ).append( "<\td>" )
+                .append( "<td>" ).append( rule.getImportance() ).append( "<\td>" )
+                .append( "<td>" ).append( rule.getLeftSide().getDescription() ).append( "<\td>" )
+                .append( "<td>" ).append( result.getLeftsideValue() ).append( "<\td>" )
+                .append( "<td>" ).append( rule.getOperator().toString() ).append( "<\td>" )
+                .append( "<td>" ).append( result.getRightsideValue() ).append( "<\td>" )
+                .append( "<td>" ).append( rule.getRightSide().getDescription() ).append( "<\td>" )
+                .append( "</tr>" );
         }
 
         messageBuilder
-        	.append( "</table>\n" )
-        	.append( "</body>\n" )
-        	.append( "</html>\n" );
+        	.append( "</table>" )
+        	.append( "</body>" )
+        	.append( "</html>" );
 
         String messageText = messageBuilder.toString();
 

@@ -53,16 +53,14 @@ import org.hisp.dhis.period.PeriodType;
  * or an alert run.) These values don't change during the multi-threaded tasks
  * (except that results entries are added in a threadsafe way.)
  * 
- * Some of the values are precalculated collections, to save CPU time during
- * the run. All of these values are stored in this single "context" object
- * to allow a single object reference for each of the scheduled tasks. (This
- * also reduces the amount of memory needed to queue all the multi-threaded
- * tasks.)
+ * Some of the values are precalculated collections, to save CPU time during the
+ * run. All of these values are stored in this single "context" object to allow
+ * a single object reference for each of the scheduled tasks. (This also reduces
+ * the amount of memory needed to queue all the multi-threaded tasks.)
  * 
- * For some of these properties this is also important because they should
- * be copied from Hibernate lazy collections before the multithreaded part
- * of the run starts, otherwise the threads may not be able to access these
- * values.
+ * For some of these properties this is also important because they should be
+ * copied from Hibernate lazy collections before the multithreaded part of the
+ * run starts, otherwise the threads may not be able to access these values.
  * 
  * @author Jim Grace
  */
@@ -79,30 +77,30 @@ public class ValidationRunContext
     private Map<ValidationRule, ValidationRuleExtended> ruleXMap;
 
     private Collection<OrganisationUnitExtended> sourceXs;
-    
+
     private Collection<ValidationResult> validationResults;
 
     private ExpressionService expressionService;
-    
+
     private PeriodService periodService;
-    
+
     private DataValueService dataValueService;
-    
+
     private ValidationRunContext()
     {
     }
-    
+
     public String toString()
     {
         return new ToStringBuilder( this, ToStringStyle.SHORT_PREFIX_STYLE )
-            .append( "\n  PeriodTypeExtendedMap", (Arrays.toString( periodTypeExtendedMap.entrySet().toArray() )) )
-            .append( "\n  runType", runType ).append( "\n  lastAlertRun", lastAlertRun )
-            .append( "\n  constantMap", "[" + constantMap.size() + "]" )
-            .append( "\n  ruleXMap", "[" + ruleXMap.size() + "]" )
+            .append( "\n PeriodTypeExtendedMap", (Arrays.toString( periodTypeExtendedMap.entrySet().toArray() )) )
+            .append( "\n runType", runType ).append( "\n  lastAlertRun", lastAlertRun )
+            .append( "\n constantMap", "[" + constantMap.size() + "]" )
+            .append( "\n ruleXMap", "[" + ruleXMap.size() + "]" )
             .append( "\n  sourceXs", Arrays.toString( sourceXs.toArray() ) )
             .append( "\n  validationResults", Arrays.toString( validationResults.toArray() ) ).toString();
     }
-    
+
     /**
      * Creates and fills a new context object for a validation run.
      * 
@@ -113,9 +111,10 @@ public class ValidationRunContext
      * @param lastAlertRun (for ALERT runs) date of previous alert run
      * @return context object for this run
      */
-    public static ValidationRunContext getNewValidationRunContext( Collection<OrganisationUnit> sources, Collection<Period> periods,
-        Collection<ValidationRule> rules, Map<String, Double> constantMap, ValidationRunType runType, Date lastAlertRun,
-        ExpressionService expressionService, PeriodService periodService, DataValueService dataValueService )
+    public static ValidationRunContext getNewValidationRunContext( Collection<OrganisationUnit> sources,
+        Collection<Period> periods, Collection<ValidationRule> rules, Map<String, Double> constantMap,
+        ValidationRunType runType, Date lastAlertRun, ExpressionService expressionService, PeriodService periodService,
+        DataValueService dataValueService )
     {
         ValidationRunContext context = new ValidationRunContext();
         context.runType = runType;
@@ -131,7 +130,7 @@ public class ValidationRunContext
         context.initialize( sources, periods, rules );
         return context;
     }
-    
+
     /**
      * Initializes context values based on sources, periods and rules
      * 
@@ -139,7 +138,8 @@ public class ValidationRunContext
      * @param periods
      * @param rules
      */
-    private void initialize( Collection<OrganisationUnit> sources, Collection<Period> periods, Collection<ValidationRule> rules )
+    private void initialize( Collection<OrganisationUnit> sources, Collection<Period> periods,
+        Collection<ValidationRule> rules )
     {
         // Group the periods by period type.
         for ( Period period : periods )
@@ -151,9 +151,10 @@ public class ValidationRunContext
         for ( ValidationRule rule : rules )
         {
             // Find the period type extended for this rule
-            PeriodTypeExtended periodTypeX = getOrCreatePeriodTypeExtended( rule.getPeriodType() ); 
-            periodTypeX.getRules().add( rule ); // Add this rule to the period type ext.
-            
+            PeriodTypeExtended periodTypeX = getOrCreatePeriodTypeExtended( rule.getPeriodType() );
+            periodTypeX.getRules().add( rule ); // Add this rule to the period
+                                                // type ext.
+
             if ( rule.getCurrentDataElements() != null )
             {
                 // Add this rule's data elements to the period extended.
@@ -161,11 +162,11 @@ public class ValidationRunContext
             }
             // Add the allowed period types for rule's current data elements:
             periodTypeX.getAllowedPeriodTypes().addAll(
-            		getAllowedPeriodTypesForDataElements( rule.getCurrentDataElements(), rule.getPeriodType() ) );
-            
+                getAllowedPeriodTypesForDataElements( rule.getCurrentDataElements(), rule.getPeriodType() ) );
+
             // Add the ValidationRuleExtended
-            Collection<PeriodType> allowedPastPeriodTypes =
-            		getAllowedPeriodTypesForDataElements( rule.getPastDataElements(), rule.getPeriodType() );
+            Collection<PeriodType> allowedPastPeriodTypes = getAllowedPeriodTypesForDataElements(
+                rule.getPastDataElements(), rule.getPeriodType() );
             ValidationRuleExtended ruleX = new ValidationRuleExtended( rule, allowedPastPeriodTypes );
             ruleXMap.put( rule, ruleX );
         }
@@ -191,8 +192,8 @@ public class ValidationRunContext
                 .getDataElementsInDataSetsByPeriodType();
             for ( PeriodTypeExtended periodTypeX : periodTypeExtendedMap.values() )
             {
-                Collection<DataElement> sourceDataElements = sourceDataElementsByPeriodType
-                    .get( periodTypeX.getPeriodType() );
+                Collection<DataElement> sourceDataElements = sourceDataElementsByPeriodType.get( periodTypeX
+                    .getPeriodType() );
                 if ( sourceDataElements != null )
                 {
                     periodTypeX.getSourceDataElements().put( source, sourceDataElements );
@@ -239,62 +240,71 @@ public class ValidationRunContext
         Collection<PeriodType> allowedPeriodTypes = new HashSet<PeriodType>();
         if ( dataElements != null )
         {
-	        for ( DataElement dataElement : dataElements )
-	        {
-	            for ( DataSet dataSet : dataElement.getDataSets() )
-	            {
-	                if ( dataSet.getPeriodType().getFrequencyOrder() >= periodType.getFrequencyOrder() )
-	                {
-	                    allowedPeriodTypes.add( dataSet.getPeriodType() );
-	                }
-	            }
-	        }
+            for ( DataElement dataElement : dataElements )
+            {
+                for ( DataSet dataSet : dataElement.getDataSets() )
+                {
+                    if ( dataSet.getPeriodType().getFrequencyOrder() >= periodType.getFrequencyOrder() )
+                    {
+                        allowedPeriodTypes.add( dataSet.getPeriodType() );
+                    }
+                }
+            }
         }
         return allowedPeriodTypes;
     }
 
     // -------------------------------------------------------------------------
     // Set and get methods
-    // -------------------------------------------------------------------------  
+    // -------------------------------------------------------------------------
 
-    public Map<PeriodType, PeriodTypeExtended> getPeriodTypeExtendedMap() {
-		return periodTypeExtendedMap;
-	}
+    public Map<PeriodType, PeriodTypeExtended> getPeriodTypeExtendedMap()
+    {
+        return periodTypeExtendedMap;
+    }
 
-	public ValidationRunType getRunType() {
-		return runType;
-	}
+    public ValidationRunType getRunType()
+    {
+        return runType;
+    }
 
-	public Date getLastAlertRun() {
-		return lastAlertRun;
-	}
+    public Date getLastAlertRun()
+    {
+        return lastAlertRun;
+    }
 
-	public Map<String, Double> getConstantMap() {
-		return constantMap;
-	}
+    public Map<String, Double> getConstantMap()
+    {
+        return constantMap;
+    }
 
-	public Map<ValidationRule, ValidationRuleExtended> getRuleXMap() {
-		return ruleXMap;
-	}
+    public Map<ValidationRule, ValidationRuleExtended> getRuleXMap()
+    {
+        return ruleXMap;
+    }
 
-	public Collection<OrganisationUnitExtended> getSourceXs() {
-		return sourceXs;
-	}
+    public Collection<OrganisationUnitExtended> getSourceXs()
+    {
+        return sourceXs;
+    }
 
-	public Collection<ValidationResult> getValidationResults() {
-		return validationResults;
-	}
+    public Collection<ValidationResult> getValidationResults()
+    {
+        return validationResults;
+    }
 
-	public ExpressionService getExpressionService() {
-		return expressionService;
-	}
+    public ExpressionService getExpressionService()
+    {
+        return expressionService;
+    }
 
-	public PeriodService getPeriodService() {
-		return periodService;
-	}
+    public PeriodService getPeriodService()
+    {
+        return periodService;
+    }
 
-	public DataValueService getDataValueService() {
-		return dataValueService;
-	}
+    public DataValueService getDataValueService()
+    {
+        return dataValueService;
+    }
 }
-
