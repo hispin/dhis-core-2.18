@@ -101,9 +101,8 @@ public class DefaultProgramDataEntryService
     // -------------------------------------------------------------------------
 
     @Override
-    public String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues,
-        I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
-        OrganisationUnit organisationUnit )
+    public String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, I18n i18n,
+        ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit )
     {
         Map<String, Collection<PatientDataValue>> mapDataValue = new HashMap<String, Collection<PatientDataValue>>();
 
@@ -246,7 +245,13 @@ public class DefaultProgramDataEntryService
 
                 tabindex++;
 
-                if ( DataElement.VALUE_TYPE_INT.equals( dataElement.getType() )
+                if ( dataElement.getOptionSet() != null && dataElement.getOptionSet().getOptions().size() < 7
+                    && programStage.getProgram().getDataEntryMethod() )
+                {
+                    String idField = programStageUid + "-" + dataElementUid + "-val";
+                    inputHTML = populateCustomDataEntryForOptionSet( dataElement, idField, patientDataValue, i18n );
+                }
+                else if ( DataElement.VALUE_TYPE_INT.equals( dataElement.getType() )
                     || DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() )
                     || DataElement.VALUE_TYPE_USER_NAME.equals( dataElement.getType() ) )
                 {
@@ -298,7 +303,7 @@ public class DefaultProgramDataEntryService
                 inputHTML = inputHTML.replace( "$VALUE", dataElementValue );
                 inputHTML = inputHTML.replace( "$PROGRAMSTAGEID", String.valueOf( programStageUid ) );
                 inputHTML = inputHTML.replace( "$PROGRAMSTAGENAME", programStageName );
-                inputHTML = inputHTML.replace( "$DATAELEMENTNAME", dataElement.getName() );
+                inputHTML = inputHTML.replace( "$DATAELEMENTNAME", dataElement.getFormNameFallback() );
                 inputHTML = inputHTML.replace( "$DATAELEMENTTYPE", dataElementType );
                 inputHTML = inputHTML.replace( "$DISABLED", disabled );
                 inputHTML = inputHTML.replace( "$COMPULSORY", compulsory );
@@ -561,7 +566,65 @@ public class DefaultProgramDataEntryService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-        
+
+    private String populateCustomDataEntryForOptionSet( DataElement dataElement, String id,
+        PatientDataValue patientDataValue, I18n i18n )
+    {
+        String inputHTML = "";
+        if ( dataElement != null )
+        {
+            String metaData = "<input id=\'" + id + "\' name=\'" + id + "\' options=\'no\' type=\'radio\' optionset='"
+                + dataElement.getOptionSet().getUid() + "'";
+            metaData += " data=\"{compulsory:$COMPULSORY, deName:\'$DATAELEMENTNAME\', deType:\'"
+                + dataElement.getDetailedNumberType() + "\' }\" ";
+
+            inputHTML = "<table style=\'width:100%\'>";
+            inputHTML += "<tr>";
+            inputHTML += "<td>";
+            inputHTML += metaData;
+
+            if ( patientDataValue == null )
+            {
+                inputHTML += " checked ";
+            }
+
+            inputHTML += "onclick=\"saveRadio( \'" + dataElement.getUid() + "\', \'$option\' )\" />"
+                + i18n.getString( "non_value" );
+            inputHTML += " </td>";
+
+            int index = 1;
+
+            for ( String optionValue : dataElement.getOptionSet().getOptions() )
+            {
+                if ( index == 4 )
+                {
+                    inputHTML += "</tr><tr>";
+                    index = 0;
+                }
+
+                inputHTML += "<td>" + metaData;
+                if ( patientDataValue != null && patientDataValue.getValue().equals( optionValue ) )
+                {
+                    inputHTML += " checked ";
+                }
+                inputHTML += " onclick=\"saveRadio( \'" + dataElement.getUid() + "\', \'" + optionValue + "\' )\"  />"
+                    + optionValue;
+                inputHTML += "</td>";
+                index++;
+            }
+            inputHTML += "  </tr>";
+            inputHTML += "   </table>";
+
+        }
+        else
+        {
+            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? " value=\"[" + DATA_ELEMENT_DOES_NOT_EXIST + "]\" "
+                : " value=\"[ " + DATA_ELEMENT_DOES_NOT_EXIST + " ]\"";
+        }
+
+        return inputHTML;
+    }
+
     private String populateCustomDataEntryForTextBox( DataElement dataElement, String inputHTML )
     {
         if ( dataElement != null )
@@ -674,7 +737,8 @@ public class DefaultProgramDataEntryService
         }
         else
         {
-            inputHTML += " class=\"optionset\" optionset=\"" + dataElement.getOptionSet().getUid() + "\" data-optionset=\"" + dataElement.getOptionSet().getUid() + "\" ";
+            inputHTML += " class=\"optionset\" optionset=\"" + dataElement.getOptionSet().getUid()
+                + "\" data-optionset=\"" + dataElement.getOptionSet().getUid() + "\" ";
         }
 
         if ( DataElement.VALUE_TYPE_LONG_TEXT.equals( dataElement.getDetailedTextType() ) )
