@@ -757,6 +757,10 @@ function loadProgramStageInstance( programStageInstanceId, always ) {
 
                         if ( field ) {
                             field.val( decodeURI( obj.values[key].value ) );
+
+                            if( obj.values[key].value === "true" && field.attr('type') === 'checkbox' ) {
+                                field.attr('checked', true);
+                            }
                         }
                     });
                 }
@@ -852,6 +856,10 @@ function loadProgramStageFromServer( programStageInstanceId ) {
 
             if ( field ) {
                 field.val( decodeURI( value.value ));
+
+                if( value.value === "true" && field.attr('type') === 'checkbox' ) {
+                    field.attr('checked', true);
+                }
             }
         } );
 
