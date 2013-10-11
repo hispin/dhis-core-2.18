@@ -157,6 +157,7 @@ public class HibernatePatientStore
         {
             query.setFirstResult( min ).setMaxResults( max );
         }
+        
         return query.list();
     }
 
