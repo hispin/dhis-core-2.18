@@ -33,39 +33,41 @@ import org.hisp.dhis.period.PeriodType;
  */
 
 /**
- * Holds information for each validation rule that is needed during
- * a validation run (either interactive or an alert run).
+ * Holds information for each validation rule that is needed during a validation
+ * run (either interactive or an alert run).
  * 
- * By computing these values once at the start of a validation run, we avoid
- * the overhead of having to compute them during the processing of every
+ * By computing these values once at the start of a validation run, we avoid the
+ * overhead of having to compute them during the processing of every
  * organisation unit. For some of these properties this is also important
  * because they should be copied from Hibernate lazy collections before the
- * multithreaded part of the run starts, otherwise the threads may not be
- * able to access these values.
+ * multithreaded part of the run starts, otherwise the threads may not be able
+ * to access these values.
  * 
  * @author Jim Grace
  */
-public class ValidationRuleExtended {
+public class ValidationRuleExtended
+{
+    private ValidationRule rule;
 
-	private ValidationRule rule;
-	
-	private Collection<PeriodType> allowedPastPeriodTypes;
+    private Collection<PeriodType> allowedPastPeriodTypes;
 
-	public ValidationRuleExtended( ValidationRule rule, Collection<PeriodType> allowedPastPeriodTypes )
-	{
-		this.rule = rule;
-		this.allowedPastPeriodTypes = allowedPastPeriodTypes;
-	}
+    public ValidationRuleExtended( ValidationRule rule, Collection<PeriodType> allowedPastPeriodTypes )
+    {
+        this.rule = rule;
+        this.allowedPastPeriodTypes = allowedPastPeriodTypes;
+    }
 
     // -------------------------------------------------------------------------
     // Set and get methods
-    // -------------------------------------------------------------------------  
+    // -------------------------------------------------------------------------
 
-	public ValidationRule getRule() {
-		return rule;
-	}
+    public ValidationRule getRule()
+    {
+        return rule;
+    }
 
-	public Collection<PeriodType> getAllowedPastPeriodTypes() {
-		return allowedPastPeriodTypes;
-	}
+    public Collection<PeriodType> getAllowedPastPeriodTypes()
+    {
+        return allowedPastPeriodTypes;
+    }
 }

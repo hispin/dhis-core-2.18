@@ -35,7 +35,6 @@ import java.io.Serializable;
 
 /**
  * @author Margrethe Store
- * @version $Id: ValidationResult.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public class ValidationResult
     implements Serializable, Comparable<ValidationResult>
@@ -152,43 +151,43 @@ public class ValidationResult
 
     public int compareTo( ValidationResult other )
     {
-    	if ( source.getName().compareTo( other.source.getName() ) != 0 )
-		{
-    		return source.getName().compareTo( other.source.getName() );
-		}
-    	else if ( period.getStartDate().compareTo( other.period.getStartDate() ) != 0 )
-		{
-    		return period.getStartDate().compareTo( other.period.getStartDate() );
-		}
-    	else if ( source.getName().compareTo( other.source.getName() ) != 0 )
-		{
-    		return source.getName().compareTo( other.source.getName() );
-		}
-    	else if ( period.getStartDate().compareTo( other.period.getStartDate() ) != 0 )
-		{
-    		return period.getStartDate().compareTo( other.period.getStartDate() );
-		}
-    	else if ( period.getEndDate().compareTo( other.period.getEndDate() ) != 0 )
-		{
-    		return period.getEndDate().compareTo( other.period.getEndDate() );
-		}
-    	else if ( validationRule.getImportance().compareTo( other.validationRule.getImportance() ) != 0 )
-    	{
-    		return validationImportanceOrder( validationRule.getImportance() )
-    				- validationImportanceOrder( other.validationRule.getImportance() );
-    	}
-    	else
-    	{
-    		return validationRule.getLeftSide().getDescription()
-    				.compareTo( other.validationRule.getLeftSide().getDescription() );
-    	}
+        if ( source.getName().compareTo( other.source.getName() ) != 0 )
+        {
+            return source.getName().compareTo( other.source.getName() );
+        }
+        else if ( period.getStartDate().compareTo( other.period.getStartDate() ) != 0 )
+        {
+            return period.getStartDate().compareTo( other.period.getStartDate() );
+        }
+        else if ( source.getName().compareTo( other.source.getName() ) != 0 )
+        {
+            return source.getName().compareTo( other.source.getName() );
+        }
+        else if ( period.getStartDate().compareTo( other.period.getStartDate() ) != 0 )
+        {
+            return period.getStartDate().compareTo( other.period.getStartDate() );
+        }
+        else if ( period.getEndDate().compareTo( other.period.getEndDate() ) != 0 )
+        {
+            return period.getEndDate().compareTo( other.period.getEndDate() );
+        }
+        else if ( validationRule.getImportance().compareTo( other.validationRule.getImportance() ) != 0 )
+        {
+            return validationImportanceOrder( validationRule.getImportance() )
+                - validationImportanceOrder( other.validationRule.getImportance() );
+        }
+        else
+        {
+            return validationRule.getLeftSide().getDescription()
+                .compareTo( other.validationRule.getLeftSide().getDescription() );
+        }
     }
-    
-    private int validationImportanceOrder ( String importance )
+
+    private int validationImportanceOrder( String importance )
     {
-    	return ( importance.equals("high") ? 0 : importance.equals("medium") ? 1 : 2 );
+        return ( importance.equals( "high" ) ? 0 : importance.equals( "medium" ) ? 1 : 2 );
     }
-    
+
     @Override
     public String toString()
     {
