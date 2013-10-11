@@ -999,6 +999,8 @@ Ext.onReady( function() {
 					}
                 },
 				run: function(id) {
+					TR.state.asc = "";
+					TR.state.desc = "";
 					if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
 					{
 						this.caseBasedReport.run( id );
@@ -1865,7 +1867,7 @@ Ext.onReady( function() {
 								var fields = [];
 								for( var index=0; index < TR.value.columns.length; index++ )
 								{
-									fields[index] = TR.value.columns[index].column;
+									fields[index] = TR.value.columns[index].name;
 								}
 								TR.value.fields = fields;
 								
@@ -2385,7 +2387,7 @@ Ext.onReady( function() {
 
 			// title
 			var title = TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report;
-			if(reportType===false){
+			if(reportType=='false'){
 				title = TR.value.title;
 			}
 			
@@ -2398,7 +2400,7 @@ Ext.onReady( function() {
 					listeners: {
 						headerclick: function(container, column, e) {
 							if( column.sortable ){
-								if( reportType === true ){
+								if( reportType == 'true' ){
 									if(column.sortState=='ASC'){
 										TR.state.asc = column.dataIndex;
 										TR.state.desc = "";
@@ -2521,10 +2523,23 @@ Ext.onReady( function() {
 			for( var i =0; i <TR.value.columns.length; i++ )
 			{
 				// Sortable columns
-				if( i==2 || i== 3 || i>= 6 ){
+				if( TR.value.columns[i].name=='ouname')
+				{
 					cols[i] = {
 						header: TR.value.columns[i].column, 
-						dataIndex: TR.value.columns[i].column,
+						dataIndex: TR.value.columns[i].name,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: TR.value.columns[i].column,
+						sortable: false,
+						draggable: false,
+						hideable: false,
+						menuDisabled: true
+					}
+				}
+				else if( i==2 || i== 3 || i>= 6 ){
+					cols[i] = {
+						header: TR.value.columns[i].column, 
+						dataIndex: TR.value.columns[i].name,
 						height: TR.conf.layout.east_gridcolumn_height,
 						name: TR.value.columns[i].column,
 						sortable: true,
@@ -2559,7 +2574,7 @@ Ext.onReady( function() {
 			{
 				cols[i] = {
 					header: TR.value.columns[i].column, 
-					dataIndex: TR.value.columns[i].column,
+					dataIndex: TR.value.columns[i].name,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: TR.value.columns[i].column,
 					sortable: true,
