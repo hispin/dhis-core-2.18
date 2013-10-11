@@ -217,7 +217,7 @@ public class SearchPatientAction
             {
                 Collection<Integer> orgunitIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren(
                     organisationUnit.getId() );
-
+                orgunits.add( organisationUnit );
                 orgunits.addAll( organisationUnitService.getOrganisationUnits( orgunitIds ) );
             }
             else if ( facilityLB.equals( SEARCH_IN_ALL_ORGUNITS ) )

@@ -86,25 +86,17 @@
 			</td>
 		</tr>
 		<tr id='searchBySelectedUnitTD'>
-			 #if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
-				<td>
-					$i18n.getString('search_in_all_facilities') 
-					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' value='searchInAllOrgunits' />&nbsp;&nbsp;&nbsp;
-				</td>
-			 #else
-					 <input type='checkbox' class='hidden' id='searchInAllFacility' name='searchInAllFacility' value='searchInAllOrgunits' />
-			 #end
-			 
-			<td class='hidden'>
-				$i18n.getString('search_by_user_orgunits') 
-				<input type='checkbox' id='searchInUserOrgunits' name='searchInUserOrgunits' value='searchInUserOrgunits' />&nbsp;&nbsp;&nbsp;
-			</td>
-			
+			<td>$i18n.getString('orgunit_search_type')</td>
 			<td>
-				$i18n.getString('search_all_below_selected_orgunit') 
-				<input type='checkbox' id='searchBelowOrgunit' name='searchBelowOrgunit' value='searchInBelowSelectedOrgunit' />&nbsp;&nbsp;&nbsp;
+				<select id='facilityLB' name='facilityLB'>
+					<option value='' />$i18n.getString('selected')</option>
+					#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
+						<option value='searchInAllOrgunits' />$i18n.getString('all_orgunits')</option>
+					#end
+					<option value='searchInUserOrgunits' />$i18n.getString('user_orgunits')</option>
+					<option value='searchBelowOrgunit' />$i18n.getString('selected_and_all_below')</option>
+				</select>
 			</td>
-		
 		</tr>
 		<tr id='enrollmentSelectTR' class='hidden' >
 			<td>$i18n.getString('show')</td>

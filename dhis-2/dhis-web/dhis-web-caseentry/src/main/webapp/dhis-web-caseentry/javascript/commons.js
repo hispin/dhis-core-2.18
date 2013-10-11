@@ -235,7 +235,8 @@ function getSearchParams() {
         var startDueDate = getFieldValue('startDueDate');
         var orgunitid = getFieldValue('orgunitId');
 
-        if( byId('searchInAllFacility').checked ) {
+		var facilityLB = getFieldValue('facilityLB');
+        if( facilityLB=='searchInAllOrgunits') {
             orgunitid = 0;
         }
 
@@ -277,9 +278,7 @@ function getSearchParams() {
             }
         });
 
-        var searchInAllFacility = byId('searchInAllFacility').checked;
-
-        if( getFieldValue('searchByProgramStage') == "false" && !searchInAllFacility ) {
+        if( getFieldValue('searchByProgramStage') == "false" && getFieldValue('facilityLB')!='searchInAllOrgunits' ) {
             p += "_" + getFieldValue('orgunitId');
         }
 
@@ -288,16 +287,7 @@ function getSearchParams() {
 
     params += '&listAll=false';
 
-    params += '&facilityLB=';
-    if( byId('searchInAllFacility').checked ) {
-        params += getFieldValue('searchInAllFacility');
-    }
-    else if( byId('searchInUserOrgunits').checked ) {
-        params += getFieldValue('searchInUserOrgunits');
-    }
-    else if( byId('searchBelowOrgunit').checked ) {
-        params += getFieldValue('searchBelowOrgunit');
-    }
+    params += '&facilityLB=' + getFieldValue('facilityLB');
 
     return params;
 }
