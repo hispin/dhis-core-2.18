@@ -78,11 +78,11 @@ public interface StatementBuilder
     /**
      * Returns a limit and offset clause.
      * 
+     * @param offset the offset / start position for the records to return.
      * @param limit the limit on max number of records to return.
-     * @param offset the offset for the records to return.
      * @return a limit and offset clause.
      */
-    String limitRecord( int limit, int offset );
+    String limitRecord( int offset, int limit );
     
     /**
      * Returns statement for vacuum and analyze operations for a table. Returns

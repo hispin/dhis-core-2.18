@@ -63,7 +63,7 @@ public abstract class AbstractStatementBuilder
     }
 
     @Override
-    public String limitRecord( int limit, int offset )
+    public String limitRecord( int offset, int limit )
     {
         return " LIMIT " + limit + " OFFSET " + offset;
     }
