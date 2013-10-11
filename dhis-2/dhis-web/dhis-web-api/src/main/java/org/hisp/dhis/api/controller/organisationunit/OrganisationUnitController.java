@@ -88,7 +88,7 @@ public class OrganisationUnitController
             level = Integer.parseInt( options.getOptions().get( "level" ) );
         }
 
-        if ( options.getOptions().get( "userOnly" ).equals( "true" ) )
+        if ( "true".equals( options.getOptions().get( "userOnly" ) ) )
         {
             entityList = new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
         }
