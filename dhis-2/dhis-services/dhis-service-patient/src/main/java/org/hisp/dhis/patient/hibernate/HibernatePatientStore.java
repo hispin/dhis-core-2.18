@@ -568,7 +568,7 @@ public class HibernatePatientStore
             {
 
                 String[] keyValues = id.split( " " );
-                patientWhere += patientOperator + "(";
+                patientWhere += patientOperator + " pi.patientidentifiertypeid is not null AND (";
                 String opt = "";
                 for ( String v : keyValues )
                 {

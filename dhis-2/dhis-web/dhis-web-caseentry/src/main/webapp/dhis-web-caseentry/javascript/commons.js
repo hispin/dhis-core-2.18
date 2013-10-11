@@ -1126,24 +1126,7 @@ function updatePatient()
       url: 'updatePatient.action',
       data: params,
       success: function( json ) {
-			if( getFieldValue('programIdAddPatient')!='')
-			{
-				jQuery.postJSON( "saveProgramEnrollment.action",
-				{
-					patientId: getFieldValue('id'),
-					programId: getFieldValue('programIdAddPatient'),
-					dateOfIncident: jQuery('#patientForm [id=dateOfIncident]').val(),
-					enrollmentDate: jQuery('#patientForm [id=enrollmentDate]').val()
-				}, 
-				function( json ) 
-				{ 
-					showPatientDashboardForm( getFieldValue('id') );
-				});
-			}
-			else
-			{
-				showPatientDashboardForm( getFieldValue('id') );
-			}
+			showPatientDashboardForm( getFieldValue('id') );
       }
      });
 }
