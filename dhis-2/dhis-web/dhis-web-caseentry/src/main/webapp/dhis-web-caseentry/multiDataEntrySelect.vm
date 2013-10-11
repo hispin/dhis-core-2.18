@@ -20,6 +20,8 @@
 		
 		jQuery("#searchObjectId [value=prg]").remove();
 		registration = false;
+		
+		jQuery('#searchByIdTR').remove();
 	});	
 </script>
 
