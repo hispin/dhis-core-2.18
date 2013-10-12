@@ -45,7 +45,7 @@
 	"items": [
 		#foreach( $item in $dimensionIdentifierTypes )
 			{
-				"id": "$item",
+				"id": "$item.uid",
 				"name": "",
 				"compulsory": "",
 				"valueType": #if( $iden.optionSet )
@@ -86,7 +86,7 @@
 		
 		#foreach( $item in $filterIdentifierTypes )
 			{
-				"id": "$item",
+				"id": "$item.uid",
 				"name": "",
 				"compulsory": "",
 				"valueType": #if( $iden.optionSet )

@@ -664,7 +664,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				+ 'psid="' + programStageId + '" '
 				+ 'psuid="' + programStageUid + '" '
 				+ 'psname="' + programStageName + '" '
-				+ 'status=3'
+				+ 'status="3"'
 				+ 'programType="' + selectedStage.attr('programType') + '" '
 				+ 'reportDate="" '
 				+ 'reportDateDes="' + selectedStage.attr('reportDateDes') + '" '
