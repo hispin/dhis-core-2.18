@@ -3,6 +3,7 @@
 		jQuery('#criteriaBtnTD').attr('rowspan', 2);
 		showById('searchByIdTR');
 	});
+	var registrationProgress = false;
 </script>
 	
 <h3 id='mainLinkLbl'>$i18n.getString( "patient_management" ) #openHelp( "patient" )</a></h3>

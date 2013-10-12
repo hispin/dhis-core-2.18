@@ -211,6 +211,7 @@ function addPatient( programId, related, isContinue )
 	var patient = new Patient();
 	var params = 'programId=' + programId + '&' + getParamsForDiv('patientForm');
 	patient.add(programId,related,params, isContinue );
+	registrationProgress = true;
     return false;
 }
 
@@ -429,11 +430,15 @@ function loadDataEntry( programStageInstanceId )
 			hideLoader();
 			hideById('contentDiv');
 			
-			var reportDateToUse = selectedProgramStageInstance.attr('reportDateToUse');
-			if(reportDateToUse != "undefined" && reportDateToUse!='' && $('#executionDate').val() == '' ){
-				$('#executionDate').val(reportDateToUse);
-				$('#executionDate').change();
+			if(registrationProgress)
+			{
+				var reportDateToUse = selectedProgramStageInstance.attr('reportDateToUse');
+				if(reportDateToUse != "undefined" && reportDateToUse!='' && $('#executionDate').val() == '' ){
+					$('#executionDate').val(reportDateToUse);
+					$('#executionDate').change();
+				}
 			}
+			registrationProgress = false;
 		
 		} );
 	

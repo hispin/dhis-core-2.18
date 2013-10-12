@@ -86,17 +86,18 @@
 							#else
 								#set($standardInterval=0)
 							#end
-							<option value="$programStage.uid" 
-							localid='$programStage.id' 
-							prevStageId='$prevStageId'
-							standardInterval='$standardInterval' 
-							selected repeatable="true"
-							allowGenerateNextVisit='$allowGenerateNextVisit' 
-							programType = '$programStage.program.type'
-							reportDateDes='$programStage.reportDateDescription'
-							repeatable="false"
-							openAfterEnrollment="$programStage.openAfterEnrollment"
-							reportDateToUse="$reportDateToUse"
+							<option 
+								value="$programStage.uid" 
+								localid='$programStage.id' 
+								prevStageId='$prevStageId'
+								standardInterval='$standardInterval' 
+								selected repeatable="true"
+								allowGenerateNextVisit='$allowGenerateNextVisit' 
+								programType = '$programStage.program.type'
+								reportDateDes='$programStage.reportDateDescription'
+								repeatable="false"
+								openAfterEnrollment="$programStage.openAfterEnrollment"
+								reportDateToUse="$reportDateToUse"
 							>$!programStage.displayName</option>
 						#else
 							#set($hasEvent="false")
@@ -125,7 +126,7 @@
 								repeatable="false"
 								openAfterEnrollment="$programStage.openAfterEnrollment"
 								reportDateToUse="$reportDateToUse"
-								>$!programStage.displayName</option>
+							>$!programStage.displayName</option>
 							
 						#end
 						
