@@ -41,6 +41,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.filter.DataElementPeriodTypeAllowAverageFilter;
 import org.hisp.dhis.system.filter.DataElementPeriodTypeFilter;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -128,13 +129,20 @@ public class GetOperandsAction
         this.periodType = periodType;
     }
 
-    private boolean includeTotals = false;
+    private boolean periodTypeAllowAverage;
+    
+    public void setPeriodTypeAllowAverage( boolean periodTypeAllowAverage )
+    {
+        this.periodTypeAllowAverage = periodTypeAllowAverage;
+    }
+
+    private boolean includeTotals;
 
     public void setIncludeTotals( boolean includeTotals )
     {
         this.includeTotals = includeTotals;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -180,9 +188,13 @@ public class GetOperandsAction
             FilterUtils.filter( dataElements, AGGREGATABLE_FILTER );
         }
 
-        if ( periodType != null )
+        if ( periodType != null && !periodTypeAllowAverage )
         {
             FilterUtils.filter( dataElements, new DataElementPeriodTypeFilter( periodType ) );
+        }
+        else if ( periodType != null && periodTypeAllowAverage )
+        {
+            FilterUtils.filter( dataElements, new DataElementPeriodTypeAllowAverageFilter( periodType ) );
         }
 
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
@@ -199,4 +211,5 @@ public class GetOperandsAction
 
         return SUCCESS;
     }
+    
 }

@@ -13,7 +13,7 @@ jQuery(document).ready(function()
 		title: "Expression"
 	});
 		
-	jQuery( "#periodTypeName" ).change(function(){
+	jQuery( "#periodTypeName, #ruleType" ).change(function(){
 		getOperandsPage();
 	});
 	
@@ -69,8 +69,11 @@ function getOperandsPage()
 	var key = getFieldValue( "expression-container input[id=filter]" );
 	
 	var periodType = getFieldValue( "periodTypeName" );
+	var ruleType = getFieldValue( "ruleType" );
+	var periodTypeAllowAverage = ( ruleType && ruleType == "monitoring" ) ? true : false;
 
-	dataDictionary.loadOperands( "#expression-container select[id=dataElementId]", {usePaging: true, key: key, periodType: periodType} );	
+	dataDictionary.loadOperands( "#expression-container select[id=dataElementId]", 
+		{usePaging: true, key: key, periodType: periodType, periodTypeAllowAverage: periodTypeAllowAverage } );	
 }
 
 function clearSearchText()
