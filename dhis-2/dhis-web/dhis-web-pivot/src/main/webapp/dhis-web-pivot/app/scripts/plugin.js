@@ -65,7 +65,7 @@ Ext.onReady(function() {
 		});
 
 		requests.push({
-			url: config.url + '/api/organisationUnits.json?userOnly=true&viewClass=detailed&links=false',
+			url: config.url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&links=false',
 			success: function(r) {
 				var ou = r.organisationUnits[0];
 				init.user.ou = ou.id;
@@ -75,7 +75,7 @@ Ext.onReady(function() {
 		});
 
 		requests.push({
-			url: config.url + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
+			url: config.url + '/api/mapLegendSets.jsonp?viewClass=detailed&links=false&paging=false',
 			success: function(r) {
 				init.legendSets = r.mapLegendSets;
 				fn();
@@ -83,7 +83,7 @@ Ext.onReady(function() {
 		});
 
 		requests.push({
-			url: config.url + '/api/dimensions.json?links=false&paging=false',
+			url: config.url + '/api/dimensions.jsonp?links=false&paging=false',
 			success: function(r) {
 				init.dimensions = r.dimensions;
 				fn();
@@ -188,8 +188,4 @@ Ext.onReady(function() {
 			getInit(config);
 		}
 	};
-
-	DHIS = Ext.isObject(DHIS) ? DHIS : {};
-
-	DHIS.getTable = PT.plugin.getTable;
 });
