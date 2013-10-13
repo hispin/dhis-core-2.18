@@ -184,8 +184,7 @@ public class DefaultValidationRuleService
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
         ValidationRuleGroup group )
     {
-    	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size()
-            + "] group=" + group.getName() );
+    	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "] group=" + group.getName() );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = group.getMembers();
         return validateInternal( sources, periods, rules, ValidationRunType.INTERACTIVE, null );
@@ -322,6 +321,7 @@ public class DefaultValidationRuleService
         }
 
         executor.shutdown();
+        
         try
         {
             executor.awaitTermination( 23, TimeUnit.HOURS );
@@ -376,8 +376,7 @@ public class DefaultValidationRuleService
      * assigned to them.
      * 
      * @param dataElements the data elements to look for
-     * @return all validation rules which have the data elements assigned to
-     *         them
+     * @return all validation rules which have the data elements assigned.
      */
     private Collection<ValidationRule> getValidationTypeRulesForDataElements( Set<DataElement> dataElements )
     {
