@@ -9,6 +9,7 @@ jQuery( document ).ready( function()
         'beforeValidateHandler' : function()
         {
             selectAllById( 'groupMembers' );
+            selectAllById( 'userRolesToAlert' );
         },
         'rules' : getValidationRules( "validationRuleGroup" )
     } );
