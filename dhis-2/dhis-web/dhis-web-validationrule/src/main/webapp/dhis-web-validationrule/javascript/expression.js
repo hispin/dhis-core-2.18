@@ -168,20 +168,18 @@ function saveExpression( side, description, expression, textualDescription )
 // Set Null Expression
 // -----------------------------------------------------------------------------
 
-function setNullExpression()
+function clearRuleExpression()
 {
-    // set left-expression
     var description = $( "#leftSideDescription" ).val();
-    $( "#leftSideExpression" ).val( '' );
-    $( "#leftSideTextualExpression" ).val( '' );
-    saveExpression( 'left', description, '', '' );
+    $( "#leftSideExpression" ).val( "" );
+    $( "#leftSideTextualExpression" ).val( "" );
+    saveExpression( "left", description, "", "" );
 
-    // set right-expression
     description = $( "#rightSideDescription" ).val();
-    $( "#rightSideExpression" ).val( '' );
-    $( "#rightSideTextualExpression" ).val( '' );
-    saveExpression( 'right', description, '', '' );
+    $( "#rightSideExpression" ).val( "" );
+    $( "#rightSideTextualExpression" ).val( "" );
+    saveExpression( "right", description, "", "" );
 
-    // Show periodType combo
-    enable( 'periodTypeName' );
+	enable( "ruleType" );
+	enable( "periodTypeName" );
 }

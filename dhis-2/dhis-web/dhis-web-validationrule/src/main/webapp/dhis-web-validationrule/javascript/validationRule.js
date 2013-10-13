@@ -1,6 +1,8 @@
-function changeRuleType( ruleType )
+function changeRuleType()
 {
-	if (ruleType == 'validation')
+	var ruleType = $( '#ruleType' ).val();
+	
+	if ( ruleType == 'validation' )
 	{
 		hideById( 'organisationUnitLevelTR');
 		hideById( 'sequentialSampleCountTR');
