@@ -156,7 +156,7 @@ public class AddValidationRuleAction
 
     private Integer organisationUnitLevel;
     
-    public void setOrganizationUnitLevel(Integer organisationUnitLevel) 
+    public void setOrganisationUnitLevel( Integer organisationUnitLevel )
     {
         this.organisationUnitLevel = organisationUnitLevel;
     }
