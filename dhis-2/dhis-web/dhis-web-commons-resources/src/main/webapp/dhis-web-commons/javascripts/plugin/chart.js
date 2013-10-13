@@ -2440,7 +2440,6 @@ Ext.onReady( function() {
 
     // PLUGIN
 
-    
 	// chart tips css
 	var css = '.dv-chart-tips { border-radius: 2px; padding: 0px 3px 1px; border: 2px solid #777; background-color: #f1f1f1; } \n';
 	css += '.dv-chart-tips .x-tip-body { background-color: #f1f1f1; font-size: 13px; font-weight: normal; color: #444; -webkit-text-stroke: 0; } \n';
@@ -2453,11 +2452,79 @@ Ext.onReady( function() {
 
 	Ext.util.CSS.createStyleSheet(css);
 
+	// i18n
+	DV.i18n = {
+		target: 'Target',
+		base: 'Base',
+		trend: 'Trend'
+	};
+
     // plugin
     DV.plugin = {};
 
-	DV.plugin.getChart = function(config) {
+	var init = {},
+		configs = [],
+		isInitialized = false,
+		getInit,
+		execute;
+
+	getInit = function(config) {
+		var requests = [],
+			callbacks = 0,
+			fn;
+
+		init.user = {};
+
+		fn = function() {
+			if (++callbacks === requests.length) {
+				for (var i = 0; i < configs.length; i++) {
+					execute(configs[i]);
+				}
+			}
+		};
+
+		requests.push({
+			url: config.url + '/api/system/info',
+			success: function(r) {
+				init.contextPath = r.contextPath;
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&links=false',
+			success: function(r) {
+				var ou = r.organisationUnits[0];
+				init.user.ou = ou.id;
+				init.user.ouc = Ext.Array.pluck(ou.children, 'id');
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/mapLegendSets.jsonp?viewClass=detailed&links=false&paging=false',
+			success: function(r) {
+				init.legendSets = r.mapLegendSets;
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/dimensions.jsonp?links=false&paging=false',
+			success: function(r) {
+				init.dimensions = r.dimensions;
+				fn();
+			}
+		});
+
+		for (var i = 0; i < requests.length; i++) {
+			Ext.data.JsonP.request(requests[i]);
+		}
+	};
+
+	execute = function(config) {
 		var validateConfig,
+            extendInstance,
 			createViewport,
 			initialize,
 			dv;
@@ -2474,6 +2541,13 @@ Ext.onReady( function() {
 			}
 
 			return true;
+		};
+
+        extendInstance = function(dv) {
+            var util = dv.util || {},
+                init = dv.init || {};
+
+            init.el = config.el;
 		};
 
 		createViewport = function() {
@@ -2506,38 +2580,37 @@ Ext.onReady( function() {
 		};
 
 		initialize = function() {
-
 			if (!validateConfig(config)) {
 				return;
 			}
 
-			Ext.data.JsonP.request({
-				url: config.url + '/dhis-web-visualizer/initialize.action',
-				success: function(r) {
-					var init = r;
+			dv = DV.core.getInstance(Ext.clone(init));
+			extendInstance(dv);
 
-					DV.i18n = init.i18n;
+			dv.isPlugin = true;
+			dv.viewport = createViewport();
 
-					dv = DV.core.getInstance(init);
+			if (config.uid) {
+				dv.engine.loadChart(config.uid, dv);
+			}
+			else {
+				layout = dv.api.layout.Layout(config);
 
-					dv.init.el = config.el;
-					dv.isPlugin = true;
-					dv.viewport = createViewport();
-
-					if (config.uid) {
-						dv.engine.loadChart(config.uid, dv);
-					}
-					else {
-						layout = dv.api.layout.Layout(config);
-
-						if (!layout) {
-							return;
-						}
-
-						dv.engine.createChart(layout, dv);
-					}
+				if (!layout) {
+					return;
 				}
-			});
+
+				dv.engine.createChart(layout, dv);
+			}
 		}();
+	};
+
+	DV.plugin.getChart = function(config) {
+		configs.push(config);
+
+		if (!isInitialized) {
+			isInitialized = true;
+			getInit(config);
+		}
 	};
 });
