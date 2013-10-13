@@ -73,13 +73,6 @@ public class GetValidationRuleGroupAction
         return validationRuleGroup;
     }
 
-    private int memberCount;
-
-    public int getMemberCount()
-    {
-        return memberCount;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -87,8 +80,6 @@ public class GetValidationRuleGroupAction
     public String execute()
     {
         validationRuleGroup = validationRuleService.getValidationRuleGroup( id );
-        
-        memberCount = validationRuleGroup.getMembers().size();
         
         return SUCCESS;
     }
