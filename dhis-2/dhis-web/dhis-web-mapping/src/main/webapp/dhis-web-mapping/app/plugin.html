@@ -14,18 +14,17 @@
     <style>h1 {font-size: 20px; padding: 30px 0 20px;}</style>
 
     <script>
-		var base = "http://localhost:8080/";
-
 		Ext.onReady(function() {
+			var url = "http://localhost:8080";
 
 			GIS.plugin.getMap({
-				url: base,
+				url: url,
 				el: "map1",
 				id: "ytkZY3ChM6J"
 			});
 
 			GIS.plugin.getMap({
-				url: base,
+				url: url,
 				el: "map2",
 				mapViews: [{
 					columns: [{dimension: 'in', items: [{id: 'Uvn6LCg7dVU'}]}], // data
