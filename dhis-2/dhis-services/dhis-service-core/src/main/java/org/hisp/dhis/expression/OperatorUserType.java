@@ -1,7 +1,5 @@
 package org.hisp.dhis.expression;
 
-import org.hisp.dhis.hibernate.EnumUserType;
-
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -30,9 +28,13 @@ import org.hisp.dhis.hibernate.EnumUserType;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class OperatorUserType extends EnumUserType<Operator> { 
+import org.hisp.dhis.hibernate.EnumUserType;
 
-    public OperatorUserType() { 
-        super(Operator.class); 
-    } 
+public class OperatorUserType
+    extends EnumUserType<Operator>
+{
+    public OperatorUserType()
+    {
+        super( Operator.class );
+    }
 }

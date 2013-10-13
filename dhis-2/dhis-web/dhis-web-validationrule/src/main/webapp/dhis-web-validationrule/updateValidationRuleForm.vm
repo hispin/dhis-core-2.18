@@ -47,7 +47,7 @@
 		<td>
 			<select type="text" id="organisationUnitLevel" name="organisationUnitLevel">
 				#foreach( $level in $organisationUnitLevels )
-				<option value="${level.level}"#if( $validationRule.organisationUnitLevel == '${level.level}' ) selected #end>${level.level} $encoder.htmlEncode( $!level.name )</option>
+				<option value="${level.level}"#if( $validationRule.organisationUnitLevel == "${level.level}" ) selected="selected"#end>${level.level} $!encoder.htmlEncode( $level.name )</option>
 			    #end
 			</select>
 		</td>
@@ -56,7 +56,7 @@
 		<td><label for="periodType">$i18n.getString( "period_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><select type="text" id="periodTypeName" name="periodTypeName" disabled>
 					#foreach ( $periodType in $periodTypes )
-             		 <option value="$periodType.name" #if( $validationRule.periodType.name.equals($periodType.name ) ) selected #end>$encoder.htmlEncode( $i18n.getString($periodType.name) )</option>
+             		 <option value="$periodType.name" #if( $validationRule.periodType.name.equals($periodType.name ) ) selected #end>$encoder.htmlEncode( $i18n.getString( $periodType.name ) )</option>
             		#end						
 			</select>
 			<img title="$i18n.getString('clear_expression')" onclick='setNullExpression();' src='../images/edit-clear.png' style='width: 20px;cursor:pointer' />

@@ -159,9 +159,9 @@ public class UpdateValidationRuleAction
         this.rightSideNullIfBlank = rightSideNullIfBlank;
     }
 
-    private String organisationUnitLevel;
-
-    public void setOrganisationUnitLevel( String organisationUnitLevel )
+    private Integer organisationUnitLevel;
+    
+    public void setOrganisationUnitLevel( Integer organisationUnitLevel )
     {
         this.organisationUnitLevel = organisationUnitLevel;
     }
@@ -226,7 +226,7 @@ public class UpdateValidationRuleAction
         validationRule.getRightSide().setNullIfBlank( rightSideNullIfBlank );
         validationRule.getRightSide().setDataElementsInExpression( expressionService.getDataElementsInExpression( rightSideExpression ) );
         validationRule.getRightSide().setOptionCombosInExpression( expressionService.getOptionCombosInExpression( rightSideExpression ) );
-        validationRule.setOrganisationUnitLevel( organisationUnitLevel != null && !organisationUnitLevel.isEmpty() ? Integer.parseInt( organisationUnitLevel ) : null );
+        validationRule.setOrganisationUnitLevel( organisationUnitLevel );
         
         PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
         validationRule.setPeriodType( periodType == null ? null : periodService.getPeriodTypeByClass( periodType.getClass() ) );
