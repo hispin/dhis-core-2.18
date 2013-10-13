@@ -460,13 +460,15 @@ Ext.onReady( function() {
 		// init
 		(function() {
 			// sort and extend dynamic dimensions
-			init.dimensions = util.array.sortObjectsByString(init.dimensions);
+			if (init.dimensions) {
+				init.dimensions = util.array.sortObjectsByString(init.dimensions);
 
-			for (var i = 0, dim; i < init.dimensions.length; i++) {
-				dim = init.dimensions[i];
-				dim.dimensionName = dim.id;
-				dim.objectName = conf.finals.dimension.dimension.objectName;
-				conf.finals.dimension.objectNameMap[dim.id] = dim;
+				for (var i = 0, dim; i < init.dimensions.length; i++) {
+					dim = init.dimensions[i];
+					dim.dimensionName = dim.id;
+					dim.objectName = conf.finals.dimension.dimension.objectName;
+					conf.finals.dimension.objectNameMap[dim.id] = dim;
+				}
 			}
 
 			// legend set map
@@ -1812,13 +1814,13 @@ Ext.onReady( function() {
 
 					getTdHtml = function(config) {
 						var bgColor,
-							legends,
+							mapLegends,
 							colSpan,
 							rowSpan,
 							htmlValue,
 							displayDensity,
 							fontSize,
-							isLegendSet = Ext.isObject(legendSet) && Ext.isArray(legendSet.legends) && legendSet.legends.length,
+							isLegendSet = Ext.isObject(legendSet) && Ext.isArray(legendSet.mapLegends) && legendSet.mapLegends.length,
 							isNumeric = Ext.isObject(config) && Ext.isString(config.type) && config.type.substr(0,5) === 'value' && !config.empty,
 							isValue = Ext.isObject(config) && Ext.isString(config.type) && config.type === 'value' && !config.empty,
 							cls = '',
@@ -1830,13 +1832,13 @@ Ext.onReady( function() {
 
 						// Background color from legend set
 						if (isNumeric && isLegendSet) {
-							legends = legendSet.legends;
+							legends = legendSet.mapLegends;
 
-							for (var i = 0, value; i < legends.length; i++) {
+							for (var i = 0, value; i < mapLegends.length; i++) {
 								value = parseFloat(config.value);
 
-								if (Ext.Number.constrain(value, legends[i].sv, legends[i].ev) === value) {
-									bgColor = legends[i].color;
+								if (Ext.Number.constrain(value, mapLegends[i].sv, mapLegends[i].ev) === value) {
+									bgColor = mapLegends[i].color;
 								}
 							}
 						}

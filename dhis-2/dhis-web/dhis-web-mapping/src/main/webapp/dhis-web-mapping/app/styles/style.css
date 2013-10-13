@@ -784,6 +784,7 @@ gis-combo .x-form-item-label {
 
 .gis-textfield input.x-form-text {
 	border-radius: 1px;
+	height: 24px;
 }
 
 

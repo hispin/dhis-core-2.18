@@ -2,14 +2,14 @@ Ext.onReady( function() {
 
 	// ext config
 	Ext.Ajax.method = 'GET';
-	
-	// pt	
+
+	// pt
 	PT = {
 		core: {
 			instances: []
-		},		
-		i18n: {},		
-		isDebug: false,		
+		},
+		i18n: {},
+		isDebug: false,
 		isSessionStorage: 'sessionStorage' in window && window['sessionStorage'] !== null
 	};
 
@@ -767,7 +767,7 @@ Ext.onReady( function() {
 					layout.showTotals = Ext.isBoolean(config.totals) ? config.totals : (Ext.isBoolean(config.showTotals) ? config.showTotals : true);
 					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
-					
+
 					layout.showHierarchy = Ext.isBoolean(config.showHierarchy) ? config.showHierarchy : false;
 
 					layout.displayDensity = Ext.isString(config.displayDensity) && !Ext.isEmpty(config.displayDensity) ? config.displayDensity : 'normal';
@@ -799,7 +799,7 @@ Ext.onReady( function() {
 			};
 
 			api.response = {};
-			
+
 			api.response.Header = function(config) {
 				var header = {};
 
@@ -883,43 +883,43 @@ Ext.onReady( function() {
 				}();
 			};
 		}());
-		
+
 		// service
 		(function() {
 			service.layout = {};
-			
+
 			service.layout.getObjectNameDimensionMap = function(dimensionArray) {
 				var map = {};
-				
-				if (Ext.isArray(dimensionArray) && dimensionArray.length) {					
+
+				if (Ext.isArray(dimensionArray) && dimensionArray.length) {
 					for (var i = 0, dim; i < dimensionArray.length; i++) {
 						dim = api.layout.Dimension(dimensionArray[i]);
-						
+
 						if (dim) {
 							map[dim.dimension] = dim;
 						}
 					}
 				}
-				
+
 				return map;
-			};				
-			
+			};
+
 			service.layout.getObjectNameDimensionItemsMap = function(dimensionArray) {
 				var map = {};
-				
-				if (Ext.isArray(dimensionArray) && dimensionArray.length) {					
+
+				if (Ext.isArray(dimensionArray) && dimensionArray.length) {
 					for (var i = 0, dim; i < dimensionArray.length; i++) {
 						dim = api.layout.Dimension(dimensionArray[i]);
-						
+
 						if (dim) {
 							map[dim.dimension] = dim.items;
 						}
 					}
 				}
-				
+
 				return map;
 			};
-							
+
 			service.response = {};
 		}());
 
@@ -1169,7 +1169,7 @@ Ext.onReady( function() {
 						paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
 					}
 				}
-				
+
 				if (xLayout.showHierarchy) {
 					paramString += '&hierarchyMeta=true';
 				}
@@ -1207,26 +1207,26 @@ Ext.onReady( function() {
 
 				isHierarchy = function(id, response) {
 					return layout.showHierarchy && Ext.isObject(response.metaData.ouHierarchy) && response.metaData.ouHierarchy.hasOwnProperty(id);
-				};						
-					
+				};
+
 				getItemName = function(id, response, isHtml) {
 					var metaData = response.metaData,
 						name = '';
-					
+
 					if (isHierarchy(id, response)) {
 						var a = Ext.clean(metaData.ouHierarchy[id].split('/'));
 						a.shift();
-						
+
 						for (var i = 0; i < a.length; i++) {
 							name += (isHtml ? '<span class="text-weak">' : '') + metaData.names[a[i]] + (isHtml ? '</span>' : '') + ' / ';
 						}
 					}
-					
+
 					name += metaData.names[id];
-					
+
 					return name;
 				};
-				
+
 				getSyncronizedXLayout = function(xLayout, response) {
 					var removeDimensionFromXLayout,
 						getHeaderNames,
@@ -1341,10 +1341,10 @@ Ext.onReady( function() {
 											responseOu = response.metaData[ou];
 
 										userOugc = [];
-										
+
 										for (var j = 0, id; j < responseOu.length; j++) {
 											id = responseOu[j];
-											
+
 											if (!Ext.Array.contains(userOuOuc, id)) {
 												userOugc.push({
 													id: id,
@@ -1361,7 +1361,7 @@ Ext.onReady( function() {
 								else if (isLevel || isGroup) {
 									for (var j = 0, responseOu = response.metaData[ou], id; j < responseOu.length; j++) {
 										id = responseOu[j];
-										
+
 										dim.items.push({
 											id: id,
 											name: getItemName(id, response)
@@ -2436,9 +2436,9 @@ Ext.onReady( function() {
 				};
 
 				afterLoad = function(layout, xLayout, xResponse) {
-					
+
 					if (pt.isPlugin) {
-						
+
 						// Resize render elements
 						var baseEl = Ext.get(pt.init.el),
 							baseElBorderW = parseInt(baseEl.getStyle('border-left-width')) + parseInt(baseEl.getStyle('border-right-width')),
@@ -2457,7 +2457,7 @@ Ext.onReady( function() {
 							setMouseHandlers();
 							engine.setSessionStorage('table', layout);
 						}
-						
+
 						if (updateGui) {
 							pt.viewport.setGui(layout, xLayout, updateGui, isFavorite);
 						}
@@ -2479,7 +2479,7 @@ Ext.onReady( function() {
 						console.log("xResponse", xResponse);
 						console.log("xLayout", xLayout);
 					}
-				};					
+				};
 
 				initialize = function() {
 					var url,
@@ -2547,7 +2547,7 @@ Ext.onReady( function() {
 							// Update viewport
 							pt.viewport.centerRegion.removeAll(true);
 							pt.viewport.centerRegion.update(html);
-							
+
 							afterLoad(layout, xLayout, xResponse);
 						}
 					});
@@ -2775,7 +2775,67 @@ Ext.onReady( function() {
 	// plugin
 	PT.plugin = {};
 
-	PT.plugin.getTable = function(config) {
+	var init = {},
+		configs = [],
+		isInitialized = false,
+		getInit,
+		execute;
+
+	getInit = function(config) {
+		var requests = [],
+			callbacks = 0,
+			fn;
+
+		init.user = {};
+
+		fn = function() {
+			if (++callbacks === requests.length) {
+				for (var i = 0; i < configs.length; i++) {
+					execute(configs[i]);
+				}
+			}
+		};
+
+		requests.push({
+			url: config.url + '/api/system/info',
+			success: function(r) {
+				init.contextPath = r.contextPath;
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/organisationUnits.json?userOnly=true&viewClass=detailed&links=false',
+			success: function(r) {
+				var ou = r.organisationUnits[0];
+				init.user.ou = ou.id;
+				init.user.ouc = Ext.Array.pluck(ou.children, 'id');
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
+			success: function(r) {
+				init.legendSets = r.mapLegendSets;
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/dimensions.json?links=false&paging=false',
+			success: function(r) {
+				init.dimensions = r.dimensions;
+				fn();
+			}
+		});
+
+		for (var i = 0; i < requests.length; i++) {
+			Ext.data.JsonP.request(requests[i]);
+		}
+	};
+
+	execute = function(config) {
 		var validateConfig,
             extendInstance,
 			createViewport,
@@ -2835,36 +2895,41 @@ Ext.onReady( function() {
 		};
 
 		initialize = function() {
-
 			if (!validateConfig(config)) {
 				return;
 			}
 
-			Ext.data.JsonP.request({
-				url: config.url + '/dhis-web-pivot/initialize.action',
-				success: function(r) {
-					PT.i18n = r.i18n;
-					
-					pt = PT.core.getInstance(r);
-                    extendInstance(pt);
+			pt = PT.core.getInstance(Ext.clone(init));
+			extendInstance(pt);
 
-					pt.viewport = createViewport();
-					pt.isPlugin = true;
+			pt.viewport = createViewport();
+			pt.isPlugin = true;
 
-					if (config.uid) {
-						pt.engine.loadTable(config.uid, pt);
-					}
-					else {
-						layout = pt.api.layout.Layout(config);
+			if (config.uid) {
+				pt.engine.loadTable(config.uid, pt);
+			}
+			else {
+				layout = pt.api.layout.Layout(config);
 
-						if (!layout) {
-							return;
-						}
-
-						pt.engine.createTable(layout, pt);
-					}
+				if (!layout) {
+					return;
 				}
-			});
+
+				pt.engine.createTable(layout, pt);
+			}
 		}();
 	};
+
+	PT.plugin.getTable = function(config) {
+		configs.push(config);
+
+		if (!isInitialized) {
+			isInitialized = true;
+			getInit(config);
+		}
+	};
+
+	DHIS = Ext.isObject(DHIS) ? DHIS : {};
+
+	DHIS.getTable = PT.plugin.getTable;
 });

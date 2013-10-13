@@ -35,7 +35,67 @@ Ext.onReady(function() {
 	// plugin
 	PT.plugin = {};
 
-	PT.plugin.getTable = function(config) {
+	var init = {},
+		configs = [],
+		isInitialized = false,
+		getInit,
+		execute;
+
+	getInit = function(config) {
+		var requests = [],
+			callbacks = 0,
+			fn;
+
+		init.user = {};
+
+		fn = function() {
+			if (++callbacks === requests.length) {
+				for (var i = 0; i < configs.length; i++) {
+					execute(configs[i]);
+				}
+			}
+		};
+
+		requests.push({
+			url: config.url + '/api/system/info',
+			success: function(r) {
+				init.contextPath = r.contextPath;
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/organisationUnits.json?userOnly=true&viewClass=detailed&links=false',
+			success: function(r) {
+				var ou = r.organisationUnits[0];
+				init.user.ou = ou.id;
+				init.user.ouc = Ext.Array.pluck(ou.children, 'id');
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
+			success: function(r) {
+				init.legendSets = r.mapLegendSets;
+				fn();
+			}
+		});
+
+		requests.push({
+			url: config.url + '/api/dimensions.json?links=false&paging=false',
+			success: function(r) {
+				init.dimensions = r.dimensions;
+				fn();
+			}
+		});
+
+		for (var i = 0; i < requests.length; i++) {
+			Ext.data.JsonP.request(requests[i]);
+		}
+	};
+
+	execute = function(config) {
 		var validateConfig,
             extendInstance,
 			createViewport,
@@ -95,36 +155,41 @@ Ext.onReady(function() {
 		};
 
 		initialize = function() {
-
 			if (!validateConfig(config)) {
 				return;
 			}
 
-			Ext.data.JsonP.request({
-				url: config.url + '/dhis-web-pivot/initialize.action',
-				success: function(r) {
-					PT.i18n = r.i18n;
-					
-					pt = PT.core.getInstance(r);
-                    extendInstance(pt);
+			pt = PT.core.getInstance(Ext.clone(init));
+			extendInstance(pt);
 
-					pt.viewport = createViewport();
-					pt.isPlugin = true;
+			pt.viewport = createViewport();
+			pt.isPlugin = true;
 
-					if (config.uid) {
-						pt.engine.loadTable(config.uid, pt);
-					}
-					else {
-						layout = pt.api.layout.Layout(config);
+			if (config.uid) {
+				pt.engine.loadTable(config.uid, pt);
+			}
+			else {
+				layout = pt.api.layout.Layout(config);
 
-						if (!layout) {
-							return;
-						}
-
-						pt.engine.createTable(layout, pt);
-					}
+				if (!layout) {
+					return;
 				}
-			});
+
+				pt.engine.createTable(layout, pt);
+			}
 		}();
 	};
+
+	PT.plugin.getTable = function(config) {
+		configs.push(config);
+
+		if (!isInitialized) {
+			isInitialized = true;
+			getInit(config);
+		}
+	};
+
+	DHIS = Ext.isObject(DHIS) ? DHIS : {};
+
+	DHIS.getTable = PT.plugin.getTable;
 });
