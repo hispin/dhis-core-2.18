@@ -52,7 +52,6 @@
 				<tr>
 					<td>#filterDiv( "validationRule" )</td>
 					<td style="text-align:right">
-						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'validationRule' );" style="width:140px"/>
 						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddValidationRuleForm.action'">
 					</td>
 				</tr>	

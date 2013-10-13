@@ -183,9 +183,7 @@ public class ValidationResult
 
     public int compareTo( ValidationResult other )
     {
-    	int result;
-    	
-    	result = source.getName().compareTo( other.source.getName() );
+    	int result = source.getName().compareTo( other.source.getName() );
     	
     	if ( result != 0 )
 	{
@@ -234,14 +232,14 @@ public class ValidationResult
     	    return result;
     	}
 
-    	result = ( int ) Math.signum( Math.round( 100.0 * leftsideValue ) - Math.round( 100.0 * other.leftsideValue ) );
+    	result = (int) Math.signum( Math.round( 100.0 * leftsideValue ) - Math.round( 100.0 * other.leftsideValue ) );
     	
     	if ( result != 0 )
     	{
     	    return result;
     	}
     	
-    	result = ( int ) Math.signum( Math.round( 100.0 * rightsideValue ) - Math.round( 100.0 * other.rightsideValue ) );
+    	result = (int) Math.signum( Math.round( 100.0 * rightsideValue ) - Math.round( 100.0 * other.rightsideValue ) );
     	
     	if ( result != 0 )
     	{

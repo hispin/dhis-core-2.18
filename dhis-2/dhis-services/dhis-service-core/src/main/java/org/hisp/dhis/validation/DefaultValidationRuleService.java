@@ -451,7 +451,8 @@ public class DefaultValidationRuleService
 
         // Find out which users receive alerts, and which ValidationRules they
         // receive alerts for.
-        HashMap<User, Collection<ValidationRule>> userRulesMap = new HashMap<User, Collection<ValidationRule>>();
+        Map<User, Collection<ValidationRule>> userRulesMap = new HashMap<User, Collection<ValidationRule>>();
+        
         for ( ValidationRuleGroup validationRuleGroup : getAllValidationRuleGroups() )
         {
             Collection<UserAuthorityGroup> userRolesToAlert = validationRuleGroup.getUserAuthorityGroupsToAlert();

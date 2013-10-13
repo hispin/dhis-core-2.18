@@ -66,15 +66,6 @@
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <!-- PDF -->
-
-  <bean id="org.hisp.dhis.oum.action.pdf.ExportToPdfAction" class="org.hisp.dhis.oum.action.pdf.ExportToPdfAction"
-    scope="prototype">
-    <property name="serviceProvider" ref="exportServiceProvider" />
-    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
-
   <!-- OrganisationUnitGroup -->
 
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.ShowAddOrganisationUnitGroupFormAction" class="org.hisp.dhis.oum.action.organisationunitgroup.ShowAddOrganisationUnitGroupFormAction">
