@@ -9,7 +9,8 @@ function changeRuleType()
 		hideById( 'annualSampleCountTR');
 		hideById( 'highOutliersTR');
 		hideById( 'lowOutliersTR');
-	} else
+	} 
+	else
 	{
 		showById( 'organisationUnitLevelTR');
 		showById( 'sequentialSampleCountTR');
