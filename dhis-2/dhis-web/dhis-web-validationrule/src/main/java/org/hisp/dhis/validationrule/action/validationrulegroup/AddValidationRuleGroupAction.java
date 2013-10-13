@@ -28,7 +28,7 @@ package org.hisp.dhis.validationrule.action.validationrulegroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationRuleGroup;
@@ -79,20 +79,20 @@ public class AddValidationRuleGroupAction
         this.description = description;
     }
     
-    private Collection<String> groupMembers;
+    private Set<String> groupMembers;
 
-    public void setGroupMembers( Collection<String> groupMembers )
+    public void setGroupMembers( Set<String> groupMembers )
     {
         this.groupMembers = groupMembers;
     }
 
-    private Collection<String> selectedUserRolesToAlert;
-    
-    public void setSelectedUserRolesToAlert( Collection<String> selectedUserRolesToAlert )
+    private Set<String> userRolesToAlert;
+
+    public void setUserRolesToAlert( Set<String> userRolesToAlert )
     {
-    	this.selectedUserRolesToAlert = selectedUserRolesToAlert;
+        this.userRolesToAlert = userRolesToAlert;
     }
-   
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -113,9 +113,9 @@ public class AddValidationRuleGroupAction
         }
         group.getUserAuthorityGroupsToAlert().clear();
 
-        if ( selectedUserRolesToAlert != null )
+        if ( userRolesToAlert != null )
         {
-            for ( String id : selectedUserRolesToAlert )
+            for ( String id : userRolesToAlert )
             {
                 group.getUserAuthorityGroupsToAlert().add( userService.getUserAuthorityGroup( Integer.valueOf( id ) ) );
             }
