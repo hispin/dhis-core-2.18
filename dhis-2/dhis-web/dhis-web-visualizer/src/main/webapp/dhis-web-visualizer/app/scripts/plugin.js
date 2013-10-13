@@ -44,7 +44,7 @@ Ext.onReady(function() {
 		};
 
 		requests.push({
-			url: config.url + '/api/system/info',
+			url: config.url + '/api/system/info.jsonp',
 			success: function(r) {
 				init.contextPath = r.contextPath;
 				fn();
@@ -166,6 +166,10 @@ Ext.onReady(function() {
 	};
 
 	DV.plugin.getChart = function(config) {
+		if (Ext.isString(config.url) && config.url.split('').pop() === '/') {
+			config.url = config.url.substr(0, config.url.length - 1);
+		}
+
 		configs.push(config);
 
 		if (!isInitialized) {
