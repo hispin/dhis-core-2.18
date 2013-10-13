@@ -1546,7 +1546,7 @@ public class ActivityReportingServiceImpl
 
         anonymousProgramMobile.setName( program.getName() );
 
-        if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
+        //if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
         {
             anonymousProgramMobile.setVersion( program.getVersion() );
 
