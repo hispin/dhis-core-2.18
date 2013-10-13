@@ -102,6 +102,13 @@ public class UpdateValidationRuleAction
     {
         this.importance = importance;
     }
+    
+    private String ruleType;
+
+    public void setRuleType( String ruleType )
+    {
+        this.ruleType = ruleType;
+    }
 
     private String operator;
 
@@ -205,6 +212,7 @@ public class UpdateValidationRuleAction
         validationRule.setName( name );
         validationRule.setDescription( description );
         validationRule.setImportance( importance );
+        validationRule.setRuleType( ruleType );
         validationRule.setOperator( Operator.valueOf( operator ) );
 
         validationRule.getLeftSide().setExpression( leftSideExpression );
