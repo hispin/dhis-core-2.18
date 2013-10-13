@@ -8,6 +8,7 @@ function showValidationRuleGroupDetails( id )
 		setInnerHTML( 'nameField', json.validationRuleGroup.name );
 		setInnerHTML( 'descriptionField', json.validationRuleGroup.description );
 		setInnerHTML( 'memberCountField', json.validationRuleGroup.memberCount );
+		setInnerHTML( 'userRolesToAlertCountField', json.validationRuleGroup.userRolesToAlertCount );
 
 		showDetails();
 	});
