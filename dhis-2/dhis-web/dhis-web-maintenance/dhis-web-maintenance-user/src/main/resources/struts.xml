@@ -83,17 +83,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <!-- PDF -->
-
-    <action name="exportToPdf" class="org.hisp.dhis.user.action.pdf.ExportToPdfAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/zip</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="${fileName}"</param>
-        <param name="bufferSize">10240</param>
-      </result>
-    </action>
-
     <!-- Role -->
 
     <action name="allRole" class="org.hisp.dhis.user.action.GetRoleListAction">

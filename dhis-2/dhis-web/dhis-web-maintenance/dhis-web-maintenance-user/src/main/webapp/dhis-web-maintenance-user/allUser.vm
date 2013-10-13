@@ -34,7 +34,6 @@
 						</select>
 					</td>
 					<td colspan="3" style="text-align:right">
-						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'alluser' );" style="width:80px"/>
 						<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddUserForm.action'"/>
 					</td>
 				</tr>
