@@ -891,7 +891,7 @@ public class JdbcCaseAggregationConditionManager
      */
     private String getConditionForProgramProperty( String operator, String startDate, String endDate, String property )
     {
-        String sql = " EXISTS ( SELECT _pi.programinstanceid FROM programinstance as _pi WHERE _pi.programinstanceid=pi.programsinstanceid AND "
+        String sql = " EXISTS ( SELECT _pi.programinstanceid FROM programinstance as _pi WHERE _pi.programinstanceid=pi.programinstanceid AND "
             + "pi.enrollmentdate >= '"
             + startDate
             + "' AND pi.enrollmentdate <= '"
