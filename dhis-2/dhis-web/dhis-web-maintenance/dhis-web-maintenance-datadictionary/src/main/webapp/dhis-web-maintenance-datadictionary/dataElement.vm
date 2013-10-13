@@ -47,8 +47,7 @@
 						</div>
 					</td>
 					<td style="text-align:right">
-						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'dataElement' );" style="width:80px"/>
-                        <input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortDataElementForm.action'" style="width:80px"/>
+						<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortDataElementForm.action'" style="width:80px"/>
                         #if ( $!dataDictionaryMode && $dataDictionaryMode == "extended" )
 							<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddExtendedDataElementForm.action'" style="width:80px"/>
 						#else

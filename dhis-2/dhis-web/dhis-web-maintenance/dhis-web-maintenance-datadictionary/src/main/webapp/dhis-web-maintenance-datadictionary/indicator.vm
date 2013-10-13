@@ -34,8 +34,7 @@
 						</div>
 					</td>
 					<td style="text-align:right">
-                        <input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPDF( 'indicator' );" style="width:80px"/>
-						<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortIndicatorForm.action'" style="width:80px"/>
+                        <input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortIndicatorForm.action'" style="width:80px"/>
 					    #if ( $dataDictionaryMode == "extended" )
 							<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddExtendedIndicatorForm.action'" style="width:80px"/>
 						#else

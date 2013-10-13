@@ -208,12 +208,5 @@
     scope="prototype">
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
-  <!-- PDF -->
-
-  <bean id="org.hisp.dhis.validationrule.action.pdf.ExportToPdfAction" class="org.hisp.dhis.validationrule.action.pdf.ExportToPdfAction"
-    scope="prototype">
-    <property name="serviceProvider" ref="exportServiceProvider" />
-    <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
-  </bean>
 
 </beans>
