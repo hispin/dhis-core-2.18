@@ -93,7 +93,12 @@ public class App
     @JsonProperty
     public String getLaunchUrl()
     {
-        return getBaseUrl() + File.separator + getFolderName() + File.separator + getLaunchPath();
+        if ( baseUrl != null && folderName != null && launchPath != null )
+        {
+            return baseUrl + File.separator + folderName + File.separator + launchPath;
+        }
+        
+        return null;
     }
     
     public String getVersion()
