@@ -26,7 +26,7 @@
 	<tr>
 		<td><label for="ruleType">$i18n.getString( "rule_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="ruleType" name="ruleType" onchange="changeRuleType( this.value )">
+			<select type="text" id="ruleType" name="ruleType" onchange="changeRuleType()">
 				<option value="validation" selected="selected">$i18n.getString( "validation" )</option>
 				<option value="monitoring">$i18n.getString( "monitoring" )</option>
 			</select>
