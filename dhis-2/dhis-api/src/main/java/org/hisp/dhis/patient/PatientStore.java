@@ -79,9 +79,6 @@ public interface PatientStore
     Collection<Patient> search( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max );
 
-    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max );
-
     Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min,
         Integer max );

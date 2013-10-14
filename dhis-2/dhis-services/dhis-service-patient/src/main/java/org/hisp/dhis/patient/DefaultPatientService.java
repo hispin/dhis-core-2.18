@@ -544,7 +544,19 @@ public class DefaultPatientService
     public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
-        return patientStore.getPatientPhoneNumbers( searchKeys, orgunits, followup, null, statusEnrollment, min, max );
+        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, followup, null, statusEnrollment, min, max );
+        
+        Set<String> phoneNumbers = new HashSet<String>();
+        
+        for ( Patient patient : patients )
+        {
+            if ( patient.getPhoneNumber() != null )
+            {
+                phoneNumbers.add( patient.getPhoneNumber() );
+            }
+        }
+        
+        return phoneNumbers;
     }
 
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,

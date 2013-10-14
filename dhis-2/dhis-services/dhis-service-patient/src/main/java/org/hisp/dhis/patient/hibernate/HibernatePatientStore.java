@@ -46,7 +46,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -278,26 +277,6 @@ public class HibernatePatientStore
             ex.printStackTrace();
         }
         return patients;
-    }
-
-    @Override
-    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min,
-        Integer max )
-    {
-        Collection<Patient> patients = search( searchKeys, orgunits, followup, patientAttributes, statusEnrollment, min, max );
-        
-        Set<String> phoneNumbers = new HashSet<String>();
-        
-        for ( Patient patient : patients )
-        {
-            if ( patient.getPhoneNumber() != null )
-            {
-                phoneNumbers.add( patient.getPhoneNumber() );
-            }
-        }
-        
-        return phoneNumbers;
     }
 
     @Override
@@ -737,7 +716,7 @@ public class HibernatePatientStore
             sql += statementBuilder.limitRecord( min, max );
         }
         
-        log.debug( "Search patient SQL: " + sql );
+        log.info( "Search patient SQL: " + sql );
         
         return sql;
     }
