@@ -690,6 +690,7 @@ function blockEntryForm()
 {
 	jQuery("#entryFormContainer :input").each(function()
 	{
+		disable($(this).attr('id'));
 		$(this).attr('disabled','disabled');
 	});
 	jQuery("#entryFormContainer").find(".ui-combobox").each(function()
@@ -710,6 +711,7 @@ function unblockEntryForm()
 	jQuery("#entryFormContainer :input").each(function()
 	{
 		enable($(this).attr('id'));
+		$(this).attr('disabled',false);
 	});
 	jQuery("#entryFormContainer").find(".ui-combobox").each(function()
 	{
