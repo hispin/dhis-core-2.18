@@ -44,7 +44,8 @@ import java.util.List;
 public interface PatientStore
     extends GenericIdentifiableObjectStore<Patient>
 {
-    String ID = PatientStore.class.getName();
+    final String ID = PatientStore.class.getName();
+    final int MAX_RESULTS = 50000;
 
     Collection<Patient> getByBirthDate( Date birthDate );
 
@@ -71,7 +72,7 @@ public interface PatientStore
 
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
 
-    Collection<Patient> getByFullName( String fullName, OrganisationUnit organisationUnit );
+    Collection<Patient> getByFullName( String name, OrganisationUnit organisationUnit );
 
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 

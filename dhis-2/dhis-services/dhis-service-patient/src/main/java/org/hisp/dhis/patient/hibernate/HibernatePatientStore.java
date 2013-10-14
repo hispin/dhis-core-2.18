@@ -795,36 +795,17 @@ public class HibernatePatientStore
     }
 
     @Override
-    //TODO this method must be changed - cannot retrieve one by one
-    public Collection<Patient> getByFullName( String fullName, OrganisationUnit organisationUnit )
+    @SuppressWarnings("unchecked")
+    public Collection<Patient> getByFullName( String name, OrganisationUnit organisationUnit )
     {
-        List<Patient> patients = new ArrayList<Patient>();
-
-        fullName = fullName.toLowerCase();
-        String sql = "SELECT patientid FROM patient where lower(name) = '" + fullName + "'";
+        Criteria criteria = getCriteria( Restrictions.eq( "name", name ).ignoreCase() );
         
         if ( organisationUnit != null )
         {
-            sql += " and organisationunitid=" + organisationUnit.getId();
+            criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
         }
-
-        try
-        {
-            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
-            {
-                public Patient mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-                    return get( rs.getInt( 1 ) );
-                }
-            } );
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-
-        return patients;
+        
+        return criteria.setMaxResults( MAX_RESULTS ).list();
     }
 
     @SuppressWarnings( "unchecked" )
