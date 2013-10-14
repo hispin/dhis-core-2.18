@@ -64,7 +64,7 @@ public class DefaultImportService
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
     @Autowired
@@ -174,7 +174,7 @@ public class DefaultImportService
             sessionFactory.getCurrentSession().clear();
         }
 
-        // cacheManager.clearCache();
+        cacheManager.clearCache();
         objectBridge.destroy();
 
         if ( taskId != null )
