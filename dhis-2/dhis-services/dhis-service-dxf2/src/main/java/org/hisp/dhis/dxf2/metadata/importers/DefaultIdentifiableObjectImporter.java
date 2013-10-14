@@ -317,7 +317,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
                         if ( attribute == null )
                         {
-                            log.warn( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
+                            log.info( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
                             return;
                         }
 
@@ -395,7 +395,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             summaryType.getImportConflicts().add(
                 new ImportConflict( ImportUtils.getDisplayName( object ), "You do not have create access to class type." ) );
 
-            log.warn( "You do have create access to class type." );
+            log.info( "You do not have create access to class type." );
 
             return false;
         }
@@ -918,7 +918,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         String logMsg = "Unknown reference to " + identifiableObjectToString( reference ) + " (" + referenceName + ")" +
             " on object " + identifiableObjectToString( object ) + " (" + objectName + ").";
 
-        log.warn( logMsg );
+        log.info( logMsg );
 
         ImportConflict importConflict = new ImportConflict( ImportUtils.getDisplayName( object ), logMsg );
         summaryType.getImportConflicts().add( importConflict );
