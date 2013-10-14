@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 
@@ -83,4 +84,7 @@ public interface PatientStore
         Integer max );
 
     Collection<Patient> getByProgram( Program program, Integer min, Integer max );
+    
+    Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
+        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max );
 }
