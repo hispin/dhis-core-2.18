@@ -68,8 +68,6 @@ public interface PersonService
 
     Persons getPersons( OrganisationUnit organisationUnit, Gender gender );
 
-    Persons getPersons( OrganisationUnit organisationUnit, Program program, Gender gender );
-
     Persons getPersons( Collection<Patient> patients );
 
     Person getPerson( String uid );

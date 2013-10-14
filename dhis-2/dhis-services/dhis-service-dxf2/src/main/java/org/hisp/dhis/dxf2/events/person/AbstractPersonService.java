@@ -195,13 +195,6 @@ public abstract class AbstractPersonService
     }
 
     @Override
-    public Persons getPersons( OrganisationUnit organisationUnit, Program program, Gender gender )
-    {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program, gender.getValue() ) );
-        return getPersons( patients );
-    }
-
-    @Override
     public Persons getPersons( Collection<Patient> patients )
     {
         Persons persons = new Persons();

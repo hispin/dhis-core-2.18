@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.outbound.DefaultOutboundSmsTransportService;
@@ -41,8 +42,6 @@ import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.UserSetting;
-import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -155,13 +154,11 @@ public class DefaultSmsSender
                     {
                         if ( !currentUserService.getCurrentUser().equals( user ) )
                         {
-                            //if ( isQualifiedReceiver( user ) )
                             toSendList.add( user );
                         }
                     }
                     else if ( currentUserService.getCurrentUser() == null )
                     {
-                        //if ( isQualifiedReceiver( user ) )
                         toSendList.add( user );
                     }
                 }
@@ -230,38 +227,6 @@ public class DefaultSmsSender
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    private boolean isQualifiedReceiver( User user )
-    {
-        if ( user.getFirstName() == null ) // If receiver is raw number
-        {
-            return true;
-        }
-        else
-        // If receiver is user
-        {
-            UserSetting userSetting = userService
-                .getUserSetting( user, UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION );
-
-            if ( userSetting != null )
-            {
-                boolean sendSMSNotification = (Boolean) userSetting.getValue();
-
-                if ( sendSMSNotification == true )
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
 
     private String createMessage( String subject, String text, User sender )
     {
