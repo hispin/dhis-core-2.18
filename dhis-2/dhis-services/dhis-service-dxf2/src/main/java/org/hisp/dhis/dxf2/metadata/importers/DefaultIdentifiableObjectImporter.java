@@ -110,7 +110,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -757,10 +757,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         else if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
         {
             Period period = (Period) identifiableObject;
-            period = periodService.reloadPeriod( period );
 
             if ( !options.isDryRun() )
             {
+                period = periodService.reloadPeriod( period );
                 sessionFactory.getCurrentSession().flush();
             }
 
