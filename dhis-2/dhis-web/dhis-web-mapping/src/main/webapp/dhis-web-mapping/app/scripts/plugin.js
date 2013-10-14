@@ -35,7 +35,7 @@ Ext.onReady( function() {
 		};
 
 		requests.push({
-			url: config.url + '/api/system/info.jsonp',
+			url: config.url + '/api/system/context.jsonp',
 			success: function(r) {
 				init.contextPath = r.contextPath;
 				fn();
