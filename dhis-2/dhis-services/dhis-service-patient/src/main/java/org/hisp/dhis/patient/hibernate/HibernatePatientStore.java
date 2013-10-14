@@ -46,6 +46,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -284,25 +285,18 @@ public class HibernatePatientStore
         Boolean followup, Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min,
         Integer max )
     {
-        String sql = searchPatientSql( false, searchKeys, orgunits, followup, patientAttributes, null,
-            statusEnrollment, min, max );
-        Collection<String> phoneNumbers = new HashSet<String>();
-        try
+        Collection<Patient> patients = search( searchKeys, orgunits, followup, patientAttributes, statusEnrollment, min, max );
+        
+        Set<String> phoneNumbers = new HashSet<String>();
+        
+        for ( Patient patient : patients )
         {
-            phoneNumbers = jdbcTemplate.query( sql, new RowMapper<String>()
+            if ( patient.getPhoneNumber() != null )
             {
-                public String mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-                    String phoneNumber = rs.getString( "phonenumber" );
-                    return (phoneNumber == null || phoneNumber.isEmpty()) ? "0" : phoneNumber;
-                }
-            } );
+                phoneNumbers.add( patient.getPhoneNumber() );
+            }
         }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
+        
         return phoneNumbers;
     }
 
