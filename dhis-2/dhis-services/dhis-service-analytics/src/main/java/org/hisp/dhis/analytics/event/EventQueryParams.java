@@ -38,6 +38,7 @@ import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;

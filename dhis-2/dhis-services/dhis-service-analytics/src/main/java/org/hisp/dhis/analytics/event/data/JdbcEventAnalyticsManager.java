@@ -41,7 +41,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventQueryParams;
-import org.hisp.dhis.analytics.event.QueryItem;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
