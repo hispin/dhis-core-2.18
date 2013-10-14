@@ -31,7 +31,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
-import org.hisp.dhis.api.mobile.model.Model;
 
  /**
  * @author Nguyen Kim Lai

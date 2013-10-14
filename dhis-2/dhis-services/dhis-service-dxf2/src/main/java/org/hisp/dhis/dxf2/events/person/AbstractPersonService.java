@@ -69,7 +69,8 @@ import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractPersonService implements PersonService
+public abstract class AbstractPersonService 
+    implements PersonService
 {
     // -------------------------------------------------------------------------
     // Dependencies
