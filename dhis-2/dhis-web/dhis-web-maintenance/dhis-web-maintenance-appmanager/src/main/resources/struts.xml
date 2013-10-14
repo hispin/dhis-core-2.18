@@ -18,6 +18,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-appmanager/index.vm</param>
       <param name="menu">/dhis-web-maintenance-appmanager/menu.vm</param>
+      <param name="javascripts">javascript/jquery.form.js,javascript/uploadApp.js</param>
     </action>
     
     <action name="addApp" class="org.hisp.dhis.appmanager.action.AddAppAction">
@@ -33,14 +34,6 @@
       <param name="page">/dhis-web-maintenance-appmanager/index.vm</param>
       <param name="menu">/dhis-web-maintenance-appmanager/menu.vm</param>
       <param name="javascripts">javascript/jquery.form.js</param>
-    </action>
-    
-    <action name="appStore" class="org.hisp.dhis.appmanager.action.AppStoreAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-appmanager/getApps.vm</param>
-      <param name="menu">/dhis-web-maintenance-appmanager/menu.vm</param>
-      <param name="javascripts">javascript/jquery.form.js,javascript/uploadApp.js</param>
-      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
     
     <action name="appSettings" class="org.hisp.dhis.appmanager.action.AppSettingsAction">
