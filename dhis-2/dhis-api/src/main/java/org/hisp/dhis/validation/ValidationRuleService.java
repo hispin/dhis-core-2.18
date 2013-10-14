@@ -92,11 +92,6 @@ public interface ValidationRuleService
      */
     Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source );
 
-    /**
-     * For a nightly alert run, run validation tests and notify users as requested of any validations.
-     */
-    void alertRun();
-    
     // -------------------------------------------------------------------------
     // ValidationRule
     // -------------------------------------------------------------------------

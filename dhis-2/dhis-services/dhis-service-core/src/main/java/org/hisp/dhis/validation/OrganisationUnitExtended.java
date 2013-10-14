@@ -48,14 +48,17 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public class OrganisationUnitExtended
 {
     private OrganisationUnit source;
+    
+    private boolean toBeValidated;
 
     private Collection<OrganisationUnit> children;
 
     private int level;
 
-    public OrganisationUnitExtended( OrganisationUnit source )
+    public OrganisationUnitExtended( OrganisationUnit source, boolean toBeValidated )
     {
     	this.source = source;
+    	this.toBeValidated = toBeValidated;
     	children = new HashSet<OrganisationUnit>( source.getChildren() );
     	level = source.getOrganisationUnitLevel();
     }
@@ -63,8 +66,9 @@ public class OrganisationUnitExtended
     public String toString()
     {
         return new ToStringBuilder( this, ToStringStyle.SHORT_PREFIX_STYLE )
-            .append( "\n     name", source.getName() ).append( "\n     children[", children.size() + "]" )
-            .append( "\n     level", level ).toString();
+            .append( "\n  name", source.getName() )
+            .append( "\n  children[", children.size() + "]" )
+            .append( "\n  level", level ).toString();
     }
 
     // -------------------------------------------------------------------------
@@ -73,6 +77,10 @@ public class OrganisationUnitExtended
 
     public OrganisationUnit getSource() {
 		return source;
+	}
+
+    public boolean getToBeValidated() {
+		return toBeValidated;
 	}
 
 	public Collection<OrganisationUnit> getChildren() {

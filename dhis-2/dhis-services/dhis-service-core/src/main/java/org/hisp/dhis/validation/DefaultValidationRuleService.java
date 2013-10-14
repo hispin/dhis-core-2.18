@@ -127,13 +127,6 @@ public class DefaultValidationRuleService
         this.periodService = periodService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -146,20 +139,6 @@ public class DefaultValidationRuleService
     public void setConstantService( ConstantService constantService )
     {
         this.constantService = constantService;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
-    private MessageService messageService;
-
-    public void setMessageService( MessageService messageService )
-    {
-        this.messageService = messageService;
     }
 
     private I18nService i18nService;
@@ -178,7 +157,8 @@ public class DefaultValidationRuleService
         log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "]" );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = getAllValidationRules();
-        return validateInternal( sources, periods, rules, ValidationRunType.INTERACTIVE, null );
+        return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
+        		constantService, expressionService, periodService, dataValueService );
     }
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
@@ -187,7 +167,8 @@ public class DefaultValidationRuleService
     	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "] group=" + group.getName() );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = group.getMembers();
-        return validateInternal( sources, periods, rules, ValidationRunType.INTERACTIVE, null );
+        return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
+        		constantService, expressionService, periodService, dataValueService );
     }
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source )
@@ -195,7 +176,10 @@ public class DefaultValidationRuleService
     	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " source=" + source.getName() );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = getAllValidationRules();
-        return validateInternal( source, periods, rules, ValidationRunType.INTERACTIVE, null );
+        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        sources.add( source );
+        return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
+        		constantService, expressionService, periodService, dataValueService );
     }
 
     public Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source )
@@ -215,161 +199,15 @@ public class DefaultValidationRuleService
             rules = getValidationTypeRulesForDataElements( dataSet.getDataElements() );
         }
 
-        return validateInternal( source, periods, rules, ValidationRunType.INTERACTIVE, null );
-    }
-
-    // TODO: Schedule this to run every night.
-    public void alertRun()
-    {
-        // Find all the rules belonging to groups that will send alerts to user roles.
-        Set<ValidationRule> rules = new HashSet<ValidationRule>();
-        for ( ValidationRuleGroup validationRuleGroup : getAllValidationRuleGroups() )
-        {
-            Collection<UserAuthorityGroup> userRolesToAlert = validationRuleGroup.getUserAuthorityGroupsToAlert();
-            if ( userRolesToAlert != null && !userRolesToAlert.isEmpty() )
-            {
-                rules.addAll( validationRuleGroup.getMembers() );
-            }
-        }
-
-        Collection<OrganisationUnit> sources = organisationUnitService.getAllOrganisationUnits();
-        Collection<Period> periods = getAlertPeriodsFromRules( rules );
-        Date lastAlertRun = (Date) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_LAST_ALERT_RUN );
-        
-        // Any database changes after this moment will contribute to the next run.
-        
-        Date thisAlertRun = new Date();
-        
-        log.info( "alertRun sources[" + sources.size() + "] periods[" + periods.size() + "] rules[" + rules.size()
-            + "] last run " + lastAlertRun == null ? "(none)" : lastAlertRun );
-        
-        Collection<ValidationResult> results = validateInternal( sources, periods, rules, ValidationRunType.ALERT,
-            lastAlertRun );
-        
-        log.trace( "alertRun() results[" + results.size() + "]" );
-        
-        if ( !results.isEmpty() )
-        {
-            postAlerts( results, thisAlertRun ); // Alert the users.
-        }
-        
-        systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_LAST_ALERT_RUN, thisAlertRun );
+        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+        sources.add( source );
+        return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
+        		constantService, expressionService, periodService, dataValueService );
     }
 
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Evaluates validation rules for a single organisation unit.
-     * 
-     * @param source the organisation unit in which to run the validation rules
-     * @param periods the periods of data to check
-     * @param rules the ValidationRules to evaluate
-     * @param runType whether this is an interactive or alert run
-     * @param lastAlertRun date/time of the most recent successful alerts run
-     *        (needed only for alert run)
-     * @return a collection of any validations that were found
-     */
-    private Collection<ValidationResult> validateInternal( OrganisationUnit source, Collection<Period> periods,
-        Collection<ValidationRule> rules, ValidationRunType runType, Date lastAlertRun )
-    {
-        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
-        sources.add( source );
-        return validateInternal( sources, periods, rules, ValidationRunType.INTERACTIVE, null );
-    }
-
-    /**
-     * Evaluates validation rules for a collection of organisation units.
-     * This method breaks the job down by organisation unit. It assigns the
-     * evaluation for each organisation unit to a task that can be evaluated
-     * independently in a multithreaded environment.
-     * 
-     * @param sources the organisation units in which to run the validation
-     *        rules
-     * @param periods the periods of data to check
-     * @param rules the ValidationRules to evaluate
-     * @param runType whether this is an INTERACTIVE or ALERT run
-     * @param lastAlertRun date/time of the most recent successful alerts run
-     *        (needed only for alert run)
-     * @return a collection of any validations that were found
-     */
-    private Collection<ValidationResult> validateInternal( Collection<OrganisationUnit> sources,
-        Collection<Period> periods, Collection<ValidationRule> rules, ValidationRunType runType, Date lastAlertRun )
-    {
-        ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods, rules,
-        		constantService.getConstantMap(), ValidationRunType.ALERT, lastAlertRun,
-        		expressionService, periodService, dataValueService);
-
-        int threadPoolSize = SystemUtils.getCpuCores();
-        
-        if ( threadPoolSize > 2 )
-        {
-            threadPoolSize--;
-        }
-        if ( threadPoolSize > sources.size() )
-        {
-            threadPoolSize = sources.size();
-        }
-
-        ExecutorService executor = Executors.newFixedThreadPool( threadPoolSize );
-
-        for ( OrganisationUnitExtended sourceX : context.getSourceXs() )
-        {
-            Runnable worker = new ValidationWorkerThread( sourceX, context );
-            executor.execute( worker );
-        }
-
-        executor.shutdown();
-        
-        try
-        {
-            executor.awaitTermination( 23, TimeUnit.HOURS );
-        }
-        catch ( InterruptedException e )
-        {
-            executor.shutdownNow();
-        }
-        return context.getValidationResults();
-    }
-
-    /**
-     * For an alert run, gets the current and most periods to search, based on
-     * the period types from the rules to run.
-     * 
-     * @param rules the ValidationRules to be evaluated on this alert run
-     * @return periods to search for new alerts
-     */
-    private Collection<Period> getAlertPeriodsFromRules( Collection<ValidationRule> rules )
-    {
-        Set<Period> periods = new HashSet<Period>();
-
-        // Construct a set of all period types found in validation rules.
-        Set<PeriodType> rulePeriodTypes = new HashSet<PeriodType>();
-        for ( ValidationRule rule : rules )
-        {
-            // (Note that we have to get periodType from periodService,
-            // otherwise the ID will not be present.)
-            rulePeriodTypes.add( periodService.getPeriodTypeByName( rule.getPeriodType().getName() ) );
-        }
-
-        // For each period type, find the period containing the current date (if
-        // any), and the most recent previous period. Add whichever one(s) of these 
-        // are present in the database.
-        for ( PeriodType periodType : rulePeriodTypes )
-        {
-            CalendarPeriodType calendarPeriodType = ( CalendarPeriodType ) periodType;
-            Period currentPeriod = calendarPeriodType.createPeriod();
-            Period previousPeriod = calendarPeriodType.getPreviousPeriod( currentPeriod );
-            periods.addAll( periodService.getIntersectingPeriodsByPeriodType( periodType,
-                previousPeriod.getStartDate(), currentPeriod.getEndDate() ) );
-            // Note: If the last successful daily run was more than one day
-            // ago, we might consider adding some additional periods of type 
-            // DailyPeriodType so we don't miss any alerts.
-        }
-
-        return periods;
-    }
 
     /**
      * Returns all validation-type rules which have specified data elements
@@ -437,176 +275,6 @@ public class DefaultValidationRuleService
 
         return rulesForDataSet;
     }
-
-    /**
-     * At the end of an ALERT run, post messages to the users who want to see
-     * the results.
-     * 
-     * @param validationResults the set of validation error results
-     * @param alertRunStart the date/time when the alert run started
-     */
-    private void postAlerts( Collection<ValidationResult> validationResults, Date alertRunStart )
-    {
-        SortedSet<ValidationResult> results = new TreeSet<ValidationResult>( validationResults );
-
-        // Find out which users receive alerts, and which ValidationRules they
-        // receive alerts for.
-        Map<User, Collection<ValidationRule>> userRulesMap = new HashMap<User, Collection<ValidationRule>>();
-        
-        for ( ValidationRuleGroup validationRuleGroup : getAllValidationRuleGroups() )
-        {
-            Collection<UserAuthorityGroup> userRolesToAlert = validationRuleGroup.getUserAuthorityGroupsToAlert();
-            if ( userRolesToAlert != null && !userRolesToAlert.isEmpty() )
-            {
-                for ( UserAuthorityGroup role : userRolesToAlert )
-                {
-                    for ( UserCredentials userCredentials : role.getMembers() )
-                    {
-                        User user = userCredentials.getUser();
-                        Collection<ValidationRule> userRules = userRulesMap.get( user );
-                        if ( userRules == null )
-                        {
-                            userRules = new ArrayList<ValidationRule>();
-                            userRulesMap.put( user, userRules );
-                        }
-                        userRules.addAll( validationRuleGroup.getMembers() );
-                    }
-                }
-            }
-        }
-
-        // We will create one message for each set of users who receive the same
-        // subset of results. (Not necessarily the same as the set of users who
-        // receive alerts from the same subset of validation rules -- because
-        // some of these rules may return no results.) This saves on message
-        // storage space.
-
-        // TODO: Encapsulate this in another level of Map by the user's
-        // language, and generate a message for each combination of ( target
-        // language, set of results )
-        Map<List<ValidationResult>, Set<User>> messageMap = new HashMap<List<ValidationResult>, Set<User>>();
-
-        for ( User user : userRulesMap.keySet() )
-        {
-            // For each user who receives alerts, find the subset of results
-            // from this run.
-            Collection<ValidationRule> userRules = userRulesMap.get( user );
-            List<ValidationResult> userResults = new ArrayList<ValidationResult>();
-            Map<String, Integer> importanceSummary = new HashMap<String, Integer>();
-
-            for ( ValidationResult result : results )
-            {
-                if ( userRules.contains( result.getValidationRule() ) )
-                {
-                    userResults.add( result );
-                    String importance = result.getValidationRule().getImportance();
-                    Integer importanceCount = importanceSummary.get( importance );
-                    if ( importanceCount == null )
-                    {
-                        importanceSummary.put( importance, 1 );
-                    }
-                    else
-                    {
-                        importanceSummary.put( importance, importanceCount + 1 );
-                    }
-                }
-            }
-
-            // Group this user with other users who have the same subset of
-            // results.
-            if ( !userResults.isEmpty() )
-            {
-                Set<User> messageReceivers = messageMap.get( userResults );
-                if ( messageReceivers == null )
-                {
-                    messageReceivers = new HashSet<User>();
-                    messageMap.put( userResults, messageReceivers );
-                }
-                messageReceivers.add( user );
-            }
-        }
-
-        // For each unique subset of results, send a message to all users
-        // receiving that subset of results.
-        for ( Map.Entry<List<ValidationResult>, Set<User>> entry : messageMap.entrySet() )
-        {
-            sendAlertmessage( entry.getKey(), entry.getValue(), alertRunStart );
-        }
-    }
-
-    /**
-     * Generate and send an alert message containing alert results to a set of
-     * users.
-     * 
-     * @param results results to put in this message
-     * @param users users to receive these results
-     * @param alertRunStart date/time when the alert run started
-     */
-    private void sendAlertmessage( List<ValidationResult> results, Set<User> users, Date alertRunStart )
-    {
-        StringBuilder messageBuilder = new StringBuilder();
-        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat( "yyyy-MM-dd HH:mm" );
-
-        // Count the number of messages of each importance type.
-        Map<String, Integer> importanceCountMap = new HashMap<String, Integer>();
-        for ( ValidationResult result : results )
-        {
-            Integer importanceCount = importanceCountMap.get( result.getValidationRule().getImportance() );
-            importanceCountMap.put( result.getValidationRule().getImportance(), importanceCount == null ? 1
-                : importanceCount + 1 );
-        }
-
-        // Construct the subject line.
-        String subject = "DHIS alerts as of " + dateTimeFormatter.format( alertRunStart ) + " - priority High "
-            + (importanceCountMap.get( "high" ) == null ? 0 : importanceCountMap.get( "high" )) + ", Medium "
-            + (importanceCountMap.get( "medium" ) == null ? 0 : importanceCountMap.get( "medium" )) + ", Low "
-            + (importanceCountMap.get( "low" ) == null ? 0 : importanceCountMap.get( "low" ));
-
-        // Construct the text of the message.
-        messageBuilder
-            .append( "<html>" )
-            .append( "<head>" ).append( "</head>" )
-            .append( "<body>" ).append( subject ).append( "<br />" )
-            .append( "<table>" )
-            .append( "<tr>" )
-            .append( "<th>Organisation Unit</th>" )
-            .append( "<th>Period</th>" )
-            .append( "<th>Importance</th>" )
-            .append( "<th>Left side description</th>" )
-            .append( "<th>Value</th>" )
-            .append( "<th>Operator</th>" )
-            .append( "<th>Value</th>" )
-            .append( "<th>Right side description</th>" )
-            .append( "</tr>" );
-
-        for ( ValidationResult result : results )
-        {
-            ValidationRule rule = result.getValidationRule();
-
-            messageBuilder
-            	.append( "<tr>" )
-            	.append( "<td>" ).append( result.getSource().getName() ).append( "<\td>" )
-                .append( "<td>" ).append( result.getPeriod().getName() ).append( "<\td>" )
-                .append( "<td>" ).append( rule.getImportance() ).append( "<\td>" )
-                .append( "<td>" ).append( rule.getLeftSide().getDescription() ).append( "<\td>" )
-                .append( "<td>" ).append( result.getLeftsideValue() ).append( "<\td>" )
-                .append( "<td>" ).append( rule.getOperator().toString() ).append( "<\td>" )
-                .append( "<td>" ).append( result.getRightsideValue() ).append( "<\td>" )
-                .append( "<td>" ).append( rule.getRightSide().getDescription() ).append( "<\td>" )
-                .append( "</tr>" );
-        }
-
-        messageBuilder
-        	.append( "</table>" )
-        	.append( "</body>" )
-        	.append( "</html>" );
-
-        String messageText = messageBuilder.toString();
-
-        log.info( "postUserResults() users[" + users.size() + "] subject " + subject );
-        messageService.sendMessage( subject, messageText, null, users );
-    }
-
     // -------------------------------------------------------------------------
     // ValidationRule CRUD operations
     // -------------------------------------------------------------------------
