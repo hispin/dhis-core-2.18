@@ -41,6 +41,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -148,9 +151,6 @@ public class DefaultImportService
 
                         ImportTypeSummary importTypeSummary = doImport( user, objects, importOptions );
 
-                        // TODO do we need this?
-                        // sessionFactory.getCurrentSession().flush();
-
                         if ( importTypeSummary != null )
                         {
                             importSummary.getImportTypeSummaries().add( importTypeSummary );
@@ -196,6 +196,8 @@ public class DefaultImportService
 
     private <T> Importer<T> findImporterClass( List<?> clazzes )
     {
+        notNull( clazzes );
+
         if ( !clazzes.isEmpty() && clazzes.get( 0 ) != null )
         {
             return findImporterClass( clazzes.get( 0 ).getClass() );
@@ -232,7 +234,7 @@ public class DefaultImportService
             }
             else
             {
-                log.info( "Importer for object of type " + objects.get( 0 ).getClass().getSimpleName() + " not found." );
+                log.warn( "Importer for object of type " + objects.get( 0 ).getClass().getSimpleName() + " not found." );
             }
         }
 
