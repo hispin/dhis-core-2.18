@@ -349,8 +349,7 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min,
-        Integer max )
+    public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min, Integer max )
     {
         return patientStore.getByOrgUnitAndNameLike( organisationUnit, name, min, max );
     }
