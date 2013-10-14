@@ -33,6 +33,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -50,6 +52,8 @@ public class PatientStoreTest
     
     private Patient patientA;
     private Patient patientB;
+    private Patient patientC;
+    private Patient patientD;
     
     private OrganisationUnit organisationUnit;
 
@@ -64,7 +68,8 @@ public class PatientStoreTest
         
         patientA = createPatient( 'A', organisationUnit );
         patientB = createPatient( 'B', organisationUnit );
-        
+        patientC = createPatient( 'A', null );
+        patientD = createPatient( 'B', organisationUnit );
     }
     
     @Test
@@ -114,5 +119,25 @@ public class PatientStoreTest
         patientStore.save( patientB );
         
         assertTrue( equals( patientStore.getAll(), patientA, patientB ) );
+    }
+    
+    @Test
+    public void testGetByFullName()
+    {
+        patientStore.save( patientA );
+        patientStore.save( patientB );
+        patientStore.save( patientC );
+        patientStore.save( patientD );
+        
+        Collection<Patient> patients = patientStore.getByFullName( "NameA", organisationUnit );
+        
+        assertEquals( 1, patients.size() );
+        assertTrue( patients.contains( patientA ) );
+        
+        patients = patientStore.getByFullName( "NameB", organisationUnit );
+        
+        assertEquals( 2, patients.size() );
+        assertTrue( patients.contains( patientB ) );
+        assertTrue( patients.contains( patientD ) );
     }
 }

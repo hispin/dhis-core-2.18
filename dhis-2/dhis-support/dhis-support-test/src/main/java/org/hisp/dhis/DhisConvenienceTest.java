@@ -986,7 +986,7 @@ public abstract class DhisConvenienceTest
         Patient patient = new Patient();
         patient.setAutoFields();
 
-        patient.setName( "FirstName" + uniqueChar );
+        patient.setName( "Name" + uniqueChar );
         patient.setGender( Patient.MALE );
         patient.setDobType( Patient.DOB_TYPE_VERIFIED );
         patient.setBirthDate( getDate( 1970, 1, 1 ) );
@@ -1001,7 +1001,7 @@ public abstract class DhisConvenienceTest
         Patient patient = new Patient();
         patient.setAutoFields();
 
-        patient.setName( "FirstName" + uniqueChar );
+        patient.setName( "Name" + uniqueChar );
         patient.setGender( gender );
         patient.setDobType( Patient.DOB_TYPE_VERIFIED );
         patient.setBirthDate( getDate( 1970, 1, 1 ) );
