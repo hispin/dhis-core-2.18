@@ -230,7 +230,7 @@ public interface PatientService
 
     Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max );
 
-    Collection<Patient> getPatientByFullname( String fullName, Integer orgunitId );
+    Collection<Patient> getPatientByFullname( String fullName, OrganisationUnit organisationUnit );
 
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 

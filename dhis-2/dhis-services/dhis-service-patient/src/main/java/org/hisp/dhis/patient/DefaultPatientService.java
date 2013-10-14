@@ -652,9 +652,9 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientByFullname( String fullName, Integer orgunitId )
+    public Collection<Patient> getPatientByFullname( String fullName, OrganisationUnit organisationUnit )
     {
-        return patientStore.getByFullName( fullName, orgunitId );
+        return patientStore.getByFullName( fullName, organisationUnit );
     }
 
     @Override

@@ -562,7 +562,9 @@ public class ActivityReportingServiceImpl
     {
         if ( isNumber( keyword ) == false )
         {
-            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( keyword, orgUnitId );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+            
+            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( keyword, organisationUnit );
 
             if ( patients.size() > 1 )
             {
@@ -1395,8 +1397,11 @@ public class ActivityReportingServiceImpl
         }
         else
         {
+
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+            
             String fullName = enrollmentRelationship.getPersonBName();
-            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( fullName, orgUnitId );
+            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( fullName, organisationUnit );
 
             // remove the own searcher
             patients = removeIfDuplicated( patients, enrollmentRelationship.getPersonAId() );
