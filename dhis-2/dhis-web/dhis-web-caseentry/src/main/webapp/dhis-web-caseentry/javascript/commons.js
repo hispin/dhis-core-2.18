@@ -2329,7 +2329,7 @@ function removeCustomPhoneNumberField(idx)
 
 function searchByIdsOnclick()
 {
-	var params = "searchTexts=iden_" + getFieldValue("searchPatientByIds") + "_" + getFieldValue("orgunitId");
+	var params = "searchTexts=iden_" + getFieldValue("searchPatientByIds").toLowerCase() + "_" + getFieldValue("orgunitId");
 	params += "&listAll=false";
 	params += "&facilityLB=";
 	
