@@ -304,8 +304,49 @@ public class HibernatePatientStore
         return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max )
+    {
+        String hql = "select p from Patient p where p.phoneNumber like '%" + phoneNumber + "%'";
+        Query query = getQuery( hql );
+
+        if ( min != null && max != null )
+        {
+            query.setFirstResult( min ).setMaxResults( max );
+        }
+
+        return query.list();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Collection<Patient> getByFullName( String name, OrganisationUnit organisationUnit )
+    {
+        Criteria criteria = getCriteria( Restrictions.eq( "name", name ).ignoreCase() );
+        
+        if ( organisationUnit != null )
+        {
+            criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
+        }
+        
+        return criteria.setMaxResults( MAX_RESULTS ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.between( "registrationDate", startDate, endDate ) );
+        criteria.createAlias( "organisationUnit", "orgunit" );
+        criteria.setProjection( Projections.distinct( Projections.projectionList().add(
+            Projections.property( "orgunit.id" ), "orgunitid" ) ) );
+
+        return criteria.list();
+    }
+
     // -------------------------------------------------------------------------
-    // Supportive methods
+    // Supportive methods TODO Remplement all this!
     // -------------------------------------------------------------------------
 
     private String searchPatientSql( boolean count, List<String> searchKeys, Collection<OrganisationUnit> orgunits,
@@ -691,51 +732,6 @@ public class HibernatePatientStore
         
         return sql;
     }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max )
-    {
-        String hql = "select p from Patient p where p.phoneNumber like '%" + phoneNumber + "%'";
-        Query query = getQuery( hql );
-
-        if ( min != null && max != null )
-        {
-            query.setFirstResult( min ).setMaxResults( max );
-        }
-
-        return query.list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Collection<Patient> getByFullName( String name, OrganisationUnit organisationUnit )
-    {
-        Criteria criteria = getCriteria( Restrictions.eq( "name", name ).ignoreCase() );
-        
-        if ( organisationUnit != null )
-        {
-            criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
-        }
-        
-        return criteria.setMaxResults( MAX_RESULTS ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate )
-    {
-        Criteria criteria = getCriteria();
-        criteria.add( Restrictions.between( "registrationDate", startDate, endDate ) );
-        criteria.createAlias( "organisationUnit", "orgunit" );
-        criteria.setProjection( Projections.distinct( Projections.projectionList().add(
-            Projections.property( "orgunit.id" ), "orgunitid" ) ) );
-
-        return criteria.list();
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
 
     private Collection<Integer> getOrgunitChildren( Collection<OrganisationUnit> orgunits )
     {
