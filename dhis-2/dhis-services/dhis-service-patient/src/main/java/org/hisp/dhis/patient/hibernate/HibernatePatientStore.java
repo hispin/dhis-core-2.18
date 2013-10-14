@@ -177,38 +177,21 @@ public class HibernatePatientStore
     }
 
     @Override
-    //TODO this method must be changed - cannot retrieve one by one
+    @SuppressWarnings("unchecked")
     public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
         Integer max )
     {
-        List<Patient> patients = new ArrayList<Patient>();
-
-        String sql = "select p.patientid from patient p join programinstance pi on p.patientid=pi.patientid "
-            + "where p.organisationunitid=" + organisationUnit.getId() + " and pi.programid=" + program.getId()
-            + " and pi.status=" + ProgramInstance.STATUS_ACTIVE;
-
-        if ( min != null && max != null )
-        {
-            sql += statementBuilder.limitRecord( min, max );
-        }
-
-        try
-        {
-            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
-            {
-                public Patient mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-                    return get( rs.getInt( 1 ) );
-                }
-            } );
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-
-        return patients;
+        String hql = 
+            "select pt from Patient pt " +
+            "inner join pt.programInstances pi " +
+            "where pt.organisationUnit = :organisationUnit " +
+            "and pi.program = :program";
+        
+        Query query = getQuery( hql );
+        query.setEntity( "organisationUnit", organisationUnit );
+        query.setEntity( "program", program );
+        
+        return query.list();
     }
 
     @Override
