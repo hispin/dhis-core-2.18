@@ -55,7 +55,6 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -67,10 +66,8 @@ import org.hisp.dhis.patient.PatientStore;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -313,25 +310,6 @@ public class HibernatePatientStore
     {
         String sql = searchPatientSql( true, searchKeys, orgunits, followup, null, null, statusEnrollment, null, null );
         return jdbcTemplate.queryForObject( sql, Integer.class );
-    }
-
-    @Override
-    public Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<PatientAttribute> patientAttributes,
-        Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
-    {
-        // ---------------------------------------------------------------------
-        // Get SQL and build grid
-        // ---------------------------------------------------------------------
-
-        String sql = searchPatientSql( false, searchKeys, orgunits, followup, patientAttributes, identifierTypes,
-            statusEnrollment, null, null );
-
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-
-        GridUtils.addRows( grid, rowSet );
-
-        return grid;
     }
 
     // -------------------------------------------------------------------------

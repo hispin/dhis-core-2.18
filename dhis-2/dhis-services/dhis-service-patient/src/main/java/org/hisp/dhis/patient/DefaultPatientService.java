@@ -613,9 +613,8 @@ public class DefaultPatientService
         grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
 
-        return patientStore.getPatientEventReport( grid, searchKeys, orgunits, followup, patientAttributes, null,
+        return getPatientEventReport( grid, searchKeys, orgunits, followup, patientAttributes, null,
             statusEnrollment, min, max );
-
     }
 
     @Override
@@ -658,9 +657,8 @@ public class DefaultPatientService
         grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "risk" ), false, true ) );
 
-        return patientStore.getPatientEventReport( grid, searchKeys, orgunits, followup, null, patientIdentifierTypes,
+        return getPatientEventReport( grid, searchKeys, orgunits, followup, null, patientIdentifierTypes,
             statusEnrollment, null, null );
-
     }
 
     @Override
@@ -673,6 +671,25 @@ public class DefaultPatientService
     public Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate )
     {
         return patientStore.getRegistrationOrgunitIds( startDate, endDate );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunits,
+        Boolean followup, Collection<PatientAttribute> patientAttributes,
+        Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
+    {
+        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, followup, patientAttributes, identifierTypes, statusEnrollment, min, max );
+        
+        for ( Patient pt : patients )
+        {
+            grid.addRow();
+            grid.addValue( pt.getId() ).addValue( pt.getName() ).addValue( pt.getGender() ).addValue( pt.getPhoneNumber() );
+        }
+        
+        return grid;
     }
 
 }
