@@ -94,6 +94,4 @@ public interface PatientStore
         Integer max );
 
     Collection<Patient> getByProgram( Program program, Integer min, Integer max );
-
-    Collection<Patient> getByProgram( Program program, String gender, Integer min, Integer max );
 }
