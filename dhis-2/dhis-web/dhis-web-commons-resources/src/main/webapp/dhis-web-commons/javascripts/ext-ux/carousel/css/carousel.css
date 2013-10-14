@@ -52,7 +52,7 @@
 }
 
 .ux-carousel-nav-next {
-    margin-right: 6px;
+    margin-right: 1px;
 }
 
 .ux-carousel-nav .ux-carousel-nav-prev {
@@ -76,7 +76,7 @@
 }
 
 .ux-carousel-nav-play:hover {
-    background-position: 0 0; 
+    background-position: 0 0;
 }
 .ux-carousel-nav-play.ux-carousel-playing {
     background-position: 16px 0px;
