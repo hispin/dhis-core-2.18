@@ -67,7 +67,6 @@ import java.util.Set;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 @Transactional
 public class DefaultProgramInstanceService
@@ -575,14 +574,14 @@ public class DefaultProgramInstanceService
         Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
 
         Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
+        
         for ( PatientReminder rm : reminders )
         {
-            if ( rm != null
-                && rm.getWhenToSend() != null
-                && rm.getWhenToSend() == status
+            if ( rm != null && rm.getWhenToSend() != null && rm.getWhenToSend() == status
                 && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
             {
                 OutboundSms outboundSms = sendProgramMessage( rm, programInstance, patient, format );
+                
                 if ( outboundSms != null )
                 {
                     outboundSmsList.add( outboundSms );
@@ -623,39 +622,29 @@ public class DefaultProgramInstanceService
     {
         if ( enrollmentDate == null )
         {
-            if ( program.getUseBirthDateAsIncidentDate() )
-            {
-                enrollmentDate = patient.getBirthDate();
-            }
-            else
-            {
-                enrollmentDate = new Date();
-            }
+            enrollmentDate = program.getUseBirthDateAsIncidentDate() ? patient.getBirthDate() : new Date();
         }
 
         if ( dateOfIncident == null )
         {
-            if ( program.getUseBirthDateAsIncidentDate() )
-            {
-                dateOfIncident = patient.getBirthDate();
-            }
-            else
-            {
-                dateOfIncident = enrollmentDate;
-            }
+            dateOfIncident = program.getUseBirthDateAsIncidentDate() ? patient.getBirthDate() : enrollmentDate;
         }
 
+        // ---------------------------------------------------------------------
+        // Add program instance
+        // ---------------------------------------------------------------------
+
         ProgramInstance programInstance = new ProgramInstance();
+        
+        programInstance.enrollPatient( patient, program );
         programInstance.setEnrollmentDate( enrollmentDate );
         programInstance.setDateOfIncident( dateOfIncident );
-        programInstance.setProgram( program );
-        programInstance.setPatient( patient );
         programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
 
         addProgramInstance( programInstance );
 
         // ---------------------------------------------------------------------
-        // Generate events of program-instance
+        // Generate events for program instance
         // ---------------------------------------------------------------------
 
         for ( ProgramStage programStage : program.getProgramStages() )
@@ -673,10 +662,11 @@ public class DefaultProgramInstanceService
         }
 
         // -----------------------------------------------------------------
-        // send messages after enrollment program
+        // Send messages after enrolling in program
         // -----------------------------------------------------------------
 
         List<OutboundSms> outboundSms = programInstance.getOutboundSms();
+        
         if ( outboundSms == null )
         {
             outboundSms = new ArrayList<OutboundSms>();
@@ -685,17 +675,17 @@ public class DefaultProgramInstanceService
         outboundSms.addAll( sendMessages( programInstance, PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
 
         // -----------------------------------------------------------------
-        // Send DHIS message when to completed the program
+        // Send message when to completed the program
         // -----------------------------------------------------------------
 
-        List<MessageConversation> piMessageConversations = programInstance.getMessageConversations();
-        if ( piMessageConversations == null )
+        List<MessageConversation> messages = programInstance.getMessageConversations();
+        
+        if ( messages == null )
         {
-            piMessageConversations = new ArrayList<MessageConversation>();
+            messages = new ArrayList<MessageConversation>();
         }
 
-        piMessageConversations.addAll( sendMessageConversations( programInstance,
-            PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
+        messages.addAll( sendMessageConversations( programInstance, PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
 
         updateProgramInstance( programInstance );
 

@@ -111,6 +111,22 @@ public class ProgramInstance
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Updated the bi-directional associations between this program instance and
+     * the given patient and program.
+     * 
+     * @param patient the patient to enroll.
+     * @param program the program to enroll the patient to.
+     */
+    public void enrollPatient( Patient patient, Program program )
+    {
+        setPatient( patient );
+        patient.getProgramInstances().add( this );
+        
+        setProgram( program );
+        program.getProgramInstances().add( this );
+    }
+    
     public ProgramStageInstance getProgramStageInstanceByStage( int stage )
     {
         int count = 1;
