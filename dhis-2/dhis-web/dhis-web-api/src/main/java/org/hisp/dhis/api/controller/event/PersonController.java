@@ -107,12 +107,6 @@ public class PersonController
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
                 persons = personService.getPersons( organisationUnit, nameLike );
             }
-            else if ( programUid != null && gender != null )
-            {
-                OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-                Program program = getProgram( programUid );
-                persons = personService.getPersons( organisationUnit, program, gender );
-            }
             else if ( gender != null )
             {
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );

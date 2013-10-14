@@ -144,15 +144,6 @@ public class PersonServiceTest
     }
 
     @Test
-    public void testGetPersonByOrganisationUnitAndGenderAndProgram()
-    {
-        assertEquals( 1, personService.getPersons( organisationUnitA, programA, Gender.MALE ).getPersons().size() );
-        assertEquals( 1, personService.getPersons( organisationUnitA, programA, Gender.FEMALE ).getPersons().size() );
-        assertEquals( 0, personService.getPersons( organisationUnitB, programA, Gender.MALE ).getPersons().size() );
-        assertEquals( 0, personService.getPersons( organisationUnitB, programA, Gender.FEMALE ).getPersons().size() );
-    }
-
-    @Test
     public void getPersonByPatients()
     {
         List<Patient> patients = Arrays.asList( maleA, femaleB );
