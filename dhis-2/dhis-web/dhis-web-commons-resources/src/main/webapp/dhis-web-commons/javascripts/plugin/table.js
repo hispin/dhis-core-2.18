@@ -2797,7 +2797,7 @@ Ext.onReady( function() {
 		};
 
 		requests.push({
-			url: config.url + '/api/system/info',
+			url: config.url + '/api/system/info.jsonp',
 			success: function(r) {
 				init.contextPath = r.contextPath;
 				fn();
