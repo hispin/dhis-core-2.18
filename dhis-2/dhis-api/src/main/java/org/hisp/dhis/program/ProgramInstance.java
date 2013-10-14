@@ -108,7 +108,51 @@ public class ProgramInstance
     }
 
     // -------------------------------------------------------------------------
-    // Getters and setters
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public ProgramStageInstance getProgramStageInstanceByStage( int stage )
+    {
+        int count = 1;
+
+        for ( ProgramStageInstance programInstanceStage : programStageInstances )
+        {
+            if ( count == stage )
+            {
+                return programInstanceStage;
+            }
+
+            count++;
+        }
+
+        return null;
+    }
+
+    public ProgramStageInstance getActiveProgramStageInstance()
+    {
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
+        {
+            if ( programStageInstance.getProgramStage().getOpenAfterEnrollment() && !programStageInstance.isCompleted()
+                && ( programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS ) )
+            {
+                return programStageInstance;
+            }
+        }
+
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
+        {
+            if ( !programStageInstance.isCompleted()
+                &&  ( programStageInstance.getStatus() != null &&  programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS ) )
+            {
+                return programStageInstance;
+            }
+        }
+
+        return null;
+    }
+        
+    // -------------------------------------------------------------------------
+    // equals and hashCode
     // -------------------------------------------------------------------------
 
     @Override
@@ -196,25 +240,20 @@ public class ProgramInstance
         return true;
     }
 
-    /**
-     * @return the id
-     */
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
     public int getId()
     {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId( int id )
     {
         this.id = id;
     }
 
-    /**
-     * @return the dateOfIncident
-     */
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -223,17 +262,11 @@ public class ProgramInstance
         return dateOfIncident;
     }
 
-    /**
-     * @param dateOfIncident the dateOfIncident to set
-     */
     public void setDateOfIncident( Date dateOfIncident )
     {
         this.dateOfIncident = dateOfIncident;
     }
 
-    /**
-     * @return the enrollmentDate
-     */
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -242,17 +275,11 @@ public class ProgramInstance
         return enrollmentDate;
     }
 
-    /**
-     * @param enrollmentDate the enrollmentDate to set
-     */
     public void setEnrollmentDate( Date enrollmentDate )
     {
         this.enrollmentDate = enrollmentDate;
     }
 
-    /**
-     * @return the endDate
-     */
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -261,17 +288,11 @@ public class ProgramInstance
         return endDate;
     }
 
-    /**
-     * @param endDate the endDate to set
-     */
     public void setEndDate( Date endDate )
     {
         this.endDate = endDate;
     }
 
-    /**
-     * @return the status
-     */
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -285,25 +306,16 @@ public class ProgramInstance
         this.status = status;
     }
 
-    /**
-     * @return the patient
-     */
     public Patient getPatient()
     {
         return patient;
     }
 
-    /**
-     * @param patient the patient to set
-     */
     public void setPatient( Patient patient )
     {
         this.patient = patient;
     }
 
-    /**
-     * @return the program
-     */
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
@@ -313,25 +325,16 @@ public class ProgramInstance
         return program;
     }
 
-    /**
-     * @param program the program to set
-     */
     public void setProgram( Program program )
     {
         this.program = program;
     }
 
-    /**
-     * @return the programStageInstances
-     */
     public Set<ProgramStageInstance> getProgramStageInstances()
     {
         return programStageInstances;
     }
 
-    /**
-     * @param programStageInstances the programStageInstances to set
-     */
     public void setProgramStageInstances( Set<ProgramStageInstance> programStageInstances )
     {
         this.programStageInstances = programStageInstances;
@@ -347,9 +350,6 @@ public class ProgramInstance
         this.outboundSms = outboundSms;
     }
 
-    /**
-     * @return the followup
-     */
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -363,9 +363,6 @@ public class ProgramInstance
         this.followup = followup;
     }
 
-    /**
-     * @return the patientComment
-     */
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -387,49 +384,5 @@ public class ProgramInstance
     public void setMessageConversations( List<MessageConversation> messageConversations )
     {
         this.messageConversations = messageConversations;
-    }
-
-    // -------------------------------------------------------------------------
-    // Convenience method
-    // -------------------------------------------------------------------------
-
-    public ProgramStageInstance getProgramStageInstanceByStage( int stage )
-    {
-        int count = 1;
-
-        for ( ProgramStageInstance programInstanceStage : programStageInstances )
-        {
-            if ( count == stage )
-            {
-                return programInstanceStage;
-            }
-
-            count++;
-        }
-
-        return null;
-    }
-
-    public ProgramStageInstance getActiveProgramStageInstance()
-    {
-        for ( ProgramStageInstance programStageInstance : programStageInstances )
-        {
-            if ( programStageInstance.getProgramStage().getOpenAfterEnrollment() && !programStageInstance.isCompleted()
-                && ( programStageInstance.getStatus() != null && programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS ) )
-            {
-                return programStageInstance;
-            }
-        }
-
-        for ( ProgramStageInstance programStageInstance : programStageInstances )
-        {
-            if ( !programStageInstance.isCompleted()
-                &&  ( programStageInstance.getStatus() != null &&  programStageInstance.getStatus() != ProgramStageInstance.SKIPPED_STATUS ) )
-            {
-                return programStageInstance;
-            }
-        }
-
-        return null;
     }
 }
