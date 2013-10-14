@@ -81,6 +81,8 @@ public class ValidationRunContext
     private Map<ValidationRule, ValidationRuleExtended> ruleXMap;
 
     private Collection<OrganisationUnitExtended> sourceXs;
+    
+    private int countOfSourcesToValidate;
 
     private Collection<ValidationResult> validationResults;
 
@@ -101,8 +103,8 @@ public class ValidationRunContext
             .append( "\n runType", runType ).append( "\n  lastAlertRun", lastAlertRun )
             .append( "\n constantMap", "[" + constantMap.size() + "]" )
             .append( "\n ruleXMap", "[" + ruleXMap.size() + "]" )
-            .append( "\n  sourceXs", Arrays.toString( sourceXs.toArray() ) )
-            .append( "\n  validationResults", Arrays.toString( validationResults.toArray() ) ).toString();
+            .append( "\n sourceXs", Arrays.toString( sourceXs.toArray() ) )
+            .append( "\n validationResults", Arrays.toString( validationResults.toArray() ) ).toString();
     }
 
     /**
@@ -138,22 +140,54 @@ public class ValidationRunContext
     /**
      * Initializes context values based on sources, periods and rules
      * 
-     * @param sources
-     * @param periods
-     * @param rules
+     * @param sources organisation units to evaluate for rules
+     * @param periods periods for validation
+     * @param rules validation rules for validation
      */
     private void initialize( Collection<OrganisationUnit> sources, Collection<Period> periods,
         Collection<ValidationRule> rules )
     {
-        boolean monitoringRulesPresent = false;
-
-        // Group the periods by period type.
-        for ( Period period : periods )
+        addPeriodsToContext( periods );
+        
+        boolean monitoringRulesPresent = addRulesToContext ( rules );
+        
+        removeAnyUnneededPeriodTypes();
+        
+        addSourcesToContext( sources, true );
+        
+        countOfSourcesToValidate = sources.size();
+        
+        if ( monitoringRulesPresent )
         {
-            PeriodTypeExtended periodTypeX = getOrCreatePeriodTypeExtended( period.getPeriodType() );
-            periodTypeX.getPeriods().add( period );
+        	Set<OrganisationUnit> otherDescendants = getAllOtherDescendants( sources );
+        	addSourcesToContext( otherDescendants, false );
         }
+    }
 
+    /**
+     * Adds Periods to the context, grouped by period type.
+     * 
+     * @param periods Periods to group and add
+     */
+    private void addPeriodsToContext ( Collection<Period> periods )
+    {
+	    for ( Period period : periods )
+	    {
+	        PeriodTypeExtended periodTypeX = getOrCreatePeriodTypeExtended( period.getPeriodType() );
+	        periodTypeX.getPeriods().add( period );
+	    }
+    }
+
+    /**
+     * Adds validation rules to the context.
+     * 
+     * @param rules validation rules to add
+     * @return true if there were some monitoring-type rules, false otherwise.
+     */
+    private boolean addRulesToContext ( Collection<ValidationRule> rules )
+    {
+    	boolean monitoringRulesPresent = false;
+    	
         for ( ValidationRule rule : rules )
         {
             if ( ValidationRule.RULE_TYPE_MONITORING.equals( rule.getRuleType() ) )
@@ -187,34 +221,91 @@ public class ValidationRunContext
             ValidationRuleExtended ruleX = new ValidationRuleExtended( rule, allowedPastPeriodTypes );
             ruleXMap.put( rule, ruleX );
         }
+        return monitoringRulesPresent;
+    }
 
-        // We only need to keep period types that are selected and also used by
-        // rules that are selected.
+    /**
+     * Removes any period types that don't have rules assigned to them.
+     */
+    private void removeAnyUnneededPeriodTypes()
+    {
         // Start by making a defensive copy so we can delete while iterating.
         Set<PeriodTypeExtended> periodTypeXs = new HashSet<PeriodTypeExtended>( periodTypeExtendedMap.values() );
         for ( PeriodTypeExtended periodTypeX : periodTypeXs )
         {
-            if ( periodTypeX.getPeriods().isEmpty() || periodTypeX.getRules().isEmpty() )
+            if ( periodTypeX.getRules().isEmpty() )
             {
                 periodTypeExtendedMap.remove( periodTypeX.getPeriodType() );
             }
         }
+    }
 
-        // If we have some monitoring rules, then make sure that we add all
-        // the descendants of each source to our collection of sources.
-        // This is so we can recurse if needed to find monitoring rule values.
-        if ( monitoringRulesPresent )
+    /**
+     * Finds all organisation unit descendants that are not in a given
+     * collection of organisation units. This is needed for monitoring-type
+     * rules, because the data values for the rules may need to be aggregated
+     * from the organisation unit's descendants.
+     * 
+     * The descendants will likely be there anyway for a run including
+     * monitoring-type rules, because an interactive run containing
+     * monitoring-type rules should select an entire subtree, and a
+     * scheduled alert run will contain all organisation units. But check
+     * just to be sure, and find any that may be missing. This makes sure
+     * that some of the tests will work, and may be required for some
+     * future features to work.
+     * 
+     * @param sources organisation units whose descendants to check
+     * @return all other descendants who need to be added who were not
+     * in the original list
+     */
+    private Set<OrganisationUnit> getAllOtherDescendants( Collection<OrganisationUnit> sources )
+    {
+    	Set<OrganisationUnit> allOtherDescendants = new HashSet<OrganisationUnit>();
+        for ( OrganisationUnit source : sources )
         {
-            for ( OrganisationUnit source : new HashSet<OrganisationUnit>( sources ) )
+            getOtherDescendantsRecursive( source, sources, allOtherDescendants );
+        }
+        return allOtherDescendants;
+    }
+
+    /**
+     * If the children of this organisation unit are not in the collection, then
+     * add them and all their descendants if needed.
+     * 
+     * @param source organisation unit whose children to check
+     * @param sources organisation units in the initial list
+     * @param allOtherDescendants list of organisation unit descendants we
+     * need to add
+     */
+    private void getOtherDescendantsRecursive( OrganisationUnit source, Collection<OrganisationUnit> sources,
+    		Set<OrganisationUnit> allOtherDescendants )
+    {
+        for ( OrganisationUnit child : source.getChildren() )
+        {
+            if ( !sources.contains( child ) && !allOtherDescendants.contains( child ) )
             {
-                addSourceRecursive( sources, source );
+            	allOtherDescendants.add( child );
+                getOtherDescendantsRecursive( child, sources, allOtherDescendants );
             }
         }
+    }
 
+    /**
+     * Adds a collection of organisation units to the validation run context.
+     * 
+     * @param sources organisation units to add
+     * @param ruleCheckThisSource true if these organisation units should be
+     * evaluated with validation rules, false if not. (This is false when
+     * adding descendants of organisation units for the purpose of getting
+     * aggregated expression values from descendants, but these organisation
+     * units are not in the main list to be evaluated.)
+     */
+    private void addSourcesToContext ( Collection<OrganisationUnit> sources, boolean ruleCheckThisSource )
+    {
         // Get the information we need for each source.
         for ( OrganisationUnit source : sources )
         {
-            OrganisationUnitExtended sourceX = new OrganisationUnitExtended( source );
+            OrganisationUnitExtended sourceX = new OrganisationUnitExtended( source, ruleCheckThisSource );
             sourceXs.add( sourceX );
 
             Map<PeriodType, Set<DataElement>> sourceElementsMap = source.getDataElementsInDataSetsByPeriodType();
@@ -232,26 +323,7 @@ public class ValidationRunContext
             }
         }
     }
-
-    /**
-     * If the children of this organisation unit are not in the collection, then
-     * add them and all their descendants if needed.
-     * 
-     * @param sources organisation units to test and add to
-     * @param source organisation unit whose children to check
-     */
-    private void addSourceRecursive( Collection<OrganisationUnit> sources, OrganisationUnit source )
-    {
-        for ( OrganisationUnit child : source.getChildren() )
-        {
-            if ( !sources.contains( child ) )
-            {
-                sources.add( child );
-                addSourceRecursive( sources, child );
-            }
-        }
-    }
-
+    
     /**
      * Gets the PeriodTypeExtended from the context object. If not found,
      * creates a new PeriodTypeExtended object, puts it into the context object,
@@ -332,6 +404,11 @@ public class ValidationRunContext
     public Collection<OrganisationUnitExtended> getSourceXs()
     {
         return sourceXs;
+    }
+
+    public int getCountOfSourcesToValidate()
+    {
+        return countOfSourcesToValidate;
     }
 
     public Collection<ValidationResult> getValidationResults()

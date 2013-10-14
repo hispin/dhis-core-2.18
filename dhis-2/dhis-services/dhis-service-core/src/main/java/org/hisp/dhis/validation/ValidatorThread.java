@@ -57,20 +57,20 @@ import org.hisp.dhis.period.PeriodType;
 /**
  * Runs a validation task on a thread within a multi-threaded validation run.
  * 
- * Each thread looks for validation results in a different organisation unit.
+ * Each task looks for validation results in a different organisation unit.
  *
  * @author Jim Grace
  */
-public class ValidationWorkerThread
+public class ValidatorThread
     implements Runnable
 {
-    private static final Log log = LogFactory.getLog( ValidationWorkerThread.class );
+    private static final Log log = LogFactory.getLog( ValidatorThread.class );
 
     private OrganisationUnitExtended sourceX;
 
     private ValidationRunContext context;
 
-    public ValidationWorkerThread( OrganisationUnitExtended sourceX, ValidationRunContext context )
+    public ValidatorThread( OrganisationUnitExtended sourceX, ValidationRunContext context )
     {
         this.sourceX = sourceX;
         this.context = context;

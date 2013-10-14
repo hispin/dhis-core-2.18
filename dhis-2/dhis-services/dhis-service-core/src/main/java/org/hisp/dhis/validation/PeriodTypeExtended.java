@@ -81,12 +81,12 @@ public class PeriodTypeExtended {
     public String toString()
     {
         return new ToStringBuilder( this, ToStringStyle.SHORT_PREFIX_STYLE )
-            .append( "\n periodType", periodType )
-            .append( "\n periods", (Arrays.toString( periods.toArray() )) )
-            .append( "\n rules", (Arrays.toString( rules.toArray() )) )
-            .append( "\n dataElements", (Arrays.toString( dataElements.toArray() )) )
-            .append( "\n allowedPeriodTypes", (Arrays.toString( allowedPeriodTypes.toArray() )) )
-            .append( "\n sourceDataElements", "[" + sourceDataElements.size() + "]" ).toString();
+            .append( "\n  periodType", periodType )
+            .append( "\n  periods", (Arrays.toString( periods.toArray() )) )
+            .append( "\n  rules", (Arrays.toString( rules.toArray() )) )
+            .append( "\n  dataElements", (Arrays.toString( dataElements.toArray() )) )
+            .append( "\n  allowedPeriodTypes", (Arrays.toString( allowedPeriodTypes.toArray() )) )
+            .append( "\n  sourceDataElements", "[" + sourceDataElements.size() + "]" ).toString();
     }
 
     // -------------------------------------------------------------------------
