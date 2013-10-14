@@ -227,7 +227,7 @@ public class SearchPatientAction
 
             total = patientService.countSearchPatients( searchTexts, orgunits, null, statusEnrollment );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, orgunits, null, null, statusEnrollment,
+            patients = patientService.searchPatients( searchTexts, orgunits, null, null, null, statusEnrollment,
                 paging.getStartPos(), paging.getPageSize() );
 
             if ( facilityLB != null && !facilityLB.isEmpty())

@@ -215,7 +215,8 @@ public interface PatientService
     Object getObjectValue( String property, String value, I18nFormat format );
     
     Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunit,
-        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max );
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes,
+        Integer statusEnrollment, Integer min, Integer max );
 
     int countSearchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup, Integer statusEnrollment );
 

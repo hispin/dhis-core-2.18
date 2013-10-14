@@ -529,10 +529,10 @@ public class DefaultPatientService
     }
 
     public Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min,
-        Integer max )
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, 
+        Integer statusEnrollment, Integer min, Integer max )
     {
-        return patientStore.search( searchKeys, orgunits, followup, patientAttributes, statusEnrollment, min, max );
+        return patientStore.search( searchKeys, orgunits, followup, patientAttributes, identifierTypes, statusEnrollment, min, max );
     }
 
     public int countSearchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
@@ -544,7 +544,7 @@ public class DefaultPatientService
     public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
-        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, followup, null, statusEnrollment, min, max );
+        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, followup, null, null, statusEnrollment, min, max );
         
         Set<String> phoneNumbers = new HashSet<String>();
         
