@@ -161,6 +161,17 @@ public class SystemController
         JacksonUtils.toJson( response.getOutputStream(), info );
     }
     
+    @RequestMapping( value = "/context", method = RequestMethod.GET, produces = { "*/*", "application/json" } )
+    public void getContextInfo( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        SystemInfo info = new SystemInfo();
+
+        info.setContextPath( ContextUtils.getContextPath( request ) );
+        info.setUserAgent( request.getHeader( ContextUtils.HEADER_USER_AGENT ) );
+
+        JacksonUtils.toJson( response.getOutputStream(), info );        
+    }
+    
     @RequestMapping( value = "/ping", method = RequestMethod.GET, produces = "text/plain" )
     public @ResponseBody String ping( Model model )
     {
