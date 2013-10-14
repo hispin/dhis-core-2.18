@@ -2797,7 +2797,7 @@ Ext.onReady( function() {
 		};
 
 		requests.push({
-			url: config.url + '/api/system/info.jsonp',
+			url: config.url + '/api/system/context.jsonp',
 			success: function(r) {
 				init.contextPath = r.contextPath;
 				fn();
@@ -2857,6 +2857,8 @@ Ext.onReady( function() {
 				console.log('No valid url provided');
 				return;
 			}
+
+			config.id = config.id || config.uid;
 
 			return true;
 		};
