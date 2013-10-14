@@ -800,7 +800,7 @@ public class HibernatePatientStore
         List<Patient> patients = new ArrayList<Patient>();
 
         fullName = fullName.toLowerCase();
-        String sql = "SELECT patientid FROM patient where lower( " + statementBuilder.getPatientFullName() + ") ='" + fullName + "'";
+        String sql = "SELECT patientid FROM patient where lower(name) = '" + fullName + "'";
         
         if ( orgunitId != null && orgunitId != 0 )
         {

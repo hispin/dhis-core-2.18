@@ -171,8 +171,6 @@ public interface StatementBuilder
     
     String getAddDate( String dateField, int days );
     
-    String getPatientFullName();
-
     String queryDataElementStructureForOrgUnit();
 
     String queryRawDataElementsForOrgUnitBetweenPeriods( Integer orgUnitId, List<Integer> betweenPeriodIds );

@@ -162,12 +162,6 @@ public class H2StatementBuilder
     }
 
     @Override
-    public String getPatientFullName()
-    {
-        return  "name";
-    }
-
-    @Override
     public String queryDataElementStructureForOrgUnit()
     {
         StringBuffer sqlsb = new StringBuffer();
