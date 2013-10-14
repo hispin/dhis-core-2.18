@@ -116,10 +116,11 @@ public class DefaultObjectBridge
         nameMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
         usernameMap = new HashMap<String, UserCredentials>();
 
+        populatePeriodTypeMap( PeriodType.class );
+        populateUsernameMap( UserCredentials.class );
+
         for ( Class<?> type : registeredTypes )
         {
-            populateUsernameMap( type );
-            populatePeriodTypeMap( type );
             populateIdentifiableObjectMap( type );
             populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.UID );
             populateIdentifiableObjectMap( type, IdentifiableObject.IdentifiableProperty.CODE );
