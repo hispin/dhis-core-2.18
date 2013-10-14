@@ -77,7 +77,7 @@ public interface PatientStore
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
     Collection<Patient> search( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max );
+        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max );
 
     Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
         Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min,

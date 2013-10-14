@@ -256,9 +256,10 @@ public class HibernatePatientStore
     @Override
     //TODO this method must be changed - cannot retrieve one by one
     public Collection<Patient> search( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max )
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, 
+        Integer statusEnrollment, Integer min, Integer max )
     {
-        String sql = searchPatientSql( false, searchKeys, orgunits, followup, patientAttributes, null,
+        String sql = searchPatientSql( false, searchKeys, orgunits, followup, patientAttributes, identifierTypes,
             statusEnrollment, min, max );
         Collection<Patient> patients = new HashSet<Patient>();
         try
@@ -281,8 +282,8 @@ public class HibernatePatientStore
 
     @Override
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<PatientAttribute> patientAttributes,
-        Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
+        Boolean followup, Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, 
+        Integer statusEnrollment, Integer min, Integer max )
     {
         String sql = searchPatientSql( false, searchKeys, orgunits, followup, patientAttributes, identifierTypes,
             statusEnrollment, min, max );
