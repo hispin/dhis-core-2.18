@@ -179,13 +179,13 @@ public class DefaultPatientRegistrationFormService
             Matcher classMarcher = CLASS_PATTERN.matcher( inputHtml );
             if ( classMarcher.find() )
             {
-                hidden = classMarcher.group( 1 );
+                hidden = classMarcher.group( 2 );
             }
 
             Matcher styleMarcher = STYLE_PATTERN.matcher( inputHtml );
             if ( styleMarcher.find() )
             {
-                style = styleMarcher.group( 1 );
+                style = styleMarcher.group( 2 );
             }
 
             if ( fixedAttrMatcher.find() && fixedAttrMatcher.groupCount() > 0 )
