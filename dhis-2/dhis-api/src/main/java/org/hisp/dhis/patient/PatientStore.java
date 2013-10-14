@@ -71,7 +71,7 @@ public interface PatientStore
 
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
 
-    Collection<Patient> getByFullName( String fullName, Integer orgunitId );
+    Collection<Patient> getByFullName( String fullName, OrganisationUnit organisationUnit );
 
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 

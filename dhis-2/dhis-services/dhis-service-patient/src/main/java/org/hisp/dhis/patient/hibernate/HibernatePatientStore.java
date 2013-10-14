@@ -795,16 +795,16 @@ public class HibernatePatientStore
 
     @Override
     //TODO this method must be changed - cannot retrieve one by one
-    public Collection<Patient> getByFullName( String fullName, Integer orgunitId )
+    public Collection<Patient> getByFullName( String fullName, OrganisationUnit organisationUnit )
     {
         List<Patient> patients = new ArrayList<Patient>();
 
         fullName = fullName.toLowerCase();
         String sql = "SELECT patientid FROM patient where lower(name) = '" + fullName + "'";
         
-        if ( orgunitId != null && orgunitId != 0 )
+        if ( organisationUnit != null )
         {
-            sql += " and organisationunitid=" + orgunitId;
+            sql += " and organisationunitid=" + organisationUnit.getId();
         }
 
         try
