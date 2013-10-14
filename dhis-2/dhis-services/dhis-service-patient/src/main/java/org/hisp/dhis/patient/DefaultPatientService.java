@@ -204,12 +204,6 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatiensByGender( String gender )
-    {
-        return patientStore.getByGender( gender );
-    }
-
-    @Override
     public Collection<Patient> getPatientsByBirthDate( Date birthDate )
     {
         return patientStore.getByBirthDate( birthDate );
@@ -306,18 +300,6 @@ public class DefaultPatientService
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program )
     {
         return patientStore.getByOrgUnitProgram( organisationUnit, program, 0, Integer.MAX_VALUE );
-    }
-
-    @Override
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String gender, Integer min, Integer max )
-    {
-        return patientStore.getByOrgUnitAndGender( organisationUnit, gender, min, max );
-    }
-
-    @Override
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String gender )
-    {
-        return patientStore.getByOrgUnitAndGender( organisationUnit, gender, 0, Integer.MAX_VALUE );
     }
 
     @Override

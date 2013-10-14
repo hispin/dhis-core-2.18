@@ -28,11 +28,16 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.events.person.Gender;
 import org.hisp.dhis.dxf2.events.person.Identifier;
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.events.person.PersonService;
@@ -55,11 +60,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -85,7 +85,6 @@ public class PersonController
     @PreAuthorize("hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')")
     public String getPersons(
         @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
-        @RequestParam( required = false ) Gender gender,
         @RequestParam( value = "program", required = false ) String programUid,
         @RequestParam( required = false ) String identifierType,
         @RequestParam( required = false ) String identifier,
@@ -106,11 +105,6 @@ public class PersonController
             {
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
                 persons = personService.getPersons( organisationUnit, nameLike );
-            }
-            else if ( gender != null )
-            {
-                OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-                persons = personService.getPersons( organisationUnit, gender );
             }
             else if ( programUid != null )
             {

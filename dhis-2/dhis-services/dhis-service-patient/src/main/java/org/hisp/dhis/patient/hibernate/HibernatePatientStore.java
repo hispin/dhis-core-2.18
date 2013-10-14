@@ -104,13 +104,6 @@ public class HibernatePatientStore
     // Implementation methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
-    @Override
-    public Collection<Patient> getByGender( String gender )
-    {
-        return getCriteria( Restrictions.eq( "gender", gender ) ).list();
-    }
-
     @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByBirthDate( Date birthDate )
@@ -179,25 +172,6 @@ public class HibernatePatientStore
             query.setFirstResult( min ).setMaxResults( max );
         }
         
-        return query.list();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getByOrgUnitAndGender( OrganisationUnit organisationUnit, String gender, Integer min,
-        Integer max )
-    {
-        String hql = "select p from Patient p where p.organisationUnit = :organisationUnit and p.gender = :gender order by p.id DESC";
-
-        Query query = getQuery( hql );
-        query.setEntity( "organisationUnit", organisationUnit );
-        query.setString( "gender", gender );
-
-        if ( min != null && max != null )
-        {
-            query.setFirstResult( min ).setMaxResults( max );
-        }
-
         return query.list();
     }
 

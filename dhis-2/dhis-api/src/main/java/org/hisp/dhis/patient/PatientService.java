@@ -60,23 +60,7 @@ public interface PatientService
 
     Collection<Patient> getAllPatients();
 
-    /**
-     * Search Patient base on name/birthDate/gender
-     *
-     * @param name
-     * @param birthdate
-     * @param gender
-     * @return Patient List
-     */
     Collection<Patient> getPatients( String name, Date birthdate, String gender );
-
-    /**
-     * Search Patient base on gender
-     *
-     * @param gender
-     * @return Patient List
-     */
-    Collection<Patient> getPatiensByGender( String gender );
 
     /**
      * Search Patient base on birthDate
@@ -141,22 +125,6 @@ public interface PatientService
      * @return
      */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program );
-
-    /**
-     * Search Patient base on organization unit with result limited
-     *
-     * @param organisationUnit organisationUnit
-     * @return Patient List
-     */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String gender, Integer min, Integer max );
-
-    /**
-     * Search Patient base on organization unit with result limited
-     *
-     * @param organisationUnit organisationUnit
-     * @return Patient List
-     */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String gender );
 
     /**
      * Search Patient base on organization unit and sort the result by

@@ -119,28 +119,10 @@ public class PersonServiceTest
     }
 
     @Test
-    public void testGetPersonByGender()
-    {
-        assertEquals( 2, personService.getPersons( Gender.MALE ).getPersons().size() );
-        assertEquals( 2, personService.getPersons( Gender.FEMALE ).getPersons().size() );
-    }
-
-    @Test
     public void testGetPersonByOrganisationUnit()
     {
         assertEquals( 2, personService.getPersons( organisationUnitA ).getPersons().size() );
         assertEquals( 2, personService.getPersons( organisationUnitB ).getPersons().size() );
-    }
-
-    @Test
-    public void testGetPersonByOrganisationUnitAndGender()
-    {
-        assertEquals( 0, personService.getPersons( organisationUnitA, Gender.TRANSGENDER ).getPersons().size() );
-        assertEquals( 1, personService.getPersons( organisationUnitA, Gender.MALE ).getPersons().size() );
-        assertEquals( 1, personService.getPersons( organisationUnitA, Gender.FEMALE ).getPersons().size() );
-        assertEquals( 0, personService.getPersons( organisationUnitB, Gender.TRANSGENDER ).getPersons().size() );
-        assertEquals( 1, personService.getPersons( organisationUnitB, Gender.MALE ).getPersons().size() );
-        assertEquals( 1, personService.getPersons( organisationUnitB, Gender.FEMALE ).getPersons().size() );
     }
 
     @Test
