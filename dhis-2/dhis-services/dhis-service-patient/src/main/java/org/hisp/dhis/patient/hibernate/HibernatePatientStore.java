@@ -56,7 +56,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
@@ -89,13 +88,6 @@ public class HibernatePatientStore
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private StatementBuilder statementBuilder;
-
-    public void setStatementBuilder( StatementBuilder statementBuilder )
-    {
-        this.statementBuilder = statementBuilder;
     }
 
     // -------------------------------------------------------------------------
@@ -692,7 +684,7 @@ public class HibernatePatientStore
 
         if ( min != null && max != null )
         {
-            sql += statementBuilder.limitRecord( min, max );
+            sql += " limit " + max + " offset " + min;
         }
         
         log.info( "Search patient SQL: " + sql );
