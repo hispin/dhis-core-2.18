@@ -160,13 +160,6 @@ public abstract class AbstractPersonService
     }
 
     @Override
-    public Persons getPersons( Gender gender )
-    {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getPatiensByGender( gender.getValue() ) );
-        return getPersons( patients );
-    }
-
-    @Override
     public Persons getPersons( Program program )
     {
         List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( program ) );
@@ -177,13 +170,6 @@ public abstract class AbstractPersonService
     public Persons getPersons( OrganisationUnit organisationUnit, Program program )
     {
         List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program ) );
-        return getPersons( patients );
-    }
-
-    @Override
-    public Persons getPersons( OrganisationUnit organisationUnit, Gender gender )
-    {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, gender.getValue() ) );
         return getPersons( patients );
     }
 
