@@ -136,14 +136,6 @@ public interface PatientService
 
     /**
      *
-     * @param program
-     * @param gender
-     * @return
-     */
-    Collection<Patient> getPatients( Program program, String gender );
-
-    /**
-     *
      * @param organisationUnit
      * @param program
      * @return

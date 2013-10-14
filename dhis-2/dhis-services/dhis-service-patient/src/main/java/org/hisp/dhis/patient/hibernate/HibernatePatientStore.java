@@ -270,40 +270,6 @@ public class HibernatePatientStore
     }
 
     @Override
-    //TODO this method must be changed - cannot retrieve one by one
-    public Collection<Patient> getByProgram( Program program, String gender, Integer min, Integer max )
-    {
-        List<Patient> patients = new ArrayList<Patient>();
-
-        String sql = "select p.patientid from patient p join programinstance pi on p.patientid=pi.patientid "
-            + "where pi.programid=" + program.getId() + " and pi.status=" + ProgramInstance.STATUS_ACTIVE
-            + " and p.gender='" + gender + "'";
-
-        if ( min != null && max != null )
-        {
-            sql += statementBuilder.limitRecord( min, max );
-        }
-
-        try
-        {
-            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
-            {
-                public Patient mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-                    return get( rs.getInt( 1 ) );
-                }
-            } );
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-
-        return patients;
-    }
-
-    @Override
     public int countGetPatientsByName( String fullName )
     {
         fullName = fullName.toLowerCase();

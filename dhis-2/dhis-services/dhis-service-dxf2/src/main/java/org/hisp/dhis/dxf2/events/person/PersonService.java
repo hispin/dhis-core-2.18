@@ -62,8 +62,6 @@ public interface PersonService
 
     Persons getPersons( Program program );
 
-    Persons getPersons( Program program, Gender gender );
-
     Persons getPersons( OrganisationUnit organisationUnit, Program program );
 
     Persons getPersons( OrganisationUnit organisationUnit, Gender gender );
