@@ -99,7 +99,7 @@ public class SystemInfo
         this.databaseInfo = null;
         this.memoryInfo = null;
         this.cpuCores = null;
-        this.systemId = systemId;
+        this.systemId = null;
     }
     
     // -------------------------------------------------------------------------
