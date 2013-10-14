@@ -35,6 +35,11 @@
       <one-to-many class="org.hisp.dhis.patient.PatientIdentifier" />
     </set>
     
+    <set name="programInstances">
+      <key column="patientid" />
+      <one-to-many class="org.hisp.dhis.program.ProgramInstance" />
+    </set>
+    
     <many-to-one name="representative" class="org.hisp.dhis.patient.Patient" column="representativeid"
       foreign-key="fk_representativeid" />
 

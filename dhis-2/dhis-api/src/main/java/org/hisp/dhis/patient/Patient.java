@@ -38,6 +38,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -98,6 +99,8 @@ public class Patient
     private boolean isDead = false;
 
     private Set<PatientIdentifier> identifiers = new HashSet<PatientIdentifier>();
+    
+    private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
     
     private OrganisationUnit organisationUnit;
     
@@ -202,6 +205,16 @@ public class Patient
         this.identifiers = identifiers;
     }
     
+    public Set<ProgramInstance> getProgramInstances()
+    {
+        return programInstances;
+    }
+
+    public void setProgramInstances( Set<ProgramInstance> programInstances )
+    {
+        this.programInstances = programInstances;
+    }
+
     @JsonProperty
     @JsonSerialize(as = BaseIdentifiableObject.class)
     @JsonView({ DetailedView.class, ExportView.class })
