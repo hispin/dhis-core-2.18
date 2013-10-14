@@ -69,7 +69,6 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
@@ -82,13 +81,6 @@ public class HibernateProgramStageInstanceStore
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     private StatementBuilder statementBuilder;
 

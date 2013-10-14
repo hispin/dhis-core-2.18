@@ -43,7 +43,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceStore;
 import org.hisp.dhis.program.SchedulingProgramObject;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
@@ -53,17 +52,6 @@ public class HibernateProgramInstanceStore
     extends HibernateIdentifiableObjectStore<ProgramInstance>
     implements ProgramInstanceStore
 {
-    // -------------------------------------------------------------------------
-    // Dependency
-    // -------------------------------------------------------------------------
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     // -------------------------------------------------------------------------
     // Implemented methods
     // -------------------------------------------------------------------------

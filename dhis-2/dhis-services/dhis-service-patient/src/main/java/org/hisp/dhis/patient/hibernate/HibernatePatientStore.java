@@ -28,6 +28,25 @@ package org.hisp.dhis.patient.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.patient.Patient.FIXED_ATTR_AGE;
+import static org.hisp.dhis.patient.Patient.FIXED_ATTR_BIRTH_DATE;
+import static org.hisp.dhis.patient.Patient.FIXED_ATTR_REGISTRATION_DATE;
+import static org.hisp.dhis.patient.Patient.PREFIX_FIXED_ATTRIBUTE;
+import static org.hisp.dhis.patient.Patient.PREFIX_IDENTIFIER_TYPE;
+import static org.hisp.dhis.patient.Patient.PREFIX_PATIENT_ATTRIBUTE;
+import static org.hisp.dhis.patient.Patient.PREFIX_PROGRAM;
+import static org.hisp.dhis.patient.Patient.PREFIX_PROGRAM_EVENT_BY_STATUS;
+import static org.hisp.dhis.patient.Patient.PREFIX_PROGRAM_INSTANCE;
+import static org.hisp.dhis.patient.Patient.PREFIX_PROGRAM_STAGE;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -50,20 +69,9 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.TextUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.hisp.dhis.patient.Patient.*;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -91,13 +99,6 @@ public class HibernatePatientStore
     public void setStatementBuilder( StatementBuilder statementBuilder )
     {
         this.statementBuilder = statementBuilder;
-    }
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------

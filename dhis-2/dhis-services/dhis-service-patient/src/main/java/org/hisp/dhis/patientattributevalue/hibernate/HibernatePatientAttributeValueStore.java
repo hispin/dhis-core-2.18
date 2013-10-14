@@ -40,7 +40,6 @@ import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueStore;
 import org.hisp.dhis.program.Program;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Abyot Asalefew
@@ -50,18 +49,6 @@ public class HibernatePatientAttributeValueStore
     extends HibernateGenericStore<PatientAttributeValue>
     implements PatientAttributeValueStore
 {
-
-    // -------------------------------------------------------------------------
-    // Dependency
-    // -------------------------------------------------------------------------
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
