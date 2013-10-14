@@ -188,4 +188,33 @@ public class PatientStoreTest
         assertEquals( 1, patients.size() );
         assertTrue( patients.contains( patientD ) );
     }
+
+    @Test
+    public void testGetByProgram()
+    {
+        programService.saveProgram( programA );
+        programService.saveProgram( programB );
+        
+        patientStore.save( patientA );
+        patientStore.save( patientB );
+        patientStore.save( patientC );
+        patientStore.save( patientD );
+        
+        programInstanceService.enrollPatient( patientA, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientB, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientC, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientD, programB, date, date, organisationUnit, null );
+        
+        Collection<Patient> patients = patientStore.getByProgram( programA, 0, 100 );
+        
+        assertEquals( 3, patients.size() );
+        assertTrue( patients.contains( patientA ) );
+        assertTrue( patients.contains( patientB ) );
+        assertTrue( patients.contains( patientC ) );
+
+        patients = patientStore.getByOrgUnitProgram( organisationUnit, programB, 0, 100 );
+        
+        assertEquals( 1, patients.size() );
+        assertTrue( patients.contains( patientD ) );
+    }
 }
