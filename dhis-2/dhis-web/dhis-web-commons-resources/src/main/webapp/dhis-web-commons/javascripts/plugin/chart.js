@@ -2592,8 +2592,8 @@ Ext.onReady( function() {
 			dv.isPlugin = true;
 			dv.viewport = createViewport();
 
-			if (config.uid) {
-				dv.engine.loadChart(config.uid, dv);
+			if (config.id) {
+				dv.engine.loadChart(config.id, dv);
 			}
 			else {
 				layout = dv.api.layout.Layout(config);
