@@ -413,6 +413,8 @@ table.pivot {
     padding-left: 1px;
     font-size: 11px;
     color: #333;
+    position: relative;
+	top: -1px;
 }
 
 	/* Icons */
@@ -520,7 +522,7 @@ table.pivot {
 .pt-menu-item-noicon .x-menu-item-link {
 	padding-left: 10px;
 }
-	
+
 .pt-menu-item-image {
     background-image:url('../images/dl_image.png');
     padding-left: 18px;
@@ -542,7 +544,7 @@ table.pivot {
     background-image:url('../images/check-un.png');
     padding-left: 18px;
 }
-	
+
 
 	/* Menu align */
 .pt-btn-menu {

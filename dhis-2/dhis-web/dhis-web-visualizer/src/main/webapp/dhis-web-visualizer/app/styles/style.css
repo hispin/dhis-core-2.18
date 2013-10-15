@@ -2,26 +2,26 @@
  *
  * Panel
  * DV Panel
- * 
+ *
  * Combobox
  * DV Combobox
- * 
+ *
  * MultiSelect
  * DV MultiSelect
- * 
+ *
  * Checkbox
  * DV Checkbox
- * 
+ *
  * Toolbar
  * DV Toolbar
- * 
+ *
  * Menu
  * DV Menu
- * 
+ *
  * Button
  * Tooltip
  * LoadMask
- * 
+ *
  * DV Grid
  * DV Window
  * DV Label
@@ -390,7 +390,7 @@ body.x-windows {
 .dv-menu-item-noicon .x-menu-item-link {
 	padding-left: 10px;
 }
-	
+
 .dv-menu-item-image {
     background-image:url('../images/dl_image.png');
     padding-left: 18px;
