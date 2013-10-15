@@ -42,6 +42,7 @@ import org.hisp.dhis.api.webdomain.user.Dashboard;
 import org.hisp.dhis.api.webdomain.user.Inbox;
 import org.hisp.dhis.api.webdomain.user.Recipients;
 import org.hisp.dhis.api.webdomain.user.UserAccount;
+import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -129,7 +130,7 @@ public class CurrentUserController
             throw new NotAuthenticatedException();
         }
 
-        JacksonUtils.toJson( response.getOutputStream(), currentUser );
+        JacksonUtils.toJsonWithView( response.getOutputStream(), currentUser, DetailedView.class );
     }
 
     @RequestMapping(value = "/inbox", produces = { "application/json", "text/*" })
