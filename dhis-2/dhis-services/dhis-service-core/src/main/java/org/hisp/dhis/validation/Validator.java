@@ -1,19 +1,5 @@
 package org.hisp.dhis.validation;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import org.hisp.dhis.constant.ConstantService;
-import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.SystemUtils;
-
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -42,6 +28,20 @@ import org.hisp.dhis.system.util.SystemUtils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.SystemUtils;
+
 /**
  * Evaluates validation rules.
  * 
@@ -49,24 +49,22 @@ import org.hisp.dhis.system.util.SystemUtils;
  */
 public class Validator
 {
-
     /**
      * Evaluates validation rules for a collection of organisation units.
      * This method breaks the job down by organisation unit. It assigns the
      * evaluation for each organisation unit to a task that can be evaluated
      * independently in a multithreaded environment.
      * 
-     * @param sources the organisation units in which to run the validation
-     *        rules
+     * @param sources the organisation units in which to run the validation rules
      * @param periods the periods of data to check
      * @param rules the ValidationRules to evaluate
      * @param runType whether this is an INTERACTIVE or ALERT run
      * @param lastAlertRun date/time of the most recent successful alerts run
      *        (needed only for alert run)
-	 * @param constantService Constant Service reference
-	 * @param expressionService Expression Service reference
-	 * @param periodService Period Service reference
-	 * @param dataValueService Data Value Service reference
+     * @param constantService Constant Service reference
+     * @param expressionService Expression Service reference
+     * @param periodService Period Service reference
+     * @param dataValueService Data Value Service reference
      * @return a collection of any validations that were found
      */
     public static Collection<ValidationResult> validate( Collection<OrganisationUnit> sources,
@@ -123,5 +121,4 @@ public class Validator
 
     	return threadPoolSize;
     }
-
 }
