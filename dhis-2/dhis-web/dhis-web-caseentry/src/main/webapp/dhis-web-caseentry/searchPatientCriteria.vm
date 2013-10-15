@@ -11,10 +11,8 @@
 		<td>
 			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 		</td>
-		<td rowspan='4' valign='bottom' id='criteriaBtnTD'>
-			<input type="button" style='width:130px' id='listPatientBtn' style='260px;' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" >
+		<td valign='bottom' id='criteriaBtnTD'>
 			<input type="button" style='width:130px' id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm(getFieldValue('programIdAddPatient'),'', '');" >
-			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();" >
 		</td>
 	</tr>
 	<tr id='programAddPatientTR'>
@@ -37,6 +35,9 @@
 			</select>
 			<span id="programLoader" style="display:none;" ><img src="../images/ajax-loader-bar.gif" /></span>
 		</td>
+		<td>
+			<input type="button" style='width:130px' id='listPatientBtn' style='260px;' value="$i18n.getString( 'list_all_patients' )" onclick="listAllPatient();">
+        </td>
 	</tr>
 	<tr id='scheduleVisitTR' class='hidden'>
 		<td>$i18n.getString('scheduled_visits')</td>
@@ -68,8 +69,13 @@
 		</td>
 	</tr>
 	<tr id='searchByIdTR' class='hidden'>
-		<td colspan='2' ><input type='text' id='searchPatientByIds' name='searchPatientByIds' onchange='searchByIdsOnclick();' style='width:350px;' placeholder='$i18n.getString("search_by_name_identifier")' /></td>
-		<td><input type='button' value='$i18n.getString("search")' onclick='searchByIdsOnclick();' ></td>
+		<td colspan='2'>
+			<input type='text' id='searchPatientByIds' name='searchPatientByIds' onchange='searchByIdsOnclick();' style='width:350px;' placeholder='$i18n.getString("search_by_name_identifier")' />
+		</td>
+		<td>
+			<input type='button' value='$i18n.getString("search")' onclick='searchByIdsOnclick();'>
+			<input type="button" style='width:130px' id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
+		</td>
 	</tr>
 	
 </table>

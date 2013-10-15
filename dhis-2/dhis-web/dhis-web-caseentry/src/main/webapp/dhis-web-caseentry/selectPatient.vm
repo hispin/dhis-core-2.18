@@ -1,6 +1,5 @@
 <script>
 	jQuery(document).ready(	function(){
-		jQuery('#criteriaBtnTD').attr('rowspan', 2);
 		showById('searchByIdTR');
 	});
 	var registrationProgress = false;
