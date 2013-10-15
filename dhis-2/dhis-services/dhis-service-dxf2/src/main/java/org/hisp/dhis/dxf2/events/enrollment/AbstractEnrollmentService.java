@@ -68,9 +68,6 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     private PatientService patientService;
 
     @Autowired
-    private OrganisationUnitService organisationUnitService;
-
-    @Autowired
     private I18nManager i18nManager;
 
     private I18nFormat _format;
