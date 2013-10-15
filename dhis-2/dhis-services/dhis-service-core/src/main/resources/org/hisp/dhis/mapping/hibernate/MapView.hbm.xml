@@ -46,6 +46,14 @@
         foreign-key="fk_mapview_indicators_indicatorid" />
     </list>
 
+    <list name="dataSets" table="mapview_datasets">
+      <cache usage="read-write" />
+      <key column="mapviewid" foreign-key="fk_mapview_datasets_mapviewid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet"
+        foreign-key="fk_mapview_datasets_datasetid" />
+    </list>
+
     <list name="organisationUnits" table="mapview_organisationunits">
       <cache usage="read-write" />
       <key column="mapviewid" foreign-key="fk_mapview_organisationunits_mapviewid" />
