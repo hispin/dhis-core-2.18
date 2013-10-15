@@ -93,7 +93,7 @@ public class ValidatorThread
     private void validateSource( OrganisationUnitExtended sourceX, ValidationRunContext context )
     {
         if ( context.getValidationResults().size() < ( ValidationRunType.INTERACTIVE == context.getRunType() ?
-        		ValidationRuleService.MAX_INTERACTIVE_VIOLATIONS : ValidationRuleService.MAX_ALERT_VIOLATIONS) )
+            ValidationRuleService.MAX_INTERACTIVE_VIOLATIONS : ValidationRuleService.MAX_ALERT_VIOLATIONS) )
         {
             for ( PeriodTypeExtended periodTypeX : context.getPeriodTypeExtendedMap().values() )
             {
@@ -111,9 +111,10 @@ public class ValidatorThread
                         Map<DataElementOperand, Double> currentValueMap = getDataValueMapRecursive( periodTypeX,
                             periodTypeX.getDataElements(), sourceDataElements, recursiveCurrentDataElements,
                             periodTypeX.getAllowedPeriodTypes(), period, sourceX.getSource(), lastUpdatedMap, incompleteValues );
-                        log.trace( "\nsource " + sourceX.getSource().getName()
-                        		+ " [" + period.getStartDate() + " - " + period.getEndDate() + "]"
-                        		+ " valueMap[" + currentValueMap.size() + "]" );
+                        
+                        log.trace( "Source " + sourceX.getSource().getName()
+                            + " [" + period.getStartDate() + " - " + period.getEndDate() + "]"
+                            + " valueMap[" + currentValueMap.size() + "]" );
 
                         for ( ValidationRule rule : rules )
                         {

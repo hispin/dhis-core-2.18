@@ -169,7 +169,7 @@ public class MonitoringTask
         
         if ( !results.isEmpty() )
         {
-            postAlerts( results, thisAlertRun ); // Alert the users.
+            postAlerts( results, thisAlertRun );
         }
         
         systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_LAST_ALERT_RUN, thisAlertRun );
@@ -205,6 +205,9 @@ public class MonitoringTask
      * (if any), and the most recent previous period. Add whichever of
      * these periods actually exist in the database.
      * 
+     * TODO If the last successful daily run was more than one day ago, we might 
+     * add some additional periods of type DailyPeriodType not to miss any alerts.
+     *
      * @param rules the ValidationRules to be evaluated on this alert run
      * @return periods to search for new alerts
      */
@@ -220,10 +223,7 @@ public class MonitoringTask
             Period currentPeriod = calendarPeriodType.createPeriod();
             Period previousPeriod = calendarPeriodType.getPreviousPeriod( currentPeriod );
             periods.addAll( periodService.getIntersectingPeriodsByPeriodType( periodType,
-                previousPeriod.getStartDate(), currentPeriod.getEndDate() ) );
-            // Note: If the last successful daily run was more than one day
-            // ago, we might consider adding some additional periods of type 
-            // DailyPeriodType so we don't miss any alerts.
+                previousPeriod.getStartDate(), currentPeriod.getEndDate() ) );            
         }
 
         return periods;
@@ -282,7 +282,7 @@ public class MonitoringTask
     }
 
     /**
-     * Returns a map where the key is a (sorted) list of validation results
+     * Returns a map where the key is a sorted list of validation results
      * to assemble into a message, and the value is the set of users who
      * should receive this message.
      * 
@@ -378,7 +378,7 @@ public class MonitoringTask
 
         SimpleDateFormat dateTimeFormatter = new SimpleDateFormat( "yyyy-MM-dd HH:mm" );
 
-        Map<String, Integer> importanceCountMap = countTheResultsByImportanceType( results );
+        Map<String, Integer> importanceCountMap = countResultsByImportanceType( results );
 
         String subject = "DHIS alerts as of " + dateTimeFormatter.format( alertRunStart ) + " - priority High "
             + ( importanceCountMap.get( "high" ) == null ? 0 : importanceCountMap.get( "high" ) ) + ", Medium "
@@ -434,9 +434,9 @@ public class MonitoringTask
      * types that are found within the results.
      * 
      * @param results results to analyze
-     * @return Map showing the result count for each importance type
+     * @return Mapping between importance type and result counts.
      */
-    private Map<String, Integer> countTheResultsByImportanceType ( List<ValidationResult> results )
+    private Map<String, Integer> countResultsByImportanceType ( List<ValidationResult> results )
     {
         Map<String, Integer> importanceCountMap = new HashMap<String, Integer>();
         
