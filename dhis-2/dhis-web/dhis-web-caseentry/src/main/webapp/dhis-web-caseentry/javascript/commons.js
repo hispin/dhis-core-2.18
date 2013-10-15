@@ -28,26 +28,26 @@ $( document ).ready( function() {
 
 function dobTypeOnChange( container ){
 
-	var type = jQuery('#' + container + ' [id=dobType]').val();
+	var type = $('#' + container + ' [id=dobType]').val();
 	if(type == 'V' || type == 'D')
 	{
-		jQuery('#' + container + ' [id=age]').rules("remove");
-		jQuery('#' + container + ' [id=age]').css("display","none");
-		jQuery('#' + container + ' [id=age]').val("");
+		$('#' + container + ' [id=age]').rules("remove");
+        $('#' + container + ' [id=age]').css("display","none");
+        $('#' + container + ' [id=age]').val("");
 		
-		jQuery('#' + container + ' [id=birthDate]').rules("add",{required:true});
+        $('#' + container + ' [id=birthDate]').rules("add",{required:true});
 		datePickerValid( container + ' [id=birthDate]' );
-		jQuery('#' + container + ' [id=birthDate]').css("display","");
+        $('#' + container + ' [id=birthDate]').css("display","");
 	}
 	else if(type == 'A')
 	{
-		jQuery('#' + container + ' [id=age]').rules("add",{required:true, number: true});
-		jQuery('#' + container + ' [id=age]').css("display","");
+        $('#' + container + ' [id=age]').rules("add",{required:true, number: true});
+        $('#' + container + ' [id=age]').css("display","");
 		
-		jQuery('#' + container + ' [id=birthDate]').val("");
-		jQuery('#' + container + ' [id=birthDate]').rules("remove","required");
+        $('#' + container + ' [id=birthDate]').val("");
+        $('#' + container + ' [id=birthDate]').rules("remove","required");
 		$('#' + container+ ' [id=birthDate]').datepicker("destroy");
-		jQuery('#' + container + ' [id=birthDate]').css("display","none");
+        $('#' + container + ' [id=birthDate]').css("display","none");
 	}
 }
 
@@ -69,10 +69,10 @@ function addAttributeOption()
 
 function removeAttributeOption( rowId )
 {
-	jQuery( '#' + rowId ).remove();
+    $( '#' + rowId ).remove();
 	
-	if( jQuery( '#advancedSearchTB tr' ).length <= 1 ){
-		jQuery('#advancedSearchTB [name=clearSearchBtn]').attr('disabled', true);
+	if( $( '#advancedSearchTB tr' ).length <= 1 ){
+        $('#advancedSearchTB [name=clearSearchBtn]').attr('disabled', true);
 	}
 }	
 
@@ -82,14 +82,15 @@ function removeAttributeOption( rowId )
 
 function searchObjectOnChange( this_ )
 {	
-	var container = jQuery(this_).parent().parent().attr('id');
-	var attributeId = jQuery('#' + container + ' [id=searchObjectId]').val(); 
-	var element = jQuery('#' + container + ' [name=searchText]');
-	var valueType = jQuery('#' + container+ ' [id=searchObjectId] option:selected').attr('valueType');
+	var container = $(this_).parent().parent().attr('id');
+	var attributeId = $('#' + container + ' [id=searchObjectId]').val();
+	var element = $('#' + container + ' [name=searchText]');
+	var valueType = $('#' + container+ ' [id=searchObjectId] option:selected').attr('valueType');
 	
-	jQuery('#searchText_' + container).removeAttr('readonly', false);
-	jQuery('#dateOperator_' + container).remove();
-	jQuery('#searchText_' + container).val("");
+    $('#searchText_' + container).removeAttr('readonly', false);
+    $('#dateOperator_' + container).remove();
+    $('#searchText_' + container).val("");
+
 	if( attributeId == 'fixedAttr_birthDate' || valueType=='date')
 	{
 		element.replaceWith( getDateField( container ) );
@@ -167,29 +168,28 @@ function getDateField( container )
 // Search Patient
 //-----------------------------------------------------------------------------
 
-function searchPatientsOnKeyUp( event )
-{
-	var key = getKeyCode( event );
-	
-	if ( key==13 )// Enter
-	{
-		validateAdvancedSearch();
-	}
+function searchPatientsOnKeyUp( event ) {
+    var key = getKeyCode(event);
+
+    if( key == 13 )// Enter
+    {
+        validateAdvancedSearch();
+    }
 }
 
-function getKeyCode(e)
-{
-	 if (window.event)
-		return window.event.keyCode;
-	 return (e)? e.which : null;
+function getKeyCode( e ) {
+    if( window.event ) {
+        return window.event.keyCode;
+    }
+
+    return (e) ? e.which : null;
 }
 
 function validateAdvancedSearch()
 {
 	hideById( 'listPatientDiv' );
 	var flag = true;
-	var dateOperator = '';
-	
+
 	if( getFieldValue('startDueDate')=='' && getFieldValue('endDueDate')=='' ){
 		if (getFieldValue('searchByProgramStage') == "false" 
 			|| ( getFieldValue('searchByProgramStage') == "true"  
@@ -225,10 +225,10 @@ function getSearchParams() {
 		params += '&statusEnrollment=' + getFieldValue('statusEnrollment');
     }
 
-    var programStageId = jQuery('#programStageAddPatient').val();
+    var programStageId = $('#programStageAddPatient').val();
 
     if( getFieldValue('searchByProgramStage') == "true" ) {
-        var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
+        var statusEvent = $('#programStageAddPatientTR [id=statusEvent]').val();
         var startDueDate = getFieldValue('startDueDate');
         var orgunitid = getFieldValue('orgunitId');
 
@@ -247,7 +247,7 @@ function getSearchParams() {
 
     var flag = false;
 
-    jQuery('#advancedSearchTB tr').each(function( i, row ) {
+    $('#advancedSearchTB tr').each(function( i, row ) {
         var dateOperator = "";
         var p = "";
         jQuery(this).find(':input').each(function( idx, item ) {
@@ -293,18 +293,15 @@ function getSearchParams() {
 // Show death field in person re form
 // ----------------------------------------------------------------------------
 
-function isDeathOnChange()
-{
-	var isDeath = byId('isDead').checked;
-	setFieldValue('deathDate','');
-	if(isDeath)
-	{
-		showById('deathDateTR');
-	}
-	else
-	{
-		hideById('deathDateTR');
-	}
+function isDeathOnChange() {
+    var isDeath = byId('isDead').checked;
+    setFieldValue('deathDate', '');
+    if( isDeath ) {
+        showById('deathDateTR');
+    }
+    else {
+        hideById('deathDateTR');
+    }
 }
 
 // ----------------------------------------------------------------
@@ -315,34 +312,34 @@ function getParamsForDiv( patientDiv)
 {
 	var params = '';
 	var dateOperator = '';
-	jQuery("#" + patientDiv + " :input").each(function()
-		{
-			var elementId = $(this).attr('id');
-			
-			if( $(this).attr('type') == 'checkbox' )
-			{
-				var checked = jQuery(this).attr('checked') ? true : false;
-				params += elementId + "=" + checked + "&";
-			}
-			else if( elementId =='dateOperator' )
-			{
-				dateOperator = jQuery(this).val();
-			}
-			else if( $(this).attr('type') != 'button' )
-			{
-				var value = "";
-				if( jQuery(this).val()!= null && jQuery(this).val() != '' )
-				{
-					value = htmlEncode(jQuery(this).val());
-				}
-				if( dateOperator != '' )
-				{
-					value = dateOperator + "'" + value + "'";
-					dateOperator = "";
-				}
-				params += elementId + "="+ value + "&";
-			}
-		});
+
+    $("#" + patientDiv + " :input").each(function() {
+        var elementId = $(this).attr('id');
+
+        if( $(this).attr('type') == 'checkbox' )
+        {
+            var checked = jQuery(this).attr('checked') ? true : false;
+            params += elementId + "=" + checked + "&";
+        }
+        else if( elementId =='dateOperator' )
+        {
+            dateOperator = jQuery(this).val();
+        }
+        else if( $(this).attr('type') != 'button' )
+        {
+            var value = "";
+            if( jQuery(this).val()!= null && jQuery(this).val() != '' )
+            {
+                value = htmlEncode(jQuery(this).val());
+            }
+            if( dateOperator != '' )
+            {
+                value = dateOperator + "'" + value + "'";
+                dateOperator = "";
+            }
+            params += elementId + "="+ value + "&";
+        }
+    });
 		
 	return params;
 }
@@ -360,43 +357,39 @@ function showPatientDetails( patientId )
 		, function( ){
 		}).dialog({
 			title: i18n_patient_details,
-			maximize: true, 
-			closable: true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 450,
-			height: 300
-		});
+            maximize: true,
+            closable: true,
+            modal: false,
+            overlay: {background: '#000000', opacity: 0.1},
+            width: 450,
+            height: 300
+        });
 }
 
 function showPatientHistory( patientId )
 {
-	$('#detailsInfo').load("getPatientHistory.action", 
-		{
-			patientId:patientId
-		}
-		, function( ){
-			
-		}).dialog({
-			title: i18n_patient_details_and_history,
-			maximize: true, 
-			closable: true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 800,
-			height: 520
-		});
+    $('#detailsInfo').load("getPatientHistory.action", {
+        patientId: patientId
+    } ,function() {
+    }).dialog({
+        title: i18n_patient_details_and_history,
+        maximize: true,
+        closable: true,
+        modal: false,
+        overlay: {background: '#000000', opacity: 0.1},
+        width: 800,
+        height: 520
+    });
 }
 
 function exportPatientHistory( patientId, type )
 {
-	var url = "getPatientHistory.action?patientId=" + patientId + "&type=" + type;
-	window.location.href = url;
+    window.location.href = "getPatientHistory.action?patientId=" + patientId + "&type=" + type;
 }
 
 function setEventColorStatus( programStageInstanceId, status )
 {
-	var boxElement = jQuery('#ps_' + programStageInstanceId );
+	var boxElement = $('#ps_' + programStageInstanceId );
 	var dueDateElementId = 'value_' + programStageInstanceId + '_date';
 	var status = eval(status);
 	
@@ -405,7 +398,7 @@ function setEventColorStatus( programStageInstanceId, status )
 		case 1:
 			boxElement.css('border-color', COLOR_GREEN);
 			boxElement.css('background-color', COLOR_LIGHT_GREEN);
-			jQuery("#" + dueDateElementId ).datepicker("destroy");
+            $("#" + dueDateElementId ).datepicker("destroy");
 			disable( dueDateElementId );
 			return;
 		case 2:
@@ -430,7 +423,7 @@ function setEventColorStatus( programStageInstanceId, status )
 			boxElement.css('border-color', COLOR_GREY);
 			boxElement.css('background-color', COLOR_LIGHT_GREY);
 			disable( 'ps_' + programStageInstanceId );
-			jQuery( "#" + dueDateElementId ).datepicker("destroy");
+            $( "#" + dueDateElementId ).datepicker("destroy");
 			disable( dueDateElementId );
 			return;
 		default:
@@ -444,26 +437,24 @@ function setEventColorStatus( programStageInstanceId, status )
 
 function checkDuplicate( divname )
 {
-	$.postUTF8( 'validatePatient.action', 
-		{
-			id: jQuery( '#' + divname + ' [id=id]' ).val(),
-			fullName: jQuery( '#' + divname + ' [id=fullName]' ).val(),
-			dobType: jQuery( '#' + divname + ' [id=dobType]' ).val(),
-			gender: jQuery( '#' + divname + ' [id=gender]' ).val(),
-			birthDate: jQuery( '#' + divname + ' [id=birthDate]' ).val(),        
-			age: jQuery( '#' + divname + ' [id=age]' ).val()
-		}, function( xmlObject, divname )
-		{
-			checkDuplicateCompleted( xmlObject, divname );
-		});
+	$.postUTF8( 'validatePatient.action', {
+        id: $( '#' + divname + ' [id=id]' ).val(),
+        fullName: $( '#' + divname + ' [id=fullName]' ).val(),
+        dobType: $( '#' + divname + ' [id=dobType]' ).val(),
+        gender: $( '#' + divname + ' [id=gender]' ).val(),
+        birthDate: $( '#' + divname + ' [id=birthDate]' ).val(),
+        age: $( '#' + divname + ' [id=age]' ).val()
+    }, function( xmlObject, divname ) {
+        checkDuplicateCompleted( xmlObject, divname );
+    });
 }
 
 function checkDuplicateCompleted( messageElement, divname )
 {
-	checkedDuplicate = true;    
-	var type = jQuery(messageElement).find('message').attr('type');
-	var message = jQuery(messageElement).find('message').text();
-    
+	var checkedDuplicate = true;
+	var type = $(messageElement).find('message').attr('type');
+	var message = $(messageElement).find('message').text();
+
     if( type == 'success')
     {
     	showSuccessMessage(i18n_no_duplicate_found);
@@ -480,25 +471,21 @@ function checkDuplicateCompleted( messageElement, divname )
 
 function enableBtn(){
 	var programIdAddPatient = getFieldValue('programIdAddPatient');
-	if(registration==undefined || !registration)
-	{
-		if( programIdAddPatient!='' ){
+    if( registration == undefined || !registration ) {
+		if( programIdAddPatient!='' ) {
 			enable('listPatientBtn');
 			enable('addPatientBtn');
 			enable('advancedSearchBtn');
 			enable('scheduledVisitDays');
-			jQuery('#advanced-search :input').each( function( idx, item ){
+            $('#advanced-search :input').each( function( idx, item ){
 				enable(this.id);
 			});
-			
-		}
-		else
-		{
+		} else {
 			disable('listPatientBtn');
 			disable('addPatientBtn');
 			disable('advancedSearchBtn');
 			disable('scheduledVisitDays');
-			jQuery('#advanced-search :input').each( function( idx, item ){
+            $('#advanced-search :input').each( function( idx, item ){
 				disable(this.id);
 			});
 		}
@@ -513,18 +500,18 @@ function enableBtn(){
 
 function enableRadioButton( programId )
 {
-	var prorgamStageId = jQuery('#programStageAddPatient').val();
+	var prorgamStageId = $('#programStageAddPatient').val();
 	if( prorgamStageId== ''){
-		jQuery('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
+        $('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
 	}
 	else{
-		jQuery('#programStageAddPatientTR [name=statusEvent]').removeAttr("disabled");
+        $('#programStageAddPatientTR [name=statusEvent]').removeAttr("disabled");
 	}
 }
 
 function showColorHelp()
 {
-	jQuery('#colorHelpDiv').dialog({
+    $('#colorHelpDiv').dialog({
 		title: i18n_color_quick_help,
 		maximize: true, 
 		closable: true,
@@ -544,32 +531,32 @@ function showCreateNewEvent( programInstanceId, programStageId )
 	
 	if(programStageId!=undefined)
 	{
-		jQuery('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
-			if( jQuery(this).css("display")!='none' && programStageId==jQuery(this).attr('prevStageId')){
-				jQuery(this).attr("selected","selected");
+        $('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
+			if( $(this).css("display")!='none' && programStageId==$(this).attr('prevStageId')){
+                $(this).attr("selected","selected");
 				setSuggestedDueDate( programInstanceId );
 				flag = true;
 			}
 		});
 		
-		jQuery('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
-			if( jQuery(this).css("display")!='none' && programStageId==jQuery(this).val()){
-				jQuery(this).attr("selected","selected");
+        $('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
+			if( $(this).css("display")!='none' && programStageId==$(this).val()){
+                $(this).attr("selected","selected");
 				setSuggestedDueDate( programInstanceId );
 				flag = true;
 			}
 		});
-		jQuery('#repeatableProgramStage_' + programInstanceId ).attr('disabled',true);
+        $('#repeatableProgramStage_' + programInstanceId ).attr('disabled',true);
 	}
 	else
 	{
-		jQuery('#repeatableProgramStage_' + programInstanceId ).attr('disabled',false);
+        $('#repeatableProgramStage_' + programInstanceId ).attr('disabled',false);
 	}
 	
 	if(!flag){
-		jQuery('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
-			if( jQuery(this).css("display")!='none' && !flag ){
-				jQuery(this).attr("selected","selected");
+        $('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
+			if( $(this).css("display")!='none' && !flag ){
+                $(this).attr("selected","selected");
 				setSuggestedDueDate( programInstanceId );
 				flag = true;
 			}
@@ -577,30 +564,31 @@ function showCreateNewEvent( programInstanceId, programStageId )
 	}
 	
 	if(!flag){
-		jQuery('#repeatableProgramStage_' + programInstanceId).val("");
+        $('#repeatableProgramStage_' + programInstanceId).val("");
 	}
-	
+
 	setInnerHTML('createEventMessage_' + programInstanceId, '');
-	jQuery('#createNewEncounterDiv_' + programInstanceId ).dialog({
+
+	$('#createNewEncounterDiv_' + programInstanceId ).dialog({
 		title: i18n_create_new_event,
-		maximize: true, 
-		closable: true,
-		modal:false,
-		overlay:{background:'#000000', opacity:0.1},
-		width: 450,
-		height: 160
-	}).show('fast');
+        maximize: true,
+        closable: true,
+        modal: true,
+        overlay: {background: '#000000', opacity: 0.1},
+        width: 450,
+        height: 160
+    }).show('fast');
 }
 
 function setSuggestedDueDate( programInstanceId )
 {
 	var lastVisit = "";
-	if( jQuery('.stage-object-selected').length!=0 )
+	if( $('.stage-object-selected').length!=0 )
 	{
-		var lastVisit = jQuery('.stage-object-selected').attr('reportDate');
-		jQuery('#tb_' + programInstanceId + ' input').each(function()
+		var lastVisit = $('.stage-object-selected').attr('reportDate');
+        $('#tb_' + programInstanceId + ' input').each(function()
 		{
-			var reportDate = jQuery(this).attr('reportDate');
+			var reportDate = $(this).attr('reportDate');
 			if( reportDate > lastVisit )
 			{
 				lastVisit = reportDate;
@@ -612,19 +600,19 @@ function setSuggestedDueDate( programInstanceId )
 		lastVisit = getCurrentDate();
 	}
 	
-	var standardInterval = jQuery('#repeatableProgramStage_' + programInstanceId + ' option:selected').attr('standardInterval');
+	var standardInterval = $('#repeatableProgramStage_' + programInstanceId + ' option:selected').attr('standardInterval');
 	var date = $.datepicker.parseDate( dateFormat, lastVisit );
 	var d = date.getDate() + eval(standardInterval);
 	var m = date.getMonth();
 	var y = date.getFullYear();
 	var edate= new Date(y, m, d);
-	var sdate = jQuery.datepicker.formatDate( dateFormat , edate ) ;
-	jQuery( '#dueDateNewEncounter_' + programInstanceId ).val(sdate);
+	var sdate = $.datepicker.formatDate( dateFormat , edate ) ;
+    $( '#dueDateNewEncounter_' + programInstanceId ).val(sdate);
 }
 
 function closeDueDateDiv( programInstanceId )
 {
-	jQuery('#createNewEncounterDiv_' + programInstanceId).dialog('close');
+    $('#createNewEncounterDiv_' + programInstanceId).dialog('close');
 }
 
 //------------------------------------------------------
@@ -638,21 +626,18 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 	}
 	else
 	{
-		jQuery.postJSON( "registerIrregularEncounter.action",
-		{ 
+        $.postJSON( "registerIrregularEncounter.action", {
 			programInstanceId:programInstanceId,
 			programStageId: programStageId, 
 			dueDate: dueDate 
-		}, 
-		function( json ) 
-		{   
+		}, function( json )  {
 			var programStageInstanceId = json.message;
 			disableCompletedButton(false);
 			
 			var elementId = prefixId + programStageInstanceId;
 			var flag = false;
-			var programType = jQuery('.stage-object-selected').attr('type');
-			var selectedStage = jQuery('#repeatableProgramStage_' + programInstanceId + ' option:selected');
+			var programType = $('.stage-object-selected').attr('type');
+			var selectedStage = $('#repeatableProgramStage_' + programInstanceId + ' option:selected');
 			var elementBox = '<td>'
 				+ '<div class="orgunit-object" id="org_' + programStageInstanceId + '">&nbsp;</div>'
 				+ '<input name="programStageBtn" '
@@ -674,28 +659,28 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				+ 'type="button" '
 				+ '></td>';
 				
-			jQuery("#programStageIdTR_" + programInstanceId + " input[name='programStageBtn']").each(function(i,item){
-				var element = jQuery(item);
+            $("#programStageIdTR_" + programInstanceId + " input[name='programStageBtn']").each(function(i,item){
+				var element = $(item);
 				var dueDateInStage = element.attr('dueDate');
 						
 				if( dueDate < dueDateInStage && !flag)
 				{	
-					jQuery(elementBox + '<td id="arrow_' + programStageInstanceId + '"><img src="images/rightarrow.png"></td>').insertBefore(element.parent());
+                    $(elementBox + '<td id="arrow_' + programStageInstanceId + '"><img src="images/rightarrow.png"></td>').insertBefore(element.parent());
 					flag = true;
 				}
 			});
 			
 			if( !flag )
 			{
-				jQuery("#programStageIdTR_" + programInstanceId).append(
+                $("#programStageIdTR_" + programInstanceId).append(
 					'<td id="arrow_' + programStageInstanceId + '">'
 					+ '<img src="images/rightarrow.png"></td>' + elementBox );
 			}
-			if( jQuery('#tb_' + programInstanceId + " :input" ).length > 4 ){
-				jQuery('#tb_' + programInstanceId + ' .arrow-left').removeClass("hidden");
-				jQuery('#tb_' + programInstanceId + ' .arrow-right').removeClass("hidden");
+			if( $('#tb_' + programInstanceId + " :input" ).length > 4 ){
+                $('#tb_' + programInstanceId + ' .arrow-left').removeClass("hidden");
+                $('#tb_' + programInstanceId + ' .arrow-right').removeClass("hidden");
 			}
-			
+
 			if( dueDate < getCurrentDate() ){
 				setEventColorStatus( programStageInstanceId, 4 );
 			}
@@ -703,28 +688,32 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				setEventColorStatus( programStageInstanceId, 3 );
 			}
 			
-			jQuery('#ps_' + programStageInstanceId ).focus();
-			var repeatable = jQuery('#repeatableProgramStage_' + programInstanceId + " [value=" + programStageId + "]" )
+            $('#ps_' + programStageInstanceId ).focus();
+			var repeatable = $('#repeatableProgramStage_' + programInstanceId + " [value=" + programStageId + "]" )
+
 			if( repeatable.attr("repeatable")=="false"){
 				repeatable.css("display","none");
 			}
-			jQuery('#createNewEncounterDiv_' + programInstanceId).dialog("close");
+
+            $('#createNewEncounterDiv_' + programInstanceId).dialog("close");
 			resetActiveEvent(programInstanceId);
 			loadDataEntry( programStageInstanceId );
 			
 			// Disable Create new event button in the entry form if doesn't have any stage for register
 			flag = true;
-			jQuery('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
-				if( jQuery(this).attr('localid')== programStageId){
-					jQuery(this).css("display","none");
+            $('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
+				if( $(this).attr('localid')== programStageId){
+                    $(this).css("display","none");
 				}
-				if( jQuery(this).css('display')!= "none"){
+				if( $(this).css('display')!= "none"){
 					flag = false;
 				}
 			});
+
 			if( flag ){
 				disable( 'newEncounterBtn_' + programInstanceId  );
 			}
+
 			closeDueDateDiv( programInstanceId );
 			showSuccessMessage(i18n_create_event_success);
 		});
@@ -778,17 +767,17 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 	{
 		var params = 'programStageInstanceId=' + programStageInstanceId + '&dueDate=' + dueDate;
 		$.ajax({
-			   type: "POST",
-			   url: "saveDueDate.action",
-			   data: params,
-			   dataType: "xml",
-			   success: function(result){
-					handleResponse (result);
-			   },
-			   error: function(request,status,errorThrown) {
-					handleHttpError (request);
-			   }
-			});
+           type: "POST",
+           url: "saveDueDate.action",
+           data: params,
+           dataType: "xml",
+           success: function(result){
+                handleResponse (result);
+           },
+           error: function(request,status,errorThrown) {
+                handleHttpError (request);
+           }
+        });
 	};
 
 	function handleResponse( rootElement )
