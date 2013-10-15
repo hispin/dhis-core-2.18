@@ -145,9 +145,9 @@ public class ValidatorThread
                                         if ( violation )
                                         {
                                             context.getValidationResults().add( new ValidationResult(
-                                            		period, sourceX.getSource(), rule,
-                                            		roundSignificant( zeroIfNull( leftSide ) ),
-                                            		roundSignificant( zeroIfNull( rightSide ) ) ) );
+                                            	period, sourceX.getSource(), rule,
+                                            	roundSignificant( zeroIfNull( leftSide ) ),
+                                            	roundSignificant( zeroIfNull( rightSide ) ) ) );
                                         }
 
                                         log.trace( "-->Evaluated " + rule.getName() + ": "
@@ -239,12 +239,12 @@ public class ValidatorThread
                     // Left+Right sides for VALIDATION, Left side only for
                     // MONITORING
                     Collection<DataElementOperand> deos = context.getExpressionService().getOperandsInExpression(
-                    		rule.getLeftSide().getExpression() );
+                        rule.getLeftSide().getExpression() );
+                    
                     if ( ValidationRule.RULE_TYPE_VALIDATION == rule.getRuleType() )
                     {
                         // Make a copy so we can add to it.
                         deos = new HashSet<DataElementOperand>( deos );                        
-                        
                         deos.addAll( context.getExpressionService().getOperandsInExpression( rule.getRightSide().getExpression() ) );
                     }
 
@@ -423,12 +423,12 @@ public class ValidatorThread
                 sampleValues.add( value );
             }
 
-            log.trace("ValidationRightSide[" + dataValueMap.size()+ "] - sample "
-            		+ (value == null ? "(null)" : value) + " [" + period.getStartDate() + " - " + period.getEndDate() + "]" );
+            log.trace( "ValidationRightSide[" + dataValueMap.size()+ "] - sample "
+                + (value == null ? "(null)" : value) + " [" + period.getStartDate() + " - " + period.getEndDate() + "]" );
         }
         else
         {
-        	log.trace("ValidationRightSide - no period [" + period.getStartDate() + " - " + period.getEndDate() + "]" );
+            log.trace( "ValidationRightSide - no period [" + period.getStartDate() + " - " + period.getEndDate() + "]" );
         }
     }
 
@@ -450,22 +450,22 @@ public class ValidatorThread
         // in this year and for every past year: one sample for the same period 
         // in that year, plus sequentialSampleCounts before and after.
         Double average = null;
+        
         if ( !sampleValues.isEmpty() )
         {
             int expectedSampleCount = sequentialSampleCount + annualSampleCount * (1 + 2 * sequentialSampleCount);
             int highOutliers = rule.getHighOutliers() == null ? 0 : rule.getHighOutliers();
             int lowOutliers = rule.getLowOutliers() == null ? 0 : rule.getLowOutliers();
 
-            // If we had fewer than the expected number of samples, then scale
-            // back
+            // If fewer than the expected number of samples, then scale back
             if ( highOutliers + lowOutliers > sampleValues.size() )
             {
                 highOutliers = (highOutliers * sampleValues.size()) / expectedSampleCount;
                 lowOutliers = (lowOutliers * sampleValues.size()) / expectedSampleCount;
             }
 
-            // If we (still) have any high and/or low outliers to remove, then
-            // sort the sample values and remove the high and/or low outliers.
+            // If we still have any high and/or low outliers to remove, then
+            // sort the sample values and remove the high and/or low outliers
             if ( highOutliers + lowOutliers > 0 )
             {
                 Collections.sort( sampleValues );
@@ -481,6 +481,7 @@ public class ValidatorThread
             }
             average = sum / sampleValues.size();
         }
+        
         return average;
     }
 
@@ -511,11 +512,11 @@ public class ValidatorThread
         Set<DataElement> dataElementsToGet = new HashSet<DataElement>( ruleDataElements );
         dataElementsToGet.retainAll( sourceDataElements );
         log.trace( "getDataValueMapRecursive: source:" + source.getName()
-        		+ " ruleDataElements[" + ruleDataElements.size() // + Arrays.toString( ruleDataElements.toArray() )
-        		+ "] sourceDataElements[" + sourceDataElements.size() // + Arrays.toString( sourceDataElements.toArray() )
-        		+ "] elementsToGet[" + dataElementsToGet.size() // + Arrays.toString( sourceDataElements.toArray() )
-        		+ "] recursiveDataElements[" + recursiveDataElements.size()
-        		+ "] allowedPeriodTypes[" + allowedPeriodTypes.size() + "]" );
+            + " ruleDataElements[" + ruleDataElements.size()
+            + "] sourceDataElements[" + sourceDataElements.size()
+            + "] elementsToGet[" + dataElementsToGet.size()
+            + "] recursiveDataElements[" + recursiveDataElements.size()
+            + "] allowedPeriodTypes[" + allowedPeriodTypes.size() + "]" );
 
         Map<DataElementOperand, Double> dataValueMap;
         
@@ -562,7 +563,7 @@ public class ValidatorThread
                 if ( childCount != entry.getValue() )
                 {
                     // Remember that we found this DataElementOperand value
-                	// in some but not all children
+                    // in some but not all children
                     incompleteValues.add( entry.getKey() );
                 }
             }
@@ -570,5 +571,4 @@ public class ValidatorThread
 
         return dataValueMap;
     }
-
 }
