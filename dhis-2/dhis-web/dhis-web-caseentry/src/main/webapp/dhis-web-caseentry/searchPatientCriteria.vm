@@ -82,13 +82,12 @@
 
 <div id='showSearchCriteriaDiv' class='hidden green-background'><img src='../images/move_bottom.png' onclick='showSearchCriteria();' >&nbsp;&nbsp; $i18n.getString("there_are_active_search_filter_click_on_arrow_to_show_them")</div>
 <div id='advanced-search' name='advanced-search' class='hidden advanced-search'>
+	<div style="float: right"><a id="clearAndCloseSearchBtn" href="javascript:clearAndCloseSearch()"><img src="../images/hide.png" title="$i18n.getString( 'clear_and_close' )"></a></div>
 	<div id='hideSearchCriteriaDiv' class='hidden'><img src='../images/move_top.png' onclick='hideSearchCriteria();' >&nbsp;&nbsp; $i18n.getString("hide_search_criteria")</div>
 	<table>	
 		<tr>
-			<td colspan='4'>
-				$i18n.getString('select_orgunit_for_search'): <span id='orgunitForSearch'>$!organisationUnit.name</span>
-				&nbsp;&nbsp;&nbsp;<input type='button' id='clearAndCloseSearchBtn' value='$i18n.getString("clear_and_close")' onclick='clearAndCloseSearch();'/>
-			</td>
+			<td>$i18n.getString('select_orgunit_for_search')</td>
+			<td><span id='orgunitForSearch'>$!organisationUnit.name</span></td>
 		</tr>
 		<tr>
 			<td>$i18n.getString('orgunit_search_type')</td>
