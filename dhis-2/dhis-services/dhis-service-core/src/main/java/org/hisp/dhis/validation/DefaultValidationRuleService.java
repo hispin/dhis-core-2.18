@@ -82,8 +82,7 @@ public class DefaultValidationRuleService
 
     private GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore;
 
-    public void setValidationRuleGroupStore(
-        GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore )
+    public void setValidationRuleGroupStore( GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore )
     {
         this.validationRuleGroupStore = validationRuleGroupStore;
     }
@@ -139,8 +138,9 @@ public class DefaultValidationRuleService
         log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "]" );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = getAllValidationRules();
+        
         return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
-        		constantService, expressionService, periodService, dataValueService );
+            constantService, expressionService, periodService, dataValueService );
     }
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
@@ -149,8 +149,9 @@ public class DefaultValidationRuleService
     	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "] group=" + group.getName() );
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = group.getMembers();
+        
         return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
-        		constantService, expressionService, periodService, dataValueService );
+            constantService, expressionService, periodService, dataValueService );
     }
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source )
@@ -160,8 +161,9 @@ public class DefaultValidationRuleService
         Collection<ValidationRule> rules = getAllValidationRules();
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( source );
+        
         return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
-        		constantService, expressionService, periodService, dataValueService );
+            constantService, expressionService, periodService, dataValueService );
     }
 
     public Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source )
@@ -172,6 +174,7 @@ public class DefaultValidationRuleService
         periods.add( period );
 
         Collection<ValidationRule> rules = null;
+        
         if ( DataSet.TYPE_CUSTOM.equals( dataSet.getDataSetType() ) )
         {
             rules = getRulesForDataSet( dataSet );
@@ -183,8 +186,9 @@ public class DefaultValidationRuleService
 
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( source );
+        
         return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
-        		constantService, expressionService, periodService, dataValueService );
+            constantService, expressionService, periodService, dataValueService );
     }
 
     // -------------------------------------------------------------------------
@@ -244,9 +248,9 @@ public class DefaultValidationRuleService
             {
                 validationRuleOperands.clear();
                 validationRuleOperands.addAll( expressionService.getOperandsInExpression(
-                		rule.getLeftSide().getExpression() ) );
+                    rule.getLeftSide().getExpression() ) );
                 validationRuleOperands.addAll( expressionService.getOperandsInExpression(
-                		rule.getRightSide().getExpression() ) );
+                    rule.getRightSide().getExpression() ) );
 
                 if ( operands.containsAll( validationRuleOperands ) )
                 {

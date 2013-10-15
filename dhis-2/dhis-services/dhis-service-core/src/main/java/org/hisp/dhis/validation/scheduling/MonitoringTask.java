@@ -148,6 +148,7 @@ public class MonitoringTask
     private void alertRun()
     {
         // Find all the rules belonging to groups that will send alerts to user roles.
+        
         Set<ValidationRule> rules = getAlertRules();
 
         Collection<OrganisationUnit> sources = organisationUnitService.getAllOrganisationUnits();
@@ -182,9 +183,11 @@ public class MonitoringTask
     private Set<ValidationRule> getAlertRules()
     {
         Set<ValidationRule> rules = new HashSet<ValidationRule>();
+        
         for ( ValidationRuleGroup validationRuleGroup : validationRuleService.getAllValidationRuleGroups() )
         {
-        	Set<UserAuthorityGroup> userRolesToAlert = validationRuleGroup.getUserAuthorityGroupsToAlert();
+            Set<UserAuthorityGroup> userRolesToAlert = validationRuleGroup.getUserAuthorityGroupsToAlert();
+            
             if ( userRolesToAlert != null && !userRolesToAlert.isEmpty() )
             {
                 rules.addAll( validationRuleGroup.getMembers() );
@@ -290,37 +293,38 @@ public class MonitoringTask
     {
         Map<User, Set<ValidationRule>> userRulesMap = getUserRulesMap();
 
-	    Map<List<ValidationResult>, Set<User>> messageMap = new HashMap<List<ValidationResult>, Set<User>>();
-	    
-	    for ( User user : userRulesMap.keySet() )
-	    {
-	        // For each user who receives alerts, find the subset of results
-	        // from this run.
-	        Collection<ValidationRule> userRules = userRulesMap.get( user );
-	        List<ValidationResult> userResults = new ArrayList<ValidationResult>();
-	
-	        for ( ValidationResult result : results )
-	        {
-	            if ( userRules.contains( result.getValidationRule() ) )
-	            {
-	                userResults.add( result );
-	            }
-	        }
-	
-	        // Group this user with any other users who have the same subset
-	        // of results.
-	        if ( !userResults.isEmpty() )
-	        {
-	            Set<User> messageReceivers = messageMap.get( userResults );
-	            if ( messageReceivers == null )
-	            {
-	                messageReceivers = new HashSet<User>();
-	                messageMap.put( userResults, messageReceivers );
-	            }
-	            messageReceivers.add( user );
-	        }
-	    }
-	    return messageMap;
+        Map<List<ValidationResult>, Set<User>> messageMap = new HashMap<List<ValidationResult>, Set<User>>();
+
+        for ( User user : userRulesMap.keySet() )
+        {
+            // For users receiving alerts, find the subset of results from run.
+
+            Collection<ValidationRule> userRules = userRulesMap.get( user );
+            List<ValidationResult> userResults = new ArrayList<ValidationResult>();
+
+            for ( ValidationResult result : results )
+            {
+                if ( userRules.contains( result.getValidationRule() ) )
+                {
+                    userResults.add( result );
+                }
+            }
+
+            // Group this user with other users having the same result subset.
+
+            if ( !userResults.isEmpty() )
+            {
+                Set<User> messageReceivers = messageMap.get( userResults );
+                if ( messageReceivers == null )
+                {
+                    messageReceivers = new HashSet<User>();
+                    messageMap.put( userResults, messageReceivers );
+                }
+                messageReceivers.add( user );
+            }
+        }
+        
+        return messageMap;
     }
 
     /**
@@ -332,32 +336,34 @@ public class MonitoringTask
      */
     private Map<User, Set<ValidationRule>> getUserRulesMap()
     {
-	    Map<User, Set<ValidationRule>> userRulesMap = new HashMap<User, Set<ValidationRule>>();
-	    
-	    for ( ValidationRuleGroup validationRuleGroup : validationRuleService.getAllValidationRuleGroups() )
-	    {
-	        Collection<UserAuthorityGroup> userRolesToAlert = validationRuleGroup.getUserAuthorityGroupsToAlert();
-	        if ( userRolesToAlert != null && !userRolesToAlert.isEmpty() )
-	        {
-	            for ( UserAuthorityGroup role : userRolesToAlert )
-	            {
-	                for ( UserCredentials userCredentials : role.getMembers() )
-	                {
-	                    User user = userCredentials.getUser();
-	                    Set<ValidationRule> userRules = userRulesMap.get( user );
-	                    if ( userRules == null )
-	                    {
-	                        userRules = new HashSet<ValidationRule>();
-	                        userRulesMap.put( user, userRules );
-	                    }
-	                    userRules.addAll( validationRuleGroup.getMembers() );
-	                }
-	            }
-	        }
-	    }
-	    return userRulesMap;
+        Map<User, Set<ValidationRule>> userRulesMap = new HashMap<User, Set<ValidationRule>>();
+
+        for ( ValidationRuleGroup validationRuleGroup : validationRuleService.getAllValidationRuleGroups() )
+        {
+            Collection<UserAuthorityGroup> userRolesToAlert = validationRuleGroup.getUserAuthorityGroupsToAlert();
+            
+            if ( userRolesToAlert != null && !userRolesToAlert.isEmpty() )
+            {
+                for ( UserAuthorityGroup role : userRolesToAlert )
+                {
+                    for ( UserCredentials userCredentials : role.getMembers() )
+                    {
+                        User user = userCredentials.getUser();
+                        Set<ValidationRule> userRules = userRulesMap.get( user );
+                        if ( userRules == null )
+                        {
+                            userRules = new HashSet<ValidationRule>();
+                            userRulesMap.put( user, userRules );
+                        }
+                        userRules.addAll( validationRuleGroup.getMembers() );
+                    }
+                }
+            }
+        }
+        
+        return userRulesMap;
     }
-    
+
     /**
      * Generate and send an alert message containing a list of validation
      * results to a set of users.
@@ -375,9 +381,9 @@ public class MonitoringTask
         Map<String, Integer> importanceCountMap = countTheResultsByImportanceType( results );
 
         String subject = "DHIS alerts as of " + dateTimeFormatter.format( alertRunStart ) + " - priority High "
-            + (importanceCountMap.get( "high" ) == null ? 0 : importanceCountMap.get( "high" )) + ", Medium "
-            + (importanceCountMap.get( "medium" ) == null ? 0 : importanceCountMap.get( "medium" )) + ", Low "
-            + (importanceCountMap.get( "low" ) == null ? 0 : importanceCountMap.get( "low" ));
+            + ( importanceCountMap.get( "high" ) == null ? 0 : importanceCountMap.get( "high" ) ) + ", Medium "
+            + ( importanceCountMap.get( "medium" ) == null ? 0 : importanceCountMap.get( "medium" ) ) + ", Low "
+            + ( importanceCountMap.get( "low" ) == null ? 0 : importanceCountMap.get( "low" ) );
 
         messageBuilder
             .append( "<html>" )
@@ -413,9 +419,9 @@ public class MonitoringTask
         }
 
         messageBuilder
-        	.append( "</table>" )
-        	.append( "</body>" )
-        	.append( "</html>" );
+            .append( "</table>" )
+            .append( "</body>" )
+            .append( "</html>" );
 
         String messageText = messageBuilder.toString();
 
