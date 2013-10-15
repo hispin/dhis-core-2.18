@@ -93,9 +93,9 @@ public class DefaultPdfDataEntryFormService
 
     private static final int PERIODRANGE_FUTUREYEARS = 2;
 
-    private static Integer MAX_OPTIONS_DISPLAYED = 30;
+    private static final Integer MAX_OPTIONS_DISPLAYED = 30;
 
-    private static Integer PROGRAM_FORM_ROW_NUMBER = 10;
+    private static final Integer PROGRAM_FORM_ROW_NUMBER = 10;
 
     private PdfFormFontSettings pdfFormFontSettings;
 

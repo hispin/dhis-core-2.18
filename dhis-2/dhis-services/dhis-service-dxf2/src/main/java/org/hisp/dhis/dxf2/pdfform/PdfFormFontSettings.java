@@ -61,7 +61,7 @@ public class PdfFormFontSettings
 
     private final static String FONTFAMILY = "HELVETICA";
 
-    private Map<Integer, Font> fontTypeMap = new HashMap<Integer, Font>();
+    private final Map<Integer, Font> fontTypeMap = new HashMap<Integer, Font>();
 
     public PdfFormFontSettings()
     {

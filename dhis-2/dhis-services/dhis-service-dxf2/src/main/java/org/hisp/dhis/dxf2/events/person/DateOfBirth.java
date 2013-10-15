@@ -42,16 +42,17 @@ import java.util.Date;
 @JacksonXmlRootElement( localName = "dateOfBirth", namespace = DxfNamespaces.DXF_2_0 )
 public class DateOfBirth
 {
-    private Date date;
+    private final Date date;
 
-    private DateOfBirthType type;
+    private final DateOfBirthType type;
 
-    private Integer age;
+    private final Integer age;
 
     public DateOfBirth()
     {
         this.type = DateOfBirthType.APPROXIMATE;
         this.age = 0;
+        this.date = Patient.getBirthFromAge( age, Patient.AGE_TYPE_YEAR );
     }
 
     public DateOfBirth( Date date )
