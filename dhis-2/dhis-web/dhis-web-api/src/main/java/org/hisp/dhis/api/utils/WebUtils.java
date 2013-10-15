@@ -40,9 +40,10 @@ import org.hisp.dhis.user.UserCredentials;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
-import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
+import static org.hisp.dhis.system.util.PredicateUtils.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -127,7 +128,7 @@ public class WebUtils
         generateLinks( object, true );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static void generateLinks( Object object, boolean deep )
     {
         if ( object == null )
@@ -141,7 +142,9 @@ public class WebUtils
             identifiableObject.setHref( ContextUtils.getPathWithUid( identifiableObject ) );
         }
 
-        Collection<Field> fields = ReflectionUtils.collectFields( object.getClass(), alwaysTrue );
+        List<Field> fields = new ArrayList<Field>();
+        fields.addAll( ReflectionUtils.collectFields( object.getClass(), idObjects ) );
+        fields.addAll( ReflectionUtils.collectFields( object.getClass(), idObjectCollections ) );
 
         if ( !deep )
         {
