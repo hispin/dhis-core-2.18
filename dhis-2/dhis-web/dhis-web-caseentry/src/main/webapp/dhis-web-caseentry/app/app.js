@@ -433,7 +433,7 @@ Ext.onReady( function() {
 						autoScroll: true,
 						overflowX: 'hidden',
 						overflowY: 'auto',
-						width: TR.conf.layout.west_fieldset_width + 4
+						width: TR.conf.layout.west_fieldset_width - 15
 					};
 					Ext.getCmp(p).add(panel);
 					subPanel = Ext.getCmp(panelid);
@@ -449,7 +449,7 @@ Ext.onReady( function() {
 					id: 'filter_lb_' + fieldid,
 					text:name,
 					style: 'padding-left:2px',
-					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 73
+					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 93
 				};
 				
 				var opt = "";
@@ -4449,6 +4449,7 @@ Ext.onReady( function() {
 									cls: 'tr-combo',
 									name: TR.init.system.programs,
 									id: 'programCombobox',
+									style: 'margin-bottom:2px',
 									fieldLabel: TR.i18n.program,
 									labelStyle: 'font-weight:bold; margin-bottom:2px',
 									labelAlign: 'top',
@@ -4489,7 +4490,7 @@ Ext.onReady( function() {
 									xtype: 'combobox',
 									cls: 'tr-combo',
 									id:'programStageCombobox',
-									style: 'margin-left:2px',
+									style: 'margin-left:2px; margin-bottom:2px',
 									fieldLabel: TR.i18n.program_stage,
 									labelStyle: 'font-weight:bold; margin-bottom:2px',
 									labelAlign: 'top',
@@ -4568,7 +4569,7 @@ Ext.onReady( function() {
 												xtype: 'datefield',
 												cls: 'tr-textfield-alt1',
 												id: 'startDate',
-												style: 'margin-bottom:3px',
+												style: 'margin-bottom:2px',
 												fieldLabel: TR.i18n.start_date,
 												labelStyle: 'position:relative; top:3px',
 												labelWidth: 90,
@@ -5197,13 +5198,14 @@ Ext.onReady( function() {
 											{
 												xtype: 'panel',
 												layout: 'column',
-												bodyStyle: 'border-style:none;magrin-left:2px;height:700px;',
+												bodyStyle: 'border-style:none;height:700px;',
 												items: [
 													{
 														xtype: 'toolbar',
 														id: 'avalableDEBar',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 + 14,
 														cls: 'tr-toolbar-multiselect-left',
+														style: 'border-bottom:0 none; border-radius: 0',
 														items: [
 															{
 																xtype: 'label',	
@@ -5229,14 +5231,15 @@ Ext.onReady( function() {
 																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}
 															},
-															''
+															' '
 														]
 													},
 													{
 														xtype: 'toolbar',
 														id: 'selectedDEBar',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 + 14,
-														cls: 'tr-toolbar-multiselect-left',
+														cls: 'tr-toolbar-multiselect-right',
+														style: 'border-bottom:0 none; border-radius: 0',
 														items: [
 															' ',
 															{
@@ -5398,7 +5401,7 @@ Ext.onReady( function() {
 														xtype: 'toolbar',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) + 28,
 														cls: 'tr-toolbar-multiselect-left',
-														style: 'margin-top:2px;',
+														style: 'margin-top:2px; border-bottom:0 none',
 														items: [
 															{
 																xtype: 'label',	
@@ -5449,7 +5452,7 @@ Ext.onReady( function() {
 														xtype: 'panel',
 														layout: 'column',
 														id: 'filterPanel',
-														bodyStyle: 'background-color:transparent; padding:2px 2px 2px 2px;overflow-x:hidden;overflow-y:auto;',
+														bodyStyle: 'background-color:transparent; padding:2px 2px 2px 2px;overflow-x:hidden;overflow-y:scroll;',
 														overflowX: 'hidden',
 														height: TR.conf.layout.west_dataelements_filter_panel,
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) + 28,
