@@ -72,19 +72,19 @@ public class Validator
         ConstantService constantService, ExpressionService expressionService, PeriodService periodService, DataValueService dataValueService)
     {
         ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods, rules,
-        		constantService.getConstantMap(), ValidationRunType.ALERT, lastAlertRun,
-        		expressionService, periodService, dataValueService);
+            constantService.getConstantMap(), ValidationRunType.ALERT, lastAlertRun,
+            expressionService, periodService, dataValueService);
 
         int threadPoolSize = getThreadPoolSize( context );
         ExecutorService executor = Executors.newFixedThreadPool( threadPoolSize );
 
         for ( OrganisationUnitExtended sourceX : context.getSourceXs() )
         {
-        	if ( sourceX.getToBeValidated() )
-        	{
-	            Runnable worker = new ValidatorThread( sourceX, context );
-	            executor.execute( worker );
-        	}
+            if ( sourceX.getToBeValidated() )
+            {
+                Runnable worker = new ValidatorThread( sourceX, context );
+                executor.execute( worker );
+            }
         }
 
         executor.shutdown();
@@ -97,6 +97,7 @@ public class Validator
         {
             executor.shutdownNow();
         }
+        
         return context.getValidationResults();
     }
     
@@ -114,6 +115,7 @@ public class Validator
         {
             threadPoolSize--;
         }
+        
         if ( threadPoolSize > context.getCountOfSourcesToValidate() )
         {
             threadPoolSize = context.getCountOfSourcesToValidate();
