@@ -433,7 +433,7 @@ Ext.onReady( function() {
 						autoScroll: true,
 						overflowX: 'hidden',
 						overflowY: 'auto',
-						width: TR.conf.layout.west_fieldset_width - 10
+						width: TR.conf.layout.west_fieldset_width + 4
 					};
 					Ext.getCmp(p).add(panel);
 					subPanel = Ext.getCmp(panelid);
@@ -448,7 +448,8 @@ Ext.onReady( function() {
 					xtype: 'label',
 					id: 'filter_lb_' + fieldid,
 					text:name,
-					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 100
+					style: 'padding-left:2px',
+					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 73
 				};
 				
 				var opt = "";
@@ -486,6 +487,7 @@ Ext.onReady( function() {
 				params.valueField = 'value';
 				params.displayField = 'name';
 				params.editable = false;
+				params.style = 'margin-bottom:2px';
 				valueType = valueType.split('_')[0];
 				if( filterOperator != undefined || filterOperator!= '')
 				{
@@ -552,6 +554,7 @@ Ext.onReady( function() {
 				params.xtype = xtype;
 				params.id = 'filter_' + id;
 				params.cls = 'tr-textfield-alt1';
+				params.style = 'margin-bottom:2px';
 				params.emptyText = TR.i18n.filter_value;
 				params.width = (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 50;
 				xtype = xtype.toLowerCase();
@@ -654,6 +657,7 @@ Ext.onReady( function() {
 				var params = {};
 				params.xtype = 'button';
 				params.text = "+";
+				params.style = 'margin-bottom:2px';
 				params.tooltip = TR.i18n.add,
 				params.handler = function() {
 					TR.util.multiselect.addFilterField(p, id, name, valueType);
@@ -666,6 +670,7 @@ Ext.onReady( function() {
 				params.xtype = 'button';
 				params.id = 'filter_rmv_' + id;	
 				params.text = "-";
+				params.style = 'margin-bottom:2px';
 				params.tooltip = TR.i18n.remove,
 				params.handler = function() {
 					var e1 = Ext.getCmp( 'filter_' + id );
@@ -687,6 +692,7 @@ Ext.onReady( function() {
 				params.queryMode = 'local';
 				params.valueField = 'value';
 				params.displayField = 'name';
+				params.style = 'margin-bottom:2px';
 				params.editable = false;
 				params.store = new Ext.data.ArrayStore({
 						fields: ['value','name'],
@@ -4363,17 +4369,15 @@ Ext.onReady( function() {
                 items: [
 					{
 						xtype: 'toolbar',
-						style: 'padding-top:1px; border-style:none;',
-						width: TR.conf.layout.west_fieldset_width + 50,
-						bodyStyle: 'border-style:none; background-color:transparent; padding:4px 0 0 8px',
+						width: TR.conf.layout.west_fieldset_width + 20,
+						style: 'padding:2px 0 0 2px; border:0 none; border-bottom:1px solid #ccc; background-color:transparent',
 						items: [
 						{
 							xtype: 'panel',
-							bodyStyle: 'border-style:none; background-color:transparent; padding:10px 0 0 8px',
+							bodyStyle: 'border-style:none; background-color:transparent; padding:2px',
 							items: [
 								Ext.create('Ext.form.Panel', {
 								bodyStyle: 'border-style:none; background-color:transparent; padding:3px 30px 0 8px',
-                                width: TR.conf.layout.west_fieldset_width + 50,
 								items: [
 								{
 									xtype: 'radiogroup',
@@ -4446,14 +4450,14 @@ Ext.onReady( function() {
 									name: TR.init.system.programs,
 									id: 'programCombobox',
 									fieldLabel: TR.i18n.program,
-									labelStyle: 'font-weight:bold',
+									labelStyle: 'font-weight:bold; margin-bottom:2px',
 									labelAlign: 'top',
 									emptyText: TR.i18n.please_select,
 									queryMode: 'local',
 									editable: false,
 									valueField: 'id',
 									displayField: 'name',
-									width: TR.conf.layout.west_fieldset_width / 2 - 10,
+									width: TR.conf.layout.west_fieldset_width / 2 - 3,
 									store: TR.store.program,
 									listeners: {
 										added: function() {
@@ -4482,22 +4486,19 @@ Ext.onReady( function() {
 									}
 								},
 								{
-									xtyle:'label',
-									text: ''
-								},
-								{
 									xtype: 'combobox',
 									cls: 'tr-combo',
 									id:'programStageCombobox',
+									style: 'margin-left:2px',
 									fieldLabel: TR.i18n.program_stage,
-									labelStyle: 'font-weight:bold',
+									labelStyle: 'font-weight:bold; margin-bottom:2px',
 									labelAlign: 'top',
 									emptyText: TR.i18n.please_select,
 									queryMode: 'local',
 									editable: false,
 									valueField: 'id',
 									displayField: 'name',
-									width:  TR.conf.layout.west_fieldset_width / 2 - 10,
+									width:  TR.conf.layout.west_fieldset_width / 2 - 3,
 									store: TR.store.programStage,
 									listeners: {
 										added: function() {
@@ -4544,15 +4545,14 @@ Ext.onReady( function() {
 					},                            
 					{
 						xtype: 'panel',
-                        bodyStyle: 'border-style:none; border-top:2px groove #eee; padding:2px 2px 0 2px;magrin-left:32px;',
-                        layout: 'fit',
+                        bodyStyle: 'border:0 none; padding:2px 2px 0',
                         items: [
 							{
 								xtype: 'panel',
 								layout: 'accordion',
-								bodyStyle: 'border-style:none;',
 								activeOnTop: true,
 								cls: 'tr-accordion',
+								bodyStyle: 'border:0 none; margin-bottom:2px',
 								height: 554,
 								items: [
 							
@@ -4562,18 +4562,20 @@ Ext.onReady( function() {
 										id: 'dateRangeDiv',
 										hideCollapseTool: true,
 										autoScroll: true,
+										bodyStyle: 'padding:3px 4px',
 										items: [
 											{
 												xtype: 'datefield',
 												cls: 'tr-textfield-alt1',
 												id: 'startDate',
+												style: 'margin-bottom:3px',
 												fieldLabel: TR.i18n.start_date,
+												labelStyle: 'position:relative; top:3px',
 												labelWidth: 90,
 												editable: true,
 												allowBlank:true,
 												invalidText: TR.i18n.the_date_is_not_valid,
-												style: 'margin-right:8px',
-												width: TR.conf.layout.west_fieldset_width - 20,
+												width: TR.conf.layout.west_fieldset_width + 7,
 												format: TR.i18n.format_date,
 												value: new Date((new Date()).setMonth((new Date()).getMonth()-3)),
 												maxValue: new Date(),
@@ -4592,11 +4594,12 @@ Ext.onReady( function() {
 												cls: 'tr-textfield-alt1',
 												id: 'endDate',
 												fieldLabel: TR.i18n.end_date,
+												labelStyle: 'position:relative; top:3px',
 												labelWidth: 90,
 												editable: true,
 												allowBlank:true,
 												invalidText: TR.i18n.the_date_is_not_valid,
-												width: TR.conf.layout.west_fieldset_width - 20,
+												width: TR.conf.layout.west_fieldset_width + 7,
 												format: TR.i18n.format_date,
 												value: new Date(),
 												minValue: new Date((new Date()).setMonth((new Date()).getMonth()-3)),
@@ -4627,7 +4630,7 @@ Ext.onReady( function() {
 													{
 														xtype: 'panel',
 														columnWidth: 0.32,
-														bodyStyle: 'border-style:none; padding:0 0 0 8px',
+														bodyStyle: 'border-style:none; padding:0 0 0 6px',
 														defaults: {
 															labelSeparator: '',
 															style: 'margin-bottom:2px',
@@ -4673,6 +4676,7 @@ Ext.onReady( function() {
 														columnWidth: 0.32,
 														bodyStyle: 'border-style:none; padding:0 0 0 10px',
 														defaults: {
+															style: 'margin-bottom:2px',
 															labelSeparator: '',
 															listeners: {
 																added: function(chb) {
@@ -4721,6 +4725,7 @@ Ext.onReady( function() {
 														columnWidth: 0.32,
 														bodyStyle: 'border-style:none; padding:0 0 0 10px',
 														defaults: {
+															style: 'margin-bottom:2px',
 															labelSeparator: '',
 															listeners: {
 																added: function(chb) {
@@ -4763,12 +4768,12 @@ Ext.onReady( function() {
 											{
 												xtype: 'panel',
 												layout: 'column',
-												bodyStyle: 'border-style:none',
+												bodyStyle: 'border-style:none; padding-top:6px',
 												items: [
 												{
 													xtype: 'panel',
 													columnWidth: 0.32,
-													bodyStyle: 'border-style:none; padding:0 0 0 2px',
+													bodyStyle: 'border-style:none; padding:0 0 0 6px',
 													defaults: {
 														labelSeparator: '',
 														style: 'margin-bottom:2px',
@@ -4850,9 +4855,10 @@ Ext.onReady( function() {
 														{
 															xtype: 'panel',
 															layout: 'anchor',
-															bodyStyle: 'border-style:none; padding:5px 0 0 5px',
+															bodyStyle: 'border-style:none; padding:0 0 0 5px',
 															defaults: {
 																labelSeparator: '',
+																style: 'margin-bottom:2px',
 																listeners: {
 																	added: function(chb) {
 																		if (chb.xtype === 'checkbox') {
@@ -4926,7 +4932,8 @@ Ext.onReady( function() {
 											},
 											{
 												layout: 'column',
-												bodyStyle: 'border:0 none; padding-bottom:4px',
+												bodyStyle: 'border:0 none; padding-bottom:3px',
+												style: 'margin-top:2px; margin-left:2px',
 												items: [
 													{
 														xtype: 'checkbox',
@@ -4967,91 +4974,6 @@ Ext.onReady( function() {
 														}
 													}
 												]
-											},
-											{
-												xtype: 'toolbar',
-												id: 'organisationunit_t',
-												style: 'margin-bottom: 5px',
-												width: TR.conf.layout.west_fieldset_width + 10,
-												xable: function(checked, value) {
-													if (checked || value) {
-														this.disable();
-													}
-													else {
-														this.enable();
-													}
-												},
-												defaults: {
-													height: 24
-												},
-												items: [
-													{
-														xtype: 'label',
-														text: TR.i18n.auto_select_orgunit_by,
-														style: 'padding-left:8px; color:#666; line-height:24px'
-													},
-													'->',
-													{
-														text: 'Group..',
-														handler: function() {},
-														listeners: {
-															added: function() {
-																this.menu = Ext.create('Ext.menu.Menu', {
-																	shadow: false,
-																	showSeparator: false,
-																	width: TR.conf.layout.treepanel_toolbar_menu_width_group,
-																	items: [
-																		{
-																			xtype: 'grid',
-																			cls: 'tr-menugrid',
-																			width: TR.conf.layout.treepanel_toolbar_menu_width_group,
-																			scroll: 'vertical',
-																			columns: [
-																				{
-																					dataIndex: 'name',
-																					width: TR.conf.layout.treepanel_toolbar_menu_width_group,
-																					style: 'display:none'
-																				}
-																			],
-																			setHeightInMenu: function(store) {
-																				var h = store.getCount() * 16,
-																					sh = TR.util.viewport.getSize().y * 0.4;
-																				this.setHeight(h > sh ? sh : h);
-																				this.doLayout();
-																				this.up('menu').doLayout();
-																			},
-																			store: TR.store.orgunitGroup,
-																			listeners: {
-																				itemclick: function(g, r) {
-																					g.getSelectionModel().select([], false);
-																					this.up('menu').hide();
-																					TR.cmp.params.organisationunit.treepanel.selectByGroup(r.data.id);
-																				}
-																			}
-																		}
-																	],
-																	listeners: {
-																		show: function() {
-																			if (!TR.store.orgunitGroup.isloaded) {
-																				TR.store.orgunitGroup.load({scope: this, callback: function() {
-																					this.down('grid').setHeightInMenu(TR.store.orgunitGroup);
-																				}});
-																			}
-																			else {
-																				this.down('grid').setHeightInMenu(TR.store.orgunitGroup);
-																			}
-																		}
-																	}
-																});
-															}
-														}
-													}
-												],
-												listeners: {
-													added: function() {
-														TR.cmp.params.organisationunit.toolbar = this;
-													}
-												}
 											},
 											{
 												xtype: 'treepanel',
@@ -5231,19 +5153,21 @@ Ext.onReady( function() {
 									{
 										title: '<div id="dataElementTabTitle" style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px;">' + TR.i18n.data_items + '</div>',
 										hideCollapseTool: true,
+										cls: 'tr-accordion-last',
 										items: [
 											{
 												xtype: 'combobox',
 												cls: 'tr-combo',
 												id: 'sectionCombobox',
-												style: 'magrin-left:2px;',
+												style: 'margin:0 2px 2px;',
 												fieldLabel: TR.i18n.section,
+												labelStyle: 'padding-left:2px',
 												emptyText: TR.i18n.please_select,
 												queryMode: 'local',
 												editable: false,
 												valueField: 'id',
 												displayField: 'name',
-												width: TR.conf.layout.west_fieldset_width - 10,
+												width: TR.conf.layout.west_fieldset_width + 8,
 												store: TR.store.programStageSection,
 												listeners: {
 													added: function() {
