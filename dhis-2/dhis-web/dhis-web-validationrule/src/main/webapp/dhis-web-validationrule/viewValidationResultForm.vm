@@ -46,7 +46,7 @@
 		<td>$i18n.getString( "end_date" ):</td>
 		<td>$endDate</td>
 		<td><input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:180px" onclick="exportValidationResult( 'csv' )"></td>
-		<td><input name="button" type="button" style="width:180px" onclick="window.location.href='showRunValidationForm.action'" value="$i18n.getString( 'done' )"></td>
+		<td><input name="button" type="button" style="width:180px" onclick="displayAnalysisInput()" value="$i18n.getString( 'done' )"></td>
 	</tr>
 	<tr>
 		<td colspan="4" height="15"></td>
