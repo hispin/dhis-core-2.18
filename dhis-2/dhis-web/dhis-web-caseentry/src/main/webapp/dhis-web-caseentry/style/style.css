@@ -68,7 +68,8 @@ textarea
     font-weight: bold;
 }
 
-.img-button{
+.img-button
+{
 	width:20px;
 	cursor:pointer;
 }
@@ -129,7 +130,7 @@ table.information, td.information
   padding-left: 20px;
   margin-bottom: 15px;
   border-radius: 3px;
-  max-width: 620px;
+  max-width: 570px;
 }
 
 #minimized-advanced-search 
@@ -251,14 +252,16 @@ div.provided-elsewhere
 // Dashboard
 // -------------------------------------------------------------- */
 
-div.dashboard-area {
+div.dashboard-area 
+{
   list-style: none inside;
   margin: 50px 50px;
   margin: 0;
   padding: 0;
 }
 
-p.header{
+p.header
+{
   background-color:#CBDDEB;
   background-repeat:repeat-x;
   border:1px solid #C8DBEA;
@@ -371,12 +374,14 @@ div.event-flow-dashboard
   background-color: #f8f8f8;
 }
 
-.tooltip {
+.tooltip 
+{
 	border-bottom: dashed 1px #aaa;
 	text-decoration: none;
 	cursor: help;
 	text-align: left;
 }
+
 .tooltip-target {
 	width: 250px;
 	top: 29px;

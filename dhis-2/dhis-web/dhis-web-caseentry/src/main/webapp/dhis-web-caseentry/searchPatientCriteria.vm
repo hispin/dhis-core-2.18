@@ -161,12 +161,12 @@
 				</td>		
 				<td>
 					<input type="text" id="searchText" name="searchText" class="searchInput" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );'>
-					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' disabled onclick="removeAttributeOption('advSearchBox0');" align='bottom'>
+					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' disabled onclick="removeAttributeOption('advSearchBox0');">
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<div style="padding: 15px 3px">
+	<div style="padding: 10px 0 15px 3px">
 		<input type="button" class='large-button' value='$i18n.getString( "add_filter" )' onclick='addAttributeOption();'>
         <input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
         <input type="button" class='large-button hidden' id='sendSmsToListBtn' value="$i18n.getString('sms')" onclick="setFieldValue('sendToList', true);showSendSmsForm();">

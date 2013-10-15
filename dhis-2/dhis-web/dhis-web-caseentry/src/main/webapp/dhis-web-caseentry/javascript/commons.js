@@ -70,7 +70,8 @@ function addAttributeOption()
 function removeAttributeOption( rowId )
 {
 	jQuery( '#' + rowId ).remove();
-	if( jQuery( '#advancedSearchTB tr' ).length == 2 ){
+	
+	if( jQuery( '#advancedSearchTB tr' ).length <= 1 ){
 		jQuery('#advancedSearchTB [name=clearSearchBtn]').attr('disabled', true);
 	}
 }	
