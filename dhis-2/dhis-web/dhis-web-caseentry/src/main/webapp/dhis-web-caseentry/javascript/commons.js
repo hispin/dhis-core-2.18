@@ -59,14 +59,12 @@ function addAttributeOption()
 {
 	jQuery('#advancedSearchTB [name=clearSearchBtn]').attr('disabled', false);
 	var rowId = 'advSearchBox' + jQuery('#advancedSearchTB select[name=searchObjectId]').length + 1;
-	var contend  = '<td>' + getInnerHTML('searchingAttributeIdTD') + '</td>';
-		contend += '<td>' + searchTextBox ;
-		contend += '&nbsp;<input type="button" name="clearSearchBtn" class="normal-button" value="' + i18n_clear + '" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
-		contend = '<tr id="' + rowId + '">' + contend + '</tr>';
+	var content  = '<td>' + getInnerHTML('searchingAttributeIdTD') + '</td>';
+	content += '<td>' + searchTextBox ;
+	content += '&nbsp;<input type="button" name="clearSearchBtn" class="normal-button" value="' + i18n_clear + '" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
+	content = '<tr id="' + rowId + '">' + content + '</tr>';
 
-	jQuery('#advancedSearchTB').append( contend );
-	var rowspan = eval( jQuery('[name=addAndSearchBtn]').attr('rowspan') );
-	jQuery('[name=addAndSearchBtn]').attr('rowspan', rowspan + 1);
+	jQuery('#advancedSearchTB').append( content );
 }	
 
 function removeAttributeOption( rowId )
@@ -75,8 +73,6 @@ function removeAttributeOption( rowId )
 	if( jQuery( '#advancedSearchTB tr' ).length == 2 ){
 		jQuery('#advancedSearchTB [name=clearSearchBtn]').attr('disabled', true);
 	}
-	var rowspan = eval( jQuery('[name=addAndSearchBtn]').attr('rowspan') );
-	jQuery('[name=addAndSearchBtn]').attr('rowspan', rowspan - 1);
 }	
 
 //------------------------------------------------------------------------------

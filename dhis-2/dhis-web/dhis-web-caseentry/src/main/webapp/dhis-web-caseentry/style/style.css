@@ -26,7 +26,7 @@ input.normal-button[type="button"] , input.normal-button[type="submit"]
 
 input.large-button[type="button"] 
 {
-    width: 110px;
+    width: 130px;
 }
 
 select.search-field
@@ -46,12 +46,12 @@ input.option
 
 select 
 {
-    width: 265px;
+    width: 264px;
 }
 
 textarea 
 {
-    width: 265px;
+    width: 264px;
 }
 
 .button-list 
@@ -156,6 +156,11 @@ table.information, td.information
   padding-left: 20px;
   margin-bottom: 15px;
   border-radius: 3px;
+}
+
+.searchInput
+{
+  width: 240px;
 }
 
 /*----------------------------------------------------------------------------*/
