@@ -384,7 +384,12 @@ dhis2.db.renderDashboard = function( id )
         if( undefined !== data.items )
         {
 			$.each( data.items, function( index, item )
-			{				
+			{
+				if ( null == item || undefined === item )
+				{
+					return true;
+				}
+				
 				if ( "chart" == item.type )
 				{
 					$d.append( $.tmpl( dhis2.db.tmpl.chartItem, { "itemId": item.id, "id": item.chart.id, "name": item.chart.name, 
@@ -477,6 +482,11 @@ dhis2.db.renderLinkItem = function( $d, itemId, contents, title, baseUrl, urlSuf
 	
 	$.each( contents, function( index, content )
 	{
+		if ( null == content || undefined === content )
+		{
+			return true;
+		}		
+		
 		html += 
 			"<li><a href='" + baseUrl + content.id + urlSuffix + "'>" + content.name + "</a><a class='removeItemLink' href='javascript:dhis2.db.removeItemContent( \"" + itemId + "\", \"" + content.id + "\" )' title='" + i18n_remove + "'>" + 
 			"<img src='../images/hide.png'></a></li>";
