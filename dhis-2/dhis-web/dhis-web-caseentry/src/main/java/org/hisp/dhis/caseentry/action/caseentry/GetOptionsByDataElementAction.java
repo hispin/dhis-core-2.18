@@ -28,19 +28,20 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.util.ContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.List;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version $GetOptionsByDataElementAction.java Jun 15, 2012 10:36:29 AM$
  */
 public class GetOptionsByDataElementAction
@@ -51,12 +52,21 @@ public class GetOptionsByDataElementAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private OptionService optionService;
 
+    @Autowired
     public void setOptionService( OptionService optionService )
     {
         this.optionService = optionService;
+    }
+
+    private DataElementService dataElementService;
+
+    @Autowired
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -98,6 +108,22 @@ public class GetOptionsByDataElementAction
 
         OptionSet optionSet = optionService.getOptionSet( id );
 
+        // retry using id as dataElementId
+        if ( optionSet == null )
+        {
+            DataElement dataElement = dataElementService.getDataElement( id );
+
+            if ( dataElement != null )
+            {
+                optionSet = dataElement.getOptionSet();
+            }
+        }
+
+        if ( optionSet == null )
+        {
+            return INPUT;
+        }
+
         // ---------------------------------------------------------------------
         // If the query is null and the option set has not changed since last
         // request we can tell the client to use its cached response (304)
@@ -106,7 +132,7 @@ public class GetOptionsByDataElementAction
         boolean isNotModified = (query == null && ContextUtils.isNotModified( ServletActionContext.getRequest(),
             ServletActionContext.getResponse(), optionSet ));
 
-        if ( !isNotModified && optionSet != null )
+        if ( !isNotModified )
         {
             options = optionService.getOptions( optionSet.getId(), query, MAX_OPTIONS_DISPLAYED );
         }
