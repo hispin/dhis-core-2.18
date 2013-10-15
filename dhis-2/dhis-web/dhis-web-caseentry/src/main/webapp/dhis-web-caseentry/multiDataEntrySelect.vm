@@ -22,6 +22,8 @@
 		registration = false;
 		
 		jQuery('#searchByIdTR').remove();
+		jQuery('#listPatientBtnTD').attr('rowspan',5);
+		jQuery('#listPatientBtnTD').attr('valign','bottom');
 	});	
 </script>
 
