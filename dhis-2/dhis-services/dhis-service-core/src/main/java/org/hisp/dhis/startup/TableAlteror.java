@@ -435,6 +435,7 @@ public class TableAlteror
         executeSql( "update reporttable set cumulative = false where cumulative is null" );
         executeSql( "update reporttable set userorganisationunit = false where userorganisationunit is null" );
         executeSql( "update reporttable set userorganisationunitchildren = false where userorganisationunitchildren is null" );
+        executeSql( "update reporttable set userorganisationunitgrandchildren = false where userorganisationunitgrandchildren is null" );
         executeSql( "update reporttable set totals = true where totals is null" );
         executeSql( "update reporttable set subtotals = true where subtotals is null" );
         executeSql( "update reporttable set hideemptyrows = false where hideemptyrows is null" );
@@ -463,8 +464,9 @@ public class TableAlteror
         executeSql( "update chart set last4quarters = false where last4quarters is null" );
         executeSql( "update chart set last2sixmonths = false where last2sixmonths is null" );
         executeSql( "update chart set showdata = false where showdata is null" );
-        executeSql( "update chart set userorganisationunitchildren = false where userorganisationunitchildren is null" );
         executeSql( "update chart set userorganisationunit = false where userorganisationunit is null" );
+        executeSql( "update chart set userorganisationunitchildren = false where userorganisationunitchildren is null" );
+        executeSql( "update chart set userorganisationunitgrandchildren = false where userorganisationunitgrandchildren is null" );
         executeSql( "update chart set hidetitle = false where hidetitle is null" );
 
         // Move chart filters to chart_filters table
@@ -674,6 +676,7 @@ public class TableAlteror
         
         executeSql( "update mapview set userorganisationunit = false where userorganisationunit is null" );
         executeSql( "update mapview set userorganisationunitchildren = false where userorganisationunitchildren is null" );
+        executeSql( "update mapview set userorganisationunitgrandchildren = false where userorganisationunitgrandchildren is null" );
     }
     
     private void upgradeChartRelativePeriods()
