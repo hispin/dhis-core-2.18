@@ -2436,8 +2436,6 @@ Ext.onReady( function() {
 			update,
 			cancel,
 			info,
-			error1Window,
-			error2Window,
 
 		// Functions
 			showUpdateLegendSet,
@@ -2589,7 +2587,7 @@ Ext.onReady( function() {
 								el = editArray[i];
 								Ext.create('Ext.tip.ToolTip', {
 									target: el,
-									html: 'Rename',
+									html: 'Edit',
 									'anchor': 'bottom',
 									anchorOffset: -14,
 									showDelay: 1000
