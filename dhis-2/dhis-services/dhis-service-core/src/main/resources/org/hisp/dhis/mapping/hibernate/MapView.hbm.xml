@@ -81,6 +81,8 @@
 
     <property name="userOrganisationUnitChildren" />
 
+    <property name="userOrganisationUnitGrandChildren" />
+
     <property name="legendType" />
 
     <property name="method" />

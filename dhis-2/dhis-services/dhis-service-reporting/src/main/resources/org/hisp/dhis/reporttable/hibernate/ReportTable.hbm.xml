@@ -159,6 +159,8 @@
 
     <property name="userOrganisationUnitChildren" />
 
+    <property name="userOrganisationUnitGrandChildren" />
+
     <many-to-one name="legendSet" class="org.hisp.dhis.mapping.MapLegendSet" column="legendsetid"
       foreign-key="fk_reporttable_legendsetid" />
 

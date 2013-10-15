@@ -146,6 +146,8 @@
 
     <property name="userOrganisationUnitChildren" />
 
+    <property name="userOrganisationUnitGrandChildren" />
+
     <property name="showData" />
 
     <property name="rewindRelativePeriods" />
