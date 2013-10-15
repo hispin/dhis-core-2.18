@@ -31,8 +31,11 @@
         var organisationUnits = fm.organisationUnits();
         var tmpl = $( '#organisation-units-template' ).html();
 
+        var ou = _.values( organisationUnits );
+        ou = _.sortBy( ou, function(n) { return n.level; } );
+
         $('#organisation-units-page section[data-role="content"]').html(
-            _.template( tmpl, { 'organisationUnits': organisationUnits } )
+            _.template( tmpl, { 'organisationUnits': ou } )
         );
 
         $('#organisation-unit-list').listview();
