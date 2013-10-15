@@ -130,6 +130,11 @@ public class WebUtils
     @SuppressWarnings("unchecked")
     public static void generateLinks( Object object, boolean deep )
     {
+        if ( object == null )
+        {
+            return;
+        }
+
         if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
         {
             IdentifiableObject identifiableObject = (IdentifiableObject) object;
