@@ -232,6 +232,78 @@ public class EnrollmentServiceTest
     }
 
     @Test
+    public void testUpdateCompleted()
+    {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setPerson( maleA.getUid() );
+        enrollment.setProgram( programA.getUid() );
+
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+
+        assertEquals( 1, enrollments.size() );
+        enrollment = enrollments.get( 0 );
+        enrollment.setStatus( EnrollmentStatus.COMPLETED );
+
+        enrollmentService.updateEnrollment( enrollment );
+        enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+        assertEquals( 1, enrollments.size() );
+        assertEquals( EnrollmentStatus.COMPLETED, enrollments.get( 0 ).getStatus() );
+    }
+
+    @Test
+    public void testUpdateCancelled()
+    {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setPerson( maleA.getUid() );
+        enrollment.setProgram( programA.getUid() );
+
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+
+        assertEquals( 1, enrollments.size() );
+        enrollment = enrollments.get( 0 );
+        enrollment.setStatus( EnrollmentStatus.CANCELLED );
+
+        enrollmentService.updateEnrollment( enrollment );
+        enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+        assertEquals( 1, enrollments.size() );
+        assertEquals( EnrollmentStatus.CANCELLED, enrollments.get( 0 ).getStatus() );
+    }
+
+    @Test
+    public void testUpdateReEnrollmentShouldFail()
+    {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setPerson( maleA.getUid() );
+        enrollment.setProgram( programA.getUid() );
+
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+
+        assertEquals( 1, enrollments.size() );
+        enrollment = enrollments.get( 0 );
+        enrollment.setStatus( EnrollmentStatus.CANCELLED );
+
+        importSummary = enrollmentService.updateEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+        assertEquals( 1, enrollments.size() );
+        assertEquals( EnrollmentStatus.CANCELLED, enrollments.get( 0 ).getStatus() );
+
+        enrollment.setStatus( EnrollmentStatus.ACTIVE );
+        importSummary = enrollmentService.updateEnrollment( enrollment );
+        assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
+    }
+
+    @Test
     public void testMultipleEnrollmentsShouldFail()
     {
         Enrollment enrollment = new Enrollment();
