@@ -451,18 +451,12 @@ public class HibernatePatientStore
             {
 
                 String[] keyValues = id.split( " " );
-                patientWhere += patientOperator + " pi.patientidentifiertypeid is not null AND (";
+                patientWhere += patientOperator + " (";
                 String opt = "";
                 for ( String v : keyValues )
                 {
-                    patientWhere += opt + " lower( p.name ) like '%" + v + "%' or lower(pi.identifier) like '%" + v + "%' ";
+                    patientWhere += opt + " lower( p.name ) like '%" + v + "%' or ( lower(pi.identifier) like '%" + v + "%' and pi.patientidentifiertypeid is not null ) ";
                     opt = "or";
-                }
-
-                if ( keyValues.length == 2 )
-                {
-                    String otherId = keyValues[0] + "  " + keyValues[1];
-                    patientWhere += " or lower( p.name ) like '%" + otherId + "%'  ";
                 }
                 
                 patientWhere += ")";
@@ -713,10 +707,9 @@ public class HibernatePatientStore
             }
             
             sql = sql + subSQL + from + " inner join programinstance pgi on " + " (pgi.patientid=p.patientid) "
-                + " inner join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) "
+                + " inner join programstageinstance psi on (psi.programinstanceid=pgi.programinstanceid) "
                 + " inner join programstage pgs on (pgs.programstageid=psi.programstageid) ";
 
-            //patientGroupBy += ",psi.programstageinstanceid, pgs.name ";
             patientGroupBy += ",psi.programstageinstanceid, pgs.name, psi.duedate ";
 
             from = " ";
