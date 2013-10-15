@@ -151,7 +151,7 @@ public class DefaultPdfDataEntryFormService
     }
 
     private void setDataSet_DocumentContent( Document document, PdfWriter writer, String dataSetUid )
-        throws IOException, DocumentException, ParseException, Exception
+        throws Exception
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetUid );
                        
@@ -313,7 +313,7 @@ public class DefaultPdfDataEntryFormService
     }
 
     private void setProgramStage_DocumentContent( Document document, PdfWriter writer, String programStageUid )
-        throws IOException, DocumentException, ParseException, Exception
+        throws Exception
     {
         ProgramStage programStage = programStageService.getProgramStage( programStageUid );
 
