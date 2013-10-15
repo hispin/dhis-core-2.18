@@ -76,35 +76,37 @@
 				<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' onchange='autoGenerateEventOnChange("$openAfterEnrollment")' #if( $programStage.autoGenerateEvent && $programStage.autoGenerateEvent=='true' ) checked #end /></td>
 			</tr>
 			
-			#if($openAfterEnrollment!='' ) 
-			<tr>
-				<td colspan='2' style="color:grey;font-style:italic">$i18n.getString('the_properties_to_open_data_entry_form_after_enrolment_is_active_in_the_stage'): $openAfterEnrollment</td>
-				<td></td>
-			</tr>
+			#if($programStage.program.type!=3)
+				#if($openAfterEnrollment!='' ) 
+				<tr>
+					<td colspan='2' style="color:grey;font-style:italic">$i18n.getString('the_properties_to_open_data_entry_form_after_enrolment_is_active_in_the_stage'): $openAfterEnrollment</td>
+					<td></td>
+				</tr>
+				#end
+				
+				<tr>
+					<td><label>$i18n.getString( "open_data_entry_form_after_enrolment" )</label></td>
+					<td><input type="checkbox" id="openAfterEnrollment" name="openAfterEnrollment" value='true' 
+						#if($programStage.openAfterEnrollment=='true') checked #end
+						#if($openAfterEnrollment!='' || $programStage.autoGenerateEvent=='false' ) disabled #end
+						onchange="openAfterEnrollmentOnchange()" ></td>
+					<td></td>
+				</tr>
+			
+				<tr>
+					<td><label>$i18n.getString( "report_date_to_use" )</label></td>
+					<td>
+						<select id="reportDateToUse" name="reportDateToUse" class="{validate:{required:true}}" 
+							#if($openAfterEnrollment!='' || $programStage.autoGenerateEvent=='false' ) disabled #elseif($programStage.openAfterEnrollment=='false') disabled #end >
+							<option value=''>[$i18n.getString('please_select')]</option>
+							<option value='registrationDate' #if($programStage.reportDateToUse=='registrationDate') selected #end >$i18n.getString("registration_date")</option>
+							<option value='dateOfIncident' #if($programStage.reportDateToUse=='dateOfIncident') selected #end >$i18n.getString("date_of_incident")</option>
+							<option value='enrollmentDate' #if($programStage.reportDateToUse=='enrollmentDate') selected #end >$i18n.getString("date_of_enrollment")</option>
+						</select>
+					</td>
+					<td></td>
+				</tr>
 			#end
-			
-			<tr>
-				<td><label>$i18n.getString( "open_data_entry_form_after_enrolment" )</label></td>
-				<td><input type="checkbox" id="openAfterEnrollment" name="openAfterEnrollment" value='true' 
-					#if($programStage.openAfterEnrollment=='true') checked #end
-					#if($openAfterEnrollment!='' || $programStage.autoGenerateEvent=='false' ) disabled #end
-					onchange="openAfterEnrollmentOnchange()" ></td>
-				<td></td>
-			</tr>
-			
-			<tr>
-				<td><label>$i18n.getString( "report_date_to_use" )</label></td>
-				<td>
-					<select id="reportDateToUse" name="reportDateToUse" class="{validate:{required:true}}" 
-						#if($openAfterEnrollment!='' || $programStage.autoGenerateEvent=='false' ) disabled #elseif($programStage.openAfterEnrollment=='false') disabled #end >
-						<option value=''>[$i18n.getString('please_select')]</option>
-						<option value='registrationDate' #if($programStage.reportDateToUse=='registrationDate') selected #end >$i18n.getString("registration_date")</option>
-						<option value='dateOfIncident' #if($programStage.reportDateToUse=='dateOfIncident') selected #end >$i18n.getString("date_of_incident")</option>
-						<option value='enrollmentDate' #if($programStage.reportDateToUse=='enrollmentDate') selected #end >$i18n.getString("date_of_enrollment")</option>
-					</select>
-				</td>
-				<td></td>
-			</tr>
 			
 			<tr>
 				<td><label>$i18n.getString( "block_entry_form_after_completed" )</label></td>
