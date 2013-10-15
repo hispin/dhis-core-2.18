@@ -35,9 +35,9 @@
 			</select>
 			<span id="programLoader" style="display:none;" ><img src="../images/ajax-loader-bar.gif" /></span>
 		</td>
-		<td>
-			<input type="button" id='listPatientBtn' style='260px;' value="$i18n.getString( 'list_all_patients' )" onclick="listAllPatient();">
-        </td>
+		<td id='listPatientBtnTD'>
+			<input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="listAllPatient();">
+		</td>
 	</tr>
 	<tr id='scheduleVisitTR' class='hidden'>
 		<td>$i18n.getString('scheduled_visits')</td>
