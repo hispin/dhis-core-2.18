@@ -146,7 +146,6 @@
 		id="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction"
 		scope="prototype">
-		<property name="optionService" ref="org.hisp.dhis.option.OptionService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.GetUsernameListAction"
