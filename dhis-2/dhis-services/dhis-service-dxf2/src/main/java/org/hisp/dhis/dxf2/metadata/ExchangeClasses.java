@@ -89,16 +89,13 @@ import java.util.Map;
 final public class ExchangeClasses
 {
     // all available classes for export, used for controllers etc
-    private static Map<Class<? extends IdentifiableObject>, String> allExportClasses;
+    private final static Map<Class<? extends IdentifiableObject>, String> allExportClasses;
 
     // these are the ones that are available for dxf2 export
-    private static Map<Class<? extends IdentifiableObject>, String> exportClasses;
+    private final static Map<Class<? extends IdentifiableObject>, String> exportClasses;
 
     // these are the ones that are available for dxf2 import
-    private static Map<Class<? extends IdentifiableObject>, String> importClasses;
-
-    // these will be listed on the global resource page
-    private static Map<Class<? extends IdentifiableObject>, String> publicResourceClasses;
+    private final static Map<Class<? extends IdentifiableObject>, String> importClasses;
 
     static
     {

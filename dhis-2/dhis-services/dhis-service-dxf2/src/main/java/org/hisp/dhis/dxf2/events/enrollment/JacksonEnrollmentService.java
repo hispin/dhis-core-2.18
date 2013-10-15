@@ -50,8 +50,9 @@ public class JacksonEnrollmentService extends AbstractEnrollmentService
     // EnrollmentService Impl
     // -------------------------------------------------------------------------
 
-    private static ObjectMapper xmlMapper = new XmlMapper();
-    private static ObjectMapper jsonMapper = new ObjectMapper();
+    private final static ObjectMapper xmlMapper = new XmlMapper();
+
+    private final static ObjectMapper jsonMapper = new ObjectMapper();
 
     @SuppressWarnings("unchecked")
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException

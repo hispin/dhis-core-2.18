@@ -57,11 +57,11 @@ import java.util.Map;
  */
 public class JacksonUtils
 {
-    private static ObjectMapper jsonMapper = new ObjectMapper();
+    private final static ObjectMapper jsonMapper = new ObjectMapper();
 
-    private static XmlMapper xmlMapper = new XmlMapper();
+    private final static XmlMapper xmlMapper = new XmlMapper();
 
-    private static Map<String, Class<?>> viewClasses = new HashMap<String, Class<?>>();
+    private final static Map<String, Class<?>> viewClasses = new HashMap<String, Class<?>>();
 
     static
     {

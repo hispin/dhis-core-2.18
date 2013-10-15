@@ -59,7 +59,7 @@ public class DefaultInputValidationService implements InputValidationService
         this._format = format;
     }
 
-    public I18nFormat getFormat()
+    I18nFormat getFormat()
     {
         if ( _format != null )
         {
