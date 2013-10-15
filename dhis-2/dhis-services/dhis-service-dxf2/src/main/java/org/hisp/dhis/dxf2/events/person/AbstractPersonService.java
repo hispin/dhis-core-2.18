@@ -32,6 +32,9 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.i18n.I18nManager;
+import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -47,7 +50,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
-import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -90,6 +92,35 @@ public abstract class AbstractPersonService
 
     @Autowired
     private IdentifiableObjectManager manager;
+
+    @Autowired
+    private I18nManager i18nManager;
+
+    private I18nFormat _format;
+
+    @Override
+    public void setFormat( I18nFormat format )
+    {
+        this._format = format;
+    }
+
+    I18nFormat getFormat()
+    {
+        if ( _format != null )
+        {
+            return _format;
+        }
+
+        try
+        {
+            _format = i18nManager.getI18nFormat();
+        }
+        catch ( I18nManagerException ignored )
+        {
+        }
+
+        return _format;
+    }
 
     // -------------------------------------------------------------------------
     // READ
