@@ -11,7 +11,8 @@ function validateRunAnalyseData()
     {
         $( '#startButton').attr( 'disabled', true );
 
-        $.getJSON( "validateRunAnalysis.action", {
+        $.getJSON( "validateRunAnalysis.action", 
+        {
             fromDate : getFieldValue( 'fromDate' ),
             toDate : getFieldValue( 'toDate' )
         }, 
@@ -69,6 +70,7 @@ function analyseData()
 
     $.get( url, function( data )
     {
+    	hideMessage();
         $( "div#analysisInput" ).hide();
         $( "div#analysisResult" ).show();
         $( "div#analysisResult" ).html( data );
@@ -89,6 +91,12 @@ function getFollowUpAnalysis()
         $( "div#analysisResult" ).show();
         $( "div#analysisResult" ).html( data );
     } );
+}
+
+function displayAnalysisInput()
+{
+	$( 'div#analysisInput' ).show();
+    $( 'div#analysisResult' ).empty().hide();
 }
 
 function exportAnalysisResult( type )
