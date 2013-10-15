@@ -48,6 +48,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -198,6 +199,36 @@ public class EnrollmentServiceTest
         assertEquals( 1, enrollments.size() );
         assertEquals( maleA.getUid(), enrollments.get( 0 ).getPerson() );
         assertEquals( programA.getUid(), enrollments.get( 0 ).getProgram() );
+    }
+
+    @Test
+    public void testUpdateEnrollment()
+    {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setPerson( maleA.getUid() );
+        enrollment.setProgram( programA.getUid() );
+        enrollment.setDateOfIncident( new Date() );
+        enrollment.setDateOfEnrollment( new Date() );
+
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        List<Enrollment> enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+
+        assertEquals( 1, enrollments.size() );
+        enrollment = enrollments.get( 0 );
+
+        assertEquals( maleA.getUid(), enrollment.getPerson() );
+        assertEquals( programA.getUid(), enrollment.getProgram() );
+
+        Date MARCH_20_81 = new Date( 81, 2, 20 );
+
+        enrollment.setDateOfEnrollment( MARCH_20_81 );
+        enrollmentService.updateEnrollment( enrollment );
+
+        enrollments = enrollmentService.getEnrollments( maleA ).getEnrollments();
+        assertEquals( 1, enrollments.size() );
+        assertEquals( MARCH_20_81, enrollments.get( 0 ).getDateOfEnrollment() );
     }
 
     @Test
