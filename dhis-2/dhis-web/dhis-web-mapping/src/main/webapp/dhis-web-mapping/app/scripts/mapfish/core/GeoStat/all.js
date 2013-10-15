@@ -331,7 +331,7 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
     CLASS_NAME: "mapfish.GeoStat.Facility"
 });
 
-mapfish.GeoStat.createThematic = function(name) {	
+mapfish.GeoStat.createThematic = function(name) {
 
 	mapfish.GeoStat[name] = OpenLayers.Class(mapfish.GeoStat, {
 		colors: [new mapfish.ColorRgb(120, 120, 0), new mapfish.ColorRgb(255, 0, 0)],
@@ -354,13 +354,15 @@ mapfish.GeoStat.createThematic = function(name) {
 			loadFeatures: function(features) {
 				if (features && features.length) {
 					var data = [];
+
+					this.features = features;
+
 					for (var i = 0; i < features.length; i++) {
 						data.push([features[i].attributes.id, features[i].attributes.name]);
 					}
 					this.loadData(data);
 					this.sortStore();
 
-					this.features = features;
 				}
 				else {
 					this.removeAll();
@@ -445,7 +447,7 @@ mapfish.GeoStat.createThematic = function(name) {
 
 		createColorInterpolation: function() {
 			var numColors = this.classification.bins.length;
-			
+
 			if (!this.view.legendSet) {
 				this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors);
 			}
@@ -526,7 +528,7 @@ mapfish.GeoStat.createThematic = function(name) {
 			var	element = document.createElement("div"),
 				child,
 				legendNames;
-				
+
 			// data
 			child = document.createElement("div");
 			child.style.height = "14px";
@@ -538,7 +540,7 @@ mapfish.GeoStat.createThematic = function(name) {
 			child = document.createElement("div");
 			child.style.clear = "left";
 			element.appendChild(child);
-				
+
 			// period
 			child = document.createElement("div");
 			child.style.height = "14px";
@@ -550,13 +552,13 @@ mapfish.GeoStat.createThematic = function(name) {
 			child = document.createElement("div");
 			child.style.clear = "left";
 			element.appendChild(child);
-			
+
 			// separator
 			child = document.createElement("div");
 			child.style.width = "1px";
 			child.style.height = "5px";
 			element.appendChild(child);
-			
+
 			// legends
 			if (this.view.legendSet) {
 				for (var i = 0; i < this.classification.bins.length; i++) {
@@ -597,7 +599,7 @@ mapfish.GeoStat.createThematic = function(name) {
 					element.appendChild(child);
 				}
 			}
-			
+
 			this.layer.legendPanel.update(element.outerHTML);
 		},
 

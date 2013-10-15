@@ -913,6 +913,8 @@ console.log(view.parentGraphMap);
 						return;
 					}
 
+					layer.core.featureStore.loadFeatures(features.slice(0));
+
 					loadData(view, features);
 				},
 				failure: function(r) {
@@ -924,7 +926,7 @@ console.log(view.parentGraphMap);
 
 		loadData = function(view, features) {
 			view = view || layer.core.view;
-			features = features || layer.features.slice(0);
+			features = features || layer.core.featureStore.features;
 
 			for (var i = 0; i < features.length; i++) {
 				features[i].attributes.label = features[i].attributes.name;
@@ -933,8 +935,6 @@ console.log(view.parentGraphMap);
 
 			layer.removeFeatures(layer.features);
 			layer.addFeatures(features);
-
-			layer.core.featureStore.loadFeatures(layer.features.slice(0));
 
 			loadLegend(view);
 		};
@@ -1190,6 +1190,8 @@ console.log(view.parentGraphMap);
 						return;
 					}
 
+					layer.core.featureStore.loadFeatures(features.slice(0));
+
 					loadData(view, features);
 				},
 				failure: function(r) {
@@ -1201,7 +1203,7 @@ console.log(view.parentGraphMap);
 
 		loadData = function(view, features) {
 			view = view || layer.core.view;
-			features = features || layer.features.slice(0);
+			features = features || layer.core.featureStore.features;
 
 			var dimConf = gis.conf.finals.dimension,
 				paramString = '?',
@@ -1295,8 +1297,6 @@ console.log(view.parentGraphMap);
 
 					layer.removeFeatures(layer.features);
 					layer.addFeatures(newFeatures);
-
-					layer.core.featureStore.loadFeatures(layer.features.slice(0));
 
 					gis.response = response;
 
@@ -1581,6 +1581,8 @@ console.log(view.parentGraphMap);
 						return;
 					}
 
+					layer.core.featureStore.loadFeatures(features.slice(0));
+
 					loadData(view, features);
 				},
 				failure: function(r) {
@@ -1592,7 +1594,7 @@ console.log(view.parentGraphMap);
 
 		loadData = function(view, features) {
 			view = view || layer.core.view;
-			features = features || layer.features.slice(0);
+			features = features || layer.core.featureStore.features;
 
 			for (var i = 0; i < features.length; i++) {
 				features[i].attributes.label = features[i].attributes.name;
@@ -1600,8 +1602,6 @@ console.log(view.parentGraphMap);
 
 			layer.removeFeatures(layer.features);
 			layer.addFeatures(features);
-
-			layer.core.featureStore.loadFeatures(layer.features.slice(0));
 
 			loadLegend(view);
 		};
