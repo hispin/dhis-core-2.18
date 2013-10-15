@@ -2907,8 +2907,8 @@ Ext.onReady( function() {
 			pt.viewport = createViewport();
 			pt.isPlugin = true;
 
-			if (config.uid) {
-				pt.engine.loadTable(config.uid, pt);
+			if (config.id) {
+				pt.engine.loadTable(config.id, pt);
 			}
 			else {
 				layout = pt.api.layout.Layout(config);
