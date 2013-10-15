@@ -49,14 +49,15 @@ import org.springframework.security.core.userdetails.User;
 public class DefaultAuthenticationSuccessHandler
     extends SavedRequestAwareAuthenticationSuccessHandler
 {
-    // default is 1 hour of inactivity, this is mostly for when we are using the mobile
-    // client, since entering data can take time, and data will be lost of the session
-    // times out while entering data.
+    /**
+     * Default is 1 hour of inactivity, this is mostly for when we are using the mobile
+     * client, since entering data can take time, and data will be lost if the session
+     * times out while entering data.
+     */
     public static int DEFAULT_SESSION_TIMEOUT = 60 * 60;
 
     @Override
-    public void onAuthenticationSuccess( HttpServletRequest request, HttpServletResponse response,
-                                         Authentication authentication )
+    public void onAuthenticationSuccess( HttpServletRequest request, HttpServletResponse response, Authentication authentication )
         throws ServletException, IOException
     {
         HttpSession session = request.getSession();

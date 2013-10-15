@@ -38,6 +38,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: HttpRedirectFilter.java 2869 2007-02-20 14:26:09Z andegje $
@@ -47,6 +50,8 @@ public class HttpRedirectFilter
 {
     public static final String REDIRECT_PATH_KEY = "redirectPath";
 
+    private static final Log log = LogFactory.getLog( HttpRedirectFilter.class );
+    
     private String redirectPath;
 
     // -------------------------------------------------------------------------
@@ -62,14 +67,19 @@ public class HttpRedirectFilter
     public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain )
         throws IOException, ServletException
     {
+        log.debug( "Redirecting to: " + redirectPath );
+        
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         if ( redirectPath == null )
         {
+            String msg = "HttpRedirectFilter was not properly initialised. \"" + REDIRECT_PATH_KEY + "\" must be specified.";
+            
             httpResponse.setContentType( "text/plain" );
-            httpResponse.getWriter().print(
-                "HttpRedirectFilter was not properly initialised. \"" + REDIRECT_PATH_KEY + "\" must be specified." );
+            httpResponse.getWriter().print( msg );
 
+            log.warn( msg );
+            
             return;
         }
 
