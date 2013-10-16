@@ -74,7 +74,7 @@ public class Translation
 
     public String getClassIdPropKey()
     {
-        return className + "-" + id + "-" + property;
+        return className + "-" + id + "-" + locale + "-" + property;
     }
     
     // -------------------------------------------------------------------------
