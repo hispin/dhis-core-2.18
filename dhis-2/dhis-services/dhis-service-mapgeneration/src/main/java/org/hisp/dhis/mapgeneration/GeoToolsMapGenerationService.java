@@ -170,8 +170,6 @@ public class GeoToolsMapGenerationService
             return null;
         }
 
-        boolean isIndicator = false; //TODO
-
         List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
         List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();
         
@@ -204,8 +202,8 @@ public class GeoToolsMapGenerationService
 
         Period period = !mapView.getPeriods().isEmpty() ? mapView.getPeriods().get( 0 ) : null;
 
-        Integer radiusLow = !isIndicator ? mapView.getRadiusLow() : DEFAULT_RADIUS_LOW;
-        Integer radiusHigh = !isIndicator ? mapView.getRadiusHigh() : DEFAULT_RADIUS_HIGH;
+        Integer radiusLow = mapView.getRadiusLow() != null ? mapView.getRadiusLow() : DEFAULT_RADIUS_LOW;
+        Integer radiusHigh = mapView.getRadiusHigh() != null ? mapView.getRadiusHigh() : DEFAULT_RADIUS_HIGH;
 
         // Get the low and high colors, typically in hexadecimal form, e.g. #ff3200
         Color colorLow = MapUtils.createColorFromString( StringUtils.trimToNull( mapView.getColorLow() ) != null ? mapView.getColorLow()
@@ -286,10 +284,7 @@ public class GeoToolsMapGenerationService
             // Update the radius of each map object in this map layer according to
             // its map object's highest and lowest values
             
-            if ( !isIndicator )
-            {
-                mapLayer.applyInterpolatedRadii();
-            }
+            mapLayer.applyInterpolatedRadii();
         }
 
         return mapLayer;
