@@ -167,7 +167,7 @@
 	<div id='dataEntryFormDiv'></div>
 	
 	<div id='actionDiv' class="page inputCriteria" style="width:700px;height:29px;">	
-		<input type="button" id="completeAndNewBtn" onclick="completedAndAddNewEvent();" value="$i18n.getString('complete_and_add_new_event')" style="width:150px;">
+		<input type="button" id="completeAndNewBtn" onclick="completedAndAddNewEvent();" value="$i18n.getString('complete_and_add_new_event')" style="width:160px;">
 		<input type="button" id="completeBtn" onclick="doComplete()" value="$i18n.getString('complete')">
 		<input type="button" id="uncompleteBtn" onclick="doUnComplete()" value="$i18n.getString('incomplete')">
 		<input type="button" id="validateBtn" value="$i18n.getString('run_validation')" onclick="javascript: runValidation();">
