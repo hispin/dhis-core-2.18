@@ -41,11 +41,17 @@
                 </div>
                 <div id="submitDiv">
                 	<input id="submit" class="button" type="submit" value="Login">
-                	#if( $keyAccountRecovery )<a id="forgotPasswordLink" href="recovery.action" style="padding-left: 18px">Forgot password?</a>#end
                 </div>
-                <div style="padding-top: 10px">                	
-                	#if( $keyConfig.selfRegistrationAllowed() )<a id="createAccountLink" href="account.action">Create an account</a>#end
+                #if( $keyAccountRecovery )
+                <div style="padding-bottom: 10px">
+                    <a id="forgotPasswordLink" href="recovery.action">Forgot password?</a>
                 </div>
+                #end
+                #if( $keyConfig.selfRegistrationAllowed() )
+                <div style="padding-bottom: 10px">                	
+                	<a id="createAccountLink" href="account.action">Create an account</a>
+                </div>
+                #end
             </form>
             #if( $failed == true )
             <div id="loginMessage">Wrong username or password</div>

@@ -90,7 +90,7 @@ input[type=text],input[type=password]
 
 #submitDiv
 {
-  padding: 5px 0 7px 0;
+  padding: 5px 0 20px 0;
 }
 
 #loginField input[type=text],input[type=password]
@@ -117,7 +117,7 @@ input[type=text],input[type=password]
 {
   background-color: #D0E6FD;
   color: #1D5288;
-  margin-top: 30px;
+  margin-top: 15px;
   padding: 15px;
   border-radius: 3px;
 }
