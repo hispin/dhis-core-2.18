@@ -40,10 +40,9 @@ import org.hisp.dhis.user.UserCredentials;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
-import static org.hisp.dhis.system.util.PredicateUtils.*;
+import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -143,8 +142,7 @@ public class WebUtils
         }
 
         List<Field> fields = new ArrayList<Field>();
-        fields.addAll( ReflectionUtils.collectFields( object.getClass(), idObjects ) );
-        fields.addAll( ReflectionUtils.collectFields( object.getClass(), idObjectCollections ) );
+        fields.addAll( ReflectionUtils.collectFields( object.getClass() ) );
 
         if ( !deep )
         {
