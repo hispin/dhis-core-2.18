@@ -367,8 +367,8 @@
 		id="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction"
 		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programValidationService"
 			ref="org.hisp.dhis.program.ProgramValidationService" />
 	</bean>

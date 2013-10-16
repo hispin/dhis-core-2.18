@@ -869,10 +869,11 @@ function showUpdateEvent( programStageInstanceId ) {
     hideById( 'listDiv' );
     hideById( 'offlineListDiv' );
     setFieldValue( 'programStageInstanceId', programStageInstanceId );
-    setInnerHTML( 'dataEntryFormDiv', '' );
+	setInnerHTML( 'dataEntryFormDiv', '' );
     showLoader();
 
     service.displayProgramStage( getFieldValue( 'programStageId' ), programStageInstanceId, getFieldValue( 'orgunitId' ) );
+	jQuery('.stage-object-selected').attr('id', 'ps_' + programStageInstanceId);
 }
 
 function backEventList() {
@@ -1021,10 +1022,8 @@ var service = (function () {
                 if ( json.response == 'success' ) {
                     $( "#executionDate" ).css( 'background-color', SUCCESS_COLOR );
                     setFieldValue( 'programStageInstanceId', json.message );
-
-                    if ( programStageInstanceId != json.message ) {
-                        showUpdateEvent( json.message );
-                    }
+					jQuery('.stage-object-selected').attr('id', json.message );
+                    showUpdateEvent( json.message );
                 }
                 else {
                     $( "#executionDate" ).css( 'background-color', ERROR_COLOR );
