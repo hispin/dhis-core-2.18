@@ -155,8 +155,8 @@ public class LoadDataElementsAction
 
         if ( program != null && program.isRegistration() )
         {
-            Collection<PatientIdentifierType> identifierTypes = identifierTypeService.getAllPatientIdentifierTypes();
-            Collection<PatientAttribute> patientAttributes = attributeService.getAllPatientAttributes();
+            identifierTypes = identifierTypeService.getAllPatientIdentifierTypes();
+            patientAttributes = attributeService.getAllPatientAttributes();
 
             Collection<Program> programs = programService.getAllPrograms();
             programs.remove( program );
