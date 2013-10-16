@@ -1612,7 +1612,7 @@ Ext.onReady( function() {
 		total: 0,
 		asc: "",
 		desc: "",
-		sortOrder: "",
+		sortOrder: "ASC",
 		orgunitIds: [],
 		generateReport: function( type ) {
 			if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
@@ -1769,7 +1769,7 @@ Ext.onReady( function() {
 			
 			params += '&startDate=' + TR.cmp.settings.startDate.rawValue;
 			params += '&endDate=' + TR.cmp.settings.endDate.rawValue;
-			if(TR.cmp.settings.ouMode.getValue()!="" ){
+			if(TR.cmp.settings.ouMode != null && TR.cmp.settings.ouMode.getValue()!="" ){
 				params += '&ouMode=' + TR.cmp.settings.ouMode.getValue();
 			}
 			
@@ -1878,9 +1878,7 @@ Ext.onReady( function() {
 				}
 				
 				// Sort-order
-				if( TR.state.sortOrder!= '' ){
-					params += '&sortOrder=' + TR.state.sortOrder;
-				}
+				params += '&sortOrder=' + TR.state.sortOrder;
 			}
 			
 			return params;
@@ -2528,7 +2526,12 @@ Ext.onReady( function() {
 									}
 								}
 								else{
-									TR.state.sortOrder = column.sortState;
+									if( column.sortState=='ASC'){
+										TR.state.sortOrder = "DESC";
+									}
+									else{
+										TR.state.sortOrder = "ASC";
+									}
 								}
 								TR.exe.execute(false, true );
 							}
@@ -2678,7 +2681,7 @@ Ext.onReady( function() {
 		},
 		createAggColTable: function(){
 			var cols = [];
-			var i=0;
+			var i = 0;
 			for( i=0; i <TR.value.columns.length - 1; i++ )
 			{
 				cols[i] = {
@@ -2686,7 +2689,7 @@ Ext.onReady( function() {
 					dataIndex: TR.value.columns[i].name,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: TR.value.columns[i].column,
-					sortable: true,
+					sortable: false,
 					draggable: false,
 					hideable: false,
 					menuDisabled: true
@@ -2694,16 +2697,16 @@ Ext.onReady( function() {
 			}
 			
 			cols[i] = {
-					header: TR.value.columns[i].column, 
-					dataIndex: TR.value.columns[i].name,
-					height: TR.conf.layout.east_gridcolumn_height,
-					name: TR.value.columns[i].column,
-					sortable: true,
-					draggable: false,
-					hideable: false,
-					menuDisabled: true
-				}
-				
+				header: TR.value.columns[i].column, 
+				dataIndex: TR.value.columns[i].name,
+				height: TR.conf.layout.east_gridcolumn_height,
+				name: TR.value.columns[i].column,
+				sortable: true,
+				draggable: false,
+				hideable: false,
+				menuDisabled: true
+			}
+			
 			return cols;
 		},
 		createColumn: function( type, id, colname, index ){
