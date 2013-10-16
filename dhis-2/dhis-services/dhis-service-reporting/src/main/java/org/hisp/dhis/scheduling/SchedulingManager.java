@@ -41,6 +41,7 @@ public interface SchedulingManager
     final String TASK_DATAMART_FROM_6_TO_12_MONTS = "dataMartFrom6To12MonthsTask";
     final String TASK_ANALYTICS_ALL = "analyticsAllTask";
     final String TASK_ANALYTICS_LAST_3_YEARS = "analyticsLast3YearsTask";
+    final String TASK_MONITORING_LAST_DAY = "monitoringLastDayTask";
         
     /**
      * Schedule all tasks.

@@ -69,6 +69,19 @@
 </select>
 </div>
 
+<!-- Monitoring -->
+
+<div class="settingHeader">$i18n.getString( "data_monitoring" )</div>
+
+<div class="settingLabel">$i18n.getString( "data_monitoring_strategy" )</div>
+
+<div class="setting">
+<select id="monitoringStrategy" name="monitoringStrategy" class="scheduling">
+    <option value="never">$i18n.getString( "never" )</option>
+    <option value="allDaily"#if( $monitoringStrategy && $monitoringStrategy == "allDaily" ) selected="selected"#end>$i18n.getString( "all_daily" )</option>
+</select>
+</div>
+
 <div class="setting">
 	<input type="button" style="width:140px" onclick="submitSchedulingForm()"
 	#if ( $running )
