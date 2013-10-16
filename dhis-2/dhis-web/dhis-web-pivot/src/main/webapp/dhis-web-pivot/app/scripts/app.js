@@ -187,12 +187,12 @@ Ext.onReady( function() {
 
 				w.hasDestroyOnBlurHandler = true;
 			};
-			
+
 			util.message = {
 				alert: function(message) {
 					alert(message);
 				}
-			}			
+			}
 		}());
 
         // init
@@ -963,7 +963,7 @@ Ext.onReady( function() {
 			style: 'margin-bottom:4px'
 		});
 		pt.viewport.showHierarchy = showHierarchy;
-		
+
 		displayDensity = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'pt-combo',
 			style: 'margin-bottom:3px',
@@ -1130,7 +1130,7 @@ Ext.onReady( function() {
 				hideEmptyRows
 			]
 		};
-		
+
 		organisationUnits = {
 			bodyStyle: 'border:0 none',
 			style: 'margin-left:14px',
@@ -2026,7 +2026,7 @@ Ext.onReady( function() {
 		userGroupRowContainer = Ext.create('Ext.container.Container', {
 			bodyStyle: 'border:0 none'
 		});
-		
+
 		if (sharing.meta.allowExternalAccess) {
 			externalAccess = userGroupRowContainer.add({
 				xtype: 'checkbox',
@@ -2219,7 +2219,7 @@ Ext.onReady( function() {
 
 	createViewport = function() {
         var dimConf = pt.conf.finals.dimension,
-        
+
 			indicatorAvailable,
 			indicatorSelected,
 			indicator,
@@ -3399,11 +3399,11 @@ Ext.onReady( function() {
 			},
 			multipleExpand: function(id, path, doUpdate) {
 				var rootId = pt.conf.finals.root.id;
-				
+
 				if (path.substr(0, rootId.length + 1) !== ('/' + rootId)) {
 					path = '/' + rootId + path;
 				}
-				
+
 				this.expandPath('/' + path, 'id', '/', function() {
 					var record = this.getRootNode().findChild('id', id, true);
 					this.recordsToSelect.push(record);
@@ -3431,14 +3431,14 @@ Ext.onReady( function() {
 			getParentGraphMap: function() {
 				var selection = this.getSelectionModel().getSelection(),
 					map = {};
-				
+
 				if (Ext.isArray(selection) && selection.length) {
 					for (var i = 0, pathArray, key; i < selection.length; i++) {
 						pathArray = selection[i].getPath().split('/');
 						map[pathArray.pop()] = pathArray.join('/');
 					}
 				}
-				
+
 				return map;
 			},
 			selectGraphMap: function(map, doUpdate) {
@@ -3589,7 +3589,7 @@ Ext.onReady( function() {
 				if (!param) {
 					return;
 				}
-				
+
 				var items = this.items.items;
 				this.menuValue = param;
 
@@ -4479,7 +4479,7 @@ Ext.onReady( function() {
 
 			// State
 			downloadButton.enable();
-			
+
 			if (isFavorite) {
 				interpretationButton.enable();
 			}
@@ -4686,6 +4686,7 @@ Ext.onReady( function() {
 			userOrganisationUnit: userOrganisationUnit,
 			userOrganisationUnitChildren: userOrganisationUnitChildren,
 			dataElementDetailLevel: dataElementDetailLevel,
+			treePanel: treePanel,
 			setGui: setGui,
 			items: [
 				westRegion,
@@ -4744,10 +4745,10 @@ Ext.onReady( function() {
 			url: '../initialize.action',
 			success: function(r) {
 				var init = Ext.decode(r.responseText);
-				
+
 				PT.i18n = init.i18n;
-				
-				pt = PT.core.getInstance(init);				
+
+				pt = PT.core.getInstance(init);
 
 				PT.app.extendInstance(pt);
 
