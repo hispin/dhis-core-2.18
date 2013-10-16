@@ -2,6 +2,8 @@ jQuery( document ).ready( function()
 {
     jQuery( "#name" ).focus();
 
+    changeRuleType();
+
     validation2( 'updateValidationRuleForm', function( form )
     {
         form.submit();
