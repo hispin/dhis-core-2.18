@@ -40,6 +40,8 @@ import java.util.List;
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.Period;
 import org.junit.Test;
 
 /**
@@ -60,7 +62,8 @@ public class PartitionUtilsTest
         assertEquals( new Partitions().add( TBL + "_2000" ).add( TBL + "_2001" ), PartitionUtils.getPartitions( createPeriod( "2000July" ), TBL, null ) );
         assertEquals( new Partitions().add( TBL + "_2001" ).add( TBL + "_2002" ), PartitionUtils.getPartitions( createPeriod( "2001April" ), TBL, null ) );
     }
-    
+
+    @Test
     public void getGetPartitionsMultiplePeriods()
     {
         List<NameableObject> periods = new ArrayList<NameableObject>();
@@ -69,6 +72,26 @@ public class PartitionUtilsTest
         periods.add( createPeriod( "200108" ) );
         
         assertEquals( new Partitions().add( TBL + "_2000" ).add( TBL + "_2001" ), PartitionUtils.getPartitions( periods, TBL, null ) );
+    }
+
+    @Test
+    public void getGetPartitionsLongPeriods()
+    {
+        Period period = new Period();
+        period.setStartDate( new Cal( 2008, 3, 1 ).time() );
+        period.setEndDate( new Cal( 2011, 7, 1 ).time() );
+        
+        Partitions expected = new Partitions().add( TBL + "_2008" ).add( TBL + "_2009" ).add( TBL + "_2010" ).add( TBL + "_2011" );
+        
+        assertEquals( expected, PartitionUtils.getPartitions( period, TBL, null ) );
+        
+        period = new Period();
+        period.setStartDate( new Cal( 2009, 8, 1 ).time() );
+        period.setEndDate( new Cal( 2010, 2, 1 ).time() );
+        
+        expected = new Partitions().add( TBL + "_2009" ).add( TBL + "_2010" );
+        
+        assertEquals( expected, PartitionUtils.getPartitions( period, TBL, null ) );
     }
         
     @Test

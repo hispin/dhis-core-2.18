@@ -39,6 +39,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.YearlyPeriodType;
 
@@ -66,7 +67,6 @@ public class PartitionUtils
         return periods;
     }
 
-    //TODO allow periods spanning more than two years
     //TODO optimize by including required filter periods only
     
     public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix )
@@ -76,14 +76,13 @@ public class PartitionUtils
 
         Partitions partitions = new Partitions();
         
-        Period startYear = PERIODTYPE.createPeriod( period.getStartDate() );
-        Period endYear = PERIODTYPE.createPeriod( period.getEndDate() );
+        int startYear = year( period.getStartDate() );
+        int endYear = year( period.getEndDate() );
         
-        partitions.add( tablePrefix + SEP + startYear.getIsoDate() + tableSuffix );
-        
-        if ( !startYear.equals( endYear ) )
+        while ( startYear <= endYear )
         {
-            partitions.add( tablePrefix + SEP + endYear.getIsoDate() + tableSuffix );            
+            partitions.add( tablePrefix + SEP + startYear + tableSuffix );
+            startYear++;
         }
 
         return partitions;
@@ -128,5 +127,21 @@ public class PartitionUtils
         }
         
         return map;
+    }
+    
+    /**
+     * Returns the year of the given date.
+     */
+    public static int year( Date date )
+    {
+        return new Cal( date ).getYear();
+    }
+    
+    /**
+     * Returns the max date within the year of the given date.
+     */
+    public static Date maxOfYear( Date date )
+    {
+        return new Cal( year( date ), 12, 31 ).time();
     }
 }
