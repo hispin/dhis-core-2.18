@@ -28,18 +28,19 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramValidation;
-import org.hisp.dhis.program.ProgramValidationResult;
-import org.hisp.dhis.program.ProgramValidationService;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.ProgramValidation;
+import org.hisp.dhis.program.ProgramValidationResult;
+import org.hisp.dhis.program.ProgramValidationService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
@@ -52,11 +53,12 @@ public class ValidateProgramInstanceAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private ProgramStageInstanceService programStageInstanceService;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.programStageInstanceService = programStageInstanceService;
     }
 
     private ProgramValidationService programValidationService;
@@ -67,8 +69,10 @@ public class ValidateProgramInstanceAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input && Output
     // -------------------------------------------------------------------------
+
+    private Integer programStageInstanceId;
 
     private Collection<ProgramValidationResult> programValidationResults;
 
@@ -83,6 +87,11 @@ public class ValidateProgramInstanceAction
     public Map<Integer, String> getLeftsideFormulaMap()
     {
         return leftsideFormulaMap;
+    }
+
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
     }
 
     public Map<Integer, String> getRightsideFormulaMap()
@@ -100,11 +109,12 @@ public class ValidateProgramInstanceAction
     // -------------------------------------------------------------------------
 
     @Override
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         programValidationResults = new ArrayList<ProgramValidationResult>();
 
-        ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
         List<ProgramValidation> validation = new ArrayList<ProgramValidation>(
             programValidationService.getProgramValidation( programStageInstance.getProgramStage() ) );

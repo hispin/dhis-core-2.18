@@ -501,7 +501,10 @@ function doComplete( isCreateEvent ) {
 
 		$("#loading-bar").siblings(".ui-dialog-titlebar").hide();
 
-		$.get( 'validateProgram.action').done(function(html){
+		$.get( 'validateProgram.action', 
+			{
+				programStageInstanceId: jQuery('.stage-object-selected').attr('id').split('_')[1]
+			}).done(function(html){
             $("#loading-bar").dialog("close");
             $('#validateProgramDiv').html(html);
             if( getFieldValue('violateValidation') == 'true' ) {
@@ -970,7 +973,11 @@ function runValidation()
 	});
 	$("#loading-bar").siblings(".ui-dialog-titlebar").hide(); 
 	
+	var programStageInstanceId = jQuery('.stage-object-selected').attr('id').split('_')[1];
 	$('#validateProgramDiv' ).load( 'validateProgram.action',
+		{
+			programStageInstanceId: programStageInstanceId
+		},
 		function(){
 			$( "#loading-bar" ).dialog( "close" );
 			
