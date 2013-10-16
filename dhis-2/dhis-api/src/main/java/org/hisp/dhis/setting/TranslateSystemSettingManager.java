@@ -37,4 +37,6 @@ import java.util.Map;
 public interface TranslateSystemSettingManager
 {
     Map<String, String> getTranslation_SystemAppearanceSetting( String localeStr );
+
+    Map<String, String> getTranslationNoFallback_SystemAppearanceSetting( String localeStr );
 }

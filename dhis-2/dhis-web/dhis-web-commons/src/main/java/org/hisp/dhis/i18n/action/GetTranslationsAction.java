@@ -94,7 +94,7 @@ public class GetTranslationsAction
     {
         Locale locale = LocaleUtils.getLocale( loc );
 
-        translations = i18nService.getTranslations( className, id, locale );
+        translations = i18nService.getTranslationsNoFallback( className, id, locale );
         
         return SUCCESS;
     }

@@ -157,8 +157,8 @@ public class TranslateAction
         for ( String propertyName : propertyNames )
         {
             String[] translation = request.getParameterValues( propertyName );
-
-            if ( translation != null && translation.length > 0 && translation[0] != null && !translation[0].trim().isEmpty() )
+            
+            if ( translation != null && translation.length > 0 )
             {
                 translations.put( propertyName, translation[0] );
             }

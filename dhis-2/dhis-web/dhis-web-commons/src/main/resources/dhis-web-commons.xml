@@ -467,11 +467,6 @@
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
-    <action name="systemAppearanceSettingsString" class="org.hisp.dhis.settings.system.action.GetAppearanceSettingsStringAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/settings/systemAppearanceSettingsString.vm</result>
-    </action>
-    
 
   </package>
 
