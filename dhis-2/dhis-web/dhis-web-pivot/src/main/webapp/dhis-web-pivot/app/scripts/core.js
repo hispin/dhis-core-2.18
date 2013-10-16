@@ -2,14 +2,14 @@ Ext.onReady( function() {
 
 	// ext config
 	Ext.Ajax.method = 'GET';
-	
-	// pt	
+
+	// pt
 	PT = {
 		core: {
 			instances: []
-		},		
-		i18n: {},		
-		isDebug: false,		
+		},
+		i18n: {},
+		isDebug: false,
 		isSessionStorage: 'sessionStorage' in window && window['sessionStorage'] !== null
 	};
 
@@ -767,7 +767,7 @@ Ext.onReady( function() {
 					layout.showTotals = Ext.isBoolean(config.totals) ? config.totals : (Ext.isBoolean(config.showTotals) ? config.showTotals : true);
 					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
-					
+
 					layout.showHierarchy = Ext.isBoolean(config.showHierarchy) ? config.showHierarchy : false;
 
 					layout.displayDensity = Ext.isString(config.displayDensity) && !Ext.isEmpty(config.displayDensity) ? config.displayDensity : 'normal';
@@ -799,7 +799,7 @@ Ext.onReady( function() {
 			};
 
 			api.response = {};
-			
+
 			api.response.Header = function(config) {
 				var header = {};
 
@@ -883,43 +883,43 @@ Ext.onReady( function() {
 				}();
 			};
 		}());
-		
+
 		// service
 		(function() {
 			service.layout = {};
-			
+
 			service.layout.getObjectNameDimensionMap = function(dimensionArray) {
 				var map = {};
-				
-				if (Ext.isArray(dimensionArray) && dimensionArray.length) {					
+
+				if (Ext.isArray(dimensionArray) && dimensionArray.length) {
 					for (var i = 0, dim; i < dimensionArray.length; i++) {
 						dim = api.layout.Dimension(dimensionArray[i]);
-						
+
 						if (dim) {
 							map[dim.dimension] = dim;
 						}
 					}
 				}
-				
+
 				return map;
-			};				
-			
+			};
+
 			service.layout.getObjectNameDimensionItemsMap = function(dimensionArray) {
 				var map = {};
-				
-				if (Ext.isArray(dimensionArray) && dimensionArray.length) {					
+
+				if (Ext.isArray(dimensionArray) && dimensionArray.length) {
 					for (var i = 0, dim; i < dimensionArray.length; i++) {
 						dim = api.layout.Dimension(dimensionArray[i]);
-						
+
 						if (dim) {
 							map[dim.dimension] = dim.items;
 						}
 					}
 				}
-				
+
 				return map;
 			};
-							
+
 			service.response = {};
 		}());
 
@@ -1169,7 +1169,7 @@ Ext.onReady( function() {
 						paramString += '&filter=' + dim.dimensionName + ':' + dim.ids.join(';');
 					}
 				}
-				
+
 				if (xLayout.showHierarchy) {
 					paramString += '&hierarchyMeta=true';
 				}
@@ -1207,26 +1207,26 @@ Ext.onReady( function() {
 
 				isHierarchy = function(id, response) {
 					return layout.showHierarchy && Ext.isObject(response.metaData.ouHierarchy) && response.metaData.ouHierarchy.hasOwnProperty(id);
-				};						
-					
+				};
+
 				getItemName = function(id, response, isHtml) {
 					var metaData = response.metaData,
 						name = '';
-					
+
 					if (isHierarchy(id, response)) {
 						var a = Ext.clean(metaData.ouHierarchy[id].split('/'));
 						a.shift();
-						
+
 						for (var i = 0; i < a.length; i++) {
 							name += (isHtml ? '<span class="text-weak">' : '') + metaData.names[a[i]] + (isHtml ? '</span>' : '') + ' / ';
 						}
 					}
-					
+
 					name += metaData.names[id];
-					
+
 					return name;
 				};
-				
+
 				getSyncronizedXLayout = function(xLayout, response) {
 					var removeDimensionFromXLayout,
 						getHeaderNames,
@@ -1341,10 +1341,10 @@ Ext.onReady( function() {
 											responseOu = response.metaData[ou];
 
 										userOugc = [];
-										
+
 										for (var j = 0, id; j < responseOu.length; j++) {
 											id = responseOu[j];
-											
+
 											if (!Ext.Array.contains(userOuOuc, id)) {
 												userOugc.push({
 													id: id,
@@ -1361,7 +1361,7 @@ Ext.onReady( function() {
 								else if (isLevel || isGroup) {
 									for (var j = 0, responseOu = response.metaData[ou], id; j < responseOu.length; j++) {
 										id = responseOu[j];
-										
+
 										dim.items.push({
 											id: id,
 											name: getItemName(id, response)
@@ -2436,9 +2436,9 @@ Ext.onReady( function() {
 				};
 
 				afterLoad = function(layout, xLayout, xResponse) {
-					
+
 					if (pt.isPlugin) {
-						
+
 						// Resize render elements
 						var baseEl = Ext.get(pt.init.el),
 							baseElBorderW = parseInt(baseEl.getStyle('border-left-width')) + parseInt(baseEl.getStyle('border-right-width')),
@@ -2457,7 +2457,7 @@ Ext.onReady( function() {
 							setMouseHandlers();
 							engine.setSessionStorage('table', layout);
 						}
-						
+
 						if (updateGui) {
 							pt.viewport.setGui(layout, xLayout, updateGui, isFavorite);
 						}
@@ -2479,80 +2479,88 @@ Ext.onReady( function() {
 						console.log("xResponse", xResponse);
 						console.log("xLayout", xLayout);
 					}
-				};					
+				};
 
-				initialize = function() {
-					var url,
-						xLayout,
-						xResponse,
-						xColAxis,
-						xRowAxis;
+                initialize = function() {
+                    var xLayout = engine.getExtendedLayout(layout),
+                        paramString = engine.getParamString(xLayout, true),
+						method = 'GET',
+						success;
 
-					// Extended layout
-					xLayout = engine.getExtendedLayout(layout);
+					success = function(response) {
+						var xResponse,
+							chart,
+							html,
+							response = pt.api.response.Response(response);
 
-					// Param string
-					pt.paramString = engine.getParamString(xLayout, true);
-					url = pt.init.contextPath + '/api/analytics.json' + pt.paramString;
+						if (!response) {
+							pt.util.mask.hideMask(pt.viewport.centerRegion);
+							return;
+						}
+
+						// Synchronize xLayout
+						xLayout = getSyncronizedXLayout(xLayout, response);
+
+						if (!xLayout) {
+							pt.util.mask.hideMask(pt.viewport.centerRegion);
+							return;
+						}
+
+						// Extended response
+						xResponse = getExtendedResponse(response, xLayout);
+
+						// Extended axes
+						xColAxis = getExtendedAxis('col', xLayout.columnDimensionNames, xResponse);
+						xRowAxis = getExtendedAxis('row', xLayout.rowDimensionNames, xResponse);
+
+						// Create html
+						html = getTableHtml(xColAxis, xRowAxis, xResponse);
+
+						// Update viewport
+						pt.viewport.centerRegion.removeAll(true);
+						pt.viewport.centerRegion.update(html);
+
+						pt.paramString = paramString;
+
+						afterLoad(layout, xLayout, xResponse);
+					};
 
 					// Validate request size
-					if (!validateUrl(url)) {
-						return;
-					}
+                    if (!validateUrl(init.contextPath + '/api/analytics.jsonp' + paramString)) {
+                        return;
+                    }
 
 					// Show load mask
-					pt.util.mask.showMask(pt.viewport.centerRegion);
+                    util.mask.showMask(pt.viewport.centerRegion);
 
-					Ext.Ajax.request({
-						method: 'GET',
-						url: url,
-						callbackName: 'analytics',
-						timeout: 60000,
-						headers: {
-							'Content-Type': 'application/json',
-							'Accept': 'application/json'
-						},
-						disableCaching: false,
-						failure: function(r) {
-							pt.util.mask.hideMask(pt.viewport.centerRegion);
-							alert(r.responseText);
-						},
-						success: function(r) {
-							var html,
-								response = pt.api.response.Response(Ext.decode(r.responseText));
-
-							if (!response) {
-								pt.util.mask.hideMask(pt.viewport.centerRegion);
-								return;
+                    if (pt.isPlugin) {
+						Ext.data.JsonP.request({
+							method: method,
+							url: init.contextPath + '/api/analytics.jsonp' + paramString,
+							disableCaching: false,
+							success: success
+						});
+					}
+					else {
+						Ext.Ajax.request({
+							method: method,
+							url: init.contextPath + '/api/analytics.json' + paramString,
+							timeout: 60000,
+							headers: {
+								'Content-Type': 'application/json',
+								'Accept': 'application/json'
+							},
+							disableCaching: false,
+							failure: function(r) {
+								util.mask.hideMask(pt.viewport.centerRegion);
+								alert(r.responseText);
+							},
+							success: function(r) {
+								success(Ext.decode(r.responseText));
 							}
-
-							// Synchronize xLayout
-							xLayout = getSyncronizedXLayout(xLayout, response);
-
-							if (!xLayout) {
-								pt.util.mask.hideMask(pt.viewport.centerRegion);
-								return;
-							}
-
-							// Extended response
-							xResponse = getExtendedResponse(response, xLayout);
-
-							// Extended axes
-							xColAxis = getExtendedAxis('col', xLayout.columnDimensionNames, xResponse);
-							xRowAxis = getExtendedAxis('row', xLayout.rowDimensionNames, xResponse);
-
-							// Create html
-							html = getTableHtml(xColAxis, xRowAxis, xResponse);
-
-							// Update viewport
-							pt.viewport.centerRegion.removeAll(true);
-							pt.viewport.centerRegion.update(html);
-							
-							afterLoad(layout, xLayout, xResponse);
-						}
-					});
-
-				}();
+						});
+					}
+                }();
 			};
 
 			engine.loadTable = function(id, pt, updateGui, isFavorite) {
