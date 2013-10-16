@@ -170,8 +170,20 @@ public class MapView
     @Override
     public String getName()
     {
-        return ( indicators != null && !indicators.isEmpty() ) ? indicators.get( 0 ).getName() : 
-            ( dataElements != null && !dataElements.isEmpty() ) ? dataElements.get( 0 ).getName() : uid;
+        if ( indicators != null && !indicators.isEmpty() )
+        {
+            return indicators.get( 0 ).getName();
+        }
+        else if ( dataElements != null && !dataElements.isEmpty() )
+        {
+            return dataElements.get( 0 ).getName();
+        }
+        else if ( dataElementOperands != null && !dataElementOperands.isEmpty() )
+        {
+            return dataElementOperands.get( 0 ).getName();
+        }
+        
+        return uid;
     }
     
     // -------------------------------------------------------------------------
