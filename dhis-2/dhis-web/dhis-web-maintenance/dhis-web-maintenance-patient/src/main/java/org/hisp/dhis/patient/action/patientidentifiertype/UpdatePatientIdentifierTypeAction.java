@@ -174,11 +174,7 @@ public class UpdatePatientIdentifierTypeAction
                 {
                     PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
                     periodType = periodService.reloadPeriodType( periodType );
-
-                    if ( periodType != null )
-                    {
-                        identifierType.setPeriodType( periodType );
-                    }
+                    identifierType.setPeriodType( periodType );
                 }
                 else
                 {
