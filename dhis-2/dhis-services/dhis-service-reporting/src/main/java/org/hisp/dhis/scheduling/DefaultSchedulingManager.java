@@ -68,6 +68,8 @@ public class DefaultSchedulingManager
     {
         this.tasks = tasks;
     }
+    
+    // TODO Avoid map, use bean identifier directly and get bean from context
 
     // -------------------------------------------------------------------------
     // SchedulingManager implementation

@@ -438,7 +438,9 @@
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
   
-  <bean id="monitoringTask" class="org.hisp.dhis.validation.scheduling.MonitoringTask" />
+  <!-- Scheduled task for data monitoring -->
+  
+  <bean id="monitoringLastDayTask" class="org.hisp.dhis.validation.scheduling.MonitoringTask" />
 
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryService" class="org.hisp.dhis.dataelement.DefaultDataElementCategoryService">
     <property name="dataElementCategoryStore" ref="org.hisp.dhis.dataelement.DataElementCategoryStore" />

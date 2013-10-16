@@ -166,6 +166,7 @@
         <entry key="dataMartFrom6To12MonthsTask" value-ref="dataMartFrom6To12MonthsTask" />
         <entry key="analyticsAllTask" value-ref="analyticsAllTask" />
         <entry key="analyticsLast3YearsTask" value-ref="analyticsLast3YearsTask" />
+        <entry key="monitoringLastDayTask" value-ref="monitoringLastDayTask" />
       </map>
     </property>
   </bean>
