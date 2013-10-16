@@ -96,6 +96,25 @@ public class HibernateTranslationStore
     }
 
     @SuppressWarnings( "unchecked" )
+    public Translation getTranslationNoFallback( String className, int id, Locale locale, String property )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Translation.class );
+
+        criteria.add( Restrictions.eq( "className", className ) );
+        criteria.add( Restrictions.eq( "id", id ) );
+        criteria.add( Restrictions.eq( "locale", locale.toString() ) );
+        criteria.add( Restrictions.eq( "property", property ) );
+
+        criteria.setCacheable( true );
+
+        List<Translation> translations = criteria.list();     
+               
+        return !translations.isEmpty() ? translations.get( 0 ) : null;
+    }
+    
+    @SuppressWarnings( "unchecked" )
     public Collection<Translation> getTranslations( String className, int id, Locale locale )
     {
         Session session = sessionFactory.getCurrentSession();

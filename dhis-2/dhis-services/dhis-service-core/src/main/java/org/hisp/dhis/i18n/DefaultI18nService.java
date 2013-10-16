@@ -217,8 +217,8 @@ public class DefaultI18nService
             {
                 String key = translationEntry.getKey();
                 String value = translationEntry.getValue();
-
-                Translation translation = translationService.getTranslation( className, id, locale, key );
+                
+                Translation translation = translationService.getTranslationNoFallback( className, id, locale, key );
 
                 if ( value != null && !value.trim().isEmpty() )
                 {                    

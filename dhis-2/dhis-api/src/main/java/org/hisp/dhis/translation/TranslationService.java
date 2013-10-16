@@ -65,6 +65,18 @@ public interface TranslationService
     Translation getTranslation( String className, int id, Locale locale, String property );
 
     /**
+     * Retrieves a Translation. Only exact matches on the given
+     * Locale will be returned.
+     * 
+     * @param className the class name.
+     * @param id the id.
+     * @param locale the locale.
+     * @param property the property.
+     * @return a Translation.
+     */
+    Translation getTranslationNoFallback( String className, int id, Locale locale, String property );
+
+    /**
      * Retrieves a Collection of Translations.
      * 
      * @param className the class name.
