@@ -274,8 +274,6 @@ public class ScheduleTasksAction
                 {
                     cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_MONITORING_LAST_DAY );
                     cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_MONITORING_LAST_DAY );
-                    
-                    System.out.println("11");
                 }
                 
                 schedulingManager.scheduleTasks( cronKeyMap );
@@ -327,7 +325,6 @@ public class ScheduleTasksAction
             if ( keys.contains( TASK_MONITORING_LAST_DAY ) )
             {
                 monitoringStrategy = STRATEGY_ALL_DAILY;
-                System.out.println("22");
             }
         }
         
