@@ -347,7 +347,6 @@ public class DefaultMappingService
         mapView.getOrganisationUnits().add( unit );
         mapView.getOrganisationUnitLevels().add( level );
         mapView.setName( indicator.getName() );
-        mapView.setValueType( MapView.VALUE_TYPE_INDICATOR );
 
         return mapView;
     }

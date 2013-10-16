@@ -20,8 +20,6 @@
 
     <property name="layer" not-null="true" />
 
-    <property name="valueType" />
-
     <list name="dataElements" table="mapview_dataelements">
       <cache usage="read-write" />
       <key column="mapviewid" foreign-key="fk_mapview_dataelements_mapviewid" />
@@ -93,8 +91,6 @@
     <property name="userOrganisationUnitChildren" />
 
     <property name="userOrganisationUnitGrandChildren" />
-
-    <property name="legendType" />
 
     <property name="method" />
 
