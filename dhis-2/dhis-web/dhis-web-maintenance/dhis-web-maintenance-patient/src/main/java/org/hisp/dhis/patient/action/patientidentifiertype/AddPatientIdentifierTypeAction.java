@@ -28,12 +28,13 @@ package org.hisp.dhis.patient.action.patientidentifiertype;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-
-import com.opensymphony.xwork2.Action;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Viet
@@ -48,6 +49,7 @@ public class AddPatientIdentifierTypeAction
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
+    @Autowired
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
@@ -55,6 +57,7 @@ public class AddPatientIdentifierTypeAction
 
     private PeriodService periodService;
 
+    @Autowired
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
@@ -162,13 +165,26 @@ public class AddPatientIdentifierTypeAction
         {
             orgunitScope = (orgunitScope == null) ? false : orgunitScope;
             programScope = (programScope == null) ? false : programScope;
-            PeriodType periodType = (periodTypeName == null) ? null : periodService
-                .getPeriodTypeByName( periodTypeName );
+
+            if ( !StringUtils.isEmpty( periodTypeName ) )
+            {
+                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
+                periodType = periodService.reloadPeriodType( periodType );
+
+                if ( periodType != null )
+                {
+                    identifierType.setPeriodType( periodType );
+                }
+            }
+            else
+            {
+                identifierType.setPeriodType( null );
+            }
 
             identifierType.setOrgunitScope( orgunitScope );
             identifierType.setProgramScope( programScope );
-            identifierType.setPeriodType( periodType );
         }
+
         patientIdentifierTypeService.savePatientIdentifierType( identifierType );
 
         return SUCCESS;
