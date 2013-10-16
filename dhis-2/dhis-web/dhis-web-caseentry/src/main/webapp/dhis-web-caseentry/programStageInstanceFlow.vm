@@ -147,7 +147,7 @@
 			<td>$i18n.getString( 'due_date' )</td>
 			<td><input id='dueDateNewEncounter_$!programInstance.id' name='dueDateNewEncounter_$!programInstance.id' style='width:260px;'></td>
 			<script type="text/javascript">
-			   datePickerValid( 'dueDateNewEncounter_$!programInstance.id', false );
+			   datePicker( 'dueDateNewEncounter_$!programInstance.id', false );
 			</script>
 		</tr>
 		<tr>
