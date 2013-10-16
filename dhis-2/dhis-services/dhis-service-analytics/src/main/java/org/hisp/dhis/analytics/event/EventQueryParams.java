@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.analytics.DataQueryParams;
+import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.SortOrder;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
@@ -70,9 +71,7 @@ public class EventQueryParams
     private List<String> desc = new ArrayList<String>();
     
     private String organisationUnitMode;
-    
-    private String tableName;
-    
+        
     private Integer page;
     
     private Integer pageSize;
@@ -104,7 +103,7 @@ public class EventQueryParams
         params.filters = new ArrayList<DimensionalObject>( this.filters );
         params.aggregationType = this.aggregationType;
 
-        params.partitions = this.partitions;
+        params.partitions = new Partitions( this.partitions );
         params.periodType = this.periodType;
         
         params.program = this.program;
@@ -116,7 +115,6 @@ public class EventQueryParams
         params.asc = new ArrayList<String>( this.asc );
         params.desc = new ArrayList<String>( this.desc );
         params.organisationUnitMode = this.organisationUnitMode;
-        params.tableName = this.tableName;
         params.page = this.page;
         params.pageSize = this.pageSize;
         params.sortOrder = this.sortOrder;
@@ -302,16 +300,6 @@ public class EventQueryParams
     public void setOrganisationUnitMode( String organisationUnitMode )
     {
         this.organisationUnitMode = organisationUnitMode;
-    }
-
-    public String getTableName()
-    {
-        return tableName;
-    }
-
-    public void setTableName( String tableName )
-    {
-        this.tableName = tableName;
     }
 
     public Integer getPage()

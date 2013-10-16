@@ -180,7 +180,7 @@ public class DataQueryParams
         params.hierarchyMeta = this.hierarchyMeta;
         params.ignoreLimit = this.ignoreLimit;
         
-        params.partitions = this.partitions;
+        params.partitions = new Partitions( this.partitions );
         params.periodType = this.periodType;
         params.dataPeriodType = this.dataPeriodType;
         params.skipPartitioning = this.skipPartitioning;

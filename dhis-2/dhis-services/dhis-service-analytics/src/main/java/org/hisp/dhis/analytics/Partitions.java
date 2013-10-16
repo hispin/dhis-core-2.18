@@ -50,6 +50,11 @@ public class Partitions
     {
         this.partitions = partitions;
     }
+    
+    public Partitions( Partitions partitions )
+    {
+        this.partitions = partitions != null ? new ArrayList<String>( partitions.getPartitions() ) : new ArrayList<String>();
+    }
 
     // -------------------------------------------------------------------------
     // Logic

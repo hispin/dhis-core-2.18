@@ -88,9 +88,9 @@ public class EventQueryPlannerTest
         assertEquals( new Cal( 2012, 1, 1 ).time(), queries.get( 2 ).getStartDate() );
         assertEquals( new Cal( 2012, 3, 20 ).time(), queries.get( 2 ).getEndDate() );
         
-        assertEquals( "analytics_event_2010_programuidA", queries.get( 0 ).getTableName() );
-        assertEquals( "analytics_event_2011_programuidA", queries.get( 1 ).getTableName() );
-        assertEquals( "analytics_event_2012_programuidA", queries.get( 2 ).getTableName() );
+        assertEquals( "analytics_event_2010_programuidA", queries.get( 0 ).getPartitions().getSinglePartition() );
+        assertEquals( "analytics_event_2011_programuidA", queries.get( 1 ).getPartitions().getSinglePartition() );
+        assertEquals( "analytics_event_2012_programuidA", queries.get( 2 ).getPartitions().getSinglePartition() );
     }
 
     @Test
@@ -109,7 +109,7 @@ public class EventQueryPlannerTest
         assertEquals( new Cal( 2010, 3, 1 ).time(), queries.get( 0 ).getStartDate() );
         assertEquals( new Cal( 2010, 9, 20 ).time(), queries.get( 0 ).getEndDate() );
 
-        assertEquals( "analytics_event_2010_programuidA", queries.get( 0 ).getTableName() );
+        assertEquals( "analytics_event_2010_programuidA", queries.get( 0 ).getPartitions().getSinglePartition() );
     }    
 
     @Test

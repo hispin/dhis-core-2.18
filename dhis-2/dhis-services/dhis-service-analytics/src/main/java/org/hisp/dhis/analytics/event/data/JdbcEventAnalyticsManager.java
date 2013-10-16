@@ -313,7 +313,7 @@ public class JdbcEventAnalyticsManager
     {
         String sql = "";
         
-        sql += "from " + params.getTableName() + " ";
+        sql += "from " + params.getPartitions().getSinglePartition() + " ";
         
         if ( params.hasStartEndDate() )
         {        
