@@ -2235,70 +2235,80 @@ Ext.onReady( function() {
 				};
 
                 initialize = function() {
-                    var url,
-                        xLayout,
-                        xResponse,
-                        chart;
+                    var xLayout = engine.getExtendedLayout(layout),
+                        paramString = engine.getParamString(xLayout, true),
+						method = 'GET',
+						success;
 
-					// Extended layout
-                    xLayout = engine.getExtendedLayout(layout);
+					success = function(response) {
+						var xResponse,
+							chart,
+							html,
+							response = dv.api.response.Response(response);
 
-                    dv.paramString = engine.getParamString(xLayout, true);
-                    url = init.contextPath + '/api/analytics.json' + dv.paramString;
+						if (!response) {
+							dv.util.mask.hideMask(dv.viewport.centerRegion);
+							return;
+						}
+
+						// Synchronize xLayout
+						xLayout = getSyncronizedXLayout(xLayout, response);
+
+						if (!xLayout) {
+							dv.util.mask.hideMask(dv.viewport.centerRegion);
+							return;
+						}
+
+						// Extended response
+						xResponse = getExtendedResponse(response, xLayout);
+
+						// Create chart
+						chart = generator[xLayout.type](xResponse, xLayout);
+
+						// Update viewport
+						dv.viewport.centerRegion.removeAll(true);
+						dv.viewport.centerRegion.add(chart);
+
+						dv.paramString = paramString;
+
+						afterLoad(layout, xLayout, xResponse);
+					};
 
 					// Validate request size
-                    if (!validateUrl(url)) {
+                    if (!validateUrl(init.contextPath + '/api/analytics.jsonp' + paramString)) {
                         return;
                     }
 
 					// Show load mask
                     util.mask.showMask(dv.viewport.centerRegion);
 
-                    Ext.Ajax.request({
-                        method: 'GET',
-                        url: url,
-                        callbackName: 'analytics',
-                        timeout: 60000,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        disableCaching: false,
-                        failure: function(r) {
-                            util.mask.hideMask(dv.viewport.centerRegion);
-                            alert(r.responseText);
-                        },
-                        success: function(r) {
-                            var html,
-								response = dv.api.response.Response(Ext.decode(r.responseText));
-
-							if (!response) {
-								dv.util.mask.hideMask(dv.viewport.centerRegion);
-								return;
+                    if (dv.isPlugin) {
+						Ext.data.JsonP.request({
+							method: method,
+							url: init.contextPath + '/api/analytics.jsonp' + paramString,
+							disableCaching: false,
+							success: success
+						});
+					}
+					else {
+						Ext.Ajax.request({
+							method: method,
+							url: init.contextPath + '/api/analytics.json' + paramString,
+							timeout: 60000,
+							headers: {
+								'Content-Type': 'application/json',
+								'Accept': 'application/json'
+							},
+							disableCaching: false,
+							failure: function(r) {
+								util.mask.hideMask(dv.viewport.centerRegion);
+								alert(r.responseText);
+							},
+							success: function(r) {
+								success(Ext.decode(r.responseText));
 							}
-
-							// Synchronize xLayout
-                            xLayout = getSyncronizedXLayout(xLayout, response);
-
-                            if (!xLayout) {
-                                dv.util.mask.hideMask(dv.viewport.centerRegion);
-                                return;
-                            }
-
-							// Extended response
-                            xResponse = getExtendedResponse(response, xLayout);
-
-							// Create chart
-                            chart = generator[xLayout.type](xResponse, xLayout);
-
-							// Update viewport
-                            dv.viewport.centerRegion.removeAll(true);
-                            dv.viewport.centerRegion.add(chart);
-
-                            afterLoad(layout, xLayout, xResponse);
-                        }
-                    });
-
+						});
+					}
                 }();
             };
 

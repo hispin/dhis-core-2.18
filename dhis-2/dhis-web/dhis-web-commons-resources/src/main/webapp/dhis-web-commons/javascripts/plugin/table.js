@@ -2481,78 +2481,86 @@ Ext.onReady( function() {
 					}
 				};
 
-				initialize = function() {
-					var url,
-						xLayout,
-						xResponse,
-						xColAxis,
-						xRowAxis;
+                initialize = function() {
+                    var xLayout = engine.getExtendedLayout(layout),
+                        paramString = engine.getParamString(xLayout, true),
+						method = 'GET',
+						success;
 
-					// Extended layout
-					xLayout = engine.getExtendedLayout(layout);
+					success = function(response) {
+						var xResponse,
+							chart,
+							html,
+							response = pt.api.response.Response(response);
 
-					// Param string
-					pt.paramString = engine.getParamString(xLayout, true);
-					url = pt.init.contextPath + '/api/analytics.json' + pt.paramString;
+						if (!response) {
+							pt.util.mask.hideMask(pt.viewport.centerRegion);
+							return;
+						}
+
+						// Synchronize xLayout
+						xLayout = getSyncronizedXLayout(xLayout, response);
+
+						if (!xLayout) {
+							pt.util.mask.hideMask(pt.viewport.centerRegion);
+							return;
+						}
+
+						// Extended response
+						xResponse = getExtendedResponse(response, xLayout);
+
+						// Extended axes
+						xColAxis = getExtendedAxis('col', xLayout.columnDimensionNames, xResponse);
+						xRowAxis = getExtendedAxis('row', xLayout.rowDimensionNames, xResponse);
+
+						// Create html
+						html = getTableHtml(xColAxis, xRowAxis, xResponse);
+
+						// Update viewport
+						pt.viewport.centerRegion.removeAll(true);
+						pt.viewport.centerRegion.update(html);
+
+						pt.paramString = paramString;
+
+						afterLoad(layout, xLayout, xResponse);
+					};
 
 					// Validate request size
-					if (!validateUrl(url)) {
-						return;
-					}
+                    if (!validateUrl(init.contextPath + '/api/analytics.jsonp' + paramString)) {
+                        return;
+                    }
 
 					// Show load mask
-					pt.util.mask.showMask(pt.viewport.centerRegion);
+                    util.mask.showMask(pt.viewport.centerRegion);
 
-					Ext.Ajax.request({
-						method: 'GET',
-						url: url,
-						callbackName: 'analytics',
-						timeout: 60000,
-						headers: {
-							'Content-Type': 'application/json',
-							'Accept': 'application/json'
-						},
-						disableCaching: false,
-						failure: function(r) {
-							pt.util.mask.hideMask(pt.viewport.centerRegion);
-							alert(r.responseText);
-						},
-						success: function(r) {
-							var html,
-								response = pt.api.response.Response(Ext.decode(r.responseText));
-
-							if (!response) {
-								pt.util.mask.hideMask(pt.viewport.centerRegion);
-								return;
+                    if (pt.isPlugin) {
+						Ext.data.JsonP.request({
+							method: method,
+							url: init.contextPath + '/api/analytics.jsonp' + paramString,
+							disableCaching: false,
+							success: success
+						});
+					}
+					else {
+						Ext.Ajax.request({
+							method: method,
+							url: init.contextPath + '/api/analytics.json' + paramString,
+							timeout: 60000,
+							headers: {
+								'Content-Type': 'application/json',
+								'Accept': 'application/json'
+							},
+							disableCaching: false,
+							failure: function(r) {
+								util.mask.hideMask(pt.viewport.centerRegion);
+								alert(r.responseText);
+							},
+							success: function(r) {
+								success(Ext.decode(r.responseText));
 							}
-
-							// Synchronize xLayout
-							xLayout = getSyncronizedXLayout(xLayout, response);
-
-							if (!xLayout) {
-								pt.util.mask.hideMask(pt.viewport.centerRegion);
-								return;
-							}
-
-							// Extended response
-							xResponse = getExtendedResponse(response, xLayout);
-
-							// Extended axes
-							xColAxis = getExtendedAxis('col', xLayout.columnDimensionNames, xResponse);
-							xRowAxis = getExtendedAxis('row', xLayout.rowDimensionNames, xResponse);
-
-							// Create html
-							html = getTableHtml(xColAxis, xRowAxis, xResponse);
-
-							// Update viewport
-							pt.viewport.centerRegion.removeAll(true);
-							pt.viewport.centerRegion.update(html);
-
-							afterLoad(layout, xLayout, xResponse);
-						}
-					});
-
-				}();
+						});
+					}
+                }();
 			};
 
 			engine.loadTable = function(id, pt, updateGui, isFavorite) {
