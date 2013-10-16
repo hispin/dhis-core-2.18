@@ -59,7 +59,6 @@
       <param name="page">/dhis-web-maintenance-dataadmin/localeList.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
 	  <param name="javascripts">javascript/locale.js</param>
-	  <param name="requiredAuthorities">F_LOCALE_MANAGEMENT</param>	  
     </action>
 
     <action name="getLocale"
