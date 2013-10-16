@@ -132,7 +132,8 @@ public class DefaultEventAnalyticsService
 
     //TODO order the event analytics tables up front to avoid default sorting in queries
     //TODO filter items support
-    //TODO remove org unit name / code columns and use names / codes from meta data
+    
+    //TODO proper query when start/end period or period filter span multiple partitions
     
     public Grid getAggregatedEventData( EventQueryParams params )
     {
@@ -159,7 +160,7 @@ public class DefaultEventAnalyticsService
         // ---------------------------------------------------------------------
         // Data
         // ---------------------------------------------------------------------
-                
+        
         List<EventQueryParams> queries = queryPlanner.planQuery( params );
 
         for ( EventQueryParams query : queries )

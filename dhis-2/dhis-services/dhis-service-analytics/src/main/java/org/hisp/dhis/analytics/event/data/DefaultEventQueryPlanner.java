@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.IllegalQueryException;
+import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
@@ -163,8 +164,10 @@ public class DefaultEventQueryPlanner
         else
         {
             //TODO implement properly 
+            
             Period period = (Period) params.getDimensionOrFilter( PERIOD_DIM_ID ).get( 0 );
-            params.setTableName( TABLE_BASE_NAME + year( period.getStartDate() ) + "_" + program.getUid() );
+            String tableName = TABLE_BASE_NAME + year( period.getStartDate() ) + "_" + program.getUid();
+            params.setPartitions( new Partitions().add( tableName ) );
             params.setPeriodType( period.getPeriodType().getName() );
             list.add( params );
         }
@@ -177,7 +180,8 @@ public class DefaultEventQueryPlanner
         EventQueryParams query = params.instance();
         query.setStartDate( startDate );
         query.setEndDate( endDate );
-        query.setTableName( TABLE_BASE_NAME + year( startDate ) + "_" + program.getUid() );
+        String tableName = TABLE_BASE_NAME + year( startDate ) + "_" + program.getUid();
+        query.setPartitions( new Partitions().add( tableName ) );
         return query;
     }
     
