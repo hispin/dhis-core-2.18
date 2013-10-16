@@ -433,7 +433,7 @@ Ext.onReady( function() {
 						autoScroll: true,
 						overflowX: 'hidden',
 						overflowY: 'auto',
-						width: TR.conf.layout.west_fieldset_width - 15
+						width: TR.conf.layout.west_fieldset_width - 16
 					};
 					Ext.getCmp(p).add(panel);
 					subPanel = Ext.getCmp(panelid);
@@ -449,7 +449,7 @@ Ext.onReady( function() {
 					id: 'filter_lb_' + fieldid,
 					text:name,
 					style: 'padding-left:2px',
-					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 93
+					width:(TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 76
 				};
 				
 				var opt = "";
@@ -556,7 +556,7 @@ Ext.onReady( function() {
 				params.cls = 'tr-textfield-alt1';
 				params.style = 'margin-bottom:2px';
 				params.emptyText = TR.i18n.filter_value;
-				params.width = (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 50;
+				params.width = (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 70;
 				xtype = xtype.toLowerCase();
 				if( valueType=='GENDER'){
 					params.xtype = 'combobox';
