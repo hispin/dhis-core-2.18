@@ -326,8 +326,11 @@ public class GeoToolsMapGenerationService
         {
             if ( row != null && row.size() >= 3 )
             {
-                String ou = (String) row.get( 1 );
-                Double value = (Double) row.get( ( row.size() - 1 ) );
+                int ouIndex = row.size() - 2;
+                int valueIndex = row.size() - 1;
+                
+                String ou = (String) row.get( ouIndex );
+                Double value = (Double) row.get( ( valueIndex ) );
                 
                 mapValues.add( new MapValue( ou, value ) );
             }
