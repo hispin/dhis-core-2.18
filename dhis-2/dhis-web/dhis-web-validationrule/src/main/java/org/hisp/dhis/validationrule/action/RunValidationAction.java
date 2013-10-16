@@ -180,7 +180,7 @@ public class RunValidationAction
                 .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, group ) );
         }
 
-        maxExceeded = validationResults.size() > ValidationRuleService.MAX_INTERACTIVE_VIOLATIONS;
+        maxExceeded = validationResults.size() > ValidationRuleService.MAX_INTERACTIVE_ALERTS;
 
         Collections.sort( validationResults, new ValidationResultComparator() );
 

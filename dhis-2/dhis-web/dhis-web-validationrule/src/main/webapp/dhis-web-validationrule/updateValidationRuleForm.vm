@@ -20,7 +20,7 @@
 		<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $validationRule.name )"></td>
 	</tr>
 	<tr>
-		<td><label for="description">$i18n.getString( "description" ) ($i18n.getString( "visible_in_validation_violations" ))</label></td>
+		<td><label for="description">$i18n.getString( "description" ) ($i18n.getString( "visible_in_validation_alerts" ))</label></td>
 		<td><textarea name="description">$!encoder.htmlEncode( $validationRule.description )</textarea></td>
 	</tr>
 	<tr>
