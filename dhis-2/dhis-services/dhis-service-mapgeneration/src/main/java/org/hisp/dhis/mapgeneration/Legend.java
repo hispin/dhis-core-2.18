@@ -103,4 +103,10 @@ public class Legend
     {
         legendItems.add( legendItem );
     }
+
+    @Override
+    public String toString()
+    {
+        return legendItems != null ? legendItems.toString() : "[No legend items]";
+    }
 }

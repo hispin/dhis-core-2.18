@@ -96,6 +96,13 @@ public class InternalMapLayer
     // Logic
     // -------------------------------------------------------------------------
 
+    @Override
+    public String toString()
+    {
+        return "[Name: " + name + ", period: " + period + ", radius high: " + radiusHigh + ", radius low: " + radiusLow +
+            ", color high: " + colorHigh + ", color low: " + colorLow + ", classes: " + classes + "]";
+    }
+    
     /**
      * Interpolates the radii of this map layer's set of map objects according
      * the highest and lowest values among them.
