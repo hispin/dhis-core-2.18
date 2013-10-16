@@ -28,6 +28,10 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.system.util.functional.Function1;
+import org.hisp.dhis.system.util.functional.Predicate;
+import org.springframework.util.StringUtils;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -42,9 +46,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.system.util.functional.Function1;
-import org.hisp.dhis.system.util.functional.Predicate;
-import org.springframework.util.StringUtils;
+import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
 
 /**
  * @author Lars Helge Overland
@@ -65,7 +67,8 @@ public class ReflectionUtils
             Method method = object.getClass().getMethod( "getId" );
 
             return (Integer) method.invoke( object );
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             return -1;
         }
@@ -87,7 +90,8 @@ public class ReflectionUtils
             Method method = object.getClass().getMethod( "get" + property );
 
             return (String) method.invoke( object );
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             return null;
         }
@@ -103,9 +107,9 @@ public class ReflectionUtils
      */
     public static void setProperty( Object object, String name, String value )
     {
-        Object[] arguments = new Object[] { value };
+        Object[] arguments = new Object[]{ value };
 
-        Class<?>[] parameterTypes = new Class<?>[] { String.class };
+        Class<?>[] parameterTypes = new Class<?>[]{ String.class };
 
         if ( name.length() > 0 )
         {
@@ -116,7 +120,8 @@ public class ReflectionUtils
                 Method concatMethod = object.getClass().getMethod( name, parameterTypes );
 
                 concatMethod.invoke( object, arguments );
-            } catch ( Exception ex )
+            }
+            catch ( Exception ex )
             {
                 throw new UnsupportedOperationException( "Failed to set property", ex );
             }
@@ -210,7 +215,8 @@ public class ReflectionUtils
                 }
             }
 
-        } catch ( ClassCastException e )
+        }
+        catch ( ClassCastException e )
         {
             return false;
         }
@@ -220,7 +226,7 @@ public class ReflectionUtils
 
     public static Method findGetterMethod( String fieldName, Object target )
     {
-        String[] getterNames = new String[] {
+        String[] getterNames = new String[]{
             "get",
             "is",
             "has"
@@ -260,7 +266,7 @@ public class ReflectionUtils
 
     public static Method findSetterMethod( String fieldName, Object target )
     {
-        String[] setterNames = new String[] {
+        String[] setterNames = new String[]{
             "set"
         };
 
@@ -386,24 +392,24 @@ public class ReflectionUtils
         return methods;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T invokeMethod( Object target, Method method, Object... args )
     {
         try
         {
             return (T) method.invoke( target, args );
-        } 
+        }
         catch ( InvocationTargetException e )
         {
             throw new RuntimeException( e );
-        } 
+        }
         catch ( IllegalAccessException e )
         {
             throw new RuntimeException( e );
         }
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static <T> T getFieldObject( Field field, T target )
     {
         return (T) invokeGetterMethod( field.getName(), target );
@@ -434,6 +440,11 @@ public class ReflectionUtils
 
             currentType = currentType.getSuperclass();
         }
+    }
+
+    public static Collection<Field> collectFields( Class<?> clazz )
+    {
+        return collectFields( clazz, alwaysTrue );
     }
 
     public static Collection<Field> collectFields( Class<?> clazz, Predicate<Field> predicate )
