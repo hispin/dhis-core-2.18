@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
@@ -70,18 +71,19 @@ public class PartitionUtils
     
     public static Partitions getPartitions( Period period, String tablePrefix, String tableSuffix )
     {
-        String suffix = tableSuffix != null ? SEP + tableSuffix : "";
-        
+        tablePrefix = StringUtils.trimToEmpty( tablePrefix );
+        tableSuffix = StringUtils.trimToEmpty( tableSuffix );
+
         Partitions partitions = new Partitions();
         
         Period startYear = PERIODTYPE.createPeriod( period.getStartDate() );
         Period endYear = PERIODTYPE.createPeriod( period.getEndDate() );
         
-        partitions.add( tablePrefix + SEP + startYear.getIsoDate() + suffix );
+        partitions.add( tablePrefix + SEP + startYear.getIsoDate() + tableSuffix );
         
         if ( !startYear.equals( endYear ) )
         {
-            partitions.add( tablePrefix + SEP + endYear.getIsoDate() + suffix );            
+            partitions.add( tablePrefix + SEP + endYear.getIsoDate() + tableSuffix );            
         }
 
         return partitions;
