@@ -2283,6 +2283,12 @@ function removeCustomPhoneNumberField(idx)
 
 function searchByIdsOnclick()
 {
+	if( getFieldValue("searchPatientByIds")=='')
+	{
+		hideById('listPatientDiv');
+		return;
+	}
+	
 	var params = "searchTexts=iden_" + getFieldValue("searchPatientByIds").toLowerCase() + "_" + getFieldValue("orgunitId");
 	params += "&listAll=false";
 	params += "&facilityLB=";
