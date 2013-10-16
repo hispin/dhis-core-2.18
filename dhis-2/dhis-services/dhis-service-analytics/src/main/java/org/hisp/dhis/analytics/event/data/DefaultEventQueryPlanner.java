@@ -176,14 +176,6 @@ public class DefaultEventQueryPlanner
                 query.setPartitions( partitions );
                 queries.add( query );
             }
-            
-            /*
-            Period period = (Period) params.getDimensionOrFilter( PERIOD_DIM_ID ).get( 0 );
-            String tableName = TABLE_PREFIX + year( period.getStartDate() ) + "_" + program.getUid();
-            params.setPartitions( new Partitions().add( tableName ) );
-            params.setPeriodType( period.getPeriodType().getName() );
-            list.add( params );
-            */
         }
         
         return queries;
