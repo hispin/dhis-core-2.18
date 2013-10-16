@@ -2289,7 +2289,7 @@ function searchByIdsOnclick()
 
     if( getFieldValue('programIdAddPatient') != "" ) {
         params += "&programIds=" + getFieldValue('programIdAddPatient');
-        params += "&searchText=prg_" + getFieldValue('programIdAddPatient');
+        params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
     }
 
     hideById( 'listPatientDiv');
