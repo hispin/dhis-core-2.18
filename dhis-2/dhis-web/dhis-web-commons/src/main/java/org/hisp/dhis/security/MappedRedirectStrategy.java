@@ -81,7 +81,16 @@ public class MappedRedirectStrategy
     public void sendRedirect( HttpServletRequest request, HttpServletResponse response, String url )
         throws IOException
     {
-        Device device = deviceResolver.resolveDevice( request );
+        // ---------------------------------------------------------------------
+        // Check if redirect should be skipped - for cookie authentication only
+        // ---------------------------------------------------------------------
+
+        String authOnly = (String) request.getAttribute( PARAM_AUTH_ONLY );
+        
+        if ( "true".equals( authOnly ) )
+        {
+            return;
+        }
 
         // ---------------------------------------------------------------------
         // Ignore certain ajax requests
@@ -99,6 +108,8 @@ public class MappedRedirectStrategy
         // Redirect to mobile start pages
         // ---------------------------------------------------------------------
 
+        Device device = deviceResolver.resolveDevice( request );
+
         String mobileVersion = (String) request.getAttribute( PARAM_MOBILE_VERSION );
         mobileVersion = mobileVersion == null ? "desktop" : mobileVersion;
 
@@ -113,17 +124,6 @@ public class MappedRedirectStrategy
         else if ( (device.isMobile() || device.isTablet()) && mobileVersion.equals( "desktop" ) )
         {
             url = getRootPath( request ) + "/";
-        }
-
-        // ---------------------------------------------------------------------
-        // Check if redirect should be skipped - for cookie authentication only
-        // ---------------------------------------------------------------------
-
-        String authOnly = (String) request.getAttribute( PARAM_AUTH_ONLY );
-        
-        if ( "true".equals( authOnly ) )
-        {
-            return;
         }
 
         log.debug( "Redirecting to " + url );
