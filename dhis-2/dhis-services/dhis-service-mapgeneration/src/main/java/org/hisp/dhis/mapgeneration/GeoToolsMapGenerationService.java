@@ -170,7 +170,7 @@ public class GeoToolsMapGenerationService
             return null;
         }
 
-        boolean isIndicator = MapView.VALUE_TYPE_INDICATOR.equals( mapView.getValueType() );
+        boolean isIndicator = false; //TODO
 
         List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
         List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();

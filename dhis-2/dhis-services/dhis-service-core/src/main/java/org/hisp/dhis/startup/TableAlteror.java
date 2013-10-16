@@ -156,6 +156,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE mapview DROP COLUMN mapdatetype" );
         executeSql( "ALTER TABLE mapview DROP COLUMN featuretype" );
         executeSql( "ALTER TABLE mapview DROP COLUMN bounds" );
+        executeSql( "ALTER TABLE mapview DROP COLUMN valuetype" );
+        executeSql( "ALTER TABLE mapview DROP COLUMN legendtype" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN mapvaluetype TO valuetype" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendtype TO legendtype" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendsetid TO legendsetid" );
@@ -645,7 +647,7 @@ public class TableAlteror
 
         upgradeMapViewsToAnalyticalObject();
 
-		executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );
+	executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );
         
         log.info( "Tables updated" );
     }
