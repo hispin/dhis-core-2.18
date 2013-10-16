@@ -139,7 +139,7 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="version" name="version" value="$program.version" class="{validate:{required:true,integer:true}}"></td>
+			<td><input type="text" id="version" name="version" style="width: 330px;" value="$program.version" class="{validate:{required:true,integer:true}}"></td>
 			<td></td>
 		</tr>
 		
