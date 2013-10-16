@@ -100,7 +100,6 @@ TR.conf = {
 		},
 		download: {
             xls: 'xls',
-			pdf: 'pdf',
 			csv: 'csv'
         },
         cmd: {
@@ -1905,7 +1904,7 @@ Ext.onReady( function() {
 				
 				if( type)
 				{
-					document.location =  url + programId + ".xls?stage=" + programStageId + TR.state.getURLParams();
+					document.location =  url + programId + "." + type + "?stage=" + programStageId + TR.state.getURLParams();
 				}
 				// Show report on grid
 				else
@@ -2072,7 +2071,7 @@ Ext.onReady( function() {
 				// Export to XLS
 				if( type)
 				{
-					document.location =  url + programId + ".xls?stage=" + programStageId + TR.state.getURLParams();
+					document.location =  url + programId + "." + type + "?stage=" + programStageId + TR.state.getURLParams();
 				}
 				// Show report on grid
 				else
@@ -2680,7 +2679,7 @@ Ext.onReady( function() {
 		createAggColTable: function(){
 			var cols = [];
 			var i=0;
-			for( i =0; i <TR.value.columns.length; i++ )
+			for( i=0; i <TR.value.columns.length - 1; i++ )
 			{
 				cols[i] = {
 					header: TR.value.columns[i].column, 
@@ -4464,7 +4463,6 @@ Ext.onReady( function() {
 													// for case-based report
 													Ext.getCmp('limitOption').setVisible(false);
 													Ext.getCmp('aggregateType').setVisible(false);
-													Ext.getCmp('downloadPdfIcon').setVisible(false);
 													Ext.getCmp('downloadCvsIcon').setVisible(false);
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
 													Ext.getCmp('deSumCbx').setVisible(false);
@@ -4487,7 +4485,6 @@ Ext.onReady( function() {
 													// For aggregate report
 													Ext.getCmp('limitOption').setVisible(true);
 													Ext.getCmp('aggregateType').setVisible(true);
-													Ext.getCmp('downloadPdfIcon').setVisible(true);
 													Ext.getCmp('downloadCvsIcon').setVisible(true);
 													Ext.getCmp('aggregateFavoriteBtn').setVisible(true);
 													Ext.getCmp('deSumCbx').setVisible(true);
@@ -5705,15 +5702,6 @@ Ext.onReady( function() {
 											}
 										},
 										{
-											text: TR.i18n.pdf,
-											iconCls: 'tr-menu-item-pdf',
-											id: 'downloadPdfIcon',
-											minWidth: 105,
-											handler: function() {
-												b.execute(TR.conf.finals.download.pdf);
-											}
-										},
-										{
 											text: TR.i18n.csv,
 											iconCls: 'tr-menu-item-csv',
 											id: 'downloadCvsIcon',
@@ -5788,7 +5776,6 @@ Ext.onReady( function() {
 				Ext.getCmp('limitOption').setVisible(false);
 				Ext.getCmp('deSumCbx').setVisible(false);
 				Ext.getCmp('aggregateType').setVisible(false);
-				Ext.getCmp('downloadPdfIcon').setVisible(false);
 				Ext.getCmp('downloadCvsIcon').setVisible(false);
 				Ext.getCmp('aggregateFavoriteBtn').setVisible(false);
 				Ext.getCmp('caseBasedFavoriteBtn').setVisible(true);
