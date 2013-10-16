@@ -1689,7 +1689,12 @@ Ext.onReady( function() {
 
 					// add uuids array to leaves
 					if (aAllObjects.length) {
-						for (var i = 0, leaf, parentUuids, obj, span = aAllObjects.length > 1 ? aSpan[aAllObjects.length - 2] : 1, leafUuids = []; i < aAllObjects[aAllObjects.length - 1].length; i++) {
+
+						// Span is second-last in aSpan - or axis size (instead of 1 - to highlight all leaves when dim == 1 )
+						var span = aAllObjects.length > 1 ? aSpan[aAllObjects.length - 2] : nCols;
+						//var span = aAllObjects.length > 1 ? aSpan[aAllObjects.length - 2] : 1;
+
+						for (var i = 0, leaf, parentUuids, obj, leafUuids = []; i < aAllObjects[aAllObjects.length - 1].length; i++) {
 							leaf = aAllObjects[aAllObjects.length - 1][i];
 							leafUuids.push(leaf.uuid);
 							parentUuids = [];
@@ -1706,7 +1711,7 @@ Ext.onReady( function() {
 
 							// add uuid for all leaves
 							if (leafUuids.length === span) {
-								for (var j = i - span + 1, leaf; j <= i; j++) {
+								for (var j = (i - span) + 1, leaf; j <= i; j++) {
 									leaf = aAllObjects[aAllObjects.length - 1][j];
 									leaf.uuids = leaf.uuids.concat(Ext.clone(leafUuids));
 								}
@@ -2646,6 +2651,7 @@ Ext.onReady( function() {
 					uuids = pt.uuidDimUuidsMap[uuid],
 					layoutConfig = Ext.clone(pt.layout),
 					objects = [],
+					parentGraphMap = pt.viewport.treePanel.getParentGraphMap(),
 					menu;
 
 				// modify layout dimension items based on uuid objects
@@ -2656,7 +2662,7 @@ Ext.onReady( function() {
 				}
 
 				// clear layoutConfig dimension items
-				for (var i = 0, a = [].concat(layoutConfig.columns, layoutConfig.rows); i < a.length; i++) {
+				for (var i = 0, a = [].concat(layoutConfig.columns || [], layoutConfig.rows || []); i < a.length; i++) {
 					a[i].items = [];
 				}
 
@@ -2670,6 +2676,17 @@ Ext.onReady( function() {
 							id: obj.id,
 							name: pt.xResponse.metaData.names[obj.id]
 						});
+					}
+				}
+
+				// parent graph map
+				layoutConfig.parentGraphMap = {};
+
+				for (var i = 0, id; i < objects.length; i++) {
+					id = objects[i].id;
+
+					if (parentGraphMap.hasOwnProperty(id)) {
+						layoutConfig.parentGraphMap[id] = parentGraphMap[id];
 					}
 				}
 
