@@ -33,5 +33,6 @@ package org.hisp.dhis.validation;
  */
 public enum ValidationRunType
 {
-    INTERACTIVE, ALERT
+    INTERACTIVE,
+    SCHEDULED
 }

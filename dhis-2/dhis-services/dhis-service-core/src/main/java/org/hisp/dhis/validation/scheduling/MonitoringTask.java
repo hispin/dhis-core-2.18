@@ -162,7 +162,7 @@ public class MonitoringTask
         log.info( "alertRun sources[" + sources.size() + "] periods[" + periods.size() + "] rules[" + rules.size()
             + "] last run " + lastAlertRun == null ? "(none)" : lastAlertRun );
         
-        Collection<ValidationResult> results = Validator.validate( sources, periods, rules, ValidationRunType.ALERT,
+        Collection<ValidationResult> results = Validator.validate( sources, periods, rules, ValidationRunType.SCHEDULED,
             lastAlertRun, constantService, expressionService, periodService, dataValueService );
         
         log.trace( "alertRun() results[" + results.size() + "]" );
