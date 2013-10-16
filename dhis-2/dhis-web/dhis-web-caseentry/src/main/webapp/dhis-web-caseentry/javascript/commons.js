@@ -1748,7 +1748,7 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
         var hasDataEntry = getFieldValue('hasDataEntry');
         var type = $( '#tb_' + programInstanceId ).attr('programType');
 
-        var program = $( '#tr1_' + programInstanceId )
+        var program = $( '#tr1_' + programInstanceId );
         var relationshipText=program.attr('relationshipText');
         var relatedProgramId=program.attr('relatedProgram');
         var patientId = getFieldValue('patientId');
