@@ -925,7 +925,7 @@ public class OrganisationUnit
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "users", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "user", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "userItem", namespace = DxfNamespaces.DXF_2_0 )
     public Set<User> getUsers()
     {
         return users;
