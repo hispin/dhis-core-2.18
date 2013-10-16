@@ -114,6 +114,27 @@ public class EventAnalyticsController
         Grid grid = analyticsService.getAggregatedEventData( params );
         GridUtils.toXls( grid, response.getOutputStream() );
     }
+
+    @RequestMapping( value = RESOURCE_PATH + "/aggregate/{program}.csv", method = RequestMethod.GET )
+    public void getAggregateCsv(
+        @PathVariable String program,
+        @RequestParam(required=false) String stage,
+        @RequestParam(required=false) String startDate,
+        @RequestParam(required=false) String endDate,
+        @RequestParam Set<String> dimension,
+        @RequestParam(required=false) Set<String> filter,
+        @RequestParam(required=false) boolean hierarchyMeta,
+        @RequestParam(required=false) Integer limit,
+        @RequestParam(required=false) SortOrder sortOrder,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, hierarchyMeta, sortOrder, limit, i18nManager.getI18nFormat() );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.csv", true );
+        Grid grid = analyticsService.getAggregatedEventData( params );
+        GridUtils.toXls( grid, response.getOutputStream() );
+    }
     
     // -------------------------------------------------------------------------
     // Query
