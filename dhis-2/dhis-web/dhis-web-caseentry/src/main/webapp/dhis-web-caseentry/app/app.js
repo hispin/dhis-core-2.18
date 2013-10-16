@@ -1998,6 +1998,42 @@ Ext.onReady( function() {
 						TR.util.notification.error(TR.i18n.em_no_data_element, TR.i18n.em_no_data_element);
 						return false;
 					}
+					else
+					{
+						var isvalid = true;
+						TR.cmp.params.dataelement.selected.store.each( function(r) {
+							var valueType = r.data.valueType;
+							var deId = r.data.id;
+							var length = Ext.getCmp('filterPanel_' + deId).items.length/5;
+							var hidden = TR.state.caseBasedReport.isColHidden(deId);
+							var dimensionOption = 'dimension';
+							
+							for(var idx=0;idx<length;idx++)
+							{
+								var id = deId + '_' + idx;
+								if(Ext.getCmp('filter_' + id)!=undefined)
+								{
+									if( idx==0 )
+									{
+										dimensionOption = Ext.getCmp('filter_dimension_' + deId ).getValue();
+										if( dimensionOption=='filter' ){
+											var filterValue = Ext.getCmp('filter_' + id).rawValue.toLowerCase();
+											if(filterValue==null ||filterValue=='' ){
+												isvalid = false;
+											}
+										}
+									}
+									
+								}
+							}
+						});
+						
+						if(	!isvalid ){
+							TR.util.notification.error(TR.i18n.fill_filter_values_for_all_selected_data_elements, TR.i18n.fill_filter_values_for_all_selected_data_elements);
+							return false;
+						}
+					}
+				
 					return true;
 				},
 				response: function(r) {
@@ -2270,31 +2306,47 @@ Ext.onReady( function() {
 					
 					// Validate data element
 					
-					var isValid = true;
-					TR.cmp.params.dataelement.selected.store.each( function(r) {
-						var deId = r.data.id;
-						var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
-						for(var idx=0;idx<length;idx++)
-						{
-							var id = deId + '_' + idx;
-							if(Ext.getCmp('filter_' + id)!=undefined)
+					if(TR.cmp.params.dataelement.selected.store.data.items.length == 0 )
+					{
+						TR.util.notification.error(TR.i18n.em_no_data_element, TR.i18n.em_no_data_element);
+						return false;
+					}
+					else
+					{
+						var isvalid = true;
+						TR.cmp.params.dataelement.selected.store.each( function(r) {
+							var valueType = r.data.valueType;
+							var deId = r.data.id;
+							var length = Ext.getCmp('filterPanel_' + deId).items.length/5;
+							var hidden = TR.state.caseBasedReport.isColHidden(deId);
+							var dimensionOption = 'dimension';
+							
+							for(var idx=0;idx<length;idx++)
 							{
-								var filterValue = Ext.getCmp('filter_' + id).rawValue;
-								if(filterValue==null || filterValue==TR.i18n.please_select){
-									filterValue = Ext.getCmp('filter_' + id).getValue();
-								}
-								if( filterValue == null 
-									|| filterValue == ''
-									|| filterValue==TR.i18n.please_select ){
-									isValid = false;
+								var id = deId + '_' + idx;
+								if(Ext.getCmp('filter_' + id)!=undefined)
+								{
+									if( idx==0 )
+									{
+										dimensionOption = Ext.getCmp('filter_dimension_' + deId ).getValue();
+										if( dimensionOption=='filter' ){
+											var filterValue = Ext.getCmp('filter_' + id).rawValue.toLowerCase();
+											if(filterValue==null ||filterValue=='' ){
+												isvalid = false;
+											}
+										}
+									}
+									
 								}
 							}
+						});
+						
+						if(	!isvalid ){
+							TR.util.notification.error(TR.i18n.fill_filter_values_for_all_selected_data_elements, TR.i18n.fill_filter_values_for_all_selected_data_elements);
+							return false;
 						}
-					});
-					if( !isValid){
-						TR.util.notification.error(TR.i18n.fill_filter_values_for_all_selected_data_elements, TR.i18n.fill_filter_values_for_all_selected_data_elements);
-						return false;		
 					}
+					
 					
 					var periodInt = 0;
 					if( TR.cmp.settings.startDate.rawValue!="" 
