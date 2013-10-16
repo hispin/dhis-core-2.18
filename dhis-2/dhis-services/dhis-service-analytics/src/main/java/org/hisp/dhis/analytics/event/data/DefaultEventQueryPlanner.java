@@ -28,7 +28,7 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.common.DimensionalObject.*;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,8 +42,10 @@ import org.hisp.dhis.analytics.Partitions;
 import org.hisp.dhis.analytics.QueryPlanner;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
+import org.hisp.dhis.analytics.table.PartitionUtils;
+import org.hisp.dhis.common.ListMap;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Cal;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,7 +57,7 @@ public class DefaultEventQueryPlanner
 {
     private static final Log log = LogFactory.getLog( DefaultEventQueryPlanner.class );
     
-    private static final String TABLE_BASE_NAME = "analytics_event_";
+    private static final String TABLE_PREFIX = "analytics_event";
     
     @Autowired
     private QueryPlanner queryPlanner;
@@ -127,7 +129,7 @@ public class DefaultEventQueryPlanner
     
     private List<EventQueryParams> groupByPartition( EventQueryParams params )
     {
-        List<EventQueryParams> list = new ArrayList<EventQueryParams>();
+        List<EventQueryParams> queries = new ArrayList<EventQueryParams>();
         
         Program program = params.getProgram();
         
@@ -147,7 +149,7 @@ public class DefaultEventQueryPlanner
                     
                     currentEndDate = maxOfYear( currentStartDate ); 
                     
-                    list.add( getQuery( params, currentStartDate, currentEndDate, program ) );
+                    queries.add( getQuery( params, currentStartDate, currentEndDate, program ) );
                     
                     // Set start date to start of next year
                     
@@ -155,7 +157,7 @@ public class DefaultEventQueryPlanner
                 }
                 else
                 {
-                    list.add( getQuery( params, currentStartDate, endDate, program ) );
+                    queries.add( getQuery( params, currentStartDate, endDate, program ) );
                     
                     break;
                 }
@@ -163,16 +165,28 @@ public class DefaultEventQueryPlanner
         }
         else
         {
-            //TODO implement properly 
+            String tableSuffix = "_" + program.getUid();
             
+            ListMap<Partitions, NameableObject> partitionPeriodMap = PartitionUtils.getPartitionPeriodMap( params.getDimensionOrFilter( PERIOD_DIM_ID ), TABLE_PREFIX, tableSuffix );
+            
+            for ( Partitions partitions : partitionPeriodMap.keySet() )
+            {
+                EventQueryParams query = params.instance();
+                query.setPeriods( partitionPeriodMap.get( partitions ) );
+                query.setPartitions( partitions );
+                queries.add( query );
+            }
+            
+            /*
             Period period = (Period) params.getDimensionOrFilter( PERIOD_DIM_ID ).get( 0 );
-            String tableName = TABLE_BASE_NAME + year( period.getStartDate() ) + "_" + program.getUid();
+            String tableName = TABLE_PREFIX + year( period.getStartDate() ) + "_" + program.getUid();
             params.setPartitions( new Partitions().add( tableName ) );
             params.setPeriodType( period.getPeriodType().getName() );
             list.add( params );
+            */
         }
         
-        return list;
+        return queries;
     }
     
     private EventQueryParams getQuery( EventQueryParams params, Date startDate, Date endDate, Program program )
@@ -180,7 +194,7 @@ public class DefaultEventQueryPlanner
         EventQueryParams query = params.instance();
         query.setStartDate( startDate );
         query.setEndDate( endDate );
-        String tableName = TABLE_BASE_NAME + year( startDate ) + "_" + program.getUid();
+        String tableName = TABLE_PREFIX + "_" + year( startDate ) + "_" + program.getUid();
         query.setPartitions( new Partitions().add( tableName ) );
         return query;
     }

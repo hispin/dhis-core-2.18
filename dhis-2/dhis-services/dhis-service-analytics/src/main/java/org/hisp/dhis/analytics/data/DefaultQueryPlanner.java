@@ -357,7 +357,7 @@ public class DefaultQueryPlanner
                 DataQueryParams query = params.instance();
                 query.setPeriods( partitionPeriodMap.get( partitions ) );
                 query.setPartitions( partitions );
-                queries.add( query );            
+                queries.add( query );
             }
         }
         else if ( params.getFilterPeriods() != null && !params.getFilterPeriods().isEmpty() )
