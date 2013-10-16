@@ -86,4 +86,10 @@ public class LegendItem
     {
         this.interval = interval;
     }
+
+    @Override
+    public String toString()
+    {
+        return interval != null ? interval.toString() : "[No interval]";
+    }
 }

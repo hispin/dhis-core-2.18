@@ -154,4 +154,10 @@ public class LegendSet
         
         return imageHeight;
     }
+    
+    @Override
+    public String toString()
+    {
+        return legends != null ? legends.toString() : "[No legends]";
+    }
 }
