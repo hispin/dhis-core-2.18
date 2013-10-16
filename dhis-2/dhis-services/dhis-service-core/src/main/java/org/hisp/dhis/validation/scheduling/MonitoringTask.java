@@ -123,7 +123,7 @@ public class MonitoringTask
         
         try
         {
-            alertRun();
+            scheduledRun();
             
             notifier.notify( taskId, INFO, "Monitoring process done", true );
         }
@@ -145,7 +145,7 @@ public class MonitoringTask
      * Evaluates all the validation rules that could generate alerts,
      * and sends results (if any) to users who should be notified.
      */
-    private void alertRun()
+    private void scheduledRun()
     {
         // Find all the rules belonging to groups that will send alerts to user roles.
         
@@ -153,26 +153,26 @@ public class MonitoringTask
 
         Collection<OrganisationUnit> sources = organisationUnitService.getAllOrganisationUnits();
         Set<Period> periods = getAlertPeriodsFromRules( rules );
-        Date lastAlertRun = (Date) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_LAST_ALERT_RUN );
+        Date lastScheduledRun = (Date) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_LAST_MONITORING_RUN );
         
         // Any database changes after this moment will contribute to the next run.
         
-        Date thisAlertRun = new Date();
+        Date thisScheduledRun = new Date();
         
-        log.info( "alertRun sources[" + sources.size() + "] periods[" + periods.size() + "] rules[" + rules.size()
-            + "] last run " + lastAlertRun == null ? "(none)" : lastAlertRun );
+        log.info( "Scheduled monitoring run sources[" + sources.size() + "] periods[" + periods.size() + "] rules[" + rules.size()
+            + "] last run " + lastScheduledRun == null ? "(none)" : lastScheduledRun );
         
         Collection<ValidationResult> results = Validator.validate( sources, periods, rules, ValidationRunType.SCHEDULED,
-            lastAlertRun, constantService, expressionService, periodService, dataValueService );
+            lastScheduledRun, constantService, expressionService, periodService, dataValueService );
         
-        log.trace( "alertRun() results[" + results.size() + "]" );
+        log.trace( "scheduledRun() results[" + results.size() + "]" );
         
         if ( !results.isEmpty() )
         {
-            postAlerts( results, thisAlertRun );
+            postAlerts( results, thisScheduledRun );
         }
         
-        systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_LAST_ALERT_RUN, thisAlertRun );
+        systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_LAST_MONITORING_RUN, thisScheduledRun );
     }
 
     /**
@@ -206,9 +206,10 @@ public class MonitoringTask
      * these periods actually exist in the database.
      * 
      * TODO If the last successful daily run was more than one day ago, we might 
-     * add some additional periods of type DailyPeriodType not to miss any alerts.
+     * add some additional periods of type DailyPeriodType not to miss any
+     * alerts.
      *
-     * @param rules the ValidationRules to be evaluated on this alert run
+     * @param rules the ValidationRules to be evaluated on this run
      * @return periods to search for new alerts
      */
     private Set<Period> getAlertPeriodsFromRules( Set<ValidationRule> rules )
@@ -251,8 +252,8 @@ public class MonitoringTask
     }
 
     /**
-     * At the end of an ALERT run, post messages to the users who want to see
-     * the results.
+     * At the end of a scheduled monitoring run, post messages to the users who
+     * want to see the results.
      * 
      * Create one message for each set of users who receive the same
      * subset of results. (Not necessarily the same as the set of users who
@@ -267,9 +268,9 @@ public class MonitoringTask
      * ( target language, set of results ).
      * 
      * @param validationResults the set of validation error results
-     * @param alertRunStart the date/time when the alert run started
+     * @param scheduledRunStart the date/time when this scheduled run started
      */
-    private void postAlerts( Collection<ValidationResult> validationResults, Date alertRunStart )
+    private void postAlerts( Collection<ValidationResult> validationResults, Date scheduledRunStart )
     {
         SortedSet<ValidationResult> results = new TreeSet<ValidationResult>( validationResults );
 
@@ -277,7 +278,7 @@ public class MonitoringTask
         
         for ( Map.Entry<List<ValidationResult>, Set<User>> entry : messageMap.entrySet() )
         {
-            sendAlertmessage( entry.getKey(), entry.getValue(), alertRunStart );
+            sendAlertmessage( entry.getKey(), entry.getValue(), scheduledRunStart );
         }
     }
 
@@ -370,9 +371,9 @@ public class MonitoringTask
      * 
      * @param results results to put in this message
      * @param users users to receive these results
-     * @param alertRunStart date/time when the alert run started
+     * @param scheduledRunStart date/time when the scheduled run started
      */
-    private void sendAlertmessage( List<ValidationResult> results, Set<User> users, Date alertRunStart )
+    private void sendAlertmessage( List<ValidationResult> results, Set<User> users, Date scheduledRunStart )
     {
         StringBuilder messageBuilder = new StringBuilder();
 
@@ -380,7 +381,7 @@ public class MonitoringTask
 
         Map<String, Integer> importanceCountMap = countResultsByImportanceType( results );
 
-        String subject = "DHIS alerts as of " + dateTimeFormatter.format( alertRunStart ) + " - priority High "
+        String subject = "DHIS alerts as of " + dateTimeFormatter.format( scheduledRunStart ) + " - priority High "
             + ( importanceCountMap.get( "high" ) == null ? 0 : importanceCountMap.get( "high" ) ) + ", Medium "
             + ( importanceCountMap.get( "medium" ) == null ? 0 : importanceCountMap.get( "medium" ) ) + ", Low "
             + ( importanceCountMap.get( "low" ) == null ? 0 : importanceCountMap.get( "low" ) );

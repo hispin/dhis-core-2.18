@@ -170,7 +170,7 @@ public class ValidatorThread
      * 
      * @param sourceX the organisation unit extended information
      * @param periodTypeX the period type extended information
-     * @param context the alert run context
+     * @param context the validation run context
      * @param sourceDataElements all data elements collected for this
      *        organisation unit
      * @return
@@ -196,7 +196,7 @@ public class ValidatorThread
             }
             else
             {
-                // For monitoring-type rules, include only rules for this
+                // For surveillance-type rules, include only rules for this
                 // organisation's unit level.
                 // The organisation may not be configured for the data elements
                 // because they could be aggregated from a lower level.
@@ -215,9 +215,9 @@ public class ValidatorThread
      * Checks to see if the evaluation should go further for this
      * evaluationRule, after the "current" data to evaluate has been fetched.
      * For INTERACTIVE runs, we always go further (always return true.) For
-     * ALERT runs, we go further only if something has changed since the last
-     * successful alert run -- either the rule definition or one of the
-     * "current" data element / option values.
+     * SCHEDULED runs, we go further only if something has changed since the
+     * last successful scheduled run -- either the rule definition or one of
+     * the "current" data element / option values.
      * 
      * @param lastUpdatedMap when each data value was last updated
      * @param rule the rule that may be evaluated
@@ -231,13 +231,13 @@ public class ValidatorThread
 
         if ( ValidationRunType.SCHEDULED == context.getRunType() )
         {
-            if ( context.getLastAlertRun() != null ) // True if no previous alert run
+            if ( context.getLastScheduledRun() != null ) // True if no previous scheduled run
             {
-                if ( rule.getLastUpdated().before( context.getLastAlertRun() ) )
+                if ( rule.getLastUpdated().before( context.getLastScheduledRun() ) )
                 {
                     // Get the "current" DataElementOperands from this rule:
                     // Left+Right sides for VALIDATION, Left side only for
-                    // MONITORING
+                    // SURVEILLANCE
                     Collection<DataElementOperand> deos = context.getExpressionService().getOperandsInExpression(
                         rule.getLeftSide().getExpression() );
                     
@@ -249,12 +249,12 @@ public class ValidatorThread
                     }
 
                     // Return true if any data is more recent than the last
-                    // ALERT run, otherwise return false.
+                    // scheduled run, otherwise return false.
                     evaluate = false;
                     for ( DataElementOperand deo : deos )
                     {
                         Date lastUpdated = lastUpdatedMap.get( deo );
-                        if ( lastUpdated != null && lastUpdated.after( context.getLastAlertRun() ) )
+                        if ( lastUpdated != null && lastUpdated.after( context.getLastScheduledRun() ) )
                         {
                             evaluate = true; // True if new/updated data.
                             break;
@@ -310,7 +310,7 @@ public class ValidatorThread
         Double rightSideValue = null;
 
         // If ruleType is VALIDATION, the right side is evaluated using the same
-        // (current) data values. If ruleType is MONITORING but there are no
+        // (current) data values. If ruleType is SURVEILLANCE but there are no
         // data elements in the right side, then it doesn't matter what data
         // values we use, so just supply the current data values in order to
         // evaluate the (constant) expression.
@@ -322,7 +322,7 @@ public class ValidatorThread
             		currentValueMap, context.getConstantMap(), null );
         }
         else
-        // ruleType equals MONITORING, and there are some data elements in the
+        // ruleType equals SURVEILLANCE, and there are some data elements in the
         // right side expression
         {
             CalendarPeriodType calendarPeriodType = ( CalendarPeriodType ) period.getPeriodType();
@@ -384,11 +384,11 @@ public class ValidatorThread
     }
 
     /**
-     * Evaluates the right side of a monitoring-type validation rule for
+     * Evaluates the right side of a surveillance-type validation rule for
      * a given organisation unit and period, and adds the value to a list
      * of sample values.
      * 
-     * Note that for a monitoring-type rule, evaluating the right side
+     * Note that for a surveillance-type rule, evaluating the right side
      * expression can result in sampling multiple periods and/or child
      * organisation units.
      * 
@@ -397,7 +397,7 @@ public class ValidatorThread
      * @param source the organisation unit
      * @param allowedPeriodTypes the period types in which the data may exist
      * @param period the main period for the validation rule evaluation
-     * @param rule the monitoring-type rule being evaluated
+     * @param rule the surveillance-type rule being evaluated
      * @param sourceDataElements the data elements configured for this
      *        organisation unit
      * @param context the evaluation run context
@@ -434,9 +434,9 @@ public class ValidatorThread
 
     /**
      * Finds the average right-side sample value. This is used as the right-side
-     * expression value to evaluate a monitoring-type rule.
+     * expression value to evaluate a surveillance-type rule.
      * 
-     * @param rule monitoring-type rule being evaluated
+     * @param rule surveillance-type rule being evaluated
      * @param sampleValues sample values actually collected
      * @param annualSampleCount number of annual samples tried for
      * @param sequentialSampleCount number of sequential samples tried for

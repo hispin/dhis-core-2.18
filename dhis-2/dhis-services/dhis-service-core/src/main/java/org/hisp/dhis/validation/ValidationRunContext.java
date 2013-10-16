@@ -52,7 +52,7 @@ import org.hisp.dhis.period.PeriodType;
 
 /**
  * Holds common values that are used during a validation run (either interactive
- * or an alert run.) These values don't change during the multi-threaded tasks
+ * or scheduled.) These values don't change during the multi-threaded tasks
  * (except that results entries are added in a threadsafe way.)
  * 
  * Some of the values are precalculated collections, to save CPU time during the
@@ -74,7 +74,7 @@ public class ValidationRunContext
 
     private ValidationRunType runType;
 
-    private Date lastAlertRun;
+    private Date lastScheduledRun;
 
     private Map<String, Double> constantMap;
 
@@ -100,7 +100,8 @@ public class ValidationRunContext
     {
         return new ToStringBuilder( this, ToStringStyle.SHORT_PREFIX_STYLE )
             .append( "\n PeriodTypeExtendedMap", (Arrays.toString( periodTypeExtendedMap.entrySet().toArray() )) )
-            .append( "\n runType", runType ).append( "\n  lastAlertRun", lastAlertRun )
+            .append( "\n runType", runType )
+            .append( "\n lastScheduledRun", lastScheduledRun )
             .append( "\n constantMap", "[" + constantMap.size() + "]" )
             .append( "\n ruleXMap", "[" + ruleXMap.size() + "]" )
             .append( "\n sourceXs", Arrays.toString( sourceXs.toArray() ) )
@@ -113,18 +114,18 @@ public class ValidationRunContext
      * @param sources organisation units for validation
      * @param periods periods for validation
      * @param rules validation rules for validation
-     * @param runType whether this is an INTERACTIVE or ALERT run
-     * @param lastAlertRun (for ALERT runs) date of previous alert run
+     * @param runType whether this is an INTERACTIVE or SCHEDULED run
+     * @param lastScheduledRun (for SCHEDULED runs) date/time of previous run
      * @return context object for this run
      */
     public static ValidationRunContext getNewValidationRunContext( Collection<OrganisationUnit> sources,
         Collection<Period> periods, Collection<ValidationRule> rules, Map<String, Double> constantMap,
-        ValidationRunType runType, Date lastAlertRun, ExpressionService expressionService, PeriodService periodService,
+        ValidationRunType runType, Date lastScheduledRun, ExpressionService expressionService, PeriodService periodService,
         DataValueService dataValueService )
     {
         ValidationRunContext context = new ValidationRunContext();
         context.runType = runType;
-        context.lastAlertRun = lastAlertRun;
+        context.lastScheduledRun = lastScheduledRun;
         context.validationResults = new ConcurrentLinkedQueue<ValidationResult>(); // thread-safe
         context.periodTypeExtendedMap = new HashMap<PeriodType, PeriodTypeExtended>();
         context.ruleXMap = new HashMap<ValidationRule, ValidationRuleExtended>();
@@ -149,7 +150,7 @@ public class ValidationRunContext
     {
         addPeriodsToContext( periods );
         
-        boolean monitoringRulesPresent = addRulesToContext ( rules );
+        boolean surveillanceRulesPresent = addRulesToContext ( rules );
         
         removeAnyUnneededPeriodTypes();
         
@@ -157,7 +158,7 @@ public class ValidationRunContext
         
         countOfSourcesToValidate = sources.size();
         
-        if ( monitoringRulesPresent )
+        if ( surveillanceRulesPresent )
         {
         	Set<OrganisationUnit> otherDescendants = getAllOtherDescendants( sources );
         	addSourcesToContext( otherDescendants, false );
@@ -182,11 +183,11 @@ public class ValidationRunContext
      * Adds validation rules to the context.
      * 
      * @param rules validation rules to add
-     * @return true if there were some monitoring-type rules, false otherwise.
+     * @return true if there were some surveillance-type rules, false otherwise.
      */
     private boolean addRulesToContext ( Collection<ValidationRule> rules )
     {
-    	boolean monitoringRulesPresent = false;
+    	boolean surveillanceRulesPresent = false;
     	
         for ( ValidationRule rule : rules )
         {
@@ -194,12 +195,12 @@ public class ValidationRunContext
             {
                 if ( rule.getOrganisationUnitLevel() == null )
                 {
-                    log.error( "monitoring-type validationRule '" + (rule.getName() == null ? "" : rule.getName())
+                    log.error( "surveillance-type validationRule '" + (rule.getName() == null ? "" : rule.getName())
                         + "' has no organisationUnitLevel." );
                     continue; // Ignore rule, avoid null reference later.
                 }
                 
-                monitoringRulesPresent = true;
+                surveillanceRulesPresent = true;
             }
 
             // Find the period type extended for this rule
@@ -221,7 +222,7 @@ public class ValidationRunContext
             ValidationRuleExtended ruleX = new ValidationRuleExtended( rule, allowedPastPeriodTypes );
             ruleXMap.put( rule, ruleX );
         }
-        return monitoringRulesPresent;
+        return surveillanceRulesPresent;
     }
 
     /**
@@ -242,14 +243,14 @@ public class ValidationRunContext
 
     /**
      * Finds all organisation unit descendants that are not in a given
-     * collection of organisation units. This is needed for monitoring-type
+     * collection of organisation units. This is needed for surveillance-type
      * rules, because the data values for the rules may need to be aggregated
      * from the organisation unit's descendants.
      * 
      * The descendants will likely be there anyway for a run including
-     * monitoring-type rules, because an interactive run containing
-     * monitoring-type rules should select an entire subtree, and a
-     * scheduled alert run will contain all organisation units. But check
+     * surveillance-type rules, because an interactive run containing
+     * surveillance-type rules should select an entire subtree, and a
+     * scheduled monitoring run will contain all organisation units. But check
      * just to be sure, and find any that may be missing. This makes sure
      * that some of the tests will work, and may be required for some
      * future features to work.
@@ -386,9 +387,9 @@ public class ValidationRunContext
         return runType;
     }
 
-    public Date getLastAlertRun()
+    public Date getLastScheduledRun()
     {
-        return lastAlertRun;
+        return lastScheduledRun;
     }
 
     public Map<String, Double> getConstantMap()

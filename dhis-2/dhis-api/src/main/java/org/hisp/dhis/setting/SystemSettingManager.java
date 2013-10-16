@@ -79,7 +79,7 @@ public interface SystemSettingManager
     final String KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "scheduleAggregateQueryBuilderTackStrategy";
     final String KEY_CONFIGURATION = "keyConfig";
     final String KEY_ACCOUNT_RECOVERY = "keyAccountRecovery";
-    final String KEY_LAST_ALERT_RUN = "keyLastAlertRun";
+    final String KEY_LAST_MONITORING_RUN = "keyLastMonitoringRun";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
