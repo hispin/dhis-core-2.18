@@ -43,9 +43,15 @@ public interface EventAnalyticsService
     
     Grid getEvents( EventQueryParams params );
 
+    /**
+     * Used for aggregate query.
+     */
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
         Set<String> dimension, Set<String> filter, boolean hierarchyMeta, SortOrder sortOrder, Integer limit, I18nFormat format );
-    
+
+    /**
+     * Used for event query.
+     */
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> dimension, Set<String> filter, 
         String ouMode, Set<String> asc, Set<String> desc, boolean hierarchyMeta, Integer page, Integer pageSize, I18nFormat format );
 }

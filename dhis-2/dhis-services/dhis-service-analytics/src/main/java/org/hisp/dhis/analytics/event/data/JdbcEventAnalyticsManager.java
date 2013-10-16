@@ -311,9 +311,7 @@ public class JdbcEventAnalyticsManager
     
     private String getFromWhereClause( EventQueryParams params )
     {
-        String sql = "";
-        
-        sql += "from " + params.getPartitions().getSinglePartition() + " ";
+        String sql = "from " + params.getPartitions().getSinglePartition() + " ";
         
         if ( params.hasStartEndDate() )
         {        

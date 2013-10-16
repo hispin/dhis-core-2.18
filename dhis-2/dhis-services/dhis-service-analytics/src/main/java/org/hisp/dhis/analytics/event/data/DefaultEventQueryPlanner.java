@@ -175,7 +175,7 @@ public class DefaultEventQueryPlanner
         return list;
     }
     
-    private static EventQueryParams getQuery( EventQueryParams params, Date startDate, Date endDate, Program program )
+    private EventQueryParams getQuery( EventQueryParams params, Date startDate, Date endDate, Program program )
     {
         EventQueryParams query = params.instance();
         query.setStartDate( startDate );

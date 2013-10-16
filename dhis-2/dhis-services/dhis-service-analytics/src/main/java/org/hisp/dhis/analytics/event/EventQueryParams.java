@@ -86,6 +86,8 @@ public class EventQueryParams
     
     private String periodType;
     
+    private boolean aggregate;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -119,7 +121,9 @@ public class EventQueryParams
         params.pageSize = this.pageSize;
         params.sortOrder = this.sortOrder;
         params.limit = this.limit;
+        
         params.periodType = this.periodType;
+        params.aggregate = this.aggregate;
         
         return params;
     }
@@ -350,5 +354,15 @@ public class EventQueryParams
     public void setPeriodType( String periodType )
     {
         this.periodType = periodType;
+    }
+
+    public boolean isAggregate()
+    {
+        return aggregate;
+    }
+
+    public void setAggregate( boolean aggregate )
+    {
+        this.aggregate = aggregate;
     }
 }
