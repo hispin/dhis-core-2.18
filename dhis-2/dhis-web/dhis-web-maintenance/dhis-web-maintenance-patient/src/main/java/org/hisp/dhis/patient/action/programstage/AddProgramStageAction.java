@@ -338,7 +338,14 @@ public class AddProgramStageAction
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setDisplayGenerateEventBox( displayGenerateEventBox );
         programStage.setValidCompleteOnly( validCompleteOnly );
-        programStage.setAutoGenerateEvent( autoGenerateEvent );
+        if ( program.isSingleEvent() )
+        {
+            programStage.setAutoGenerateEvent( true );
+        }
+        else
+        {
+            programStage.setAutoGenerateEvent( autoGenerateEvent );
+        }
         programStage.setCaptureCoordinates( captureCoordinates );
         programStage.setBlockEntryForm( blockEntryForm );
         programStage.setRemindCompleted( remindCompleted );
