@@ -5622,10 +5622,9 @@ Ext.onReady( function() {
 						handler: function() {
 							if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
 							{
-							
 								TR.cmp.params.dataelement.selected.store.each( function(r) {
 									var deId = r.data.id;
-									var length = Ext.getCmp('filterPanel_' + deId).items.length/4;
+									var length = Ext.getCmp('filterPanel_' + deId).items.length/5;
 									for(var idx=0;idx<length;idx++)
 									{					
 										var id = deId + '_' + idx;
