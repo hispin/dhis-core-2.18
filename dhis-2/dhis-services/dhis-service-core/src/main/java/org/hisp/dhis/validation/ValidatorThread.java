@@ -229,7 +229,7 @@ public class ValidatorThread
     {
         boolean evaluate = true; // Assume true for now.
 
-        if ( ValidationRunType.ALERT == context.getRunType() )
+        if ( ValidationRunType.SCHEDULED == context.getRunType() )
         {
             if ( context.getLastAlertRun() != null ) // True if no previous alert run
             {

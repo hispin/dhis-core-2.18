@@ -72,7 +72,7 @@ public class Validator
         ConstantService constantService, ExpressionService expressionService, PeriodService periodService, DataValueService dataValueService)
     {
         ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods, rules,
-            constantService.getConstantMap(), ValidationRunType.ALERT, lastAlertRun,
+            constantService.getConstantMap(), ValidationRunType.SCHEDULED, lastAlertRun,
             expressionService, periodService, dataValueService );
 
         int threadPoolSize = getThreadPoolSize( context );
