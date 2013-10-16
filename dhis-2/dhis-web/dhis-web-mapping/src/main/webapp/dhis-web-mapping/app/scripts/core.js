@@ -1254,7 +1254,6 @@ console.log(view.parentGraphMap);
 						items = [];
 
 					if (!response) {
-						alert(GIS.i18n.current_selection_no_data);
 						olmap.mask.hide();
 						return;
 					}
