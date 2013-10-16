@@ -1689,9 +1689,9 @@ Ext.onReady( function() {
 				
 				for(var idx=0;idx<length;idx++)
 				{
+					var id = deId + '_' + idx;
 					if(Ext.getCmp('filter_' + id)!=undefined)
 					{
-						var id = deId + '_' + idx;
 						if( idx==0 )
 						{
 							dimensionOption = Ext.getCmp('filter_dimension_' + deId ).getValue();
@@ -2071,7 +2071,7 @@ Ext.onReady( function() {
 							var fields = [];
 							for( var index=0; index < TR.value.columns.length; index++ )
 							{
-								fields[index] = TR.value.columns[index].column;
+								fields[index] = TR.value.columns[index].name;
 							}
 							TR.value.fields = fields;
 							
@@ -2277,9 +2277,9 @@ Ext.onReady( function() {
 						for(var idx=0;idx<length;idx++)
 						{
 							var id = deId + '_' + idx;
-							var filterValue = Ext.getCmp('filter_' + id).rawValue;
-							if(Ext.getCmp('filter_' + id)==undefined)
+							if(Ext.getCmp('filter_' + id)!=undefined)
 							{
+								var filterValue = Ext.getCmp('filter_' + id).rawValue;
 								if(filterValue==null || filterValue==TR.i18n.please_select){
 									filterValue = Ext.getCmp('filter_' + id).getValue();
 								}
@@ -2525,8 +2525,10 @@ Ext.onReady( function() {
 							added: function() {
 								TR.cmp.settings.currentPage = this;
 							},
-							change: function(textfield,newValue,oldValue){
-								TR.exe.paging( eval(newValue));
+							specialkey: function(f,e){
+								 if(e.getKey() == e.ENTER){
+									TR.exe.paging( Ext.getCmp('currentPage').getValue() );
+								}
 							}
 						},
 					},
