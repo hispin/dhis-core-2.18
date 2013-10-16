@@ -52,13 +52,13 @@ public class PartitionUtilsTest
     @Test
     public void testGetPartitions()
     {
-        assertEquals( new Partitions().add( TBL + "_2000" ), PartitionUtils.getPartitions( createPeriod( "200001" ), TBL ) );
-        assertEquals( new Partitions().add( TBL + "_2001" ), PartitionUtils.getPartitions( createPeriod( "200110" ), TBL ) );
-        assertEquals( new Partitions().add( TBL + "_2002" ), PartitionUtils.getPartitions( createPeriod( "2002Q2" ), TBL ) );
-        assertEquals( new Partitions().add( TBL + "_2003" ), PartitionUtils.getPartitions( createPeriod( "2003S2" ), TBL ) );
+        assertEquals( new Partitions().add( TBL + "_2000" ), PartitionUtils.getPartitions( createPeriod( "200001" ), TBL, null ) );
+        assertEquals( new Partitions().add( TBL + "_2001" ), PartitionUtils.getPartitions( createPeriod( "200110" ), TBL, null ) );
+        assertEquals( new Partitions().add( TBL + "_2002" ), PartitionUtils.getPartitions( createPeriod( "2002Q2" ), TBL, null ) );
+        assertEquals( new Partitions().add( TBL + "_2003" ), PartitionUtils.getPartitions( createPeriod( "2003S2" ), TBL, null ) );
         
-        assertEquals( new Partitions().add( TBL + "_2000" ).add( TBL + "_2001" ), PartitionUtils.getPartitions( createPeriod( "2000July" ), TBL ) );
-        assertEquals( new Partitions().add( TBL + "_2001" ).add( TBL + "_2002" ), PartitionUtils.getPartitions( createPeriod( "2001April" ), TBL ) );
+        assertEquals( new Partitions().add( TBL + "_2000" ).add( TBL + "_2001" ), PartitionUtils.getPartitions( createPeriod( "2000July" ), TBL, null ) );
+        assertEquals( new Partitions().add( TBL + "_2001" ).add( TBL + "_2002" ), PartitionUtils.getPartitions( createPeriod( "2001April" ), TBL, null ) );
     }
     
     public void getGetPartitionsMultiplePeriods()
@@ -68,14 +68,14 @@ public class PartitionUtilsTest
         periods.add( createPeriod( "200105" ) );
         periods.add( createPeriod( "200108" ) );
         
-        assertEquals( new Partitions().add( TBL + "_2000" ).add( TBL + "_2001" ), PartitionUtils.getPartitions( periods, TBL ) );
+        assertEquals( new Partitions().add( TBL + "_2000" ).add( TBL + "_2001" ), PartitionUtils.getPartitions( periods, TBL, null ) );
     }
         
     @Test
     public void testGetTablePeriodMapA()
     {        
         ListMap<Partitions, NameableObject> map = PartitionUtils.getPartitionPeriodMap( getList( 
-            createPeriod( "2000S1" ), createPeriod( "2000S2" ), createPeriod( "2001S1" ), createPeriod( "2001S2" ), createPeriod( "2002S1" ) ), TBL );
+            createPeriod( "2000S1" ), createPeriod( "2000S2" ), createPeriod( "2001S1" ), createPeriod( "2001S2" ), createPeriod( "2002S1" ) ), TBL, null );
         
         assertEquals( 3, map.size() );
         
@@ -92,7 +92,7 @@ public class PartitionUtilsTest
     public void testGetTablePeriodMapB()
     {        
         ListMap<Partitions, NameableObject> map = PartitionUtils.getPartitionPeriodMap( getList( 
-            createPeriod( "2000April" ), createPeriod( "2000" ), createPeriod( "2001" ), createPeriod( "2001Oct" ), createPeriod( "2002Oct" ) ), TBL );
+            createPeriod( "2000April" ), createPeriod( "2000" ), createPeriod( "2001" ), createPeriod( "2001Oct" ), createPeriod( "2002Oct" ) ), TBL, null );
 
         assertEquals( 5, map.size() );
         

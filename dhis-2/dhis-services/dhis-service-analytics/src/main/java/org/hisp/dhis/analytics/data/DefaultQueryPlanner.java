@@ -350,7 +350,7 @@ public class DefaultQueryPlanner
         }
         else if ( params.getPeriods() != null && !params.getPeriods().isEmpty() )
         {
-            ListMap<Partitions, NameableObject> partitionPeriodMap = PartitionUtils.getPartitionPeriodMap( params.getPeriods(), tableName );
+            ListMap<Partitions, NameableObject> partitionPeriodMap = PartitionUtils.getPartitionPeriodMap( params.getPeriods(), tableName, null );
             
             for ( Partitions partitions : partitionPeriodMap.keySet() )
             {
@@ -363,7 +363,7 @@ public class DefaultQueryPlanner
         else if ( params.getFilterPeriods() != null && !params.getFilterPeriods().isEmpty() )
         {
             DataQueryParams query = params.instance();
-            query.setPartitions( PartitionUtils.getPartitions( params.getFilterPeriods(), tableName ) );
+            query.setPartitions( PartitionUtils.getPartitions( params.getFilterPeriods(), tableName, null ) );
             queries.add( query );
         }
         else
