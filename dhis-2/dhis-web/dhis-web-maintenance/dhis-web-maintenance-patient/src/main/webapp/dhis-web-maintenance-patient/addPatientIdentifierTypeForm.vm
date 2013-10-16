@@ -1,4 +1,7 @@
 <script type="text/javascript" src="javascript/addPatientIdentifierTypeForm.js"></script>
+<script>
+	var i18n_select_at_least_one_scope = '$encoder.jsEscape( $i18n.getString( "select_at_least_one_scope" ) , "'" )';
+</script>
 
 <h3>$i18n.getString( "create_new_patient_identifier_type" )</h3>
 								
