@@ -5,7 +5,9 @@ dhis2.db.currentKey = "dhis2.dashboard.current";
 
 dhis2.db.current = function() 
 {
-	return localStorage[dhis2.db.currentKey];
+	var current = localStorage[dhis2.db.currentKey];
+	
+	return current;
 }
 
 dhis2.db.setCurrent = function( id )
@@ -347,7 +349,7 @@ dhis2.db.renderDashboardListLoadFirst = function()
 				}
 			} );
 
-			if ( undefined == dhis2.db.current() )
+			if ( undefined === dhis2.db.current() )
 			{
 				dhis2.db.setCurrent( first );
 			}
