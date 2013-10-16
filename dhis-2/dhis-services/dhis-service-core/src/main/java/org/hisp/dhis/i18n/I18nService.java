@@ -64,10 +64,14 @@ public interface I18nService
     // -------------------------------------------------------------------------
 
     void updateTranslation( String className, int id, Locale thisLocale, Map<String, String> translations );
-
+    
     Map<String, String> getTranslations( String className, int id );
 
     Map<String, String> getTranslations( String className, int id, Locale locale );
+    
+    Map<String, String> getTranslationsNoFallback( String className, int id );
+
+    Map<String, String> getTranslationsNoFallback( String className, int id, Locale locale );
     
     // -------------------------------------------------------------------------
     // Locale

@@ -74,6 +74,20 @@ public class DefaultTranslateSystemSettingManager
         return translations;
     }
 
+    @Override
+    public Map<String, String> getTranslationNoFallback_SystemAppearanceSetting( String localeStr )
+    {
+        Map<String, String> translations = new Hashtable<String, String>();
+
+         // Add the key application data (with localeCode name) into translations map object
+        translations.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE + localeStr, DEFAULT_APPLICATION_TITLE ).toString() );        
+        translations.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO + localeStr, "" ).toString() );
+        translations.put( KEY_APPLICATION_NOTIFICATION, systemSettingManager.getSystemSetting( KEY_APPLICATION_NOTIFICATION + localeStr, "" ).toString() );
+        translations.put( KEY_APPLICATION_FOOTER, systemSettingManager.getSystemSetting( KEY_APPLICATION_FOOTER + localeStr, "" ).toString() );
+                
+        return translations;
+    }
+
     // -------------------------------------------------------------------------
     // Support Method implementation
     // -------------------------------------------------------------------------

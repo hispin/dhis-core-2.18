@@ -169,7 +169,7 @@ public class I18nAction
         
         availableLocales = i18nService.getAvailableLocales();
         
-        translations = i18nService.getTranslations( className, objectId );
+        translations = i18nService.getTranslationsNoFallback( className, objectId );
 
         IdentifiableObject object = identifiableObjectManager.getObject( objectId, className );
 

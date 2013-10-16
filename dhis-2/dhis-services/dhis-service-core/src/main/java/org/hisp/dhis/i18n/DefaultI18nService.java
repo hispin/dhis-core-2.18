@@ -221,7 +221,7 @@ public class DefaultI18nService
                 Translation translation = translationService.getTranslation( className, id, locale, key );
 
                 if ( value != null && !value.trim().isEmpty() )
-                {
+                {                    
                     if ( translation != null )
                     {
                         translation.setValue( value );
@@ -251,6 +251,21 @@ public class DefaultI18nService
         if ( locale != null && className != null )
         {
             return convertTranslations( translationService.getTranslations( className, id, locale ) );
+        }
+
+        return new HashMap<String, String>();
+    }
+
+    public Map<String, String> getTranslationsNoFallback( String className, int id )
+    {
+        return getTranslationsNoFallback( className, id, getCurrentLocale() );
+    }
+
+    public Map<String, String> getTranslationsNoFallback( String className, int id, Locale locale )
+    {
+        if ( locale != null && className != null )
+        {
+            return convertTranslations( translationService.getTranslationsNoFallback( className, id, locale ) );
         }
 
         return new HashMap<String, String>();

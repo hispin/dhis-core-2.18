@@ -47,6 +47,10 @@
 	  <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 	
+	<action name="systemAppearanceSettingsString" class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsStringAction">
+      <result name="success" type="velocity-json">/dhis-web-maintenance-settings/systemAppearanceSettingsString.vm</result>
+    </action>
+    
 	<!-- Email settings -->
 
     <action name="systemEmailSettings" class="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction">

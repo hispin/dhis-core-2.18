@@ -1,4 +1,4 @@
-package org.hisp.dhis.settings.system.action;
+package org.hisp.dhis.settings.action.system;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -80,7 +80,7 @@ public class GetAppearanceSettingsStringAction
 
     public String execute()
     {
-        translations = translateSystemSettingManager.getTranslation_SystemAppearanceSetting( localeCode );
+        translations = translateSystemSettingManager.getTranslationNoFallback_SystemAppearanceSetting( localeCode );
         
         return SUCCESS;
     }
