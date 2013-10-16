@@ -346,6 +346,7 @@ public class JdbcCaseAggregationConditionManager
                 if( hasDataelement)
                 {
                     sql += " programinstance as pi ";
+                    sql += " INNER JOIN patient p on p.patientid=pi.patientid ";
                     sql += " INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
                     sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
                 }
@@ -1009,7 +1010,7 @@ public class JdbcCaseAggregationConditionManager
     private String getConditionForMinusDataElement( Collection<Integer> orgunitIds, Integer programStageId,
         Integer dataElementId, String compareSide, String startDate, String endDate )
     {
-        return " EXISTS ( SELECT_pdv.value FROM patientdatavalue _pdv inner join programstageinstance _psi "
+        return " EXISTS ( SELECT _pdv.value FROM patientdatavalue _pdv inner join programstageinstance _psi "
             + "                         ON _pdv.programstageinstanceid=_psi.programstageinstanceid "
             + "                 JOIN programinstance _pi ON _pi.programinstanceid=_psi.programinstanceid "
             + "           WHERE psi.programstageinstanceid=_pdv.programstageinstanceid "
