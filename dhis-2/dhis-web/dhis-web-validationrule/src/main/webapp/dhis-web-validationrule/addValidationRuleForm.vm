@@ -28,7 +28,7 @@
 		<td>
 			<select type="text" id="ruleType" name="ruleType" onchange="changeRuleType()">
 				<option value="validation" selected="selected">$i18n.getString( "validation" )</option>
-				<option value="monitoring">$i18n.getString( "monitoring" )</option>
+				<option value="surveillance">$i18n.getString( "surveillance" )</option>
 			</select>
 		</td>
 	</tr>

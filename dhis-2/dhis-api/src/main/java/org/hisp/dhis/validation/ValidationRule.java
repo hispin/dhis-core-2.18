@@ -68,7 +68,7 @@ public class ValidationRule
     public static final String IMPORTANCE_LOW = "low";
 
     public static final String RULE_TYPE_VALIDATION = "validation";
-    public static final String RULE_TYPE_MONITORING = "monitoring";
+    public static final String RULE_TYPE_SURVEILLANCE = "surveillance";
     
     public static final String TYPE_STATISTICAL = "statistical";
     public static final String TYPE_ABSOLUTE = "absolute";

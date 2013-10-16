@@ -38,12 +38,12 @@
 		<td>
 			<select type="text" id="ruleType" name="ruleType" onchange="changeRuleType()" disabled="disabled">
 				<option value="validation" #if( $validationRule.ruleType == 'validation' ) selected #end>$encoder.htmlEncode( $i18n.getString( "validation" ) )</option>
-				<option value="monitoring" #if( $validationRule.ruleType == 'monitoring' ) selected #end>$encoder.htmlEncode( $i18n.getString( "monitoring" ) )</option>
+				<option value="surveillance" #if( $validationRule.ruleType == 'surveillance' ) selected #end>$encoder.htmlEncode( $i18n.getString( "surveillance" ) )</option>
 			</select>
 			<img title="$i18n.getString( 'clear_expression' )" onclick="clearRuleExpression()" src="../images/edit-clear.png" style="width: 20px; cursor:pointer;" />
 		</td>
 	</tr>
-	<tr id="organisationUnitLevelTR" #if( $!validationRule.ruleType != 'monitoring' ) style="display:none;" #end>
+	<tr id="organisationUnitLevelTR" #if( $!validationRule.ruleType != 'surveillance' ) style="display:none;" #end>
 		<td><label for="organisationUnitLevel">$i18n.getString( "organisation_unit_level" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="organisationUnitLevel" name="organisationUnitLevel">
@@ -63,19 +63,19 @@
 			<img title="$i18n.getString( 'clear_expression' )" onclick="clearRuleExpression()" src="../images/edit-clear.png" style="width: 20px; cursor:pointer;" />
 		</td>
 	</tr>
-	<tr id="sequentialSampleCountTR"  #if( $!validationRule.ruleType != 'monitoring' ) style='display:none;' #end>
+	<tr id="sequentialSampleCountTR"  #if( $!validationRule.ruleType != 'surveillance' ) style='display:none;' #end>
 		<td><label for="sequentialSampleCount">$i18n.getString( "sequential_sample_count" )</label></td>
 		<td><input type="text" id="sequentialSampleCount" name="sequentialSampleCount" value="$!validationRule.sequentialSampleCount"></td>
 	</tr>
-	<tr id="annualSampleCountTR" #if( $!validationRule.ruleType != 'monitoring' ) style='display:none;' #end">
+	<tr id="annualSampleCountTR" #if( $!validationRule.ruleType != 'surveillance' ) style='display:none;' #end">
 		<td><label for="annualSampleCount">$i18n.getString( "annual_sample_count" )</label></td>
 		<td><input type="text" id="annualSampleCount" name="annualSampleCount" value="$!validationRule.annualSampleCount"></td>
 	</tr>
-	<tr id="highOutliersTR" #if( $!validationRule.ruleType != 'monitoring' ) style='display:none;' #end>
+	<tr id="highOutliersTR" #if( $!validationRule.ruleType != 'surveillance' ) style='display:none;' #end>
 		<td><label for="highOutliers">$i18n.getString( "high_outliers" )</label></td>
 		<td><input type="text" id="highOutliers" name="highOutliers" value="$!validationRule.highOutliers"></td>
 	</tr>
-	<tr id="lowOutliersTR" #if( $!validationRule.ruleType != 'monitoring' ) style='display:none;' #end>
+	<tr id="lowOutliersTR" #if( $!validationRule.ruleType != 'surveillance' ) style='display:none;' #end>
 		<td><label for="lowOutliers">$i18n.getString( "low_outliers" )</label></td>
 		<td><input type="text" id="lowOutliers" name="lowOutliers" value="$!validationRule.lowOutliers"></td>
 	</tr>

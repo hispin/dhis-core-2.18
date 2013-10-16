@@ -12,7 +12,7 @@ function showValidationRuleDetails( validationId )
 		var ruleType = json.validationRule.ruleType;
 		setText( 'ruleTypeField', i18nalizeRuleType( ruleType ) );
 		
-		if ( ruleType == 'monitoring' ) 
+		if ( ruleType == 'surveillance' ) 
 		{
 			var organisationUnitLevel = string( json.validationRule.organisationUnitLevel );
 			setText( 'organisationUnitLevelField', organisationUnitLevel ? organisationUnitLevel : '[' + i18n_none + ']' );
@@ -81,9 +81,9 @@ function i18nalizeRuleType ( ruleType )
 	{
 		return i18n_validation;
 	}
-	else if ( ruleType == "monitoring" )
+	else if ( ruleType == "surveillance" )
 	{
-		return i18n_monitoring;
+		return i18n_surveillance;
 	}
 	
 	return null;

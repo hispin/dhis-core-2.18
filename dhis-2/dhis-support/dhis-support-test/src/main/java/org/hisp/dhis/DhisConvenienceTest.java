@@ -807,7 +807,7 @@ public abstract class DhisConvenienceTest
         validationRule.setName( "MonitoringRule" + uniqueCharacter );
         validationRule.setDescription( "Description" + uniqueCharacter );
         validationRule.setType( ValidationRule.TYPE_ABSOLUTE );
-        validationRule.setRuleType( ValidationRule.RULE_TYPE_MONITORING );
+        validationRule.setRuleType( ValidationRule.RULE_TYPE_SURVEILLANCE );
         validationRule.setOperator( operator );
         validationRule.setLeftSide( leftSide );
         validationRule.setRightSide( rightSide );

@@ -31,7 +31,7 @@
 	var i18n_low = '$encoder.jsEscape( $i18n.getString( "low" ) , "'")';
 	
 	var i18n_validation = '$encoder.jsEscape( $i18n.getString( "validation" ) , "'")';
-	var i18n_monitoring = '$encoder.jsEscape( $i18n.getString( "monitoring" ) , "'")';
+	var i18n_surveillance = '$encoder.jsEscape( $i18n.getString( "surveillance" ) , "'")';
 	
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_validation_rule" ) , "'")';
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
