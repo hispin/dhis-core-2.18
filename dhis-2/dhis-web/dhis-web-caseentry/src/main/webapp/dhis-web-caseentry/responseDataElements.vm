@@ -5,16 +5,6 @@
 
 { "items": [
 	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) && $program!='' )
-		{
-			"id": "GENDER",
-			"name": "$i18n.getString('gender')",
-			"valueType":"GENDER"
-		},
-		{
-			"id": "ISDEAD",
-			"name": "$i18n.getString('is_dead')",
-			"valueType": "bool"
-		},
 		#foreach( $iden in $identifierTypes )
 		{
 			"id": "$iden.uid",
