@@ -73,7 +73,7 @@ public class Validator
     {
         ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods, rules,
             constantService.getConstantMap(), ValidationRunType.ALERT, lastAlertRun,
-            expressionService, periodService, dataValueService);
+            expressionService, periodService, dataValueService );
 
         int threadPoolSize = getThreadPoolSize( context );
         ExecutorService executor = Executors.newFixedThreadPool( threadPoolSize );

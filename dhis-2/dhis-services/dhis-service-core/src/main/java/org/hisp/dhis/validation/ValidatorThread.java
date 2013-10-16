@@ -280,7 +280,7 @@ public class ValidatorThread
 
         for ( ValidationRule rule : rules )
         {
-            if ( ValidationRule.RULE_TYPE_MONITORING.equals( rule.getRuleType() )
+            if ( ValidationRule.RULE_TYPE_SURVEILLANCE.equals( rule.getRuleType() )
                 && rule.getCurrentDataElements() != null )
             {
                 recursiveCurrentDataElements.addAll( rule.getCurrentDataElements() );

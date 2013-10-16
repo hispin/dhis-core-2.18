@@ -190,7 +190,7 @@ public class ValidationRunContext
     	
         for ( ValidationRule rule : rules )
         {
-            if ( ValidationRule.RULE_TYPE_MONITORING.equals( rule.getRuleType() ) )
+            if ( ValidationRule.RULE_TYPE_SURVEILLANCE.equals( rule.getRuleType() ) )
             {
                 if ( rule.getOrganisationUnitLevel() == null )
                 {

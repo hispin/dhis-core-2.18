@@ -70,7 +70,7 @@ function getOperandsPage()
 	
 	var periodType = getFieldValue( "periodTypeName" );
 	var ruleType = getFieldValue( "ruleType" );
-	var periodTypeAllowAverage = ( ruleType && ruleType == "monitoring" ) ? true : false;
+	var periodTypeAllowAverage = ( ruleType && ruleType == "surveillance" ) ? true : false;
 
 	dataDictionary.loadOperands( "#expression-container select[id=dataElementId]", 
 		{usePaging: true, key: key, periodType: periodType, periodTypeAllowAverage: periodTypeAllowAverage } );	
