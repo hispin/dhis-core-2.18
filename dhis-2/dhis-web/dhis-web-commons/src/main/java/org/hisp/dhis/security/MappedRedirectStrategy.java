@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hisp.dhis.security.filter.CustomAuthenticationFilter.*;
+
 /**
  * @author mortenoh
  */
@@ -81,6 +83,10 @@ public class MappedRedirectStrategy
     {
         Device device = deviceResolver.resolveDevice( request );
 
+        // ---------------------------------------------------------------------
+        // Ignore certain ajax requests
+        // ---------------------------------------------------------------------
+
         for ( String key : redirectMap.keySet() )
         {
             if ( url.indexOf( key ) != -1 )
@@ -89,7 +95,11 @@ public class MappedRedirectStrategy
             }
         }
 
-        String mobileVersion = (String) request.getAttribute( "mobileVersion" );
+        // ---------------------------------------------------------------------
+        // Redirect to mobile start pages
+        // ---------------------------------------------------------------------
+
+        String mobileVersion = (String) request.getAttribute( PARAM_MOBILE_VERSION );
         mobileVersion = mobileVersion == null ? "desktop" : mobileVersion;
 
         if ( (device.isMobile() || device.isTablet()) && mobileVersion.equals( "basic" ) )
@@ -103,6 +113,17 @@ public class MappedRedirectStrategy
         else if ( (device.isMobile() || device.isTablet()) && mobileVersion.equals( "desktop" ) )
         {
             url = getRootPath( request ) + "/";
+        }
+
+        // ---------------------------------------------------------------------
+        // Check if redirect should be skipped - for cookie authentication only
+        // ---------------------------------------------------------------------
+
+        String authOnly = (String) request.getAttribute( PARAM_AUTH_ONLY );
+        
+        if ( "true".equals( authOnly ) )
+        {
+            return;
         }
 
         log.debug( "Redirecting to " + url );

@@ -37,6 +37,9 @@ import java.io.IOException;
 public class CustomAuthenticationFilter
     implements Filter
 {
+    public static final String PARAM_MOBILE_VERSION = "mobileVersion";
+    public static final String PARAM_AUTH_ONLY = "authOnly";
+    
     @Override
     public void init( FilterConfig filterConfig ) throws ServletException
     {
@@ -45,13 +48,19 @@ public class CustomAuthenticationFilter
     @Override
     public void doFilter( ServletRequest request, ServletResponse response, FilterChain filterChain ) throws IOException, ServletException
     {
-        String mobileVersion = request.getParameter( "mobileVersion" );
-
+        String mobileVersion = request.getParameter( PARAM_MOBILE_VERSION );
+        String authOnly = request.getParameter( PARAM_AUTH_ONLY );
+        
         if ( mobileVersion != null )
         {
-            request.setAttribute( "mobileVersion", mobileVersion );
+            request.setAttribute( PARAM_MOBILE_VERSION, mobileVersion );
         }
 
+        if ( authOnly != null )
+        {
+            request.setAttribute( PARAM_AUTH_ONLY, authOnly );
+        }
+        
         filterChain.doFilter( request, response );
     }
 
