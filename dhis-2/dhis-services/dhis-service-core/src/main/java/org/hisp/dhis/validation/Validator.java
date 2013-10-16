@@ -58,9 +58,9 @@ public class Validator
      * @param sources the organisation units in which to run the validation rules
      * @param periods the periods of data to check
      * @param rules the ValidationRules to evaluate
-     * @param runType whether this is an INTERACTIVE or ALERT run
-     * @param lastAlertRun date/time of the most recent successful alerts run
-     *        (needed only for alert run)
+     * @param runType whether this is an INTERACTIVE or SCHEDULED run
+     * @param lastScheduledRun date/time of the most recent successful
+     *        scheduled monitoring run (needed only for scheduled runs)
      * @param constantService Constant Service reference
      * @param expressionService Expression Service reference
      * @param periodService Period Service reference
@@ -68,11 +68,11 @@ public class Validator
      * @return a collection of any validations that were found
      */
     public static Collection<ValidationResult> validate( Collection<OrganisationUnit> sources,
-        Collection<Period> periods, Collection<ValidationRule> rules, ValidationRunType runType, Date lastAlertRun,
+        Collection<Period> periods, Collection<ValidationRule> rules, ValidationRunType runType, Date lastScheduledRun,
         ConstantService constantService, ExpressionService expressionService, PeriodService periodService, DataValueService dataValueService)
     {
         ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods, rules,
-            constantService.getConstantMap(), ValidationRunType.SCHEDULED, lastAlertRun,
+            constantService.getConstantMap(), ValidationRunType.SCHEDULED, lastScheduledRun,
             expressionService, periodService, dataValueService );
 
         int threadPoolSize = getThreadPoolSize( context );
