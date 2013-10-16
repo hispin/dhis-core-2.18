@@ -132,7 +132,7 @@ public class DefaultEventAnalyticsService
 
     //TODO order the event analytics tables up front to avoid default sorting in queries
     //TODO filter items support
-    
+    //TODO parallel processing of queries
     //TODO proper query when start/end period or period filter span multiple partitions
     
     public Grid getAggregatedEventData( EventQueryParams params )
@@ -262,22 +262,17 @@ public class DefaultEventAnalyticsService
         return grid;
     }
 
-    /**
-     * Used for aggregate query.
-     */
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
         Set<String> dimension, Set<String> filter, boolean hierarchyMeta, SortOrder sortOrder, Integer limit, I18nFormat format )
     {
         EventQueryParams params = getFromUrl( program, stage, startDate, endDate, dimension, filter, null, null, null, hierarchyMeta, null, null, format );
         params.setSortOrder( sortOrder );
         params.setLimit( limit );
+        params.setAggregate( true );
         
         return params;
     }
     
-    /**
-     * Used for event query.
-     */
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> dimension, Set<String> filter, 
         String ouMode, Set<String> asc, Set<String> desc, boolean hierarchyMeta, Integer page, Integer pageSize, I18nFormat format )
     {
@@ -381,6 +376,7 @@ public class DefaultEventAnalyticsService
         params.setHierarchyMeta( hierarchyMeta );
         params.setPage( page );
         params.setPageSize( pageSize );
+        params.setAggregate( false );
 
         return params;
     }
