@@ -166,9 +166,7 @@ public class SaveProgramEnrollmentAction
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             ProgramInstance.STATUS_ACTIVE );
-
-        ProgramInstance programInstance = null;
-
+        
         if ( programInstances.iterator().hasNext() )
         {
             programInstance = programInstances.iterator().next();

@@ -2679,8 +2679,8 @@ Ext.onReady( function() {
 		},
 		createAggColTable: function(){
 			var cols = [];
-			
-			for( var i =0; i <TR.value.columns.length; i++ )
+			var i=0;
+			for( i =0; i <TR.value.columns.length; i++ )
 			{
 				cols[i] = {
 					header: TR.value.columns[i].column, 
@@ -2693,6 +2693,17 @@ Ext.onReady( function() {
 					menuDisabled: true
 				}
 			}
+			
+			cols[i] = {
+					header: TR.value.columns[i].column, 
+					dataIndex: TR.value.columns[i].name,
+					height: TR.conf.layout.east_gridcolumn_height,
+					name: TR.value.columns[i].column,
+					sortable: true,
+					draggable: false,
+					hideable: false,
+					menuDisabled: true
+				}
 				
 			return cols;
 		},

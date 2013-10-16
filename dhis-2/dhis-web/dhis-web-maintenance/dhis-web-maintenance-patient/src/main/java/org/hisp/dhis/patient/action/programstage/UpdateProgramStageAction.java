@@ -336,11 +336,15 @@ public class UpdateProgramStageAction
         programStage.setOpenAfterEnrollment( openAfterEnrollment );
         programStage.setReportDateToUse( reportDateToUse );
 
-        if ( !programStage.getProgram().isSingleEvent() )
+        if ( programStage.getProgram().isSingleEvent() )
+        {
+            programStage.setAutoGenerateEvent( true );
+        }
+        else
         {
             programStage.setAutoGenerateEvent( autoGenerateEvent );
         }
-
+        
         programStage.setValidCompleteOnly( validCompleteOnly );
         programStage.setCaptureCoordinates( captureCoordinates );
 
