@@ -27,7 +27,7 @@
 
 <input type="hidden" id="organisationUnitId" value="$!{organisationUnit.id}" />
 
-<h3>$i18n.getString( "validation_violations" ) - $encoder.htmlEncode( $!{organisationUnit.name} )</h3>
+<h3>$i18n.getString( "validation_alerts" ) - $encoder.htmlEncode( $!{organisationUnit.name} )</h3>
 
 <table>
 	<colgroup>

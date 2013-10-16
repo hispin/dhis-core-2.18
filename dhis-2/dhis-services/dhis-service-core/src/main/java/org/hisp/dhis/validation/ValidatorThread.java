@@ -93,7 +93,7 @@ public class ValidatorThread
     private void validateSource( OrganisationUnitExtended sourceX, ValidationRunContext context )
     {
         if ( context.getValidationResults().size() < ( ValidationRunType.INTERACTIVE == context.getRunType() ?
-            ValidationRuleService.MAX_INTERACTIVE_VIOLATIONS : ValidationRuleService.MAX_ALERT_VIOLATIONS) )
+            ValidationRuleService.MAX_INTERACTIVE_ALERTS : ValidationRuleService.MAX_SCHEDULED_ALERTS) )
         {
             for ( PeriodTypeExtended periodTypeX : context.getPeriodTypeExtendedMap().values() )
             {
