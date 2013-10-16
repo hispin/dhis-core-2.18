@@ -465,11 +465,12 @@ gis-combo .x-form-item-label {
  *--------------------------------------------------------------------------*/
 
 .x-menu-body {
-    border-color: #bbb;
+    border: 1px solid #aaa;
     border-radius: 2px;
 	padding: 0;
 	background-color: #fff !important;
 }
+
 .x-menu-item-active .x-menu-item-link {
 	border-radius: 0;
 	border-color: #e1e1e1;
@@ -495,16 +496,6 @@ gis-combo .x-form-item-label {
 .gis-toolbar-btn-menu-first { /* Boundary layer menu spacing from viewport */
 	left: 2px !important;
 }
-
-	/* Menu item */
-	.gis-menu-item-first.x-menu-item-active .x-menu-item-link { /* Menu item (first) hover */
-		border-top-left-radius: 2px;
-		border-top-right-radius: 2px;
-	}
-	.gis-menu-item-last.x-menu-item-active .x-menu-item-link { /* Menu item (first) hover */
-		border-bottom-left-radius: 2px;
-		border-bottom-right-radius: 2px;
-	}
 
 	.gis-menu-item-icon-edit,
 	.gis-menu-item-icon-clear,
