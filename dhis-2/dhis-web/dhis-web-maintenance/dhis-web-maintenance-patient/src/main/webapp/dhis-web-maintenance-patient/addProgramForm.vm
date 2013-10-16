@@ -66,11 +66,10 @@
 		selectedPropertyIds.empty();
 		var personDisplayNames = jQuery( "#personDisplayNames" );
 		personDisplayNames.empty();
-		
-		if(getFieldValue('type')!=3){
-			jQuery("#selectedList").find("tr").each( function( i, item ){ 
-				
-				selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
+
+        if( getFieldValue('type') != 3 ) {
+            jQuery("#selectedList").find("tr").each( function( i, item ){
+                selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
 				
 				var displayed = jQuery( item ).find( "input[name='displayed']:first");
 				var checked = displayed.attr('checked') ? true : false;
@@ -95,10 +94,10 @@
 	<select id='messageType' name="messageType" multiple="multiple" class="hidden"></select>
 	<select id='userGroup' name="userGroup" multiple="multiple" class="hidden"></select>
 	
-<table>	 
+<table>
 	<thead>
       <tr>
-        <th colspan="2">$i18n.getString( "program_details" )</th>
+        <th colspan="2" style="width: 590px;">$i18n.getString( "program_details" )</th>
       </tr>
     </thead>
     
@@ -126,20 +125,20 @@
 			</td>
 			<td></td>
 		</tr>
-		
+
 		<tr>
 			<td><label>$i18n.getString( "data_entry_method" ) </label></td>
 			<td>
-				<select id='dataEntryMethod' name='dataEntryMethod' >
+				<select id='dataEntryMethod' name='dataEntryMethod' style="width: 335px;">
 					<option value='false' selected>$i18n.getString('drop_down_lists')</option>
 					<option value='true'>$i18n.getString('radio_buttons')</option>
 				</select>
 			</td>
 			<td></td>
 		</tr>
-		
+
 		<tr name='nonAnonymous'>
-			<th colspan="2">$i18n.getString( "enrollment_details" )</th>
+			<th colspan="2" style="width: 590px;">$i18n.getString( "enrollment_details" )</th>
 		</tr>
 		
 		<tr name='nonAnonymous'>
@@ -153,43 +152,31 @@
 			<td><input type="checkbox" id="selectIncidentDatesInFuture" name="selectIncidentDatesInFuture" value='true' ></td>
 			<td></td>
 		</tr>
-		
-		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
-			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true'></td>
-			<td></td>
-		</tr>
-		
-		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "only_enroll_once" )</label></td>
-			<td><input type="checkbox" id="onlyEnrollOnce" name="onlyEnrollOnce" value='true'></td>
-			<td></td>
-		</tr>
-		
-		<tr>
-			<td><label>$i18n.getString( "used_by_all_orgunits" )</label></td>
-			<td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true'></td>
-			<td></td>
-		</tr>
-		
-		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "use_birth_date_as_incident_date" )</label></td>
-			<td><input type="checkbox" id="useBirthDateAsIncidentDate" name="useBirthDateAsIncidentDate" value='true'></td>
-			<td></td>
-		</tr>
-		
-		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "use_birth_date_as_enrollment_date" )</label></td>
-			<td><input type="checkbox" id="useBirthDateAsEnrollmentDate" name="useBirthDateAsEnrollmentDate" value='true' ></td>
-			<td></td>
-		</tr>
-		
-		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "show_incident_date" )</label></td>
-			<td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' checked ></td>
-			<td></td>
-		</tr>
-		
+
+        <tr name='nonAnonymous'>
+            <td><label>$i18n.getString( "use_birth_date_as_incident_date" )</label></td>
+            <td><input type="checkbox" id="useBirthDateAsIncidentDate" name="useBirthDateAsIncidentDate" value='true'></td>
+            <td></td>
+        </tr>
+
+        <tr name='nonAnonymous'>
+            <td><label>$i18n.getString( "use_birth_date_as_enrollment_date" )</label></td>
+            <td><input type="checkbox" id="useBirthDateAsEnrollmentDate" name="useBirthDateAsEnrollmentDate" value='true' ></td>
+            <td></td>
+        </tr>
+
+        <tr name='nonAnonymous'>
+            <td><label>$i18n.getString( "only_enroll_once" )</label></td>
+            <td><input type="checkbox" id="onlyEnrollOnce" name="onlyEnrollOnce" value='true'></td>
+            <td></td>
+        </tr>
+
+        <tr name='nonAnonymous'>
+            <td><label>$i18n.getString( "show_incident_date" )</label></td>
+            <td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' checked ></td>
+            <td></td>
+        </tr>
+
 		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:2}}" value="Incident Date"></td>
@@ -202,6 +189,13 @@
 			<td></td>
 		</tr>
 			
+        <tr>
+            <td><label>$i18n.getString( "used_by_all_orgunits" )</label></td>
+            <td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true'></td>
+            <td></td>
+        </tr>
+
+
 		<tr name='nonAnonymous'>
 			<th colspan="2">$i18n.getString( "dashboard_shortcut_to_add_relative" )</th>
 		</tr>
@@ -210,9 +204,9 @@
 			<td>$i18n.getString("shortcut_link_label_eg_add_child")</td>
 			<td><input type='text' id='relationshipText' name='relationshipText' ></td>
 		</tr>
-		
+
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("relationship")</td>
+			<td>$i18n.getString("relationship_description")</td>
 			<td>
 				<select type='text' id='relationshipTypeId' name='relationshipTypeId' onchange='relationshipTypeOnchange()' >
 					<option value=''>[$i18n.getString("please_select")]</option>
@@ -222,7 +216,7 @@
 				</select>
 			</td>
 		</tr>
-		
+
 		<tr name='nonAnonymous'>
 			<td>$i18n.getString("who_is_the_new_relative_to_the_existing_person")</td>
 			<td>
@@ -245,18 +239,41 @@
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 	<tbody>
 </table>
-	
+
+<table name='nonAnonymous'>
+    <thead>
+      <tr>
+        <th colspan="2" style="width: 590px;">$i18n.getString( "scheduling_of_events" )</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        <tr name='nonAnonymous'>
+  			<td><label>$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
+  			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true'></td>
+  			<td></td>
+  		</tr>
+    </tbody>
+</table>
+
+<br />
+
 <table name='nonAnonymous'>
 	<colgroup>
         <col style="width:400px;"/>
 		<col/>
 		<col style="width:400px;"/>
     </colgroup>
+    <thead>
+      <tr>
+        <th colspan="3" style="width: 590px;">$i18n.getString( "identifiers_and_attributes" )</th>
+      </tr>
+    </thead>
 	<thead>
 	  <tr>        
-		<th>$i18n.getString( "available_identifiers_and_attributes" )</th>
+		<th>$i18n.getString( "available" )</th>
 		<th></th>
-		<th>$i18n.getString( "select_identifiers_and_attributes" )							
+		<th>$i18n.getString( "selected" )
 			<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
 			<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
 		</th>
@@ -288,8 +305,9 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th>$i18n.getString( "identifiers_and_attributes" )</th>
-							<th>$i18n.getString( "displayed_in_patient_list" )</th>
+                            <th style="width:180px;">$i18n.getString( "identifiers_and_attributes" )</th>
+                            <th style="width:20px;">$i18n.getString( "displayed_in_patient_list" )</th>
+                        </tr>
 					</thead>
 					<tbody id="selectedList"></tbody>
 				</table>
