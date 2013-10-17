@@ -1825,7 +1825,6 @@ Ext.onReady( function() {
 							isValue = Ext.isObject(config) && Ext.isString(config.type) && config.type === 'value' && !config.empty,
 							cls = '',
 							html = '';
-);
 
 						if (!Ext.isObject(config)) {
 							return '';
