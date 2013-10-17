@@ -1837,7 +1837,7 @@ Ext.onReady( function() {
 
 						// Background color from legend set
 						if (isNumeric && isLegendSet) {
-							legends = legendSet.mapLegends;
+							mapLegends = legendSet.mapLegends;
 
 							for (var i = 0, value; i < mapLegends.length; i++) {
 								value = parseFloat(config.value);
