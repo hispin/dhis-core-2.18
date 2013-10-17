@@ -1814,17 +1814,18 @@ Ext.onReady( function() {
 
 					getTdHtml = function(config) {
 						var bgColor,
-							legends,
+							mapLegends,
 							colSpan,
 							rowSpan,
 							htmlValue,
 							displayDensity,
 							fontSize,
-							isLegendSet = Ext.isObject(legendSet) && Ext.isArray(legendSet.legends) && legendSet.legends.length,
+							isLegendSet = Ext.isObject(legendSet) && Ext.isArray(legendSet.mapLegends) && legendSet.mapLegends.length,
 							isNumeric = Ext.isObject(config) && Ext.isString(config.type) && config.type.substr(0,5) === 'value' && !config.empty,
 							isValue = Ext.isObject(config) && Ext.isString(config.type) && config.type === 'value' && !config.empty,
 							cls = '',
 							html = '';
+);
 
 						if (!Ext.isObject(config)) {
 							return '';
@@ -1832,13 +1833,13 @@ Ext.onReady( function() {
 
 						// Background color from legend set
 						if (isNumeric && isLegendSet) {
-							legends = legendSet.legends;
+							mapLegends = legendSet.mapLegends;
 
-							for (var i = 0, value; i < legends.length; i++) {
+							for (var i = 0, value; i < mapLegends.length; i++) {
 								value = parseFloat(config.value);
 
-								if (Ext.Number.constrain(value, legends[i].sv, legends[i].ev) === value) {
-									bgColor = legends[i].color;
+								if (Ext.Number.constrain(value, mapLegends[i].sv, mapLegends[i].ev) === value) {
+									bgColor = mapLegends[i].color;
 								}
 							}
 						}
