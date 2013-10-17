@@ -440,7 +440,7 @@ public class ValidatorThread
      * @param sampleValues sample values actually collected
      * @param annualSampleCount number of annual samples tried for
      * @param sequentialSampleCount number of sequential samples tried for
-     * @return
+     * @return average right-side sample value
      */
     Double rightSideAverage( ValidationRule rule, List<Double> sampleValues, int annualSampleCount,
         int sequentialSampleCount )
@@ -458,7 +458,7 @@ public class ValidatorThread
             int lowOutliers = rule.getLowOutliers() == null ? 0 : rule.getLowOutliers();
 
             // If fewer than the expected number of samples, then scale back
-            if ( highOutliers + lowOutliers > sampleValues.size() )
+            if ( sampleValues.size() < expectedSampleCount )
             {
                 highOutliers = (highOutliers * sampleValues.size()) / expectedSampleCount;
                 lowOutliers = (lowOutliers * sampleValues.size()) / expectedSampleCount;
