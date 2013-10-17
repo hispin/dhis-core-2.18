@@ -17,16 +17,8 @@
 <form id='activityPlanForm' name='activityPlanForm'>
 	<input type='hidden' id='export' value='export'>
 	
-	<div id='selectDiv' style='width:550px;'>
+	<div id='selectDiv' style='width:550px;' class='advanced-search'>
 		<table style="margin-bottom:8px;width:550px;">    
-			<tr>
-				<td>
-					<label>$i18n.getString( "registering_unit" )</label>
-				</td>
-				<td>
-					<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
-				</td>
-			</tr> 
 			<tr>
 				<td>$i18n.getString('program')</td>
 				<td>
