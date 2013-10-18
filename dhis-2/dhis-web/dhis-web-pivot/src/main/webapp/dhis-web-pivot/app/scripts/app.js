@@ -4485,6 +4485,9 @@ Ext.onReady( function() {
 			}
 
 			// Set gui
+			if (!updateGui) {
+				return;
+			}
 
 			// Indicators
 			pt.store.indicatorSelected.removeAll();

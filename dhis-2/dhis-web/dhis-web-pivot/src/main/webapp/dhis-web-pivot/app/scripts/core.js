@@ -2463,9 +2463,7 @@ Ext.onReady( function() {
 							engine.setSessionStorage('table', layout);
 						}
 
-						if (updateGui) {
-							pt.viewport.setGui(layout, xLayout, updateGui, isFavorite);
-						}
+						pt.viewport.setGui(layout, xLayout, updateGui, isFavorite);
 					}
 
 					// Hide mask
