@@ -124,7 +124,9 @@ implements Action
             {
                 if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelAttributeValue.getModelTypeAttribute().getValueType() ) )
                 {
-                    modelTypeAttributeValueMap.put( modelAttributeValue.getModelTypeAttribute().getId(), modelAttributeValue.getModelTypeAttributeOption().getName() );
+                    //modelTypeAttributeValueMap.put( modelAttributeValue.getModelTypeAttribute().getId(), modelAttributeValue.getModelTypeAttributeOption().getName() );
+                    
+                    modelTypeAttributeValueMap.put( modelAttributeValue.getModelTypeAttribute().getId(), modelAttributeValue.getValue() );
                 }
                 
                 else

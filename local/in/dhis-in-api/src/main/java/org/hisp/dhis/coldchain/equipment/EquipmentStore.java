@@ -49,4 +49,7 @@ public interface EquipmentStore extends GenericStore<Equipment>
     int countOrgUnitByAttributeValue( Collection<Integer> orgunitIds, Attribute attribute, String searchText );
     Collection<OrganisationUnit> searchOrgUnitByAttributeValue( Collection<Integer> orgunitIds, Attribute attribute, String searchText, Integer min, Integer max );
     
+    
+    Collection<Equipment> getEquipmentList( OrganisationUnit organisationUnit, EquipmentType equipmentType );
+    
 }

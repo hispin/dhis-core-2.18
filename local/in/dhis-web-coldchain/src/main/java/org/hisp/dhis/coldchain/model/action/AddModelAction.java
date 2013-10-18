@@ -17,6 +17,7 @@ import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeOption;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.model.ModelTypeService;
+import org.hisp.dhis.option.OptionSet;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,12 +46,14 @@ implements Action
         this.modelTypeService = modelTypeService;
     }
     
+    
     private ModelTypeAttributeOptionService modelTypeAttributeOptionService;
     
     public void setModelTypeAttributeOptionService( ModelTypeAttributeOptionService modelTypeAttributeOptionService )
     {
         this.modelTypeAttributeOptionService = modelTypeAttributeOptionService;
     }
+    
     /*
     private ModelAttributeValueService modelAttributeValueService;
     
@@ -142,8 +145,20 @@ implements Action
                     
                     if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelTypeAttribute.getValueType() ) )
                     {
-                        ModelTypeAttributeOption option = modelTypeAttributeOptionService.getModelTypeAttributeOption( NumberUtils.toInt( value ) );
+                        //ModelTypeAttributeOption option = modelTypeAttributeOptionService.getModelTypeAttributeOption( NumberUtils.toInt( value ) );
                         
+                        OptionSet modelTypeAttributesOption  = modelTypeAttribute.getOptionSet();
+                        
+                        if ( modelTypeAttributesOption != null )
+                        {
+                            modelAttributeValue.setValue( value );
+                        }
+                        else
+                        {
+                            
+                        }
+                        
+                        /*
                         if ( option != null )
                         {
                             modelAttributeValue.setModelTypeAttributeOption( option );
@@ -153,6 +168,7 @@ implements Action
                         {
                             
                         }
+                        */
                     }
                     else
                     {

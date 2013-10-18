@@ -48,8 +48,8 @@
 		<td><select id="selectedPeriodId" name="selectedPeriodId" style="width:220px" onchange="loadDataEntryForm()">
 				<option value="-1">[$i18n.getString( "select" )]</option>
 				#foreach( $period in $periods )
-    				    <option value="$period.id">$encoder.htmlEncode( $period.name )</option>
-    			    #end
+					<option value="$period.iso">$encoder.htmlEncode( $period.name )</option>
+    			#end
 			</select>
 			<input type="button" id="prevButton" style="width:75px" value="$i18n.getString( 'prev_year' )" title="$i18n.getString('earlier_periods')" onclick="getAvailablePeriodsTemp( 'selectedPeriodId', 'selectedPeriodId', '-1' )" >
 			<input type="button" id="nextButton" style="width:75px" value="$i18n.getString( 'next_year' )" title="$i18n.getString('later_periods')" onclick="getAvailablePeriodsTemp( 'selectedPeriodId', 'selectedPeriodId', '1' )" >

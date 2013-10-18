@@ -28,9 +28,17 @@
 				#elseif( $attribute.valueType == "COMBO" )
 					<select  id="attr$attribute.id" name="attr$attribute.id" class='#validate( "default"  $attribute.mandatory )'>
 						<option value="">[$i18n.getString( "please_select" )]</option>
+						
+						#foreach ($option in $attribute.optionSet.options )
+							<option value="$option" #if($attributeValue == $option ) selected="selected" #end>$option</option>
+						 #end
+						
+						<!--
 						#foreach ($option in $!equipmentTypeAttributeOptionsMap.get( $attribute.id ) )
 							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 						#end
+						-->
+						
 					</select>
                 #elseif( $attribute.valueType == "MODEL" )
                     <select id="attr$attribute.id" name="attr$attribute.id" onChange="modelDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>

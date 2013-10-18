@@ -23,6 +23,7 @@ import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOption;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.equipment.EquipmentType_Attribute;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -134,17 +135,21 @@ public class UpdateEquipmentAction implements Action
 
                 if ( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                 {
-                    EquipmentTypeAttributeOption option = equipmentTypeAttributeOptionService.getEquipmentTypeAttributeOption( NumberUtils.toInt( value, 0 ) );
-                    if ( option != null )
+                    //EquipmentTypeAttributeOption option = equipmentTypeAttributeOptionService.getEquipmentTypeAttributeOption( NumberUtils.toInt( value, 0 ) );
+                    
+                    OptionSet equipmentTypeAttributeOption  = attribute.getOptionSet();
+                    
+                    //if ( option != null )
+                    if ( equipmentTypeAttributeOption != null )
                     {
-                        equipmentAttributeValueDetails.setEquipmentTypeAttributeOption( option );
-                        equipmentAttributeValueDetails.setValue( option.getName() );
+                       // equipmentAttributeValueDetails.setEquipmentTypeAttributeOption( option );
+                        equipmentAttributeValueDetails.setValue( value );
                         
                         if ( EquipmentStatus.WORKING_STATUS.equalsIgnoreCase( attribute.getDescription() ) )
                         {
                             //System.out.println( "Option ID is  : " + option.getId() + "---Option Name is : "+option.getName() );
                             
-                            if ( EquipmentStatus.STATUS_NOT_WORKING.equalsIgnoreCase( option.getName() ) )
+                            if ( EquipmentStatus.STATUS_NOT_WORKING.equalsIgnoreCase( value ) )
                             {
                                 equipment.setWorking( false );
                                 equipmentService.updateEquipment( equipment );
@@ -165,7 +170,7 @@ public class UpdateEquipmentAction implements Action
 
                             equipmentStatus.setDescription( "Updated from edit equipmentAttributeValue screen" );
                             equipmentStatus.setEquipment( equipment );
-                            equipmentStatus.setStatus( option.getName() );
+                            equipmentStatus.setStatus( value );
                             
                             equipmentStatus.setReportingDate( format.parseDate( currentDate.trim() ) );
                             equipmentStatus.setUpdationDate( format.parseDate( currentDate.trim() ) );
@@ -206,21 +211,23 @@ public class UpdateEquipmentAction implements Action
             {
                 if ( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                 {
-                    EquipmentTypeAttributeOption option = equipmentTypeAttributeOptionService.getEquipmentTypeAttributeOption( NumberUtils.toInt( value, 0 ) );
+                    //EquipmentTypeAttributeOption option = equipmentTypeAttributeOptionService.getEquipmentTypeAttributeOption( NumberUtils.toInt( value, 0 ) );
                     
-                    //System.out.println( " Option is  : " + option + "-- and value is --" + value.trim());
+                    OptionSet equipmentTypeAttributeOption  = attribute.getOptionSet();
                     
-                    if ( option != null )
+                    //if ( option != null )
+                   
+                    if (  equipmentTypeAttributeOption != null )
                     {
-                        equipmentAttributeValueDetails.setEquipmentTypeAttributeOption( option );
-                        equipmentAttributeValueDetails.setValue( option.getName() );
+                        //equipmentAttributeValueDetails.setEquipmentTypeAttributeOption( option );
+                        equipmentAttributeValueDetails.setValue( value );
                         
                         
                         if ( EquipmentStatus.WORKING_STATUS.equalsIgnoreCase( attribute.getDescription() ) )
                         {
                             //System.out.println( " Option ID is  : " + option.getId() + "---Option Name is : " + option.getName() );
                             
-                            if ( EquipmentStatus.STATUS_NOT_WORKING.equalsIgnoreCase( option.getName() ) )
+                            if ( EquipmentStatus.STATUS_NOT_WORKING.equalsIgnoreCase( value ) )
                             {
                                 equipment.setWorking( false );
                                 equipmentService.updateEquipment( equipment );
@@ -240,7 +247,7 @@ public class UpdateEquipmentAction implements Action
 
                             equipmentStatus.setDescription( "Updated from edit equipmentAttributeValue screen" );
                             equipmentStatus.setEquipment( equipment );
-                            equipmentStatus.setStatus( option.getName() );
+                            equipmentStatus.setStatus( value );
                             
                             equipmentStatus.setReportingDate( format.parseDate( currentDate.trim() ) );
                             equipmentStatus.setUpdationDate( format.parseDate( currentDate.trim() ) );

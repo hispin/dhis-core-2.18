@@ -115,11 +115,11 @@ public class AddModelTypeAttributeAction implements Action
         
         if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
         {
-        	if( optionSetId != -1 )
-        	{
-        		OptionSet optionSet = optionService.getOptionSet( optionSetId );
-        		modelTypeAttribute.setOptionSet( optionSet );
-        	}
+            if( optionSetId != -1 &&  optionSetId != null )
+            {
+                OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        	modelTypeAttribute.setOptionSet( optionSet );
+            }
         }
         
         modelTypeAttributeService.addModelTypeAttribute( modelTypeAttribute );

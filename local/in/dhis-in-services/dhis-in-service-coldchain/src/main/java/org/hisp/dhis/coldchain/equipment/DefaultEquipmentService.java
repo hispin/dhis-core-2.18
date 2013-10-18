@@ -163,6 +163,13 @@ public class DefaultEquipmentService implements EquipmentService
         return equipmentStore.getEquipments( orgUnitIdsByComma, equipmentType, equipmentTypeAttribute, searchText, searchBy, min, max );
     }
     
+    
+    public Collection<Equipment> getEquipmentList( OrganisationUnit organisationUnit, EquipmentType equipmentType )
+    {
+        return equipmentStore.getEquipmentList( organisationUnit, equipmentType );
+    }
+    
+   
     public Collection<OrganisationUnit> searchOrgUnitListByName( String searchText )
     {
         return equipmentStore.searchOrgUnitListByName( searchText );

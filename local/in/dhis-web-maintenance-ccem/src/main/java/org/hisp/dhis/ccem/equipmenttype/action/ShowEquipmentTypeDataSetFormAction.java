@@ -46,6 +46,14 @@ public class ShowEquipmentTypeDataSetFormAction implements Action
         return selEquipmentTypeDataSets;
     }
 
+    private List<EquipmentType> equipmentTypeList;
+    
+    public List<EquipmentType> getEquipmentTypeList()
+    {
+        return equipmentTypeList;
+    }
+
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -54,6 +62,16 @@ public class ShowEquipmentTypeDataSetFormAction implements Action
         equipmentType = equipmentTypeService.getEquipmentType( Integer.parseInt( id ) );
         
         selEquipmentTypeDataSets = new ArrayList<DataSet>(  equipmentType.getDataSets() );
+        
+        equipmentTypeList = new ArrayList<EquipmentType>();
+        
+        for( EquipmentType equipmentType : equipmentTypeService.getAllEquipmentTypes() ) 
+        {
+            if(  equipmentType.getDataSets() != null && equipmentType.getDataSets().size() != 0  )
+            {
+                equipmentTypeList.add( equipmentType );
+            }
+        }
         
         return SUCCESS;        
     }

@@ -159,6 +159,24 @@ public class HibernateEquipmentStore
         //return getCriteria( Restrictions.in( "organisationUnit", orgUnitList ) ).add( Restrictions.eq( "equipmentType", equipmentType ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<Equipment> getEquipmentList( OrganisationUnit organisationUnit, EquipmentType equipmentType )
+    {
+        List<Equipment> equipmentList  = new ArrayList<Equipment>();
+        
+        if ( organisationUnit != null )
+        {
+            return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).add( Restrictions.eq( "equipmentType", equipmentType ) ).list();
+        }
+        
+        else
+        {
+            return equipmentList;
+        }
+        
+    }    
+    
+    
     //public int getCountEquipment( OrganisationUnit orgUnit, EquipmentType equipmentType, EquipmentTypeAttribute equipmentTypeAttribute, String searchText )
     public int getCountEquipment( String orgUnitIdsByComma, EquipmentType equipmentType, EquipmentTypeAttribute equipmentTypeAttribute, String searchText, String searchBy )
     {

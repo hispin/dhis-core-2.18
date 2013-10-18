@@ -105,7 +105,8 @@ public class SaveEquipmentDataValueAction implements Action
 
     public String execute()
     {
-        Period period = PeriodType.createPeriodExternalId( selectedPeriodId );
+        //Period period = PeriodType.createPeriodExternalId( selectedPeriodId );
+        Period period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
         
         if ( period == null )
         {

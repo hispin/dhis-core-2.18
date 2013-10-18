@@ -18,6 +18,7 @@ import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeOption;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.model.ModelTypeService;
+import org.hisp.dhis.option.OptionSet;
 
 import com.opensymphony.xwork2.Action;
 
@@ -170,6 +171,19 @@ implements Action
                         
                         if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelTypeAttribute.getValueType() ) )
                         {
+                            
+                            OptionSet modelTypeAttributesOption  = modelTypeAttribute.getOptionSet();
+                            
+                            if ( modelTypeAttributesOption != null )
+                            {
+                                modelAttributeValue.setValue( value );
+                            }
+                            else
+                            {
+                                
+                            }
+                            
+                            /*
                             ModelTypeAttributeOption option = modelTypeAttributeOptionService.getModelTypeAttributeOption( NumberUtils.toInt( value ) );
                             
                             if ( option != null )
@@ -181,6 +195,7 @@ implements Action
                             {
                                 
                             }
+                            */
                         }
                         else
                         {
@@ -192,6 +207,19 @@ implements Action
                     {
                         if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelTypeAttribute.getValueType() ) )
                         {
+                            
+                            OptionSet modelTypeAttributesOption  = modelTypeAttribute.getOptionSet();
+                            
+                            if ( modelTypeAttributesOption != null )
+                            {
+                                modelAttributeValue.setValue( value );
+                            }
+                            else
+                            {
+                                
+                            }
+                            
+                            /*
                             ModelTypeAttributeOption option = modelTypeAttributeOptionService.getModelTypeAttributeOption( NumberUtils.toInt( value ));
                             if ( option != null )
                             {
@@ -201,6 +229,7 @@ implements Action
                             else
                             {
                             }
+                            */
                         }
                         else
                         {

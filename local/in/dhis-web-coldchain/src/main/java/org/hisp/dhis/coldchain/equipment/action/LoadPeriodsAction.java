@@ -93,6 +93,8 @@ public class LoadPeriodsAction implements Action
         //Collections.sort( periods );
         for ( Period period : periods )
         {
+            //System.out.println("ISO Date : " + period.getIsoDate() );
+            
             period.setName( format.formatPeriod( period ) );
         }
         

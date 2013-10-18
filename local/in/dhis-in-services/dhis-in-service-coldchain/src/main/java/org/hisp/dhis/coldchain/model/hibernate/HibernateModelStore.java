@@ -132,6 +132,14 @@ public class HibernateModelStore extends HibernateIdentifiableObjectStore<Model>
         }
         
         /*
+        postGress Hibernate query
+        
+        SELECT DISTINCT cat FROM Model AS cat  " +
+        " WHERE cat IN ( SELECT catdata.model FROM ModelAttributeValue catdata WHERE catdata.modelTypeAttribute.id = "+ modelTypeAttribute.getId()+" AND lower(catdata.value) LIKE '%" + searchText + "%' ) " +
+        " AND cat.modelType.id = " + modelType.getId();
+        */
+        
+        /*
         String hql = "SELECT DISTINCT cat FROM Model AS cat  " +
                      " WHERE cat.name LIKE '%" + searchText + "%' ) " +
                      " AND cat.modelType.id = " + modelType.getId();

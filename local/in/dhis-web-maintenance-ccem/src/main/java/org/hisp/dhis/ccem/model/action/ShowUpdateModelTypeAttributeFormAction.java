@@ -1,10 +1,12 @@
 package org.hisp.dhis.ccem.model.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 
@@ -28,8 +30,8 @@ implements Action
     
     public void setOptionService(OptionService optionService) 
     {
-		this.optionService = optionService;
-	}
+        this.optionService = optionService;
+    }
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -51,10 +53,10 @@ implements Action
 
     private List<OptionSet> optionSets;
 
-	public List<OptionSet> getOptionSets() 
-	{
-		return optionSets;
-	}
+    public List<OptionSet> getOptionSets() 
+    {
+	return optionSets;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -66,6 +68,8 @@ implements Action
         modelTypeAttribute = modelTypeAttributeService.getModelTypeAttribute( id );
         
         optionSets = new ArrayList<OptionSet>( optionService.getAllOptionSets() );
+        
+        Collections.sort( optionSets, new IdentifiableObjectNameComparator() );
         
         return SUCCESS;
     }

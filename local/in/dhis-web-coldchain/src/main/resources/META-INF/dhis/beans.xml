@@ -592,6 +592,9 @@
         class="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentStatusFormAction"
         scope="prototype">
 		<property name="equipmentService" ref="org.hisp.dhis.coldchain.equipment.EquipmentService" />
+		<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+		<property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+		
     </bean>
     <bean id="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentStatusAction"
         class="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentStatusAction"

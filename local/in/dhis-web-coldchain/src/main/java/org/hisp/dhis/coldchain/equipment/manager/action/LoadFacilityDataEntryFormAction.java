@@ -153,8 +153,8 @@ public class LoadFacilityDataEntryFormAction implements Action
         
         dataSet = dataSetService.getDataSet( dataSetId );
         
-        period = PeriodType.createPeriodExternalId( selectedPeriodId );
-        
+        //period = PeriodType.createPeriodExternalId( selectedPeriodId );
+        period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
         
         dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
         

@@ -40,6 +40,7 @@ ATTRIBUTE_OPTION =
 			}
 		}else {
 			jQuery("#attributeComboRow").hide();
+			$("#optionSetId option").removeAttr('selected');
 		}
 	},
 	checkOnSubmit : function ()

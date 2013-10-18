@@ -114,13 +114,22 @@ public class GetEquipmentDataAction implements Action
     {
         return equipmentModelId;
     }
-
+    /*
     private Map<Integer, List<EquipmentTypeAttributeOption>> equipmentTypeAttributeOptionsMap = new HashMap<Integer, List<EquipmentTypeAttributeOption>>();
     
     public Map<Integer, List<EquipmentTypeAttributeOption>> getEquipmentTypeAttributeOptionsMap()
     {
         return equipmentTypeAttributeOptionsMap;
     }
+    */
+    private Map<Integer, List<String>> equipmentTypeAttributeOptionsMap = new HashMap<Integer, List<String>>();
+    
+    public Map<Integer, List<String>> getEquipmentTypeAttributeOptionsMap()
+    {
+        return equipmentTypeAttributeOptionsMap;
+    }
+    
+    
     
     public List<EquipmentType_Attribute> equipmentTypeAttributeList;
     
@@ -240,15 +249,25 @@ public class GetEquipmentDataAction implements Action
         */
         for( EquipmentTypeAttribute equipmentTypeAttribute : equipmentTypeAttributes )
         {       
+            /*
             List<EquipmentTypeAttributeOption> equipmentTypeAttributeOptions = new ArrayList<EquipmentTypeAttributeOption>();
             if( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( equipmentTypeAttribute.getValueType() ) )
             {
-                //System.out.println(" inside equipmentTypeAttribute.TYPE_COMBO ");
                 equipmentTypeAttributeOptions = new ArrayList<EquipmentTypeAttributeOption>( equipmentTypeAttribute.getAttributeOptions() );
                 Collections.sort( equipmentTypeAttributeOptions, new EquipmentTypeAttributeOptionComparator() );
                 equipmentTypeAttributeOptionsMap.put( equipmentTypeAttribute.getId(), equipmentTypeAttributeOptions );
             }
-
+            */
+            
+            List<String> equipmentTypeAttributeOptions = new ArrayList<String>();
+            
+            if( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( equipmentTypeAttribute.getValueType() ) )
+            {
+               
+                equipmentTypeAttributeOptions = new ArrayList<String>( equipmentTypeAttribute.getOptionSet().getOptions() );
+                equipmentTypeAttributeOptionsMap.put( equipmentTypeAttribute.getId(), equipmentTypeAttributeOptions );
+            }
+            
         }
         
         ModelType tempModelType = equipment.getEquipmentType().getModelType();
@@ -280,8 +299,10 @@ public class GetEquipmentDataAction implements Action
                 {
                     if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelAttributeValue.getModelTypeAttribute().getValueType() ) )
                     {
-                        modelTypeAttributeValueMap.put( modelAttributeValue.getModelTypeAttribute().getId(), modelAttributeValue.getModelTypeAttributeOption().getName() );
+                        modelTypeAttributeValueMap.put( modelAttributeValue.getModelTypeAttribute().getId(), modelAttributeValue.getValue() );
                     }
+                    
+                    
                     /*
                     else if ( ModelTypeAttribute.TYPE_BOOL.equalsIgnoreCase( modelAttributeValue.getModelTypeAttribute().getValueType() ) )
                     {

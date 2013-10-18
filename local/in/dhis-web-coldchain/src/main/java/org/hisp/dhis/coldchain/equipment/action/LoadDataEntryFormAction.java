@@ -126,7 +126,8 @@ public class LoadDataEntryFormAction implements Action
         //OrganisationUnit organisationUnit = equipment.getOrganisationUnit();
         //EquipmentType equipmentType =  equipment.getEquipmentType();
         
-        Period period = PeriodType.createPeriodExternalId( selectedPeriodId );
+        //Period period = PeriodType.createPeriodExternalId( selectedPeriodId );
+        Period period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
         
         dataSet = dataSetService.getDataSet( dataSetId );
         

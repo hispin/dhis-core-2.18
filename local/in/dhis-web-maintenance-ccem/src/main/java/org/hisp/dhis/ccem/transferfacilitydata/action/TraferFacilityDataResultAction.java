@@ -219,11 +219,14 @@ public class TraferFacilityDataResultAction implements Action
         
         previousPeriod = periodService.getPeriod( firstDayPreviousYear, lastDaypreviousYear, periodType );
         
-        String createPreviousYearlyPeroid = "Yearly" + "_" + previousYear + "-01-01";
+        //String createPreviousYearlyPeroid = "Yearly" + "_" + previousYear + "-01-01";
+        
+        String createPreviousYearlyPeroid = ""+previousYear;
         
         if( previousPeriod == null )
         {
-            previousPeriod = PeriodType.createPeriodExternalId( createPreviousYearlyPeroid );
+            //previousPeriod = PeriodType.createPeriodExternalId( createPreviousYearlyPeroid );
+            previousPeriod = PeriodType.getPeriodFromIsoString( createPreviousYearlyPeroid );
         }
         
         
@@ -238,17 +241,19 @@ public class TraferFacilityDataResultAction implements Action
         
         currentPeriod = periodService.getPeriod( firstDayCurrentYear, lastDayCurrentYear, periodType );
         
-        String createCurrentYearlyPeroid = "Yearly" + "_" + currentYear + "-01-01";
+        //String createCurrentYearlyPeroid = "Yearly" + "_" + currentYear + "-01-01";
+        String createCurrentYearlyPeroid = ""+currentYear;
         
         if( currentPeriod == null )
         {
-            currentPeriod = PeriodType.createPeriodExternalId( createCurrentYearlyPeroid );
+            //currentPeriod = PeriodType.createPeriodExternalId( createCurrentYearlyPeroid );
+            currentPeriod = PeriodType.getPeriodFromIsoString( createCurrentYearlyPeroid );
         }
         
         System.out.println( "Transfering Facility Data Start Time is : \t" + new Date() );
         
         int flag = 1;
-        int orgUnitCount = 1;
+        //int orgUnitCount = 1;
         for( OrganisationUnit organisationUnit : orgUnitList )
         {
             for( DataElement dataElement : dataElementList )
@@ -290,7 +295,7 @@ public class TraferFacilityDataResultAction implements Action
                 }
             }
             //System.out.println(  "-SL No- " + orgUnitCount  + " --Data Transfer for facility- " + " : "+ organisationUnit.getId() +  " : " + organisationUnit.getName() + " --currentPeriod : " + currentPeriod.getId() + " --previousPeriod : " + previousPeriod.getId() );
-            orgUnitCount++;
+            //orgUnitCount++;
         }
         
         if(flag != 1)

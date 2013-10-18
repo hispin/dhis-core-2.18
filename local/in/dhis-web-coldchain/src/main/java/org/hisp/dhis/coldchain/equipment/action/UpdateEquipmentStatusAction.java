@@ -83,6 +83,7 @@ public class UpdateEquipmentStatusAction implements Action
                     if( equipmentAttributeValue == null )
                     {
                         equipmentAttributeValue = new EquipmentAttributeValue();
+                        
                         if( status.equalsIgnoreCase( EquipmentStatus.STATUS_WORKING_WELL ))
                         {
                             equipmentAttributeValue.setValue( EquipmentStatus.STATUS_WORKING_WELL.trim() );
@@ -96,6 +97,7 @@ public class UpdateEquipmentStatusAction implements Action
                         {
                             equipmentAttributeValue.setValue( EquipmentStatus.STATUS_NOT_WORKING.trim() );
                         }
+                        
                         equipmentAttributeValueService.addEquipmentAttributeValue( equipmentAttributeValue );
                     }
                     else
