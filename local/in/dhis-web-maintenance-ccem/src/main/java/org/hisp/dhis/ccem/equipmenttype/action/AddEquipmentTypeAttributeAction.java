@@ -95,8 +95,8 @@ public class AddEquipmentTypeAttributeAction implements Action
     
     public void setOptionSetId(Integer optionSetId) 
     {
-		this.optionSetId = optionSetId;
-	}
+	this.optionSetId = optionSetId;
+    }
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -114,13 +114,15 @@ public class AddEquipmentTypeAttributeAction implements Action
         equipmentTypeAttribute.setValueType( valueType );
         //equipmentTypeAttribute.setDisplay( display );
         
+        //System.out.println( "optionSetId == " + optionSetId );
+        
         if ( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
         {
-        	if( optionSetId != -1 )
-        	{
-        		OptionSet optionSet = optionService.getOptionSet( optionSetId );
-        		equipmentTypeAttribute.setOptionSet( optionSet );
-        	}
+            if( optionSetId != -1 &&  optionSetId != null )
+            {
+                OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        	equipmentTypeAttribute.setOptionSet( optionSet );
+            }
         }
         
         equipmentTypeAttributeService.addEquipmentTypeAttribute( equipmentTypeAttribute );

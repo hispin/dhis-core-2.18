@@ -52,4 +52,6 @@ public interface EquipmentService
     // for orgUnit list according to orGUnit Attribute values for paging purpose
     int countOrgUnitByAttributeValue( Collection<Integer> orgunitIds, Attribute attribute, String searchText );
     Collection<OrganisationUnit> searchOrgUnitByAttributeValue( Collection<Integer> orgunitIds, Attribute attribute, String searchText, Integer min, Integer max );
+    
+    Collection<Equipment> getEquipmentList( OrganisationUnit organisationUnit, EquipmentType equipmentType );
 }

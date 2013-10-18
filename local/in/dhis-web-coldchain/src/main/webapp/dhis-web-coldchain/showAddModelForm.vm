@@ -74,10 +74,16 @@
 						<select  id="attr$attribute.id" name="attr$attribute.id" class='#validate( "default"  $attribute.mandatory )'>
 							<!--Collections.sort($attribute.attributeOptions))-->
 							##set ( $options = $sorter.sort($attribute.attributeOptions))
+							
 							<option value="">[$i18n.getString( "please_select" )]</option>
+							<!--
 							#foreach ($option in $!modelTypeAttributesOptionsMap.get( $attribute.id ) )
 								<option value="$option.id" >$option.name</option>
-							#end						
+							#end
+							-->	
+							#foreach ($option in $attribute.optionSet.options )
+								<option value="$option">$option</option>
+							#end	
 						</select>
 					#else 
 						<input type="text" id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" />
@@ -123,9 +129,15 @@
 						<!--Collections.sort($attribute.attributeOptions))-->
 						##set ( $options = $sorter.sort($attribute.attributeOptions))
 						<option value="">[$i18n.getString( "please_select" )]</option>
+						
+						<!--
 						#foreach ($option in $!modelTypeAttributesOptionsMap.get( $attribute.id ) )
 							<option value="$option.id" >$option.name</option>
-						#end						
+						#end
+						-->
+						#foreach ($option in $attribute.optionSet.options )
+								<option value="$option">$option</option>
+						#end
 					</select>
 				#else 
 					<input type="text" id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" />

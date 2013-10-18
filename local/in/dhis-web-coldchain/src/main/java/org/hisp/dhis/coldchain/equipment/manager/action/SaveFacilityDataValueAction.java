@@ -129,7 +129,9 @@ public class SaveFacilityDataValueAction implements Action
     {
         //System.out.println( "inside save data value" );
         
-        Period period = PeriodType.createPeriodExternalId( selPeriodId );
+        //Period period = PeriodType.createPeriodExternalId( selPeriodId );
+        
+        Period period = PeriodType.getPeriodFromIsoString( selPeriodId );
         
         if ( period == null )
         {

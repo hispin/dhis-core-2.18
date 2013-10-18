@@ -97,7 +97,7 @@ public class UpdateEquipmentTypeAttributeAction implements Action
         this.noChars = noChars;
     }
     
-   private boolean display;
+    private boolean display;
     
     public void setDisplay( boolean display )
     {
@@ -108,8 +108,8 @@ public class UpdateEquipmentTypeAttributeAction implements Action
     
     public void setOptionSetId(Integer optionSetId) 
     {
-		this.optionSetId = optionSetId;
-	}
+	this.optionSetId = optionSetId;
+    }
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -128,15 +128,15 @@ public class UpdateEquipmentTypeAttributeAction implements Action
         
         if ( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
         {
-        	if( optionSetId != -1 )
-        	{
-        		OptionSet optionSet = optionService.getOptionSet( optionSetId );
-        		equipmentTypeAttribute.setOptionSet( optionSet );
-        	}
-        	else
-        	{
-        		equipmentTypeAttribute.setOptionSet( null );
-        	}
+            if( optionSetId != -1 &&  optionSetId != null )
+            {
+                OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        	equipmentTypeAttribute.setOptionSet( optionSet );
+            }
+            else
+            {
+        	equipmentTypeAttribute.setOptionSet( null );
+            }
         }
         
 

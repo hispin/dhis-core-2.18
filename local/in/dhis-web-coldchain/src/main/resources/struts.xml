@@ -562,7 +562,7 @@
         </action>	
 	
         <action name="loadPeriods" class="org.hisp.dhis.coldchain.equipment.action.LoadPeriodsAction">
-            <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonPeriods.vm</result>
+            <result name="success" type="velocity-json">/dhis-web-coldchain/jsonPeriods.vm</result>
         </action>	
 
         <action name="getAvailableNextPrePeriods" class="org.hisp.dhis.coldchain.equipment.action.LoadNextPrePeriodsAction">

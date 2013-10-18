@@ -1,14 +1,12 @@
 package org.hisp.dhis.coldchain.equipment.action;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.coldchain.equipment.Equipment;
 import org.hisp.dhis.coldchain.equipment.EquipmentService;
 import org.hisp.dhis.coldchain.equipment.EquipmentStatus;
 import org.hisp.dhis.coldchain.equipment.EquipmentStatusService;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 import com.opensymphony.xwork2.Action;
 

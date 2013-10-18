@@ -271,8 +271,8 @@ public class GetFullOrganisationUnitDetailsAction implements Action
         
         orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit.getId() ) );
         
-		List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );
-		OrganisationUnitGroup ouGroup = ouGroups.get( 0 ); 
+	List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );
+	OrganisationUnitGroup ouGroup = ouGroups.get( 0 ); 
         //OrganisationUnitGroup ouGroup = organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY );
        
         if ( ouGroup != null )
@@ -348,11 +348,14 @@ public class GetFullOrganisationUnitDetailsAction implements Action
         
         period = periodService.getPeriod( firstDay, lastDay, periodType );
         
-        String createNewYearlyPeroid = "Yearly" + "_" + year + "-01-01";
+        //String createNewYearlyPeroid = "Yearly" + "_" + year + "-01-01";
+        
+        String createNewYearlyPeroid =  ""+year;
         
         if( period == null )
         {
-            period = PeriodType.createPeriodExternalId( createNewYearlyPeroid );
+            //period = PeriodType.createPeriodExternalId( createNewYearlyPeroid );
+            period = PeriodType.getPeriodFromIsoString( createNewYearlyPeroid );
         }
         
         

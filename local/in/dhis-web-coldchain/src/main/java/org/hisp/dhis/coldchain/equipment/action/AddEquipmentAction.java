@@ -8,18 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.coldchain.model.Model;
-import org.hisp.dhis.coldchain.model.ModelService;
-import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
 import org.hisp.dhis.coldchain.equipment.Equipment;
+import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
 import org.hisp.dhis.coldchain.equipment.EquipmentService;
-import org.hisp.dhis.coldchain.equipment.EquipmentStatus;
 import org.hisp.dhis.coldchain.equipment.EquipmentType;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
-import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOption;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeService;
 import org.hisp.dhis.coldchain.equipment.EquipmentType_Attribute;
+import org.hisp.dhis.coldchain.model.Model;
+import org.hisp.dhis.coldchain.model.ModelService;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -142,7 +141,16 @@ public class AddEquipmentAction implements Action
                 if ( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                 {
                     
-                    EquipmentTypeAttributeOption option = equipmentTypeAttributeOptionService.getEquipmentTypeAttributeOption( NumberUtils.toInt( value, 0 ) );
+                    //EquipmentTypeAttributeOption option = equipmentTypeAttributeOptionService.getEquipmentTypeAttributeOption( NumberUtils.toInt( value, 0 ) );
+                    
+                    OptionSet equipmentTypeAttributeOption  = attribute.getOptionSet();
+                    
+                    if ( equipmentTypeAttributeOption != null )
+                    {
+                        equipmentAttributeValueDetails.setValue( value );
+                    }
+                    
+                    /*
                     if ( option != null )
                     {
                         equipmentAttributeValueDetails.setEquipmentTypeAttributeOption( option );
@@ -163,6 +171,8 @@ public class AddEquipmentAction implements Action
                         }
                         
                     }
+                    */
+                    
                     else
                     {
                         // Someone deleted this option ...

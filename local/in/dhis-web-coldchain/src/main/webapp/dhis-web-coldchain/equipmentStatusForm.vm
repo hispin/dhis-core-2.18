@@ -48,14 +48,19 @@
                 </script>
 			</td>
         </tr>   
-        <tr>Not working
+        <tr>
             <td>$i18n.getString( "status" ) : </td>
             <td>
 				<select id="status" name="status" class="{validate:{required:true}}">
 					<option value="" >[$i18n.getString( "please_select" )]</option>
+					#foreach ($option in $optionSet.options )
+						<option value="$option">$option</option>
+					#end
+					<!--
 					<option value="Not working" >$i18n.getString( "notworking" )</option>
 					<option value="Working but needs maintenance" >$i18n.getString( "under_repair" )</option>
                     <option value="Working well">$i18n.getString( "working" )</option>
+					-->
 				</select>
 			</td>
         </tr>

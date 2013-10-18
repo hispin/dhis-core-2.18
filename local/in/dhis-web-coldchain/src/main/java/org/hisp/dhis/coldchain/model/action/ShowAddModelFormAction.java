@@ -1,14 +1,12 @@
 package org.hisp.dhis.coldchain.model.action;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.coldchain.model.ModelDataEntryService;
-import org.hisp.dhis.coldchain.model.ModelAttributeValue;
 import org.hisp.dhis.coldchain.model.ModelType;
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeGroup;
@@ -16,8 +14,8 @@ import org.hisp.dhis.coldchain.model.ModelTypeAttributeOption;
 import org.hisp.dhis.coldchain.model.ModelTypeService;
 import org.hisp.dhis.coldchain.model.comparator.ModelTypeAttributeGroupOrderComparator;
 import org.hisp.dhis.coldchain.model.comparator.ModelTypeAttributeOptionComparator;
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.option.OptionSet;
 
 import com.opensymphony.xwork2.Action;
 
@@ -111,10 +109,18 @@ implements Action
         return modelTypeAttributesOptions;
     }
     */
-    
+    /*
     private Map<Integer, List<ModelTypeAttributeOption>> modelTypeAttributesOptionsMap = new HashMap<Integer, List<ModelTypeAttributeOption>>();
     
     public Map<Integer, List<ModelTypeAttributeOption>> getModelTypeAttributesOptionsMap()
+    {
+        return modelTypeAttributesOptionsMap;
+    }
+    */
+    
+    private Map<Integer, List<String>> modelTypeAttributesOptionsMap = new HashMap<Integer, List<String>>();
+    
+    public Map<Integer, List<String>> getModelTypeAttributesOptionsMap()
     {
         return modelTypeAttributesOptionsMap;
     }
@@ -167,13 +173,23 @@ implements Action
             
             for( ModelTypeAttribute modelTypeAttribute : modelTypeAttributes )
             {
-                List<ModelTypeAttributeOption> modelTypeAttributesOptions = new ArrayList<ModelTypeAttributeOption>();
+                //List<ModelTypeAttributeOption> modelTypeAttributesOptions = new ArrayList<ModelTypeAttributeOption>();
+                
+                List<String> modelTypeAttributesOptions = new ArrayList<String>();
+                
                 if( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelTypeAttribute.getValueType() ) )
                 {
                     //System.out.println(" inside ModelTypeAttribute.TYPE_COMBO ");
-                    modelTypeAttributesOptions = new ArrayList<ModelTypeAttributeOption>( modelTypeAttribute.getAttributeOptions() );
-                    Collections.sort( modelTypeAttributesOptions, new ModelTypeAttributeOptionComparator() );
+                    
+                    modelTypeAttributesOptions = new ArrayList<String>( modelTypeAttribute.getOptionSet().getOptions() );
+                    
+                    //modelTypeAttributesOptions = new ArrayList<ModelTypeAttributeOption>( modelTypeAttribute.getAttributeOptions() );
+                    
+                    //Collections.sort( modelTypeAttributesOptions, new ModelTypeAttributeOptionComparator() );
+                    
                     modelTypeAttributesOptionsMap.put( modelTypeAttribute.getId(), modelTypeAttributesOptions );
+                    
+                   // modelTypeAttributesOptionsMap.put( modelTypeAttribute.getId(), modelTypeAttributesOptions );
                 }
 
                 /*

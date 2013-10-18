@@ -19,12 +19,22 @@ public class EquipmentStatus
 
     public static final String WORKING_STATUS = "WORKING_STATUS";
 
+    /*
     public static final String STATUS_NOT_WORKING = "Not working";
 
     public static final String STATUS_WORKING_WELL = "Working well";
 
     public static final String STATUS_WORKING_NEEDS_MAINTENANCE = "Working but needs maintenance";
+    */
+    
+    public static final String STATUS_NOT_WORKING = "Unservicable";
 
+    public static final String STATUS_WORKING_WELL = "Functioning";
+
+    public static final String STATUS_WORKING_NEEDS_MAINTENANCE = "AwaitingRepair";
+    
+    
+    
     public static final String STATUS_IN_USE = "In Use";
 
     public static final String STATUS_NOT_IN_USE = "Not in use";

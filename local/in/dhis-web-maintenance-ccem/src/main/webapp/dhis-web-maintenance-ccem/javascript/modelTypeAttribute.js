@@ -39,9 +39,19 @@ ATTRIBUTE_OPTION =
 		}else if ( jQuery(this_).val() == "DATE" )
 		{
 			jQuery("#attributeNoCharRow").hide();
+			jQuery("#attributeComboRow").hide();
+			$("#optionSetId option").removeAttr('selected');
 		}else {
 			jQuery("#attributeNoCharRow").show();
 			jQuery("#attributeComboRow").hide();
+			
+			//var list = document.getElementById( 'optionSetId' );
+			
+			//clearList( list );
+			 $("#optionSetId option").removeAttr('selected');
+			//addOptionToList( list, '-1', 'Please Select' );
+			
+			//$( '#optionSetId' ).val() = "";
 		}
 	},
 	checkOnSubmit : function ()

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.hisp.dhis.coldchain.model.Model;
 import org.hisp.dhis.coldchain.model.ModelService;
 import org.hisp.dhis.coldchain.model.ModelType;
+import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
 import org.hisp.dhis.coldchain.equipment.EquipmentType;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
@@ -103,13 +104,22 @@ public class ShowAddEquipmentFormAction implements Action
     {
         return models;
     }
-    
+    /*
     private Map<Integer, List<EquipmentTypeAttributeOption>> equipmentTypeAttributeOptionsMap = new HashMap<Integer, List<EquipmentTypeAttributeOption>>();
     
     public Map<Integer, List<EquipmentTypeAttributeOption>> getEquipmentTypeAttributeOptionsMap()
     {
         return equipmentTypeAttributeOptionsMap;
     }
+    */
+    
+    private Map<Integer, List<String>> equipmentTypeAttributeOptionsMap = new HashMap<Integer, List<String>>();
+    
+    public Map<Integer, List<String>> getEquipmentTypeAttributeOptionsMap()
+    {
+        return equipmentTypeAttributeOptionsMap;
+    }
+    
     
     private List<OrganisationUnit> orgUnitList;
     
@@ -153,6 +163,7 @@ public class ShowAddEquipmentFormAction implements Action
         
         for( EquipmentTypeAttribute equipmentTypeAttribute : equipmentTypeAttributes )
         {
+            /*
             List<EquipmentTypeAttributeOption> equipmentTypeAttributeOptions = new ArrayList<EquipmentTypeAttributeOption>();
             if( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( equipmentTypeAttribute.getValueType() ) )
             {
@@ -161,7 +172,16 @@ public class ShowAddEquipmentFormAction implements Action
                 Collections.sort( equipmentTypeAttributeOptions, new EquipmentTypeAttributeOptionComparator() );
                 equipmentTypeAttributeOptionsMap.put( equipmentTypeAttribute.getId(), equipmentTypeAttributeOptions );
             }
-
+            */
+            
+            List<String> equipmentTypeAttributeOptions = new ArrayList<String>();
+            
+            if( EquipmentTypeAttribute.TYPE_COMBO.equalsIgnoreCase( equipmentTypeAttribute.getValueType() ) )
+            {
+                equipmentTypeAttributeOptions = new ArrayList<String>( equipmentTypeAttribute.getOptionSet().getOptions() );
+                equipmentTypeAttributeOptionsMap.put( equipmentTypeAttribute.getId(), equipmentTypeAttributeOptions );
+            }
+            
             /*
             System.out.println( "Name :" + modelTypeAttribute.getName() );
             System.out.println( "valueType :" + modelTypeAttribute.getValueType() );

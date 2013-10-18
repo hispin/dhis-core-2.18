@@ -42,7 +42,7 @@ function getPeriods()
     $.getJSON( url, function( json ) {
     	for ( i in json.periods ) {
     		//addOptionToList( list, i, json.periods[i].name );
-    		addOptionToList( list, json.periods[i].externalId, json.periods[i].name );
+    		addOptionToList( list, json.periods[i].isoDate, json.periods[i].name );
     	}
     } );
 	
@@ -166,7 +166,7 @@ function getAvailablePeriodsTemp( availablePeriodsId, selectedPeriodsId, year )
 			
 			for ( i in json.periods ) {
 	    		//addOptionToList( list, i, json.periods[i].name );
-	    		addOptionToList( selectedList, json.periods[i].externalId, json.periods[i].name );
+	    		addOptionToList( selectedList, json.periods[i].isoDate, json.periods[i].name );
 	    	}
 			
 		} );
@@ -290,7 +290,7 @@ function getFacilityDataSetPeriods()
 	$.getJSON( url, function( json ) {
 		for ( i in json.periods ) {
 			//addOptionToList( list, i, json.periods[i].name );
-			addOptionToList( list, json.periods[i].externalId, json.periods[i].name );
+			addOptionToList( list, json.periods[i].isoDate, json.periods[i].name );
 		}
 		loadFacilityDataEntryForm();
 	} );
@@ -322,7 +322,7 @@ function getFacilityAvailablePeriodsTemp( availablePeriodsId, selectedPeriodsId,
 			
 			for ( i in json.periods ) {
 	    		//addOptionToList( list, i, json.periods[i].name );
-	    		addOptionToList( selectedList, json.periods[i].externalId, json.periods[i].name );
+	    		addOptionToList( selectedList, json.periods[i].isoDate, json.periods[i].name );
 	    	}
 			loadFacilityDataEntryForm();
 		} );

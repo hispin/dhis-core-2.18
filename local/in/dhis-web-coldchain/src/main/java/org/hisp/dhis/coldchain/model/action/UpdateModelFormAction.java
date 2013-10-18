@@ -17,10 +17,8 @@ import org.hisp.dhis.coldchain.model.ModelService;
 import org.hisp.dhis.coldchain.model.ModelType;
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeGroup;
-import org.hisp.dhis.coldchain.model.ModelTypeAttributeOption;
 import org.hisp.dhis.coldchain.model.ModelTypeService;
 import org.hisp.dhis.coldchain.model.comparator.ModelTypeAttributeGroupOrderComparator;
-import org.hisp.dhis.coldchain.model.comparator.ModelTypeAttributeOptionComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -139,12 +137,22 @@ implements Action
         return modelImage;
     }
     
+    /*
     private Map<Integer, List<ModelTypeAttributeOption>> modelTypeAttributesOptionsMap = new HashMap<Integer, List<ModelTypeAttributeOption>>();
     
     public Map<Integer, List<ModelTypeAttributeOption>> getModelTypeAttributesOptionsMap()
     {
         return modelTypeAttributesOptionsMap;
     }
+    */
+    
+    private Map<Integer, List<String>> modelTypeAttributesOptionsMap = new HashMap<Integer, List<String>>();
+    
+    public Map<Integer, List<String>> getModelTypeAttributesOptionsMap()
+    {
+        return modelTypeAttributesOptionsMap;
+    }
+    
     
     private List<ModelTypeAttributeGroup> modelTypeAttributeGroups;
     
@@ -277,7 +285,8 @@ implements Action
         {
             if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelAttributeValue.getModelTypeAttribute().getValueType() ) )
             {
-                modelTypeAttributeValueMap.put( modelAttributeValue.getModelTypeAttribute().getId(), modelAttributeValue.getModelTypeAttributeOption().getName() );
+                //modelTypeAttributeValueMap.put( modelAttributeValue.getModelTypeAttribute().getId(), modelAttributeValue.getModelTypeAttributeOption().getName() );
+                modelTypeAttributeValueMap.put( modelAttributeValue.getModelTypeAttribute().getId(), modelAttributeValue.getValue() );
             }
             
             else
@@ -293,8 +302,11 @@ implements Action
             
         }
         */
+        
+        
         for( ModelTypeAttribute modelTypeAttribute : modelTypeAttributes )
         {
+            /*
             List<ModelTypeAttributeOption> modelTypeAttributesOptions = new ArrayList<ModelTypeAttributeOption>();
             if( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelTypeAttribute.getValueType() ) )
             {
@@ -302,6 +314,19 @@ implements Action
                 Collections.sort( modelTypeAttributesOptions, new ModelTypeAttributeOptionComparator() );
                 modelTypeAttributesOptionsMap.put( modelTypeAttribute.getId(), modelTypeAttributesOptions );
             }
+            */
+            
+            List<String> modelTypeAttributesOptions = new ArrayList<String>();
+            
+            if( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( modelTypeAttribute.getValueType() ) )
+            {
+               
+                modelTypeAttributesOptions = new ArrayList<String>( modelTypeAttribute.getOptionSet().getOptions() );
+                modelTypeAttributesOptionsMap.put( modelTypeAttribute.getId(), modelTypeAttributesOptions );
+            }
+            
+            
+            
         }
         
         modelTypeAttributeGroups = new ArrayList<ModelTypeAttributeGroup>( modelType.getModelTypeAttributeGroups() );

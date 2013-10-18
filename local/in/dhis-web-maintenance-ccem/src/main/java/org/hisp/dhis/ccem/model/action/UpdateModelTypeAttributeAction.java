@@ -111,8 +111,8 @@ public class UpdateModelTypeAttributeAction implements Action
     
     public void setOptionSetId(Integer optionSetId) 
     {
-		this.optionSetId = optionSetId;
-	}
+	this.optionSetId = optionSetId;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -132,15 +132,15 @@ public class UpdateModelTypeAttributeAction implements Action
         
         if ( ModelTypeAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
         {
-        	if( optionSetId != -1 )
-        	{
-        		OptionSet optionSet = optionService.getOptionSet( optionSetId );
-        		modelTypeAttribute.setOptionSet( optionSet );
-        	}
-        	else
-        	{
-        		modelTypeAttribute.setOptionSet( null );
-        	}
+            if( optionSetId != -1 &&  optionSetId != null )
+            {
+        	OptionSet optionSet = optionService.getOptionSet( optionSetId );
+        	modelTypeAttribute.setOptionSet( optionSet );
+            }
+            else
+            {
+        	modelTypeAttribute.setOptionSet( null );
+            }
         }
 
         /*
