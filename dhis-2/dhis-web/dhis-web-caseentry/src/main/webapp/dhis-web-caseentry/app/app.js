@@ -2526,7 +2526,7 @@ Ext.onReady( function() {
 									}
 								}
 								else{
-									if( column.sortState=='ASC'){
+									if( TR.state.sortOrder=='ASC'){
 										TR.state.sortOrder = "DESC";
 									}
 									else{
