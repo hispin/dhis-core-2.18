@@ -261,6 +261,7 @@ public class DefaultValidationRuleService
 
         return rulesForDataSet;
     }
+    
     // -------------------------------------------------------------------------
     // ValidationRule CRUD operations
     // -------------------------------------------------------------------------

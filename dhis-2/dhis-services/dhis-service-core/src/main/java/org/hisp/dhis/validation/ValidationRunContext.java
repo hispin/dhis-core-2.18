@@ -160,8 +160,8 @@ public class ValidationRunContext
         
         if ( surveillanceRulesPresent )
         {
-        	Set<OrganisationUnit> otherDescendants = getAllOtherDescendants( sources );
-        	addSourcesToContext( otherDescendants, false );
+            Set<OrganisationUnit> otherDescendants = getAllOtherDescendants( sources );
+            addSourcesToContext( otherDescendants, false );
         }
     }
 
@@ -172,11 +172,11 @@ public class ValidationRunContext
      */
     private void addPeriodsToContext ( Collection<Period> periods )
     {
-	    for ( Period period : periods )
-	    {
-	        PeriodTypeExtended periodTypeX = getOrCreatePeriodTypeExtended( period.getPeriodType() );
-	        periodTypeX.getPeriods().add( period );
-	    }
+        for ( Period period : periods )
+	{
+	    PeriodTypeExtended periodTypeX = getOrCreatePeriodTypeExtended( period.getPeriodType() );
+	    periodTypeX.getPeriods().add( period );
+	}
     }
 
     /**
@@ -230,7 +230,6 @@ public class ValidationRunContext
      */
     private void removeAnyUnneededPeriodTypes()
     {
-        // Start by making a defensive copy so we can delete while iterating.
         Set<PeriodTypeExtended> periodTypeXs = new HashSet<PeriodTypeExtended>( periodTypeExtendedMap.values() );
         for ( PeriodTypeExtended periodTypeX : periodTypeXs )
         {
@@ -279,7 +278,7 @@ public class ValidationRunContext
      * need to add
      */
     private void getOtherDescendantsRecursive( OrganisationUnit source, Collection<OrganisationUnit> sources,
-    		Set<OrganisationUnit> allOtherDescendants )
+        Set<OrganisationUnit> allOtherDescendants )
     {
         for ( OrganisationUnit child : source.getChildren() )
         {
@@ -303,7 +302,6 @@ public class ValidationRunContext
      */
     private void addSourcesToContext ( Collection<OrganisationUnit> sources, boolean ruleCheckThisSource )
     {
-        // Get the information we need for each source.
         for ( OrganisationUnit source : sources )
         {
             OrganisationUnitExtended sourceX = new OrganisationUnitExtended( source, ruleCheckThisSource );
