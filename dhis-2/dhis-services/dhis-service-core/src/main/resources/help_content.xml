@@ -5581,25 +5581,11 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
     <orderedlist>
       <listitem>
         <para><emphasis role="italic">Persons and Programs maintenance module </emphasis>- Definition  meta data, include person attributes, person attribute groups, identifier types, relationships, program and program-stages, validation for program and formula to generate aggregate data value.</para>
-        <para>When the ‘<emphasis role="italic">Persons and Programs</emphasis>’ options is chosen from the main <emphasis role="italic">Maintenance</emphasis> menu, the following screen appears -</para>
-        <screenshot>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="70%" fileref="resources/images/patients_programs/persons_and_programs_main_page.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
+        <para>To go to  the this module,  from the main <emphasis role="italic">Maintenance</emphasis> menu, select <emphasis role="italic">Persons and Programs</emphasis>.</para>
       </listitem>
       <listitem>
         <para><emphasis role="italic">Individual records module</emphasis> - Support main functions for person registration, tracking information and individual reports.</para>
-        <para>When the ‘<emphasis role="italic">Individual Records</emphasis>’ options is chosen from the main <emphasis role="italic">Services</emphasis> menu, the following screen appears -</para>
-        <screenshot>
-          <mediaobject>
-            <imageobject>
-              <imagedata width="70%" fileref="resources/images/patients_programs/individual_records_main_page.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>
-        </screenshot>
+        <para>To go to this module, from the main <emphasis role="italic">Services</emphasis> menu, select <emphasis role="italic">Individual Records</emphasis>.</para>
       </listitem>
     </orderedlist>
     <section>
@@ -5629,7 +5615,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
         </listitem>
         <listitem>
           <para>Person Registration Form</para>
-          <para>Define custom person registration form.</para>
+          <para>Create a custom custom person registration form with person attributes and identifier types for each health program or any program.</para>
         </listitem>
         <listitem>
           <para>Program</para>
@@ -5669,8 +5655,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
             <para><emphasis role="italic">Mandatory</emphasis> - Entering value for this attribute is required or not.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Inherit</emphasis> - When to registry a new person for relationship with an available person, all inherit person attribute values of the person will be pre-filled in the registration form.
- </para>
+            <para><emphasis role="italic">Inherit</emphasis> - When to registry a new person for relationship with an available person, all inherit person attribute values of the person will be pre-filled in the registration form. </para>
           </listitem>
           <listitem>
             <para><emphasis role="italic">Value Type</emphasis> - Data type of value to be entered.
@@ -5680,11 +5665,10 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
               registered. E.g. code values which record the information on access to HIV prevention
               services can be pre-defined, include <emphasis role="italic">T</emphasis>, <emphasis role="italic">TR</emphasis>, <emphasis role="italic">TRR</emphasis>, <emphasis role="italic">TRRD</emphasis>, <emphasis role="italic">TRRDm</emphasis>, <emphasis role="italic">TRRDmDb</emphasis> as <emphasis role="italic">PMTCT Code</emphasis>
               attribute.</para>
-            <para>The system also supports a value type as <emphasis role="italic">Calculated</emphasis> for calculating a number based on other attribute values, e,g. caculate gestational age, EDD, ... in Mother care program.</para>
           </listitem>
         </itemizedlist>
       </section>
-      <section id='patient_attribute_visit_schedule'>
+      <section id="patient_attribute_visit_schedule">
         <title>Patient attribute visit schedule</title>
         <para>This function supports configuration for  person attributes that are added to the visit schedule.This is very useful when the list is printed and used for tracking in the community. </para>
         <para>Select patient attributes on the left section and move them to the right section and click <emphasis role="italic">Save</emphasis> button.</para>
@@ -5723,7 +5707,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
               characters for value to be entered. </para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Type</emphasis> - Data type of value inputted, includes <emphasis role="italic">Text</emphasis>, <emphasis role="italic">Number</emphasis> and <emphasis role="italic">Letter Only</emphasis>.</para>
+            <para><emphasis role="italic">Type</emphasis> - Data type of value inputted, includes <emphasis role="italic">Text</emphasis>, <emphasis role="italic">Number</emphasis>,  <emphasis role="italic">Letter Only</emphasis> and Local Identifier. For Local identifier type, user needs to define scope for specifying the identifier based on an organisation unit, a program or a period.</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -5759,35 +5743,26 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
             <listitem>
               <para><emphasis role="italic">Type</emphasis> - There are three types of program: multi events with registration, single event with registration and single event without registration.</para>
             </listitem>
-          </itemizedlist>
-          <para><emphasis role="italic">Form details </emphasis>section - </para>
-          <itemizedlist>
             <listitem>
-              <para><emphasis role="italic">Show provided elsewhere</emphasis> - Set show/hide provided elsewhere column in data entry form.</para>
-            </listitem>
-            <listitem>
-              <para><emphasis role="italic">Block entry form after completed</emphasis> - Check on it for blocking entry form after completed. The data values in the entry form cannot be changed until the status of the event is reset as incomplete.</para>
-            </listitem>
-            <listitem>
-              <para><emphasis role="italic">Remind completing program after a program stage completed</emphasis> - After an event is completed, the system remind if the user want to complete the program.</para>
+              <para>Data entry method - Used for displaying option-set data elements in case entry form as drop down list or radio buttons. If this option is selected as radio buttons, just option-set  data elements which  the number of option values is less then 8 are displayed as radio buttons. Others are displayed as drop down lists</para>
             </listitem>
           </itemizedlist>
-          <para><emphasis role="italic">Enrollment details</emphasis> section - </para>
+          <para><emphasis role="italic">Enrollment details </emphasis>section - </para>
           <itemizedlist>
             <listitem>
-              <para><emphasis role="italic">Disable registration fields</emphasis> - Registration fields in default form include full name, gender, dob type,  date of birth,  phone number, date of death, is dead and health worker. Other attributes and identifier  are not required. In custom form, user can define a registration form required above fields.</para>
+              <para>Allow to select enrollment date in future</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Generate events by enrollment date</emphasis> - Check on it for auto-generating due dates of events from program-stages of this program    based on the enrollment date. If it is not checked, the due dates are generated based on incident date.</para>
+              <para>Allow to select incident date in future</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Skip to generate overdue events</emphasis> - When a person enrolls into the program, the  events corresponding to the program-stages are created. If this field is checked, the system will ignore to generate overdue events. </para>
+              <para>Use birthdate as incident date</para>
+            </listitem>
+            <listitem>
+              <para>Use birthdate as enrollment date</para>
             </listitem>
             <listitem>
               <para><emphasis role="italic">Only enroll one </emphasis>- Check on it if a person only can enroll the program one time. For example, Child Vaccination Program, Post-mortem examination, PSI&apos;s IPC process. This will avoid a person enrolling more than one into a program when it doesn&apos;t make sense.</para>
-            </listitem>
-            <listitem>
-              <para><emphasis role="italic">Display on all organisation units </emphasis>- Check on it if user want to use  the program on all  organisation units no mater what the program is assigned to the organisation unit or not. Unchecnk if the program is only used on organisation units assigned.</para>
             </listitem>
             <listitem>
               <para><emphasis role="italic">Show incident date</emphasis> - Set show/hide incident date field when a person enroll in this program.</para>
@@ -5800,17 +5775,48 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 For example: the date in which a person enrolls to the system.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Identifiers / attributes <emphasis role="italic">section</emphasis></emphasis> - Select identifier-types and person attributes which belong to the program. Check  <emphasis role="italic">Displayed in list</emphasis> checkboxes of identifier types to display its value in person list instead of person&apos;s full-name.</para>
+              <para><emphasis role="italic">Allow enrollment at all orgunits </emphasis>- Check on it if user want to use  the program on all  organisation units no mater what the program is assigned to the organisation unit or not. Unchecnk if the program is only used on organisation units assigned.</para>
+            </listitem>
+          </itemizedlist>
+          <para><emphasis role="italic">Dashboard shortcut to add relative</emphasis> section - Define a program and a relationship type which has related to the program. It&apos;s used for registering a new person,  enroll into an other program and create relationship between person who user is working on and the new person. E.g after delivery, a baby is born, then in the Delivery  event of  the mother, user can register this baby and enroll him/her into the Child program. After that, create a relationship as Mother/Child for this mother and her baby.</para>
+          <itemizedlist>
+            <listitem>
+              <para><emphasis role="italic">Shortcut link label (e.g. Add Child)</emphasis> - The label for this shortcut link which is displayed in Relation tab of person dashboard.</para>
             </listitem>
             <listitem>
-              <para>Template reminder message section -  Define  template reminder messages which are used for sending messages for person automatically. There are four fields -
+              <para>Relationship description - Select a relationship type defined, e.g Mother/Child, ...</para>
+            </listitem>
+            <listitem>
+              <para>Who is the new relative to the existing person? </para>
+            </listitem>
+            <listitem>
+              <para>Program for new relative to be enrolled in - Select a program related.</para>
+            </listitem>
+          </itemizedlist>
+          <para><emphasis role="italic">Scheduling of events</emphasis> section - </para>
+          <itemizedlist>
+            <listitem>
+              <para><emphasis role="italic">Skip generation of events that are overdue (before enrollment date)</emphasis> - When a person enrolls into the program, the  events corresponding to the program-stages are created. If this field is checked, the system will ignore to generate overdue events.</para>
+            </listitem>
+          </itemizedlist>
+          <para><emphasis role="italic">Identifiers / attributes <emphasis role="italic">section</emphasis></emphasis> - Select identifier-types and person attributes which belong to the program. Check  <emphasis role="italic">Displayed in list</emphasis> checkboxes of identifier types to display its value in person list instead of person&apos;s full-name.</para>
+          <para><emphasis role="italic">Template reminder message</emphasis> section -  Define  template reminder messages which are used for sending messages for person automatically. </para>
+          <itemizedlist>
+            <listitem>
+              <para><emphasis role="italic">Send base on</emphasis> - There are three options, Days scheduled, Complete program and Program enrollment. The system bases on this option to specify when messages are sent.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Date to compare</emphasis> - Select the incident date or enrollment date for calculating the date to send messages for persons. </para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Send message X days before/after scheduled date </emphasis>-  Enter a number of days when these  messages are sent.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Parameters</emphasis> - Provide parameters  which are used for generating a message for each person. The parameters include <emphasis role="italic">person name</emphasis>,<emphasis role="italic"> program name</emphasis>, <emphasis role="italic">incident date, days since incident date, enrollment date, days since enrollment date, organisation unit name</emphasis>. Double-click on an option to insert it into template message field below.
 </para>
-              <para>1) <emphasis role="italic">Date to compare</emphasis> - Select the incident date or enrollment date for calculating the date to send messages for persons. </para>
-              <para>2) <emphasis role="italic">Days before/after due date </emphasis>-  Enter a positive number of days if  sending process happens after due-date of events which are generated from this program stage. Enter a negative number of days if  sending process happens before due-date of events.
-</para>
-              <para>3) <emphasis role="italic">Parameters</emphasis> - Provide parameters  which are used for generating a message for each person. The parameters include <emphasis role="italic">person first name</emphasis>,<emphasis role="italic"> program name</emphasis>, <emphasis role="italic">incident date, days since incident date, enrollment date, days since enrollment date, organisation unit name</emphasis>. Double-click on an option to insert it into template message field below.
-</para>
-              <para>4) <emphasis role="italic">Message</emphasis> - Content of template message. E.g.
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Message</emphasis> - Content of template message. E.g.
             Dear {patient-name}, please come to your appointment at {due-date}.
 </para>
               <para>Click <emphasis role="italic">Add more...</emphasis> button to add more template reminder messages.</para>
@@ -5851,11 +5857,6 @@ For example: the date in which a person enrolls to the system.</para>
             <listitem>
               <para><emphasis role="italic">Scheduled days from start</emphasis> - The minimum number of days to wait for starting the program stage.</para>
             </listitem>
-            <listitem>
-              <para><emphasis role="italic">Auto-generate event</emphasis> - Uncheck this to prevent
-                for creating an event of this program stage automatically when a person enroll into
-                the program.</para>
-            </listitem>
           </itemizedlist>
           <para><emphasis role="italic">Repeatable program stage details</emphasis> section - </para>
           <itemizedlist>
@@ -5875,6 +5876,29 @@ For example: the date in which a person enrolls to the system.</para>
           <para><emphasis role="italic">Form details</emphasis> section - </para>
           <itemizedlist>
             <listitem>
+              <para><emphasis role="italic">Auto-generate event</emphasis> - Uncheck this to prevent
+                for creating an event of this program stage automatically when a person enroll into
+                the program.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Open data entry form after enrollment</emphasis>  - After a person enrolls into the program successfull, the event of this stage is opened.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Report Date to use</emphasis> - The date is used for report date of the event. When a data entry of this event are opened after registration, the system  use registration date, date of incident or date of enrollment for report date. </para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Block entry form after completed</emphasis> - Check on it for blocking entry form after completed. The data values in the entry form cannot be changed until the status of the event is reset as incomplete.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Remind completing program after a program stage completed</emphasis> - After an event is completed, the system remind if the user want to complete the program.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Remind creating next event on this event completed</emphasis> - When the event of this stage completed, an alert is displayed and ask user to complete the program.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Generate events by enrollment date</emphasis> - Check on it for auto-generating due dates of events from program-stages of this program    based on the enrollment date. If it is not checked, the due dates are generated based on incident date.</para>
+            </listitem>
+            <listitem>
               <para><emphasis role="italic">Capture coordinates</emphasis> - Many types of events may be recorded at a facility or be <emphasis role="italic">owned-by</emphasis> a health worker at a facility, but actually take place somewhere in the community. This field is checked to get coordinates of the place.</para>
             </listitem>
             <listitem>
@@ -5883,16 +5907,27 @@ For example: the date in which a person enrolls to the system.</para>
             <listitem>
               <para><emphasis role="italic">Description of report date</emphasis> - The description for report date which is displayed in case entry form.</para>
             </listitem>
+          </itemizedlist>
+          <para><emphasis role="italic">Data elements <emphasis role="italic">section</emphasis></emphasis> - Select person data elements which belong to the program stage. We have three options for each selected data element. The first one is <emphasis role="italic">Compulsory</emphasis> option. Please check  it if the data value of the selected one is compulsory. The second one is <emphasis role="italic">Allow provided elsewhere</emphasis> option, please check it if the data value of this one can be provided by other facilities. The last one is<emphasis role="italic"> Display in reports</emphasis> option. Please check it of you want to display the data value of this one in event list of single event without registration into data entry form.</para>
+          <para><emphasis role="italic">Template reminder message<emphasis role="italic"> section</emphasis></emphasis> - Define  template reminder messages which are used for sending messages for person automatically. There are two params -</para>
+          <itemizedlist>
             <listitem>
-              <para><emphasis role="italic">Data elements <emphasis role="italic">section</emphasis></emphasis> - Select person data elements which belong to the program stage. We have three options for each selected data element. The first one is <emphasis role="italic">Compulsory</emphasis> option. Please check  it if the data value of the selected one is compulsory. The second one is <emphasis role="italic">Allow provided elsewhere</emphasis> option, please check it if the data value of this one can be provided by other facilities. The last one is<emphasis role="italic"> Display in reports</emphasis> option. Please check it of you want to display the data value of this one in event list of single event without registration into data entry form.</para>
+              <para><emphasis role="italic"><emphasis role="italic">Send base on</emphasis> - There are two ptions, Days scheduled and Complete event.</emphasis></para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Days before/after due date</emphasis> -  Enter a positive number of days if  sending process happens after due-date of events which are generated from this program stage. Enter a negative number of days if  sending process happens before due-date of events.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Parameters</emphasis> - Provide parameters  which are used for generating a message for each person. The parameters include person&apos;s first name, program&apos;s name, program stage&apos;s name, due date of event, interval between current date and due date and organisation unit&apos;s name. </para>
+            </listitem>
+            <listitem>
+              <para>Double-click on an option to insert it into template message field below.</para>
+            </listitem>
+            <listitem>
+              <para><emphasis role="italic">Message</emphasis> - Content of template message. E.g.
+            Dear {patient-name}, please come to your appointment at {due-date}.</para>
             </listitem>
           </itemizedlist>
-          <para><emphasis role="italic">Template reminder message<emphasis role="italic"> section</emphasis></emphasis> - Define  template reminder messages which are used for sending messages for person automatically. There are two params -</para>
-          <para><emphasis role="italic">1) Days before/after due date</emphasis> -  Enter a positive number of days if  sending process happens after due-date of events which are generated from this program stage. Enter a negative number of days if  sending process happens before due-date of events.</para>
-          <para><emphasis role="italic">2) Parameters</emphasis> - Provide parameters  which are used for generating a message for each person. The parameters include person&apos;s first name, program&apos;s name, program stage&apos;s name, due date of event, interval between current date and due date and organisation unit&apos;s name. </para>
-          <para>Double-click on an option to insert it into template message field below.</para>
-          <para><emphasis role="italic">3) Message</emphasis> - Content of template message. E.g.
-            Dear {patient-name}, please come to your appointment at {due-date}.</para>
           <note>
             <para>Click <emphasis role="italic">Add more... </emphasis>button to add more template reminder messages.</para>
           </note>
@@ -6152,7 +6187,7 @@ For example: the date in which a person enrolls to the system.</para>
         </listitem>
         <listitem>
           <para>Tabular report</para>
-          <para>Use an interactive reporting tool for tracker-data using tabular presentation with dynamic filters for each person attribute/data element.
+          <para>Use an interactive reporting tool for tracker-data using tabular presentation with dynamic filters for each person attribute, person identifier and data element.
     </para>
         </listitem>
         <listitem>
