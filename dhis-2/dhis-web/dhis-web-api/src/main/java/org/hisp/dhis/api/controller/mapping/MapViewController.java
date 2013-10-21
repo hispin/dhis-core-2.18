@@ -76,9 +76,15 @@ public class MapViewController
     private ContextUtils contextUtils;
 
     @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
-    public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
+    public void getMapViewData( @PathVariable String uid, HttpServletResponse response ) throws Exception
     {
         MapView mapView = mappingService.getMapView( uid );
+
+        if ( mapView == null )
+        {
+            ContextUtils.notFoundResponse( response, "Map view does not exist: " + uid );
+            return;
+        }
 
         renderMapViewPng( mapView, response );
     }
