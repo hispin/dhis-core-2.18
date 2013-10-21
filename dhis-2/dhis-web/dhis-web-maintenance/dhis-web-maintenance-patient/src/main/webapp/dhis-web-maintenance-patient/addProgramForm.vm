@@ -190,7 +190,7 @@
 		</tr>
 			
         <tr>
-            <td><label>$i18n.getString( "used_by_all_orgunits" )</label></td>
+            <td><label>$i18n.getString( "allow_enrollment_at_all_orgunits" )</label></td>
             <td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true'></td>
             <td></td>
         </tr>

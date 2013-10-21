@@ -23,7 +23,7 @@
 		showById('followupTR');
 		setFieldValue('listPatientBtn','$encoder.jsEscape( $i18n.getString( "show_activity_list" ) , "'")');
 		
-		jQuery('#searchByIdTR').remove();
+		showById('advancedSearchBtn');
 		jQuery('#listPatientBtnTD').attr('rowspan',2);
 		jQuery('#listPatientBtnTD').attr('valign','bottom');
 		
