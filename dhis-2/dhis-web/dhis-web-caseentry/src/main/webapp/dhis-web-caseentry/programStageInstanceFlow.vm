@@ -80,12 +80,23 @@
 					#set($allowGenerateNextVisit='false')
 					#set($prevStageId='')
 					#foreach( $programStage in $programInstance.program.programStages )
+					
+						#set($reportDateToUse = "")
+						#if($programStageInstance.programStage.reportDateToUse=='registrationDate' )
+							#set($reportDateToUse = "$format.formatDate( $programInstance.patient.registrationDate)")
+						#elseif($programStageInstance.programStage.reportDateToUse=='dateOfIncident' )
+							#set($reportDateToUse = "$format.formatDate( $programInstance.dateOfIncident)")
+						#elseif($programStageInstance.programStage.reportDateToUse=='enrollmentDate' )
+							#set($reportDateToUse = "$format.formatDate( $programInstance.enrollmentDate)")
+						#end
+					
 						#if( $programStage.irregular=='true')
 							#if($!programStage.standardInterval)
 								#set($standardInterval=$!programStage.standardInterval)
 							#else
 								#set($standardInterval=0)
 							#end
+							
 							<option 
 								value="$programStage.uid" 
 								localid='$programStage.id' 
@@ -94,10 +105,10 @@
 								selected repeatable="true"
 								allowGenerateNextVisit='$allowGenerateNextVisit' 
 								programType = '$programStage.program.type'
-								reportDateDes='$programStage.reportDateDescription'
+								reportDateDes='$!programStage.reportDateDescription'
 								repeatable="false"
-								openAfterEnrollment="$programStage.openAfterEnrollment"
-								reportDateToUse="$reportDateToUse"
+								openAfterEnrollment="$!programStage.openAfterEnrollment"
+								reportDateToUse="$!reportDateToUse"
 							>$!programStage.displayName</option>
 						#else
 							#set($hasEvent="false")
@@ -107,15 +118,7 @@
 								#end
 							#end
 							
-							#set($reportDateToUse = "")
-							#if($programStageInstance.programStage.reportDateToUse=='registrationDate' )
-								#set($reportDateToUse = "$format.formatDate( $programInstance.patient.registrationDate)")
-							#elseif($programStageInstance.programStage.reportDateToUse=='dateOfIncident' )
-								#set($reportDateToUse = "$format.formatDate( $programInstance.dateOfIncident)")
-							#elseif($programStageInstance.programStage.reportDateToUse=='enrollmentDate' )
-								#set($reportDateToUse = "$format.formatDate( $programInstance.enrollmentDate)")
-							#end
-							<option 
+								<option 
 								#if($hasEvent=="true") style="display:none;" #else selected #end 
 								value="$programStage.uid" localid='$programStage.id' 
 								prevStageId='$prevStageId'

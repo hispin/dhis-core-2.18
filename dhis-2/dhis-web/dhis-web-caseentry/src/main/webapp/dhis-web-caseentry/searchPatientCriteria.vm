@@ -37,6 +37,7 @@
 		</td>
 		<td id='listPatientBtnTD'>
 			<input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="listAllPatient();">
+			<input type="button" id='advancedSearchBtn' class='hidden' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
 		</td>
 	</tr>
 	<tr id='scheduleVisitTR' class='hidden'>
