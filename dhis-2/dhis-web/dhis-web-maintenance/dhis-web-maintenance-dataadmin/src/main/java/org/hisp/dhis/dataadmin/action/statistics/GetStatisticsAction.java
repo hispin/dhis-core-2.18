@@ -28,9 +28,12 @@ package org.hisp.dhis.dataadmin.action.statistics;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.statistics.StatisticsProvider;
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -105,10 +108,13 @@ public class GetStatisticsAction
     {
         Map<Objects, Integer> counts = statisticsProvider.getObjectCounts();
         
+        Date lastHour = new Cal().now().subtract( Calendar.HOUR_OF_DAY, 1 ).time();
+        
         objects = new EnumMapWrapper<Objects, Integer>( Objects.class, counts );
         
-        activeUsers.put( 0, userService.getActiveUsersCount( 0 ) );
-        activeUsers.put( 1, userService.getActiveUsersCount( 1 ) );
+        activeUsers.put( 0, userService.getActiveUsersCount( lastHour ) );
+        activeUsers.put( 1, userService.getActiveUsersCount( 0 ) );
+        activeUsers.put( 2, userService.getActiveUsersCount( 1 ) );
         activeUsers.put( 7, userService.getActiveUsersCount( 7 ) );
         activeUsers.put( 30, userService.getActiveUsersCount( 30 ) );
         

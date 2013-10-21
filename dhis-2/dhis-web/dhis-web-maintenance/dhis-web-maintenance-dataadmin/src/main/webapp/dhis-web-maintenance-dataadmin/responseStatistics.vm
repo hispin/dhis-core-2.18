@@ -62,13 +62,17 @@
 		<th style="width:200px">$i18n.getString( "users_logged_in" )</th>
 		<th style="width:200px">$i18n.getString( "number" )</th>
 	</tr>
+    <tr>
+        <td>$i18n.getString( "last_hour" )</td>
+        <td>$activeUsers.get( 0 )</td>
+    </tr>
 	<tr>
 		<td>$i18n.getString( "today" )</td>
-		<td>$activeUsers.get( 0 )</td>
+		<td>$activeUsers.get( 1 )</td>
 	</tr>
 	<tr>
 		<td>$i18n.getString( "yesterday" )</td>
-		<td>$activeUsers.get( 1 )</td>
+		<td>$activeUsers.get( 2 )</td>
 	</tr>
 	<tr>
 		<td>$i18n.getString( "last_7_days" )</td>

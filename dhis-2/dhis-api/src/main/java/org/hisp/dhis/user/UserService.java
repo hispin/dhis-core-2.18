@@ -235,6 +235,8 @@ public interface UserService
     int getInactiveUsersCount( int months );
 
     int getActiveUsersCount( int days );
+    
+    int getActiveUsersCount( Date since );
 
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
