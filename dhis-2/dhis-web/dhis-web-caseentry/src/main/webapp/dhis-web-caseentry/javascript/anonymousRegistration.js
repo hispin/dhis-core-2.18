@@ -1143,6 +1143,10 @@ function createProgramStage( programStageId, programStageInstanceId, organisatio
 function loadProgramStage( programStageId, programStageInstanceId, organisationUnitId, success, fail ) {
     var data = createProgramStage( programStageId, programStageInstanceId, organisationUnitId );
 
+    if( programStageId === undefined ) {
+        programStageId = $('#programId option:selected').attr('psid');
+    }
+
     DAO.store.get('programStages', programStageId ).done(function(obj) {
         if(success) success(obj.form);
     } ).fail(function() {
