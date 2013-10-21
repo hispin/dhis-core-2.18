@@ -501,6 +501,11 @@ public class DefaultUserService
 
         return userCredentialsStore.getActiveUsersCount( cal.getTime() );
     }
+    
+    public int getActiveUsersCount( Date since )
+    {
+        return userCredentialsStore.getActiveUsersCount( since );
+    }
 
     // -------------------------------------------------------------------------
     // UserSettings
