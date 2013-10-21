@@ -155,19 +155,11 @@ public class LoadDataElementsAction
 
         if ( program != null && program.isRegistration() )
         {
-            identifierTypes = identifierTypeService.getAllPatientIdentifierTypes();
-            patientAttributes = attributeService.getAllPatientAttributes();
+            identifierTypes = program.getPatientIdentifierTypes();
+            patientAttributes = program.getPatientAttributes();
 
-            Collection<Program> programs = programService.getAllPrograms();
-            programs.remove( program );
-
-            for ( Program _program : programs )
-            {
-                identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
-                patientAttributes.removeAll( _program.getPatientAttributes() );
-            }
         }
-        
+
         return SUCCESS;
     }
 }
