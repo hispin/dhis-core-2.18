@@ -106,7 +106,7 @@ function WeeklyPeriodType( dateFormat )
         var day = startDate.date().getDay();
         var i = 0;
 
-        if ( day == 0 ) // Sunday, forward to Monday
+        if ( day == 0 ) // Sunday (0), forward to Monday
         {
             startDate.adjust( 'D', +1 );
         }
@@ -122,7 +122,9 @@ function WeeklyPeriodType( dateFormat )
         
         var endDate = startDate.clone().adjust( 'D', +6 );
 
-        while ( startDate.date().getFullYear() <= year )
+        // Include all weeks where Thursday falls in same year
+        
+        while ( startDate.clone().adjust( 'D', 3 ).date().getFullYear() <= year )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
