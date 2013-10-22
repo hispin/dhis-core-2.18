@@ -42,6 +42,7 @@ public interface AppManager
     final String KEY_APP_FOLDER_PATH = "appFolderPath";    
     final String KEY_APP_BASE_URL = "appBaseUrl";
     final String KEY_APP_STORE_URL = "appStoreUrl";
+    final String DEFAULT_APP_STORE_URL = "http://appstore.dhis2.org";
         
     /**
      * Gets the Base URL for accessing the apps
