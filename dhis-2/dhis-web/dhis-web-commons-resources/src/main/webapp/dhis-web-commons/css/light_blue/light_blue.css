@@ -107,22 +107,16 @@ a.menuLink:hover
 #menuLink1
 {
   position: absolute;
-  left: 595px;
+  left: 695px;
 }
 
 #menuLink2
 {
   position: absolute;
-  left: 695px;
-}
-
-#menuLink3
-{
-  position: absolute;
   left: 795px;
 }
 
-#menuLink4
+#menuLink3
 {
   position: absolute;
   left: 895px;
@@ -132,24 +126,17 @@ a.menuLink:hover
 {
   position: absolute;
   top: 44px;
-  left: 595px;
+  left: 695px;
 }
 
 #menuDropDown2
 {
   position: absolute;
   top: 44px;
-  left: 695px;
-}
-
-#menuDropDown3
-{
-  position: absolute;
-  top: 44px;
   left: 795px;
 }
 
-#menuDropDown4
+#menuDropDown3
 {
   position: absolute;
   top: 44px;
