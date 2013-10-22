@@ -30,6 +30,7 @@ package org.hisp.dhis.mapping.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.api.utils.ContextUtils;
@@ -125,9 +126,9 @@ public class InitializeAction
         return infrastructuralPeriodType;
     }
 
-    private Collection<OrganisationUnit> rootNodes;
+    private List<OrganisationUnit> rootNodes;
 
-    public Collection<OrganisationUnit> getRootNodes()
+    public List<OrganisationUnit> getRootNodes()
     {
         return rootNodes;
     }
@@ -168,7 +169,7 @@ public class InitializeAction
 
         rootNodes = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
 
-        if ( rootNodes.size() < 1 )
+        if ( rootNodes.isEmpty() )
         {
             rootNodes.add( new OrganisationUnit() );
         }
