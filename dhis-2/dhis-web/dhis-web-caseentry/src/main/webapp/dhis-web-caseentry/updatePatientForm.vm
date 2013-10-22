@@ -144,6 +144,7 @@
 </div>
 
 <script>
+	var systemIdentifier = "";
 	#foreach ( $idValue in $patient.identifiers )
 		#if( $!idValue.identifierType)
 		#else
