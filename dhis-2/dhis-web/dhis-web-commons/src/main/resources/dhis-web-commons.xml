@@ -862,12 +862,6 @@
       <result name="success" type="outputStreamResult"></result>
     </action>
 
-    <action name="software" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-commons/about/software.vm</param>
-      <param name="menu">/dhis-web-commons/about/menu.vm</param>
-    </action>
-
     <action name="showUpdateUserAccountForm" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/useraccount/updateUserAccountForm.vm</param>
