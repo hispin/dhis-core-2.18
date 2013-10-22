@@ -127,10 +127,10 @@
 	#if( $status == 1 )
 		setFieldValue('selectedOrgunitText', i18n_please_select_village );
 	#elseif( $status == 2 )
-		setFieldValue('selectedOrgunitText', '$organisationUnit.name' );
+		setFieldValue('selectedOrgunitText', '$encoder.jsEncode( $organisationUnit.name )' );
 		enable('listPatientBtn');
 	#else
-		setFieldValue('selectedOrgunitText', '$organisationUnit.name' );
+		setFieldValue('selectedOrgunitText', '$encoder.jsEncode( $organisationUnit.name )' );
 		enable('listPatientBtn');
 		showById('searchDiv');
 	#end
