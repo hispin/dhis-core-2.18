@@ -28,8 +28,6 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.system.comparator.FileLastModifiedComparator;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -53,11 +51,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import org.hisp.dhis.system.comparator.FileLastModifiedComparator;
 
 /**
  * @author Lars Helge Overland
@@ -599,19 +598,5 @@ public class StreamUtils
     public static boolean exists( String path )
     {
         return new File( path ).exists();
-    }
-
-    /**
-     * Converts an InputStream to String with encoding as UTF-8
-     * 
-     * @since 2.12
-     * @param inputStream the InputStream
-     * @return String after reading the InputStream
-     */
-    @Deprecated
-    public static String convertStreamToString( InputStream inputStream )
-    {
-        Scanner s = new Scanner( inputStream, ENCODING_UTF8 ).useDelimiter( "\\A" );
-        return s.hasNext() ? s.next() : "";
     }
 }
