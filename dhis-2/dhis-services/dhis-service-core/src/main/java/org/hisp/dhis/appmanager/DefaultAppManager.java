@@ -91,7 +91,7 @@ public class DefaultAppManager
     }
 
     @Override
-    public List<App> getInstalledApps()
+    public List<App> getApps()
     {
         String baseUrl = getAppBaseUrl();
         
@@ -117,7 +117,7 @@ public class DefaultAppManager
 
         // Delete if app is already installed
         
-        if ( getInstalledApps().contains( app ) )
+        if ( getApps().contains( app ) )
         {
             String folderPath = getAppFolderPath() + File.separator + app.getFolderName();
             FileUtils.forceDelete( new File( folderPath ) );
@@ -148,7 +148,7 @@ public class DefaultAppManager
     @Override
     public boolean deleteApp( String name )
     {
-        for ( App app : getInstalledApps() )
+        for ( App app : getApps() )
         {
             if ( app.getName().equals( name ) )
             {

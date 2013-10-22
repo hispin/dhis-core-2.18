@@ -112,7 +112,7 @@ public class DefaultAppManagerServiceTest
         System.out.println( "getInstalledApps" );
         DefaultAppManager instance = new DefaultAppManager();
         List<App> expResult = null;
-        List<App> result = instance.getInstalledApps();
+        List<App> result = instance.getApps();
         assertEquals( expResult, result );
         // TODO review the generated test code and remove the default call to fail.
         fail( "The test case is a prototype." );

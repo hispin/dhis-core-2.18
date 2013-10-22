@@ -53,7 +53,7 @@ public class AppController
     @RequestMapping( method = RequestMethod.GET )
     public String getApps( Model model )
     {
-        List<App> apps = appManager.getInstalledApps();
+        List<App> apps = appManager.getApps();
         
         model.addAttribute( "model", apps );
         

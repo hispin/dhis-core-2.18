@@ -146,7 +146,7 @@ public class DefaultModuleManager
     {
         List<Module> modules = getAccessibleMenuModules();
         
-        List<App> apps = appManager.getInstalledApps();
+        List<App> apps = appManager.getApps();
         
         for ( App app : apps )
         {   
@@ -188,7 +188,7 @@ public class DefaultModuleManager
     {
         List<Module> modules = getAccessibleServiceModules();
 
-        List<App> apps = appManager.getInstalledApps();
+        List<App> apps = appManager.getApps();
         
         for ( App app : apps )
         {   
