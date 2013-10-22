@@ -274,7 +274,6 @@ public class DefaultDataValueSetService
         boolean skipExistingCheck = importOptions.isSkipExistingCheck();
 
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
-
         Map<String, OrganisationUnit> orgUnitMap = orgUnitIdScheme == UUID ? getUuidOrgUnitMap() : identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
         Map<String, Period> periodMap = new HashMap<String, Period>();
