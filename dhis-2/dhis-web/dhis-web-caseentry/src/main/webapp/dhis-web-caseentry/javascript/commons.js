@@ -702,7 +702,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			// Disable Create new event button in the entry form if doesn't have any stage for register
 			flag = true;
             $('#repeatableProgramStage_' + programInstanceId + " option ").each(function(){
-				if( $(this).attr('localid')== programStageId){
+				if( $(this).attr('localid')== programStageId && $(this).attr('repeatable')=='false'){
                     $(this).css("display","none");
 				}
 				if( $(this).css('display')!= "none"){
