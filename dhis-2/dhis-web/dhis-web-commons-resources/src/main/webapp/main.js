@@ -49,16 +49,7 @@ function pageInit()
 		hideDropDownTimeout();
 	} );
 
-	$( "#menuLink4" ).hover( function() 
-	{
-		showDropDown( "menuDropDown4" );
-	}, 
-	function() 
-	{
-		hideDropDownTimeout();
-	} );
-
-	$( "#menuDropDown1, #menuDropDown2, #menuDropDown3, #menuDropDown4" ).hover( function() 
+	$( "#menuDropDown1, #menuDropDown2, #menuDropDown3" ).hover( function() 
 	{
 		cancelHideDropDownTimeout();
 	}, 

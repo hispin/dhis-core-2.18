@@ -1,6 +1,7 @@
 <h3>$i18n.getString( "about_dhis2" )</h3>
 
 <dl>
+  <dt>$i18n.getString( "web_api" ):</dt><dd><a href="../api">$i18n.getString( "browse_it_here" )</a></dd>
   <dt>$i18n.getString( "current_user" ):</dt><dd>$!currentUsername</dd>
   <dt>$i18n.getString( "version" ):</dt><dd>$!info.version</dd>
   <dt>$i18n.getString( "build_revision" ):</dt><dd>$!info.revision</dd>

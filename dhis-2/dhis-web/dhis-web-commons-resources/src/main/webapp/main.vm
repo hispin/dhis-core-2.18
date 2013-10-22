@@ -68,6 +68,10 @@
       <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png"
         onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'view_intepretations' )">
 
+      <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'view_home_page' )">
+        $encoder.htmlEncode( $applicationTitle )
+      </span>
+      
       <ul id="menuLinkArea">
       #if( $maintenanceModules.size() > 0 )
       <li><a id="menuLink1" href="../dhis-web-commons-about/modules.action" class="menuLink">$i18n.getString( "maintenance" )</a></li>
@@ -75,8 +79,7 @@
       #if( $serviceModules.size() > 0 )
       <li><a id="menuLink2" href="../dhis-web-commons-about/modules.action" class="menuLink">$i18n.getString( "services" )</a></li>
       #end
-      <li><a id="menuLink3" href="../dhis-web-commons-about/functions.action" class="menuLink">$i18n.getString( "help" )</a></li>
-      <li><a id="menuLink4" href="../dhis-web-commons-about/functions.action" class="menuLink">$i18n.getString( "profile" )</a></li>
+      <li><a id="menuLink3" href="../dhis-web-commons-about/functions.action" class="menuLink">$i18n.getString( "profile" )</a></li>
       </ul>
 
       #if( $maintenanceModules.size() > 0 )
@@ -99,27 +102,17 @@
       </div>
       #end
 
-      <div id="menuDropDown3" class="menuDropDownArea">
-      <ul class="menuDropDownBox">
-        <li><a href="../dhis-web-commons-about/help.action">$i18n.getString( "help_center" )&nbsp;</a></li>
-        <li><a href="../api">$i18n.getString( "web_api" )&nbsp;</a></li>
-        <li><a href="../dhis-web-commons-about/about.action">$i18n.getString( "about_dhis2" )&nbsp;</a></li>
-      </ul>
-      </div>
-
-	  <div id="menuDropDown4" class="menuDropDownArea">
+	  <div id="menuDropDown3" class="menuDropDownArea">
 	  <ul class="menuDropDownBox">
   	    <li><a href="../dhis-web-commons-about/userSettings.action">$i18n.getString( "settings" )&nbsp;</a></li>
         <li><a href="../dhis-web-commons-about/showUpdateUserProfileForm.action">$i18n.getString( "profile" )&nbsp;</a></li>
   	    <li><a href="../dhis-web-commons-about/showUpdateUserAccountForm.action">$i18n.getString( "account" )&nbsp;</a></li>
+        <li><a href="../dhis-web-commons-about/help.action">$i18n.getString( "help" )&nbsp;</a></li>
         <li><a href="../dhis-web-commons-security/logout.action">$i18n.getString( "log_out" )&nbsp;</a></li>
+        <li><a href="../dhis-web-commons-about/about.action">$i18n.getString( "about_dhis2" )&nbsp;</a></li>
       </ul>
 	  </div>
 	  
-      <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'view_home_page' )">
-        $encoder.htmlEncode( $applicationTitle )
-      </span>
-      
       <span id="showLeftBar">
         <a href="javascript:dhis2.leftBar.showAnimated()" title="$i18n.getString( 'show_menu' )">
           <img src="../images/show_menu.png" width="16" height="16" alt="$i18n.getString( 'show_menu' )"/></a>
