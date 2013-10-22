@@ -55,7 +55,7 @@ public class Patient
 
     private int age;
 
-    private List<PatientAttribute> patientAttValues;
+    private List<PatientAttribute> attributes;
 
     private List<PatientIdentifier> identifiers;
 
@@ -80,6 +80,8 @@ public class Patient
     private String organisationUnitName;
 
     private List<Program> completedPrograms;
+    
+    private String incidentDate;
 
     // -------------------------------------------------------------------------
     // Getters and setters
@@ -175,14 +177,14 @@ public class Patient
         this.age = age;
     }
 
-    public List<PatientAttribute> getPatientAttValues()
+    public List<PatientAttribute> getAttributes()
     {
-        return patientAttValues;
+        return attributes;
     }
 
-    public void setPatientAttValues( List<PatientAttribute> patientAttValues )
+    public void setAttributes( List<PatientAttribute> attributes )
     {
-        this.patientAttValues = patientAttValues;
+        this.attributes = attributes;
     }
 
     public int getId()
@@ -254,7 +256,17 @@ public class Patient
     {
         this.completedPrograms = completedPrograms;
     }
+    
+    public String getIncidentDate()
+    {
+        return incidentDate;
+    }
 
+    public void setIncidentDate( String incidentDate )
+    {
+        this.incidentDate = incidentDate;
+    }
+    
     // -------------------------------------------------------------------------
     // Override Methods
     // -------------------------------------------------------------------------
@@ -326,6 +338,16 @@ public class Patient
         {
             dout.writeBoolean( false );
         }
+        
+        if ( incidentDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( incidentDate );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
 
         if ( phoneNumber != null )
         {
@@ -338,10 +360,10 @@ public class Patient
         }
 
         // Write Patient Attribute
-        if ( patientAttValues != null )
+        if ( attributes != null )
         {
-            dout.writeInt( patientAttValues.size() );
-            for ( PatientAttribute patientAtt : patientAttValues )
+            dout.writeInt( attributes.size() );
+            for ( PatientAttribute patientAtt : attributes )
             {
                 patientAtt.serialize( dout );
             }
@@ -472,6 +494,16 @@ public class Patient
             this.setRegistrationDate( null );
         }
 
+        // Incident Date
+        if ( din.readBoolean() )
+        {
+            this.setIncidentDate( din.readUTF() );
+        }
+        else
+        {
+            this.setIncidentDate( null );
+        }
+        
         // Phone Number
         if ( din.readBoolean() )
         {
@@ -486,17 +518,17 @@ public class Patient
         int attsNumb = din.readInt();
         if ( attsNumb > 0 )
         {
-            this.patientAttValues = new ArrayList<PatientAttribute>();
+            attributes = new ArrayList<PatientAttribute>();
             for ( int j = 0; j < attsNumb; j++ )
             {
                 PatientAttribute pa = new PatientAttribute();
                 pa.deSerialize( din );
-                this.patientAttValues.add( pa );
+                attributes.add( pa );
             }
         }
         else
         {
-            this.patientAttValues = null;
+            attributes = null;
         }
 
         int numbIdentifiers = din.readInt();

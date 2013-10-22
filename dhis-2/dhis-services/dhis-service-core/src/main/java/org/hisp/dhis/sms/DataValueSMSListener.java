@@ -123,6 +123,7 @@ public class DataValueSMSListener
         }
         SMSCommand smsCommand = smsCommandService.getSMSCommand( commandString, ParserType.KEY_VALUE_PARSER );
         Map<String, String> parsedMessage = this.parse( message, smsCommand );
+        
         Date date = lookForDate( message );
         String senderPhoneNumber = StringUtils.replace( sms.getOriginator(), "+", "" );
         Collection<OrganisationUnit> orgUnits = getOrganisationUnitsByPhoneNumber( senderPhoneNumber );
