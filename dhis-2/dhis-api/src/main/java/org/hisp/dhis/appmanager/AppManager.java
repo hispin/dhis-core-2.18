@@ -66,7 +66,7 @@ public interface AppManager
      * Returns a list of all the installed apps at @see getAppFolderPath
      * @return list of installed apps
      */
-    List<App> getInstalledApps();
+    List<App> getApps();
     
     /**
      * Installs the app.

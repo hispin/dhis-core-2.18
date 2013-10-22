@@ -131,7 +131,7 @@ public class AppSettingsAction
 
     public List<App> getAppList()
     {
-        return appManager.getInstalledApps();
+        return appManager.getApps();
     }
 
     private I18n i18n;

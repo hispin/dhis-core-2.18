@@ -86,7 +86,7 @@ public class AppListAction
     public String execute()
         throws Exception
     {
-        appList = appManager.getInstalledApps();
+        appList = appManager.getApps();
         
         appBaseUrl = appManager.getAppBaseUrl();
 
