@@ -148,6 +148,13 @@ join categorycombos_optioncombos cc using(categorycomboid)
 join categoryoptioncombo coc using(categoryoptioncomboid)
 join _categoryoptioncomboname con using(categoryoptioncomboid);
 
+-- Display category option combo identifier and name
+
+select cc.categoryoptioncomboid as id, uid, categoryoptioncomboname as name, code
+from categoryoptioncombo cc
+join _categoryoptioncomboname cn
+on (cc.categoryoptioncomboid=cn.categoryoptioncomboid);
+
 -- Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
 
 insert into usersetting (userinfoid, name, value)
