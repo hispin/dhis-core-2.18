@@ -35,6 +35,7 @@ import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 import static org.hisp.dhis.system.util.ConversionUtils.wrap;
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -274,22 +275,7 @@ public class DefaultDataValueSetService
 
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
 
-        Map<String, OrganisationUnit> orgUnitMap = new HashMap<String, OrganisationUnit>();
-
-        if ( orgUnitIdScheme == IdentifiableProperty.UUID )
-        {
-            Collection<OrganisationUnit> allOrganisationUnits = organisationUnitService.getAllOrganisationUnits();
-
-            for ( OrganisationUnit organisationUnit : allOrganisationUnits )
-            {
-                orgUnitMap.put( organisationUnit.getUuid(), organisationUnit );
-            }
-        }
-        else
-        {
-            orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
-        }
-
+        Map<String, OrganisationUnit> orgUnitMap = orgUnitIdScheme == UUID ? getUuidOrgUnitMap() : identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
         Map<String, Period> periodMap = new HashMap<String, Period>();
 
@@ -519,7 +505,7 @@ public class DefaultDataValueSetService
         return dataElements;
     }
 
-    public Set<OrganisationUnit> getOrgUnits( Set<String> orgUnits )
+    private Set<OrganisationUnit> getOrgUnits( Set<String> orgUnits )
     {
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
 
@@ -537,4 +523,18 @@ public class DefaultDataValueSetService
 
         return organisationUnits;
     }
+
+    private Map<String, OrganisationUnit> getUuidOrgUnitMap()
+    {
+        Map<String, OrganisationUnit> orgUnitMap = new HashMap<String, OrganisationUnit>();
+        
+        Collection<OrganisationUnit> allOrganisationUnits = organisationUnitService.getAllOrganisationUnits();
+
+        for ( OrganisationUnit organisationUnit : allOrganisationUnits )
+        {
+            orgUnitMap.put( organisationUnit.getUuid(), organisationUnit );
+        }
+        
+        return orgUnitMap;
+    }    
 }
