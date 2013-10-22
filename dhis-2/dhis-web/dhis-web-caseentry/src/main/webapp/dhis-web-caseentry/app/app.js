@@ -1483,7 +1483,11 @@ Ext.onReady( function() {
         getDataTableStore: function() {
 			this.datatable = Ext.create('Ext.data.ArrayStore', {
 				fields: TR.value.fields,
-				data: TR.value.values
+				data: TR.value.values,
+				sorters: [{
+					property: 'value',
+					direction: 'ASC'
+				}]
 			});
         },
 		caseBasedFavorite: Ext.create('Ext.data.Store', {
@@ -2102,10 +2106,19 @@ Ext.onReady( function() {
 							// Get fields
 							
 							var fields = [];
-							for( var index=0; index < TR.value.columns.length; index++ )
+							var index=0;
+							for( index=0; index < TR.value.columns.length - 1; index++ )
 							{
-								fields[index] = TR.value.columns[index].name;
+								fields[index] = {
+									name:TR.value.columns[index].name,
+									type: 'string'
+								};
 							}
+							fields[index] = {
+								name:TR.value.columns[index].name,
+								type: 'number'
+							};
+							
 							TR.value.fields = fields;
 							
 							// Set data for grid
@@ -2524,6 +2537,7 @@ Ext.onReady( function() {
 										TR.state.asc = "";
 										TR.state.desc = column.dataIndex;
 									}
+									TR.exe.execute(false, true );
 								}
 								else{
 									if( TR.state.sortOrder=='ASC'){
@@ -2533,7 +2547,6 @@ Ext.onReady( function() {
 										TR.state.sortOrder = "ASC";
 									}
 								}
-								TR.exe.execute(false, true );
 							}
 						}
 					}
@@ -2700,7 +2713,8 @@ Ext.onReady( function() {
 				header: TR.value.columns[i].column, 
 				dataIndex: TR.value.columns[i].name,
 				height: TR.conf.layout.east_gridcolumn_height,
-				name: TR.value.columns[i].column,
+				name: TR.value.columns[i].column, 
+				type: 'number',
 				sortable: true,
 				draggable: false,
 				hideable: false,
