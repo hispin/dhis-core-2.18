@@ -127,18 +127,6 @@ public class AppSettingsAction
         appManager.setAppBaseUrl( appBaseUrl );
     }
 
-    private String appStoreUrl;
-
-    public String getAppStoreUrl()
-    {
-        return appManager.getAppStoreUrl();
-    }
-
-    public void setAppStoreUrl( String appStoreUrl )
-    {
-        appManager.setAppStoreUrl( appStoreUrl );
-    }
-
     private List<App> appList;
 
     public List<App> getAppList()

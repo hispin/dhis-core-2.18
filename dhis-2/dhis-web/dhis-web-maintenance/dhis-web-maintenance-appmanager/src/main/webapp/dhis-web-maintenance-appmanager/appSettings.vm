@@ -13,24 +13,11 @@
 <h3>$i18n.getString( "appmanager_settings" )</h3>
 
 <form id="appSettingsForm" action="appSettings.action" method="post">
-  <table>
-    <tr>
-      <td>$i18n.getString( "appmanager_installation_folder" )</td>
-      <td><input type="text" id="appFolderPath" name="appFolderPath" style="width:40em" value="$!appFolderPath"/> </td>
-    </tr>
-    <tr>
-      <td>$i18n.getString( "appmanager_baseurl" )</td>
-      <td><input type="text" id="appBaseUrl" name="appBaseUrl" style="width:40em" value="$!appBaseUrl"/> </td>
-    </tr>
-    <tr>
-      <td>$i18n.getString( "appmanager_store_url" )</td>
-      <td><input type="text" id="appStoreUrl" name="appStoreUrl" style="width:40em" value="$!appStoreUrl"/> </td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Save" style="width:120px" /></td>
-    </tr>
-  </table>
+<div class="settingLabel">$i18n.getString( "appmanager_installation_folder" ) <span class="tipText">($i18n.getString( "appmanager_absolute_server_path" ))</span></div>
+<div class="setting"><input type="text" id="appFolderPath" name="appFolderPath" style="width:40em" value="$!appFolderPath"/></div>
+<div class="settingLabel">$i18n.getString( "appmanager_baseurl" ) <span class="tipText">($i18n.getString( "appmanager_where_apps_can_be_found" ))</span></div>
+<div class="setting"><input type="text" id="appBaseUrl" name="appBaseUrl" style="width:40em" value="$!appBaseUrl"/></div>
+<div><input type="submit" value="Save" style="width:120px" /></div>
 </form>
 
 <h3>$i18n.getString( "appmanager_management" )</h3>

@@ -87,7 +87,7 @@ public class DefaultAppManager
     @Override
     public String getAppStoreUrl()
     {
-        return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_STORE_URL ) );
+        return StringUtils.trimToNull( (String) appSettingManager.getSystemSetting( KEY_APP_STORE_URL, DEFAULT_APP_STORE_URL ) );
     }
 
     @Override
