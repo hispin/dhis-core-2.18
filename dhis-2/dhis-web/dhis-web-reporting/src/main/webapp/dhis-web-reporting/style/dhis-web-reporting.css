@@ -13,3 +13,10 @@
 {
   margin: 0 0 10px 0;
 }
+
+.resultDiv
+{
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 20px;
+}

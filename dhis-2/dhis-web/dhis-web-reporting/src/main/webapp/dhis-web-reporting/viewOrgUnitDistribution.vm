@@ -57,8 +57,8 @@
 
 <!-- Table -->
 
-<div id="tableDiv"></div>
+<div id="tableDiv" class="resultDiv" style="display:none"></div>
 
 <!-- Chart -->
 
-<div id="chartDiv" style="display:none"><img src="" id="chartImg"></div>
+<div id="chartDiv" class="resultDiv" style="display:none"><img src="" id="chartImg"></div>

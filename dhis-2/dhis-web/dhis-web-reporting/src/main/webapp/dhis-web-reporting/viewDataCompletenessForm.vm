@@ -75,4 +75,4 @@
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 
-<div id="contentDiv"></div>
+<div id="contentDiv" class="resultDiv" style="display:none"></div>
