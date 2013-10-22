@@ -29,6 +29,7 @@ package org.hisp.dhis.api.mobile;
  */
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
@@ -69,7 +70,7 @@ public interface ActivityReportingService
     public String saveProgramStage( ProgramStage programStage, int patientId, int orgUnitId )
         throws NotAllowedException;
 
-    public Patient enrollProgram( String enrollInfo )
+    public Patient enrollProgram( String enrollInfo, Date incidentDate )
         throws NotAllowedException;
 
     public Collection<PatientIdentifierType> getIdentifierTypes();

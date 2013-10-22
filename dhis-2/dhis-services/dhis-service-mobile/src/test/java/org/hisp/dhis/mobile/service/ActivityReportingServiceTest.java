@@ -77,8 +77,9 @@ public class ActivityReportingServiceTest
         patient.setOrganisationUnitName( "OrgUnitName" );
         patient.setPhoneNumber( "095678943" );
         patient.setRegistrationDate( new Date() );
+        patient.setIncidentDate( "Incident Date" );
         patient.setIdentifiers( new ArrayList<PatientIdentifier>() );
-        patient.setPatientAttValues( new ArrayList<PatientAttribute>() );
+        patient.setAttributes( new ArrayList<PatientAttribute>() );
         return patient;
     }
 }

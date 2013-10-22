@@ -173,9 +173,9 @@ public class ActivityReportingServiceImpl
     {
         this.currentUserService = currentUserService;
     }
-    
+
     private MessageService messageService;
-    
+
     @Required
     public void setMessageService( MessageService messageService )
     {
@@ -188,7 +188,7 @@ public class ActivityReportingServiceImpl
     {
         this.smsSender = smsSender;
     }
-    
+
     public PatientIdentifierTypeService getPatientIdentifierTypeService()
     {
         return patientIdentifierTypeService;
@@ -563,8 +563,9 @@ public class ActivityReportingServiceImpl
         if ( isNumber( keyword ) == false )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-            
-            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( keyword, organisationUnit );
+
+            List<Patient> patients = (List<Patient>) patientService.getPatientByFullname( keyword,
+                organisationUnit );
 
             if ( patients.size() > 1 )
             {
@@ -793,7 +794,7 @@ public class ActivityReportingServiceImpl
     }
 
     @Override
-    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient enrollProgram( String enrollInfo )
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient enrollProgram( String enrollInfo, Date incidentDate )
         throws NotAllowedException
     {
         String[] enrollProgramInfo = enrollInfo.split( "-" );
@@ -805,7 +806,7 @@ public class ActivityReportingServiceImpl
 
         ProgramInstance programInstance = new ProgramInstance();
         programInstance.setEnrollmentDate( new Date() );
-        programInstance.setDateOfIncident( new Date() );
+        programInstance.setDateOfIncident( incidentDate );
         programInstance.setProgram( program );
         programInstance.setPatient( patient );
         programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
@@ -1054,7 +1055,7 @@ public class ActivityReportingServiceImpl
         }
         patientModel.setIdentifiers( identifiers );
 
-        patientModel.setPatientAttValues( patientAtts );
+        patientModel.setAttributes( patientAtts );
 
         // Set current programs
         List<ProgramInstance> listOfProgramInstance = new ArrayList<ProgramInstance>(
@@ -1399,9 +1400,10 @@ public class ActivityReportingServiceImpl
         {
 
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-            
+
             String fullName = enrollmentRelationship.getPersonBName();
-            List<Patient> patients = (List<Patient>) this.patientService.getPatientByFullname( fullName, organisationUnit );
+            List<Patient> patients = (List<Patient>) patientService.getPatientByFullname( fullName,
+                organisationUnit );
 
             // remove the own searcher
             patients = removeIfDuplicated( patients, enrollmentRelationship.getPersonAId() );
@@ -1551,7 +1553,7 @@ public class ActivityReportingServiceImpl
 
         anonymousProgramMobile.setName( program.getName() );
 
-        //if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
+        // if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
         {
             anonymousProgramMobile.setVersion( program.getVersion() );
 
@@ -1837,16 +1839,15 @@ public class ActivityReportingServiceImpl
         Set<org.hisp.dhis.patient.PatientAttribute> patientAttributeSet = new HashSet<org.hisp.dhis.patient.PatientAttribute>();
         List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
 
-        Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> identifiers = patient.getIdentifiers();
+        Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> identifiersMobile = patient.getIdentifiers();
 
         Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
 
-        Collection<org.hisp.dhis.api.mobile.model.PatientAttribute> patientAttributesMobile = patient
-            .getPatientAttValues();
+        Collection<org.hisp.dhis.api.mobile.model.PatientAttribute> attributesMobile = patient.getAttributes();
 
         if ( identifierTypes.size() > 0 )
         {
-            for ( org.hisp.dhis.api.mobile.model.PatientIdentifier identifier : identifiers )
+            for ( org.hisp.dhis.api.mobile.model.PatientIdentifier identifier : identifiersMobile )
             {
                 PatientIdentifierType patientIdentifierType = patientIdentifierTypeService
                     .getPatientIdentifierType( identifier.getIdentifierType() );
@@ -1876,9 +1877,9 @@ public class ActivityReportingServiceImpl
             patientIdentifierSet.add( systemGenerateIdentifier );
         }
 
-        if ( patientAttributesMobile != null )
+        if ( attributesMobile != null )
         {
-            for ( org.hisp.dhis.api.mobile.model.PatientAttribute paAtt : patientAttributesMobile )
+            for ( org.hisp.dhis.api.mobile.model.PatientAttribute paAtt : attributesMobile )
             {
 
                 org.hisp.dhis.patient.PatientAttribute patientAttribute = patientAttributeService
@@ -1903,7 +1904,8 @@ public class ActivityReportingServiceImpl
         try
         {
             int programId = Integer.parseInt( programIdText );
-            this.enrollProgram( patientId + "-" + programId );
+            Date incidentDate = PeriodUtil.stringToDate( patient.getIncidentDate() );
+            enrollProgram( patientId + "-" + programId, incidentDate );
         }
         catch ( Exception e )
         {
@@ -2073,43 +2075,49 @@ public class ActivityReportingServiceImpl
         Notification notification = new Notification();
         try
         {
-            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( lostEvent.getId() );
+            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( lostEvent
+                .getId() );
             programStageInstance.setDueDate( PeriodUtil.stringToDate( lostEvent.getDueDate() ) );
             programStageInstance.setStatus( lostEvent.getStatus() );
-    
+
             if ( lostEvent.getComment() != null )
             {
                 List<MessageConversation> conversationList = new ArrayList<MessageConversation>();
-        
-                MessageConversation conversation = new MessageConversation( lostEvent.getName(), currentUserService.getCurrentUser() );
-        
-                conversation.addMessage( new Message( lostEvent.getComment(), null, currentUserService.getCurrentUser() ) );
-                
+
+                MessageConversation conversation = new MessageConversation( lostEvent.getName(),
+                    currentUserService.getCurrentUser() );
+
+                conversation
+                    .addMessage( new Message( lostEvent.getComment(), null, currentUserService.getCurrentUser() ) );
+
                 conversation.setRead( true );
-                
+
                 conversationList.add( conversation );
-        
+
                 programStageInstance.setMessageConversations( conversationList );
-                
+
                 messageService.saveMessageConversation( conversation );
             }
-    
+
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
-            
-            //send SMS
-            if ( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() != null && lostEvent.getSMS() != null )
+
+            // send SMS
+            if ( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() != null
+                && lostEvent.getSMS() != null )
             {
                 User user = new User();
                 user.setPhoneNumber( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() );
                 List<User> recipientsList = new ArrayList<User>();
                 recipientsList.add( user );
-                
-                smsSender.sendMessage( lostEvent.getName(), lostEvent.getSMS(), currentUserService.getCurrentUser(), recipientsList, false );
+
+                smsSender.sendMessage( lostEvent.getName(), lostEvent.getSMS(), currentUserService.getCurrentUser(),
+                    recipientsList, false );
             }
-            
+
             notification.setMessage( "Success" );
         }
-        catch (Exception e) {
+        catch ( Exception e )
+        {
             e.printStackTrace();
             notification.setMessage( "Fail" );
         }
