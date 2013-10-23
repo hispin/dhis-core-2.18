@@ -5,7 +5,7 @@
 
 <h3>$i18n.getString( "edit_validation_rule" )</h3>
 
-<form id="updateValidationRuleForm" action="updateValidationRule.action" method="POST" onsubmit="enable('periodTypeName');" class="inputForm">
+<form id="updateValidationRuleForm" action="updateValidationRule.action" method="POST" onsubmit="enable('periodTypeName') & enable('ruleType');" class="inputForm">
 
 <div>
 	<input type="hidden" id="id" name="id" value="$!validationRule.id">
