@@ -45,6 +45,7 @@ public interface PatientStore
     extends GenericIdentifiableObjectStore<Patient>
 {
     final String ID = PatientStore.class.getName();
+
     final int MAX_RESULTS = 50000;
 
     Collection<Patient> getByBirthDate( Date birthDate );
@@ -55,7 +56,8 @@ public interface PatientStore
 
     Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
 
-    Collection<Patient> getByOrgUnitAndNameLike( OrganisationUnit organisationUnit, String nameLike, Integer min, Integer max );
+    Collection<Patient> getByOrgUnitAndNameLike( OrganisationUnit organisationUnit, String nameLike, Integer min,
+        Integer max );
 
     Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
         Integer max );
@@ -68,7 +70,8 @@ public interface PatientStore
 
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 
-    int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup, Integer statusEnrollment );
+    int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
+        Integer statusEnrollment );
 
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
 
@@ -77,14 +80,18 @@ public interface PatientStore
     Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
     Collection<Patient> search( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max );
+        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes,
+        Integer statusEnrollment, Integer min, Integer max );
 
-    List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min,
-        Integer max );
+    List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
+        Boolean followup, Collection<PatientAttribute> patientAttributes,
+        Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max );
 
     Collection<Patient> getByProgram( Program program, Integer min, Integer max );
-    
-    Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max );
+
+    Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit,
+        Boolean followup, Collection<PatientAttribute> patientAttributes,
+        Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max );
+
+    int validate( Patient patient, Program program );
 }
