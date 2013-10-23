@@ -8,7 +8,7 @@
 #set($divIdx=0)
 #set($hashValues=false)
 #foreach( $grid in $grids )
-	#if($grid.getRows().size() > 0)
+	#if(${grid.height} > 0)
 	#set($hashValues=true)
 	#set($divIdx=$divIdx+1)
 	<h3>

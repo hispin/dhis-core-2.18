@@ -548,11 +548,8 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+			<ref bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		</property>
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="identifierTypeService">
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
