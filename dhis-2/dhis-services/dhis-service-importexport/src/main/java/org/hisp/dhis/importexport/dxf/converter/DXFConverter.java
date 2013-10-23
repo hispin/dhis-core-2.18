@@ -55,7 +55,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -76,7 +75,6 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
@@ -976,27 +974,6 @@ public class DXFConverter
                 converterInvoker.invokeRead( converter, reader, params );
 
                 log.info( "Imported Charts" );
-            }
-            else if ( reader.isStartElement( CompleteDataSetRegistrationConverter.COLLECTION_NAME )
-                && params.isDataValues() )
-            {
-                log.debug("Starting CompleteDataSetRegistrations import");
-
-                state.setMessage( "importing_complete_data_set_registrations" );
-
-                BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory.createBatchHandler(
-                    CompleteDataSetRegistrationBatchHandler.class ).init();
-
-                XMLConverter converter = new CompleteDataSetRegistrationConverter( batchHandler, importObjectService,
-                    params, objectMappingGenerator.getDataSetMapping( params.skipMapping() ), objectMappingGenerator
-                        .getPeriodMapping( params.skipMapping() ), objectMappingGenerator
-                        .getOrganisationUnitMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported CompleteDataSetRegistrations" );
             }
         }
 

@@ -52,7 +52,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -71,7 +70,6 @@ import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.ImportType;
 import org.hisp.dhis.importexport.Importer;
 import org.hisp.dhis.importexport.importer.ChartImporter;
-import org.hisp.dhis.importexport.importer.CompleteDataSetRegistrationImporter;
 import org.hisp.dhis.importexport.importer.ConstantImporter;
 import org.hisp.dhis.importexport.importer.DataDictionaryImporter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryComboImporter;
@@ -104,7 +102,6 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
@@ -1005,38 +1002,6 @@ public class DefaultImportObjectManager
         importObjectStore.deleteImportObjects( Report.class );
 
         log.info( "Imported Reports" );
-    }
-
-    @Transactional
-    public void importCompleteDataSetRegistrations()
-    {
-        BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory.createBatchHandler(
-            CompleteDataSetRegistrationBatchHandler.class ).init();
-
-        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( CompleteDataSetRegistration.class );
-
-        Map<Object, Integer> dataSetMapping = objectMappingGenerator.getDataSetMapping( false );
-        Map<Object, Integer> periodMapping = objectMappingGenerator.getPeriodMapping( false );
-        Map<Object, Integer> sourceMapping = objectMappingGenerator.getOrganisationUnitMapping( false );
-
-        Importer<CompleteDataSetRegistration> importer = new CompleteDataSetRegistrationImporter( batchHandler, params );
-
-        for ( ImportObject importObject : importObjects )
-        {
-            CompleteDataSetRegistration registration = (CompleteDataSetRegistration) importObject.getObject();
-
-            registration.getDataSet().setId( dataSetMapping.get( registration.getDataSet().getId() ) );
-            registration.getPeriod().setId( periodMapping.get( registration.getPeriod().getId() ) );
-            registration.getSource().setId( sourceMapping.get( registration.getSource().getId() ) );
-
-            importer.importObject( registration, params );
-        }
-
-        batchHandler.flush();
-
-        importObjectStore.deleteImportObjects( CompleteDataSetRegistration.class );
-
-        log.info( "Imported CompleteDataSetRegistrations" );
     }
 
     @Transactional
