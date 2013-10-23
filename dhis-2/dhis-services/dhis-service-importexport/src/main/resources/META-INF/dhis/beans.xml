@@ -235,7 +235,6 @@
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-    <property name="completeDataSetRegistrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
   </bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

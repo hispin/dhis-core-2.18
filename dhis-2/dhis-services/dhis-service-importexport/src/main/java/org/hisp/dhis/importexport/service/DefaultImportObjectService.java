@@ -670,7 +670,6 @@ public class DefaultImportObjectService<T>
         importObjectManager.importReports();
         importObjectManager.importReportTables();
         importObjectManager.importCharts();
-        importObjectManager.importCompleteDataSetRegistrations();
         importObjectManager.importDataValues();
 
         NameMappingUtil.clearMapping();

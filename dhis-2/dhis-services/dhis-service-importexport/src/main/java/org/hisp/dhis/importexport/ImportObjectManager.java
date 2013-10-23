@@ -106,8 +106,6 @@ public interface ImportObjectManager
     
     void importCharts();
     
-    void importCompleteDataSetRegistrations();
-    
     void importDataValues();
 
 }

@@ -52,7 +52,6 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
@@ -60,7 +59,6 @@ import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.dxf.converter.CategoryCategoryOptionAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryComboCategoryAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.ChartConverter;
-import org.hisp.dhis.importexport.dxf.converter.CompleteDataSetRegistrationConverter;
 import org.hisp.dhis.importexport.dxf.converter.ConceptConverter;
 import org.hisp.dhis.importexport.dxf.converter.ConstantConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryConverter;
@@ -222,14 +220,6 @@ public class DefaultDXFExportService
         this.chartService = chartService;
     }
 
-    private CompleteDataSetRegistrationService completeDataSetRegistrationService;
-
-    public void setCompleteDataSetRegistrationService(
-        CompleteDataSetRegistrationService completeDataSetRegistrationService )
-    {
-        this.completeDataSetRegistrationService = completeDataSetRegistrationService;
-    }
-
     // -------------------------------------------------------------------------
     // ExportService implementation
     // -------------------------------------------------------------------------
@@ -317,8 +307,6 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new ReportConverter( reportService ) );
             thread.registerXMLConverter( new ReportTableConverter( reportTableService ) );
             thread.registerXMLConverter( new ChartConverter( chartService ) );
-            thread.registerXMLConverter( new CompleteDataSetRegistrationConverter( completeDataSetRegistrationService,
-                dataSetService, organisationUnitService, periodService ) );
 
             thread.start();
 
