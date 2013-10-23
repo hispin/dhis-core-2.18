@@ -22,20 +22,27 @@ function addValidationRepresentativeCompleted( messageElement )
     
 	 if ( type == 'success' )
 	 {
-		jQuery.ajax({
-			type: "POST"
-			,url: "addRepresentative.action"
-			,data: jQuery("#addRepresentativeForm").serialize()
-			,dataType : "xml"
-			,success: function(xml){ 
-				autoChoosePerson( xml );
-			}
-			,error: function()
-			{
-				alert(i18n_error_connect_to_server);
-			}
-		});
-		
+		if( message == 0 ){
+			jQuery.ajax({
+				type: "POST"
+				,url: "addRepresentative.action"
+				,data: jQuery("#addRepresentativeForm").serialize()
+				,dataType : "xml"
+				,success: function(xml){ 
+					autoChoosePerson( xml );
+				}
+				,error: function()
+				{
+					alert(i18n_error_connect_to_server);
+				}
+			});
+		}
+		else if( message == 1 ){
+			showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + i18n_duplicate_identifier );
+		}
+		else if( message == 2 ){
+			showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + i18n_this_patient_could_not_be_enrolled_please_check_validation_criteria );
+		}
 	 }
 	 else if ( type == 'error' )
 	 {

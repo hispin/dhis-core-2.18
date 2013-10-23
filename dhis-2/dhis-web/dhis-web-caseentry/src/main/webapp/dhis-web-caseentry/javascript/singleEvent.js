@@ -93,8 +93,16 @@ function validateData()
 			
 			if ( type == 'success' )
 			{
-				removeDisabledIdentifier( );
-				addPatient();
+				if( message == 0 ){
+					removeDisabledIdentifier( );
+					addPatient();
+				}
+				else if( message == 1 ){
+					showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + i18n_duplicate_identifier );
+				}
+				else if( message == 2 ){
+					showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + i18n_this_patient_could_not_be_enrolled_please_check_validation_criteria );
+				}
 			}
 			else
 			{

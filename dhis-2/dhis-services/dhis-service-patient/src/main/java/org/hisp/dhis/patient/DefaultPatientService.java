@@ -319,7 +319,8 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min, Integer max )
+    public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min,
+        Integer max )
     {
         return patientStore.getByOrgUnitAndNameLike( organisationUnit, name, min, max );
     }
@@ -529,10 +530,11 @@ public class DefaultPatientService
     }
 
     public Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<PatientAttribute> patientAttributes, Collection<PatientIdentifierType> identifierTypes, 
-        Integer statusEnrollment, Integer min, Integer max )
+        Boolean followup, Collection<PatientAttribute> patientAttributes,
+        Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
     {
-        return patientStore.search( searchKeys, orgunits, followup, patientAttributes, identifierTypes, statusEnrollment, min, max );
+        return patientStore.search( searchKeys, orgunits, followup, patientAttributes, identifierTypes,
+            statusEnrollment, min, max );
     }
 
     public int countSearchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
@@ -544,10 +546,11 @@ public class DefaultPatientService
     public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
-        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, followup, null, null, statusEnrollment, min, max );
-        
+        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, followup, null, null,
+            statusEnrollment, min, max );
+
         Set<String> phoneNumbers = new HashSet<String>();
-        
+
         for ( Patient patient : patients )
         {
             if ( patient.getPhoneNumber() != null )
@@ -555,7 +558,7 @@ public class DefaultPatientService
                 phoneNumbers.add( patient.getPhoneNumber() );
             }
         }
-        
+
         return phoneNumbers;
     }
 
@@ -671,5 +674,11 @@ public class DefaultPatientService
     public Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate )
     {
         return patientStore.getRegistrationOrgunitIds( startDate, endDate );
+    }
+
+    @Override
+    public int validatePatient( Patient patient, Program program )
+    {
+        return patientStore.validate( patient, program );
     }
 }
