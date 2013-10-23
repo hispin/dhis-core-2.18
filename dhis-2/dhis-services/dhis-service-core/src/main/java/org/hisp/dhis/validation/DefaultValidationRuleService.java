@@ -233,30 +233,36 @@ public class DefaultValidationRuleService
     @Override
     public void scheduledRun()
     {
+        log.info( "Starting scheduled monitoring task" );
+        
         // Find all the rules belonging to groups that will send alerts to user roles.
 
         Set<ValidationRule> rules = getAlertRules();
 
         Collection<OrganisationUnit> sources = organisationUnitService.getAllOrganisationUnits();
+        
         Set<Period> periods = getAlertPeriodsFromRules( rules );
+        
         Date lastScheduledRun = (Date) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_LAST_MONITORING_RUN );
         
         // Any database changes after this moment will contribute to the next run.
         
         Date thisRun = new Date();
         
-        log.info( "Scheduled monitoring run sources[" + sources.size() + "] periods[" + periods.size() + "] rules[" + rules.size()
-            + "] last run " + lastScheduledRun == null ? "(none)" : lastScheduledRun );
+        log.info( "Scheduled monitoring run sources: " + sources.size() + ", periods: " + periods.size() + ", rules:" + rules.size()
+            + ", last run: " + ( lastScheduledRun == null ? "[none]" : lastScheduledRun ) );
         
         Collection<ValidationResult> results = Validator.validate( sources, periods, rules, ValidationRunType.SCHEDULED,
             lastScheduledRun, constantService, expressionService, periodService, dataValueService );
         
-        log.trace( "scheduledRun() results[" + results.size() + "]" );
+        log.info( "Run results: " + results.size() );
         
         if ( !results.isEmpty() )
         {
             postAlerts( results, thisRun );
         }
+        
+        log.info( "Posted alerts, monitoring task done" );
         
         systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_LAST_MONITORING_RUN, thisRun );
     }
