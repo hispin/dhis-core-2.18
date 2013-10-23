@@ -563,10 +563,9 @@ public class ActivityReportingServiceImpl
         if ( isNumber( keyword ) == false )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-
             List<Patient> patients = (List<Patient>) patientService.getPatientByFullname( keyword,
                 organisationUnit );
-
+            
             if ( patients.size() > 1 )
             {
                 String patientsInfo = new String();
@@ -1400,7 +1399,6 @@ public class ActivityReportingServiceImpl
         {
 
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-
             String fullName = enrollmentRelationship.getPersonBName();
             List<Patient> patients = (List<Patient>) patientService.getPatientByFullname( fullName,
                 organisationUnit );
@@ -1766,7 +1764,7 @@ public class ActivityReportingServiceImpl
             {
                 idt += " (*)";
             }
-            list.add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idt, id ) );
+            list.add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idt, id, identifierType.isMandatory() ) );
         }
         return list;
     }

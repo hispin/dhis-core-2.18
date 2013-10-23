@@ -42,6 +42,8 @@ public class PatientIdentifier
     private String identifierType;
 
     private String identifier;
+    
+    private boolean isMandatory;
 
     public PatientIdentifier()
     {
@@ -51,6 +53,13 @@ public class PatientIdentifier
     {
         this.identifierType = identifierType;
         this.identifier = identifier;
+    }
+    
+    public PatientIdentifier( String identifierType, String identifier, boolean isMandatory )
+    {
+        this.identifierType = identifierType;
+        this.identifier = identifier;
+        this.isMandatory = isMandatory;
     }
 
     @XmlAttribute
@@ -84,6 +93,16 @@ public class PatientIdentifier
     {
         this.clientVersion = clientVersion;
     }
+    
+    public boolean isMandatory()
+    {
+        return isMandatory;
+    }
+
+    public void setMandatory( boolean isMandatory )
+    {
+        this.isMandatory = isMandatory;
+    }
 
     @Override
     public void serialize( DataOutputStream dataOutputStream )
@@ -91,6 +110,7 @@ public class PatientIdentifier
     {
         dataOutputStream.writeUTF( identifierType );
         dataOutputStream.writeUTF( identifier );
+        dataOutputStream.writeBoolean( isMandatory );
     }
 
     @Override
@@ -99,6 +119,7 @@ public class PatientIdentifier
     {
         identifierType = dataInputStream.readUTF();
         identifier = dataInputStream.readUTF();
+        isMandatory = dataInputStream.readBoolean();
     }
 
     @Override
