@@ -39,6 +39,7 @@ import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.validation.scheduling.MonitoringTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -62,6 +63,9 @@ public class ResourceTableController
     
     @Autowired
     private ResourceTableTask resourceTableTask;
+    
+    @Autowired
+    private MonitoringTask monitoringTask;
     
     @Autowired
     private Scheduler scheduler;
@@ -103,4 +107,15 @@ public class ResourceTableController
         
         ContextUtils.okResponse( response, "Initiated resource table update" );
     }    
+
+    @RequestMapping( value = "/monitoring", method = { RequestMethod.PUT, RequestMethod.POST } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PERFORM_MAINTENANCE')" )
+    public void monitoring( HttpServletResponse response )
+    {
+        monitoringTask.setTaskId( new TaskId( TaskCategory.MONITORING, currentUserService.getCurrentUser() ) );
+        
+        scheduler.executeTask( monitoringTask );
+        
+        ContextUtils.okResponse( response, "Initiated data monitoring" );
+    }   
 }

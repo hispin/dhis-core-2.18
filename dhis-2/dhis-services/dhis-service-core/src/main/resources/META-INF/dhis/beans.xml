@@ -436,6 +436,9 @@
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
   
   <!-- Scheduled task for data monitoring -->

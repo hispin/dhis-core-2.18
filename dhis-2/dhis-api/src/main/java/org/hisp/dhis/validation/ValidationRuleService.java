@@ -92,6 +92,12 @@ public interface ValidationRuleService
      */
     Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source );
 
+    /**
+     * Evaluates all the validation rules that could generate alerts,
+     * and sends results (if any) to users who should be notified.
+     */
+    void scheduledRun();
+    
     // -------------------------------------------------------------------------
     // ValidationRule
     // -------------------------------------------------------------------------
