@@ -222,7 +222,7 @@ public class JdbcEventAnalyticsTableManager
             String select = "(select identifier from patientidentifier where patientid=pi.patientid and " +
                 "patientidentifiertypeid=" + identifierType.getId() + ") as " + identifierType.getUid();
             
-            String[] col = { identifierType.getUid() + "character varying(31)", select };
+            String[] col = { identifierType.getUid(), "character varying(31)", select };
             columns.add( col );
         }
         
