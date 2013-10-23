@@ -44,7 +44,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
@@ -72,8 +71,6 @@ public class ValidatePatientAction
     private PatientService patientService;
 
     private PatientAttributeValueService patientAttributeValueService;
-
-    private PatientIdentifierService patientIdentifierService;
 
     private PatientIdentifierTypeService identifierTypeService;
 
@@ -283,11 +280,6 @@ public class ValidatePatientAction
     public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
     {
         this.identifierTypeService = identifierTypeService;
-    }
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
     }
 
     public void setFormat( I18nFormat format )
