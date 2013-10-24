@@ -15,7 +15,7 @@
 			,errorElement:"span"
 			,submitHandler: function(form)
 				{
-					validateUpdatePatient( false );
+					validatePatient( true );
 				}
 			,beforeValidateHandler: function(form)
 				{

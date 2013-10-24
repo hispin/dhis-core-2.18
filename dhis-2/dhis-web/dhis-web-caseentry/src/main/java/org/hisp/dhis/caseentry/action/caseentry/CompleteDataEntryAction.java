@@ -128,7 +128,6 @@ public class CompleteDataEntryAction
             }
 
             programInstanceService.completeProgramInstanceStatus( programStageInstance.getProgramInstance(), format );
-
         }
 
         return "programcompleted";

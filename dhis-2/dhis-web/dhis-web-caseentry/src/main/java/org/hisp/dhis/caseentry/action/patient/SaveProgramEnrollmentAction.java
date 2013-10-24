@@ -34,9 +34,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -80,11 +80,11 @@ public class SaveProgramEnrollmentAction
         this.programInstanceService = programInstanceService;
     }
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     private I18nFormat format;
@@ -157,7 +157,7 @@ public class SaveProgramEnrollmentAction
 
         Program program = programService.getProgram( programId );
 
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
 
         Date enrollment = (enrollmentDate == null || enrollmentDate.isEmpty()) ? null : format
             .parseDate( enrollmentDate );
@@ -166,7 +166,7 @@ public class SaveProgramEnrollmentAction
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             ProgramInstance.STATUS_ACTIVE );
-        
+
         if ( programInstances.iterator().hasNext() )
         {
             programInstance = programInstances.iterator().next();

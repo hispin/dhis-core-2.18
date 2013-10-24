@@ -36,9 +36,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -80,7 +80,7 @@ public class AddRelationshipPatientAction
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
     private PatientAttributeService patientAttributeService;
 
@@ -154,7 +154,7 @@ public class AddRelationshipPatientAction
 
     public String execute()
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patient = new Patient();
 
@@ -263,12 +263,7 @@ public class AddRelationshipPatientAction
         systemGenerateIdentifier.setPatient( patient );
 
         patient.getIdentifiers().add( systemGenerateIdentifier );
-
-        selectedStateManager.clearListAll();
-        selectedStateManager.clearSearchingAttributeId();
-        selectedStateManager.clearSortingAttributeId();
-        selectedStateManager.setSearchText( systemGenerateIdentifier.getIdentifier() );
-
+        
         // ---------------------------------------------------------------------
         // Save Patient Identifiers
         // ---------------------------------------------------------------------
@@ -412,9 +407,9 @@ public class AddRelationshipPatientAction
         this.patientIdentifierService = patientIdentifierService;
     }
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )

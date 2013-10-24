@@ -62,7 +62,8 @@ public interface ProgramStageInstanceService
 
     ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage );
 
-    Collection<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, ProgramStage programStage );
+    Collection<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance,
+        ProgramStage programStage );
 
     Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage );
 
@@ -92,12 +93,12 @@ public interface ProgramStageInstanceService
     /**
      * Get all {@link ProgramStageInstance program stage instances} for unit,
      * optionally filtering by date or completed.
-     *
-     * @param unit      - the unit to get instances for.
-     * @param after     - optional date the instance should be on or after.
-     * @param before    - optional date the instance should be on or before.
+     * 
+     * @param unit - the unit to get instances for.
+     * @param after - optional date the instance should be on or after.
+     * @param before - optional date the instance should be on or before.
      * @param completed - optional flag to only get completed (<code>true</code>
-     *                  ) or uncompleted (<code>false</code>) instances.
+     *        ) or uncompleted (<code>false</code>) instances.
      * @return
      */
     List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
@@ -125,7 +126,7 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
         Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer max, Integer min );
-    
+
     // -------------------------------------------------------------------------
     // Statistical
     // -------------------------------------------------------------------------
@@ -149,4 +150,10 @@ public interface ProgramStageInstanceService
         I18nFormat format );
 
     void completeProgramStageInstance( ProgramStageInstance programStageInstance, I18nFormat format );
+
+    void setExecutionDate( ProgramStageInstance programStageInstance, Date executionDate,
+        OrganisationUnit organisationUnit );
+
+    void createProgramStageInstance( Patient patient, Program program, Date executionDate,
+        OrganisationUnit organisationUnit );
 }

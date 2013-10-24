@@ -166,6 +166,7 @@ function loadProgramStages( patientId, programId )
 {
 	jQuery.getJSON( "loadProgramStageInstances.action",
 		{
+			patientId:patientId,
 			programId: programId
 		},  
 		function( json ) 

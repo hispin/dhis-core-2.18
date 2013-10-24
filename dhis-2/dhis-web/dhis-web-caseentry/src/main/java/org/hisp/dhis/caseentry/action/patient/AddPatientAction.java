@@ -28,11 +28,16 @@ package org.hisp.dhis.caseentry.action.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -55,11 +60,7 @@ import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserService;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -85,8 +86,6 @@ public class AddPatientAction
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private OrganisationUnitSelectionManager selectionManager;
-
-    private SelectedStateManager selectedStateManager;
 
     private PatientAttributeService patientAttributeService;
 
@@ -178,7 +177,7 @@ public class AddPatientAction
             phone = (phone.isEmpty()) ? null : phone.substring( 0, phone.length() - 1 );
             patient.setPhoneNumber( phone );
         }
-        
+
         patient.setGender( gender );
         patient.setIsDead( false );
         patient.setUnderAge( underAge );
@@ -289,10 +288,6 @@ public class AddPatientAction
         systemGenerateIdentifier.setPatient( patient );
 
         patient.getIdentifiers().add( systemGenerateIdentifier );
-
-        selectedStateManager.clearListAll();
-        selectedStateManager.clearSearchingAttributeId();
-        selectedStateManager.setSearchText( systemGenerateIdentifier.getIdentifier() );
 
         // -----------------------------------------------------------------------------
         // Prepare Patient Attributes
@@ -474,11 +469,6 @@ public class AddPatientAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
-    }
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
     }
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )

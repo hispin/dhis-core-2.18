@@ -572,17 +572,8 @@
 
     <action name="validatePatient"
       class="org.hisp.dhis.caseentry.action.patient.ValidatePatientAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-commons/ajax/xmlResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-xml">
-        /dhis-web-commons/ajax/xmlResponseError.vm
-      </result>
-      <result name="input" type="velocity-xml">
-        /dhis-web-commons/ajax/xmlResponseInput.vm
-      </result>
-      <result name="duplicate" type="velocity-xml">
-        /dhis-web-caseentry/responseDuplicate.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>

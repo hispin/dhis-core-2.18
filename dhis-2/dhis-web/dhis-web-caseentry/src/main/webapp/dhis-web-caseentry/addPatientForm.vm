@@ -12,12 +12,11 @@
 					{
 						#if($!relatedProgram)
 							var programId = getFieldValue("relatedProgramId");
-							validateAddPatient(programId, true, isContinue);
+							addPatient( programId, true, isContinue);
 						#else
 							var programId = getFieldValue('programIdAddPatient');
-							validateAddPatient(programId, false, isContinue);
+							addPatient(programId, false, isContinue);
 						#end
-						
 					}
 				,beforeValidateHandler: function(form)
 					{

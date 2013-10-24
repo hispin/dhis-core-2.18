@@ -104,9 +104,7 @@ function saveRadio( dataElementUid, value )
 
 function updateProvidingFacility( dataElementUid, checkField )
 {
-	var programStageUid = byId( 'programStageUid' ).value;
 	var checked= checkField.checked;
-
     var facilitySaver = new FacilitySaver( dataElementUid, checked, SUCCESS_COLOR );
     facilitySaver.save();    
 }
@@ -343,14 +341,16 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 
 function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
 {
-    var dataElementUid = dataElementId_;
+    var programStageInstanceId = getFieldValue('programStageInstanceId');
+	var dataElementUid = dataElementId_;
 	var providedElsewhere = providedElsewhere_;
     var resultColor = resultColor_;
 
     this.save = function()
     {
-		var params  = 'dataElementUid=' + dataElementUid;
+		var params  = 'dataElementId=' + dataElementUid;
 			params += '&providedElsewhere=' + providedElsewhere ;
+			params += '&programStageInstanceId=' + programStageInstanceId;
 		$.ajax({
 			   type: "POST",
 			   url: "saveProvidingFacility.action",

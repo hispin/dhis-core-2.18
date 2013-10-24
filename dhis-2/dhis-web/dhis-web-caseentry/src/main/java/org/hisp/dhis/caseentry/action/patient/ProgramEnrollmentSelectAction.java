@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -75,11 +75,11 @@ public class ProgramEnrollmentSelectAction
         this.programInstanceService = programInstanceService;
     }
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
@@ -114,32 +114,31 @@ public class ProgramEnrollmentSelectAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
         patient = patientService.getPatient( id );
 
         // Get all programs
-        
-        programs = new ArrayList<Program>( programService.getProgramsByDisplayOnAllOrgunit( true, null ) );
-        programs.addAll( programService.getProgramsByDisplayOnAllOrgunit( false, orgunit ) );
-        programs.retainAll( programService.getProgramsByCurrentUser() );
+
+        programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( orgunit ) );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
-        
+
         Iterator<Program> iterProgram = programs.iterator();
-        while(iterProgram.hasNext() )
+        while ( iterProgram.hasNext() )
         {
-            if( iterProgram.next().getOnlyEnrollOnce())
+            if ( iterProgram.next().getOnlyEnrollOnce() )
             {
                 iterProgram.remove();
             }
         }
-        
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, ProgramInstance.STATUS_ACTIVE );
+
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient,
+            ProgramInstance.STATUS_ACTIVE );
 
         for ( ProgramInstance programInstance : programInstances )
         {
             programs.remove( programInstance.getProgram() );
         }
-        
+
         return SUCCESS;
     }
 }

@@ -35,11 +35,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
@@ -98,11 +98,11 @@ public class LoadDataEntryAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     private ProgramStageSectionService programStageSectionService;
@@ -117,13 +117,6 @@ public class LoadDataEntryAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private String displayOptionSetAsRadioButton;
-
-    public String getDisplayOptionSetAsRadioButton()
-    {
-        return displayOptionSetAsRadioButton;
     }
 
     // -------------------------------------------------------------------------
@@ -157,6 +150,8 @@ public class LoadDataEntryAction
     private Map<String, Double> calAttributeValueMap = new HashMap<String, Double>();
 
     private ProgramIndicatorService programIndicatorService;
+
+    private String displayOptionSetAsRadioButton;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
@@ -267,6 +262,11 @@ public class LoadDataEntryAction
         return programIndicatorsMap;
     }
 
+    public String getDisplayOptionSetAsRadioButton()
+    {
+        return displayOptionSetAsRadioButton;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -281,8 +281,6 @@ public class LoadDataEntryAction
             program = programStageInstance.getProgramStage().getProgram();
 
             programStage = programStageInstance.getProgramStage();
-
-            selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
         }
         else if ( programStageId != null )
         {
@@ -330,7 +328,7 @@ public class LoadDataEntryAction
             // Get registration orgunit
             // ---------------------------------------------------------------------
 
-            organisationUnit = organisationUnitId == null ? selectedStateManager.getSelectedOrganisationUnit()
+            organisationUnit = organisationUnitId == null ? selectionManager.getSelectedOrganisationUnit()
                 : organisationUnitService.getOrganisationUnit( organisationUnitId );
 
             if ( program.isRegistration() )
@@ -362,7 +360,7 @@ public class LoadDataEntryAction
             longitude = ValidationUtils.getLongitude( programStageInstance.getCoordinates() );
             latitude = ValidationUtils.getLatitude( programStageInstance.getCoordinates() );
         }
-        
+
         return SUCCESS;
     }
 
