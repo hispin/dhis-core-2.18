@@ -70,4 +70,6 @@ public interface ProgramService
     Program getProgram( String uid );
 
     Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit );
+    
+    Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit );
 }

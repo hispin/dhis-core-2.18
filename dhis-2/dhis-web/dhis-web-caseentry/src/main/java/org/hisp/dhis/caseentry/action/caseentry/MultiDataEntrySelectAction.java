@@ -31,8 +31,8 @@ package org.hisp.dhis.caseentry.action.caseentry;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
@@ -47,11 +47,11 @@ public class MultiDataEntrySelectAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     private ProgramService programService;
@@ -114,15 +114,16 @@ public class MultiDataEntrySelectAction
     {
         patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         if ( organisationUnit != null )
         {
-            programs = programService.getPrograms( organisationUnit );
-            programs.retainAll( programService.getProgramsByCurrentUser());
-            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit ) );
+            programs = programService.getProgramsByCurrentUser( organisationUnit );
+            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, organisationUnit ) );
+            programs.removeAll( programService
+                .getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit ) );
         }
-        
+
         return SUCCESS;
     }
 }

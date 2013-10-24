@@ -31,8 +31,8 @@ package org.hisp.dhis.caseentry.action.caseentry;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -65,11 +65,11 @@ public class DataRecordingSelectAction
         this.programService = programService;
     }
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
@@ -104,7 +104,7 @@ public class DataRecordingSelectAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
 
         patient = patientService.getPatient( patientId );
 
@@ -112,10 +112,7 @@ public class DataRecordingSelectAction
         // Get programs which patient enrolls
         // ---------------------------------------------------------------------
 
-        programs = programService.getPrograms( orgunit );
-        programs.retainAll( programService.getProgramsByCurrentUser());
-        
-        selectedStateManager.setSelectedPatient( patient );
+        programs = programService.getProgramsByCurrentUser( orgunit );
 
         return SUCCESS;
     }

@@ -264,6 +264,10 @@
 
 #end
 
+<tr>
+	<td colspan='3'><span id='message'></td>
+</tr>
+
 <script>
 	var disableButtons = true;
 	

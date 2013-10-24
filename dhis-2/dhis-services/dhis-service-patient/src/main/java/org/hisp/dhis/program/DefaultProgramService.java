@@ -34,6 +34,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -185,6 +186,15 @@ public class DefaultProgramService
     public Program getProgramByCode( String code )
     {
         return i18n( i18nService, programStore.getByCode( code ) );
+    }
+
+    public Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit )
+    {
+        Collection<Program> programs = new ArrayList<Program>( getProgramsByDisplayOnAllOrgunit( true, null ) );
+        programs.addAll( getProgramsByDisplayOnAllOrgunit( false, organisationUnit ) );
+        programs.retainAll( getProgramsByCurrentUser() );
+
+        return programs;
     }
 
 }

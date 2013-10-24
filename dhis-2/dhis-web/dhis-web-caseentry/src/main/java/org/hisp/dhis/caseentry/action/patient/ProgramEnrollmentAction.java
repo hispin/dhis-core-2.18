@@ -36,8 +36,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientIdentifier;
@@ -69,7 +69,7 @@ public class ProgramEnrollmentAction
 
     private PatientAttributeValueService patientAttributeValueService;
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -98,10 +98,9 @@ public class ProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     public Collection<PatientAttribute> getNoGroupAttributes()
@@ -176,7 +175,7 @@ public class ProgramEnrollmentAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
 
         // ---------------------------------------------------------------------
         // Load active ProgramInstance, completed = false

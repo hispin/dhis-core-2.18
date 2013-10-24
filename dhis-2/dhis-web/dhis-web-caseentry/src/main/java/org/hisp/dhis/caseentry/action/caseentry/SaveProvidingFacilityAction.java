@@ -28,12 +28,12 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,13 +47,6 @@ public class SaveProvidingFacilityAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
 
     private DataElementService dataElementService;
 
@@ -69,15 +62,29 @@ public class SaveProvidingFacilityAction
         this.patientDataValueService = patientDataValueService;
     }
 
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private int dataElementId;
+    private String dataElementId;
 
-    public void setDataElementId( int dataElementId )
+    public void setDataElementId( String dataElementId )
     {
         this.dataElementId = dataElementId;
+    }
+
+    private Integer programStageInstanceId;
+
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
     }
 
     private Boolean providedElsewhere;
@@ -101,7 +108,8 @@ public class SaveProvidingFacilityAction
     public String execute()
         throws Exception
     {
-        ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+        ProgramStageInstance programStageInstance = programStageInstanceService
+            .getProgramStageInstance( programStageInstanceId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 

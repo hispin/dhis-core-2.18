@@ -33,8 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -53,6 +53,13 @@ public class LoadProgramStageInstancesAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private PatientService patientService;
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
 
     private ProgramService programService;
 
@@ -75,16 +82,16 @@ public class LoadProgramStageInstancesAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
+
+    private Integer patientId;
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
 
     private Integer programId;
 
@@ -99,9 +106,9 @@ public class LoadProgramStageInstancesAction
     {
         return statusMap;
     }
-    
+
     private ProgramInstance programInstance;
-    
+
     public ProgramInstance getProgramInstance()
     {
         return programInstance;
@@ -120,7 +127,7 @@ public class LoadProgramStageInstancesAction
     {
         return program;
     }
-    
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -128,16 +135,13 @@ public class LoadProgramStageInstancesAction
     public String execute()
         throws Exception
     {
-        selectedStateManager.clearSelectedProgramInstance();
-        selectedStateManager.clearSelectedProgramStageInstance();
-
-        Patient patient = selectedStateManager.getSelectedPatient();
+        Patient patient = patientService.getPatient( patientId );
 
         program = programService.getProgram( programId );
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
-        if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION)
+        if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
         {
             programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( patient,
                 program, ProgramInstance.STATUS_ACTIVE ) );
@@ -156,17 +160,16 @@ public class LoadProgramStageInstancesAction
         {
             programInstance = programInstances.iterator().next();
 
-            selectedStateManager.setSelectedProgramInstance( programInstance );
-
             if ( programInstance.getProgramStageInstances() != null )
             {
                 if ( program.isRegistration() )
                 {
-                    statusMap = programStageInstanceService.statusProgramStageInstances( programInstance.getProgramStageInstances() );
+                    statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
+                        .getProgramStageInstances() );
                 }
             }
         }
-        
+
         return SUCCESS;
     }
 }

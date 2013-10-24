@@ -36,11 +36,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -61,12 +61,12 @@ public class GetDataRecordsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private OrganisationUnitSelectionManager selectionManager;
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     private PatientService patientService;
@@ -220,7 +220,7 @@ public class GetDataRecordsAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
 
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
         orgunits.add( orgunit );

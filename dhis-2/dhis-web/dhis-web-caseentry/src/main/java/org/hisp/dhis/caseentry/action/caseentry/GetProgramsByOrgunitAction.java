@@ -31,8 +31,8 @@ package org.hisp.dhis.caseentry.action.caseentry;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -57,11 +57,11 @@ public class GetProgramsByOrgunitAction
         this.programService = programService;
     }
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
@@ -89,18 +89,14 @@ public class GetProgramsByOrgunitAction
     public String execute()
         throws Exception
     {
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         if ( organisationUnit != null )
         {
-            programs = programService.getPrograms( organisationUnit );
-            programs.retainAll( programService.getProgramsByCurrentUser());
-            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit ) );
+            programs = programService.getProgramsByCurrentUser( organisationUnit );
+            programs.removeAll( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
+            programs.removeAll( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         }
-        
-        selectedStateManager.clearSelectedPatient();
-        selectedStateManager.clearSelectedProgramInstance();
-        selectedStateManager.clearSelectedProgramStageInstance();
 
         return SUCCESS;
     }

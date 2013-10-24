@@ -85,13 +85,11 @@ public class GetAllProgramsAction
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        programs = new ArrayList<Program>( programService.getProgramsByDisplayOnAllOrgunit( true, null ) );
-        programs.addAll( programService.getProgramsByDisplayOnAllOrgunit( false, organisationUnit ) );
-        programs.retainAll( programService.getProgramsByCurrentUser() );
+        programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( organisationUnit ) );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         return SUCCESS;
     }
 

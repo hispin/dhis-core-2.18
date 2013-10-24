@@ -30,9 +30,9 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.Date;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -55,13 +55,13 @@ public class CreateAnonymousEncounterAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
-
+    
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -148,7 +148,7 @@ public class CreateAnonymousEncounterAction
             programStageInstance.setProgramStage( programStage );
             programStageInstance.setDueDate( date );
             programStageInstance.setExecutionDate( date );
-            programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
+            programStageInstance.setOrganisationUnit( selectionManager.getSelectedOrganisationUnit() );
 
             int id = programStageInstanceService.addProgramStageInstance( programStageInstance );
 

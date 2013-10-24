@@ -166,7 +166,8 @@ public class DefaultProgramStageInstanceService
     }
 
     @Override
-    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, ProgramStage programStage )
+    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance,
+        ProgramStage programStage )
     {
         return programStageInstanceStore.getAll( programInstance, programStage );
     }
@@ -681,6 +682,84 @@ public class DefaultProgramStageInstanceService
         // ---------------------------------------------------------------------
 
         updateProgramStageInstance( programStageInstance );
+    }
+
+    @Override
+    public void setExecutionDate( ProgramStageInstance programStageInstance, Date executionDate,
+        OrganisationUnit organisationUnit )
+    {
+        programStageInstance.setExecutionDate( executionDate );
+        programStageInstance.setOrganisationUnit( organisationUnit );
+
+        if ( programStageInstance.getProgramInstance().getProgram().isSingleEvent() )
+        {
+            programStageInstance.setDueDate( executionDate );
+        }
+
+        updateProgramStageInstance( programStageInstance );
+    }
+
+    /**
+     * For the first case of an anonymous program, the program-instance doesn't
+     * exist, So system has to create a program-instance and
+     * program-stage-instance. The similar thing happens for single event with
+     * registration.
+     */
+    @Override
+    public void createProgramStageInstance( Patient patient, Program program, Date executionDate,
+        OrganisationUnit organisationUnit )
+    {
+        ProgramStage programStage = null;
+
+        if ( program.getProgramStages() != null )
+        {
+            programStage = program.getProgramStages().iterator().next();
+        }
+
+        int type = program.getType();
+        ProgramInstance programInstance = null;
+
+        if ( type == Program.SINGLE_EVENT_WITH_REGISTRATION )
+        {
+            // Add a new program-instance
+            programInstance = new ProgramInstance();
+            programInstance.setEnrollmentDate( executionDate );
+            programInstance.setDateOfIncident( executionDate );
+            programInstance.setProgram( program );
+            programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
+
+            programInstance.setPatient( patient );
+
+            programInstanceService.addProgramInstance( programInstance );
+        }
+        else if ( type == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
+        {
+            Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( program );
+            if ( programInstances == null || programInstances.size() == 0 )
+            {
+                // Add a new program-instance if it doesn't exist
+                programInstance = new ProgramInstance();
+                programInstance.setEnrollmentDate( executionDate );
+                programInstance.setDateOfIncident( executionDate );
+                programInstance.setProgram( program );
+                programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
+                programInstanceService.addProgramInstance( programInstance );
+            }
+            else
+            {
+                programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
+            }
+        }
+
+        // Add a new program-stage-instance
+        ProgramStageInstance programStageInstance = new ProgramStageInstance();
+        programStageInstance.setProgramInstance( programInstance );
+        programStageInstance.setProgramStage( programStage );
+        programStageInstance.setDueDate( executionDate );
+        programStageInstance.setExecutionDate( executionDate );
+        programStageInstance.setOrganisationUnit( organisationUnit );
+
+        addProgramStageInstance( programStageInstance );
     }
 
     // -------------------------------------------------------------------------

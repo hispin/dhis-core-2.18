@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -102,12 +102,13 @@ public class SaveValuesAction
         this.programInstanceService = programInstanceService;
     }
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
+
 
     private CurrentUserService currentUserService;
 
@@ -175,7 +176,7 @@ public class SaveValuesAction
         programStageInstance.setProgramStage( programStage );
         programStageInstance.setDueDate( currentDate );
         programStageInstance.setExecutionDate( currentDate );
-        programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
+        programStageInstance.setOrganisationUnit( selectionManager.getSelectedOrganisationUnit() );
         programStageInstance.setCompleted( true );
 
         programStageInstanceService.addProgramStageInstance( programStageInstance );

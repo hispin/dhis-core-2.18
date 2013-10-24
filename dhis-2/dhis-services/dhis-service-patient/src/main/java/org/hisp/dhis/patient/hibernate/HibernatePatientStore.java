@@ -364,16 +364,16 @@ public class HibernatePatientStore
 
     public int validate( Patient patient, Program program )
     {
-        Criteria criteria = getCriteria();
-        criteria.createAlias( "identifiers", "patientIdentifier" );
-        criteria.createAlias( "organisationUnit", "orgunit" );
-        criteria.createAlias( "programInstances", "programInstance" );
-        criteria.createAlias( "programInstance.program", "program" );
-
         if ( patient.getIdentifiers() != null && patient.getIdentifiers().size() > 0 )
         {
+            Criteria criteria = getCriteria();
+            criteria.createAlias( "identifiers", "patientIdentifier" );
+            criteria.createAlias( "organisationUnit", "orgunit" );
+            criteria.createAlias( "programInstances", "programInstance" );
+            criteria.createAlias( "programInstance.program", "program" );
+
             Disjunction disjunction = Restrictions.disjunction();
-            
+
             for ( PatientIdentifier identifier : patient.getIdentifiers() )
             {
                 PatientIdentifierType patientIdentifierType = identifier.getIdentifierType();
@@ -413,13 +413,15 @@ public class HibernatePatientStore
             }
 
             criteria.add( disjunction );
-            
-            if ( criteria.list() != null )
+
+            Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
+          
+            if ( rs != null && rs.intValue() > 0 )
             {
                 return PatientService.ERROR_DUPLICATE_IDENTIFIER;
             }
         }
-        
+
         if ( program != null )
         {
             ValidationCriteria validationCriteria = program.isValid( patient );
