@@ -104,7 +104,7 @@ public class DefaultAnalyticsTableService
         
         clock.logTime( "Partition tables: " + tables + ", last 3 years: " + last3YearsOnly );
         
-        notifier.notify( taskId, "Creating analytics tables" );
+        notifier.notify( taskId, "Creating analytics tables: " + tables );
         
         createTables( tables );
         
