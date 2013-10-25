@@ -28,12 +28,10 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.program.Program;
-
-import java.util.Collection;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -73,8 +71,5 @@ public interface PatientIdentifierStore
     int countGetPatientsByIdentifier( String identifier );
 
     Collection<PatientIdentifier> get( Collection<PatientIdentifierType> identifierTypes, Patient patient );
-
-    boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        Integer patientId, OrganisationUnit organisationUnit, Program program, PeriodType periodType );
 
 }

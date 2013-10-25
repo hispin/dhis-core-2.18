@@ -180,7 +180,7 @@ public class ValidatePatientAction
 
         int errorCode = patientService.validatePatient( patient, program );
 
-        message = errorCode + " ";
+        message = errorCode + "";
 
         return SUCCESS;
     }

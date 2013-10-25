@@ -207,7 +207,8 @@ public class ShowUpdateProgramFormAction
         availableAttributes.removeAll( new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
         
         programs = new ArrayList<Program>( programService.getAllPrograms() );
-
+        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+        
         for ( Program p : programs )
         {
             availableIdentifierTypes

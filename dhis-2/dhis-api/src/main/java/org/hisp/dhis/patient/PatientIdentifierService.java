@@ -30,10 +30,6 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.program.Program;
-
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
@@ -76,7 +72,5 @@ public interface PatientIdentifierService
 
     Collection<PatientIdentifier> getPatientIdentifiers( Collection<PatientIdentifierType> identifierTypes,
         Patient patient );
-
-    boolean checkDuplicateIdentifier( PatientIdentifierType patientIdentifierType, String identifier,
-        Integer patientId, OrganisationUnit organisationUnit, Program program, PeriodType periodType );
+    
 }

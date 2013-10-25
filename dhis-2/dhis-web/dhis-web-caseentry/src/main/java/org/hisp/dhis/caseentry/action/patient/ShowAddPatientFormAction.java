@@ -51,6 +51,8 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
@@ -113,6 +115,13 @@ public class ShowAddPatientFormAction
     public void setAttributeGroupService( PatientAttributeGroupService attributeGroupService )
     {
         this.attributeGroupService = attributeGroupService;
+    }
+
+    private RelationshipTypeService relationshipTypeService;
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
     }
 
     private I18n i18n;
@@ -236,6 +245,20 @@ public class ShowAddPatientFormAction
         return relatedProgram;
     }
 
+    private boolean related;
+
+    public void setRelated( boolean related )
+    {
+        this.related = related;
+    }
+
+    private Collection<RelationshipType> relationshipTypes;
+
+    public Collection<RelationshipType> getRelationshipTypes()
+    {
+        return relationshipTypes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -244,7 +267,7 @@ public class ShowAddPatientFormAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
-
+        
         if ( programId == null )
         {
             patientRegistrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
@@ -318,6 +341,11 @@ public class ShowAddPatientFormAction
         if ( relatedProgramId != null )
         {
             relatedProgram = programService.getProgram( relatedProgramId );
+        }
+        
+        if(related)
+        {
+            relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
         }
 
         return SUCCESS;

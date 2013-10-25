@@ -5,7 +5,7 @@
 </h5>
 <h3>	
 	&raquo; <a href="javascript:showAddRelationship('$patient.id')" >$i18n.getString( 'seach_available_patient' )</a>
-	&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id',false,'' )" >$i18n.getString( 'add_new_patient' )</a>
+	&#8226; <a href="javascript:showAddPatientForm( '$patient.id','','', true )" >$i18n.getString( 'add_new_patient' )</a>
 </h3>
 
 <input type="hidden" id="id" name="id" value="$patient.id">

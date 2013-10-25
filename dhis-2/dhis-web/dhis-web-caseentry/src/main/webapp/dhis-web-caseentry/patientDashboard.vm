@@ -219,7 +219,7 @@
 		<p class='header'>
 			$i18n.getString("relationships")
 			
-			#if( $auth.hasAccess( "dhis-web-caseentry", "showAddRelationshipPatient" ) )			
+			#if( $auth.hasAccess( "dhis-web-caseentry", "showRelationshipList" ) )			
 				&#8226; <a href="javascript:showRelationshipList( '$patient.id');">$i18n.getString("add_relative")</a>
 				<span id="patientRelatedStageSpan">&nbsp;<span>
 			#end

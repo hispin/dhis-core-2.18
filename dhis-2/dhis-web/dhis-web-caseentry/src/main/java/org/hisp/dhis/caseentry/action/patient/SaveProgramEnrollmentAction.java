@@ -185,7 +185,7 @@ public class SaveProgramEnrollmentAction
         // ---------------------------------------------------------------------
         // Update enrollment-date and incident-date
         // ---------------------------------------------------------------------
-
+        
         else
         {
             programInstance.setEnrollmentDate( enrollment );

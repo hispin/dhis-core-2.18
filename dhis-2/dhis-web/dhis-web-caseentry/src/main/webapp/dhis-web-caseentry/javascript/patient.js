@@ -319,12 +319,13 @@ function addPatient( programId, related, isContinue )
     return false;
 }
 
-function showAddPatientForm( programId, patientId, relatedProgramId )
+function showAddPatientForm( patientId, programId, relatedProgramId, related )
 {
 	hideById('listPatientDiv');
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('migrationPatientDiv');
+	hideById('listRelationshipDiv');
 	setInnerHTML('addRelationshipDiv','');
 	setInnerHTML('patientDashboard','');
 	
@@ -333,41 +334,18 @@ function showAddPatientForm( programId, patientId, relatedProgramId )
 		{
 			programId: programId,
 			patientId: patientId,
-			relatedProgramId: relatedProgramId
+			relatedProgramId: relatedProgramId,
+			related: related
 		}, function()
 		{
 			showById('editPatientDiv');
+			if(related){
+				setFieldValue('relationshipId',patientId);
+			}
 			jQuery('#loaderDiv').hide();
 		});
 	
 }
-
-function addRelationship()
-{
-	jQuery('#loaderDiv').show();
-	var params = getParamsForDiv('addRelationshipDiv');
-		params += "&relationshipFromA=" + jQuery('#patientForm option:selected').attr("relationshipFromA");
-	$.ajax({
-		type: "POST",
-		url: 'addRelationshipPatient.action',
-		data: params,
-		success: function( json ) {
-			hideById('addRelationshipDiv');
-			showById('selectDiv');
-			showById('searchDiv');
-			showById('listPatientDiv');
-			jQuery('#loaderDiv').hide();
-
-			if( getFieldValue( 'isShowPatientList' ) == 'false' ){
-				showRelationshipList( getFieldValue('relationshipId') );
-			}
-			else{
-				loadPatientList();
-			}
-		}});
-    return false;
-}
-
 
 // ----------------------------------------------------------------
 // Click Back to main form
