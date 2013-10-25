@@ -12,7 +12,7 @@
 			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 		</td>
 		<td valign='bottom' id='criteriaBtnTD'>
-			<input type="button" id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm(getFieldValue('programIdAddPatient'),'', '');" >
+			<input type="button" id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm('', getFieldValue('programIdAddPatient'),'', false );" >
 		</td>
 	</tr>
 	<tr id='programAddPatientTR'>

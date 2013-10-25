@@ -1700,7 +1700,7 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
 
         if( relationshipText != "")
         {
-            setInnerHTML('patientRelatedStageSpan',"&#8226; <a href='javascript:showAddPatientForm( " + relatedProgramId + "," + patientId + "," + selectedProgram + " );' id='relatedPatient_$!programStageInstance.id' >" + relationshipText + "</a><br>&nbsp;");
+            setInnerHTML('patientRelatedStageSpan',"&#8226; <a href='javascript:showAddPatientForm( " + patientId + "," + relatedProgramId + "," + selectedProgram + " , false );' id='relatedPatient_$!programStageInstance.id' >" + relationshipText + "</a><br>&nbsp;");
         }
         else
         {

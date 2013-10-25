@@ -30,19 +30,19 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -54,19 +54,15 @@ import com.opensymphony.xwork2.Action;
 public class ValidatePatientIdentifierAction
     implements Action
 {
-    public static final String PATIENT_DUPLICATE = "duplicate";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientIdentifierService patientIdentifierService;
+    private PatientService patientService;
 
     private PatientIdentifierTypeService identifierTypeService;
 
     private ProgramService programService;
-
-    private OrganisationUnitSelectionManager selectionManager;
 
     // -------------------------------------------------------------------------
     // Input
@@ -82,8 +78,6 @@ public class ValidatePatientIdentifierAction
 
     private String message;
 
-    private I18n i18n;
-
     private Map<String, String> patientAttributeValueMap = new HashMap<String, String>();
 
     private PatientIdentifier patientIdentifier;
@@ -94,52 +88,44 @@ public class ValidatePatientIdentifierAction
 
     public String execute()
     {
+        Patient patient = patientService.getPatient( patientId );
+        Program program = programService.getProgram( programId );
+
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        Collection<PatientIdentifierType> identifiers = identifierTypeService.getAllPatientIdentifierTypes();
+        Collection<PatientIdentifierType> identifierTypes = identifierTypeService.getAllPatientIdentifierTypes();
 
-        if ( identifiers != null && identifiers.size() > 0 )
+        if ( identifierTypes != null && identifierTypes.size() > 0 )
         {
             String value = null;
-            String idDuplicate = "";
 
-            for ( PatientIdentifierType idType : identifiers )
+            Set<PatientIdentifier> patientIdentifiers = new HashSet<PatientIdentifier>();
+
+            for ( PatientIdentifierType idType : identifierTypes )
             {
 
                 value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );
-
                 if ( StringUtils.isNotBlank( value ) )
                 {
-                    boolean isDuplicate = false;
+                    PatientIdentifier patientIdentifier = new PatientIdentifier();
+                    patientIdentifier.setPatient( patient );
+                    patientIdentifier.setIdentifierType( idType );
+                    patientIdentifier.setIdentifier( value );
 
-                     OrganisationUnit orgunit = (idType.getOrgunitScope()) ? selectionManager
-                            .getSelectedOrganisationUnit() : null;
-
-                        Program program = (idType.getProgramScope()) ? programService.getProgram( programId ) : null;
-                        isDuplicate = patientIdentifierService.checkDuplicateIdentifier( idType, value, patientId,  orgunit,
-                            program, idType.getPeriodType() );
-                 
-                    if ( isDuplicate )
-                    {
-                        idDuplicate += idType.getName() + ", ";
-                    }
+                    patientIdentifiers.add( patientIdentifier );
                 }
-
             }
 
-            if ( StringUtils.isNotBlank( idDuplicate ) )
-            {
-                idDuplicate = StringUtils.substringBeforeLast( idDuplicate, "," );
-                message = i18n.getString( "identifier_duplicate" ) + ": " + idDuplicate;
-                return INPUT;
-            }
+            patient.setIdentifiers( patientIdentifiers );
         }
+
+        int errorCode = patientService.validatePatient( patient, program );
 
         // ---------------------------------------------------------------------
         // Validation success
         // ---------------------------------------------------------------------
 
-        message = i18n.getString( "everything_is_ok" );
+        message = errorCode + "";
 
         return SUCCESS;
     }
@@ -168,24 +154,9 @@ public class ValidatePatientIdentifierAction
         this.identifierTypeService = identifierTypeService;
     }
 
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
-    }
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
     public String getMessage()
     {
         return message;
-    }
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
     }
 
     public Map<String, String> getPatientAttributeValueMap()
@@ -196,6 +167,11 @@ public class ValidatePatientIdentifierAction
     public PatientIdentifier getPatientIdentifier()
     {
         return patientIdentifier;
+    }
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
     }
 
 }

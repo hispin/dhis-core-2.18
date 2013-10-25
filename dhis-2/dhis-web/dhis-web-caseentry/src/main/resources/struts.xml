@@ -836,31 +836,6 @@
       <param name="requiredAuthorities">F_PATIENT_ADD, F_RELATIONSHIP_ADD</param>
     </action>
 
-    <action name="validateAddRelationshipPatient"
-      class="org.hisp.dhis.caseentry.action.patient.ValidateAddRelationshipPatientAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-commons/ajax/xmlResponseSuccess.vm
-      </result>
-      <result name="error" type="velocity-xml">
-        /dhis-web-commons/ajax/xmlResponseError.vm
-      </result>
-      <result name="input" type="velocity-xml">
-        /dhis-web-commons/ajax/xmlResponseInput.vm
-      </result>
-      <result name="duplicate" type="velocity-xml">
-        /dhis-web-caseentry/responseDuplicate.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="addRelationshipPatient"
-      class="org.hisp.dhis.caseentry.action.patient.AddRelationshipPatientAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <param name="requiredAuthorities">F_RELATIONSHIP_ADD</param>
-    </action>
-
     <!-- Tabular report -->
 
     <action name="searchProgramStageInstances"

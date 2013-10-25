@@ -58,18 +58,34 @@
 </h3>
 
 <form id="patientForm" name="patientForm" method="post" >
-
-#if($relatedProgram)
-	<input type='hidden' name="relationshipTypeId" id="relationshipTypeId" value="$relatedProgram.relationshipType.id">
-	<input type='hidden' name="relationshipFromA" id="relationshipFromA" value="$relatedProgram.relationshipFromA" >
-	<input type='hidden' name="relationshipId" id="relationshipId" value="$patientId">
-	<input type='hidden' name="relatedProgramId" id="relatedProgramId" value="$program.id" >
-#else
-	<input type="hidden" id="representativeId" name="representativeId"/> 
-	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
-	<input type="hidden" id="addRelationship" name="addRelationship" value="true">
-#end
 <table>
+	#if($relatedProgram)
+		<input type='hidden' name="relationshipTypeId" id="relationshipTypeId" value="$relatedProgram.relationshipType.id">
+		<input type='hidden' name="relationshipFromA" id="relationshipFromA" value="$relatedProgram.relationshipFromA" >
+		<input type='hidden' name="relationshipId" id="relationshipId" value="$patientId">
+		<input type='hidden' name="relatedProgramId" id="relatedProgramId" value="$program.id" >
+	#elseif( $!relationshipTypes)
+	<tr>
+		<td class='text-column'><label for="relationship_type">$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td class="input-column">
+			<select name="relationshipTypeId" id="relationshipTypeId" class="{validate:{required:true}}" >
+				<option value="">[$i18n.getString( "please_select" )]</option>        
+				#foreach ($relationship in $relationshipTypes)
+					<option value="$relationship.id" relationshipFromA='true'>$!encoder.htmlEncode(${relationship.aIsToB}) $i18n.getString("of") $!encoder.htmlEncode($patient.name) ($!encoder.htmlEncode(${relationship.bIsToA}))</option>
+					<option value="$relationship.id" relationshipFromA='false'>$!encoder.htmlEncode(${relationship.bIsToA}) $i18n.getString("of") $!encoder.htmlEncode($patient.name) ($!encoder.htmlEncode(${relationship.aIsToB}))</option>
+				#end
+			</select>
+		</td>
+		<input type="hidden" id="representativeId" name="representativeId"/> 
+		<input type='hidden' name="relationshipId" id="relationshipId">
+		<input type="hidden" id="addRelationship" name="addRelationship" value="true">
+	</tr>
+	#else
+		<input type="hidden" id="representativeId" name="representativeId"/> 
+		<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
+		<input type="hidden" id="addRelationship" name="addRelationship" value="true">
+	#end
+	
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
 	<tr>
 		<td></td>

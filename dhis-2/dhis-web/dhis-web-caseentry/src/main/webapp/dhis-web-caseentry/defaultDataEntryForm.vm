@@ -74,10 +74,10 @@
 					<table style='width:100%'>
 						<tr>
 							<td>
-					<input id='$id' class='$id' name="$id" options='no' type='radio' optionset='$programStageDataElement.dataElement.optionSet.uid'
-						data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }"
-						#if( $patientDataValue.value == $option) checked #end
-						onclick="saveRadio( '$programStageDataElement.dataElement.uid', '' )" tabindex="$tabIndex" />$i18n.getString("non_value")
+							<input id='$id' class='$id' name="$id" type='radio' options='no' optionset='$programStageDataElement.dataElement.optionSet.uid'
+								data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }"
+								#if( $patientDataValue.value == $option) checked #end
+								onclick="saveRadio( '$programStageDataElement.dataElement.uid', '' )" tabindex="$tabIndex" />$i18n.getString("non_value")
 						</td>
 					#set($index=1)
 					#foreach($option in $programStageDataElement.dataElement.optionSet.options)
@@ -96,8 +96,7 @@
 					</tr>
 					</table>
 				#else
-					<input optionset='$programStageDataElement.dataElement.optionSet.uid' id='$id' name="entryfield" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
-				#end
+					<input options='$hasOptionSet' optionset='$programStageDataElement.dataElement.optionSet.uid' id='$id' name="entryfield" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />				#end
 			#elseif($programStageDataElement.dataElement.type=='username')
 				<input name="entryfield" username='true' class="auto-field optionset" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
 			#else
