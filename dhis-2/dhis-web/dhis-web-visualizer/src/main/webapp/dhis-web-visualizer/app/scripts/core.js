@@ -2270,6 +2270,7 @@ Ext.onReady( function() {
 						dv.viewport.centerRegion.add(chart);
 
 						dv.paramString = paramString;
+						dv.chart = chart;
 
 						afterLoad(layout, xLayout, xResponse);
 					};
