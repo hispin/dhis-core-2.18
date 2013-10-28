@@ -40,16 +40,43 @@ public interface PatientAttributeStore
 {
     String ID = PatientAttributeStore.class.getName();
 
+    /**
+     * Get patient attributes by value type
+     * 
+     * @param valueType Value type
+     * 
+     * @return List of patient attributes
+     */
     Collection<PatientAttribute> getByValueType( String valueType );
 
+    /**
+     * Get mandatory patient attributes without groups
+     * 
+     * @return List of patient attributes
+     */
     Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
 
+    /**
+     * Get patient attributes by mandatory option
+     * 
+     * @param mandatory True/False value
+     */
     Collection<PatientAttribute> getByMandatory( boolean mandatory );
 
     Collection<PatientAttribute> getWithoutGroup();
 
+    /**
+     * Get patient attributes by groupBy option
+     * 
+     * @param groupBy True/False value
+     */
     PatientAttribute getByGroupBy( boolean groupBy );
 
+    /**
+     * Get patient attributes which are displayed in visit schedule
+     * 
+     * @return List of patient attributes
+     */
     Collection<PatientAttribute> getByDisplayOnVisitSchedule( boolean displayOnVisitSchedule );
 
 }
