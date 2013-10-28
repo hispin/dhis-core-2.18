@@ -102,7 +102,8 @@ public interface ActivityReportingService
 
     public String findLostToFollowUp( int orgUnitId, String programId )
         throws NotAllowedException;
-    
+
     public Notification handleLostToFollowUp( LostEvent lostEvent )
         throws NotAllowedException;
+
 }
