@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 import org.geotools.feature.DefaultFeatureCollection;
@@ -40,6 +41,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
+import org.geotools.referencing.GeodeticCalculator;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.Style;
@@ -288,5 +290,51 @@ public class MapUtils
         g.drawString( str, 1, 12 );
 
         return image;
+    }
+    
+    /**
+     * Returns boundaries of a box shape which centre is the point defined by the 
+     * given longitude and latitude. The distance between the center point and the
+     * edges of the box is defined in meters by the given distance. Based on standard
+     * EPSG:4326 long/lat projection. The result is an array of length 4 where
+     * the values at each index are:
+     * 
+     * <ul>
+     * <li>Index 0: Maximum latitude (north edge of box shape).</li>
+     * <li>Index 1: Maxium longitude (east edge of box shape).</li>
+     * <li>Index 2: Minimum latitude (south edge of box shape).</li>
+     * <li>Index 3: Minumum longitude (west edge of box shape).</li>
+     * </ul>
+     * 
+     * @param longitude the longitude.
+     * @param latitude the latitude.
+     * @param distance the distance in meters to each box edge.
+     * @return an array of length 4.
+     */
+    public static double[] getBoxShape( double longitude, double latitude, double distance )
+    {
+        double[] box = new double[4];
+        
+        GeodeticCalculator calc = new GeodeticCalculator();
+        calc.setStartingGeographicPoint( longitude, latitude );
+        
+        calc.setDirection( 0, distance );
+        Point2D north = calc.getDestinationGeographicPoint();
+        
+        calc.setDirection( 90, distance );
+        Point2D east = calc.getDestinationGeographicPoint();
+        
+        calc.setDirection( 180, distance );
+        Point2D south = calc.getDestinationGeographicPoint();
+        
+        calc.setDirection( -90, distance );
+        Point2D west = calc.getDestinationGeographicPoint();
+        
+        box[0] = north.getY();
+        box[1] = east.getX();
+        box[2] = south.getY();
+        box[3] = west.getX();
+        
+        return box;
     }
 }
