@@ -26,21 +26,24 @@
 		exportPdfByType( type, params );
 	}
 	
-	var i18n_high = '$encoder.jsEscape( $i18n.getString( "high" ) , "'")';
-	var i18n_medium = '$encoder.jsEscape( $i18n.getString( "medium" ) , "'")';
-	var i18n_low = '$encoder.jsEscape( $i18n.getString( "low" ) , "'")';
+	var i18n_high = '$i18n.getString( "high" )';
+	var i18n_medium = '$i18n.getString( "medium" )';
+	var i18n_low = '$i18n.getString( "low" )';
 	
-	var i18n_validation = '$encoder.jsEscape( $i18n.getString( "validation" ) , "'")';
-	var i18n_surveillance = '$encoder.jsEscape( $i18n.getString( "surveillance" ) , "'")';
+	var i18n_validation = '$i18n.getString( "validation" )';
+	var i18n_surveillance = '$i18n.getString( "surveillance" )';
 	
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_validation_rule" ) , "'")';
-	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
-	var i18n_equal_to = '$encoder.jsEscape( $i18n.getString( "equal_to" ) , "'")';
-	var i18n_not_equal_to = '$encoder.jsEscape( $i18n.getString( "not_equal_to" ) , "'")';
-	var i18n_greater_than = '$encoder.jsEscape( $i18n.getString( "greater_than" ) , "'")';
-	var i18n_greater_than_or_equal_to = '$encoder.jsEscape( $i18n.getString( "greater_than_or_equal_to" ) , "'")';
-	var i18n_less_than = '$encoder.jsEscape( $i18n.getString( "less_than" ) , "'")';
-	var i18n_less_than_or_equal_to = '$encoder.jsEscape( $i18n.getString( "less_than_or_equal_to" ) , "'")';
+	var i18n_confirm_delete = '$i18n.getString( "confirm_delete_validation_rule" )';
+
+	var i18n_none = '$i18n.getString( "none" )';
+
+	var i18n_equal_to = '$i18n.getString( "equal_to" )';
+	var i18n_not_equal_to = '$i18n.getString( "not_equal_to" )';
+	var i18n_greater_than = '$i18n.getString( "greater_than" )';
+	var i18n_greater_than_or_equal_to = '$i18n.getString( "greater_than_or_equal_to" )';
+	var i18n_less_than = '$i18n.getString( "less_than" )';
+	var i18n_less_than_or_equal_to = '$i18n.getString( "less_than_or_equal_to" )';
+	var i18n_compulsory_pair = '$i18n.getString( "compulsory_pair" )';
 </script>
 
 <h3>$encoder.htmlEncode( $i18n.getString( "validation_rule_management" ) ) #openHelp( "validationRule" )</h3>
