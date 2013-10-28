@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,15 +52,25 @@ public class SystemSettingController
     @Autowired
     private SystemSettingManager systemSettingManager;
     
-    @RequestMapping( value = "/{key}", method = RequestMethod.POST )
+    @RequestMapping( value = "/{key}", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_TEXT, ContextUtils.CONTENT_TYPE_HTML } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_SYSTEM_SETTING')" )
-    public void setSystemSetting( @PathVariable( "key" ) String key, @RequestParam String value, HttpServletResponse response )
+    public void setSystemSetting( 
+        @PathVariable String key, 
+        @RequestParam(required = false) String value, 
+        @RequestBody(required=false) String valuePayload, HttpServletResponse response )
     {
-        if ( key == null || value == null )
+        if ( key == null )
         {
-            ContextUtils.conflictResponse( response, "Key and value must be specified" );
+            ContextUtils.conflictResponse( response, "Key must be specified" );
             return;
         }
+        
+        if ( value == null && valuePayload == null )
+        {
+            ContextUtils.conflictResponse( response, "Value must be specified as query param or as payload" );
+        }
+        
+        value = value != null ? value : valuePayload;
         
         systemSettingManager.saveSystemSetting( key, value );
         
