@@ -563,9 +563,8 @@ public class ActivityReportingServiceImpl
         if ( isNumber( keyword ) == false )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-            List<Patient> patients = (List<Patient>) patientService.getPatientByFullname( keyword,
-                organisationUnit );
-            
+            List<Patient> patients = (List<Patient>) patientService.getPatientByFullname( keyword, organisationUnit );
+
             if ( patients.size() > 1 )
             {
                 String patientsInfo = new String();
@@ -1400,8 +1399,7 @@ public class ActivityReportingServiceImpl
 
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
             String fullName = enrollmentRelationship.getPersonBName();
-            List<Patient> patients = (List<Patient>) patientService.getPatientByFullname( fullName,
-                organisationUnit );
+            List<Patient> patients = (List<Patient>) patientService.getPatientByFullname( fullName, organisationUnit );
 
             // remove the own searcher
             patients = removeIfDuplicated( patients, enrollmentRelationship.getPersonAId() );
@@ -1812,10 +1810,11 @@ public class ActivityReportingServiceImpl
     public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient findLatestPatient()
         throws NotAllowedException
     {
-        Patient patient = patientService.getPatient( this.patientId );
-
-        org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile = getPatientModel( patient );
-        return patientMobile;
+        // Patient patient = patientService.getPatient( this.patientId );
+        //
+        // org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile =
+        // getPatientModel( patient );
+        return this.getPatientMobile();
     }
 
     @Override
@@ -1909,6 +1908,9 @@ public class ActivityReportingServiceImpl
         {
             return patientId;
         }
+
+        Patient patientNew = patientService.getPatient( this.patientId );
+        this.setPatientMobile( getPatientModel( patientNew ) );
 
         return patientId;
 
@@ -2124,4 +2126,17 @@ public class ActivityReportingServiceImpl
             return notification;
         }
     }
+
+    private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile;
+
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient getPatientMobile()
+    {
+        return patientMobile;
+    }
+
+    public void setPatientMobile( org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile )
+    {
+        this.patientMobile = patientMobile;
+    }
+
 }
