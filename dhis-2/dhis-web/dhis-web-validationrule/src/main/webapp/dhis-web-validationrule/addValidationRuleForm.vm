@@ -75,14 +75,14 @@
 		<td><label for="operatorId">$i18n.getString( "operator" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select id="operator" name="operator">
-				<option value="">[ $i18n.getString( "select_operator" ) ]</option>
+				<option value="" id="select_operator">[ $i18n.getString( "select_operator" ) ]</option>
 				<option value="equal_to">$i18n.getString( "equal_to" )</option>
 				<option value="not_equal_to">$i18n.getString( "not_equal_to" )</option>
 				<option value="greater_than">$i18n.getString( "greater_than" )</option>
 				<option value="greater_than_or_equal_to">$i18n.getString( "greater_than_or_equal_to" )</option>
 				<option value="less_than">$i18n.getString( "less_than" )</option>
 				<option value="less_than_or_equal_to">$i18n.getString( "less_than_or_equal_to" )</option>
-                <option value="compulsory_pair">$i18n.getString( "compulsory_pair" )</option>
+                <option value="compulsory_pair" id="compulsory_pair">$i18n.getString( "compulsory_pair" )</option>
 			</select>
 		</td>
 	</tr>

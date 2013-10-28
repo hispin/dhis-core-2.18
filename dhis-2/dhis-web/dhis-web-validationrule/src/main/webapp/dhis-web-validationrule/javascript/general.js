@@ -115,6 +115,10 @@ function i18nalizeOperator( operator )
     {
         return i18n_less_than_or_equal_to;
     }
+    else if ( operator == "compulsory_pair" )
+    {
+        return i18n_compulsory_pair;
+    }
     
     return null;
 }

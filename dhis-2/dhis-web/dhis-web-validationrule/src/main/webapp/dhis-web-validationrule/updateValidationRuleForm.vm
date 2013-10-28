@@ -63,19 +63,19 @@
 			<img title="$i18n.getString( 'clear_expression' )" onclick="clearRuleExpression()" src="../images/edit-clear.png" style="width: 20px; cursor:pointer;" />
 		</td>
 	</tr>
-	<tr id="sequentialSampleCountTR"  #if( $!validationRule.ruleType != 'surveillance' ) style='display:none;' #end>
+	<tr id="sequentialSampleCountTR">
 		<td><label for="sequentialSampleCount">$i18n.getString( "sequential_sample_count" )</label></td>
 		<td><input type="text" id="sequentialSampleCount" name="sequentialSampleCount" value="$!validationRule.sequentialSampleCount"></td>
 	</tr>
-	<tr id="annualSampleCountTR" #if( $!validationRule.ruleType != 'surveillance' ) style='display:none;' #end">
+	<tr id="annualSampleCountTR">
 		<td><label for="annualSampleCount">$i18n.getString( "annual_sample_count" )</label></td>
 		<td><input type="text" id="annualSampleCount" name="annualSampleCount" value="$!validationRule.annualSampleCount"></td>
 	</tr>
-	<tr id="highOutliersTR" #if( $!validationRule.ruleType != 'surveillance' ) style='display:none;' #end>
+	<tr id="highOutliersTR">
 		<td><label for="highOutliers">$i18n.getString( "high_outliers" )</label></td>
 		<td><input type="text" id="highOutliers" name="highOutliers" value="$!validationRule.highOutliers"></td>
 	</tr>
-	<tr id="lowOutliersTR" #if( $!validationRule.ruleType != 'surveillance' ) style='display:none;' #end>
+	<tr id="lowOutliersTR">
 		<td><label for="lowOutliers">$i18n.getString( "low_outliers" )</label></td>
 		<td><input type="text" id="lowOutliers" name="lowOutliers" value="$!validationRule.lowOutliers"></td>
 	</tr>
@@ -83,13 +83,14 @@
 		<td><label for="operatorId">$i18n.getString( "operator" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select id="operator" name="operator">
+                <option value="" id="select_operator" style='display:none;'>[ $i18n.getString( "select_operator" ) ]</option>
 				<option value="equal_to" #if ( $validationRule.operator == 'equal_to' )selected="selected"#end>$i18n.getString( "equal_to" )</option>
 				<option value="not_equal_to" #if ( $validationRule.operator == 'not_equal_to' )selected="selected"#end>$i18n.getString( "not_equal_to" )</option>
 				<option value="greater_than" #if ( $validationRule.operator == 'greater_than' )selected="selected"#end>$i18n.getString( "greater_than" )</option>
 				<option value="greater_than_or_equal_to" #if ( $validationRule.operator == 'greater_than_or_equal_to' )selected="selected"#end>$i18n.getString( "greater_than_or_equal_to" )</option>
 				<option value="less_than" #if ( $validationRule.operator == 'less_than' )selected="selected"#end>$i18n.getString( "less_than" )</option>
 				<option value="less_than_or_equal_to" #if ( $validationRule.operator == 'less_than_or_equal_to' )selected="selected"#end>$i18n.getString( "less_than_or_equal_to" )</option>
-                <option value="compulsory_pair" #if ( $validationRule.operator == 'compulsory_pair' )selected="selected"#end>$i18n.getString( "compulsory_pair" )</option>
+                <option value="compulsory_pair" id="compulsory_pair" #if ( $validationRule.operator == 'compulsory_pair' )selected="selected"#end>$i18n.getString( "compulsory_pair" )</option>
 			</select>
 		</td>
 	</tr>
