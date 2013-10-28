@@ -312,7 +312,7 @@ public class HibernatePatientStore
         Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
     {
         String sql = searchPatientSql( false, searchKeys, orgunits, followup, patientAttributes, identifierTypes,
-            statusEnrollment, null, null );
+            statusEnrollment, min, max );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 

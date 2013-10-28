@@ -35,12 +35,31 @@ import org.hisp.dhis.common.GenericStore;
 
 /**
  * @author Chau Thu Tran
- *
+ * 
  * @version PatientAuditStore.java 9:04:53 AM Sep 26, 2012 $
  */
-public interface PatientAuditStore extends GenericStore<PatientAudit>
+public interface PatientAuditStore
+    extends GenericStore<PatientAudit>
 {
+    /**
+     * Get all patient audits of a patient
+     * 
+     * @param patient Patient
+     * 
+     * @return List of PatientAudit
+     */
     Collection<PatientAudit> get( Patient patient );
-    
+
+    /**
+     * Get patient audit of a patient
+     * 
+     * @param patientId The id of patient
+     * @param visitor The user who accessed to see a certain information of the
+     *        patient
+     * @param date The data this user visited
+     * @param accessedModule The module this user accessed
+     * 
+     * @return PatientAudit
+     */
     PatientAudit get( Integer patientId, String visitor, Date date, String accessedModule );
 }
