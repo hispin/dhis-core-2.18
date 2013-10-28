@@ -35,6 +35,7 @@ import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,14 +51,24 @@ public class UserSettingController
     @Autowired
     private UserSettingService userSettingService;
 
-    @RequestMapping( value = "/{key}", method = RequestMethod.POST )
-    public void setUserSetting( @PathVariable( "key" ) String key, @RequestParam String value, HttpServletResponse response )
+    @RequestMapping( value = "/{key}", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_TEXT, ContextUtils.CONTENT_TYPE_HTML } )
+    public void setUserSetting( 
+        @PathVariable String key, 
+        @RequestParam(required = false) String value, 
+        @RequestBody(required=false) String valuePayload, HttpServletResponse response )
     {
-        if ( key == null || value == null )
+        if ( key == null )
         {
-            ContextUtils.conflictResponse( response, "Key and value must be specified" );
+            ContextUtils.conflictResponse( response, "Key must be specified" );
             return;
         }
+
+        if ( value == null && valuePayload == null )
+        {
+            ContextUtils.conflictResponse( response, "Value must be specified as query param or as payload" );
+        }
+
+        value = value != null ? value : valuePayload;
         
         userSettingService.saveUserSetting( key, value );
         
