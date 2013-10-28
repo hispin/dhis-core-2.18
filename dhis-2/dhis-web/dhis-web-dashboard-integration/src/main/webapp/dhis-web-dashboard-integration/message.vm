@@ -35,7 +35,7 @@
 		<td onclick="read( '${conversation.uid}' )">$!encoder.htmlEncode( $conversation.subject )</td>
 		<td onclick="read( '${conversation.uid}' )" style="width:80px">$!format.formatDate( $conversation.lastMessage )</td>
 		<td style="width:70px; text-align:center;">
-			<a href="readMessage.action?id=${conversation.id}"><img src="../images/read.png" title="$i18n.getString( 'read' )"></a>
+			<a href="readMessage.action?id=${conversation.uid}"><img src="../images/read.png" title="$i18n.getString( 'read' )"></a>
 			<a href="javascript:removeMessage( '${conversation.id}' )"><img src="../images/delete.png" title="$i18n.getString( 'delete' )"></a>
 		</td>
 	</tr>
