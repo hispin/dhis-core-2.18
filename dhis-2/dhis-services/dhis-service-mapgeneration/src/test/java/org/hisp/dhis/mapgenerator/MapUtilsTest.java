@@ -28,13 +28,19 @@ package org.hisp.dhis.mapgenerator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.mapgeneration.MapUtils.getBoxShape;
+import static org.hisp.dhis.mapgeneration.MapUtils.getWidthHeight;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.hisp.dhis.mapgeneration.MapUtils.*;
-
+/**
+ * Lars Helge Overland
+ */
 public class MapUtilsTest
 {
+    private static final double DELTA = 0.01;
+    
     @Test
     public void testGetWidthHeight()
     {
@@ -60,5 +66,27 @@ public class MapUtilsTest
     public void testGetWidthHeightIllegalArgument()
     {
         getWidthHeight( null, null, 0, 0, 0.5 );
+    }
+    
+    @Test
+    public void testGetBoxShape()
+    {
+        // Equator
+        
+        double[] box = getBoxShape( 0, 0, 110574.27 );
+        
+        assertEquals( 1d, box[0], DELTA );
+        assertEquals( 1d, box[1], DELTA );
+        assertEquals( -1d, box[2], DELTA );
+        assertEquals( -1d, box[3], DELTA );
+        
+        // Punta Arenas
+
+        box = getBoxShape( -71, -53, 67137.20 );
+
+        assertEquals( -52.4, box[0], DELTA );
+        assertEquals( -70d, box[1], DELTA );
+        assertEquals( -53.6, box[2], DELTA );
+        assertEquals( -72d, box[3], DELTA );        
     }
 }
