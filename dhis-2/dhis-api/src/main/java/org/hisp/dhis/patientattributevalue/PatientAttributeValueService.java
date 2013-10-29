@@ -125,4 +125,6 @@ public interface PatientAttributeValueService
      */
     void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption );
 
+    int countByPatientAttributeoption( PatientAttributeOption patientAttributeOption );
+
 }
