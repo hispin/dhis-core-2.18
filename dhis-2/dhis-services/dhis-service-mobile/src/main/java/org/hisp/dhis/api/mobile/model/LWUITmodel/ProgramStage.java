@@ -53,6 +53,8 @@ public class ProgramStage
     private boolean isCompleted;
 
     private boolean isSingleEvent;
+    
+    private Integer standardInterval; 
 
     private List<Section> sections;
 
@@ -138,31 +140,42 @@ public class ProgramStage
         this.reportDateDescription = reportDateDescription;
     }
 
+    public Integer getStandardInterval()
+    {
+        return standardInterval;
+    }
+
+    public void setStandardInterval( Integer standardInterval )
+    {
+        this.standardInterval = standardInterval;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
         super.serialize( dout );
-        if ( this.reportDate == null )
+        if ( reportDate == null )
         {
             reportDate = "";
         }
-        dout.writeUTF( this.reportDate );
-        dout.writeUTF( this.reportDateDescription );
-        dout.writeBoolean( this.isRepeatable() );
-        dout.writeBoolean( this.isCompleted() );
-        dout.writeBoolean( this.isSingleEvent );
+        dout.writeUTF( reportDate );
+        dout.writeUTF( reportDateDescription );
+        dout.writeBoolean( isRepeatable );
+        dout.writeInt( standardInterval );
+        dout.writeBoolean( isCompleted() );
+        dout.writeBoolean( isSingleEvent );
 
-        dout.writeInt( this.dataElements.size() );
-        for ( int i = 0; i < this.dataElements.size(); i++ )
+        dout.writeInt( dataElements.size() );
+        for ( int i = 0; i < dataElements.size(); i++ )
         {
-            this.dataElements.get( i ).serialize( dout );
+            dataElements.get( i ).serialize( dout );
         }
 
-        dout.writeInt( this.sections.size() );
-        for ( int i = 0; i < this.sections.size(); i++ )
+        dout.writeInt( sections.size() );
+        for ( int i = 0; i < sections.size(); i++ )
         {
-            this.sections.get( i ).serialize( dout );
+            sections.get( i ).serialize( dout );
         }
     }
 
@@ -171,11 +184,12 @@ public class ProgramStage
         throws IOException
     {
         super.deSerialize( dint );
-        this.setReportDate( dint.readUTF() );
-        this.setReportDateDescription( dint.readUTF() );
-        this.setRepeatable( dint.readBoolean() );
-        this.setCompleted( dint.readBoolean() );
-        this.setSingleEvent( dint.readBoolean() );
+        setReportDate( dint.readUTF() );
+        setReportDateDescription( dint.readUTF() );
+        setRepeatable( dint.readBoolean() );
+        setStandardInterval( dint.readInt() );
+        setCompleted( dint.readBoolean() );
+        setSingleEvent( dint.readBoolean() );
         int dataElementSize = dint.readInt();
         if ( dataElementSize > 0 )
         {
@@ -183,7 +197,7 @@ public class ProgramStage
             {
                 ProgramStageDataElement de = new ProgramStageDataElement();
                 de.deSerialize( dint );
-                this.dataElements.add( de );
+                dataElements.add( de );
             }
         }
         else
@@ -198,7 +212,7 @@ public class ProgramStage
                 sections = new ArrayList<Section>();
                 Section se = new Section();
                 se.deSerialize( dint );
-                this.sections.add( se );
+                sections.add( se );
             }
         }
         else

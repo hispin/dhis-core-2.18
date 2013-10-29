@@ -766,7 +766,16 @@ public class ActivityReportingServiceImpl
                     programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
                     programInstanceService.updateProgramInstance( programInstance );
                 }
-                return PROGRAM_STAGE_UPLOADED;
+                if ( mobileProgramStage.isRepeatable() )
+                {
+                    Date nextDate = DateUtils.getDateAfterAddition( new Date(), mobileProgramStage.getStandardInterval() );
+                    
+                    return PROGRAM_STAGE_UPLOADED+"$"+PeriodUtil.dateToString( nextDate );
+                }
+                else
+                {
+                    return PROGRAM_STAGE_UPLOADED;    
+                }
             }
         }
     }
@@ -1178,10 +1187,6 @@ public class ActivityReportingServiceImpl
     {
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage> mobileProgramStages = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage>();
 
-        /*
-         * for ( ProgramStage eachProgramStage :
-         * programInstance.getProgram().getProgramStages() )
-         */
         for ( ProgramStageInstance eachProgramStageInstance : programInstance.getProgramStageInstances() )
         {
             // only for Mujhu database, because there is null program stage
@@ -1207,18 +1212,25 @@ public class ActivityReportingServiceImpl
                     mobileProgramStage.setReportDate( "" );
                 }
 
-                if ( eachProgramStageInstance.getProgramStage().getReportDateDescription() == null )
+                if ( programStage.getReportDateDescription() == null )
                 {
                     mobileProgramStage.setReportDateDescription( "Report Date" );
                 }
                 else
                 {
-                    mobileProgramStage.setReportDateDescription( eachProgramStageInstance.getProgramStage()
-                        .getReportDateDescription() );
+                    mobileProgramStage.setReportDateDescription( programStage.getReportDateDescription() );
                 }
 
                 // is repeatable
                 mobileProgramStage.setRepeatable( programStage.getIrregular() );
+                if ( programStage.getStandardInterval() == null )
+                {
+                    mobileProgramStage.setStandardInterval( 0 );
+                }
+                else
+                {
+                    mobileProgramStage.setStandardInterval( programStage.getStandardInterval() );
+                }
 
                 // is completed
                 /*

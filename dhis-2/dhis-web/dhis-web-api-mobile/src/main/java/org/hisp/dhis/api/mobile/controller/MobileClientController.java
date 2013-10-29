@@ -159,6 +159,7 @@ public class MobileClientController
         orgUnit.setFindPatientInAdvancedUrl( getUrl( request, unit.getId(), "findPatientInAdvanced" ) );
         orgUnit.setFindLostToFollowUpUrl( getUrl( request, unit.getId(), "findLostToFollowUp" ) );
         orgUnit.setHandleLostToFollowUpUrl( getUrl( request, unit.getId(), "handleLostToFollowUpUrl" ) );
+        orgUnit.setGenerateRepeatableEventUrl( getUrl( request, unit.getId(), "generateRepeatableEventUrl" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );
