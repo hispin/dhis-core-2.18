@@ -52,6 +52,8 @@ public interface PatientIdentifierService
      * Retrieve patient identifiers of patient
      * 
      * @param patient Patient
+     * 
+     * @return PatientIdentifier list
      */
     PatientIdentifier getPatientIdentifier( Patient patient );
 
@@ -59,6 +61,8 @@ public interface PatientIdentifierService
      * Retrieve patient identifiers by type
      * 
      * @param identifierType PatientIdentifierType
+     * 
+     * @return PatientIdentifier list
      */
     Collection<PatientIdentifier> getPatientIdentifiersByType( PatientIdentifierType identifierType );
 
@@ -113,7 +117,8 @@ public interface PatientIdentifierService
     /**
      * Retrieve patients based on type and identifier. We need this since we
      * have allowed identifiers with duplicate values in the past. This returns
-     * a list instead.
+     * a list instead. We need this since we have allowed identifiers with
+     * duplicate values in the past. This returns a list instead.
      * 
      * @param type PatientIdentifierType
      * @param identifier Identifier of patient
@@ -128,7 +133,7 @@ public interface PatientIdentifierService
      * @param identifierType PatientIdentifierType
      * @param value Identifier value
      */
-    Patient getPatient( PatientIdentifierType identifierType, String value );
+    Patient getPatient( PatientIdentifierType identifierType, String identifier );
 
     /**
      * Retrieve patients based on identifier value with limit result (performs
@@ -157,6 +162,8 @@ public interface PatientIdentifierService
      * 
      * @param identifierTypes PatientIdentifierType collection
      * @param patient Patient
+     * 
+     * @return PatientIdentifier list
      */
     Collection<PatientIdentifier> getPatientIdentifiers( Collection<PatientIdentifierType> identifierTypes,
         Patient patient );

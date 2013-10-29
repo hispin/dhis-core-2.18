@@ -33,7 +33,6 @@ import java.util.Collection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierStore;
@@ -54,13 +53,7 @@ public class HibernatePatientIdentifierStore
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "patient", patient ) ).uniqueResult();
     }
-
-    public PatientIdentifier get( String identifier, OrganisationUnit organisationUnit )
-    {
-        return (PatientIdentifier) getCriteria( Restrictions.eq( "identifier", identifier ),
-            Restrictions.eq( "organisationUnit", organisationUnit ) ).uniqueResult();
-    }
-
+    
     public PatientIdentifier get( PatientIdentifierType type, String identifier )
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifierType", type ),

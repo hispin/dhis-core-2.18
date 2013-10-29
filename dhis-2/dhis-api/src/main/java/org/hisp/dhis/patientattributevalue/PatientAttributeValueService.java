@@ -63,18 +63,66 @@ public interface PatientAttributeValueService
 
     Collection<PatientAttributeValue> getAllPatientAttributeValues();
 
+    /**
+     * Retrieve PatientAttributeValues of many patients and put them into a Map
+     * Object with key as the ids of patients and values as a
+     * PatientAttributeValue list of each patient
+     * 
+     * @param patients A patient list
+     * 
+     * @return Map<PatientID, PatientAttributeValue list>
+     */
     Map<Integer, Collection<PatientAttributeValue>> getPatientAttributeValueMapForPatients( Collection<Patient> patients );
-    
-    Map<Integer, PatientAttributeValue> getPatientAttributeValueMapForPatients( Collection<Patient> patients, PatientAttribute patientAttribute );
-    
-    Collection<PatientAttributeValue> searchPatientAttributeValue( PatientAttribute patientAttribute, String searchText );   
 
+    /**
+     * Retrieve PatientAttributeValues of many patients on a PatientAttribute
+     * and put them into a Map Object with key as the ids of patients and values
+     * as a PatientAttributeValue list of each patient
+     * 
+     * @param patients A patient list
+     * @param patientAttribute PatientAttribute
+     * 
+     * @return Map<Patient ID, PatientAttributeValue>
+     */
+    Map<Integer, PatientAttributeValue> getPatientAttributeValueMapForPatients( Collection<Patient> patients,
+        PatientAttribute patientAttribute );
+
+    /**
+     * Search PatientAttribueValue objects by a PatientAttribute and a attribute
+     * value (performs partial search )
+     * 
+     * @param patientAttribute PatientAttribute
+     * @param searchText A string for searching by attribute values
+     * 
+     * @return PatientAttributeValue list
+     */
+    Collection<PatientAttributeValue> searchPatientAttributeValue( PatientAttribute patientAttribute, String searchText );
+
+    /**
+     * Remove all attribute values of destination patient and copy attribute
+     * values of source patient to destination patient
+     * 
+     * @param source Source patient
+     * @param destination Destination patient
+     */
     void copyPatientAttributeValues( Patient source, Patient destination );
-    
-    int countByPatientAttributeoption( PatientAttributeOption attributeOption ); 
-    
+
+    /**
+     * Retrieve patients who have the same value on an attribute
+     * 
+     * @param attribute PatientAttribute
+     * @param value An attribute value for searching
+     * 
+     * @return Patient list
+     */
     Collection<Patient> getPatient( PatientAttribute attribute, String value );
-    
-    void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption);
-    
+
+    /**
+     * Update patient attribute values which belong to the pre-defined attribute
+     * when a value pre-defined of this attribute is modified
+     * 
+     * @param patientAttributeOption PatientAttributeOption
+     */
+    void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption );
+
 }

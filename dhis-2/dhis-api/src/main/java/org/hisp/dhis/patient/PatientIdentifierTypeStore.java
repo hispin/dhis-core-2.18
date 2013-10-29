@@ -35,7 +35,22 @@ import org.hisp.dhis.common.GenericNameableObjectStore;
 public interface PatientIdentifierTypeStore
     extends GenericNameableObjectStore<PatientIdentifierType>
 {
+    /**
+     * Retrieve patient identifer types based on mandatory option
+     * 
+     * @param mandatory True/False value
+     * 
+     * @return PatientIdentifierType list
+     */
     Collection<PatientIdentifierType> get( boolean mandatory );
-    
+
+    /**
+     * Retrieve patient identifer types which are displayed in person list
+     * instead of full name of person or not
+     * 
+     * @param personDisplayName True/False value
+     * 
+     * @return PatientIdentifierType list
+     */
     Collection<PatientIdentifierType> getByDisplayed( boolean personDisplayName );
 }

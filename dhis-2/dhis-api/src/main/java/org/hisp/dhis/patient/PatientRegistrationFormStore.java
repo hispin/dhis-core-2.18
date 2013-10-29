@@ -41,7 +41,19 @@ public interface PatientRegistrationFormStore
 {
     String ID = PatientRegistrationFormStore.class.getName();
 
+    /**
+     * Get custom registration form of a program
+     * 
+     * @param program Program
+     * 
+     * @return PatientRegistrationForm
+     */
     PatientRegistrationForm get( Program program );
-    
+
+    /**
+     * Get custom registration form which doesn't belong to any program
+     * 
+     * @return PatientRegistrationForm
+     */
     PatientRegistrationForm getCommonForm();
 }
