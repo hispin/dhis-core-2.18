@@ -52,7 +52,22 @@ public interface PatientIdentifierTypeService
 
     PatientIdentifierType getPatientIdentifierTypeByUid( String uid );
 
+    /**
+     * Retrieve patient identifer types based on mandatory option
+     * 
+     * @param mandatory True/False value
+     * 
+     * @return PatientIdentifierType list
+     */
     Collection<PatientIdentifierType> getPatientIdentifierTypes( boolean mandatory );
 
+    /**
+     * Retrieve patient identifer types which are displayed in person list
+     * instead of full name of person or not
+     * 
+     * @param personDisplayName True/False value
+     * 
+     * @return PatientIdentifierType list
+     */
     Collection<PatientIdentifierType> getDisplayedPatientIdentifierTypes( boolean personDisplayName );
 }

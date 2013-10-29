@@ -31,7 +31,6 @@ package org.hisp.dhis.patient;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -42,34 +41,122 @@ public interface PatientIdentifierStore
 {
     String ID = PatientIdentifierStore.class.getName();
 
+    /**
+     * Retrieve patient identifiers of a patient
+     * 
+     * @param patient Patient
+     * 
+     * @return PatientIdentifier list
+     */
     PatientIdentifier get( Patient patient );
 
-    PatientIdentifier get( String identifier, OrganisationUnit organisationUnit );
-
+    /**
+     * Retrieve first patient based on type and identifier
+     * 
+     * @param type PatientIdentifierType
+     * @param identifier Identifier of patient
+     * 
+     * @return PatientIdentifier
+     */
     PatientIdentifier get( PatientIdentifierType type, String identifier );
 
-    /*
-     * We need this since we have allowed identifiers with duplicate values in
-     * the past. This returns a list instead.
+    /**
+     * Retrieve patients based on type and identifier. We need this since we
+     * have allowed identifiers with duplicate values in the past. This returns
+     * a list instead.
+     * 
+     * @param type PatientIdentifierType
+     * @param identifier Identifier of patient
+     * 
+     * @return PatientIdentifier list
      */
     Collection<PatientIdentifier> getAll( PatientIdentifierType type, String identifier );
 
+    /**
+     * Search patient identifiers by identifier (performs partial search )
+     * 
+     * @param identifier A string for searching by identifier
+     * 
+     * @return PatientIdentifier list
+     */
     Collection<PatientIdentifier> getByIdentifier( String identifier );
 
+    /**
+     * Retrieve patient identifiers by type
+     * 
+     * @param identifierType PatientIdentifierType
+     * 
+     * @return PatientIdentifier list
+     */
     Collection<PatientIdentifier> getByType( PatientIdentifierType identifierType );
 
+    /**
+     * Search a patient identifier of a patient by identifier
+     * 
+     * @param identifier An identifier string for searching
+     * @param patient Patient
+     * 
+     * @return PatientIdentifier
+     */
     PatientIdentifier getPatientIdentifier( String identifier, Patient patient );
 
+    /**
+     * Retrieve PatientIdentifier of a patient by identifier type
+     * 
+     * @param identifierType PatientIdentifierType
+     * @param patient Patient
+     * 
+     * @return PatientIdentifier
+     */
     PatientIdentifier getPatientIdentifier( PatientIdentifierType identifierType, Patient patient );
 
+    /**
+     * Retrieve patient identifiers of a patient
+     * 
+     * @param patient Patient
+     * 
+     * @return PatientIdentifier list
+     */
     Collection<PatientIdentifier> getPatientIdentifiers( Patient patient );
 
-    Patient getPatient( PatientIdentifierType identifierType, String value );
+    /**
+     * Retrieve a patient based on identifier type and a identifier value
+     * 
+     * @param identifierType PatientIdentifierType
+     * @param value Identifier value
+     */
+    Patient getPatient( PatientIdentifierType identifierType, String identifier );
 
+    /**
+     * Retrieve patients based on identifier value with limit result (performs
+     * partial search )
+     * 
+     * @param identifier identifier value
+     * @param min
+     * @param max
+     * 
+     * @result Patient list
+     */
     Collection<Patient> getPatientsByIdentifier( String identifier, Integer min, Integer max );
 
+    /**
+     * Get the number of patient who has a identifier value (performs partial
+     * search )
+     * 
+     * @param identifier Identifier value
+     * 
+     * @return The number of patients
+     */
     int countGetPatientsByIdentifier( String identifier );
 
+    /**
+     * Retrieve patient identifiers based on identifier types
+     * 
+     * @param identifierTypes PatientIdentifierType collection
+     * @param patient Patient
+     * 
+     * @result PatientIdentifier list
+     */
     Collection<PatientIdentifier> get( Collection<PatientIdentifierType> identifierTypes, Patient patient );
 
 }

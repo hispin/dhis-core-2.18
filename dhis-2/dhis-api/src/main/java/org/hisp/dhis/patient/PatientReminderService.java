@@ -42,12 +42,51 @@ import org.hisp.dhis.user.User;
  */
 public interface PatientReminderService
 {
+    /**
+     * Get message for sending to a patient from program-instance template
+     * defined
+     * 
+     * @param patientReminder PatientReminder object
+     * @param programInstance ProgramInstance
+     * @param format I18nFormat object
+     * 
+     * @return A message for an program instance.
+     */
     String getMessageFromTemplate( PatientReminder patientReminder, ProgramInstance programInstance, I18nFormat format );
 
+    /**
+     * Get message for sending to a patient from program-stage-instance template
+     * defined
+     * 
+     * @param patientReminder PatientReminder object
+     * @param programStageInstance ProgramStageInstance
+     * @param format I18nFormat object
+     * 
+     * @return A message for an program instance.
+     */
     String getMessageFromTemplate( PatientReminder patientReminder, ProgramStageInstance programStageInstance,
         I18nFormat format );
 
+    /**
+     * Retrieve the phone numbers for sending sms based on a template defined
+     * 
+     * @param patientReminder PatientReminder
+     * @param patient Patient
+     * 
+     * @return The list of the phone numbers ( patient phone numbers, orgunit
+     *         phone numbers, phone numbers of DHIS users at the orgunit OR
+     *         phone numbers of DHIS users in a user group.
+     */
     Set<String> getPhonenumbers( PatientReminder patientReminder, Patient patient );
 
+    /**
+     * Retrieve DHIS users from a template which is defined to send messages to
+     * DHIS users
+     * 
+     * @param patientReminder PatientReminder
+     * @param patient Patient
+     * 
+     * @return The list of DHIS users
+     */
     Set<User> getUsers( PatientReminder patientReminder, Patient patient );
 }

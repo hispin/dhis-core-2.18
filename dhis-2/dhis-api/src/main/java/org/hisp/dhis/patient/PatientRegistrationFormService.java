@@ -79,10 +79,36 @@ public interface PatientRegistrationFormService
 
     Collection<PatientRegistrationForm> getAllPatientRegistrationForms();
 
+    /**
+     * Get custom registration form of a program
+     * 
+     * @param program Program
+     * 
+     * @return PatientRegistrationForm
+     */
     PatientRegistrationForm getPatientRegistrationForm( Program program );
 
+    /**
+     * Get custom registration form which doesn't belong to any program
+     * 
+     * @return PatientRegistrationForm 
+     */
     PatientRegistrationForm getCommonPatientRegistrationForm();
 
+    /**
+     * Prepares the custom registration by injecting required javascripts
+     * and drop down lists.
+     * 
+     * @param htmlCode the HTML code of the data entry form. 
+     * @param program Program which include a custom entry form
+     * @param healthWorkers DHIS users list
+     * @param patient Patient
+     * @param programInstance Program-instance of the patient
+     * @param i18n the i18n object
+     * @param format the I18nFormat object
+     * 
+     * @return HTML code for the form.
+     */
     String prepareDataEntryFormForAdd( String htmlCode, Program program, Collection<User> healthWorkers, Patient patient,
         ProgramInstance programInstance, I18n i18n, I18nFormat format );
 
