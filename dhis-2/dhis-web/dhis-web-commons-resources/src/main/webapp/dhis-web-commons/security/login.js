@@ -37,13 +37,14 @@ login.changeLocale = function( locale )
 {	
 	$.get( 'loginStrings.action?keyApplication=Y&loc=' + locale, function( json ) {
 		$( '#createAccountButton' ).html( json.create_an_account );
-		$( '#usernameLabel' ).html( json.login_username );
-		$( '#passwordLabel' ).html( json.login_password );
+		$( '#signInLabel' ).html( json.sign_in );
+		$( '#j_username' ).attr( 'placeholder', json.login_username );
+		$( '#j_password' ).attr( 'placeholder', json.login_password );
 		$( '#forgotPasswordLink' ).html( json.forgot_password );
 		$( '#createAccountLink' ).html( json.create_an_account );
 		$( '#loginMessage' ).html( json.wrong_username_or_password );
 		$( '#poweredByLabel' ).html( json.powered_by );
-		$( '#submit' ).val( json.login );
+		$( '#submit' ).val( json.sign_in );
 		
 		$( '#titleArea' ).html( json.applicationTitle );		
 		$( '#introArea' ).html( json.keyApplicationIntro );

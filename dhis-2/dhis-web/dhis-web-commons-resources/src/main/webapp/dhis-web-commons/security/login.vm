@@ -34,13 +34,12 @@
             
             <form id="loginForm" action="../../dhis-web-commons-security/login.action" method="post">
                 <div>
-                    <div><label id="usernameLabel" for="j_username">Username</label></div>
-                    <div><input type="text" id="j_username" name="j_username"></div>
-                    <div><label id="passwordLabel" for="j_password">Password</label></div>
-                    <div><input type="password" id="j_password" name="j_password" autocomplete="off"></div>
+                	<div id="signInLabel">Sign in</div>
+                    <div><input type="text" id="j_username" name="j_username" placeholder="Username"></div>
+                    <div><input type="password" id="j_password" name="j_password" autocomplete="off" placeholder="Password"></div>
                 </div>
                 <div id="submitDiv">
-                	<input id="submit" class="button" type="submit" value="Login">
+                	<input id="submit" class="button" type="submit" value="Sign in">
                 </div>
                 #if( $keyAccountRecovery )
                 <div style="padding-bottom: 10px">
