@@ -210,6 +210,15 @@ public class DefaultProgramService
             
             prStg.setRepeatable( programStage.getIrregular() );
             
+            if ( programStage.getStandardInterval() == null )
+            {
+                prStg.setStandardInterval( 0 );
+            }
+            else
+            {
+                prStg.setStandardInterval( programStage.getStandardInterval() );
+            }
+            
             prStg.setCompleted( false );
             
             prStg.setSingleEvent( program.isSingleEvent() );

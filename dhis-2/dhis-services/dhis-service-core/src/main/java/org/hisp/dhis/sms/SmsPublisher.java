@@ -124,6 +124,7 @@ public class SmsPublisher
                 }
                 catch ( Exception e )
                 {
+                    e.printStackTrace();
                     log.error( e );
                     smsSender.sendMessage( e.getMessage(), message.getOriginator() );
                 }

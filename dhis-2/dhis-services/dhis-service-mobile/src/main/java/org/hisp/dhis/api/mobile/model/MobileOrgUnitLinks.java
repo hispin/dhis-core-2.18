@@ -88,6 +88,8 @@ public class MobileOrgUnitLinks
     private String findLostToFollowUpUrl;
     
     private String handleLostToFollowUpUrl;
+    
+    private String generateRepeatableEventUrl;
 
     @XmlAttribute
     public int getId()
@@ -331,6 +333,16 @@ public class MobileOrgUnitLinks
         this.handleLostToFollowUpUrl = handleLostToFollowUpUrl;
     }
 
+    public String getGenerateRepeatableEventUrl()
+    {
+        return generateRepeatableEventUrl;
+    }
+
+    public void setGenerateRepeatableEventUrl( String generateRepeatableEventUrl )
+    {
+        this.generateRepeatableEventUrl = generateRepeatableEventUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
 
         throws IOException
@@ -358,6 +370,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
         dataOutputStream.writeUTF( this.findLostToFollowUpUrl );
         dataOutputStream.writeUTF( this.handleLostToFollowUpUrl );
+        dataOutputStream.writeUTF( this.generateRepeatableEventUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -386,6 +399,7 @@ public class MobileOrgUnitLinks
         this.findPatientInAdvancedUrl = dataInputStream.readUTF();
         this.findLostToFollowUpUrl = dataInputStream.readUTF();
         this.handleLostToFollowUpUrl = dataInputStream.readUTF();
+        this.generateRepeatableEventUrl = dataInputStream.readUTF();
     }
 
     @Override
@@ -447,5 +461,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
         dataOutputStream.writeUTF( this.findLostToFollowUpUrl );
         dataOutputStream.writeUTF( this.handleLostToFollowUpUrl );
+        dataOutputStream.writeUTF( this.generateRepeatableEventUrl );
     }
 }

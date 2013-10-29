@@ -390,25 +390,36 @@ public class DataValueSMSListener
     {
         OrganisationUnit orgunit = null;
         User user = null;
+        
+        //-------------------------> Need to be edit 
         for ( User u : userService.getUsersByPhoneNumber( sender ) )
         {
             OrganisationUnit ou = u.getOrganisationUnit();
 
-            // Might be undefined if the user has more than one org units
-            if ( orgunit == null )
+            if ( ou != null )
             {
-                orgunit = ou;
-            }
-            else if ( orgunit.getId() == ou.getId() )
-            {
-                // Same org unit
-            }
-            else
-            {
-                throw new SMSParserException(
-                    "User is associated with more than one orgunit. Please contact your supervisor." );
+                // Might be undefined if the user has more than one org units
+                if ( orgunit == null )
+                {
+                    orgunit = ou;
+                }
+                else if ( orgunit.getId() == ou.getId() )
+                {
+                    // Same org unit
+                }
+                else
+                {
+                    throw new SMSParserException(
+                        "User is associated with more than one orgunit. Please contact your supervisor." );
+                }
             }
             user = u;
+        }
+        // <-------------------------------------
+        if ( user == null)
+        {
+            throw new SMSParserException(
+            "User is not associated with any orgunit. Please contact your supervisor." );
         }
         
         return user;

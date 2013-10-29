@@ -71,6 +71,7 @@ public class OrgUnitTest
         unit.setFindPatientInAdvancedUrl( "findPatientInAdvanced" );
         unit.setFindLostToFollowUpUrl( "findLostToFollowUpUrl" );
         unit.setHandleLostToFollowUpUrl( "handleLostToFollowUpUrl" );
+        unit.setGenerateRepeatableEventUrl( "generateRepeatableEventUrl" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );
