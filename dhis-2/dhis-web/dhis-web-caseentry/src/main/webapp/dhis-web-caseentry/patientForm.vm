@@ -153,7 +153,7 @@
 	
 	#foreach ($attributeGroup in $attributeGroups )
 		#set($attributes = $attributesMap.get($attributeGroup.displayName))
-		#if( $attributes && $attributes.size() == 0 )
+		#if( $attributes && $attributes.size() > 0 )
 			<tr><td>&nbsp;</td></tr>
 			<tr><th colspan="2" class="heading-column">$attributeGroup.displayName</th></tr>
 			#foreach($attribute in $attributes )
