@@ -64,7 +64,7 @@ function exportFilterButton( filterUid )
     {
         if ( filters[i].id == filterUid )
         {
-            $( "#exportJson" ).attr( "value", filters[i].metaDataUids );
+            $( "#exportJson" ).attr( "value", filters[i].jsonFilter );
             jQuery( "#exportDialog" ).dialog( {
                 title: i18n_export,
                 modal: true
@@ -78,7 +78,7 @@ function exportFilteredMetaData()
 {
     var exportJson = {};
     exportJson.exportDependencies = $( "#exportDependencies" ).is( ":checked" ).toString();
-    exportJson.metaDataUids = $( "#exportJson" ).val();
+    exportJson.jsonFilter = $( "#exportJson" ).val();
 
     $( "#exportJsonValue" ).val( JSON.stringify( exportJson ) );
 
@@ -121,7 +121,7 @@ function editFilterButton( filterUid )
             $( "input[name='name']" ).val( filters[i].name );
             $( "input[name='description']" ).val( filters[i].description );
             $( "input[name='uid']" ).val( filters[i].id );
-            $( "input[name='metaDataUids']" ).val( filters[i].metaDataUids );
+            $( "input[name='jsonFilter']" ).val( filters[i].jsonFilter );
             $( "input[name='command']" ).val( "update" );
         }
     }
