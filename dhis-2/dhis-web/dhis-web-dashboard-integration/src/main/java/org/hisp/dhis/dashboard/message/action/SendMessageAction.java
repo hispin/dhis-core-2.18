@@ -93,6 +93,13 @@ public class SendMessageAction
     {
         this.text = text;
     }
+    
+    private boolean ignoreTree;
+
+    public void setIgnoreTree( boolean ignoreTree )
+    {
+        this.ignoreTree = ignoreTree;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -105,9 +112,12 @@ public class SendMessageAction
 
         Set<User> users = new HashSet<User>();
 
-        for ( OrganisationUnit unit : selectionTreeManager.getReloadedSelectedOrganisationUnits() )
+        if ( !ignoreTree )
         {
-            users.addAll( unit.getUsers() );
+            for ( OrganisationUnit unit : selectionTreeManager.getReloadedSelectedOrganisationUnits() )
+            {
+                users.addAll( unit.getUsers() );
+            }
         }
 
         String[] recipientsArray = recipients.split( "," );
