@@ -152,6 +152,12 @@ public class ActivityReportingServiceImpl
     private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
+    
+    private CurrentUserService currentUserService;
+    
+    private MessageService messageService;
+    
+    private SmsSender smsSender;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -166,15 +172,11 @@ public class ActivityReportingServiceImpl
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
-    private CurrentUserService currentUserService;
-
     @Required
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-
-    private MessageService messageService;
 
     @Required
     public void setMessageService( MessageService messageService )
@@ -182,28 +184,9 @@ public class ActivityReportingServiceImpl
         this.messageService = messageService;
     }
 
-    private SmsSender smsSender;
-
     public void setSmsSender( SmsSender smsSender )
     {
         this.smsSender = smsSender;
-    }
-
-    public PatientIdentifierTypeService getPatientIdentifierTypeService()
-    {
-        return patientIdentifierTypeService;
-    }
-
-    private Collection<PatientIdentifier> patientIdentifiers;
-
-    public Collection<PatientIdentifier> getPatientIdentifiers()
-    {
-        return patientIdentifiers;
-    }
-
-    public void setPatientIdentifiers( Collection<PatientIdentifier> patientIdentifiers )
-    {
-        this.patientIdentifiers = patientIdentifiers;
     }
 
     private Collection<PatientIdentifierType> patientIdentifierTypes;
@@ -249,7 +232,6 @@ public class ActivityReportingServiceImpl
         this.patientId = patientId;
     }
 
-    @Required
     public void setProgramStageInstanceService(
         org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService )
     {
@@ -1223,6 +1205,7 @@ public class ActivityReportingServiceImpl
 
                 // is repeatable
                 mobileProgramStage.setRepeatable( programStage.getIrregular() );
+                
                 if ( programStage.getStandardInterval() == null )
                 {
                     mobileProgramStage.setStandardInterval( 0 );
@@ -2138,6 +2121,38 @@ public class ActivityReportingServiceImpl
             return notification;
         }
     }
+    
+    
+    @Override
+    public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient generateRepeatableEvent( int orgUnitId, String eventInfo )
+        throws NotAllowedException
+    {
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId ); 
+        
+        String mobileProgramStageId = eventInfo.substring( 0, eventInfo.indexOf( "$" ) );
+        
+        String nextDueDate = eventInfo.substring( eventInfo.indexOf( "$" )+1, eventInfo.length() );
+        
+        ProgramStageInstance oldProgramStageIntance = programStageInstanceService.getProgramStageInstance( Integer.valueOf( mobileProgramStageId ) );
+        
+        ProgramInstance programInstance = oldProgramStageIntance.getProgramInstance(); 
+        
+        ProgramStageInstance newProgramStageInstance = new ProgramStageInstance( programInstance, oldProgramStageIntance.getProgramStage() );
+        
+        newProgramStageInstance.setDueDate( PeriodUtil.stringToDate( nextDueDate ) );
+        
+        newProgramStageInstance.setOrganisationUnit( orgUnit );
+        
+        programInstance.getProgramStageInstances().add( newProgramStageInstance );
+        
+        programStageInstanceService.addProgramStageInstance( newProgramStageInstance );
+        
+        programInstanceService.updateProgramInstance( programInstance );
+        
+        org.hisp.dhis.api.mobile.model.LWUITmodel.Patient mobilePatient = getPatientModel( patientService.getPatient( programInstance.getPatient().getId() ));
+        
+        return mobilePatient;
+    }
 
     private org.hisp.dhis.api.mobile.model.LWUITmodel.Patient patientMobile;
 
@@ -2150,5 +2165,4 @@ public class ActivityReportingServiceImpl
     {
         this.patientMobile = patientMobile;
     }
-
 }

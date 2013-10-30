@@ -105,5 +105,8 @@ public interface ActivityReportingService
 
     public Notification handleLostToFollowUp( LostEvent lostEvent )
         throws NotAllowedException;
+    
+    public Patient generateRepeatableEvent( int orgUnitId, String eventInfo )
+        throws NotAllowedException;
 
 }

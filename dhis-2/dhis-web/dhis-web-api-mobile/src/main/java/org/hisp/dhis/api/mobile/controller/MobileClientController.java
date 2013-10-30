@@ -153,13 +153,13 @@ public class MobileClientController
         orgUnit.setEnrollProgramUrl( getUrl( request, unit.getId(), "enrollProgram" ) );
         orgUnit.setGetVariesInfoUrl( getUrl( request, unit.getId(), "getVariesInfo" ) );
         orgUnit.setAddRelationshipUrl( getUrl( request, unit.getId(), "addRelationship" ) );
-        orgUnit.setDownloadAnonymousProgramUrl( getUrl( request, unit.getId(), "downloadAnonymousProgramUrl" ) );
+        orgUnit.setDownloadAnonymousProgramUrl( getUrl( request, unit.getId(), "downloadAnonymousProgram" ) );
         orgUnit.setFindProgramUrl( getUrl( request, unit.getId(), "findProgram" ) );
         orgUnit.setFindLatestPersonUrl( getUrl( request, unit.getId(), "findLatestPerson" ) );
         orgUnit.setFindPatientInAdvancedUrl( getUrl( request, unit.getId(), "findPatientInAdvanced" ) );
         orgUnit.setFindLostToFollowUpUrl( getUrl( request, unit.getId(), "findLostToFollowUp" ) );
-        orgUnit.setHandleLostToFollowUpUrl( getUrl( request, unit.getId(), "handleLostToFollowUpUrl" ) );
-        orgUnit.setGenerateRepeatableEventUrl( getUrl( request, unit.getId(), "generateRepeatableEventUrl" ) );
+        orgUnit.setHandleLostToFollowUpUrl( getUrl( request, unit.getId(), "handleLostToFollowUp" ) );
+        orgUnit.setGenerateRepeatableEventUrl( getUrl( request, unit.getId(), "generateRepeatableEvent" ) );
 
         // generate URL for download new version
         String full = UrlUtils.buildFullRequestUrl( request );
