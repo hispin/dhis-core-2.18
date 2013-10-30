@@ -83,9 +83,26 @@ public class OrganisationUnitController
 
         Integer level = null;
 
+        Integer maxLevel = null;
+
         if ( options.getOptions().containsKey( "level" ) )
         {
             level = Integer.parseInt( options.getOptions().get( "level" ) );
+        }
+
+        if ( options.getOptions().containsKey( "maxLevel" ) )
+        {
+            maxLevel = Integer.parseInt( options.getOptions().get( "maxLevel" ) );
+
+            if ( organisationUnitService.getOrganisationUnitLevelByLevel( maxLevel ) == null )
+            {
+                maxLevel = null;
+            }
+
+            if ( level == null )
+            {
+                level = 1;
+            }
         }
 
         if ( "true".equals( options.getOptions().get( "userOnly" ) ) )
@@ -101,9 +118,23 @@ public class OrganisationUnitController
                 Collections.sort( entityList, OrganisationUnitByLevelComparator.INSTANCE );
             }
         }
-        else if ( level != null )
+        else if ( maxLevel != null || level != null )
         {
-            entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+            entityList = new ArrayList<OrganisationUnit>();
+
+            if ( maxLevel == null )
+            {
+                entityList.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+            }
+            else
+            {
+                entityList.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+
+                while ( !level.equals( maxLevel ) )
+                {
+                    entityList.addAll( organisationUnitService.getOrganisationUnitsAtLevel( ++level ) );
+                }
+            }
         }
         else if ( levelSorted )
         {
@@ -128,8 +159,8 @@ public class OrganisationUnitController
     }
 
     @Override
-    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
-    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -140,49 +171,45 @@ public class OrganisationUnitController
             throw new NotFoundException( uid );
         }
 
-        if ( options.getOptions().containsKey( "level" ) )
-        {
-            int level = -1;
+        Integer maxLevel = null;
 
+        if ( options.getOptions().containsKey( "maxLevel" ) )
+        {
             try
             {
-                level = Integer.parseInt( options.getOptions().get( "level" ) );
+                maxLevel = Integer.parseInt( options.getOptions().get( "maxLevel" ) );
             }
-            catch ( Exception e )
+            catch ( NumberFormatException ignored )
             {
-                level = entity.getOrganisationUnitLevel();
-            }
-
-            if ( level < 1 || level > organisationUnitService.getNumberOfOrganisationalLevels() )
-            {
-                level = entity.getOrganisationUnitLevel();
             }
 
-            if ( level == entity.getOrganisationUnitLevel() )
+            if ( maxLevel != null && (organisationUnitService.getOrganisationUnitLevelByLevel( maxLevel ) == null
+                || maxLevel > organisationUnitService.getNumberOfOrganisationalLevels()) )
             {
-                model.addAttribute( "model", entity );
-            }
-            else if ( level < entity.getOrganisationUnitLevel() )
-            {
-                while ( level < entity.getOrganisationUnitLevel() )
-                {
-                    entity = entity.getParent();
-                }
-
-                model.addAttribute( "model", entity );
-            }
-            else
-            {
-                List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>(
-                    organisationUnitService.getOrganisationUnitsAtLevel( level, entity ) );
-
-                MetaData metaData = new MetaData();
-                metaData.setOrganisationUnits( entities );
-
-                model.addAttribute( "model", metaData );
+                maxLevel = organisationUnitService.getNumberOfOrganisationalLevels();
             }
         }
-        if ( options.getOptions().containsKey( "includeDescendants" ) && Boolean.parseBoolean( options.getOptions().get( "includeDescendants" ) ) )
+
+        if ( maxLevel != null )
+        {
+            List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>();
+            entities.add( entity );
+
+            int level = entity.getOrganisationUnitLevel();
+
+            while ( maxLevel > level )
+            {
+                entities.addAll( organisationUnitService.getOrganisationUnitsAtLevel( ++level, entity ) );
+            }
+
+            MetaData metaData = new MetaData();
+            metaData.setOrganisationUnits( entities );
+
+            model.addAttribute( "model", metaData );
+
+            return StringUtils.uncapitalize( getEntitySimpleName() );
+        }
+        else if ( options.getOptions().containsKey( "includeDescendants" ) && Boolean.parseBoolean( options.getOptions().get( "includeDescendants" ) ) )
         {
             List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>(
                 organisationUnitService.getOrganisationUnitsWithChildren( uid ) );
@@ -192,7 +219,7 @@ public class OrganisationUnitController
 
             model.addAttribute( "model", metaData );
         }
-        if ( options.getOptions().containsKey( "includeChildren" ) && Boolean.parseBoolean( options.getOptions().get( "includeChildren" ) ) )
+        else if ( options.getOptions().containsKey( "includeChildren" ) && Boolean.parseBoolean( options.getOptions().get( "includeChildren" ) ) )
         {
             List<OrganisationUnit> entities = new ArrayList<OrganisationUnit>();
             entities.add( entity );
