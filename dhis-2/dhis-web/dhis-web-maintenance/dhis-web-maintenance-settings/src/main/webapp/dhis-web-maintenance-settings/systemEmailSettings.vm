@@ -6,7 +6,7 @@
 				smtpPort: getFieldValue( 'smtpPort' ),
 				smtpUsername: getFieldValue( 'smtpUsername' ),
 				smtpPassword: getFieldValue( 'smtpPassword' ),
-				smtpTls: getFieldValue( 'smtpTls' )
+				smtpTls: $( '#smtpTls' ).is( ':checked' )
 			}, function( json ) {
 				if ( json.response == "success" ) {
 					setHeaderDelayMessage( json.message );
