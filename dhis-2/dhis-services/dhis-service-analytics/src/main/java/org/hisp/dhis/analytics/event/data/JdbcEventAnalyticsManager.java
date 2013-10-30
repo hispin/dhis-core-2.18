@@ -178,7 +178,7 @@ public class JdbcEventAnalyticsManager
     
     public Grid getEvents( EventQueryParams params, Grid grid )
     {
-        String sql = "select psi,ps,executiondate,ouname,oucode," + getSelectColumns( params ) + " ";
+        String sql = "select psi,ps,executiondate,coordinates,ouname,oucode," + getSelectColumns( params ) + " ";
 
         // ---------------------------------------------------------------------
         // Criteria
