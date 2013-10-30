@@ -46,6 +46,8 @@ jQuery(function() {
 #organisationUnitSelectionTree( true true false )
 </td>
 </tr>
+#else
+<input type="hidden" name="ignoreTree" value="true">
 #end
 
 <tr>
