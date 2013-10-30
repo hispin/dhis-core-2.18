@@ -231,11 +231,12 @@ public class JdbcEventAnalyticsTableManager
         String[] psi = { "psi", "character(11) not null", "psi.uid" };
         String[] ps = { "ps", "character(11) not null", "ps.uid" };
         String[] ed = { "executiondate", "date", "psi.executiondate" };
+        String[] cord = { "coordinates", "character varying(100)", "psi.coordinates" };
         String[] ou = { "ou", "character(11) not null", "ou.uid" };
         String[] oun = { "ouname", "character varying(230) not null", "ou.name" };
         String[] ouc = { "oucode", "character varying(50)", "ou.code" };
         
-        columns.addAll( Arrays.asList( gender, isdead, psi, ps, ed, ou, oun, ouc ) );
+        columns.addAll( Arrays.asList( gender, isdead, psi, ps, ed, cord, ou, oun, ouc ) );
         
         return columns;
     }
