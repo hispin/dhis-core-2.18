@@ -380,7 +380,7 @@ public class MobileOrganisationUnitController
         return activityReportingService.addRelationship( enrollmentRelationship, id );
     }
 
-    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/downloadAnonymousProgramUrl" )
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/downloadAnonymousProgram" )
     @ResponseBody
     public Program getAnonymousProgram( @PathVariable int id, @RequestHeader( "programType" ) String programType )
         throws NotAllowedException
@@ -404,12 +404,20 @@ public class MobileOrganisationUnitController
         return activityReportingService.findLostToFollowUp( id, programId );
     }
     
-    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/handleLostToFollowUpUrl" )
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/handleLostToFollowUp" )
     @ResponseBody
     public Notification handleLostToFollowUp( @PathVariable int id, @RequestBody LostEvent lostEvent )
         throws NotAllowedException
     {
         return activityReportingService.handleLostToFollowUp( lostEvent );
+    }
+    
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/generateRepeatableEvent" )
+    @ResponseBody
+    public Patient generateRepeatableEvent( @PathVariable int id, @RequestHeader( "eventInfo" ) String eventInfo )
+        throws NotAllowedException
+    {
+        return activityReportingService.generateRepeatableEvent( id, eventInfo );
     }
 
     // Supportive methods
