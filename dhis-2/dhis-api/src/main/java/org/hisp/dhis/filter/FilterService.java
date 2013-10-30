@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.metadata;
+package org.hisp.dhis.filter;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,32 +28,30 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import net.sf.json.JSONObject;
-import org.hisp.dhis.filter.Filter;
-import org.hisp.dhis.scheduling.TaskId;
-
-import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
 /**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
-public interface ExportService
+public interface FilterService
 {
-    MetaData getMetaData( Options options );
+    Filter getFilter( Integer id );
 
-    MetaData getMetaData( Options options, TaskId taskId );
+    Filter getFilterByUid( String uid );
 
-//  @author Ovidiu Rosu <rosu.ovi@gmail.com>
-    MetaData getFilteredMetaData( FilterOptions filterOptions ) throws IOException;
+    Collection<Filter> getAllFilters();
 
-    MetaData getFilteredMetaData( FilterOptions filterOptions, TaskId taskId ) throws IOException;
+    Collection<Filter> getFiltersBetweenByName( String name, int first, int max );
 
-    List<Filter> getFilters();
+    Collection<Filter> getFiltersBetween( int first, int max );
 
-    void saveFilter( JSONObject json ) throws IOException;
+    void saveFilter( Filter filter );
 
-    void updateFilter( JSONObject json ) throws IOException;
+    void updateFilter( Filter filter );
 
-    void deleteFilter( JSONObject json ) throws IOException;
+    void deleteFilter( Filter filter );
+
+    int getFilterCountByName( String name );
+
+    int getFilterCount();
 }
