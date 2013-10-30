@@ -73,7 +73,6 @@
         url += "?assumeTrue=false&" + $("#exportForm").serialize();
 
         log("url" + url);
-
         window.location=url;
     }
 </script>

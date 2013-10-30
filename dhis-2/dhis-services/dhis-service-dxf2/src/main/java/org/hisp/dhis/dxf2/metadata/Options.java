@@ -163,6 +163,10 @@ public class Options
         this.assumeTrue = options.get( "assumeTrue" ) == null || options.get( "assumeTrue" ).equalsIgnoreCase( "true" );
     }
 
+    public Options()
+    {
+    }
+
     //--------------------------------------------------------------------------
     // Get options for classes/strings etc
     //--------------------------------------------------------------------------

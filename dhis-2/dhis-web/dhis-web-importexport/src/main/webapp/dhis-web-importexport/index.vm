@@ -9,6 +9,8 @@
     #introListImgItem( "displayExternalImportMenu.action" "dhis14_import" "import" )
 
     #introListImgItem( "dxf2MetaDataExport.action" "metadata_export" "export" )
+##  @author Ovidiu Rosu <rosu.ovi@gmail.com>
+    #introListImgItem( "dxf2FilteredMetaDataExport.action" "filtered_metadata_export" "export")
     #introListImgItem( "displayDataValueExportForm.action" "data_export" "export" )
     #introListImgItem( "displayEventExportForm.action" "event_data_export" "export" )
     #introListImgItem( "displayExternalExportMenu.action" "export_to_other_systems" "export" )

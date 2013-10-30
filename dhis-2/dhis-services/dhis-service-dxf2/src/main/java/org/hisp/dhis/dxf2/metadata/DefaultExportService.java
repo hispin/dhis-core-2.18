@@ -28,15 +28,15 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.filter.Filter;
+import org.hisp.dhis.filter.FilterService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
@@ -46,6 +46,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -54,11 +62,9 @@ public class DefaultExportService
     implements ExportService
 {
     private static final Log log = LogFactory.getLog( DefaultExportService.class );
-
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
-
     @Autowired
     protected IdentifiableObjectManager manager;
 
@@ -68,8 +74,14 @@ public class DefaultExportService
     @Autowired
     private Notifier notifier;
 
+    @Autowired
+    private MetaDataDependencyService metaDataDependencyService;
+
+    @Autowired
+    private FilterService filterService;
+
     //-------------------------------------------------------------------------------------------------------
-    // ExportService Implementation
+    // ExportService Implementation - MetaData
     //-------------------------------------------------------------------------------------------------------
 
     @Override
@@ -138,5 +150,121 @@ public class DefaultExportService
         }
 
         return metaData;
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // ExportService Implementation - Detailed MetaData Export
+    //-------------------------------------------------------------------------------------------------------
+
+    //@author Ovidiu Rosu <rosu.ovi@gmail.com>
+    @Override
+    public MetaData getFilteredMetaData( FilterOptions filterOptions ) throws IOException
+    {
+        return getFilteredMetaData( filterOptions, null );
+    }
+
+    @Override
+    public MetaData getFilteredMetaData( FilterOptions filterOptions, TaskId taskId ) throws IOException
+    {
+        MetaData metaData = new MetaData();
+        metaData.setCreated( new Date() );
+
+        log.info( "User '" + currentUserService.getCurrentUsername() + "' started export at " + new Date() );
+
+        if ( taskId != null )
+        {
+            notifier.notify( taskId, "Exporting meta-data" );
+        }
+
+        Object jsonFilter = filterOptions.getRestrictionsJson().get( "jsonFilter" );
+        String json;
+
+        if ( jsonFilter == null )
+        {
+            json = "{}";
+        }
+        else
+        {
+            json = jsonFilter.toString();
+        }
+
+
+        Map<String, List<String>> identifiableObjectUidMap = new ObjectMapper().readValue( json, new TypeReference<HashMap<String, List<String>>>()
+        {
+        } );
+
+        Map<String, List<IdentifiableObject>> identifiableObjectMap;
+
+        if ( filterOptions.getRestrictionsJson().get( "exportDependencies" ).equals( "true" ) )
+        {
+            identifiableObjectMap = metaDataDependencyService.getIdentifiableObjectWithDependencyMap( identifiableObjectUidMap );
+        }
+        else
+        {
+            identifiableObjectMap = metaDataDependencyService.getIdentifiableObjectMap( identifiableObjectUidMap );
+        }
+
+        for ( Map.Entry<String, List<IdentifiableObject>> identifiableObjectEntry : identifiableObjectMap.entrySet() )
+        {
+            String message = "Exporting " + identifiableObjectEntry.getValue().size() + " " + StringUtils.capitalize( identifiableObjectEntry.getKey() );
+            log.info( message );
+
+            if ( taskId != null )
+            {
+                notifier.notify( taskId, message );
+            }
+
+            ReflectionUtils.invokeSetterMethod( identifiableObjectEntry.getKey(), metaData, identifiableObjectEntry.getValue() );
+        }
+
+        log.info( "Export done at " + new Date() );
+
+        if ( taskId != null )
+        {
+            notifier.notify( taskId, NotificationLevel.INFO, "Export done", true );
+        }
+
+        return metaData;
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // ExportService Implementation - Filter functionality
+    //-------------------------------------------------------------------------------------------------------
+
+    @Override
+    public List<Filter> getFilters()
+    {
+        return (List<Filter>) filterService.getAllFilters();
+    }
+
+    @Override
+    public void saveFilter( JSONObject json ) throws IOException
+    {
+        Filter filter = new Filter( json.getString( "name" ) );
+        filter.setDescription( json.getString( "description" ) );
+        filter.setJsonFilter( json.getString( "jsonFilter" ) );
+        filter.setAutoFields();
+
+        filterService.saveFilter( filter );
+    }
+
+    @Override
+    public void updateFilter( JSONObject json ) throws IOException
+    {
+        Filter filter = filterService.getFilterByUid( json.getString( "uid" ) );
+        filter.setName( json.getString( "name" ) );
+        filter.setDescription( json.getString( "description" ) );
+        filter.setJsonFilter( json.getString( "jsonFilter" ) );
+        filter.setLastUpdated( new Date() );
+
+        filterService.updateFilter( filter );
+    }
+
+    @Override
+    public void deleteFilter( JSONObject json ) throws IOException
+    {
+        Filter filter = filterService.getFilterByUid( json.getString( "uid" ) );
+
+        filterService.deleteFilter( filter );
     }
 }

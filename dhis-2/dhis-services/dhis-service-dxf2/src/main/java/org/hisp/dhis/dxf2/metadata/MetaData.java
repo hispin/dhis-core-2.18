@@ -50,6 +50,7 @@ import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.filter.Filter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -180,6 +181,9 @@ public class MetaData
     private List<ProgramStage> programStages = new ArrayList<ProgramStage>();
 
     private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
+
+    //@author Ovidiu Rosu <rosu.ovi@gmail.com>
+    private List<Filter> filters = new ArrayList<Filter>();
 
     private List<PatientIdentifierType> personIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
@@ -812,6 +816,20 @@ public class MetaData
     public void setDimensions( List<DimensionalObject> dimensions )
     {
         this.dimensions = dimensions;
+    }
+
+    //@author Ovidiu Rosu <rosu.ovi@gmail.com>
+    @JsonProperty
+    @JacksonXmlElementWrapper(localName = "filters", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "filter", namespace = DxfNamespaces.DXF_2_0)
+    public List<Filter> getFilters()
+    {
+        return filters;
+    }
+
+    public void setFilters( List<Filter> filters )
+    {
+        this.filters = filters;
     }
 
     @Override

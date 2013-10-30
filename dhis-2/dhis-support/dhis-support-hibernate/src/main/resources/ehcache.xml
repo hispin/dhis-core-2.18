@@ -116,6 +116,9 @@
   
   <cache name="org.hisp.dhis.dataset.LockException" maxElementsInMemory="1000" />
 
+  <!--@author Ovidiu Rosu <rosu.ovi@gmail.com>-->
+  <cache name="org.hisp.dhis.filter.Filter" maxElementsInMemory="100" />
+
   <!-- Hibernate Associations -->
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo.categories" maxElementsInMemory="300" />
