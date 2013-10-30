@@ -171,7 +171,8 @@ public class DefaultValidationRuleService
     @Override
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources )
     {
-        log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "]" );
+        log.info( "Validate start: " + startDate + " end: " + endDate + " sources: " + sources.size() );
+        
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = getAllValidationRules();
         
@@ -183,7 +184,8 @@ public class DefaultValidationRuleService
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
         ValidationRuleGroup group )
     {
-    	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " sources[" + sources.size() + "] group=" + group.getName() );
+    	log.info( "Validate start:" + startDate + " end: " + endDate + " sources: " + sources.size() + " group: " + group.getName() );
+    	
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = group.getMembers();
         
@@ -194,7 +196,8 @@ public class DefaultValidationRuleService
     @Override
     public Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source )
     {
-    	log.info( "Validate startDate=" + startDate + " endDate=" + endDate + " source=" + source.getName() );
+    	log.info( "Validate start: " + startDate + " end: " + endDate + " source: " + source.getName() );
+    	
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = getAllValidationRules();
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
@@ -207,8 +210,9 @@ public class DefaultValidationRuleService
     @Override
     public Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source )
     {
-    	log.info( "Validate dataSet=" + dataSet.getName() + " period=[" + period.getPeriodType().getName() + " "
-            + period.getStartDate() + " " + period.getEndDate() + "]" + " source=" + source.getName() );
+    	log.info( "Validate data set: " + dataSet.getName() + " period: " + period.getPeriodType().getName() + " "
+            + period.getStartDate() + " " + period.getEndDate() + " source: " + source.getName() );
+    	
         Collection<Period> periods = new ArrayList<Period>();
         periods.add( period );
 
@@ -222,6 +226,8 @@ public class DefaultValidationRuleService
         {
             rules = getValidationTypeRulesForDataElements( dataSet.getDataElements() );
         }
+        
+        log.info( "Using validation rules: " + rules.size() );
 
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( source );
