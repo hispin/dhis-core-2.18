@@ -640,6 +640,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE datavalue ALTER COLUMN lastupdated TYPE timestamp" );
         executeSql( "ALTER TABLE completedatasetregistration ALTER COLUMN date TYPE timestamp" );
         executeSql( "ALTER TABLE message ALTER COLUMN userid DROP NOT NULL" );
+        executeSql( "ALTER TABLE message ALTER COLUMN messagetext TYPE text" );
         
         executeSql( "delete from usersetting where name = 'dashboardConfig' or name = 'dashboardConfiguration'" );
         executeSql( "ALTER TABLE interpretation ALTER COLUMN userid DROP NOT NULL" );
