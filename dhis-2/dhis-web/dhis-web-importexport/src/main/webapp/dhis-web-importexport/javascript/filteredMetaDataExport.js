@@ -27,6 +27,7 @@ jQuery( function ()
     if ( $( "#jsonFilter" ).attr( "value" ) != "" )
     {
         selectAllMetaDataCategories();
+
         $( "body" ).ajaxComplete( function ()
         {
             applyFilter();
@@ -44,15 +45,15 @@ function loadMetaDataCategories()
 
         $( "#checkboxSelectAll" + metaDataArray[i] ).change( function ()
         {
-            var metaDataCategoryName = $( this ).attr( "name" );
+            var metaDataCategoryName = $(this).attr("name");
 
-            if ( $( this ).is( ":checked" ) )
-            {
-                $( this ).attr( 'checked', true );
-                selectAllValuesByCategory( metaDataCategoryName );
-            } else
-            {
-                deselectValuesByCategory( metaDataCategoryName );
+            if( $(this).is(":checked") ) {
+                $(this).attr('checked', true);
+                $( "#heading" + metaDataCategoryName ).css( "background", "#CFFFB3 50% 50% repeat-x" );
+                // selectAllValuesByCategory(metaDataCategoryName);
+            } else {
+                // deselectValuesByCategory(metaDataCategoryName);
+                $( "#heading" + metaDataCategoryName ).css( "background", "" );
             }
         } );
     }
@@ -68,13 +69,11 @@ function insertMetaDataCategoryHeadingDesign( metaDataCategoryName )
 // Insert MetaData HTML & CSS for a Category
 function insertMetaDataCategoryDesign( metaDataCategoryName )
 {
-    if ( $( "#mainDiv" + metaDataCategoryName ).is( ":empty" ) )
-    {
+    if ( $( "#mainDiv" + metaDataCategoryName ).is( ":empty" ) ) {
         var design = generateMetaDataCategoryDesign( metaDataCategoryName );
         $( "#mainDiv" + metaDataCategoryName ).append( design );
         loadMetaData( metaDataCategoryName );
-    } else
-    {
+    } else {
         deselectAllValues();
     }
 }
@@ -141,6 +140,7 @@ function generateMetaDataCategoryDesign( metaDataCategoryName )
 function moveSelected( metaDataCategoryName )
 {
     dhisAjaxSelect_moveAllSelected( "available" + metaDataCategoryName );
+
     if ( $( "#selected" + metaDataCategoryName + " option" ).length > 0 )
     {
         $( "#heading" + metaDataCategoryName ).css( "background", "#CFFFB3 50% 50% repeat-x" );
@@ -203,21 +203,20 @@ function Filter()
 // Load MetaData by Category
 function loadMetaData( metaDataCategoryName )
 {
-    $( "#available" + metaDataCategoryName ).dhisAjaxSelect(
+    $( "#available" + metaDataCategoryName ).dhisAjaxSelect( {
+        source: "../api/" + lowercaseFirstLetter( metaDataCategoryName ) + ".json?links=false&paging=false",
+        iterator: lowercaseFirstLetter( metaDataCategoryName ),
+        connectedTo: "selected" + metaDataCategoryName,
+        handler: function ( item )
         {
-            source: "../api/" + lowercaseFirstLetter( metaDataCategoryName ) + ".json?links=false&paging=false",
-            iterator: lowercaseFirstLetter( metaDataCategoryName ),
-            connectedTo: "selected" + metaDataCategoryName,
-            handler: function ( item )
-            {
-                var option = jQuery( "<option/>" );
-                option.text( item.name );
-                option.attr( "name", item.name );
-                option.attr( "value", item.id );
+            var option = jQuery( "<option/>" );
+            option.text( item.name );
+            option.attr( "name", item.name );
+            option.attr( "value", item.id );
 
-                return option;
-            }
-        } );
+            return option;
+        }
+    } );
 }
 
 // -----------------------------------------------------------------------------
@@ -250,19 +249,24 @@ function getSelectedUidsJson()
 
     for ( var i = 0; i < metaDataArray.length; i++ )
     {
-        var metaDataCategoryValues = [];
+        var metaDataCategory = lowercaseFirstLetter( metaDataArray[i] );
 
-        var values = $( "#selected" + metaDataArray[i] ).val();
+        if( $("#checkboxSelectAll" + metaDataArray[i]).is(':checked') ) {
+            jsonFilter[metaDataCategory + "_all"] = true;
+        } else {
+            var metaDataCategoryValues = [];
 
-        if ( values != undefined )
-        {
-            metaDataCategoryValues = values;
-        }
+            var values = $( "#selected" + metaDataArray[i] ).val();
 
-        if ( metaDataCategoryValues.length != 0 )
-        {
-            var metaDataCategory = lowercaseFirstLetter( metaDataArray[i] );
-            jsonFilter[metaDataCategory] = metaDataCategoryValues;
+            if ( values != undefined )
+            {
+                metaDataCategoryValues = values;
+            }
+
+            if ( metaDataCategoryValues.length != 0 )
+            {
+                jsonFilter[metaDataCategory] = metaDataCategoryValues;
+            }
         }
     }
 
@@ -350,7 +354,11 @@ function applyFilter()
     {
         category = lowercaseFirstLetter( metaDataArray[i] );
 
-        if ( jsonFilter.hasOwnProperty( category ) )
+        if( jsonFilter[category + "_all"] && jsonFilter[category + "_all"] == true ) {
+            $("#checkboxSelectAll" + metaDataArray[i]).attr('checked', true);
+            $("#heading" + metaDataArray[i]).css("background", "#CFFFB3 50% 50% repeat-x");
+        }
+        else if ( jsonFilter.hasOwnProperty( category ) )
         {
             var uidValues = jsonFilter[category];
 
