@@ -189,7 +189,7 @@ public class DefaultExportService
         }
 
 
-        Map<String, List<String>> identifiableObjectUidMap = new ObjectMapper().readValue( json, new TypeReference<HashMap<String, List<String>>>()
+        Map<String, Object> identifiableObjectUidMap = new ObjectMapper().readValue( json, new TypeReference<HashMap<String, Object>>()
         {
         } );
 

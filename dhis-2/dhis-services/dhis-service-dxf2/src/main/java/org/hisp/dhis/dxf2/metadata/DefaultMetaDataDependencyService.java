@@ -90,19 +90,31 @@ public class DefaultMetaDataDependencyService
     // Get MetaData dependency Map
     //--------------------------------------------------------------------------
 
-    public Map<String, List<IdentifiableObject>> getIdentifiableObjectMap( Map<String, List<String>> identifiableObjectUidMap )
+    public Map<String, List<IdentifiableObject>> getIdentifiableObjectMap( Map<String, Object> identifiableObjectUidMap )
     {
         Map<String, List<IdentifiableObject>> identifiableObjectMap = new HashMap<String, List<IdentifiableObject>>();
 
-        for ( Map.Entry<String, List<String>> identifiableObjectUidEntry : identifiableObjectUidMap.entrySet() )
+        for ( Map.Entry<String, Object> identifiableObjectUidEntry : identifiableObjectUidMap.entrySet() )
         {
             String className = identifiableObjectUidEntry.getKey();
+
             for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
             {
-                if ( entry.getValue().equals( className ) )
+                if ( className.equals( (entry.getValue() + "_all") ) )
+                {
+                    Boolean o = (Boolean) identifiableObjectUidMap.get( className );
+
+                    if ( o != null && o )
+                    {
+                        Class<? extends IdentifiableObject> identifiableObjectClass = entry.getKey();
+                        Collection<? extends IdentifiableObject> identifiableObjects = manager.getAll( identifiableObjectClass );
+                        identifiableObjectMap.put( entry.getValue(), new ArrayList<IdentifiableObject>( identifiableObjects ) );
+                    }
+                }
+                else if ( entry.getValue().equals( className ) )
                 {
                     Class<? extends IdentifiableObject> identifiableObjectClass = entry.getKey();
-                    Collection<? extends IdentifiableObject> identifiableObjects = manager.getByUid( identifiableObjectClass, identifiableObjectUidEntry.getValue() );
+                    Collection<? extends IdentifiableObject> identifiableObjects = manager.getByUid( identifiableObjectClass, (Collection<String>) identifiableObjectUidEntry.getValue() );
 
                     identifiableObjectMap.put( entry.getValue(), new ArrayList<IdentifiableObject>( identifiableObjects ) );
                 }
@@ -112,7 +124,7 @@ public class DefaultMetaDataDependencyService
         return identifiableObjectMap;
     }
 
-    public Map<String, List<IdentifiableObject>> getIdentifiableObjectWithDependencyMap( Map<String, List<String>> identifiableObjectUidMap )
+    public Map<String, List<IdentifiableObject>> getIdentifiableObjectWithDependencyMap( Map<String, Object> identifiableObjectUidMap )
     {
         Map<String, List<IdentifiableObject>> identifiableObjectMap = getIdentifiableObjectMap( identifiableObjectUidMap );
         Collection<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>();
