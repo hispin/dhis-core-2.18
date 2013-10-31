@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport.action.dxf2;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.filter.Filter;
+import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.filter.FilterService;
 
 import java.util.ArrayList;
@@ -55,16 +55,16 @@ public class GetFilterListSortOrderAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<Filter> filters;
+    private List<MetaDataFilter> filters;
 
-    public List<Filter> getFilters()
+    public List<MetaDataFilter> getFilters()
     {
         return filters;
     }
 
-    public void setFilters( List<Filter> filters )
+    public void setFilters( List<MetaDataFilter> metaDataFilters )
     {
-        this.filters = filters;
+        this.filters = metaDataFilters;
     }
 
     // -------------------------------------------------------------------------
@@ -74,7 +74,7 @@ public class GetFilterListSortOrderAction
     @Override
     public String execute() throws Exception
     {
-        filters = new ArrayList<Filter>( filterService.getAllFilters() );
+        filters = new ArrayList<MetaDataFilter>( filterService.getAllFilters() );
 
         return SUCCESS;
     }

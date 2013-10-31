@@ -29,7 +29,7 @@ package org.hisp.dhis.dxf2.metadata;
  */
 
 import net.sf.json.JSONObject;
-import org.hisp.dhis.filter.Filter;
+import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.scheduling.TaskId;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public interface ExportService
 
     MetaData getFilteredMetaData( FilterOptions filterOptions, TaskId taskId ) throws IOException;
 
-    List<Filter> getFilters();
+    List<MetaDataFilter> getFilters();
 
     void saveFilter( JSONObject json ) throws IOException;
 

@@ -50,7 +50,7 @@ import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
-import org.hisp.dhis.filter.Filter;
+import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -183,7 +183,7 @@ public class MetaData
     private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
 
     //@author Ovidiu Rosu <rosu.ovi@gmail.com>
-    private List<Filter> filters = new ArrayList<Filter>();
+    private List<MetaDataFilter> metaDataFilters = new ArrayList<MetaDataFilter>();
 
     private List<PatientIdentifierType> personIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
@@ -818,18 +818,17 @@ public class MetaData
         this.dimensions = dimensions;
     }
 
-    //@author Ovidiu Rosu <rosu.ovi@gmail.com>
     @JsonProperty
-    @JacksonXmlElementWrapper(localName = "filters", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper(localName = "metaDataFilters", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty(localName = "filter", namespace = DxfNamespaces.DXF_2_0)
-    public List<Filter> getFilters()
+    public List<MetaDataFilter> getMetaDataFilters()
     {
-        return filters;
+        return metaDataFilters;
     }
 
-    public void setFilters( List<Filter> filters )
+    public void setMetaDataFilters( List<MetaDataFilter> metaDataFilters )
     {
-        this.filters = filters;
+        this.metaDataFilters = metaDataFilters;
     }
 
     @Override

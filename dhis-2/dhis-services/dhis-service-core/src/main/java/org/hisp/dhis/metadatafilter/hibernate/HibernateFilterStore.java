@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.metadatafilter.hibernate;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -6,14 +6,15 @@ package org.hisp.dhis.api.controller;
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
- *   be used to endorse or promote products derived from this software without
- *   specific prior written permission.
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * Neither the name of the HISP project nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -27,17 +28,15 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.filter.Filter;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.filter.MetaDataFilter;
+import org.hisp.dhis.filter.FilterStore;
 
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
-@Controller
-@RequestMapping( value = FilterController.RESOURCE_PATH )
-public class FilterController
-        extends AbstractCrudController<Filter>
+public class HibernateFilterStore
+    extends HibernateIdentifiableObjectStore<MetaDataFilter>
+    implements FilterStore
 {
-    public static final String RESOURCE_PATH = "/filters";
 }

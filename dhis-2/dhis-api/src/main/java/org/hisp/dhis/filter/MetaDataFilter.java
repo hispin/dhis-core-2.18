@@ -41,7 +41,7 @@ import org.hisp.dhis.common.view.ExportView;
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
 @JacksonXmlRootElement(localName = "filter", namespace = DxfNamespaces.DXF_2_0)
-public class Filter
+public class MetaDataFilter
     extends BaseNameableObject
 {
     /**
@@ -57,16 +57,16 @@ public class Filter
     // Constructors
     //--------------------------------------------------------------------------
 
-    public Filter()
+    public MetaDataFilter()
     {
     }
 
-    public Filter( String name )
+    public MetaDataFilter( String name )
     {
         this.name = name;
     }
 
-    public Filter( String uid, String description, String name, String jsonFilter )
+    public MetaDataFilter( String uid, String description, String name, String jsonFilter )
     {
         super( uid, description, name );
         this.jsonFilter = jsonFilter;

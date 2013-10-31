@@ -28,7 +28,7 @@ function loadFilters()
 {
     $.ajax( {
         type: "GET",
-        url: "../api/filteredMetaData/getFilters",
+        url: "../api/filteredMetaData/getMetaDataFilters",
         dataType: "json",
         success: function( response ) {
             filters = response;

@@ -1,4 +1,4 @@
-package org.hisp.dhis.filter.hibernate;
+package org.hisp.dhis.api.controller;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,15 +28,17 @@ package org.hisp.dhis.filter.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.filter.Filter;
-import org.hisp.dhis.filter.FilterStore;
+import org.hisp.dhis.filter.MetaDataFilter;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
-public class HibernateFilterStore
-    extends HibernateIdentifiableObjectStore<Filter>
-    implements FilterStore
+@Controller
+@RequestMapping( value = MetaDataFilterController.RESOURCE_PATH )
+public class MetaDataFilterController
+    extends AbstractCrudController<MetaDataFilter>
 {
+    public static final String RESOURCE_PATH = "/metaDataFilters";
 }
