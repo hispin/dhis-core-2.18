@@ -347,59 +347,59 @@ public class MobileOrgUnitLinks
 
         throws IOException
     {
-        dataOutputStream.writeInt( this.id );
-        dataOutputStream.writeUTF( this.name );
-        dataOutputStream.writeUTF( this.downloadAllUrl );
-        dataOutputStream.writeUTF( this.updateActivityPlanUrl );
-        dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
-        dataOutputStream.writeUTF( this.uploadActivityReportUrl );
-        dataOutputStream.writeUTF( this.updateDataSetUrl );
-        dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
-        dataOutputStream.writeUTF( this.searchUrl );
-        dataOutputStream.writeUTF( this.updateNewVersionUrl );
-        dataOutputStream.writeUTF( this.updateContactUrl );
-        dataOutputStream.writeUTF( this.findPatientUrl );
-        dataOutputStream.writeUTF( this.registerPersonUrl );
-        dataOutputStream.writeUTF( this.uploadProgramStageUrl );
-        dataOutputStream.writeUTF( this.enrollProgramUrl );
-        dataOutputStream.writeUTF( this.getVariesInfoUrl );
-        dataOutputStream.writeUTF( this.addRelationshipUrl );
-        dataOutputStream.writeUTF( this.downloadAnonymousProgramUrl );
-        dataOutputStream.writeUTF( this.findProgramUrl );
-        dataOutputStream.writeUTF( this.findLatestPersonUrl );
-        dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
-        dataOutputStream.writeUTF( this.findLostToFollowUpUrl );
-        dataOutputStream.writeUTF( this.handleLostToFollowUpUrl );
-        dataOutputStream.writeUTF( this.generateRepeatableEventUrl );
+        dataOutputStream.writeInt( id );
+        dataOutputStream.writeUTF( name );
+        dataOutputStream.writeUTF( downloadAllUrl );
+        dataOutputStream.writeUTF( updateActivityPlanUrl );
+        dataOutputStream.writeUTF( uploadFacilityReportUrl );
+        dataOutputStream.writeUTF( uploadActivityReportUrl );
+        dataOutputStream.writeUTF( updateDataSetUrl );
+        dataOutputStream.writeUTF( changeUpdateDataSetLangUrl );
+        dataOutputStream.writeUTF( searchUrl );
+        dataOutputStream.writeUTF( updateNewVersionUrl );
+        dataOutputStream.writeUTF( updateContactUrl );
+        dataOutputStream.writeUTF( findPatientUrl );
+        dataOutputStream.writeUTF( registerPersonUrl );
+        dataOutputStream.writeUTF( uploadProgramStageUrl );
+        dataOutputStream.writeUTF( enrollProgramUrl );
+        dataOutputStream.writeUTF( getVariesInfoUrl );
+        dataOutputStream.writeUTF( addRelationshipUrl );
+        dataOutputStream.writeUTF( downloadAnonymousProgramUrl );
+        dataOutputStream.writeUTF( findProgramUrl );
+        dataOutputStream.writeUTF( findLatestPersonUrl );
+        dataOutputStream.writeUTF( findPatientInAdvancedUrl );
+        dataOutputStream.writeUTF( findLostToFollowUpUrl );
+        dataOutputStream.writeUTF( handleLostToFollowUpUrl );
+        dataOutputStream.writeUTF( generateRepeatableEventUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        this.id = dataInputStream.readInt();
-        this.name = dataInputStream.readUTF();
-        this.downloadAllUrl = dataInputStream.readUTF();
-        this.updateActivityPlanUrl = dataInputStream.readUTF();
-        this.uploadFacilityReportUrl = dataInputStream.readUTF();
-        this.uploadActivityReportUrl = dataInputStream.readUTF();
-        this.updateDataSetUrl = dataInputStream.readUTF();
-        this.changeUpdateDataSetLangUrl = dataInputStream.readUTF();
-        this.searchUrl = dataInputStream.readUTF();
-        this.updateNewVersionUrl = dataInputStream.readUTF();
-        this.updateContactUrl = dataInputStream.readUTF();
-        this.findPatientUrl = dataInputStream.readUTF();
-        this.registerPersonUrl = dataInputStream.readUTF();
-        this.uploadProgramStageUrl = dataInputStream.readUTF();
-        this.enrollProgramUrl = dataInputStream.readUTF();
-        this.getVariesInfoUrl = dataInputStream.readUTF();
-        this.addRelationshipUrl = dataInputStream.readUTF();
-        this.downloadAnonymousProgramUrl = dataInputStream.readUTF();
-        this.findProgramUrl = dataInputStream.readUTF();
-        this.findLatestPersonUrl = dataInputStream.readUTF();
-        this.findPatientInAdvancedUrl = dataInputStream.readUTF();
-        this.findLostToFollowUpUrl = dataInputStream.readUTF();
-        this.handleLostToFollowUpUrl = dataInputStream.readUTF();
-        this.generateRepeatableEventUrl = dataInputStream.readUTF();
+        id = dataInputStream.readInt();
+        name = dataInputStream.readUTF();
+        downloadAllUrl = dataInputStream.readUTF();
+        updateActivityPlanUrl = dataInputStream.readUTF();
+        uploadFacilityReportUrl = dataInputStream.readUTF();
+        uploadActivityReportUrl = dataInputStream.readUTF();
+        updateDataSetUrl = dataInputStream.readUTF();
+        changeUpdateDataSetLangUrl = dataInputStream.readUTF();
+        searchUrl = dataInputStream.readUTF();
+        updateNewVersionUrl = dataInputStream.readUTF();
+        updateContactUrl = dataInputStream.readUTF();
+        findPatientUrl = dataInputStream.readUTF();
+        registerPersonUrl = dataInputStream.readUTF();
+        uploadProgramStageUrl = dataInputStream.readUTF();
+        enrollProgramUrl = dataInputStream.readUTF();
+        getVariesInfoUrl = dataInputStream.readUTF();
+        addRelationshipUrl = dataInputStream.readUTF();
+        downloadAnonymousProgramUrl = dataInputStream.readUTF();
+        findProgramUrl = dataInputStream.readUTF();
+        findLatestPersonUrl = dataInputStream.readUTF();
+        findPatientInAdvancedUrl = dataInputStream.readUTF();
+        findLostToFollowUpUrl = dataInputStream.readUTF();
+        handleLostToFollowUpUrl = dataInputStream.readUTF();
+        generateRepeatableEventUrl = dataInputStream.readUTF();
     }
 
     @Override
@@ -438,29 +438,29 @@ public class MobileOrgUnitLinks
     public void serializeVersion2_10( DataOutputStream dataOutputStream )
         throws IOException
     {
-        dataOutputStream.writeInt( this.id );
-        dataOutputStream.writeUTF( this.name );
-        dataOutputStream.writeUTF( this.downloadAllUrl );
-        dataOutputStream.writeUTF( this.updateActivityPlanUrl );
-        dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
-        dataOutputStream.writeUTF( this.uploadActivityReportUrl );
-        dataOutputStream.writeUTF( this.updateDataSetUrl );
-        dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
-        dataOutputStream.writeUTF( this.searchUrl );
-        dataOutputStream.writeUTF( this.updateNewVersionUrl );
-        dataOutputStream.writeUTF( this.updateContactUrl );
-        dataOutputStream.writeUTF( this.findPatientUrl );
-        dataOutputStream.writeUTF( this.registerPersonUrl );
-        dataOutputStream.writeUTF( this.uploadProgramStageUrl );
-        dataOutputStream.writeUTF( this.enrollProgramUrl );
-        dataOutputStream.writeUTF( this.getVariesInfoUrl );
-        dataOutputStream.writeUTF( this.addRelationshipUrl );
-        dataOutputStream.writeUTF( this.downloadAnonymousProgramUrl );
-        dataOutputStream.writeUTF( this.findProgramUrl );
-        dataOutputStream.writeUTF( this.findLatestPersonUrl );
-        dataOutputStream.writeUTF( this.findPatientInAdvancedUrl );
-        dataOutputStream.writeUTF( this.findLostToFollowUpUrl );
-        dataOutputStream.writeUTF( this.handleLostToFollowUpUrl );
-        dataOutputStream.writeUTF( this.generateRepeatableEventUrl );
+        dataOutputStream.writeInt( id );
+        dataOutputStream.writeUTF( name );
+        dataOutputStream.writeUTF( downloadAllUrl );
+        dataOutputStream.writeUTF( updateActivityPlanUrl );
+        dataOutputStream.writeUTF( uploadFacilityReportUrl );
+        dataOutputStream.writeUTF( uploadActivityReportUrl );
+        dataOutputStream.writeUTF( updateDataSetUrl );
+        dataOutputStream.writeUTF( changeUpdateDataSetLangUrl );
+        dataOutputStream.writeUTF( searchUrl );
+        dataOutputStream.writeUTF( updateNewVersionUrl );
+        dataOutputStream.writeUTF( updateContactUrl );
+        dataOutputStream.writeUTF( findPatientUrl );
+        dataOutputStream.writeUTF( registerPersonUrl );
+        dataOutputStream.writeUTF( uploadProgramStageUrl );
+        dataOutputStream.writeUTF( enrollProgramUrl );
+        dataOutputStream.writeUTF( getVariesInfoUrl );
+        dataOutputStream.writeUTF( addRelationshipUrl );
+        dataOutputStream.writeUTF( downloadAnonymousProgramUrl );
+        dataOutputStream.writeUTF( findProgramUrl );
+        dataOutputStream.writeUTF( findLatestPersonUrl );
+        dataOutputStream.writeUTF( findPatientInAdvancedUrl );
+        dataOutputStream.writeUTF( findLostToFollowUpUrl );
+        dataOutputStream.writeUTF( handleLostToFollowUpUrl );
+        dataOutputStream.writeUTF( generateRepeatableEventUrl );
     }
 }
