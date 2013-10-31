@@ -48,7 +48,7 @@ function loadMetaDataCategories()
             var metaDataCategoryName = $(this).attr("name");
 
             if( $(this).is(":checked") ) {
-                $(this).attr('checked', true);
+                // $(this).attr('checked', true);
                 $( "#heading" + metaDataCategoryName ).css( "background", "#CFFFB3 50% 50% repeat-x" );
                 // selectAllValuesByCategory(metaDataCategoryName);
             } else {
@@ -145,11 +145,6 @@ function moveSelected( metaDataCategoryName )
     {
         $( "#heading" + metaDataCategoryName ).css( "background", "#CFFFB3 50% 50% repeat-x" );
     }
-
-    if ( $( "#available" + metaDataCategoryName + " option" ).length == 0 )
-    {
-        $( "#checkboxSelectAll" + metaDataCategoryName ).attr( "checked", true );
-    }
 }
 
 // Remove all selected items
@@ -160,18 +155,12 @@ function removeSelected( metaDataCategoryName )
     {
         $( "#heading" + metaDataCategoryName ).css( "background", "" );
     }
-
-    if ( $( "#available" + metaDataCategoryName + " option" ).length > 0 )
-    {
-        $( "#checkboxSelectAll" + metaDataCategoryName ).attr( "checked", false );
-    }
 }
 
 // Move all items
 function moveAll( metaDataCategoryName )
 {
     dhisAjaxSelect_moveAll( "available" + metaDataCategoryName );
-    $( "#checkboxSelectAll" + metaDataCategoryName ).attr( "checked", true );
     $( "#heading" + metaDataCategoryName ).css( "background", "#CFFFB3 50% 50% repeat-x" );
 }
 
@@ -179,7 +168,6 @@ function moveAll( metaDataCategoryName )
 function removeAll( metaDataCategoryName )
 {
     dhisAjaxSelect_moveAll( "selected" + metaDataCategoryName );
-    $( "#checkboxSelectAll" + metaDataCategoryName ).attr( "checked", false );
     $( "#heading" + metaDataCategoryName ).css( "background", "" );
 }
 
