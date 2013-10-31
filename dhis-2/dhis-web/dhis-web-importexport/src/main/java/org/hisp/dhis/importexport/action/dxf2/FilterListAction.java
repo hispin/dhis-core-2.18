@@ -29,7 +29,7 @@ package org.hisp.dhis.importexport.action.dxf2;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.filter.MetaDataFilter;
-import org.hisp.dhis.filter.FilterService;
+import org.hisp.dhis.filter.MetaDataFilterService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 import java.util.ArrayList;
@@ -42,17 +42,17 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
 public class FilterListAction
-        extends ActionPagingSupport<MetaDataFilter>
+    extends ActionPagingSupport<MetaDataFilter>
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private FilterService filterService;
+    private MetaDataFilterService metaDataFilterService;
 
-    public void setFilterService( FilterService filterService )
+    public void setMetaDataFilterService( MetaDataFilterService metaDataFilterService )
     {
-        this.filterService = filterService;
+        this.metaDataFilterService = metaDataFilterService;
     }
 
     // -------------------------------------------------------------------------
@@ -92,14 +92,15 @@ public class FilterListAction
     {
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            this.paging = createPaging( filterService.getFilterCountByName( key ) );
+            this.paging = createPaging( metaDataFilterService.getFilterCountByName( key ) );
 
-            filters = new ArrayList<MetaDataFilter>( filterService.getFiltersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
-        } else
+            filters = new ArrayList<MetaDataFilter>( metaDataFilterService.getFiltersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
         {
-            this.paging = createPaging( filterService.getFilterCount() );
+            this.paging = createPaging( metaDataFilterService.getFilterCount() );
 
-            filters = new ArrayList<MetaDataFilter>( filterService.getFiltersBetween( paging.getStartPos(), paging.getPageSize() ) );
+            filters = new ArrayList<MetaDataFilter>( metaDataFilterService.getFiltersBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         Collections.sort( filters, IdentifiableObjectNameComparator.INSTANCE );

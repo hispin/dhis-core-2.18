@@ -39,23 +39,23 @@ import static org.hisp.dhis.i18n.I18nUtils.*;
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
 @Transactional
-public class DefaultFilterService
-    implements FilterService
+public class DefaultMetaDataFilterService
+    implements MetaDataFilterService
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private FilterStore filterStore;
+    private MetaDataFilterStore metaDataFilterStore;
 
-    public FilterStore getFilterStore()
+    public MetaDataFilterStore getMetaDataFilterStore()
     {
-        return filterStore;
+        return metaDataFilterStore;
     }
 
-    public void setFilterStore( FilterStore filterStore )
+    public void setMetaDataFilterStore( MetaDataFilterStore metaDataFilterStore )
     {
-        this.filterStore = filterStore;
+        this.metaDataFilterStore = metaDataFilterStore;
     }
 
     private I18nService i18nService;
@@ -77,60 +77,60 @@ public class DefaultFilterService
     @Override
     public MetaDataFilter getFilter( Integer id )
     {
-        return filterStore.get( id );
+        return metaDataFilterStore.get( id );
     }
 
     @Override
     public MetaDataFilter getFilterByUid( String uid )
     {
-        return filterStore.getByUid( uid );
+        return metaDataFilterStore.getByUid( uid );
     }
 
     @Override
     public Collection<MetaDataFilter> getAllFilters()
     {
-        return filterStore.getAll();
+        return metaDataFilterStore.getAll();
     }
 
     @Override
     public Collection<MetaDataFilter> getFiltersBetweenByName( String name, int first, int max )
     {
-        return getObjectsBetweenByName( i18nService, filterStore, name, first, max );
+        return getObjectsBetweenByName( i18nService, metaDataFilterStore, name, first, max );
     }
 
     @Override
     public Collection<MetaDataFilter> getFiltersBetween( int first, int max )
     {
-        return getObjectsBetween( i18nService, filterStore, first, max );
+        return getObjectsBetween( i18nService, metaDataFilterStore, first, max );
     }
 
     @Override
     public void saveFilter( MetaDataFilter metaDataFilter )
     {
-        filterStore.save( metaDataFilter );
+        metaDataFilterStore.save( metaDataFilter );
     }
 
     @Override
     public void updateFilter( MetaDataFilter metaDataFilter )
     {
-        filterStore.update( metaDataFilter );
+        metaDataFilterStore.update( metaDataFilter );
     }
 
     @Override
     public void deleteFilter( MetaDataFilter metaDataFilter )
     {
-        filterStore.delete( metaDataFilter );
+        metaDataFilterStore.delete( metaDataFilter );
     }
 
     @Override
     public int getFilterCountByName( String name )
     {
-        return getCountByName( i18nService, filterStore, name );
+        return getCountByName( i18nService, metaDataFilterStore, name );
     }
 
     @Override
     public int getFilterCount()
     {
-        return filterStore.getCount();
+        return metaDataFilterStore.getCount();
     }
 }

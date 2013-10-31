@@ -29,7 +29,7 @@ package org.hisp.dhis.importexport.action.dxf2;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.filter.MetaDataFilter;
-import org.hisp.dhis.filter.FilterService;
+import org.hisp.dhis.filter.MetaDataFilterService;
 
 import java.util.List;
 
@@ -43,11 +43,11 @@ public class SaveFilterListSortOrderAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private FilterService filterService;
+    private MetaDataFilterService metaDataFilterService;
 
-    public void setFilterService( FilterService filterService )
+    public void setMetaDataFilterService( MetaDataFilterService metaDataFilterService )
     {
-        this.filterService = filterService;
+        this.metaDataFilterService = metaDataFilterService;
     }
 
     // -------------------------------------------------------------------------
@@ -71,11 +71,11 @@ public class SaveFilterListSortOrderAction
 
         for ( String id : filters )
         {
-            MetaDataFilter metaDataFilter = filterService.getFilter( Integer.parseInt( id ) );
+            MetaDataFilter metaDataFilter = metaDataFilterService.getFilter( Integer.parseInt( id ) );
 
             metaDataFilter.setSortOrder( sortOrder++ );
 
-            filterService.updateFilter( metaDataFilter );
+            metaDataFilterService.updateFilter( metaDataFilter );
         }
 
         return SUCCESS;

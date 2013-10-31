@@ -1,4 +1,4 @@
-package org.hisp.dhis.filter;
+package org.hisp.dhis.metadatafilter.hibernate;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,30 +28,15 @@ package org.hisp.dhis.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.filter.MetaDataFilter;
+import org.hisp.dhis.filter.MetaDataFilterStore;
 
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
-public interface FilterService
+public class HibernateMetaDataFilterStore
+    extends HibernateIdentifiableObjectStore<MetaDataFilter>
+    implements MetaDataFilterStore
 {
-    MetaDataFilter getFilter( Integer id );
-
-    MetaDataFilter getFilterByUid( String uid );
-
-    Collection<MetaDataFilter> getAllFilters();
-
-    Collection<MetaDataFilter> getFiltersBetweenByName( String name, int first, int max );
-
-    Collection<MetaDataFilter> getFiltersBetween( int first, int max );
-
-    void saveFilter( MetaDataFilter metaDataFilter );
-
-    void updateFilter( MetaDataFilter metaDataFilter );
-
-    void deleteFilter( MetaDataFilter metaDataFilter );
-
-    int getFilterCountByName( String name );
-
-    int getFilterCount();
 }

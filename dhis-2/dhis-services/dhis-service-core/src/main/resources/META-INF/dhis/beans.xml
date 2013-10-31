@@ -56,7 +56,7 @@
   </bean>
 
   <!--@author Ovidiu Rosu <rosu.ovi@gmail.com>-->
-  <bean id="org.hisp.dhis.filter.FilterStore" class="org.hisp.dhis.metadatafilter.hibernate.HibernateFilterStore">
+  <bean id="org.hisp.dhis.filter.MetaDataFilterStore" class="org.hisp.dhis.metadatafilter.hibernate.HibernateMetaDataFilterStore">
     <property name="clazz" value="org.hisp.dhis.filter.MetaDataFilter" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
@@ -591,8 +591,8 @@
   </bean>
 
   <!--@author Ovidiu Rosu <rosu.ovi@gmail.com>-->
-  <bean id="org.hisp.dhis.filter.FilterService" class="org.hisp.dhis.filter.DefaultFilterService">
-    <property name="filterStore" ref="org.hisp.dhis.filter.FilterStore" />
+  <bean id="org.hisp.dhis.filter.MetaDataFilterService" class="org.hisp.dhis.filter.DefaultMetaDataFilterService">
+    <property name="metaDataFilterStore" ref="org.hisp.dhis.filter.MetaDataFilterStore" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 

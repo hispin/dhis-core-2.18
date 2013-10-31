@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.filter.MetaDataFilter;
-import org.hisp.dhis.filter.FilterService;
+import org.hisp.dhis.filter.MetaDataFilterService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
@@ -78,7 +78,7 @@ public class DefaultExportService
     private MetaDataDependencyService metaDataDependencyService;
 
     @Autowired
-    private FilterService filterService;
+    private MetaDataFilterService metaDataFilterService;
 
     //-------------------------------------------------------------------------------------------------------
     // ExportService Implementation - MetaData
@@ -234,7 +234,7 @@ public class DefaultExportService
     @Override
     public List<MetaDataFilter> getFilters()
     {
-        return (List<MetaDataFilter>) filterService.getAllFilters();
+        return (List<MetaDataFilter>) metaDataFilterService.getAllFilters();
     }
 
     @Override
@@ -245,26 +245,26 @@ public class DefaultExportService
         metaDataFilter.setJsonFilter( json.getString( "jsonFilter" ) );
         metaDataFilter.setAutoFields();
 
-        filterService.saveFilter( metaDataFilter );
+        metaDataFilterService.saveFilter( metaDataFilter );
     }
 
     @Override
     public void updateFilter( JSONObject json ) throws IOException
     {
-        MetaDataFilter metaDataFilter = filterService.getFilterByUid( json.getString( "uid" ) );
+        MetaDataFilter metaDataFilter = metaDataFilterService.getFilterByUid( json.getString( "uid" ) );
         metaDataFilter.setName( json.getString( "name" ) );
         metaDataFilter.setDescription( json.getString( "description" ) );
         metaDataFilter.setJsonFilter( json.getString( "jsonFilter" ) );
         metaDataFilter.setLastUpdated( new Date() );
 
-        filterService.updateFilter( metaDataFilter );
+        metaDataFilterService.updateFilter( metaDataFilter );
     }
 
     @Override
     public void deleteFilter( JSONObject json ) throws IOException
     {
-        MetaDataFilter metaDataFilter = filterService.getFilterByUid( json.getString( "uid" ) );
+        MetaDataFilter metaDataFilter = metaDataFilterService.getFilterByUid( json.getString( "uid" ) );
 
-        filterService.deleteFilter( metaDataFilter );
+        metaDataFilterService.deleteFilter( metaDataFilter );
     }
 }
