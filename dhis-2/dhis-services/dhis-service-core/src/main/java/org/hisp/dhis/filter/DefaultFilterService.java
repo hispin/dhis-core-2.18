@@ -75,51 +75,51 @@ public class DefaultFilterService
     // -------------------------------------------------------------------------
 
     @Override
-    public Filter getFilter( Integer id )
+    public MetaDataFilter getFilter( Integer id )
     {
         return filterStore.get( id );
     }
 
     @Override
-    public Filter getFilterByUid( String uid )
+    public MetaDataFilter getFilterByUid( String uid )
     {
         return filterStore.getByUid( uid );
     }
 
     @Override
-    public Collection<Filter> getAllFilters()
+    public Collection<MetaDataFilter> getAllFilters()
     {
         return filterStore.getAll();
     }
 
     @Override
-    public Collection<Filter> getFiltersBetweenByName( String name, int first, int max )
+    public Collection<MetaDataFilter> getFiltersBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, filterStore, name, first, max );
     }
 
     @Override
-    public Collection<Filter> getFiltersBetween( int first, int max )
+    public Collection<MetaDataFilter> getFiltersBetween( int first, int max )
     {
         return getObjectsBetween( i18nService, filterStore, first, max );
     }
 
     @Override
-    public void saveFilter( Filter filter )
+    public void saveFilter( MetaDataFilter metaDataFilter )
     {
-        filterStore.save( filter );
+        filterStore.save( metaDataFilter );
     }
 
     @Override
-    public void updateFilter( Filter filter )
+    public void updateFilter( MetaDataFilter metaDataFilter )
     {
-        filterStore.update( filter );
+        filterStore.update( metaDataFilter );
     }
 
     @Override
-    public void deleteFilter( Filter filter )
+    public void deleteFilter( MetaDataFilter metaDataFilter )
     {
-        filterStore.delete( filter );
+        filterStore.delete( metaDataFilter );
     }
 
     @Override

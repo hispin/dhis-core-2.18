@@ -35,21 +35,21 @@ import java.util.Collection;
  */
 public interface FilterService
 {
-    Filter getFilter( Integer id );
+    MetaDataFilter getFilter( Integer id );
 
-    Filter getFilterByUid( String uid );
+    MetaDataFilter getFilterByUid( String uid );
 
-    Collection<Filter> getAllFilters();
+    Collection<MetaDataFilter> getAllFilters();
 
-    Collection<Filter> getFiltersBetweenByName( String name, int first, int max );
+    Collection<MetaDataFilter> getFiltersBetweenByName( String name, int first, int max );
 
-    Collection<Filter> getFiltersBetween( int first, int max );
+    Collection<MetaDataFilter> getFiltersBetween( int first, int max );
 
-    void saveFilter( Filter filter );
+    void saveFilter( MetaDataFilter metaDataFilter );
 
-    void updateFilter( Filter filter );
+    void updateFilter( MetaDataFilter metaDataFilter );
 
-    void deleteFilter( Filter filter );
+    void deleteFilter( MetaDataFilter metaDataFilter );
 
     int getFilterCountByName( String name );
 

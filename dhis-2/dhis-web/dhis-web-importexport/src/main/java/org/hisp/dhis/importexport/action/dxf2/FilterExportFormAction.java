@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport.action.dxf2;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.filter.Filter;
+import org.hisp.dhis.filter.MetaDataFilter;
 
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
@@ -104,16 +104,16 @@ public class FilterExportFormAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Filter filter = new Filter();
+    private MetaDataFilter filter = new MetaDataFilter();
 
-    public Filter getFilter()
+    public MetaDataFilter getFilter()
     {
         return filter;
     }
 
-    public void setFilter( Filter filter )
+    public void setFilter( MetaDataFilter metaDataFilter )
     {
-        this.filter = filter;
+        this.filter = metaDataFilter;
     }
 
     // -------------------------------------------------------------------------

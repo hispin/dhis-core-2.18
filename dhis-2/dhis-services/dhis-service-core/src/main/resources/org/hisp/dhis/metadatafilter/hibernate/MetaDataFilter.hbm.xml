@@ -5,11 +5,11 @@
   [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
   >
 <hibernate-mapping>
-  <class name="org.hisp.dhis.filter.Filter" table="filter">
+  <class name="org.hisp.dhis.filter.MetaDataFilter" table="metadatafilter">
 
     <cache usage="read-write" />
 
-    <id name="id" column="filterid">
+    <id name="id" column="metadatafilterid">
       <generator class="native" />
     </id>
 

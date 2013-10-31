@@ -34,7 +34,7 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.metadata.*;
 import org.hisp.dhis.dxf2.metadata.tasks.ImportMetaDataTask;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.filter.Filter;
+import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
@@ -206,13 +206,13 @@ public class FilteredMetaDataController
     // Detailed MetaData Export - Filter functionality
     //--------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.GET, value = FilteredMetaDataController.RESOURCE_PATH + "/getFilters" )
+    @RequestMapping( method = RequestMethod.GET, value = FilteredMetaDataController.RESOURCE_PATH + "/getMetaDataFilters" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public @ResponseBody String getFilters( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
-        List<Filter> filters = exportService.getFilters();
+        List<MetaDataFilter> metaDataFilters = exportService.getFilters();
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, ContextUtils.CacheStrategy.NO_CACHE );
-        return JacksonUtils.toJsonAsString( filters );
+        return JacksonUtils.toJsonAsString( metaDataFilters );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = FilteredMetaDataController.RESOURCE_PATH + "/saveFilter" )

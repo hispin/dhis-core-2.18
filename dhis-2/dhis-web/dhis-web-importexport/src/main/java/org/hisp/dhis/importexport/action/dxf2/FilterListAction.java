@@ -28,7 +28,7 @@ package org.hisp.dhis.importexport.action.dxf2;
  */
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.filter.Filter;
+import org.hisp.dhis.filter.MetaDataFilter;
 import org.hisp.dhis.filter.FilterService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
@@ -42,7 +42,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
 public class FilterListAction
-        extends ActionPagingSupport<Filter>
+        extends ActionPagingSupport<MetaDataFilter>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -59,16 +59,16 @@ public class FilterListAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<Filter> filters;
+    private List<MetaDataFilter> filters;
 
-    public List<Filter> getFilters()
+    public List<MetaDataFilter> getFilters()
     {
         return filters;
     }
 
-    public void setFilters( List<Filter> filters )
+    public void setFilters( List<MetaDataFilter> metaDataFilters )
     {
-        this.filters = filters;
+        this.filters = metaDataFilters;
     }
 
     private String key;
@@ -94,12 +94,12 @@ public class FilterListAction
         {
             this.paging = createPaging( filterService.getFilterCountByName( key ) );
 
-            filters = new ArrayList<Filter>( filterService.getFiltersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            filters = new ArrayList<MetaDataFilter>( filterService.getFiltersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         } else
         {
             this.paging = createPaging( filterService.getFilterCount() );
 
-            filters = new ArrayList<Filter>( filterService.getFiltersBetween( paging.getStartPos(), paging.getPageSize() ) );
+            filters = new ArrayList<MetaDataFilter>( filterService.getFiltersBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         Collections.sort( filters, IdentifiableObjectNameComparator.INSTANCE );
