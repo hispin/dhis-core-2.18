@@ -158,14 +158,21 @@ public class ActivityReportingServiceImpl
     private MessageService messageService;
     
     private SmsSender smsSender;
+    
+    private PatientAttributeService patientAttributeService;
+    
+    private Collection<PatientIdentifierType> patientIdentifierTypes;
 
+    private Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes;
+    
+    private Integer patientId;
+    
     @Autowired
     private OrganisationUnitService organisationUnitService;
-
-    public PatientAttributeService getPatientAttributeService()
-    {
-        return patientAttributeService;
-    }
+    
+    // -------------------------------------------------------------------------
+    // Setters
+    // -------------------------------------------------------------------------
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
@@ -189,51 +196,12 @@ public class ActivityReportingServiceImpl
         this.smsSender = smsSender;
     }
 
-    private Collection<PatientIdentifierType> patientIdentifierTypes;
-
-    public Collection<PatientIdentifierType> getPatientIdentifierTypes()
-    {
-        return patientIdentifierTypes;
-    }
-
-    public void setPatientIdentifierTypes( Collection<PatientIdentifierType> patientIdentifierTypes )
-    {
-        this.patientIdentifierTypes = patientIdentifierTypes;
-    }
-
-    private Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes;
-
-    public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
-
-    public void setPatientAttributes( Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes )
-    {
-        this.patientAttributes = patientAttributes;
-    }
-
-    private PatientAttributeService patientAttributeService;
-
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
 
-    private Integer patientId;
-
-    public Integer getPatientId()
-    {
-        return patientId;
-    }
-
-    public void setPatientId( Integer patientId )
-    {
-        this.patientId = patientId;
-    }
-
-    public void setProgramStageInstanceService(
-        org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService )
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
     }
@@ -268,19 +236,9 @@ public class ActivityReportingServiceImpl
         this.modelMapping = modelMapping;
     }
 
-    public PatientMobileSetting getSetting()
-    {
-        return setting;
-    }
-
     public void setSetting( PatientMobileSetting setting )
     {
         this.setting = setting;
-    }
-
-    public org.hisp.dhis.patient.PatientAttribute getGroupByAttribute()
-    {
-        return groupByAttribute;
     }
 
     public void setGroupByAttribute( org.hisp.dhis.patient.PatientAttribute groupByAttribute )
@@ -1817,6 +1775,7 @@ public class ActivityReportingServiceImpl
         String programIdText )
         throws NotAllowedException
     {
+        System.out.println("program IDDDDDDDDDDDDDDDDDDdd: "+programIdText);
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
 
         patientWeb.setName( patient.getName() );
