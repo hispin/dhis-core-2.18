@@ -33,7 +33,7 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
-public interface FilterStore
+public interface MetaDataFilterStore
     extends GenericIdentifiableObjectStore<MetaDataFilter>
 {
 }
