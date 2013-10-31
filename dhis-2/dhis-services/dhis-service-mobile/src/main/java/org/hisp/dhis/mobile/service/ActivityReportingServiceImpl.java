@@ -1775,7 +1775,6 @@ public class ActivityReportingServiceImpl
         String programIdText )
         throws NotAllowedException
     {
-        System.out.println("program IDDDDDDDDDDDDDDDDDDdd: "+programIdText);
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
 
         patientWeb.setName( patient.getName() );
