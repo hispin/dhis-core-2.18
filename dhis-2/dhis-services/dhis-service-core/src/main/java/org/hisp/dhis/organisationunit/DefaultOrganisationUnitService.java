@@ -798,6 +798,11 @@ public class DefaultOrganisationUnitService
         return organisationUnitLevelStore.getMaxLevels();
     }
 
+    public Collection<OrganisationUnit> getWithinCoordinateArea( double[] box )
+    {
+        return organisationUnitStore.getWithinCoordinateArea( box );
+    }
+    
     // -------------------------------------------------------------------------
     // Version
     // -------------------------------------------------------------------------

@@ -161,6 +161,20 @@ public interface OrganisationUnitStore
      */
     Collection<OrganisationUnit> getBetweenByStatusLastUpdated( boolean status, Date lastUpdated, int first, int max );
 
+
+    /**
+     * Retrieves the objects where its coordinate is within the 4 area points.
+     * 4 area points are
+     * Index 0: Maximum latitude (north edge of box shape)
+     * Index 1: Maxium longitude (east edge of box shape)
+     * Index 2: Minimum latitude (south edge of box shape)
+     * Index 3: Minumum longitude (west edge of box shape)
+     *
+     * @param box      the 4 area points.
+     * @return collection of objects.
+     */
+    Collection<OrganisationUnit> getWithinCoordinateArea( double[] box );
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

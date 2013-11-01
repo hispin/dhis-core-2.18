@@ -267,6 +267,20 @@ public class HibernateOrganisationUnitStore
         return criteria.list();
     }
 
+    @SuppressWarnings("unchecked")
+    public Collection<OrganisationUnit> getWithinCoordinateArea( double[] box )
+    {
+        return getQuery( "from OrganisationUnit o"
+            + " where o.featureType='Point'"
+            + " and o.coordinates is not null"
+            + " and CAST( SUBSTRING(o.coordinates, 2, LOCATE(',', o.coordinates) - 2) AS big_decimal ) >= " + box[3]
+            + " and CAST( SUBSTRING(o.coordinates, 2, LOCATE(',', o.coordinates) - 2) AS big_decimal ) <= " + box[1] 
+            + " and CAST( SUBSTRING(coordinates, LOCATE(',', o.coordinates) + 1, LOCATE(']', o.coordinates) - LOCATE(',', o.coordinates) - 1 ) AS big_decimal ) >= " + box[2] 
+            + " and CAST( SUBSTRING(coordinates, LOCATE(',', o.coordinates) + 1, LOCATE(']', o.coordinates) - LOCATE(',', o.coordinates) - 1 ) AS big_decimal ) <= " + box[0] 
+            ).list();
+    }
+    
+        
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
