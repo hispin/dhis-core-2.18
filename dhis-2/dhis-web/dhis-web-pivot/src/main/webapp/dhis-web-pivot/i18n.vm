@@ -134,5 +134,15 @@
 "allow_external_access": "$encoder.jsEscape($i18n.getString( 'allow_external_access' ) , "'")",
 "show_hierarchy": "$encoder.jsEscape($i18n.getString( 'show_hierarchy' ) , "'")",
 "all_indicators": "$encoder.jsEscape($i18n.getString( 'all_indicators' ) , "'")",
-"all_data_elements": "$encoder.jsEscape($i18n.getString( 'all_data_elements' ) , "'")"
+"all_data_elements": "$encoder.jsEscape($i18n.getString( 'all_data_elements' ) , "'")",
+"daily": "$encoder.jsEscape($i18n.getString( 'daily' ) , "'")",
+"weekly": "$encoder.jsEscape($i18n.getString( 'weekly' ) , "'")",
+"monthly": "$encoder.jsEscape($i18n.getString( 'monthly' ) , "'")",
+"bimonthly": "$encoder.jsEscape($i18n.getString( 'bimonthly' ) , "'")",
+"quarterly": "$encoder.jsEscape($i18n.getString( 'quarterly' ) , "'")",
+"sixmonthly": "$encoder.jsEscape($i18n.getString( 'sixmonthly' ) , "'")",
+"yearly": "$encoder.jsEscape($i18n.getString( 'yearly' ) , "'")",
+"financial_oct": "$encoder.jsEscape($i18n.getString( 'financial_oct' ) , "'")",
+"financial_july": "$encoder.jsEscape($i18n.getString( 'financial_july' ) , "'")",
+"financial_april": "$encoder.jsEscape($i18n.getString( 'financial_april' ) , "'")"
 }
