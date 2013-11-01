@@ -33,6 +33,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.hisp.dhis.dataelement.DataElement;
 
+import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -196,6 +197,29 @@ public class ValidationUtils
         Matcher matcher = POINT_PATTERN.matcher( coordinate );
 
         return matcher.find() ? matcher.group( 2 ) : null;
+    }
+
+
+    /**
+     * Returns the longitude and latitude from the given coordinate.
+     *
+     * @param coordinate the coordinate string.
+     * @return Point2D of the coordinate.
+     */
+    public static Point2D getCoordinatePoint2D( String coordinate )
+    {
+        if ( coordinate == null )
+        {
+            return null;
+        }
+
+        Matcher matcher = POINT_PATTERN.matcher( coordinate );
+
+        if( matcher.find() && matcher.groupCount() == 2 )
+        {
+            return new Point2D.Double( Double.parseDouble( matcher.group( 1 ) ), Double.parseDouble( matcher.group( 2 ) ) );
+        }
+        else return null;        
     }
 
     /**

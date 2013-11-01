@@ -30,6 +30,7 @@ package org.hisp.dhis.mapgeneration;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
@@ -337,4 +338,17 @@ public class MapUtils
         
         return box;
     }
+    
+    /**
+     * Creates the distance between two points.
+     */
+    public static double getDistanceBetweenTwoPoints( Point2D from, Point2D to)
+    {                        
+        GeodeticCalculator calc = new GeodeticCalculator();
+        calc.setStartingGeographicPoint( from );
+        calc.setDestinationGeographicPoint( to);
+        
+        return calc.getOrthodromicDistance();
+    }
+    
 }
