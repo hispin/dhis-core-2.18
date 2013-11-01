@@ -336,7 +336,7 @@ public class FacilityController
 
             facilities.getFacilities().add( facility );
 
-            if ( request.getRequestURL().toString().endsWith( ".json" ) )
+            if ( request.getRequestURL().toString().endsWith( ".json" ) && facility.getHref() != null )
             {
                 facility.setHref( facility.getHref() + ".json" );
             }
