@@ -91,6 +91,7 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -2093,7 +2094,7 @@ public class ActivityReportingServiceImpl
         
         ProgramStageInstance oldProgramStageIntance = programStageInstanceService.getProgramStageInstance( Integer.valueOf( mobileProgramStageId ) );
         
-        ProgramInstance programInstance = oldProgramStageIntance.getProgramInstance(); 
+        ProgramInstance programInstance = oldProgramStageIntance.getProgramInstance();
         
         ProgramStageInstance newProgramStageInstance = new ProgramStageInstance( programInstance, oldProgramStageIntance.getProgramStage() );
         
@@ -2102,6 +2103,13 @@ public class ActivityReportingServiceImpl
         newProgramStageInstance.setOrganisationUnit( orgUnit );
         
         programInstance.getProgramStageInstances().add( newProgramStageInstance );
+        
+        List<ProgramStageInstance> proStageInstanceList = new ArrayList<ProgramStageInstance>( programInstance.getProgramStageInstances() );
+        
+        Collections.sort( proStageInstanceList, new ProgramStageInstanceVisitDateComparator() );
+        
+        programInstance.getProgramStageInstances().removeAll( proStageInstanceList );
+        programInstance.getProgramStageInstances().addAll( proStageInstanceList );
         
         programStageInstanceService.addProgramStageInstance( newProgramStageInstance );
         
