@@ -41,11 +41,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.IOException;
 
@@ -53,13 +56,13 @@ import java.io.IOException;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @ControllerAdvice
-public class FacilityAdvice
+public class FacilityAdvice extends ResponseEntityExceptionHandler
 {
     //--------------------------------------------------------------------------
     // EXCEPTION HANDLERS
     //--------------------------------------------------------------------------
 
-    @ExceptionHandler( { HttpClientErrorException.class, HttpServerErrorException.class } )
+    @ExceptionHandler({ HttpClientErrorException.class, HttpServerErrorException.class })
     public ResponseEntity<String> statusCodeExceptionHandler( HttpStatusCodeException ex ) throws IOException
     {
         HttpHeaders headers = new HttpHeaders();
@@ -69,7 +72,7 @@ public class FacilityAdvice
             ex.getMessage() ), headers, ex.getStatusCode() );
     }
 
-    @ExceptionHandler( { DeleteNotAllowedException.class, HierarchyViolationException.class } )
+    @ExceptionHandler({ DeleteNotAllowedException.class, HierarchyViolationException.class })
     public ResponseEntity<String> handleForbidden( Exception ex ) throws IOException
     {
         HttpHeaders headers = new HttpHeaders();
@@ -89,7 +92,7 @@ public class FacilityAdvice
             ex.getMessage() ), headers, HttpStatus.PRECONDITION_FAILED );
     }
 
-    @ExceptionHandler( { FacilityNotFoundException.class } )
+    @ExceptionHandler({ FacilityNotFoundException.class })
     public ResponseEntity<String> handleNotFound( Exception ex ) throws IOException
     {
         HttpHeaders headers = new HttpHeaders();
@@ -99,7 +102,7 @@ public class FacilityAdvice
             ex.getMessage() ), headers, HttpStatus.NOT_FOUND );
     }
 
-    @ExceptionHandler( { DuplicateCodeException.class, DuplicateUidException.class, DuplicateUuidException.class } )
+    @ExceptionHandler({ DuplicateCodeException.class, DuplicateUidException.class, DuplicateUuidException.class })
     public ResponseEntity<String> handleConflict( Exception ex ) throws IOException
     {
         HttpHeaders headers = new HttpHeaders();
@@ -107,5 +110,14 @@ public class FacilityAdvice
 
         return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.CONFLICT.toString(),
             ex.getMessage() ), headers, HttpStatus.CONFLICT );
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported( HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request )
+    {
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
+        return new ResponseEntity<Object>( MessageUtils.jsonMessage(
+            "415", ex.getMessage() ), HttpStatus.UNSUPPORTED_MEDIA_TYPE );
     }
 }
