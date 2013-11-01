@@ -53,7 +53,7 @@ public class Facility
 
     // Name of the facility
     @NotNull
-    @Length(min = 2, max = 160)
+    @Length( min = 2, max = 160 )
     private String name;
 
     // Active = true/false indicates whether the facility is active or not
