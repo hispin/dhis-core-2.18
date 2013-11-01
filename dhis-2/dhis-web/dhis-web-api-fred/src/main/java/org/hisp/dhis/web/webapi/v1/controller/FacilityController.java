@@ -643,7 +643,7 @@ public class FacilityController
         organisationUnitService.deleteOrganisationUnit( organisationUnit );
 
         return new ResponseEntity<String>( MessageUtils.jsonMessage( HttpStatus.OK.toString(),
-            "{}" ), HttpStatus.OK );
+            "Deleted facility with ID " + id ), HttpStatus.OK );
     }
 
     //--------------------------------------------------------------------------
