@@ -32,6 +32,7 @@
 	
 	    <action name="i18n" class="org.hisp.dhis.pivot.action.NoAction">
 			<result name="success" type="velocity-javascript">/dhis-web-pivot/i18n.vm</result>
+      		<interceptor-ref name="cacheStack" />
 	    </action>
 	
 		</package>
