@@ -49,19 +49,28 @@ public final class MessageUtils
         objectMapper.setSerializationInclusion( JsonInclude.Include.NON_EMPTY );
     }
 
-    public static String jsonMessage( String message ) throws IOException
+    public static String jsonMessage( String message )
     {
         return messageToJson( new MessageResponse( null, message ) );
     }
 
-    public static String jsonMessage( String code, String message ) throws IOException
+    public static String jsonMessage( String code, String message )
     {
         return messageToJson( new MessageResponse( code, message ) );
     }
 
-    public static String messageToJson( MessageResponse messageResponse ) throws IOException
+    public static String messageToJson( MessageResponse messageResponse )
     {
-        return objectMapper.writeValueAsString( messageResponse );
+        try
+        {
+            return objectMapper.writeValueAsString( messageResponse );
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        throw new IllegalArgumentException();
     }
 
     private MessageUtils()
