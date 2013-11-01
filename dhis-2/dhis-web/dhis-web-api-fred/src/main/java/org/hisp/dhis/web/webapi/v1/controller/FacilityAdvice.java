@@ -41,6 +41,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -118,6 +119,15 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
 
         return new ResponseEntity<Object>( MessageUtils.jsonMessage(
-            "415", ex.getMessage() ), HttpStatus.UNSUPPORTED_MEDIA_TYPE );
+            Integer.toString( status.value() ), ex.getMessage() ), status );
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable( HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request )
+    {
+        headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
+
+        return new ResponseEntity<Object>( MessageUtils.jsonMessage(
+            Integer.toString( status.value() ), ex.getMessage() ), status );
     }
 }
