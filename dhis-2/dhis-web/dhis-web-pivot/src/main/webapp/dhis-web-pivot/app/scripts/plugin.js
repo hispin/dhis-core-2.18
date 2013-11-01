@@ -194,4 +194,23 @@ Ext.onReady(function() {
 			getInit(config);
 		}
 	};
+
+
+
+	//if (ns.isPlugin) {
+
+		//// Resize render elements
+		//var baseEl = Ext.get(ns.init.el),
+			//baseElBorderW = parseInt(baseEl.getStyle('border-left-width')) + parseInt(baseEl.getStyle('border-right-width')),
+			//baseElBorderH = parseInt(baseEl.getStyle('border-top-width')) + parseInt(baseEl.getStyle('border-bottom-width')),
+			//baseElPaddingW = parseInt(baseEl.getStyle('padding-left')) + parseInt(baseEl.getStyle('padding-right')),
+			//baseElPaddingH = parseInt(baseEl.getStyle('padding-top')) + parseInt(baseEl.getStyle('padding-bottom')),
+			//el = Ext.get(tableUuid);
+
+		//ns.viewport.centerRegion.setWidth(el.getWidth());
+		//ns.viewport.centerRegion.setHeight(el.getHeight());
+		//baseEl.setWidth(el.getWidth() + baseElBorderW + baseElPaddingW);
+		//baseEl.setHeight(el.getHeight() + baseElBorderH + baseElPaddingH);
+	//}
+
 });
