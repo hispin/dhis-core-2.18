@@ -1830,17 +1830,17 @@ console.log(view.parentGraphMap);
 
 			conf.period = {
 				periodTypes: [
-					{id: 'relativePeriods', name: 'Relative'},
-					{id: 'Daily', name: 'Daily'},
-					{id: 'Weekly', name: 'Weekly'},
-					{id: 'Monthly', name: 'Monthly'},
-					{id: 'BiMonthly', name: 'BiMonthly'},
-					{id: 'Quarterly', name: 'Quarterly'},
-					{id: 'SixMonthly', name: 'SixMonthly'},
-					{id: 'Yearly', name: 'Yearly'},
-					{id: 'FinancialOct', name: 'FinancialOct'},
-					{id: 'FinancialJuly', name: 'FinancialJuly'},
-					{id: 'FinancialApril', name: 'FinancialApril'}
+					{id: 'relativePeriods', name: GIS.i18n.relative},
+					{id: 'Daily', name: GIS.i18n.daily},
+					{id: 'Weekly', name: GIS.i18n.weekly},
+					{id: 'Monthly', name: GIS.i18n.monthly},
+					{id: 'BiMonthly', name: GIS.i18n.bimonthly},
+					{id: 'Quarterly', name: GIS.i18n.quarterly},
+					{id: 'SixMonthly', name: GIS.i18n.sixmonthly},
+					{id: 'Yearly', name: GIS.i18n.yearly},
+					{id: 'FinancialOct', name: GIS.i18n.financial_oct},
+					{id: 'FinancialJuly', name: GIS.i18n.financial_july},
+					{id: 'FinancialApril', name: GIS.i18n.financial_april}
 				],
 				relativePeriods: [
 					{id: 'LAST_WEEK', name: GIS.i18n.last_week},

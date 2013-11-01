@@ -217,16 +217,16 @@ Ext.onReady( function() {
                     'last5Years': 'LAST_5_YEARS'
                 },
                 periodTypes: [
-                    {id: 'Daily', name: 'Daily'},
-                    {id: 'Weekly', name: 'Weekly'},
-                    {id: 'Monthly', name: 'Monthly'},
-                    {id: 'BiMonthly', name: 'BiMonthly'},
-                    {id: 'Quarterly', name: 'Quarterly'},
-                    {id: 'SixMonthly', name: 'SixMonthly'},
-                    {id: 'Yearly', name: 'Yearly'},
-                    {id: 'FinancialOct', name: 'FinancialOct'},
-                    {id: 'FinancialJuly', name: 'FinancialJuly'},
-                    {id: 'FinancialApril', name: 'FinancialApril'}
+					{id: 'Daily', name: DV.i18n.daily},
+					{id: 'Weekly', name: DV.i18n.weekly},
+					{id: 'Monthly', name: DV.i18n.monthly},
+					{id: 'BiMonthly', name: DV.i18n.bimonthly},
+					{id: 'Quarterly', name: DV.i18n.quarterly},
+					{id: 'SixMonthly', name: DV.i18n.sixmonthly},
+					{id: 'Yearly', name: DV.i18n.yearly},
+					{id: 'FinancialOct', name: DV.i18n.financial_oct},
+					{id: 'FinancialJuly', name: DV.i18n.financial_july},
+					{id: 'FinancialApril', name: DV.i18n.financial_april}
                 ]
             };
 
