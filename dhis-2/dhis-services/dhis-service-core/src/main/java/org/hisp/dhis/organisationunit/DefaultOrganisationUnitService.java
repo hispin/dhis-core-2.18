@@ -30,6 +30,7 @@ package org.hisp.dhis.organisationunit;
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,6 +51,8 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.system.util.GeoUtils;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.VersionService;
@@ -798,9 +801,34 @@ public class DefaultOrganisationUnitService
         return organisationUnitLevelStore.getMaxLevels();
     }
 
-    public Collection<OrganisationUnit> getWithinCoordinateArea( double[] box )
+    public Collection<OrganisationUnit> getWithinCoordinateArea( double longitude, double latitude, double distance )
     {
-        return organisationUnitStore.getWithinCoordinateArea( box );
+        Collection<OrganisationUnit> objects = organisationUnitStore.getWithinCoordinateArea( GeoUtils.getBoxShape( longitude, latitude, distance ) );
+
+        // Go through the list and remove the ones located farther than the distance.
+        if ( objects != null && objects.size() > 0 )
+        {
+            Iterator<OrganisationUnit> iter = objects.iterator();
+
+            Point2D centerPoint = new Point2D.Double( longitude, latitude );
+
+            while ( iter.hasNext() )
+            {
+                OrganisationUnit orgunit = iter.next();
+
+                double distancebetween = GeoUtils.getDistanceBetweenTwoPoints( centerPoint,
+                    ValidationUtils.getCoordinatePoint2D( orgunit.getCoordinates() ) );
+
+                if ( distancebetween > distance )
+                {
+                    // Remove the orgUnits that is outside of the distance range 
+                    // - due to the 'getWithinCoordinateArea' looking at square area instead of circle.
+                    iter.remove();
+                }
+            }
+        }
+
+        return objects;
     }
     
     // -------------------------------------------------------------------------

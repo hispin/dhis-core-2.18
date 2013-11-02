@@ -53,6 +53,13 @@
       <artifactId>poi</artifactId>
     </dependency>
     
+    <!-- GeoTools -->
+    
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+    </dependency>
+    
     <!-- Other -->
     
     <dependency>

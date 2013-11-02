@@ -28,6 +28,16 @@ package org.hisp.dhis.api.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
@@ -38,12 +48,10 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.mapgeneration.MapUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
-import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,18 +61,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -270,50 +266,39 @@ public class OrganisationUnitController
         Double longitude = Double.parseDouble( options.getOptions().get( "longitude" ) );
         Double latitude = Double.parseDouble( options.getOptions().get( "latitude" ) );
         Double distance = Double.parseDouble( options.getOptions().get( "distance" ) );
+        String orgUnitGroupSetId = options.getOptions().get( "orgUnitGroupSetId" );
         
-        entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( MapUtils.getBoxShape( longitude, latitude, distance ) ) );
-        
-        Point2D centerPoint = new Point2D.Double( longitude, latitude );
-        
+        entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( longitude, latitude, distance ) );
+                
         if ( entityList != null )
-        {
-            Iterator<OrganisationUnit> iter = entityList.iterator();
-
-            while ( iter.hasNext() )
+        {            
+            for( OrganisationUnit orgunit : entityList )
             {
-                OrganisationUnit orgunit = iter.next();
+                // Clear out all data not needed for this task
+                orgunit.removeAllDataSets();
+                orgunit.removeAllUsers();
+                orgunit.removeAllOrganisationUnitGroups();
 
-                double distancebetween = MapUtils.getDistanceBetweenTwoPoints( centerPoint,
-                    ValidationUtils.getCoordinatePoint2D( orgunit.getCoordinates() ) );
+                Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
+                attributeValues.clear();
 
-                if ( distancebetween > distance )
+                // Add OrgUnit Group Symbol into attributes
+                if( orgUnitGroupSetId != null )
                 {
-                    // Remove the orgUnits that is outside of the distance range 
-                    // - due to the 'getWithinCoordinateArea' looking at square area instead of circle.
-                    iter.remove();
-                }
-                else
-                {
-                    // Clear out all data not needed for this task
-                    orgunit.removeAllDataSets();
-                    orgunit.removeAllUsers();
-                    orgunit.removeAllOrganisationUnitGroups();
-
-                    Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
-                    attributeValues.clear();
-
-                    // Add OrgUnit Group Symbol into attributes
                     for ( OrganisationUnitGroup orgunitGroup : orgunit.getGroups() )
                     {
-                        AttributeValue attributeValue = new AttributeValue();
-                        attributeValue.setAttribute( new Attribute( "OrgUnitGroupSymbol", "OrgUnitGroupSymbol" ) );
-                        attributeValue.setValue( orgunitGroup.getSymbol() );
-
-                        attributeValues.add( attributeValue );
+                        if( orgunitGroup.getGroupSet().getUid() == orgUnitGroupSetId )
+                        {                        
+                            AttributeValue attributeValue = new AttributeValue();
+                            attributeValue.setAttribute( new Attribute( "OrgUnitGroupSymbol", "OrgUnitGroupSymbol" ) );
+                            attributeValue.setValue( orgunitGroup.getSymbol() );
+        
+                            attributeValues.add( attributeValue );
+                        }
                     }
-
-                    orgunit.setAttributeValues( attributeValues );
                 }
+                
+                orgunit.setAttributeValues( attributeValues );
             }
         }
 

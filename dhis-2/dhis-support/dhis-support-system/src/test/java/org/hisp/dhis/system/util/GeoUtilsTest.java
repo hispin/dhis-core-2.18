@@ -1,4 +1,4 @@
-package org.hisp.dhis.mapgenerator;
+package org.hisp.dhis.system.util;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,7 +28,7 @@ package org.hisp.dhis.mapgenerator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.mapgeneration.MapUtils.getWidthHeight;
+import static org.hisp.dhis.system.util.GeoUtils.getBoxShape;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -36,33 +36,29 @@ import org.junit.Test;
 /**
  * Lars Helge Overland
  */
-public class MapUtilsTest
-{    
-    @Test
-    public void testGetWidthHeight()
-    {
-        assertEquals( 150, getWidthHeight( 200, 300, 0, 0, 0.5 )[0] );
-        assertEquals( 300, getWidthHeight( 200, 300, 0, 0,  0.5 )[1] );
-        assertEquals( 200, getWidthHeight( 200, 300, 0, 0,  2 )[0] );
-        assertEquals( 100, getWidthHeight( 200, 300, 0, 0,  2 )[1] );
-        assertEquals( 300, getWidthHeight( 600, 300, 0, 0,  1d )[0] );
-        assertEquals( 300, getWidthHeight( 600, 300, 0, 0,  1d )[1] );
-
-        assertEquals( 200, getWidthHeight( 200, null, 0, 0,  0.5 )[0] );
-        assertEquals( 400, getWidthHeight( 200, null, 0, 0,  0.5 )[1] );
-        assertEquals( 200, getWidthHeight( 200, null, 0, 0,  2 )[0] );
-        assertEquals( 100, getWidthHeight( 200, null, 0, 0,  2 )[1] );
-
-        assertEquals( 150, getWidthHeight( null, 300, 0, 0,  0.5 )[0] );
-        assertEquals( 300, getWidthHeight( null, 300, 0, 0,  0.5 )[1] );
-        assertEquals( 600, getWidthHeight( null, 300, 0, 0,  2 )[0] );
-        assertEquals( 300, getWidthHeight( null, 300, 0, 0,  2 )[1] );
-    }
-
-    @Test( expected = IllegalArgumentException.class )
-    public void testGetWidthHeightIllegalArgument()
-    {
-        getWidthHeight( null, null, 0, 0, 0.5 );
-    }
+public class GeoUtilsTest
+{
+    private static final double DELTA = 0.01;
     
+    @Test
+    public void testGetBoxShape()
+    {
+        // Equator
+        
+        double[] box = getBoxShape( 0, 0, 110574.27 );
+        
+        assertEquals( 1d, box[0], DELTA );
+        assertEquals( 1d, box[1], DELTA );
+        assertEquals( -1d, box[2], DELTA );
+        assertEquals( -1d, box[3], DELTA );
+        
+        // Punta Arenas
+
+        box = getBoxShape( -71, -53, 67137.20 );
+
+        assertEquals( -52.4, box[0], DELTA );
+        assertEquals( -70d, box[1], DELTA );
+        assertEquals( -53.6, box[2], DELTA );
+        assertEquals( -72d, box[3], DELTA );        
+    }
 }
