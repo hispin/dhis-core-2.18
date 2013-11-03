@@ -39,7 +39,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
@@ -104,14 +103,6 @@ public interface ProgramStageInstanceService
     List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
-
-    Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode, Integer min, Integer max, I18n i18n );
-
-    int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
-        List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, Boolean completed,
-        Date startDate, Date endDate );
 
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
 
