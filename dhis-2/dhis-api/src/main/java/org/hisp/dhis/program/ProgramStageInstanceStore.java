@@ -31,15 +31,12 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
@@ -87,15 +84,6 @@ public interface ProgramStageInstanceStore
 
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate,
         int min, int max );
-
-    Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage,
-        Map<Integer, OrganisationUnitLevel> orgUnitLevelMap, Collection<Integer> orgUnits,
-        List<TabularReportColumn> columns, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
-        Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode, Integer min, Integer max, I18n i18n );
-
-    int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
-        List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, int maxLevel,
-        Date startDate, Date endDate, Boolean completed );
 
     void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
 

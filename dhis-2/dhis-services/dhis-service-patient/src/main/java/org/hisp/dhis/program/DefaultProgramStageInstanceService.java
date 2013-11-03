@@ -46,14 +46,12 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -248,32 +246,6 @@ public class DefaultProgramStageInstanceService
     public List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed )
     {
         return programStageInstanceStore.get( patient, completed );
-    }
-
-    @Override
-    public Grid getTabularReport( Boolean anonynousEntryForm, ProgramStage programStage,
-        List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, Date startDate,
-        Date endDate, boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode,
-        Integer min, Integer max, I18n i18n )
-    {
-        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
-
-        Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
-
-        return programStageInstanceStore.getTabularReport( anonynousEntryForm, programStage, orgUnitLevelMap,
-            organisationUnits, columns, level, maxLevel, startDate, endDate, descOrder, completed, accessPrivateInfo,
-            displayOrgunitCode, min, max, i18n );
-    }
-
-    @Override
-    public int getTabularReportCount( Boolean anonynousEntryForm, ProgramStage programStage,
-        List<TabularReportColumn> columns, Collection<Integer> organisationUnits, int level, Boolean completed,
-        Date startDate, Date endDate )
-    {
-        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
-
-        return programStageInstanceStore.getTabularReportCount( anonynousEntryForm, programStage, columns,
-            organisationUnits, level, maxLevel, startDate, endDate, completed );
     }
 
     public List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n )
