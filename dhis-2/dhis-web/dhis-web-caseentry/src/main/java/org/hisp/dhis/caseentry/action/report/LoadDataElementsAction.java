@@ -28,8 +28,10 @@ package org.hisp.dhis.caseentry.action.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
@@ -86,23 +88,23 @@ public class LoadDataElementsAction
         this.sectionId = sectionId;
     }
 
-    private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
+    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
 
-    public Collection<PatientIdentifierType> getIdentifierTypes()
+    public List<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
     }
 
-    private Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public List<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
 
-    private Collection<ProgramStageDataElement> psDataElements;
+    private List<ProgramStageDataElement> psDataElements = new ArrayList<ProgramStageDataElement>();
 
-    public Collection<ProgramStageDataElement> getPsDataElements()
+    public List<ProgramStageDataElement> getPsDataElements()
     {
         return psDataElements;
     }
@@ -116,24 +118,26 @@ public class LoadDataElementsAction
         throws Exception
     {
         Program program = null;
+        
         if ( programStageId != null )
         {
             ProgramStage programStage = programStageService.getProgramStage( programStageId );
-            psDataElements = programStage.getProgramStageDataElements();
+            psDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
             program = programStage.getProgram();
+            
+            System.out.println("psd " + psDataElements.size());
         }
         else if ( sectionId != null )
         {
             ProgramStageSection section = programStageSectionService.getProgramStageSection( sectionId );
-            psDataElements = section.getProgramStageDataElements();
+            psDataElements = new ArrayList<ProgramStageDataElement>( section.getProgramStageDataElements() );
             program = section.getProgramStageDataElements().iterator().next().getProgramStage().getProgram();
         }
 
         if ( program != null && program.isRegistration() )
         {
-            identifierTypes = program.getPatientIdentifierTypes();
-            patientAttributes = program.getPatientAttributes();
-
+            identifierTypes = new ArrayList<PatientIdentifierType>( program.getPatientIdentifierTypes() );
+            patientAttributes = new ArrayList<PatientAttribute>( program.getPatientAttributes() );
         }
 
         return SUCCESS;
