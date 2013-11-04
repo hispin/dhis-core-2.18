@@ -889,6 +889,8 @@ public class TableAlteror
             executeSql( "alter table reporttable drop column doperiods" );
             executeSql( "alter table reporttable drop column dounits" );
             executeSql( "alter table reporttable drop column categorycomboid" );
+            
+            executeSql( "delete from configuration where configurationid not in (select configurationid from configuration limit 1)" );
         }
         catch ( Exception ex )
         {

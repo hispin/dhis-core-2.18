@@ -54,7 +54,14 @@ public class DefaultConfigurationService
     @Override
     public void setConfiguration( Configuration configuration )
     {
-        configurationStore.save( configuration );
+        if ( configuration != null && configuration.getId() > 0 )
+        {
+            configurationStore.update( configuration );
+        }
+        else
+        {
+            configurationStore.save( configuration );
+        }
     }
     
     @Override
