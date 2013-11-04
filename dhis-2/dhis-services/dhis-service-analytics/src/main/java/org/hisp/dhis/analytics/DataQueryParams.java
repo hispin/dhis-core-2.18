@@ -1334,6 +1334,11 @@ public class DataQueryParams
         setDimensionOptions( CATEGORYOPTIONCOMBO_DIM_ID, DimensionType.CATEGORY_OPTION_COMBO, null, new ArrayList<NameableObject>() );
     }
     
+    public boolean isCategoryOptionCombosEnabled()
+    {
+        return getDimensionOrFilter( CATEGORYOPTIONCOMBO_DIM_ID ) != null;
+    }
+    
     // -------------------------------------------------------------------------
     // Get and set helpers for filters
     // -------------------------------------------------------------------------
