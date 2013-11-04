@@ -471,13 +471,16 @@ div#selectionTree
 #interpretationFeed
 {
   width: 600px;
+  margin-left: 4%;
 }
 
 #shareLink
 {
   color: #777;
-  font-size: 11pt;
-  margin-bottom: 15px;
+  font-size: 16px;
+  padding-top: 7px;
+  margin-left: 4%;
+  margin-bottom: 22px;
 }
 
 .interpretationContainer
