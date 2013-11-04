@@ -89,8 +89,8 @@ public class ProgramServiceTest
         Program programA = createProgram( 'A', programStages, organisationUnit );
         Program programB = createProgram( 'B', programStages, organisationUnit );
         
-        int idA = programService.saveProgram( programA );
-        int idB = programService.saveProgram( programB );
+        int idA = programService.addProgram( programA );
+        int idB = programService.addProgram( programB );
         
         assertEquals( programA, programService.getProgram( idA ) );
         assertEquals( programB, programService.getProgram( idB ) );

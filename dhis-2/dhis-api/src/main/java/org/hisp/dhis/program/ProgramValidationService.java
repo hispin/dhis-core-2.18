@@ -38,22 +38,81 @@ public interface ProgramValidationService
 {
     String ID = ProgramValidationService.class.getName();
 
+    /**
+     * Adds an {@link ProgramValidation}
+     * 
+     * @param programValidation The to ProgramValidation add.
+     * 
+     * @return A generated unique id of the added {@link ProgramValidation}.
+     */
     int addProgramValidation( ProgramValidation programValidation );
 
+    /**
+     * Deletes a {@link ProgramValidation}
+     * 
+     * @param programValidation The ProgramValidation to delete.
+     */
     void deleteProgramValidation( ProgramValidation programValidation );
 
+    /**
+     * Updates an {@link ProgramValidation}.
+     * 
+     * @param programValidation The ProgramValidation to update.
+     */
     void updateProgramValidation( ProgramValidation programValidation );
 
+    /**
+     * Returns a {@link ProgramValidation}.
+     * 
+     * @param id the id of the ProgramValidation to return.
+     * 
+     * @return the ProgramValidation with the given id
+     */
     ProgramValidation getProgramValidation( int id );
 
+    /**
+     * Returns all {@link ProgramValidation}.
+     * 
+     * @return a collection of all ProgramValidation, or an empty collection if
+     *         there are no ProgramValidations.
+     */
     Collection<ProgramValidation> getAllProgramValidation();
 
+    /**
+     * Get validation by {@link Program}
+     * 
+     * @param program Program
+     * 
+     * @return ProgramValidation list
+     */
     Collection<ProgramValidation> getProgramValidation( Program program );
 
+    /**
+     * Get validation by program stage
+     * 
+     * @param programStage {@link ProgramStage}
+     * 
+     * @return ProgramValidation list
+     */
     Collection<ProgramValidation> getProgramValidation( ProgramStage programStage );
 
+    /**
+     * Get {@link ProgramValidation} list from a {@link ProgramStageDataElement}
+     * 
+     * @param psdataElement {@link ProgramStageDataElement}
+     * 
+     * @return ProgramValidation list
+     */
     Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement );
 
+    /**
+     * Get validation violated in an event
+     * 
+     * @param validation ProgramValidation List
+     * @param programStageInstance {@link ProgramStageInstance}
+     * 
+     * @return List of validation violated
+     */
     Collection<ProgramValidationResult> validate( Collection<ProgramValidation> validation,
         ProgramStageInstance programStageInstance );
 }

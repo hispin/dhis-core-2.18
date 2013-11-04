@@ -60,15 +60,24 @@ public interface PatientAttributeStore
      * Get patient attributes by mandatory option
      * 
      * @param mandatory True/False value
+     * 
+     * @return List of patient attributes
      */
     Collection<PatientAttribute> getByMandatory( boolean mandatory );
 
+    /**
+     * Get {@link PatientAttribute} without any group
+     * 
+     * @return PatientAttribute without group.
+     */
     Collection<PatientAttribute> getWithoutGroup();
 
     /**
      * Get patient attributes by groupBy option
      * 
      * @param groupBy True/False value
+     * 
+     * @return List of patient attributes
      */
     PatientAttribute getByGroupBy( boolean groupBy );
 

@@ -64,7 +64,7 @@ public class DefaultPatientTabularReportService
     }
 
     @Override
-    public Collection<PatientTabularReport> getAllCharts()
+    public Collection<PatientTabularReport> getAllTabularReports()
     {
         return tabularReportStore.getAll();
     }

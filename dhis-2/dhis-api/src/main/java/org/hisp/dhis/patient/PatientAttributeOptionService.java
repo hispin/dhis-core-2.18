@@ -37,16 +37,56 @@ import java.util.Collection;
  */
 public interface PatientAttributeOptionService
 {
+    /**
+     * Adds an {@link PatientAttributeOption}
+     * 
+     * @param option The to PatientAttributeOption add.
+     * 
+     * @return A generated unique id of the added {@link PatientAttributeOption}.
+     */
     void addPatientAttributeOption( PatientAttributeOption option );
 
+    /**
+     * Updates a {@link PatientAttributeOption}.
+     * 
+     * @param option the PatientAttributeOption to update.
+     */
     void updatePatientAttributeOption( PatientAttributeOption option );
 
+    /**
+     * Deletes a {@link PatientAttributeOption}.
+     * 
+     * @param option the PatientAttributeOption to delete.
+     */
     void deletePatientAttributeOption( PatientAttributeOption option );
 
+    /**
+     * Returns a {@link PatientAttributeOption} with a given name.
+     * 
+     * @param patientAttribute {@link PatientAttribute}
+     * @param name the name of the PatientAttributeOption to return.
+     * 
+     * @return the PatientAttributeOption with the given name, or null if no
+     *         match.
+     */
     PatientAttributeOption get( PatientAttribute patientAttribute, String name );
-    
+
+    /**
+     * Returns a {@link PatientAttributeOption}.
+     * 
+     * @param id the id of the PatientAttributeOption to return.
+     * 
+     * @return the PatientAttributeOption with the given id
+     */
     PatientAttributeOption get( int id );
-    
+
+    /**
+     * Get all {@link PatientAttributeOption} of a {@link PatientAttribute}
+     * 
+     * @param patientAttribute {@link PatientAttribute}
+     * 
+     * @return {@link PatientAttributeOption}
+     */
     Collection<PatientAttributeOption> get( PatientAttribute patientAttribute );
 
 }

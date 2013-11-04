@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  * @author Chau Thu Tran
- *
+ * 
  * @version ProgramStageSectionService.java 11:12:41 AM Aug 22, 2012 $
  */
 public interface ProgramStageSectionService
@@ -43,21 +43,75 @@ public interface ProgramStageSectionService
     // -------------------------------------------------------------------------
     // ProgramStageSection
     // -------------------------------------------------------------------------
-    
+
+    /**
+     * Adds an {@link ProgramStageSection}
+     * 
+     * @param programStageSection The to ProgramStageSection add.
+     * 
+     * @return A generated unique id of the added {@link ProgramStageSection}.
+     */
     int saveProgramStageSection( ProgramStageSection programStageSection );
-    
+
+    /**
+     * Deletes a {@link ProgramStageSection}.
+     * 
+     * @param programStageSection the ProgramStageSection to delete.
+     */
     void deleteProgramStageSection( ProgramStageSection programStageSection );
-    
+
+    /**
+     * Updates an {@link ProgramStageSection}.
+     * 
+     * @param programStageSection the ProgramStageSection to update.
+     */
     void updateProgramStageSection( ProgramStageSection programStageSection );
-    
+
+    /**
+     * Returns a {@link ProgramStageSection}.
+     * 
+     * @param id the id of the ProgramStageSection to return.
+     * 
+     * @return the ProgramStageSection with the given id
+     */
     ProgramStageSection getProgramStageSection( int id );
-    
+
+    /**
+     * Returns a {@link ProgramStageSection} with a given name.
+     * 
+     * @param name the name of the ProgramStageSection to return.
+     * 
+     * @return the ProgramStageSection with the given name, or null if no match.
+     */
     List<ProgramStageSection> getProgramStageSectionByName( String name );
-    
+
+    /**
+     * Retrieve a program stage section by name and a program stage
+     * 
+     * @param name Name of program stage
+     * @param programStage Specify a {@link Program} for retrieving a program
+     *        stage. The system allows the name of program stages are duplicated
+     *        on different programs
+     * 
+     * @return ProgramStage
+     */
     ProgramStageSection getProgramStageSectionByName( String name, ProgramStage programStage );
-    
+
+    /**
+     * Returns all {@link ProgramStageSection}
+     * 
+     * @return a collection of all ProgramStageSection, or an empty collection if
+     *         there are no ProgramStageSections.
+     */
     Collection<ProgramStageSection> getAllProgramStageSections();
-    
+
+    /**
+     * Get all sections by a program stage
+     * 
+     * @param programStage {@link ProgramStage}
+     * 
+     * @return ProgramStageSection list
+     */
     Collection<ProgramStageSection> getProgramStages( ProgramStage programStage );
-    
+
 }

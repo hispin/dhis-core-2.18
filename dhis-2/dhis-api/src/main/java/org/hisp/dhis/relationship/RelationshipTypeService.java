@@ -35,19 +35,57 @@ import java.util.Collection;
  * @version $Id$
  */
 public interface RelationshipTypeService
-{    
+{
     String ID = RelationshipTypeService.class.getName();
-    
+
+    /**
+     * Adds an {@link RelationshipType}
+     * 
+     * @param relationshipType The to RelationshipType add.
+     * 
+     * @return A generated unique id of the added {@link RelationshipType}.
+     */
     int saveRelationshipType( RelationshipType relationshipType );
-    
+
+    /**
+     * Deletes a {@link RelationshipType}.
+     * 
+     * @param relationshipType the RelationshipType to delete.
+     */
     void deleteRelationshipType( RelationshipType relationshipType );
-    
+
+    /**
+     * Updates an {@link RelationshipType}.
+     * 
+     * @param relationshipType the RelationshipType to update.
+     */
     void updateRelationshipType( RelationshipType relationshipType );
-    
-    RelationshipType getRelationshipType( int id );    
-    
+
+    /**
+     * Returns a {@link RelationshipType}.
+     * 
+     * @param id the id of the RelationshipType to return.
+     * 
+     * @return the RelationshipType with the given id
+     */
+    RelationshipType getRelationshipType( int id );
+
+    /**
+     * Retrieve a relationship
+     * 
+     * @param aIsToB The A side
+     * @param bIsToA The B side
+     * 
+     * @return RelationshipType
+     */
     RelationshipType getRelationshipType( String aIsToB, String bIsToA );
-    
-    Collection<RelationshipType> getAllRelationshipTypes();    
-    
+
+    /**
+     * Returns all {@link RelationshipType}
+     * 
+     * @return a collection of all RelationshipType, or an empty collection if
+     *         there are no RelationshipTypes.
+     */
+    Collection<RelationshipType> getAllRelationshipTypes();
+
 }

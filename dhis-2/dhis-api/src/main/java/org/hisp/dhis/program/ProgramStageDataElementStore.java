@@ -41,17 +41,64 @@ public interface ProgramStageDataElementStore
 {
     String ID = ProgramStageInstanceStore.class.getName();
 
+    /**
+     * Adds an {@link ProgramStageDataElement}
+     * 
+     * @param programStageDataElement The to ProgramStageDataElement add.
+     * 
+     * @return A generated unique id of the added
+     *         {@link ProgramStageDataElement}.
+     */
     void save( ProgramStageDataElement programStageDataElement );
 
+    /**
+     * Updates an {@link ProgramStageDataElement}.
+     * 
+     * @param programStageDataElement the ProgramStageDataElement to update.
+     */
     void update( ProgramStageDataElement programStageDataElement );
 
+    /**
+     * Deletes a {@link ProgramStageDataElement}.
+     * 
+     * @param programStageDataElement the ProgramStageDataElement to delete.
+     */
     void delete( ProgramStageDataElement programStageDataElement );
 
+    /**
+     * Retrieve ProgramStageDataElement list on a program stage and a data
+     * element
+     * 
+     * @param programStage ProgramStage
+     * @param dataElement DataElement
+     * 
+     * @return ProgramStageDataElement
+     */
     ProgramStageDataElement get( ProgramStage programStage, DataElement dataElement );
-    
+
+    /**
+     * Returns all {@link ProgramStageDataElement}
+     * 
+     * @return a collection of all ProgramStageDataElement, or an empty
+     *         collection if there are no ProgramStageDataElements.
+     */
     Collection<ProgramStageDataElement> getAll();
 
+    /**
+     * Retrieve ProgramStageDataElement list on a program stage
+     * 
+     * @param programStage ProgramStage
+     * 
+     * @return ProgramStageDataElement list
+     */
     Collection<ProgramStageDataElement> get( ProgramStage programStage );
 
+    /**
+     * Retrieve Data element list on a program stage
+     * 
+     * @param programStage ProgramStage
+     * 
+     * @return ProgramStageDataElement list
+     */
     Collection<DataElement> getListDataElement( ProgramStage programStage );
 }

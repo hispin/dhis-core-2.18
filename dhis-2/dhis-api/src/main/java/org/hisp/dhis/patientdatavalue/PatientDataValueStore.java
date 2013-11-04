@@ -45,21 +45,81 @@ public interface PatientDataValueStore
 {
     String ID = PatientDataValueStore.class.getName();
 
+    /**
+     * Adds an {@link PatientDataValue}
+     * 
+     * @param patientAttribute The to PatientDataValue add.
+     * 
+     * @return A generated unique id of the added {@link PatientDataValue}.
+     */
     void saveVoid( PatientDataValue patientDataValue );
 
     int delete( ProgramStageInstance programStageInstance );
 
+    /**
+     * Deletes a {@link PatientDataValue}.
+     * 
+     * @param patientDataValue the PatientDataValue to delete.
+     */
     int delete( DataElement dataElement );
-    
+
+    /**
+     * Retrieve patient data values of a event
+     * 
+     * @param programStageInstance ProgramStageInstance
+     * 
+     * @return PatientDataValue list
+     */
     Collection<PatientDataValue> get( ProgramStageInstance programStageInstance );
-    
+
+    /**
+     * Retrieve patient data values of a event with data elements specified
+     * 
+     * @param programStageInstance ProgramStageInstance
+     * @param dataElement DataElement List
+     * 
+     * @return PatientDataValue list
+     */
     Collection<PatientDataValue> get( ProgramStageInstance programStageInstance, Collection<DataElement> dataElements );
 
+    /**
+     * Retrieve patient data values of many events
+     * 
+     * @param programStageInstance ProgramStageInstance
+     * 
+     * @return PatientDataValue list
+     */
     Collection<PatientDataValue> get( Collection<ProgramStageInstance> programStageInstances );
 
+    /**
+     * Retrieve patient data values on a data element
+     * 
+     * @param dataElement {@link DataElement}
+     * 
+     * @return PatientDataValue list
+     */
     Collection<PatientDataValue> get( DataElement dataElement );
-    
-    Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date startDate, Date endDate );
-    
+
+    /**
+     * Retrieve patient data values of a {@link Patient} on a
+     * {@link DataElement} lisy
+     * 
+     * @patient patient Patient
+     * @param dataElements The data element list
+     * @param after Optional date the instance should be on or after.
+     * @param before Optional date the instance should be on or before.
+     * 
+     * @return PatientDataValue list
+     */
+    Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date after,
+        Date before );
+    /**
+     * Retrieve a patient data value on an event and a data element
+     * 
+     * @param programStageInstance ProgramStageInstance
+     * @param dataElement DataElement
+     * 
+     * @return PatientDataValue
+     */
     PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement );
 }

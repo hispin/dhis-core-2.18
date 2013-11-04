@@ -43,28 +43,112 @@ public interface PatientDataValueService
 {
     String ID = PatientDataValueService.class.getName();
 
+    /**
+     * Adds an {@link PatientDataValue}
+     * 
+     * @param patientAttribute The to PatientDataValue add.
+     * 
+     * @return A generated unique id of the added {@link PatientDataValue}.
+     */
     void savePatientDataValue( PatientDataValue patientDataValue );
 
+    /**
+     * Updates an {@link PatientDataValue}.
+     * 
+     * @param patientDataValue the PatientDataValue to update.
+     */
     void updatePatientDataValue( PatientDataValue patientDataValue );
 
+    /**
+     * Deletes a {@link PatientDataValue}.
+     * 
+     * @param patientDataValue the PatientDataValue to delete.
+     */
     void deletePatientDataValue( PatientDataValue patientDataValue );
 
+    /**
+     * Deletes all {@link PatientDataValue} of {@link ProgramStageInstance}
+     * 
+     * @param programStageInstance The {@link ProgramStageInstance}.
+     * 
+     * @return Error code. If this code is 0, deleting succeed.
+     */
     int deletePatientDataValue( ProgramStageInstance programStageInstance );
 
+    /**
+     * Deletes all {@link PatientDataValue} of an {@link DataElement}
+     * 
+     * @param patientDataValue the PatientDataValue to delete.
+     */
     int deletePatientDataValue( DataElement dataElement );
 
+    /**
+     * Retrieve patient data values of a event
+     * 
+     * @param programStageInstance ProgramStageInstance
+     * 
+     * @return PatientDataValue list
+     */
     Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance );
-    
-    Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance, Collection<DataElement> dataElement );
 
+    /**
+     * Retrieve patient data values of a event with data elements specified
+     * 
+     * @param programStageInstance ProgramStageInstance
+     * @param dataElement DataElement List
+     * 
+     * @return PatientDataValue list
+     */
+    Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance,
+        Collection<DataElement> dataElement );
+
+    /**
+     * Retrieve patient data values of many events
+     * 
+     * @param programStageInstance ProgramStageInstance
+     * 
+     * @return PatientDataValue list
+     */
     Collection<PatientDataValue> getPatientDataValues( Collection<ProgramStageInstance> programStageInstances );
 
+    /**
+     * Retrieve patient data values of a data element
+     * 
+     * @param dataElement DataElement
+     * 
+     * @return PatientDataValue list
+     */
     Collection<PatientDataValue> getPatientDataValues( DataElement dataElement );
 
+    /**
+     * Retrive patient data values of a patient on data elements specified from
+     * a certain period
+     * 
+     * @param patient Patient
+     * @param dataElements DataElement List
+     * @param after Optional date the instance should be on or after.
+     * @param before Optional date the instance should be on or before.
+     * 
+     * @return PatientDataValue list
+     */
     Collection<PatientDataValue> getPatientDataValues( Patient patient, Collection<DataElement> dataElements,
-        Date startDate, Date endDate );
+        Date after, Date before );
 
+    /**
+     * Retrieve a patient data value on an event and a data element
+     * 
+     * @param programStageInstance ProgramStageInstance
+     * @param dataElement DataElement
+     * 
+     * @return PatientDataValue
+     */
     PatientDataValue getPatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement );
 
+    /**
+     * Returns all {@link PatientDataValue}
+     * 
+     * @return a collection of all PatientDataValues, or an empty collection if
+     *         there are no PatientDataValues.
+     */
     Collection<PatientDataValue> getAllPatientDataValues();
 }

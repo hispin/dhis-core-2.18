@@ -60,23 +60,53 @@ public interface PatientRegistrationFormService
     final Pattern TITLE_TAG_PATTERN = Pattern.compile( "title=\"(.*?)\"", Pattern.DOTALL );
 
     final Pattern SUGGESTED_VALUE_PATTERN = Pattern.compile( "suggested=('|\")(\\w*)('|\")" );
-    
+
     final Pattern CLASS_PATTERN = Pattern.compile( "class=('|\")(\\w*)('|\")" );
-    
+
     final Pattern STYLE_PATTERN = Pattern.compile( "style=('|\")([\\w|\\d\\:\\;]+)('|\")" );
 
     // --------------------------------------------------------------------------
     // ProgramDataEntryService
     // --------------------------------------------------------------------------
 
+    /**
+     * Adds an {@link PatientRegistrationForm}
+     * 
+     * @param registrationForm The to PatientRegistrationForm add.
+     * 
+     * @return A generated unique id of the added {@link PatientRegistrationForm}.
+     */
     int savePatientRegistrationForm( PatientRegistrationForm registrationForm );
 
+    /**
+     * Deletes a {@link PatientRegistrationForm}.
+     * 
+     * @param registrationForm the PatientRegistrationForm to delete.
+     */
     void deletePatientRegistrationForm( PatientRegistrationForm registrationForm );
 
+    /**
+     * Updates an {@link PatientRegistrationForm}.
+     * 
+     * @param patientAttribute the PatientRegistrationForm to update.
+     */
     void updatePatientRegistrationForm( PatientRegistrationForm registrationForm );
 
+    /**
+     * Returns a {@link PatientRegistrationForm}.
+     * 
+     * @param id the id of the PatientRegistrationForm to return.
+     * 
+     * @return the PatientRegistrationForm with the given id
+     */
     PatientRegistrationForm getPatientRegistrationForm( int id );
 
+    /**
+     * Returns all {@link PatientRegistrationForm}
+     * 
+     * @return a collection of all PatientRegistrationForm, or an empty collection if
+     *         there are no PatientRegistrationForms.
+     */
     Collection<PatientRegistrationForm> getAllPatientRegistrationForms();
 
     /**
@@ -91,15 +121,15 @@ public interface PatientRegistrationFormService
     /**
      * Get custom registration form which doesn't belong to any program
      * 
-     * @return PatientRegistrationForm 
+     * @return PatientRegistrationForm
      */
     PatientRegistrationForm getCommonPatientRegistrationForm();
 
     /**
-     * Prepares the custom registration by injecting required javascripts
-     * and drop down lists.
+     * Prepares the custom registration by injecting required javascripts and
+     * drop down lists.
      * 
-     * @param htmlCode the HTML code of the data entry form. 
+     * @param htmlCode the HTML code of the data entry form.
      * @param program Program which include a custom entry form
      * @param healthWorkers DHIS users list
      * @param patient Patient
@@ -109,7 +139,7 @@ public interface PatientRegistrationFormService
      * 
      * @return HTML code for the form.
      */
-    String prepareDataEntryFormForAdd( String htmlCode, Program program, Collection<User> healthWorkers, Patient patient,
-        ProgramInstance programInstance, I18n i18n, I18nFormat format );
+    String prepareDataEntryFormForAdd( String htmlCode, Program program, Collection<User> healthWorkers,
+        Patient patient, ProgramInstance programInstance, I18n i18n, I18nFormat format );
 
 }

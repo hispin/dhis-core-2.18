@@ -37,28 +37,107 @@ import java.util.Map;
  */
 public interface ProgramIndicatorService
 {
+    /**
+     * Adds an {@link ProgramIndicator}
+     * 
+     * @param programIndicator The to ProgramIndicator add.
+     * 
+     * @return A generated unique id of the added {@link ProgramIndicator}.
+     */
     int addProgramIndicator( ProgramIndicator programIndicator );
 
+    /**
+     * Updates an {@link ProgramIndicator}.
+     * 
+     * @param programIndicator the ProgramIndicator to update.
+     */
     void updateProgramIndicator( ProgramIndicator programIndicator );
 
+    /**
+     * Deletes a {@link ProgramIndicator}.
+     * 
+     * @param programIndicator the ProgramIndicator to delete.
+     */
     void deleteProgramIndicator( ProgramIndicator programIndicator );
 
+    /**
+     * Returns a {@link ProgramIndicator}.
+     * 
+     * @param id the id of the ProgramIndicator to return.
+     * 
+     * @return the ProgramIndicator with the given id
+     */
     ProgramIndicator getProgramIndicator( int id );
 
+    /**
+     * Returns a {@link ProgramIndicator} with a given name.
+     * 
+     * @param name the name of the ProgramIndicator to return.
+     * @return the ProgramIndicator with the given name, or null if no match.
+     */
     ProgramIndicator getProgramIndicator( String name );
 
+    /**
+     * Returns a {@link ProgramIndicator} with a given short name.
+     * 
+     * @param name the name of the ProgramIndicator to return.
+     * @return the ProgramIndicator with the given short name, or null if no
+     *         match.
+     */
     ProgramIndicator getProgramIndicatorByShortName( String shortName );
 
+    /**
+     * Returns the {@link ProgramIndicator} with the given UID.
+     * 
+     * @param uid the UID.
+     * @return the ProgramIndicator with the given UID, or null if no match.
+     */
     ProgramIndicator getProgramIndicatorByUid( String uid );
 
+    /**
+     * Returns all {@link ProgramIndicator}.
+     * 
+     * @return a collection of all ProgramIndicator, or an empty collection if
+     *         there are no ProgramIndicators.
+     */
     Collection<ProgramIndicator> getAllProgramIndicators();
 
+    /**
+     * Get {@link ProgramIndicator} of a program
+     * 
+     * @param program Program
+     * 
+     * @return ProgramIndicators belong to the program
+     */
     Collection<ProgramIndicator> getProgramIndicators( Program program );
 
+    /**
+     * Calculate an prorgam indicator value based on program instance and an
+     * indicator defined for a patient
+     * 
+     * @param programInstance ProgramInstance
+     * @param programIndicator ProgramIndicator
+     * 
+     * @return Indicator value
+     */
     String getProgramIndicatorValue( ProgramInstance programInstance, ProgramIndicator programIndicator );
 
+    /**
+     * Get indicator values of all program indicators defined for a patient
+     * 
+     * @param programInstance ProgramInstance
+     * 
+     * @return Map<Indicator name, Indicator value>
+     */
     Map<String, String> getProgramIndicatorValues( ProgramInstance programInstance );
 
+    /**
+     * Get description of an indicator expression
+     * 
+     * @param expression A expression string
+     * 
+     * @return The description
+     */
     String getExpressionDescription( String expression );
 
 }

@@ -38,18 +38,61 @@ public interface PatientIdentifierTypeService
 {
     String ID = PatientIdentifierTypeService.class.getName();
 
+    /**
+     * Adds an {@link PatientIdentifierType}
+     * 
+     * @param patientIdentifierType The to PatientIdentifierType add.
+     * 
+     * @return A generated unique id of the added {@link PatientIdentifierType}.
+     */
     int savePatientIdentifierType( PatientIdentifierType patientIdentifierType );
 
+    /**
+     * Deletes a {@link PatientIdentifierType}.
+     * 
+     * @param patientIdentifierType the PatientIdentifierType to delete.
+     */
     void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType );
 
+    /**
+     * Deletes a {@link PatientIdentifierType}.
+     * 
+     * @param patientIdentifierType the PatientIdentifierType to delete.
+     */
     void updatePatientIdentifierType( PatientIdentifierType patientIdentifierType );
 
+    /**
+     * Returns a {@link PatientIdentifierType}.
+     * 
+     * @param id the id of the PatientIdentifierType to return.
+     * 
+     * @return the PatientIdentifierType with the given id
+     */
     PatientIdentifierType getPatientIdentifierType( int id );
 
+    /**
+     * Returns all {@link PatientIdentifierType}
+     * 
+     * @return a collection of all PatientIdentifierType, or an empty collection if
+     *         there are no PatientAttributeGroups.
+     */
     Collection<PatientIdentifierType> getAllPatientIdentifierTypes();
 
+    /**
+     * Returns a {@link PatientIdentifierType} with a given name.
+     * 
+     * @param name the name of the PatientIdentifierType to return.
+     * 
+     * @return the PatientIdentifierType with the given name, or null if no match.
+     */
     PatientIdentifierType getPatientIdentifierType( String name );
 
+    /**
+     * Returns the {@link PatientIdentifierType} with the given UID.
+     * 
+     * @param uid the UID.
+     * @return the PatientIdentifierType with the given UID, or null if no match.
+     */
     PatientIdentifierType getPatientIdentifierTypeByUid( String uid );
 
     /**

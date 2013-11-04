@@ -164,8 +164,8 @@ public class PatientStoreTest
     @Test
     public void testGetByOrgUnitProgram()
     {
-        programService.saveProgram( programA );
-        programService.saveProgram( programB );
+        programService.addProgram( programA );
+        programService.addProgram( programB );
         
         patientStore.save( patientA );
         patientStore.save( patientB );
@@ -192,8 +192,8 @@ public class PatientStoreTest
     @Test
     public void testGetByProgram()
     {
-        programService.saveProgram( programA );
-        programService.saveProgram( programB );
+        programService.addProgram( programA );
+        programService.addProgram( programB );
         
         patientStore.save( patientA );
         patientStore.save( patientB );

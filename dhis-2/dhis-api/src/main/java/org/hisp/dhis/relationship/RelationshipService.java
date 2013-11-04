@@ -31,6 +31,7 @@ package org.hisp.dhis.relationship;
 import java.util.Collection;
 
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.program.Program;
 
 /**
  * @author Abyot Asalefew
@@ -40,25 +41,97 @@ public interface RelationshipService
 {
     String ID = RelationshipService.class.getName();
 
+    /**
+     * Adds an {@link Program}
+     * 
+     * @param program The to Program add.
+     * 
+     * @return A generated unique id of the added {@link Program}.
+     */
     int saveRelationship( Relationship relationship );
 
+    /**
+     * Returns a {@link Program}.
+     * 
+     * @param id the id of the Program to return.
+     * 
+     * @return the Program with the given id
+     */
     void deleteRelationship( Relationship relationship );
 
+    /**
+     * Updates an {@link Program}.
+     * 
+     * @param program the Program to update.
+     */
     void updateRelationship( Relationship relationship );
 
+    /**
+     * Returns a {@link Program}.
+     * 
+     * @param id the id of the Program to return.
+     * 
+     * @return the Program with the given id
+     */
     Relationship getRelationship( int id );
-    
+
+    /**
+     * Get the relationship between two patients by retrieving a
+     * {@link RelationshipType}
+     * 
+     * @param patientA {@link Patient}
+     * @param patientB {@link Patient}
+     * @param relationshipType {@link RelationshipType}
+     * 
+     * @return {@link RelationshipType}
+     */
     Relationship getRelationship( Patient patientA, Patient patientB, RelationshipType relationshipType );
-    
+
+    /**
+     * Get the relationship between two patients
+     * 
+     * @param patientA {@link Patient}
+     * @param patientB {@link Patient}
+     * 
+     * @return {@link RelationshipType}
+     */
     Relationship getRelationship( Patient patientA, Patient patientB );
 
+    /**
+     * Returns all {@link Relationship}.
+     * 
+     * @return a collection of all Relationship, or an empty collection if there
+     *         are no Programs.
+     */
     Collection<Relationship> getAllRelationships();
 
+    /**
+     * Retrieve relationships of a patient
+     * 
+     * @param patient Patient
+     * 
+     * @return Relationship list
+     */
     Collection<Relationship> getRelationshipsForPatient( Patient patient );
 
-    // For example a patient might have more than one sibling
+    /**
+     * Retrieve all relationships by relationship type of a person, for example
+     * a patient might have more than one sibling
+     * 
+     * @param patientA Patient
+     * @param relationshipType RelationshipType
+     * 
+     * @return Relationship list
+     */
     Collection<Relationship> getRelationships( Patient patientA, RelationshipType relationshipType );
 
-    Collection<Relationship> getRelationshipsByRelationshipType( RelationshipType relationshipType );   
+    /**
+     * Retrieve all relationships of a relationship type
+     * 
+     * @param relationshipType RelationshipType
+     * 
+     * @return Relationship list
+     */
+    Collection<Relationship> getRelationshipsByRelationshipType( RelationshipType relationshipType );
 
 }

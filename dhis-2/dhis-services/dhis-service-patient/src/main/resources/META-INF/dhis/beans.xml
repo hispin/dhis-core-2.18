@@ -117,7 +117,7 @@
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientAttributeGroupStore"
-		class="org.hisp.dhis.patient.hibernate.HibernatePatientAttributeGroupStore">
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
 		<property name="clazz" value="org.hisp.dhis.patient.PatientAttributeGroup" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
