@@ -29,8 +29,6 @@ package org.hisp.dhis.caseentry.action.report;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
