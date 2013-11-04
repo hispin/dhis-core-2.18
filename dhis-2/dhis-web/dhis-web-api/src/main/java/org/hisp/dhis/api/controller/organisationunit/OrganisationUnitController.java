@@ -50,6 +50,7 @@ import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitByLevelComparator;
 import org.hisp.dhis.user.CurrentUserService;
@@ -267,18 +268,13 @@ public class OrganisationUnitController
         Double latitude = Double.parseDouble( options.getOptions().get( "latitude" ) );
         Double distance = Double.parseDouble( options.getOptions().get( "distance" ) );
         String orgUnitGroupSetId = options.getOptions().get( "orgUnitGroupSetId" );
-        
+                
         entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( longitude, latitude, distance ) );
                 
         if ( entityList != null )
         {            
             for( OrganisationUnit orgunit : entityList )
             {
-                // Clear out all data not needed for this task
-                orgunit.removeAllDataSets();
-                orgunit.removeAllUsers();
-                orgunit.removeAllOrganisationUnitGroups();
-
                 Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
                 attributeValues.clear();
 
@@ -287,18 +283,28 @@ public class OrganisationUnitController
                 {
                     for ( OrganisationUnitGroup orgunitGroup : orgunit.getGroups() )
                     {
-                        if( orgunitGroup.getGroupSet().getUid() == orgUnitGroupSetId )
-                        {                        
-                            AttributeValue attributeValue = new AttributeValue();
-                            attributeValue.setAttribute( new Attribute( "OrgUnitGroupSymbol", "OrgUnitGroupSymbol" ) );
-                            attributeValue.setValue( orgunitGroup.getSymbol() );
-        
-                            attributeValues.add( attributeValue );
+                        if( orgunitGroup.getGroupSet() != null )
+                        {
+                            OrganisationUnitGroupSet orgunitGroupSet = orgunitGroup.getGroupSet();
+                                                        
+                            if( orgunitGroupSet.getUid().compareTo( orgUnitGroupSetId ) == 0 )
+                            {                        
+                                AttributeValue attributeValue = new AttributeValue();
+                                attributeValue.setAttribute( new Attribute( "OrgUnitGroupSymbol", "OrgUnitGroupSymbol" ) );
+                                attributeValue.setValue( orgunitGroup.getSymbol() );
+            
+                                attributeValues.add( attributeValue );
+                            }
                         }
                     }
                 }
                 
                 orgunit.setAttributeValues( attributeValues );
+                
+                // Clear out all data not needed for this task
+                orgunit.removeAllDataSets();
+                orgunit.removeAllUsers();
+                orgunit.removeAllOrganisationUnitGroups();
             }
         }
 
