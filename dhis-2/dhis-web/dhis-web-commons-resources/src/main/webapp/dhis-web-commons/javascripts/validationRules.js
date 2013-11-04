@@ -484,11 +484,6 @@ var validationRules = {
 			"rangelength" : [ 2, 255 ]
 		}
 	},
-	"emailSettings" : {
-		"smtpHostName" : {
-			"required" : true
-		}
-	},
 	"SMSConfig" : {
 		"pollingInterval" : {
 			"required" : true,

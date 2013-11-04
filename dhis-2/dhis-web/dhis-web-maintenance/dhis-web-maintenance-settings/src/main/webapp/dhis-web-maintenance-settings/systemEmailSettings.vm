@@ -1,6 +1,6 @@
 <script>
 	jQuery(document).ready(function() {
-		validation2( 'emailSettingForm', function( form ) {
+		jQuery("input[type=button]").click(function() {
 			jQuery.postUTF8( 'setSystemEmailSettings.action', {
 				smtpHostName: getFieldValue( 'smtpHostName' ),
 				smtpPort: getFieldValue( 'smtpPort' ),
@@ -12,8 +12,6 @@
 					setHeaderDelayMessage( json.message );
 				}
 			});
-		}, {
-			"rules" : getValidationRules( "emailSettings" )
 		});
 		
 		jQuery( '#smtpHostName' ).blur();
@@ -51,6 +49,6 @@
 	<label for="smtpTls">$i18n.getString( "tls" )</label>
 </div>
 
-<div class="setting"><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/></div>
+<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
 
 </form>
