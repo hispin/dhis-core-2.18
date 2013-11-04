@@ -52,7 +52,8 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractEnrollmentService implements EnrollmentService
+public abstract class AbstractEnrollmentService
+    implements EnrollmentService
 {
     @Autowired
     private ProgramInstanceService programInstanceService;
@@ -104,7 +105,8 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     {
         List<Program> programs = getProgramsWithRegistration();
 
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( programs ) );
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+            programInstanceService.getProgramInstances( programs ) );
         return getEnrollments( programInstances );
     }
 
@@ -136,8 +138,7 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     @Override
     public Enrollments getEnrollments( Patient patient )
     {
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
-            programInstanceService.getProgramInstances( patient ) );
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( patient.getProgramInstances() );
 
         return getEnrollments( programInstances );
     }
@@ -154,7 +155,8 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     @Override
     public Enrollments getEnrollments( Program program )
     {
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program ) );
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+            programInstanceService.getProgramInstances( program ) );
         return getEnrollments( programInstances );
     }
 
@@ -171,7 +173,8 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
     public Enrollments getEnrollments( OrganisationUnit organisationUnit )
     {
         List<Program> programs = getProgramsWithRegistration();
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( programs, organisationUnit ) );
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
+            programInstanceService.getProgramInstances( programs, organisationUnit ) );
 
         return getEnrollments( programInstances );
     }
@@ -255,15 +258,16 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
 
         if ( !enrollments.getEnrollments().isEmpty() )
         {
-            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "Person " + person.getPerson() + " already have an active enrollment in program "
-                + program.getUid() );
+            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "Person " + person.getPerson()
+                + " already have an active enrollment in program " + program.getUid() );
             importSummary.getImportCount().incrementIgnored();
 
             return importSummary;
         }
 
-        ProgramInstance programInstance = programInstanceService.enrollPatient( patient, program, enrollment.getDateOfEnrollment(), enrollment.getDateOfIncident(),
-            patient.getOrganisationUnit(), getFormat() );
+        ProgramInstance programInstance = programInstanceService.enrollPatient( patient, program,
+            enrollment.getDateOfEnrollment(), enrollment.getDateOfIncident(), patient.getOrganisationUnit(),
+            getFormat() );
 
         if ( programInstance == null )
         {
@@ -324,7 +328,8 @@ public abstract class AbstractEnrollmentService implements EnrollmentService
             }
             else
             {
-                ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "Re-enrollment is not allowed, please create a new enrollment." );
+                ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR,
+                    "Re-enrollment is not allowed, please create a new enrollment." );
                 importSummary.getImportCount().incrementIgnored();
 
                 return importSummary;
