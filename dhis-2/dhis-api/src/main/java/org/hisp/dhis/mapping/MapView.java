@@ -182,6 +182,10 @@ public class MapView
         {
             return dataElementOperands.get( 0 ).getName();
         }
+        else if ( dataSets != null && !dataSets.isEmpty() )
+        {
+            return dataSets.get( 0 ).getName();
+        }
         
         return uid;
     }
