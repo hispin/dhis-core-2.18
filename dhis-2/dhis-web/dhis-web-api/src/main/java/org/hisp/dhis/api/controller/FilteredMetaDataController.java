@@ -27,11 +27,25 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONObject;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.dxf2.metadata.*;
+import org.hisp.dhis.dxf2.metadata.ExportService;
+import org.hisp.dhis.dxf2.metadata.FilterOptions;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.metadata.ImportService;
+import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.metadata.tasks.ImportMetaDataTask;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.filter.MetaDataFilter;
@@ -47,16 +61,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
@@ -109,7 +120,7 @@ public class FilteredMetaDataController
 
     @RequestMapping( value = FilteredMetaDataController.RESOURCE_PATH, headers = "Accept=application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
-    public String detailedExport( @RequestParam Map<String, String> parameters, Model model ) throws IOException
+    public String detailedExport( @RequestParam Map<String, String> parameters, Model model )
     {
         WebOptions options = new WebOptions( parameters );
         MetaData metaData = exportService.getMetaData( options );

@@ -260,8 +260,6 @@ public class OrganisationUnitController
     public void getEntitiesWithinRange( @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        List<OrganisationUnit> entityList;
-
         WebOptions options = new WebOptions( parameters );
 
         Double longitude = Double.parseDouble( options.getOptions().get( "longitude" ) );
@@ -269,46 +267,41 @@ public class OrganisationUnitController
         Double distance = Double.parseDouble( options.getOptions().get( "distance" ) );
         String orgUnitGroupSetId = options.getOptions().get( "orgUnitGroupSetId" );
                 
-        entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( longitude, latitude, distance ) );
-                
-        if ( entityList != null )
-        {            
-            for( OrganisationUnit orgunit : entityList )
-            {
-                Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
-                attributeValues.clear();
-
-                // Add OrgUnit Group Symbol into attributes
-                if( orgUnitGroupSetId != null )
-                {
-                    for ( OrganisationUnitGroup orgunitGroup : orgunit.getGroups() )
-                    {
-                        if( orgunitGroup.getGroupSet() != null )
-                        {
-                            OrganisationUnitGroupSet orgunitGroupSet = orgunitGroup.getGroupSet();
-                                                        
-                            if( orgunitGroupSet.getUid().compareTo( orgUnitGroupSetId ) == 0 )
-                            {                        
-                                AttributeValue attributeValue = new AttributeValue();
-                                attributeValue.setAttribute( new Attribute( "OrgUnitGroupSymbol", "OrgUnitGroupSymbol" ) );
-                                attributeValue.setValue( orgunitGroup.getSymbol() );
+        List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( longitude, latitude, distance ) );
+                 
+        for( OrganisationUnit orgunit : entityList )
+        {
+            Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
+            attributeValues.clear();
             
-                                attributeValues.add( attributeValue );
-                            }
+            if ( orgUnitGroupSetId != null ) // Add org unit group symbol into attr
+            {
+                for ( OrganisationUnitGroup orgunitGroup : orgunit.getGroups() )
+                {
+                    if ( orgunitGroup.getGroupSet() != null )
+                    {
+                        OrganisationUnitGroupSet orgunitGroupSet = orgunitGroup.getGroupSet();
+                                                    
+                        if ( orgunitGroupSet.getUid().compareTo( orgUnitGroupSetId ) == 0 )
+                        {                        
+                            AttributeValue attributeValue = new AttributeValue();
+                            attributeValue.setAttribute( new Attribute( "OrgUnitGroupSymbol", "OrgUnitGroupSymbol" ) );
+                            attributeValue.setValue( orgunitGroup.getSymbol() );
+        
+                            attributeValues.add( attributeValue );
                         }
                     }
                 }
-                
-                orgunit.setAttributeValues( attributeValues );
-                
-                // Clear out all data not needed for this task
-                orgunit.removeAllDataSets();
-                orgunit.removeAllUsers();
-                orgunit.removeAllOrganisationUnitGroups();
             }
+            
+            orgunit.setAttributeValues( attributeValues );
+            
+            // Clear out all data not needed for this task
+            orgunit.removeAllDataSets();
+            orgunit.removeAllUsers();
+            orgunit.removeAllOrganisationUnitGroups();
         }
 
         JacksonUtils.toJson( response.getOutputStream(), entityList );
-    }    
-    
+    }
 }
