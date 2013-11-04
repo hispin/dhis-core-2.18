@@ -89,7 +89,7 @@ public class ProgramInstanceDeletionHandler
     @Override
     public void deletePatient( Patient patient )
     {
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
+        Collection<ProgramInstance> programInstances = patient.getProgramInstances();
 
         if ( programInstances != null )
         {
