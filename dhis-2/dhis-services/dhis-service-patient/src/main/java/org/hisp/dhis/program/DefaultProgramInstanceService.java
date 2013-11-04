@@ -211,11 +211,6 @@ public class DefaultProgramInstanceService
         return programInstanceStore.get( program, status );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Patient patient )
-    {
-        return programInstanceStore.get( patient );
-    }
-
     public Collection<ProgramInstance> getProgramInstances( Patient patient, Integer status )
     {
         return programInstanceStore.get( patient, status );
@@ -237,7 +232,7 @@ public class DefaultProgramInstanceService
     }
 
     public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit,
-        int min, int max )
+        Integer min, Integer max )
     {
         return programInstanceStore.get( program, organisationUnit, min, max );
     }
@@ -574,14 +569,16 @@ public class DefaultProgramInstanceService
         Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
 
         Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
-        
+
         for ( PatientReminder rm : reminders )
         {
-            if ( rm != null && rm.getWhenToSend() != null && rm.getWhenToSend() == status
+            if ( rm != null
+                && rm.getWhenToSend() != null
+                && rm.getWhenToSend() == status
                 && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
             {
                 OutboundSms outboundSms = sendProgramMessage( rm, programInstance, patient, format );
-                
+
                 if ( outboundSms != null )
                 {
                     outboundSmsList.add( outboundSms );
@@ -635,7 +632,7 @@ public class DefaultProgramInstanceService
         // ---------------------------------------------------------------------
 
         ProgramInstance programInstance = new ProgramInstance();
-        
+
         programInstance.enrollPatient( patient, program );
         programInstance.setEnrollmentDate( enrollmentDate );
         programInstance.setDateOfIncident( dateOfIncident );
@@ -666,7 +663,7 @@ public class DefaultProgramInstanceService
         // -----------------------------------------------------------------
 
         List<OutboundSms> outboundSms = programInstance.getOutboundSms();
-        
+
         if ( outboundSms == null )
         {
             outboundSms = new ArrayList<OutboundSms>();
@@ -679,7 +676,7 @@ public class DefaultProgramInstanceService
         // -----------------------------------------------------------------
 
         List<MessageConversation> messages = programInstance.getMessageConversations();
-        
+
         if ( messages == null )
         {
             messages = new ArrayList<MessageConversation>();

@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
@@ -285,9 +286,10 @@ public class GetPatientProgramListAction
 
         patient = patientService.getPatient( patientId );
         Collection<Program> programByCurrentUser = programService.getProgramsByCurrentUser();
-        for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
+        for ( ProgramInstance programInstance : patient.getProgramInstances() )
         {
-            if ( programInstance.getStatus() == ProgramInstance.STATUS_ACTIVE && programByCurrentUser.contains( programInstance.getProgram() ) )
+            if ( programInstance.getStatus() == ProgramInstance.STATUS_ACTIVE
+                && programByCurrentUser.contains( programInstance.getProgram() ) )
             {
                 programInstances.add( programInstance );
             }
@@ -313,7 +315,7 @@ public class GetPatientProgramListAction
 
         patientIdentifiers = patientIdentifierService.getPatientIdentifiers( patient );
 
-        Collection<ProgramInstance> listOfProgramInstance = programInstanceService.getProgramInstances( patient );
+        Collection<ProgramInstance> listOfProgramInstance = patient.getProgramInstances();
 
         this.listOfCompletedProgram = new ArrayList<ProgramInstance>();
 
@@ -343,13 +345,15 @@ public class GetPatientProgramListAction
             }
             else if ( !program.isSingleEvent() )
             {
-                if ( programInstanceService.getProgramInstances( patient, program, ProgramInstance.STATUS_ACTIVE ).size() == 0 )
+                if ( programInstanceService.getProgramInstances( patient, program, ProgramInstance.STATUS_ACTIVE )
+                    .size() == 0 )
                 {
                     programs.add( program );
                 }
                 else if ( programInstanceService.getProgramInstances( patient, program ).size() > 0
                     && !program.getOnlyEnrollOnce()
-                    && programInstanceService.getProgramInstances( patient, program, ProgramInstance.STATUS_ACTIVE ).size() == 0 )
+                    && programInstanceService.getProgramInstances( patient, program, ProgramInstance.STATUS_ACTIVE )
+                        .size() == 0 )
                 {
                     programs.add( program );
                 }

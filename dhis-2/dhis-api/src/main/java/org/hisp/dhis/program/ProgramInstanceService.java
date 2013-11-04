@@ -170,16 +170,7 @@ public interface ProgramInstanceService
      * @return ProgramInstance list
      */
     Collection<ProgramInstance> getProgramInstances( Collection<Program> programs, Integer status );
-
-    /**
-     * Retrieve program instances on a patient
-     * 
-     * @param patient Patient
-     * 
-     * @return ProgramInstance list
-     */
-    Collection<ProgramInstance> getProgramInstances( Patient patient );
-
+    
     /**
      * Retrieve program instances on a patient by a status
      * 
@@ -234,8 +225,8 @@ public interface ProgramInstanceService
      * 
      * @return ProgramInstance list
      */
-    Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, int min,
-        int max );
+    Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, Integer min,
+        Integer max );
 
     /**
      * Retrieve program instances with active status on an orgunit by a program

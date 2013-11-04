@@ -49,7 +49,6 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
@@ -73,8 +72,6 @@ public class PatientDashboardAction
 
     private RelationshipService relationshipService;
 
-    private ProgramInstanceService programInstanceService;
-
     private PatientAuditService patientAuditService;
 
     private CurrentUserService currentUserService;
@@ -84,7 +81,7 @@ public class PatientDashboardAction
     private ProgramIndicatorService programIndicatorService;
 
     private PatientAttributeValueService patientAttributeValueService;
-    
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -173,11 +170,6 @@ public class PatientDashboardAction
         return relationships;
     }
 
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
-
     public Patient getPatient()
     {
         return patient;
@@ -223,8 +215,8 @@ public class PatientDashboardAction
 
         relationships = relationshipService.getRelationshipsForPatient( patient );
 
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
-        
+        Collection<ProgramInstance> programInstances = patient.getProgramInstances();
+
         // ---------------------------------------------------------------------
         // Get patient-attribute-values
         // ---------------------------------------------------------------------
