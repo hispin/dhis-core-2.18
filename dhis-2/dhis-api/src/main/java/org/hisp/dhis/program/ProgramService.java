@@ -28,10 +28,10 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.validation.ValidationCriteria;
-
-import java.util.Collection;
 
 /**
  * @author Abyot Asalefew
@@ -41,35 +41,149 @@ public interface ProgramService
 {
     String ID = ProgramService.class.getName();
 
-    int saveProgram( Program program );
+    /**
+     * Adds an {@link Program}
+     * 
+     * @param program The to Program add.
+     * 
+     * @return A generated unique id of the added {@link Program}.
+     */
+    int addProgram( Program program );
 
-    void deleteProgram( Program program );
-
+    /**
+     * Updates an {@link Program}.
+     * 
+     * @param program the Program to update.
+     */
     void updateProgram( Program program );
 
+    /**
+     * Deletes a {@link Program}. All {@link ProgramStage},
+     * {@link ProgramInstance} and {@link ProgramStageInstance} belong to this
+     * program are removed
+     * 
+     * @param program the Program to delete.
+     */
+    void deleteProgram( Program program );
+
+    /**
+     * Returns a {@link Program}.
+     * 
+     * @param id the id of the Program to return.
+     * 
+     * @return the Program with the given id
+     */
     Program getProgram( int id );
 
+    /**
+     * Returns a {@link Program} with a given name.
+     * 
+     * @param name the name of the Program to return.
+     * @return the Program with the given name, or null if no match.
+     */
     Program getProgramByName( String name );
-    
+
+    /**
+     * Returns the {@link Program} with the given code.
+     * 
+     * @param code the code.
+     * @return the Program with the given code, or null if no match.
+     */
     Program getProgramByCode( String code );
 
+    /**
+     * Returns all {@link Program}.
+     * 
+     * @return a collection of all Program, or an empty collection if there are
+     *         no Programs.
+     */
     Collection<Program> getAllPrograms();
 
+    /**
+     * Get all {@link Program} belong to a orgunit
+     * 
+     * @param organisationUnit {@link OrganisationUnit}
+     * 
+     * @return The program list
+     */
     Collection<Program> getPrograms( OrganisationUnit organisationUnit );
 
+    /**
+     * Get {@link Program} by the current user.
+     * 
+     * @return The program list the current user
+     */
     Collection<Program> getProgramsByCurrentUser();
 
+    /**
+     * Get {@link Program} by the current user and a certain type
+     * 
+     * @param type The type of program. There are three types, include Multi
+     *        events with registration, Single event with registration and
+     *        Single event without registration.
+     * 
+     * @return Program list by a type specified
+     */
     Collection<Program> getProgramsByCurrentUser( int type );
 
+    /**
+     * Get {@link Program} included in the expression of a
+     * {@link ValidationCriteria}
+     * 
+     * @param validationCriteria {@link ValidationCriteria}
+     * 
+     * @return Program list
+     */
     Collection<Program> getPrograms( ValidationCriteria validationCriteria );
 
+    /**
+     * Get {@link Program} by a type
+     * 
+     * @param type The type of program. There are three types, include Multi
+     *        events with registration, Single event with registration and
+     *        Single event without registration
+     * 
+     * @return Program list by a type specified
+     */
     Collection<Program> getPrograms( int type );
 
+    /**
+     * Get {@link Program} assigned to an {@link OrganisationUnit} by a type
+     * 
+     * @param type The type of program. There are three types, include Multi
+     *        events with registration, Single event with registration and
+     *        Single event without registration
+     * @param orgunit Where programs assigned
+     * 
+     * @return Program list by a type specified
+     */
     Collection<Program> getPrograms( int type, OrganisationUnit orgunit );
 
+    /**
+     * Returns the {@link Program} with the given UID.
+     * 
+     * @param uid the UID.
+     * @return the Program with the given UID, or null if no match.
+     */
     Program getProgram( String uid );
 
+    /**
+     * Get {@link Program} which are displayed on all {@link OrganisationUnit}
+     * for searching or enrolling a person
+     * 
+     * @param displayOnAllOrgunit Optional flag to specify programs can
+     *        displayed for searching or enrolling (<code>true</code> ) or
+     *        cannot be used on the orgunit (<code>false</code>) instances.
+     * @param orgunit {@link OrganisationUnit}
+     * 
+     * @return Program list
+     */
     Collection<Program> getProgramsByDisplayOnAllOrgunit( boolean displayOnAllOrgunit, OrganisationUnit orgunit );
-    
+
+    /**
+     * Get {@link Program} belong to an orgunit by the current user
+     * 
+     * @param organisationUnit {@link OrganisationUnit}
+     */
     Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit );
 }

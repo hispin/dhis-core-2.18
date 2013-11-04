@@ -39,14 +39,44 @@ public interface PatientCommentService
 {
     String ID = PatientCommentService.class.getName();
 
+    /**
+     * Adds an {@link PatientComment}
+     * 
+     * @param patientComment The to PatientComment add.
+     * 
+     * @return A generated unique id of the added {@link PatientComment}.
+     */
     int addPatientComment( PatientComment patientComment );
 
+    /**
+     * Deletes a {@link PatientComment}.
+     * 
+     * @param patientComment the PatientComment to delete.
+     */
     void deletePatientComment( PatientComment patientComment );
 
+    /**
+     * Updates an {@link PatientComment}.
+     * 
+     * @param patientComment the PatientComment to update.
+     */
     void updatePatientComment( PatientComment patientComment );
 
+    /**
+     * Returns a {@link PatientComment}.
+     * 
+     * @param id the id of the PatientComment to return.
+     * 
+     * @return the PatientComment with the given id
+     */
     PatientComment getPatientComment( int id );
 
+    /**
+     * Returns all {@link PatientComment}
+     * 
+     * @return a collection of all PatientComment, or an empty collection if
+     *         there are no PatientAttributes.
+     */
     Collection<PatientComment> getAllPatientComments();
 
 }

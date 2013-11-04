@@ -42,13 +42,54 @@ public interface RelationshipStore
 {
     String ID = RelationshipStore.class.getName();
 
+    /**
+     * Get the relationship between two patients by retrieving a
+     * {@link RelationshipType}
+     * 
+     * @param patientA {@link Patient}
+     * @param patientB {@link Patient}
+     * @param relationshipType {@link RelationshipType}
+     * 
+     * @return {@link RelationshipType}
+     */
     Relationship get( Patient patientA, Patient patientB, RelationshipType relationshipType );
-    
+
+    /**
+     * Get the relationship between two patients
+     * 
+     * @param patientA {@link Patient}
+     * @param patientB {@link Patient}
+     * 
+     * @return {@link RelationshipType}
+     */
     Relationship get( Patient patientA, Patient patientB );
 
+    /**
+     * Retrieve all relationships by relationship type of a person, for example
+     * a patient might have more than one sibling
+     * 
+     * @param patientA Patient
+     * @param relationshipType RelationshipType
+     * 
+     * @return Relationship list
+     */
     Collection<Relationship> get( Patient patientA, RelationshipType relationshipType );
 
+    /**
+     * Retrieve relationships of a patient
+     * 
+     * @param patient Patient
+     * 
+     * @return Relationship list
+     */
     Collection<Relationship> getForPatient( Patient patient );
 
-    Collection<Relationship> getByRelationshipType( RelationshipType relationshipType );   
+    /**
+     * Retrieve all relationships of a relationship type
+     * 
+     * @param relationshipType RelationshipType
+     * 
+     * @return Relationship list
+     */
+    Collection<Relationship> getByRelationshipType( RelationshipType relationshipType );
 }

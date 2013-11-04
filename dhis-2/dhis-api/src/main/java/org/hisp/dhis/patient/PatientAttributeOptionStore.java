@@ -35,12 +35,28 @@ import org.hisp.dhis.common.GenericStore;
 /**
  * @author Viet
  */
-public interface PatientAttributeOptionStore 
+public interface PatientAttributeOptionStore
     extends GenericStore<PatientAttributeOption>
 {
-    String ID = PatientAttributeOption.class.getName(); 
-    
+    String ID = PatientAttributeOption.class.getName();
+
+    /**
+     * Returns a {@link PatientAttributeOption} with a given name.
+     * 
+     * @param patientAttribute {@link PatientAttribute}
+     * @param name the name of the PatientAttributeOption to return.
+     * 
+     * @return the PatientAttributeOption with the given name, or null if no
+     *         match.
+     */
     PatientAttributeOption get( PatientAttribute patientAttribute, String name );
-    
+
+    /**
+     * Get all {@link PatientAttributeOption} of a {@link PatientAttribute}
+     * 
+     * @param patientAttribute {@link PatientAttribute}
+     * 
+     * @return {@link PatientAttributeOption}
+     */
     Collection<PatientAttributeOption> get( PatientAttribute patientAttribute );
 }

@@ -43,24 +43,90 @@ public interface PatientAttributeValueService
 {
     String ID = PatientAttributeValueService.class.getName();
 
+    /**
+     * Adds an {@link PatientAttribute}
+     * 
+     * @param patientAttribute The to PatientAttribute add.
+     * 
+     * @return A generated unique id of the added {@link PatientAttribute}.
+     */
     void savePatientAttributeValue( PatientAttributeValue patientAttributeValue );
 
+    /**
+     * Updates an {@link PatientAttribute}.
+     * 
+     * @param patientAttribute the PatientAttribute to update.
+     */
     void updatePatientAttributeValue( PatientAttributeValue patientAttributeValue );
 
+    /**
+     * Deletes a {@link PatientAttribute}.
+     * 
+     * @param patientAttribute the PatientAttribute to delete.
+     */
     void deletePatientAttributeValue( PatientAttributeValue patientAttributeValue );
 
+    /**
+     * Deletes all {@link PatientAttributeValue} of a patient
+     * 
+     * @param patient {@link Patient}
+     * 
+     * @return The error code. If the code is 0, deleting success
+     */
     int deletePatientAttributeValue( Patient patient );
 
+    /**
+     * Delete all {@link PatientAttributeValue} of a {@link PatientAttribute}
+     * 
+     * @param patientAttribute {@link PatientAttribute}
+     * 
+     * @return The error code. If the code is 0, deleting success
+     */
     int deletePatientAttributeValue( PatientAttribute patientAttribute );
 
+    /**
+     * Retrieve a {@link PatientAttributeValue} on a {@link Patient} and
+     * {@link PatientAttribute}
+     * 
+     * @param patientAttribute {@link PatientAttribute}
+     * 
+     * @return PatientAttributeValue
+     */
     PatientAttributeValue getPatientAttributeValue( Patient patient, PatientAttribute patientAttribute );
 
+    /**
+     * Retrieve {@link PatientAttributeValue} of a {@link Patient}
+     * 
+     * @param patient Patient
+     * 
+     * @return PatientAttributeValue list
+     */
     Collection<PatientAttributeValue> getPatientAttributeValues( Patient patient );
 
+    /**
+     * Retrieve {@link PatientAttributeValue} of a {@link PatientAttribute}
+     * 
+     * @param patientAttribute {@link PatientAttribute}
+     * 
+     * @return PatientAttributeValue list
+     */
     Collection<PatientAttributeValue> getPatientAttributeValues( PatientAttribute patientAttribute );
 
+    /**
+     * Retrieve {@link PatientAttributeValue} of a patient list
+     * 
+     * @param patients Patient list
+     * 
+     * @return PatientAttributeValue list
+     */
     Collection<PatientAttributeValue> getPatientAttributeValues( Collection<Patient> patients );
 
+    /**
+     * Returns all {@link PatientAttributeValue}
+     * 
+     * @return a collection of all PatientAttributeValue, or an empty collection
+     *         if there are no PatientAttributPatientAttributeValues.
+     */
     Collection<PatientAttributeValue> getAllPatientAttributeValues();
 
     /**
@@ -125,6 +191,14 @@ public interface PatientAttributeValueService
      */
     void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption );
 
+    /**
+     * Get the number of {@link PatientAttributeOption} in all
+     * {@link PatientAttribute}
+     * 
+     * @param attributeOption PatientAttributeOption
+     * 
+     * @return The number of PatientAttributeOptions
+     */
     int countByPatientAttributeoption( PatientAttributeOption patientAttributeOption );
 
 }

@@ -403,7 +403,7 @@ public class DefaultProgramInstanceService
         // Get all program data registered
         // ---------------------------------------------------------------------
 
-        Collection<ProgramInstance> programInstances = getProgramInstances( patient );
+        Collection<ProgramInstance> programInstances = patient.getProgramInstances();
 
         if ( programInstances.size() > 0 )
         {

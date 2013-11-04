@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +50,10 @@ public class DefaultPatientAttributeGroupService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAttributeGroupStore patientAttributeGroupStore;
+    private GenericIdentifiableObjectStore<PatientAttributeGroup> patientAttributeGroupStore;
 
-    public void setPatientAttributeGroupStore( PatientAttributeGroupStore patientAttributeGroupStore )
+    public void setPatientAttributeGroupStore(
+        GenericIdentifiableObjectStore<PatientAttributeGroup> patientAttributeGroupStore )
     {
         this.patientAttributeGroupStore = patientAttributeGroupStore;
     }

@@ -39,17 +39,61 @@ public interface PatientAttributeGroupService
 {
     String ID = PatientAttributeGroupService.class.getName();
 
+    /**
+     * Adds an {@link PatientAttributeGroup}
+     * 
+     * @param patientAttributeGroup The to PatientAttributeGroup add.
+     * 
+     * @return A generated unique id of the added {@link PatientAttributeGroup}.
+     */
     int savePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
 
+    /**
+     * Deletes a {@link PatientAttributeGroup}.
+     * 
+     * @param patientAttributeGroup the PatientAttributeGroup to delete.
+     */
     void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
 
+    /**
+     * Updates a {@link PatientAttributeGroup}.
+     * 
+     * @param patientAttributeGroup the PatientAttributeGroup to update.
+     */
     void updatePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
 
+    /**
+     * Returns a {@link PatientAttributeGroup}.
+     * 
+     * @param id the id of the PatientAttributeGroup to return.
+     * 
+     * @return the PatientAttributeGroup with the given id
+     */
     PatientAttributeGroup getPatientAttributeGroup( int id );
 
+    /**
+     * Returns a {@link PatientAttributeGroup} with a given name.
+     * 
+     * @param name the name of the PatientAttributeGroup to return.
+     * 
+     * @return the PatientAttributeGroup with the given name, or null if no match.
+     */
     PatientAttributeGroup getPatientAttributeGroupByName( String name );
 
+    /**
+     * Returns all {@link PatientAttributeGroup}
+     * 
+     * @return a collection of all PatientAttributeGroup, or an empty collection if there are
+     *         no PatientAttributeGroups.
+     */
     Collection<PatientAttributeGroup> getAllPatientAttributeGroups();
-    
+
+    /**
+     * Get {@link PatientAttribute} by a {@link PatientAttributeGroup}
+     * 
+     * @param patientAttributeGroup {@link PatientAttributeGroup}
+     * 
+     * @return PatientAttribute list
+     */
     List<PatientAttribute> getPatientAttributes( PatientAttributeGroup patientAttributeGroup );
 }

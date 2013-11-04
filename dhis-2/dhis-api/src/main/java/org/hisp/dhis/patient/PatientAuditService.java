@@ -40,12 +40,37 @@ public interface PatientAuditService
 {
     String ID = PatientAuditService.class.getName();
 
+    /**
+     * Adds an {@link PatientAudit}
+     * 
+     * @param patientAudit The to PatientAudit add.
+     * 
+     * @return A generated unique id of the added {@link PatientAudit}.
+     */
     int savePatientAudit( PatientAudit patientAudit );
 
+    /**
+     * Deletes a {@link PatientAudit}.
+     * 
+     * @param patientAudit the PatientAudit to delete.
+     */
     void deletePatientAudit( PatientAudit patientAudit );
 
+    /**
+     * Returns a {@link PatientAudit}.
+     * 
+     * @param id the id of the PatientAudit to return.
+     * 
+     * @return the PatientAudit with the given id
+     */
     PatientAudit getPatientAudit( int id );
 
+    /**
+     * Returns all {@link PatientAudit}
+     * 
+     * @return a collection of all PatientAudit, or an empty collection if
+     *         there are no PatientAttributeGroups.
+     */
     Collection<PatientAudit> getAllPatientAudit();
 
     /**
@@ -61,7 +86,8 @@ public interface PatientAuditService
      * Get patient audit of a patient
      * 
      * @param patientId The id of patient
-     * @param visitor The user who accessed to see a certain information of the patient
+     * @param visitor The user who accessed to see a certain information of the
+     *        patient
      * @param date The data this user visited
      * @param accessedModule The module this user accessed
      * 

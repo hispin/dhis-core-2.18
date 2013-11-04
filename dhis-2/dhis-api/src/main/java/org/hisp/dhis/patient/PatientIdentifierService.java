@@ -38,14 +38,44 @@ public interface PatientIdentifierService
 {
     String ID = PatientIdentifierService.class.getName();
 
+    /**
+     * Adds an {@link PatientIdentifier}
+     * 
+     * @param patientIdentifier The to PatientIdentifier add.
+     * 
+     * @return A generated unique id of the added {@link PatientIdentifier}.
+     */
     int savePatientIdentifier( PatientIdentifier patientIdentifier );
 
+    /**
+     * Deletes a {@link PatientIdentifier}.
+     * 
+     * @param patientIdentifier the PatientIdentifier to delete.
+     */
     void deletePatientIdentifier( PatientIdentifier patientIdentifier );
 
+    /**
+     * Deletes a {@link PatientIdentifier}.
+     * 
+     * @param patientIdentifier the PatientIdentifier to delete.
+     */
     void updatePatientIdentifier( PatientIdentifier patientIdentifier );
 
+    /**
+     * Returns a {@link PatientIdentifier}.
+     * 
+     * @param id the id of the PatientIdentifier to return.
+     * 
+     * @return the PatientIdentifier with the given id
+     */
     PatientIdentifier getPatientIdentifier( int id );
 
+    /**
+     * Returns all {@link PatientIdentifier}
+     * 
+     * @return a collection of all PatientIdentifier, or an empty collection if
+     *         there are no PatientAttributeGroups.
+     */
     Collection<PatientIdentifier> getAllPatientIdentifiers();
 
     /**

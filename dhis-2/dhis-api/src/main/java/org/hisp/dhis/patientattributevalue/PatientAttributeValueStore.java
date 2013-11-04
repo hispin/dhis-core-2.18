@@ -34,7 +34,6 @@ import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.program.Program;
 
 /**
  * @author Abyot Asalefew
@@ -43,31 +42,107 @@ import org.hisp.dhis.program.Program;
 public interface PatientAttributeValueStore
     extends GenericStore<PatientAttributeValue>
 {
-    String ID = PatientAttributeValueStore.class.getName();   
-    
+    String ID = PatientAttributeValueStore.class.getName();
+
+    /**
+     * Adds an {@link PatientAttribute}
+     * 
+     * @param patientAttribute The to PatientAttribute add.
+     * 
+     * @return A generated unique id of the added {@link PatientAttribute}.
+     */
     void saveVoid( PatientAttributeValue patientAttributeValue );
 
+    /**
+     * Deletes all {@link PatientAttributeValue} of a patient
+     * 
+     * @param patient {@link Patient}
+     * 
+     * @return The error code. If the code is 0, deleting success
+     */
     int deleteByPatient( Patient patient );
-    
+
+    /**
+     * Deletes a {@link PatientAttribute}.
+     * 
+     * @param patientAttribute the PatientAttribute to delete.
+     */
     int deleteByAttribute( PatientAttribute patientAttribute );
-    
-    PatientAttributeValue get( Patient patient, PatientAttribute patientAttribute );    
 
+    /**
+     * Retrieve a {@link PatientAttributeValue} on a {@link Patient} and
+     * {@link PatientAttribute}
+     * 
+     * @param patientAttribute {@link PatientAttribute}
+     * 
+     * @return PatientAttributeValue
+     */
+    PatientAttributeValue get( Patient patient, PatientAttribute patientAttribute );
+
+    /**
+     * Retrieve {@link PatientAttributeValue} of a {@link Patient}
+     * 
+     * @param patient Patient
+     * 
+     * @return PatientAttributeValue list
+     */
     Collection<PatientAttributeValue> get( Patient patient );
-    
-    Collection<PatientAttributeValue> get( PatientAttribute patientAttribute );
-    
-    Collection<PatientAttributeValue> get( Collection<Patient> patients );
-    
-    Collection<PatientAttributeValue> searchByValue( PatientAttribute patientAttribute, String searchText );  
-   
-    int countByPatientAttributeoption( PatientAttributeOption attributeOption );
-    
-    Collection<Patient> getPatient( PatientAttribute attribute, String value );
-    
-    void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption);
 
-    Collection<PatientAttributeValue> get( Patient patient, Program program );
+    /**
+     * Retrieve {@link PatientAttributeValue} of a {@link Patient}
+     * 
+     * @param patient Patient
+     * 
+     * @return PatientAttributeValue list
+     */
+    Collection<PatientAttributeValue> get( PatientAttribute patientAttribute );
+
+    /**
+     * Retrieve {@link PatientAttributeValue} of a patient list
+     * 
+     * @param patients Patient list
+     * 
+     * @return PatientAttributeValue list
+     */
+    Collection<PatientAttributeValue> get( Collection<Patient> patients );
+
+    /**
+     * Search PatientAttribueValue objects by a PatientAttribute and a attribute
+     * value (performs partial search )
+     * 
+     * @param patientAttribute PatientAttribute
+     * @param searchText A string for searching by attribute values
+     * 
+     * @return PatientAttributeValue list
+     */
+    Collection<PatientAttributeValue> searchByValue( PatientAttribute patientAttribute, String searchText );
+
+    /**
+     * Get the number of {@link PatientAttributeOption} in all
+     * {@link PatientAttribute}
+     * 
+     * @param attributeOption PatientAttributeOption
+     * 
+     * @return The number of PatientAttributeOptions
+     */
+    int countByPatientAttributeoption( PatientAttributeOption attributeOption );
+
+    /**
+     * Retrieve patients who have the same value on an attribute
+     * 
+     * @param attribute PatientAttribute
+     * @param value An attribute value for searching
+     * 
+     * @return Patient list
+     */
+    Collection<Patient> getPatient( PatientAttribute attribute, String value );
+
+    /**
+     * Update patient attribute values which belong to the pre-defined attribute
+     * when a value pre-defined of this attribute is modified
+     * 
+     * @param patientAttributeOption PatientAttributeOption
+     */
+    void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption );
     
-    Collection<PatientAttributeValue> getWithoutProgram( Patient patient );
 }

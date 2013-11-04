@@ -420,7 +420,7 @@ public class AddProgramAction
         }
         program.setPatientReminders( patientReminders );
 
-        programService.saveProgram( program );
+        programService.addProgram( program );
 
         if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION )
             || program.getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )

@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
  */
 
 import java.util.Collection;
+
 import org.hisp.dhis.common.GenericStore;
 
 /**
@@ -40,5 +41,12 @@ public interface ProgramValidationStore
 {
     String ID = ProgramValidation.class.getName();
 
+    /**
+     * Get validation by program
+     * 
+     * @param program {@link Program}
+     * 
+     * @return ProgramValidation list
+     */
     Collection<ProgramValidation> get( Program program );
 }

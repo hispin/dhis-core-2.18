@@ -35,12 +35,33 @@ import org.hisp.dhis.user.User;
 
 /**
  * @author Chau Thu Tran
- *
+ * 
  * @version $PatientTabularReportStore.java May 7, 2012 1:01:55 PM$
  */
-public interface PatientTabularReportStore extends GenericIdentifiableObjectStore<PatientTabularReport>
-{    
+public interface PatientTabularReportStore
+    extends GenericIdentifiableObjectStore<PatientTabularReport>
+{
+    /**
+     * Retrieve case-based report favorites by name (performs partial search)
+     * which a user can read with result limited
+     * 
+     * @param user User
+     * @param query A string for searching by name
+     * @param min
+     * @param max
+     * 
+     * @return PatientAggregateReport list
+     */
     Collection<PatientTabularReport> get( User user, String query, Integer min, Integer max );
-    
+
+    /**
+     * Get the number of case-based report favorites which a user can read and
+     * have the names meet the search string
+     * 
+     * @param user User
+     * @param query A string for searching by name
+     * 
+     * @return A number
+     */
     int countList( User user, String query );
 }

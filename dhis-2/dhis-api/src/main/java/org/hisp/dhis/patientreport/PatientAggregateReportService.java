@@ -39,22 +39,88 @@ import org.hisp.dhis.user.User;
  */
 public interface PatientAggregateReportService
 {
+    /**
+     * Adds an {@link PatientAggregateReport}
+     * 
+     * @param patientAggregateReport The to PatientAggregateReport add.
+     * 
+     * @return A generated unique id of the added {@link PatientAggregateReport}
+     *         .
+     */
     void addPatientAggregateReport( PatientAggregateReport patientAggregateReport );
 
+    /**
+     * Updates an {@link PatientAggregateReport}.
+     * 
+     * @param patientAggregateReport the PatientAggregateReport to update.
+     */
     void updatePatientAggregateReport( PatientAggregateReport patientAggregateReport );
 
+    /**
+     * Returns a {@link patientAggregateReport}.
+     * 
+     * @param id the id of the patientAggregateReport to return.
+     * 
+     * @return the patientAggregateReport with the given id
+     */
     PatientAggregateReport getPatientAggregateReport( int id );
-    
+
+    /**
+     * Returns the {@link patientAggregateReport} with the given UID.
+     * 
+     * @param uid the UID.
+     * @return the patientAggregateReport with the given UID, or null if no
+     *         match.
+     */
     PatientAggregateReport getPatientAggregateReportByUid( String uid );
 
+    /**
+     * Returns a {@link patientAggregateReport} with a given name.
+     * 
+     * @param name the name of the patientAggregateReport to return.
+     * 
+     * @return the patientAggregateReport with the given name, or null if no
+     *         match.
+     */
     PatientAggregateReport getPatientAggregateReport( String name );
-    
+
+    /**
+     * Deletes a {@link patientAggregateReport}.
+     * 
+     * @param patientAggregateReport the patientAggregateReport to delete.
+     */
     void deletePatientAggregateReport( PatientAggregateReport patientAggregateReport );
 
+    /**
+     * Returns all {@link patientAggregateReport}
+     * 
+     * @return a collection of all patientAggregateReport, or an empty
+     *         collection if there are no PatientAttributes.
+     */
     Collection<PatientAggregateReport> getAllPatientAggregateReports();
 
+    /**
+     * Retrieve aggregate report favorites by name (performs partial search)
+     * which a user can read with result limited
+     * 
+     * @param user User
+     * @param query A string for searching by name
+     * @param min
+     * @param max
+     * 
+     * @return PatientAggregateReport list
+     */
     Collection<PatientAggregateReport> getPatientAggregateReports( User user, String query, Integer min, Integer max );
-    
+
+    /**
+     * Get the number of aggregate report favorites which a user can read and
+     * have the names meet the search string
+     * 
+     * @param user User
+     * @param query A string for searching by name
+     * 
+     * @return A number
+     */
     int countPatientAggregateReportList( User user, String query );
 
 }

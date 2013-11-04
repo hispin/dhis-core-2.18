@@ -39,5 +39,12 @@ import org.hisp.dhis.common.GenericNameableObjectStore;
 public interface ProgramIndicatorStore
     extends GenericNameableObjectStore<ProgramIndicator>
 {
+    /**
+     * Get {@link ProgramIndicator} of a program
+     * 
+     * @param program Program
+     * 
+     * @return ProgramIndicators belong to the program
+     */
     Collection<ProgramIndicator> getByProgram( Program program );
 }

@@ -72,7 +72,7 @@ public class DefaultProgramService
     // -------------------------------------------------------------------------
 
     @Override
-    public int saveProgram( Program program )
+    public int addProgram( Program program )
     {
         return programStore.save( program );
     }

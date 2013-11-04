@@ -38,18 +38,61 @@ public interface PatientAttributeService
 {
     String ID = PatientAttributeService.class.getName();
 
+    /**
+     * Adds an {@link PatientAttribute}
+     * 
+     * @param patientAttribute The to PatientAttribute add.
+     * 
+     * @return A generated unique id of the added {@link PatientAttribute}.
+     */
     int savePatientAttribute( PatientAttribute patientAttribute );
 
+    /**
+     * Deletes a {@link PatientAttribute}.
+     * 
+     * @param patientAttribute the PatientAttribute to delete.
+     */
     void deletePatientAttribute( PatientAttribute patientAttribute );
 
+    /**
+     * Updates an {@link PatientAttribute}.
+     * 
+     * @param patientAttribute the PatientAttribute to update.
+     */
     void updatePatientAttribute( PatientAttribute patientAttribute );
 
+    /**
+     * Returns a {@link PatientAttribute}.
+     * 
+     * @param id the id of the PatientAttribute to return.
+     * 
+     * @return the PatientAttribute with the given id
+     */
     PatientAttribute getPatientAttribute( int id );
 
+    /**
+     * Returns the {@link PatientAttribute} with the given UID.
+     * 
+     * @param uid the UID.
+     * @return the PatientAttribute with the given UID, or null if no match.
+     */
     PatientAttribute getPatientAttribute( String uid );
 
+    /**
+     * Returns a {@link PatientAttribute} with a given name.
+     * 
+     * @param name the name of the PatientAttribute to return.
+     * 
+     * @return the PatientAttribute with the given name, or null if no match.
+     */
     PatientAttribute getPatientAttributeByName( String name );
 
+    /**
+     * Returns all {@link PatientAttribute}
+     * 
+     * @return a collection of all PatientAttribute, or an empty collection if
+     *         there are no PatientAttributes.
+     */
     Collection<PatientAttribute> getAllPatientAttributes();
 
     /**
@@ -85,7 +128,7 @@ public interface PatientAttributeService
     /**
      * Get patient attributes without groups
      * 
-     * @return List of patient attributes
+     * @return List of patient attributes without group
      */
     Collection<PatientAttribute> getPatientAttributesWithoutGroup();
 

@@ -138,13 +138,4 @@ public class HibernatePatientAttributeValueStore
         return query.list();
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttributeValue> getWithoutProgram( Patient patient )
-    {
-        String hql = "SELECT pav FROM PatientAttributeValue as pav WHERE pav.patient=:patient and pav.patientAttribute.program IS NULL";
-        Query query = getQuery( hql );
-        query.setEntity( "patient", patient );
-
-        return query.list();
-    }
 }
