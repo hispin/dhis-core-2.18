@@ -35,7 +35,6 @@ import org.hisp.dhis.relationship.RelationshipTypeStore;
 
 /**
  * @author Abyot Asalefew Gizaw
- * @version $Id$
  */
 public class HibernateRelationshipTypeStore
     extends HibernateIdentifiableObjectStore<RelationshipType>

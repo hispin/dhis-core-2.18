@@ -92,7 +92,10 @@ public class PatientIdentifierGenerator
         int sum = 0, flip = 0;
 
         for ( int i = num.length() - 1; i >= 0; i--, flip++ )
+        {
             sum += sumTable[flip & 0x1][num.charAt( i ) - '0'];
+        }
+        
         return sum % 10 == 0;
     }
 
@@ -100,8 +103,12 @@ public class PatientIdentifierGenerator
     {
         int i = 0;
         String pattern = "";
+        
         if ( length == 0 )
+        {
             pattern = "000000";
+        }
+        
         while ( i < length && length > 0 )
         {
             pattern += "0";

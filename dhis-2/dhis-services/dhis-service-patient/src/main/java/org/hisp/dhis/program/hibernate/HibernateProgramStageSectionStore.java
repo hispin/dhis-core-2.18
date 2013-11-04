@@ -56,5 +56,4 @@ public class HibernateProgramStageSectionStore
 
         return (ProgramStageSection) criteria.uniqueResult();
     }
-
 }
