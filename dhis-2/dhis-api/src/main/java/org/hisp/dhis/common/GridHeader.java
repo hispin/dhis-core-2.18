@@ -168,6 +168,12 @@ public class GridHeader
     }
 
     @Override
+    public String toString()
+    {
+        return "[Name: " + name + ", column: " + column + ", type: " + type + "]";
+    }
+    
+    @Override
     public int hashCode()
     {
         return name.hashCode();
