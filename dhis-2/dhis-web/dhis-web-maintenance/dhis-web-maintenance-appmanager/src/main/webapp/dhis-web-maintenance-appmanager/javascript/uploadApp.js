@@ -23,8 +23,9 @@ function autoUpload() {
                 }, 4000);
                 setHeaderDelayMessage(JSON.parse(xhr.responseText).message);
                 jQuery("#uploadPackageForm")[0].reset();
-                
-                window.location.reload();
+
+                setInterval( function() {
+                	window.location.reload() }, 1500 );
             }
         };
         xhr.open('post', 'addApp.action', true);
