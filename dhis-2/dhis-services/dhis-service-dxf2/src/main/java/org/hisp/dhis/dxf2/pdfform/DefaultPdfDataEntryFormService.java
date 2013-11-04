@@ -119,7 +119,7 @@ public class DefaultPdfDataEntryFormService
     // -------------------------------------------------------------------------
 
     @Override
-    public void generatePDFDataEntryForm( Document document, PdfWriter writer, String inputUid, int typeId,
+    public void generatePDFDataEntryForm( Document document, PdfWriter writer, String dataSetUid, int typeId,
         Rectangle pageSize, PdfFormFontSettings pdfFormFontSettings, I18nFormat format )
     {
 
@@ -134,11 +134,11 @@ public class DefaultPdfDataEntryFormService
 
             if ( typeId == PdfDataEntryFormUtil.DATATYPE_DATASET )
             {
-                setDataSet_DocumentContent( document, writer, inputUid );
+                setDataSet_DocumentContent( document, writer, dataSetUid );
             }
             else if ( typeId == PdfDataEntryFormUtil.DATATYPE_PROGRAMSTAGE )
             {
-                setProgramStage_DocumentContent( document, writer, inputUid );
+                setProgramStage_DocumentContent( document, writer, dataSetUid );
             }
 
             document.close();
@@ -159,36 +159,32 @@ public class DefaultPdfDataEntryFormService
         {
             throw new Exception( "Error - DataSet not found for UID " + dataSetUid );
         }
-        else
-        {
             
-            // Get I18n locale language translated version of DataSet
-            dataSet = dataSetService.getDataSet( dataSet.getId(), true, true, false );
-                
-            setDataSet_DocumentTopSection( document, dataSet );
-
-            document.add( Chunk.NEWLINE );
-
-            List<Period> periods = getPeriods_DataSet( dataSet.getPeriodType() );
-
-            PdfPTable mainTable = new PdfPTable( 1 ); // Table with 1 cell.
-            setMainTable( mainTable );
-
-            insertTable_OrgAndPeriod( mainTable, writer, periods );
-
-            insertTable_TextRow( writer, mainTable, TEXT_BLANK );
-
-            insertTable_DataSet( mainTable, writer, dataSet );
-
-            document.add( mainTable );
-
-
-            document.add( Chunk.NEWLINE );             
-            document.add( Chunk.NEWLINE );
+        // Get I18n locale language translated version of DataSet
+        dataSet = dataSetService.getDataSet( dataSet.getId(), true, true, false );
             
-            insertSaveAsButton( document, writer, PdfDataEntryFormUtil.LABELCODE_BUTTON_SAVEAS, dataSet.getDisplayName() );
-             
-        }
+        setDataSet_DocumentTopSection( document, dataSet );
+
+        document.add( Chunk.NEWLINE );
+
+        List<Period> periods = getPeriods_DataSet( dataSet.getPeriodType() );
+
+        PdfPTable mainTable = new PdfPTable( 1 ); // Table with 1 cell.
+        setMainTable( mainTable );
+
+        insertTable_OrgAndPeriod( mainTable, writer, periods );
+
+        insertTable_TextRow( writer, mainTable, TEXT_BLANK );
+
+        insertTable_DataSet( mainTable, writer, dataSet );
+
+        document.add( mainTable );
+
+
+        document.add( Chunk.NEWLINE );             
+        document.add( Chunk.NEWLINE );
+        
+        insertSaveAsButton( document, writer, PdfDataEntryFormUtil.LABELCODE_BUTTON_SAVEAS, dataSet.getDisplayName() );
     }
 
     private void setDataSet_DocumentTopSection( Document document, DataSet dataSet )
@@ -224,8 +220,7 @@ public class DefaultPdfDataEntryFormService
         {
             for ( Section section : dataSet.getSections() )
             {
-                insertTable_DataSetSections( mainTable, writer, rectangle, section.getDataElements(),
-                    section.getDisplayName() );
+                insertTable_DataSetSections( mainTable, writer, rectangle, section.getDataElements(), section.getDisplayName() );
             }
         }
         else
@@ -264,7 +259,6 @@ public class DefaultPdfDataEntryFormService
             for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo()
                 .getSortedOptionCombos() )
             {
-
                 String categoryOptionComboDisplayName = "";
 
                 // Hide Default category option combo name
@@ -323,16 +317,16 @@ public class DefaultPdfDataEntryFormService
         }
         else
         {
-            // 1. Get Rectangle with TextBox Width to be used
+            // Get Rectangle with TextBox Width to be used
             Rectangle rectangle = new Rectangle( 0, 0, TEXTBOXWIDTH, PdfDataEntryFormUtil.CONTENT_HEIGHT_DEFAULT );
 
-            // 2. Create Main Layout table and set the properties
+            // Create Main Layout table and set the properties
             PdfPTable mainTable = getProgramStageMainTable();
 
-            // 3. Generate Period List for ProgramStage
+            // Generate Period List for ProgramStage
             List<Period> periods = getProgramStagePeriodList();
 
-            // 4. Add Org Unit, Period, Hidden ProgramStageID Field
+            // Add Org Unit, Period, Hidden ProgramStageID Field
             insertTable_OrgAndPeriod( mainTable, writer, periods );
 
             insertTable_TextRow( writer, mainTable, TEXT_BLANK );
@@ -341,10 +335,10 @@ public class DefaultPdfDataEntryFormService
             insertTable_HiddenValue( mainTable, rectangle, writer,
                 PdfDataEntryFormUtil.LABELCODE_PROGRAMSTAGEIDTEXTBOX, String.valueOf( programStage.getId() ) );
 
-            // 5. Add ProgramStage Content to PDF - [The Main Section]
+            // Add ProgramStage Content to PDF - [The Main Section]
             insertTable_ProgramStage( mainTable, writer, programStage );
 
-            // 6. Add the mainTable to document
+            // Add the mainTable to document
             document.add( mainTable );
         }
     }
@@ -577,9 +571,7 @@ public class DefaultPdfDataEntryFormService
         cell_withInnerTable.setBorder( Rectangle.NO_BORDER );
         
         mainTable.addCell( cell_withInnerTable );
-    }
-
-    
+    }    
     
     // Insert 'Save As' button to document.
     //@SuppressWarnings( "unused" )
@@ -595,9 +587,7 @@ public class DefaultPdfDataEntryFormService
         float buttonHeight = PdfDataEntryFormUtil.UNITSIZE_DEFAULT + 5;
 
         tableButton.setHorizontalAlignment( Element.ALIGN_CENTER );
-
         
-        //String jsAction = "app.execMenuItem('SaveAs');";
         String jsAction ="var newFileName = this.getField(\"" + PdfDataEntryFormUtil.LABELCODE_PERIODID + "\").value + ' ' + "
             + "  this.getField(\"" + PdfDataEntryFormUtil.LABELCODE_ORGID + "\").value + ' ' + "
             + "  \"" + dataSetName + ".pdf\";"
@@ -609,8 +599,7 @@ public class DefaultPdfDataEntryFormService
             + "  this.saveAs(aMyPath.join(\"/\"));"
             + "  this.saveAs({cPath:cMyPath, bPromptToOverwrite:true});"
             + "  app.alert('File Saved.', 1);"
-            + "} "
-            ;
+            + "} ";
                 
         addCell_WithPushButtonField( tableButton, writer, PdfDataEntryFormUtil.getPdfPCell(buttonHeight, PdfDataEntryFormUtil.CELL_COLUMN_TYPE_ENTRYFIELD, hasBorder ),  name, jsAction );
 
@@ -721,7 +710,6 @@ public class DefaultPdfDataEntryFormService
     @SuppressWarnings( "unused" )
     private void addCell_WithRadioButton( PdfPTable table, PdfWriter writer, PdfPCell cell, String strfldName )
     {
-        // RADIO BUTTON FIELD
         PdfFormField radiogroupField = PdfFormField.createRadioButton( writer, true );
         radiogroupField.setFieldName( strfldName );
 
@@ -730,7 +718,6 @@ public class DefaultPdfDataEntryFormService
 
         table.addCell( cell );
 
-        // Last - Add Annotation
         writer.addAnnotation( radiogroupField );
     }
 
@@ -819,6 +806,5 @@ public class DefaultPdfDataEntryFormService
         
         checkboxfield.setAppearance(PdfAnnotation.APPEARANCE_NORMAL, "Off", onOff[0]);
         checkboxfield.setAppearance(PdfAnnotation.APPEARANCE_NORMAL, "On", onOff[1]);
-    }
-    
+    }    
 }
