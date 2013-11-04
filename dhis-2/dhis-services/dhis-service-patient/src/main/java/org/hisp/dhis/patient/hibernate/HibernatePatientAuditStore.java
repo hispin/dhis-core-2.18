@@ -61,5 +61,4 @@ public class HibernatePatientAuditStore
             Restrictions.eq( "visitor", visitor ), Restrictions.eq( "date", date ),
             Restrictions.eq( "accessedModule", accessedModule ) ).uniqueResult();
     }
-
 }

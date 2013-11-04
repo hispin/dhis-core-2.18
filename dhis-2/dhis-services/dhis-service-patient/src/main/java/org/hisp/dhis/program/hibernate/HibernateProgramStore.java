@@ -45,7 +45,6 @@ import java.util.Set;
 
 /**
  * @author Chau Thu Tran
- * @version $Id: HibernateProgramStore.java Dec 14, 2011 9:24:21 AM $
  */
 public class HibernateProgramStore
     extends HibernateIdentifiableObjectStore<Program>
@@ -158,5 +157,4 @@ public class HibernateProgramStore
 
         return criteria.list();
     }
-
 }

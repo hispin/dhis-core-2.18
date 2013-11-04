@@ -48,9 +48,8 @@ public class HibernateRelationshipStore
     @SuppressWarnings( "unchecked" )
     public Collection<Relationship> getForPatient( Patient patient )
     {
-        return getCriteria(
-            Restrictions.disjunction().add( Restrictions.eq( "patientA", patient ) ).add(
-                Restrictions.eq( "patientB", patient ) ) ).list();
+        return getCriteria( Restrictions.disjunction().add( Restrictions.eq( "patientA", patient ) ).add(
+            Restrictions.eq( "patientB", patient ) ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -76,7 +75,6 @@ public class HibernateRelationshipStore
     public Relationship get( Patient patientA, Patient patientB )
     {
         return (Relationship) getCriteria( Restrictions.eq( "patientA", patientA ),
-            Restrictions.eq( "patientB", patientB ) )
-            .uniqueResult();
+            Restrictions.eq( "patientB", patientB ) ).uniqueResult();
     }
 }

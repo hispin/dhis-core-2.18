@@ -51,5 +51,4 @@ public class HibernateProgramStageStore
         return (ProgramStage) getCriteria( Restrictions.eq( "name", name ), Restrictions.eq( "program", program ) )
             .uniqueResult();
     }
-
 }

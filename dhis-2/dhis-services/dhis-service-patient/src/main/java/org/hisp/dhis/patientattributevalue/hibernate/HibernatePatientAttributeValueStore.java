@@ -120,6 +120,7 @@ public class HibernatePatientAttributeValueStore
 
     public void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption )
     {
+        //TODO use hql for caching reasons
         String sql = "UPDATE patientattributevalue SET value='" + patientAttributeOption.getName()
             + "' WHERE patientattributeoptionid='" + patientAttributeOption.getId() + "'";
 

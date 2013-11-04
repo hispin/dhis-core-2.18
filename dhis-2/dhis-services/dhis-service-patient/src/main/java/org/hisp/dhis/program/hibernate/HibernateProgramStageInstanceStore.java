@@ -34,8 +34,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -46,15 +44,9 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAudit;
-import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -66,9 +58,7 @@ import org.hisp.dhis.program.SchedulingProgramObject;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.grid.ListGrid;
-import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
-import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
@@ -81,35 +71,7 @@ public class HibernateProgramStageInstanceStore
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
-
-    private StatementBuilder statementBuilder;
-
-    public void setStatementBuilder( StatementBuilder statementBuilder )
-    {
-        this.statementBuilder = statementBuilder;
-    }
     
-    private PatientAuditService patientAuditService;
-
-    public void setPatientAuditService( PatientAuditService patientAuditService )
-    {
-        this.patientAuditService = patientAuditService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
     private ProgramInstanceService programInstanceService;
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
@@ -538,203 +500,6 @@ public class HibernateProgramStageInstanceStore
         }
 
         return criteria;
-    }
-
-    private String getTabularReportSql( Boolean anonynousEntryForm, boolean count, ProgramStage programStage,
-        List<TabularReportColumn> columns, Collection<Integer> orgUnits, int level, int maxLevel, Date startDate,
-        Date endDate, Boolean descOrder, Boolean completed, Boolean accessPrivateInfo, Boolean displayOrgunitCode,
-        Integer min, Integer max )
-    {
-        Set<String> deKeys = new HashSet<String>();
-        String selector = count ? "count(*) " : "* ";
-
-        String sql = "select " + selector + "from ( select DISTINCT psi.programstageinstanceid, psi.executiondate,";
-        String where = "";
-        String operator = "where ";
-
-        if ( anonynousEntryForm == null || !anonynousEntryForm )
-        {
-            for ( int i = level; i <= maxLevel; i++ )
-            {
-                sql += "(select name from organisationunit where organisationunitid=ous.idlevel" + i + ") as level_"
-                    + i + ",";
-            }
-        }
-
-        if ( displayOrgunitCode != null && displayOrgunitCode )
-        {
-            sql += "(select code from organisationunit where organisationunitid=psi.organisationunitid ) as code_,";
-        }
-
-        for ( TabularReportColumn column : columns )
-        {
-            if ( column.isFixedAttribute() )
-            {
-                sql += "p." + column.getIdentifier() + ",";
-
-                if ( column.hasQuery() )
-                {
-                    if ( column.isDateType() )
-                    {
-                        where += operator + column.getIdentifier() + " " + column.getOperator() + " "
-                            + column.getQuery() + " ";
-                    }
-                    else
-                    {
-                        where += operator + "lower(" + column.getIdentifier() + ") " + column.getOperator() + " "
-                            + column.getQuery() + " ";
-                    }
-                    operator = "and ";
-                }
-            }
-            else if ( column.isIdentifierType() )
-            {
-                String deKey = "identifier_" + column.getIdentifier();
-                if ( !deKeys.contains( deKey ) )
-                {
-                    sql += "(select identifier from patientidentifier where patientid=p.patientid and patientidentifiertypeid="
-                        + column.getIdentifier() + ") as identifier_" + column.getIdentifier() + ",";
-                }
-
-                if ( column.hasQuery() )
-                {
-                    if ( column.isDateType() )
-                    {
-                        where += operator + "identifier_" + column.getIdentifier() + " " + column.getOperator() + " "
-                            + column.getQuery() + " ";
-                    }
-                    else
-                    {
-                        where += operator + "lower(identifier_" + column.getIdentifier() + ") " + column.getOperator()
-                            + " " + column.getQuery() + " ";
-                    }
-                    operator = "and ";
-                }
-            }
-            else if ( column.isDynamicAttribute() )
-            {
-                String deKey = "attribute_" + column.getIdentifier();
-                if ( !deKeys.contains( deKey ) )
-                {
-                    sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid="
-                        + column.getIdentifier() + ") as attribute_" + column.getIdentifier() + ",";
-                }
-
-                if ( column.hasQuery() )
-                {
-                    if ( column.isDateType() )
-                    {
-                        where += operator + "attribute_" + column.getIdentifier() + " " + column.getOperator() + " "
-                            + column.getQuery() + " ";
-                    }
-                    else
-                    {
-                        where += operator + "lower(attribute_" + column.getIdentifier() + ") " + column.getOperator()
-                            + " " + column.getQuery() + " ";
-                    }
-                    operator = "and ";
-                }
-            }
-            if ( column.isNumberDataElement() )
-            {
-                String deKey = "element_" + column.getIdentifier();
-                if ( !deKeys.contains( deKey ) )
-                {
-                    sql += "(select cast( value as "
-                        + statementBuilder.getDoubleColumnType()
-                        + " ) from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
-                        + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
-                    deKeys.add( deKey );
-                }
-
-                if ( column.hasQuery() )
-                {
-                    where += operator + "element_" + column.getIdentifier() + " " + column.getOperator() + " "
-                        + column.getQuery() + " ";
-                    operator = "and ";
-                }
-            }
-            else if ( column.isDataElement() )
-            {
-                String deKey = "element_" + column.getIdentifier();
-                if ( !deKeys.contains( deKey ) )
-                {
-                    sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
-                        + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
-                    deKeys.add( deKey );
-                }
-
-                if ( column.hasQuery() )
-                {
-                    if ( column.isDateType() )
-                    {
-                        where += operator + "element_" + column.getIdentifier() + " " + column.getOperator() + " "
-                            + column.getQuery() + " ";
-                    }
-                    else
-                    {
-                        where += operator + "lower(element_" + column.getIdentifier() + ") " + column.getOperator()
-                            + " " + column.getQuery() + " ";
-                    }
-                    operator = "and ";
-                }
-            }
-        }
-
-        sql += " psi.completed ";
-        if ( accessPrivateInfo != null && accessPrivateInfo )
-        {
-            sql += ", p.patientid ";
-        }
-
-        sql += "from programstageinstance psi ";
-        sql += "left join programinstance pi on (psi.programinstanceid=pi.programinstanceid) ";
-        sql += "left join patient p on (pi.patientid=p.patientid) ";
-        sql += "join organisationunit ou on (ou.organisationunitid=psi.organisationunitid) ";
-
-        if ( anonynousEntryForm == null || !anonynousEntryForm )
-        {
-            sql += "join _orgunitstructure ous on (psi.organisationunitid=ous.organisationunitid) ";
-        }
-
-        sql += "where psi.programstageid=" + programStage.getId() + " ";
-
-        if ( startDate != null && endDate != null )
-        {
-            String sDate = DateUtils.getMediumDateString( startDate );
-            String eDate = DateUtils.getMediumDateString( endDate );
-
-            sql += "and psi.executiondate >= '" + sDate + "' ";
-            sql += "and psi.executiondate <= '" + eDate + "' ";
-        }
-
-        if ( orgUnits != null )
-        {
-            sql += "and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnits ) + ") ";
-        }
-        if ( completed != null )
-        {
-            sql += "and psi.completed=" + completed + " ";
-        }
-
-        sql += "order by ";
-
-        if ( anonynousEntryForm == null || !anonynousEntryForm )
-        {
-            for ( int i = level; i <= maxLevel; i++ )
-            {
-                sql += "level_" + i + ",";
-            }
-        }
-
-        sql += "psi.executiondate ";
-        sql += (descOrder == null || descOrder) ? "desc " : "";
-        sql += ") as tabular ";
-        sql += where; // filters
-        sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
-        sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
-
-        return sql;
     }
 
     private Criteria getStatisticalProgramStageCriteria( ProgramStage programStage, Collection<Integer> orgunitIds,

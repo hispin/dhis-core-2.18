@@ -36,9 +36,6 @@ import org.hisp.dhis.program.Program;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version HibernatePatientRegistrationFormStore.java 10:07:23 AM Jan 31, 2013
- *          $
  */
 public class HibernatePatientRegistrationFormStore
     extends HibernateGenericStore<PatientRegistrationForm>
