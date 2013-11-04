@@ -36,7 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -71,7 +70,7 @@ public class HibernateProgramStageInstanceStore
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
-    
+
     private ProgramInstanceService programInstanceService;
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
@@ -83,6 +82,7 @@ public class HibernateProgramStageInstanceStore
     // Implemented methods
     // -------------------------------------------------------------------------
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage )
     {
@@ -93,6 +93,7 @@ public class HibernateProgramStageInstanceStore
         return list.isEmpty() ? null : list.get( list.size() - 1 );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> getAll( ProgramInstance programInstance, ProgramStage programStage )
     {
@@ -102,18 +103,14 @@ public class HibernateProgramStageInstanceStore
         return criteria.list();
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> get( ProgramStage programStage )
     {
         return getCriteria( Restrictions.eq( "programStage", programStage ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances )
-    {
-        return getCriteria( Restrictions.in( "programInstance", programInstances ) ).list();
-    }
-
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed )
     {
@@ -121,71 +118,7 @@ public class HibernateProgramStageInstanceStore
             Restrictions.eq( "completed", completed ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<ProgramStageInstance> get( Date dueDate )
-    {
-        return getCriteria( Restrictions.eq( "dueDate", dueDate ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<ProgramStageInstance> get( Date dueDate, Boolean completed )
-    {
-        return getCriteria( Restrictions.eq( "dueDate", dueDate ), Restrictions.eq( "completed", completed ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<ProgramStageInstance> get( Date startDate, Date endDate )
-    {
-        return (getCriteria( Restrictions.ge( "dueDate", startDate ), Restrictions.le( "dueDate", endDate ) )).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<ProgramStageInstance> get( Date startDate, Date endDate, Boolean completed )
-    {
-        return (getCriteria( Restrictions.ge( "dueDate", startDate ), Restrictions.le( "dueDate", endDate ),
-            Restrictions.eq( "completed", completed ) )).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed )
-    {
-        String hql = "from ProgramStageInstance psi where psi.organisationUnit = :unit";
-
-        if ( after != null )
-        {
-            hql += " and dueDate >= :after";
-        }
-
-        if ( before != null )
-        {
-            hql += " and dueDate <= :before";
-        }
-
-        if ( completed != null )
-        {
-            hql += " and completed = :completed";
-        }
-
-        Query q = getQuery( hql ).setEntity( "unit", unit );
-
-        if ( after != null )
-        {
-            q.setDate( "after", after );
-        }
-
-        if ( before != null )
-        {
-            q.setDate( "before", before );
-        }
-
-        if ( completed != null )
-        {
-            q.setBoolean( "completed", completed );
-        }
-
-        return q.list();
-    }
-
+    @Override
     @SuppressWarnings( "unchecked" )
     public List<ProgramStageInstance> get( Patient patient, Boolean completed )
     {
@@ -194,23 +127,8 @@ public class HibernateProgramStageInstanceStore
         return getQuery( hql ).setEntity( "patient", patient ).setBoolean( "completed", completed ).list();
     }
 
+
     @Override
-    @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit organisationUnit )
-    {
-        return getCriteria( Restrictions.eq( "programStage", programStage ),
-            Restrictions.eq( "organisationUnit", organisationUnit ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate,
-        Date endDate, int min, int max )
-    {
-        return getCriteria( Restrictions.eq( "programStage", programStage ),
-            Restrictions.eq( "organisationUnit", orgunit ), Restrictions.between( "dueDate", startDate, endDate ) )
-            .setFirstResult( min ).setMaxResults( max ).list();
-    }
-
     public void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
         String sql = "delete from programstageinstance where programstageid=" + programStage.getId()
@@ -242,6 +160,7 @@ public class HibernateProgramStageInstanceStore
         }
     }
 
+    @Override
     public Collection<SchedulingProgramObject> getSendMesssageEvents()
     {
         String sql = " ( " + sendMessageToPatientSql() + " ) ";
@@ -296,6 +215,7 @@ public class HibernateProgramStageInstanceStore
         return schedulingProgramObjects;
     }
 
+    @Override
     public int getStatisticalProgramStageReport( ProgramStage programStage, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, int status )
     {
@@ -306,6 +226,7 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
         Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer min, Integer max )
@@ -321,6 +242,7 @@ public class HibernateProgramStageInstanceStore
         return criteria.list();
     }
 
+    @Override
     public int getOverDueCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         Calendar yesterday = Calendar.getInstance();
@@ -349,6 +271,7 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, Boolean completed )
@@ -356,6 +279,7 @@ public class HibernateProgramStageInstanceStore
         return getCriteria( program, orgunitIds, startDate, endDate, completed ).list();
     }
 
+    @Override
     public int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate, Boolean completed )
     {
         Number rs = (Number) getCriteria( program, orgunitIds, startDate, endDate, completed ).setProjection(
@@ -364,6 +288,7 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     public int count( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         Boolean completed )
     {
@@ -373,6 +298,7 @@ public class HibernateProgramStageInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @Override
     public Grid getCompleteness( Collection<Integer> orgunitIds, Program program, String startDate, String endDate,
         I18n i18n )
     {
@@ -539,11 +465,12 @@ public class HibernateProgramStageInstanceStore
         return criteria;
     }
 
-    public int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
-        Integer status )
+    @Override
+    public int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date after, Date before,
+        int status )
     {
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstancesByStatus(
-            ProgramInstance.STATUS_COMPLETED, program, orgunitIds, startDate, endDate );
+            ProgramInstance.STATUS_COMPLETED, program, orgunitIds, after, before );
         Criteria criteria = getCriteria();
         criteria.createAlias( "programInstance", "programInstance" );
         criteria.createAlias( "programStage", "programStage" );
@@ -551,7 +478,7 @@ public class HibernateProgramStageInstanceStore
         criteria.add( Restrictions.eq( "programInstance.program", program ) );
         criteria.add( Restrictions.eq( "programInstance.status", status ) );
         criteria.add( Restrictions.in( "organisationUnit.id", orgunitIds ) );
-        criteria.add( Restrictions.between( "programInstance.endDate", startDate, endDate ) );
+        criteria.add( Restrictions.between( "programInstance.endDate", after, before ) );
         criteria.add( Restrictions.eq( "completed", true ) );
         if ( programInstances != null && programInstances.size() > 0 )
         {
