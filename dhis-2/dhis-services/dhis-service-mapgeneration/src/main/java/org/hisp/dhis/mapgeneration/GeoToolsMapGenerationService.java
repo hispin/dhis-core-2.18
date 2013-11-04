@@ -50,6 +50,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.util.Assert;
 
 /**
@@ -80,6 +82,13 @@ public class GeoToolsMapGenerationService
     public void setAnalyticsService( AnalyticsService analyticsService )
     {
         this.analyticsService = analyticsService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -114,9 +123,11 @@ public class GeoToolsMapGenerationService
         List<MapView> mapViews = new ArrayList<MapView>( map.getMapViews() );
         Collections.reverse( mapViews );
         
+        User user = currentUserService.getCurrentUser();
+        
         for ( MapView mapView : mapViews )
         {        
-            InternalMapLayer mapLayer = getSingleInternalMapLayer( mapView, date );
+            InternalMapLayer mapLayer = getSingleInternalMapLayer( mapView, user, date );
             
             if ( mapLayer != null )
             {
@@ -166,7 +177,7 @@ public class GeoToolsMapGenerationService
     private static final Integer DEFAULT_RADIUS_HIGH = 35;
     private static final Integer DEFAULT_RADIUS_LOW = 15;
 
-    private InternalMapLayer getSingleInternalMapLayer( MapView mapView, Date date )
+    private InternalMapLayer getSingleInternalMapLayer( MapView mapView, User user, Date date )
     {
         if ( mapView == null )
         {
@@ -188,7 +199,7 @@ public class GeoToolsMapGenerationService
 
         date = date != null ? date : new Date();
         
-        mapView.init( null, date, null, atLevels, inGroups, null );
+        mapView.init( user, date, null, atLevels, inGroups, null );
         
         List<OrganisationUnit> organisationUnits = mapView.getAllOrganisationUnits();
 
