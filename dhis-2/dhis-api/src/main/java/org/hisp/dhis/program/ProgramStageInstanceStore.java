@@ -79,55 +79,6 @@ public interface ProgramStageInstanceStore
     Collection<ProgramStageInstance> get( ProgramStage programStage );
 
     /**
-     * Retrieve an event list on due-date
-     * 
-     * @param dueDate Due date
-     * 
-     * @return ProgramStageInstance list
-     */
-    Collection<ProgramStageInstance> get( Date dueDate );
-
-    /**
-     * Retrieve an event list by status on due date
-     * 
-     * @param dueDate Due date
-     * @param completed Optional flag to only get completed (<code>true</code> )
-     *        or uncompleted (<code>false</code>) instances.
-     * 
-     * @return ProgramStageInstance list
-     */
-    Collection<ProgramStageInstance> get( Date dueDate, Boolean completed );
-
-    /**
-     * Retrieve an event list in a due date period
-     * 
-     * @param after - Optional date the instance should be on or after.
-     * @param before - optional date the instance should be on or before.
-     * 
-     * @param ProgramStageInstance list
-     */
-    Collection<ProgramStageInstance> get( Date startDate, Date endDate );
-
-    /**
-     * Retrieve an event list by complete status in a period
-     * 
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * @param completed Optional flag to only get completed (<code>true</code> )
-     *        or uncompleted (<code>false</code>) instances.
-     */
-    Collection<ProgramStageInstance> get( Date startDate, Date endDate, Boolean completed );
-
-    /**
-     * Retrieve an event list on program instance list
-     * 
-     * @param programInstances ProgramInstance list
-     * 
-     * @return ProgramStageInstance list
-     */
-    Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances );
-
-    /**
      * Retrieve an event list on program instance list with a certain status
      * 
      * @param programInstances ProgramInstance list
@@ -137,18 +88,6 @@ public interface ProgramStageInstanceStore
      * @return ProgramStageInstance list
      */
     Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed );
-
-    /**
-     * Get all {@link ProgramStageInstance program stage instances} for unit.
-     * 
-     * @param unit - the unit to get instances for.
-     * @param after - optional date the instance should be on or after.
-     * @param before - optional date the instance should be on or before.
-     * @param completed - optional flag to only get completed (<code>true</code>
-     *        ) or uncompleted (<code>false</code>) instances.
-     * @return
-     */
-    List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
     /**
      * Get all events by patient, optionally filtering by completed.
@@ -161,30 +100,6 @@ public interface ProgramStageInstanceStore
      * @return ProgramStageInstance list
      */
     List<ProgramStageInstance> get( Patient patient, Boolean completed );
-
-    /**
-     * Retrieve an event list on program stage by an orgunit
-     * 
-     * @param programStage ProgramStage
-     * @param organisationUnit OrganisationUnit
-     * 
-     * @return ProgramStageInstance list
-     */
-    List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit );
-
-    /**
-     * Retrieve an event list on program stage by an orgunit in a due date
-     * period
-     * 
-     * @param programStage ProgramStage
-     * @param organisationUnit OrganisationUnit
-     * @param after Optional date the instance should be on or after.
-     * @param before Optional date the instance should be on or before.
-     * 
-     * @return ProgramStageInstance list
-     */
-    List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate,
-        int min, int max );
 
     /**
      * Remove events without any data values
@@ -306,8 +221,8 @@ public interface ProgramStageInstanceStore
      *        LATE_VISIT_STATUS
      * @return A number
      */
-    int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
-        Integer status );
+    int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date after, Date before,
+        int status );
 
     /**
      * Get ids of orgunits where events happened in a period

@@ -124,32 +124,32 @@ public class DefaultProgramStageInstanceService
     // Implementation methods
     // -------------------------------------------------------------------------
 
+    @Override
     public int addProgramStageInstance( ProgramStageInstance programStageInstance )
     {
         programStageInstance.setAutoFields();
         return programStageInstanceStore.save( programStageInstance );
     }
 
+    @Override
     public void deleteProgramStageInstance( ProgramStageInstance programStageInstance )
     {
         programStageInstanceStore.delete( programStageInstance );
     }
 
-    public Collection<ProgramStageInstance> getAllProgramStageInstances()
-    {
-        return programStageInstanceStore.getAll();
-    }
-
+    @Override
     public ProgramStageInstance getProgramStageInstance( int id )
     {
         return programStageInstanceStore.get( id );
     }
 
+    @Override
     public ProgramStageInstance getProgramStageInstance( String uid )
     {
         return programStageInstanceStore.getByUid( uid );
     }
 
+    @Override
     public ProgramStageInstance getProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage )
     {
         return programStageInstanceStore.get( programInstance, programStage );
@@ -162,31 +162,14 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.getAll( programInstance, programStage );
     }
 
-    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage )
-    {
-        return programStageInstanceStore.get( programStage );
-    }
-
     @Override
-    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage,
-        OrganisationUnit organisationUnit )
-    {
-        return programStageInstanceStore.get( programStage, organisationUnit );
-    }
-
-    @Override
-    public Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage,
-        OrganisationUnit organisationUnit, Date start, Date end )
-    {
-        return programStageInstanceStore.get( programStage, organisationUnit, start, end, 0, Integer.MAX_VALUE );
-    }
-
     public void updateProgramStageInstance( ProgramStageInstance programStageInstance )
     {
         programStageInstance.setAutoFields();
         programStageInstanceStore.update( programStageInstance );
     }
 
+    @Override
     public Map<Integer, Integer> statusProgramStageInstances( Collection<ProgramStageInstance> programStageInstances )
     {
         Map<Integer, Integer> colorMap = new HashMap<Integer, Integer>();
@@ -199,47 +182,20 @@ public class DefaultProgramStageInstanceService
         return colorMap;
     }
 
-    public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances )
-    {
-        return programStageInstanceStore.get( programInstances );
-    }
-
+    @Override
     public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances,
         boolean completed )
     {
         return programStageInstanceStore.get( programInstances, completed );
     }
 
-    public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate )
-    {
-        return programStageInstanceStore.get( dueDate );
-    }
-
-    public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed )
-    {
-        return programStageInstanceStore.get( dueDate, completed );
-    }
-
-    public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate )
-    {
-        return programStageInstanceStore.get( startDate, endDate );
-    }
-
-    public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed )
-    {
-        return programStageInstanceStore.get( startDate, endDate, completed );
-    }
-
-    public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed )
-    {
-        return programStageInstanceStore.get( unit, after, before, completed );
-    }
-
+    @Override
     public List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed )
     {
         return programStageInstanceStore.get( patient, completed );
     }
 
+    @Override
     public List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n )
     {
         List<Grid> grids = new ArrayList<Grid>();
@@ -309,6 +265,7 @@ public class DefaultProgramStageInstanceService
         return grids;
     }
 
+    @Override
     public void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
         programStageInstanceStore.removeEmptyEvents( programStage, organisationUnit );
@@ -320,27 +277,17 @@ public class DefaultProgramStageInstanceService
         programStageInstanceStore.update( programStageInstanceIds, outboundSms );
     }
 
+    @Override
     public Collection<SchedulingProgramObject> getSendMesssageEvents()
     {
         return programStageInstanceStore.getSendMesssageEvents();
     }
 
+    @Override
     public Collection<ProgramStageInstance> getProgramStageInstances( Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, Boolean completed )
     {
         return programStageInstanceStore.get( program, orgunitIds, startDate, endDate, completed );
-    }
-
-    public int getProgramStageInstanceCount( Program program, Collection<Integer> orgunitIds, Date startDate,
-        Date endDate, Boolean completed )
-    {
-        return programStageInstanceStore.count( program, orgunitIds, startDate, endDate, completed );
-    }
-
-    public int getProgramStageInstanceCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate,
-        Date endDate, Boolean completed )
-    {
-        return programStageInstanceStore.count( programStage, orgunitIds, startDate, endDate, completed );
     }
 
     @Override
@@ -465,16 +412,14 @@ public class DefaultProgramStageInstanceService
             grid.addValue( programStage.getDisplayName() );
 
             // Visits scheduled (All)
-
-            int totalAll = this.getProgramStageInstanceCount( programStage, orgunitIds, startDate, endDate, null );
+            int totalAll = programStageInstanceStore.count( programStage, orgunitIds, startDate, endDate, null );
             grid.addValue( totalAll );
 
             // Visits done (#) = Incomplete + Complete stages.
-
-            int totalCompletedEvent = this.getProgramStageInstanceCount( programStage, orgunitIds, startDate, endDate,
+            int totalCompletedEvent = programStageInstanceStore.count( programStage, orgunitIds, startDate, endDate,
                 true );
             int totalVisit = totalCompletedEvent
-                + this.getProgramStageInstanceCount( programStage, orgunitIds, startDate, endDate, false );
+                + programStageInstanceStore.count( programStage, orgunitIds, startDate, endDate, false );
             grid.addValue( totalVisit );
 
             // Visits done (%)
@@ -516,6 +461,7 @@ public class DefaultProgramStageInstanceService
         return grid;
     }
 
+    @Override
     public List<ProgramStageInstance> getStatisticalProgramStageDetailsReport( ProgramStage programStage,
         Collection<Integer> orgunitIds, Date startDate, Date endDate, int status, Integer min, Integer max )
     {
@@ -532,7 +478,7 @@ public class DefaultProgramStageInstanceService
 
     @Override
     public int averageNumberCompletedProgramInstance( Program program, Collection<Integer> orgunitIds, Date startDate,
-        Date endDate, Integer status )
+        Date endDate, int status )
     {
         return programStageInstanceStore.averageNumberCompleted( program, orgunitIds, startDate, endDate, status );
     }
@@ -755,4 +701,5 @@ public class DefaultProgramStageInstanceService
 
         return outboundSms;
     }
+
 }
