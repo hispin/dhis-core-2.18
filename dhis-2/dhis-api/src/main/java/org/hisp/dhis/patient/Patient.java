@@ -71,6 +71,9 @@ public class Patient
     public static final char AGE_TYPE_MONTH = 'M';
     public static final char AGE_TYPE_DAY = 'D';
 
+
+    public static String SEARCH_SAPERATE = "_";
+    
     public static String PREFIX_IDENTIFIER_TYPE = "iden";
     public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";
     public static String PREFIX_PATIENT_ATTRIBUTE = "attr";

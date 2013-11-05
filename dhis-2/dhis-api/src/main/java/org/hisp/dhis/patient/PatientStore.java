@@ -49,15 +49,6 @@ public interface PatientStore
     final int MAX_RESULTS = 50000;
 
     /**
-     * Search patients by birth date
-     * 
-     * @param birthDate Data of birth
-     * 
-     * @return List of patient
-     */
-    Collection<Patient> getByBirthDate( Date birthDate );
-
-    /**
      * Search patients by full name (performs partial search )
      * 
      * @param name Full name of patients
@@ -90,8 +81,8 @@ public interface PatientStore
     Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
 
     /**
-     * Search patients who registered in a certain organisation unit by full name
-     * (performs partial search)
+     * Search patients who registered in a certain organisation unit by full
+     * name (performs partial search)
      * 
      * @param organisationUnit Organisation unit where patients registered
      * @param nameLike A string for searching by full name

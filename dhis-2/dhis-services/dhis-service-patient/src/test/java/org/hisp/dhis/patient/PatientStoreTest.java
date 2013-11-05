@@ -33,17 +33,24 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.validation.ValidationCriteria;
+import org.hisp.dhis.validation.ValidationCriteriaService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -58,23 +65,45 @@ public class PatientStoreTest
 
     @Autowired
     private ProgramService programService;
-    
+
     @Autowired
     private ProgramInstanceService programInstanceService;
-    
+
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
-    private Patient patientA;
-    private Patient patientB;
-    private Patient patientC;
-    private Patient patientD;
-        
+
+    @Autowired
+    private PatientAttributeService patientAttributeService;
+
+    @Autowired
+    private PatientIdentifierTypeService identifierTypeService;
+
+    @Autowired
+    private PatientAttributeValueService patientAttributeValueService;
+
+    @Autowired
+    private ValidationCriteriaService validationCriteriaService;
+
+    private Patient patientA1;
+
+    private Patient patientA2;
+
+    private Patient patientA3;
+
+    private Patient patientB1;
+
+    private Patient patientB2;
+
+    private PatientAttribute patientAttribute;
+
+    private int attributeId;
+
     private Program programA;
+
     private Program programB;
-        
+
     private OrganisationUnit organisationUnit;
-    
+
     private Date date = new Date();
 
     @Override
@@ -82,111 +111,118 @@ public class PatientStoreTest
     {
         organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
-        
-        patientA = createPatient( 'A', organisationUnit );
-        patientB = createPatient( 'B', organisationUnit );
-        patientC = createPatient( 'A', null );
-        patientD = createPatient( 'B', organisationUnit );
-        
+
+        PatientIdentifierType patientIdentifierType = createPatientIdentifierType( 'A' );
+        identifierTypeService.savePatientIdentifierType( patientIdentifierType );
+
+        patientAttribute = createPatientAttribute( 'A' );
+        attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
+
+        patientA1 = createPatient( 'A', "F", organisationUnit );
+        patientA2 = createPatient( 'A', "F", null );
+        patientA3 = createPatient( 'A', organisationUnit, patientIdentifierType );
+        patientB1 = createPatient( 'B', "M", organisationUnit );
+        patientB2 = createPatient( 'B', organisationUnit );
+
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
     }
-    
+
     @Test
-    public void addGet()
+    public void testAddGet()
     {
-        int idA = patientStore.save( patientA );
-        int idB = patientStore.save( patientB );
-        
-        assertEquals( patientA.getName(), patientStore.get( idA ).getName() );
-        assertEquals( patientB.getName(), patientStore.get( idB ).getName() );
+        int idA = patientStore.save( patientA1 );
+        int idB = patientStore.save( patientB1 );
+
+        assertNotNull( patientStore.get( idA ) );
+        assertNotNull( patientStore.get( idB ) );
     }
 
     @Test
-    public void addGetbyOu()
+    public void testAddGetbyOu()
     {
-        int idA = patientStore.save( patientA );
-        int idB = patientStore.save( patientB );
-      
-        assertEquals( patientA.getName(), patientStore.get( idA ).getName() );
-        assertEquals( patientB.getName(), patientStore.get( idB ).getName() );
+        int idA = patientStore.save( patientA1 );
+        int idB = patientStore.save( patientB1 );
+
+        assertEquals( patientA1.getName(), patientStore.get( idA ).getName() );
+        assertEquals( patientB1.getName(), patientStore.get( idB ).getName() );
     }
-    
+
     @Test
-    public void delete()
+    public void testDelete()
     {
-        int idA = patientStore.save( patientA );
-        int idB = patientStore.save( patientB );
-        
+        int idA = patientStore.save( patientA1 );
+        int idB = patientStore.save( patientB1 );
+
         assertNotNull( patientStore.get( idA ) );
         assertNotNull( patientStore.get( idB ) );
 
-        patientStore.delete( patientA );
-        
+        patientStore.delete( patientA1 );
+
         assertNull( patientStore.get( idA ) );
         assertNotNull( patientStore.get( idB ) );
 
-        patientStore.delete( patientB );
-        
+        patientStore.delete( patientB1 );
+
         assertNull( patientStore.get( idA ) );
-        assertNull( patientStore.get( idB ) );        
+        assertNull( patientStore.get( idB ) );
     }
-    
+
     @Test
-    public void getAll()
+    public void testGetAll()
     {
-        patientStore.save( patientA );
-        patientStore.save( patientB );
-        
-        assertTrue( equals( patientStore.getAll(), patientA, patientB ) );
+        patientStore.save( patientA1 );
+        patientStore.save( patientB1 );
+
+        assertTrue( equals( patientStore.getAll(), patientA1, patientB1 ) );
     }
-    
+
     @Test
     public void testGetByFullName()
     {
-        patientStore.save( patientA );
-        patientStore.save( patientB );
-        patientStore.save( patientC );
-        patientStore.save( patientD );
-        
+        patientStore.save( patientA1 );
+        patientStore.save( patientA2 );
+        patientStore.save( patientB1 );
+        patientStore.save( patientB2 );
+
         Collection<Patient> patients = patientStore.getByFullName( "NameA", organisationUnit );
-        
+
         assertEquals( 1, patients.size() );
-        assertTrue( patients.contains( patientA ) );
-        
+        assertTrue( patients.contains( patientA1 ) );
+
         patients = patientStore.getByFullName( "NameB", organisationUnit );
-        
+
         assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientB ) );
-        assertTrue( patients.contains( patientD ) );
+        assertTrue( patients.contains( patientB1 ) );
+        assertTrue( patients.contains( patientB2 ) );
     }
-    
+
     @Test
     public void testGetByOrgUnitProgram()
     {
         programService.addProgram( programA );
         programService.addProgram( programB );
-        
-        patientStore.save( patientA );
-        patientStore.save( patientB );
-        patientStore.save( patientC );
-        patientStore.save( patientD );
-        
-        programInstanceService.enrollPatient( patientA, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientB, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientC, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientD, programB, date, date, organisationUnit, null );
-        
+
+        patientStore.save( patientA1 );
+        patientStore.save( patientB1 );
+        patientStore.save( patientA2 );
+        patientStore.save( patientB2 );
+
+        programInstanceService.enrollPatient( patientA1, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientA2, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientB2, programB, date, date, organisationUnit, null );
+
         Collection<Patient> patients = patientStore.getByOrgUnitProgram( organisationUnit, programA, 0, 100 );
-        
+
         assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientA ) );
-        assertTrue( patients.contains( patientB ) );
+        assertTrue( patients.contains( patientA1 ) );
+        assertTrue( patients.contains( patientB1 ) );
 
         patients = patientStore.getByOrgUnitProgram( organisationUnit, programB, 0, 100 );
-        
+
         assertEquals( 1, patients.size() );
-        assertTrue( patients.contains( patientD ) );
+        assertTrue( patients.contains( patientB2 ) );
     }
 
     @Test
@@ -194,27 +230,145 @@ public class PatientStoreTest
     {
         programService.addProgram( programA );
         programService.addProgram( programB );
-        
-        patientStore.save( patientA );
-        patientStore.save( patientB );
-        patientStore.save( patientC );
-        patientStore.save( patientD );
-        
-        programInstanceService.enrollPatient( patientA, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientB, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientC, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientD, programB, date, date, organisationUnit, null );
-        
+
+        patientStore.save( patientA1 );
+        patientStore.save( patientB1 );
+        patientStore.save( patientA2 );
+        patientStore.save( patientB2 );
+
+        programInstanceService.enrollPatient( patientA1, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientA2, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientB2, programB, date, date, organisationUnit, null );
+
         Collection<Patient> patients = patientStore.getByProgram( programA, 0, 100 );
-        
+
         assertEquals( 3, patients.size() );
-        assertTrue( patients.contains( patientA ) );
-        assertTrue( patients.contains( patientB ) );
-        assertTrue( patients.contains( patientC ) );
+        assertTrue( patients.contains( patientA1 ) );
+        assertTrue( patients.contains( patientA2 ) );
+        assertTrue( patients.contains( patientB1 ) );
 
         patients = patientStore.getByOrgUnitProgram( organisationUnit, programB, 0, 100 );
-        
+
         assertEquals( 1, patients.size() );
-        assertTrue( patients.contains( patientD ) );
+        assertTrue( patients.contains( patientB2 ) );
     }
+
+    @Test
+    public void testGetByNames()
+    {
+        patientStore.save( patientA1 );
+        patientStore.save( patientA2 );
+
+        Collection<Patient> patients = patientStore.getByNames( "NameA", null, null );
+
+        assertEquals( 2, patients.size() );
+        assertTrue( patients.contains( patientA1 ) );
+        assertTrue( patients.contains( patientA2 ) );
+    }
+
+    @Test
+    public void testGetByNameGenderBirthdate()
+    {
+        patientStore.save( patientA1 );
+        patientStore.save( patientA2 );
+
+        Collection<Patient> patients = patientStore.get( "NameA", patientA1.getBirthDate(), patientA1.getGender() );
+
+        assertEquals( 2, patients.size() );
+        assertTrue( patients.contains( patientA1 ) );
+        assertTrue( patients.contains( patientA2 ) );
+    }
+
+    @Test
+    public void testGetByOrgUnitAndNameLike()
+    {
+        patientStore.save( patientA1 );
+        patientStore.save( patientA2 );
+        patientStore.save( patientA3 );
+
+        Collection<Patient> patients = patientStore.getByOrgUnitAndNameLike( organisationUnit, "A", null, null );
+        assertEquals( 2, patients.size() );
+        assertTrue( patients.contains( patientA1 ) );
+        assertTrue( patients.contains( patientA3 ) );
+    }
+
+    @Test
+    public void testGetRepresentatives()
+    {
+        patientStore.save( patientB1 );
+
+        patientA1.setRepresentative( patientB1 );
+        patientA2.setRepresentative( patientB1 );
+        patientStore.save( patientA1 );
+        patientStore.save( patientA2 );
+
+        assertEquals( 2, patientStore.getRepresentatives( patientB1 ).size() );
+    }
+
+    @Test
+    public void testGetByPhoneNumber()
+    {
+        patientStore.save( patientA1 );
+        patientStore.save( patientB1 );
+
+        assertEquals( 2, patientStore.getByPhoneNumber( "123456789", null, null ).size() );
+    }
+
+    @Test
+    public void testSearch()
+    {
+        int idA = programService.addProgram( programA );
+        programService.addProgram( programB );
+
+        patientStore.save( patientA1 );
+        patientStore.save( patientA2 );
+        patientStore.save( patientA3 );
+        patientStore.save( patientB1 );
+        patientStore.save( patientB2 );
+
+        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA3, patientAttribute );
+        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+
+        programInstanceService.enrollPatient( patientA3, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
+
+        List<String> searchKeys = new ArrayList<String>();
+        searchKeys.add( Patient.PREFIX_IDENTIFIER_TYPE + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE
+            + organisationUnit.getId() );
+        searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
+            + Patient.SEARCH_SAPERATE + "a" );
+        searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
+
+        Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
+        orgunits.add( organisationUnit );
+
+        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, null, null, null,
+            ProgramStageInstance.ACTIVE_STATUS, null, null );
+
+        assertEquals( 1, patients.size() );
+        assertTrue( patients.contains( patientA3 ) );
+    }
+
+    @Test
+    public void testValidate()
+    {
+        programService.addProgram( programA );
+
+        ValidationCriteria validationCriteria = createValidationCriteria( 'A', "gender", 0, "F" );
+        validationCriteriaService.saveValidationCriteria( validationCriteria );
+
+        programA.getPatientValidationCriteria().add( validationCriteria );
+        programService.updateProgram( programA );
+
+        patientStore.save( patientA1 );
+        patientStore.save( patientB1 );
+
+        int validatePatientA1 = patientStore.validate( patientA1, programA );
+        int validatePatientB1 = patientStore.validate( patientB1, programA );
+
+        assertEquals( 0, validatePatientA1 );
+        assertEquals( 2, validatePatientB1 );
+    }
+
 }
