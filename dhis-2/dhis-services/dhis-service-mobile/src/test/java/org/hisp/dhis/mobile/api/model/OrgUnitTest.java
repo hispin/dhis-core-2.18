@@ -67,7 +67,6 @@ public class OrgUnitTest
         unit.setAddRelationshipUrl( "addRelationshipUrl" );
         unit.setDownloadAnonymousProgramUrl( "downloadAnonymousProgramUrl" );
         unit.setFindProgramUrl( "findProgramUrl" );
-        unit.setFindLatestPersonUrl( "findLatestPersonUrl" );
         unit.setFindPatientInAdvancedUrl( "findPatientInAdvanced" );
         unit.setFindLostToFollowUpUrl( "findLostToFollowUpUrl" );
         unit.setHandleLostToFollowUpUrl( "handleLostToFollowUpUrl" );
