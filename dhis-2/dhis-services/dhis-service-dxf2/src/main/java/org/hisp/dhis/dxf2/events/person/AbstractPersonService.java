@@ -144,7 +144,7 @@ public abstract class AbstractPersonService
     @Override
     public Persons getPersons( OrganisationUnit organisationUnit )
     {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit ) );
+        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, null, null ) );
         return getPersons( patients );
     }
 

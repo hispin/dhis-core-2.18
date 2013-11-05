@@ -113,14 +113,6 @@ public interface PatientService
     Collection<Patient> getPatients( String name, Date birthdate, String gender );
 
     /**
-     * Retrieve patients base on birthDate
-     * 
-     * @param birthDate
-     * @return Patient List
-     */
-    Collection<Patient> getPatientsByBirthDate( Date birthDate );
-
-    /**
      * Retrieve patients by full name (performs partial search )
      * 
      * @param name fullName
@@ -129,9 +121,13 @@ public interface PatientService
     Collection<Patient> getPatientsByNames( String name, Integer min, Integer max );
 
     /**
-     * Retrieve patients base on full-name or identifier value
+     * Retrieve patients base on full-name or identifier value with result
+     * limited
      * 
      * @param searchText value
+     * @param min
+     * @param max
+     * 
      * @return Patient List
      */
     Collection<Patient> getPatients( String searchText, Integer min, Integer max );
@@ -141,6 +137,7 @@ public interface PatientService
      * 
      * @param searchText value
      * @param orgUnitId
+     * 
      * @return Patient List
      */
     Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId );
@@ -149,17 +146,12 @@ public interface PatientService
      * Retrieve patients base on organization unit with result limited
      * 
      * @param organisationUnit organisationUnit
+     * @param min
+     * @param max
+     * 
      * @return Patient List
      */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, Integer min, Integer max );
-
-    /**
-     * Retrieve patients base on organization unit with result limited
-     * 
-     * @param organisationUnit organisationUnit
-     * @return Patient List
-     */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit );
 
     /**
      * Retrieve patients who enrolled into a program with active status
@@ -178,20 +170,7 @@ public interface PatientService
      * @return
      */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program );
-
-    /**
-     * Retrieve patients base on organization unit and sort the result by
-     * PatientAttribute
-     * 
-     * @param organisationUnit organisationUnit
-     * @param patientAttribute
-     * @param min
-     * @param max
-     * @return Patient List
-     */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, PatientAttribute patientAttribute, Integer min,
-        Integer max );
-
+    
     /**
      * Retrieve patients base on organisationUnit and identifier value name
      * 
