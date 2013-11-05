@@ -75,11 +75,9 @@ public interface PatientAttributeStore
     /**
      * Get patient attributes by groupBy option
      * 
-     * @param groupBy True/False value
-     * 
-     * @return List of patient attributes
+     * @return PatientAttribute with groupby as true
      */
-    PatientAttribute getByGroupBy( boolean groupBy );
+    PatientAttribute getByGroupBy();
 
     /**
      * Get patient attributes which are displayed in visit schedule

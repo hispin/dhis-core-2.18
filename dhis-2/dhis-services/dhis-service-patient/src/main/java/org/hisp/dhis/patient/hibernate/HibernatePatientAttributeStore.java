@@ -65,9 +65,9 @@ public class HibernatePatientAttributeStore
             .add( Restrictions.eq( "mandatory", false ) ).list();
     }
 
-    public PatientAttribute getByGroupBy( boolean groupBy )
+    public PatientAttribute getByGroupBy( )
     {
-        return (PatientAttribute) getCriteria( Restrictions.eq( "groupBy", groupBy ) ).uniqueResult();
+        return (PatientAttribute) getCriteria( Restrictions.eq( "groupBy", true ) ).uniqueResult();
     }
 
     @SuppressWarnings("unchecked")

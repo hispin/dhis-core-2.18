@@ -121,9 +121,9 @@ public interface PatientAttributeService
     /**
      * Get patient attributes by groupBy option
      * 
-     * @param groupBy True/False value
+     * @return PatientAttribute with groupby as true
      */
-    PatientAttribute getPatientAttributeByGroupBy( boolean groupBy );
+    PatientAttribute getPatientAttributeByGroupBy();
 
     /**
      * Get patient attributes without groups

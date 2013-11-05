@@ -100,9 +100,9 @@ public class DefaultPatientAttributeService
         return i18n( i18nService, patientAttributeStore.getByName( name ) );
     }
 
-    public PatientAttribute getPatientAttributeByGroupBy( boolean groupBy )
+    public PatientAttribute getPatientAttributeByGroupBy( )
     {
-        return i18n( i18nService, patientAttributeStore.getByGroupBy( groupBy ) );
+        return i18n( i18nService, patientAttributeStore.getByGroupBy( ) );
     }
 
     public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()

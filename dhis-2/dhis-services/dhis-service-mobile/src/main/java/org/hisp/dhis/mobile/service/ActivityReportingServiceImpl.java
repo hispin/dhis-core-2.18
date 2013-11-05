@@ -330,7 +330,7 @@ public class ActivityReportingServiceImpl
             }
         }
 
-        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( true ) );
+        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( ) );
 
         if ( items.isEmpty() )
         {
@@ -358,7 +358,7 @@ public class ActivityReportingServiceImpl
             }
         }
 
-        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( true ) );
+        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy(  ) );
 
         if ( items.isEmpty() )
         {
