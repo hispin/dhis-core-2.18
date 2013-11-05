@@ -81,14 +81,12 @@ public class MobileOrgUnitLinks
 
     private String getVariesInfoUrl;
 
-    private String findLatestPersonUrl;
-    
     private String findPatientInAdvancedUrl;
-    
+
     private String findLostToFollowUpUrl;
-    
+
     private String handleLostToFollowUpUrl;
-    
+
     private String generateRepeatableEventUrl;
 
     @XmlAttribute
@@ -293,16 +291,6 @@ public class MobileOrgUnitLinks
         this.findProgramUrl = findProgramUrl;
     }
 
-    public String getFindLatestPersonUrl()
-    {
-        return findLatestPersonUrl;
-    }
-
-    public void setFindLatestPersonUrl( String findLatestPersonUrl )
-    {
-        this.findLatestPersonUrl = findLatestPersonUrl;
-    }
-
     public String getFindPatientInAdvancedUrl()
     {
         return findPatientInAdvancedUrl;
@@ -366,7 +354,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( addRelationshipUrl );
         dataOutputStream.writeUTF( downloadAnonymousProgramUrl );
         dataOutputStream.writeUTF( findProgramUrl );
-        dataOutputStream.writeUTF( findLatestPersonUrl );
         dataOutputStream.writeUTF( findPatientInAdvancedUrl );
         dataOutputStream.writeUTF( findLostToFollowUpUrl );
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
@@ -395,7 +382,6 @@ public class MobileOrgUnitLinks
         addRelationshipUrl = dataInputStream.readUTF();
         downloadAnonymousProgramUrl = dataInputStream.readUTF();
         findProgramUrl = dataInputStream.readUTF();
-        findLatestPersonUrl = dataInputStream.readUTF();
         findPatientInAdvancedUrl = dataInputStream.readUTF();
         findLostToFollowUpUrl = dataInputStream.readUTF();
         handleLostToFollowUpUrl = dataInputStream.readUTF();
@@ -457,7 +443,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( addRelationshipUrl );
         dataOutputStream.writeUTF( downloadAnonymousProgramUrl );
         dataOutputStream.writeUTF( findProgramUrl );
-        dataOutputStream.writeUTF( findLatestPersonUrl );
         dataOutputStream.writeUTF( findPatientInAdvancedUrl );
         dataOutputStream.writeUTF( findLostToFollowUpUrl );
         dataOutputStream.writeUTF( handleLostToFollowUpUrl );
