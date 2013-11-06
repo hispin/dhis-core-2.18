@@ -218,6 +218,12 @@ public class AnalyticsController
         ContextUtils.conflictResponse( response, ex.getMessage() );
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void handleError( IllegalArgumentException ex, HttpServletResponse response )
+    {
+        ContextUtils.conflictResponse( response, ex.getMessage() );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
