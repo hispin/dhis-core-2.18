@@ -153,25 +153,25 @@ public class DefaultExpressionService
             return null;
         }
         
-        final String numeratorExpression = generateExpression( indicator.getExplodedDenominatorFallback(), valueMap, constantMap, days, false );
+        final String denominatorExpression = generateExpression( indicator.getExplodedDenominatorFallback(), valueMap, constantMap, days, false );
         
-        if ( numeratorExpression == null )
+        if ( denominatorExpression == null )
         {
             return null;
         }
         
-        final double denominatorValue = calculateExpression( numeratorExpression );
+        final double denominatorValue = calculateExpression( denominatorExpression );
         
         if ( !isEqual( denominatorValue, 0d ) )
         {
-            final String denominatorExpression = generateExpression( indicator.getExplodedNumeratorFallback(), valueMap, constantMap, days, false );
+            final String numeratorExpression = generateExpression( indicator.getExplodedNumeratorFallback(), valueMap, constantMap, days, false );
             
-            if ( denominatorExpression == null )
+            if ( numeratorExpression == null )
             {
                 return null;
             }
             
-            final double numeratorValue = calculateExpression( denominatorExpression );
+            final double numeratorValue = calculateExpression( numeratorExpression );
             
             final double annualizationFactor = period != null ? DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() ) : 1d;
             final double factor = indicator.getIndicatorType().getFactor();
@@ -523,8 +523,8 @@ public class DefaultExpressionService
                 {
                     for ( Indicator indicator : indicators )
                     {
-                        indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumerator() != null ? indicator.getExplodedNumerator() : "", dataElementMap ) );
-                        indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominator() != null ? indicator.getExplodedDenominator() : "", dataElementMap ) );
+                        indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumeratorFallback(), dataElementMap ) );
+                        indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominatorFallback(), dataElementMap ) );
                     }
                 }
             }
