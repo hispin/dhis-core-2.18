@@ -90,7 +90,7 @@ public class MapViewController
     }
 
     @RequestMapping(value = { "/data", "/data.png" }, method = RequestMethod.GET)
-    public void getMap( Model model,
+    public void getMapView( Model model,
         @RequestParam(value = "in") String indicatorUid,
         @RequestParam(value = "ou") String organisationUnitUid,
         @RequestParam(value = "level", required = false) Integer level,

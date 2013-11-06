@@ -623,14 +623,21 @@ dhis2.db.search = function()
 		dhis2.db.hideSearch();
 		return false;
 	}
-		
-	var hits = $.get( "../api/dashboards/q/" + query + dhis2.db.getMaxParams(), function( data ) {
-		var $h = $( "#hitDiv" );
-		dhis2.db.renderSearch( data, $h );
-		dhis2.db.setHitLinks();
-		$h.show();
-		$( "#searchField" ).focus();
-	} );		
+	
+	var url = "../api/dashboards/q/" + query + dhis2.db.getMaxParams();
+	
+	var hits = $.ajax( {
+		url: url,
+		dataType: "json",
+		cache: false,
+		success: function( data ) {
+			var $h = $( "#hitDiv" );
+			dhis2.db.renderSearch( data, $h );
+			dhis2.db.setHitLinks();
+			$h.show();
+			$( "#searchField" ).focus();
+		}
+	} );
 }
 
 dhis2.db.setHitLinks = function()
