@@ -55,9 +55,9 @@ public class DefaultPatientAttributeOptionService
     // Implementation methods
     // -------------------------------------------------------------------------
 
-    public void addPatientAttributeOption( PatientAttributeOption option )
+    public int addPatientAttributeOption( PatientAttributeOption option )
     {
-        patientAttributeOptionStore.save( option );
+        return patientAttributeOptionStore.save( option );
     }
 
     public void deletePatientAttributeOption( PatientAttributeOption option )
