@@ -44,7 +44,7 @@ public interface PatientAttributeOptionService
      * 
      * @return A generated unique id of the added {@link PatientAttributeOption}.
      */
-    void addPatientAttributeOption( PatientAttributeOption option );
+    int addPatientAttributeOption( PatientAttributeOption option );
 
     /**
      * Updates a {@link PatientAttributeOption}.

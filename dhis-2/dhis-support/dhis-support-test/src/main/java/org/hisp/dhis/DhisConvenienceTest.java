@@ -1092,6 +1092,19 @@ public abstract class DhisConvenienceTest
 
         return patientAttribute;
     }
+    /**
+     * @param uniqueCharacter A unique character to identify the object.
+     * @return PatientAttributeOption
+     */
+    public static PatientAttributeOption createPatientAttributeOption( char uniqueChar, PatientAttribute patientAttribute )
+    {
+        PatientAttributeOption patientAttributeOption = new PatientAttributeOption();
+
+        patientAttributeOption.setName( "AttributeOption" + uniqueChar );
+        patientAttributeOption.setPatientAttribute( patientAttribute );
+
+        return patientAttributeOption;
+    }
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
