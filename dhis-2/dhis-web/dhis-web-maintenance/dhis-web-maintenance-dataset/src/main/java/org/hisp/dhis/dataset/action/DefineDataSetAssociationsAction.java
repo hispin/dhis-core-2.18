@@ -32,9 +32,12 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Kristian
@@ -63,6 +66,14 @@ public class DefineDataSetAssociationsAction
         this.dataSetService = dataSetService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -83,7 +94,19 @@ public class DefineDataSetAssociationsAction
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
-        dataSet.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() ) );
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( dataSet.getSources() );
+
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+
+        for ( OrganisationUnit organisationUnit : selectionTreeManager.getRootOrganisationUnits() )
+        {
+            userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+        }
+
+        organisationUnits.removeAll( userOrganisationUnits );
+        organisationUnits.addAll( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
+
+        dataSet.updateOrganisationUnits( organisationUnits );
 
         dataSetService.updateDataSet( dataSet );
 

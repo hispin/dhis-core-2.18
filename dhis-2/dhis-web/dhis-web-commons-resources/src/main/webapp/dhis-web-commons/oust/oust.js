@@ -160,25 +160,25 @@ function SelectionTree()
 
     this.buildSelectionTree = function()
     {
-		selectedOrganisationUnit = new Array();
-		selectedOrganisationUnitUid = new Array();
-		
-        var treeTag = document.getElementById( 'selectionTree' );
-        
-        setLoadingMessage( treeTag );
-        
-        var children = $(treeTag).find( 'ul' );
-        if ( children.length > 0 )
-        {
-            treeTag.removeChild( children[0] );
+        selectedOrganisationUnit = [];
+        selectedOrganisationUnitUid = [];
+
+        var treeTag = document.getElementById('selectionTree');
+
+        setLoadingMessage(treeTag);
+
+        var children = $(treeTag).find('ul');
+
+        if( children.length > 0 ) {
+            treeTag.removeChild(children[0]);
         }
-		
-		$.ajax({
-			url: selectionTreePath + 'getExpandedTree.action',
-			cache: false,
-			dataType: "xml",
-			success: treeReceived
-		});
+
+        $.ajax({
+            url: selectionTreePath + 'getExpandedTree.action',
+            cache: false,
+            dataType: "xml",
+            success: treeReceived
+        });
     };
 
     function processExpand( rootElement )

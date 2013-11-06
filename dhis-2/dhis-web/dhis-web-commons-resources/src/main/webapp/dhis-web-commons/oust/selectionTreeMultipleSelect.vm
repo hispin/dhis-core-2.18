@@ -16,15 +16,17 @@ jQuery(document).ready( function()
 });
 
 function selectedOrganisationUnitXML__( xml )
-{		
-	#if( $required )
-	selectedOrganisationUnitList__.empty();
+{
+    #if( $required )
+    selectedOrganisationUnitList__.empty();
 
 	jQuery.each( jQuery( xml ).find( 'unitId' ), function( i, item ) {
-		id = item.firstChild.nodeValue;
+		var id = item.firstChild.nodeValue;
 		selectedOrganisationUnitList__.append( '<option value="' + id + '" selected="selected">' + id + '</option>' );
 	});
+
 	#end
+
 	selectionTree.buildSelectionTree();
 }
 </script>
@@ -32,8 +34,8 @@ function selectedOrganisationUnitXML__( xml )
 <table cellspacing=0 width="535px">
 	<thead>
 		<tr>
-			<th colspan="2">$i18n.getString( "organisation_unit_selection_tree" )			
-				<select id="treeSelectedId" name="treeSelectedId" #if( $required ) class="{validate:{required:true}}" #end multiple="multiple" style="display:none"/>			
+			<th colspan="2">$i18n.getString( "organisation_unit_selection_tree" )
+				<select id="treeSelectedId" name="treeSelectedId" #if( $required ) class="{validate:{required:true}}" #end multiple="multiple" style="display:none"/>
 			</th>
 		</tr>
 	</thead>

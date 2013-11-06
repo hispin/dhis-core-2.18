@@ -2,18 +2,25 @@ var selectedOrganisationUnitList__;
 
 function addSelectedOrganisationUnit__( id )
 {
-	selectedOrganisationUnitList__.append('<option value="' + id + '" selected="selected">' + id + '</option>');
+    selectedOrganisationUnitList__.empty();
+    selectedOrganisationUnitList__.append('<option value="' + id + '" selected="selected">' + id + '</option>');
 }
 
 function selectOrganisationUnit__( ids )
 {
 	selectedOrganisationUnitList__.empty();
 
+    if( ids && ids.length > 0 ) {
+        selectedOrganisationUnitList__.append('<option value="' + ids[0] + '" selected="selected">' + ids[0] + '</option>');
+    }
+
+    /*
 	jQuery.each(ids, function( i, item )
 	{
 		selectedOrganisationUnitList__.append('<option value="' + item + '" selected="selected">' + item	+ '</option>');
 	});
-	
+	*/
+
 	byId('treeSelectedId').selectedIndex = 0;
 }
 
