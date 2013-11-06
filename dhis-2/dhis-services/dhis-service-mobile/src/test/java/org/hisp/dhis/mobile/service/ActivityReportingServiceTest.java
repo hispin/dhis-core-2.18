@@ -34,6 +34,8 @@ import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.PatientIdentifier;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,16 +49,22 @@ public class ActivityReportingServiceTest
 {
     @Autowired
     private ActivityReportingService activityReportingService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     @Test
     public void testSavePatient()
         throws NotAllowedException
     {
+        OrganisationUnit orgUnit = createOrganisationUnit( 'O' );
+        organisationUnitService.addOrganisationUnit( orgUnit );
+        
         Patient patientA = this.createLWUITPatient( 'A' );
         Patient patientB = this.createLWUITPatient( 'B' );
 
-        int patientAId = activityReportingService.savePatient( patientA, 779, "" );
-        int patientBId = activityReportingService.savePatient( patientB, 779, "" );
+        int patientAId = activityReportingService.savePatient( patientA, orgUnit.getId(), "" );
+        int patientBId = activityReportingService.savePatient( patientB, orgUnit.getId(), "" );
 
         patientA = activityReportingService.findPatient( patientAId );
         assertEquals( patientAId, patientA.getId() );
