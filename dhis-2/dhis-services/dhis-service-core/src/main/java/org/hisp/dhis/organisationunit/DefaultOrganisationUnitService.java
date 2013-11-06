@@ -432,7 +432,7 @@ public class DefaultOrganisationUnitService
                 if ( level < parentLevel )
                 {
                     throw new IllegalArgumentException(
-                        "Level must be greater than or equal to level of parent OrganisationUnit" );
+                        "Level must be greater than or equal to level of parent organisation unit" );
                 }
     
                 if ( level == parentLevel )
