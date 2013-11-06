@@ -225,6 +225,10 @@ public class MapController
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Get data
+    //--------------------------------------------------------------------------
+
     @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
     public void getMapData( 
         @PathVariable String uid, 
