@@ -867,8 +867,8 @@ function loadProgramStageFromServer( programStageInstanceId ) {
         }
 
         if ( data.program.type == '1' && data.programInstance.status == '1' ) {
-            var blockEntryForm = getFieldValue('blockEntryForm');
-            if( blockEntryForm == 'true' ){
+            var blockEntry = getFieldValue('blockEntryForm');
+            if( blockEntry == 'true' ){
                 blockEntryForm();
             }
         }
