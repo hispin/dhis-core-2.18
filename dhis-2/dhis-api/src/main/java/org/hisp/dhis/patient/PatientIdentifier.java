@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -60,6 +61,14 @@ public class PatientIdentifier
     public PatientIdentifier()
     {
         setAutoFields();
+    }
+
+    public PatientIdentifier( PatientIdentifierType identifierType, Patient patient, String identifier )
+    {
+        setAutoFields();
+        this.identifierType = identifierType;
+        this.patient = patient;
+        this.identifier = identifier;
     }
 
     // -------------------------------------------------------------------------
@@ -96,7 +105,7 @@ public class PatientIdentifier
     @JsonProperty( "personIdentifier" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
-    @JacksonXmlProperty( localName ="personIdentifier", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "personIdentifier", namespace = DxfNamespaces.DXF_2_0 )
     public PatientIdentifierType getIdentifierType()
     {
         return identifierType;

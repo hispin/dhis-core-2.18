@@ -197,5 +197,4 @@ public interface PatientIdentifierService
      */
     Collection<PatientIdentifier> getPatientIdentifiers( Collection<PatientIdentifierType> identifierTypes,
         Patient patient );
-
 }

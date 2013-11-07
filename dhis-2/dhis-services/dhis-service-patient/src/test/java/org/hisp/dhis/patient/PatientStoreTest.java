@@ -112,6 +112,9 @@ public class PatientStoreTest
         organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
 
+        OrganisationUnit organisationUnitB = createOrganisationUnit( 'B' );
+        organisationUnitService.addOrganisationUnit( organisationUnitB );
+        
         PatientIdentifierType patientIdentifierType = createPatientIdentifierType( 'A' );
         identifierTypeService.savePatientIdentifierType( patientIdentifierType );
 
@@ -119,7 +122,7 @@ public class PatientStoreTest
         attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
 
         patientA1 = createPatient( 'A', "F", organisationUnit );
-        patientA2 = createPatient( 'A', "F", null );
+        patientA2 = createPatient( 'A', "F", organisationUnitB );
         patientA3 = createPatient( 'A', organisationUnit, patientIdentifierType );
         patientB1 = createPatient( 'B', "M", organisationUnit );
         patientB2 = createPatient( 'B', organisationUnit );
