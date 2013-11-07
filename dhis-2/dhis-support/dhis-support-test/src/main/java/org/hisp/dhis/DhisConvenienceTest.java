@@ -1123,7 +1123,7 @@ public abstract class DhisConvenienceTest
 
     /**
      * @param uniqueCharacter A unique character to identify the object.
-     * @return PatientAttribute
+     * @return PatientIdentifierType
      */
     public static PatientIdentifierType createPatientIdentifierType( char uniqueChar )
     {
