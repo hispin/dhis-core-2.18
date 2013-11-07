@@ -87,7 +87,7 @@ public class ProgramInstance
 
     private List<MessageConversation> messageConversations;
 
-    private Boolean followup;
+    private Boolean followup = false;
 
     private PatientComment patientComment;
 
