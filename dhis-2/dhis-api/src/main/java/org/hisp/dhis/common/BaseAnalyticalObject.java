@@ -579,6 +579,29 @@ public abstract class BaseAnalyticalObject
         
         return StringUtils.join( ids, DIMENSION_SEP );
     }
+
+    /**
+     * Clear or set to false all persistent properties for this object.
+     */
+    public void clear()
+    {
+        indicators.clear();
+        dataElements.clear();
+        dataElementOperands.clear();
+        dataSets.clear();
+        periods.clear();
+        relatives = null;
+        organisationUnits.clear();
+        categoryDimensions.clear();
+        dataElementGroups.clear();
+        organisationUnitGroups.clear();
+        userOrganisationUnit = false;
+        userOrganisationUnitChildren = false;
+        userOrganisationUnitGrandChildren = false;
+        organisationUnitLevels.clear();
+        itemOrganisationUnitGroups.clear();
+        rewindRelativePeriods = false;
+    }
     
     @Override
     public void mergeWith( IdentifiableObject other )
@@ -589,37 +612,24 @@ public abstract class BaseAnalyticalObject
         {
             BaseAnalyticalObject object = (BaseAnalyticalObject) other;
             
-            indicators.clear();
+            this.clear();
+            
             indicators.addAll( object.getIndicators() );
-
-            dataElements.clear();
             dataElements.addAll( object.getDataElements() );
-
-            dataElementOperands.clear();
             dataElementOperands.addAll( object.getDataElementOperands() );
-            
-            dataSets.clear();
             dataSets.addAll( object.getDataSets() );
-            
-            periods.clear();
             periods.addAll( object.getPeriods() );
-
             relatives = object.getRelatives() == null ? relatives : object.getRelatives();
-            
-            organisationUnits.clear();
             organisationUnits.addAll( object.getOrganisationUnits() );
-            
-            dataElementGroups.clear();
-            dataElementGroups.addAll( object.getDataElementGroups() );
-            
-            organisationUnitGroups.clear();
-            organisationUnitGroups.addAll( object.getOrganisationUnitGroups() );
-            
-            categoryDimensions.clear();
             categoryDimensions.addAll( object.getCategoryDimensions() );
-            
+            dataElementGroups.addAll( object.getDataElementGroups() );
+            organisationUnitGroups.addAll( object.getOrganisationUnitGroups() );
             userOrganisationUnit = object.isUserOrganisationUnit();
             userOrganisationUnitChildren = object.isUserOrganisationUnitChildren();
+            userOrganisationUnitGrandChildren = object.isUserOrganisationUnitGrandChildren();
+            organisationUnitLevels.addAll( object.getOrganisationUnitLevels() );
+            itemOrganisationUnitGroups = object.getItemOrganisationUnitGroups();
+            rewindRelativePeriods = object.isRewindRelativePeriods();
         }
     }
 
