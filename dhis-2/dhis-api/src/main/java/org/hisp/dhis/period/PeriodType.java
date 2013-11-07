@@ -143,12 +143,12 @@ public abstract class PeriodType
 
     private int id;
 
-    public final void setId( int id )
+    public void setId( int id )
     {
         this.id = id;
     }
 
-    public final int getId()
+    public int getId()
     {
         return id;
     }
