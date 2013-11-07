@@ -58,11 +58,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Encoder;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -223,7 +223,7 @@ public class DefaultReportService
         return print;
     }
     
-    public void renderHtmlReport( Writer writer, String uid, String pe, String ou, I18nFormat format )
+    public void renderHtmlReport( Writer writer, String uid, Date date, String ou, I18nFormat format )
     {
         Report report = getReport( uid );        
         OrganisationUnit organisationUnit = null;
@@ -250,14 +250,7 @@ public class DefaultReportService
                 organisationUnitChildren.addAll( organisationUnit.getChildren() );
             }
         }
-        
-        Date date = new Date();
-        
-        if ( pe != null )
-        {
-            date = PeriodType.getPeriodFromIsoString( pe ).getStartDate();
-        }
-        
+                
         if ( report != null && report.hasRelativePeriods() )
         {
             periods = report.getRelatives().getRelativePeriods( date, format, true );
@@ -268,6 +261,7 @@ public class DefaultReportService
         context.put( "organisationUnit", organisationUnit );
         context.put( "organisationUnitHierarchy", organisationUnitHierarchy );
         context.put( "organisationUnitChildren", organisationUnitChildren );
+        context.put( "date", DateUtils.getMediumDateString( date ) );
         context.put( "periods", periods );
         context.put( "format", format );
         context.put( "encoder", ENCODER );

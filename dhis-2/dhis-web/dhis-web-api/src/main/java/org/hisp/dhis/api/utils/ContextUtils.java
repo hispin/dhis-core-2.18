@@ -78,6 +78,8 @@ public class ContextUtils
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
     public static final String HEADER_LOCATION = "Location";
+    
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
 
     @Autowired
     private SystemSettingManager systemSettingManager;

@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.api.utils.ContextUtils.DATE_PATTERN;
 import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
 import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
@@ -58,9 +59,9 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.grid.GridUtils;
-import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -172,6 +173,111 @@ public class ReportTableController
         reportTableService.deleteReportTable( reportTable );
     }
 
+    //--------------------------------------------------------------------------
+    // GET - Report table data
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET ) // For json, jsonp
+    public String getReportTableData( @PathVariable( "uid" ) String uid, Model model,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletResponse response ) throws Exception
+    {
+        model.addAttribute( "model", getReportTableGrid( uid, organisationUnitUid, date ) );
+        model.addAttribute( "viewClass", "detailed" );
+
+        return "grid";
+    }
+
+    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
+    public void getReportTableHtml( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletResponse response ) throws Exception
+    {
+        Grid grid = getReportTableGrid( uid, organisationUnitUid, date );
+
+        String filename = filenameEncode( grid.getTitle() ) + ".html";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+
+        GridUtils.toHtml( grid, response.getWriter() );
+    }
+
+    @RequestMapping( value = "/{uid}/data.xml", method = RequestMethod.GET )
+    public void getReportTableXml( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletResponse response ) throws Exception
+    {
+        Grid grid = getReportTableGrid( uid, organisationUnitUid, date );
+
+        String filename = filenameEncode( grid.getTitle() ) + ".xml";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+
+        GridUtils.toXml( grid, response.getOutputStream() );
+    }
+
+    @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
+    public void getReportTablePdf( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletResponse response ) throws Exception
+    {
+        Grid grid = getReportTableGrid( uid, organisationUnitUid, date );
+
+        String filename = filenameEncode( grid.getTitle() ) + ".pdf";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+
+        GridUtils.toPdf( grid, response.getOutputStream() );
+    }
+
+    @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
+    public void getReportTableXls( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletResponse response ) throws Exception
+    {
+        Grid grid = getReportTableGrid( uid, organisationUnitUid, date );
+
+        String filename = filenameEncode( grid.getTitle() ) + ".xls";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
+
+        GridUtils.toXls( grid, response.getOutputStream() );
+    }
+
+    @RequestMapping( value = "/{uid}/data.csv", method = RequestMethod.GET )
+    public void getReportTableCsv( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletResponse response ) throws Exception
+    {
+        Grid grid = getReportTableGrid( uid, organisationUnitUid, date );
+
+        String filename = filenameEncode( grid.getTitle() ) + ".csv";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
+
+        GridUtils.toCsv( grid, response.getOutputStream() );
+    }
+
+    private Grid getReportTableGrid( String uid, String organisationUnitUid, Date date )
+        throws Exception
+    {
+        ReportTable reportTable = reportTableService.getReportTableNoAcl( uid );
+
+        if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
+        {
+            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
+        }
+
+        date = date != null ? date : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
+
+        return reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
+    }
+
+    //--------------------------------------------------------------------------
+    // Hooks
+    //--------------------------------------------------------------------------
+
     @Override
     protected void postProcessEntity( ReportTable reportTable ) throws Exception
     {
@@ -191,107 +297,6 @@ public class ReportTableController
                 period.setName( format.formatPeriod( period ) );
             }
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // GET - Report table data
-    //--------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET ) // For json, jsonp
-    public String getReportTableData( @PathVariable( "uid" ) String uid, Model model,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
-    {
-        model.addAttribute( "model", getReportTableGrid( uid, organisationUnitUid, period ) );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "grid";
-    }
-
-    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
-    public void getReportTableHtml( @PathVariable( "uid" ) String uid,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
-
-        String filename = filenameEncode( grid.getTitle() ) + ".html";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
-
-        GridUtils.toHtml( grid, response.getWriter() );
-    }
-
-    @RequestMapping( value = "/{uid}/data.xml", method = RequestMethod.GET )
-    public void getReportTableXml( @PathVariable( "uid" ) String uid,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
-
-        String filename = filenameEncode( grid.getTitle() ) + ".xml";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
-
-        GridUtils.toXml( grid, response.getOutputStream() );
-    }
-
-    @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
-    public void getReportTablePdf( @PathVariable( "uid" ) String uid,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
-
-        String filename = filenameEncode( grid.getTitle() ) + ".pdf";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
-
-        GridUtils.toPdf( grid, response.getOutputStream() );
-    }
-
-    @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
-    public void getReportTableXls( @PathVariable( "uid" ) String uid,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
-
-        String filename = filenameEncode( grid.getTitle() ) + ".xls";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
-
-        GridUtils.toXls( grid, response.getOutputStream() );
-    }
-
-    @RequestMapping( value = "/{uid}/data.csv", method = RequestMethod.GET )
-    public void getReportTableCsv( @PathVariable( "uid" ) String uid,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
-
-        String filename = filenameEncode( grid.getTitle() ) + ".csv";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
-
-        GridUtils.toCsv( grid, response.getOutputStream() );
-    }
-
-    private Grid getReportTableGrid( String uid, String organisationUnitUid, String period )
-        throws Exception
-    {
-        ReportTable reportTable = reportTableService.getReportTableNoAcl( uid );
-
-        if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
-        {
-            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
-        }
-
-        Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
-
-        return reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
     }
 
     //--------------------------------------------------------------------------

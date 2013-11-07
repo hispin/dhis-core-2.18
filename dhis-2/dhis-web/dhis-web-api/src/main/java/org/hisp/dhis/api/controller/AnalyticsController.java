@@ -73,7 +73,7 @@ public class AnalyticsController
     // -------------------------------------------------------------------------
     // Resources
     // -------------------------------------------------------------------------
-  
+
     @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.GET, produces = { "application/json", "application/javascript" } )
     public String getJson( // JSON, JSONP
         @RequestParam Set<String> dimension,

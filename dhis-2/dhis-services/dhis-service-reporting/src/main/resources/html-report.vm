@@ -23,15 +23,6 @@ dhis2.report.organisationUnitHierarchy = [
 #end
 ];
 
-dhis2.report.periods = [
-#if( $periods )
-#set( $size = $periods.size() )
-#foreach( $period in $periods )
-"$period.getIsoDate()"#if( $velocityCount < $size ),#end
-#end
-#end
-];
-
 dhis2.report.organisationUnitChildren = [
 #if( $organisationUnitChildren )
 #set( $size = $organisationUnitChildren.size() )
@@ -41,6 +32,17 @@ dhis2.report.organisationUnitChildren = [
     "name": "$!encoder.htmlEncode( ${ou.name} )",
     "code": "$!encoder.htmlEncode( ${ou.code} )"
 }#if( $velocityCount < $size ),#end
+#end
+#end
+];
+
+dhis2.report.date = "$!{date}";
+
+dhis2.report.periods = [
+#if( $periods )
+#set( $size = $periods.size() )
+#foreach( $period in $periods )
+"$period.getIsoDate()"#if( $velocityCount < $size ),#end
 #end
 #end
 ];

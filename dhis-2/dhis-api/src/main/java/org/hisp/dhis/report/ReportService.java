@@ -31,6 +31,7 @@ package org.hisp.dhis.report;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import net.sf.jasperreports.engine.JasperPrint;
@@ -86,11 +87,11 @@ public interface ReportService
      * 
      * @param writer the Writer.
      * @param uid the report uid.
-     * @param pe the period iso identifier.
+     * @param date the date.
      * @param ou the organisation unit uid.
      * @param format the I18nFormat.
      */
-    void renderHtmlReport( Writer writer, String uid, String pe, String ou, I18nFormat format );
+    void renderHtmlReport( Writer writer, String uid, Date date, String ou, I18nFormat format );
 
     /**
      * Saves a Report.
