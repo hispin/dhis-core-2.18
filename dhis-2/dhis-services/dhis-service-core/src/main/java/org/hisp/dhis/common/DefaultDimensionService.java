@@ -181,16 +181,7 @@ public class DefaultDimensionService
     {
         if ( object != null )
         {
-            object.getIndicators().clear();
-            object.getDataElements().clear();
-            object.getDataElementOperands().clear();
-            object.getDataSets().clear();
-            object.getPeriods().clear();
-            object.setRelatives( null );
-            object.getOrganisationUnits().clear();
-            object.getCategoryDimensions().clear();
-            object.getDataElementGroups().clear();
-            object.getOrganisationUnitGroups().clear();
+            object.clear();
 
             if ( object.getUser() != null )
             {
