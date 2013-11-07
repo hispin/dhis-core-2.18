@@ -68,6 +68,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static org.hisp.dhis.api.utils.ContextUtils.DATE_PATTERN;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  * @author Lars Helge Overland
@@ -201,6 +203,35 @@ public class MapController
         mappingService.deleteMap( map );
     }
 
+    //--------------------------------------------------------------------------
+    // Get data
+    //--------------------------------------------------------------------------
+
+    @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
+    public void getMapData( @PathVariable String uid, 
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        @RequestParam( value = "ou", required = false ) String ou,
+        @RequestParam( required = false ) Integer width, 
+        @RequestParam( required = false ) Integer height, 
+        HttpServletResponse response ) throws Exception
+    {
+        Map map = mappingService.getMapNoAcl( uid );
+
+        if ( map == null )
+        {
+            ContextUtils.notFoundResponse( response, "Map does not exist: " + uid );
+            return;
+        }
+
+        OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
+        
+        renderMapViewPng( map, date, unit, width, height, response );
+    }
+
+    //--------------------------------------------------------------------------
+    // Hooks
+    //--------------------------------------------------------------------------
+
     @Override
     public void postProcessEntity( Map map ) throws Exception
     {
@@ -223,32 +254,6 @@ public class MapController
                 }
             }
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // Get data
-    //--------------------------------------------------------------------------
-
-    @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
-    public void getMapData( 
-        @PathVariable String uid, 
-        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date date,
-        @RequestParam( value = "ou", required = false ) String ou,
-        @RequestParam( required = false ) Integer width, 
-        @RequestParam( required = false ) Integer height, 
-        HttpServletResponse response ) throws Exception
-    {
-        Map map = mappingService.getMapNoAcl( uid );
-
-        if ( map == null )
-        {
-            ContextUtils.notFoundResponse( response, "Map does not exist: " + uid );
-            return;
-        }
-
-        OrganisationUnit unit = ou != null ? organisationUnitService.getOrganisationUnit( ou ) : null;
-        
-        renderMapViewPng( map, date, unit, width, height, response );
     }
 
     //--------------------------------------------------------------------------

@@ -28,7 +28,11 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.api.utils.ContextUtils.DATE_PATTERN;
 import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +46,7 @@ import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -49,6 +54,7 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -80,33 +86,10 @@ public class ReportController
     @Autowired
     private ContextUtils contextUtils;
 
-    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.pdf" }, method = RequestMethod.GET )
-    public void getReportAsPdf( @PathVariable( "uid" ) String uid,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        getReport( request, response, uid, organisationUnitUid, period, "pdf", ContextUtils.CONTENT_TYPE_PDF, false );
-    }
+    // -------------------------------------------------------------------------
+    // CRUD
+    // -------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
-    public void getReportAsXls( @PathVariable( "uid" ) String uid,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        getReport( request, response, uid, organisationUnitUid, period, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
-    }
-
-    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
-    public void getReportAsHtml( @PathVariable( "uid" ) String uid,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletRequest request, HttpServletResponse response ) throws Exception
-    {
-        getReport( request, response, uid, organisationUnitUid, period, "html", ContextUtils.CONTENT_TYPE_HTML, false );
-    }
-    
     @RequestMapping( value = "/{uid}/design", method = RequestMethod.PUT )
     @PreAuthorize( "hasRole('ALL')" )
     public void updateReportDesign( @PathVariable( "uid" ) String uid, 
@@ -153,7 +136,45 @@ public class ReportController
         
         response.getWriter().write( report.getDesignContent() );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Get data
+    // -------------------------------------------------------------------------
+
+    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.pdf" }, method = RequestMethod.GET )
+    public void getReportAsPdf( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        getReport( request, response, uid, organisationUnitUid, period, date, "pdf", ContextUtils.CONTENT_TYPE_PDF, false );
+    }
+
+    @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
+    public void getReportAsXls( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        getReport( request, response, uid, organisationUnitUid, period, date, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
+    }
+
+    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
+    public void getReportAsHtml( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = DATE_PATTERN ) Date date,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        getReport( request, response, uid, organisationUnitUid, period, date, "html", ContextUtils.CONTENT_TYPE_HTML, false );
+    }
+
+    // -------------------------------------------------------------------------
+    // Images
+    // -------------------------------------------------------------------------
+
     /**
      * This methods wraps the Jasper image servlet to avoid having a separate
      * servlet mapping around. Note that the path to images are relative to the
@@ -171,7 +192,7 @@ public class ReportController
     // -------------------------------------------------------------------------
 
     private void getReport( HttpServletRequest request, HttpServletResponse response, String uid, String organisationUnitUid, String isoPeriod,
-        String type, String contentType, boolean attachment ) throws Exception
+        Date date, String type, String contentType, boolean attachment ) throws Exception
     {
         Report report = reportService.getReport( uid );
         
@@ -189,16 +210,18 @@ public class ReportController
             organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
         }
 
-        Period period = isoPeriod != null ? PeriodType.getPeriodFromIsoString( isoPeriod ) : new MonthlyPeriodType().createPeriod();
-        
         if ( report.isTypeHtml() )
         {
             contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING );
             
-            reportService.renderHtmlReport( response.getWriter(), uid, isoPeriod, organisationUnitUid, format );
+            reportService.renderHtmlReport( response.getWriter(), uid, date, organisationUnitUid, format );
         }
         else
         {
+            date = date != null ? date : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
+            
+            Period period = isoPeriod != null ? PeriodType.getPeriodFromIsoString( isoPeriod ) : new MonthlyPeriodType().createPeriod( date );
+            
             String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
             
             contextUtils.configureResponse( response, contentType, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, attachment );

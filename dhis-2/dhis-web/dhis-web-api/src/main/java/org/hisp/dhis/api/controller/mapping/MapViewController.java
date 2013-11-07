@@ -75,6 +75,10 @@ public class MapViewController
     @Autowired
     private ContextUtils contextUtils;
 
+    //--------------------------------------------------------------------------
+    // Get data
+    //--------------------------------------------------------------------------
+
     @RequestMapping(value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET)
     public void getMapViewData( @PathVariable String uid, HttpServletResponse response ) throws Exception
     {
@@ -108,6 +112,10 @@ public class MapViewController
 
         renderMapViewPng( mapView, response );
     }
+
+    //--------------------------------------------------------------------------
+    // Hooks
+    //--------------------------------------------------------------------------
 
     @Override
     protected List<MapView> getEntityList( WebMetaData metaData, WebOptions options )
