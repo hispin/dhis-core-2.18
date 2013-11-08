@@ -89,7 +89,7 @@ public class PatientIdentifierTypeStoreTest
         identifierTypeStore.save( identifierTypeA );
         identifierTypeStore.save( identifierTypeB );
         identifierTypeStore.save( identifierTypeC );
-        System.out.println( "\n\n ===\n " + identifierTypeA.getPersonDisplayName() );
+
         Collection<PatientIdentifierType> identifierTypes = identifierTypeStore.getByDisplayed( true );
         assertEquals( 2, identifierTypes.size() );
         assertTrue( equals( identifierTypes, identifierTypeA, identifierTypeB ) );

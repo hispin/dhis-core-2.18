@@ -72,6 +72,11 @@ public class PatientRegistrationForm
     {
     }
 
+    public PatientRegistrationForm( DataEntryForm dataEntryForm )
+    {
+        this.dataEntryForm = dataEntryForm;
+    }
+
     public PatientRegistrationForm( Program program, DataEntryForm dataEntryForm )
     {
         this.program = program;
