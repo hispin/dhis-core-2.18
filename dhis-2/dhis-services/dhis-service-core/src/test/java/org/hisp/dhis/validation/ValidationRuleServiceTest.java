@@ -485,7 +485,7 @@ public class ValidationRuleServiceTest
         // insures that if they are the same as the reference results, they will appear in the same order.
         
         Collection<ValidationResult> results = validationRuleService.validate(
-        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA );
+        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, false );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 
@@ -543,7 +543,7 @@ public class ValidationRuleServiceTest
         validationRuleService.addValidationRuleGroup( group );
 
         Collection<ValidationResult> results = validationRuleService.validate(
-        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, group );
+        		getDate( 2000, 2, 1 ), getDate( 2000, 6, 1 ), sourcesA, group, false );
 
         Collection<ValidationResult> reference = new HashSet<ValidationResult>();
 

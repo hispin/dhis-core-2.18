@@ -54,23 +54,25 @@ public interface ValidationRuleService
     /**
      * Validate DataValues.
      *
-     * @param startDate the start date.
-     * @param endDate   the end date.
-     * @param sources   a collection of Sources.
+     * @param startDate  the start date.
+     * @param endDate    the end date.
+     * @param sources    a collection of Sources.
+     * @param sendAlerts whether to send alerts for surveillance.
      * @return a collection of ValidationResults for each validation violation.
      */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources );
+    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, boolean sendAlerts );
 
     /**
      * Validate DataValues.
      *
-     * @param startDate the start date.
-     * @param endDate   the end date.
-     * @param sources   a collection of Sources.
-     * @param group     a group of ValidationRules.
+     * @param startDate  the start date.
+     * @param endDate    the end date.
+     * @param sources    a collection of Sources.
+     * @param group      a group of ValidationRules.
+     * @param sendAlerts whether to send alerts for surveillance.
      * @return a collection of ValidationResults for each validation violation.
      */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group );
+    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group, boolean sendAlerts );
 
     /**
      * Validate DataValues.
