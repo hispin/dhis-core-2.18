@@ -121,6 +121,7 @@ public class DefaultSmsSender
 
         if ( transportService != null )
         {
+            message = createMessage( null, message, currentUserService.getCurrentUser() );
             String defaultGatewayId = transportService.getDefaultGateway();
             return transportService.sendMessage( new OutboundSms( message, phoneNumber ), defaultGatewayId );
         }
