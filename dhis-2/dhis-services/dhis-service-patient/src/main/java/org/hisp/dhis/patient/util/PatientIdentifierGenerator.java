@@ -51,8 +51,14 @@ public class PatientIdentifierGenerator
      */
     public static String getNewIdentifier( Date birthDate, String gender )
     {
+        if ( birthDate == null || gender == null )
+        {
+            return null;
+        }
+        
         String noCheck = formatDate( birthDate ) + formatGender( gender )
             + getFixLengthOfNumber( new Random().nextInt( 100000 ), 6 );
+        
         return noCheck + getCheckdigit( noCheck );
     }
 
