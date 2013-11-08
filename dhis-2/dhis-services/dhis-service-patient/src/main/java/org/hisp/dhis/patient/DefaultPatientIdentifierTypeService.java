@@ -130,7 +130,7 @@ public class DefaultPatientIdentifierTypeService
 
     public Collection<PatientIdentifierType> getDisplayedPatientIdentifierTypes( boolean personDisplayName )
     {
-        return i18n( i18nService, patientIdentifierTypeStore.get( personDisplayName ) );
+        return i18n( i18nService, patientIdentifierTypeStore.getByDisplayed( personDisplayName ) );
     }
 
 }
