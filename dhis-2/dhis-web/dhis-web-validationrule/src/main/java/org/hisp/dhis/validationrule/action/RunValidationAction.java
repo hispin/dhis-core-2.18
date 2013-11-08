@@ -124,6 +124,13 @@ public class RunValidationAction
     {
         this.validationRuleGroupId = validationRuleGroupId;
     }
+    
+    private boolean sendAlerts;
+
+    public void setSendAlerts( boolean sendAlerts )
+    {
+        this.sendAlerts = sendAlerts;
+    }
 
     private List<ValidationResult> validationResults = new ArrayList<ValidationResult>();
 
@@ -168,7 +175,7 @@ public class RunValidationAction
             log.info( "Validating captured data for all rules" );
 
             validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( format
-                .parseDate( startDate ), format.parseDate( endDate ), organisationUnits ) );
+                .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, sendAlerts ) );
         }
         else
         {
@@ -177,7 +184,7 @@ public class RunValidationAction
             log.info( "Validating captured data for rules for group: '" + group.getName() + "'" );
 
             validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( format
-                .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, group ) );
+                .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, group, sendAlerts ) );
         }
 
         maxExceeded = validationResults.size() > ValidationRuleService.MAX_INTERACTIVE_ALERTS;

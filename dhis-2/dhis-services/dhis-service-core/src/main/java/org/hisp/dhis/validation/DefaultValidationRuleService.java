@@ -169,22 +169,29 @@ public class DefaultValidationRuleService
     // -------------------------------------------------------------------------
 
     @Override
-    public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources )
+    public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, boolean sendAlerts )
     {
-        return validate( startDate, endDate, sources, null );
+        return validate( startDate, endDate, sources, null, sendAlerts );
     }
 
     @Override
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
-        ValidationRuleGroup group )
+        ValidationRuleGroup group, boolean sendAlerts )
     {
     	log.info( "Validate start:" + startDate + " end: " + endDate + " sources: " + sources.size() + " group: " + group );
     	
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
         Collection<ValidationRule> rules = group != null ? group.getMembers() : getAllValidationRules();
         
-        return Validator.validate( sources, periods, rules, null,
+        Collection<ValidationResult> results = Validator.validate( sources, periods, rules, null,
             constantService, expressionService, periodService, dataValueService );
+        
+        if ( sendAlerts )
+        {
+            postAlerts( results, new Date() );
+        }
+        
+        return results;
     }
 
     @Override

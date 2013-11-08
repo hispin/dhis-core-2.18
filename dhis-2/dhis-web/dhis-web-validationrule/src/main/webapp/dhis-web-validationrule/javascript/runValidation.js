@@ -1,7 +1,7 @@
 var startDate;
 var endDate;
-var aggregate;
 var validationRuleGroupId;
+var sendAlerts;
 var organisationUnitId;
 
 function organisationUnitSelected( ids )
@@ -13,14 +13,13 @@ function validateRunValidation()
 {
 	startDate = $( '#startDate' ).val();
 	endDate = $( '#endDate' ).val();
-	aggregate = $( '#aggregate' ).val();
 	validationRuleGroupId = $( '#validationRuleGroupId' ).val();
+	sendAlerts =  $( '#sendAlerts' ).is( ':checked' );
 
 	$.getJSON( 'validateRunValidation.action', 
 	{ 
 		startDate:startDate, 
-		endDate:endDate, 
-		aggregate:aggregate 
+		endDate:endDate
 	}, 
 	function( json )
 	{
@@ -32,10 +31,10 @@ function validateRunValidation()
 
 	        $.get( 'runValidationAction.action', 
 	        { 
-	        	organisationUnitId:organisationUnitId, 
+	        	organisationUnitId: organisationUnitId, 
 	        	startDate:startDate, endDate:endDate, 
-	        	validationRuleGroupId:validationRuleGroupId, 
-	        	aggregate:aggregate 
+	        	validationRuleGroupId: validationRuleGroupId,
+	        	sendAlerts: sendAlerts
 	        }, 
 	        function( data )
 	        {
