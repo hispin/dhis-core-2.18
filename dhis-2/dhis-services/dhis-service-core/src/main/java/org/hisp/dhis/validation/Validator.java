@@ -68,7 +68,7 @@ public class Validator
      * @return a collection of any validations that were found
      */
     public static Collection<ValidationResult> validate( Collection<OrganisationUnit> sources,
-        Collection<Period> periods, Collection<ValidationRule> rules, ValidationRunType runType, Date lastScheduledRun,
+        Collection<Period> periods, Collection<ValidationRule> rules, Date lastScheduledRun,
         ConstantService constantService, ExpressionService expressionService, PeriodService periodService, DataValueService dataValueService )
     {
         ValidationRunContext context = ValidationRunContext.getNewValidationRunContext( sources, periods, rules,

@@ -171,25 +171,19 @@ public class DefaultValidationRuleService
     @Override
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources )
     {
-        log.info( "Validate start: " + startDate + " end: " + endDate + " sources: " + sources.size() );
-        
-        Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-        Collection<ValidationRule> rules = getAllValidationRules();
-        
-        return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
-            constantService, expressionService, periodService, dataValueService );
+        return validate( startDate, endDate, sources, null );
     }
 
     @Override
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
         ValidationRuleGroup group )
     {
-    	log.info( "Validate start:" + startDate + " end: " + endDate + " sources: " + sources.size() + " group: " + group.getName() );
+    	log.info( "Validate start:" + startDate + " end: " + endDate + " sources: " + sources.size() + " group: " + group );
     	
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-        Collection<ValidationRule> rules = group.getMembers();
+        Collection<ValidationRule> rules = group != null ? group.getMembers() : getAllValidationRules();
         
-        return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
+        return Validator.validate( sources, periods, rules, null,
             constantService, expressionService, periodService, dataValueService );
     }
 
@@ -203,7 +197,7 @@ public class DefaultValidationRuleService
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( source );
         
-        return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
+        return Validator.validate( sources, periods, rules, null,
             constantService, expressionService, periodService, dataValueService );
     }
 
@@ -232,7 +226,7 @@ public class DefaultValidationRuleService
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( source );
         
-        return Validator.validate( sources, periods, rules, ValidationRunType.INTERACTIVE, null,
+        return Validator.validate( sources, periods, rules, null,
             constantService, expressionService, periodService, dataValueService );
     }
 
@@ -258,7 +252,7 @@ public class DefaultValidationRuleService
         log.info( "Scheduled monitoring run sources: " + sources.size() + ", periods: " + periods.size() + ", rules:" + rules.size()
             + ", last run: " + ( lastScheduledRun == null ? "[none]" : lastScheduledRun ) );
         
-        Collection<ValidationResult> results = Validator.validate( sources, periods, rules, ValidationRunType.SCHEDULED,
+        Collection<ValidationResult> results = Validator.validate( sources, periods, rules,
             lastScheduledRun, constantService, expressionService, periodService, dataValueService );
         
         log.info( "Run results: " + results.size() );
