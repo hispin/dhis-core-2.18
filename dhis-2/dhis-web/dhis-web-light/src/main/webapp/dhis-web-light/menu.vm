@@ -19,30 +19,12 @@
 <h2>$i18n.getString( "menu" )</h2>
 
 <p>
-<ul>
-	#set ( $trackingAuthority = false)
-	#set ( $aggregateAuthority = false)
-	
-	#foreach( $each in $user.getUserCredentials().getAllAuthorities() )
-		#if ( $each == 'ALL' )
-			#set ($trackingAuthority = true)
-			#set ($aggregateAuthority = true)
-        #else
-            #if ( $each == 'M_dhis-web-maintenance-patient' )                       
-				#set ($trackingAuthority = true)
-			#end
-				
-			#if ( $each == 'M_dhis-web-dataentry' )              
-				#set ($aggregateAuthority = true)
-			#end
-		#end
-	#end
-	
-	#if ( $aggregateAuthority == true)
+<ul>	
+	#if( $auth.hasAccess( "dhis-web-light", "dataEntry" ) )
 		<li><a href="selectOrganisationUnit.action">$i18n.getString( "agregate_reporting" )</a></li>
 	#end
 	
-	#if ( $trackingAuthority == true )
+    #if( $auth.hasAccess( "dhis-web-light", "registerPatientLocation" ) )
 		<li><a href="trackingMenu.action">$i18n.getString( "tracking" )</a></li>
 	#end
 
