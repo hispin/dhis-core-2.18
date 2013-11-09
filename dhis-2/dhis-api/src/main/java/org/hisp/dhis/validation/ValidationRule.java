@@ -246,6 +246,22 @@ public class ValidationRule
     {
         return RULE_TYPE_VALIDATION.equals( ruleType ) ? null : rightSide.getDataElementsInExpression();
     }
+    
+    /**
+     * Indicates whether this validation rule has user roles to alert.
+     */
+    public boolean hasUserRolesToAlert()
+    {
+        for ( ValidationRuleGroup group : groups )
+        {
+            if ( group.hasUserRolesToAlert() )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     // -------------------------------------------------------------------------
     // Set and get methods
