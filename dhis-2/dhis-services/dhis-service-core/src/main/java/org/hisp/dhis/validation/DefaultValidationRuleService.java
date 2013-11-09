@@ -188,7 +188,9 @@ public class DefaultValidationRuleService
         
         if ( sendAlerts )
         {
-            postAlerts( results, new Date() );
+            Set<ValidationResult> resultsToAlert = new HashSet<ValidationResult>( results );
+            FilterUtils.filter( resultsToAlert, new ValidationResultToAlertFilter() );
+            postAlerts( resultsToAlert, new Date() );
         }
         
         return results;
@@ -289,9 +291,7 @@ public class DefaultValidationRuleService
         
         for ( ValidationRuleGroup validationRuleGroup : getAllValidationRuleGroups() )
         {
-            Set<UserAuthorityGroup> userRolesToAlert = validationRuleGroup.getUserAuthorityGroupsToAlert();
-            
-            if ( userRolesToAlert != null && !userRolesToAlert.isEmpty() )
+            if ( validationRuleGroup.hasUserRolesToAlert() )
             {
                 rules.addAll( validationRuleGroup.getMembers() );
             }
