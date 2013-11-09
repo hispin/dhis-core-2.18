@@ -54,6 +54,7 @@
 		</select>
 		
 		<label>$i18n.getString( "date_of_birth" )</label>
+		
 		<select name="dobType">
 			<option value="A"
 			#if($previousValues.get("dobType") == "A")
@@ -73,7 +74,7 @@
 			#end
 			>$i18n.getString( "verified" )</option>
 		</select>
-
+		<label>$i18n.getString( "date_of_birth_hint" )</label>
 		#if( $validationMap.get( "dob" ) )
            	<span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
      	#end
