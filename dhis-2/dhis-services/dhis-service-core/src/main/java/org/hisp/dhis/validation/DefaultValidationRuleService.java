@@ -33,10 +33,12 @@ import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
 import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
 import static org.hisp.dhis.i18n.I18nUtils.getObjectsByName;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import static org.hisp.dhis.system.util.TextUtils.LN;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,6 +58,7 @@ import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -169,14 +172,14 @@ public class DefaultValidationRuleService
     // -------------------------------------------------------------------------
 
     @Override
-    public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, boolean sendAlerts )
+    public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, boolean sendAlerts, I18nFormat format )
     {
-        return validate( startDate, endDate, sources, null, sendAlerts );
+        return validate( startDate, endDate, sources, null, sendAlerts, format );
     }
 
     @Override
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources,
-        ValidationRuleGroup group, boolean sendAlerts )
+        ValidationRuleGroup group, boolean sendAlerts, I18nFormat format )
     {
     	log.info( "Validate start:" + startDate + " end: " + endDate + " sources: " + sources.size() + " group: " + group );
     	
@@ -185,6 +188,8 @@ public class DefaultValidationRuleService
         
         Collection<ValidationResult> results = Validator.validate( sources, periods, rules, null,
             constantService, expressionService, periodService, dataValueService );
+        
+        formatPeriods( results, format );
         
         if ( sendAlerts )
         {
@@ -360,6 +365,7 @@ public class DefaultValidationRuleService
         
         for ( Map.Entry<List<ValidationResult>, Set<User>> entry : messageMap.entrySet() )
         {
+            Collections.sort( entry.getKey() );
             sendAlertmessage( entry.getKey(), entry.getValue(), scheduledRunStart );
         }
     }
@@ -427,7 +433,7 @@ public class DefaultValidationRuleService
                 messageReceivers.add( user );
             }
         }
-        
+                
         return messageMap;
     }
 
@@ -478,59 +484,31 @@ public class DefaultValidationRuleService
      */
     private void sendAlertmessage( List<ValidationResult> results, Set<User> users, Date scheduledRunStart )
     {
-        StringBuilder messageBuilder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
         SimpleDateFormat dateTimeFormatter = new SimpleDateFormat( "yyyy-MM-dd HH:mm" );
 
         Map<String, Integer> importanceCountMap = countResultsByImportanceType( results );
 
-        String subject = "DHIS alerts as of " + dateTimeFormatter.format( scheduledRunStart ) + " - priority High "
+        String subject = "Alerts as of " + dateTimeFormatter.format( scheduledRunStart ) + ": High "
             + ( importanceCountMap.get( "high" ) == null ? 0 : importanceCountMap.get( "high" ) ) + ", Medium "
             + ( importanceCountMap.get( "medium" ) == null ? 0 : importanceCountMap.get( "medium" ) ) + ", Low "
             + ( importanceCountMap.get( "low" ) == null ? 0 : importanceCountMap.get( "low" ) );
 
-        messageBuilder
-            .append( "<html>" )
-            .append( "<head>" ).append( "</head>" )
-            .append( "<body>" ).append( subject ).append( "<br />" )
-            .append( "<table>" )
-            .append( "<tr>" )
-            .append( "<th>Organisation Unit</th>" )
-            .append( "<th>Period</th>" )
-            .append( "<th>Importance</th>" )
-            .append( "<th>Left side description</th>" )
-            .append( "<th>Value</th>" )
-            .append( "<th>Operator</th>" )
-            .append( "<th>Value</th>" )
-            .append( "<th>Right side description</th>" )
-            .append( "</tr>" );
-
+        //TODO use velocity template for message
+        
         for ( ValidationResult result : results )
         {
             ValidationRule rule = result.getValidationRule();
-
-            messageBuilder
-                .append( "<tr>" )
-                .append( "<td>" ).append( result.getSource().getName() ).append( "<\td>" )
-                .append( "<td>" ).append( result.getPeriod().getName() ).append( "<\td>" )
-                .append( "<td>" ).append( rule.getImportance() ).append( "<\td>" )
-                .append( "<td>" ).append( rule.getLeftSide().getDescription() ).append( "<\td>" )
-                .append( "<td>" ).append( result.getLeftsideValue() ).append( "<\td>" )
-                .append( "<td>" ).append( rule.getOperator().toString() ).append( "<\td>" )
-                .append( "<td>" ).append( result.getRightsideValue() ).append( "<\td>" )
-                .append( "<td>" ).append( rule.getRightSide().getDescription() ).append( "<\td>" )
-                .append( "</tr>" );
+            
+            builder.append( result.getSource().getName() ).append( " " ).append( result.getPeriod().getName() ).append( LN ).
+            append( rule.getName() ).append( " (" ).append( rule.getImportance() ).append( ") " ).append( LN ).
+            append( rule.getLeftSide().getDescription() ).append( ": " ).append( result.getLeftsideValue() ).append( LN ).
+            append( rule.getRightSide().getDescription() ).append( ": " ).append( result.getRightsideValue() ).append( LN ).append( LN );
         }
-
-        messageBuilder
-            .append( "</table>" )
-            .append( "</body>" )
-            .append( "</html>" );
-
-        String messageText = messageBuilder.toString();
-
-        log.info( "Alerting users[" + users.size() + "] subject " + subject );
-        messageService.sendMessage( subject, messageText, null, users );
+        
+        log.info( "Alerting users: " + users.size() + ", subject: " + subject );
+        messageService.sendMessage( subject, builder.toString(), null, users );
     }
 
     // -------------------------------------------------------------------------
@@ -624,6 +602,26 @@ public class DefaultValidationRuleService
         }
 
         return rulesForDataSet;
+    }
+    
+    /**
+     * Formats and sets name on the period of each result.
+     * 
+     * @param results the collecion of validation results.
+     * @param format the i18n format.
+     */
+    private void formatPeriods( Collection<ValidationResult> results, I18nFormat format )
+    {
+        if ( format != null )
+        {
+            for ( ValidationResult result : results )
+            {
+                if ( result != null && result.getPeriod() != null )
+                {
+                    result.getPeriod().setName( format.formatPeriod( result.getPeriod() ) );
+                }
+            }
+        }
     }
     
     // -------------------------------------------------------------------------

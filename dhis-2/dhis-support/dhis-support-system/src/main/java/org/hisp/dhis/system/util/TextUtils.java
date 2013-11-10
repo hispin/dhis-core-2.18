@@ -39,6 +39,7 @@ public class TextUtils
 {
     public static final TextUtils INSTANCE = new TextUtils();
     public static final String EMPTY = "";
+    public static final String LN = System.getProperty( "line.separator" );
     
     private static final Pattern LINK_PATTERN = Pattern.compile( "((http://|https://|www\\.).+?)($|\\n|\\r|\\r\\n| )" );
     private static final String DELIMITER = ", ";

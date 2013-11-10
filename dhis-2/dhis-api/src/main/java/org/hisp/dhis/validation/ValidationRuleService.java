@@ -33,6 +33,7 @@ import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -58,9 +59,10 @@ public interface ValidationRuleService
      * @param endDate    the end date.
      * @param sources    a collection of Sources.
      * @param sendAlerts whether to send alerts for surveillance.
+     * @param format     the i18n format.
      * @return a collection of ValidationResults for each validation violation.
      */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, boolean sendAlerts );
+    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, boolean sendAlerts, I18nFormat format );
 
     /**
      * Validate DataValues.
@@ -70,9 +72,10 @@ public interface ValidationRuleService
      * @param sources    a collection of Sources.
      * @param group      a group of ValidationRules.
      * @param sendAlerts whether to send alerts for surveillance.
+     * @param format     the i18n format.
      * @return a collection of ValidationResults for each validation violation.
      */
-    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group, boolean sendAlerts );
+    Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group, boolean sendAlerts, I18nFormat format );
 
     /**
      * Validate DataValues.
