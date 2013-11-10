@@ -44,7 +44,6 @@ import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.sqlview.SqlViewService;
@@ -144,7 +143,7 @@ public class DefaultAnalyticsTableService
 
     public void dropTables()
     {
-        List<AnalyticsTable> tables = tableManager.getTables( new Cal().set( 1900, 1, 1 ).time(), new Cal().set( 2100, 1, 1 ).time() );
+        List<AnalyticsTable> tables = tableManager.getTables( false );
         
         for ( AnalyticsTable table : tables )   
         {

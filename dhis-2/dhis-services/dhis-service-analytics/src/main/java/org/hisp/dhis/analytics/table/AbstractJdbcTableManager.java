@@ -249,7 +249,7 @@ public abstract class AbstractJdbcTableManager
     protected void executeSilently( String sql )
     {
         try
-        {
+        {            
             jdbcTemplate.execute( sql );
         }
         catch ( BadSqlGrammarException ex )

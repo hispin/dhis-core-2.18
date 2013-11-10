@@ -67,6 +67,9 @@ public class PerformMaintenanceAction
     @Resource(name="org.hisp.dhis.analytics.CompletenessTargetTableService")
     private AnalyticsTableService completenessTargetTableService;
     
+    @Resource(name="org.hisp.dhis.analytics.EventAnalyticsTableService")
+    private AnalyticsTableService eventAnalyticsTableService;
+    
     private MaintenanceService maintenanceService;
 
     public void setMaintenanceService( MaintenanceService maintenanceService )
@@ -183,6 +186,7 @@ public class PerformMaintenanceAction
             analyticsTableService.dropTables();
             completenessTableService.dropTables();
             completenessTargetTableService.dropTables();
+            eventAnalyticsTableService.dropTables();
         }
         
         if ( clearDataMart )
