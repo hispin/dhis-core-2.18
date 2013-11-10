@@ -82,7 +82,7 @@ public class RunValidationAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -175,7 +175,7 @@ public class RunValidationAction
             log.info( "Validating captured data for all rules" );
 
             validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( format
-                .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, sendAlerts ) );
+                .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, sendAlerts, format ) );
         }
         else
         {
@@ -184,7 +184,7 @@ public class RunValidationAction
             log.info( "Validating captured data for rules for group: '" + group.getName() + "'" );
 
             validationResults = new ArrayList<ValidationResult>( validationRuleService.validate( format
-                .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, group, sendAlerts ) );
+                .parseDate( startDate ), format.parseDate( endDate ), organisationUnits, group, sendAlerts, format ) );
         }
 
         maxExceeded = validationResults.size() > ValidationRuleService.MAX_INTERACTIVE_ALERTS;
