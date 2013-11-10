@@ -74,7 +74,7 @@ public class HibernateMessageConversationStore
             "from messageconversation mc " +
             "inner join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
             "inner join usermessage um on mu.usermessageid=um.usermessageid " +
-            "inner join userinfo ui on mc.lastsenderid=ui.userinfoid ";
+            "left join userinfo ui on mc.lastsenderid=ui.userinfoid ";
 
         if ( user != null )
         {
@@ -148,12 +148,11 @@ public class HibernateMessageConversationStore
         {
             return -1;
         }
-        
+            
         String hql = "select count(*) from MessageConversation m join m.userMessages u where u.user = :user and u.read = false";
 
         Query query = getQuery( hql );
         query.setEntity( "user", user );
-        query.setCacheable( true );
 
         return (Long) query.uniqueResult();
     }
