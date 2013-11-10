@@ -466,7 +466,10 @@ dhis2.db.renderMessagesItem = function( $d, itemId )
 	{
 		$.each( json.messageConversations, function( index, message )
 		{
-			var sender = message.lastSenderFirstname + " " + message.lastSenderSurname;
+			var firstName = ( undefined !== message.lastSenderFirstname ) ? message.lastSenderFirstname : "";
+			var surname = ( undefined !== message.lastSenderSurname ) ? message.lastSenderSurname: "";
+			
+			var sender = firstName + " " + surname;
 			var count = message.messageCount > 1 ? ( " (" + message.messageCount + ")" ) : "";			
 			var readSpan = message.read ? "" : " class='bold'";
 			
