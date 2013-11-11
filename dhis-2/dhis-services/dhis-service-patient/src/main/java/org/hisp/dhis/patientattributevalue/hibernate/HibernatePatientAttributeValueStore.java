@@ -120,11 +120,11 @@ public class HibernatePatientAttributeValueStore
 
     public void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption )
     {
-        //TODO use hql for caching reasons
-        String sql = "UPDATE patientattributevalue SET value='" + patientAttributeOption.getName()
-            + "' WHERE patientattributeoptionid='" + patientAttributeOption.getId() + "'";
-
-        jdbcTemplate.execute( sql );
+        String hql = "UPDATE PatientAttributeValue SET value=:value where patientAttributeOption=:patientAttributeOption";
+        Query query = getQuery( hql );
+        query.setString( "value", patientAttributeOption.getName() );
+        query.setEntity( "patientAttributeOption", patientAttributeOption );
+        query.executeUpdate();
     }
 
     @SuppressWarnings( "unchecked" )

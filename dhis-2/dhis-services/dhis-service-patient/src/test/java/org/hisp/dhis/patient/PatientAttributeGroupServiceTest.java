@@ -63,7 +63,6 @@ public class PatientAttributeGroupServiceTest
         PatientAttribute attributeA = createPatientAttribute( 'A' );
         PatientAttribute attributeB = createPatientAttribute( 'B' );
         PatientAttribute attributeC = createPatientAttribute( 'C' );
-        PatientAttribute attributeD = createPatientAttribute( 'B' );
 
         attributeService.savePatientAttribute( attributeA );
         attributeService.savePatientAttribute( attributeB );
@@ -75,7 +74,6 @@ public class PatientAttributeGroupServiceTest
 
         List<PatientAttribute> attributesB = new ArrayList<PatientAttribute>();
         attributesB.add( attributeC );
-        attributesB.add( attributeD );
 
         attributeGroupA = createPatientAttributeGroup( 'A', attributesA );
         attributeGroupB = createPatientAttributeGroup( 'B', attributesB );

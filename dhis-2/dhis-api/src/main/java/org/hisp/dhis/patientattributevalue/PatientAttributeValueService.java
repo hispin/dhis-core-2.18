@@ -48,7 +48,6 @@ public interface PatientAttributeValueService
      * 
      * @param patientAttribute The to PatientAttribute add.
      * 
-     * @return A generated unique id of the added {@link PatientAttribute}.
      */
     void savePatientAttributeValue( PatientAttributeValue patientAttributeValue );
 
