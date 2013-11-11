@@ -212,7 +212,7 @@ public abstract class BaseAnalyticalObject
             this.transientOrganisationUnits.add( organisationUnit );
         }
     }
-        
+    
     /**
      * Assembles a DimensionalObject based on the persisted properties of this
      * AnalyticalObject. Collapses indicators, data elements, data element 
@@ -580,6 +580,32 @@ public abstract class BaseAnalyticalObject
         return StringUtils.join( ids, DIMENSION_SEP );
     }
 
+    /**
+     * Returns meta-data mapping for this analytical object. Includes a identifier
+     * to name mapping for dynamic dimensions.
+     */
+    public Map<String, String> getMetaData()
+    {
+        Map<String, String> meta = new HashMap<String, String>();
+        
+        for ( DataElementGroup group : dataElementGroups )
+        {
+            meta.put( group.getGroupSet().getUid(), group.getGroupSet().getName() );
+        }
+        
+        for ( OrganisationUnitGroup group : organisationUnitGroups )
+        {
+            meta.put( group.getGroupSet().getUid(), group.getGroupSet().getName() );
+        }
+        
+        for ( DataElementCategoryDimension category : categoryDimensions )
+        {
+            meta.put( category.getDimension().getUid(), category.getDimension().getName() );
+        }
+        
+        return meta;
+    }
+    
     /**
      * Clear or set to false all persistent properties for this object.
      */
