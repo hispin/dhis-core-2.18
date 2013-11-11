@@ -169,7 +169,6 @@ public class PatientRegistrationFormServiceTest
         patientRegistrationFormService.savePatientRegistrationForm( patientRegistrationFormB );
 
         Collection<PatientRegistrationForm> forms = patientRegistrationFormService.getAllPatientRegistrationForms();
-        System.out.println( "\n\n forms : " + forms );
         assertEquals( 2, forms.size() );
         assertTrue( forms.contains( patientRegistrationFormA ) );
         assertTrue( forms.contains( patientRegistrationFormB ) );
