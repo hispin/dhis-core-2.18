@@ -782,10 +782,15 @@ public class ActivityReportingServiceImpl
                 }
 
                 programStageInstanceService.addProgramStageInstance( programStageInstance );
-
+                programInstance.getProgramStageInstances().add( programStageInstance );
             }
-
         }
+        programInstanceService.updateProgramInstance( programInstance );
+        patient.getProgramInstances().add( programInstance );
+        patientService.updatePatient( patient );
+        
+        patient = patientService.getPatient( patientId );
+        
         return getPatientModel( patient );
     }
 
@@ -1864,7 +1869,7 @@ public class ActivityReportingServiceImpl
         }
 
         Patient patientNew = patientService.getPatient( this.patientId );
-        this.setPatientMobile( getPatientModel( patientNew ) );
+        setPatientMobile( getPatientModel( patientNew ) );
 
         return patientId;
 
