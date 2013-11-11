@@ -176,7 +176,7 @@ public class PatientIdentifierTypeServiceTest
         identifierTypeService.savePatientIdentifierType( identifierTypeA );
         identifierTypeService.savePatientIdentifierType( identifierTypeB );
         identifierTypeService.savePatientIdentifierType( identifierTypeC );
-System.out.println("\n\n ===\n " + identifierTypeA.getPersonDisplayName() );
+        
         Collection<PatientIdentifierType> identifierTypes = identifierTypeService
             .getDisplayedPatientIdentifierTypes( true );
         assertEquals( 2, identifierTypes.size() );
