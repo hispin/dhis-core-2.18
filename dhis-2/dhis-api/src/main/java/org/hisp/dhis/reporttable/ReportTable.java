@@ -597,9 +597,12 @@ public class ReportTable
         // Headers
         // ---------------------------------------------------------------------
 
+        Map<String, String> metaData = getMetaData();
+        metaData.putAll( DimensionalObject.PRETTY_NAMES );
+        
         for ( String row : rowDimensions )
         {
-            String name = StringUtils.defaultIfEmpty( DimensionalObject.PRETTY_NAMES.get( row ), row );            
+            String name = StringUtils.defaultIfEmpty( metaData.get( row ), row );            
             String col = StringUtils.defaultIfEmpty( COLUMN_NAMES.get( row ), row );
             
             grid.addHeader( new GridHeader( name + " ID", col + "id", String.class.getName(), true, true ) );
