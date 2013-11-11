@@ -49,7 +49,6 @@ public interface PatientAttributeValueStore
      * 
      * @param patientAttribute The to PatientAttribute add.
      * 
-     * @return A generated unique id of the added {@link PatientAttribute}.
      */
     void saveVoid( PatientAttributeValue patientAttributeValue );
 
@@ -144,5 +143,5 @@ public interface PatientAttributeValueStore
      * @param patientAttributeOption PatientAttributeOption
      */
     void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption );
-    
+
 }
