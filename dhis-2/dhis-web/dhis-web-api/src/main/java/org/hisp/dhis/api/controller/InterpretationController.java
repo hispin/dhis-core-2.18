@@ -247,6 +247,14 @@ public class InterpretationController
         @PathVariable( "uid" ) String uid,
         @RequestBody String text, HttpServletResponse response )
     {
+        Interpretation interpretation = interpretationService.getInterpretation( uid );
+        
+        if ( interpretation == null )
+        {
+            ContextUtils.conflictResponse( response, "Interpretation does not exist: " + uid );
+            return;
+        }
+        
         interpretationService.addInterpretationComment( uid, text );
 
         ContextUtils.createdResponse( response, "Commented created", InterpretationController.RESOURCE_PATH + "/" + uid );
