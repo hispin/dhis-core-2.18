@@ -30,7 +30,7 @@ package org.hisp.dhis.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.web.webapi.v1.utils.ObjectMapperFactoryBean;
+import org.hisp.dhis.web.webapi.v1.utils.CustomObjectMapper;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +114,7 @@ public abstract class FredSpringWebTest
     @Before
     public void setup() throws Exception
     {
-        objectMapper = new ObjectMapperFactoryBean().getObject();
+        objectMapper = new CustomObjectMapper();
 
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding( "UTF-8" );

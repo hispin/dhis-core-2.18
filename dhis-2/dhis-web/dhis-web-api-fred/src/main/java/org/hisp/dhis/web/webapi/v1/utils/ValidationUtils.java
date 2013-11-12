@@ -31,6 +31,7 @@ package org.hisp.dhis.web.webapi.v1.utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import javax.validation.ConstraintViolation;
 import java.io.IOException;
@@ -50,6 +51,7 @@ public final class ValidationUtils
         objectMapper = new ObjectMapper();
         objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
         objectMapper.setSerializationInclusion( JsonInclude.Include.NON_EMPTY );
+        objectMapper.enable( SerializationFeature.INDENT_OUTPUT );
     }
 
     public static <T> String constraintViolationsToJson( Set<ConstraintViolation<T>> constraintViolations ) throws IOException
