@@ -67,8 +67,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -243,13 +245,14 @@ public class FacilityController
     }
 
     @RequestMapping( value = "", method = RequestMethod.GET )
-    public ResponseEntity<Facilities> readFacilities(
+    @ResponseStatus( HttpStatus.OK )
+    public void readFacilities(
         @RequestParam( value = "updatedSince", required = false ) Date lastUpdated,
         @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
         @RequestParam( value = "fields", required = false ) String fields,
         @RequestParam( value = "limit", required = false, defaultValue = "25" ) String limit,
         @RequestParam( value = "offset", required = false, defaultValue = "0" ) Integer offset,
-        HttpServletRequest request )
+        HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         Facilities facilities = new Facilities();
         List<OrganisationUnit> allOrganisationUnits;
@@ -301,7 +304,7 @@ public class FacilityController
             }
         }
 
-        return new ResponseEntity<Facilities>( facilities, HttpStatus.OK );
+        objectMapper.writeValue( response.getOutputStream(), facilities );
     }
 
     private Integer getLimitValue( String limit, int defaultValue )
@@ -328,10 +331,11 @@ public class FacilityController
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public ResponseEntity<Facility> readFacility( @PathVariable String id,
+    @ResponseStatus( HttpStatus.OK )
+    public void readFacility( @PathVariable String id,
         @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
         @RequestParam( value = "fields", required = false ) String fields,
-        HttpServletRequest request ) throws FacilityNotFoundException
+        HttpServletRequest request, HttpServletResponse response ) throws FacilityNotFoundException, IOException
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );
 
@@ -351,7 +355,7 @@ public class FacilityController
             facility.setHref( facility.getHref() + ".json" );
         }
 
-        return new ResponseEntity<Facility>( facility, HttpStatus.OK );
+        objectMapper.writeValue( response.getOutputStream(), facility );
     }
 
     private void addHierarchyPropertyToFacility( List<OrganisationUnitLevel> organisationUnitLevels, Facility facility )

@@ -13,6 +13,7 @@
   <sec:global-method-security pre-post-annotations="enabled" />
 
   <context:component-scan base-package="org.hisp.dhis.web.webapi" />
+
   <context:annotation-config />
 
   <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
@@ -59,6 +60,20 @@
     </constructor-arg>
   </bean>
 
+  <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+    <property name="objectMapper" ref="objectMapperFactoryBean" />
+    <property name="modelKey" value="entity" />
+    <property name="extractValueFromSingleKeyModel" value="true" />
+  </bean>
+
+  <mvc:annotation-driven>
+    <mvc:message-converters register-defaults="false">
+      <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="objectMapper" ref="objectMapperFactoryBean" />
+      </bean>
+    </mvc:message-converters>
+  </mvc:annotation-driven>
+
   <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManager">
     <constructor-arg>
       <list>
@@ -73,11 +88,7 @@
 
     <property name="defaultViews">
       <list>
-        <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
-          <property name="objectMapper" ref="objectMapperFactoryBean" />
-          <property name="modelKey" value="entity" />
-          <property name="extractValueFromSingleKeyModel" value="true" />
-        </bean>
+        <ref bean="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
       </list>
     </property>
   </bean>
