@@ -76,13 +76,6 @@ public interface PatientDataValueService
     int deletePatientDataValue( ProgramStageInstance programStageInstance );
 
     /**
-     * Deletes all {@link PatientDataValue} of an {@link DataElement}
-     * 
-     * @param patientDataValue the PatientDataValue to delete.
-     */
-    int deletePatientDataValue( DataElement dataElement );
-
-    /**
      * Retrieve patient data values of a event
      * 
      * @param programStageInstance ProgramStageInstance
