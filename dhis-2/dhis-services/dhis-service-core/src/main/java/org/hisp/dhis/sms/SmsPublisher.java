@@ -64,7 +64,7 @@ public class SmsPublisher
         {
             thread.stopFetching();
         }
-        
+
         thread = null;
     }
 
@@ -104,7 +104,6 @@ public class SmsPublisher
         private void fetchAndParseSMS()
         {
             IncomingSms message = messageQueue.get();
-
             while ( message != null )
             {
                 log.info( "Received SMS: " + message.getText() );
@@ -119,7 +118,6 @@ public class SmsPublisher
                             return;
                         }
                     }
-                    
                     smsSender.sendMessage( "No command found", message.getOriginator() );
                 }
                 catch ( Exception e )

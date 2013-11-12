@@ -814,6 +814,8 @@
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
+  
+   <bean id="org.hisp.dhis.sms.task.SendSmsTask" class="org.hisp.dhis.sms.task.SendSmsTask"/>
 
   <!-- I18nService -->
 

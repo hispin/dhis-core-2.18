@@ -16,9 +16,7 @@
     scope="prototype" />
 
   <bean id="org.hisp.dhis.sms.outcoming.ProcessingSendSMSAction"
-    class="org.hisp.dhis.sms.outcoming.ProcessingSendSMSAction" scope="prototype">
-    <property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
-  </bean>
+    class="org.hisp.dhis.sms.outcoming.ProcessingSendSMSAction" scope="prototype"/>
 
   <bean id="org.hisp.dhis.sms.outcoming.SearchPatientAction" class="org.hisp.dhis.sms.outcoming.SearchPatientAction"
     scope="prototype" />
