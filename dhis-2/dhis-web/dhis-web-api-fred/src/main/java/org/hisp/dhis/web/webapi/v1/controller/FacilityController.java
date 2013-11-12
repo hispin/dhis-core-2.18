@@ -93,9 +93,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller( value = "facility-controller-" + FredController.PREFIX )
-@RequestMapping( FacilityController.RESOURCE_PATH )
-@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
+@Controller(value = "facility-controller-" + FredController.PREFIX)
+@RequestMapping(FacilityController.RESOURCE_PATH)
+@PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
@@ -244,20 +244,25 @@ public class FacilityController
         return facility;
     }
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
-    @ResponseStatus( HttpStatus.OK )
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public void readFacilities(
-        @RequestParam( value = "updatedSince", required = false ) Date lastUpdated,
-        @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
-        @RequestParam( value = "fields", required = false ) String fields,
-        @RequestParam( value = "limit", required = false, defaultValue = "25" ) String limit,
-        @RequestParam( value = "offset", required = false, defaultValue = "0" ) Integer offset,
+        @RequestParam(value = "updatedSince", required = false) Date lastUpdated,
+        @RequestParam(value = "allProperties", required = false, defaultValue = "true") Boolean allProperties,
+        @RequestParam(value = "fields", required = false) String fields,
+        @RequestParam(value = "limit", required = false, defaultValue = "25") String limit,
+        @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
         HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         Facilities facilities = new Facilities();
         List<OrganisationUnit> allOrganisationUnits;
 
         Integer limitValue = getLimitValue( limit, 25 );
+
+        if ( offset < 0 )
+        {
+            offset = 0;
+        }
 
         if ( lastUpdated == null )
         {
@@ -330,11 +335,11 @@ public class FacilityController
         return limitValue;
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    @ResponseStatus( HttpStatus.OK )
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public void readFacility( @PathVariable String id,
-        @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
-        @RequestParam( value = "fields", required = false ) String fields,
+        @RequestParam(value = "allProperties", required = false, defaultValue = "true") Boolean allProperties,
+        @RequestParam(value = "fields", required = false) String fields,
         HttpServletRequest request, HttpServletResponse response ) throws FacilityNotFoundException, IOException
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );
@@ -390,8 +395,8 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "", method = RequestMethod.POST )
-    @PreAuthorize( "hasRole('F_FRED_CREATE') or hasRole('ALL')" )
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('F_FRED_CREATE') or hasRole('ALL')")
     public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws Exception
     {
         if ( facility.getUuid() == null )
@@ -463,8 +468,8 @@ public class FacilityController
     // PUT JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
-    @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility, HttpServletRequest request ) throws Exception
     {
         HttpHeaders headers = new HttpHeaders();
@@ -560,8 +565,8 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
-    @PreAuthorize( "hasRole('F_FRED_DELETE') or hasRole('ALL')" )
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('F_FRED_DELETE') or hasRole('ALL')")
     public ResponseEntity<String> deleteFacility( @PathVariable String id ) throws HierarchyViolationException, IOException, FacilityNotFoundException
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );
