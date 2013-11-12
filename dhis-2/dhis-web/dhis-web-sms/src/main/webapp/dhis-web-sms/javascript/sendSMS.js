@@ -80,14 +80,7 @@ function sendSMSMessage( _form )
 			return;
 		}
 	}
-	else if ( _target == "user" || _target == "unit" )
-	{
-		if ( !isOrgunitSelected )
-		{
-			setHeaderDelayMessage( i18n_please_select_orgunit );
-			return;
-		}
-	}
+	
 	else
 	{
 		if ( hasElements( 'recipients' ) )

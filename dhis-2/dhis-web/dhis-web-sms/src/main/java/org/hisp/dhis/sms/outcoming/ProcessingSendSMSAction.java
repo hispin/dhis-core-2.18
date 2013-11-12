@@ -37,8 +37,12 @@ import java.util.Set;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.sms.SmsSender;
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
+import org.hisp.dhis.sms.task.SendSmsTask;
+import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
@@ -72,13 +76,15 @@ public class ProcessingSendSMSAction
 
     @Autowired
     private OutboundSmsTransportService transportService;
+    
+    @Autowired
+    private Scheduler scheduler;
 
-    private SmsSender smsSender;
+    @Autowired
+    private Notifier notifier;
 
-    public void setSmsSender( SmsSender smsSender )
-    {
-        this.smsSender = smsSender;
-    }
+    @Autowired
+    private SendSmsTask sendSmsTask;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -194,7 +200,6 @@ public class ProcessingSendSMSAction
             }
             // message = messageSender.sendMessage( smsSubject, smsMessage,
             // currentUser, true, recipients, gatewayId );
-            message = smsSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
         }
         else if ( sendTarget.equals( "userGroup" ) )
         {
@@ -213,12 +218,8 @@ public class ProcessingSendSMSAction
 
                 return ERROR;
             }
-            
-            // message = messageSender.sendMessage( smsSubject, smsMessage,
-            // currentUser, false, group.getMembers(), gatewayId );
-            
-            message = smsSender.sendMessage( smsSubject, text, currentUser, new ArrayList<User>( group.getMembers() ),
-                false );
+
+            recipientsList = new ArrayList<User>( group.getMembers());
         }
         else if ( sendTarget.equals( "user" ) )
         {
@@ -240,8 +241,6 @@ public class ProcessingSendSMSAction
 
                 // message = messageSender.sendMessage( smsSubject, smsMessage,
                 // currentUser, false, users, gatewayId );
-                
-                message = smsSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
             }
         }
         else if ( sendTarget.equals( "unit" ) )
@@ -262,9 +261,18 @@ public class ProcessingSendSMSAction
 
                 return ERROR;
             }
-
-            message = smsSender.sendMessage( smsSubject, text, currentUser, recipientsList, false );
         }
+        
+        TaskId taskId = new TaskId( TaskCategory.SENDING_SMS, currentUser );
+        notifier.clear( taskId );
+
+        sendSmsTask.setTaskId( taskId );
+        sendSmsTask.setCurrentUser( currentUser );
+        sendSmsTask.setRecipientsList( recipientsList );
+        sendSmsTask.setSmsSubject( smsSubject );
+        sendSmsTask.setText( text );
+        
+        scheduler.executeTask( sendSmsTask );
 
         if ( message != null && !message.equals( "success" ) )
         {
