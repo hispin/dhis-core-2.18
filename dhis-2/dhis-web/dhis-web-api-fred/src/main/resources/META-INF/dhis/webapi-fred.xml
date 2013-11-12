@@ -49,16 +49,11 @@
 
   <mvc:annotation-driven conversion-service="conversionService" validator="validator" />
 
-  <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
-    <property name="resourceLoaderPath" value="/WEB-INF/api-fred-velocity/" />
-  </bean>
-
   <bean id="headerContentNegotiationStrategy" class="org.springframework.web.accept.HeaderContentNegotiationStrategy" />
 
   <bean id="pathExtensionContentNegotiationStrategy" class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
     <constructor-arg name="mediaTypes">
       <map>
-        <entry key="html" value="text/*" />
         <entry key="json" value="application/json" />
       </map>
     </constructor-arg>
@@ -75,17 +70,6 @@
 
   <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
     <property name="contentNegotiationManager" ref="contentNegotiationManager" />
-
-    <property name="viewResolvers">
-      <list>
-        <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
-          <property name="cache" value="true" />
-          <property name="prefix" value="" />
-          <property name="suffix" value=".vm" />
-          <property name="contentType" value="text/html; charset=UTF-8" />
-        </bean>
-      </list>
-    </property>
 
     <property name="defaultViews">
       <list>

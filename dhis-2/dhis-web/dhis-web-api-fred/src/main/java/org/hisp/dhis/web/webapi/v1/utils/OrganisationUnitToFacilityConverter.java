@@ -67,7 +67,7 @@ public class OrganisationUnitToFacilityConverter implements Converter<Organisati
 
         try
         {
-            facility.setHref( linkTo( FacilityController.class ).slash( organisationUnit.getUid() ).toString() );
+            facility.setHref( linkTo( FacilityController.class ).slash( organisationUnit.getUuid() ).toString() );
         }
         catch ( IllegalStateException ignored )
         {
