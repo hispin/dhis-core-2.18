@@ -442,11 +442,11 @@ public class MobileOrganisationUnitController
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/LWUIT/orgUnits/{id}/findLostToFollowUp" )
     @ResponseBody
     public String findLostToFollowUp( @PathVariable
-    int id, @RequestHeader( "programId" )
-    String programId )
+    int id, @RequestHeader( "searchEventInfos" )
+    String searchEventInfos )
         throws NotAllowedException
     {
-        return activityReportingService.findLostToFollowUp( id, programId );
+        return activityReportingService.findLostToFollowUp( id, searchEventInfos );
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/LWUIT/orgUnits/{id}/handleLostToFollowUp" )
