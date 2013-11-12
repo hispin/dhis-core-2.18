@@ -641,7 +641,7 @@ public class HibernatePatientStore
                     case ProgramStageInstance.FUTURE_VISIT_STATUS:
                         patientWhere += condition + operatorStatus + "( psi.executiondate is null and psi.duedate>='"
                             + keys[2] + "' and psi.duedate<='" + keys[3]
-                            + "' and psi.status is null and (DATE(now()) - DATE(psi.duedate) <= 0) ";
+                            + "' and psi.status is not null and (DATE(now()) - DATE(psi.duedate) <= 0) ";
 
                         // get events by orgunit children
                         if ( keys[4].equals( "-1" ) )
