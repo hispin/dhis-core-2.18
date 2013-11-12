@@ -50,9 +50,9 @@ public class DefaultPatientAggregateReportService
     }
 
     @Override
-    public void addPatientAggregateReport( PatientAggregateReport patientAggregateReport )
+    public int addPatientAggregateReport( PatientAggregateReport patientAggregateReport )
     {
-        patientAggregateReportStore.save( patientAggregateReport );
+        return patientAggregateReportStore.save( patientAggregateReport );
     }
 
     @Override

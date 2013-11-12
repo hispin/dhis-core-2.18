@@ -47,7 +47,7 @@ public interface PatientAggregateReportService
      * @return A generated unique id of the added {@link PatientAggregateReport}
      *         .
      */
-    void addPatientAggregateReport( PatientAggregateReport patientAggregateReport );
+    int addPatientAggregateReport( PatientAggregateReport patientAggregateReport );
 
     /**
      * Updates an {@link PatientAggregateReport}.
