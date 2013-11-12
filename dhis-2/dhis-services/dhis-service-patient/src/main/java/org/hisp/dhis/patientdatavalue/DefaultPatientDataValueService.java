@@ -76,12 +76,7 @@ public class DefaultPatientDataValueService
     {
         return patientDataValueStore.delete( programStageInstance );
     }
-
-    public int deletePatientDataValue( DataElement dataElement )
-    {
-        return patientDataValueStore.delete( dataElement );
-    }
-
+    
     public void updatePatientDataValue( PatientDataValue patientDataValue )
     {
         if ( patientDataValue.getValue() == null )

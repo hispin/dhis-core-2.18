@@ -73,15 +73,15 @@ public class PatientAttributeValueStoreTest
     @Autowired
     private PatientAttributeOptionService attributeOptionService;
 
-    PatientAttribute attributeA;
+    private PatientAttribute attributeA;
 
-    PatientAttribute attributeB;
+    private PatientAttribute attributeB;
 
-    PatientAttribute attributeC;
+    private PatientAttribute attributeC;
 
-    PatientAttributeOption attributeOpionA;
+    private PatientAttributeOption attributeOpionA;
 
-    PatientAttributeOption attributeOpionB;
+    private PatientAttributeOption attributeOpionB;
 
     private Patient patientA;
 

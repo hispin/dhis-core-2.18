@@ -54,14 +54,12 @@ public interface PatientDataValueStore
      */
     void saveVoid( PatientDataValue patientDataValue );
 
-    int delete( ProgramStageInstance programStageInstance );
-
     /**
      * Deletes a {@link PatientDataValue}.
      * 
-     * @param patientDataValue the PatientDataValue to delete.
+     * @param programStageInstance ProgramStageInstance.
      */
-    int delete( DataElement dataElement );
+    int delete( ProgramStageInstance programStageInstance );
 
     /**
      * Retrieve patient data values of a event
@@ -111,8 +109,8 @@ public interface PatientDataValueStore
      * 
      * @return PatientDataValue list
      */
-    Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date after,
-        Date before );
+    Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date after, Date before );
+
     /**
      * Retrieve a patient data value on an event and a data element
      * 

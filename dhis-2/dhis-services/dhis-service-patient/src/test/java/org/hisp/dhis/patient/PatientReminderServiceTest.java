@@ -146,7 +146,7 @@ public class PatientReminderServiceTest
             PatientReminder.MESSAGE_TYPE_DIRECT_SMS );
         patientReminders = new HashSet<PatientReminder>();
         patientReminders.add( patientReminderB );
-        stageA.setPatientReminders( patientReminders );
+        stageB.setPatientReminders( patientReminders );
 
         Set<ProgramStage> programStages = new HashSet<ProgramStage>();
         programStages.add( stageA );

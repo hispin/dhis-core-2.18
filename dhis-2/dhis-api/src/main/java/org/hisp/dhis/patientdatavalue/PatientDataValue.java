@@ -78,6 +78,14 @@ public class PatientDataValue
         this.timestamp = timeStamp;
     }
 
+    public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement, String value )
+    {
+        super();
+        this.dataElement = dataElement;
+        this.programStageInstance = programStageInstance;
+        this.value = value;
+    }
+
     public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement, Date timeStamp,
         String value )
     {
@@ -108,19 +116,19 @@ public class PatientDataValue
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final PatientDataValue other = (PatientDataValue) object;
-        
+
         if ( dataElement == null )
         {
             if ( other.dataElement != null )
@@ -132,7 +140,7 @@ public class PatientDataValue
         {
             return false;
         }
-        
+
         if ( programStageInstance == null )
         {
             if ( other.programStageInstance != null )
@@ -144,21 +152,16 @@ public class PatientDataValue
         {
             return false;
         }
-        
+
         return true;
     }
 
     @Override
     public String toString()
     {
-        return "PatientDataValue{" +
-            "dataElement=" + dataElement +
-            ", programStageInstance=" + programStageInstance +
-            ", timestamp=" + timestamp +
-            ", value='" + value + '\'' +
-            ", providedElsewhere=" + providedElsewhere +
-            ", storedBy='" + storedBy + '\'' +
-            '}';
+        return "PatientDataValue{" + "dataElement=" + dataElement + ", programStageInstance=" + programStageInstance
+            + ", timestamp=" + timestamp + ", value='" + value + '\'' + ", providedElsewhere=" + providedElsewhere
+            + ", storedBy='" + storedBy + '\'' + '}';
     }
 
     // -------------------------------------------------------------------------
