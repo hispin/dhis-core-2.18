@@ -225,7 +225,9 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollment getEnrollment( String id )
     {
-        return getEnrollment( programInstanceService.getProgramInstance( id ) );
+        ProgramInstance pi = programInstanceService.getProgramInstance( id );
+        
+        return pi != null ? getEnrollment( pi ) : null;
     }
 
     @Override
@@ -290,9 +292,9 @@ public abstract class AbstractEnrollmentService
     @Override
     public ImportSummary updateEnrollment( Enrollment enrollment )
     {
-        if ( enrollment.getEnrollment() == null )
+        if ( enrollment == null || enrollment.getEnrollment() == null )
         {
-            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "No enrollment ID was supplied" );
+            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "No enrollment or enrollment ID was supplied" );
             importSummary.getImportCount().incrementIgnored();
 
             return importSummary;
