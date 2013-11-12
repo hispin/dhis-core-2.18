@@ -31,6 +31,9 @@ package org.hisp.dhis.web.webapi;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -38,8 +41,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RedirectController
 {
     @RequestMapping(value = { "/api-fred", "/" })
-    public String redirectToCurrentVersion()
+    public void redirectToCurrentVersion( HttpServletResponse response ) throws IOException
     {
-        return "redirect:/api-fred/v1";
+        response.sendRedirect( "/api-fred/v1" );
     }
 }

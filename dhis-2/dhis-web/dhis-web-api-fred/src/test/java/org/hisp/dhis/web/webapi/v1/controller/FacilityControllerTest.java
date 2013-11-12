@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Ignore //TODO Enable as integration test
+@Ignore
 public class FacilityControllerTest extends FredSpringWebTest
 {
     @Autowired
@@ -72,7 +72,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( status().isOk() );
     }
@@ -83,7 +83,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "M_dhis-web-api-fred" );
 
         mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( status().isOk() );
     }
@@ -106,7 +106,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( jsonPath( "$.facilities[0].name" ).value( "OrgUnitA" ) )
             .andExpect( status().isOk() );
@@ -118,7 +118,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities/abc123" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
     }
@@ -133,7 +133,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( get( "/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( header().string( "ETag", Matchers.notNullValue() ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isOk() );
     }
 
@@ -146,7 +146,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
             .andExpect( jsonPath( "$.active" ).value( true ) )
@@ -165,7 +165,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( get( "/v1/facilities/" + organisationUnit.getUuid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
             .andExpect( jsonPath( "$.active" ).value( true ) )
@@ -185,7 +185,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( put( "/v1/facilities/INVALID_IDENTIFIER" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
     }
@@ -256,7 +256,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( put( "/v1/facilities/" + organisationUnit.getUid() ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityB" ) )
             .andExpect( jsonPath( "$.active" ).value( false ) )
@@ -280,7 +280,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityB" ) )
             .andExpect( jsonPath( "$.active" ).value( false ) )
@@ -303,7 +303,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isPreconditionFailed() );
     }
 
@@ -336,7 +336,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( post( "/v1/facilities" ).content( "{}" )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isUnprocessableEntity() );
     }
 
@@ -350,7 +350,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isPreconditionFailed() );
     }
 
@@ -363,7 +363,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
             .andExpect( jsonPath( "$.active" ).value( true ) )
@@ -383,7 +383,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid" ).value( "aabbccdd-aabb-aabb-aabb-aabbccddeeff" ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
             .andExpect( jsonPath( "$.active" ).value( true ) )
@@ -402,7 +402,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
             .andExpect( jsonPath( "$.active" ).value( false ) )
@@ -421,7 +421,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
             .andExpect( jsonPath( "$.active" ).value( true ) )
@@ -432,7 +432,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "FacilityA" ) )
             .andExpect( jsonPath( "$.active" ).value( true ) )
@@ -461,7 +461,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( delete( "/v1/facilities/INVALID_IDENTIFIER" ).session( session ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
     }
@@ -475,7 +475,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( delete( "/v1/facilities/" + organisationUnit.getUid() ).session( session ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isOk() );
     }
 
@@ -488,7 +488,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         MockHttpSession session = getSession( "ALL" );
 
         mvc.perform( delete( "/v1/facilities/" + organisationUnit.getUuid() ).session( session ) )
-            .andExpect( content().contentType( MediaType.APPLICATION_JSON ) )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isOk() );
     }
 

@@ -29,7 +29,6 @@ package org.hisp.dhis.web.webapi.v1.controller;
  */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.hisp.dhis.api.controller.organisationunit.OrganisationUnitLevelController;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
@@ -48,7 +47,6 @@ import org.hisp.dhis.web.webapi.v1.exception.DuplicateUuidException;
 import org.hisp.dhis.web.webapi.v1.exception.ETagVerificationException;
 import org.hisp.dhis.web.webapi.v1.exception.FacilityNotFoundException;
 import org.hisp.dhis.web.webapi.v1.exception.UuidFormatException;
-import org.hisp.dhis.web.webapi.v1.utils.ContextUtils;
 import org.hisp.dhis.web.webapi.v1.utils.MessageUtils;
 import org.hisp.dhis.web.webapi.v1.utils.ValidationUtils;
 import org.hisp.dhis.web.webapi.v1.validation.group.Create;
@@ -61,7 +59,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -246,7 +243,7 @@ public class FacilityController
     }
 
     @RequestMapping( value = "", method = RequestMethod.GET )
-    public String readFacilities( Model model,
+    public ResponseEntity<Facilities> readFacilities(
         @RequestParam( value = "updatedSince", required = false ) Date lastUpdated,
         @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
         @RequestParam( value = "fields", required = false ) String fields,
@@ -304,26 +301,7 @@ public class FacilityController
             }
         }
 
-        setAccessRights( model );
-
-        model.addAttribute( "esc", StringEscapeUtils.class );
-        model.addAttribute( "entity", facilities );
-        ContextUtils.populateContextPath( model, request );
-        model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
-        model.addAttribute( "pageName", "facilities" );
-        model.addAttribute( "page", FredController.PREFIX + "/facilities.vm" );
-
-        if ( offset == 0 )
-        {
-            model.addAttribute( "prevDisabled", true );
-        }
-
-        if ( (offset + (limitValue == null ? 0 : limitValue) >= organisationUnitService.getNumberOfOrganisationUnits()) )
-        {
-            model.addAttribute( "nextDisabled", true );
-        }
-
-        return FredController.PREFIX + "/layout";
+        return new ResponseEntity<Facilities>( facilities, HttpStatus.OK );
     }
 
     private Integer getLimitValue( String limit, int defaultValue )
@@ -350,7 +328,7 @@ public class FacilityController
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String readFacility( Model model, @PathVariable String id,
+    public ResponseEntity<Facility> readFacility( @PathVariable String id,
         @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
         @RequestParam( value = "fields", required = false ) String fields,
         HttpServletRequest request ) throws FacilityNotFoundException
@@ -373,43 +351,7 @@ public class FacilityController
             facility.setHref( facility.getHref() + ".json" );
         }
 
-        setAccessRights( model );
-
-        model.addAttribute( "esc", StringEscapeUtils.class );
-        model.addAttribute( "entity", facility );
-
-        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
-        model.addAttribute( "dataSets", dataSets );
-
-        ContextUtils.populateContextPath( model, request );
-
-        model.addAttribute( "baseUrl", linkTo( FredController.class ).toString() );
-        model.addAttribute( "pageName", "facility" );
-        model.addAttribute( "page", FredController.PREFIX + "/facility.vm" );
-
-        return FredController.PREFIX + "/layout";
-    }
-
-    private void setAccessRights( Model model )
-    {
-        // TODO fix this, a proper mock currentuserservice should be implemented
-        if ( currentUserService != null && currentUserService.getCurrentUser() != null )
-        {
-            Set<String> authorities = currentUserService.getCurrentUser().getUserCredentials().getAllAuthorities();
-
-            model.addAttribute( "canCreate", authorities.contains( "F_FRED_CREATE" ) || currentUserService.currentUserIsSuper() );
-            model.addAttribute( "canRead", authorities.contains( "M-dhis-web-api-fred" ) || currentUserService.currentUserIsSuper() );
-            model.addAttribute( "canUpdate", authorities.contains( "F_FRED_UPDATE" ) || currentUserService.currentUserIsSuper() );
-            model.addAttribute( "canDelete", authorities.contains( "F_FRED_DELETE" ) || currentUserService.currentUserIsSuper() );
-        }
-        else
-        {
-            model.addAttribute( "canCreate", false );
-            model.addAttribute( "canRead", false );
-            model.addAttribute( "canUpdate", false );
-            model.addAttribute( "canDelete", false );
-        }
+        return new ResponseEntity<Facility>( facility, HttpStatus.OK );
     }
 
     private void addHierarchyPropertyToFacility( List<OrganisationUnitLevel> organisationUnitLevels, Facility facility )
