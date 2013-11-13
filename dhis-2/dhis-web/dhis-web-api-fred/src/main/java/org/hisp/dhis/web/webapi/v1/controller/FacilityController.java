@@ -175,7 +175,7 @@ public class FacilityController
         List<String> strings = Arrays.asList( fields.split( "," ) );
 
         // simple field filtering
-        if ( !strings.contains( "id" ) )
+        if ( !strings.contains( "uuid" ) )
         {
             facility.setUuid( null );
         }
