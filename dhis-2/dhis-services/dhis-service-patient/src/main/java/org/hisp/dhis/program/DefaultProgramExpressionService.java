@@ -132,27 +132,22 @@ public class DefaultProgramExpressionService
         else
         {
             StringBuffer description = new StringBuffer();
-
             Pattern pattern = Pattern.compile( regExp );
             Matcher matcher = pattern.matcher( programExpression.getExpression() );
-System.out.println("\n\n matcher " + matcher );
+
             while ( matcher.find() )
             {
                 String key = matcher.group().replaceAll( "[\\[\\]]", "" ).split( SEPARATOR_OBJECT )[1];
-System.out.println("\n\n key " + key );                
                 String dataValue = patientDataValueMap.get( key );
-System.out.println("\n\n dataValue " + dataValue );        
                 if ( dataValue == null )
                 {
                     return null;
                 }
 
                 matcher.appendReplacement( description, dataValue );
-System.out.println("\n\n description 1 : " + description.toString() );
             }
 
             matcher.appendTail( description );
-System.out.println("\n\n description 2 : " + description.toString() );
            
             value = description.toString();
         }
