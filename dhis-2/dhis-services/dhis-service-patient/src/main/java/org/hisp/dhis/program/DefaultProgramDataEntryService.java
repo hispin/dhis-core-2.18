@@ -230,13 +230,13 @@ public class DefaultProgramDataEntryService
                 if ( inputHTML.contains( "title=\"\"" ) )
                 {
                     inputHTML = inputHTML.replace( "title=\"\"",
-                        "title=\"" + dataElement.getUid() + "." + dataElement.getName() + " (" + dataElementType
-                            + ")\" " );
+                        "title=\"[ " + dataElement.getUid() + " - " + dataElement.getName() + " - " + dataElementType
+                            + " ]\" " );
                 }
                 else
                 {
-                    inputHTML += "title=\"" + dataElement.getUid() + "." + dataElement.getName() + " ("
-                        + dataElementType + ")\" ";
+                    inputHTML += "title=\"[ " + dataElement.getUid() + " - " + dataElement.getName() + " - "
+                        + dataElementType + " ]\" ";
                 }
 
                 // -------------------------------------------------------------
@@ -423,14 +423,13 @@ public class DefaultProgramDataEntryService
 
                 if ( inputHTML.contains( "title=\"\"" ) )
                 {
-                    inputHTML = inputHTML.replace( "title=\"\"",
-                        "title=\"" + dataElement.getUid() + "." + dataElement.getName() + " (" + dataElementType
-                            + ")\" " );
+                    inputHTML = inputHTML.replace( "title=\"\"", "title=\"[ " + dataElement.getUid() + " - "
+                        + dataElement.getName() + " - " + dataElementType + " ]\" " );
                 }
                 else
                 {
-                    inputHTML += "title=\"" + dataElement.getUid() + "." + dataElement.getName() + " ("
-                        + dataElementType + ")\" ";
+                    inputHTML += "title=\"[ " + dataElement.getUid() + " - " + dataElement.getName() + " - "
+                        + dataElementType + " ]\" ";
                 }
 
                 // -------------------------------------------------------------
@@ -554,7 +553,6 @@ public class DefaultProgramDataEntryService
                 inputHTML = inputHTML + ">";
 
                 inputMatcher.appendReplacement( sb, inputHTML );
-
             }
         }
 
@@ -629,19 +627,19 @@ public class DefaultProgramDataEntryService
     {
         if ( dataElement != null )
         {
-            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, " value=\"["
-                + dataElement.getDisplayName() + "]\"" ) : inputHTML + " value=\"[" + dataElement.getDisplayName()
+            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, "value=\"["
+                + dataElement.getDisplayName() + "]\"" ) : inputHTML + "value=\"[" + dataElement.getDisplayName()
                 + "]\" ";
 
             String displayTitle = dataElement.getUid() + " - " + dataElement.getName() + " - "
-                + dataElement.getDetailedNumberType() + " - ";
-            inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, " title=\""
-                + displayTitle + "\"" ) : inputHTML + " title=\"" + displayTitle + "\"";
+                + dataElement.getDetailedNumberType();
+            inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, "title=\"[ "
+                + displayTitle + " ]\"" ) : inputHTML + " title=\"[ " + displayTitle + " ]\"";
         }
         else
         {
-            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? " value=\"[" + DATA_ELEMENT_DOES_NOT_EXIST + "]\" "
-                : " value=\"[ " + DATA_ELEMENT_DOES_NOT_EXIST + " ]\"";
+            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? "value=\"[" + DATA_ELEMENT_DOES_NOT_EXIST + "]\" "
+                : " value=\"[" + DATA_ELEMENT_DOES_NOT_EXIST + "]\"";
         }
 
         return inputHTML;
@@ -712,7 +710,7 @@ public class DefaultProgramDataEntryService
     private String populateCustomDataEntryForTextBox( DataElement dataElement, String inputHTML, String dataElementValue )
     {
         final String jsCodeForInputs = " name=\"entryfield\" tabIndex=\"$TABINDEX\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE'}\" options='$OPTIONS' maxlength=255 ";
-        final String jsCodeForOnchange = " name=\"entryfield\" tabIndex=\"$TABINDEX\" onchange=\"saveVal( '$DATAELEMENTID' )\" onkeypress=\"return keyPress(event, this)\" maxlength=255 ";
+        final String jsCodeForOnchange = " onchange=\"saveVal( '$DATAELEMENTID' )\" onkeypress=\"return keyPress(event, this)\" ";
 
         // -------------------------------------------------------------
         // Insert value of data element in output code
@@ -745,6 +743,10 @@ public class DefaultProgramDataEntryService
         {
             inputHTML = inputHTML.replaceFirst( "input", "textarea" );
             inputHTML += " >$VALUE</textarea>";
+        }
+        else
+        {
+            inputHTML += " />";
         }
 
         return inputHTML;
