@@ -53,7 +53,7 @@ public class DefaultProgramExpressionService
     implements ProgramExpressionService
 {
     private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
-        + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+        + SEPARATOR_ID + "[0-9]+]*)" + "\\]";
 
     private final String INVALID_CONDITION = "Invalid condition";
 
@@ -74,7 +74,7 @@ public class DefaultProgramExpressionService
     {
         this.programStageService = programStageService;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -135,25 +135,29 @@ public class DefaultProgramExpressionService
 
             Pattern pattern = Pattern.compile( regExp );
             Matcher matcher = pattern.matcher( programExpression.getExpression() );
+System.out.println("\n\n matcher " + matcher );
             while ( matcher.find() )
             {
                 String key = matcher.group().replaceAll( "[\\[\\]]", "" ).split( SEPARATOR_OBJECT )[1];
-
+System.out.println("\n\n key " + key );                
                 String dataValue = patientDataValueMap.get( key );
-
+System.out.println("\n\n dataValue " + dataValue );        
                 if ( dataValue == null )
                 {
                     return null;
                 }
 
                 matcher.appendReplacement( description, dataValue );
+System.out.println("\n\n description 1 : " + description.toString() );
             }
 
             matcher.appendTail( description );
+System.out.println("\n\n description 2 : " + description.toString() );
+           
             value = description.toString();
         }
+        
         return value;
-
     }
 
     @Override
@@ -183,12 +187,12 @@ public class DefaultProgramExpressionService
             }
 
             matcher.appendReplacement( description,
-                programStage.getDisplayName() + SEPARATOR_ID + dataElement.getName() );
+                "[" + ProgramExpression.OBJECT_PROGRAM_STAGE_DATAELEMENT + ProgramExpression.SEPARATOR_OBJECT
+                    + programStage.getDisplayName() + SEPARATOR_ID + dataElement.getName() + "]" );
         }
 
         matcher.appendTail( description );
 
         return description.toString();
     }
-
 }

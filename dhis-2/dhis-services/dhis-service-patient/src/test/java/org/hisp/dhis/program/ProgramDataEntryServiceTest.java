@@ -45,7 +45,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Lars Helge Overland
+ * @author Chau Thu Tran
  * @version $Id$
  */
 public class ProgramDataEntryServiceTest
