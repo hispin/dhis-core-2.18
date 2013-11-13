@@ -83,7 +83,7 @@ public class PatientReminderServiceTest
     @Autowired
     private UserService userService;
 
-    protected MockI18nFormat mockFormat;
+    private MockI18nFormat mockFormat;
 
     private ProgramInstance programInstance;
 

@@ -70,13 +70,13 @@ public class ProgramStageDataElement
      */
     private boolean compulsory = false;
 
-    private Boolean allowProvidedElsewhere;
+    private Boolean allowProvidedElsewhere = false;
 
     private Integer sortOrder;
 
-    private Boolean displayInReports;
+    private Boolean displayInReports = false;
 
-    private Boolean allowDateInFuture;
+    private Boolean allowDateInFuture = false;
 
     // -------------------------------------------------------------------------
     // Constructors
