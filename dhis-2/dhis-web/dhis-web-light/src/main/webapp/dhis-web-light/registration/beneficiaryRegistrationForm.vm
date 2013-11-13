@@ -54,7 +54,6 @@
 		</select>
 		
 		<label>$i18n.getString( "date_of_birth" )</label>
-		
 		<select name="dobType">
 			<option value="A"
 			#if($previousValues.get("dobType") == "A")
@@ -62,19 +61,19 @@
 			#end
 			>$i18n.getString( "approximated" )</option>
 			
-			<option value="F"
+			<option value="D"
 			#if($previousValues.get("dobType") == "D")
 				selected
 			#end
 			>$i18n.getString( "declared" )</option>
 			
-			<option value="T"
+			<option value="V"
 			#if($previousValues.get("dobType") == "V")
 				selected
 			#end
 			>$i18n.getString( "verified" )</option>
 		</select>
-		<label>$i18n.getString( "date_of_birth_hint" )</label>
+		<label>$i18n.getString( "date_of_birth_hint" )</label><br/>
 		#if( $validationMap.get( "dob" ) )
            	<span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
      	#end
