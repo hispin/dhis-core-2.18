@@ -174,7 +174,7 @@ public class ProgramExpressionServiceTest
     }
 
     @Test
-    public void tesDeleteProgramExpression()
+    public void testDeleteProgramExpression()
     {
         int idA = programExpressionService.addProgramExpression( programExpressionA );
         int idB = programExpressionService.addProgramExpression( programExpressionB );
