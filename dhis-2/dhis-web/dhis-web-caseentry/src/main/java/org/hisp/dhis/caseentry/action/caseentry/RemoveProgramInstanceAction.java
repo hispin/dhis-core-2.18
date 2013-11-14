@@ -71,7 +71,7 @@ public class RemoveProgramInstanceAction
     {
         ProgramInstance programInstance = programInstanceService.getProgramInstance( id );
 
-        // programInstanceService.removeProgramEnrollment( programInstance );
+        programInstanceService.deleteProgramInstance( programInstance );
 
         return SUCCESS;
     }
