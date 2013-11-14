@@ -148,7 +148,6 @@ public class DefaultEventStore implements EventStore
                     catch ( IOException ignored )
                     {
                     }
-
                 }
 
                 events.add( event );
