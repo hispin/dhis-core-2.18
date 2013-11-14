@@ -46,6 +46,9 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
+import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +76,9 @@ public class ProgramInstanceServiceTest
 
     @Autowired
     private ProgramStageService programStageService;
+    
+    @Autowired
+    private SmsConfigurationManager smsConfigurationManager; 
 
     private Date incidenDate;
 
@@ -557,6 +563,10 @@ public class ProgramInstanceServiceTest
     @Test
     public void testSendMessageConversations()
     {
+        this.createSMSConfiguration();
+        SmsConfiguration smsConfiguration = new SmsConfiguration();
+        smsConfiguration.setEnabled( true );
+        
         programInstanceService.addProgramInstance( programInstanceB );
 
         Collection<OutboundSms> outboundSmsList = programInstanceService.sendMessages( programInstanceA,
@@ -608,5 +618,21 @@ public class ProgramInstanceServiceTest
 
         assertEquals( ProgramInstance.STATUS_CANCELLED, programInstanceService.getProgramInstance( idA ).getStatus() );
         assertEquals( ProgramInstance.STATUS_CANCELLED, programInstanceService.getProgramInstance( idD ).getStatus() );
+    }
+    
+    private void createSMSConfiguration() {
+        BulkSmsGatewayConfig bulkGatewayConfig = new BulkSmsGatewayConfig();
+        bulkGatewayConfig.setName( "bulksms" );
+        bulkGatewayConfig.setPassword( "bulk" );
+        bulkGatewayConfig.setUsername( "bulk" );
+        bulkGatewayConfig.setRegion( "uk" );
+        bulkGatewayConfig.setDefault( true );
+        
+        SmsConfiguration smsConfig = new SmsConfiguration();
+        smsConfig.setPollingInterval( 3000 );
+        smsConfig.getGateways().add( bulkGatewayConfig );
+        smsConfig.setEnabled( true );
+        smsConfigurationManager.updateSmsConfiguration( smsConfig );
+        
     }
 }

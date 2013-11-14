@@ -88,7 +88,7 @@ public class SmsMessageSender
     {
         String message = null;
 
-        if ( outboundSmsTransportService == null || outboundSmsTransportService.getGatewayMap() == null )
+        if ( outboundSmsTransportService == null || outboundSmsTransportService.getGatewayMap() == null || !outboundSmsTransportService.isEnabled() )
         {
             message = "No gateway";
             return message;
