@@ -183,11 +183,7 @@ public class DefaultProgramService
         return i18n( i18nService, programStore.getProgramsByDisplayOnAllOrgunit( displayOnAllOrgunit, orgunit ) );
     }
 
-    public Program getProgramByCode( String code )
-    {
-        return i18n( i18nService, programStore.getByCode( code ) );
-    }
-
+    @Override
     public Collection<Program> getProgramsByCurrentUser( OrganisationUnit organisationUnit )
     {
         Collection<Program> programs = new ArrayList<Program>( getProgramsByDisplayOnAllOrgunit( true, null ) );

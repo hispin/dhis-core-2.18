@@ -84,14 +84,6 @@ public interface ProgramService
     Program getProgramByName( String name );
 
     /**
-     * Returns the {@link Program} with the given code.
-     * 
-     * @param code the code.
-     * @return the Program with the given code, or null if no match.
-     */
-    Program getProgramByCode( String code );
-
-    /**
      * Returns all {@link Program}.
      * 
      * @return a collection of all Program, or an empty collection if there are
