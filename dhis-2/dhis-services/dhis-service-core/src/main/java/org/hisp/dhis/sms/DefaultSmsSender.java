@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.outbound.DefaultOutboundSmsTransportService;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -69,6 +70,13 @@ public class DefaultSmsSender
     {
         this.userService = userService;
     }
+    
+    private OutboundSmsService outboundSmsService;
+
+    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    {
+        this.outboundSmsService = outboundSmsService;
+    }
 
     @Autowired
     private OutboundSmsTransportService transportService;
@@ -78,6 +86,7 @@ public class DefaultSmsSender
     public String sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
+        String resultMessage = null;
         if ( !transportService.isEnabled() )
         {
             throw new SmsServiceNotEnabledException();
@@ -85,7 +94,12 @@ public class DefaultSmsSender
 
         if ( transportService != null )
         {
-            return transportService.sendMessage( sms, gatewayId );
+            resultMessage = isWastedSMS( sms );
+            if ( resultMessage == null )
+            {
+                resultMessage = transportService.sendMessage( sms, gatewayId ); 
+            }
+            return resultMessage;
         }
 
         return "outboundsms_saved";
@@ -96,6 +110,7 @@ public class DefaultSmsSender
     public String sendMessage( OutboundSms sms )
         throws SmsServiceException
     {
+        String message = null;
         if ( !transportService.isEnabled() )
         {
             throw new SmsServiceNotEnabledException();
@@ -103,10 +118,17 @@ public class DefaultSmsSender
 
         if ( transportService != null )
         {
-            return transportService.sendMessage( sms, transportService.getDefaultGateway() );
+            message = isWastedSMS( sms );
+            if ( message == null )
+            {
+                message = transportService.sendMessage( sms, transportService.getDefaultGateway() );
+            }
+            return message;
         }
-
-        return "outboundsms_saved";
+        else
+        {
+            return "outboundsms_saved";
+        }
     }
     
     @Transactional
@@ -122,8 +144,8 @@ public class DefaultSmsSender
         if ( transportService != null )
         {
             message = createMessage( null, message, currentUserService.getCurrentUser() );
-            String defaultGatewayId = transportService.getDefaultGateway();
-            return transportService.sendMessage( new OutboundSms( message, phoneNumber ), defaultGatewayId );
+            OutboundSms sms = new OutboundSms( message, phoneNumber );
+            return sendMessage( sms );
         }
 
         return "outboundsms_saved";
@@ -276,17 +298,22 @@ public class DefaultSmsSender
         OutboundSms sms = new OutboundSms();
         sms.setMessage( text );
         sms.setRecipients( recipients );
+        message = isWastedSMS( sms );
 
-        try
+        if( message == null )
         {
-            message = transportService.sendMessage( sms, gateWayId );
-        }
-        catch ( SmsServiceException e )
-        {
-            message = "Unable to send message through sms: " + sms + e.getCause().getMessage();
+            try
+            {
+                message = transportService.sendMessage( sms, gateWayId );
+            }
+            catch ( SmsServiceException e )
+            {
+                message = "Unable to send message through sms: " + sms + e.getCause().getMessage();
 
-            log.warn( "Unable to send message through sms: " + sms, e );
+                log.warn( "Unable to send message through sms: " + sms, e );
+            }
         }
+        
         return message;
     }
 
@@ -315,6 +342,19 @@ public class DefaultSmsSender
         {
             return splitLongUnicodeString( secondTempString, result );
         }
+    }
+    
+    public String isWastedSMS( OutboundSms sms )
+    {
+        List<OutboundSms> listOfRecentOutboundSms = outboundSmsService.getAllOutboundSms( 0, 10 );
+        for( OutboundSms each: listOfRecentOutboundSms )
+        {
+            if( each.getRecipients().equals( sms.getRecipients() )&& each.getMessage().equalsIgnoreCase( sms.getMessage() ) )
+            {
+                return "system is trying to send out wasted SMS";
+            }
+        }
+        return null;
     }
 
     public CurrentUserService getCurrentUserService()
