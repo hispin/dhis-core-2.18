@@ -494,6 +494,11 @@ public abstract class AbstractEventService implements EventService
                 {
                 }
             }
+
+            if ( coordinate.isValid() )
+            {
+                event.setCoordinate( coordinate );
+            }
         }
 
         Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
