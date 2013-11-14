@@ -148,6 +148,11 @@ public class DefaultEventStore implements EventStore
                     catch ( IOException ignored )
                     {
                     }
+
+                    if ( coordinate.isValid() )
+                    {
+                        event.setCoordinate( coordinate );
+                    }
                 }
 
                 events.add( event );
