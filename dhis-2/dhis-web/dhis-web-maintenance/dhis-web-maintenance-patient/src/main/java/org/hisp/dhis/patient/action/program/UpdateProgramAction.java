@@ -443,14 +443,15 @@ public class UpdateProgramAction
                 reminder.setUserGroup( null );
             }
 
-            if ( relatedProgramId != null )
-            {
-                Program relatedProgram = programService.getProgram( relatedProgramId );
-                program.setRelatedProgram( relatedProgram );
-            }
-
             patientReminders.add( reminder );
         }
+
+        if ( relatedProgramId != null )
+        {
+            Program relatedProgram = programService.getProgram( relatedProgramId );
+            program.setRelatedProgram( relatedProgram );
+        }
+
         program.setPatientReminders( patientReminders );
 
         programService.updateProgram( program );

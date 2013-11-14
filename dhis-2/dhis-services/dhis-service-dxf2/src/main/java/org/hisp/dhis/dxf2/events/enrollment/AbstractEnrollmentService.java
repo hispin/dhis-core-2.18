@@ -192,7 +192,7 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollments getEnrollments( Program program, OrganisationUnit organisationUnit )
     {
-        return getEnrollments( programInstanceService.getProgramInstances( program, organisationUnit ) );
+        return getEnrollments( programInstanceService.getProgramInstances( program, organisationUnit, 0, null ) );
     }
 
     @Override

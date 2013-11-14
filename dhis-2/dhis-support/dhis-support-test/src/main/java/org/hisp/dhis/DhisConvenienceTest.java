@@ -970,6 +970,7 @@ public abstract class DhisConvenienceTest
         program.setDateOfEnrollmentDescription( "DateOfEnrollmentDescription" );
         program.setDateOfIncidentDescription( "DateOfIncidentDescription" );
         program.setProgramStages( programStages );
+        program.setType( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
 
         for ( ProgramStage programStage : programStages )
         {
@@ -1077,7 +1078,7 @@ public abstract class DhisConvenienceTest
 
         return patientAttribute;
     }
-    
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @return PatientAttribute
@@ -1092,11 +1093,13 @@ public abstract class DhisConvenienceTest
 
         return patientAttribute;
     }
+
     /**
      * @param uniqueCharacter A unique character to identify the object.
      * @return PatientAttributeOption
      */
-    public static PatientAttributeOption createPatientAttributeOption( char uniqueChar, PatientAttribute patientAttribute )
+    public static PatientAttributeOption createPatientAttributeOption( char uniqueChar,
+        PatientAttribute patientAttribute )
     {
         PatientAttributeOption patientAttributeOption = new PatientAttributeOption();
 
