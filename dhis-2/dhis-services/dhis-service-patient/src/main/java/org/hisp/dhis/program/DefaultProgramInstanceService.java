@@ -171,7 +171,7 @@ public class DefaultProgramInstanceService
 
     public Collection<ProgramInstance> getProgramInstances( Integer status )
     {
-        return programInstanceStore.get( status );
+        return programInstanceStore.getByStatus( status );
     }
 
     public void updateProgramInstance( ProgramInstance programInstance )
@@ -226,11 +226,6 @@ public class DefaultProgramInstanceService
         return programInstanceStore.get( patient, program, status );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit )
-    {
-        return programInstanceStore.get( program, organisationUnit );
-    }
-
     public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit,
         Integer min, Integer max )
     {
@@ -244,7 +239,7 @@ public class DefaultProgramInstanceService
     }
 
     public Collection<ProgramInstance> getProgramInstances( Program program, Collection<Integer> orgunitIds,
-        Date startDate, Date endDate, int min, int max )
+        Date startDate, Date endDate, Integer min, Integer max )
     {
         return programInstanceStore.get( program, orgunitIds, startDate, endDate, min, max );
     }
@@ -547,12 +542,7 @@ public class DefaultProgramInstanceService
     {
         return programInstanceStore.getByStatus( status, program, orgunitIds, startDate, endDate );
     }
-
-    public void removeProgramEnrollment( ProgramInstance programInstance )
-    {
-        programInstanceStore.removeProgramEnrollment( programInstance );
-    }
-
+    
     public Collection<SchedulingProgramObject> getScheduleMesssages()
     {
         Collection<SchedulingProgramObject> result = programInstanceStore

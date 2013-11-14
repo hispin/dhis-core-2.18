@@ -52,7 +52,7 @@ public interface ProgramInstanceStore
      * 
      * @return ProgramInstance list
      */
-    Collection<ProgramInstance> get( Integer status );
+    Collection<ProgramInstance> getByStatus( Integer status );
 
     /**
      * Retrieve program instances on a program
@@ -152,16 +152,6 @@ public interface ProgramInstanceStore
     Collection<ProgramInstance> get( Patient patient, Program program, Integer status );
 
     /**
-     * Retrieve program instances on an orgunit by a program
-     * 
-     * @param program Program
-     * @param organisationUnit Organisation Unit
-     * 
-     * @return ProgramInstance list
-     */
-    Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit );
-
-    /**
      * Retrieve program instances with active status on an orgunit by a program
      * with result limited
      * 
@@ -195,11 +185,13 @@ public interface ProgramInstanceStore
      * @param organisationUnit Organisation Unit
      * @param startDate The start date for retrieving on enrollment-date
      * @param endDate The end date for retrieving on enrollment-date
+     * @param min
+     * @param max
      * 
      * @return ProgramInstance list
      */
     Collection<ProgramInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
-        int min, int max );
+        Integer min, Integer max );
 
     /**
      * Get the number of program instances of a program on an organisation unit
@@ -225,13 +217,6 @@ public interface ProgramInstanceStore
      * @return ProgramInstance list
      */
     int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
-
-    /**
-     * Remove a program instance
-     * 
-     * @param programInstance ProgramInstance
-     */
-    void removeProgramEnrollment( ProgramInstance programInstance );
 
     /**
      * Get the number of program instances of a program which have a certain
