@@ -28,6 +28,8 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -36,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -50,6 +53,8 @@ public class DefaultEventStore implements EventStore
 {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public List<Event> getAll( Program program, OrganisationUnit organisationUnit )
@@ -126,6 +131,26 @@ public class DefaultEventStore implements EventStore
                 event.setOrgUnit( rowSet.getString( "ou_uid" ) );
                 event.setEventDate( rowSet.getString( "psi_executiondate" ) );
 
+                if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
+                {
+                    Coordinate coordinate = new Coordinate();
+                    String psi_coordinates = rowSet.getString( "psi_coordinates" );
+
+                    try
+                    {
+                        List<Double> list = objectMapper.readValue( psi_coordinates, new TypeReference<List<Double>>()
+                        {
+                        } );
+
+                        coordinate.setLongitude( list.get( 0 ) );
+                        coordinate.setLatitude( list.get( 1 ) );
+                    }
+                    catch ( IOException ignored )
+                    {
+                    }
+
+                }
+
                 events.add( event );
             }
 
@@ -143,8 +168,8 @@ public class DefaultEventStore implements EventStore
 
     private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds, Date startDate, Date endDate )
     {
-        String sql = "select p.uid as p_uid, ps.uid as ps_uid, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, psi.executiondate as psi_executiondate," +
-            " psi.completeduser as psi_completeduser," +
+        String sql = "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, "
+            + "psi.executiondate as psi_executiondate, psi.completeduser as psi_completeduser, psi.coordinates as psi_coordinates," +
             " pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid" +
             " from program p" +
             " left join programstage ps on ps.programid=p.programid" +
