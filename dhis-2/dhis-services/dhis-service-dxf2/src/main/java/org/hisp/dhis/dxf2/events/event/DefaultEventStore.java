@@ -149,10 +149,11 @@ public class DefaultEventStore implements EventStore
             " from program p" +
             " left join programstage ps on ps.programid=p.programid" +
             " left join programstageinstance psi on ps.programstageid=psi.programstageid" +
+            " left join programinstance pi on pi.programinstanceid=psi.programinstanceid" +
             " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid)" +
             " left join patientdatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid" +
             " left join dataelement de on pdv.dataelementid=de.dataelementid " +
-            " left join patient pa on pa.patientid=ps.patientid ";
+            " left join patient pa on pa.patientid=pi.patientid ";
 
         boolean startedWhere = false;
 
