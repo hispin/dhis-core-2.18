@@ -348,11 +348,11 @@ public class DataValueSMSListener
 
             if ( StringUtils.equals( dv.getDataElement().getType(), DataElement.VALUE_TYPE_BOOL ) )
             {
-                if ( "Y".equals( value.toUpperCase() ) || "YES".equals( value.toUpperCase() ) )
+                if ( "Y".equals( value.toUpperCase() ) || "YES".equals( value.toUpperCase() ) || "1".equals( value ) )
                 {
                     value = "true";
                 }
-                else if ( "N".equals( value.toUpperCase() ) || "NO".equals( value.toUpperCase() ) )
+                else if ( "N".equals( value.toUpperCase() ) || "NO".equals( value.toUpperCase() ) || "0".equals( value ) )
                 {
                     value = "false";
                 }
@@ -361,6 +361,15 @@ public class DataValueSMSListener
             {
                 try
                 {
+                    if( value.equals( "l" ) )
+                    {
+                        value = "1";
+                    }
+                    else if( value.equals( "o" ) )
+                    {
+                        value = "0";
+                    }
+                        
                     Integer.parseInt( value );
                 }
                 catch ( NumberFormatException e )
