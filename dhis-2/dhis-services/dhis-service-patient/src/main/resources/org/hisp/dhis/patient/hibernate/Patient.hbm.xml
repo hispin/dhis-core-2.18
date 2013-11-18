@@ -30,9 +30,14 @@
 
     <property name="dobType" column="dobType" />
 
-    <set name="identifiers" cascade="all">
+    <set name="identifiers" inverse="true">
       <key column="patientid" />
       <one-to-many class="org.hisp.dhis.patient.PatientIdentifier" />
+    </set>
+    
+    <set name="attributeValues" inverse="true">
+      <key column="patientid" />
+      <one-to-many class="org.hisp.dhis.patientattributevalue.PatientAttributeValue" />
     </set>
     
     <set name="programInstances">

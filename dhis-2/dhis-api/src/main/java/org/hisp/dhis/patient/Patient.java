@@ -38,6 +38,7 @@ import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.user.User;
 
@@ -102,6 +103,8 @@ public class Patient
     private boolean isDead = false;
 
     private Set<PatientIdentifier> identifiers = new HashSet<PatientIdentifier>();
+    
+    private Set<PatientAttributeValue> attributeValues = new HashSet<PatientAttributeValue>();
     
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
     
@@ -208,6 +211,16 @@ public class Patient
         this.identifiers = identifiers;
     }
     
+    public Set<PatientAttributeValue> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
+    public void setAttributeValues( Set<PatientAttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
+    }
+
     public Set<ProgramInstance> getProgramInstances()
     {
         return programInstances;

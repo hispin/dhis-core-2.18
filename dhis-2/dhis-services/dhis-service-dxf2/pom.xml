@@ -11,7 +11,7 @@
 
   <artifactId>dhis-service-dxf2</artifactId>
   <packaging>jar</packaging>
-  <name>DHIS Data Exchange</name>
+  <name>DHIS DXF 2 Data Exchange</name>
 
   <dependencies>
     <dependency>

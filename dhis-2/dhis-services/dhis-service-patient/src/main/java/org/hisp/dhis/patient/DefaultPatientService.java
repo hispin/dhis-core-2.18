@@ -164,7 +164,6 @@ public class DefaultPatientService
         }
 
         return patientid;
-
     }
 
     @Override
