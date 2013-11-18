@@ -182,6 +182,10 @@ public class DefaultAnalyticsTableService
     
     private void populateTables( List<AnalyticsTable> tables )
     {
+        int taskNo = Math.min( getProcessNo(), tables.size() );
+        
+        log.info( "Populate table task number: " + taskNo );
+        
         ConcurrentLinkedQueue<AnalyticsTable> tableQ = new ConcurrentLinkedQueue<AnalyticsTable>( tables );
         
         List<Future<?>> futures = new ArrayList<Future<?>>();
