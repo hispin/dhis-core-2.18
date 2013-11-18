@@ -55,6 +55,24 @@ public class PostgreSQLStatementBuilder
     }
 
     @Override
+    public String getTableOptions( boolean autoVacuum )
+    {
+        String sql = "";
+        
+        if ( !autoVacuum )
+        {
+            sql += "autovacuum_enabled = false";
+        }
+        
+        if ( !sql.isEmpty() )
+        {
+            sql = "with (" + sql + ")";
+        }
+        
+        return sql;
+    }
+    
+    @Override
     public String getRegexpMatch()
     {
         return "~";

@@ -114,7 +114,9 @@ public class JdbcEventAnalyticsTableManager
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate = removeLast( sqlCreate, 1 ) + ")";
+        sqlCreate = removeLast( sqlCreate, 1 ) + ") ";
+
+        sqlCreate += statementBuilder.getTableOptions( false );
         
         log.info( "Create SQL: " + sqlCreate );
         

@@ -55,6 +55,12 @@ public class MySQLStatementBuilder
     }
 
     @Override
+    public String getTableOptions( boolean autoVacuum )
+    {
+        return ""; //TODO implement
+    }
+
+    @Override
     public String getRegexpMatch()
     {
         return "regexp";

@@ -55,6 +55,12 @@ public class HsqlStatementBuilder
     }
 
     @Override
+    public String getTableOptions( boolean autoVacuum )
+    {
+        return "";
+    }
+
+    @Override
     public String getRegexpMatch()
     {
         return "regexp";
