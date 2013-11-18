@@ -116,6 +116,8 @@ public abstract class AbstractJdbcTableManager
     @Transactional
     public List<AnalyticsTable> getTables( Date earliest, Date latest )
     {
+        log.info( "Get tables using earliest: " + earliest + ", latest: " + latest );
+        
         String baseName = getTableName();
         
         List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
