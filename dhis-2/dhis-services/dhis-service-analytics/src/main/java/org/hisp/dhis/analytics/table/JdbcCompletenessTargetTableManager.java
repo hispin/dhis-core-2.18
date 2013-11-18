@@ -81,7 +81,9 @@ public class JdbcCompletenessTargetTableManager
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate += "value double precision)";
+        sqlCreate += "value double precision) ";
+        
+        sqlCreate += statementBuilder.getTableOptions( false );
         
         log.info( "Create SQL: " + sqlCreate );
         

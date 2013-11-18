@@ -100,7 +100,9 @@ public class JdbcAnalyticsTableManager
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate += "daysxvalue " + dbl + ", daysno integer not null, value " + dbl + ")";
+        sqlCreate += "daysxvalue " + dbl + ", daysno integer not null, value " + dbl + ") ";
+        
+        sqlCreate += statementBuilder.getTableOptions( false );
         
         log.info( "Create SQL: " + sqlCreate );
         

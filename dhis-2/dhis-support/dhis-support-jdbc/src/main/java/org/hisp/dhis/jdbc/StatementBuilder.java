@@ -94,6 +94,16 @@ public interface StatementBuilder
     String getVacuum( String table );
     
     /**
+     * Returns a sql statement to include in create table statements with applies
+     * options to the table. Returns an empty string if all options are set to the
+     * default value.
+     * 
+     * @param autoVacuum whether to enable automatic vacuum, default is true.
+     * @return a sql option string.
+     */
+    String getTableOptions( boolean autoVacuum );
+    
+    /**
      * Returns the name of a double column type.
      * @return the name of a double column type.
      */

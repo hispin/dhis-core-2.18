@@ -73,7 +73,9 @@ public class JdbcCompletenessTableManager
             sqlCreate += col[0] + " " + col[1] + ",";
         }
         
-        sqlCreate += "value date)";
+        sqlCreate += "value date) ";
+        
+        sqlCreate += statementBuilder.getTableOptions( false );
         
         log.info( "Create SQL: " + sqlCreate );
         

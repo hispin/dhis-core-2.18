@@ -53,6 +53,12 @@ public class H2StatementBuilder
     {
         return null;
     }
+    
+    @Override
+    public String getTableOptions( boolean autoVacuum )
+    {
+        return "";
+    }
 
     @Override
     public String getRegexpMatch()
