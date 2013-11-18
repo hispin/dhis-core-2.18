@@ -81,6 +81,19 @@ public class PatientAttributeValue
     // hashCode and equals
     // -------------------------------------------------------------------------
 
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( ( patient == null) ? 0 : patient.hashCode() );
+        result = prime * result + ( ( patientAttribute == null) ? 0 : patientAttribute.hashCode() );
+        result = prime * result + ( ( patientAttributeOption == null) ? 0 : patientAttributeOption.hashCode() );
+        result = prime * result + ( ( value == null) ? 0 : value.hashCode() );
+        return result;
+    }
+
     @Override
     public boolean equals( Object object )
     {
@@ -88,44 +101,77 @@ public class PatientAttributeValue
         {
             return true;
         }
-
+        
         if ( object == null )
         {
             return false;
         }
-
-        if ( getClass() != object.getClass() )
+        
+        if ( !getClass().isAssignableFrom( object.getClass() ) )
         {
             return false;
         }
-
+        
         final PatientAttributeValue other = (PatientAttributeValue) object;
-
-        return patientAttribute.equals( other.getPatientAttribute() ) && patient.equals( other.getPatient() );
-
+        
+        if ( patient == null )
+        {
+            if ( other.patient != null )
+            {
+                return false;
+            }
+        }
+        else if ( !patient.equals( other.patient ) )
+        {
+            return false;
+        }
+        
+        if ( patientAttribute == null )
+        {
+            if ( other.patientAttribute != null )
+            {
+                return false;
+            }
+        }
+        else if ( !patientAttribute.equals( other.patientAttribute ) )
+        {
+            return false;
+        }
+        
+        if ( patientAttributeOption == null )
+        {
+            if ( other.patientAttributeOption != null )
+            {
+                return false;
+            }
+        }
+        else if ( !patientAttributeOption.equals( other.patientAttributeOption ) )
+        {
+            return false;
+        }
+        
+        if ( value == null )
+        {
+            if ( other.value != null )
+            {
+                return false;
+            }
+        }
+        else if ( !value.equals( other.value ) )
+        {
+            return false;
+        }
+        
+        return true;
     }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-
-        result = result * prime + patientAttribute.hashCode();
-        result = result * prime + patient.hashCode();
-
-        return result;
-    }
-
+    
     @Override
     public String toString()
     {
-        return "PatientAttributeValue{" +
-            "patientAttribute=" + patientAttribute +
+        return "[Patient attribute=" + patientAttribute +
             ", patient=" + patient +
-            ", value='" + value + '\'' +
-            ", patientAttributeOption=" + patientAttributeOption +
-            '}';
+            ", value='" + value + "'" +
+            ", attribute option=" + patientAttributeOption + "]";
     }
 
     // -------------------------------------------------------------------------

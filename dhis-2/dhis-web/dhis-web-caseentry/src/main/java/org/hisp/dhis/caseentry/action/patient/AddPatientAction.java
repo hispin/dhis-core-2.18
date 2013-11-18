@@ -31,7 +31,9 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -295,7 +297,7 @@ public class AddPatientAction
 
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
 
-        List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
+        Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
 
         PatientAttributeValue attributeValue = null;
 

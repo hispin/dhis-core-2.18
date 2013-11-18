@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -105,8 +106,6 @@ public class PatientServiceTest
 
     private int attributeId;
 
-    private int identifierTypeId;
-
     private Program programA;
 
     private Program programB;
@@ -125,7 +124,7 @@ public class PatientServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnitB );
 
         PatientIdentifierType patientIdentifierType = createPatientIdentifierType( 'A' );
-        identifierTypeId = identifierTypeService.savePatientIdentifierType( patientIdentifierType );
+        identifierTypeService.savePatientIdentifierType( patientIdentifierType );
 
         patientAttribute = createPatientAttribute( 'A' );
         attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
@@ -322,7 +321,7 @@ public class PatientServiceTest
     }
 
     @Test
-    public void testGetPatientsByAttributeAndIdentifier()
+    public void testGetPatientsByAttribute()
     {
         patientService.savePatient( patientA2 );
         patientService.savePatient( patientA3 );
@@ -330,7 +329,7 @@ public class PatientServiceTest
         patientService.savePatient( patientB2 );
 
         PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA3, patientAttribute );
-        List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
+        Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
         patientAttributeValues.add( attributeValue );
 
         patientService.createPatient( patientA3, null, null, patientAttributeValues );
@@ -340,10 +339,9 @@ public class PatientServiceTest
         assertEquals( 1, patients.size() );
         assertTrue( patients.contains( patientA3 ) );
         
-        /*
-        patients = patientService.getPatient( identifierTypeId, null, "IdentifierA" );
-        assertEquals( 1, patients.size() );
-        assertTrue( patients.contains( patientA3 ) );*/
+        Patient patient = patients.iterator().next();
+        assertEquals( 1, patient.getAttributeValues().size() );
+        assertTrue( patient.getAttributeValues().contains( attributeValue ) );
     }
 
     @Test
@@ -420,7 +418,7 @@ public class PatientServiceTest
 
         patientA1.setUnderAge( true );
         PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA1, patientAttribute );
-        List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
+        Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
         patientAttributeValues.add( attributeValue );
 
         int idA = patientService.createPatient( patientA1, idB, relationshipTypeId, patientAttributeValues );
@@ -438,16 +436,16 @@ public class PatientServiceTest
         patientA3.setUnderAge( true );
         patientA3.setName( "B" );
         PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA3, patientAttribute );
-        List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
+        Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
         patientAttributeValues.add( attributeValue );
         int idA = patientService.createPatient( patientA3, idB, relationshipTypeId, patientAttributeValues );
         assertNotNull( patientService.getPatient( idA ) );
 
         attributeValue.setValue( "AttributeB" );
-        patientAttributeValues = new ArrayList<PatientAttributeValue>();
-        patientAttributeValues.add( attributeValue );
+        List<PatientAttributeValue> attributeValues = new ArrayList<PatientAttributeValue>(); //TODO use set
+        attributeValues.add( attributeValue );
 
-        patientService.updatePatient( patientA3, idB, relationshipTypeId, patientAttributeValues,  new ArrayList<PatientAttributeValue>(),  new ArrayList<PatientAttributeValue>() );
+        patientService.updatePatient( patientA3, idB, relationshipTypeId, attributeValues, new ArrayList<PatientAttributeValue>(), new ArrayList<PatientAttributeValue>() );
         assertEquals( "B", patientService.getPatient( idA ).getName() );
     }
 

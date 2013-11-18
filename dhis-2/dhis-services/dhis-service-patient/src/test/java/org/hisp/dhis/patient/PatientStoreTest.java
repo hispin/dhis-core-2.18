@@ -373,5 +373,4 @@ public class PatientStoreTest
         assertEquals( 0, validatePatientA1 );
         assertEquals( 2, validatePatientB1 );
     }
-
 }

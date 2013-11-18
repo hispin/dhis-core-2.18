@@ -38,6 +38,7 @@ import org.hisp.dhis.program.Program;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -247,12 +248,12 @@ public interface PatientService
      * @param patient Patient
      * @param representativeId The id of patient who is representative
      * @param relationshipTypeId The id of relationship type defined
-     * @param patientAttributeValues List of attribute values
+     * @param attributeValues Set of attribute values
      * 
      * @return The error code after registering patient
      */
     int createPatient( Patient patient, Integer representativeId, Integer relationshipTypeId,
-        List<PatientAttributeValue> patientAttributeValues );
+        Set<PatientAttributeValue> attributeValues );
 
     /**
      * Update information of an patient existed

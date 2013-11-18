@@ -75,6 +75,76 @@ public class PatientIdentifier
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ( ( identifierType == null) ? 0 : identifierType.hashCode() );
+        result = prime * result + ( ( patient == null) ? 0 : patient.hashCode() );
+        result = prime * result + ( ( identifier == null) ? 0 : identifier.hashCode() );
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( !super.equals( object ) )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        final PatientIdentifier other = (PatientIdentifier) object;
+        
+        if ( identifierType == null )
+        {
+            if ( other.identifierType != null )
+            {
+                return false;
+            }
+        }
+        else if ( !identifierType.equals( other.identifierType ) )
+        {
+            return false;
+        }
+        
+        if ( patient == null )
+        {
+            if ( other.patient != null )
+            {
+                return false;
+            }
+        }
+        else if ( !patient.equals( other.patient ) )
+        {
+            return false;
+        }
+
+        if ( identifier == null )
+        {
+            if ( other.identifier != null )
+            {
+                return false;
+            }
+        }
+        else if ( !identifier.equals( other.identifier ) )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class } )
