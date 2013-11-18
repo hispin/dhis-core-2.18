@@ -400,6 +400,30 @@ public class Patient
 
         return AGE_TYPE_DAY;
     }
+    
+    public void addIdentifier( PatientIdentifier identifier )
+    {
+        identifiers.add( identifier );
+        identifier.setPatient( this );
+    }
+    
+    public void removeIdentifier( PatientIdentifier identifier )
+    {
+        identifiers.remove( identifier );
+        identifier.setPatient( null );
+    }
+    
+    public void addAttributeValue( PatientAttributeValue attributeValue )
+    {
+        attributeValues.add( attributeValue );
+        attributeValue.setPatient( this );
+    }
+    
+    public void removeAttributeValue( PatientAttributeValue attributeValue )
+    {
+        attributeValues.remove( attributeValue );
+        attributeValue.setPatient( null );
+    }
 
     // -------------------------------------------------------------------------
     // Getter && Setter
