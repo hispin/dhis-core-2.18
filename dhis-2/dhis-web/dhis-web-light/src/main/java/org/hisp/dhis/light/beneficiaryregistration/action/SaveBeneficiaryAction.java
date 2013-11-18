@@ -335,7 +335,7 @@ public class SaveBeneficiaryAction
         Patient patient = new Patient();
         Set<PatientIdentifier> patientIdentifierSet = new HashSet<PatientIdentifier>();
         Set<PatientAttribute> patientAttributeSet = new HashSet<PatientAttribute>();
-        List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
+        Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
 
         patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         patientAttributes = patientAttributeService.getAllPatientAttributes();

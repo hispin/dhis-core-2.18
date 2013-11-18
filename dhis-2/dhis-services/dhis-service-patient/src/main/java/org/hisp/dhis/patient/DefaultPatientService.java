@@ -125,17 +125,19 @@ public class DefaultPatientService
 
     @Override
     public int createPatient( Patient patient, Integer representativeId, Integer relationshipTypeId,
-        List<PatientAttributeValue> patientAttributeValues )
+        Set<PatientAttributeValue> patientAttributeValues )
     {
-        int patientid = savePatient( patient );
+        int id = savePatient( patient );
 
         for ( PatientAttributeValue pav : patientAttributeValues )
         {
             patientAttributeValueService.savePatientAttributeValue( pav );
+            patient.getAttributeValues().add( pav );
         }
-        // -------------------------------------------------------------------------
-        // If underAge = true : save representative information.
-        // -------------------------------------------------------------------------
+        
+        // ---------------------------------------------------------------------
+        // If under age, save representative information
+        // ---------------------------------------------------------------------
 
         if ( patient.isUnderAge() )
         {
@@ -162,8 +164,10 @@ public class DefaultPatientService
                 }
             }
         }
+        
+        updatePatient( patient ); // Save patient to update associations
 
-        return patientid;
+        return id;
     }
 
     @Override
@@ -327,6 +331,7 @@ public class DefaultPatientService
         {
             return patientStore.getByNames( value, null, null );
         }
+        
         return null;
     }
 
