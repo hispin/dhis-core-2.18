@@ -40,6 +40,7 @@ import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -185,22 +186,25 @@ public class DefaultEventStore implements EventStore
                     Coordinate coordinate = new Coordinate();
                     String psi_coordinates = rowSet.getString( "psi_coordinates" );
 
-                    try
+                    if ( !StringUtils.isEmpty( psi_coordinates ) )
                     {
-                        List<Double> list = objectMapper.readValue( psi_coordinates, new TypeReference<List<Double>>()
+                        try
                         {
-                        } );
+                            List<Double> list = objectMapper.readValue( psi_coordinates, new TypeReference<List<Double>>()
+                            {
+                            } );
 
-                        coordinate.setLongitude( list.get( 0 ) );
-                        coordinate.setLatitude( list.get( 1 ) );
-                    }
-                    catch ( IOException ignored )
-                    {
-                    }
+                            coordinate.setLongitude( list.get( 0 ) );
+                            coordinate.setLatitude( list.get( 1 ) );
+                        }
+                        catch ( IOException ignored )
+                        {
+                        }
 
-                    if ( coordinate.isValid() )
-                    {
-                        event.setCoordinate( coordinate );
+                        if ( coordinate.isValid() )
+                        {
+                            event.setCoordinate( coordinate );
+                        }
                     }
                 }
 
