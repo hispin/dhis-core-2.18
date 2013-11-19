@@ -93,22 +93,7 @@ public class DefineDataSetAssociationsAction
         throws Exception
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( dataSet.getSources() );
-
-        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
-
-        for ( OrganisationUnit organisationUnit : selectionTreeManager.getRootOrganisationUnits() )
-        {
-            userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
-        }
-
-        organisationUnits.removeAll( userOrganisationUnits );
-        organisationUnits.addAll( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
-
-        dataSet.updateOrganisationUnits( organisationUnits );
-
-        dataSetService.updateDataSet( dataSet );
+        dataSetService.mergeWithCurrentUserOrganisationUnits( dataSet, selectionTreeManager.getReloadedSelectedOrganisationUnits() );
 
         return SUCCESS;
     }
