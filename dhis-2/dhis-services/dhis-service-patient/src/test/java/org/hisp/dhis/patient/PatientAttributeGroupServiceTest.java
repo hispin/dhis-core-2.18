@@ -138,7 +138,6 @@ public class PatientAttributeGroupServiceTest
         int idA = attributeGroupService.savePatientAttributeGroup( attributeGroupA );
 
         assertNotNull( attributeGroupService.getPatientAttributeGroup( idA ) );
-
         assertEquals( attributeGroupA.getName(),
             attributeGroupService.getPatientAttributeGroupByName( "PatientAttributeGroupA" ).getName() );
     }
