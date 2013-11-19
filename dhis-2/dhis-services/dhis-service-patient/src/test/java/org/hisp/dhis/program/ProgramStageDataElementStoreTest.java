@@ -39,7 +39,6 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
@@ -64,9 +63,6 @@ public class ProgramStageDataElementStoreTest
 
     @Autowired
     private ProgramService programService;
-
-    @Autowired
-    private DataEntryFormService dataEntryFormService;
 
     @Autowired
     private ProgramStageService programStageService;

@@ -305,7 +305,7 @@ public class LoadDataEntryAction
 
         if ( programStage.getDataEntryType().equals( ProgramStage.TYPE_SECTION ) )
         {
-            sections = new ArrayList<ProgramStageSection>( programStageSectionService.getProgramStages( programStage ) );
+            sections = new ArrayList<ProgramStageSection>( programStage.getProgramStageSections() );
 
             Collections.sort( sections, new ProgramStageSectionSortOrderComparator() );
         }

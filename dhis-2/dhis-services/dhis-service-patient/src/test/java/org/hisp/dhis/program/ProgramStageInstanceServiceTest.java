@@ -44,7 +44,6 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -72,7 +71,7 @@ public class ProgramStageInstanceServiceTest
     private ProgramStageInstanceService programStageInstanceService;
 
     @Autowired
-    private ProgramStageDataElementStore programStageDataElementStore;
+    private ProgramStageDataElementService programStageDataElementService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -82,9 +81,6 @@ public class ProgramStageInstanceServiceTest
 
     @Autowired
     private ProgramService programService;
-
-    @Autowired
-    private DataEntryFormService dataEntryFormService;
 
     @Autowired
     private ProgramStageService programStageService;
@@ -221,10 +217,10 @@ public class ProgramStageInstanceServiceTest
         stageDataElementC = new ProgramStageDataElement( stageB, dataElementA, false, 1 );
         stageDataElementD = new ProgramStageDataElement( stageB, dataElementB, false, 2 );
 
-        programStageDataElementStore.save( stageDataElementA );
-        programStageDataElementStore.save( stageDataElementB );
-        programStageDataElementStore.save( stageDataElementC );
-        programStageDataElementStore.save( stageDataElementD );
+        programStageDataElementService.addProgramStageDataElement( stageDataElementA );
+        programStageDataElementService.addProgramStageDataElement( stageDataElementB );
+        programStageDataElementService.addProgramStageDataElement( stageDataElementC );
+        programStageDataElementService.addProgramStageDataElement( stageDataElementD );
 
         /**
          * Program B
