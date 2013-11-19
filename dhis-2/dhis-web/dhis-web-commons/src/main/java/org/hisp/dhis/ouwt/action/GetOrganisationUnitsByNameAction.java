@@ -97,8 +97,6 @@ public class GetOrganisationUnitsByNameAction
     public String execute()
         throws Exception
     {
-        // organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetweenByName( term, 0, MAX ) );
-
         term = term.toLowerCase();
 
         Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
