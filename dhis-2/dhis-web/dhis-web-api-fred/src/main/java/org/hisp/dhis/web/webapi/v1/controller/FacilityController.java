@@ -394,7 +394,8 @@ public class FacilityController
 
             for ( String parent : parentList )
             {
-                if ( organisationUnit.getParent() != null && organisationUnit.getParent().getUid().equals( parent ) )
+                if ( organisationUnit.getParent() != null &&
+                    (organisationUnit.getParent().getUid().equals( parent ) || organisationUnit.getParent().getUuid().equals( parent )) )
                 {
                     shouldRemove = false;
                     break;
