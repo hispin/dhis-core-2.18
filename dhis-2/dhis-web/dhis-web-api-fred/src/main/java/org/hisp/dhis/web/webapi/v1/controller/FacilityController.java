@@ -256,6 +256,8 @@ public class FacilityController
         @RequestParam( value = "active", required = false ) List<Boolean> activeList,
         @RequestParam( value = "name", required = false ) List<String> nameList,
         @RequestParam( value = "uuid", required = false ) List<String> uuidList,
+        @RequestParam( value = "properties.parent", required = false ) List<String> parentList,
+        @RequestParam( value = "properties.level", required = false ) List<String> levelList,
         HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         Facilities facilities = new Facilities();
@@ -280,6 +282,8 @@ public class FacilityController
         filterByActiveList( activeList, allOrganisationUnits );
         filterByNameList( nameList, allOrganisationUnits );
         filterByUuidList( uuidList, allOrganisationUnits );
+        filterByPropertiesParent( parentList, allOrganisationUnits );
+        filterByPropertiesLevel( levelList, allOrganisationUnits );
 
         filterByLimit( offset, limitValue, allOrganisationUnits );
 
@@ -327,6 +331,76 @@ public class FacilityController
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( allOrganisationUnits.subList( offset, offset + limitValue ) );
         allOrganisationUnits.clear();
         allOrganisationUnits.addAll( organisationUnits );
+    }
+
+    private void filterByPropertiesLevel( List<String> levelList, List<OrganisationUnit> allOrganisationUnits )
+    {
+        if ( levelList == null || levelList.isEmpty() )
+        {
+            return;
+        }
+
+        Iterator<OrganisationUnit> organisationUnitIterator = allOrganisationUnits.iterator();
+
+        while ( organisationUnitIterator.hasNext() )
+        {
+            OrganisationUnit organisationUnit = organisationUnitIterator.next();
+
+            boolean shouldRemove = true;
+
+            for ( String level : levelList )
+            {
+                try
+                {
+                    int l = Integer.parseInt( level );
+
+                    if ( organisationUnit.getOrganisationUnitLevel() == l )
+                    {
+                        shouldRemove = false;
+                        break;
+                    }
+                }
+                catch ( NumberFormatException ignored )
+                {
+                }
+            }
+
+            if ( shouldRemove )
+            {
+                organisationUnitIterator.remove();
+            }
+        }
+    }
+
+    private void filterByPropertiesParent( List<String> parentList, List<OrganisationUnit> allOrganisationUnits )
+    {
+        if ( parentList == null || parentList.isEmpty() )
+        {
+            return;
+        }
+
+        Iterator<OrganisationUnit> organisationUnitIterator = allOrganisationUnits.iterator();
+
+        while ( organisationUnitIterator.hasNext() )
+        {
+            OrganisationUnit organisationUnit = organisationUnitIterator.next();
+
+            boolean shouldRemove = true;
+
+            for ( String parent : parentList )
+            {
+                if ( organisationUnit.getParent() != null && organisationUnit.getParent().getUid().equals( parent ) )
+                {
+                    shouldRemove = false;
+                    break;
+                }
+            }
+
+            if ( shouldRemove )
+            {
+                organisationUnitIterator.remove();
+            }
+        }
     }
 
     private void filterByUuidList( List<String> uuidList, List<OrganisationUnit> allOrganisationUnits )
