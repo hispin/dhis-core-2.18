@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -76,9 +77,9 @@ public class ProgramInstanceServiceTest
 
     @Autowired
     private ProgramStageService programStageService;
-    
+
     @Autowired
-    private SmsConfigurationManager smsConfigurationManager; 
+    private SmsConfigurationManager smsConfigurationManager;
 
     private Date incidenDate;
 
@@ -107,10 +108,10 @@ public class ProgramInstanceServiceTest
     private Collection<Integer> orgunitIds;
 
     private MockI18nFormat mockFormat;
-    
+
     @Autowired
     JdbcTemplate jdbcTemplate;
-    
+
     @Override
     public void setUpTest()
     {
@@ -127,24 +128,23 @@ public class ProgramInstanceServiceTest
         orgunitIds.add( idB );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
-        
+
         PatientReminder patientReminderA = new PatientReminder( "A", 0, "Test program message template "
             + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
             PatientReminder.SEND_TO_PATIENT, null, PatientReminder.MESSAGE_TYPE_BOTH );
-        
+
         PatientReminder patientReminderB = new PatientReminder( "B", 0, "Test program message template "
             + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
             PatientReminder.SEND_TO_PATIENT, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             PatientReminder.MESSAGE_TYPE_BOTH );
-        
+
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         patientReminders.add( patientReminderA );
         patientReminders.add( patientReminderB );
         programA.setPatientReminders( patientReminders );
-        
-        programService.addProgram( programA ); 
-        
-        
+
+        programService.addProgram( programA );
+
         ProgramStage stageA = new ProgramStage( "StageA", programA );
         programStageService.saveProgramStage( stageA );
 
@@ -566,13 +566,13 @@ public class ProgramInstanceServiceTest
         this.createSMSConfiguration();
         SmsConfiguration smsConfiguration = new SmsConfiguration();
         smsConfiguration.setEnabled( true );
-        
+
         programInstanceService.addProgramInstance( programInstanceB );
 
-        Collection<OutboundSms> outboundSmsList = programInstanceService.sendMessages( programInstanceA,
+        Collection<MessageConversation> messages = programInstanceService.sendMessageConversations( programInstanceA,
             PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
-        assertEquals( 1, outboundSmsList.size() );
-        assertEquals( "Test program message template NameA", outboundSmsList.iterator().next().getMessage() );
+        assertEquals( 1, messages.size() );
+        assertEquals( "Test program message template NameA", messages.iterator().next().getMessages().get( 0 ).getText() );
     }
 
     @Test
@@ -619,20 +619,21 @@ public class ProgramInstanceServiceTest
         assertEquals( ProgramInstance.STATUS_CANCELLED, programInstanceService.getProgramInstance( idA ).getStatus() );
         assertEquals( ProgramInstance.STATUS_CANCELLED, programInstanceService.getProgramInstance( idD ).getStatus() );
     }
-    
-    private void createSMSConfiguration() {
+
+    private void createSMSConfiguration()
+    {
         BulkSmsGatewayConfig bulkGatewayConfig = new BulkSmsGatewayConfig();
         bulkGatewayConfig.setName( "bulksms" );
         bulkGatewayConfig.setPassword( "bulk" );
         bulkGatewayConfig.setUsername( "bulk" );
         bulkGatewayConfig.setRegion( "uk" );
         bulkGatewayConfig.setDefault( true );
-        
+
         SmsConfiguration smsConfig = new SmsConfiguration();
         smsConfig.setPollingInterval( 3000 );
         smsConfig.getGateways().add( bulkGatewayConfig );
         smsConfig.setEnabled( true );
         smsConfigurationManager.updateSmsConfiguration( smsConfig );
-        
+
     }
 }

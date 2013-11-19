@@ -528,7 +528,7 @@ public class DefaultProgramStageInstanceService
     {
         Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
 
-        Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
+        Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders(); 
         for ( PatientReminder rm : reminders )
         {
             if ( rm != null
@@ -616,7 +616,7 @@ public class DefaultProgramStageInstanceService
      * registration.
      */
     @Override
-    public void createProgramStageInstance( Patient patient, Program program, Date executionDate,
+    public ProgramStageInstance createProgramStageInstance( Patient patient, Program program, Date executionDate,
         OrganisationUnit organisationUnit )
     {
         ProgramStage programStage = null;
@@ -670,6 +670,8 @@ public class DefaultProgramStageInstanceService
         programStageInstance.setOrganisationUnit( organisationUnit );
 
         addProgramStageInstance( programStageInstance );
+        
+        return programStageInstance;
     }
 
     // -------------------------------------------------------------------------
