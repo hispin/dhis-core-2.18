@@ -32,11 +32,14 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.user.CurrentUserService;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -80,6 +83,22 @@ public class DefaultDataSetService
     public void setI18nService( I18nService service )
     {
         i18nService = service;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    @Autowired
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -410,5 +429,25 @@ public class DefaultDataSetService
         boolean expired = expiryDays != DataSet.NO_EXPIRY && new DateTime( period.getEndDate() ).plusDays( expiryDays ).isBefore( new DateTime( now ) );
 
         return expired && lockExceptionStore.getCount( dataElement, period, organisationUnit ) == 0l;
+    }
+
+    @Override
+    public void mergeWithCurrentUserOrganisationUnits( DataSet dataSet, Collection<OrganisationUnit> mergeOrganisationUnits )
+    {
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( dataSet.getSources() );
+
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+
+        for ( OrganisationUnit organisationUnit : currentUserService.getCurrentUser().getOrganisationUnits() )
+        {
+            userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+        }
+
+        organisationUnits.removeAll( userOrganisationUnits );
+        organisationUnits.addAll( mergeOrganisationUnits );
+
+        dataSet.updateOrganisationUnits( organisationUnits );
+
+        updateDataSet( dataSet );
     }
 }

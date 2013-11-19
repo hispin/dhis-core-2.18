@@ -354,4 +354,11 @@ public interface DataSetService
      * @return true or false indicating whether the system is locked or not.
      */
     boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit, Date now );
+
+    /**
+     * Take
+     * @param dataSet
+     * @param organisationUnits
+     */
+    void mergeWithCurrentUserOrganisationUnits( DataSet dataSet, Collection<OrganisationUnit> organisationUnits );
 }
