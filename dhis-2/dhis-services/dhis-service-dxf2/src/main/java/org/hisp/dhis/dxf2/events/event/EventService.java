@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -58,13 +59,21 @@ public interface EventService
 
     Events getEvents( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
 
+    Events getEvents( Program program, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate );
+
     Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
 
     Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate );
 
+    Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate );
+
     Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit );
 
+    Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person );
+
     Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+
+    Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate );
 
     Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate );
 
