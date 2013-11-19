@@ -36,6 +36,8 @@ import org.hisp.dhis.dxf2.events.event.Event;
 import org.hisp.dhis.dxf2.events.event.EventService;
 import org.hisp.dhis.dxf2.events.event.Events;
 import org.hisp.dhis.dxf2.events.event.ImportEventTask;
+import org.hisp.dhis.dxf2.events.person.Person;
+import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -73,7 +75,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = EventController.RESOURCE_PATH)
+@RequestMapping( value = EventController.RESOURCE_PATH )
 public class EventController
 {
     public static final String RESOURCE_PATH = "/events";
@@ -94,29 +96,44 @@ public class EventController
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private PersonService personService;
+
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
+    @RequestMapping( value = "", method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public String getEvents(
-        @RequestParam(value = "program", required = false) String programUid,
-        @RequestParam(value = "programStage", required = false) String programStageUid,
-        @RequestParam(value = "orgUnit") String orgUnitUid,
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+        @RequestParam( value = "program", required = false ) String programUid,
+        @RequestParam( value = "programStage", required = false ) String programStageUid,
+        @RequestParam( value = "person", required = false ) String personUid,
+        @RequestParam( value = "orgUnit" ) String orgUnitUid,
+        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Program program = manager.get( Program.class, programUid );
         ProgramStage programStage = manager.get( ProgramStage.class, programStageUid );
         OrganisationUnit organisationUnit;
+        Person person = null;
 
         if ( program == null && programStage == null )
         {
             throw new HttpClientErrorException( HttpStatus.BAD_REQUEST,
                 "Both program and programStage is invalid or missing, needs at least one." );
+        }
+
+        if ( personUid != null )
+        {
+            person = personService.getPerson( personUid );
+
+            if ( person == null )
+            {
+                throw new NotFoundException( "Person", personUid );
+            }
         }
 
         organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
@@ -141,15 +158,36 @@ public class EventController
 
         if ( program != null && programStage != null )
         {
-            events = eventService.getEvents( program, programStage, organisationUnit, startDate, endDate );
+            if ( person != null )
+            {
+                events = eventService.getEvents( program, programStage, organisationUnit, person, startDate, endDate );
+            }
+            else
+            {
+                events = eventService.getEvents( program, programStage, organisationUnit, startDate, endDate );
+            }
         }
         else if ( program != null )
         {
-            events = eventService.getEvents( program, organisationUnit, startDate, endDate );
+            if ( person != null )
+            {
+                events = eventService.getEvents( program, organisationUnit, person, startDate, endDate );
+            }
+            else
+            {
+                events = eventService.getEvents( program, organisationUnit, startDate, endDate );
+            }
         }
         else
         {
-            events = eventService.getEvents( programStage, organisationUnit, startDate, endDate );
+            if ( person != null )
+            {
+                events = eventService.getEvents( programStage, organisationUnit, person, startDate, endDate );
+            }
+            else
+            {
+                events = eventService.getEvents( programStage, organisationUnit, startDate, endDate );
+            }
         }
 
         if ( options.hasLinks() )
@@ -166,9 +204,9 @@ public class EventController
         return "events";
     }
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
-    public String getEvent( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    public String getEvent( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -195,8 +233,8 @@ public class EventController
     // CREATE
     // -------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/xml")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public void postXmlEvent( HttpServletResponse response, HttpServletRequest request, ImportOptions importOptions ) throws Exception
     {
         InputStream inputStream = StreamUtils.wrapAndCheckCompressionFormat( request.getInputStream() );
@@ -240,8 +278,8 @@ public class EventController
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
     public void postJsonEvent( HttpServletResponse response, HttpServletRequest request, ImportOptions importOptions ) throws Exception
     {
         InputStream inputStream = StreamUtils.wrapAndCheckCompressionFormat( request.getInputStream() );
@@ -290,9 +328,9 @@ public class EventController
     // UPDATE
     // -------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" })
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
-    public void putXmlEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid ) throws IOException
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    public void putXmlEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws IOException
     {
         Event event = eventService.getEvent( uid );
 
@@ -309,9 +347,9 @@ public class EventController
         ContextUtils.okResponse( response, "Event updated: " + uid );
     }
 
-    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json")
-    @PreAuthorize("hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')")
-    public void putJsonEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid ) throws IOException
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DATAVALUE_ADD')" )
+    public void putJsonEvent( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws IOException
     {
         Event event = eventService.getEvent( uid );
 

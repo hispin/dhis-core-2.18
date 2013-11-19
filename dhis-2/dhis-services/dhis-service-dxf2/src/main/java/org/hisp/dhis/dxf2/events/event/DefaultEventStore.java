@@ -30,6 +30,7 @@ package org.hisp.dhis.dxf2.events.event;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -59,53 +60,83 @@ public class DefaultEventStore implements EventStore
     @Override
     public List<Event> getAll( Program program, OrganisationUnit organisationUnit )
     {
-        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), null, null );
+        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), null, null, null );
     }
 
     @Override
     public List<Event> getAll( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), startDate, endDate );
+        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), null, startDate, endDate );
+    }
+
+    @Override
+    public List<Event> getAll( Program program, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    {
+        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), person, startDate, endDate );
     }
 
     @Override
     public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
-        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null );
+        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null, null );
     }
 
     @Override
     public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
-        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), startDate, endDate );
+        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, startDate, endDate );
+    }
+
+    @Override
+    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    {
+        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), person, startDate, endDate );
     }
 
     @Override
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null );
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null, null );
+    }
+
+    @Override
+    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person )
+    {
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), person, null, null );
     }
 
     @Override
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), startDate, endDate );
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, startDate, endDate );
+    }
+
+    @Override
+    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    {
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), person, startDate, endDate );
     }
 
     @Override
     public List<Event> getAll( Program program, List<ProgramStage> programStages, OrganisationUnit organisationUnit )
     {
-        return getAll( Arrays.asList( program ), programStages, Arrays.asList( organisationUnit ), null, null );
+        return getAll( Arrays.asList( program ), programStages, Arrays.asList( organisationUnit ), null, null, null );
     }
 
     @Override
     public List<Event> getAll( Program program, List<ProgramStage> programStages, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), programStages, Arrays.asList( organisationUnit ), startDate, endDate );
+        return getAll( Arrays.asList( program ), programStages, Arrays.asList( organisationUnit ), null, startDate, endDate );
     }
 
     @Override
     public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate )
+    {
+        return getAll( programs, programStages, organisationUnits, null, startDate, endDate );
+    }
+
+    @Override
+    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Person person, Date startDate, Date endDate )
     {
         List<Event> events = new ArrayList<Event>();
         String sql = buildSql( getIdList( programs ), getIdList( programStages ), getIdList( organisationUnits ),

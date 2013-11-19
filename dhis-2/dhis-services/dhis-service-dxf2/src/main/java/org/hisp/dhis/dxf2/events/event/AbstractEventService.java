@@ -34,6 +34,7 @@ import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.InputValidationService;
+import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -313,6 +314,16 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
+    public Events getEvents( Program program, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    {
+        List<Event> eventList = eventStore.getAll( program, organisationUnit, person, startDate, endDate );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
     public Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
         List<Event> eventList = eventStore.getAll( programStage, organisationUnit );
@@ -333,6 +344,16 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
+    public Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    {
+        List<Event> eventList = eventStore.getAll( programStage, organisationUnit, person, startDate, endDate );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
     public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit )
     {
         List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit );
@@ -343,9 +364,29 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
+    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person )
+    {
+        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, person );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
     public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
         List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, startDate, endDate );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
+    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    {
+        List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, person, startDate, endDate );
         Events events = new Events();
         events.setEvents( eventList );
 
