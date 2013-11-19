@@ -31,6 +31,7 @@ package org.hisp.dhis.web.webapi.v1.validation.constraint;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.webapi.v1.validation.constraint.annotation.ValidProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,6 +47,9 @@ public class PropertiesValidator implements ConstraintValidator<ValidProperties,
 {
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     @Override
     public void initialize( ValidProperties constraintAnnotation )
@@ -90,20 +94,29 @@ public class PropertiesValidator implements ConstraintValidator<ValidProperties,
     {
         String parentId = (String) values.get( "parent" );
 
-        if ( parentId != null )
+        if ( parentId == null )
         {
-            OrganisationUnit organisationUnit = identifiableObjectManager.get( OrganisationUnit.class, parentId );
-
-            if ( organisationUnit == null )
-            {
-                return false;
-            }
+            return true;
         }
 
-        return true;
+        OrganisationUnit organisationUnit = identifiableObjectManager.get( OrganisationUnit.class, parentId );
+
+        if ( organisationUnit != null )
+        {
+            return true;
+        }
+
+        organisationUnit = organisationUnitService.getOrganisationUnitByUuid( parentId );
+
+        if ( organisationUnit != null )
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     private boolean validateDataSets( Map<String, Object> values )
     {
         Collection<String> dataSetIds = (Collection<String>) values.get( "dataSets" );

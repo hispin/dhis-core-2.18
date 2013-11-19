@@ -106,7 +106,16 @@ public class FacilityToOrganisationUnitConverter implements Converter<Facility, 
 
         if ( facility.getProperties() != null )
         {
-            organisationUnit.setParent( organisationUnitService.getOrganisationUnit( (String) facility.getProperties().get( "parent" ) ) );
+            String parentId = (String) facility.getProperties().get( "parent" );
+
+            OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
+
+            if ( parent == null )
+            {
+                parent = organisationUnitService.getOrganisationUnitByUuid( parentId );
+            }
+
+            organisationUnit.setParent( parent );
 
             Collection<String> dataSets = (Collection<String>) facility.getProperties().get( "dataSets" );
 
