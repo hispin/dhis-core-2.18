@@ -32,6 +32,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.system.util.TextUtils;
@@ -54,6 +56,9 @@ public class DefaultEventStore implements EventStore
 {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private PatientService patientService;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -139,8 +144,21 @@ public class DefaultEventStore implements EventStore
     public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Person person, Date startDate, Date endDate )
     {
         List<Event> events = new ArrayList<Event>();
+
+        Integer personId = null;
+
+        if ( person != null )
+        {
+            Patient patient = patientService.getPatient( person.getPerson() );
+
+            if ( patient != null )
+            {
+                personId = patient.getId();
+            }
+        }
+
         String sql = buildSql( getIdList( programs ), getIdList( programStages ), getIdList( organisationUnits ),
-            startDate, endDate );
+            personId, startDate, endDate );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -201,7 +219,7 @@ public class DefaultEventStore implements EventStore
         return events;
     }
 
-    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds, Date startDate, Date endDate )
+    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds, Integer personId, Date startDate, Date endDate )
     {
         String sql = "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, "
             + "psi.executiondate as psi_executiondate, psi.completeduser as psi_completeduser, psi.coordinates as psi_coordinates," +
@@ -216,6 +234,19 @@ public class DefaultEventStore implements EventStore
             " left join patient pa on pa.patientid=pi.patientid ";
 
         boolean startedWhere = false;
+
+        if ( personId != null )
+        {
+            if ( startedWhere )
+            {
+                sql += " and pa.patientid=" + personId;
+            }
+            else
+            {
+                sql += " where pa.patientid=" + personId;
+                startedWhere = true;
+            }
+        }
 
         if ( !programIds.isEmpty() )
         {
