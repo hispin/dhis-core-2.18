@@ -106,6 +106,7 @@ public class PatientReminderServiceTest
 
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
+        
         Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>();
         orgUnits.add( organisationUnit );
 

@@ -118,16 +118,12 @@ public class ProgramStageDataElementServiceTest
         dataElementService.addDataElement( dataElementB );
 
         stageDataElementA = new ProgramStageDataElement( stageA, dataElementA, false, 1 );
-        programStageDataElementService.addProgramStageDataElement( stageDataElementA );
 
         stageDataElementB = new ProgramStageDataElement( stageA, dataElementB, false, 2 );
-        programStageDataElementService.addProgramStageDataElement( stageDataElementB );
 
         stageDataElementC = new ProgramStageDataElement( stageB, dataElementA, false, 1 );
-        programStageDataElementService.addProgramStageDataElement( stageDataElementA );
 
         stageDataElementD = new ProgramStageDataElement( stageB, dataElementB, false, 2 );
-        programStageDataElementService.addProgramStageDataElement( stageDataElementB );
     }
 
     @Test

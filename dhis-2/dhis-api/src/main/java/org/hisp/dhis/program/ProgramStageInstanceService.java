@@ -238,7 +238,7 @@ public interface ProgramStageInstanceService
     int getOverDueEventCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
     /**
-     * Get the number of program instances completed
+     * Get the number of program instances completed, includes all program stage instances were completed
      * 
      * @param program Program
      * @param orgunitIds The ids of orgunits where the events happened
@@ -330,8 +330,10 @@ public interface ProgramStageInstanceService
      * @param program Single event without registration
      * @param executionDate Report date of the event
      * @param organisationUnit Orgunit where the event happens
+     * 
+     * @return ProgramStageInstance ProgramStageInstance object
      */
-    void createProgramStageInstance( Patient patient, Program program, Date executionDate,
+    ProgramStageInstance createProgramStageInstance( Patient patient, Program program, Date executionDate,
         OrganisationUnit organisationUnit );
 
 }
