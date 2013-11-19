@@ -81,7 +81,7 @@ import java.util.Set;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = { CurrentUserController.RESOURCE_PATH, "/me" }, method = RequestMethod.GET)
+@RequestMapping( value = { CurrentUserController.RESOURCE_PATH, "/me" }, method = RequestMethod.GET )
 public class CurrentUserController
 {
     public static final String RESOURCE_PATH = "/currentUser";
@@ -120,7 +120,7 @@ public class CurrentUserController
     @Autowired
     private I18nService i18nService;
 
-    @RequestMapping(produces = { "application/json", "text/*" })
+    @RequestMapping( produces = { "application/json", "text/*" } )
     public void getCurrentUser( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -133,7 +133,7 @@ public class CurrentUserController
         JacksonUtils.toJsonWithView( response.getOutputStream(), currentUser, DetailedView.class );
     }
 
-    @RequestMapping(value = "/inbox", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/inbox", produces = { "application/json", "text/*" } )
     public void getInbox( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -150,7 +150,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), inbox );
     }
 
-    @RequestMapping(value = "/dashboard", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/dashboard", produces = { "application/json", "text/*" } )
     public void getDashboard( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -167,7 +167,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), dashboard );
     }
 
-    @RequestMapping(value = { "/profile", "/user-account" }, produces = { "application/json", "text/*" })
+    @RequestMapping( value = { "/profile", "/user-account" }, produces = { "application/json", "text/*" } )
     public void getUserAccount( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -204,7 +204,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), userAccount );
     }
 
-    @RequestMapping(value = { "/profile", "/user-account" }, method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping( value = { "/profile", "/user-account" }, method = RequestMethod.POST, consumes = "application/json" )
     public void postUserAccountJson( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         UserAccount userAccount = JacksonUtils.fromJson( request.getInputStream(), UserAccount.class );
@@ -240,9 +240,9 @@ public class CurrentUserController
         userService.updateUser( currentUser );
     }
 
-    @RequestMapping(value = "/recipients", produces = { "application/json", "text/*" })
+    @RequestMapping( value = "/recipients", produces = { "application/json", "text/*" } )
     public void recipientsJson( HttpServletResponse response,
-        @RequestParam(value = "filter") String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
+        @RequestParam( value = "filter" ) String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -267,7 +267,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
 
-    @RequestMapping(value = { "/assignedOrganisationUnits", "/organisationUnits" }, produces = { "application/json", "text/*" })
+    @RequestMapping( value = { "/assignedOrganisationUnits", "/organisationUnits" }, produces = { "application/json", "text/*" } )
     public void getAssignedOrganisationUnits( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -282,17 +282,25 @@ public class CurrentUserController
 
         if ( parameters.containsKey( "includeChildren" ) && Boolean.parseBoolean( parameters.get( "includeChildren" ) ) )
         {
+            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                userOrganisationUnits.addAll( organisationUnit.getChildren() );
+                children.addAll( organisationUnit.getChildren() );
             }
+
+            userOrganisationUnits.addAll( children );
         }
         else if ( parameters.containsKey( "includeDescendants" ) && Boolean.parseBoolean( parameters.get( "includeDescendants" ) ) )
         {
+            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+                children.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
             }
+
+            userOrganisationUnits.addAll( children );
         }
 
         String viewName = parameters.get( "viewClass" );
@@ -307,9 +315,9 @@ public class CurrentUserController
         JacksonUtils.toJsonWithView( response.getOutputStream(), userOrganisationUnits, viewClass );
     }
 
-    @RequestMapping(value = { "/assignedPrograms", "/programs" }, produces = { "application/json", "text/*" })
+    @RequestMapping( value = { "/assignedPrograms", "/programs" }, produces = { "application/json", "text/*" } )
     public void getPrograms( HttpServletResponse response, @RequestParam Map<String, String> parameters,
-        @RequestParam(required = false) Integer type )
+        @RequestParam( required = false ) Integer type )
         throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
@@ -345,17 +353,25 @@ public class CurrentUserController
 
         if ( parameters.containsKey( "includeDescendants" ) && Boolean.parseBoolean( parameters.get( "includeDescendants" ) ) )
         {
+            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+                children.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
             }
+
+            userOrganisationUnits.addAll( children );
         }
         else
         {
+            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                userOrganisationUnits.addAll( organisationUnit.getChildren() );
+                children.addAll( organisationUnit.getChildren() );
             }
+
+            userOrganisationUnits.addAll( children );
         }
 
         for ( OrganisationUnit organisationUnit : userOrganisationUnits )
@@ -418,8 +434,8 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), forms );
     }
 
-    @SuppressWarnings("unchecked")
-    @RequestMapping(value = { "/assignedDataSets", "/dataSets" }, produces = { "application/json", "text/*" })
+    @SuppressWarnings( "unchecked" )
+    @RequestMapping( value = { "/assignedDataSets", "/dataSets" }, produces = { "application/json", "text/*" } )
     public void getDataSets( HttpServletResponse response, @RequestParam Map<String, String> parameters ) throws IOException, NotAuthenticatedException
     {
         User currentUser = currentUserService.getCurrentUser();
