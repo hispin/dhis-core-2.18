@@ -45,7 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ ProgramStageSectionService.java Nov 14, 2013 4:22:27 PM $
+ * @version $ ProgramStageSectionStoreTest.java Nov 14, 2013 4:22:27 PM $
  */
 public class ProgramStageSectionStoreTest
     extends DhisSpringTest
