@@ -29,7 +29,7 @@ package org.hisp.dhis.de.action;
  */
 
 import com.opensymphony.xwork2.Action;
-
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -141,7 +141,7 @@ public class SaveValueAction
     {
         this.periodId = periodId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -172,33 +172,33 @@ public class SaveValueAction
         {
             return logError( "Invalid organisation unit identifier: " + organisationUnitId );
         }
-        
+
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         if ( dataElement == null )
         {
             return logError( "Invalid data element identifier: " + dataElementId );
         }
-        
+
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
         if ( optionCombo == null )
         {
             return logError( "Invalid category option combo identifier: " + optionComboId );
         }
-        
+
         String storedBy = currentUserService.getCurrentUsername();
 
         Date now = new Date();
 
         value = StringUtils.trimToNull( value );
-        
+
         // ---------------------------------------------------------------------
         // Validate value according to type from data element
         // ---------------------------------------------------------------------
 
         String valid = ValidationUtils.dataValueIsValid( value, dataElement );
-        
+
         if ( valid != null )
         {
             return logError( valid, 3 );
@@ -218,6 +218,11 @@ public class SaveValueAction
         // ---------------------------------------------------------------------
 
         DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
+
+        if ( DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() ) )
+        {
+            value = StringEscapeUtils.escapeJavaScript( value );
+        }
 
         if ( dataValue == null )
         {
