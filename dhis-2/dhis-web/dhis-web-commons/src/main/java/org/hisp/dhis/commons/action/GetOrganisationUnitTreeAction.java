@@ -160,12 +160,15 @@ public class GetOrganisationUnitTreeAction
                 organisationUnits.add( child );
                 OrganisationUnit parent = child.getParent();
 
-                do
+                if ( parent != null )
                 {
-                    organisationUnits.add( parent );
-                    organisationUnits.addAll( parent.getChildren() );
+                    do
+                    {
+                        organisationUnits.add( parent );
+                        organisationUnits.addAll( parent.getChildren() );
+                    }
+                    while ( (parent = parent.getParent()) != null );
                 }
-                while ( (parent = parent.getParent()) != null );
 
                 return "partial";
             }

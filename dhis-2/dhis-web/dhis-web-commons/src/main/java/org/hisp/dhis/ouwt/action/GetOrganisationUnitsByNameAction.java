@@ -29,11 +29,16 @@ package org.hisp.dhis.ouwt.action;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Chau Thu Tran
@@ -54,6 +59,14 @@ public class GetOrganisationUnitsByNameAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    @Autowired
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -69,7 +82,7 @@ public class GetOrganisationUnitsByNameAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> organisationUnits;
+    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
     public List<OrganisationUnit> getOrganisationUnits()
     {
@@ -84,7 +97,26 @@ public class GetOrganisationUnitsByNameAction
     public String execute()
         throws Exception
     {
-        organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetweenByName( term, 0, MAX ) );
+        // organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetweenByName( term, 0, MAX ) );
+
+        term = term.toLowerCase();
+
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>( currentUserService.getCurrentUser().getOrganisationUnits() );
+
+        userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( IdentifiableObjectUtils.getUids( userOrganisationUnits ) ) );
+
+        for ( OrganisationUnit organisationUnit : userOrganisationUnits )
+        {
+            if ( organisationUnits.size() >= MAX )
+            {
+                return SUCCESS;
+            }
+
+            if ( organisationUnit.getName().toLowerCase().contains( term ) )
+            {
+                organisationUnits.add( organisationUnit );
+            }
+        }
 
         return SUCCESS;
     }
