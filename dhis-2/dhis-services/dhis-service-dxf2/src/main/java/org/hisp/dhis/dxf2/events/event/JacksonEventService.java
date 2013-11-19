@@ -31,13 +31,9 @@ package org.hisp.dhis.dxf2.events.event;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
@@ -68,25 +64,25 @@ public class JacksonEventService extends AbstractEventService
 
     private final static ObjectMapper jsonMapper = new ObjectMapper();
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromXml( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromXml( String input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromJson( InputStream inputStream, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( inputStream, clazz );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     private static <T> T fromJson( String input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
