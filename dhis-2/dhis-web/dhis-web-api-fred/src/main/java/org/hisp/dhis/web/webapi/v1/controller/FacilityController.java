@@ -83,6 +83,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,9 +94,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller(value = "facility-controller-" + FredController.PREFIX)
-@RequestMapping(FacilityController.RESOURCE_PATH)
-@PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
+@Controller( value = "facility-controller-" + FredController.PREFIX )
+@RequestMapping( FacilityController.RESOURCE_PATH )
+@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
 public class FacilityController
 {
     public static final String RESOURCE_PATH = "/" + FredController.PREFIX + "/facilities";
@@ -244,14 +245,17 @@ public class FacilityController
         return facility;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping( value = "", method = RequestMethod.GET )
+    @ResponseStatus( HttpStatus.OK )
     public void readFacilities(
-        @RequestParam(value = "updatedSince", required = false) Date lastUpdated,
-        @RequestParam(value = "allProperties", required = false, defaultValue = "true") Boolean allProperties,
-        @RequestParam(value = "fields", required = false) String fields,
-        @RequestParam(value = "limit", required = false, defaultValue = "25") String limit,
-        @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
+        @RequestParam( value = "updatedSince", required = false ) Date lastUpdated,
+        @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
+        @RequestParam( value = "fields", required = false ) String fields,
+        @RequestParam( value = "limit", required = false, defaultValue = "25" ) String limit,
+        @RequestParam( value = "offset", required = false, defaultValue = "0" ) Integer offset,
+        @RequestParam( value = "active", required = false ) List<Boolean> activeList,
+        @RequestParam( value = "name", required = false ) List<String> nameList,
+        @RequestParam( value = "uuid", required = false ) List<String> uuidList,
         HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         Facilities facilities = new Facilities();
@@ -266,27 +270,18 @@ public class FacilityController
 
         if ( lastUpdated == null )
         {
-            if ( limitValue != null )
-            {
-                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetween( offset, limitValue ) );
-            }
-            else
-            {
-                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
-            }
+            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
         }
         else
         {
-            if ( limitValue != null )
-            {
-                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.
-                    getOrganisationUnitsBetweenByLastUpdated( lastUpdated, offset, limitValue ) );
-            }
-            else
-            {
-                allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
-            }
+            allOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastUpdated ) );
         }
+
+        filterByActiveList( activeList, allOrganisationUnits );
+        filterByNameList( nameList, allOrganisationUnits );
+        filterByUuidList( uuidList, allOrganisationUnits );
+
+        filterByLimit( offset, limitValue, allOrganisationUnits );
 
         facilities.getMeta().put( "limit", limitValue );
         facilities.getMeta().put( "offset", offset );
@@ -312,6 +307,122 @@ public class FacilityController
         objectMapper.writeValue( response.getOutputStream(), facilities );
     }
 
+    private void filterByLimit( Integer offset, Integer limitValue, List<OrganisationUnit> allOrganisationUnits )
+    {
+        if ( offset < 0 )
+        {
+            offset = 0;
+        }
+
+        if ( offset > allOrganisationUnits.size() )
+        {
+            offset = allOrganisationUnits.size();
+        }
+
+        if ( (offset + limitValue) > allOrganisationUnits.size() )
+        {
+            limitValue = allOrganisationUnits.size() - offset;
+        }
+
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( allOrganisationUnits.subList( offset, offset + limitValue ) );
+        allOrganisationUnits.clear();
+        allOrganisationUnits.addAll( organisationUnits );
+    }
+
+    private void filterByUuidList( List<String> uuidList, List<OrganisationUnit> allOrganisationUnits )
+    {
+        if ( uuidList == null || uuidList.isEmpty() )
+        {
+            return;
+        }
+
+        Iterator<OrganisationUnit> organisationUnitIterator = allOrganisationUnits.iterator();
+
+        while ( organisationUnitIterator.hasNext() )
+        {
+            OrganisationUnit organisationUnit = organisationUnitIterator.next();
+
+            boolean shouldRemove = true;
+
+            for ( String uuid : uuidList )
+            {
+                if ( organisationUnit.getUuid().equals( uuid ) )
+                {
+                    shouldRemove = false;
+                    break;
+                }
+            }
+
+            if ( shouldRemove )
+            {
+                organisationUnitIterator.remove();
+            }
+        }
+    }
+
+    private void filterByNameList( List<String> nameList, List<OrganisationUnit> allOrganisationUnits )
+    {
+        if ( nameList == null || nameList.isEmpty() )
+        {
+            return;
+        }
+
+        Iterator<OrganisationUnit> organisationUnitIterator = allOrganisationUnits.iterator();
+
+        while ( organisationUnitIterator.hasNext() )
+        {
+            OrganisationUnit organisationUnit = organisationUnitIterator.next();
+
+            boolean shouldRemove = true;
+
+            for ( String name : nameList )
+            {
+                if ( organisationUnit.getName().contains( name ) )
+                {
+                    shouldRemove = false;
+                    break;
+                }
+            }
+
+            if ( shouldRemove )
+            {
+                organisationUnitIterator.remove();
+            }
+        }
+    }
+
+    private void filterByActiveList( List<Boolean> activeList, List<OrganisationUnit> allOrganisationUnits )
+    {
+        if ( activeList == null || activeList.isEmpty() )
+        {
+            return;
+        }
+
+        Iterator<OrganisationUnit> organisationUnitIterator = allOrganisationUnits.iterator();
+
+        while ( organisationUnitIterator.hasNext() )
+        {
+            OrganisationUnit organisationUnit = organisationUnitIterator.next();
+
+            boolean shouldRemove = true;
+
+            // see if it matches at least one
+            for ( Boolean active : activeList )
+            {
+                if ( organisationUnit.isActive() == active )
+                {
+                    shouldRemove = false;
+                    break;
+                }
+            }
+
+            if ( shouldRemove )
+            {
+                organisationUnitIterator.remove();
+            }
+        }
+    }
+
     private Integer getLimitValue( String limit, int defaultValue )
     {
         Integer limitValue;
@@ -325,6 +436,11 @@ public class FacilityController
             try
             {
                 limitValue = Integer.parseInt( limit );
+
+                if ( limitValue < 0 )
+                {
+                    limitValue = 0;
+                }
             }
             catch ( NumberFormatException ignored )
             {
@@ -335,11 +451,11 @@ public class FacilityController
         return limitValue;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
+    @ResponseStatus( HttpStatus.OK )
     public void readFacility( @PathVariable String id,
-        @RequestParam(value = "allProperties", required = false, defaultValue = "true") Boolean allProperties,
-        @RequestParam(value = "fields", required = false) String fields,
+        @RequestParam( value = "allProperties", required = false, defaultValue = "true" ) Boolean allProperties,
+        @RequestParam( value = "fields", required = false ) String fields,
         HttpServletRequest request, HttpServletResponse response ) throws FacilityNotFoundException, IOException
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );
@@ -395,8 +511,8 @@ public class FacilityController
     // POST JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('F_FRED_CREATE') or hasRole('ALL')")
+    @RequestMapping( value = "", method = RequestMethod.POST )
+    @PreAuthorize( "hasRole('F_FRED_CREATE') or hasRole('ALL')" )
     public ResponseEntity<String> createFacility( @RequestBody Facility facility ) throws Exception
     {
         if ( facility.getUuid() == null )
@@ -468,8 +584,8 @@ public class FacilityController
     // PUT JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('F_FRED_UPDATE') or hasRole('ALL')")
+    @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
+    @PreAuthorize( "hasRole('F_FRED_UPDATE') or hasRole('ALL')" )
     public ResponseEntity<String> updateFacility( @PathVariable String id, @RequestBody Facility facility, HttpServletRequest request ) throws Exception
     {
         HttpHeaders headers = new HttpHeaders();
@@ -565,8 +681,8 @@ public class FacilityController
     // DELETE JSON
     //--------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('F_FRED_DELETE') or hasRole('ALL')")
+    @RequestMapping( value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE )
+    @PreAuthorize( "hasRole('F_FRED_DELETE') or hasRole('ALL')" )
     public ResponseEntity<String> deleteFacility( @PathVariable String id ) throws HierarchyViolationException, IOException, FacilityNotFoundException
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );
