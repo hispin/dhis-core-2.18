@@ -104,12 +104,6 @@ public class DefaultProgramStageSectionService
     }
 
     @Override
-    public Collection<ProgramStageSection> getProgramStages( ProgramStage programStage )
-    {
-        return i18n( i18nService, programStage.getProgramStageSections() );
-    }
-
-    @Override
     public ProgramStageSection getProgramStageSectionByName( String name, ProgramStage programStage )
     {
         return i18n( i18nService, programStageSectionStore.getByNameAndProgramStage( name, programStage ) );

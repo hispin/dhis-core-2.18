@@ -104,7 +104,7 @@ public class GetProgramStageSectionListAction
     {
         programStage = programStageService.getProgramStage( id );
 
-        sections = new ArrayList<ProgramStageSection>( programStageSectionService.getProgramStages( programStage ) );
+        sections = new ArrayList<ProgramStageSection>( programStage.getProgramStageSections() );
 
         Collections.sort( sections, new ProgramStageSectionSortOrderComparator() );
 

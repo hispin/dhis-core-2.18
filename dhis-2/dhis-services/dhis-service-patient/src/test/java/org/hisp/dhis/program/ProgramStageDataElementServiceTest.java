@@ -39,7 +39,6 @@ import java.util.Set;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
@@ -64,9 +63,6 @@ public class ProgramStageDataElementServiceTest
 
     @Autowired
     private ProgramService programService;
-
-    @Autowired
-    private DataEntryFormService dataEntryFormService;
 
     @Autowired
     private ProgramStageService programStageService;
@@ -190,7 +186,7 @@ public class ProgramStageDataElementServiceTest
     }
 
     @Test
-    public void testGetByStage( )
+    public void testGetByStage()
     {
         programStageDataElementService.addProgramStageDataElement( stageDataElementA );
         programStageDataElementService.addProgramStageDataElement( stageDataElementB );
@@ -205,7 +201,7 @@ public class ProgramStageDataElementServiceTest
     }
 
     @Test
-    public void testGetListDataElementByStage( )
+    public void testGetListDataElementByStage()
     {
         programStageDataElementService.addProgramStageDataElement( stageDataElementA );
         programStageDataElementService.addProgramStageDataElement( stageDataElementB );

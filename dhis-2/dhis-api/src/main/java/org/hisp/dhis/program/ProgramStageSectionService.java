@@ -104,14 +104,5 @@ public interface ProgramStageSectionService
      *         there are no ProgramStageSections.
      */
     Collection<ProgramStageSection> getAllProgramStageSections();
-
-    /**
-     * Get all sections by a program stage
-     * 
-     * @param programStage {@link ProgramStage}
-     * 
-     * @return ProgramStageSection list
-     */
-    Collection<ProgramStageSection> getProgramStages( ProgramStage programStage );
-
+    
 }
