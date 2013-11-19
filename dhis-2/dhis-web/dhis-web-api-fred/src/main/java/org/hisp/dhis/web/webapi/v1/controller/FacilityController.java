@@ -318,6 +318,11 @@ public class FacilityController
             offset = 0;
         }
 
+        if ( limitValue == null )
+        {
+            limitValue = allOrganisationUnits.size();
+        }
+
         if ( offset > allOrganisationUnits.size() )
         {
             offset = allOrganisationUnits.size();
