@@ -467,17 +467,25 @@ public class CurrentUserController
 
         if ( parameters.containsKey( "includeDescendants" ) && Boolean.parseBoolean( parameters.get( "includeDescendants" ) ) )
         {
+            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                userOrganisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
+                children.addAll( organisationUnitService.getOrganisationUnitsWithChildren( organisationUnit.getUid() ) );
             }
+
+            userOrganisationUnits.addAll( children );
         }
         else
         {
+            List<OrganisationUnit> children = new ArrayList<OrganisationUnit>();
+
             for ( OrganisationUnit organisationUnit : userOrganisationUnits )
             {
-                userOrganisationUnits.addAll( organisationUnit.getChildren() );
+                children.addAll( organisationUnit.getChildren() );
             }
+
+            userOrganisationUnits.addAll( children );
         }
 
         for ( OrganisationUnit ou : userOrganisationUnits )
