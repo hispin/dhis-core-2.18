@@ -43,6 +43,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.smscommand.SMSSpecialCharacter;
 import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
@@ -92,6 +93,8 @@ public class EditSMSCommandForm
     private Integer userGroupID;
 
     private String codeDataelementOption;
+    
+    private String specialCharactersInfo;
 
     private String separator;
 
@@ -125,6 +128,18 @@ public class EditSMSCommandForm
             c.setOptionId( x.getInt( "optionId" ) );
             codeSet.add( c );
         }
+        
+        @SuppressWarnings( "unchecked" )
+        List<JSONObject> jsonSpecialCharacters = (List<JSONObject>) JSONObject.fromObject( specialCharactersInfo ).get( "specialCharacters" );
+        Set<SMSSpecialCharacter> specialCharacterSet = new HashSet<SMSSpecialCharacter>();
+        for ( JSONObject x : jsonSpecialCharacters )
+        {
+            String name = x.getString( "name" );
+            String value = x.getString( "value" );
+            SMSSpecialCharacter smsSpecialCharacter = new SMSSpecialCharacter( name, value );
+            specialCharacterSet.add( smsSpecialCharacter );
+        }
+        smsCommandService.saveSpecialCharacterSet( specialCharacterSet );
 
         if ( codeSet.size() > 0 )
         {
@@ -144,6 +159,8 @@ public class EditSMSCommandForm
             {
                 c.setUserGroup( userGroupService.getUserGroup( userGroupID ) );
             }
+            c.getSpecialCharacters().removeAll( c.getSpecialCharacters() );
+            c.setSpecialCharacters( specialCharacterSet );
             smsCommandService.save( c );
         }
 
@@ -267,4 +284,15 @@ public class EditSMSCommandForm
     {
         this.receivedMessage = receivedMessage;
     }
+
+    public String getSpecialCharactersInfo()
+    {
+        return specialCharactersInfo;
+    }
+
+    public void setSpecialCharactersInfo( String specialCharactersInfo )
+    {
+        this.specialCharactersInfo = specialCharactersInfo;
+    }
+    
 }

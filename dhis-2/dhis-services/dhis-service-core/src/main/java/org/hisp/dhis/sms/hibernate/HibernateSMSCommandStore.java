@@ -40,6 +40,7 @@ import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandStore;
+import org.hisp.dhis.smscommand.SMSSpecialCharacter;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,6 +106,11 @@ public class HibernateSMSCommandStore
             session.delete( x );
         }
         
+        for ( SMSSpecialCharacter x : cmd.getSpecialCharacters() )
+        {
+            session.delete( x );
+        }
+        
         session.delete( cmd );
     }
 
@@ -130,5 +136,16 @@ public class HibernateSMSCommandStore
         }
 
         return null;
+    }
+
+    @Override
+    public void saveSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        for ( SMSSpecialCharacter x : specialCharacters )
+        {
+            session.saveOrUpdate( x );
+        }
     }
 }

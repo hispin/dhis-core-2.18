@@ -17,12 +17,20 @@
             $(this).attr('name',''); // avoid error in struts 
       });
       selectedDataOptions += ']}';
-     
       $("#codeDataelementOption").val(selectedDataOptions);
-      $("#updateSMSCommand").submit(); 
+	  
+	  var specialCharactersInfo = '{"specialCharacters":[';
+		for (var i=1; i<=jQuery('.trSpecialCharacter').length; i++)
+		{ 
+			specialCharactersInfo += '{"name" :"'+document.getElementById('name'+i).value+'",';
+			specialCharactersInfo += '"value" :"'+document.getElementById('value'+i).value+'"},';	
+		}
+	  specialCharactersInfo += ']}';
+	  $("#specialCharactersInfo").val(specialCharactersInfo);
+	  
+      $("#updateSMSCommand").submit();
 
-    }
-  
+    };
     
 </script>
 
@@ -94,9 +102,7 @@
 	</br>
 	#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' )
     <table id="codes">
-		<col style="width: 450px"/>
-    <col/>
-    <col style="width: 450px"/>
+	<col style="width:450px"/><col/>
     <thead>
       <tr>
         <th>$i18n.getString( "data_element_category_combination")</th>
@@ -124,10 +130,33 @@
             #end  
          #end
     </table>
+	<table border="0">
+	<col style="width:320px"/><col/>
+    <thead>
+      <tr>
+        <th>$i18n.getString( "special_characters" )</th>
+		<th>$i18n.getString( "value" )</th>
+      </tr>
+    </thead>
+	<tbody id="specialCharacters">
+		#foreach( $specialCharacters in $smsCommand.specialCharacters )
+			<tr id="trSpecialCharacter$velocityCount" name="trSpecialCharacter$velocityCount" class="trSpecialCharacter">
+				<td><input type="text" id="name$velocityCount" name="name$velocityCount" value="$specialCharacters.name"/></td>
+				<td>
+					<input type="text" id="value$velocityCount" name="value$velocityCount" value="$specialCharacters.value"/><input type="button" value="remove" onclick="removeSpecialCharactersForm($velocityCount)"/>
+				</td>
+			</tr>
+		#end
+	</tbody>
+	<tr>
+		<td col="2"><input type="button" value="$i18n.getString('add_more')" onclick="generateSpecialCharactersForm()"/><td>
+	</tr>
+	</table>
     #end
 
 	<br/>	
     <input type="hidden" name="codeDataelementOption" id="codeDataelementOption" />
+	<input type="hidden" name="specialCharactersInfo" id="specialCharactersInfo" />
     <input  type="button" style="width: 100px" onclick="prepSubmit()" value="$i18n.getString( "save" )" />
     <input type="button" id ="btnBack" name ="btnBack" value="Back" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
 </form>

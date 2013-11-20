@@ -142,7 +142,6 @@ public class SMSCommandAction
                 codes.put( "" + x.getDataElement().getId() + x.getOptionId(), x.getCode() );
             }
         }
-        
         userGroupList = new ArrayList<UserGroup>(userGroupService.getAllUserGroups());
         return SUCCESS;
     }
