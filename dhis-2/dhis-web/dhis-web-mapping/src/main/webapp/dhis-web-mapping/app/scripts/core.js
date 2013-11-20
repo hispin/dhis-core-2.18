@@ -799,8 +799,14 @@ console.log(view.parentGraphMap);
 				}
 			}
 
-			if (gis.viewport.interpretationButton) {
+			// interpretation button
+			if (gis.map.id && gis.viewport.interpretationButton) {
 				gis.viewport.interpretationButton.enable();
+			}
+
+			// session storage
+			if (GIS.isSessionStorage) {
+				gis.util.layout.setSessionStorage('map', gis.util.layout.getAnalytical());
 			}
 
 			gis.olmap.mask.hide();
@@ -1314,8 +1320,9 @@ console.log(view.parentGraphMap);
 			addNames = function(response) {
 
 				// All dimensions
-				var dimensions = [].concat(view.columns || [], view.rows || [], view.filters || []),
-					metaData = response.metaData;
+				var dimensions = Ext.Array.clean([].concat(view.columns || [], view.rows || [], view.filters || [])),
+					metaData = response.metaData,
+					peIds = metaData[dimConf.period.objectName];
 
 				for (var i = 0, dimension; i < dimensions.length; i++) {
 					dimension = dimensions[i];
@@ -1334,7 +1341,7 @@ console.log(view.parentGraphMap);
 				}
 
 				// Period name without changing the id
-				view.filters[0].items[0].name = metaData.names[gis.response.metaData[dimConf.period.objectName][0]];
+				view.filters[0].items[0].name = metaData.names[peIds[peIds.length - 1]];
 			};
 
 			fn = function() {
@@ -1443,6 +1450,11 @@ console.log(view.parentGraphMap);
 				if (gis.viewport.interpretationButton) {
 					gis.viewport.interpretationButton.disable();
 				}
+			}
+
+			// session storage
+			if (GIS.isSessionStorage) {
+				gis.util.layout.setSessionStorage('map', gis.util.layout.getAnalytical());
 			}
 		};
 
@@ -1851,7 +1863,36 @@ console.log(view.parentGraphMap);
 					{id: 'LAST_FINANCIAL_YEAR', name: GIS.i18n.last_financial_year},
 					{id: 'THIS_YEAR', name: GIS.i18n.this_year},
 					{id: 'LAST_YEAR', name: GIS.i18n.last_year}
-				]
+				],
+				relativePeriodsMap: {
+					'LAST_WEEK': {id: 'LAST_WEEK', name: GIS.i18n.last_week},
+					'LAST_MONTH': {id: 'LAST_MONTH', name: GIS.i18n.last_month},
+					'LAST_BIMONTH': {id: 'LAST_BIMONTH', name: GIS.i18n.last_bimonth},
+					'LAST_QUARTER': {id: 'LAST_QUARTER', name: GIS.i18n.last_quarter},
+					'LAST_SIX_MONTH': {id: 'LAST_SIX_MONTH', name: GIS.i18n.last_sixmonth},
+					'LAST_FINANCIAL_YEAR': {id: 'LAST_FINANCIAL_YEAR', name: GIS.i18n.last_financial_year},
+					'THIS_YEAR': {id: 'THIS_YEAR', name: GIS.i18n.this_year},
+					'LAST_YEAR': {id: 'LAST_YEAR', name: GIS.i18n.last_year}
+				},
+				integratedRelativePeriodsMap: {
+					'LAST_WEEK': 'LAST_WEEK',
+					'LAST_4_WEEKS': 'LAST_WEEK',
+					'LAST_12_WEEKS': 'LAST_WEEK',
+					'LAST_MONTH': 'LAST_MONTH',
+					'LAST_3_MONTHS': 'LAST_MONTH',
+					'LAST_12_MONTHS': 'LAST_MONTH',
+					'LAST_BIMONTH': 'LAST_BIMONTH',
+					'LAST_6_BIMONTHS': 'LAST_BIMONTH',
+					'LAST_QUARTER': 'LAST_QUARTER',
+					'LAST_4_QUARTERS': 'LAST_QUARTER',
+					'LAST_SIX_MONTH': 'LAST_SIX_MONTH',
+					'LAST_2_SIXMONTHS': 'LAST_SIX_MONTH',
+					'LAST_FINANCIAL_YEAR': 'LAST_FINANCIAL_YEAR',
+					'LAST_5_FINANCIAL_YEARS': 'LAST_FINANCIAL_YEAR',
+					'THIS_YEAR': 'THIS_YEAR',
+					'LAST_YEAR': 'LAST_YEAR',
+					'LAST_5_YEARS': 'LAST_YEAR'
+				}
 			};
 		}());
 
@@ -2066,7 +2107,8 @@ console.log(view.parentGraphMap);
 			};
 
 			api.layout.Layout = function(config) {
-				var layout = {},
+				var config = Ext.clone(config),
+					layout = {},
 					getValidatedDimensionArray,
 					validateSpecialCases;
 
@@ -2115,7 +2157,7 @@ console.log(view.parentGraphMap);
 				};
 
 				validateSpecialCases = function(config) {
-					var dimensions = [].concat(config.columns || [], config.rows || [], config.filters || []),
+					var dimensions = Ext.Array.clean([].concat(config.columns || [], config.rows || [], config.filters || [])),
 						dxDim,
 						peDim,
 						ouDim;
@@ -2137,6 +2179,20 @@ console.log(view.parentGraphMap);
 						}
 					}
 
+					if (!ouDim) {
+						alert('No organisation units specified');
+						return;
+					}
+
+					if (dxDim) {
+						dxDim.items = [dxDim.items[0]];
+					}
+
+					if (peDim) {
+						peDim.items = [peDim.items[0]];
+						peDim.items[0].id = map[peDim.items[0].id] ? map[peDim.items[0].id] : peDim.items[0].id;
+					}
+
 					config.columns = [dxDim];
 					config.rows = [ouDim];
 					config.filters = [peDim];
@@ -2154,13 +2210,16 @@ console.log(view.parentGraphMap);
 
 					config = validateSpecialCases(config);
 
+					if (!config) {
+						return;
+					}
+
 					config.columns = getValidatedDimensionArray(config.columns);
 					config.rows = getValidatedDimensionArray(config.rows);
 					config.filters = getValidatedDimensionArray(config.filters);
 
-					// At least one dimension
-					if (!(config.columns || config.rows || config.filters)) {
-						alert(gis.el + ': At least one dimension required');
+					if (!config.rows) {
+						console.log('Organisation unit dimension is invalid');
 						return;
 					}
 
@@ -2218,7 +2277,7 @@ console.log(view.parentGraphMap);
 					layout.organisationUnitGroupSet = config.organisationUnitGroupSet;
 					layout.areaRadius = config.areaRadius;
 
-					return Ext.clone(layout);
+					return layout;
 				}();
 			};
 

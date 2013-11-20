@@ -441,7 +441,8 @@
 "financial_oct": "$encoder.jsEscape($i18n.getString( 'financial_oct' ) , "'")",
 "financial_july": "$encoder.jsEscape($i18n.getString( 'financial_july' ) , "'")",
 "financial_april": "$encoder.jsEscape($i18n.getString( 'financial_april' ) , "'")",
-"relative": "$encoder.jsEscape($i18n.getString( 'relative' ) , "'")"
+"relative": "$encoder.jsEscape($i18n.getString( 'relative' ) , "'")",
+"reporting_rates": "$encoder.jsEscape($i18n.getString( 'reporting_rates' ) , "'")"
 }
 }
 #if($callback)

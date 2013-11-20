@@ -175,13 +175,13 @@ Ext.onReady( function() {
 					if (id !== gis.layer.boundary.id && id !== gis.layer.facility.id) {
 						what = '<g id="indicator" style="display: block; visibility: visible;">' +
 							   '<text id="indicator" x="' + x + '" y="' + y + '" font-size="12">' +
-							   '<tspan>' + layer.core.view.columns[0].items[0].name + '</tspan></text></g>';
+							   '<tspan>' + Ext.htmlEncode(layer.core.view.columns[0].items[0].name) + '</tspan></text></g>';
 
 						y += 15;
 
 						when = '<g id="period" style="display: block; visibility: visible;">' +
 							   '<text id="period" x="' + x + '" y="' + y + '" font-size="12">' +
-							   '<tspan>' + layer.core.view.filters[0].items[0].name + '</tspan></text></g>';
+							   '<tspan>' + Ext.htmlEncode(layer.core.view.filters[0].items[0].name) + '</tspan></text></g>';
 
 						y += 8;
 
@@ -193,10 +193,10 @@ Ext.onReady( function() {
 							}
 
 							legend += '<rect x="' + x + '" y="' + y + '" height="15" width="30" ' +
-									  'fill="' + imageLegendConfig[j].color + '" stroke="#000000" stroke-width="1"/>';
+									  'fill="' + Ext.htmlEncode(imageLegendConfig[j].color) + '" stroke="#000000" stroke-width="1"/>';
 
 							legend += '<text id="label" x="' + (x + 40) + '" y="' + (y + 12) + '" font-size="12">' +
-									  '<tspan>' + imageLegendConfig[j].label + '</tspan></text>';
+									  '<tspan>' + Ext.htmlEncode(imageLegendConfig[j].label) + '</tspan></text>';
 						}
 
 						legend += '</g>';
@@ -308,7 +308,7 @@ Ext.onReady( function() {
 						id = view.layer;
 
 						if (gis.layer.hasOwnProperty(id) && gis.layer[id].layerCategory === gis.conf.finals.layer.category_thematic) {
-							layout = gis.api.layout.Layout(Ext.clone(view));
+							layout = gis.api.layout.Layout(view);
 
 							if (layout) {
 								return layout;
@@ -320,7 +320,7 @@ Ext.onReady( function() {
 					for (var key in gis.layer) {
 						if (gis.layer.hasOwnProperty(key) && gis.layer[key].layerCategory === gis.conf.finals.layer.category_thematic && gis.layer[key].core.view) {
 							layer = gis.layer[key];
-							layout = gis.api.layout.Layout(Ext.clone(layer.core.view));
+							layout = gis.api.layout.Layout(layer.core.view);
 
 							if (layout) {
 								if (!layout.parentGraphMap && layer.widget) {
@@ -855,7 +855,7 @@ Ext.onReady( function() {
 		};
 		items.push(item);
 
-		if (layer.id !== gis.layer.boundary.id) {
+		if (!(layer.id === gis.layer.boundary.id || layer.id === gis.layer.facility.id)) {
 			item = {
 				text: GIS.i18n.filter + '..',
 				iconCls: 'gis-menu-item-icon-filter',
@@ -1884,7 +1884,7 @@ Ext.onReady( function() {
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
 				width: 371,
-				fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
+				fieldStyle: 'padding-left: 5px; border-radius: 1px; border-color: #bbb; font-size:11px',
 				style: 'margin-bottom:0',
 				emptyText: 'Favorite name',
 				value: id ? record.data.name : '',
@@ -2007,6 +2007,8 @@ Ext.onReady( function() {
 				listeners: {
 					show: function() {
 						this.setPosition(favoriteWindow.x + 14, favoriteWindow.y + 67);
+
+						nameTextfield.focus(false, 500);
 					}
 				}
 			});
@@ -2029,7 +2031,7 @@ Ext.onReady( function() {
 		searchTextfield = Ext.create('Ext.form.field.Text', {
 			width: windowCmpWidth - addButton.width - 11,
 			height: 26,
-			fieldStyle: 'padding-right: 0; padding-left: 6px; border-radius: 1px; border-color: #bbb; font-size:11px',
+			fieldStyle: 'padding-right: 0; padding-left: 5px; border-radius: 1px; border-color: #bbb; font-size:11px',
 			emptyText: GIS.i18n.search_for_favorites,
 			enableKeyEvents: true,
 			currentValue: '',
@@ -2403,6 +2405,8 @@ Ext.onReady( function() {
 				show: function() {
 					this.setPosition(115, 33);
 				}
+
+				searchTextfield.focus(false, 500);
 			}
 		});
 
@@ -3191,7 +3195,7 @@ Ext.onReady( function() {
 			cls: 'gis-container-inner',
 			html: function() {
 				var moduleUrl = gis.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + gis.map.id,
-					apiUrl = gis.init.contextPath + '/api/maps/' + gis.map.id + '/data.html',
+					apiUrl = gis.init.contextPath + '/api/maps/' + gis.map.id + '/data',
 					html = '';
 
 				html += '<div><b>GIS link: </b><span class="user-select"><a href="' + moduleUrl + '" target="_blank">' + moduleUrl + '</a></span></div>';
@@ -3740,6 +3744,7 @@ Ext.onReady( function() {
 			layer.item.setValue(false);
 
 			if (!layer.window.isRendered) {
+				layer.core.view = null;
 				return;
 			}
 
@@ -4075,7 +4080,7 @@ Ext.onReady( function() {
 				if (Ext.isString(uid)) {
 					this.setProxy({
 						type: 'ajax',
-						url: gis.conf.finals.url.path_commons + 'getOperands.action?uid=' + uid,
+						url: gis.init.contextPath + '/dhis-web-commons-ajax-json/getOperands.action?uid=' + uid,
 						reader: {
 							type: 'json',
 							root: 'operands'
@@ -4257,7 +4262,7 @@ Ext.onReady( function() {
 				data: [
 					[dimConf.indicator.objectName, GIS.i18n.indicator],
 					[dimConf.dataElement.objectName, GIS.i18n.dataelement],
-					[dimConf.dataSet.objectName, GIS.i18n.dataset]
+					[dimConf.dataSet.objectName, GIS.i18n.reporting_rates]
 				]
 			}),
 			listeners: {
@@ -5114,6 +5119,7 @@ Ext.onReady( function() {
 
 			// Components
 			if (!layer.window.isRendered) {
+				layer.core.view = null;
 				return;
 			}
 
@@ -5204,7 +5210,7 @@ Ext.onReady( function() {
 				objectNameCmpMap[dxDim.dimension].setValue(dxDim.items[0].id);
 
 				// Period
-				period.store.add(peDim.items[0])
+				period.store.add(gis.conf.period.relativePeriodsMap[peDim.items[0].id] ? gis.conf.period.relativePeriodsMap[peDim.items[0].id] : peDim.items[0]);
 				period.setValue(peDim.items[0].id);
 
 				// Legend
@@ -5883,13 +5889,14 @@ Ext.onReady( function() {
 				layer.labelWindow = null;
 			}
 
-			if (layer.circleLayer) {
+			if (layer.circleLayer & !skipTree) {
 				layer.circleLayer.deactivateControls();
 				layer.circleLayer = null;
 			}
 
 			// Components
 			if (!layer.window.isRendered) {
+				layer.core.view = null;
 				return;
 			}
 

@@ -213,7 +213,7 @@
 "select_boundaries_and_groups": "$encoder.jsEscape($i18n.getString( 'select_boundaries_and_groups' ) , "'")",
 "select_organisation_unit_groups": "$encoder.jsEscape($i18n.getString( 'select_organisation_unit_groups' ) , "'")",
 "user_organisation_unit_grandchildren": "$encoder.jsEscape($i18n.getString( 'user_organisation_unit_grandchildren' ) , "'")",
-"allow_external_access": "$encoder.jsEscape($i18n.getString( 'allow_external_access' ) , "'")'",
+"allow_external_access": "$encoder.jsEscape($i18n.getString( 'allow_external_access' ) , "'")",
 "daily": "$encoder.jsEscape($i18n.getString( 'daily' ) , "'")",
 "weekly": "$encoder.jsEscape($i18n.getString( 'weekly' ) , "'")",
 "monthly": "$encoder.jsEscape($i18n.getString( 'monthly' ) , "'")",

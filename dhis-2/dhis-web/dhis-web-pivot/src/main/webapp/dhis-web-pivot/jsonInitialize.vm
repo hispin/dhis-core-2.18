@@ -11,7 +11,7 @@
   "ou":"$currentUser.getOrganisationUnit().uid",
   "ouc":[#foreach($ou in $currentUser.getOrganisationUnit().getSortedChildren())"$ou.uid"#if($velocityCount < $oucSize),#end#end]
  },
-"rootNodes":[#foreach($node in $rootNodes){"id": "$!{node.uid}","text": "$!encoder.jsonEncode( ${node.name} )","level": 1,"hasChildrenWithCoordinates": $!{node.hasChildrenWithCoordinates()},"expanded": true}#if($velocityCount<$rootNodes.size()),#end#end],
+"rootNodes":[#foreach($node in $rootNodes){"id": "$!{node.uid}","text": "$!encoder.jsonEncode( ${node.name} )","level": 1,"hasChildrenWithCoordinates": $!{node.hasChildrenWithCoordinates()},"expanded": false}#if($velocityCount<$rootNodes.size()),#end#end],
 "dimensions":[#foreach($dim in $dimensions){"id":"$!{dim.uid}","name":"$!encoder.jsonEncode($!{dim.name})"}#if($velocityCount<$dimensions.size()),#end#end],
 "legendSets":[#foreach($set in $legendSets){"id":"$!{set.uid}","name":"$!encoder.jsonEncode($!{set.name})", "mapLegends":[#foreach($legend in $set.mapLegends){"id":"$!{legend.uid}","name":"$!{legend.name}","sv":"$!{legend.startValue}", "ev":"$!{legend.endValue}", "color":"$!{legend.color}"}#if($velocityCount<$set.mapLegends.size()),#end#end]}#if($velocityCount<$legendSets.size()),#end#end],
 "organisationUnitLevels":[#foreach($level in $levels){"id":"$!{level.uid}","name":"$!encoder.jsonEncode($!{level.name})","level":"$!{level.level}"}#if($velocityCount<$levels.size()),#end#end],

@@ -200,7 +200,7 @@ Ext.onReady(function() {
 	//if (ns.isPlugin) {
 
 		//// Resize render elements
-		//var baseEl = Ext.get(ns.init.el),
+		//var baseEl = Ext.get(ns.core.init.el),
 			//baseElBorderW = parseInt(baseEl.getStyle('border-left-width')) + parseInt(baseEl.getStyle('border-right-width')),
 			//baseElBorderH = parseInt(baseEl.getStyle('border-top-width')) + parseInt(baseEl.getStyle('border-bottom-width')),
 			//baseElPaddingW = parseInt(baseEl.getStyle('padding-left')) + parseInt(baseEl.getStyle('padding-right')),
