@@ -133,6 +133,13 @@ public class UpdateDataSetAction
         this.description = description;
     }
 
+    private String symbol;
+
+    public void setSymbol( String symbol )
+    {
+        this.symbol = symbol;
+    }
+
     private int expiryDays;
 
     public void setExpiryDays( int expiryDays )
@@ -278,6 +285,7 @@ public class UpdateDataSetAction
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
+        dataSet.setSymbol( symbol );
         dataSet.setExpiryDays( expiryDays );
         dataSet.setTimelyDays( timelyDays );
         dataSet.setSkipAggregation( skipAggregation );
