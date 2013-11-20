@@ -234,7 +234,7 @@ public class LoadFormAction
     public String execute()
         throws Exception
     {
-                
+
         dataSet = dataSetService.getDataSet( dataSetId, true, false, false, true );
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getDataElements( dataSet, null,
@@ -328,6 +328,7 @@ public class LoadFormAction
                 Section section = new Section();
                 section.setUid( CodeGenerator.generateCode() );
                 section.setId( i );
+                section.setName( orderedCategoryCombos.get( i ).getName() );
                 section.setSortOrder( i );
                 section.setDataSet( dataSet );
                 dataSet.getSections().add( section );
@@ -377,7 +378,7 @@ public class LoadFormAction
         {
             getOtherDataEntryForm( dataElements, dataSet );
         }
-        
+
         return displayMode;
     }
 
