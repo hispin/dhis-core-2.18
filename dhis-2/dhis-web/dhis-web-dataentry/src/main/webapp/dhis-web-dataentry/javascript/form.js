@@ -214,7 +214,7 @@ function loadMetaData()
 	        dataElements = metaData.dataElements;
 	        indicatorFormulas = metaData.indicatorFormulas;
 	        dataSets = metaData.dataSets;
-            optionSets = metaData.optionSets;
+          optionSets = metaData.optionSets;
 	        dataSetAssociationSets = metaData.dataSetAssociationSets;
 	        organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
 
@@ -2370,20 +2370,20 @@ function loadOptionSets() {
 }
 
 function insertOptionSets() {
-    $( '.entryoptionset' ).each( function ( idx, item ) {
-        var optionSetKey = splitFieldId( item.id );
+  $('.entryoptionset').each(function( idx, item ) {
+    var optionSetKey = splitFieldId(item.id);
 
-        if ( multiOrganisationUnit ) {
-            item = optionSetKey.organisationUnitId + '-' + optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
-        } else {
-            item = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
-        }
+    if( multiOrganisationUnit ) {
+      item = optionSetKey.organisationUnitId + '-' + optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
+    } else {
+      item = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
+    }
 
-        item = item + '-val';
-        optionSetKey = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
+    item = item + '-val';
+    optionSetKey = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
 
-        autocompleteOptionSetField( item, optionSets[optionSetKey].uid );
-    } );
+    autocompleteOptionSetField(item, optionSets[optionSetKey].uid);
+  });
 }
 
 function autocompleteOptionSetField( idField, optionSetUid ) {
