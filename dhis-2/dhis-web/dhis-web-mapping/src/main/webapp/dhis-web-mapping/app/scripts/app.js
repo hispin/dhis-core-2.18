@@ -2404,9 +2404,9 @@ Ext.onReady( function() {
 			listeners: {
 				show: function() {
 					this.setPosition(115, 33);
-				}
 
-				searchTextfield.focus(false, 500);
+					searchTextfield.focus(false, 500);
+				}
 			}
 		});
 
@@ -3356,6 +3356,7 @@ Ext.onReady( function() {
 			cls: 'gis-tree',
 			height: 300,
 			style: 'border-top: 1px solid #ddd; padding-top: 1px',
+			displayField: 'name',
 			width: gis.conf.layout.widget.item_width,
 			rootVisible: false,
 			autoScroll: true,
@@ -3376,44 +3377,53 @@ Ext.onReady( function() {
 					return node;
 				}
 			},
-			numberOfRecords: 0,
+			isPending: false,
 			recordsToSelect: [],
-			multipleSelectIf: function(doUpdate) {
-				if (this.recordsToSelect.length === this.numberOfRecords) {
+			recordsToRestore: [],
+			multipleSelectIf: function(map, doUpdate) {
+				if (this.recordsToSelect.length === gis.util.object.getLength(map)) {
 					this.getSelectionModel().select(this.recordsToSelect);
 					this.recordsToSelect = [];
-					this.numberOfRecords = 0;
+					this.isPending = false;
 
 					if (doUpdate) {
 						update();
 					}
 				}
 			},
-			multipleExpand: function(id, path, doUpdate) {
-				this.expandPath('/' + gis.conf.finals.root.id + path, 'id', '/', function() {
-					var record = this.getRootNode().findChild('id', id, true);
-					this.recordsToSelect.push(record);
-					this.multipleSelectIf(doUpdate);
-				}, this);
-			},
-			select: function(url, params) {
-				if (!params) {
-					params = {};
+			multipleExpand: function(id, map, doUpdate) {
+				var that = this,
+					rootId = gis.conf.finals.root.id,
+					path = map[id];
+
+				if (path.substr(0, rootId.length + 1) !== ('/' + rootId)) {
+					path = '/' + rootId + path;
 				}
-				Ext.Ajax.request({
-					url: url,
-					method: 'GET',
-					params: params,
-					scope: this,
-					success: function(r) {
-						var a = Ext.decode(r.responseText).organisationUnits;
-						this.numberOfRecords = a.length;
-						for (var i = 0; i < a.length; i++) {
-							this.multipleExpand(a[i].id, a[i].path);
-						}
-					}
+
+				that.expandPath(path, 'id', '/', function() {
+					record = Ext.clone(that.getRootNode().findChild('id', id, true));
+					that.recordsToSelect.push(record);
+					that.multipleSelectIf(map, doUpdate);
 				});
 			},
+            select: function(url, params) {
+                if (!params) {
+                    params = {};
+                }
+                Ext.Ajax.request({
+                    url: url,
+                    method: 'GET',
+                    params: params,
+                    scope: this,
+                    success: function(r) {
+                        var a = Ext.decode(r.responseText).organisationUnits;
+                        this.numberOfRecords = a.length;
+                        for (var i = 0; i < a.length; i++) {
+                            this.multipleExpand(a[i].id, a[i].path);
+                        }
+                    }
+                });
+            },
 			getParentGraphMap: function() {
 				var selection = this.getSelectionModel().getSelection(),
 					map = {};
@@ -3427,20 +3437,38 @@ Ext.onReady( function() {
 
 				return map;
 			},
-			selectGraphMap: function(map, doUpdate) {
-				this.numberOfRecords = gis.util.object.getLength(map);
+			selectGraphMap: function(map, update) {
+				if (!gis.util.object.getLength(map)) {
+					return;
+				}
+
+				this.isPending = true;
 
 				for (var key in map) {
 					if (map.hasOwnProperty(key)) {
-						treePanel.multipleExpand(key, map[key], doUpdate);
+						treePanel.multipleExpand(key, map, update);
 					}
 				}
 			},
 			store: Ext.create('Ext.data.TreeStore', {
+				fields: ['id', 'name'],
 				proxy: {
-					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunitchildren_get
+					type: 'rest',
+					format: 'json',
+					noCache: false,
+					extraParams: {
+						links: 'false'
+					},
+					url: gis.init.contextPath + '/api/organisationUnits',
+					reader: {
+						type: 'json',
+						root: 'children'
+					}
 				},
+				sorters: [{
+					property: 'name',
+					direction: 'ASC'
+				}],
 				root: {
 					id: gis.conf.finals.root.id,
 					expanded: true,
@@ -3528,14 +3556,19 @@ Ext.onReady( function() {
 
 				return config.items.length ? config : null;
 			},
-            listeners: {
-				load: function() {
-					if (treePanel.tmpSelection) {
-						treePanel.selectGraphMap(treePanel.tmpSelection);
+			listeners: {
+				beforeitemexpand: function() {
+					var rts = treePanel.recordsToSelect;
+
+					if (!treePanel.isPending) {
+						treePanel.recordsToRestore = treePanel.getSelectionModel().getSelection();
 					}
 				},
-				beforeitemexpand: function() {
-					treePanel.tmpSelection = treePanel.getParentGraphMap();
+				itemexpand: function() {
+					if (!treePanel.isPending && treePanel.recordsToRestore.length) {
+						treePanel.getSelectionModel().select(treePanel.recordsToRestore);
+						treePanel.recordsToRestore = [];
+					}
 				},
 				render: function() {
 					this.rendered = true;
@@ -3550,12 +3583,14 @@ Ext.onReady( function() {
 						v.menu.destroy();
 					}
 					v.menu = Ext.create('Ext.menu.Menu', {
+						id: 'treepanel-contextmenu',
 						showSeparator: false,
 						shadow: false
 					});
 					if (!r.data.leaf) {
 						v.menu.add({
-							text: GIS.i18n.select_all_children,
+							id: 'treepanel-contextmenu-item',
+							text: gis.i18n.select_all_children,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {
@@ -4659,8 +4694,9 @@ Ext.onReady( function() {
 
 		treePanel = Ext.create('Ext.tree.Panel', {
 			cls: 'gis-tree',
-			height: 210,
+			height: 300,
 			style: 'border-top: 1px solid #ddd; padding-top: 1px',
+			displayField: 'name',
 			width: gis.conf.layout.widget.item_width,
 			rootVisible: false,
 			autoScroll: true,
@@ -4681,44 +4717,53 @@ Ext.onReady( function() {
 					return node;
 				}
 			},
-			numberOfRecords: 0,
+			isPending: false,
 			recordsToSelect: [],
-			multipleSelectIf: function(doUpdate) {
-				if (this.recordsToSelect.length === this.numberOfRecords) {
+			recordsToRestore: [],
+			multipleSelectIf: function(map, doUpdate) {
+				if (this.recordsToSelect.length === gis.util.object.getLength(map)) {
 					this.getSelectionModel().select(this.recordsToSelect);
 					this.recordsToSelect = [];
-					this.numberOfRecords = 0;
+					this.isPending = false;
 
 					if (doUpdate) {
 						update();
 					}
 				}
 			},
-			multipleExpand: function(id, path, doUpdate) {
-				this.expandPath('/' + gis.conf.finals.root.id + path, 'id', '/', function() {
-					var record = this.getRootNode().findChild('id', id, true);
-					this.recordsToSelect.push(record);
-					this.multipleSelectIf(doUpdate);
-				}, this);
-			},
-			select: function(url, params) {
-				if (!params) {
-					params = {};
+			multipleExpand: function(id, map, doUpdate) {
+				var that = this,
+					rootId = gis.conf.finals.root.id,
+					path = map[id];
+
+				if (path.substr(0, rootId.length + 1) !== ('/' + rootId)) {
+					path = '/' + rootId + path;
 				}
-				Ext.Ajax.request({
-					url: url,
-					method: 'GET',
-					params: params,
-					scope: this,
-					success: function(r) {
-						var a = Ext.decode(r.responseText).organisationUnits;
-						this.numberOfRecords = a.length;
-						for (var i = 0; i < a.length; i++) {
-							this.multipleExpand(a[i].id, a[i].path);
-						}
-					}
+
+				that.expandPath(path, 'id', '/', function() {
+					record = Ext.clone(that.getRootNode().findChild('id', id, true));
+					that.recordsToSelect.push(record);
+					that.multipleSelectIf(map, doUpdate);
 				});
 			},
+            select: function(url, params) {
+                if (!params) {
+                    params = {};
+                }
+                Ext.Ajax.request({
+                    url: url,
+                    method: 'GET',
+                    params: params,
+                    scope: this,
+                    success: function(r) {
+                        var a = Ext.decode(r.responseText).organisationUnits;
+                        this.numberOfRecords = a.length;
+                        for (var i = 0; i < a.length; i++) {
+                            this.multipleExpand(a[i].id, a[i].path);
+                        }
+                    }
+                });
+            },
 			getParentGraphMap: function() {
 				var selection = this.getSelectionModel().getSelection(),
 					map = {};
@@ -4732,20 +4777,38 @@ Ext.onReady( function() {
 
 				return map;
 			},
-			selectGraphMap: function(map, doUpdate) {
-				this.numberOfRecords = gis.util.object.getLength(map);
+			selectGraphMap: function(map, update) {
+				if (!gis.util.object.getLength(map)) {
+					return;
+				}
+
+				this.isPending = true;
 
 				for (var key in map) {
 					if (map.hasOwnProperty(key)) {
-						treePanel.multipleExpand(key, map[key], doUpdate);
+						treePanel.multipleExpand(key, map, update);
 					}
 				}
 			},
 			store: Ext.create('Ext.data.TreeStore', {
+				fields: ['id', 'name'],
 				proxy: {
-					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunitchildren_get
+					type: 'rest',
+					format: 'json',
+					noCache: false,
+					extraParams: {
+						links: 'false'
+					},
+					url: gis.init.contextPath + '/api/organisationUnits',
+					reader: {
+						type: 'json',
+						root: 'children'
+					}
 				},
+				sorters: [{
+					property: 'name',
+					direction: 'ASC'
+				}],
 				root: {
 					id: gis.conf.finals.root.id,
 					expanded: true,
@@ -4833,14 +4896,19 @@ Ext.onReady( function() {
 
 				return config.items.length ? config : null;
 			},
-            listeners: {
-				load: function() {
-					if (treePanel.tmpSelection) {
-						treePanel.selectGraphMap(treePanel.tmpSelection);
+			listeners: {
+				beforeitemexpand: function() {
+					var rts = treePanel.recordsToSelect;
+
+					if (!treePanel.isPending) {
+						treePanel.recordsToRestore = treePanel.getSelectionModel().getSelection();
 					}
 				},
-				beforeitemexpand: function() {
-					treePanel.tmpSelection = treePanel.getParentGraphMap();
+				itemexpand: function() {
+					if (!treePanel.isPending && treePanel.recordsToRestore.length) {
+						treePanel.getSelectionModel().select(treePanel.recordsToRestore);
+						treePanel.recordsToRestore = [];
+					}
 				},
 				render: function() {
 					this.rendered = true;
@@ -4855,12 +4923,14 @@ Ext.onReady( function() {
 						v.menu.destroy();
 					}
 					v.menu = Ext.create('Ext.menu.Menu', {
+						id: 'treepanel-contextmenu',
 						showSeparator: false,
 						shadow: false
 					});
 					if (!r.data.leaf) {
 						v.menu.add({
-							text: GIS.i18n.select_all_children,
+							id: 'treepanel-contextmenu-item',
+							text: gis.i18n.select_all_children,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {
@@ -5483,6 +5553,7 @@ Ext.onReady( function() {
 			cls: 'gis-tree',
 			height: 300,
 			style: 'border-top: 1px solid #ddd; padding-top: 1px',
+			displayField: 'name',
 			width: gis.conf.layout.widget.item_width,
 			rootVisible: false,
 			autoScroll: true,
@@ -5503,44 +5574,53 @@ Ext.onReady( function() {
 					return node;
 				}
 			},
-			numberOfRecords: 0,
+			isPending: false,
 			recordsToSelect: [],
-			multipleSelectIf: function(doUpdate) {
-				if (this.recordsToSelect.length === this.numberOfRecords) {
+			recordsToRestore: [],
+			multipleSelectIf: function(map, doUpdate) {
+				if (this.recordsToSelect.length === gis.util.object.getLength(map)) {
 					this.getSelectionModel().select(this.recordsToSelect);
 					this.recordsToSelect = [];
-					this.numberOfRecords = 0;
+					this.isPending = false;
 
 					if (doUpdate) {
 						update();
 					}
 				}
 			},
-			multipleExpand: function(id, path, doUpdate) {
-				this.expandPath('/' + gis.conf.finals.root.id + path, 'id', '/', function() {
-					var record = this.getRootNode().findChild('id', id, true);
-					this.recordsToSelect.push(record);
-					this.multipleSelectIf(doUpdate);
-				}, this);
-			},
-			select: function(url, params) {
-				if (!params) {
-					params = {};
+			multipleExpand: function(id, map, doUpdate) {
+				var that = this,
+					rootId = gis.conf.finals.root.id,
+					path = map[id];
+
+				if (path.substr(0, rootId.length + 1) !== ('/' + rootId)) {
+					path = '/' + rootId + path;
 				}
-				Ext.Ajax.request({
-					url: url,
-					method: 'GET',
-					params: params,
-					scope: this,
-					success: function(r) {
-						var a = Ext.decode(r.responseText).organisationUnits;
-						this.numberOfRecords = a.length;
-						for (var i = 0; i < a.length; i++) {
-							this.multipleExpand(a[i].id, a[i].path);
-						}
-					}
+
+				that.expandPath(path, 'id', '/', function() {
+					record = Ext.clone(that.getRootNode().findChild('id', id, true));
+					that.recordsToSelect.push(record);
+					that.multipleSelectIf(map, doUpdate);
 				});
 			},
+            select: function(url, params) {
+                if (!params) {
+                    params = {};
+                }
+                Ext.Ajax.request({
+                    url: url,
+                    method: 'GET',
+                    params: params,
+                    scope: this,
+                    success: function(r) {
+                        var a = Ext.decode(r.responseText).organisationUnits;
+                        this.numberOfRecords = a.length;
+                        for (var i = 0; i < a.length; i++) {
+                            this.multipleExpand(a[i].id, a[i].path);
+                        }
+                    }
+                });
+            },
 			getParentGraphMap: function() {
 				var selection = this.getSelectionModel().getSelection(),
 					map = {};
@@ -5554,20 +5634,38 @@ Ext.onReady( function() {
 
 				return map;
 			},
-			selectGraphMap: function(map, doUpdate) {
-				this.numberOfRecords = gis.util.object.getLength(map);
+			selectGraphMap: function(map, update) {
+				if (!gis.util.object.getLength(map)) {
+					return;
+				}
+
+				this.isPending = true;
 
 				for (var key in map) {
 					if (map.hasOwnProperty(key)) {
-						treePanel.multipleExpand(key, map[key], doUpdate);
+						treePanel.multipleExpand(key, map, update);
 					}
 				}
 			},
 			store: Ext.create('Ext.data.TreeStore', {
+				fields: ['id', 'name'],
 				proxy: {
-					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.finals.url.path_module + gis.conf.finals.url.organisationunitchildren_get
+					type: 'rest',
+					format: 'json',
+					noCache: false,
+					extraParams: {
+						links: 'false'
+					},
+					url: gis.init.contextPath + '/api/organisationUnits',
+					reader: {
+						type: 'json',
+						root: 'children'
+					}
 				},
+				sorters: [{
+					property: 'name',
+					direction: 'ASC'
+				}],
 				root: {
 					id: gis.conf.finals.root.id,
 					expanded: true,
@@ -5655,14 +5753,19 @@ Ext.onReady( function() {
 
 				return config.items.length ? config : null;
 			},
-            listeners: {
-				load: function() {
-					if (treePanel.tmpSelection) {
-						treePanel.selectGraphMap(treePanel.tmpSelection);
+			listeners: {
+				beforeitemexpand: function() {
+					var rts = treePanel.recordsToSelect;
+
+					if (!treePanel.isPending) {
+						treePanel.recordsToRestore = treePanel.getSelectionModel().getSelection();
 					}
 				},
-				beforeitemexpand: function() {
-					treePanel.tmpSelection = treePanel.getParentGraphMap();
+				itemexpand: function() {
+					if (!treePanel.isPending && treePanel.recordsToRestore.length) {
+						treePanel.getSelectionModel().select(treePanel.recordsToRestore);
+						treePanel.recordsToRestore = [];
+					}
 				},
 				render: function() {
 					this.rendered = true;
@@ -5677,12 +5780,14 @@ Ext.onReady( function() {
 						v.menu.destroy();
 					}
 					v.menu = Ext.create('Ext.menu.Menu', {
+						id: 'treepanel-contextmenu',
 						showSeparator: false,
 						shadow: false
 					});
 					if (!r.data.leaf) {
 						v.menu.add({
-							text: GIS.i18n.select_all_children,
+							id: 'treepanel-contextmenu-item',
+							text: gis.i18n.select_all_children,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {
