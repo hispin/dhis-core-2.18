@@ -86,4 +86,10 @@ public class DefaultSMSCommandService
     {
         return smsCommandStore.getSMSCommand( commandName, parserType );
     }
+
+    @Override
+    public void saveSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters )
+    {
+        smsCommandStore.saveSpecialCharacterSet( specialCharacters );
+    }
 }

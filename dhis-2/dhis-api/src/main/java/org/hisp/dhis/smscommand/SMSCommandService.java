@@ -50,4 +50,6 @@ public interface SMSCommandService
     Collection<SMSCommand> getJ2MESMSCommands();
     
     SMSCommand getSMSCommand( String commandName, ParserType parserType );
+    
+    void saveSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters );
 }
