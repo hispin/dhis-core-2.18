@@ -3446,6 +3446,7 @@ Ext.onReady( function() {
             cls: 'dv-tree',
             style: 'border-top: 1px solid #ddd; padding-top: 1px',
             width: dv.conf.layout.west_fieldset_width - dv.conf.layout.west_width_padding,
+			displayField: 'name',
             rootVisible: false,
             autoScroll: true,
             multiSelect: true,
@@ -3465,31 +3466,34 @@ Ext.onReady( function() {
                     return node;
                 }
             },
-            numberOfRecords: 0,
-            recordsToSelect: [],
-            multipleSelectIf: function(doUpdate) {
-                if (this.recordsToSelect.length === this.numberOfRecords) {
-                    this.getSelectionModel().select(this.recordsToSelect);
-                    this.recordsToSelect = [];
-                    this.numberOfRecords = 0;
+			isPending: false,
+			recordsToSelect: [],
+			recordsToRestore: [],
+			multipleSelectIf: function(map, doUpdate) {
+				if (this.recordsToSelect.length === dv.util.object.getLength(map)) {
+					this.getSelectionModel().select(this.recordsToSelect);
+					this.recordsToSelect = [];
+					this.isPending = false;
 
-                    if (doUpdate) {
-                        update();
-                    }
-                }
-            },
-            multipleExpand: function(id, path, doUpdate) {
-				var rootId = dv.conf.finals.root.id;
+					if (doUpdate) {
+						update();
+					}
+				}
+			},
+			multipleExpand: function(id, map, doUpdate) {
+				var that = this,
+					rootId = dv.conf.finals.root.id,
+					path = map[id];
 
 				if (path.substr(0, rootId.length + 1) !== ('/' + rootId)) {
 					path = '/' + rootId + path;
 				}
 
-				this.expandPath('/' + path, 'id', '/', function() {
-					var record = this.getRootNode().findChild('id', id, true);
-					this.recordsToSelect.push(record);
-					this.multipleSelectIf(doUpdate);
-				}, this);
+				that.expandPath(path, 'id', '/', function() {
+					record = Ext.clone(that.getRootNode().findChild('id', id, true));
+					that.recordsToSelect.push(record);
+					that.multipleSelectIf(map, doUpdate);
+				});
 			},
             select: function(url, params) {
                 if (!params) {
@@ -3522,25 +3526,43 @@ Ext.onReady( function() {
 
 				return map;
 			},
-			selectGraphMap: function(map, doUpdate) {
-				this.numberOfRecords = dv.util.object.getLength(map);
+			selectGraphMap: function(map, update) {
+				if (!dv.util.object.getLength(map)) {
+					return;
+				}
+
+				this.isPending = true;
 
 				for (var key in map) {
 					if (map.hasOwnProperty(key)) {
-						treePanel.multipleExpand(key, map[key], doUpdate);
+						treePanel.multipleExpand(key, map, update);
 					}
 				}
 			},
             store: Ext.create('Ext.data.TreeStore', {
-                proxy: {
-                    type: 'ajax',
-                    url: dv.init.contextPath + dv.conf.finals.ajax.path_module + dv.conf.finals.ajax.organisationunitchildren_get
-                },
-                root: {
-                    id: dv.conf.finals.root.id,
-                    expanded: true,
-                    children: dv.init.rootNodes
-                }
+				fields: ['id', 'name'],
+				proxy: {
+					type: 'rest',
+					format: 'json',
+					noCache: false,
+					extraParams: {
+						links: 'false'
+					},
+					url: dv.init.contextPath + '/api/organisationUnits',
+					reader: {
+						type: 'json',
+						root: 'children'
+					}
+				},
+				sorters: [{
+					property: 'name',
+					direction: 'ASC'
+				}],
+				root: {
+					id: dv.conf.finals.root.id,
+					expanded: true,
+					children: dv.init.rootNodes
+				}
             }),
 			xable: function(values) {
 				for (var i = 0; i < values.length; i++) {
@@ -3553,20 +3575,20 @@ Ext.onReady( function() {
 				this.enable();
 			},
             listeners: {
-				load: function() {
-					if (treePanel.tmpSelection) {
-						treePanel.selectGraphMap(treePanel.tmpSelection);
+				beforeitemexpand: function() {
+					if (!treePanel.isPending) {
+						treePanel.recordsToRestore = treePanel.getSelectionModel().getSelection();
 					}
 				},
-				beforeitemexpand: function() {
-					treePanel.tmpSelection = treePanel.getParentGraphMap();
+				itemexpand: function() {
+					if (!treePanel.isPending && treePanel.recordsToRestore.length) {
+						treePanel.getSelectionModel().select(treePanel.recordsToRestore);
+						treePanel.recordsToRestore = [];
+					}
 				},
-                added: function() {
-                    dv.cmp.dimension.organisationUnit.treepanel = this;
-                },
-                render: function() {
-                    this.rendered = true;
-                },
+				render: function() {
+					this.rendered = true;
+				},
                 afterrender: function() {
                     this.getSelectionModel().select(0);
                 },

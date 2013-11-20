@@ -2066,7 +2066,7 @@ console.log(view.parentGraphMap);
 
 				return function() {
 					if (!Ext.isObject(config)) {
-						console.log('Dimension config is not an object: ' + config);
+						//console.log('Dimension config is not an object: ' + config);
 						return;
 					}
 
@@ -2158,6 +2158,7 @@ console.log(view.parentGraphMap);
 
 				validateSpecialCases = function(config) {
 					var dimensions = Ext.Array.clean([].concat(config.columns || [], config.rows || [], config.filters || [])),
+						map = conf.period.integratedRelativePeriodsMap,
 						dxDim,
 						peDim,
 						ouDim;

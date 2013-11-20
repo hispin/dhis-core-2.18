@@ -12,7 +12,7 @@
   "ou":"$currentUser.getOrganisationUnit().uid",
   "ouc":[#foreach($ou in $currentUser.getOrganisationUnit().getSortedChildren())"$ou.uid"#if($velocityCount < $oucSize),#end#end]
 },
-"rootNodes":[#foreach( $node in $rootNodes ){"id": "$!{node.uid}", "text": "$!encoder.jsonEncode( ${node.name} )", "level": 1, "hasChildrenWithCoordinates": $!{node.hasChildrenWithCoordinates()}, "expanded": true}#if($velocityCount<$rootNodes.size()),#end#end],
+"rootNodes":[#foreach( $node in $rootNodes ){"id": "$!{node.uid}", "name": "$!encoder.jsonEncode( ${node.name} )", "level": 1, "hasChildrenWithCoordinates": $!{node.hasChildrenWithCoordinates()}, "expanded": true}#if($velocityCount<$rootNodes.size()),#end#end],
 "organisationUnitLevels":[#foreach($level in $levels){"id":"$!{level.uid}","name":"$!encoder.jsonEncode($!{level.name})","level":"$!{level.level}"}#if($velocityCount<$levels.size()),#end#end],
 "indicatorGroups":[#foreach($group in $indicatorGroups){"id":"$!{group.uid}","name":"$!encoder.jsonEncode($!{group.name})"}#if($velocityCount<$indicatorGroups.size()),#end#end],
 "dataElementGroups":[#foreach($group in $dataElementGroups){"id":"$!{group.uid}","name":"$!encoder.jsonEncode($!{group.name})"}#if($velocityCount<$dataElementGroups.size()),#end#end],
