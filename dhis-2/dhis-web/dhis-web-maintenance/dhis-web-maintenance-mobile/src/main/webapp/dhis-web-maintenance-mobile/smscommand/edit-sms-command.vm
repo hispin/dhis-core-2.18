@@ -102,7 +102,7 @@
 	</br>
 	#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' )
     <table id="codes">
-	<col style="width:450px"/><col/>
+	<col style="width:350px"/><col/>
     <thead>
       <tr>
         <th>$i18n.getString( "data_element_category_combination")</th>
@@ -131,7 +131,7 @@
          #end
     </table>
 	<table border="0">
-	<col style="width:320px"/><col/>
+	<col style="width:350px"/><col/>
     <thead>
       <tr>
         <th>$i18n.getString( "special_characters" )</th>

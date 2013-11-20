@@ -126,13 +126,6 @@ public class CreateSMSCommandForm
             userGroup = userGroupService.getUserGroup( userGroupID );
             command.setUserGroup( userGroup );
         }
-        /*Set<SMSSpecialCharacter> specialCharacterSet = new HashSet<SMSSpecialCharacter>();
-        SMSSpecialCharacter smsSpecialCharacter1 = new SMSSpecialCharacter( "lai", "cool" );
-        SMSSpecialCharacter smsSpecialCharacter2 = new SMSSpecialCharacter( "trinh", "sexy" );
-        specialCharacterSet.add( smsSpecialCharacter1 );
-        specialCharacterSet.add( smsSpecialCharacter2 );
-        smsCommandService.saveSpecialCharacterSet( specialCharacterSet );
-        command.setSpecialCharacters( specialCharacterSet );*/
         
         smsCommandService.save( command );
         return SUCCESS;
