@@ -1885,3 +1885,26 @@ function pingNotifications( category, tableId, completedCallback )
 		}
 	} );
 }
+
+
+//-----------------------------------------------------------------------------
+// Symbol
+//-----------------------------------------------------------------------------
+
+function openSymbolDialog()
+{
+	$( "#symbolDiv" ).dialog( {
+		height: 294,
+		width: 250,
+		modal: true,
+		resizable: false,
+		title: "Select symbol"
+	} );
+}
+
+function selectSymbol( img )
+{
+	$( "#symbol" ).val( img );
+	$( "#symbolDiv" ).dialog( "close" );
+	$( "#symbolImg" ).attr( "src", "../images/orgunitgroup/" + img ).show();
+}
