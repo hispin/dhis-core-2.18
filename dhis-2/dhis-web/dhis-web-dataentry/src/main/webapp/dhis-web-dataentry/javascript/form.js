@@ -805,7 +805,7 @@ function getSortedDataSetListForOrgUnits( orgUnits )
             }
         } );
 
-        if ( !found && formType == FORMTYPE_SECTION )
+        if ( !found && ( formType == FORMTYPE_SECTION || formType == FORMTYPE_DEFAULT ) )
         {
             filteredDataSetList.push(item);
         }
