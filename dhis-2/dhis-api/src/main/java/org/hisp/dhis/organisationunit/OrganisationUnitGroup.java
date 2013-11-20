@@ -258,6 +258,7 @@ public class OrganisationUnitGroup
             OrganisationUnitGroup organisationUnitGroup = (OrganisationUnitGroup) other;
 
             groupSet = null;
+            symbol = organisationUnitGroup.getSymbol();
 
             removeAllOrganisationUnits();
 

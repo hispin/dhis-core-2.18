@@ -21,6 +21,8 @@
 
     <property name="description" type="text" />
 
+    <property name="symbol" />
+
     <many-to-one name="periodType" lazy="false" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
       not-null="true" foreign-key="fk_dataset_periodtypeid" />
 

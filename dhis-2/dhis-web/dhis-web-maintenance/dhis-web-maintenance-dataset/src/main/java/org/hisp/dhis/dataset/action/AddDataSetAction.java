@@ -122,6 +122,13 @@ public class AddDataSetAction
         this.description = description;
     }
 
+    private String symbol;
+
+    public void setSymbol( String symbol )
+    {
+        this.symbol = symbol;
+    }
+
     private int expiryDays;
 
     public void setExpiryDays( int expiryDays )
@@ -246,6 +253,7 @@ public class AddDataSetAction
 
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
 
+        dataSet.setSymbol( symbol );
         dataSet.setExpiryDays( expiryDays );
         dataSet.setTimelyDays( timelyDays );
         dataSet.setSkipAggregation( skipAggregation );
