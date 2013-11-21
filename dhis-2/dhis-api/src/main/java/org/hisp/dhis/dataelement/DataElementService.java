@@ -28,15 +28,15 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.period.PeriodType;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Defines service functionality for DataElements and DataElementGroups.
@@ -172,7 +172,7 @@ public interface DataElementService
      * Returns all DataElements with a given aggregantion operator.
      *
      * @param aggregationOperator the aggregation operator of the DataElements
-     *        to return.
+     *                            to return.
      * @return a collection of all DataElements with the given aggregation
      *         operator, or an empty collection if no DataElements have the
      *         aggregation operator.
@@ -186,6 +186,14 @@ public interface DataElementService
      * @return all DataElements with the given domainType.
      */
     Collection<DataElement> getDataElementsByDomainType( String domainType );
+
+    /**
+     * Returns all DataElements with the given domain type.
+     *
+     * @param domainType the domainType.
+     * @return all DataElements with the given domainType.
+     */
+    Collection<DataElement> getDataElementsByDomainType( String domainType, int first, int max );
 
     /**
      * Returns all DataElements with the given type.
@@ -264,7 +272,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElements which are assigned to any of the given DataSets.
-     * 
+     *
      * @param dataSets the collection of DataSets.
      * @return all DataElements which are assigned to any of the given DataSets.
      */
@@ -272,7 +280,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElements which have the given aggregation level assigned.
-     * 
+     *
      * @param aggregationLevel the aggregation level.
      * @return all DataElements which have the given aggregation level assigned.
      */
@@ -288,15 +296,17 @@ public interface DataElementService
 
     int getDataElementCountByName( String name );
 
+    int getDataElementCountByDomainType( String domainType );
+
     /**
      * Returns a mapping of data element uid and associated category option combo
      * uids.
-     * 
+     *
      * @param dataElementUids the uids of the data elements to include in the map.
      * @return a ListMap.
      */
     ListMap<String, String> getDataElementCategoryOptionComboMap( Set<String> dataElementUids );
-    
+
     Map<String, Integer> getDataElementUidIdMap();
 
     // -------------------------------------------------------------------------
@@ -336,7 +346,7 @@ public interface DataElementService
     /**
      * Returns a DataElementGroup.
      *
-     * @param id the id of the DataElementGroup to return.
+     * @param id               the id of the DataElementGroup to return.
      * @param i18nDataElements whether to i18n the data elements of this group.
      * @return the DataElementGroup with the given id, or null if no match.
      */
@@ -352,12 +362,12 @@ public interface DataElementService
 
     /**
      * Returns the data element groups with the given uids.
-     * 
+     *
      * @param uids the uid collection.
      * @return the data element groups with the given uids.
      */
-    List<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids );    
-    
+    List<DataElementGroup> getDataElementGroupsByUid( Collection<String> uids );
+
     /**
      * Returns the DataElementGroup with the given UID.
      *
@@ -381,8 +391,8 @@ public interface DataElementService
      *         no DataElementGroups exist.
      */
     Collection<DataElementGroup> getAllDataElementGroups();
-    
-    
+
+
     /**
      * Returns a DataElementGroup with a given short name.
      *
@@ -390,7 +400,7 @@ public interface DataElementService
      * @return the DataElementGroup with the given short name, or null if no match.
      */
     DataElementGroup getDataElementGroupByShortName( String shortName );
-    
+
     /**
      * Returns a DataElementGroup with a given code.
      *
@@ -399,12 +409,12 @@ public interface DataElementService
      */
     DataElementGroup getDataElementGroupByCode( String code );
 
-    
+
     /**
      * Returns all DataElementGroups which contain the given DataElement.
      *
      * @param dataElement the DataElement which the DataElementGroups must
-     *        contain.
+     *                    contain.
      * @return a collection of all DataElementGroups that contain the given
      *         DataElement.
      */
@@ -423,7 +433,7 @@ public interface DataElementService
      * elements are defined as zero is in-significant.
      *
      * @param dataElementIds identifiers of data elements where zero is
-     *        significant.
+     *                       significant.
      */
     void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds );
 
@@ -439,7 +449,7 @@ public interface DataElementService
      * Returns all DataElement which zeroIsSignificant property is true or false
      *
      * @param zeroIsSignificant is zeroIsSignificant property
-     * @param dataElementGroup is group contain data elements
+     * @param dataElementGroup  is group contain data elements
      * @return a collection of all DataElement
      */
     Collection<DataElement> getDataElementsByZeroIsSignificantAndGroup( boolean zeroIsSignificant,
@@ -452,9 +462,9 @@ public interface DataElementService
     int getDataElementGroupCount();
 
     int getDataElementGroupCountByName( String name );
-    
+
     Collection<DataElement> getDataElements( DataSet dataSet, String key, Integer max );
-    
+
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
@@ -466,7 +476,7 @@ public interface DataElementService
     void deleteDataElementGroupSet( DataElementGroupSet groupSet );
 
     DataElementGroupSet getDataElementGroupSet( int id );
-    
+
     DataElementGroupSet getDataElementGroupSet( int id, boolean i18nGroups );
 
     DataElementGroupSet getDataElementGroupSet( String uid );
@@ -482,7 +492,7 @@ public interface DataElementService
     Collection<DataElementGroupSet> getAllDataElementGroupSets();
 
     Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
-    
+
     List<DataElementGroupSet> getDataElementGroupSetsByUid( Collection<String> uids );
 
     Collection<DataElementGroupSet> getDataElementGroupSetsBetween( int first, int max );
