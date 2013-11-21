@@ -68,9 +68,9 @@ function updateAggreationOperation( value )
 
 function criteriaChanged()
 {
-    var dataDictionaryId = getListValue( "dataDictionaryList" );
+    var domainType = getListValue( "domainTypeList" );
 
-    var url = "dataElement.action?&dataDictionaryId=" + dataDictionaryId;
+    var url = "dataElement.action?&domainType=" + domainType;
 
     window.location.href = url;
 }

@@ -28,13 +28,6 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.hisp.dhis.user.UserSettingService.KEY_CURRENT_DATADICTIONARY;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
@@ -42,6 +35,13 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserSettingService;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.user.UserSettingService.KEY_CURRENT_DOMAIN_TYPE;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -85,31 +85,24 @@ public class GetDataElementListAction
         return dataElements;
     }
 
-    private List<DataDictionary> dataDictionaries;
-
-    public List<DataDictionary> getDataDictionaries()
-    {
-        return dataDictionaries;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer dataDictionaryId;
+    private String domainType;
 
-    public Integer getDataDictionaryId()
+    public String getDomainType()
     {
-        return dataDictionaryId;
+        return domainType;
     }
 
-    public void setDataDictionaryId( Integer dataDictionaryId )
+    public void setDomainType( String domainType )
     {
-        this.dataDictionaryId = dataDictionaryId;
+        this.domainType = domainType;
     }
 
     private String key;
-    
+
     public String getKey()
     {
         return key;
@@ -126,24 +119,20 @@ public class GetDataElementListAction
 
     public String execute()
     {
-        if ( dataDictionaryId == null ) // None, get current data dictionary
+        if ( domainType == null ) // None, get current domain type
         {
-            dataDictionaryId = (Integer) userSettingService.getUserSetting( KEY_CURRENT_DATADICTIONARY );
+            domainType = (String) userSettingService.getUserSetting( KEY_CURRENT_DOMAIN_TYPE );
         }
-        else if ( dataDictionaryId == -1 ) // All, reset current data dictionary
+        else if ( "all".equals( domainType ) ) // All, reset current domain type
         {
-            userSettingService.saveUserSetting( KEY_CURRENT_DATADICTIONARY, null );
+            userSettingService.saveUserSetting( KEY_CURRENT_DOMAIN_TYPE, null );
 
-            dataDictionaryId = null;
+            domainType = null;
         }
-        else  // Specified, set current data dictionary
+        else  // Specified, set current domain type
         {
-            userSettingService.saveUserSetting( KEY_CURRENT_DATADICTIONARY, dataDictionaryId );
+            userSettingService.saveUserSetting( KEY_CURRENT_DOMAIN_TYPE, domainType );
         }
-
-        dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
-
-        Collections.sort( dataDictionaries, IdentifiableObjectNameComparator.INSTANCE );
 
         // ---------------------------------------------------------------------
         // Criteria
@@ -152,21 +141,19 @@ public class GetDataElementListAction
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( dataElementService.getDataElementCountByName( key ) );
-            
+
             dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
-        else if ( dataDictionaryId != null )
+        else if ( domainType != null )
         {
-            dataElements = new ArrayList<DataElement>( dataDictionaryService.getDataElementsByDictionaryId( dataDictionaryId ) );
-            
-            this.paging = createPaging( dataElements.size() );
-            
-            dataElements = getBlockElement( dataElements, paging.getStartPos(), paging.getPageSize() );
+            this.paging = createPaging( dataElementService.getDataElementCountByDomainType( domainType ) );
+
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( domainType, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( dataElementService.getDataElementCount() );
-            
+
             dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
