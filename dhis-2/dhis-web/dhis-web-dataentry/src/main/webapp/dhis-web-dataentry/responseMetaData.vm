@@ -1,5 +1,9 @@
 { "metaData": {
 
+#if( $emptyOrganisationUnits )
+"emptyOrganisationUnits": $emptyOrganisationUnits,
+#end
+
 "significantZeros": [
 #set( $size = $significantZeros.size() )
 #foreach( $dataElement in $significantZeros )

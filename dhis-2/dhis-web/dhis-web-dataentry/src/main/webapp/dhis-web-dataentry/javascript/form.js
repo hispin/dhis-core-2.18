@@ -1,3 +1,7 @@
+
+// does current user have any organisation units?
+var emptyOrganisationUnits = false;
+
 // Identifiers for which zero values are insignificant, also used in entry.js
 var significantZeros = [];
 
@@ -145,8 +149,12 @@ $( document ).ready( function()
 	        }
 	        else
 	        {
-	            setHeaderDelayMessage( i18n_online_notification );
-	        }
+            if( emptyOrganisationUnits ) {
+              setHeaderMessage(i18n_no_orgunits);
+            } else {
+              setHeaderDelayMessage(i18n_online_notification);
+            }
+          }
 	    }
 	    else
 	    {
@@ -167,7 +175,11 @@ $( document ).ready( function()
 
     $( document ).bind( 'dhis2.offline', function()
     {
+      if( emptyOrganisationUnits ) {
+        setHeaderMessage(i18n_no_orgunits);
+      } else {
         setHeaderMessage( i18n_offline_notification );
+      }
     } );
 
     dhis2.availability.startAvailabilityCheck();
@@ -210,6 +222,7 @@ function loadMetaData()
 	    {
 	        var metaData = JSON.parse( sessionStorage[KEY_METADATA] );
 
+          emptyOrganisationUnits = metaData.emptyOrganisationUnits;
 	        significantZeros = metaData.significantZeros;
 	        dataElements = metaData.dataElements;
 	        indicatorFormulas = metaData.indicatorFormulas;

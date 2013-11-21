@@ -38,6 +38,8 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitDataSetAssociationSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,6 +90,14 @@ public class GetMetaDataAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    @Autowired
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -143,12 +153,26 @@ public class GetMetaDataAction
         return organisationUnitAssociationSetMap;
     }
 
+    private boolean emptyOrganisationUnits;
+
+    public boolean isEmptyOrganisationUnits()
+    {
+        return emptyOrganisationUnits;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
+        if ( currentUserService.getCurrentUser().getOrganisationUnits().isEmpty() )
+        {
+            emptyOrganisationUnits = true;
+
+            return SUCCESS;
+        }
+
         significantZeros = dataElementService.getDataElementsByZeroIsSignificant( true );
 
         dataElements = dataElementService.getDataElementsWithDataSets();
