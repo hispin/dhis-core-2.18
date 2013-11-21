@@ -38,11 +38,11 @@
 					<td>#filterDiv( "dataElement" )</td>
 					<td>
 					   <div style="inline">
-					       <select id="domainTypeList" name="domainTypeList" onchange="criteriaChanged()" style="width:160px">
-                   <option value="all">[ $i18n.getString( "select_domain_type" ) ]</option>
-                   <option value="aggregate" #if ( $!domainType && $domainType == "aggregate" ) selected="selected" #end>$i18n.getString("aggregate")</option>
-                   <option value="patient" #if ( $!domainType && $domainType == "patient" ) selected="selected" #end>$i18n.getString("patient")</option>
-                  </select>
+               <select id="domainTypeList" name="domainTypeList" onchange="criteriaChanged()" style="width:160px">
+                 <option value="all">[ $i18n.getString( "select_domain_type" ) ]</option>
+                 <option value="aggregate" #if ( $!domainType && $domainType == "aggregate" ) selected="selected" #end>$i18n.getString("aggregate")</option>
+                 <option value="patient" #if ( $!domainType && $domainType == "patient" ) selected="selected" #end>$i18n.getString("patient")</option>
+              </select>
 						</div>
 					</td>
 					<td style="text-align:right">
