@@ -93,6 +93,14 @@ public interface DataElementStore
     Collection<DataElement> getDataElementsByDomainType( String domainType );
 
     /**
+     * Returns all DataElements with the given domain type.
+     *
+     * @param domainType the domainType.
+     * @return all DataElements with the given domainType.
+     */
+    Collection<DataElement> getDataElementsByDomainType( String domainType, int first, int max );
+
+    /**
      * Returns all DataElements with the given type.
      * 
      * @param type the type.
@@ -179,4 +187,6 @@ public interface DataElementStore
     ListMap<String, String> getDataElementCategoryOptionComboMap( Set<String> dataElementUids );
     
     Collection<DataElement> get( DataSet dataSet, String key, Integer max );
+
+    int getCountByDomainType( String domainType );
 }

@@ -244,6 +244,11 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementsByDomainType( domainType ) );
     }
 
+    public Collection<DataElement> getDataElementsByDomainType( String domainType, int first, int max )
+    {
+        return i18n( i18nService, dataElementStore.getDataElementsByDomainType( domainType, first, max ) );
+    }
+
     public Collection<DataElement> getDataElementByCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         return i18n( i18nService, dataElementStore.getDataElementByCategoryCombo( categoryCombo ) );
@@ -323,6 +328,12 @@ public class DefaultDataElementService
         return getCountByName( i18nService, dataElementStore, name );
     }
 
+    @Override
+    public int getDataElementCountByDomainType( String domainType )
+    {
+        return dataElementStore.getCountByDomainType( domainType );
+    }
+
     public Collection<DataElement> getDataElementsBetween( int first, int max )
     {
         return getObjectsBetween( i18nService, dataElementStore, first, max );
@@ -347,7 +358,7 @@ public class DefaultDataElementService
     {
         return dataElementStore.getDataElementCategoryOptionComboMap( dataElementUids );
     }
-    
+
     public Map<String, Integer> getDataElementUidIdMap()
     {
         Map<String, Integer> map = new HashMap<String, Integer>();

@@ -29,17 +29,77 @@ package org.hisp.dhis.api.controller.dataelement;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataElementController.RESOURCE_PATH )
+@RequestMapping(value = DataElementController.RESOURCE_PATH)
 public class DataElementController
     extends AbstractCrudController<DataElement>
 {
     public static final String RESOURCE_PATH = "/dataElements";
+
+    @Autowired
+    private DataElementService dataElementService;
+
+    protected List<DataElement> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<DataElement> entityList;
+
+        Date lastUpdated = options.getLastUpdated();
+
+        String KEY_DOMAIN_TYPE = "domainType";
+
+        if ( DataElement.DOMAIN_TYPE_AGGREGATE.equals( options.getOptions().get( KEY_DOMAIN_TYPE ) )
+            || DataElement.DOMAIN_TYPE_PATIENT.equals( options.getOptions().get( KEY_DOMAIN_TYPE ) ) )
+        {
+            String domainType = options.getOptions().get( KEY_DOMAIN_TYPE );
+
+            if ( options.hasPaging() )
+            {
+                int count = dataElementService.getDataElementCountByDomainType( domainType );
+
+                Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+                metaData.setPager( pager );
+
+                entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( domainType, pager.getOffset(), pager.getPageSize() ) );
+            }
+            else
+            {
+                entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( domainType ) );
+            }
+        }
+        else if ( lastUpdated != null )
+        {
+            entityList = new ArrayList<DataElement>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
+        }
+        else if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
+
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<DataElement>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+        }
+        else
+        {
+            entityList = new ArrayList<DataElement>( manager.getAllSorted( getEntityClass() ) );
+        }
+
+        return entityList;
+    }
 }
