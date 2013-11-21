@@ -51,6 +51,8 @@ public class Document
 
     private String contentType;
 
+    private Boolean attachment = false;
+
     public Document()
     {
     }
@@ -106,6 +108,19 @@ public class Document
     public void setContentType( String contentType )
     {
         this.contentType = contentType;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getAttachment()
+    {
+        return attachment;
+    }
+
+    public void setAttachment( Boolean attachment )
+    {
+        this.attachment = attachment;
     }
 
     @Override

@@ -47,6 +47,10 @@
 <div id="fileDiv">
 <table>
     <tr>
+      <td style="width:70px"><label for="attachment">$i18n.getString( "attachment" )</label></td>
+      <td><input type="checkbox" id="attachment" name="attachment" value="true" #if($!document.attachment) checked="checked" #end size="30" ></td>
+    </tr>
+    <tr>
         <td style="width:70px"><label for="upload">$i18n.getString( "file" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><input type="file" id="upload" name="upload" size="30" ></td>
     </tr>

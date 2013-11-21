@@ -28,14 +28,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JPG;
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_PDF;
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_PNG;
-
-import java.io.InputStream;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
@@ -49,12 +41,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = DocumentController.RESOURCE_PATH )
+@RequestMapping(value = DocumentController.RESOURCE_PATH)
 public class DocumentController
     extends AbstractCrudController<Document>
 {
@@ -69,31 +64,28 @@ public class DocumentController
     @Autowired
     private ContextUtils contextUtils;
 
-    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
-    public void getDocumentContent( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    @RequestMapping(value = "/{uid}/data", method = RequestMethod.GET)
+    public void getDocumentContent( @PathVariable("uid") String uid, HttpServletResponse response ) throws Exception
     {
         Document document = documentService.getDocument( uid );
-        
+
         if ( document == null )
         {
             ContextUtils.notFoundResponse( response, "Resource not found for identifier: " + uid );
             return;
         }
-        
+
         if ( document.isExternal() )
         {
             response.sendRedirect( response.encodeRedirectURL( document.getUrl() ) );
         }
         else
         {
-            String ct = document.getContentType();
-
-            boolean attachment = !(CONTENT_TYPE_PDF.equals( ct ) || CONTENT_TYPE_JPG.equals( ct ) || CONTENT_TYPE_PNG.equals( ct ));
-
-            contextUtils.configureResponse( response, document.getContentType(), CacheStrategy.CACHE_TWO_WEEKS, document.getUrl(), attachment );
+            contextUtils.configureResponse( response, document.getContentType(), CacheStrategy.CACHE_TWO_WEEKS, document.getUrl(),
+                document.getAttachment() );
 
             InputStream in = null;
-            
+
             try
             {
                 in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
@@ -103,13 +95,13 @@ public class DocumentController
             catch ( LocationManagerException ex )
             {
                 ContextUtils.conflictResponse( response, "Document could not be found: " + document.getUrl() );
-                
+
                 return;
             }
             finally
             {
                 IOUtils.closeQuietly( in );
-            }            
+            }
         }
     }
 }
