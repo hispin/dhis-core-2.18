@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.14-SNAPSHOT V1
+# 2.14-SNAPSHOT V2
 
 NETWORK:
 *
@@ -10,7 +10,10 @@ css/widgets.css
 css/print.css
 ../dhis-web-dataentry/style/dhis-web-dataentry.css
 ../favicon.ico
+javascripts/underscore.min.js
 javascripts/jQuery/jquery.min.js
+javascripts/jQuery/jquery.validate.js
+javascripts/jQuery/jquery.validate.ext.js
 javascripts/jQuery/jquery.utils.js
 javascripts/jQuery/jquery.metadata.js
 javascripts/jQuery/jquery.glob.js
@@ -57,5 +60,26 @@ fonts/LiberationSans-Bold-webfont.svg
 ../images/ajax-loader-bar.gif
 ../images/warning_small.png
 ../images/success_small.png
+../images/home_small.png
+../images/extend_menu.png
 ../dhis-web-dataentry/javascript/form.js
 ../dhis-web-dataentry/javascript/entry.js
+
+# jquery-ui 1.9.1
+../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.9.1.custom.min.js
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_flat_55_fbec88_40x100.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_glass_85_dfeffc_1x400.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_glass_95_fef1ec_1x400.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_inset-hard_100_f5f8f9_1x100.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-bg_inset-hard_100_fcfdfd_1x100.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-icons_2e83ff_256x240.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-icons_6da8d5_256x240.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-icons_217bc0_256x240.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-icons_469bdd_256x240.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-icons_cd0a0a_256x240.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-icons_d8e7f3_256x240.png
+../dhis-web-commons/javascripts/jQuery/ui/css/redmond/images/ui-icons_f9bd01_256x240.png
