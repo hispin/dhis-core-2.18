@@ -33,7 +33,7 @@ Ext.onReady( function() {
                     indicator_getall: 'indicators.json?paging=false&links=false',
                     indicatorgroup_get: 'indicatorGroups.json?paging=false&links=false',
                     dataelement_get: 'dataElementGroups/',
-                    dataelement_getall: 'dataElements.json?paging=false&links=false',
+                    dataelement_getall: 'dataElements.json?domainType=aggregate&paging=false&links=false',
                     dataelementgroup_get: 'dataElementGroups.json?paging=false&links=false',
                     dataset_get: 'dataSets.json?paging=false&links=false',
                     organisationunit_getbygroup: 'getOrganisationUnitPathsByGroup.action',
