@@ -104,6 +104,13 @@ public class SaveDocumentAction
         this.external = external;
     }
 
+    private Boolean attachment = false;
+
+    public void setAttachment( Boolean attachment )
+    {
+        this.attachment = attachment;
+    }
+
     private File file;
 
     public void setUpload( File file )
@@ -146,7 +153,7 @@ public class SaveDocumentAction
             File destination = locationManager.getFileForWriting( fileName, DocumentService.DIR );
 
             log.info( "Destination: '" + destination.getAbsolutePath() + "'" );
-            
+
             boolean fileMoved = file.renameTo( destination );
 
             if ( !fileMoved )
@@ -170,6 +177,8 @@ public class SaveDocumentAction
 
             document.setUrl( url );
         }
+
+        document.setAttachment( attachment );
 
         document.setExternal( external );
 

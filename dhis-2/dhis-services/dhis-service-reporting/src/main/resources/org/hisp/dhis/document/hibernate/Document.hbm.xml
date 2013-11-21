@@ -23,6 +23,8 @@
 
     <property name="contentType" />
 
+    <property name="attachment" />
+
     <!-- Access properties -->
     <property name="externalAccess" />
 
