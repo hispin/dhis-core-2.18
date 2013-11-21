@@ -46,6 +46,7 @@ public interface UserSettingService
 
     final String AUTO_SAVE_DATA_ENTRY_FORM = "autoSaveDataEntryForm";
     final String KEY_CURRENT_DATADICTIONARY = "currentDataDictionary";
+    final String KEY_CURRENT_DOMAIN_TYPE = "currentDomainType";
     final String KEY_STYLE = "stylesheet";
     final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";
     final String KEY_MESSAGE_EMAIL_NOTIFICATION = "keyMessageEmailNotification";
