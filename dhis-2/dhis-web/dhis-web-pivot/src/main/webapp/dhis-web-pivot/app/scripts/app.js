@@ -2400,10 +2400,10 @@ Ext.onReady( function() {
 				var path;
 
 				if (Ext.isString(uid)) {
-					path = '/dataElementGroups/' + uid + '.json?links=false&paging=false';
+					path = '/dataElementGroups/' + uid + '.json?domainType=aggregate&links=false&paging=false';
 				}
 				else if (uid === 0) {
-					path = 'dataElements.json?paging=false&links=false';
+					path = 'dataElements.json?domainType=aggregate&paging=false&links=false';
 				}
 
 				if (!path) {

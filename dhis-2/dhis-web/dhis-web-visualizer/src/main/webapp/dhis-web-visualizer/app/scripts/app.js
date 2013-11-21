@@ -457,7 +457,7 @@ Ext.onReady( function() {
                     var path;
 
                     if (Ext.isString(uid)) {
-                        path = conf.finals.ajax.dataelement_get + uid + '.json?links=false&paging=false';
+                        path = conf.finals.ajax.dataelement_get + uid + '.json?domainType=aggregate&links=false&paging=false';
                     }
                     else if (uid === 0) {
                         path = conf.finals.ajax.dataelement_getall;
