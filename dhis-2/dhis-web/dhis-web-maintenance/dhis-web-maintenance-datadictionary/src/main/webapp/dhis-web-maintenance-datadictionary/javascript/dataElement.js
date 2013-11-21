@@ -70,7 +70,7 @@ function criteriaChanged()
 {
     var domainType = getListValue( "domainTypeList" );
 
-    var url = "dataElement.action?&domainType=" + domainType;
+    var url = "dataElement.action?domainType=" + domainType;
 
     window.location.href = url;
 }
