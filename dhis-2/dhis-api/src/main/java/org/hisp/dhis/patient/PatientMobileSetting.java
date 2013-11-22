@@ -35,16 +35,16 @@ public class PatientMobileSetting
     public static final long serialVersionUID = -5947521380646718129L;
 
     private int id;
-    
-    private Boolean gender;
 
-    private Boolean dobtype;
+    private Boolean gender = false;
 
-    private Boolean birthdate;
+    private Boolean dobtype = false;
 
-    private Boolean registrationdate;
+    private Boolean birthdate = false;
 
-    private Boolean autoUpdateClient;
+    private Boolean registrationdate = false;
+
+    private Boolean autoUpdateClient = false;
 
     private Double versionToUpdate;
 
@@ -130,7 +130,7 @@ public class PatientMobileSetting
         {
             return versionToUpdate;
         }
-        
+
         return 0;
     }
 

@@ -100,7 +100,7 @@ public class Patient
 
     private Date registrationDate;
 
-    private boolean isDead = false;
+    private boolean isDead;
 
     private Set<PatientIdentifier> identifiers = new HashSet<PatientIdentifier>();
     
