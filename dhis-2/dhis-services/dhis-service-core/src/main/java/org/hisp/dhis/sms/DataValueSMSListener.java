@@ -345,6 +345,7 @@ public class DataValueSMSListener
             if ( each.getName().equals( value ) )
             {
                 value = each.getValue();
+                break;
             }
         }
         
@@ -364,11 +365,11 @@ public class DataValueSMSListener
 
             if ( StringUtils.equals( dv.getDataElement().getType(), DataElement.VALUE_TYPE_BOOL ) )
             {
-                if ( "Y".equals( value.toUpperCase() ) || "YES".equals( value.toUpperCase() ) || "1".equals( value ) )
+                if ( "Y".equals( value.toUpperCase() ) || "YES".equals( value.toUpperCase() ) )
                 {
                     value = "true";
                 }
-                else if ( "N".equals( value.toUpperCase() ) || "NO".equals( value.toUpperCase() ) || "0".equals( value ) )
+                else if ( "N".equals( value.toUpperCase() ) || "NO".equals( value.toUpperCase() ) )
                 {
                     value = "false";
                 }
