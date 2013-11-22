@@ -52,4 +52,8 @@ public interface SMSCommandService
     SMSCommand getSMSCommand( String commandName, ParserType parserType );
     
     void saveSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters );
+    
+    void deleteSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters );
+    
+    void deleteCodeSet( Set<SMSCode> codes );
 }

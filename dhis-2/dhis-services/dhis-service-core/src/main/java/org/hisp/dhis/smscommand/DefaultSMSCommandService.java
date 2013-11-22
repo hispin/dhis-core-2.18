@@ -92,4 +92,18 @@ public class DefaultSMSCommandService
     {
         smsCommandStore.saveSpecialCharacterSet( specialCharacters );
     }
+
+    @Override
+    public void deleteCodeSet( Set<SMSCode> codes )
+    {
+        smsCommandStore.deleteCodeSet( codes );
+        
+    }
+
+    @Override
+    public void deleteSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters )
+    {
+        smsCommandStore.deleteSpecialCharacterSet( specialCharacters );
+        
+    }
 }

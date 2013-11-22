@@ -147,11 +147,21 @@ public class EditSMSCommandForm
         }
 
         SMSCommand c = getSMSCommand();
+        
         if ( selectedDataSetID > -1 && c != null )
         {
             c.setCurrentPeriodUsedForReporting( currentPeriodUsedForReporting );
             c.setName( name );
             c.setSeparator( separator );
+            
+            //remove codes
+            Set<SMSCode> toRemoveCodes = c.getCodes();
+            smsCommandService.deleteCodeSet( toRemoveCodes );
+            
+            //remove special characters
+            Set<SMSSpecialCharacter> toRemoveCharacters = c.getSpecialCharacters();
+            smsCommandService.deleteSpecialCharacterSet( toRemoveCharacters );
+            
             c.setCodes( codeSet );
             c.setDefaultMessage( defaultMessage );
             c.setReceivedMessage( receivedMessage );
@@ -159,7 +169,6 @@ public class EditSMSCommandForm
             {
                 c.setUserGroup( userGroupService.getUserGroup( userGroupID ) );
             }
-            c.getSpecialCharacters().removeAll( c.getSpecialCharacters() );
             c.setSpecialCharacters( specialCharacterSet );
             smsCommandService.save( c );
         }
