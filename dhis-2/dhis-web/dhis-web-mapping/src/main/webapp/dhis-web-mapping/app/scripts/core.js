@@ -571,17 +571,20 @@ console.log(view.parentGraphMap);
 				strokeWidth: 1
 			},
 			select = {
-				strokeColor: '#000000',
-				strokeWidth: 2,
+				fillOpacity: 0.9,
+				strokeColor: '#fff',
+				strokeWidth: 1,
 				cursor: 'pointer'
 			};
 
 		if (id === 'boundary') {
 			defaults.fillOpacity = 0;
 			defaults.strokeColor = '#000';
+			defaults.strokeWidth = 1;
 
 			select.fillColor = '#000';
-			select.fillOpacity = 0.2;
+			select.fillOpacity = 0.15;
+			select.strokeColor = '#000';
 			select.strokeWidth = 1;
 		}
 
