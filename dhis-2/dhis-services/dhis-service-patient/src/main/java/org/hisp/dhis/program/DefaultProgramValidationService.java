@@ -170,9 +170,6 @@ public class DefaultProgramValidationService
             String rightSideValue = expressionService.getProgramExpressionValue( validate.getRightSide(),
                 programStageInstance, patientDataValueMap );
             String operator = validate.getOperator().getMathematicalOperator();
-System.out.println("\n\n leftSideValue : " + leftSideValue );
-System.out.println("\n\n operator : " + operator );
-System.out.println("\n\n rightSideValue : " + rightSideValue );
             if ( (leftSideValue != null && rightSideValue != null && !((operator.equals( "==" ) && leftSideValue
                 .compareTo( rightSideValue ) == 0)
                 || (operator.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0)
