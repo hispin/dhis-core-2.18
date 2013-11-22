@@ -148,4 +148,27 @@ public class HibernateSMSCommandStore
             session.saveOrUpdate( x );
         }
     }
+
+
+    @Override
+    public void deleteCodeSet( Set<SMSCode> codes )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        for ( SMSCode x : codes )
+        {
+            session.delete( x );
+        }
+    }
+
+    @Override
+    public void deleteSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        for ( SMSSpecialCharacter x : specialCharacters )
+        {
+            session.delete( x );
+        }
+    }
 }
