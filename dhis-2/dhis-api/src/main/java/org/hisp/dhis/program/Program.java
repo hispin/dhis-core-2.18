@@ -140,7 +140,7 @@ public class Program
 
     private RelationshipType relationshipType;
 
-    private Boolean relationshipFromA;
+    private Boolean relationshipFromA = false;
 
     private Program relatedProgram;
     

@@ -66,9 +66,9 @@ public class PatientAttribute
 
     private boolean mandatory;
 
-    private Boolean inherit;
+    private Boolean inherit = false;
 
-    private Boolean groupBy;
+    private Boolean groupBy = false;
 
     private PatientAttributeGroup patientAttributeGroup;
 
@@ -76,7 +76,7 @@ public class PatientAttribute
 
     private String expression;
 
-    private Boolean displayOnVisitSchedule;
+    private Boolean displayOnVisitSchedule = false;
 
     private Integer sortOrderInVisitSchedule;
 

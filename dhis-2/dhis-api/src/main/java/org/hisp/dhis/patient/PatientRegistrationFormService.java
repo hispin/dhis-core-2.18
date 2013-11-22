@@ -44,7 +44,6 @@ import org.hisp.dhis.user.User;
  */
 public interface PatientRegistrationFormService
 {
-
     final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?/>)", Pattern.DOTALL );
 
     final Pattern FIXED_ATTRIBUTE_PATTERN = Pattern.compile( "fixedattributeid=\"(\\w+)\"" );
