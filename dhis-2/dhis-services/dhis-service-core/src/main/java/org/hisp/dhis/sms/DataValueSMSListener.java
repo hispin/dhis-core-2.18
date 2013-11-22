@@ -38,9 +38,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -63,6 +65,7 @@ import org.hisp.dhis.sms.parse.SMSParserException;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
+import org.hisp.dhis.smscommand.SMSSpecialCharacter;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
@@ -148,6 +151,7 @@ public class DataValueSMSListener
         {
             if ( parsedMessage.containsKey( code.getCode().toUpperCase() ) )
             {
+                //potential bugs [noted by Lai]
                 valueStored = storeDataValue( senderPhoneNumber, orgUnit, parsedMessage, code, smsCommand, date,
                     smsCommand.getDataset() );
             }
@@ -332,6 +336,18 @@ public class DataValueSMSListener
         DataValue dv = dataValueService.getDataValue( orgunit, code.getDataElement(), period, optionCombo );
 
         String value = parsedMessage.get( upperCaseCode );
+        
+        Set<SMSSpecialCharacter> specialCharacters = command.getSpecialCharacters();
+        
+        //Check for special character cases
+        for( SMSSpecialCharacter each: specialCharacters )
+        {
+            if ( each.getName().equals( value ) )
+            {
+                value = each.getValue();
+            }
+        }
+        
         if ( !StringUtils.isEmpty( value ) )
         {
             boolean newDataValue = false;
@@ -360,16 +376,7 @@ public class DataValueSMSListener
             else if ( StringUtils.equals( dv.getDataElement().getType(), DataElement.VALUE_TYPE_INT ) )
             {
                 try
-                {
-                    if( value.equals( "l" ) )
-                    {
-                        value = "1";
-                    }
-                    else if( value.equals( "o" ) )
-                    {
-                        value = "0";
-                    }
-                        
+                {    
                     Integer.parseInt( value );
                 }
                 catch ( NumberFormatException e )
