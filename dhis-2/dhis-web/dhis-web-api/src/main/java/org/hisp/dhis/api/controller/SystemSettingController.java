@@ -51,12 +51,12 @@ public class SystemSettingController
 {
     @Autowired
     private SystemSettingManager systemSettingManager;
-    
+
     @RequestMapping( value = "/{key}", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_TEXT, ContextUtils.CONTENT_TYPE_HTML } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_SYSTEM_SETTING')" )
-    public void setSystemSetting( 
-        @PathVariable String key, 
-        @RequestParam(required = false) String value, 
+    public void setSystemSetting(
+        @PathVariable String key,
+        @RequestParam(required = false) String value,
         @RequestBody(required=false) String valuePayload, HttpServletResponse response )
     {
         if ( key == null )
@@ -64,25 +64,25 @@ public class SystemSettingController
             ContextUtils.conflictResponse( response, "Key must be specified" );
             return;
         }
-        
+
         if ( value == null && valuePayload == null )
         {
             ContextUtils.conflictResponse( response, "Value must be specified as query param or as payload" );
         }
-        
+
         value = value != null ? value : valuePayload;
-        
+
         systemSettingManager.saveSystemSetting( key, value );
-        
-        ContextUtils.okResponse( response, "System setting saved" );
+
+        ContextUtils.okResponse( response, "System setting " + key + " set as value '" + value + "'." );
     }
-    
+
     @RequestMapping( value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key )
     {
         return (String) systemSettingManager.getSystemSetting( key );
     }
-    
+
     @RequestMapping( value = "/{key}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_SYSTEM_SETTING')" )
     public void removeSystemSetting( @PathVariable( "key" ) String key )
