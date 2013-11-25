@@ -4,6 +4,7 @@
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programInstance.id' />
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='0'>
 <input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id' />
+<input type='hidden' id='patientUid' name='patientUid' value='$programInstance.patient.uid' />
 <input type='hidden' id='hasDataEntry' name='hasDataEntry' value='$hasDataEntry' />
 <input type='hidden' name='editDataEntryForm' id='editDataEntryForm' value='$auth.hasAccess( "dhis-web-caseentry", "editDataEntryForm" )'>
 

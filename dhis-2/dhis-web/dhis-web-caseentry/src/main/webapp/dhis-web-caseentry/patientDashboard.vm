@@ -228,7 +228,7 @@
 			<table>
 				#foreach( $rel in $relationships )
 					#if($rel.patientA.id==$patient.id)
-						<tr onclick="showPatientDashboardForm($rel.patientB.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.name'>
+						<tr onclick="showPatientDashboardForm('$rel.patientB.uid')" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.name'>
 							<td><a href='#'>$rel.relationshipType.bIsToA</a></td>
 							<td>
 								#set($patient=$rel.patientB)
@@ -248,7 +248,7 @@
 							</td>
 						</tr>
 					#else
-						<tr onclick="showPatientDashboardForm($rel.patientA.id)" title='$i18n.getString( "move_to_dashboard_of" ) $!rel.patientB.name'>
+						<tr onclick="showPatientDashboardForm('$rel.patientA.uid')" title='$i18n.getString( "move_to_dashboard_of" ) $!rel.patientB.name'>
 							<td><a href='#'>$!rel.relationshipType.aIsToB</a></td>
 							<td><a href='#'>
 								#set($patient=$!rel.patientA)

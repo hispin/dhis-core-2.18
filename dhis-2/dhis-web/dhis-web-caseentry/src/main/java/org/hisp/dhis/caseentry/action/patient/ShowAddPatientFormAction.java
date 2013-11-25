@@ -161,6 +161,18 @@ public class ShowAddPatientFormAction
         return patientId;
     }
 
+    private String patientUid;
+
+    public void setPatientUid( String patientUid )
+    {
+        this.patientUid = patientUid;
+    }
+
+    public String getPatientUid()
+    {
+        return patientUid;
+    }
+
     private Integer relatedProgramId;
 
     public void setRelatedProgramId( Integer relatedProgramId )
@@ -267,7 +279,7 @@ public class ShowAddPatientFormAction
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         healthWorkers = organisationUnit.getUsers();
-        
+
         if ( programId == null )
         {
             patientRegistrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
@@ -342,8 +354,8 @@ public class ShowAddPatientFormAction
         {
             relatedProgram = programService.getProgram( relatedProgramId );
         }
-        
-        if(related)
+
+        if ( related )
         {
             relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
         }

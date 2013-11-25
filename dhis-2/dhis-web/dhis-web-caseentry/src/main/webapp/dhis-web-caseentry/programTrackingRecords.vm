@@ -46,7 +46,7 @@
 				#end
 			</td>
 			
-			<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">
+			<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
 				#set($value="")
 				#foreach( $identifierType in $identifierTypes)
 					#foreach( $identifier in $patient.identifiers)
@@ -91,7 +91,7 @@
 			
 			#if( $patientId != $patient.id ) 
 			<td class='$alterclass' name='opt_$patient.id'>
-				<a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )" title="$i18n.getString( 'patient_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
+				<a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )" title="$i18n.getString( 'patient_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
 				<a href="javascript:programTrackingReport( $programStageInstance.programInstance.id )" title='$i18n.getString( "program_report" )'><img src="../images/information.png" alt='$i18n.getString( "program_report" )'></a>
 			</td>
 			#else

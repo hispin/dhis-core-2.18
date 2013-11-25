@@ -1,6 +1,6 @@
 <h3>
  <a href="javascript:onClickBackBtn();">$i18n.getString( 'program_tracking' )</a>
- &#8226; <a href="javascript:showPatientDashboardForm( $programStageInstance.programInstance.patient.id );">$i18n.getString( 'patient_dashboard' )</a>
+ &#8226; <a href="javascript:showPatientDashboardForm( '$programStageInstance.programInstance.patient.uid' );">$i18n.getString( 'patient_dashboard' )</a>
  &raquo; $encoder.htmlEncode($programStageInstance.programStage.displayName)
 </h3>
 
