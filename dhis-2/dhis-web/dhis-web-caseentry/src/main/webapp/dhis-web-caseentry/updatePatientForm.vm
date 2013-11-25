@@ -15,7 +15,7 @@
 			,errorElement:"span"
 			,submitHandler: function(form)
 				{
-					validatePatient( true );
+					updatePatient();
 				}
 			,beforeValidateHandler: function(form)
 				{
@@ -71,7 +71,7 @@
 <input type="hidden" id="representativeId" name="representativeId" value='$!patient.representative.id' /> 
 <input type="hidden" id="relationshipTypeId" name='relationshipTypeId' value="$!relationship.relationshipType.id"/>
 <input type="hidden" id="id" name="id" value="$patient.id">
-
+<input type="hidden" id="uid" name="uid" value="$patient.uid">
 
 <table>	
 	#if($!customRegistrationForm)
