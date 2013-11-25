@@ -1,6 +1,6 @@
 #set($programStageInstances = $programInstance.programStageInstances)
 #set($hasUsers = false)
-#foreach($user in $!programInstance.patient.healthWorker.organisationUnit.users)
+#foreach($user in $!programInstance.patient.associate.organisationUnit.users)
 	#if($!user.phoneNumber!='') 
 		#set($hasUsers = true)
 	#end
@@ -185,8 +185,8 @@
 			<td>
 				#if(($auth.hasAccess( "dhis-web-caseentry", "sendSMS" ) ) 
 					&& ($!programInstance.patient.phoneNumber 
-					|| $!programInstance.patient.healthWorker.phoneNumber 
-					|| $!programInstance.patient.healthWorker.organisationUnit.phoneNumber 
+					|| $!programInstance.patient.associate.phoneNumber 
+					|| $!programInstance.patient.associate.organisationUnit.phoneNumber 
 					|| $hasUsers ))
 				<img src="images/send_sms.png" class='img-button' title="$i18n.getString( 'send_message' )" onclick="setFieldValue('sendFromEvent','true');setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatientForm();"/>
 				#end
@@ -211,11 +211,11 @@
 						<option value='1'>$i18n.getString('patient')</option>
 						#end
 						
-						#if($!programInstance.patient.healthWorker.phoneNumber)
+						#if($!programInstance.patient.associate.phoneNumber)
 						<option value='2'>$i18n.getString('health_worker')</option>
 						#end
 						
-						#if($!programInstance.patient.healthWorker.organisationUnit.phoneNumber)
+						#if($!programInstance.patient.associate.organisationUnit.phoneNumber)
 						<option value='3'>$i18n.getString('orgunit_registered')</option>
 						#end
 						

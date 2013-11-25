@@ -128,9 +128,9 @@ public class DefaultPatientReminderService
             }
             break;
         case PatientReminder.SEND_TO_HEALTH_WORKER:
-            if ( patient.getHealthWorker() != null && patient.getHealthWorker().getPhoneNumber() != null )
+            if ( patient.getAssociate() != null && patient.getAssociate().getPhoneNumber() != null )
             {
-                phoneNumbers.add( patient.getHealthWorker().getPhoneNumber() );
+                phoneNumbers.add( patient.getAssociate().getPhoneNumber() );
             }
             break;
         case PatientReminder.SEND_TO_ORGUGNIT_REGISTERED:
@@ -180,9 +180,9 @@ public class DefaultPatientReminderService
             users.addAll( patient.getOrganisationUnit().getUsers() );
             break;
         case PatientReminder.SEND_TO_HEALTH_WORKER:
-            if ( patient.getHealthWorker() != null && patient.getHealthWorker().getPhoneNumber() != null )
+            if ( patient.getAssociate() != null && patient.getAssociate().getPhoneNumber() != null )
             {
-                users.add( patient.getHealthWorker() );
+                users.add( patient.getAssociate() );
             }
             break;
         case PatientReminder.SEND_TO_USER_GROUP:

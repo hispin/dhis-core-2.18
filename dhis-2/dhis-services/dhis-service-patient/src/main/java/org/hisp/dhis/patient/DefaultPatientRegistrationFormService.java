@@ -549,7 +549,7 @@ public class DefaultPatientRegistrationFormService
         }
 
         // Health-worker field
-        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_HEALTH_WORKER ) )
+        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_ASSOCIATE ) )
         {
             inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >";
             inputHtml += "<option value=\"\" selected >" + i18n.getString( "please_select" ) + "</option>";

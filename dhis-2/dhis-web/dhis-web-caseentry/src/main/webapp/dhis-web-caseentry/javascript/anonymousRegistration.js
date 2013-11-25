@@ -478,7 +478,7 @@ function getDataElements() {
     }
 
     $.getJSON( "getProgramStageDataElementList.action", {
-        programStageId: getFieldValue( 'programStageId' )
+        programStageId: programStageId
     }, function ( json ) {
         $( '#advancedSearchTB [name=searchText]' ).val( '' );
         $( '.stage-object-selected' ).attr( 'psid', $( '#programId option:selected' ).attr( "psid" ) );
@@ -730,7 +730,7 @@ function searchEvents( listAll ) {
     hideById( 'dataEntryInfor' );
     hideById( 'listDiv' );
 
-    var params = 'anonynousEntryForm=true';
+    var params = '';
     $( '#displayInReports option' ).each( function ( i, item ) {
         var input = $( item );
         params += '&filterValues=de_' + input.val() + '_false_';
@@ -773,10 +773,8 @@ function searchEvents( listAll ) {
     }
 
     params += '&facilityLB=selected';
-    params += '&level=0';
     params += '&orgunitIds=' + getFieldValue( 'orgunitId' );
     params += '&programStageId=' + $( '#programId option:selected' ).attr( 'psid' );
-    params += '&orderByOrgunitAsc=false';
     params += '&userOrganisationUnit=false';
     params += '&userOrganisationUnitChildren=false';
 

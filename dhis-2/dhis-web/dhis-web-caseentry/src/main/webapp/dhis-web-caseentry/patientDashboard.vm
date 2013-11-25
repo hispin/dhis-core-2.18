@@ -61,8 +61,8 @@
 				<tr>
 					<td>$i18n.getString("health_worker")</td>
 					<td>
-						#if($!patient.healthWorker )
-							$!encoder.htmlEncode($patient.healthWorker.name)
+						#if($!patient.associate )
+							$!encoder.htmlEncode($patient.associate.name)
 						#else
 							[$i18n.getString('none')]
 						#end
