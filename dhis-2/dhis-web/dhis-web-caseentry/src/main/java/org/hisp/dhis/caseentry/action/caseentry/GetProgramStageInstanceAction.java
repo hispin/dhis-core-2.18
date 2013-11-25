@@ -28,22 +28,23 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.system.util.ValidationUtils;
-import org.hisp.dhis.user.CurrentUserService;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.user.CurrentUserService;
+
+import com.opensymphony.xwork2.Action;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GetProgramStageInstanceAction implements Action
+public class GetProgramStageInstanceAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -89,16 +90,16 @@ public class GetProgramStageInstanceAction implements Action
         return programStageInstance;
     }
 
-    private String latitude;
+    private Double latitude;
 
-    public String getLatitude()
+    public Double getLatitude()
     {
         return latitude;
     }
 
-    private String longitude;
+    private Double longitude;
 
-    public String getLongitude()
+    public Double getLongitude()
     {
         return longitude;
     }
@@ -122,7 +123,8 @@ public class GetProgramStageInstanceAction implements Action
     // -------------------------------------------------------------------------
 
     @Override
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
         if ( programStageInstanceId == null )
         {
@@ -138,6 +140,10 @@ public class GetProgramStageInstanceAction implements Action
         return SUCCESS;
     }
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private void populateCurrentUsername()
     {
         currentUsername = currentUserService.getCurrentUsername();
@@ -148,8 +154,8 @@ public class GetProgramStageInstanceAction implements Action
         if ( programStageInstance != null && programStageInstance.getProgramStage() != null
             && programStageInstance.getProgramStage().getCaptureCoordinates() )
         {
-            longitude = ValidationUtils.getLongitude( programStageInstance.getCoordinates() );
-            latitude = ValidationUtils.getLatitude( programStageInstance.getCoordinates() );
+            longitude = programStageInstance.getLongitude();
+            latitude = programStageInstance.getLatitude();
         }
     }
 
@@ -166,4 +172,3 @@ public class GetProgramStageInstanceAction implements Action
         }
     }
 }
-

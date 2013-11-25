@@ -50,8 +50,10 @@
 		
 		<property name="status" column="status" />
 
-		<property name="coordinates" />
+		<property name="longitude" />
 
+		<property name="latitude" />
+		
 		<property name="completedUser" />
 
 		<property name="completedDate" />

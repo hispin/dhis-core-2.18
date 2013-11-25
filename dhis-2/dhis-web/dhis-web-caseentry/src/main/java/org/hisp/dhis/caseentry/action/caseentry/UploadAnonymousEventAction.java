@@ -58,7 +58,8 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class UploadAnonymousEventAction implements Action
+public class UploadAnonymousEventAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -108,14 +109,16 @@ public class UploadAnonymousEventAction implements Action
     // -------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings("unchecked")
-    public String execute() throws Exception
+    @SuppressWarnings( "unchecked" )
+    public String execute()
+        throws Exception
     {
         ServletInputStream inputStream = ServletActionContext.getRequest().getInputStream();
 
-        Map<String, Object> input = JacksonUtils.getJsonMapper().readValue( inputStream, new TypeReference<HashMap<String, Object>>()
-        {
-        } );
+        Map<String, Object> input = JacksonUtils.getJsonMapper().readValue( inputStream,
+            new TypeReference<HashMap<String, Object>>()
+            {
+            } );
 
         Map<String, Object> executionDate = (Map<String, Object>) input.get( "executionDate" );
 
@@ -136,17 +139,16 @@ public class UploadAnonymousEventAction implements Action
         {
         }
 
-        Coordinate coordinate = null;
+        Double longitude = null;
+        Double latitude = null;
         Map<String, String> coord = (Map<String, String>) input.get( "coordinate" );
 
         if ( coord != null )
         {
             try
             {
-                double lng = Double.parseDouble( coord.get( "longitude" ) );
-                double lat = Double.parseDouble( coord.get( "latitude" ) );
-
-                coordinate = new Coordinate( lng, lat );
+                longitude = Double.parseDouble( coord.get( "longitude" ) );
+                latitude = Double.parseDouble( coord.get( "latitude" ) );
             }
             catch ( NullPointerException ignored )
             {
@@ -171,7 +173,7 @@ public class UploadAnonymousEventAction implements Action
         if ( programStageInstanceId != null )
         {
             programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-            updateExecutionDate( programStageInstance, date, completed, coordinate );
+            updateExecutionDate( programStageInstance, date, completed, longitude, latitude );
         }
         else
         {
@@ -191,7 +193,7 @@ public class UploadAnonymousEventAction implements Action
                 return INPUT;
             }
 
-            programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed, coordinate );
+            programStageInstance = saveExecutionDate( programId, organisationUnitId, date, completed, longitude, latitude );
         }
 
         Map<String, Object> values = (Map<String, Object>) input.get( "values" );
@@ -213,7 +215,8 @@ public class UploadAnonymousEventAction implements Action
         return SUCCESS;
     }
 
-    private void updateExecutionDate( ProgramStageInstance programStageInstance, Date date, Boolean completed, Coordinate coordinate )
+    private void updateExecutionDate( ProgramStageInstance programStageInstance, Date date, Boolean completed,
+        Double longitude, Double latitude )
     {
         if ( date != null )
         {
@@ -230,13 +233,10 @@ public class UploadAnonymousEventAction implements Action
 
         if ( programStageInstance.getProgramStage().getCaptureCoordinates() )
         {
-            if ( coordinate != null && coordinate.isValid() )
+            if ( longitude != null && latitude != null )
             {
-                programStageInstance.setCoordinates( coordinate.getCoordinateString() );
-            }
-            else
-            {
-                programStageInstance.setCoordinates( null );
+                programStageInstance.setLongitude( longitude );
+                programStageInstance.setLatitude( latitude );
             }
         }
 
@@ -245,8 +245,8 @@ public class UploadAnonymousEventAction implements Action
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
     }
 
-    private ProgramStageInstance saveExecutionDate( Integer programId, Integer organisationUnitId, Date date, Boolean completed,
-        Coordinate coordinate )
+    private ProgramStageInstance saveExecutionDate( Integer programId, Integer organisationUnitId, Date date,
+        Boolean completed, Double longitude, Double latitude )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Program program = programService.getProgram( programId );
@@ -269,13 +269,10 @@ public class UploadAnonymousEventAction implements Action
 
         if ( programStage.getCaptureCoordinates() )
         {
-            if ( coordinate != null && coordinate.isValid() )
+            if ( longitude != null && latitude != null )
             {
-                programStageInstance.setCoordinates( coordinate.getCoordinateString() );
-            }
-            else
-            {
-                programStageInstance.setCoordinates( null );
+                programStageInstance.setLongitude( longitude );
+                programStageInstance.setLatitude( latitude );
             }
         }
 
@@ -286,7 +283,8 @@ public class UploadAnonymousEventAction implements Action
         return programStageInstance;
     }
 
-    private void saveDataValue( ProgramStageInstance programStageInstance, DataElement dataElement, String value, Boolean providedElsewhere )
+    private void saveDataValue( ProgramStageInstance programStageInstance, DataElement dataElement, String value,
+        Boolean providedElsewhere )
     {
         String storedBy = currentUserService.getCurrentUsername();
 
@@ -295,7 +293,8 @@ public class UploadAnonymousEventAction implements Action
             value = null;
         }
 
-        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement );
+        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
+            dataElement );
 
         if ( value != null )
         {

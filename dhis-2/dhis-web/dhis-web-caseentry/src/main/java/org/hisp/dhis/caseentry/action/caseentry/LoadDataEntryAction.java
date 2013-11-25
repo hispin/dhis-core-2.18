@@ -55,7 +55,6 @@ import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 import org.hisp.dhis.program.comparator.ProgramStageSectionSortOrderComparator;
-import org.hisp.dhis.system.util.ValidationUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -241,16 +240,16 @@ public class LoadDataEntryAction
         return calAttributeValueMap;
     }
 
-    private String longitude;
+    private Double longitude;
 
-    public String getLongitude()
+    public Double getLongitude()
     {
         return longitude;
     }
 
-    private String latitude;
+    private Double latitude;
 
-    public String getLatitude()
+    public Double getLatitude()
     {
         return latitude;
     }
@@ -357,8 +356,8 @@ public class LoadDataEntryAction
             // Allow update only if org unit does not have polygon coordinates
             // -----------------------------------------------------------------
 
-            longitude = ValidationUtils.getLongitude( programStageInstance.getCoordinates() );
-            latitude = ValidationUtils.getLatitude( programStageInstance.getCoordinates() );
+            longitude = programStageInstance.getLongitude();
+            latitude = programStageInstance.getLatitude();
         }
 
         return SUCCESS;

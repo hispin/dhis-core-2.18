@@ -81,7 +81,9 @@ public class ProgramStageInstance
 
     private Integer status = ACTIVE_STATUS;
 
-    private String coordinates;
+    private Double longitude;
+
+    private Double latitude;
 
     private String completedUser;
 
@@ -292,16 +294,6 @@ public class ProgramStageInstance
         this.status = status;
     }
 
-    public String getCoordinates()
-    {
-        return coordinates;
-    }
-
-    public void setCoordinates( String coordinates )
-    {
-        this.coordinates = coordinates;
-    }
-
     public List<MessageConversation> getMessageConversations()
     {
         return messageConversations;
@@ -310,6 +302,26 @@ public class ProgramStageInstance
     public void setMessageConversations( List<MessageConversation> messageConversations )
     {
         this.messageConversations = messageConversations;
+    }
+
+    public Double getLongitude()
+    {
+        return longitude;
+    }
+
+    public void setLongitude( Double longitude )
+    {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude()
+    {
+        return latitude;
+    }
+
+    public void setLatitude( Double latitude )
+    {
+        this.latitude = latitude;
     }
 
     public Integer getEventStatus()
