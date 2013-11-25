@@ -420,6 +420,16 @@ public abstract class AbstractEventService
     }
 
     @Override
+    public Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Person person, Date startDate, Date endDate )
+    {
+        List<Event> eventList = eventStore.getAll( programs, programStages, organisationUnits, person, startDate, endDate );
+        Events events = new Events();
+        events.setEvents( eventList );
+
+        return events;
+    }
+
+    @Override
     public Event getEvent( String uid )
     {
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( uid );
