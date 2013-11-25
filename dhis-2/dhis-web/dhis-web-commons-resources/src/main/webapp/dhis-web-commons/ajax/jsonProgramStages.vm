@@ -1,10 +1,10 @@
-#set( $size = $associations.size() )
+#set( $size = $programStages.size() )
 { 
 	"programStages": [
-		#foreach( $association in $associations )
+		#foreach( $programStage in $programStages )
 		  {
-			"id":  ${association.id} ,
-			"name": "$!encoder.jsonEncode( ${association.displayName} )"
+			"id":  ${programStages.id} ,
+			"name": "$!encoder.jsonEncode( ${programStages.displayName} )"
 		  }#if( $velocityCount < $size ),#end
 		#end]
 }

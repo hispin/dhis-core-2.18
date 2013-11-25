@@ -221,8 +221,7 @@ public interface ProgramStageInstanceStore
      *        LATE_VISIT_STATUS
      * @return A number
      */
-    int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date after, Date before,
-        int status );
+    int averageNumberCompleted( Program program, Collection<Integer> orgunitIds, Date after, Date before, int status );
 
     /**
      * Get ids of orgunits where events happened in a period
@@ -246,4 +245,10 @@ public interface ProgramStageInstanceStore
      * @return Grid
      */
     Grid getCompleteness( Collection<Integer> orgunitIds, Program program, String startDate, String endDate, I18n i18n );
+
+    Grid searchEvent( ProgramStage programStage, Collection<Integer> orgUnits, List<TabularEventColumn> columns,
+        Date startDate, Date endDate, Boolean completed, Integer min, Integer max, I18n i18n );
+
+    int searchEventsCount( ProgramStage programStage, List<TabularEventColumn> columns,
+        Collection<Integer> organisationUnits, Date startDate, Date endDate, Boolean completed );
 }

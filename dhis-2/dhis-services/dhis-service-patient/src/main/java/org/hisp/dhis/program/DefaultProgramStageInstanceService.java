@@ -528,7 +528,7 @@ public class DefaultProgramStageInstanceService
     {
         Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
 
-        Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders(); 
+        Collection<PatientReminder> reminders = programStageInstance.getProgramStage().getPatientReminders();
         for ( PatientReminder rm : reminders )
         {
             if ( rm != null
@@ -670,8 +670,25 @@ public class DefaultProgramStageInstanceService
         programStageInstance.setOrganisationUnit( organisationUnit );
 
         addProgramStageInstance( programStageInstance );
-        
+
         return programStageInstance;
+    }
+
+    @Override
+    public Grid searchEvents( ProgramStage programStage, List<TabularEventColumn> columns,
+        Collection<Integer> organisationUnits, Date startDate, Date endDate, Boolean completed, Integer min,
+        Integer max, I18n i18n )
+    {
+        return programStageInstanceStore.searchEvent( programStage, organisationUnits, columns, startDate, endDate,
+            completed, min, max, i18n );
+    }
+
+    @Override
+    public int searchEventsCount( ProgramStage programStage, List<TabularEventColumn> columns,
+        Collection<Integer> organisationUnits, Boolean completed, Date startDate, Date endDate )
+    {
+        return programStageInstanceStore.searchEventsCount( programStage, columns, organisationUnits, startDate,
+            endDate, completed );
     }
 
     // -------------------------------------------------------------------------

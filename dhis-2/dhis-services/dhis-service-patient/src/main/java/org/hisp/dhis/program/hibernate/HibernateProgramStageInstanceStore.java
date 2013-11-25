@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -43,6 +44,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientReminder;
@@ -54,9 +56,11 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceStore;
 import org.hisp.dhis.program.SchedulingProgramObject;
+import org.hisp.dhis.program.TabularEventColumn;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -76,6 +80,13 @@ public class HibernateProgramStageInstanceStore
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
+    }
+
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
     }
 
     // -------------------------------------------------------------------------
@@ -483,8 +494,10 @@ public class HibernateProgramStageInstanceStore
         {
             criteria.add( Restrictions.not( Restrictions.in( "programInstance", programInstances ) ) );
         }
-System.out.println("\n\n\n ............. \n programInstances : " + programInstances.iterator().next().getProgram().getName() );
-System.out.println("\n\n\n ............. \n stageInstances : " + programInstances.iterator().next().getProgramStageInstances() );
+        System.out.println( "\n\n\n ............. \n programInstances : "
+            + programInstances.iterator().next().getProgram().getName() );
+        System.out.println( "\n\n\n ............. \n stageInstances : "
+            + programInstances.iterator().next().getProgramStageInstances() );
         Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
         return rs != null ? rs.intValue() : 0;
     }
@@ -498,6 +511,60 @@ System.out.println("\n\n\n ............. \n stageInstances : " + programInstance
         criteria.setProjection( Projections.distinct( Projections.projectionList().add(
             Projections.property( "orgunit.id" ), "orgunitid" ) ) );
         return criteria.list();
+    }
+
+    @Override
+    public Grid searchEvent( ProgramStage programStage, Collection<Integer> orgUnits, List<TabularEventColumn> columns,
+        Date startDate, Date endDate, Boolean completed, Integer min, Integer max, I18n i18n )
+    {
+        // ---------------------------------------------------------------------
+        // Headers cols
+        // ---------------------------------------------------------------------
+
+        Grid grid = new ListGrid();
+        grid.setTitle( programStage.getDisplayName() );
+        grid.setSubtitle( i18n.getString( "from" ) + " " + DateUtils.getMediumDateString( startDate ) + " "
+            + i18n.getString( "to" ) + " " + DateUtils.getMediumDateString( endDate ) );
+
+        grid.addHeader( new GridHeader( "id", true, true ) );
+        grid.addHeader( new GridHeader( programStage.getReportDateDescription(), false, true ) );
+
+        Collection<String> deKeys = new HashSet<String>();
+        for ( TabularEventColumn column : columns )
+        {
+            String deKey = "element_" + column.getIdentifier();
+            if ( !deKeys.contains( deKey ) )
+            {
+                grid.addHeader( new GridHeader( column.getName(), column.isHidden(), true ) );
+                deKeys.add( deKey );
+            }
+        }
+
+        grid.addHeader( new GridHeader( "Complete", true, true ) );
+        grid.addHeader( new GridHeader( "PatientId", true, true ) );
+
+        // ---------------------------------------------------------------------
+        // Get SQL and build grid
+        // ---------------------------------------------------------------------
+
+        String sql = getTabularReportSql( false, programStage, columns, orgUnits, startDate, endDate, completed, min,
+            max );
+
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+
+        GridUtils.addRows( grid, rowSet );
+
+        return grid;
+    }
+
+    @Override
+    public int searchEventsCount( ProgramStage programStage, List<TabularEventColumn> columns,
+        Collection<Integer> organisationUnits, Date startDate, Date endDate, Boolean completed )
+    {
+        String sql = getTabularReportSql( true, programStage, columns, organisationUnits, startDate, endDate,
+            completed, null, null );
+
+        return jdbcTemplate.queryForObject( sql, Integer.class );
     }
 
     // ---------------------------------------------------------------------
@@ -653,4 +720,101 @@ System.out.println("\n\n\n ............. \n stageInstances : " + programInstance
             + "       and (  now() - psi.duedate ) = prm.daysallowedsendmessage "
             + "       and prm.whentosend is null " + "       and prm.sendto = " + PatientReminder.SEND_TO_USER_GROUP;
     }
+
+    private String getTabularReportSql( boolean count, ProgramStage programStage, List<TabularEventColumn> columns,
+        Collection<Integer> orgUnits, Date startDate, Date endDate, Boolean completed, Integer min, Integer max )
+    {
+        Set<String> deKeys = new HashSet<String>();
+        String selector = count ? "count(*) " : "* ";
+
+        String sql = "select " + selector + "from ( select DISTINCT psi.programstageinstanceid, psi.executiondate,";
+        String where = "";
+        String operator = "where ";
+
+        for ( TabularEventColumn column : columns )
+        {
+            if ( column.isNumberDataElement() )
+            {
+                String deKey = "element_" + column.getIdentifier();
+                if ( !deKeys.contains( deKey ) )
+                {
+                    sql += "(select cast( value as "
+                        + statementBuilder.getDoubleColumnType()
+                        + " ) from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
+                        + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
+                    deKeys.add( deKey );
+                }
+
+                if ( column.hasQuery() )
+                {
+                    where += operator + "element_" + column.getIdentifier() + " " + column.getOperator() + " "
+                        + column.getQuery() + " ";
+                    operator = "and ";
+                }
+            }
+            else if ( column.isDataElement() )
+            {
+                String deKey = "element_" + column.getIdentifier();
+                if ( !deKeys.contains( deKey ) )
+                {
+                    sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
+                        + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
+                    deKeys.add( deKey );
+                }
+
+                if ( column.hasQuery() )
+                {
+                    if ( column.isDateType() )
+                    {
+                        where += operator + "element_" + column.getIdentifier() + " " + column.getOperator() + " "
+                            + column.getQuery() + " ";
+                    }
+                    else
+                    {
+                        where += operator + "lower(element_" + column.getIdentifier() + ") " + column.getOperator()
+                            + " " + column.getQuery() + " ";
+                    }
+                    operator = "and ";
+                }
+            }
+        }
+
+        sql += " psi.completed ";
+
+        sql += "from programstageinstance psi ";
+        sql += "left join programinstance pi on (psi.programinstanceid=pi.programinstanceid) ";
+        sql += "left join patient p on (pi.patientid=p.patientid) ";
+        sql += "join organisationunit ou on (ou.organisationunitid=psi.organisationunitid) ";
+
+        sql += "where psi.programstageid=" + programStage.getId() + " ";
+
+        if ( startDate != null && endDate != null )
+        {
+            String sDate = DateUtils.getMediumDateString( startDate );
+            String eDate = DateUtils.getMediumDateString( endDate );
+
+            sql += "and psi.executiondate >= '" + sDate + "' ";
+            sql += "and psi.executiondate <= '" + eDate + "' ";
+        }
+
+        if ( orgUnits != null )
+        {
+            sql += "and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnits ) + ") ";
+        }
+        if ( completed != null )
+        {
+            sql += "and psi.completed=" + completed + " ";
+        }
+
+        sql += "order by psi.executiondate desc ";
+
+        sql += " ";
+        sql += ") as tabular ";
+        sql += where; // filters
+        sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
+        sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
+
+        return sql;
+    }
+
 }

@@ -30,6 +30,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="statementBuilder" ref="statementBuilder" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramInstanceStore"
