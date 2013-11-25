@@ -86,7 +86,7 @@ public class PatientDashboardAction
     // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
+    private String patientId;
 
     private Patient patient;
 
@@ -190,7 +190,7 @@ public class PatientDashboardAction
         this.patientService = patientService;
     }
 
-    public void setPatientId( Integer patientId )
+    public void setPatientId( String patientId )
     {
         this.patientId = patientId;
     }
@@ -290,7 +290,7 @@ public class PatientDashboardAction
         PeriodType.clearTimeOfDay( today );
         Date date = today.getTime();
         String visitor = currentUserService.getCurrentUsername();
-        PatientAudit patientAudit = patientAuditService.getPatientAudit( patientId, visitor, date,
+        PatientAudit patientAudit = patientAuditService.getPatientAudit( patient.getId(), visitor, date,
             PatientAudit.MODULE_PATIENT_DASHBOARD );
         if ( patientAudit == null )
         {

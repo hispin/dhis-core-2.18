@@ -52,7 +52,7 @@
 <h3 id='patientMamagementLink'>
 	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
 	#if($!relatedProgram)
-		&#8226; <a href="javascript:showPatientDashboardForm($!patientId);">$i18n.getString( 'patient_dashboard' )</a>
+		&#8226; <a href="javascript:showPatientDashboardForm('$!patientUid');">$i18n.getString( 'patient_dashboard' )</a>
 	#end
 	&#8226; $i18n.getString( "add_new_patient" )
 </h3>
@@ -92,7 +92,7 @@
 		<td colspan='2' id='actionButtons'>
 			#if($!relatedProgram)
 				<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;" style="width:70px;" />
-				<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="showPatientDashboardForm($!patientId);" style="width:70px;" />
+				<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="showPatientDashboardForm('$!patientUid');" style="width:70px;" />
 			#else
 			<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;" style="width:70px;" />
 			<input type="submit" class="button" value="$i18n.getString( 'add_and_register_new' )" style="width:140px;" onclick="isContinue=true;"/>
