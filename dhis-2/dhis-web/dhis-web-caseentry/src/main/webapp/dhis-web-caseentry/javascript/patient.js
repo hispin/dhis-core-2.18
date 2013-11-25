@@ -227,7 +227,7 @@ function Patient()
 		  url: 'updatePatient.action',
 		  data: params,
 		  success: function( json ) {
-				showPatientDashboardForm( getFieldValue('id') );
+				showPatientDashboardForm( getFieldValue('uid') );
 				$("#patientForm :input").attr("disabled", false);
 				$("#patientForm").find("select").attr("disabled", false);
 		  }
@@ -316,6 +316,14 @@ function addPatient( programId, related, isContinue )
 	var params = 'programId=' + programId + '&' + getParamsForDiv('patientForm');
 	patient.add(programId,related,params, isContinue );
 	registrationProgress = true;
+    return false;
+}
+
+function updatePatient()
+{		
+	var patient = new Patient();
+	var params = getParamsForDiv('patientForm');
+	patient.update();
     return false;
 }
 
