@@ -1,23 +1,24 @@
 <script>
-	jQuery(document).ready(function() {
-		jQuery("input[type=button]").click(function() {
-			jQuery.postUTF8( 'setSystemGeneralSettings.action', {
-				cacheStrategy: getFieldValue( 'cacheStrategy' ),
-				infrastructuralDataElements: getFieldValue( 'infrastructuralDataElements' ),
-				infrastructuralPeriodType: getFieldValue( 'infrastructuralPeriodType' ),
-				feedbackRecipients: getFieldValue( 'feedbackRecipients' ),
-                offlineOrganisationUnitLevel: getFieldValue( 'offlineOrganisationUnitLevel' ),
-				omitIndicatorsZeroNumeratorDataMart: jQuery( '#omitIndicatorsZeroNumeratorDataMart' ).is( ':checked' ),
-				factorDeviation: getFieldValue( 'factorDeviation' ),
-				phoneNumberAreaCode: getFieldValue( 'phoneNumberAreaCode' ),
-                multiOrganisationUnitForms: jQuery( '#multiOrganisationUnitForms' ).is( ':checked' )
-			}, function( json ) {
-				if ( json.response == "success" ) {
-					setHeaderDelayMessage( json.message );
-				}
-			});
-		});
-	});
+  jQuery(document).ready(function() {
+    jQuery("input[type=button]").click(function() {
+      jQuery.postUTF8('setSystemGeneralSettings.action', {
+        cacheStrategy: getFieldValue('cacheStrategy'),
+        infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
+        infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
+        feedbackRecipients: getFieldValue('feedbackRecipients'),
+        offlineOrganisationUnitLevel: getFieldValue('offlineOrganisationUnitLevel'),
+        omitIndicatorsZeroNumeratorDataMart: jQuery('#omitIndicatorsZeroNumeratorDataMart').is(':checked'),
+        factorDeviation: getFieldValue('factorDeviation'),
+        phoneNumberAreaCode: getFieldValue('phoneNumberAreaCode'),
+        googleAnalyticsUA: getFieldValue('googleAnalyticsUA'),
+        multiOrganisationUnitForms: jQuery('#multiOrganisationUnitForms').is(':checked')
+      }, function( json ) {
+        if( json.response == "success" ) {
+          setHeaderDelayMessage(json.message);
+        }
+      });
+    });
+  });
 </script>
 
 <h3>$i18n.getString( "general_settings" ) #openHelp( "systemGeneralSettings" )</h3>
@@ -85,6 +86,12 @@
 
 <div class="setting">
 	<input type="text" id="phoneNumberAreaCode" name="phoneNumberAreaCode" value="$!phoneNumberAreaCode"/>
+</div>
+
+<div class="settingLabel">$i18n.getString( "google_analytics_ua_key" )</div>
+
+<div class="setting">
+	<input type="text" id="googleAnalyticsUA" name="googleAnalyticsUA" value="$!googleAnalyticsUA"/>
 </div>
 
 <div class="setting">

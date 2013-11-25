@@ -80,6 +80,7 @@ public interface SystemSettingManager
     final String KEY_CONFIGURATION = "keyConfig";
     final String KEY_ACCOUNT_RECOVERY = "keyAccountRecovery";
     final String KEY_LAST_MONITORING_RUN = "keyLastMonitoringRun";
+    final String KEY_GOOGLE_ANALYTICS_UA = "googleAnalyticsUA";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
@@ -130,4 +131,6 @@ public interface SystemSettingManager
     boolean accountRecoveryEnabled();
     
     boolean emailEnabled();
+
+    String googleAnalyticsUA();
 }

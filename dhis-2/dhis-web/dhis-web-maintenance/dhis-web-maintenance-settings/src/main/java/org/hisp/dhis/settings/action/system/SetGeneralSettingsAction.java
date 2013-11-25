@@ -154,6 +154,13 @@ public class SetGeneralSettingsAction
         this.phoneNumberAreaCode = phoneNumberAreaCode;
     }
 
+    private String googleAnalyticsUA;
+
+    public void setGoogleAnalyticsUA( String googleAnalyticsUA )
+    {
+        this.googleAnalyticsUA = googleAnalyticsUA;
+    }
+
     private boolean multiOrganisationUnitForms;
 
     public void setMultiOrganisationUnitForms( boolean multiOrganisationUnitForms )
@@ -186,6 +193,7 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );
         systemSettingManager.saveSystemSetting( KEY_MULTI_ORGANISATION_UNIT_FORMS, multiOrganisationUnitForms );
+        systemSettingManager.saveSystemSetting( KEY_GOOGLE_ANALYTICS_UA, googleAnalyticsUA );
 
         Configuration configuration = configurationService.getConfiguration();
 

@@ -28,13 +28,13 @@ package org.hisp.dhis.setting;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Stian Strandli
@@ -137,7 +137,7 @@ public class DefaultSystemSettingManager
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_HOST_NAME ) );
     }
-    
+
     public int getEmailPort()
     {
         return (Integer) getSystemSetting( KEY_EMAIL_PORT, DEFAULT_EMAIL_PORT );
@@ -152,19 +152,24 @@ public class DefaultSystemSettingManager
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_USERNAME ) );
     }
-    
+
     public boolean getEmailTls()
     {
         return (Boolean) getSystemSetting( KEY_EMAIL_TLS, true );
     }
-    
+
     public boolean accountRecoveryEnabled()
     {
         return (Boolean) getSystemSetting( KEY_ACCOUNT_RECOVERY, false );
     }
-    
+
     public boolean emailEnabled()
     {
         return getEmailHostName() != null;
+    }
+
+    public String googleAnalyticsUA()
+    {
+        return StringUtils.trimToNull( (String) getSystemSetting( KEY_GOOGLE_ANALYTICS_UA ) );
     }
 }

@@ -28,19 +28,17 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.setting.SystemSettingManager;
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.Interceptor;
-
-import static org.hisp.dhis.setting.SystemSettingManager.*;
-import static org.hisp.dhis.appmanager.AppManager.KEY_APP_BASE_URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+import static org.hisp.dhis.appmanager.AppManager.KEY_APP_BASE_URL;
+import static org.hisp.dhis.setting.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -58,7 +56,7 @@ public class SystemSettingInterceptor
     {
         this.systemSettingManager = systemSettingManager;
     }
-    
+
     private ConfigurationService configurationService;
 
     public void setConfigurationService( ConfigurationService configurationService )
@@ -71,7 +69,7 @@ public class SystemSettingInterceptor
     // -------------------------------------------------------------------------
 
     public void destroy()
-    {        
+    {
     }
 
     public void init()
@@ -82,7 +80,7 @@ public class SystemSettingInterceptor
         throws Exception
     {
         Map<String, Object> map = new HashMap<String, Object>();
-        
+
         map.put( KEY_CACHE_STRATEGY, systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY, DEFAULT_CACHE_STRATEGY ) );
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE, DEFAULT_APPLICATION_TITLE ) );
         map.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO ) );
@@ -98,11 +96,12 @@ public class SystemSettingInterceptor
         map.put( KEY_ACCOUNT_RECOVERY, systemSettingManager.getSystemSetting( KEY_ACCOUNT_RECOVERY, false ) );
         map.put( KEY_CONFIGURATION, configurationService.getConfiguration() );
         map.put( KEY_APP_BASE_URL, systemSettingManager.getSystemSetting( KEY_APP_BASE_URL ) );
-        
+        map.put( KEY_GOOGLE_ANALYTICS_UA, systemSettingManager.getSystemSetting( KEY_GOOGLE_ANALYTICS_UA, "" ) );
+
         map.put( SYSPROP_PORTAL, defaultIfEmpty( System.getProperty( SYSPROP_PORTAL ), String.valueOf( false ) ) );
-        
+
         invocation.getStack().push( map );
-        
+
         return invocation.invoke();
     }
 }
