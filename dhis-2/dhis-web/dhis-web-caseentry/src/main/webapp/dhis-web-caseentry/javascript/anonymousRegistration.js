@@ -785,7 +785,7 @@ function searchEvents( listAll ) {
 
     $.ajax( {
         type: "POST",
-        url: 'searchProgramStageInstances.action',
+        url: 'searchEvents.action',
         data: params,
         dataType: 'text',
         cache: false,

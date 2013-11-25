@@ -238,7 +238,8 @@ public interface ProgramStageInstanceService
     int getOverDueEventCount( ProgramStage programStage, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 
     /**
-     * Get the number of program instances completed, includes all program stage instances were completed
+     * Get the number of program instances completed, includes all program stage
+     * instances were completed
      * 
      * @param program Program
      * @param orgunitIds The ids of orgunits where the events happened
@@ -336,4 +337,10 @@ public interface ProgramStageInstanceService
     ProgramStageInstance createProgramStageInstance( Patient patient, Program program, Date executionDate,
         OrganisationUnit organisationUnit );
 
+    Grid searchEvents( ProgramStage programStage, List<TabularEventColumn> columns,
+        Collection<Integer> organisationUnits, Date startDate, Date endDate, Boolean completed, Integer min,
+        Integer max, I18n i18n );
+
+    int searchEventsCount( ProgramStage programStage, List<TabularEventColumn> columns,
+        Collection<Integer> organisationUnits, Boolean completed, Date startDate, Date endDate );
 }
