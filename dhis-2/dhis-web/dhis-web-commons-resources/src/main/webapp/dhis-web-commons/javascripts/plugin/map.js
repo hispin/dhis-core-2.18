@@ -810,7 +810,7 @@ Ext.onReady( function() {
 				// parent graph map
 				view.parentGraphMap = {};
 				view.parentGraphMap[parentId] = parentGraph;
-console.log(view.parentGraphMap);
+
 				// dimension
 				view.rows = [{
 					dimension: dimConf.organisationUnit.objectName,
@@ -963,17 +963,20 @@ console.log(view.parentGraphMap);
 				strokeWidth: 1
 			},
 			select = {
-				strokeColor: '#000000',
-				strokeWidth: 2,
+				fillOpacity: 0.9,
+				strokeColor: '#fff',
+				strokeWidth: 1,
 				cursor: 'pointer'
 			};
 
 		if (id === 'boundary') {
 			defaults.fillOpacity = 0;
 			defaults.strokeColor = '#000';
+			defaults.strokeWidth = 1;
 
 			select.fillColor = '#000';
-			select.fillOpacity = 0.2;
+			select.fillOpacity = 0.15;
+			select.strokeColor = '#000';
 			select.strokeWidth = 1;
 		}
 
@@ -1711,7 +1714,7 @@ console.log(view.parentGraphMap);
 					metaData = response.metaData;
 
 				for (var i = 0, dimension; i < dimensions.length; i++) {
-					dimension = dimensions[i];
+					dimension = dimensions[i];
 
 					for (var j = 0, item; j < dimension.items.length; j++) {
 						item = dimension.items[j];
@@ -2359,7 +2362,7 @@ console.log(view.parentGraphMap);
 				return array;
 			};
 
-			util.object.getLength = function(object) {
+			util.object.getLength = function(object) {
 				var size = 0;
 
 				for (var key in object) {
@@ -2539,7 +2542,7 @@ console.log(view.parentGraphMap);
 
 				return function() {
 					var a = [],
-						objectNames = [],
+						objectNames = [],
 						dimConf = conf.finals.dimension,
 						isOu = false,
 						isOuc = false,
@@ -4038,9 +4041,12 @@ console.log(view.parentGraphMap);
 
 
 	// GIS PLUGIN (plugin.js)
-	var init = {},
+	var init = {
+			user: {}
+		},
 		configs = [],
-		isInitialized = false,
+		isInitStarted = false,
+		isInitComplete = false,
 		getInit,
 		applyCss,
 		execute;
@@ -4056,25 +4062,26 @@ console.log(view.parentGraphMap);
 
 	GIS.plugin = {};
 
-	getInit = function(config) {
-		var requests = [],
+	getInit = function(url) {
+		var isInit = false,
+			requests = [],
 			callbacks = 0,
 			fn;
 
-		init.user = {};
-
 		fn = function() {
-			applyCss();
-
 			if (++callbacks === requests.length) {
+				isInitComplete = true;
+
 				for (var i = 0; i < configs.length; i++) {
 					execute(configs[i]);
 				}
+
+				configs = [];
 			}
 		};
 
 		requests.push({
-			url: config.url + '/api/system/context.jsonp',
+			url: url + '/api/system/context.jsonp',
 			success: function(r) {
 				init.contextPath = r.contextPath;
 				fn();
@@ -4082,7 +4089,7 @@ console.log(view.parentGraphMap);
 		});
 
 		requests.push({
-			url: config.url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&links=false',
+			url: url + '/api/organisationUnits.jsonp?userOnly=true&viewClass=detailed&links=false',
 			success: function(r) {
 				var ou = r.organisationUnits[0];
 				init.user.ou = ou.id;
@@ -4092,7 +4099,7 @@ console.log(view.parentGraphMap);
 		});
 
 		requests.push({
-			url: config.url + '/api/mapLegendSets.jsonp?viewClass=detailed&links=false&paging=false',
+			url: url + '/api/mapLegendSets.jsonp?viewClass=detailed&links=false&paging=false',
 			success: function(r) {
 				init.legendSets = r.mapLegendSets;
 				fn();
@@ -4100,7 +4107,7 @@ console.log(view.parentGraphMap);
 		});
 
 		requests.push({
-			url: config.url + '/api/dimensions.jsonp?links=false&paging=false',
+			url: url + '/api/dimensions.jsonp?links=false&paging=false',
 			success: function(r) {
 				init.dimensions = r.dimensions;
 				fn();
@@ -4213,7 +4220,7 @@ console.log(view.parentGraphMap);
 						xtype: 'gx_mappanel',
 						map: gis.olmap,
 						bodyStyle: 'border:0 none',
-						width: el.getWidth() - 200,
+						width: el.getWidth() - (gis.map.hideLegend ? 0 : 200),
 						height: el.getHeight(),
 						listeners: {
 							added: function() {
@@ -4225,7 +4232,7 @@ console.log(view.parentGraphMap);
 						xtype: 'panel',
 						layout: 'anchor',
 						bodyStyle: 'border-top:0 none; border-bottom:0 none',
-						width: 200,
+						width: gis.map.hideLegend ? 0 : 200,
 						preventHeader: true,
 						defaults: {
 							bodyStyle: 'padding: 6px; border: 0 none',
@@ -4309,12 +4316,31 @@ console.log(view.parentGraphMap);
 				Ext.query('.zoomVisibleButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/app/images/zoomvisible_24.png" />';
 				Ext.query('.measureButton')[i].innerHTML = '<img src="' + gis.init.contextPath + '/dhis-web-mapping/app/images/measure_24.png" />';
 			}
+
+			// base layer
+			if (Ext.isDefined(gis.map.baseLayer)) {
+				var base = Ext.isString(gis.map.baseLayer) ? gis.map.baseLayer.split(' ').join('').toLowerCase() : gis.map.baseLayer;
+
+				if (!base || base === 'none' || base === 'off') {
+					gis.layer.googleStreets.setVisibility(false);
+				}
+				else if (base === 'gh' || base === 'googlehybrid') {
+					gis.olmap.setBaseLayer(gis.layer.googleHybrid);
+				}
+				else if (base === 'osm' || base === 'openstreetmap') {
+					gis.olmap.setBaseLayer(gis.layer.openStreetMap);
+				}
+			}
+
+			var tmp = gis;
 		};
 
 		initialize = function() {
 			if (!validateConfig()) {
 				return;
 			}
+
+			applyCss();
 
 			gis = GIS.core.getInstance(init);
 			gis.el = config.el;
@@ -4343,41 +4369,19 @@ console.log(view.parentGraphMap);
 			config.url = config.url.substr(0, config.url.length - 1);
 		}
 
-		configs.push(config);
+		if (isInitComplete) {
+			execute(config);
+		}
+		else {
+			configs.push(config);
 
-		if (!isInitialized) {
-			isInitialized = true;
-			getInit(config);
+			if (!isInitStarted) {
+				isInitStarted = true;
+				getInit(config.url);
+			}
 		}
 	};
 
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 });
