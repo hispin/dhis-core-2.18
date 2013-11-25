@@ -110,8 +110,8 @@ public class EventController
         @RequestParam( value = "programStage", required = false ) String programStageUid,
         @RequestParam( value = "person", required = false ) String personUid,
         @RequestParam( value = "orgUnit" ) String orgUnitUid,
-        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
-        @RequestParam @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam( required =  false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam( required =  false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
