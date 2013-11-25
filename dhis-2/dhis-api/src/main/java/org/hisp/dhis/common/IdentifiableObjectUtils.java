@@ -257,24 +257,27 @@ public class IdentifiableObjectUtils
         {
             for ( IdentifiableObject identifiableObject : identifiableObjects )
             {
-                integers.add( identifiableObject.getId() );
+                if ( identifiableObject != null )
+                {
+                    integers.add( identifiableObject.getId() );
+                }
             }
         }
 
         return integers;
     }
-    
+
     /**
      * Returns a mapping between the uid and the name of the given identifiable
      * objects.
-     * 
+     *
      * @param objects the identifiable objects.
      * @return mapping between the uid and the name of the given objects.
      */
     public static Map<String, String> getUidNameMap( Collection<? extends IdentifiableObject> objects )
     {
         Map<String, String> map = new HashMap<String, String>();
-        
+
         if ( objects != null )
         {
             for ( IdentifiableObject object : objects )
@@ -282,7 +285,7 @@ public class IdentifiableObjectUtils
                 map.put( object.getUid(), object.getDisplayName() );
             }
         }
-        
+
         return map;
     }
 }

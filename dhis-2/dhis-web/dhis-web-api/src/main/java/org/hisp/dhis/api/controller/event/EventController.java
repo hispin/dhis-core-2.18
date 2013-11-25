@@ -44,6 +44,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.scheduling.TaskCategory;
@@ -62,13 +63,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -99,6 +102,9 @@ public class EventController
     @Autowired
     private PersonService personService;
 
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
@@ -110,21 +116,18 @@ public class EventController
         @RequestParam( value = "programStage", required = false ) String programStageUid,
         @RequestParam( value = "person", required = false ) String personUid,
         @RequestParam( value = "orgUnit" ) String orgUnitUid,
-        @RequestParam( required =  false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
-        @RequestParam( required =  false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
+        @RequestParam( value = "includeChildren", required = false, defaultValue = "false" ) boolean includeChildren,
+        @RequestParam( value = "includeDescendants", required = false, defaultValue = "false" ) boolean includeDescendants,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date startDate,
+        @RequestParam( required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date endDate,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Program program = manager.get( Program.class, programUid );
         ProgramStage programStage = manager.get( ProgramStage.class, programStageUid );
-        OrganisationUnit organisationUnit;
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+        OrganisationUnit rootOrganisationUnit;
         Person person = null;
-
-        if ( program == null && programStage == null )
-        {
-            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST,
-                "Both program and programStage is invalid or missing, needs at least one." );
-        }
 
         if ( personUid != null )
         {
@@ -136,59 +139,39 @@ public class EventController
             }
         }
 
-        organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
+        rootOrganisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
 
-        if ( organisationUnit == null )
+        if ( rootOrganisationUnit == null )
         {
             try
             {
-                organisationUnit = manager.get( OrganisationUnit.class, Integer.parseInt( orgUnitUid ) );
+                rootOrganisationUnit = manager.get( OrganisationUnit.class, Integer.parseInt( orgUnitUid ) );
             }
             catch ( NumberFormatException ignored )
             {
             }
         }
 
-        if ( organisationUnit == null )
+        if ( rootOrganisationUnit == null )
         {
             throw new NotFoundException( "OrganisationUnit", programUid );
         }
 
-        Events events;
-
-        if ( program != null && programStage != null )
+        if ( includeDescendants )
         {
-            if ( person != null )
-            {
-                events = eventService.getEvents( program, programStage, organisationUnit, person, startDate, endDate );
-            }
-            else
-            {
-                events = eventService.getEvents( program, programStage, organisationUnit, startDate, endDate );
-            }
+            organisationUnits.addAll( organisationUnitService.getOrganisationUnitsWithChildren( rootOrganisationUnit.getUid() ) );
         }
-        else if ( program != null )
+        else if ( includeChildren )
         {
-            if ( person != null )
-            {
-                events = eventService.getEvents( program, organisationUnit, person, startDate, endDate );
-            }
-            else
-            {
-                events = eventService.getEvents( program, organisationUnit, startDate, endDate );
-            }
+            organisationUnits.add( rootOrganisationUnit );
+            organisationUnits.addAll( rootOrganisationUnit.getChildren() );
         }
         else
         {
-            if ( person != null )
-            {
-                events = eventService.getEvents( programStage, organisationUnit, person, startDate, endDate );
-            }
-            else
-            {
-                events = eventService.getEvents( programStage, organisationUnit, startDate, endDate );
-            }
+            organisationUnits.add( rootOrganisationUnit );
         }
+
+        Events events = eventService.getEvents( Arrays.asList( program ), Arrays.asList( programStage ), organisationUnits, person, startDate, endDate );
 
         if ( options.hasLinks() )
         {

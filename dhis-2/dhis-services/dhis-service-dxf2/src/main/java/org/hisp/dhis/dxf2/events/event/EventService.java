@@ -77,6 +77,8 @@ public interface EventService
 
     Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate );
 
+    Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Person person, Date startDate, Date endDate );
+
     Event getEvent( String uid );
 
     Event getEvent( ProgramStageInstance programStageInstance );
