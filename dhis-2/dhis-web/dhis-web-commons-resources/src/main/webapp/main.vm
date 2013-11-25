@@ -164,5 +164,7 @@
       <div id="rightBarContents"/>
     </div>
 
+    #googleAnalyticsUA()
+
   </body>
 </html>

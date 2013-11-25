@@ -30,5 +30,7 @@
   #parse( $page )
 #end
 
+#googleAnalyticsUA()
+
 </body>
 </html>
