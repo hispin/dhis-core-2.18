@@ -30,7 +30,6 @@ package org.hisp.dhis.dxf2.events.event;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -50,6 +49,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -211,7 +211,7 @@ public class DefaultEventStore
 
                     if ( !StringUtils.isEmpty( psi_longitude ) && !StringUtils.isEmpty( psi_latitude ) )
                     {
-                        coordinate = new Coordinate(psi_longitude, psi_latitude);
+                        coordinate = new Coordinate( psi_longitude, psi_latitude );
                         try
                         {
                             List<Double> list = objectMapper.readValue( coordinate.getCoordinateString(),
@@ -317,10 +317,14 @@ public class DefaultEventStore
             }
         }
 
-        if ( startDate != null && endDate != null )
+        if ( startDate != null )
         {
-            sql += " and (psi.executiondate >= '" + startDate.toString() + "' and psi.executiondate <= '"
-                + endDate.toString() + "') ";
+            sql += " and psi.executiondate >= '" + getMediumDateString( startDate ) + "' ";
+        }
+
+        if ( endDate != null )
+        {
+            sql += " and psi.executiondate <= '" + getMediumDateString( endDate ) + "' ";
         }
 
         sql += " order by psi_uid;";
