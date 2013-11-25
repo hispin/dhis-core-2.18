@@ -51,7 +51,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * @author Abyot Asalefew Gizaw
  */
-@JacksonXmlRootElement(localName = "person", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "person", namespace = DxfNamespaces.DXF_2_0 )
 public class Patient
     extends BaseIdentifiableObject
 {
@@ -61,31 +61,45 @@ public class Patient
     private static final long serialVersionUID = 884114994005945275L;
 
     public static final String MALE = "M";
+
     public static final String FEMALE = "F";
+
     public static final String TRANSGENDER = "T";
 
     public static final char DOB_TYPE_VERIFIED = 'V';
+
     public static final char DOB_TYPE_DECLARED = 'D';
+
     public static final char DOB_TYPE_APPROXIMATED = 'A';
 
     public static final char AGE_TYPE_YEAR = 'Y';
+
     public static final char AGE_TYPE_MONTH = 'M';
+
     public static final char AGE_TYPE_DAY = 'D';
 
-
     public static String SEARCH_SAPERATE = "_";
-    
+
     public static String PREFIX_IDENTIFIER_TYPE = "iden";
+
     public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";
+
     public static String PREFIX_PATIENT_ATTRIBUTE = "attr";
+
     public static String PREFIX_PROGRAM = "prg";
+
     public static String PREFIX_PROGRAM_INSTANCE = "pi";
+
     public static String PREFIX_PROGRAM_EVENT_BY_STATUS = "stat";
+
     public static String PREFIX_PROGRAM_STAGE = "prgst";
 
     public static String FIXED_ATTR_BIRTH_DATE = "birthDate";
+
     public static String FIXED_ATTR_AGE = "age";
+
     public static String FIXED_ATTR_INTEGER_AGE = "integerValueOfAge";
+
     public static String FIXED_ATTR_REGISTRATION_DATE = "registrationDate";
 
     public static String FIXED_ATTR_FULL_NAME = "fullName";
@@ -103,20 +117,20 @@ public class Patient
     private boolean isDead;
 
     private Set<PatientIdentifier> identifiers = new HashSet<PatientIdentifier>();
-    
+
     private Set<PatientAttributeValue> attributeValues = new HashSet<PatientAttributeValue>();
-    
+
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
-    
+
     private OrganisationUnit organisationUnit;
-    
+
     private Patient representative;
 
     private boolean underAge;
 
     private Character dobType;
 
-    private User healthWorker;
+    private User associate;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -136,9 +150,9 @@ public class Patient
     }
 
     @JsonProperty
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -150,8 +164,8 @@ public class Patient
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getGender()
     {
         return gender;
@@ -163,8 +177,8 @@ public class Patient
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getBirthDate()
     {
         return birthDate;
@@ -176,8 +190,8 @@ public class Patient
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getDeathDate()
     {
         return deathDate;
@@ -189,8 +203,8 @@ public class Patient
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getIsDead()
     {
         return isDead;
@@ -210,7 +224,7 @@ public class Patient
     {
         this.identifiers = identifiers;
     }
-    
+
     public Set<PatientAttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -232,22 +246,22 @@ public class Patient
     }
 
     @JsonProperty
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
-    public User getHealthWorker()
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public User getAssociate()
     {
-        return healthWorker;
+        return associate;
     }
 
-    public void setHealthWorker( User healthWorker )
+    public void setAssociate( User associate )
     {
-        this.healthWorker = healthWorker;
+        this.associate = associate;
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getRegistrationDate()
     {
         return registrationDate;
@@ -259,9 +273,9 @@ public class Patient
     }
 
     @JsonProperty
-    @JsonSerialize(as = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Patient getRepresentative()
     {
         return representative;
@@ -400,25 +414,25 @@ public class Patient
 
         return AGE_TYPE_DAY;
     }
-    
+
     public void addIdentifier( PatientIdentifier identifier )
     {
         identifiers.add( identifier );
         identifier.setPatient( this );
     }
-    
+
     public void removeIdentifier( PatientIdentifier identifier )
     {
         identifiers.remove( identifier );
         identifier.setPatient( null );
     }
-    
+
     public void addAttributeValue( PatientAttributeValue attributeValue )
     {
         attributeValues.add( attributeValue );
         attributeValue.setPatient( this );
     }
-    
+
     public void removeAttributeValue( PatientAttributeValue attributeValue )
     {
         attributeValues.remove( attributeValue );
@@ -468,12 +482,12 @@ public class Patient
     {
         switch ( dobType )
         {
-            case DOB_TYPE_VERIFIED:
-                return "Verified";
-            case DOB_TYPE_DECLARED:
-                return "Declared";
-            default:
-                return "Approxiated";
+        case DOB_TYPE_VERIFIED:
+            return "Verified";
+        case DOB_TYPE_DECLARED:
+            return "Declared";
+        default:
+            return "Approxiated";
         }
     }
 }

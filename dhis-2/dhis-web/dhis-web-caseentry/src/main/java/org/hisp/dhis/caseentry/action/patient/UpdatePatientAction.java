@@ -182,11 +182,7 @@ public class UpdatePatientAction
 
         if ( healthWorker != null )
         {
-            patient.setHealthWorker( userService.getUser( healthWorker ) );
-        }
-        else
-        {
-            patient.setHealthWorker( null );
+            patient.setAssociate(  userService.getUser( healthWorker ) );
         }
 
         if ( birthDate != null || age != null )

@@ -58,7 +58,7 @@ public class PatientRegistrationForm
 
     public static String FIXED_ATTRIBUTE_DOB_TYPE = "dobType";
 
-    public static String FIXED_ATTRIBUTE_HEALTH_WORKER = "healthWorker";
+    public static String FIXED_ATTRIBUTE_ASSOCIATE = "associate";
 
     private Program program;
 

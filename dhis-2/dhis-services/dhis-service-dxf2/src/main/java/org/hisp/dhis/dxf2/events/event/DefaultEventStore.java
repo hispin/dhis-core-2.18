@@ -30,6 +30,7 @@ package org.hisp.dhis.dxf2.events.event;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -53,7 +54,8 @@ import static org.hisp.dhis.common.IdentifiableObjectUtils.getIdList;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultEventStore implements EventStore
+public class DefaultEventStore
+    implements EventStore
 {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -66,61 +68,77 @@ public class DefaultEventStore implements EventStore
     @Override
     public List<Event> getAll( Program program, OrganisationUnit organisationUnit )
     {
-        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), null, null, null );
+        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ),
+            null, null, null );
     }
 
     @Override
     public List<Event> getAll( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), null, startDate, endDate );
+        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ),
+            null, startDate, endDate );
     }
 
     @Override
-    public List<Event> getAll( Program program, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    public List<Event> getAll( Program program, OrganisationUnit organisationUnit, Person person, Date startDate,
+        Date endDate )
     {
-        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ), person, startDate, endDate );
+        return getAll( Arrays.asList( program ), new ArrayList<ProgramStage>(), Arrays.asList( organisationUnit ),
+            person, startDate, endDate );
     }
 
     @Override
     public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
-        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null, null );
+        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
+            null, null, null );
     }
 
     @Override
-    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate,
+        Date endDate )
     {
-        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, startDate, endDate );
+        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
+            null, startDate, endDate );
     }
 
     @Override
-    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    public List<Event> getAll( ProgramStage programStage, OrganisationUnit organisationUnit, Person person,
+        Date startDate, Date endDate )
     {
-        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), person, startDate, endDate );
+        return getAll( new ArrayList<Program>(), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
+            person, startDate, endDate );
     }
 
     @Override
     public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, null, null );
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
+            null, null, null );
     }
 
     @Override
-    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person )
+    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
+        Person person )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), person, null, null );
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
+            person, null, null );
     }
 
     @Override
-    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
+        Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), null, startDate, endDate );
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
+            null, startDate, endDate );
     }
 
     @Override
-    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    public List<Event> getAll( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
+        Person person, Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ), person, startDate, endDate );
+        return getAll( Arrays.asList( program ), Arrays.asList( programStage ), Arrays.asList( organisationUnit ),
+            person, startDate, endDate );
     }
 
     @Override
@@ -130,19 +148,23 @@ public class DefaultEventStore implements EventStore
     }
 
     @Override
-    public List<Event> getAll( Program program, List<ProgramStage> programStages, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    public List<Event> getAll( Program program, List<ProgramStage> programStages, OrganisationUnit organisationUnit,
+        Date startDate, Date endDate )
     {
-        return getAll( Arrays.asList( program ), programStages, Arrays.asList( organisationUnit ), null, startDate, endDate );
+        return getAll( Arrays.asList( program ), programStages, Arrays.asList( organisationUnit ), null, startDate,
+            endDate );
     }
 
     @Override
-    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate )
+    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages,
+        List<OrganisationUnit> organisationUnits, Date startDate, Date endDate )
     {
         return getAll( programs, programStages, organisationUnits, null, startDate, endDate );
     }
 
     @Override
-    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Person person, Date startDate, Date endDate )
+    public List<Event> getAll( List<Program> programs, List<ProgramStage> programStages,
+        List<OrganisationUnit> organisationUnits, Person person, Date startDate, Date endDate )
     {
         List<Event> events = new ArrayList<Event>();
 
@@ -184,15 +206,18 @@ public class DefaultEventStore implements EventStore
                 if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
                 {
                     Coordinate coordinate = new Coordinate();
-                    String psi_coordinates = rowSet.getString( "psi_coordinates" );
+                    Double psi_longitude = rowSet.getDouble( "psi_longitude" );
+                    Double psi_latitude = rowSet.getDouble( "psi_latitude" );
 
-                    if ( !StringUtils.isEmpty( psi_coordinates ) )
+                    if ( !StringUtils.isEmpty( psi_longitude ) && !StringUtils.isEmpty( psi_latitude ) )
                     {
+                        coordinate = new Coordinate(psi_longitude, psi_latitude);
                         try
                         {
-                            List<Double> list = objectMapper.readValue( psi_coordinates, new TypeReference<List<Double>>()
-                            {
-                            } );
+                            List<Double> list = objectMapper.readValue( coordinate.getCoordinateString(),
+                                new TypeReference<List<Double>>()
+                                {
+                                } );
 
                             coordinate.setLongitude( list.get( 0 ) );
                             coordinate.setLatitude( list.get( 1 ) );
@@ -223,19 +248,20 @@ public class DefaultEventStore implements EventStore
         return events;
     }
 
-    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds, Integer personId, Date startDate, Date endDate )
+    private String buildSql( List<Integer> programIds, List<Integer> programStageIds, List<Integer> orgUnitIds,
+        Integer personId, Date startDate, Date endDate )
     {
         String sql = "select p.uid as p_uid, ps.uid as ps_uid, ps.capturecoordinates as ps_capturecoordinates, pa.uid as pa_uid, psi.uid as psi_uid, psi.status as psi_status, ou.uid as ou_uid, "
-            + "psi.executiondate as psi_executiondate, psi.completeduser as psi_completeduser, psi.coordinates as psi_coordinates," +
-            " pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid" +
-            " from program p" +
-            " left join programstage ps on ps.programid=p.programid" +
-            " left join programstageinstance psi on ps.programstageid=psi.programstageid" +
-            " left join programinstance pi on pi.programinstanceid=psi.programinstanceid" +
-            " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid)" +
-            " left join patientdatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid" +
-            " left join dataelement de on pdv.dataelementid=de.dataelementid " +
-            " left join patient pa on pa.patientid=pi.patientid ";
+            + "psi.executiondate as psi_executiondate, psi.completeduser as psi_completeduser, psi.longitude as psi_longitude, psi.latitude as psi_latitude,"
+            + " pdv.value as pdv_value, pdv.storedby as pdv_storedby, pdv.providedelsewhere as pdv_providedelsewhere, de.uid as de_uid"
+            + " from program p"
+            + " left join programstage ps on ps.programid=p.programid"
+            + " left join programstageinstance psi on ps.programstageid=psi.programstageid"
+            + " left join programinstance pi on pi.programinstanceid=psi.programinstanceid"
+            + " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid)"
+            + " left join patientdatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid"
+            + " left join dataelement de on pdv.dataelementid=de.dataelementid "
+            + " left join patient pa on pa.patientid=pi.patientid ";
 
         boolean startedWhere = false;
 
@@ -293,7 +319,8 @@ public class DefaultEventStore implements EventStore
 
         if ( startDate != null && endDate != null )
         {
-            sql += " and (psi.executiondate >= '" + startDate.toString() + "' and psi.executiondate <= '" + endDate.toString() + "') ";
+            sql += " and (psi.executiondate >= '" + startDate.toString() + "' and psi.executiondate <= '"
+                + endDate.toString() + "') ";
         }
 
         sql += " order by psi_uid;";

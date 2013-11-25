@@ -28,11 +28,9 @@ package org.hisp.dhis.caseentry.action.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -194,7 +192,7 @@ public class AddPatientAction
 
         if ( healthWorker != null )
         {
-            patient.setHealthWorker( userService.getUser( healthWorker ) );
+            patient.setAssociate( userService.getUser( healthWorker ) );
         }
 
         Date _birthDate = new Date();
