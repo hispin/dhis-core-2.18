@@ -72,7 +72,8 @@ import java.util.Set;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractEventService implements EventService
+public abstract class AbstractEventService
+    implements EventService
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -170,7 +171,8 @@ public abstract class AbstractEventService implements EventService
 
         if ( programStage == null && !program.isSingleEvent() )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Event.programStage does not point to a valid programStage, and program is multi stage" );
+            return new ImportSummary( ImportStatus.ERROR,
+                "Event.programStage does not point to a valid programStage, and program is multi stage" );
         }
         else if ( programStage == null )
         {
@@ -182,14 +184,16 @@ public abstract class AbstractEventService implements EventService
 
         if ( verifyProgramAccess( program ) )
         {
-            return new ImportSummary( ImportStatus.ERROR, "Current user does not have permission to access this program." );
+            return new ImportSummary( ImportStatus.ERROR,
+                "Current user does not have permission to access this program." );
         }
 
         if ( program.isRegistration() )
         {
             if ( event.getPerson() == null )
             {
-                return new ImportSummary( ImportStatus.ERROR, "No Event.person was provided for registration based program." );
+                return new ImportSummary( ImportStatus.ERROR,
+                    "No Event.person was provided for registration based program." );
             }
 
             Patient patient = patientService.getPatient( event.getPerson() );
@@ -204,13 +208,14 @@ public abstract class AbstractEventService implements EventService
 
             if ( programInstances.isEmpty() )
             {
-                return new ImportSummary( ImportStatus.ERROR, "Person " + patient.getUid() + " is not enrolled in program " + program.getUid() );
+                return new ImportSummary( ImportStatus.ERROR, "Person " + patient.getUid()
+                    + " is not enrolled in program " + program.getUid() );
             }
             else if ( programInstances.size() > 1 )
             {
-                return new ImportSummary( ImportStatus.ERROR,
-                    "Person " + patient.getUid() + " have multiple active enrollments into program " + program.getUid()
-                        + " please check and correct your database." );
+                return new ImportSummary( ImportStatus.ERROR, "Person " + patient.getUid()
+                    + " have multiple active enrollments into program " + program.getUid()
+                    + " please check and correct your database." );
             }
 
             programInstance = programInstances.get( 0 );
@@ -222,13 +227,14 @@ public abstract class AbstractEventService implements EventService
 
                 if ( programStageInstances.isEmpty() )
                 {
-                    return new ImportSummary( ImportStatus.ERROR, "Person " + patient.getUid() + " is not enrolled in programStage " + programStage.getUid() );
+                    return new ImportSummary( ImportStatus.ERROR, "Person " + patient.getUid()
+                        + " is not enrolled in programStage " + programStage.getUid() );
                 }
                 else if ( programStageInstances.size() > 1 )
                 {
-                    return new ImportSummary( ImportStatus.ERROR,
-                        "Person " + patient.getUid() + " have multiple active enrollments into programStage " + programStage.getUid()
-                            + " please check and correct your database for multiple active stages." );
+                    return new ImportSummary( ImportStatus.ERROR, "Person " + patient.getUid()
+                        + " have multiple active enrollments into programStage " + programStage.getUid()
+                        + " please check and correct your database for multiple active stages." );
                 }
 
                 programStageInstance = programStageInstances.get( 0 );
@@ -237,7 +243,8 @@ public abstract class AbstractEventService implements EventService
             {
                 if ( !programStage.getIrregular() )
                 {
-                    programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
+                    programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance,
+                        programStage );
                 }
 
                 else
@@ -261,13 +268,15 @@ public abstract class AbstractEventService implements EventService
 
             if ( programInstances.isEmpty() )
             {
-                return new ImportSummary( ImportStatus.ERROR, "No active event exists for single event no registration program " + program.getUid()
-                    + ", please check and correct your database." );
+                return new ImportSummary( ImportStatus.ERROR,
+                    "No active event exists for single event no registration program " + program.getUid()
+                        + ", please check and correct your database." );
             }
             else if ( programInstances.size() > 1 )
             {
-                return new ImportSummary( ImportStatus.ERROR, "Multiple active events exists for single event no registration program " + program.getUid()
-                    + ", please check and correct your database." );
+                return new ImportSummary( ImportStatus.ERROR,
+                    "Multiple active events exists for single event no registration program " + program.getUid()
+                        + ", please check and correct your database." );
             }
 
             programInstance = programInstances.get( 0 );
@@ -286,7 +295,8 @@ public abstract class AbstractEventService implements EventService
             return new ImportSummary( ImportStatus.ERROR, "Program is not assigned to this organisation unit." );
         }
 
-        return saveEvent( program, programInstance, programStage, programStageInstance, organisationUnit, event, importOptions );
+        return saveEvent( program, programInstance, programStage, programStageInstance, organisationUnit, event,
+            importOptions );
     }
 
     // -------------------------------------------------------------------------
@@ -314,7 +324,8 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
-    public Events getEvents( Program program, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    public Events getEvents( Program program, OrganisationUnit organisationUnit, Person person, Date startDate,
+        Date endDate )
     {
         List<Event> eventList = eventStore.getAll( program, organisationUnit, person, startDate, endDate );
         Events events = new Events();
@@ -344,7 +355,8 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
-    public Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    public Events getEvents( ProgramStage programStage, OrganisationUnit organisationUnit, Person person,
+        Date startDate, Date endDate )
     {
         List<Event> eventList = eventStore.getAll( programStage, organisationUnit, person, startDate, endDate );
         Events events = new Events();
@@ -364,7 +376,8 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
-    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person )
+    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
+        Person person )
     {
         List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, person );
         Events events = new Events();
@@ -374,7 +387,8 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
-    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
+        Date startDate, Date endDate )
     {
         List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, startDate, endDate );
         Events events = new Events();
@@ -384,7 +398,8 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
-    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit, Person person, Date startDate, Date endDate )
+    public Events getEvents( Program program, ProgramStage programStage, OrganisationUnit organisationUnit,
+        Person person, Date startDate, Date endDate )
     {
         List<Event> eventList = eventStore.getAll( program, programStage, organisationUnit, person, startDate, endDate );
         Events events = new Events();
@@ -394,7 +409,8 @@ public abstract class AbstractEventService implements EventService
     }
 
     @Override
-    public Events getEvents( List<Program> programs, List<ProgramStage> programStages, List<OrganisationUnit> organisationUnits, Date startDate, Date endDate )
+    public Events getEvents( List<Program> programs, List<ProgramStage> programStages,
+        List<OrganisationUnit> organisationUnits, Date startDate, Date endDate )
     {
         List<Event> eventList = eventStore.getAll( programs, programStages, organisationUnits, startDate, endDate );
         Events events = new Events();
@@ -423,7 +439,8 @@ public abstract class AbstractEventService implements EventService
     @Override
     public void updateEvent( Event event )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
+            .getEvent() );
 
         if ( programStageInstance == null )
         {
@@ -452,13 +469,15 @@ public abstract class AbstractEventService implements EventService
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
-        Set<PatientDataValue> patientDataValues = new HashSet<PatientDataValue>( patientDataValueService.getPatientDataValues( programStageInstance ) );
+        Set<PatientDataValue> patientDataValues = new HashSet<PatientDataValue>(
+            patientDataValueService.getPatientDataValues( programStageInstance ) );
 
         for ( DataValue value : event.getDataValues() )
         {
             DataElement dataElement = dataElementService.getDataElement( value.getDataElement() );
 
-            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement );
+            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
+                dataElement );
 
             if ( patientDataValue != null )
             {
@@ -470,7 +489,8 @@ public abstract class AbstractEventService implements EventService
             }
             else
             {
-                saveDataValue( programStageInstance, event.getStoredBy(), dataElement, value.getValue(), value.getProvidedElsewhere() );
+                saveDataValue( programStageInstance, event.getStoredBy(), dataElement, value.getValue(),
+                    value.getProvidedElsewhere() );
             }
         }
 
@@ -487,7 +507,8 @@ public abstract class AbstractEventService implements EventService
     @Override
     public void deleteEvent( Event event )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( event
+            .getEvent() );
 
         if ( programStageInstance != null )
         {
@@ -518,13 +539,14 @@ public abstract class AbstractEventService implements EventService
 
         if ( programStageInstance.getProgramStage().getCaptureCoordinates() )
         {
-            Coordinate coordinate = new Coordinate();
-
-            if ( programStageInstance.getCoordinates() != null )
+            Coordinate coordinate = null;
+            if ( programStageInstance.getLongitude() != null && programStageInstance.getLongitude() != null )
             {
+                coordinate = new Coordinate( programStageInstance.getLongitude(), programStageInstance.getLatitude() );
+
                 try
                 {
-                    List<Double> list = objectMapper.readValue( programStageInstance.getCoordinates(), new TypeReference<List<Double>>()
+                    List<Double> list = objectMapper.readValue( coordinate.getCoordinateString(), new TypeReference<List<Double>>()
                     {
                     } );
 
@@ -542,7 +564,8 @@ public abstract class AbstractEventService implements EventService
             }
         }
 
-        Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
+        Collection<PatientDataValue> patientDataValues = patientDataValueService
+            .getPatientDataValues( programStageInstance );
 
         for ( PatientDataValue patientDataValue : patientDataValues )
         {
@@ -589,7 +612,8 @@ public abstract class AbstractEventService implements EventService
 
     private boolean validateDataElement( DataElement dataElement, String value, ImportSummary importSummary )
     {
-        InputValidationService.Status status = inputValidationService.validateDataElement( dataElement, value, getFormat() );
+        InputValidationService.Status status = inputValidationService.validateDataElement( dataElement, value,
+            getFormat() );
 
         if ( !status.isSuccess() )
         {
@@ -613,21 +637,25 @@ public abstract class AbstractEventService implements EventService
         {
             if ( importSummary != null )
             {
-                importSummary.getConflicts().add( new ImportConflict( "storedBy", storedBy + " is more than 31 characters, using current username instead." ) );
+                importSummary.getConflicts().add(
+                    new ImportConflict( "storedBy", storedBy
+                        + " is more than 31 characters, using current username instead." ) );
             }
             storedBy = currentUserService.getCurrentUsername();
         }
         return storedBy;
     }
 
-    private void saveDataValue( ProgramStageInstance programStageInstance, String storedBy, DataElement dataElement, String value, Boolean providedElsewhere )
+    private void saveDataValue( ProgramStageInstance programStageInstance, String storedBy, DataElement dataElement,
+        String value, Boolean providedElsewhere )
     {
         if ( value != null && value.trim().length() == 0 )
         {
             value = null;
         }
 
-        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement );
+        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
+            dataElement );
 
         if ( value != null )
         {
@@ -655,17 +683,21 @@ public abstract class AbstractEventService implements EventService
         }
     }
 
-    private ProgramStageInstance createProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance, OrganisationUnit organisationUnit, Date date, Boolean completed,
+    private ProgramStageInstance createProgramStageInstance( ProgramStage programStage,
+        ProgramInstance programInstance, OrganisationUnit organisationUnit, Date date, Boolean completed,
         Coordinate coordinate, String storedBy )
     {
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
-        updateProgramStageInstance( programStage, programInstance, organisationUnit, date, completed, coordinate, storedBy, programStageInstance );
+        updateProgramStageInstance( programStage, programInstance, organisationUnit, date, completed, coordinate,
+            storedBy, programStageInstance );
         programStageInstanceService.addProgramStageInstance( programStageInstance );
 
         return programStageInstance;
     }
 
-    private void updateProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance, OrganisationUnit organisationUnit, Date date, Boolean completed, Coordinate coordinate, String storedBy, ProgramStageInstance programStageInstance )
+    private void updateProgramStageInstance( ProgramStage programStage, ProgramInstance programInstance,
+        OrganisationUnit organisationUnit, Date date, Boolean completed, Coordinate coordinate, String storedBy,
+        ProgramStageInstance programStageInstance )
     {
         programStageInstance.setProgramInstance( programInstance );
         programStageInstance.setProgramStage( programStage );
@@ -677,11 +709,8 @@ public abstract class AbstractEventService implements EventService
         {
             if ( coordinate.isValid() )
             {
-                programStageInstance.setCoordinates( coordinate.getCoordinateString() );
-            }
-            else
-            {
-                programStageInstance.setCoordinates( null );
+                programStageInstance.setLongitude( coordinate.getLongitude() );
+                programStageInstance.setLatitude( coordinate.getLatitude() );
             }
         }
 
@@ -696,7 +725,9 @@ public abstract class AbstractEventService implements EventService
         }
     }
 
-    private ImportSummary saveEvent( Program program, ProgramInstance programInstance, ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit, Event event, ImportOptions importOptions )
+    private ImportSummary saveEvent( Program program, ProgramInstance programInstance, ProgramStage programStage,
+        ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit, Event event,
+        ImportOptions importOptions )
     {
         Assert.notNull( program );
         Assert.notNull( programInstance );
@@ -719,13 +750,14 @@ public abstract class AbstractEventService implements EventService
         {
             if ( programStageInstance == null )
             {
-                programStageInstance = createProgramStageInstance( programStage, programInstance, organisationUnit, eventDate,
-                    EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy );
+                programStageInstance = createProgramStageInstance( programStage, programInstance, organisationUnit,
+                    eventDate, EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy );
             }
             else
             {
                 updateProgramStageInstance( programStage, programInstance, organisationUnit, eventDate,
-                    EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy, programStageInstance );
+                    EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy,
+                    programStageInstance );
             }
 
             importSummary.setReference( programStageInstance.getUid() );
@@ -737,7 +769,8 @@ public abstract class AbstractEventService implements EventService
 
             if ( dataElement == null )
             {
-                importSummary.getConflicts().add( new ImportConflict( "dataElement", dataValue.getDataElement() + " is not a valid dataElementId." ) );
+                importSummary.getConflicts().add(
+                    new ImportConflict( "dataElement", dataValue.getDataElement() + " is not a valid dataElementId." ) );
                 importSummary.getDataValueCount().incrementIgnored();
             }
             else
@@ -748,7 +781,8 @@ public abstract class AbstractEventService implements EventService
 
                     if ( !dryRun )
                     {
-                        saveDataValue( programStageInstance, dataValueStoredBy, dataElement, dataValue.getValue(), dataValue.getProvidedElsewhere() );
+                        saveDataValue( programStageInstance, dataValueStoredBy, dataElement, dataValue.getValue(),
+                            dataValue.getProvidedElsewhere() );
                     }
 
                     importSummary.getDataValueCount().incrementImported();

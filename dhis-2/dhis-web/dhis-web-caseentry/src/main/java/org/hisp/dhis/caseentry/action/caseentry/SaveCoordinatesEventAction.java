@@ -30,7 +30,6 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.system.util.ValidationUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -64,16 +63,16 @@ public class SaveCoordinatesEventAction
         this.programStageInstanceId = programStageInstanceId;
     }
 
-    private String longitude;
+    private Double longitude;
 
-    public void setLongitude( String longitude )
+    public void setLongitude( Double longitude )
     {
         this.longitude = longitude;
     }
 
-    private String latitude;
+    private Double latitude;
 
-    public void setLatitude( String latitude )
+    public void setLatitude( Double latitude )
     {
         this.latitude = latitude;
     }
@@ -85,9 +84,6 @@ public class SaveCoordinatesEventAction
     public String execute()
         throws Exception
     {
-        longitude = (longitude == null || longitude.isEmpty() ) ? null : longitude;
-        latitude = (latitude == null || latitude.isEmpty() ) ? null : latitude;
-        
         // ---------------------------------------------------------------------
         // Set coordinates and feature type to point if valid
         // ---------------------------------------------------------------------
@@ -97,20 +93,12 @@ public class SaveCoordinatesEventAction
 
         if ( longitude != null && latitude != null )
         {
-            String coordinates = ValidationUtils.getCoordinate( longitude, latitude );
-
-            if ( ValidationUtils.coordinateIsValid( coordinates ) )
-            {
-                programStageInstance.setCoordinates( coordinates );
-            }
-        }
-        else
-        {
-            programStageInstance.setCoordinates( null );
+            programStageInstance.setLongitude( longitude );
+            programStageInstance.setLatitude( latitude );
         }
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        
+
         return SUCCESS;
     }
 }

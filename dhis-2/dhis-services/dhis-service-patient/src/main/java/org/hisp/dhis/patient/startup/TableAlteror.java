@@ -46,6 +46,7 @@ import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -248,9 +249,9 @@ public class TableAlteror
 
         executeSql( "update patientidentifiertype set orgunitScope=false where orgunitScope is null" );
         executeSql( "update patientidentifiertype set programScope=false where programScope is null" );
-        
+
         executeSql( "update programstageinstance set status=0 where status is null" );
-        executeSql( "ALTER TABLE patienttabularreport RENAME level TO ouMode" ); 
+        executeSql( "ALTER TABLE patienttabularreport RENAME level TO ouMode" );
         executeSql( "ALTER TABLE program DROP COLUMN facilityLB" );
         executeSql( "DROP TABLE patienttabularreport_attributes" );
         executeSql( "DROP TABLE patienttabularreport_filtervalues" );
@@ -265,10 +266,12 @@ public class TableAlteror
         executeSql( "DROP TABLE patientaggregatereport_organisationunits" );
         executeSql( "DROP TABLE patientaggregatereport_relativeperiods" );
         executeSql( "DROP TABLE patientaggregatereport_startdates" );
-        executeSql( "ALTER TABLE patientaggregatereport RENAME level TO ouMode" );  
+        executeSql( "ALTER TABLE patientaggregatereport RENAME level TO ouMode" );
         executeSql( "ALTER TABLE patientaggregatereport DROP COLUMN facilityLB" );
         executeSql( "update programstage_dataelements set allowDateInFuture=false where allowDateInFuture is null" );
         executeSql( "update programstage set autoGenerateEvent=true where programid in ( select programid from program where type=2 )" );
+        
+        updateCoordinatesProgramStageInstance();
     }
 
     // -------------------------------------------------------------------------
@@ -401,6 +404,38 @@ public class TableAlteror
 
         // Drop the column with name as completed
         executeSql( "ALTER TABLE programinstance DROP COLUMN completed" );
+    }
+
+    private void updateCoordinatesProgramStageInstance()
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT programstageinstanceid, coordinates FROM programstageinstance where coordinates is not null" );
+
+            while ( resultSet.next() )
+            {
+                String coordinates = resultSet.getString( "coordinates" );
+                String longitude = ValidationUtils.getLongitude( coordinates );
+                String latitude = ValidationUtils.getLatitude( coordinates );
+                executeSql( "UPDATE programstageinstance SET longitude='" + longitude + "', latitude='" + latitude
+                    + "'  WHERE programstageinstanceid=" + resultSet.getInt( "programstageinstanceid" ) );
+            }
+
+            executeSql( "ALTER TABLE programstageinstance DROP COLUMN coordinates" );
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
     }
 
     private int executeSql( String sql )
