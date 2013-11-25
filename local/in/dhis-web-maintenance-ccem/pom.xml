@@ -50,11 +50,11 @@
 			<artifactId>dhis-web-commons-resources</artifactId>
 			<type>war</type>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-aggregationengine-default</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-support-external</artifactId>
@@ -80,12 +80,17 @@
 			<artifactId>jxl</artifactId>
 		</dependency>
 		
-		<dependency>
-      <groupId>ar.com.fdvs</groupId>
-      <artifactId>DynamicJasper</artifactId>
-      <version>4.0.0</version>
+	<dependency>
+	      <groupId>ar.com.fdvs</groupId>
+	      <artifactId>DynamicJasper</artifactId>
+	      <version>4.0.0</version>
     </dependency>
-		
+    
+	<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>2.3</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<rootDir>../../</rootDir>
