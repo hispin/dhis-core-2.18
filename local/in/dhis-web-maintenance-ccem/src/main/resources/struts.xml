@@ -690,5 +690,12 @@
 		<param name="requiredAuthorities">F_TRANSFER_FACILITY_DATA</param>
 	</action>	
 	
+	<!--  Import ColdChain Data -->
+	<action name="importDataForm" class="org.hisp.dhis.ccem.action.NoAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-maintenance-ccem/importDataForm.vm</param>
+		<param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>		
+	</action>
+	
 </package>
 </struts>
