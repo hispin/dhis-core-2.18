@@ -29,6 +29,7 @@ var OU_KEY = "ou";
 var OU_PARTIAL_KEY = "ouPartial";
 var OU_ROOTS_KEY = "ouRoots";
 var OU_VERSION_KEY = "ouVersion";
+var OU_USERNAME_KEY = "ouUsername";
 var OU_SELECTED_KEY = "ouSelected";
 
 dhis2.ou.store = new dhis2.storage.Store( {
@@ -135,6 +136,18 @@ function Selection()
         localStorage.removeItem( OU_VERSION_KEY );
     };
 
+    this.getUsername = function() {
+        return localStorage[ OU_USERNAME_KEY ] ? localStorage[ OU_USERNAME_KEY ] : "";
+    };
+
+    this.setUsername = function( username ) {
+        localStorage[ OU_USERNAME_KEY ] = username;
+    };
+
+    this.clearUsername = function() {
+        localStorage.removeItem( OU_USERNAME_KEY );
+    };
+
     this.getAllOrganisationUnits = function() {
         var def = $.Deferred();
 
@@ -149,7 +162,18 @@ function Selection()
     this.setOrganisationUnits = function( ous ) {
         $.extend( organisationUnits, ous );
         ous = ous ? _.values( ous ) : [];
-        return dhis2.ou.store.setAll( OU_KEY, ous );
+
+        var def = $.Deferred();
+
+        // clear out old tree
+        dhis2.ou.store.clear(OU_KEY).always(function() {
+          // set new tree
+          dhis2.ou.store.setAll(OU_KEY, ous).always(function() { 
+            def.resolve();
+          });
+        });
+
+        return def.promise();
     };
 
     this.getOrganisationUnit = function( id ) {
@@ -239,12 +263,17 @@ function Selection()
             } );
         }
 
-        function update_required( remoteVersion, remoteRoots ) {
+        function update_required( remoteVersion, remoteRoots, remoteUsername ) {
             var localVersion = selection.getVersion();
+            var localUsername = selection.getUsername();
             var localRoots = selection.getRoots();
 
             if ( localVersion != remoteVersion ) {
                 return true;
+            }
+
+            if( localUsername != remoteUsername ) {
+              return true;
             }
 
             if ( localRoots == null || localRoots.length == 0 ) {
@@ -271,13 +300,14 @@ function Selection()
             if ( data.indexOf( "<!DOCTYPE" ) != 0 ) {
                 data = JSON.parse( data );
                 realRoot = data.realRoot;
-                should_update = update_required( data.version, data.roots );
+                should_update = update_required( data.version, data.roots, data.username );
             }
         } ).always( function() {
             if( should_update ) {
                 selection.ajaxOrganisationUnits( false ).done(function( data ) {
                     selection.setRoots( data.roots );
                     selection.setVersion( data.version );
+                    selection.setUsername( data.username );
                     selection.setOrganisationUnits( data.organisationUnits ).done(function() {
                         sync_and_reload();
                         $( "#orgUnitTree" ).trigger( "ouwtLoaded" );

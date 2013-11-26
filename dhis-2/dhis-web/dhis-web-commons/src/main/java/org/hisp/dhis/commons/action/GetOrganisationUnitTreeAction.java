@@ -110,6 +110,13 @@ public class GetOrganisationUnitTreeAction
         return version;
     }
 
+    private String username;
+
+    public String getUsername()
+    {
+        return username;
+    }
+
     private boolean versionOnly;
 
     public void setVersionOnly( Boolean versionOnly )
@@ -261,6 +268,8 @@ public class GetOrganisationUnitTreeAction
         Collections.sort( rootOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
 
         version = getVersionString();
+
+        username = currentUserService.getCurrentUsername();
 
         return SUCCESS;
     }
