@@ -123,6 +123,8 @@ public interface OrganisationUnitStore
 
     Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap();
 
+    Map<Integer, Set<Integer>> getOrganisationUnitGroupDataSetAssocationMap();
+
     Set<Integer> getOrganisationUnitIdsWithoutData();
 
 
