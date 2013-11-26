@@ -67,6 +67,8 @@ public class PdfFieldCell
 
     public final static int TPYE_LABEL = 6;
 
+    public final static String TPYEDEFINE_NAME = "T";    
+    
     private final static float RADIOBUTTON_WIDTH = 10.0f;
 
     private final static float RADIOBUTTON_TEXTOFFSET = 3.0f;
