@@ -672,6 +672,7 @@ function Subtree() {
     // force reload
     this.refreshTree = function() {
         selection.clearVersion();
+        selection.clearUsername();
         selection.load();
     };
 
