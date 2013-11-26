@@ -102,33 +102,35 @@ public class PatientStoreTest
 
     private Program programB;
 
-    private OrganisationUnit organisationUnit;
+    private OrganisationUnit organisationUnitA;
+
+    private OrganisationUnit organisationUnitB;
 
     private Date date = new Date();
 
     @Override
     public void setUpTest()
     {
-        organisationUnit = createOrganisationUnit( 'A' );
-        organisationUnitService.addOrganisationUnit( organisationUnit );
+        organisationUnitA = createOrganisationUnit( 'A' );
+        organisationUnitService.addOrganisationUnit( organisationUnitA );
 
-        OrganisationUnit organisationUnitB = createOrganisationUnit( 'B' );
+        organisationUnitB = createOrganisationUnit( 'B' );
         organisationUnitService.addOrganisationUnit( organisationUnitB );
-        
+
         PatientIdentifierType patientIdentifierType = createPatientIdentifierType( 'A' );
         identifierTypeService.savePatientIdentifierType( patientIdentifierType );
 
         patientAttribute = createPatientAttribute( 'A' );
         attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
 
-        patientA1 = createPatient( 'A', "F", organisationUnit );
+        patientA1 = createPatient( 'A', "F", organisationUnitA );
         patientA2 = createPatient( 'A', "F", organisationUnitB );
-        patientA3 = createPatient( 'A', organisationUnit, patientIdentifierType );
-        patientB1 = createPatient( 'B', "M", organisationUnit );
-        patientB2 = createPatient( 'B', organisationUnit );
+        patientA3 = createPatient( 'A', organisationUnitA, patientIdentifierType );
+        patientB1 = createPatient( 'B', "M", organisationUnitA );
+        patientB2 = createPatient( 'B', organisationUnitA );
 
-        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
-        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
+        programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
+        programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnitA );
     }
 
     @Test
@@ -188,12 +190,12 @@ public class PatientStoreTest
         patientStore.save( patientB1 );
         patientStore.save( patientB2 );
 
-        Collection<Patient> patients = patientStore.getByFullName( "NameA", organisationUnit );
+        Collection<Patient> patients = patientStore.getByFullName( "NameA", organisationUnitA );
 
         assertEquals( 1, patients.size() );
         assertTrue( patients.contains( patientA1 ) );
 
-        patients = patientStore.getByFullName( "NameB", organisationUnit );
+        patients = patientStore.getByFullName( "NameB", organisationUnitA );
 
         assertEquals( 2, patients.size() );
         assertTrue( patients.contains( patientB1 ) );
@@ -211,18 +213,18 @@ public class PatientStoreTest
         patientStore.save( patientA2 );
         patientStore.save( patientB2 );
 
-        programInstanceService.enrollPatient( patientA1, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientA2, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientB2, programB, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientA1, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientA2, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientB2, programB, date, date, organisationUnitA, null );
 
-        Collection<Patient> patients = patientStore.getByOrgUnitProgram( organisationUnit, programA, 0, 100 );
+        Collection<Patient> patients = patientStore.getByOrgUnitProgram( organisationUnitA, programA, 0, 100 );
 
         assertEquals( 2, patients.size() );
         assertTrue( patients.contains( patientA1 ) );
         assertTrue( patients.contains( patientB1 ) );
 
-        patients = patientStore.getByOrgUnitProgram( organisationUnit, programB, 0, 100 );
+        patients = patientStore.getByOrgUnitProgram( organisationUnitA, programB, 0, 100 );
 
         assertEquals( 1, patients.size() );
         assertTrue( patients.contains( patientB2 ) );
@@ -239,10 +241,10 @@ public class PatientStoreTest
         patientStore.save( patientA2 );
         patientStore.save( patientB2 );
 
-        programInstanceService.enrollPatient( patientA1, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientA2, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientB2, programB, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientA1, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientA2, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientB2, programB, date, date, organisationUnitA, null );
 
         Collection<Patient> patients = patientStore.getByProgram( programA, 0, 100 );
 
@@ -251,7 +253,7 @@ public class PatientStoreTest
         assertTrue( patients.contains( patientA2 ) );
         assertTrue( patients.contains( patientB1 ) );
 
-        patients = patientStore.getByOrgUnitProgram( organisationUnit, programB, 0, 100 );
+        patients = patientStore.getByOrgUnitProgram( organisationUnitA, programB, 0, 100 );
 
         assertEquals( 1, patients.size() );
         assertTrue( patients.contains( patientB2 ) );
@@ -290,7 +292,7 @@ public class PatientStoreTest
         patientStore.save( patientA2 );
         patientStore.save( patientA3 );
 
-        Collection<Patient> patients = patientStore.getByOrgUnitAndNameLike( organisationUnit, "A", null, null );
+        Collection<Patient> patients = patientStore.getByOrgUnitAndNameLike( organisationUnitA, "A", null, null );
         assertEquals( 2, patients.size() );
         assertTrue( patients.contains( patientA1 ) );
         assertTrue( patients.contains( patientA3 ) );
@@ -333,18 +335,18 @@ public class PatientStoreTest
         PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA3, patientAttribute );
         patientAttributeValueService.savePatientAttributeValue( attributeValue );
 
-        programInstanceService.enrollPatient( patientA3, programA, date, date, organisationUnit, null );
-        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
+        programInstanceService.enrollPatient( patientA3, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnitA, null );
 
         List<String> searchKeys = new ArrayList<String>();
         searchKeys.add( Patient.PREFIX_IDENTIFIER_TYPE + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE
-            + organisationUnit.getId() );
+            + organisationUnitA.getId() );
         searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
             + Patient.SEARCH_SAPERATE + "a" );
         searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
 
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-        orgunits.add( organisationUnit );
+        orgunits.add( organisationUnitA );
 
         Collection<Patient> patients = patientStore.search( searchKeys, orgunits, null, null, null,
             ProgramStageInstance.ACTIVE_STATUS, null, null );
@@ -372,5 +374,28 @@ public class PatientStoreTest
 
         assertEquals( 0, validatePatientA1 );
         assertEquals( 2, validatePatientB1 );
+    }
+
+    @Test
+    public void testCountGetPatientsByOrgUnitProgram()
+    {
+        programService.addProgram( programA );
+        programService.addProgram( programB );
+
+        patientStore.save( patientA1 );
+        patientStore.save( patientA2 );
+        patientStore.save( patientA3 );
+        patientStore.save( patientB1 );
+        patientStore.save( patientB2 );
+
+        programInstanceService.enrollPatient( patientA1, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientA3, programA, date, date, organisationUnitA, null );
+        programInstanceService.enrollPatient( patientB1, programB, date, date, organisationUnitA, null );
+
+        int count = patientStore.countGetPatientsByOrgUnitProgram( organisationUnitA, programA );
+        assertEquals( 2, count );
+
+        count = patientStore.countGetPatientsByOrgUnitProgram( organisationUnitA, programB );
+        assertEquals( 1, count );
     }
 }
