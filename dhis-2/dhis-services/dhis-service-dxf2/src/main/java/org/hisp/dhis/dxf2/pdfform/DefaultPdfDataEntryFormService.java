@@ -698,7 +698,7 @@ public class DefaultPdfDataEntryFormService
         checkbox.setBorderColor( Color.BLACK );
 
         PdfFormField checkboxfield = checkbox.getCheckField();
-        checkboxfield.setFieldName( strfldName );
+        checkboxfield.setFieldName( strfldName + "_" + PdfFieldCell.TPYEDEFINE_NAME + PdfFieldCell.TYPE_CHECKBOX );
 
         setCheckboxAppearance(checkboxfield, writer.getDirectContent(), sizeDefault);
         

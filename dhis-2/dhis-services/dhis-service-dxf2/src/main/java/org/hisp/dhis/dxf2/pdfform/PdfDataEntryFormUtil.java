@@ -250,8 +250,8 @@ public class PdfDataEntryFormUtil
                         dataValue.setOrgUnit( orgUnitUID );
                         dataValue.setPeriod( period.getIsoDate() );
                         
-                        dataValue.setValue( form.getField( fldName ) );
-
+                        dataValue.setValue( fieldValueFormat( strArrFldName, form.getField( fldName ) ) );     
+                        
                         dataValue.setStoredBy( DATAVALUE_IMPORT_STOREBY );
                         dataValue.setComment( DATAVALUE_IMPORT_COMMENT );
                         dataValue.setFollowup( false );
@@ -283,4 +283,29 @@ public class PdfDataEntryFormUtil
 
         return dataValueSet;
     }
+    
+    private static String fieldValueFormat( String[] strArrFldName, String fldValue )
+    {                
+        // For checkbox, we need to change value from Off/On --> false/true
+        if( strArrFldName.length == 4 
+            && strArrFldName[3].substring( 0, 1 ).compareTo( PdfFieldCell.TPYEDEFINE_NAME ) == 0 )
+        {            
+            int fieldType = Integer.parseInt( strArrFldName[3].substring( 1 ) );
+                                        
+            if( fieldType == PdfFieldCell.TYPE_CHECKBOX )
+            {       
+                if( fldValue.compareTo( "On" ) == 0 )
+                {
+                    fldValue = "true";
+                }
+                else if( fldValue.compareTo( "Off" ) == 0 )
+                {
+                    fldValue = "false";                                    
+                }                                
+            }            
+        }
+                
+        return fldValue;
+    }
+
 }
