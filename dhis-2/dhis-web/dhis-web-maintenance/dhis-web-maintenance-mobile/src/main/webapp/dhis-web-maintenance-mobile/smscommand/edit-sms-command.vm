@@ -1,42 +1,42 @@
 #parse("/dhis-web-maintenance-mobile/smscommand/validate_javascript.vm")
 
-<script langauge="Javascript">
+<script language="Javascript">
 
     function prepSubmit(){
-    
-      if(VALIDATION_ERRORS > 0){
-        alert("$i18n.getString( "sms_command_validation_alert" )");
-        return;
-      }
- 
-      var selectedDataOptions = '{"codes":[';      
-      $("#codes input").each(function(){
-            selectedDataOptions += '{"dataElementId" :' + $(this).attr('name').split('.')[0] +  ',';  
-            selectedDataOptions += '"optionId" :' + $(this).attr('name').split('.')[1] + ',';
-            selectedDataOptions += '"code" :"' + $(this).val() + '"},';
-            $(this).attr('name',''); // avoid error in struts 
-      });
-      selectedDataOptions += ']}';
-      $("#codeDataelementOption").val(selectedDataOptions);
-	  
-	  var specialCharactersInfo = '{"specialCharacters":[';
+	
+		validation( "updateSMSCommandForm" );
+		var selectedDataOptions = '{"codes":[';      
+		//$("#codes label").each(function(){
+            //selectedDataOptions += '{"dataElementId" :' + $(this).attr('value').split('.')[0] +  ',';  
+            //selectedDataOptions += '"optionId" :' + $(this).attr('value').split('.')[1] + ',';
+            //selectedDataOptions += '"code" :"' + $(this).val() + '"},';
+            //$(this).attr('name',''); // avoid error in struts 
+		//});
+		for (var i=1; i<=jQuery('.trDataElementCode').length; i++ )
+		{
+			selectedDataOptions += '{"dataElementId" :' + document.getElementById('codeId'+i).value.split('.')[0] +  ','; 
+			selectedDataOptions += '"optionId" :' + document.getElementById('codeId'+i).value.split('.')[1] +  ','; 
+			selectedDataOptions += '"code" :"' + document.getElementById('codeValue'+i).value + '"},';
+		}
+		selectedDataOptions += ']}';
+		$("#codeDataelementOption").val(selectedDataOptions);
+
+		var specialCharactersInfo = '{"specialCharacters":[';
 		for (var i=1; i<=jQuery('.trSpecialCharacter').length; i++)
 		{ 
 			specialCharactersInfo += '{"name" :"'+document.getElementById('name'+i).value+'",';
 			specialCharactersInfo += '"value" :"'+document.getElementById('value'+i).value+'"},';	
 		}
-	  specialCharactersInfo += ']}';
-	  $("#specialCharactersInfo").val(specialCharactersInfo);
-	  
-      $("#updateSMSCommand").submit();
-
+		specialCharactersInfo += ']}';
+		$("#specialCharactersInfo").val(specialCharactersInfo);
+		$("#updateSMSCommandForm").submit();
     };
     
 </script>
 
 <h3>$i18n.getString( "edit_command" )</h3>
 
-<form id="updateSMSCommand" name="updateSMSCommand" action="saveEditSMSCommandForm.action" method="post">
+<form id="updateSMSCommandForm" name="updateSMSCommandForm" action="saveEditSMSCommandForm.action" method="post">
 	<table>
 	<thead>
       <tr>
@@ -109,21 +109,27 @@
 		<th>$i18n.getString( "code" )</th>
       </tr>
     </thead>
-         #foreach( $dataElement in $dataElements)
-            #if ($dataElement.categoryCombo && $dataElement.categoryCombo.sortedOptionCombos) 
-                   #foreach($x in $dataElement.categoryCombo.sortedOptionCombos)    
-                       #set ($str = ""+$dataElement.id+""+$x.id)
-                       <tr>
+		#set($index = 0)
+        #foreach( $dataElement in $dataElements)
+			#set($index = $index + 1)
+            #if ($dataElement.categoryCombo && $dataElement.categoryCombo.sortedOptionCombos)
+				#set ($index = $index - 1)
+				#foreach($x in $dataElement.categoryCombo.sortedOptionCombos)
+					#set ($index = $index + 1)
+					
+					#set ($str = ""+$dataElement.id+""+$x.id)
+                       <tr class="trDataElementCode">
                            <td>
                                $dataElement.name $x.name
                            </td>
                            <td>
-                               <input type="text" name="$dataElement.id.$x.id" value='$!codes[$str]' class="validate">
+                               <input type="hidden" id="codeId$index" name="codeId$index" value="$dataElement.id.$x.id"/>
+							   <input type="text" id="codeValue$index" name="codeValue$index" class="{validate:{required:true}}" value='$!codes[$str]' class="validate"/>
                            </td>
                        </tr>
-                   #end
+				#end
             #else
-            <tr>
+            <tr class="dataElementCode">
                <td>$dataElement.name</td>
                <td><input type="text" name="$dataElement.id"></td>   
             </tr>         
@@ -141,9 +147,9 @@
 	<tbody id="specialCharacters">
 		#foreach( $specialCharacters in $smsCommand.specialCharacters )
 			<tr id="trSpecialCharacter$velocityCount" name="trSpecialCharacter$velocityCount" class="trSpecialCharacter">
-				<td><input type="text" id="name$velocityCount" name="name$velocityCount" value="$specialCharacters.name"/></td>
+				<td><input type="text" id="name$velocityCount" name="name$velocityCount" class="{validate:{required:true}}" value="$specialCharacters.name"/></td>
 				<td>
-					<input type="text" id="value$velocityCount" name="value$velocityCount" value="$specialCharacters.value"/><input type="button" value="remove" onclick="removeSpecialCharactersForm($velocityCount)"/>
+					<input type="text" id="value$velocityCount" name="value$velocityCount" class="{validate:{required:true}}" value="$specialCharacters.value"/><input type="button" value="remove" onclick="removeSpecialCharactersForm($velocityCount)"/>
 				</td>
 			</tr>
 		#end
@@ -157,6 +163,6 @@
 	<br/>	
     <input type="hidden" name="codeDataelementOption" id="codeDataelementOption" />
 	<input type="hidden" name="specialCharactersInfo" id="specialCharactersInfo" />
-    <input  type="button" style="width: 100px" onclick="prepSubmit()" value="$i18n.getString( "save" )" />
-    <input type="button" id ="btnBack" name ="btnBack" value="Back" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
+    <input type="button" style="width: 100px" onclick="prepSubmit()" value="$i18n.getString( 'save' )" />
+    <input type="button" id="btnBack" name="btnBack" value="Back" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
 </form>
