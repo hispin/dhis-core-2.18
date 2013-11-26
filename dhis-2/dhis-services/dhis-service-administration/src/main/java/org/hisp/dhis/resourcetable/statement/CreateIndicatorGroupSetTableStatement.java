@@ -67,7 +67,7 @@ public class CreateIndicatorGroupSetTableStatement
         for ( IndicatorGroupSet groupSet : groupSets )
         {
             statement += quote + groupSet.getName() + quote + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
-            statement += groupSet.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
+            statement += quote + groupSet.getUid() + quote + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
         
         statement += "PRIMARY KEY ( indicatorid ) )";

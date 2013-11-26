@@ -66,7 +66,7 @@ public class CreateCategoryTableStatement
         for ( DataElementCategory category : categories )
         {
             statement += quote + category.getName() + quote + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
-            statement += category.getUid() + SPACE + "CHARACTER(11)" + SEPARATOR;
+            statement += quote + category.getUid() + quote + SPACE + "CHARACTER(11)" + SEPARATOR;
         }
 
         statement += "PRIMARY KEY ( categoryoptioncomboid ) )";
