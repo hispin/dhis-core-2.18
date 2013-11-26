@@ -554,6 +554,7 @@ public class DefaultOrganisationUnitService
     public OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet()
     {
         Map<Integer, Set<Integer>> associationSet = organisationUnitStore.getOrganisationUnitDataSetAssocationMap();
+        associationSet.putAll( organisationUnitStore.getOrganisationUnitGroupDataSetAssocationMap() );
 
         filterUserDataSets( associationSet );
         filterChildOrganisationUnits( associationSet );

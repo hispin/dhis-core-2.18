@@ -216,6 +216,37 @@ public class HibernateOrganisationUnitStore
         return map;
     }
 
+    @Override
+    public Map<Integer, Set<Integer>> getOrganisationUnitGroupDataSetAssocationMap()
+    {
+        final String sql = "select ougds.datasetid, ou.organisationunitid from orgunitgroupdatasets ougds " +
+            "left join orgunitgroupmembers ougm on ougds.orgunitgroupid=ougm.orgunitgroupid " +
+            "left join organisationunit ou on ou.organisationunitid=ougm.organisationunitid";
+
+        final Map<Integer, Set<Integer>> map = new HashMap<Integer, Set<Integer>>();
+
+        jdbcTemplate.query( sql, new RowCallbackHandler()
+        {
+            public void processRow( ResultSet rs ) throws SQLException
+            {
+                int dataSetId = rs.getInt( 1 );
+                int organisationUnitId = rs.getInt( 2 );
+
+                Set<Integer> dataSets = map.get( organisationUnitId );
+
+                if ( dataSets == null )
+                {
+                    dataSets = new HashSet<Integer>();
+                    map.put( organisationUnitId, dataSets );
+                }
+
+                dataSets.add( dataSetId );
+            }
+        } );
+
+        return map;
+    }
+
     public Set<Integer> getOrganisationUnitIdsWithoutData()
     {
         final String sql = "select organisationunitid from organisationunit ou where not exists (" +
