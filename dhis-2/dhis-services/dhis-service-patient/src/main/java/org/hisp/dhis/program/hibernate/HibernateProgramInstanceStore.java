@@ -28,10 +28,6 @@ package org.hisp.dhis.program.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -45,6 +41,11 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceStore;
 import org.hisp.dhis.program.SchedulingProgramObject;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 
 /**
  * @author Abyot Asalefew
@@ -72,6 +73,11 @@ public class HibernateProgramInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Collection<Program> programs )
     {
+        if ( programs == null || programs.isEmpty() )
+        {
+            return new ArrayList<ProgramInstance>();
+        }
+
         return getCriteria( Restrictions.in( "program", programs ) ).list();
     }
 
@@ -79,6 +85,11 @@ public class HibernateProgramInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Collection<Program> programs, OrganisationUnit organisationUnit )
     {
+        if ( programs == null || programs.isEmpty() )
+        {
+            return new ArrayList<ProgramInstance>();
+        }
+
         return getCriteria( Restrictions.in( "program", programs ) ).createAlias( "patient", "patient" )
             .add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) ).list();
     }
@@ -87,6 +98,11 @@ public class HibernateProgramInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Collection<Program> programs, OrganisationUnit organisationUnit, int status )
     {
+        if ( programs == null || programs.isEmpty() )
+        {
+            return new ArrayList<ProgramInstance>();
+        }
+
         return getCriteria( Restrictions.eq( "status", status ), Restrictions.in( "program", programs ) )
             .createAlias( "patient", "patient" ).add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
             .list();
@@ -101,6 +117,11 @@ public class HibernateProgramInstanceStore
     @SuppressWarnings( "unchecked" )
     public Collection<ProgramInstance> get( Collection<Program> programs, Integer status )
     {
+        if ( programs == null || programs.isEmpty() )
+        {
+            return new ArrayList<ProgramInstance>();
+        }
+
         return getCriteria( Restrictions.in( "program", programs ), Restrictions.eq( "status", status ) ).list();
     }
 
@@ -155,6 +176,7 @@ public class HibernateProgramInstanceStore
             Restrictions.ge( "enrollmentDate", startDate ), Restrictions.le( "enrollmentDate", endDate ) )
             .createAlias( "patient", "patient" ).createAlias( "patient.organisationUnit", "organisationUnit" )
             .add( Restrictions.in( "organisationUnit.id", orgunitIds ) ).addOrder( Order.asc( "patient.id" ) );
+
         if ( min != null && max != null )
         {
             criteria.setFirstResult( min ).setMaxResults( max );
@@ -234,16 +256,16 @@ public class HibernateProgramInstanceStore
                 String organisationunitName = rs.getString( "orgunitName" );
                 String programName = rs.getString( "programName" );
                 String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];// just
-                                                                                        // get
-                                                                                        // date,
-                                                                                        // remove
-                                                                                        // timestamp
+                // get
+                // date,
+                // remove
+                // timestamp
                 String daysSinceIncidentDate = rs.getString( "days_since_incident_date" );
                 String erollmentDate = rs.getString( "enrollmentdate" ).split( " " )[0];// just
-                                                                                        // get
-                                                                                        // date,
-                                                                                        // remove
-                                                                                        // timestamp
+                // get
+                // date,
+                // remove
+                // timestamp
                 String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
 
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
