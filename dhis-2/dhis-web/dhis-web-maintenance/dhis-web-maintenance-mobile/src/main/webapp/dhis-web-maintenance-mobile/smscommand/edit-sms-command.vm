@@ -6,7 +6,7 @@
 	
 		validation( "updateSMSCommandForm" );
 		var selectedDataOptions = '{"codes":[';      
-		//$("#codes label").each(function(){
+		//$("#codes input").each(function(){
             //selectedDataOptions += '{"dataElementId" :' + $(this).attr('value').split('.')[0] +  ',';  
             //selectedDataOptions += '"optionId" :' + $(this).attr('value').split('.')[1] + ',';
             //selectedDataOptions += '"code" :"' + $(this).val() + '"},';
@@ -31,6 +31,26 @@
 		$("#specialCharactersInfo").val(specialCharactersInfo);
 		$("#updateSMSCommandForm").submit();
     };
+	
+	function checkDuplicatedCode( value, index )
+	{
+		for (var i=1; i<=jQuery('.trDataElementCode').length; i++ )
+		{
+			if ( i != index )
+			{
+				var otherValue = document.getElementById('codeValue'+i).value;
+				if( value!='' && value == otherValue )
+				{
+					markInvalid( 'codeValue'+index, 'Duplicated Value' );
+					break;
+				}
+				else
+				{
+					markValid( 'codeValue'+index );
+				}
+			} 
+		}
+	};
     
 </script>
 
@@ -50,7 +70,7 @@
 		</tr>
 		<tr>
 			<td>$i18n.getString( "name" )</td>
-			<td><input type="text" name="name" id="name" value="$smsCommand.name" style="width:20em" class="validate" /></td>
+			<td><input type="text" name="name" id="name" value="$smsCommand.name" style="width:20em" class="{validate:{required:true}}" /></td>
 		</tr>
 		<tr>
 			<td>$i18n.getString( "parser" )</td>
@@ -123,9 +143,9 @@
                                $dataElement.name $x.name
                            </td>
                            <td>
-                               <input type="hidden" id="codeId$index" name="codeId$index" value="$dataElement.id.$x.id"/>
-							   <input type="text" id="codeValue$index" name="codeValue$index" class="{validate:{required:true}}" value='$!codes[$str]' class="validate"/>
-                           </td>
+								<input type="hidden" id="codeId$index" name="codeId$index" value="$dataElement.id.$x.id"/>
+								<input type="text" id="codeValue$index" name="codeValue$index" class="{validate:{required:true}}" value='$!codes[$str]' onblur="checkDuplicatedCode(this.value, $index)"/>
+						   </td>
                        </tr>
 				#end
             #else
