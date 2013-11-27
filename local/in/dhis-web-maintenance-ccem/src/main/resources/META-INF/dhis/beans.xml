@@ -748,7 +748,8 @@
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
         <property name="modelTypeAttributeService" ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />
         <property name="modelService" ref="org.hisp.dhis.coldchain.model.ModelService" />
-        <property name="modelTypeService" ref="org.hisp.dhis.coldchain.model.ModelTypeService" />        
+        <property name="modelTypeService" ref="org.hisp.dhis.coldchain.model.ModelTypeService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean> 
 		
 	

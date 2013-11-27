@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,19 +15,17 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.hisp.dhis.coldchain.model.Model;
 import org.hisp.dhis.coldchain.model.ModelAttributeValue;
-import org.hisp.dhis.coldchain.model.ModelAttributeValueService;
 import org.hisp.dhis.coldchain.model.ModelService;
 import org.hisp.dhis.coldchain.model.ModelType;
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
-import org.hisp.dhis.coldchain.model.ModelTypeAttributeOption;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeService;
 import org.hisp.dhis.coldchain.model.ModelTypeService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.csvreader.CsvReader;
 import com.opensymphony.xwork2.Action;
@@ -38,6 +37,13 @@ public class CSVImportAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+	
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     private CurrentUserService currentUserService;
 
@@ -65,6 +71,13 @@ public class CSVImportAction
     public void setModelTypeService( ModelTypeService modelTypeService )
     {
         this.modelTypeService = modelTypeService;
+    }
+    
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
     }
     
     // -------------------------------------------------------------------------
@@ -120,7 +133,9 @@ public class CSVImportAction
              */
             ModelType refrigeratorModel = modelTypeService.getModelTypeByName( "Refrigerator Catalog" );
             
-            importRefrigeratorCatalogData( uncompressedFolderPath, refrigeratorModel );
+            importAdminHierarchy( uncompressedFolderPath );
+            
+            //importRefrigeratorCatalogData( uncompressedFolderPath, refrigeratorModel, lookupDataMap );
             
             /*
             for( String lookupKey : lookupDataMap.keySet() )
@@ -145,7 +160,91 @@ public class CSVImportAction
         return SUCCESS;
     }
 
-    public void importRefrigeratorCatalogData( String refrigeratorCatalogDataCSVFilePath, ModelType refrigeratorModel )
+    public void importAdminHierarchy( String adminHierarchyCSVFilePath )
+    {
+    	adminHierarchyCSVFilePath += File.separator + "AdminHierarchy.csv";
+    	
+    	Map<Integer, List<OrganisationUnit>> levelwiseOrgunits = new HashMap<Integer, List<OrganisationUnit>>();
+    	Map<Integer, OrganisationUnit> orgUnitMap = new HashMap<Integer, OrganisationUnit>();
+    	
+    	List<Integer> ouLevels = new ArrayList<Integer>();
+    	
+    	try
+    	{
+    		CsvReader csvReader = new CsvReader( adminHierarchyCSVFilePath, ',', Charset.forName( "UTF-8" ) );
+    		csvReader.readHeaders();
+    		String headers[] = csvReader.getHeaders();
+
+    		Integer colCount = headers.length;
+    		while( csvReader.readRecord() )
+    		{
+    			String nodeId = csvReader.get( "NodeID" );
+    			String ouName = csvReader.get( "Name" );
+    			Integer ouLevel = Integer.parseInt( csvReader.get( "Level" ) );    			
+    			String parentId = csvReader.get( "Parent" );
+    			String ouCode = csvReader.get( "Code" );
+    			
+    			if( ouCode != null && ouCode.trim().equals("") )
+    				ouCode = null;
+    			
+            	List<OrganisationUnit> tempList = levelwiseOrgunits.get( ouLevel );
+                if( tempList == null )
+                {
+                    tempList = new ArrayList<OrganisationUnit>();                        
+                }
+                
+                OrganisationUnit organisationUnit = new OrganisationUnit( ouName, ouName, ouCode, new Date(), null, true, parentId );
+                organisationUnit.setDescription( nodeId );
+                orgUnitMap.put( Integer.parseInt(nodeId), organisationUnit );
+                
+                //tempList.add( nodeId + "#@#" + ouName + "#@#" + parentId + "#@#" + ouCode );
+                //tempList.add( ouName );
+                //tempList.add( parentId );
+                //tempList.add( ouCode );
+                
+                tempList.add( organisationUnit );
+                
+                levelwiseOrgunits.put( ouLevel, tempList );
+    		}
+    		
+            csvReader.close();
+            
+            ouLevels.addAll( levelwiseOrgunits.keySet() );
+            Collections.sort( ouLevels );
+            
+            for( Integer ouLevel : ouLevels )
+            {
+            	List<OrganisationUnit> orgUnits = levelwiseOrgunits.get( ouLevel );
+            	for( OrganisationUnit ou : orgUnits )
+            	{
+            		Integer parentId = Integer.parseInt( ou.getComment() );
+            		String nodeId = ou.getDescription();
+            		ou.setComment( null );
+            		ou.setAlternativeName( null );
+            		if( parentId == -1 )
+            		{
+            			parentId = null;
+            			int orgUnitId = organisationUnitService.addOrganisationUnit( ou );
+            			orgUnitMap.put( Integer.parseInt( nodeId ), ou );
+            		}
+            		else
+            		{
+            			OrganisationUnit parentOU = orgUnitMap.get( parentId );
+            			ou.setParent( parentOU );
+            			int orgUnitId = organisationUnitService.addOrganisationUnit( ou );
+            			orgUnitMap.put( Integer.parseInt( nodeId ), ou );
+            		}
+            	}
+            }
+    	}
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public void importRefrigeratorCatalogData( String refrigeratorCatalogDataCSVFilePath, ModelType refrigeratorModel, Map<String, List<String>> lookupDataMap )
     {
         refrigeratorCatalogDataCSVFilePath += File.separator + "RefrigeratorCatalog.csv";
         
@@ -168,9 +267,9 @@ public class CSVImportAction
             
             while( csvReader.readRecord() )
             {
-                
                 String catalogId = csvReader.get( "CatalogID" );
                 String modelName = csvReader.get( "ModelName" );
+                /*
                 String manufacturer = csvReader.get( "Manufacturer" );
                 String refPowerSource = csvReader.get( "RefPowerSource" );
                 String refType = csvReader.get( "RefType" );
@@ -180,7 +279,7 @@ public class CSVImportAction
                 String refNetVolume = csvReader.get( "RefNetVolume" );
                 String freezeGrossVolume = csvReader.get( "FreezeGrossVolume" );
                 String freezeNetVolume = csvReader.get( "FreezeNetVolume" );
-                
+                */
                 
                 Model model = new Model();
                 model.setName( catalogId + " + " + modelName );
@@ -198,18 +297,39 @@ public class CSVImportAction
                         ModelAttributeValue modelAttributeValue = new ModelAttributeValue();
                         modelAttributeValue.setModel( model );
                         modelAttributeValue.setModelTypeAttribute( modelTypeAttribute );
-                        modelAttributeValue.setValue( csvReader.get( headers[i] ) );
                         
-                        modelAttributeValues.add( modelAttributeValue );
-                        
+                        if( modelTypeAttribute.getOptionSet() != null )
+                        {
+                        	List<String> lookupOptions = lookupDataMap.get( headers[i] );
+                        	if( lookupOptions != null )
+                        	{
+                        		try
+                        		{
+                        			modelAttributeValue.setValue( lookupOptions.get( Integer.parseInt( csvReader.get( headers[i] ) ) + 1  ) );
+                        			modelAttributeValues.add( modelAttributeValue );
+                        		}
+                        		catch( Exception e )
+                        		{
+                        			
+                        		}
+                        	}
+                        	else
+                        	{
+                        		
+                        	}
+                        }
+                        else
+                        {
+                        	modelAttributeValue.setValue( csvReader.get( headers[i] ) );
+                        	modelAttributeValues.add( modelAttributeValue );
+                        }
                     }
                 }
                 
                 // -------------------------------------------------------------------------
                 // Save model
-                // -------------------------------------------------------------------------
-                    
-                Integer id = modelService.createModel(  model, modelAttributeValues );
+                // -------------------------------------------------------------------------                    
+                modelService.createModel(  model, modelAttributeValues );
 
             }                                                    
 
