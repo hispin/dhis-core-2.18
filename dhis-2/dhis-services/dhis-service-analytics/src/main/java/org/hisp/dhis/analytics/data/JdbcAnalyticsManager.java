@@ -59,6 +59,7 @@ import org.hisp.dhis.analytics.MeasureFilter;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.MathUtils;
@@ -89,6 +90,9 @@ public class JdbcAnalyticsManager
         
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    private StatementBuilder statementBuilder;
     
     // -------------------------------------------------------------------------
     // Implementation
@@ -180,10 +184,11 @@ public class JdbcAnalyticsManager
      */
     private String getSelectClause( DataQueryParams params )
     {
-        String sql = "select " + getCommaDelimitedString( params.getQueryDimensions() ) + ", ";
+        String sql = "select " + getCommaDelimitedQuotedColumns( params.getQueryDimensions() ) + ", ";
         
         if ( params.isAggregationType( AVERAGE_INT ) )
         {
+            System.out.println("type name " + params.getPeriodType());
             int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
             
             sql += "sum(daysxvalue) / " + days;
@@ -216,7 +221,7 @@ public class JdbcAnalyticsManager
         
         for ( String partition : params.getPartitions().getPartitions() )
         {
-            sql += "select " + getCommaDelimitedString( params.getQueryDimensions() ) + ", ";
+            sql += "select " + getCommaDelimitedQuotedColumns( params.getQueryDimensions() ) + ", ";
             
             if ( params.isAggregationType( AVERAGE_INT ) )
             {
@@ -254,7 +259,9 @@ public class JdbcAnalyticsManager
         {
             if ( !dim.isAllItems() )
             {
-                sql += sqlHelper.whereAnd() + " " + dim.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
+                String col = statementBuilder.columnQuote( dim.getDimensionName() );
+                
+                sql += sqlHelper.whereAnd() + " " + col + " in (" + getQuotedCommaDelimitedString( getUids( dim.getItems() ) ) + ") ";
             }
         }
 
@@ -272,7 +279,9 @@ public class JdbcAnalyticsManager
                 {
                     if ( filter.hasItems() )
                     {
-                        sql += filter.getDimensionName() + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
+                        String col = statementBuilder.columnQuote( filter.getDimensionName() );
+                        
+                        sql += col + " in (" + getQuotedCommaDelimitedString( getUids( filter.getItems() ) ) + ") or ";
                     }
                 }
             }
@@ -288,7 +297,7 @@ public class JdbcAnalyticsManager
      */
     private String getGroupByClause( DataQueryParams params )
     {
-        String sql = "group by " + getCommaDelimitedString( params.getQueryDimensions() );
+        String sql = "group by " + getCommaDelimitedQuotedColumns( params.getQueryDimensions() );
         
         return sql;
     }
@@ -378,17 +387,17 @@ public class JdbcAnalyticsManager
     
     /**
      * Generates a comma-delimited string based on the dimension names of the
-     * given dimensions.
+     * given dimensions where each dimension name is quoted.
      */
-    private String getCommaDelimitedString( Collection<DimensionalObject> dimensions )
-    {
+    private String getCommaDelimitedQuotedColumns( Collection<DimensionalObject> dimensions )
+    {        
         final StringBuilder builder = new StringBuilder();
         
         if ( dimensions != null && !dimensions.isEmpty() )
         {
             for ( DimensionalObject dimension : dimensions )
             {
-                builder.append( dimension.getDimensionName() ).append( "," );
+                builder.append( statementBuilder.columnQuote( dimension.getDimensionName() ) ).append( "," );
             }
             
             return builder.substring( 0, builder.length() - 1 );
