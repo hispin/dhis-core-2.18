@@ -9,6 +9,7 @@ $( function() {
         var compression = $( '#compression' ).val();
         var program = $( '#programs' ).val();
         var programStage = $( '#programStages' ).val();
+        var inclusion = $( '#inclusion' ).val();
 
         var url = '../api/events' + format + compression + "?program=" + program;
 
@@ -30,6 +31,14 @@ $( function() {
 
         var startDate = $('#startDate' ).val();
         var endDate = $('#endDate' ).val();
+
+        if( inclusion ) {
+          if( "children" == inclusion ) {
+            url += "&includeChildren=true";
+          } else if( "descendants" == inclusion ) {
+            url += "&includeDescendants=true";
+          }
+        }
 
         url += "&startDate=" + startDate;
         url += "&endDate=" + endDate;
@@ -131,15 +140,26 @@ $( function() {
     <td><input type="text" id="endDate" name="endDate" value="$!endDate" style="width:296px"></td>
 </tr>
 
-    <tr>
-        <td>$i18n.getString( "format" )</td>
-        <td>
-            <select id="format" style="width: 300px;">
-                <option value=".xml">XML</option>
-                <option value=".json">Json</option>
-            </select>
-        </td>
-    </tr>
+<tr>
+    <td>$i18n.getString( "inclusion" )</td>
+    <td>
+        <select id="inclusion" style="width: 300px;">
+            <option value="selected">$i18n.getString( "include_selected" )</option>
+            <option value="children">$i18n.getString( "include_children" )</option>
+            <option value="descendants">$i18n.getString( "include_descendants" )</option>
+        </select>
+    </td>
+</tr>
+
+<tr>
+    <td>$i18n.getString( "format" )</td>
+    <td>
+        <select id="format" style="width: 300px;">
+            <option value=".xml">XML</option>
+            <option value=".json">Json</option>
+        </select>
+    </td>
+</tr>
 
 <tr>
     <td>$i18n.getString( "compression" )</td>
