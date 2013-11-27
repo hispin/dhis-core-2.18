@@ -217,7 +217,9 @@ public abstract class AbstractEnrollmentService
 
         for ( ProgramInstance programInstance : programInstances )
         {
-            if ( programInstance != null )
+            // check for null, both for pi, and for pi.patient, there are DBs out there where patientid == null
+            // even if the program is of type 1/2.
+            if ( programInstance != null && programInstance.getPatient() != null )
             {
                 enrollments.getEnrollments().add( getEnrollment( programInstance ) );
             }
