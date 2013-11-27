@@ -43,6 +43,10 @@ $(function() {
     $contextMenu.css({left: e.pageX, top: e.pageY});
 
     var $target = $(e.target);
+
+    $list.find('td').removeClass('contextMenuItemActive');
+    $target.addClass('contextMenuItemActive');
+
     $contextMenu.data('id', $target.data('id'));
     $contextMenu.data('uid', $target.data('uid'));
     $contextMenu.data('name', $target.data('name'));
@@ -54,6 +58,8 @@ $(function() {
     if( $contextMenu.is(":visible") ) {
       $contextMenu.hide();
     }
+
+    $list.find('td').removeClass('contextMenuItemActive');
 
     $contextMenu.removeData('id');
   });
