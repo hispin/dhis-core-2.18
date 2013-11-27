@@ -207,8 +207,8 @@ a.menuLink:hover
   background-color           : #f7f7f7;
   display                    : none;
   z-index                    : 10;
-  filter                     : alpha(opacity=94);
-  opacity                    : 0.94;
+  filter                     : alpha(opacity=98);
+  opacity                    : 0.98;
   border-bottom-left-radius  : 3px;
   border-bottom-right-radius : 3px;
   box-shadow                 : #ccc 0px 1px 1px 0px;
@@ -231,6 +231,11 @@ a.menuLink:hover
 .contextMenuItems a:hover {
   text-decoration  : none;
   background-color : #eee;
+}
+
+.contextMenuItemActive {
+  background-color: #276696;
+  color: #fff;
 }
 
 /*----------------------------------------------------------------------------*/

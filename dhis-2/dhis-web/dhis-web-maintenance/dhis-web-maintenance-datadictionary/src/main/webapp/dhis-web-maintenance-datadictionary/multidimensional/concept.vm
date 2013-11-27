@@ -33,9 +33,6 @@
         <thead>
 				<tr>
 					<th>$i18n.getString( "name" )</th>
-          <!--
-					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
-					-->
 				</tr>
         </thead>
 				<tbody id="list">
@@ -43,15 +40,6 @@
 				#if( $concept.id != $defaultConcept.id )
 				<tr id="tr${concept.id}" style="height: 40px;">
           <td data-id="$concept.id" data-uid="$concept.uid" data-name="$encoder.htmlEncode( $concept.name )">$encoder.htmlEncode( $concept.name )</td>
-
-          <!--
-					<td onclick="javascript:showConceptDetails( $concept.id )">$encoder.htmlEncode( $concept.name )</td>
-					<td style="text-align:right">
-						<a href="showUpdateConceptForm.action?id=$concept.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-						<a href="javascript:removeConcept( $concept.id, '$encoder.jsEncode( $concept.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-						<a href="javascript:showConceptDetails( $concept.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-					</td>
-					-->
 				</tr>
 				#end
 				#end
@@ -60,22 +48,25 @@
 			<p></p>
 			#parse( "/dhis-web-commons/paging/paging.vm" )
 		</td>
-		
-		<td id="detailsData">
 
-            <div id="detailsArea">
-                <div id="hideDetailsArea">
-					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
-				</div>
-				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
-			</div>
+    <td id="detailsData">
+      <div id="detailsArea">
+        <div id="hideDetailsArea">
+          <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )">
+            <img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/>
+          </a>
+        </div>
+        <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
+      </div>
 
-			<div id="warningArea">
-                <div id="hideDetailsArea">
-                    <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_warning' )"/></a>
-                </div>
-                <p><span id="warningField"></span></p>
-            </div>
-		</td>
-	</tr>
+      <div id="warningArea">
+        <div id="hideDetailsArea">
+          <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )">
+            <img src="../images/hide.png" alt="$i18n.getString( 'hide_warning' )"/>
+          </a>
+        </div>
+        <p><span id="warningField"></span></p>
+      </div>
+    </td>
+  </tr>
 </table>
