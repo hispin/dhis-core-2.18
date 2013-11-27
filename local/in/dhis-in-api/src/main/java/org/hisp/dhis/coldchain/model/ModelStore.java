@@ -18,6 +18,8 @@ public interface ModelStore extends GenericNameableObjectStore<Model>
     Model getModel( int id );
     
     Model getModelByName( String name );
+    
+    Model getModelByDescription( String description );
 
     Collection<Model> getAllModels();
     

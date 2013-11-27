@@ -102,6 +102,12 @@ public class DefaultModelService
     }
 
     @Override
+    public Model getModelByDescription( String description )
+    {
+        return modelStore.getModelByDescription( description );
+    }
+    
+    @Override
     public int createModel( Model model, List<ModelAttributeValue> modelAttributeValues )
     {
         int modelId = addModel( model );

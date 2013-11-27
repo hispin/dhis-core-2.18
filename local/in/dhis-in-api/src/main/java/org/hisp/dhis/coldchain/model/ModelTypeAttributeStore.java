@@ -19,6 +19,8 @@ public interface ModelTypeAttributeStore extends GenericNameableObjectStore<Mode
     
     ModelTypeAttribute getModelTypeAttributeByName( String name );
     
+    ModelTypeAttribute getModelTypeAttributeByDescription( String description );
+    
     Collection<ModelTypeAttribute> getAllModelTypeAttributes();
 
 }

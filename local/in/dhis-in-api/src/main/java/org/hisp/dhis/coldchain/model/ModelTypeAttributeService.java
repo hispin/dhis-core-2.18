@@ -16,6 +16,8 @@ public interface ModelTypeAttributeService
     
     ModelTypeAttribute getModelTypeAttributeByName( String name );
     
+    ModelTypeAttribute getModelTypeAttributeByDescription( String description );
+    
     //ModelType getModelTypeByAttribute( ModelType modelType, ModelTypeAttribute modelTypeAttribute);
 
     Collection<ModelTypeAttribute> getAllModelTypeAttributes();

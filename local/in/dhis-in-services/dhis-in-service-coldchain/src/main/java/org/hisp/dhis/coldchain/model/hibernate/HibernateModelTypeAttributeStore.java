@@ -87,6 +87,13 @@ public class HibernateModelTypeAttributeStore extends HibernateIdentifiableObjec
         */
 
     }
+    
+    @Override
+    public ModelTypeAttribute getModelTypeAttributeByDescription( String description )
+    {
+        return (ModelTypeAttribute) getCriteria( Restrictions.eq( "description", description ) ).uniqueResult();
+    }
+    
     @SuppressWarnings( "unchecked" )
     public Collection<ModelTypeAttribute> getAllModelTypeAttributes()
     {
