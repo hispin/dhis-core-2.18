@@ -10,8 +10,8 @@
 
 <h3>$i18n.getString( "concept_management" ) #openHelp( "concept" )</h3>
 
-<div class="contextMenu">
-  <ul class="contextMenuItems">
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
     <li><a data-target-fn="showUpdateConcept" href="#">$i18n.getString( "edit" )</a></li>
     <li><a data-target-fn="removeConcept" href="#">$i18n.getString( "remove" )</a></li>
     <li><a data-target-fn="showConceptDetails" href="#">$i18n.getString( "show_details" )</a></li>
@@ -39,7 +39,9 @@
 				#foreach( $concept in $concepts )
 				#if( $concept.id != $defaultConcept.id )
 				<tr id="tr${concept.id}" style="height: 40px;">
-          <td data-id="$concept.id" data-uid="$concept.uid" data-name="$encoder.htmlEncode( $concept.name )">$encoder.htmlEncode( $concept.name )</td>
+          <td data-id="$!concept.id" data-uid="$!concept.uid" data-name="$encoder.htmlEncode( $!concept.name )">
+            $encoder.htmlEncode( $!concept.name )
+          </td>
 				</tr>
 				#end
 				#end
