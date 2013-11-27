@@ -26,7 +26,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 dhis2.util.namespace( 'dhis2.availability' );
 
 dhis2.availability._isAvailable = -1;
