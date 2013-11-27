@@ -107,6 +107,7 @@ public abstract class AbstractEnrollmentService
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
             programInstanceService.getProgramInstances( programs ) );
+
         return getEnrollments( programInstances );
     }
 
@@ -216,7 +217,10 @@ public abstract class AbstractEnrollmentService
 
         for ( ProgramInstance programInstance : programInstances )
         {
-            enrollments.getEnrollments().add( getEnrollment( programInstance ) );
+            if ( programInstance != null )
+            {
+                enrollments.getEnrollments().add( getEnrollment( programInstance ) );
+            }
         }
 
         return enrollments;
@@ -225,9 +229,9 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollment getEnrollment( String id )
     {
-        ProgramInstance pi = programInstanceService.getProgramInstance( id );
-        
-        return pi != null ? getEnrollment( pi ) : null;
+        ProgramInstance programInstance = programInstanceService.getProgramInstance( id );
+
+        return programInstance != null ? getEnrollment( programInstance ) : null;
     }
 
     @Override
