@@ -105,6 +105,12 @@ public class DefaultModelTypeAttributeService implements ModelTypeAttributeServi
         return modelTypeAttributeStore.getModelTypeAttributeByName( name );
         
     }
+    
+    public ModelTypeAttribute getModelTypeAttributeByDescription( String description )
+    {
+        return modelTypeAttributeStore.getModelTypeAttributeByDescription( description );
+    }
+
     //Methods
     public int getModelTypeAttributeCount()
     {

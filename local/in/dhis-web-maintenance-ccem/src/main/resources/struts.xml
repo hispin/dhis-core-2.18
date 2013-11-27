@@ -674,7 +674,7 @@
 	</action>	
 	
 	<!--<result name="success" type="redirect">programStage.action?id=${modelTypeId}</result>-->
-	
+
 	<!-- Transfer Facility Data -->
 	<action name="transferFacilityDataForm" class="org.hisp.dhis.ccem.transferfacilitydata.action.TraferFacilityDataFormAction">
 		<result name="success" type="velocity">/main.vm</result>
@@ -683,19 +683,26 @@
 		<param name="javascripts">javascript/transferFacilityData.js</param>
 		<param name="requiredAuthorities">F_TRANSFER_FACILITY_DATA</param>
 	</action>	
-	
+
 	<action name="transferFacilityDataResult" class="org.hisp.dhis.ccem.transferfacilitydata.action.TraferFacilityDataResultAction">
 		<result name="success" type="velocity">/content.vm</result>
 		<param name="page">/dhis-web-maintenance-ccem/transferFacilityDataResult.vm</param>
 		<param name="requiredAuthorities">F_TRANSFER_FACILITY_DATA</param>
 	</action>	
-	
+
 	<!--  Import ColdChain Data -->
 	<action name="importDataForm" class="org.hisp.dhis.ccem.action.NoAction">
 		<result name="success" type="velocity">/main.vm</result>
 		<param name="page">/dhis-web-maintenance-ccem/importDataForm.vm</param>
 		<param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>		
 	</action>
+
+    <action name="importCSVData" class="org.hisp.dhis.ccem.importexport.action.CSVImportAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-ccem/csvImportResult.vm</param>
+        <param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
+        <interceptor-ref name="fileUploadStack"/>
+    </action>
 	
 </package>
 </struts>

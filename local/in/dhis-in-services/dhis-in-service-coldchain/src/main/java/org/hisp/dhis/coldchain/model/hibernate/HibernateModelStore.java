@@ -36,6 +36,12 @@ public class HibernateModelStore extends HibernateIdentifiableObjectStore<Model>
     }
     
     @Override
+    public Model getModelByDescription( String description )
+    {
+        return (Model) getCriteria( Restrictions.eq( "description", description ) ).uniqueResult();
+    }
+    
+    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Model> getAllModels()
     {

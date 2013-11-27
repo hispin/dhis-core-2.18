@@ -740,4 +740,16 @@
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<!--<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />-->
 	</bean>	
+	
+	<!-- Import / Export -->
+    <bean id="org.hisp.dhis.ccem.importexport.action.CSVImportAction"
+        class="org.hisp.dhis.ccem.importexport.action.CSVImportAction"
+        scope="prototype">
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="modelTypeAttributeService" ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />
+        <property name="modelService" ref="org.hisp.dhis.coldchain.model.ModelService" />
+        <property name="modelTypeService" ref="org.hisp.dhis.coldchain.model.ModelTypeService" />        
+    </bean> 
+		
+	
 </beans>

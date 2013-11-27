@@ -21,6 +21,8 @@ public interface ModelService
     
     Model getModelByName( String name );
     
+    Model getModelByDescription( String description );
+    
     Collection<Model> getModels( ModelType modelType );
     
     int createModel( Model model, List<ModelAttributeValue> modelAttributeValues );
@@ -39,7 +41,6 @@ public interface ModelService
     Collection<Model> getModelsBetween( int first, int max );
     
     Collection<Model> getModelsBetweenByName( String name, int first, int max );
-    
     
     int getCountModel( ModelType modelType );
     

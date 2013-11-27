@@ -17,12 +17,12 @@ function Checkfiles()
 }
 </script>
 <h3>$i18n.getString( "Import Data" )</h3>
-<form id="dataImportForm" name="dataImportForm" method="post" enctype="multipart/form-data" action="#" onsubmit="return Checkfiles();">
+<form id="dataImportForm" name="dataImportForm" method="post" enctype="multipart/form-data" action="importCSVData.action" >
 	<table style="width:60%">
 		<tr >
 			<td >
 				Upload CSV File :<br><br>
-                <input type="file" id="importData" name="importData" size="45" class="{validate:{required:true}}">
+                <input type="file" id="upload" name="upload" size="45" class="{validate:{required:true}}">
             </td>
 			<td>
 				<div class="ui-widget-content ui-corner-all" style="padding:10px 10px 10px 30px;">
@@ -41,8 +41,7 @@ function Checkfiles()
                 <input type="submit" name="importReport" value="Upload Data" style="width:325px">
             </td>
 			<td>&nbsp;</td>
-        </tr>
-		
+        </tr>		
     </table>
 </form>
 
