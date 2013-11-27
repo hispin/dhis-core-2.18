@@ -566,9 +566,6 @@
 				pointcut="execution( * org.hisp.dhis.program.ProgramValidationService.delete*(..) )"
 				method="intercept" />
 			<aop:before
-				pointcut="execution( * org.hisp.dhis.program.ProgramStageInstanceService.delete*(..) )"
-				method="intercept" />
-			<aop:before
 				pointcut="execution( * org.hisp.dhis.patientdatavalue.PatientDataValueService.delete*(..) )"
 				method="intercept" />
 			<aop:before
