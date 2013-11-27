@@ -3,12 +3,20 @@
 		tableSorter( 'listTable' );
 	});
 
-    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_concept" ) , "'")';
+  var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_concept" ) , "'")';
 	var i18n_adding_concept_failed = '$encoder.jsEscape( $i18n.getString( "adding_concept_failed" ) , "'")';
 	var i18n_saving_concept_failed = '$encoder.jsEscape( $i18n.getString( "saving_concept_failed" ) , "'")';
 </script>
 
 <h3>$i18n.getString( "concept_management" ) #openHelp( "concept" )</h3>
+
+<div class="contextMenu">
+  <ul class="contextMenuItems">
+    <li><a data-target-fn="showUpdateConcept" href="#">$i18n.getString( "edit" )</a></li>
+    <li><a data-target-fn="removeConcept" href="#">$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showConceptDetails" href="#">$i18n.getString( "show_details" )</a></li>
+  </ul>
+</div>
 
 <table class="mainPageTable">
 	<tr>
@@ -22,22 +30,28 @@
 			<table class="listTable" id="listTable">
 				<col/>
 				<col width="96px"/>			
-                <thead>				
+        <thead>
 				<tr>
 					<th>$i18n.getString( "name" )</th>
+          <!--
 					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
+					-->
 				</tr>
-                </thead>
+        </thead>
 				<tbody id="list">
 				#foreach( $concept in $concepts )
 				#if( $concept.id != $defaultConcept.id )
-				<tr id="tr${concept.id}">
+				<tr id="tr${concept.id}" style="height: 40px;">
+          <td data-id="$concept.id" data-uid="$concept.uid" data-name="$encoder.htmlEncode( $concept.name )">$encoder.htmlEncode( $concept.name )</td>
+
+          <!--
 					<td onclick="javascript:showConceptDetails( $concept.id )">$encoder.htmlEncode( $concept.name )</td>
 					<td style="text-align:right">
 						<a href="showUpdateConceptForm.action?id=$concept.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 						<a href="javascript:removeConcept( $concept.id, '$encoder.jsEncode( $concept.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 						<a href="javascript:showConceptDetails( $concept.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
+					-->
 				</tr>
 				#end
 				#end
