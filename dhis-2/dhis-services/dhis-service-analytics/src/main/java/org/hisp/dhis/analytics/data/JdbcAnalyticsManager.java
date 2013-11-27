@@ -188,7 +188,6 @@ public class JdbcAnalyticsManager
         
         if ( params.isAggregationType( AVERAGE_INT ) )
         {
-            System.out.println("type name " + params.getPeriodType());
             int days = PeriodType.getPeriodTypeByName( params.getPeriodType() ).getFrequencyOrder();
             
             sql += "sum(daysxvalue) / " + days;
