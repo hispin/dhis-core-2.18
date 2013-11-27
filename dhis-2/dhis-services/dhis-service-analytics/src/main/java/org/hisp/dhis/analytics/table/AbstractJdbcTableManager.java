@@ -91,11 +91,13 @@ public abstract class AbstractJdbcTableManager
     /**
      * Returns a list of string arrays in where the first index holds the database
      * column name, the second index holds the database column data type and the 
-     * third column holds a table alias and name, i.e.:
+     * third column holds a table alias and name. Column names are quoted.
      * 
-     * 0 = database column name
-     * 1 = database column data type
-     * 2 = column alias and name
+     * <ul>
+     * <li>0 = database column name</li>
+     * <li>1 = database column data type</li>
+     * <li>2 = column alias and name</li>
+     * </ul>
      */
     protected abstract List<String[]> getDimensionColumns( AnalyticsTable table );
     
@@ -227,6 +229,14 @@ public abstract class AbstractJdbcTableManager
     // Supportive methods
     // -------------------------------------------------------------------------
   
+    /**
+     * Quotes the given column name.
+     */
+    protected String quote( String column )
+    {
+        return statementBuilder.columnQuote( column );
+    }
+    
     /**
      * Indicates whether the given table exists and has at least one row.
      */

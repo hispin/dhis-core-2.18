@@ -401,7 +401,7 @@ public class DefaultQueryPlanner
             for ( String periodType : periodTypePeriodMap.keySet() )
             {
                 DataQueryParams query = params.instance();
-                query.setDimensionOptions( PERIOD_DIM_ID, DimensionType.PERIOD, periodType, periodTypePeriodMap.get( periodType ) );
+                query.setDimensionOptions( PERIOD_DIM_ID, DimensionType.PERIOD, periodType.toLowerCase(), periodTypePeriodMap.get( periodType ) );
                 query.setPeriodType( periodType );
                 queries.add( query );
             }
@@ -416,7 +416,7 @@ public class DefaultQueryPlanner
             
             for ( String periodType : periodTypePeriodMap.keySet() )
             {
-                params.getFilters().add( new BaseDimensionalObject( filter.getDimension(), filter.getType(), periodType, periodTypePeriodMap.get( periodType ) ) );
+                params.getFilters().add( new BaseDimensionalObject( filter.getDimension(), filter.getType(), periodType.toLowerCase(), periodTypePeriodMap.get( periodType ) ) );
             }
             
             queries.add( params );

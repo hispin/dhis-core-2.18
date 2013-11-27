@@ -187,7 +187,7 @@ public class JdbcEventAnalyticsTableManager
         
         for ( OrganisationUnitLevel level : levels )
         {
-            String column = PREFIX_ORGUNITLEVEL + level.getLevel();
+            String column = quote( PREFIX_ORGUNITLEVEL + level.getLevel() );
             String[] col = { column, "character(11)", "ous." + column };
             columns.add( col );
         }
@@ -196,7 +196,7 @@ public class JdbcEventAnalyticsTableManager
         
         for ( PeriodType periodType : periodTypes )
         {
-            String column = periodType.getName().toLowerCase();
+            String column = quote( periodType.getName().toLowerCase() );
             String[] col = { column, "character varying(10)", "dps." + column };
             columns.add( col );
         }
@@ -204,27 +204,27 @@ public class JdbcEventAnalyticsTableManager
         for ( DataElement dataElement : table.getProgram().getAllDataElements() )
         {
             String select = "(select value from patientdatavalue where programstageinstanceid=" +
-                "psi.programstageinstanceid and dataelementid=" + dataElement.getId() + ") as " + dataElement.getUid();
+                "psi.programstageinstanceid and dataelementid=" + dataElement.getId() + ") as " + quote( dataElement.getUid() );
             
-            String[] col = { dataElement.getUid(), "character varying(255)", select };
+            String[] col = { quote( dataElement.getUid() ), "character varying(255)", select };
             columns.add( col );
         }
         
         for ( PatientAttribute attribute : table.getProgram().getPatientAttributes() )
         {
             String select = "(select value from patientattributevalue where patientid=pi.patientid and " +
-                "patientattributeid=" + attribute.getId() + ") as " + attribute.getUid();
+                "patientattributeid=" + attribute.getId() + ") as " + quote( attribute.getUid() );
             
-            String[] col = { attribute.getUid(), "character varying(255)", select };
+            String[] col = { quote( attribute.getUid() ), "character varying(255)", select };
             columns.add( col );
         }
         
         for ( PatientIdentifierType identifierType : table.getProgram().getPatientIdentifierTypes() )
         {
             String select = "(select identifier from patientidentifier where patientid=pi.patientid and " +
-                "patientidentifiertypeid=" + identifierType.getId() + ") as " + identifierType.getUid();
+                "patientidentifiertypeid=" + identifierType.getId() + ") as " + quote( identifierType.getUid() );
             
-            String[] col = { identifierType.getUid(), "character varying(31)", select };
+            String[] col = { quote( identifierType.getUid() ), "character varying(31)", select };
             columns.add( col );
         }
         

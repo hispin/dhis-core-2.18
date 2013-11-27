@@ -201,25 +201,25 @@ public class JdbcAnalyticsTableManager
         
         for ( DataElementGroupSet groupSet : dataElementGroupSets )
         {
-            String[] col = { groupSet.getUid(), "character(11)", "degs." + groupSet.getUid() };
+            String[] col = { quote( groupSet.getUid() ), "character(11)", "degs." + quote( groupSet.getUid() ) };
             columns.add( col );
         }
         
         for ( OrganisationUnitGroupSet groupSet : orgUnitGroupSets )
         {
-            String[] col = { groupSet.getUid(), "character(11)", "ougs." + groupSet.getUid() };
+            String[] col = { quote( groupSet.getUid() ), "character(11)", "ougs." + quote( groupSet.getUid() ) };
             columns.add( col );
         }
         
         for ( DataElementCategory category : categories )
         {
-            String[] col = { category.getUid(), "character(11)", "cs." + category.getUid() };
+            String[] col = { quote( category.getUid() ), "character(11)", "cs." + quote( category.getUid() ) };
             columns.add( col );
         }
         
         for ( OrganisationUnitLevel level : levels )
         {
-            String column = PREFIX_ORGUNITLEVEL + level.getLevel();
+            String column = quote( PREFIX_ORGUNITLEVEL + level.getLevel() );
             String[] col = { column, "character(11)", "ous." + column };
             columns.add( col );
         }
@@ -228,7 +228,7 @@ public class JdbcAnalyticsTableManager
         
         for ( PeriodType periodType : periodTypes )
         {
-            String column = periodType.getName().toLowerCase();
+            String column = quote( periodType.getName().toLowerCase() );
             String[] col = { column, "character varying(10)", "ps." + column };
             columns.add( col );
         }

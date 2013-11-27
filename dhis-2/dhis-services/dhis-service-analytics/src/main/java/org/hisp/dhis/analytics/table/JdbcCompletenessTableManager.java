@@ -149,20 +149,20 @@ public class JdbcCompletenessTableManager
         
         for ( OrganisationUnitGroupSet groupSet : orgUnitGroupSets )
         {
-            String[] col = { groupSet.getUid(), "character(11)", "ougs." + groupSet.getUid() };
+            String[] col = { quote( groupSet.getUid() ), "character(11)", "ougs." + quote( groupSet.getUid() ) };
             columns.add( col );
         }
         
         for ( OrganisationUnitLevel level : levels )
         {
-            String column = PREFIX_ORGUNITLEVEL + level.getLevel();
+            String column = quote( PREFIX_ORGUNITLEVEL + level.getLevel() );
             String[] col = { column, "character(11)", "ous." + column };
             columns.add( col );
         }
         
         for ( PeriodType periodType : PeriodType.getAvailablePeriodTypes().subList( 0, 7 ) )
         {
-            String column = periodType.getName().toLowerCase();
+            String column = quote( periodType.getName().toLowerCase() );
             String[] col = { column, "character varying(10)", "ps." + column };
             columns.add( col );
         }
