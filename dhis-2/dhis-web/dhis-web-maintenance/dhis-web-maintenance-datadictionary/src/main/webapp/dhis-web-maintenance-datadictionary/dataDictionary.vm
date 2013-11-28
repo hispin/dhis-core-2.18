@@ -41,8 +41,8 @@
         </thead>
 				<tbody id="list">
 				#foreach( $dataDictionary in $dataDictionaries )
-				<tr id="tr${dataDictionary.id}" style="height: 40px;">
-          <td data-id="$!dataDictionary.id" data-uid="$!dataDictionary.uid" data-type="DataDictionary" data-name="$encoder.htmlEncode( $!dataDictionary.displayName )">
+				<tr id="tr${dataDictionary.id}">
+          <td style="padding: 12px 0 12px 5px;" data-id="$!dataDictionary.id" data-uid="$!dataDictionary.uid" data-type="DataDictionary" data-name="$encoder.htmlEncode( $!dataDictionary.displayName )">
             $encoder.htmlEncode( $!dataDictionary.displayName )
           </td>
 				</tr>

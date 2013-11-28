@@ -36,8 +36,8 @@
       <tbody id="list">
         #foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
         #if( $dataElementCategoryCombo.id != $defaultCombo.id )
-        <tr id="tr${dataElementCategoryCombo.id}" style="height: 40px;">
-          <td data-id="$!dataElementCategoryCombo.id" data-uid="$!dataElementCategoryCombo.uid" data-type="DataElementCategoryCombo" data-name="$encoder.htmlEncode( $!dataElementCategoryCombo.displayName )">
+        <tr id="tr${dataElementCategoryCombo.id}">
+          <td style="padding: 12px 0 12px 5px;" data-id="$!dataElementCategoryCombo.id" data-uid="$!dataElementCategoryCombo.uid" data-type="DataElementCategoryCombo" data-name="$encoder.htmlEncode( $!dataElementCategoryCombo.displayName )">
             $encoder.htmlEncode( $!dataElementCategoryCombo.displayName )
           </td>
         </tr>
