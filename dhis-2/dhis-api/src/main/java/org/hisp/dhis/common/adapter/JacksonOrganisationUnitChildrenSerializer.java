@@ -71,7 +71,7 @@ public class JacksonOrganisationUnitChildrenSerializer extends JsonSerializer<Or
                     staxWriter.writeAttribute( "href", value.getHref() );
                 }
 
-                staxWriter.writeAttribute( "haveChildren", String.valueOf( value.hasChild() ) );
+                staxWriter.writeAttribute( "hasChildren", String.valueOf( value.hasChild() ) );
                 staxWriter.writeEndElement();
             }
             catch ( XMLStreamException e )
@@ -96,7 +96,7 @@ public class JacksonOrganisationUnitChildrenSerializer extends JsonSerializer<Or
                 jgen.writeStringField( "href", value.getHref() );
             }
 
-            jgen.writeBooleanField( "haveChildren", value.hasChild() );
+            jgen.writeBooleanField( "hasChildren", value.hasChild() );
 
             jgen.writeEndObject();
         }
