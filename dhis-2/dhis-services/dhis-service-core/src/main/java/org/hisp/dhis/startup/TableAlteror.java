@@ -646,6 +646,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE interpretation ALTER COLUMN userid DROP NOT NULL" );
         executeSql( "UPDATE interpretation SET publicaccess='r-------' WHERE publicaccess IS NULL;" );
 
+        executeSql( "ALTER TABLE dataset DROP COLUMN symbol" );
+
         upgradeMapViewsToAnalyticalObject();
 
 	executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );

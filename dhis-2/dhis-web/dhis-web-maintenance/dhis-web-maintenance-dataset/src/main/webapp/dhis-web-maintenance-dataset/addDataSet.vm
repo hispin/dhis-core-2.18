@@ -52,8 +52,6 @@
 #sharingCreateNotification( "dataSet" )
 
 <form id="addDataSetForm" name="addDataSetForm" action="addDataSet.action" method="post" class="inputForm">
-  <input type="hidden" id="symbol" name="symbol">
-
   <table id="detailsList" style="width: 600px;">
     <col style="width: 400px;"/> ## Labels
     <col /> ## Input
@@ -124,12 +122,7 @@
       	  	<option value="false">$i18n.getString( "no" )</option>
       	  	<option value="true">$i18n.getString( "yes" )</option>
   	      </select>
-	    </td>
-      </tr>
-      <tr>
-      	<td style="height:35px"><label for="symbol">$i18n.getString( "symbol" )</td>
-      	<td><a href="javascript:openSymbolDialog()">$i18n.getString( "select_symbol" )</a>
-      	   <img id="symbolImg" style="margin-left: 30px;"></td>
+	      </td>
       </tr>
     </tbody>
     <thead>
@@ -290,5 +283,3 @@
     </tbody>
   </table>
 </form>
-
-#parse( "dhis-web-maintenance-dataset/dataSetSymbol.vm" )
