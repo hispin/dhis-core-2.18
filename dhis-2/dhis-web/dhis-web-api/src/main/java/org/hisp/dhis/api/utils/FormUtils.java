@@ -128,34 +128,37 @@ public class FormUtils
             throw new NullPointerException();
         }
 
-        form.getOptions().put( "captureCoordinates", programStage.getCaptureCoordinates() );
-
-        if ( programStage.getProgramStageSections().size() > 0 )
+        if ( programStage != null )
         {
-            for ( ProgramStageSection section : programStage.getProgramStageSections() )
+            form.getOptions().put( "captureCoordinates", programStage.getCaptureCoordinates() );
+
+            if ( programStage.getProgramStageSections().size() > 0 )
             {
-                List<Field> fields = inputsFromProgramStageDataElements( section.getProgramStageDataElements() );
+                for ( ProgramStageSection section : programStage.getProgramStageSections() )
+                {
+                    List<Field> fields = inputsFromProgramStageDataElements( section.getProgramStageDataElements() );
+
+                    if ( !fields.isEmpty() )
+                    {
+                        Group s = new Group();
+                        s.setLabel( section.getDisplayName() );
+                        s.setFields( fields );
+                        form.getGroups().add( s );
+                    }
+                }
+            }
+            else
+            {
+                List<Field> fields = inputsFromProgramStageDataElements(
+                    new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() ) );
 
                 if ( !fields.isEmpty() )
                 {
                     Group s = new Group();
-                    s.setLabel( section.getDisplayName() );
+                    s.setLabel( "default" );
                     s.setFields( fields );
                     form.getGroups().add( s );
                 }
-            }
-        }
-        else
-        {
-            List<Field> fields = inputsFromProgramStageDataElements(
-                new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() ) );
-
-            if ( !fields.isEmpty() )
-            {
-                Group s = new Group();
-                s.setLabel( "default" );
-                s.setFields( fields );
-                form.getGroups().add( s );
             }
         }
 
