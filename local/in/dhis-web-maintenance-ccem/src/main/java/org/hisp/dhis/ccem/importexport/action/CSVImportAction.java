@@ -128,12 +128,16 @@ public class CSVImportAction
             
             Map<String, List<String>> lookupDataMap = getLookupData( uncompressedFolderPath );
             
+            Map<Integer, List<String>> assetMap = getAssetData( uncompressedFolderPath );
+            
             /**
              * TODO - Need to use parameter / constant for timebeing directly used name
              */
             ModelType refrigeratorModel = modelTypeService.getModelTypeByName( "Refrigerator Catalog" );
             
-            importAdminHierarchy( uncompressedFolderPath );
+            Map<Integer, OrganisationUnit> orgUnitMap = importAdminHierarchy( uncompressedFolderPath );
+            
+            Map<Integer, OrganisationUnit> faclityMap = importFacility( uncompressedFolderPath, orgUnitMap );
             
             //importRefrigeratorCatalogData( uncompressedFolderPath, refrigeratorModel, lookupDataMap );
             
@@ -159,8 +163,52 @@ public class CSVImportAction
 
         return SUCCESS;
     }
+    
+    
+    public Map<Integer, OrganisationUnit> importFacility( String facilityCSVFilePath, Map<Integer, OrganisationUnit> orgUnitMap )
+    {
+        facilityCSVFilePath += File.separator + "Facility.csv";
+        
+        try
+        {
+            CsvReader csvReader = new CsvReader( facilityCSVFilePath, ',', Charset.forName( "UTF-8" ) );
+            csvReader.readHeaders();
+            String headers[] = csvReader.getHeaders();
 
-    public void importAdminHierarchy( String adminHierarchyCSVFilePath )
+            Integer colCount = headers.length;
+            while( csvReader.readRecord() )
+            {
+                String nodeId = csvReader.get( "FacilityID" );
+                String ouName = csvReader.get( "FacilityName" );
+                //Integer ouLevel = Integer.parseInt( csvReader.get( "Level" ) );                         
+                Integer parentId = Integer.parseInt(  csvReader.get( "AdminRegion" ) );
+                //String ouCode = csvReader.get( "Code" );
+                
+                //if( ouCode != null && ouCode.trim().equals("") )
+                //        ouCode = null;
+                
+                OrganisationUnit organisationUnit = new OrganisationUnit( ouName, ouName, null, new Date(), null, true, parentId+"" );
+                if( parentId != -1 )
+                {
+                    OrganisationUnit parentOU = orgUnitMap.get( parentId );
+                    organisationUnit.setParent( parentOU );
+                    int orgUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
+                    orgUnitMap.put( Integer.parseInt( nodeId ), organisationUnit );
+                }
+            }
+                
+            csvReader.close();                       
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+
+        return orgUnitMap;
+    }
+
+
+    public Map<Integer, OrganisationUnit> importAdminHierarchy( String adminHierarchyCSVFilePath )
     {
     	adminHierarchyCSVFilePath += File.separator + "AdminHierarchy.csv";
     	
@@ -242,6 +290,7 @@ public class CSVImportAction
             e.printStackTrace();
         }
 
+    	return orgUnitMap;
     }
     
     public void importRefrigeratorCatalogData( String refrigeratorCatalogDataCSVFilePath, ModelType refrigeratorModel, Map<String, List<String>> lookupDataMap )
@@ -340,6 +389,38 @@ public class CSVImportAction
         }
     }
 
+    public Map<Integer, List<String>> getAssetData( String assetListCSVFilePath )
+    {
+        Map<Integer, List<String>> assetMap = new HashMap<Integer, List<String>>();
+        
+        assetListCSVFilePath += File.separator + "AssetList.csv";
+        
+        try
+        {
+            CsvReader csvReader = new CsvReader( assetListCSVFilePath, ',', Charset.forName( "UTF-8" ) );
+            
+            csvReader.readHeaders();
+            
+            while( csvReader.readRecord() )
+            {
+                Integer equipmentId = Integer.parseInt(  csvReader.get( "EquipmentID" ) );
+                List<String> tempList = new ArrayList<String>();
+                tempList.add( csvReader.get( "FacilityID" ) );
+                tempList.add( csvReader.get( "AssetType" ) );
+                    
+                assetMap.put( equipmentId, tempList );
+            }
+            
+            csvReader.close();
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+        
+        return assetMap;
+    }
+
     public Map<String, List<String>> getLookupData( String lookupsCSVFilePath )
     {
         Map<String, List<String>> lookupDataMap = new HashMap<String, List<String>>();
@@ -385,7 +466,7 @@ public class CSVImportAction
         
         return lookupDataMap;
     }
-         
+
     public String unZip( ZipInputStream zis  )
     {
         byte[] buffer = new byte[1024];
