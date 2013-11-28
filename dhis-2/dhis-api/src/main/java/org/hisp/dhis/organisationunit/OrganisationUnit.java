@@ -41,6 +41,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.adapter.JacksonOrganisationUnitChildrenSerializer;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -699,7 +700,8 @@ public class OrganisationUnit
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    //@JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentUsing = JacksonOrganisationUnitChildrenSerializer.class)
     @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "children", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "child", namespace = DxfNamespaces.DXF_2_0 )
