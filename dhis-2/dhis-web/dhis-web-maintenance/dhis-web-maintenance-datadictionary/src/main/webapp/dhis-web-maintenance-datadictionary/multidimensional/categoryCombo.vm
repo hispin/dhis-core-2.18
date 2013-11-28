@@ -8,6 +8,15 @@
 
 <h3>$i18n.getString( "data_element_category_combo_management" ) #openHelp( "dataElementCategoryCombo" )</h3>
 
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
+    <li><a data-target-fn="showUpdateDataElementCategoryComboForm" href="#">$i18n.getString( "edit" )</a></li>
+    <li><a data-target-fn="translateWithContext" href="#">$i18n.getString( "translation_translate" )</a></li>
+    <li><a data-target-fn="removeDataElementCategoryCombo" href="#">$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showDataElementCategoryComboDetails" href="#">$i18n.getString( "show_details" )</a></li>
+  </ul>
+</div>
+
 <table class="mainPageTable">
   <tr>
     <td style="vertical-align:top">
@@ -17,51 +26,44 @@
 				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddDataElementCategoryComboForm.action'"/></td>
 			</tr>
 		</table>
-      <table class="listTable" id="categoryComboList">
-          <col/>
-          <col width="120px"/>        
-          <thead>
-          <tr>
-            <th>$i18n.getString( "name" )</th>
-            <th class="{sorter: false}">$i18n.getString( "operations" )</th>
-          </tr>
-          </thead>
-          <tbody id="list">
-            #foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
-            #if( $dataElementCategoryCombo.id != $defaultCombo.id )
-              <tr id="tr${dataElementCategoryCombo.id}">
-                <td onclick="showDataElementCategoryComboDetails( $dataElementCategoryCombo.id )">$encoder.htmlEncode( $dataElementCategoryCombo.displayName )</td>
-                <td style="text-align:right">
-					<a href="showUpdateDataElementCategoryComboForm.action?id=$dataElementCategoryCombo.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-					<a href="javascript:translate( 'DataElementCategoryCombo', '$dataElementCategoryCombo.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-				    <a href="javascript:removeDataElementCategoryCombo( '$dataElementCategoryCombo.id', '$encoder.jsEncode( $dataElementCategoryCombo.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-					<a href="javascript:showDataElementCategoryComboDetails( $dataElementCategoryCombo.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-				</td>
-              </tr>
-			#end
-            #end
-          </tbody>
+    <table class="listTable" id="categoryComboList">
+      <thead>
+      <tr>
+        <th>$i18n.getString( "name" )</th>
+      </tr>
+      </thead>
 
-        </table>
+      <tbody id="list">
+        #foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
+        #if( $dataElementCategoryCombo.id != $defaultCombo.id )
+        <tr id="tr${dataElementCategoryCombo.id}" style="height: 40px;">
+          <td data-id="$!dataElementCategoryCombo.id" data-uid="$!dataElementCategoryCombo.uid" data-type="DataElementCategoryCombo" data-name="$encoder.htmlEncode( $!dataElementCategoryCombo.displayName )">
+            $encoder.htmlEncode( $!dataElementCategoryCombo.displayName )
+          </td>
+        </tr>
+        #end
+        #end
+      </tbody>
+    </table>
 		<p></p>
 		#parse( "/dhis-web-commons/paging/paging.vm" )
     </td>
-		<td id="detailsData">
 
-            <div id="detailsArea">
-                <div id="hideDetailsArea">
+		<td id="detailsData">
+      <div id="detailsArea">
+        <div id="hideDetailsArea">
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
 				</div>
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "number_of_categories" ):</label><br/><span id="dataElementCategoryCountField"></span></p>
 			</div>
 
-            <div id="warningArea">
-                <div id="hideDetailsArea">
-                    <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_warning' )"/></a>
-                </div>
-                <p><span id="warningField"></span></p>
-            </div>
+      <div id="warningArea">
+        <div id="hideDetailsArea">
+          <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_warning' )"/></a>
+        </div>
+        <p><span id="warningField"></span></p>
+      </div>
 			
 		</td>
   </tr>

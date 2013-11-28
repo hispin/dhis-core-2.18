@@ -1,17 +1,24 @@
 
-#* #sharingDialog() *#
-
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 		tableSorter( 'dataElementGroupList' );	
 	});
 
-    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';
+  var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';
 	var i18n_adding_data_element_group_failed = '$encoder.jsEscape( $i18n.getString( "adding_data_element_group_failed" ) , "'")';
 	var	i18n_saving_data_element_group_failed = '$encoder.jsEscape( $i18n.getString( "saving_data_element_group_failed" ) , "'")';
 </script>
 
 <h3>$i18n.getString( "data_element_group_management" ) #openHelp( "dataElementGroup" )</h3>
+
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
+    <li><a data-target-fn="showUpdateDataElementGroupForm" href="#">$i18n.getString( "edit" )</a></li>
+    <li><a data-target-fn="translateWithContext" href="#">$i18n.getString( "translation_translate" )</a></li>
+    <li><a data-target-fn="removeDataElementGroup" href="#">$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showDataElementGroupDetails" href="#">$i18n.getString( "show_details" )</a></li>
+  </ul>
+</div>
 
 <table class="mainPageTable">
 	<tr>
@@ -24,51 +31,17 @@
 			</table>
 			<div id="content">
 			<table class="listTable" id="dataElementGroupList">			
-				<col/>
-				<col width="145px"/>
-				<thead>					
+				<thead>
 					<tr>
 						<th>$i18n.getString( "name" )</th>
-						<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 					</tr>
 				</thead>
 				<tbody id="list">
 				#foreach( $dataElementGroup in $dataElementGroups )
-				<tr id="tr${dataElementGroup.id}">
-					<td onclick="showDataElementGroupDetails( $dataElementGroup.id )">$encoder.htmlEncode( $dataElementGroup.displayName )</td>
-					<td style="text-align:right">
-
-                        #* #if ( $security.canManage( $dataElementGroup ) )
-                        <a href="javascript:showSharingDialog('dataElementGroup', '$dataElementGroup.uid');"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
-                        #else
-                        <img src="../images/relationship-denied.png">
-                        #end *#
-
-                        #* #if( $security.canUpdate( $dataElementGroup ) ) *#
-                        <a href="showUpdateDataElementGroupForm.action?id=$dataElementGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-                        #*
-                        #else
-                        <img src="../images/edit-denied.png">
-                        #end *#
-
-                        #* #if( $security.canUpdate( $dataElementGroup ) ) *#
-                        <a href="javascript:translate( 'DataElementGroup', '$dataElementGroup.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-                        #*
-                        #else
-                        <img src="../images/i18n-denied.png">
-                        #end
-                        *#
-
-                        #* #if( $security.canDelete( $dataElementGroup ) ) *#
-                        <a href="javascript:removeDataElementGroup( $dataElementGroup.id, '$encoder.jsEncode( $dataElementGroup.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-                        #* #else
-                        <img src="../images/delete-denied.png">
-                        #end
-                        *#
-
-						<a href="javascript:showDataElementGroupDetails( $dataElementGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-
-					</td>
+				<tr id="tr${dataElementGroup.id}" style="height: 40px;">
+          <td data-id="$!dataElementGroup.id" data-uid="$!dataElementGroup.uid" data-type="DataElementGroup" data-name="$encoder.htmlEncode( $!dataElementGroup.displayName )">
+            $encoder.htmlEncode( $!dataElementGroup.displayName )
+          </td>
 				</tr>
 				#end
 				</tbody>
@@ -77,8 +50,8 @@
 			#parse( "/dhis-web-commons/paging/paging.vm" )
 			</div>
 		</td>
-		<td id="detailsData">
 
+		<td id="detailsData">
 			<div id="detailsArea">
 				<div id="hideDetailsArea">
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
@@ -90,11 +63,11 @@
 			</div>
 
 			<div id="warningArea">
-                <div id="hideDetailsArea">
-                    <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_warning' )"/></a>
-                </div>
-                <p><span id="warningField"></span></p>
-            </div>
+          <div id="hideDetailsArea">
+              <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_warning' )"/></a>
+          </div>
+          <p><span id="warningField"></span></p>
+      </div>
 			
 		</td>
 	</tr>

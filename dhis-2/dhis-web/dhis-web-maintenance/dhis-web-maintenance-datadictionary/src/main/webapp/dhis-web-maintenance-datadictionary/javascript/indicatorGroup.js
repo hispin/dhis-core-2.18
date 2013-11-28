@@ -1,23 +1,32 @@
+$(function() {
+  dhis2.contextmenu.makeContextMenu({
+    menuId: 'contextMenu',
+    menuItemActiveClass: 'contextMenuItemActive'
+  });
+});
+
 // -----------------------------------------------------------------------------
 // Show Indicator Group details
 // -----------------------------------------------------------------------------
 
-function showIndicatorGroupDetails( indicatorGroupId )
-{
-	jQuery.get( '../dhis-web-commons-ajax-json/getIndicatorGroup.action',
-		{ id: indicatorGroupId }, function( json ) {
-		setInnerHTML( 'nameField', json.indicatorGroup.name );
-		setInnerHTML( 'memberCountField', json.indicatorGroup.memberCount );
+function showIndicatorGroupDetails( context ) {
+  jQuery.get('../dhis-web-commons-ajax-json/getIndicatorGroup.action',
+    { id: context.id }, function( json ) {
+      setInnerHTML('nameField', json.indicatorGroup.name);
+      setInnerHTML('memberCountField', json.indicatorGroup.memberCount);
 
-		showDetails();
-	});
+      showDetails();
+    });
 }
 
 // -----------------------------------------------------------------------------
 // Remove indicator group
 // -----------------------------------------------------------------------------
 
-function removeIndicatorGroup( indicatorGroupId, indicatorGroupName )
-{
-    removeItem( indicatorGroupId, indicatorGroupName, i18n_confirm_delete, 'removeIndicatorGroup.action' );
+function removeIndicatorGroup( context ) {
+  removeItem(context.id, context.name, i18n_confirm_delete, 'removeIndicatorGroup.action');
+}
+
+function showUpdateIndicatorGroupForm( context ) {
+  location.href = 'showUpdateIndicatorGroupForm.action?id=' + context.id;
 }

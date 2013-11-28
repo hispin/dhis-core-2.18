@@ -49,7 +49,7 @@ dhis2.contextmenu.defaultOptions = {
   listId: 'list',
   menuId: 'menu',
   menuItemActiveClass: 'menuItemActive',
-  listItemProps: ['id', 'uid', 'name'],
+  listItemProps: ['id', 'uid', 'name', 'type'],
   functionResolver: dhis2.contextmenu.utils.findFnInWindowScope
 };
 

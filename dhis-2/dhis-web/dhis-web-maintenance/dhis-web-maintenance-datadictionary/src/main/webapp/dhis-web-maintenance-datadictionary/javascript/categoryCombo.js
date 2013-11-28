@@ -1,6 +1,13 @@
-function showDataElementCategoryComboDetails( categoryComboId )
-{
-    jQuery.post( 'getDataElementCategoryCombo.action', { id: categoryComboId },
+
+$(function() {
+  dhis2.contextmenu.makeContextMenu({
+    menuId: 'contextMenu',
+    menuItemActiveClass: 'contextMenuItemActive'
+  });
+});
+
+function showDataElementCategoryComboDetails( context ) {
+    jQuery.post( 'getDataElementCategoryCombo.action', { id: context.id },
 		function ( json) {
 			setInnerHTML( 'nameField', json.dataElementCategoryCombo.name );
 			setInnerHTML( 'dataElementCategoryCountField', json.dataElementCategoryCombo.dataElementCategoryCount );
@@ -13,17 +20,15 @@ function showDataElementCategoryComboDetails( categoryComboId )
 // Delete Category
 // -----------------------------------------------------------------------------
 
-function removeDataElementCategoryCombo( categoryComboId, categoryComboName )
-{
-    removeItem( categoryComboId, categoryComboName, i18n_confirm_delete, 'removeDataElementCategoryCombo.action' );
+function removeDataElementCategoryCombo( context ) {
+    removeItem( context.id, context.name, i18n_confirm_delete, 'removeDataElementCategoryCombo.action' );
 }
 
 // ----------------------------------------------------------------------
 // Validation
 // ----------------------------------------------------------------------
 
-function validateSelectedCategories( form )
-{
+function validateSelectedCategories( form ) {
     var url = "validateDataElementCategoryCombo.action?";
     url += getParamString( "selectedList", "selectedCategories" );
 
@@ -36,4 +41,8 @@ function validateSelectedCategories( form )
             markInvalid( 'selectedCategories', json.message );
     } );
 
+}
+
+function showUpdateDataElementCategoryComboForm( context ) {
+  location.href = 'showUpdateDataElementCategoryComboForm.action?id=' + context.id;
 }

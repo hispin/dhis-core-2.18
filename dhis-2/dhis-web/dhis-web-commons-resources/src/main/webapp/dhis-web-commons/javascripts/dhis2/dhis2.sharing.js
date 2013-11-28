@@ -140,6 +140,12 @@ function getUserGroupAccesses() {
     return v;
 }
 
+function showSharingDialogWithContext( context ) {
+  // context always give type which starts with UpperCase
+  var type = context.type.charAt(0).toLowerCase() + context.type.slice(1);
+  showSharingDialog( type, context.uid );
+}
+
 function showSharingDialog( type, uid ) {
     loadSharingSettings( type, uid ).done( function ( data ) {
         setPublicAccess( data.object.publicAccess );

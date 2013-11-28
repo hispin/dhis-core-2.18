@@ -457,7 +457,6 @@
     <action name="showAddIndicatorTypeForm" class="org.hisp.dhis.dd.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorTypeForm.vm</param>
-      <param name="javascripts">javascript/indicatorType.js</param>
       <param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
     </action>
 
@@ -469,7 +468,6 @@
     <action name="showUpdateIndicatorTypeForm" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorTypeForm.vm</param>
-      <param name="javascripts">javascript/indicatorType.js</param>
       <param name="requiredAuthorities">F_INDICATORTYPE_ADD</param>
     </action>
 

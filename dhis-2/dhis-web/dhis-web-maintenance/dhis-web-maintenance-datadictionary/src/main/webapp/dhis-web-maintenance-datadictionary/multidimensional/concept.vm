@@ -28,8 +28,6 @@
 				</tr>
 			</table>
 			<table class="listTable" id="listTable">
-				<col/>
-				<col width="96px"/>			
         <thead>
 				<tr>
 					<th>$i18n.getString( "name" )</th>
@@ -39,8 +37,8 @@
 				#foreach( $concept in $concepts )
 				#if( $concept.id != $defaultConcept.id )
 				<tr id="tr${concept.id}" style="height: 40px;">
-          <td data-id="$!concept.id" data-uid="$!concept.uid" data-name="$encoder.htmlEncode( $!concept.name )">
-            $encoder.htmlEncode( $!concept.name )
+          <td data-id="$!concept.id" data-uid="$!concept.uid" data-type="Concept" data-name="$encoder.htmlEncode( $!concept.displayName )">
+            $encoder.htmlEncode( $!concept.displayName )
           </td>
 				</tr>
 				#end

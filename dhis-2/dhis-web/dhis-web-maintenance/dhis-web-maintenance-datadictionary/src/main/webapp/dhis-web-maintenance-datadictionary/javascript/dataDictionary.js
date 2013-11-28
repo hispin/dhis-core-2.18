@@ -1,10 +1,17 @@
+
+$(function() {
+  dhis2.contextmenu.makeContextMenu({
+    menuId: 'contextMenu',
+    menuItemActiveClass: 'contextMenuItemActive'
+  });
+});
+
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
 
-function showDataDictionaryDetails( dataDictionaryId )
-{
-	jQuery.post( 'getDataDictionary.action', { id: dataDictionaryId },
+function showDataDictionaryDetails( context ) {
+	jQuery.post( 'getDataDictionary.action', { id: context.id },
 		function ( json ) {
 			setInnerHTML( 'nameField', json.dataDictionary.name );
 
@@ -22,8 +29,7 @@ function showDataDictionaryDetails( dataDictionaryId )
 // Change DataDictionary
 // -----------------------------------------------------------------------------
 
-function dataDictionaryChanged( list )
-{
+function dataDictionaryChanged( list ) {
     var id = list.options[list.selectedIndex].value;
 
     var url = "setCurrentDataDictionary.action?id=" + id;
@@ -35,7 +41,10 @@ function dataDictionaryChanged( list )
 // Remove DataDictionary
 // -----------------------------------------------------------------------------
 
-function removeDataDictionary( dataDictionaryId, dataDictionaryName )
-{
-    removeItem( dataDictionaryId, dataDictionaryName, i18n_confirm_delete, 'removeDataDictionary.action' );
+function removeDataDictionary( context ) {
+    removeItem( context.id, context.name, i18n_confirm_delete, 'removeDataDictionary.action' );
+}
+
+function showUpdateDataDictionaryForm( context ) {
+  location.href = 'showUpdateDataDictionaryForm.action?id=' + context.id;
 }
