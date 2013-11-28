@@ -14,57 +14,37 @@
 
 <h3>$i18n.getString( "indicator_group_set" ) #openHelp( "indicatorGroupSet" )</h3>
 
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
+    #if( $security.canManage( $indicatorGroupSet ) )<li><a data-target-fn="showSharingDialogWithContext" href="#">$i18n.getString( "sharing_settings" )</a></li>#end
+    #if( $security.canUpdate( $indicatorGroupSet ) )<li><a data-target-fn="showUpdateIndicatorGroupSetForm" href="#">$i18n.getString( "edit" )</a></li>#end
+    #if( $security.canUpdate( $indicatorGroupSet ) )<li><a data-target-fn="translateWithContext" href="#">$i18n.getString( "translation_translate" )</a></li>#end
+    #if( $security.canDelete( $indicatorGroupSet ) )<li><a data-target-fn="deleteIndicatorGroupSet" href="#">$i18n.getString( "remove" )</a></li>#end
+    <li><a data-target-fn="showIndicatorGroupSetDetails" href="#">$i18n.getString( "show_details" )</a></li>
+  </ul>
+</div>
+
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
 			<table width="100%">
 				<tr>
-                    <td>#filterDiv( "indicatorGroupSet" )</td>
+          <td>#filterDiv( "indicatorGroupSet" )</td>
 					<td colspan="4" style="text-align:right"><input type=button value="$i18n.getString( 'add_new' )" onclick="window.location='openAddIndicatorGroupSet.action'"/></td>
 				</tr>
 			<table>
 			<table class="listTable" id="listTable">
-                <col/>
-                <col width="145px"/>
-                <thead>
+      <thead>
 				<tr>
 					<th>$i18n.getString( "name" )</th>
-					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 				</tr>
-                </thead>
-				<tbody id="list">
+      </thead>
+      <tbody id="list">
 					#foreach( $indicatorGroupSet in $indicatorGroupSets )
-					<tr id="tr${indicatorGroupSet.id}">
-						<td onclick="showIndicatorGroupSetDetails( $indicatorGroupSet.id )">$encoder.htmlEncode( $indicatorGroupSet.displayName )</td>
-						<td style="text-align:right">
-
-                            #if ( $security.canManage( $indicatorGroupSet ) )
-                            <a href="javascript:showSharingDialog('indicatorGroupSet', '$indicatorGroupSet.uid');" title="$i18n.getString( 'sharing_settings' )"><img src="../images/relationship.png" alt="$i18n.getString( 'sharing_settings' )"></a>
-                            #else
-                            <img src="../images/relationship-denied.png">
-                            #end
-
-                            #if( $security.canUpdate( $indicatorGroupSet ) )
-                            <a href="openUpdateIndicatorGroupSet.action?id=$indicatorGroupSet.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-                            #else
-                            <img src="../images/edit-denied.png">
-                            #end
-
-                            #if( $security.canUpdate( $indicatorGroupSet ) )
-                            <a href="javascript:translate( 'IndicatorGroupSet', '$indicatorGroupSet.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-                            #else
-                            <img src="../images/i18n-denied.png">
-                            #end
-
-                            #if( $security.canDelete( $indicatorGroupSet ) )
-                            <a href="javascript:deleteIndicatorGroupSet( $indicatorGroupSet.id, '$encoder.jsEncode( $indicatorGroupSet.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-                            #else
-                            <img src="../images/delete-denied.png">
-                            #end
-
-							<a href="javascript:showIndicatorGroupSetDetails( $indicatorGroupSet.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-
-						</td>
+					<tr id="tr${indicatorGroupSet.id}" style="height: 40px;">
+            <td data-id="$!indicatorGroupSet.id" data-uid="$!indicatorGroupSet.uid" data-type="IndicatorGroupSet" data-name="$encoder.htmlEncode( $!indicatorGroupSet.displayName )">
+              $encoder.htmlEncode( $!indicatorGroupSet.displayName )
+            </td>
 					</tr>
 					#end
 				</tbody>
@@ -74,21 +54,20 @@
 		</td>
 		
 		<td id="detailsData">
-
-            <div id="detailsArea">
-                <div id="hideDetailsArea">
-					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
+      <div id="detailsArea">
+        <div id="hideDetailsArea">
+          <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
 				</div>
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "number_of_members" ):</label><br/><span id="memberCountField"></span></p>
 			</div>
 
 			<div id="warningArea">
-                <div id="hideDetailsArea">
-                    <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_warning' )"/></a>
-                </div>
-                <p><span id="warningField"></span></p>
-            </div>
+        <div id="hideDetailsArea">
+          <a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_warning' )"/></a>
+        </div>
+        <p><span id="warningField"></span></p>
+      </div>
 			
 		</td>
 		

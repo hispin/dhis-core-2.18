@@ -83,7 +83,16 @@ function referrerBack( defaultUrl )
 
 /**
  * Redirects to the translate GUI.
- * 
+ *
+ * @param context Context vars from context menu
+ */
+function translateWithContext( context ) {
+  translate( context.type, context.id );
+}
+
+/**
+ * Redirects to the translate GUI.
+ *
  * @param className the name of the object class.
  * @param objectId the identifier of the object.
  */

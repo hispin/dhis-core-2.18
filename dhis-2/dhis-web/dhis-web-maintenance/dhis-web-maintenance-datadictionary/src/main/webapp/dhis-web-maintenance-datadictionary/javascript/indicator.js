@@ -1,3 +1,10 @@
+$(function() {
+  dhis2.contextmenu.makeContextMenu({
+    menuId: 'contextMenu',
+    menuItemActiveClass: 'contextMenuItemActive'
+  });
+});
+
 function exportPDF( type )
 {
 	var params = "type=" + type;
@@ -45,10 +52,10 @@ function criteriaChanged()
 // View details
 // -----------------------------------------------------------------------------
 
-function showIndicatorDetails( indicatorId )
+function showIndicatorDetails( context )
 {
     jQuery.get( '../dhis-web-commons-ajax-json/getIndicator.action',
-		{ id: indicatorId }, function( json ) {
+		{ id: context.id }, function( json ) {
 		
 		setInnerHTML( 'nameField', json.indicator.name );
 
@@ -85,7 +92,10 @@ function showIndicatorDetails( indicatorId )
 // Remove indicator
 // -----------------------------------------------------------------------------
 
-function removeIndicator( indicatorId, indicatorName )
-{
-    removeItem( indicatorId, indicatorName, i18n_confirm_delete, 'removeIndicator.action' );
+function removeIndicator( context ) {
+    removeItem( context.id, context.name, i18n_confirm_delete, 'removeIndicator.action' );
+}
+
+function showUpdateIndicatorForm( context ) {
+  location.href = 'showUpdateIndicatorForm.action?id=' + context.id;
 }
