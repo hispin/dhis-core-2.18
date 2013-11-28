@@ -46,7 +46,7 @@ public interface PatientTabularReportService
      * 
      * @return A generated unique id of the added {@link PatientTabularReport} .
      */
-    void saveOrUpdate( PatientTabularReport patientTabularReport );
+    int saveOrUpdate( PatientTabularReport patientTabularReport );
 
     /**
      * Returns a {@link patientTabularReport}.

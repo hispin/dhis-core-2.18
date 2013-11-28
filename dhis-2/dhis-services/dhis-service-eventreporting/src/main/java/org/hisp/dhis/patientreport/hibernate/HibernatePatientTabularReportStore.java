@@ -66,18 +66,21 @@ public class HibernatePatientTabularReportStore
                 result.add( report );
             }
         }
+        if ( min != null && max != null )
+        {
 
-        if( min > result.size() )
-        {
-            min = result.size();
+            if ( min > result.size() )
+            {
+                min = result.size();
+            }
+
+            if ( max > result.size() )
+            {
+                max = result.size();
+            }
+            return result.subList( min, max );
         }
-        
-        if( max > result.size() )
-        {
-            max = result.size();
-        }
-        
-        return result.subList( min, max );
+        return result;
     }
 
     @Override
@@ -112,7 +115,7 @@ public class HibernatePatientTabularReportStore
         {
             criteria.add( Restrictions.ilike( "name", "%" + query + "%" ) );
         }
-        
+
         return criteria;
     }
 
