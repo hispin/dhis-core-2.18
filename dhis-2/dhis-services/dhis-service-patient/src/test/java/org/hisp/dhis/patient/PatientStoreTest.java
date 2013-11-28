@@ -114,7 +114,7 @@ public class PatientStoreTest
 
         OrganisationUnit organisationUnitB = createOrganisationUnit( 'B' );
         organisationUnitService.addOrganisationUnit( organisationUnitB );
-        
+
         PatientIdentifierType patientIdentifierType = createPatientIdentifierType( 'A' );
         identifierTypeService.savePatientIdentifierType( patientIdentifierType );
 
@@ -340,7 +340,7 @@ public class PatientStoreTest
         searchKeys.add( Patient.PREFIX_IDENTIFIER_TYPE + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE
             + organisationUnit.getId() );
         searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
-            + Patient.SEARCH_SAPERATE + "a" );
+            + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE + organisationUnit.getId() );
         searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
 
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();

@@ -898,8 +898,8 @@
     id="org.hisp.dhis.patient.action.caseaggregation.TestCaseAggregationConditionAction"
     class="org.hisp.dhis.patient.action.caseaggregation.TestCaseAggregationConditionAction"
     scope="prototype">
-    <property name="caseAggregationConditionManager">
-      <ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionManager" />
+    <property name="caseAggregationConditionService">
+      <ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
     </property>
   </bean>
 

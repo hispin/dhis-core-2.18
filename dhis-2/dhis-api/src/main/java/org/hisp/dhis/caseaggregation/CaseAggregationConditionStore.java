@@ -29,10 +29,16 @@ package org.hisp.dhis.caseaggregation;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Chau Thu Tran
@@ -49,5 +55,67 @@ public interface CaseAggregationConditionStore
     CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
 
     Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements );
-    
+
+    /**
+     * Generate period list based on period Type and taskStrategy option
+     * 
+     * @param periodTypeName The name of period type
+     * @param taskStrategy Specify how to get period list based on period type
+     *        of each dataset. There are four options, include last month, last
+     *        3 month, last 6 month and last 12 month
+     * 
+     */
+    Collection<Period> getPeriods( String periodTypeName, String taskStrategy );
+
+    Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
+        Period period, I18nFormat format, I18n i18n );
+
+    Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+        Period period, I18nFormat format, I18n i18n );
+
+    /**
+     * Insert data values into database directly
+     * 
+     * @param caseAggregationCondition The query builder expression
+     * @param orgunitIds The ids of organisation unit where to aggregate data
+     *        value
+     * @param period The date range for aggregate data value
+     */
+    void insertAggregateValue( String expression, String operator, Integer dataElementId, Integer optionComboId,
+        Integer deSumId, Collection<Integer> orgunitIds, Period period );
+
+    /**
+     * Return standard SQL from query builder formula
+     * 
+     * @param isInsert Insert aggregate result into database directly
+     * @param caseExpression The query builder expression
+     * @param operator There are six operators, includes Number of persons,
+     *        Number of visits, Sum, Average, Minimum and Maximum of data
+     *        element values.
+     * @param aggregateDeId The id of aggregate data element
+     * @param aggregateDeName The name of aggregate data element
+     * @param optionComboId The id of category option combo
+     * @param optionComboName The name of category option combo
+     * @param deSumId The id of aggregate data element which used for aggregate
+     *        data values for operator Sum, Average, Minimum and Maximum of data
+     *        element values. This fill is null for other operators.
+     * @param orgunitId The id of organisation unit where to aggregate data
+     *        value
+     * @param startDate Start date
+     * @param endDate End date
+     */
+    String parseExpressionToSql( boolean isInsert, String caseExpression, String operator, Integer aggregateDeId,
+        String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
+        Collection<Integer> orgunitIds, Period period );
+
+    /**
+     * Aggregate data values for the dataset by periods with a organisation unit
+     * list
+     * 
+     */
+    void runAggregate( Collection<Integer> orgunitIds, CaseAggregateSchedule dataSet, Collection<Period> periods );
+
+    String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period );
+
+    List<Integer> executeSQL( String sql );
 }

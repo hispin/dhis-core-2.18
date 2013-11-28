@@ -5,14 +5,7 @@
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
 	<!-- Store definitions -->
-
-	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionManager"
-		class="org.hisp.dhis.caseaggregation.jdbc.JdbcCaseAggregationConditionManager">
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
-		<property name="statementBuilder" ref="statementBuilder" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
+	
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore"
 		class="org.hisp.dhis.caseaggregation.hibernate.HibernateCaseAggregationConditionStore">
 		<property name="clazz"
@@ -40,8 +33,6 @@
 		class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationConditionService">
 		<property name="aggregationConditionStore"
 			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore" />
-		<property name="aggregationConditionManager"
-			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionManager" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />

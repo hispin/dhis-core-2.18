@@ -64,6 +64,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.SystemUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -85,8 +86,6 @@ public class DefaultCaseAggregationConditionService
 
     private CaseAggregationConditionStore aggregationConditionStore;
 
-    private CaseAggregationConditionManager aggregationConditionManager;
-
     private DataElementService dataElementService;
 
     private ProgramStageService programStageService;
@@ -104,11 +103,6 @@ public class DefaultCaseAggregationConditionService
     public void setAggregationConditionStore( CaseAggregationConditionStore aggregationConditionStore )
     {
         this.aggregationConditionStore = aggregationConditionStore;
-    }
-
-    public void setAggregationConditionManager( CaseAggregationConditionManager aggregationConditionManager )
-    {
-        this.aggregationConditionManager = aggregationConditionManager;
     }
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
@@ -187,28 +181,6 @@ public class DefaultCaseAggregationConditionService
         DataElementCategoryOptionCombo optionCombo )
     {
         return i18n( i18nService, aggregationConditionStore.get( dataElement, optionCombo ) );
-    }
-
-    @Override
-    public Grid getAggregateValue( CaseAggregationCondition aggregationCondition, Collection<Integer> orgunitIds,
-        Period period, I18nFormat format, I18n i18n )
-    {
-        return aggregationConditionManager.getAggregateValue( aggregationCondition, orgunitIds, period, format, i18n );
-    }
-
-    @Override
-    public Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
-        Period period, I18nFormat format, I18n i18n )
-    {
-        return aggregationConditionManager.getAggregateValueDetails( aggregationCondition, orgunit, period, format,
-            i18n );
-    }
-
-    @Override
-    public void insertAggregateValue( CaseAggregationCondition caseAggregationCondition,
-        Collection<Integer> orgunitIds, Period period )
-    {
-        aggregationConditionManager.insertAggregateValue( caseAggregationCondition, orgunitIds, period );
     }
 
     public String getConditionDescription( String condition )
@@ -422,15 +394,81 @@ public class DefaultCaseAggregationConditionService
 
         for ( int i = 0; i < getProcessNo(); i++ )
         {
-            futures.add( aggregationConditionManager.aggregate( datasetQ, taskStrategy ) );
+            futures.add( aggregateValueManager( datasetQ, taskStrategy ) );
         }
 
         ConcurrentUtils.waitForCompletion( futures );
     }
 
-    public boolean hasOrgunitProgramStageCompleted( String expresstion )
+    @Async
+    private Future<?> aggregateValueManager( ConcurrentLinkedQueue<CaseAggregateSchedule> caseAggregateSchedule,
+        String taskStrategy )
     {
-        return aggregationConditionManager.hasOrgunitProgramStageCompleted( expresstion );
+        taskLoop: while ( true )
+        {
+            CaseAggregateSchedule dataSet = caseAggregateSchedule.poll();
+
+            if ( dataSet == null )
+            {
+                break taskLoop;
+            }
+
+            Collection<Period> periods = aggregationConditionStore.getPeriods( dataSet.getPeriodTypeName(),
+                taskStrategy );
+
+            aggregationConditionStore.runAggregate( null, dataSet, periods );
+        }
+
+        return null;
+    }
+
+    public Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
+        Period period, I18nFormat format, I18n i18n )
+    {
+        return aggregationConditionStore.getAggregateValue( caseAggregationCondition, orgunitIds, period, format, i18n );
+    }
+
+    @Override
+    public Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+        Period period, I18nFormat format, I18n i18n )
+    {
+        return aggregationConditionStore.getAggregateValueDetails( aggregationCondition, orgunit, period, format, i18n );
+    }
+
+    /**
+     * Insert data elements into database directly
+     * 
+     */
+    public void insertAggregateValue( CaseAggregationCondition caseAggregationCondition,
+        Collection<Integer> orgunitIds, Period period )
+    {
+        Integer deSumId = (caseAggregationCondition.getDeSum() == null) ? null : caseAggregationCondition.getDeSum()
+            .getId();
+
+        aggregationConditionStore.insertAggregateValue( caseAggregationCondition.getAggregationExpression(),
+            caseAggregationCondition.getOperator(), caseAggregationCondition.getAggregationDataElement().getId(),
+            caseAggregationCondition.getOptionCombo().getId(), deSumId, orgunitIds, period );
+    }
+
+    @Override
+    public String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period )
+    {
+        return aggregationConditionStore.parseExpressionDetailsToSql( caseExpression, operator, orgunitId, period );
+    }
+
+    @Override
+    public String parseExpressionToSql( boolean isInsert, String caseExpression, String operator,
+        Integer aggregateDeId, String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
+        Collection<Integer> orgunitIds, Period period )
+    {
+        return parseExpressionToSql( isInsert, caseExpression, operator, aggregateDeId, aggregateDeName, optionComboId,
+            optionComboName, deSumId, orgunitIds, period );
+    }
+
+    @Override
+    public List<Integer> executeSQL( String sql )
+    {
+        return executeSQL( sql );
     }
 
     // -------------------------------------------------------------------------
