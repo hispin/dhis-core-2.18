@@ -35,10 +35,10 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
-    <li><a data-target-fn="showUpdateDataElementCategoryOptionForm" href="#">$i18n.getString( "edit" )</a></li>
-    <li><a data-target-fn="translateWithContext" href="#">$i18n.getString( "translation_translate" )</a></li>
-    <li><a data-target-fn="removeDataElementCategoryOption" href="#">$i18n.getString( "remove" )</a></li>
-    <li><a data-target-fn="showDataElementCategoryOptionDetails" href="#">$i18n.getString( "show_details" )</a></li>
+    <li><a data-target-fn="showUpdateDataElementCategoryOptionForm">$i18n.getString( "edit" )</a></li>
+    <li><a data-target-fn="translateWithContext">$i18n.getString( "translation_translate" )</a></li>
+    <li><a data-target-fn="removeDataElementCategoryOption">$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showDataElementCategoryOptionDetails">$i18n.getString( "show_details" )</a></li>
   </ul>
 </div>
 

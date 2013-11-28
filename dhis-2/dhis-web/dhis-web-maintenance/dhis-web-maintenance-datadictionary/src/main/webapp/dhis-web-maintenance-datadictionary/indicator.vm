@@ -19,11 +19,11 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
-    #if( $security.canManage( $indicator ) )<li><a data-target-fn="showSharingDialogWithContext" href="#">$i18n.getString( "sharing_settings" )</a></li>#end
-    #if( $security.canUpdate( $indicator ) )<li><a data-target-fn="showUpdateIndicatorForm" href="#">$i18n.getString( "edit" )</a></li>#end
-    #if( $security.canUpdate( $indicator ) )<li><a data-target-fn="translateWithContext" href="#">$i18n.getString( "translation_translate" )</a></li>#end
-    #if( $security.canDelete( $indicator ) )<li><a data-target-fn="removeIndicator" href="#">$i18n.getString( "remove" )</a></li>#end
-    <li><a data-target-fn="showIndicatorDetails" href="#">$i18n.getString( "show_details" )</a></li>
+    #if( $security.canManage( $indicator ) )<li><a data-target-fn="showSharingDialogWithContext">$i18n.getString( "sharing_settings" )</a></li>#end
+    #if( $security.canUpdate( $indicator ) )<li><a data-target-fn="showUpdateIndicatorForm">$i18n.getString( "edit" )</a></li>#end
+    #if( $security.canUpdate( $indicator ) )<li><a data-target-fn="translateWithContext">$i18n.getString( "translation_translate" )</a></li>#end
+    #if( $security.canDelete( $indicator ) )<li><a data-target-fn="removeIndicator">$i18n.getString( "remove" )</a></li>#end
+    <li><a data-target-fn="showIndicatorDetails">$i18n.getString( "show_details" )</a></li>
   </ul>
 </div>
 
