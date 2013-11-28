@@ -12,9 +12,9 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
-    <li><a data-target-fn="showUpdateConcept" href="#">$i18n.getString( "edit" )</a></li>
-    <li><a data-target-fn="removeConcept" href="#">$i18n.getString( "remove" )</a></li>
-    <li><a data-target-fn="showConceptDetails" href="#">$i18n.getString( "show_details" )</a></li>
+    <li><a data-target-fn="showUpdateConcept">$i18n.getString( "edit" )</a></li>
+    <li><a data-target-fn="removeConcept">$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showConceptDetails">$i18n.getString( "show_details" )</a></li>
   </ul>
 </div>
 

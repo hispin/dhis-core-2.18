@@ -14,10 +14,10 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
-    <li><a data-target-fn="showUpdateDataElementGroupSetForm" href="#">$i18n.getString( "edit" )</a></li>
-    <li><a data-target-fn="translateWithContext" href="#">$i18n.getString( "translation_translate" )</a></li>
-    <li><a data-target-fn="deleteDataElementGroupSet" href="#">$i18n.getString( "remove" )</a></li>
-    <li><a data-target-fn="showDataElementGroupSetDetails" href="#">$i18n.getString( "show_details" )</a></li>
+    <li><a data-target-fn="showUpdateDataElementGroupSetForm">$i18n.getString( "edit" )</a></li>
+    <li><a data-target-fn="translateWithContext">$i18n.getString( "translation_translate" )</a></li>
+    <li><a data-target-fn="deleteDataElementGroupSet">$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showDataElementGroupSetDetails">$i18n.getString( "show_details" )</a></li>
   </ul>
 </div>
 
