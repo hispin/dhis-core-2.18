@@ -55,7 +55,7 @@ public interface CaseAggregationConditionService
     void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
     CaseAggregationCondition getCaseAggregationCondition( int id );
-    
+
     CaseAggregationCondition getCaseAggregationCondition( String name );
 
     Collection<CaseAggregationCondition> getAllCaseAggregationCondition();
@@ -67,12 +67,6 @@ public interface CaseAggregationConditionService
 
     Collection<CaseAggregationCondition> getCaseAggregationCondition( Collection<DataElement> dataElements );
 
-    Grid getAggregateValue( CaseAggregationCondition aggregationCondition, Collection<Integer> orgunitIds,
-        Period period, I18nFormat format, I18n i18n );
-
-    void insertAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
-        Period period );
-    
     Collection<DataElement> getDataElementsInCondition( String aggregationExpression );
 
     Collection<Program> getProgramsInCondition( String aggregationExpression );
@@ -81,11 +75,41 @@ public interface CaseAggregationConditionService
 
     String getConditionDescription( String condition );
 
+    /**
+     * Aggregate data values from query builder formulas defined based on
+     * datasets which have data elements defined in the formulas
+     * 
+     * @param caseAggregateSchedule
+     * @param taskStrategy Specify how to get period list based on period type
+     *        of each dataset. There are four options, include last month, last
+     *        3 month, last 6 month and last 12 month
+     */
     void aggregate( List<CaseAggregateSchedule> caseAggregateSchedules, String taskStrategy );
 
-    boolean hasOrgunitProgramStageCompleted( String expresstion );
-    
-    Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period,
-        I18nFormat format, I18n i18n );
-    
+    /**
+     * Return a data value table aggregated of a query builder formula
+     * 
+     * @param caseAggregationCondition The query builder expression
+     * @param orgunitIds The ids of organisation unit where to aggregate data
+     *        value
+     * @param period The date range for aggregate data value
+     * @param format
+     * @param i18n
+     */
+    Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
+        Period period, I18nFormat format, I18n i18n );
+
+    void insertAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
+        Period period );
+
+    Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+        Period period, I18nFormat format, I18n i18n );
+
+    String parseExpressionToSql( boolean isInsert, String caseExpression, String operator, Integer aggregateDeId,
+        String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
+        Collection<Integer> orgunitIds, Period period );
+
+    String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period );
+
+    List<Integer> executeSQL( String sql );
 }

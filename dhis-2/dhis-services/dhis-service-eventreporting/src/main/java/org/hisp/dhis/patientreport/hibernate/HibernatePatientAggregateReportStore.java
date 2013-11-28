@@ -59,24 +59,29 @@ public class HibernatePatientAggregateReportStore
         Collection<PatientAggregateReport> reports = criteria.list();
 
         for ( PatientAggregateReport report : reports )
-        {
+        { 
             if ( SharingUtils.canRead( user, report ) )
             {
-                result.add( report );
+                result.add( report ); 
             }
         }
 
-        if ( min > result.size() )
+        if ( min != null && max != null )
         {
-            min = result.size();
-        }
+            if ( min > result.size() )
+            {
+                min = result.size();
+            }
 
-        if ( max > result.size() )
-        {
-            max = result.size();
-        }
+            if ( max > result.size() )
+            {
+                max = result.size();
+            }
 
-        return result.subList( min, max );
+            return result.subList( min, max );
+        }
+        
+        return result;
     }
 
     @SuppressWarnings( "unchecked" )

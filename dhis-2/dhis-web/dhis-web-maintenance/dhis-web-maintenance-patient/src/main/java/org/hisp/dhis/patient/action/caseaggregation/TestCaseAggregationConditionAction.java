@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import org.hisp.dhis.caseaggregation.CaseAggregationConditionManager;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 
@@ -49,11 +49,11 @@ public class TestCaseAggregationConditionAction
     // Dependency
     // -------------------------------------------------------------------------
 
-    private CaseAggregationConditionManager caseAggregationConditionManager;
+    private CaseAggregationConditionService caseAggregationConditionService;
 
-    public void setCaseAggregationConditionManager( CaseAggregationConditionManager caseAggregationConditionManager )
+    public void setCaseAggregationConditionService( CaseAggregationConditionService caseAggregationConditionService )
     {
-        this.caseAggregationConditionManager = caseAggregationConditionManager;
+        this.caseAggregationConditionService = caseAggregationConditionService;
     }
 
     // -------------------------------------------------------------------------
@@ -105,11 +105,11 @@ public class TestCaseAggregationConditionAction
         period.setEndDate( new Date() );
         period.setPeriodType( periodType );
 
-        String sql = caseAggregationConditionManager.parseExpressionToSql( false, condition, operator, 0,
+        String sql = caseAggregationConditionService.parseExpressionToSql( false, condition, operator, 0,
             "dataelementname", 0, "optioncomboid", deSumId, orgunitIds, period );
 
-        List<Integer> ids = caseAggregationConditionManager.executeSQL( sql );
-        
+        List<Integer> ids = caseAggregationConditionService.executeSQL( sql );
+
         return (ids == null) ? INPUT : SUCCESS;
     }
 }
