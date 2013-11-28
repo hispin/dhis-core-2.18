@@ -26,16 +26,27 @@
 				el: "map2",
 				baseLayer: 'osm',
 				hideLegend: true,
-				mapViews: [{
-					columns: [{dimension: 'in', items: [{id: 'Uvn6LCg7dVU'}]}], // data
-					rows: [{dimension: 'ou', items: [{id: 'LEVEL-3'}, {id: 'ImspTQPwCqd'}]}], // organisation units
-					filters: [{dimension: 'pe', items: [{id: 'LAST_3_MONTHS'}]}], // period
-					classes: 7,
-					colorLow: '02079c',
-					colorHigh: 'e5ecff',
-					opacity: 0.9
-					//legendSet: {id: 'fqs276KXCXi'}
-				}]
+				mapViews: [
+					//{
+						//columns: [{dimension: 'in', items: [{id: 'Uvn6LCg7dVU'}]}], // data
+						//rows: [{dimension: 'ou', items: [{id: 'LEVEL-3'}, {id: 'ImspTQPwCqd'}]}], // organisation units
+						//filters: [{dimension: 'pe', items: [{id: 'LAST_3_MONTHS'}]}], // period
+						//classes: 7,
+						//colorLow: '02079c',
+						//colorHigh: 'e5ecff',
+						//opacity: 0.9
+						////labels: true
+						////legendSet: {id: 'fqs276KXCXi'}
+					//}
+					{
+						layer: 'boundary',
+						rows: [{dimension: 'ou', items: [{id: 'LEVEL-2'}, {id: 'ImspTQPwCqd'}]}],
+						labels: {
+							fontSize: 14,
+							color: '#00f'
+						}
+					}
+					]
 			});
 		});
 

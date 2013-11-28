@@ -986,7 +986,7 @@ Ext.onReady( function() {
 			defaults.fontSize = labelConfig.fontSize ? labelConfig.fontSize + 'px' : '13px';
 			defaults.fontWeight = labelConfig.strong ? 'bold' : 'normal';
 			defaults.fontStyle = labelConfig.italic ? 'italic' : 'normal';
-			defaults.fontColor = labelConfig.color ? '#' + labelConfig.color : '#000000';
+			defaults.fontColor = labelConfig.color ? (labelConfig.color.split('').shift() !== '#' ? '#' + labelConfig.color : labelConfig.color) : '#000000';
 		}
 
 		return new OpenLayers.StyleMap({
@@ -1345,6 +1345,21 @@ Ext.onReady( function() {
 				minSize: 6,
 				maxSize: 6
 			};
+
+			// Labels
+			if (view.labels) {
+				if (Ext.isObject(view.labels)) {
+					layer.styleMap = GIS.core.StyleMap(layer.id, view.labels);
+				}
+				else {
+					layer.styleMap = GIS.core.StyleMap(layer.id, {
+						fontSize: 12,
+						strong: false,
+						italic: false,
+						color: '#000'
+					});
+				}
+			}
 
 			layer.core.view = view;
 
@@ -1754,6 +1769,22 @@ Ext.onReady( function() {
 				afterLoad(view);
 			};
 
+			// Labels
+			if (view.labels) {
+				if (Ext.isObject(view.labels)) {
+					layer.styleMap = GIS.core.StyleMap(layer.id, view.labels);
+				}
+				else {
+					layer.styleMap = GIS.core.StyleMap(layer.id, {
+						fontSize: 12,
+						strong: false,
+						italic: false,
+						color: '#000'
+					});
+				}
+			}
+
+			// Legend set
 			if (view.legendSet) {
 				var bounds = [],
 					colors = [],
@@ -2610,6 +2641,7 @@ Ext.onReady( function() {
 					layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
 
 					layout.legendSet = config.legendSet;
+					layout.labels = config.labels;
 
 					layout.organisationUnitGroupSet = config.organisationUnitGroupSet;
 					layout.areaRadius = config.areaRadius;
@@ -4331,8 +4363,6 @@ Ext.onReady( function() {
 					gis.olmap.setBaseLayer(gis.layer.openStreetMap);
 				}
 			}
-
-			var tmp = gis;
 		};
 
 		initialize = function() {
