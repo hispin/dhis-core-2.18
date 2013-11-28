@@ -70,8 +70,8 @@
         </thead>
         <tbody id="list">
           #foreach( $dataElement in $dataElements )
-          <tr id="tr${dataElement.id}" style="height: 40px;">
-            <td data-id="$!dataElement.id" data-uid="$!dataElement.uid" data-type="DataElement" data-name="$encoder.htmlEncode( $!dataElement.displayName )">
+          <tr id="tr${dataElement.id}">
+            <td style="padding: 12px 0 12px 5px;" data-id="$!dataElement.id" data-uid="$!dataElement.uid" data-type="DataElement" data-name="$encoder.htmlEncode( $!dataElement.displayName )">
               $encoder.htmlEncode( $!dataElement.displayName )
             </td>
           </tr>

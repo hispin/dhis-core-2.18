@@ -41,8 +41,8 @@
       </thead>
       <tbody id="list">
 					#foreach( $indicatorGroupSet in $indicatorGroupSets )
-					<tr id="tr${indicatorGroupSet.id}" style="height: 40px;">
-            <td data-id="$!indicatorGroupSet.id" data-uid="$!indicatorGroupSet.uid" data-type="IndicatorGroupSet" data-name="$encoder.htmlEncode( $!indicatorGroupSet.displayName )">
+					<tr id="tr${indicatorGroupSet.id}">
+            <td style="padding: 12px 0 12px 5px;" data-id="$!indicatorGroupSet.id" data-uid="$!indicatorGroupSet.uid" data-type="IndicatorGroupSet" data-name="$encoder.htmlEncode( $!indicatorGroupSet.displayName )">
               $encoder.htmlEncode( $!indicatorGroupSet.displayName )
             </td>
 					</tr>

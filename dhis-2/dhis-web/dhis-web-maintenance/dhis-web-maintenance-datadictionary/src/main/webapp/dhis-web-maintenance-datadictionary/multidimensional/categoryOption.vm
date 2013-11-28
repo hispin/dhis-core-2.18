@@ -60,8 +60,8 @@
           <tbody id="list">
             #foreach( $dataElementCategoryOption in $dataElementCategoryOptions )
             #if( $dataElementCategoryOption.id != $defaultCategory.id )
-              <tr id="tr${dataElementCategoryOption.id}" style="height: 40px;">
-                <td data-id="$!dataElementCategoryOption.id" data-uid="$!dataElementCategoryOption.uid" data-type="DataElementCategoryOption" data-name="$encoder.htmlEncode( $!dataElementCategoryOption.displayName )">
+              <tr id="tr${dataElementCategoryOption.id}">
+                <td style="padding: 12px 0 12px 5px;" data-id="$!dataElementCategoryOption.id" data-uid="$!dataElementCategoryOption.uid" data-type="DataElementCategoryOption" data-name="$encoder.htmlEncode( $!dataElementCategoryOption.displayName )">
                   $encoder.htmlEncode( $!dataElementCategoryOption.displayName )
                 </td>
               </tr>

@@ -38,8 +38,8 @@
 				</thead>
 				<tbody id="list">
 				#foreach( $dataElementGroup in $dataElementGroups )
-				<tr id="tr${dataElementGroup.id}" style="height: 40px;">
-          <td data-id="$!dataElementGroup.id" data-uid="$!dataElementGroup.uid" data-type="DataElementGroup" data-name="$encoder.htmlEncode( $!dataElementGroup.displayName )">
+				<tr id="tr${dataElementGroup.id}">
+          <td style="padding: 12px 0 12px 5px;" data-id="$!dataElementGroup.id" data-uid="$!dataElementGroup.uid" data-type="DataElementGroup" data-name="$encoder.htmlEncode( $!dataElementGroup.displayName )">
             $encoder.htmlEncode( $!dataElementGroup.displayName )
           </td>
 				</tr>
