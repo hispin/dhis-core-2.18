@@ -1726,7 +1726,7 @@ Ext.onReady( function() {
 
                     width = (numberOfItems * itemLength) + (numberOfChars * charLength);
 
-                    if (width > dv.viewport.centerRegion.getWidth() - 50) {
+                    if (width > ns.app.centerRegion.getWidth() - 50) {
                         isVertical = true;
                         position = 'right';
                     }
@@ -1766,7 +1766,7 @@ Ext.onReady( function() {
                         text = xLayout.title;
                     }
 
-                    fontSize = (dv.viewport.centerRegion.getWidth() / text.length) < 11.6 ? 13 : 18;
+                    fontSize = (ns.app.centerRegion.getWidth() / text.length) < 11.6 ? 13 : 18;
 
                     return Ext.create('Ext.draw.Sprite', {
                         type: 'text',
@@ -1781,8 +1781,8 @@ Ext.onReady( function() {
                 getDefaultChartSizeHandler = function() {
                     return function() {
                         this.animate = false;
-                        this.setWidth(dv.viewport.centerRegion.getWidth());
-                        this.setHeight(dv.viewport.centerRegion.getHeight() - 25);
+                        this.setWidth(ns.app.centerRegion.getWidth());
+                        this.setHeight(ns.app.centerRegion.getHeight() - 25);
                         this.animate = true;
                     };
                 };
@@ -1820,8 +1820,8 @@ Ext.onReady( function() {
                             animate: true,
                             shadow: false,
                             insetPadding: 35,
-                            width: dv.viewport.centerRegion.getWidth(),
-                            height: dv.viewport.centerRegion.getHeight() - 25,
+                            width: ns.app.centerRegion.getWidth(),
+                            height: ns.app.centerRegion.getHeight() - 25,
                             theme: theme || 'dv1'
                         };
 
@@ -2194,12 +2194,12 @@ Ext.onReady( function() {
                     chart = getDefaultChart(store, axes, series, xResponse, xLayout, 'Category2');
 
                     chart.insetPadding = 40;
-                    chart.height = dv.viewport.centerRegion.getHeight() - 80;
+                    chart.height = ns.app.centerRegion.getHeight() - 80;
 
                     chart.setChartSize = function() {
                         this.animate = false;
-                        this.setWidth(dv.viewport.centerRegion.getWidth());
-                        this.setHeight(dv.viewport.centerRegion.getHeight() - 80);
+                        this.setWidth(ns.app.centerRegion.getWidth());
+                        this.setHeight(ns.app.centerRegion.getHeight() - 80);
                         this.animate = true;
                     };
 
@@ -2222,7 +2222,7 @@ Ext.onReady( function() {
 					}
 
 					// Hide mask
-					util.mask.hideMask(dv.viewport.centerRegion);
+					util.mask.hideMask(ns.app.centerRegion);
 
 					// Add objects to instance
 					dv.layout = layout;
@@ -2249,7 +2249,7 @@ Ext.onReady( function() {
 							response = dv.api.response.Response(response);
 
 						if (!response) {
-							dv.util.mask.hideMask(dv.viewport.centerRegion);
+							dv.util.mask.hideMask(ns.app.centerRegion);
 							return;
 						}
 
@@ -2257,19 +2257,19 @@ Ext.onReady( function() {
 						xLayout = getSyncronizedXLayout(xLayout, response);
 
 						if (!xLayout) {
-							dv.util.mask.hideMask(dv.viewport.centerRegion);
+							dv.util.mask.hideMask(ns.app.centerRegion);
 							return;
 						}
 
 						// Extended response
-						xResponse = getExtendedResponse(response, xLayout);
+						xResponse = getExtendedResponse(xLayout, response);
 
 						// Create chart
 						chart = generator[xLayout.type](xResponse, xLayout);
 
 						// Update viewport
-						dv.viewport.centerRegion.removeAll(true);
-						dv.viewport.centerRegion.add(chart);
+						ns.app.centerRegion.removeAll(true);
+						ns.app.centerRegion.add(chart);
 
 						dv.paramString = paramString;
 
@@ -2282,7 +2282,7 @@ Ext.onReady( function() {
                     }
 
 					// Show load mask
-                    util.mask.showMask(dv.viewport.centerRegion);
+                    util.mask.showMask(ns.app.centerRegion);
 
                     if (dv.isPlugin) {
 						Ext.data.JsonP.request({
@@ -2303,7 +2303,7 @@ Ext.onReady( function() {
 							},
 							disableCaching: false,
 							failure: function(r) {
-								util.mask.hideMask(dv.viewport.centerRegion);
+								util.mask.hideMask(ns.app.centerRegion);
 								alert(r.responseText);
 							},
 							success: function(r) {
@@ -2339,7 +2339,7 @@ Ext.onReady( function() {
                 };
 
                 failure = function(responseText) {
-                    util.mask.hideMask(dv.viewport.centerRegion);
+                    util.mask.hideMask(ns.app.centerRegion);
                     alert(responseText);
                 };
 

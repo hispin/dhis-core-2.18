@@ -1,6 +1,6 @@
 {
     "version": "0.1",
-    "name": "DHIS2 Pivot Table",
+    "name": "DHIS2 Data Visualizer",
     "description": "The pivot table app",
     "launch_path": "/app/index.html",
     "icons": {
@@ -15,7 +15,7 @@
     "default_locale": "en",
     "activities": {
         "dhis": {
-            "href": "*"
+            "href": "http://localhost:8080"
         }
     }
 }

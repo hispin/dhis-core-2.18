@@ -594,7 +594,7 @@ console.log(view.parentGraphMap);
 			defaults.fontSize = labelConfig.fontSize ? labelConfig.fontSize + 'px' : '13px';
 			defaults.fontWeight = labelConfig.strong ? 'bold' : 'normal';
 			defaults.fontStyle = labelConfig.italic ? 'italic' : 'normal';
-			defaults.fontColor = labelConfig.color ? '#' + labelConfig.color : '#000000';
+			defaults.fontColor = labelConfig.color ? (labelConfig.color.split('').shift() !== '#' ? '#' + labelConfig.color : labelConfig.color) : '#000000';
 		}
 
 		return new OpenLayers.StyleMap({
