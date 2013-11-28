@@ -265,7 +265,7 @@
 #end
 
 <tr>
-	<td colspan='3'><span id='message'></td>
+	<td colspan='3'><span id='message'></span></td>
 </tr>
 
 <script>

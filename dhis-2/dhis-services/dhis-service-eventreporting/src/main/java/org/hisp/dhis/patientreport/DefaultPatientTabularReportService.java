@@ -94,9 +94,9 @@ public class DefaultPatientTabularReportService
     }
 
     @Override
-    public void saveOrUpdate( PatientTabularReport patientTabularReport )
+    public int saveOrUpdate( PatientTabularReport patientTabularReport )
     {
-        tabularReportStore.save( patientTabularReport );
+        return tabularReportStore.save( patientTabularReport );
     }
 
     @Override

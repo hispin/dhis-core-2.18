@@ -51,7 +51,7 @@ public class TestCaseAggregationConditionAction
 
     private CaseAggregationConditionService caseAggregationConditionService;
 
-    public void setCaseAggregationConditionService( CaseAggregationConditionService caseAggregationConditionService )
+    public void setCaseAggregationConditionManager( CaseAggregationConditionService caseAggregationConditionService )
     {
         this.caseAggregationConditionService = caseAggregationConditionService;
     }
@@ -109,7 +109,7 @@ public class TestCaseAggregationConditionAction
             "dataelementname", 0, "optioncomboid", deSumId, orgunitIds, period );
 
         List<Integer> ids = caseAggregationConditionService.executeSQL( sql );
-
+        
         return (ids == null) ? INPUT : SUCCESS;
     }
 }
