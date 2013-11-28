@@ -37,12 +37,15 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author mortenoh
@@ -73,6 +76,14 @@ public class EditDataSetFormAction
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
+    }
+
+    private MappingService mappingService;
+
+    @Autowired
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -121,6 +132,13 @@ public class EditDataSetFormAction
         return indicators;
     }
 
+    private List<MapLegendSet> legendSets;
+
+    public List<MapLegendSet> getLegendSets()
+    {
+        return legendSets;
+    }
+
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -130,6 +148,7 @@ public class EditDataSetFormAction
     {
         periodTypes = periodService.getAllPeriodTypes();
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        legendSets = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
 
         if ( dataSetId != null )
         {
@@ -141,6 +160,7 @@ public class EditDataSetFormAction
         Collections.sort( userGroups, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( legendSets, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

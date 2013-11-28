@@ -124,6 +124,7 @@
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.UpdateDataSetAction" class="org.hisp.dhis.dataset.action.UpdateDataSetAction"
@@ -134,6 +135,7 @@
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.GetDataSetAction" class="org.hisp.dhis.dataset.action.GetDataSetAction"

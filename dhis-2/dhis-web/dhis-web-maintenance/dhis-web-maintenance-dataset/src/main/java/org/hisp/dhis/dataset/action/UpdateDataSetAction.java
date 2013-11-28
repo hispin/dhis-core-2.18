@@ -37,6 +37,8 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroupService;
@@ -99,6 +101,13 @@ public class UpdateDataSetAction
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
+    }
+
+    private MappingService mappingService;
+
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -245,6 +254,13 @@ public class UpdateDataSetAction
         this.indicatorsSelectedList = indicatorsSelectedList;
     }
 
+    private Integer selectedLegendSetId;
+
+    public void setSelectedLegendSetId( Integer selectedLegendSetId )
+    {
+        this.selectedLegendSetId = selectedLegendSetId;
+    }
+
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -261,6 +277,8 @@ public class UpdateDataSetAction
         description = nullIfEmpty( description );
 
         Set<DataElement> dataElements = new HashSet<DataElement>();
+
+        MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
 
         for ( String id : dataElementsSelectedList )
         {
@@ -282,11 +300,11 @@ public class UpdateDataSetAction
         dataSet.setTimelyDays( timelyDays );
         dataSet.setSkipAggregation( skipAggregation );
 
-        if ( !( equalsNullSafe( name, dataSet.getName() ) && 
-            periodType.equals( dataSet.getPeriodType() ) && 
-            dataElements.equals( dataSet.getDataElements() ) && 
+        if ( !(equalsNullSafe( name, dataSet.getName() ) &&
+            periodType.equals( dataSet.getPeriodType() ) &&
+            dataElements.equals( dataSet.getDataElements() ) &&
             indicators.equals( dataSet.getIndicators() ) &&
-            renderAsTabs == dataSet.isRenderAsTabs() ) )
+            renderAsTabs == dataSet.isRenderAsTabs()) )
         {
             dataSet.increaseVersion(); // Check if version must be updated
         }
@@ -303,10 +321,11 @@ public class UpdateDataSetAction
         dataSet.setValidCompleteOnly( validCompleteOnly );
         dataSet.setNotifyCompletingUser( notifyCompletingUser );
         dataSet.setSkipOffline( skipOffline );
-        dataSet.setDataElementDecoration( dataElementDecoration );		
+        dataSet.setDataElementDecoration( dataElementDecoration );
         dataSet.setRenderAsTabs( renderAsTabs );
         dataSet.setRenderHorizontally( renderHorizontally );
         dataSet.setNotificationRecipients( userGroupService.getUserGroup( notificationRecipients ) );
+        dataSet.setLegendSet( legendSet );
 
         dataSetService.updateDataSet( dataSet );
 

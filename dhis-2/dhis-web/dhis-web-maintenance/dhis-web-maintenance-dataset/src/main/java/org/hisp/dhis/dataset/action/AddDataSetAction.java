@@ -34,6 +34,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
@@ -88,6 +90,13 @@ public class AddDataSetAction
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
+    }
+
+    private MappingService mappingService;
+
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -227,6 +236,13 @@ public class AddDataSetAction
         this.indicatorsSelectedList = indicatorsSelectedList;
     }
 
+    private Integer selectedLegendSetId;
+
+    public void setSelectedLegendSetId( Integer selectedLegendSetId )
+    {
+        this.selectedLegendSetId = selectedLegendSetId;
+    }
+
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -245,6 +261,8 @@ public class AddDataSetAction
         PeriodType periodType = PeriodType.getPeriodTypeByName( frequencySelect );
 
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
+
+        MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
 
         dataSet.setExpiryDays( expiryDays );
         dataSet.setTimelyDays( timelyDays );
@@ -275,6 +293,7 @@ public class AddDataSetAction
         dataSet.setDataElementDecoration( dataElementDecoration );
         dataSet.setRenderAsTabs( renderAsTabs );
         dataSet.setRenderHorizontally( renderHorizontally );
+        dataSet.setLegendSet( legendSet );
 
         dataSetService.addDataSet( dataSet );
 

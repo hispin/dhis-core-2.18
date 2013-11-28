@@ -159,6 +159,17 @@
         </td>
       </tr>
       <tr>
+        <td>$i18n.getString( 'legend_set' )</td>
+        <td>
+          <select id="selectedLegendSetId" name="selectedLegendSetId">
+            <option value="0">[$i18n.getString('please_select')]</option>
+            #foreach ( $legendSet in $legendSets )
+              <option value="$legendSet.id" #if( $dataSet.legendSet && $dataSet.legendSet.id == "$legendSet.id" )selected #end>$encoder.htmlEncode( $legendSet.name )</option>
+            #end
+          </select>
+        </td>
+      </tr>
+      <tr>
         <td><label for="skipOffline">$i18n.getString( "skip_offline" )</label></td>
         <td>
           <select id="skipOffline" name="skipOffline">
