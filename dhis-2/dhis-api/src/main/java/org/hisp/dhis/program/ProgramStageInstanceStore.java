@@ -246,9 +246,40 @@ public interface ProgramStageInstanceStore
      */
     Grid getCompleteness( Collection<Integer> orgunitIds, Program program, String startDate, String endDate, I18n i18n );
 
+    /**
+     * Search {@link ProgramStageInstance} by criteria with result limited
+     * 
+     * @param programStage {@link ProgramStage} needs for seaching events
+     * @param orgUnits List of {@link OrganisationUnit} ids
+     * @param columns The criteria for searching
+     * @param startDate Report date the instance should be on or after.
+     * @param endDate Report date the instance should be on or before.
+     * @param completed The status of events. There are three status values,
+     *        NULL for retrieving all events, false for retrieving events
+     *        uncompleted and true for retrieving events completed.
+     * @param min
+     * @param max
+     * @param i18n
+     * 
+     * @return A grid
+     */
     Grid searchEvent( ProgramStage programStage, Collection<Integer> orgUnits, List<TabularEventColumn> columns,
         Date startDate, Date endDate, Boolean completed, Integer min, Integer max, I18n i18n );
 
+    /**
+     * Search {@link ProgramStageInstance} by criteria
+     * 
+     * @param programStage {@link ProgramStage} needs for seaching events
+     * @param orgUnits List of {@link OrganisationUnit} ids
+     * @param columns The criteria for searching
+     * @param startDate Report date the instance should be on or after.
+     * @param endDate Report date the instance should be on or before.
+     * @param completed The status of events. There are three status values,
+     *        NULL for retrieving all events, false for retrieving events
+     *        uncompleted and true for retrieving events completed.
+     * 
+     * @return The number of events
+     */
     int searchEventsCount( ProgramStage programStage, List<TabularEventColumn> columns,
         Collection<Integer> organisationUnits, Date startDate, Date endDate, Boolean completed );
 }
