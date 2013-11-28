@@ -28,17 +28,9 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
-import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -49,8 +41,17 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -95,6 +96,14 @@ public class UpdateOrganisationUnitAction
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
+    }
+
+    private IdentifiableObjectManager manager;
+
+    @Autowired
+    public void setManager( IdentifiableObjectManager manager )
+    {
+        this.manager = manager;
     }
 
     // -------------------------------------------------------------------------
@@ -352,13 +361,15 @@ public class UpdateOrganisationUnitAction
             if ( oldGroup != null && oldGroup.getMembers().remove( organisationUnit ) )
             {
                 oldGroup.removeOrganisationUnit( organisationUnit );
-                organisationUnitGroupService.updateOrganisationUnitGroup( oldGroup );
+                // organisationUnitGroupService.updateOrganisationUnitGroup( oldGroup );
+                manager.updateNoAcl( oldGroup );
             }
 
             if ( newGroup != null && newGroup.getMembers().add( organisationUnit ) )
             {
                 newGroup.addOrganisationUnit( organisationUnit );
-                organisationUnitGroupService.updateOrganisationUnitGroup( newGroup );
+                // organisationUnitGroupService.updateOrganisationUnitGroup( newGroup );
+                manager.updateNoAcl( newGroup );
             }
         }
 
