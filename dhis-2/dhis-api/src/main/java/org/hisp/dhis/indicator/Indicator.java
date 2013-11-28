@@ -371,6 +371,7 @@ public class Indicator
             explodedNumerator = indicator.getExplodedNumerator() == null ? explodedNumerator : indicator.getExplodedNumerator();
             explodedDenominator = indicator.getExplodedDenominator() == null ? explodedDenominator : indicator.getExplodedDenominator();
             indicatorType = indicator.getIndicatorType() == null ? indicatorType : indicator.getIndicatorType();
+            legendSet = indicator.getLegendSet() == null ? legendSet : indicator.getLegendSet();
 
             dataSets.clear();
             groups.clear();

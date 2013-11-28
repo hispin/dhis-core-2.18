@@ -48,6 +48,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.PeriodType;
@@ -207,6 +208,11 @@ public class DataSet
      * Render multi-organisationUnit forms either with OU vertically or horizontally.
      */
     private boolean renderHorizontally;
+
+    /**
+     * The legend set for this indicator.
+     */
+    private MapLegendSet legendSet;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -734,6 +740,20 @@ public class DataSet
         this.dataElementDecoration = dataElementDecoration;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public MapLegendSet getLegendSet()
+    {
+        return legendSet;
+    }
+
+    public void setLegendSet( MapLegendSet legendSet )
+    {
+        this.legendSet = legendSet;
+    }
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -756,6 +776,7 @@ public class DataSet
             skipOffline = dataSet.isSkipOffline();
             renderAsTabs = dataSet.isRenderAsTabs();
             renderHorizontally = dataSet.isRenderHorizontally();
+            legendSet = dataSet.getLegendSet() == null ? legendSet : dataSet.getLegendSet();
 
             dataElementDecoration = dataSet.isDataElementDecoration();
             notificationRecipients = dataSet.getNotificationRecipients();
