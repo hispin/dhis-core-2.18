@@ -34,9 +34,11 @@ import java.util.List;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
@@ -48,32 +50,126 @@ import org.hisp.dhis.program.Program;
  */
 public interface CaseAggregationConditionService
 {
+    /**
+     * Adds an {@link CaseAggregationCondition}
+     * 
+     * @param patientAttributeGroup The to CaseAggregationCondition add.
+     * 
+     * @return A generated unique id of the added
+     *         {@link CaseAggregationCondition}.
+     */
     int addCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
+    /**
+     * Updates a {@link CaseAggregationCondition}.
+     * 
+     * @param patientAttributeGroup the CaseAggregationCondition to update.
+     */
     void updateCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
+    /**
+     * Deletes a {@link CaseAggregationCondition}.
+     * 
+     * @param patientAttributeGroup the CaseAggregationCondition to delete.
+     */
     void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
+    /**
+     * Returns a {@link CaseAggregationCondition}.
+     * 
+     * @param id the id of the CaseAggregationCondition to return.
+     * 
+     * @return the CaseAggregationCondition with the given id
+     */
     CaseAggregationCondition getCaseAggregationCondition( int id );
 
+    /**
+     * Returns a {@link CaseAggregationCondition} with a given name.
+     * 
+     * @param name the name of the CaseAggregationCondition to return.
+     * 
+     * @return the CaseAggregationCondition with the given name, or null if no
+     *         match.
+     */
     CaseAggregationCondition getCaseAggregationCondition( String name );
 
+    /**
+     * Returns all {@link CaseAggregationCondition}
+     * 
+     * @return A collection of all CaseAggregationCondition, or an empty
+     *         collection if there are no CaseAggregationConditions.
+     */
     Collection<CaseAggregationCondition> getAllCaseAggregationCondition();
 
+    /**
+     * Retrieve {@link CaseAggregationCondition} by a {@link DataElement}
+     * 
+     * @param dataElement DataElement
+     * 
+     * @return A collection of CaseAggregationCondition
+     */
     Collection<CaseAggregationCondition> getCaseAggregationCondition( DataElement dataElement );
 
+    /**
+     * Retrieve a {@link CaseAggregationCondition} by a {@link DataElement} and
+     * {@link DataElementCategoryOptionCombo}
+     * 
+     * @param dataElement DataElement
+     * @param optionCombo DataElementCategoryOptionCombo
+     * 
+     * @return A CaseAggregationCondition
+     */
     CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement,
         DataElementCategoryOptionCombo optionCombo );
 
+    /**
+     * Retrieve a {@link CaseAggregationCondition} by a collection of
+     * {@link DataElement}
+     * 
+     * @param dataElements DataElement collection
+     * 
+     * @return A collection of CaseAggregationCondition
+     */
     Collection<CaseAggregationCondition> getCaseAggregationCondition( Collection<DataElement> dataElements );
 
+    /**
+     * Retrieve a collection of {@link DataElement} by a
+     * {@link CaseAggregationCondition} formula
+     * 
+     * @param aggregationExpression Aggregate Expression
+     * 
+     * @return A collection of DataElement
+     */
     Collection<DataElement> getDataElementsInCondition( String aggregationExpression );
 
+    /**
+     * Retrieve a collection of {@link Program} by a
+     * {@link CaseAggregationCondition} formula
+     * 
+     * @param aggregationExpression Aggregate Expression
+     * 
+     * @return A collection of Program
+     */
     Collection<Program> getProgramsInCondition( String aggregationExpression );
 
+    /**
+     * Retrieve a collection of {@link PatientAttribute} by a
+     * {@link CaseAggregationCondition} formula
+     * 
+     * @param aggregationExpression Aggregate Expression
+     * 
+     * @return A collection of PatientAttribute
+     */
     Collection<PatientAttribute> getPatientAttributesInCondition( String aggregationExpression );
 
-    String getConditionDescription( String condition );
+    /**
+     * Retrieve the description of a {@link CaseAggregationCondition} expression
+     * 
+     * @param aggregationExpression Aggregate Expression
+     * 
+     * @return The Description of the CaseAggregationCondition
+     */
+    String getConditionDescription( String aggregationExpression );
 
     /**
      * Aggregate data values from query builder formulas defined based on
@@ -99,17 +195,75 @@ public interface CaseAggregationConditionService
     Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
         Period period, I18nFormat format, I18n i18n );
 
+    /**
+     * Insert value aggregated from a {@link CaseAggregationCondition}
+     * 
+     * @param caseAggregationCondition CaseAggregationCondition
+     * @param orgunitIds The list of {@link OrganisationUnit} ids
+     * @param period {@link Period}
+     */
     void insertAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
         Period period );
 
+    /**
+     * Retrieve the details of each {@link DataValue} which are generated by a
+     * {@link CaseAggregationCondition}
+     * 
+     * @param caseAggregationCondition CaseAggregationCondition
+     * @param orgunitIds The list of {@link OrganisationUnit} ids
+     * @param period {@link Period}
+     * @param format I18nFormat
+     * @param i18n I18n
+     */
     Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period, I18nFormat format, I18n i18n );
 
+    /**
+     * Convert an expression of {@link CaseAggregationCondition} to standard
+     * query
+     * 
+     * @param isInsert True if converting the expression for inserting
+     *        {@link DataValue}
+     * @param caseExpression The expression of CaseAggregationCondition
+     * @param operator There are six operators, includes COUNT, TIMES, SUM, AVG,
+     *        MIN and MAX
+     * @param aggregateDeId The aggregate data element which is used for saving
+     *        a datavalue
+     * @param aggregateDeName The name of aggregate data element
+     * @param optionComboId The {@link DataElementCategoryOptionCombo} which is
+     *        used for saving a datavalue
+     * @param optionComboName The name ofDataElementCategoryOptionCombo
+     * @param deSumId The id of the patient data element
+     * @param orgunitIds The ids of orgunits where data are retrieved to
+     *        calculate value
+     * @param period The period for retrieving data
+     * 
+     * @return SQL
+     */
     String parseExpressionToSql( boolean isInsert, String caseExpression, String operator, Integer aggregateDeId,
         String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
         Collection<Integer> orgunitIds, Period period );
 
+    /**
+     * Convert an expression of {@link CaseAggregationCondition} to standard
+     * query
+     * 
+     * @param caseExpression The expression of CaseAggregationCondition
+     * @param operator There are six operators, includes COUNT, TIMES, SUM, AVG,
+     *        MIN and MAX
+     * @param orgunitIds The id of {@link OrganisationUnit}
+     * @param period The period for retrieving data
+     * 
+     * @return SQL
+     */
     String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period );
 
+    /**
+     * Get list of {@link Patient} ids from SQL
+     * 
+     * @param sql SQL statement
+     * 
+     * @return List of patient ids
+     */
     List<Integer> executeSQL( String sql );
 }

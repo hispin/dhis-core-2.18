@@ -461,14 +461,14 @@ public class DefaultCaseAggregationConditionService
         Integer aggregateDeId, String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
         Collection<Integer> orgunitIds, Period period )
     {
-        return parseExpressionToSql( isInsert, caseExpression, operator, aggregateDeId, aggregateDeName, optionComboId,
+        return aggregationConditionStore.parseExpressionToSql( isInsert, caseExpression, operator, aggregateDeId, aggregateDeName, optionComboId,
             optionComboName, deSumId, orgunitIds, period );
     }
 
     @Override
     public List<Integer> executeSQL( String sql )
     {
-        return executeSQL( sql );
+        return aggregationConditionStore.executeSQL( sql );
     }
 
     // -------------------------------------------------------------------------
