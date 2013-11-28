@@ -166,8 +166,6 @@ public class DataSet
      */
     private boolean notifyCompletingUser;
 
-    private String symbol;
-
     // -------------------------------------------------------------------------
     // Form properties
     // -------------------------------------------------------------------------
@@ -648,19 +646,6 @@ public class DataSet
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getSymbol()
-    {
-        return symbol;
-    }
-
-    public void setSymbol( String symbol )
-    {
-        this.symbol = symbol;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isAllowFuturePeriods()
     {
         return allowFuturePeriods;
@@ -774,7 +759,6 @@ public class DataSet
 
             dataElementDecoration = dataSet.isDataElementDecoration();
             notificationRecipients = dataSet.getNotificationRecipients();
-            symbol = dataSet.getSymbol();
 
             dataElements.clear();
 
