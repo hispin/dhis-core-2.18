@@ -122,43 +122,47 @@ public class FormUtils
 
         ProgramStage programStage = program.getProgramStageByStage( 1 );
 
-        if ( programStage == null && (Program.SINGLE_EVENT_WITHOUT_REGISTRATION == program.getType()
-            || Program.SINGLE_EVENT_WITH_REGISTRATION == program.getType()) )
+        if ( programStage == null )
         {
-            throw new NullPointerException();
-        }
-
-        if ( programStage != null )
-        {
-            form.getOptions().put( "captureCoordinates", programStage.getCaptureCoordinates() );
-
-            if ( programStage.getProgramStageSections().size() > 0 )
+            if ( (Program.SINGLE_EVENT_WITHOUT_REGISTRATION == program.getType()
+                || Program.SINGLE_EVENT_WITH_REGISTRATION == program.getType()) )
             {
-                for ( ProgramStageSection section : programStage.getProgramStageSections() )
-                {
-                    List<Field> fields = inputsFromProgramStageDataElements( section.getProgramStageDataElements() );
-
-                    if ( !fields.isEmpty() )
-                    {
-                        Group s = new Group();
-                        s.setLabel( section.getDisplayName() );
-                        s.setFields( fields );
-                        form.getGroups().add( s );
-                    }
-                }
+                throw new NullPointerException();
             }
             else
             {
-                List<Field> fields = inputsFromProgramStageDataElements(
-                    new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() ) );
+                return form;
+            }
+        }
+
+        form.getOptions().put( "captureCoordinates", programStage.getCaptureCoordinates() );
+
+        if ( programStage.getProgramStageSections().size() > 0 )
+        {
+            for ( ProgramStageSection section : programStage.getProgramStageSections() )
+            {
+                List<Field> fields = inputsFromProgramStageDataElements( section.getProgramStageDataElements() );
 
                 if ( !fields.isEmpty() )
                 {
                     Group s = new Group();
-                    s.setLabel( "default" );
+                    s.setLabel( section.getDisplayName() );
                     s.setFields( fields );
                     form.getGroups().add( s );
                 }
+            }
+        }
+        else
+        {
+            List<Field> fields = inputsFromProgramStageDataElements(
+                new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() ) );
+
+            if ( !fields.isEmpty() )
+            {
+                Group s = new Group();
+                s.setLabel( "default" );
+                s.setFields( fields );
+                form.getGroups().add( s );
             }
         }
 
