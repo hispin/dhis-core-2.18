@@ -180,6 +180,8 @@ public class JdbcEventAnalyticsTableManager
     
     public List<String[]> getDimensionColumns( AnalyticsTable table )
     {
+        final String dbl = statementBuilder.getDoubleColumnType();
+        
         List<String[]> columns = new ArrayList<String[]>();
 
         Collection<OrganisationUnitLevel> levels =
@@ -233,12 +235,13 @@ public class JdbcEventAnalyticsTableManager
         String[] psi = { "psi", "character(11) not null", "psi.uid" };
         String[] ps = { "ps", "character(11) not null", "ps.uid" };
         String[] ed = { "executiondate", "date", "psi.executiondate" };
-        String[] cord = { "coordinates", "character varying(100)", "psi.coordinates" };
+        String[] longitude = { "longitude", dbl, "psi.longitude" };
+        String[] latitude = { "latitude", dbl, "psi.latitude" };
         String[] ou = { "ou", "character(11) not null", "ou.uid" };
         String[] oun = { "ouname", "character varying(230) not null", "ou.name" };
         String[] ouc = { "oucode", "character varying(50)", "ou.code" };
         
-        columns.addAll( Arrays.asList( gender, isdead, psi, ps, ed, cord, ou, oun, ouc ) );
+        columns.addAll( Arrays.asList( gender, isdead, psi, ps, ed, longitude, latitude, ou, oun, ouc ) );
         
         return columns;
     }
