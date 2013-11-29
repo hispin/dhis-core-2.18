@@ -28,20 +28,18 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.user.UserSettingService;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.user.UserSettingService.KEY_CURRENT_DOMAIN_TYPE;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.hisp.dhis.user.UserSettingService.KEY_CURRENT_DOMAIN_TYPE;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.user.UserSettingService;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -65,13 +63,6 @@ public class GetDataElementListAction
     public void setUserSettingService( UserSettingService userSettingService )
     {
         this.userSettingService = userSettingService;
-    }
-
-    private DataDictionaryService dataDictionaryService;
-
-    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
-    {
-        this.dataDictionaryService = dataDictionaryService;
     }
 
     // -------------------------------------------------------------------------
