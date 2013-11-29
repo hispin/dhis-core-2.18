@@ -42,7 +42,6 @@
 	
 	function checkDuplicatedCode( value, index )
 	{
-		
 		for (var i=1; i<=jQuery('.trDataElementCode').length; i++ )
 		{
 			if ( i != index )
@@ -50,7 +49,7 @@
 				var otherValue = document.getElementById('codeValue'+i).value;
 				if( value!='' && value == otherValue )
 				{
-					markInvalid( 'codeValue'+index, 'Duplicated Value' );
+					markInvalid( 'codeValue'+index, 'Duplicated Code' );
 					break;
 				}
 				else
@@ -58,6 +57,46 @@
 					markValid( 'codeValue'+index );
 				}
 			} 
+		}
+	};
+	
+	function checkDuplicatedSpeCharName( value, index )
+	{
+		for (var i=1; i<=jQuery('.trSpecialCharacter').length; i++ )
+		{
+			if ( i != index )
+			{
+				var otherValue = document.getElementById('name'+i).value;
+				if( value!='' && value == otherValue )
+				{
+					markInvalid( 'name'+index, 'Duplicated Name' );
+					break;
+				}
+				else
+				{
+					markValid( 'name'+index );
+				}
+			}
+		}
+	};
+	
+	function checkDuplicatedSpeCharValue( value, index )
+	{
+		for (var i=1; i<=jQuery('.trSpecialCharacter').length; i++ )
+		{
+			if ( i != index )
+			{
+				var otherValue = document.getElementById('value'+i).value;
+				if( value!='' && value == otherValue )
+				{
+					markInvalid( 'value'+index, 'Duplicated Value' );
+					break;
+				}
+				else
+				{
+					markValid( 'value'+index );
+				}
+			}
 		}
 	};
     
@@ -178,10 +217,9 @@
 	<tbody id="specialCharacters">
 		#foreach( $specialCharacters in $smsCommand.specialCharacters )
 			<tr id="trSpecialCharacter$velocityCount" name="trSpecialCharacter$velocityCount" class="trSpecialCharacter">
-				<td><input type="text" id="name$velocityCount" name="name$velocityCount" class="name {validate:{required:true}}" value="$specialCharacters.name"/></td>
-				<td>
-					<input type="text" id="value$velocityCount" name="value$velocityCount" class="value {validate:{required:true}}" value="$specialCharacters.value"/><input type="button" value="remove" onclick="removeSpecialCharactersForm($velocityCount)"/>
-				</td>
+				<td><input type="text" id="name$velocityCount" name="name$velocityCount" class="name {validate:{required:true}}" value="$specialCharacters.name" onblur="checkDuplicatedSpeCharName(this.value, $velocityCount)"/></td>
+				<td><input type="text" id="value$velocityCount" name="value$velocityCount" class="value {validate:{required:true}}" value="$specialCharacters.value" onblur="checkDuplicatedSpeCharValue(this.value, $velocityCount)"/></td>
+				<td><input type="button" value="remove" onclick="removeSpecialCharactersForm($velocityCount)"/></input>
 			</tr>
 		#end
 	</tbody>
