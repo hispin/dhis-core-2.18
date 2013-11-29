@@ -6,6 +6,7 @@ import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeStore;
@@ -109,6 +110,11 @@ public class DefaultEquipmentTypeAttributeService implements EquipmentTypeAttrib
     public  EquipmentTypeAttribute getEquipmentTypeAttributeByName( String name )
     {
         return equipmentTypeAttributeStore.getEquipmentTypeAttributeByName( name );
+    }
+
+    public EquipmentTypeAttribute getEquipmentTypeAttributeByDescription( String description )
+    {
+        return equipmentTypeAttributeStore.getEquipmentTypeAttributeByDescription( description );
     }
 
     

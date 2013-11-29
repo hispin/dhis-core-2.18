@@ -93,8 +93,13 @@ public class HibernateEquipmentTypeAttributeStore extends HibernateIdentifiableO
     public EquipmentTypeAttribute getEquipmentTypeAttributeByName( String name )
     {
         return (EquipmentTypeAttribute) getCriteria( Restrictions.eq( "name", name ) ).uniqueResult();
-        
     }
+
+    public EquipmentTypeAttribute getEquipmentTypeAttributeByDescription( String description )
+    {
+        return (EquipmentTypeAttribute) getCriteria( Restrictions.eq( "description", description ) ).uniqueResult();
+    }
+
     /*
     @SuppressWarnings( "unchecked" )
     public Collection<EquipmentTypeAttribute> getAllEquipmentTypeAttributesForDisplay( EquipmentTypeAttribute equipmentTypeAttribute )

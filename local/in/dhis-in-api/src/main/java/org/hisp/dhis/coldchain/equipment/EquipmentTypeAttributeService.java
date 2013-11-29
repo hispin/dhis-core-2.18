@@ -18,6 +18,8 @@ public interface EquipmentTypeAttributeService
     
     EquipmentTypeAttribute getEquipmentTypeAttributeByName( String name );
     
+    EquipmentTypeAttribute getEquipmentTypeAttributeByDescription( String description );
+    
     //  methods
     
     int getEquipmentTypeAttributeCount();

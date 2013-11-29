@@ -22,6 +22,8 @@ public interface EquipmentTypeAttributeStore extends GenericNameableObjectStore<
     
     EquipmentTypeAttribute getEquipmentTypeAttributeByName( String name );
     
+    EquipmentTypeAttribute getEquipmentTypeAttributeByDescription( String description );
+    
     //Collection<EquipmentTypeAttribute> getAllEquipmentTypeAttributesForDisplay( EquipmentTypeAttribute equipmentTypeAttribute );
     
     
