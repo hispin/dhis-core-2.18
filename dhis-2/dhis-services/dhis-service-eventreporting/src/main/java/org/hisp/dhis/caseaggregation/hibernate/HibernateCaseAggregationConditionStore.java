@@ -222,18 +222,15 @@ public class HibernateCaseAggregationConditionStore
     {
         // Delete all data value from this period which created from DHIS-system
         // after to run Aggregate Query Builder
-
         String periodtypeSql = "select periodtypeid from periodtype where name='" + period.getPeriodType().getName()
             + "'";
         int periodTypeId = jdbcTemplate.queryForObject( periodtypeSql, Integer.class );
-
         String periodSql = "select periodid from period where periodtypeid=" + periodTypeId + " and startdate='"
             + DateUtils.getMediumDateString( period.getStartDate() ) + "' and enddate='"
             + DateUtils.getMediumDateString( period.getEndDate() ) + "'";
-
         SqlRowSet rs = jdbcTemplate.queryForRowSet( periodSql );
-
         int periodid = 0;
+
         if ( rs.next() )
         {
             periodid = rs.getInt( "periodid" );
@@ -263,7 +260,6 @@ public class HibernateCaseAggregationConditionStore
 
         String sql = parseExpressionToSql( true, expression, operator, dataElementId, "dataelementname", optionComboId,
             "optionComboname", deSumId, orgunitIds, period );
-
         jdbcTemplate.execute( sql );
     }
 
@@ -278,7 +274,7 @@ public class HibernateCaseAggregationConditionStore
 
         if ( isInsert )
         {
-            sql = "INSERT INTO datavalue (dataelementid, categoryoptioncomboid, sourceid, periodid, comment, value)"
+            sql = "INSERT INTO datavalue (dataelementid, categoryoptioncomboid, sourceid, periodid, comment, value) "
                 + sql;
         }
         else
