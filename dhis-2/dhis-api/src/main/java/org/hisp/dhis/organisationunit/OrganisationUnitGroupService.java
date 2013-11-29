@@ -273,4 +273,6 @@ public interface OrganisationUnitGroupService
     int getOrganisationUnitGroupSetCount();
     
     int getOrganisationUnitGroupSetCountByName( String name );
+
+    void mergeWithCurrentUserOrganisationUnits( OrganisationUnitGroup organisationUnitGroup, Collection<OrganisationUnit> mergeOrganisationUnits );
 }
