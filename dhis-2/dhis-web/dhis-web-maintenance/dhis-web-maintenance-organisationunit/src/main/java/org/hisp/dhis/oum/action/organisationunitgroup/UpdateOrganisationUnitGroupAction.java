@@ -46,7 +46,7 @@ import java.util.Set;
 /**
  * @author Torgeir Lorange Ostby
  */
-@SuppressWarnings( "serial" )
+@SuppressWarnings("serial")
 public class UpdateOrganisationUnitGroupAction
     extends ActionSupport
 {
@@ -154,7 +154,7 @@ public class UpdateOrganisationUnitGroupAction
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
             .getReloadedSelectedOrganisationUnits();
 
-        organisationUnitGroup.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectedOrganisationUnits ) );
+        organisationUnitGroupService.mergeWithCurrentUserOrganisationUnits( organisationUnitGroup, selectedOrganisationUnits );
 
         if ( jsonAttributeValues != null )
         {
