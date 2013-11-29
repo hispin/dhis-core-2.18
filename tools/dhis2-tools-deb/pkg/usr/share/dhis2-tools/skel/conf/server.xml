@@ -13,7 +13,8 @@
            maxThreads="100" minSpareThreads="10" /> 
                     
     <Connector port="HTTPPORT" address="127.0.0.1" protocol="HTTP/1.1" proxyPort="443" scheme="https"  
-           executor="tomcatThreadPool" connectionTimeout="20000" />
+        URIEncoding="UTF-8"
+        executor="tomcatThreadPool" connectionTimeout="20000" />
  
     <Engine name="Catalina" defaultHost="localhost">
       <Host name="localhost"  appBase="webapps" 
