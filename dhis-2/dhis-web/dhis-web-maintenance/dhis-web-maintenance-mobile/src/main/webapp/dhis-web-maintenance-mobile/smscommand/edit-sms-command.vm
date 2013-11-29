@@ -16,11 +16,24 @@
 		selectedDataOptions += ']}';
 		$("#codeDataelementOption").val(selectedDataOptions);
 
+		//get special characters' data
+		var speCharName = jQuery("#speCharName");
+		speCharName.empty();
+		jQuery(".name").each( function( i, item ){
+			speCharName.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+		});
+		
+		var speCharValue = jQuery("#speCharValue");
+		speCharValue.empty();
+		jQuery(".value").each( function( i, item ){
+			speCharValue.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+		});
+
 		var specialCharactersInfo = '{"specialCharacters":[';
-		for (var i=1; i<=jQuery('.trSpecialCharacter').length; i++)
+		for (var i=0; i<jQuery('.trSpecialCharacter').length; i++)
 		{ 
-			specialCharactersInfo += '{"name" :"'+document.getElementById('name'+i).value+'",';
-			specialCharactersInfo += '"value" :"'+document.getElementById('value'+i).value+'"},';	
+			specialCharactersInfo += '{"name" :"'+document.getElementById("speCharName").options[i].value+'",';
+			specialCharactersInfo += '"value" :"'+document.getElementById("speCharValue").options[i].value+'"},';	
 		}
 		specialCharactersInfo += ']}';
 		$("#specialCharactersInfo").val(specialCharactersInfo);
@@ -29,6 +42,7 @@
 	
 	function checkDuplicatedCode( value, index )
 	{
+		
 		for (var i=1; i<=jQuery('.trDataElementCode').length; i++ )
 		{
 			if ( i != index )
@@ -52,6 +66,8 @@
 <h3>$i18n.getString( "edit_command" )</h3>
 
 <form id="updateSMSCommandForm" name="updateSMSCommandForm" action="saveEditSMSCommandForm.action" method="post">
+	<select id='speCharName' name="speCharName" multiple="multiple" class="hidden"></select>
+	<select id='speCharValue' name="speCharValue" multiple="multiple" class="hidden"></select>
 	<table>
 	<thead>
       <tr>
@@ -162,9 +178,9 @@
 	<tbody id="specialCharacters">
 		#foreach( $specialCharacters in $smsCommand.specialCharacters )
 			<tr id="trSpecialCharacter$velocityCount" name="trSpecialCharacter$velocityCount" class="trSpecialCharacter">
-				<td><input type="text" id="name$velocityCount" name="name$velocityCount" class="{validate:{required:true}}" value="$specialCharacters.name"/></td>
+				<td><input type="text" id="name$velocityCount" name="name$velocityCount" class="name {validate:{required:true}}" value="$specialCharacters.name"/></td>
 				<td>
-					<input type="text" id="value$velocityCount" name="value$velocityCount" class="{validate:{required:true}}" value="$specialCharacters.value"/><input type="button" value="remove" onclick="removeSpecialCharactersForm($velocityCount)"/>
+					<input type="text" id="value$velocityCount" name="value$velocityCount" class="value {validate:{required:true}}" value="$specialCharacters.value"/><input type="button" value="remove" onclick="removeSpecialCharactersForm($velocityCount)"/>
 				</td>
 			</tr>
 		#end

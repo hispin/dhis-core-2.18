@@ -179,6 +179,7 @@
       <param name="page">/dhis-web-maintenance-mobile/smscommand/edit-sms-command.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/command.js</param>
+      <param name="stylesheets">style/dhis-web-maintenance-mobile.css</param>
       <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
     </action>
 
