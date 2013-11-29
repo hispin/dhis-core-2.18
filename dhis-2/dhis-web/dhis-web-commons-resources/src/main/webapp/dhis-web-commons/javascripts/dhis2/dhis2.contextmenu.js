@@ -60,7 +60,12 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
   var $menu = $('#' + config.menuId);
   var $menuItems = $menu.find('ul');
 
-  $menuItems.on('touchend click', 'li', function( e ) {
+  // make sure that all old event handler are removed (with .context namespace)
+  $(document).off('click.context');
+  $list.off('click.context');
+  $menuItems.off('click.context');
+
+  $menuItems.on('click.context', 'li', function( e ) {
     var context = {};
 
     $.each(config.listItemProps, function( idx, val ) {
@@ -73,9 +78,11 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
 
     $menu.hide();
     fn(context);
+
+    return false;
   });
 
-  $list.on('click', 'td', function( e ) {
+  $list.on('click.context', 'td', function( e ) {
     $menu.show();
     $menu.css({left: e.pageX, top: e.pageY});
 
@@ -91,7 +98,7 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
     return false;
   });
 
-  $(document).on('touchend click', function() {
+  $(document).on('click.context', function() {
     if( $menu.is(":visible") ) {
       $menu.hide();
     }
