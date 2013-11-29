@@ -16,8 +16,8 @@ jQuery(function() {
   var dropDown = jQuery('.dropDown');
 
   gearDropDown.on('click', function( e ) {
+    gearDropDown.toggleClass('active');
     dropDown.show();
-    dropDown.css({left: e.pageX, top: e.pageY});
 
     dropDown.offset({
       'top': gearDropDown.offset().top + 24,
@@ -28,6 +28,8 @@ jQuery(function() {
   });
 
   $(document).on('touchend click', function() {
+    gearDropDown.toggleClass('active');
+
     if( dropDown.is(":visible") ) {
       dropDown.hide();
     }
@@ -37,11 +39,15 @@ jQuery(function() {
 
 <style>
 .gearDropDown {
-  background-color           : #f7f7f7;
-  float: right;
-  border: 1px solid #eaeaea;
-  padding: 4px 10px;
-  cursor: pointer;
+  background-color : #f7f7f7;
+  float            : right;
+  border           : 1px solid #eaeaea;
+  padding          : 4px 10px;
+  cursor           : pointer;
+}
+
+.gearDropDown.active {
+  background-color : #ddd;
 }
 
 .dropDown {
