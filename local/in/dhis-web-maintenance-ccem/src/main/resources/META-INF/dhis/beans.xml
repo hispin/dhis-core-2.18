@@ -750,6 +750,10 @@
         <property name="modelService" ref="org.hisp.dhis.coldchain.model.ModelService" />
         <property name="modelTypeService" ref="org.hisp.dhis.coldchain.model.ModelTypeService" />
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        <property name="equipmentTypeService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeService" />
+        <property name="equipmentService" ref="org.hisp.dhis.coldchain.equipment.EquipmentService" />
+        <property name="equipmentTypeAttributeService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService" />
     </bean> 
 		
 	
