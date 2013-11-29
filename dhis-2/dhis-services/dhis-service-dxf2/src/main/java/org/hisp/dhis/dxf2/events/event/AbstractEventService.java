@@ -717,7 +717,7 @@ public abstract class AbstractEventService
 
         if ( programStage.getCaptureCoordinates() )
         {
-            if ( coordinate.isValid() )
+            if ( coordinate != null && coordinate.isValid() )
             {
                 programStageInstance.setLongitude( coordinate.getLongitude() );
                 programStageInstance.setLatitude( coordinate.getLatitude() );
