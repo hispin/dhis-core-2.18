@@ -6,12 +6,7 @@
 	
 		validation( "updateSMSCommandForm" );
 		var selectedDataOptions = '{"codes":[';      
-		//$("#codes input").each(function(){
-            //selectedDataOptions += '{"dataElementId" :' + $(this).attr('value').split('.')[0] +  ',';  
-            //selectedDataOptions += '"optionId" :' + $(this).attr('value').split('.')[1] + ',';
-            //selectedDataOptions += '"code" :"' + $(this).val() + '"},';
-            //$(this).attr('name',''); // avoid error in struts 
-		//});
+
 		for (var i=1; i<=jQuery('.trDataElementCode').length; i++ )
 		{
 			selectedDataOptions += '{"dataElementId" :' + document.getElementById('codeId'+i).value.split('.')[0] +  ','; 
