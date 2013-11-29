@@ -16,7 +16,7 @@ jQuery(function() {
   var dropDown = jQuery('.dropDown');
 
   gearDropDown.on('click', function( e ) {
-    gearDropDown.toggleClass('active');
+    gearDropDown.addClass('active');
     dropDown.show();
 
     dropDown.offset({
@@ -27,10 +27,9 @@ jQuery(function() {
     return false;
   });
 
-  $(document).on('touchend click', function() {
-    gearDropDown.toggleClass('active');
-
+  $(document).on('click', function() {
     if( dropDown.is(":visible") ) {
+      gearDropDown.removeClass('active');
       dropDown.hide();
     }
   });
@@ -44,6 +43,8 @@ jQuery(function() {
   border           : 1px solid #eaeaea;
   padding          : 4px 10px;
   cursor           : pointer;
+  border-top-left-radius  : 3px;
+  border-top-right-radius : 3px;
 }
 
 .gearDropDown.active {
@@ -66,6 +67,10 @@ jQuery(function() {
   border-bottom-left-radius  : 3px;
   border-bottom-right-radius : 3px;
   box-shadow                 : #ccc 0px 1px 1px 0px;
+}
+
+.dropDown > ul {
+  margin: 6px 0;
 }
 
 .dropDown > ul > li {
