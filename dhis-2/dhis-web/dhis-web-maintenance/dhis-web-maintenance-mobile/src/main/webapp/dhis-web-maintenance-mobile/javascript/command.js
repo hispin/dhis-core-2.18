@@ -21,8 +21,8 @@ function generateSpecialCharactersForm()
 	var rowId = jQuery('.trSpecialCharacter').length + 1;
 
 	var contend = '<tr id="trSpecialCharacter'+rowId+'" name="trSpecialCharacter'+rowId+'" class="trSpecialCharacter">'
-				+	'<td><input id="name'+rowId+'" name="name'+rowId+'" type="text"/></td>'
-				+	'<td><input id="value'+rowId+'" name="value'+rowId+'" type="text"/>'
+				+	'<td><input id="name'+rowId+'" name="name'+rowId+'" type="text" class="name {validate:{required:true}}"/></td>'
+				+	'<td><input id="value'+rowId+'" name="value'+rowId+'" type="text" class="value {validate:{required:true}}"/>'
 				+   	'<input type="button" value="remove" onclick="removeSpecialCharactersForm('+rowId+')"/></td>'
 				+ '</tr>';
 	jQuery('#specialCharacters').append( contend );
