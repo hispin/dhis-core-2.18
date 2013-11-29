@@ -9,7 +9,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-    <property name="dataDictionaryService" ref="org.hisp.dhis.datadictionary.DataDictionaryService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementListSortOrderAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementListSortOrderAction"
