@@ -3473,6 +3473,13 @@ Ext.onReady( function() {
 					id: gis.conf.finals.root.id,
 					expanded: true,
 					children: gis.init.rootNodes
+				},
+				listeners: {
+					load: function(store, node, records) {
+						Ext.Array.each(records, function(record) {
+							record.set('leaf', !record.raw.hasChildren);
+						});
+					}
 				}
 			}),
 			xable: function(values) {
@@ -4808,6 +4815,13 @@ Ext.onReady( function() {
 					id: gis.conf.finals.root.id,
 					expanded: true,
 					children: gis.init.rootNodes
+				},
+				listeners: {
+					load: function(store, node, records) {
+						Ext.Array.each(records, function(record) {
+							record.set('leaf', !record.raw.hasChildren);
+						});
+					}
 				}
 			}),
 			xable: function(values) {
@@ -5665,6 +5679,13 @@ Ext.onReady( function() {
 					id: gis.conf.finals.root.id,
 					expanded: true,
 					children: gis.init.rootNodes
+				},
+				listeners: {
+					load: function(store, node, records) {
+						Ext.Array.each(records, function(record) {
+							record.set('leaf', !record.raw.hasChildren);
+						});
+					}
 				}
 			}),
 			xable: function(values) {

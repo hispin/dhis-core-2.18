@@ -3628,6 +3628,13 @@ Ext.onReady( function() {
 					id: ns.core.conf.finals.root.id,
 					expanded: true,
 					children: ns.core.init.rootNodes
+				},
+				listeners: {
+					load: function(store, node, records) {
+						Ext.Array.each(records, function(record) {
+							record.set('leaf', !record.raw.hasChildren);
+						});
+					}
 				}
 			}),
 			xable: function(values) {
