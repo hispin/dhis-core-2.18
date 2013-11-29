@@ -80,7 +80,6 @@ public class PatientDataValue
 
     public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement, String value )
     {
-        super();
         this.dataElement = dataElement;
         this.programStageInstance = programStageInstance;
         this.value = value;

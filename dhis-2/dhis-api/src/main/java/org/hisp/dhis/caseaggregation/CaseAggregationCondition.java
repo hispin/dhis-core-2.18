@@ -43,34 +43,55 @@ public class CaseAggregationCondition
     private static final long serialVersionUID = -5746649805915250424L;
 
     public static final String SEPARATOR_ID = "\\.";
+
     public static final String SEPARATOR_OBJECT = ":";
 
     public static final String AGGRERATION_COUNT = "COUNT";
+
     public static final String AGGRERATION_SUM = "times";
+
     public static final String AGGRERATION_SUM_VALUE = "sum";
+
     public static final String AGGRERATION_AVG_VALUE = "avg";
+
     public static final String AGGRERATION_AVG_MIN = "min";
+
     public static final String AGGRERATION_AVG_MAX = "max";
 
     public static final String OPERATOR_AND = "AND";
+
     public static final String OPERATOR_OR = "OR";
 
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
+
     public static String OBJECT_PATIENT_ATTRIBUTE = "CA";
+
     public static String OBJECT_PATIENT_PROPERTY = "CP";
+
     public static String OBJECT_PROGRAM_PROPERTY = "PP";
+
     public static String OBJECT_PROGRAM = "PG";
+
     public static String OBJECT_PATIENT = "PT";
+
     public static String OBJECT_PROGRAM_STAGE = "PS";
+
     public static String OBJECT_PROGRAM_STAGE_PROPERTY = "PSP";
+
     public static String OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY = "PC";
+
     public static String OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE = "PSIC";
+
     public static String OBJECT_PROGRAM_PROPERTY_INCIDENT_DATE = "dateOfIncident";
+
     public static String OBJECT_PROGRAM_PROPERTY_ENROLLEMENT_DATE = "enrollmentDate";
+
     public static String OBJECT_PROGRAM_PROPERTY_REPORT_DATE_DATE = "executionDate";
 
     public static String MINUS_OPERATOR = "DATEDIFF";
+
     public static String MINUS_DATAELEMENT_OPERATOR = "DEDATEDIFF";
+
     public static String AUTO_STORED_BY = "DHIS-SYSTEM";
 
     public static final String regExp = "\\[(" + OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE + "|" + OBJECT_PATIENT + "|"
@@ -154,19 +175,19 @@ public class CaseAggregationCondition
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( !getClass().isAssignableFrom( object.getClass() ) )
         {
             return false;
         }
-        
+
         final CaseAggregationCondition other = (CaseAggregationCondition) object;
-        
+
         if ( aggregationExpression == null )
         {
             if ( other.aggregationExpression != null )
@@ -178,7 +199,7 @@ public class CaseAggregationCondition
         {
             return false;
         }
-        
+
         if ( operator == null )
         {
             if ( other.operator != null )
@@ -190,7 +211,7 @@ public class CaseAggregationCondition
         {
             return false;
         }
-        
+
         return true;
     }
 

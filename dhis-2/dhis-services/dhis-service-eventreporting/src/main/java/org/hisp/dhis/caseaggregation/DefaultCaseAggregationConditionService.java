@@ -400,28 +400,6 @@ public class DefaultCaseAggregationConditionService
         ConcurrentUtils.waitForCompletion( futures );
     }
 
-    @Async
-    private Future<?> aggregateValueManager( ConcurrentLinkedQueue<CaseAggregateSchedule> caseAggregateSchedule,
-        String taskStrategy )
-    {
-        taskLoop: while ( true )
-        {
-            CaseAggregateSchedule dataSet = caseAggregateSchedule.poll();
-
-            if ( dataSet == null )
-            {
-                break taskLoop;
-            }
-
-            Collection<Period> periods = aggregationConditionStore.getPeriods( dataSet.getPeriodTypeName(),
-                taskStrategy );
-
-            aggregationConditionStore.runAggregate( null, dataSet, periods );
-        }
-
-        return null;
-    }
-
     public Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
         Period period, I18nFormat format, I18n i18n )
     {
@@ -435,10 +413,6 @@ public class DefaultCaseAggregationConditionService
         return aggregationConditionStore.getAggregateValueDetails( aggregationCondition, orgunit, period, format, i18n );
     }
 
-    /**
-     * Insert data elements into database directly
-     * 
-     */
     public void insertAggregateValue( CaseAggregationCondition caseAggregationCondition,
         Collection<Integer> orgunitIds, Period period )
     {
@@ -461,8 +435,8 @@ public class DefaultCaseAggregationConditionService
         Integer aggregateDeId, String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
         Collection<Integer> orgunitIds, Period period )
     {
-        return aggregationConditionStore.parseExpressionToSql( isInsert, caseExpression, operator, aggregateDeId, aggregateDeName, optionComboId,
-            optionComboName, deSumId, orgunitIds, period );
+        return aggregationConditionStore.parseExpressionToSql( isInsert, caseExpression, operator, aggregateDeId,
+            aggregateDeName, optionComboId, optionComboName, deSumId, orgunitIds, period );
     }
 
     @Override
@@ -474,6 +448,28 @@ public class DefaultCaseAggregationConditionService
     // -------------------------------------------------------------------------
     // Support Methods
     // -------------------------------------------------------------------------
+
+    @Async
+    private Future<?> aggregateValueManager( ConcurrentLinkedQueue<CaseAggregateSchedule> caseAggregateSchedule,
+        String taskStrategy )
+    {
+        taskLoop: while ( true )
+        {
+            CaseAggregateSchedule dataSet = caseAggregateSchedule.poll();
+
+            if ( dataSet == null )
+            {
+                break taskLoop;
+            }
+
+            Collection<Period> periods = aggregationConditionStore.getPeriods( dataSet.getPeriodTypeName(),
+                taskStrategy );
+
+            aggregationConditionStore.runAggregate( null, dataSet, periods );
+        }
+
+        return null;
+    }
 
     private int getProcessNo()
     {
