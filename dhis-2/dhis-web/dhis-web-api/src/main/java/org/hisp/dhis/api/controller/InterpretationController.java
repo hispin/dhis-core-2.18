@@ -36,6 +36,7 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.interpretation.Interpretation;
+import org.hisp.dhis.interpretation.InterpretationComment;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MappingService;
@@ -59,13 +60,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping(value = InterpretationController.RESOURCE_PATH)
+@RequestMapping( value = InterpretationController.RESOURCE_PATH )
 public class InterpretationController
     extends AbstractCrudController<Interpretation>
 {
@@ -120,22 +122,9 @@ public class InterpretationController
         return entityList;
     }
 
-    @Override
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        Interpretation interpretation = interpretationService.getInterpretation( uid );
-
-        if ( interpretation == null )
-        {
-            throw new NotFoundException( uid );
-        }
-
-        interpretationService.deleteInterpretation( interpretation );
-    }
-
     @RequestMapping( value = "/chart/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void shareChartInterpretation(
-        @PathVariable("uid") String chartUid,
+        @PathVariable( "uid" ) String chartUid,
         @RequestBody String text, HttpServletResponse response )
     {
         Chart chart = chartService.getChart( chartUid );
@@ -162,9 +151,9 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @RequestMapping(value = "/map/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" })
+    @RequestMapping( value = "/map/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void shareMapInterpretation(
-        @PathVariable("uid") String mapUid,
+        @PathVariable( "uid" ) String mapUid,
         @RequestBody String text, HttpServletResponse response )
     {
         Map map = mappingService.getMap( mapUid );
@@ -182,11 +171,11 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @RequestMapping(value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" })
+    @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void shareReportTableInterpretation(
-        @PathVariable("uid") String reportTableUid,
-        @RequestParam(value = "pe", required = false) String isoPeriod,
-        @RequestParam(value = "ou", required = false) String orgUnitUid,
+        @PathVariable( "uid" ) String reportTableUid,
+        @RequestParam( value = "pe", required = false ) String isoPeriod,
+        @RequestParam( value = "ou", required = false ) String orgUnitUid,
         @RequestBody String text, HttpServletResponse response )
     {
         ReportTable reportTable = reportTableService.getReportTable( reportTableUid );
@@ -219,11 +208,11 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @RequestMapping(value = "/dataSetReport/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" })
+    @RequestMapping( value = "/dataSetReport/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void shareDataSetReportInterpretation(
-        @PathVariable("uid") String dataSetUid,
-        @RequestParam("pe") String isoPeriod,
-        @RequestParam("ou") String orgUnitUid,
+        @PathVariable( "uid" ) String dataSetUid,
+        @RequestParam( "pe" ) String isoPeriod,
+        @RequestParam( "ou" ) String orgUnitUid,
         @RequestBody String text, HttpServletResponse response )
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetUid );
@@ -257,21 +246,41 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @RequestMapping(value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" })
-    public void postComment(
-        @PathVariable("uid") String uid,
-        @RequestBody String text, HttpServletResponse response )
+    @Override
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
         Interpretation interpretation = interpretationService.getInterpretation( uid );
 
         if ( interpretation == null )
         {
-            ContextUtils.conflictResponse( response, "Interpretation does not exist: " + uid );
-            return;
+            throw new NotFoundException( uid );
         }
 
-        interpretationService.addInterpretationComment( uid, text );
+        interpretationService.deleteInterpretation( interpretation );
+    }
 
-        ContextUtils.createdResponse( response, "Commented created", InterpretationController.RESOURCE_PATH + "/" + uid );
+    @RequestMapping( value = "/{uid}/comments/{cuid}", method = RequestMethod.DELETE )
+    public void deleteComment( @PathVariable( "uid" ) String uid, @PathVariable( "cuid" ) String cuid ) throws NotFoundException
+    {
+        Interpretation interpretation = interpretationService.getInterpretation( uid );
+
+        if ( interpretation == null )
+        {
+            throw new NotFoundException( uid );
+        }
+
+        Iterator<InterpretationComment> iterator = interpretation.getComments().iterator();
+
+        while ( iterator.hasNext() )
+        {
+            InterpretationComment comment = iterator.next();
+
+            if ( comment.getUid().equals( cuid ) )
+            {
+                iterator.remove();
+            }
+        }
+
+        interpretationService.updateInterpretation( interpretation );
     }
 }
