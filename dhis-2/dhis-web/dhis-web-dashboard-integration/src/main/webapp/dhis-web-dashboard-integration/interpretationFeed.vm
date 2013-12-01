@@ -24,7 +24,7 @@ jQuery(function() {
   });
 
   jQuery('.interpretationContainer').on('click', '.gearDropDown', function( e ) {
-    var jqTarget = jQuery(e.target).parents('.gearDropDown');
+    var jqTarget = jQuery(e.target).closest('.gearDropDown');
 
     jQuery('.gearDropDown').removeClass('active');
     jqTarget.addClass('active');
@@ -48,6 +48,18 @@ jQuery(function() {
 });
 
 function editIp( e ) {
+  var jqActiveGearDropDown = jQuery('.gearDropDown.active');
+  var isHeader = jqActiveGearDropDown.parents('.interpretationContent').length != 0;
+  var isComment = jqActiveGearDropDown.parents('.interpretationCommentArea').length != 0;
+  var jqInterpretation = jqActiveGearDropDown.parents('.interpretationContainer');
+  var jqInterpretationComment = jqActiveGearDropDown.parents('.interpretationComment');
+
+  var ipUid = jqInterpretation.data('ip-uid');
+  var ipCommentUid = jqInterpretationComment.data('ip-comment-uid');
+
+  if( isHeader ) {
+  } else if( isComment ) {
+  }
 }
 
 function deleteIp( e ) {
