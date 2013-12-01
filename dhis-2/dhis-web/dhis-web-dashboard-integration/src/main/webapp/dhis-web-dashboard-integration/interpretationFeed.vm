@@ -71,7 +71,7 @@ function deleteIp( e ) {
     }).done(function() {
       jqInterpretation.remove();
     }).error(function() {
-      setHeaderDelayMessage('Could not delete interpretation, please try again later');
+      setHeaderDelayMessage('$i18n.getString("could_not_delete_interpretation")');
     });
   } else if( isComment ) {
     jQuery.ajax({
@@ -80,7 +80,7 @@ function deleteIp( e ) {
     }).done(function() {
       jqInterpretationComment.remove();
     }).error(function() {
-      setHeaderDelayMessage('Could not delete interpretation comment, please try again later');
+      setHeaderDelayMessage('$i18n.getString("could_not_delete_interpretation_comment")');
     });
   }
 }
