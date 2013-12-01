@@ -24,11 +24,7 @@ jQuery(function() {
   });
 
   jQuery('.interpretationContainer').on('click', '.gearDropDown', function( e ) {
-    var jqTarget = jQuery(e.target);
-
-    while( !jqTarget.hasClass('gearDropDown') ) {
-      jqTarget = jqTarget.parent();
-    }
+    var jqTarget = jQuery(e.target).parents('.gearDropDown');
 
     jQuery('.gearDropDown').removeClass('active');
     jqTarget.addClass('active');
