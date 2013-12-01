@@ -39,6 +39,7 @@ import static org.hisp.dhis.system.util.MathUtils.isEqual;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -547,7 +548,11 @@ public class DefaultExpressionService
             {
                 final StringBuilder replace = new StringBuilder( PAR_OPEN );
 
-                for ( String coc : dataElementOptionComboMap.get( matcher.group( 1 ) ) )
+                String de = matcher.group( 1 );
+                
+                List<String> cocs = dataElementOptionComboMap.get( de );
+                
+                for ( String coc : cocs )
                 {
                     replace.append( EXP_OPEN ).append( matcher.group( 1 ) ).append( SEPARATOR ).append(
                         coc ).append( EXP_CLOSE ).append( "+" );
