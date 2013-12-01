@@ -63,21 +63,28 @@ function postComment( uid )
 	var url = "../api/interpretations/" + uid + "/comment";
 	
 	var created = getCurrentDate();
-	
+
+  var gearBox = "<div class=\"gearDropDown\">\n  <span><i class=\"fa fa-gear\"></i> <i class=\"fa fa-caret-down\"></i></span>\n</div>\n";
+
 	if ( text.length && $.trim( text ).length )
 	{
 		$.ajax( url, {
 			type: "POST",
 			contentType: "text/html",
 			data: $.trim( text ),
-			success: function() {			
-				var template = 
+			success: function(data, textStatus, request) {
+        var locationArray = request.getResponseHeader('Location').split('/');
+        var commentUid = locationArray[locationArray.length-1];
+
+				var template =
+          "<div class='interpretationComment' data-ip-comment-uid='" + commentUid + "'>" +
 					"<div><div class=\"interpretationName\">" +
 					"<a class=\"bold userLink\" href=\"profile.action?id=${userUid}\">${userName}</a>&nbsp;" +
-					"<span class=\"grey\">${created}<\/span><\/div><\/div>" +
-					"<div class=\"interpretationText\">${text}<\/div>";
-				
-				$.tmpl( template, { 
+					"<span class=\"grey\">${created}<\/span>" + gearBox + "<\/div><\/div>" +
+					"<div class=\"interpretationText\">${text}<\/div>" +
+          "</div>";
+
+				$.tmpl( template, {
 					"userId": currentUser.id,
 					"userUid": currentUser.uid,
 					"userName": currentUser.name, 

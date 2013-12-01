@@ -143,7 +143,8 @@ public class DefaultInterpretationService
         return interpretationStore.getAllOrderedLastUpdated( first, max );
     }
 
-    public void addInterpretationComment( String uid, String text )
+    @Override
+    public InterpretationComment addInterpretationComment( String uid, String text )
     {
         Interpretation interpretation = getInterpretation( uid );
 
@@ -161,6 +162,8 @@ public class DefaultInterpretationService
         interpretation.addComment( comment );
 
         interpretationStore.update( interpretation );
+
+        return comment;
     }
 
     public void updateCurrentUserLastChecked()

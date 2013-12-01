@@ -52,7 +52,7 @@ public interface InterpretationService
 
     List<Interpretation> getInterpretations( int first, int max );
 
-    void addInterpretationComment( String uid, String text );
+    InterpretationComment addInterpretationComment( String uid, String text );
 
     void updateCurrentUserLastChecked();
 
