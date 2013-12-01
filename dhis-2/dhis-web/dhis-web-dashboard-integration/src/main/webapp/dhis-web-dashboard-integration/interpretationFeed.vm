@@ -12,24 +12,30 @@
 
 <script>
 jQuery(function() {
-  var gearDropDown = jQuery('.gearDropDown');
   var dropDown = jQuery('.dropDown');
 
-  gearDropDown.on('click', function( e ) {
-    gearDropDown.addClass('active');
+  jQuery('.gearDropDown').on('click', function( e ) {
+    var jqTarget = jQuery(e.target);
+
+    while( !jqTarget.hasClass('gearDropDown') ) {
+      jqTarget = jqTarget.parent();
+    }
+
+    jqTarget.addClass('active');
+
     dropDown.show();
 
-    dropDown.offset({
-      'top': gearDropDown.offset().top + 24,
-      'left': gearDropDown.offset().left - 35
+    dropDown.css({
+      top: jqTarget.offset().top + jqTarget.innerHeight(),
+      left: jqTarget.offset().left
     });
 
     return false;
   });
 
-  $(document).on('click', function() {
+  jQuery(document).on('click', function() {
     if( dropDown.is(":visible") ) {
-      gearDropDown.removeClass('active');
+      jQuery('.gearDropDown').removeClass('active');
       dropDown.hide();
     }
   });
@@ -66,7 +72,7 @@ jQuery(function() {
   z-index                    : 10;
   border-bottom-left-radius  : 3px;
   border-bottom-right-radius : 3px;
-  box-shadow                 : #ccc 0px 1px 1px 0px;
+  box-shadow                 : #ccc 0 1px 1px 0;
 }
 
 .dropDown > ul {
