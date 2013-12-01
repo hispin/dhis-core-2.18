@@ -14,6 +14,15 @@
 jQuery(function() {
   var dropDown = jQuery('.dropDown');
 
+  dropDown.on('click.dropdown', 'li', function(e) {
+    var jqTarget = jQuery(e.target).closest('li');
+    var targetFn = dhis2.contextmenu.utils.findFnInWindowScope(jqTarget.data('target-fn'));
+
+    if( typeof targetFn !== 'undefined' ) {
+      targetFn( e );
+    }
+  });
+
   jQuery('.gearDropDown').on('click', function( e ) {
     var jqTarget = jQuery(e.target);
 
@@ -40,6 +49,31 @@ jQuery(function() {
     }
   });
 });
+
+function editIp( e ) {
+}
+
+function deleteIp( e ) {
+  var jqTarget = jQuery(e.target);
+  var jqActiveGearDropDown = jQuery('.gearDropDown.active');
+  var isHeader = jqActiveGearDropDown.parents('.interpretationName').length != 0;
+  var isComment = jqActiveGearDropDown.parents('.interpretationCommentArea').length != 0;
+  var jqInterpretation = jqActiveGearDropDown.parents('.interpretation');
+  var uid = jqInterpretation.data('ip-uid');
+
+  if( isHeader ) {
+    jQuery.ajax({
+      url: '../api/interpretations/' + uid,
+      type: 'DELETE'
+    }).done(function() {
+      jqInterpretation.parents('.interpretationContainer').remove();
+    }).error(function() {
+      setHeaderDelayMessage('Could not delete interpretation, please try again later');
+    });
+  } else if( isComment ) {
+
+  }
+}
 </script>
 
 <style>
@@ -97,7 +131,6 @@ jQuery(function() {
   text-decoration  : none;
   background-color : #eee;
 }
-
 </style>
 
 #macro( gearDropDown )
@@ -108,8 +141,8 @@ jQuery(function() {
 
 <div class="dropDown">
   <ul>
-    <li><a>Edit</a></li>
-    <li><a>Delete</a></li>
+    <li data-target-fn="editIp" ><a>$i18n.getString('edit')</a></li>
+    <li data-target-fn="deleteIp"><a>$i18n.getString('delete')</a></li>
   </ul>
 </div>
 
@@ -119,7 +152,7 @@ jQuery(function() {
     #if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end
     #if( $ip.period )#set( $pe = "&pe=" + $ip.period.isoDate )#else#set( $pe = "" )#end
 
-    <div class="interpretation">
+    <div class="interpretation" data-ip-uid="$ip.uid">
 	    <div class="interpretationName">
 	    	<div class="interpretationSymbol">
 	    	  #getSymbol( $ip )

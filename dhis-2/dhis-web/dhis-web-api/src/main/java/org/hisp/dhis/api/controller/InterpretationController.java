@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
@@ -54,6 +55,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,7 +65,7 @@ import java.util.List;
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = InterpretationController.RESOURCE_PATH )
+@RequestMapping(value = InterpretationController.RESOURCE_PATH)
 public class InterpretationController
     extends AbstractCrudController<Interpretation>
 {
@@ -118,9 +120,22 @@ public class InterpretationController
         return entityList;
     }
 
+    @Override
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        Interpretation interpretation = interpretationService.getInterpretation( uid );
+
+        if ( interpretation == null )
+        {
+            throw new NotFoundException( uid );
+        }
+
+        interpretationService.deleteInterpretation( interpretation );
+    }
+
     @RequestMapping( value = "/chart/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void shareChartInterpretation(
-        @PathVariable( "uid" ) String chartUid,
+        @PathVariable("uid") String chartUid,
         @RequestBody String text, HttpServletResponse response )
     {
         Chart chart = chartService.getChart( chartUid );
@@ -147,9 +162,9 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @RequestMapping( value = "/map/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    @RequestMapping(value = "/map/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" })
     public void shareMapInterpretation(
-        @PathVariable( "uid" ) String mapUid,
+        @PathVariable("uid") String mapUid,
         @RequestBody String text, HttpServletResponse response )
     {
         Map map = mappingService.getMap( mapUid );
@@ -167,11 +182,11 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    @RequestMapping(value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" })
     public void shareReportTableInterpretation(
-        @PathVariable( "uid" ) String reportTableUid,
-        @RequestParam( value = "pe", required = false ) String isoPeriod,
-        @RequestParam( value = "ou", required = false ) String orgUnitUid,
+        @PathVariable("uid") String reportTableUid,
+        @RequestParam(value = "pe", required = false) String isoPeriod,
+        @RequestParam(value = "ou", required = false) String orgUnitUid,
         @RequestBody String text, HttpServletResponse response )
     {
         ReportTable reportTable = reportTableService.getReportTable( reportTableUid );
@@ -204,11 +219,11 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @RequestMapping( value = "/dataSetReport/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    @RequestMapping(value = "/dataSetReport/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" })
     public void shareDataSetReportInterpretation(
-        @PathVariable( "uid" ) String dataSetUid,
-        @RequestParam( "pe" ) String isoPeriod,
-        @RequestParam( "ou" ) String orgUnitUid,
+        @PathVariable("uid") String dataSetUid,
+        @RequestParam("pe") String isoPeriod,
+        @RequestParam("ou") String orgUnitUid,
         @RequestBody String text, HttpServletResponse response )
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetUid );
@@ -242,19 +257,19 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    @RequestMapping(value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" })
     public void postComment(
-        @PathVariable( "uid" ) String uid,
+        @PathVariable("uid") String uid,
         @RequestBody String text, HttpServletResponse response )
     {
         Interpretation interpretation = interpretationService.getInterpretation( uid );
-        
+
         if ( interpretation == null )
         {
             ContextUtils.conflictResponse( response, "Interpretation does not exist: " + uid );
             return;
         }
-        
+
         interpretationService.addInterpretationComment( uid, text );
 
         ContextUtils.createdResponse( response, "Commented created", InterpretationController.RESOURCE_PATH + "/" + uid );
