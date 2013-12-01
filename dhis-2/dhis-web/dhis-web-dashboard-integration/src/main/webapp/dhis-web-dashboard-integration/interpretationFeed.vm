@@ -134,7 +134,7 @@ function deleteIp( e ) {
 </style>
 
 #macro( gearDropDown $user )
-  #if( $!currentUser.username != $!user.username )
+  #if( $currentUser == $user )
   <div class="gearDropDown">
     <span><i class="fa fa-gear"></i> <i class="fa fa-caret-down"></i></span>
   </div>
