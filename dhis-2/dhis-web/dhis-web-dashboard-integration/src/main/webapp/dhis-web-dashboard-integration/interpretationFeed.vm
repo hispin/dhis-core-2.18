@@ -133,10 +133,12 @@ function deleteIp( e ) {
 }
 </style>
 
-#macro( gearDropDown )
-<div class="gearDropDown">
-  <span><i class="fa fa-gear"></i> <i class="fa fa-caret-down"></i></span>
-</div>
+#macro( gearDropDown $user )
+  #if( $!currentUser.username != $!user.username )
+  <div class="gearDropDown">
+    <span><i class="fa fa-gear"></i> <i class="fa fa-caret-down"></i></span>
+  </div>
+  #end
 #end
 
 <div class="dropDown">
@@ -161,7 +163,7 @@ function deleteIp( e ) {
            <a class="bold userLink" href="profile.action?id=${ip.user.uid}">${encoder.htmlEncode( $ip.user.name )}</a><br>
            <span class="tipText">${format.formatDate( $ip.created )}</span>
         </div>
-        #gearDropDown()
+        #gearDropDown( $ip.user )
 	    </div>
 	    <div class="interpretationText">
 	        $!dhisTextUtils.htmlify( ${ip.text} )
@@ -198,10 +200,11 @@ function deleteIp( e ) {
         	#end
         	<div id="comments${ip.uid}">
 	        #foreach( $comment in $comments )
-	        <div #if( $velocityCount <= $commentStartPos ) style="display:none"#end>
+	        <div #if( $velocityCount <= $commentStartPos ) style="display:none"#end class="interpretationComment" data-ip-comment-uid="$comment.uid">
 	            <div class="interpretationName">
-	                <a class="bold userLink" href="profile.action?id=${comment.user.uid}">${comment.user.name}</a>&nbsp;
-	                <span class="grey">${format.formatDate( $comment.created )}</span>
+                <a class="bold userLink" href="profile.action?id=${comment.user.uid}">${comment.user.name}</a>&nbsp;
+                <span class="grey">${format.formatDate( $comment.created )}</span>
+                #gearDropDown( $comment.user )
 	            </div>
 		        <div class="interpretationText">
 		            $!dhisTextUtils.htmlify( ${comment.text} )
@@ -209,8 +212,10 @@ function deleteIp( e ) {
             </div>
 	        #end
 	        </div>
-	        <textarea id="commentArea${ip.uid}" class="commentArea" placeholder="$i18n.getString( 'add_a_comment' )..."></textarea>
-	        <input type="button" class="commentButton" value="Post comment" onclick="postComment( '${ip.uid}' )">
+          <div style="clear: none;">
+            <textarea id="commentArea${ip.uid}" class="commentArea" placeholder="$i18n.getString( 'add_a_comment' )..."></textarea>
+            <input type="button" class="commentButton" value="Post comment" onclick="postComment( '${ip.uid}' )">
+          </div>
 	    </div>
     </div>
 </div>
