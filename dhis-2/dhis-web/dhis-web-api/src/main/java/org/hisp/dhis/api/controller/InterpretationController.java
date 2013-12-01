@@ -122,6 +122,19 @@ public class InterpretationController
         return entityList;
     }
 
+    @Override
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        Interpretation interpretation = interpretationService.getInterpretation( uid );
+
+        if ( interpretation == null )
+        {
+            throw new NotFoundException( uid );
+        }
+
+        interpretationService.deleteInterpretation( interpretation );
+    }
+
     @RequestMapping( value = "/chart/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void shareChartInterpretation(
         @PathVariable( "uid" ) String chartUid,
@@ -246,19 +259,6 @@ public class InterpretationController
         ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
-    @Override
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        Interpretation interpretation = interpretationService.getInterpretation( uid );
-
-        if ( interpretation == null )
-        {
-            throw new NotFoundException( uid );
-        }
-
-        interpretationService.deleteInterpretation( interpretation );
-    }
-
     @RequestMapping( value = "/{uid}/comments/{cuid}", method = RequestMethod.DELETE )
     public void deleteComment( @PathVariable( "uid" ) String uid, @PathVariable( "cuid" ) String cuid ) throws NotFoundException
     {
@@ -282,5 +282,23 @@ public class InterpretationController
         }
 
         interpretationService.updateInterpretation( interpretation );
+    }
+
+    @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    public void postComment(
+        @PathVariable( "uid" ) String uid,
+        @RequestBody String text, HttpServletResponse response )
+    {
+        Interpretation interpretation = interpretationService.getInterpretation( uid );
+
+        if ( interpretation == null )
+        {
+            ContextUtils.conflictResponse( response, "Interpretation does not exist: " + uid );
+            return;
+        }
+
+        interpretationService.addInterpretationComment( uid, text );
+
+        ContextUtils.createdResponse( response, "Commented created", InterpretationController.RESOURCE_PATH + "/" + uid );
     }
 }
