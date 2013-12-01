@@ -28,6 +28,14 @@ package org.hisp.dhis.dxf2.events;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 import org.hamcrest.CoreMatchers;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -41,20 +49,13 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -221,7 +222,7 @@ public class EnrollmentServiceTest
         assertEquals( maleA.getUid(), enrollment.getPerson() );
         assertEquals( programA.getUid(), enrollment.getProgram() );
 
-        Date MARCH_20_81 = new Date( 81, 2, 20 );
+        Date MARCH_20_81 = new Cal( 81, 2, 20 ).time();
 
         enrollment.setDateOfEnrollment( MARCH_20_81 );
         enrollmentService.updateEnrollment( enrollment );

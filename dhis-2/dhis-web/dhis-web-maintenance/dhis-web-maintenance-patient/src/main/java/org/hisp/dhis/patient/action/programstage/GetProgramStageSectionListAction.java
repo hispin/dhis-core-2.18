@@ -34,7 +34,6 @@ import java.util.List;
 
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageSection;
-import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.comparator.ProgramStageSectionSortOrderComparator;
 
@@ -56,13 +55,6 @@ public class GetProgramStageSectionListAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
-    }
-
-    private ProgramStageSectionService programStageSectionService;
-
-    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
-    {
-        this.programStageSectionService = programStageSectionService;
     }
 
     // -------------------------------------------------------------------------

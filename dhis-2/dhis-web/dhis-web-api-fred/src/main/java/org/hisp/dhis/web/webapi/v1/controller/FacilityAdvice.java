@@ -62,8 +62,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
-import java.io.IOException;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -75,7 +73,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
     //--------------------------------------------------------------------------
 
     @ExceptionHandler({ HttpClientErrorException.class, HttpServerErrorException.class })
-    public ResponseEntity<String> statusCodeExceptionHandler( HttpStatusCodeException ex ) throws IOException
+    public ResponseEntity<String> statusCodeExceptionHandler( HttpStatusCodeException ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
@@ -85,7 +83,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler({ DeleteNotAllowedException.class, HierarchyViolationException.class })
-    public ResponseEntity<String> handleForbidden( Exception ex ) throws IOException
+    public ResponseEntity<String> handleForbidden( Exception ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
@@ -95,7 +93,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler( { ETagVerificationException.class, UuidFormatException.class } )
-    public ResponseEntity<String> handlePreconditionFailed( Exception ex ) throws IOException
+    public ResponseEntity<String> handlePreconditionFailed( Exception ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
@@ -105,7 +103,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler({ FacilityNotFoundException.class })
-    public ResponseEntity<String> handleNotFound( Exception ex ) throws IOException
+    public ResponseEntity<String> handleNotFound( Exception ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
@@ -115,7 +113,7 @@ public class FacilityAdvice extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler({ DuplicateCodeException.class, DuplicateUidException.class, DuplicateUuidException.class })
-    public ResponseEntity<String> handleConflict( Exception ex ) throws IOException
+    public ResponseEntity<String> handleConflict( Exception ex )
     {
         HttpHeaders headers = new HttpHeaders();
         headers.add( "Content-Type", MediaType.APPLICATION_JSON_VALUE );
