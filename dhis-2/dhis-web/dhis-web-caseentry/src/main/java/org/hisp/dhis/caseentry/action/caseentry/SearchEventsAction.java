@@ -269,8 +269,6 @@ public class SearchEventsAction
         this.useFormNameDataElement = useFormNameDataElement;
     }
 
-    private boolean accessPrivateInfo = false;
-
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
