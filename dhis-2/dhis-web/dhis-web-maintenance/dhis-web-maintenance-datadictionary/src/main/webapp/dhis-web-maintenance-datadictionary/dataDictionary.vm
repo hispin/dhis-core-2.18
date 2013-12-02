@@ -16,11 +16,11 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
-    #if( $security.canManage( $dataDictionary ) )<li><a data-target-fn="showSharingDialogWithContext">$i18n.getString( "sharing_settings" )</a></li>#end
-    #if( $security.canUpdate( $dataDictionary ) )<li><a data-target-fn="showUpdateDataDictionaryForm">$i18n.getString( "edit" )</a></li>#end
-    #if( $security.canUpdate( $dataDictionary ) )<li><a data-target-fn="translateWithContext">$i18n.getString( "translation_translate" )</a></li>#end
-    #if( $security.canDelete( $dataDictionary ) )<li><a data-target-fn="removeDataDictionary">$i18n.getString( "remove" )</a></li>#end
-    <li><a data-target-fn="showDataDictionaryDetails">$i18n.getString( "show_details" )</a></li>
+    #if( $security.canManage( $dataDictionary ) )<li><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>#end
+    #if( $security.canUpdate( $dataDictionary ) )<li><a data-target-fn="showUpdateDataDictionaryForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>#end
+    #if( $security.canUpdate( $dataDictionary ) )<li><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>#end
+    #if( $security.canDelete( $dataDictionary ) )<li><a data-target-fn="removeDataDictionary"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>#end
+    <li><a data-target-fn="showDataDictionaryDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
   </ul>
 </div>
 
