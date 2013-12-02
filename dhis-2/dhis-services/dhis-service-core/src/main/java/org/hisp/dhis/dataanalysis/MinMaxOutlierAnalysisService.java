@@ -51,6 +51,8 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.MathUtils;
 
+import static org.hisp.dhis.dataelement.DataElement.*;
+
 /**
  * @author Lars Helge Overland
  */
@@ -124,7 +126,7 @@ public class MinMaxOutlierAnalysisService
         
         for ( DataElement dataElement : dataElements )
         {
-            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            if ( VALUE_TYPE_INT.equals( dataElement.getType() ) )
             {
                 Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();
 
@@ -143,6 +145,16 @@ public class MinMaxOutlierAnalysisService
                         {
                             int min = (int) MathUtils.getLowBound( stdDev, stdDevFactor, avg );
                             int max = (int) MathUtils.getHighBound( stdDev, stdDevFactor, avg );
+                            
+                            if ( VALUE_TYPE_POSITIVE_INT.equals( dataElement.getNumberType() ) || VALUE_TYPE_ZERO_OR_POSITIVE_INT.equals( dataElement.getNumberType() ) )
+                            {
+                                min = Math.max( 0, min ); // Cannot be < 0
+                            }
+                            
+                            if ( VALUE_TYPE_NEGATIVE_INT.equals( dataElement.getNumberType() ) )
+                            {
+                                max = Math.min( 0, max ); // Cannot be > 0
+                            }
                             
                             OrganisationUnit source = new OrganisationUnit();
                             source.setId( unit );
