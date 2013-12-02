@@ -161,8 +161,8 @@ function deleteIp( e ) {
 
 <div class="dropDown">
   <ul>
-    <li data-target-fn="editIp"><a><i class="fa fa-edit"></i> $i18n.getString('edit')</a></li>
-    <li data-target-fn="deleteIp"><a><i class="fa fa-trash-o"></i> $i18n.getString('delete')</a></li>
+    <li data-target-fn="editIp"><a><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString('edit')</a></li>
+    <li data-target-fn="deleteIp"><a><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString('delete')</a></li>
   </ul>
 </div>
 
