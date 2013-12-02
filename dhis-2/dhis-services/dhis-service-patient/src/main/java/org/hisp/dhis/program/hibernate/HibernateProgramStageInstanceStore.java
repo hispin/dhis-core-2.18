@@ -574,7 +574,7 @@ public class HibernateProgramStageInstanceStore
     private String sendMessageToPatientSql()
     {
         return "select psi.programstageinstanceid, p.phonenumber, prm.templatemessage, p.name, org.name as orgunitName "
-            + ",pg.name as programName, ps.name as programStageName, psi.duedate,(now() - psi.duedate ) as days_since_due_date "
+            + ",pg.name as programName, ps.name as programStageName, psi.duedate,(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "from patient p INNER JOIN programinstance pi "
             + "     ON p.patientid=pi.patientid "
             + " INNER JOIN programstageinstance psi  "
@@ -587,13 +587,13 @@ public class HibernateProgramStageInstanceStore
             + "     ON org.organisationunitid = p.organisationunitid "
             + " INNER JOIN patientreminder prm  "
             + "     ON prm.programstageid = ps.programstageid "
-            + " WHERE pi.status="
+            + "WHERE pi.status="
             + ProgramInstance.STATUS_ACTIVE
             + "     and p.phonenumber is not NULL and p.phonenumber != '' "
             + "     and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "     and pg.type=1 and prm.daysallowedsendmessage is not null  "
             + "     and psi.executiondate is null "
-            + "     and ( now() - psi.duedate ) = prm.daysallowedsendmessage "
+            + "     and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "     and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_PATIENT;
     }
 
@@ -601,7 +601,7 @@ public class HibernateProgramStageInstanceStore
     {
         return "SELECT psi.programstageinstanceid, uif.phonenumber, prm.templatemessage, p.name, org.name as orgunitName, "
             + "pg.name as programName, ps.name as programStageName, psi.duedate, "
-            + "         (now() - psi.duedate ) as days_since_due_date "
+            + "         (DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + " FROM patient p INNER JOIN programinstance pi "
             + "          ON p.patientid=pi.patientid "
             + "           INNER JOIN programstageinstance psi  "
@@ -624,7 +624,7 @@ public class HibernateProgramStageInstanceStore
             + "               and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "               and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "               and psi.executiondate is null "
-            + "               and (  now() - psi.duedate ) = prm.daysallowedsendmessage "
+            + "               and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "               and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_HEALTH_WORKER;
     }
 
@@ -632,7 +632,7 @@ public class HibernateProgramStageInstanceStore
     {
         return "select psi.programstageinstanceid, ou.phonenumber, prm.templatemessage, p.name, org.name as orgunitName, "
             + "pg.name as programName, ps.name as programStageName, psi.duedate,"
-            + "(now() - psi.duedate) as days_since_due_date "
+            + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "            from patient p INNER JOIN programinstance pi "
             + "               ON p.patientid=pi.patientid "
             + "           INNER JOIN programstageinstance psi "
@@ -653,7 +653,7 @@ public class HibernateProgramStageInstanceStore
             + "               and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "               and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "               and psi.executiondate is null "
-            + "               and (now() - psi.duedate ) = prm.daysallowedsendmessage "
+            + "               and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "               and prm.whentosend is null and prm.sendto = "
             + +PatientReminder.SEND_TO_ORGUGNIT_REGISTERED;
     }
@@ -662,7 +662,7 @@ public class HibernateProgramStageInstanceStore
     {
         return "select psi.programstageinstanceid, uif.phonenumber,prm.templatemessage, p.name, org.name as orgunitName ,"
             + " pg.name as programName, ps.name as programStageName, psi.duedate, "
-            + "(now() - psi.duedate ) as days_since_due_date "
+            + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "  from patient p INNER JOIN programinstance pi "
             + "       ON p.patientid=pi.patientid "
             + "   INNER JOIN programstageinstance psi "
@@ -685,7 +685,7 @@ public class HibernateProgramStageInstanceStore
             + "       and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "       and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "       and psi.executiondate is null "
-            + "       and ( now() - psi.duedate ) = prm.daysallowedsendmessage "
+            + "       and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "       and prm.whentosend is null and prm.sendto = "
             + PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED;
     }
@@ -694,7 +694,7 @@ public class HibernateProgramStageInstanceStore
     {
         return "select psi.programstageinstanceid, uif.phonenumber,prm.templatemessage, p.name, org.name as orgunitName ,"
             + " pg.name as programName, ps.name as programStageName, psi.duedate, "
-            + "(now() - psi.duedate) as days_since_due_date "
+            + "(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "  from patient p INNER JOIN programinstance pi "
             + "       ON p.patientid=pi.patientid "
             + "   INNER JOIN programstageinstance psi "
@@ -717,7 +717,7 @@ public class HibernateProgramStageInstanceStore
             + "       and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "       and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "       and psi.executiondate is not null "
-            + "       and (  now() - psi.duedate ) = prm.daysallowedsendmessage "
+            + "       and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "       and prm.whentosend is null " + "       and prm.sendto = " + PatientReminder.SEND_TO_USER_GROUP;
     }
 
