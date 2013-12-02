@@ -85,3 +85,51 @@ function postComment( uid ) {
     });
   }
 }
+
+// DropDown Actions
+
+function editIp( e ) {
+  var jqActiveGearDropDown = jQuery('.gearDropDown.active');
+  var isHeader = jqActiveGearDropDown.parents('.interpretationContent').length != 0;
+  var isComment = jqActiveGearDropDown.parents('.interpretationCommentArea').length != 0;
+  var jqInterpretation = jqActiveGearDropDown.parents('.interpretationContainer');
+  var jqInterpretationComment = jqActiveGearDropDown.parents('.interpretationComment');
+
+  var ipUid = jqInterpretation.data('ip-uid');
+  var ipCommentUid = jqInterpretationComment.data('ip-comment-uid');
+
+  if( isHeader ) {
+  } else if( isComment ) {
+  }
+}
+
+function deleteIp( e ) {
+  var jqActiveGearDropDown = jQuery('.gearDropDown.active');
+  var isHeader = jqActiveGearDropDown.parents('.interpretationContent').length != 0;
+  var isComment = jqActiveGearDropDown.parents('.interpretationCommentArea').length != 0;
+  var jqInterpretation = jqActiveGearDropDown.parents('.interpretationContainer');
+  var jqInterpretationComment = jqActiveGearDropDown.parents('.interpretationComment');
+
+  var ipUid = jqInterpretation.data('ip-uid');
+  var ipCommentUid = jqInterpretationComment.data('ip-comment-uid');
+
+  if( isHeader ) {
+    jQuery.ajax({
+      url: '../api/interpretations/' + ipUid,
+      type: 'DELETE'
+    }).done(function() {
+      jqInterpretation.remove();
+    }).error(function() {
+      setHeaderDelayMessage('$i18n.getString("could_not_delete_interpretation")');
+    });
+  } else if( isComment ) {
+    jQuery.ajax({
+      url: '../api/interpretations/' + ipUid + '/comments/' + ipCommentUid,
+      type: 'DELETE'
+    }).done(function() {
+      jqInterpretationComment.remove();
+    }).error(function() {
+      setHeaderDelayMessage('$i18n.getString("could_not_delete_interpretation_comment")');
+    });
+  }
+}
