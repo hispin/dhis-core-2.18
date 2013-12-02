@@ -99,8 +99,44 @@ function editIp( e ) {
   var ipCommentUid = jqInterpretationComment.data('ip-comment-uid');
 
   if( isHeader ) {
+    var jqTarget = jqInterpretation.find('.interpretationContent').find('.interpretationText');
+    setupTextArea(ipUid, ipCommentUid,jqTarget );
   } else if( isComment ) {
+    var jqTarget = jqInterpretationComment.find('.interpretationText');
+    setupTextArea(ipUid, ipCommentUid,jqTarget );
   }
+}
+
+function setupTextArea( ipUid, ipCommentUid, $target ) {
+  var oldContent = $target.html().trim();
+
+  var textArea = jQuery("<textarea />")
+    .css({ 'width': '100%', 'height': '80px' })
+    .uniqueId()
+    .html(oldContent);
+
+  var container = jQuery("<div />")
+    .uniqueId()
+    .append(textArea);
+
+  var cancelButton = jQuery("<button/>")
+    .text('Cancel')
+    .on('click', function( e ) {
+      $target.html(oldContent);
+    });
+
+  var saveButton = jQuery("<button/>")
+    .text('Save')
+    .on('click', function( e ) {
+      alert('save is not implemented');
+    });
+
+  container.append(cancelButton);
+  container.append(saveButton);
+
+  $target.html(container);
+
+  textArea.focus();
 }
 
 function deleteIp( e ) {
