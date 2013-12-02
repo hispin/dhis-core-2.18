@@ -354,7 +354,7 @@ Ext.onReady( function() {
 									return;
 								}
 
-								ns.core.web.pivot.createTable(layout, false);
+								ns.core.web.pivot.getData(layout, false);
 
 								window.hide();
 							});
@@ -709,7 +709,7 @@ Ext.onReady( function() {
 							return;
 						}
 
-						ns.core.web.pivot.createTable(layout, false);
+						ns.core.web.pivot.getData(layout, false);
 
 						window.hide();
 					}
@@ -1940,7 +1940,7 @@ Ext.onReady( function() {
 			// mouse events
 			web.events = web.events || {};
 
-			web.events.setMouseHandlers = function(layout, response, uuidDimUuidsMap, uuidObjectMap) {
+			web.events.setValueMouseHandlers = function(layout, response, uuidDimUuidsMap, uuidObjectMap) {
 				var valueEl;
 
 				for (var key in uuidDimUuidsMap) {
@@ -1948,18 +1948,22 @@ Ext.onReady( function() {
 						valueEl = Ext.get(key);
 
 						if (parseFloat(valueEl.dom.textContent)) {
-							valueEl.dom.onMouseClick = web.events.onMouseClick;
+							valueEl.dom.onValueMouseClick = web.events.onValueMouseClick;
+							valueEl.dom.onValueMouseOver = web.events.onValueMouseOver;
+							valueEl.dom.onValueMouseOut = web.events.onValueMouseOut;
 							valueEl.dom.layout = layout;
 							valueEl.dom.response = response;
 							valueEl.dom.uuidDimUuidsMap = uuidDimUuidsMap;
 							valueEl.dom.uuidObjectMap = uuidObjectMap;
-							valueEl.dom.setAttribute('onclick', 'this.onMouseClick(this.layout, this.response, this.uuidDimUuidsMap, this.uuidObjectMap, this.id);');
+							valueEl.dom.setAttribute('onclick', 'this.onValueMouseClick(this.layout, this.response, this.uuidDimUuidsMap, this.uuidObjectMap, this.id);');
+							valueEl.dom.setAttribute('onmouseover', 'this.onValueMouseOver(this.id);');
+							valueEl.dom.setAttribute('onmouseout', 'this.onValueMouseOut(this.id);');
 						}
 					}
 				}
 			};
 
-			web.events.onMouseClick = function(layout, response, uuidDimUuidsMap, uuidObjectMap, uuid) {
+			web.events.onValueMouseClick = function(layout, response, uuidDimUuidsMap, uuidObjectMap, uuid) {
 				var uuids = uuidDimUuidsMap[uuid],
 					layoutConfig = Ext.clone(layout),
 					parentGraphMap = ns.app.viewport.treePanel.getParentGraphMap(),
@@ -2018,11 +2022,11 @@ Ext.onReady( function() {
 							listeners: {
 								render: function() {
 									this.getEl().on('mouseover', function() {
-										web.events.onMouseHover(uuidDimUuidsMap, uuid, 'mouseover', 'chart');
+										web.events.onValueMenuMouseHover(uuidDimUuidsMap, uuid, 'mouseover', 'chart');
 									});
 
 									this.getEl().on('mouseout', function() {
-										web.events.onMouseHover(uuidDimUuidsMap, uuid, 'mouseout', 'chart');
+										web.events.onValueMenuMouseHover(uuidDimUuidsMap, uuid, 'mouseout', 'chart');
 									});
 								}
 							}
@@ -2038,11 +2042,11 @@ Ext.onReady( function() {
 							listeners: {
 								render: function() {
 									this.getEl().on('mouseover', function() {
-										web.events.onMouseHover(uuidDimUuidsMap, uuid, 'mouseover', 'map');
+										web.events.onValueMenuMouseHover(uuidDimUuidsMap, uuid, 'mouseover', 'map');
 									});
 
 									this.getEl().on('mouseout', function() {
-										web.events.onMouseHover(uuidDimUuidsMap, uuid, 'mouseout', 'map');
+										web.events.onValueMenuMouseHover(uuidDimUuidsMap, uuid, 'mouseout', 'map');
 									});
 								}
 							}
@@ -2061,9 +2065,18 @@ Ext.onReady( function() {
 				}());
 			};
 
-			web.events.onMouseHover = function(uuidDimUuidsMap, uuid, event, param) {
+			web.events.onValueMouseOver = function(uuid) {
+				Ext.get(uuid).addCls('highlighted');
+			};
+
+			web.events.onValueMouseOut = function(uuid) {
+				Ext.get(uuid).removeCls('highlighted');
+			};
+
+			web.events.onValueMenuMouseHover = function(uuidDimUuidsMap, uuid, event, param) {
 				var dimUuids;
 
+				// dimension elements
 				if (param === 'chart') {
 					if (Ext.isString(uuid) && Ext.isArray(uuidDimUuidsMap[uuid])) {
 						dimUuids = uuidDimUuidsMap[uuid];
@@ -2082,6 +2095,48 @@ Ext.onReady( function() {
 						}
 					}
 				}
+			};
+
+			web.events.setColumnHeaderMouseHandlers = function(xLayout, response) {
+				if (Ext.isArray(xLayout.sortableIdObjects)) {
+					for (var i = 0, obj, el; i < xLayout.sortableIdObjects.length; i++) {
+						obj = xLayout.sortableIdObjects[i];
+						el = Ext.get(obj.uuid);
+
+						el.dom.xLayout = xLayout;
+						el.dom.response = response;
+						el.dom.metaDataId = obj.id;
+						el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
+						el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
+						el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
+
+						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.xLayout, this.response, this.metaDataId)');
+						el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
+						el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
+					}
+				}
+			};
+
+			web.events.onColumnHeaderMouseClick = function(xLayout, response, id) {
+				if (xLayout.sorting && xLayout.sorting.id === id) {
+					xLayout.sorting.direction = support.prototype.str.toggleDirection(xLayout.sorting.direction);
+				}
+				else {
+					xLayout.sorting = {
+						id: id,
+						direction: 'DESC'
+					};
+				}
+
+				ns.core.web.pivot.sort(xLayout, response, id);
+			};
+
+			web.events.onColumnHeaderMouseOver = function(el) {
+				Ext.get(el).addCls('pointer highlighted');
+			};
+
+			web.events.onColumnHeaderMouseOut = function(el) {
+				Ext.get(el).removeCls('pointer highlighted');
 			};
 
 			// pivot
@@ -2163,13 +2218,13 @@ Ext.onReady( function() {
 							layout = api.layout.Layout(layoutConfig);
 
 						if (layout) {
-							web.pivot.createTable(layout, true);
+							web.pivot.getData(layout, true);
 						}
 					}
 				});
 			};
 
-			web.pivot.createTable = function(layout, isUpdateGui) {
+			web.pivot.getData = function(layout, isUpdateGui) {
 				var xLayout,
 					paramString;
 
@@ -2200,11 +2255,7 @@ Ext.onReady( function() {
 						alert(r.responseText);
 					},
 					success: function(r) {
-						var response = api.response.Response(Ext.decode(r.responseText)),
-							xResponse,
-							xColAxis,
-							xRowAxis,
-							config;
+						var response = api.response.Response(Ext.decode(r.responseText));
 
 						if (!response) {
 							web.mask.hide(ns.app.centerRegion);
@@ -2219,42 +2270,100 @@ Ext.onReady( function() {
 							return;
 						}
 
-						// extend response
-						xResponse = service.response.getExtendedResponse(xLayout, response);
-
-						// extended axes
-						xColAxis = service.layout.getExtendedAxis(xLayout, xResponse, 'col');
-						xRowAxis = service.layout.getExtendedAxis(xLayout, xResponse, 'row');
-
-						// update viewport
-						config = web.pivot.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
-						ns.app.centerRegion.removeAll(true);
-						ns.app.centerRegion.update(config.html);
-
-						// after render
-						ns.app.layout = layout;
-						ns.app.xLayout = xLayout;
-						ns.app.response = response;
-						ns.app.xResponse = xResponse;
 						ns.app.paramString = paramString;
-						ns.app.uuidDimUuidsMap = config.uuidDimUuidsMap;
-						ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
 
-						if (NS.isSessionStorage) {
-							web.events.setMouseHandlers(layout, response, ns.app.uuidDimUuidsMap, ns.app.uuidObjectMap);
-							web.storage.session.set(layout, 'table');
-						}
-
-						ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
-
-						web.mask.hide(ns.app.centerRegion);
-
-						if (NS.isDebug) {
-							console.log("core", ns.core);
-							console.log("app", ns.app);
-						}
+						web.pivot.createTable(layout, xLayout, response, isUpdateGui);
 					}
 				});
+			};
+
+			web.pivot.createTable = function(layout, xLayout, response, isUpdateGui) {
+				var xResponse,
+					xColAxis,
+					xRowAxis,
+					config;
+
+				if (!xLayout) {
+					xLayout = service.layout.getExtendedLayout(layout);
+				}
+
+				// extend response
+				xResponse = service.response.getExtendedResponse(xLayout, response);
+
+				// extended axes
+				xColAxis = service.layout.getExtendedAxis(xLayout, xResponse, 'col');
+				xRowAxis = service.layout.getExtendedAxis(xLayout, xResponse, 'row');
+
+				// update viewport
+				config = web.pivot.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
+				ns.app.centerRegion.removeAll(true);
+				ns.app.centerRegion.update(config.html);
+
+				// after render
+				ns.app.layout = layout;
+				ns.app.xLayout = xLayout;
+				ns.app.response = response;
+				ns.app.xResponse = xResponse;
+				ns.app.uuidDimUuidsMap = config.uuidDimUuidsMap;
+				ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
+
+				if (NS.isSessionStorage) {
+					web.events.setValueMouseHandlers(layout, response, ns.app.uuidDimUuidsMap, ns.app.uuidObjectMap);
+					web.events.setColumnHeaderMouseHandlers(xLayout, response);
+					web.storage.session.set(layout, 'table');
+				}
+
+
+
+							//valueEl.dom.onValueMouseClick = web.events.onValueMouseClick;
+							//valueEl.dom.layout = layout;
+							//valueEl.dom.response = response;
+							//valueEl.dom.uuidDimUuidsMap = uuidDimUuidsMap;
+							//valueEl.dom.uuidObjectMap = uuidObjectMap;
+							//valueEl.dom.setAttribute('onclick', 'this.onValueMouseClick(this.layout, this.response, this.uuidDimUuidsMap, this.uuidObjectMap, this.id);');
+
+				ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
+
+				web.mask.hide(ns.app.centerRegion);
+
+				if (NS.isDebug) {
+					console.log("core", ns.core);
+					console.log("app", ns.app);
+				}
+			};
+
+			web.pivot.sort = function(xLayout, response, id) {
+				var xLayout = Ext.clone(xLayout),
+					response = Ext.clone(response),
+					dim = xLayout.rows[0],
+					valueMap = response.idValueMap,
+					direction = xLayout.sorting ? xLayout.sorting.direction : 'DESC',
+					layout;
+
+				dim.ids = [];
+
+				// collect values
+				for (var i = 0, item, key, value; i < dim.items.length; i++) {
+					item = dim.items[i];
+					key = id + item.id;
+					value = parseFloat(valueMap[key]);
+
+					item.value = Ext.isNumber(value) ? value : (Number.MAX_VALUE * -1);
+				}
+
+				// sort
+				support.prototype.array.sort(dim.items, direction, 'value');
+
+				// new id order
+				for (var i = 0; i < dim.items.length; i++) {
+					dim.ids.push(dim.items[i].id);
+				}
+
+				// re-layout
+				layout = api.layout.Layout(xLayout);
+
+				// re-create table
+				web.pivot.createTable(layout, null, response, false);
 			};
 		}());
 	};
@@ -4387,7 +4496,7 @@ Ext.onReady( function() {
 				return;
 			}
 
-			ns.core.web.pivot.createTable(layout, false);
+			ns.core.web.pivot.getData(layout, false);
 		};
 
 		accordionBody = Ext.create('Ext.panel.Panel', {
@@ -4846,7 +4955,9 @@ Ext.onReady( function() {
 						xtype: 'button',
 						text: NS.i18n.home,
 						handler: function() {
-							window.location.href = ns.core.init.contextPath + '/dhis-web-commons-about/redirect.action';
+							//window.location.href = ns.core.init.contextPath + '/dhis-web-commons-about/redirect.action';
+
+							ns.core.web.pivot.sort(ns.app.xLayout, ns.app.response, 'Uvn6LCg7dVU');
 						}
 					}
 				]
@@ -5149,7 +5260,7 @@ Ext.onReady( function() {
 						layout = ns.core.api.layout.Layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]);
 
 						if (layout) {
-							ns.core.web.pivot.createTable(layout, true);
+							ns.core.web.pivot.getData(layout, true);
 						}
 					}
 
