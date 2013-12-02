@@ -494,10 +494,6 @@ public class HibernateProgramStageInstanceStore
         {
             criteria.add( Restrictions.not( Restrictions.in( "programInstance", programInstances ) ) );
         }
-        System.out.println( "\n\n\n ............. \n programInstances : "
-            + programInstances.iterator().next().getProgram().getName() );
-        System.out.println( "\n\n\n ............. \n stageInstances : "
-            + programInstances.iterator().next().getProgramStageInstances() );
         Number rs = (Number) criteria.setProjection( Projections.rowCount() ).uniqueResult();
         return rs != null ? rs.intValue() : 0;
     }
