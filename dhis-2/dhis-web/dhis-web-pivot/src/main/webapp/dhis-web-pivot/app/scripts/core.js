@@ -283,6 +283,8 @@ Ext.onReady( function() {
 
 				// parentGraphMap: object
 
+				// sorting: transient object
+
 				// reportingPeriod: boolean (false) //report tables only
 
 				// organisationUnit: boolean (false) //report tables only
@@ -441,6 +443,8 @@ Ext.onReady( function() {
 
 					layout.parentGraphMap = Ext.isObject(config.parentGraphMap) ? config.parentGraphMap : null;
 
+					layout.sorting = Ext.isObject(config.sorting) && Ext.isString(config.sorting.id) && Ext.isString(config.sorting.direction) ? config.sorting : null;
+
 					layout.reportingPeriod = Ext.isObject(config.reportParams) && Ext.isBoolean(config.reportParams.paramReportingPeriod) ? config.reportParams.paramReportingPeriod : (Ext.isBoolean(config.reportingPeriod) ? config.reportingPeriod : false);
 					layout.organisationUnit =  Ext.isObject(config.reportParams) && Ext.isBoolean(config.reportParams.paramOrganisationUnit) ? config.reportParams.paramOrganisationUnit : (Ext.isBoolean(config.organisationUnit) ? config.organisationUnit : false);
 					layout.parentOrganisationUnit =  Ext.isObject(config.reportParams) && Ext.isBoolean(config.reportParams.paramParentOrganisationUnit) ? config.reportParams.paramParentOrganisationUnit : (Ext.isBoolean(config.parentOrganisationUnit) ? config.parentOrganisationUnit : false);
@@ -550,7 +554,7 @@ Ext.onReady( function() {
 			};
 
 			support.prototype.array.sort = function(array, direction, key) {
-				// accepts [number], [string], [{prop: number}], [{prop: string}]
+				// accepts [number], [string], [{key: number}], [{key: string}]
 
 				if (!support.prototype.array.getLength(array)) {
 					return;
@@ -584,7 +588,7 @@ Ext.onReady( function() {
 						return direction === 'DESC' ? b - a : a - b;
 					}
 
-					return 0;
+					return -1;
 				});
 
 				return array;
@@ -636,6 +640,9 @@ Ext.onReady( function() {
 				return str.replace(new RegExp(find, 'g'), replace);
 			};
 
+			support.prototype.str.toggleDirection = function(direction) {
+				return direction === 'DESC' ? 'ASC' : 'DESC';
+			};
 				// number
 			support.prototype.number = {};
 
@@ -848,7 +855,10 @@ Ext.onReady( function() {
 					dimensionNameIdsMap: {},
 
 						// for param string
-					dimensionNameSortedIdsMap: {}
+					dimensionNameSortedIdsMap: {},
+
+					// sort table by column
+					sortableIdObjects: []
 				};
 
 				Ext.applyIf(xLayout, layout);
@@ -1483,8 +1493,6 @@ Ext.onReady( function() {
 
 //console.log("aaAllFloorObjects", aaAllFloorObjects);
 
-
-	alle = aaAllFloorObjects;
 				return {
 					type: type,
 					items: aDimensions,
@@ -1757,7 +1765,7 @@ Ext.onReady( function() {
 					return parseFloat(support.prototype.number.roundIf(value, 2)).toString();
 				};
 
-				getTdHtml = function(config) {
+				getTdHtml = function(config, metaDataId) {
 					var bgColor,
 						mapLegends,
 						colSpan,
@@ -1769,7 +1777,6 @@ Ext.onReady( function() {
 						isValue = Ext.isObject(config) && Ext.isString(config.type) && config.type === 'value' && !config.empty,
 						cls = '',
 						html = '';
-//console.log(config.type);
 
 					if (!Ext.isObject(config)) {
 						return '';
@@ -1779,7 +1786,6 @@ Ext.onReady( function() {
 					if (isNumeric && xLayout.legendSet) {
 						var value = parseFloat(config.value);
 						mapLegends = xLayout.legendSet.mapLegends;
-console.log(config.type);
 
 						for (var i = 0; i < mapLegends.length; i++) {
 							if (Ext.Number.constrain(value, mapLegends[i].startValue, mapLegends[i].endValue) === value) {
@@ -1800,7 +1806,19 @@ console.log(config.type);
 					cls += isValue ? ' pointer' : '';
 					cls += bgColor ? ' legend' : (config.cls ? ' ' + config.cls : '');
 
-					html += '<td ' + (config.uuid ? ('id="' + config.uuid + '" ') : '') + ' class="' + cls + '" ' + colSpan + rowSpan;
+					// sorting
+					if (Ext.isString(metaDataId)) {
+						cls += ' td-sortable';
+
+						xLayout.sortableIdObjects.push({
+							id: metaDataId,
+							uuid: config.uuid
+						});
+					}
+
+					html += '<td ' + (config.uuid ? ('id="' + config.uuid + '" ') : '');
+					html += ' class="' + cls + '" ' + colSpan + rowSpan
+
 
 					if (bgColor) {
 						html += '>';
@@ -1855,6 +1873,10 @@ console.log(config.type);
 					return !!xLayout.showTotals;
 				};
 
+				doSortableColumnHeaders = function() {
+					return (xRowAxis && xRowAxis.dims === 1);// && !doSubTotals(
+				};
+
 				getColAxisHtmlArray = function() {
 					var a = [],
 						getEmptyHtmlArray;
@@ -1872,6 +1894,7 @@ console.log(config.type);
 						return a;
 					}
 
+					// for each col dimension
 					for (var i = 0, dimHtml; i < xColAxis.dims; i++) {
 						dimHtml = [];
 
@@ -1879,7 +1902,7 @@ console.log(config.type);
 							dimHtml.push(getEmptyHtmlArray());
 						}
 
-						for (var j = 0, obj, spanCount = 0; j < xColAxis.size; j++) {
+						for (var j = 0, obj, spanCount = 0, condoId; j < xColAxis.size; j++) {
 							spanCount++;
 
 							obj = xColAxis.objects.all[i][j];
@@ -1889,7 +1912,12 @@ console.log(config.type);
 							obj.hidden = !(obj.rowSpan || obj.colSpan);
 							obj.htmlValue = service.layout.getItemName(xLayout, xResponse, obj.id, true);
 
-							dimHtml.push(getTdHtml(obj));
+							// sortable column headers. only if last dim and no subtotals.
+							if (i === xColAxis.dims - 1 && doSortableColumnHeaders()) {
+								condoId = xColAxis.ids[j];
+							}
+
+							dimHtml.push(getTdHtml(obj, condoId));
 
 							if (i === 0 && spanCount === xColAxis.span[i] && doSubTotals(xColAxis) ) {
 								dimHtml.push(getTdHtml({

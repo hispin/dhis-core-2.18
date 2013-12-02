@@ -147,6 +147,13 @@ body.x-windows {
 	display: none;
 }
 
+.td-sortable {
+	background-image: url('../images/arrowupdown.png');
+	background-repeat: no-repeat;
+	background-position: right center;
+	padding-right: 15px !important;
+}
+
 .text-weak {
 	color: #303038;
 }
@@ -201,6 +208,10 @@ table.pivot {
 	white-space: nowrap;
 	text-align: right;
 }
+.pivot-value.highlighted {
+	background-color: #f5f5f5;
+}
+
 .pivot-value-subtotal {
 	background-color: #f4f4f4;
 	white-space: nowrap;
