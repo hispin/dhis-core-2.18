@@ -17,7 +17,10 @@ if [ -z "$2" ]; then
 fi
 
 echo "Using revision ${REV}..${TOREV}"
+bzr revert
+echo "Reverted local changes"
 bzr up
 echo "Updated branch"
 bzr merge lp:dhis2 -r ${REV}..${TOREV}
 echo "Merged revision ${TOREV}"
+echo "To commit changes: bzr commit -m \"R ${TOREV}\""
