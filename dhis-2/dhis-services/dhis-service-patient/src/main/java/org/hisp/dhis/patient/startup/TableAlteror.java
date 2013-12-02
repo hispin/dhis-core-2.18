@@ -270,6 +270,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientaggregatereport DROP COLUMN facilityLB" );
         executeSql( "update programstage_dataelements set allowDateInFuture=false where allowDateInFuture is null" );
         executeSql( "update programstage set autoGenerateEvent=true where programid in ( select programid from program where type=2 )" );
+        executeSql( "alter table patient alter column organisationunitid set not null" );
         
         updateCoordinatesProgramStageInstance();
     }
