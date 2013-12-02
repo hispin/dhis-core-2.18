@@ -128,7 +128,31 @@ function setupTextArea( ipUid, ipCommentUid, $target ) {
   var saveButton = jQuery("<button/>")
     .text(i18n_save)
     .on('click', function( e ) {
-      alert('save is not implemented');
+      var content = textArea.html().trim();
+
+      if( ipCommentUid ) {
+        $.ajax({
+          url: '../api/interpretations/' + ipUid + '/comments/' + ipCommentUid,
+          contentType: 'text/plain; charset=UTF-8',
+          type: 'POST',
+          data: content
+        }).done(function() {
+          $target.html(content);
+        }).error(function() {
+          setHeaderDelayMessage(i18n_could_not_save_interpretation);
+        });
+      } else {
+        $.ajax({
+          url: '../api/interpretations/' + ipUid,
+          contentType: 'text/plain; charset=UTF-8',
+          type: 'POST',
+          data: content
+        }).done(function() {
+          $target.html(content);
+        }).error(function() {
+          setHeaderDelayMessage(i18n_could_not_save_interpretation);
+        });
+      }
     });
 
   container.append(cancelButton);
@@ -156,7 +180,7 @@ function deleteIp( e ) {
     }).done(function() {
       jqInterpretation.remove();
     }).error(function() {
-      setHeaderDelayMessage('$i18n.getString("could_not_delete_interpretation")');
+      setHeaderDelayMessage(i18n_could_not_delete_interpretation);
     });
   } else if( isComment ) {
     jQuery.ajax({
@@ -165,7 +189,7 @@ function deleteIp( e ) {
     }).done(function() {
       jqInterpretationComment.remove();
     }).error(function() {
-      setHeaderDelayMessage('$i18n.getString("could_not_delete_interpretation_comment")');
+      setHeaderDelayMessage(i18n_could_not_delete_interpretation_comment);
     });
   }
 }
