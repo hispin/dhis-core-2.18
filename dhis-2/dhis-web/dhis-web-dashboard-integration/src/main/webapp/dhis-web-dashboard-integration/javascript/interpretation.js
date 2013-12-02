@@ -120,13 +120,13 @@ function setupTextArea( ipUid, ipCommentUid, $target ) {
     .append(textArea);
 
   var cancelButton = jQuery("<button/>")
-    .text('Cancel')
+    .text(i18n_cancel)
     .on('click', function( e ) {
       $target.html(oldContent);
     });
 
   var saveButton = jQuery("<button/>")
-    .text('Save')
+    .text(i18n_save)
     .on('click', function( e ) {
       alert('save is not implemented');
     });

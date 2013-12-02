@@ -11,6 +11,9 @@
 #end
 
 <script>
+var i18n_cancel = '$encoder.jsEscape( $i18n.getString( "cancel" ) , "'")';
+var i18n_save = '$encoder.jsEscape( $i18n.getString( "save" ) , "'")';
+
 jQuery(function() {
   var dropDown = jQuery('.dropDown');
 
