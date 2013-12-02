@@ -128,6 +128,7 @@ function setupTextArea( ipUid, ipCommentUid, $target ) {
   var saveButton = jQuery("<button/>")
     .text(i18n_save)
     .on('click', function( e ) {
+      disableButtons();
       var content = textArea.val().trim();
 
       if( ipCommentUid ) {
@@ -140,6 +141,8 @@ function setupTextArea( ipUid, ipCommentUid, $target ) {
           $target.html(content);
         }).error(function() {
           setHeaderDelayMessage(i18n_could_not_save_interpretation);
+        }).always(function() {
+          enableButtons();
         });
       } else {
         $.ajax({
@@ -151,9 +154,21 @@ function setupTextArea( ipUid, ipCommentUid, $target ) {
           $target.html(content);
         }).error(function() {
           setHeaderDelayMessage(i18n_could_not_save_interpretation);
+        }).always(function() {
+          enableButtons();
         });
       }
     });
+
+  function enableButtons() {
+    saveButton.removeAttr('disabled');
+    cancelButton.removeAttr('disabled');
+  }
+
+  function disableButtons() {
+    saveButton.attr('disabled', true);
+    cancelButton.attr('disabled', true);
+  }
 
   container.append(cancelButton);
   container.append(saveButton);
