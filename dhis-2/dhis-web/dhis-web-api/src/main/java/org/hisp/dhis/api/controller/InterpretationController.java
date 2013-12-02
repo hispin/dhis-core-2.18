@@ -28,14 +28,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
@@ -63,6 +55,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -258,12 +257,37 @@ public class InterpretationController
             return;
         }
 
-        if ( !currentUserService.getCurrentUser().equals( interpretation.getUser() ) )
+        if ( !currentUserService.getCurrentUser().equals( interpretation.getUser() ) &&
+            !currentUserService.currentUserIsSuper() )
         {
             throw new AccessDeniedException( "You are not allowed to delete this interpretation." );
         }
 
         interpretationService.deleteInterpretation( interpretation );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT )
+    public void updateInterpretation( @PathVariable( "uid" ) String uid, HttpServletResponse response, @RequestBody String content )
+    {
+        Interpretation interpretation = interpretationService.getInterpretation( uid );
+
+        if ( interpretation == null )
+        {
+            ContextUtils.conflictResponse( response, "Interpretation does not exist: " + uid );
+            return;
+        }
+
+        if ( !currentUserService.getCurrentUser().equals( interpretation.getUser() ) &&
+            !currentUserService.currentUserIsSuper() )
+        {
+            throw new AccessDeniedException( "You are not allowed to update this interpretation." );
+        }
+
+        System.err.println( content );
+
+        interpretation.setText( content );
+
+        interpretationService.updateInterpretation( interpretation );
     }
 
     @RequestMapping( value = "/{uid}/comments/{cuid}", method = RequestMethod.DELETE )
@@ -285,12 +309,42 @@ public class InterpretationController
 
             if ( comment.getUid().equals( cuid ) )
             {
-                if ( !currentUserService.getCurrentUser().equals( comment.getUser() ) )
+                if ( !currentUserService.getCurrentUser().equals( comment.getUser() ) &&
+                    !currentUserService.currentUserIsSuper() )
                 {
                     throw new AccessDeniedException( "You are not allowed to delete this comment." );
                 }
 
                 iterator.remove();
+            }
+        }
+
+        interpretationService.updateInterpretation( interpretation );
+    }
+
+    @RequestMapping( value = "/{uid}/comments/{cuid}", method = RequestMethod.PUT )
+    public void updateComment( @PathVariable( "uid" ) String uid, @PathVariable( "cuid" ) String cuid, HttpServletResponse response,
+        @RequestBody String content )
+    {
+        Interpretation interpretation = interpretationService.getInterpretation( uid );
+
+        if ( interpretation == null )
+        {
+            ContextUtils.conflictResponse( response, "Interpretation does not exist: " + uid );
+            return;
+        }
+
+        for ( InterpretationComment comment : interpretation.getComments() )
+        {
+            if ( comment.getUid().equals( cuid ) )
+            {
+                if ( !currentUserService.getCurrentUser().equals( comment.getUser() ) &&
+                    !currentUserService.currentUserIsSuper() )
+                {
+                    throw new AccessDeniedException( "You are not allowed to update this comment." );
+                }
+
+                comment.setText( content );
             }
         }
 

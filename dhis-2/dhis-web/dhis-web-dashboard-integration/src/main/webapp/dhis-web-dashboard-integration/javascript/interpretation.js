@@ -113,7 +113,7 @@ function setupTextArea( ipUid, ipCommentUid, $target ) {
   var textArea = jQuery("<textarea />")
     .css({ 'width': '100%', 'height': '80px' })
     .uniqueId()
-    .html(oldContent);
+    .val(oldContent);
 
   var container = jQuery("<div />")
     .uniqueId()
@@ -128,13 +128,13 @@ function setupTextArea( ipUid, ipCommentUid, $target ) {
   var saveButton = jQuery("<button/>")
     .text(i18n_save)
     .on('click', function( e ) {
-      var content = textArea.html().trim();
+      var content = textArea.val().trim();
 
       if( ipCommentUid ) {
         $.ajax({
           url: '../api/interpretations/' + ipUid + '/comments/' + ipCommentUid,
           contentType: 'text/plain; charset=UTF-8',
-          type: 'POST',
+          type: 'PUT',
           data: content
         }).done(function() {
           $target.html(content);
@@ -145,7 +145,7 @@ function setupTextArea( ipUid, ipCommentUid, $target ) {
         $.ajax({
           url: '../api/interpretations/' + ipUid,
           contentType: 'text/plain; charset=UTF-8',
-          type: 'POST',
+          type: 'PUT',
           data: content
         }).done(function() {
           $target.html(content);
