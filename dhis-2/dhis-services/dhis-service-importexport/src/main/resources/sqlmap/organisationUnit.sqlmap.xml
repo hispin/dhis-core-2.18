@@ -22,6 +22,7 @@
         <result property="active" column="Active" typeHandler="booleanTypeHandler"/>
         <result property="comment" column="Comment"/>
         <result property="lastUpdated" column="LastUpdated"/>
+        <result property="uid" column="UID"/>
     </resultMap>
 	
 	<!-- Statement -->

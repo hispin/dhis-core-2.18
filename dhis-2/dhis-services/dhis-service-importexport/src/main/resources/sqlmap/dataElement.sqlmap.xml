@@ -23,6 +23,7 @@
 		<result property="aggregationOperator" column="AggregateOperator" typeHandler="aggregationOperatorTypeHandler"/>
 		<result property="sortOrder" column="SortOrder"/>
 		<result property="lastUpdated" column="LastUpdated"/>
+		<result property="uid" column="UID"/>
 	</resultMap>
 	
 	<!-- Statement -->
