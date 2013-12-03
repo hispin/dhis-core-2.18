@@ -404,7 +404,7 @@ public class LoadFormAction
 
             for ( DataElementOperand operand : section.getGreyedFields() )
             {
-                if ( operand.getDataElement() != null && operand.getCategoryOptionCombo() != null )
+                if ( operand != null && operand.getDataElement() != null && operand.getCategoryOptionCombo() != null )
                 {
                     greyedFields.put( operand.getDataElement().getUid() + ":" + operand.getCategoryOptionCombo().getUid(), true );
                 }
