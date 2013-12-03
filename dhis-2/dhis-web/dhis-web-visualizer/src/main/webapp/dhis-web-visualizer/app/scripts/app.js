@@ -4529,7 +4529,7 @@ Ext.onReady( function() {
 									},
 									'-',
 									{
-										text: 'Open this table as pivot table' + '&nbsp;&nbsp;', //i18n
+										text: 'Open this chart as pivot table' + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && ns.app.layout),
 										handler: function() {
@@ -4542,7 +4542,7 @@ Ext.onReady( function() {
 									{
 										text: 'Open last pivot table' + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
-										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['chart']),
+										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
 										handler: function() {
 											window.location.href = ns.core.init.contextPath + '/dhis-web-pivot/app/index.html?s=chart';
 										}
