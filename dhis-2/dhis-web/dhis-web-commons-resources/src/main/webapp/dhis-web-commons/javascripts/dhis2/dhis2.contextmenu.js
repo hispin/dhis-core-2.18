@@ -86,10 +86,7 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
   });
 
   $list.on('click.context', 'td', function( e ) {
-    $list.find('td').removeClass(config.menuItemActiveClass);
-
-    if( $menu.is(":visible") ) {
-      $menu.hide();
+    if(dhis2.contextmenu.disable()) {
       return false;
     }
 

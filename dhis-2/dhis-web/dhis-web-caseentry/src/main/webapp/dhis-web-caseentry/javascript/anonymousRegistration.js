@@ -208,7 +208,7 @@ function uploadOfflineData( event ) {
         cache: false
     } ).done( function ( json ) {
         if ( json.response === 'success' ) {
-            DAO.store.delete( 'dataValues', event.id ).done( function () {
+            DAO.store.remove( 'dataValues', event.id ).done( function () {
                 updateOfflineEvents();
                 searchEvents( eval( getFieldValue( 'listAll' ) ) );
             } );
@@ -846,7 +846,7 @@ function removeEvent( programStageId ) {
     DAO.store.get('dataValues', programStageId).done(function(obj) {
         if(obj) {
             if( confirm(i18n_comfirm_delete_event) ) {
-                DAO.store.delete('dataValues', programStageId).always(function() {
+                DAO.store.remove('dataValues', programStageId).always(function() {
                     updateOfflineEvents();
                     // needed, seemed that from time-to-time the events are updated too early, could be idb related
                     setTimeout(updateOfflineEvents, 100);
@@ -945,7 +945,7 @@ function removeCurrentEvent() {
     DAO.store.get('dataValues', programStageInstanceId).done(function(obj) {
         if(obj) {
             if( confirm(i18n_comfirm_delete_event) ) {
-                DAO.store.delete('dataValues', programStageInstanceId).always(function() {
+                DAO.store.remove('dataValues', programStageInstanceId).always(function() {
                     setTimeout(backEventList, 200);
                 });
             }

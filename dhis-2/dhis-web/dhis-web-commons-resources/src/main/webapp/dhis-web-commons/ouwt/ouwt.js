@@ -166,7 +166,7 @@ function Selection()
         var def = $.Deferred();
 
         // clear out old tree
-        dhis2.ou.store.clear(OU_KEY).always(function() {
+        dhis2.ou.store.removeAll(OU_KEY).always(function() {
           // set new tree
           dhis2.ou.store.setAll(OU_KEY, ous).always(function() { 
             def.resolve();

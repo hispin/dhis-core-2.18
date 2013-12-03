@@ -115,7 +115,7 @@ dhis2.storage.Store = function( options ) {
         enumerable: true
     } );
 
-    var adapterMethods = "open set setAll get getAll getKeys count contains clear close delete destroy".split( ' ' );
+    var adapterMethods = "open set setAll get getAll getKeys count contains remove removeAll close destroy".split( ' ' );
 
     $.each( adapterMethods, function( idx, item ) {
         Object.defineProperty( self, item, {
@@ -153,7 +153,7 @@ dhis2.storage.Store = function( options ) {
     } );
 };
 
-dhis2.storage.Store.adapterMethods = "open set setAll get getAll getKeys count contains clear close delete destroy".split( ' ' );
+dhis2.storage.Store.adapterMethods = "open set setAll get getAll getKeys count contains remove removeAll close destroy".split( ' ' );
 
 dhis2.storage.Store.verifyAdapter = function( Adapter ) {
     var failed = [];
