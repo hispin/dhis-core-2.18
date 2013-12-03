@@ -121,13 +121,14 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
 
 dhis2.contextmenu.disable = function() {
   var config = dhis2.contextmenu.config;
-
   var $list = $('#' + config.listId);
   var $menu = $('#' + config.menuId);
+  $list.find('td').removeClass(config.menuItemActiveClass);
 
   if( $menu.is(":visible") ) {
     $menu.hide();
+    return true;
   }
 
-  $list.find('td').removeClass(config.menuItemActiveClass);
+  return false;
 };
