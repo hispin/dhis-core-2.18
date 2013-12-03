@@ -22,7 +22,7 @@ jQuery(function() {
 
   dropDown.on('click.dropdown', 'li', function( e ) {
     var jqTarget = jQuery(e.target).closest('li');
-    var targetFn = dhis2.contextmenu.utils.findFnInWindowScope(jqTarget.data('target-fn'));
+    var targetFn = dhis2.contextmenu.utils.findInScope(window)(jqTarget.data('target-fn'));
 
     if( typeof targetFn !== 'undefined' ) {
       targetFn(e);
