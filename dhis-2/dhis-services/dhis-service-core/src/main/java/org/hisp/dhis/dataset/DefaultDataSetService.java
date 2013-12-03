@@ -162,6 +162,11 @@ public class DefaultDataSetService
         if ( i18nSections && dataSet.hasSections() )
         {
             i18n( i18nService, dataSet.getSections() );
+            
+            for ( Section section : dataSet.getSections() )
+            {
+                i18n( i18nService, section.getDataElements() );
+            }
         }
 
         return dataSet;
