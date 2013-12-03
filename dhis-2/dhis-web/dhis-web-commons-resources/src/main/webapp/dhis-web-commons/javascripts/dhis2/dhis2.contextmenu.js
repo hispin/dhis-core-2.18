@@ -83,6 +83,11 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
   });
 
   $list.on('click.context', 'td', function( e ) {
+    if( $menu.is(":visible") ) {
+      $menu.hide();
+      return false;
+    }
+
     $menu.show();
     $menu.css({left: e.pageX, top: e.pageY});
 
