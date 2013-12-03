@@ -30,19 +30,19 @@ dhis2.util.namespace('dhis2.contextmenu');
 dhis2.util.namespace('dhis2.contextmenu.utils');
 
 /**
- * Tried to find a function with fnName in window scope.
+ * Creates a resolver to search within a certain scope
  *
- * TODO: extend to search for more scopes
- *
- * @param fnName Name of function to search for
+ * @param scope Scope to search within
  * @returns Function
  */
-dhis2.contextmenu.utils.findFnInWindowScope = function( fnName ) {
-  if( typeof window[fnName] !== 'function' ) {
-    throw new Error('target-fn \'' + fnName + '\' does not point to a valid function.')
-  }
+dhis2.contextmenu.utils.findInScope = function( scope ) {
+  return function( fnName ) {
+    if( typeof scope[fnName] !== 'function' ) {
+      throw new Error('target-fn \'' + fnName + '\' does not point to a valid function.')
+    }
 
-  return window[fnName];
+    return scope[fnName];
+  }
 };
 
 dhis2.contextmenu.defaultOptions = {
@@ -50,7 +50,7 @@ dhis2.contextmenu.defaultOptions = {
   menuId: 'menu',
   menuItemActiveClass: 'menuItemActive',
   listItemProps: ['id', 'uid', 'name', 'type'],
-  functionResolver: dhis2.contextmenu.utils.findFnInWindowScope
+  functionResolver: dhis2.contextmenu.utils.findInScope(window)
 };
 
 dhis2.contextmenu.config = dhis2.contextmenu.defaultOptions;
