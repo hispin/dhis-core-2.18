@@ -31,12 +31,15 @@ jQuery(function() {
 
   jQuery('.interpretationContainer').on('click', '.gearDropDown', function( e ) {
     var jqTarget = jQuery(e.target).closest('.gearDropDown');
-
     jQuery('.gearDropDown').removeClass('active');
+
+    if(dropDown.is(':visible')) {
+      dropDown.hide();
+      return false;
+    }
+
     jqTarget.addClass('active');
-
     dropDown.show();
-
     dropDown.css({
       top: jqTarget.offset().top + jqTarget.innerHeight(),
       left: jqTarget.offset().left - 34
@@ -47,6 +50,13 @@ jQuery(function() {
 
   jQuery(document).on('click', function() {
     if( dropDown.is(":visible") ) {
+      jQuery('.gearDropDown').removeClass('active');
+      dropDown.hide();
+    }
+  });
+
+  $(document).keyup(function( e ) {
+    if( e.keyCode == 27 ) {
       jQuery('.gearDropDown').removeClass('active');
       dropDown.hide();
     }
