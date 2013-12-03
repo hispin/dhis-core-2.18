@@ -53,8 +53,11 @@ dhis2.contextmenu.defaultOptions = {
   functionResolver: dhis2.contextmenu.utils.findFnInWindowScope
 };
 
+dhis2.contextmenu.config = dhis2.contextmenu.defaultOptions;
+
 dhis2.contextmenu.makeContextMenu = function( options ) {
-  var config = $.extend({}, dhis2.contextmenu.defaultOptions, options);
+  dhis2.contextmenu.config = $.extend({}, dhis2.contextmenu.defaultOptions, options);
+  var config = dhis2.contextmenu.config;
 
   var $list = $('#' + config.listId);
   var $menu = $('#' + config.menuId);
@@ -105,12 +108,26 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
   });
 
   $(document).on('click.context', function() {
-    if( $menu.is(":visible") ) {
-      $menu.hide();
-    }
-
-    $list.find('td').removeClass(config.menuItemActiveClass);
-
+    dhis2.contextmenu.disable();
     $menu.removeData('id');
   });
+
+  $(document).keyup(function( e ) {
+    if( e.keyCode == 27 ) {
+      dhis2.contextmenu.disable();
+    }
+  });
+};
+
+dhis2.contextmenu.disable = function() {
+  var config = dhis2.contextmenu.config;
+
+  var $list = $('#' + config.listId);
+  var $menu = $('#' + config.menuId);
+
+  if( $menu.is(":visible") ) {
+    $menu.hide();
+  }
+
+  $list.find('td').removeClass(config.menuItemActiveClass);
 };
