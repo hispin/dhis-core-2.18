@@ -83,6 +83,8 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
   });
 
   $list.on('click.context', 'td', function( e ) {
+    $list.find('td').removeClass(config.menuItemActiveClass);
+
     if( $menu.is(":visible") ) {
       $menu.hide();
       return false;
@@ -93,7 +95,6 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
 
     var $target = $(e.target);
 
-    $list.find('td').removeClass(config.menuItemActiveClass);
     $target.addClass(config.menuItemActiveClass);
 
     $.each(config.listItemProps, function( idx, val ) {
