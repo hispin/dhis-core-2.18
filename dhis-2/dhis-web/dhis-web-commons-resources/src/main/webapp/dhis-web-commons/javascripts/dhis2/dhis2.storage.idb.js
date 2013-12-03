@@ -327,7 +327,7 @@ dhis2.util.namespace( 'dhis2.storage' );
 
                 var tx = self._db.transaction( [ store ], "readwrite" );
                 var objectStore = tx.objectStore( store );
-                var request = objectStore.delete( key );
+                var request = objectStore['delete']( key );
 
                 var deferred = $.Deferred();
 
