@@ -259,7 +259,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                             records.push( cursor.value );
                         }
 
-                        cursor.continue();
+                        cursor['continue']();
                     } else {
                         deferred.resolveWith( self, [ records ] );
                     }
@@ -293,7 +293,7 @@ dhis2.util.namespace( 'dhis2.storage' );
 
                     if( cursor ) {
                         keys.push( cursor.key );
-                        cursor.continue();
+                        cursor['continue']();
                     } else {
                         deferred.resolveWith( self, [ keys ] );
                     }
