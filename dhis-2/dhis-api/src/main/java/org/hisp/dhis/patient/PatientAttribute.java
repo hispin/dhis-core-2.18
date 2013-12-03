@@ -90,6 +90,18 @@ public class PatientAttribute
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    /**
+     * Indicates whether the value type of this attribute is numeric.
+     */
+    public boolean isNumericType()
+    {
+        return TYPE_INT.equals( valueType );
+    }
+    
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
