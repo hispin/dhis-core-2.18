@@ -11,8 +11,8 @@
 
 html,body 
 {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   background-color: white;
 }
 
@@ -23,7 +23,7 @@ img
 
 ul,ol 
 {
-  padding: 0px;
+  padding: 0;
 }
 
 a
@@ -58,9 +58,9 @@ input[type=text],input[type=password],textarea
   height: 44px;
   position: fixed;
   z-index: 10;
-  top: 0px;
-  left: 0px;
-  right: 0px;
+  top: 0;
+  left: 0;
+  right: 0;
   box-shadow: 0 0 3px #222;
 }
 
@@ -162,7 +162,7 @@ a.menuLink:hover
   opacity: 0.94;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  box-shadow: #ccc 0px 1px 1px 0px;
+  box-shadow: #ccc 0 1px 1px 0;
 }
 
 .menuDropDownBox
@@ -270,7 +270,7 @@ a.menuLink:hover
   opacity                    : 0.98;
   border-bottom-left-radius  : 3px;
   border-bottom-right-radius : 3px;
-  box-shadow                 : #ccc 0px 1px 1px 0px;
+  box-shadow                 : #ccc 0 1px 1px 0;
 }
 
 .contextMenuItems {
@@ -308,7 +308,7 @@ a.menuLink:hover
   width: 235px;
   position: fixed;
   top: 46px;
-  left: 0px;
+  left: 0;
   padding-top: 6px;
   border-right: 1px solid #ddd;
   box-shadow: #ddd 0 0 2px 0;
