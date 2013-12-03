@@ -447,6 +447,7 @@ a.menuLink:hover
 {
   width: 100%;
   border-collapse: collapse;
+  cursor: pointer;
 }
 
 .listTable td
