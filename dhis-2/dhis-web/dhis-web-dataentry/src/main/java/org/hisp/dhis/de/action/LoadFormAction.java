@@ -404,8 +404,10 @@ public class LoadFormAction
 
             for ( DataElementOperand operand : section.getGreyedFields() )
             {
-                greyedFields.put( operand.getDataElement().getUid() + ":" + operand.getCategoryOptionCombo().getUid(),
-                    true );
+                if ( operand.getDataElement() != null && operand.getCategoryOptionCombo() != null )
+                {
+                    greyedFields.put( operand.getDataElement().getUid() + ":" + operand.getCategoryOptionCombo().getUid(), true );
+                }
             }
         }
     }
