@@ -95,7 +95,7 @@ public class App
     {
         if ( baseUrl != null && folderName != null && launchPath != null )
         {
-            return baseUrl + File.separator + folderName + File.separator + launchPath;
+            return baseUrl + "/" + folderName + "/"+ launchPath;
         }
         
         return null;
