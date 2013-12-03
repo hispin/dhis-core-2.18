@@ -8,8 +8,8 @@
 "ou":"$currentUser.getOrganisationUnit().uid",
 "ouc":[#foreach($ou in $currentUser.getOrganisationUnit().getSortedChildren())"$ou.uid"#if($velocityCount < $oucSize),#end#end]},
 "rootNodes":[#foreach($node in $rootNodes){"id": "$!{node.uid}","name": "$!encoder.jsonEncode( ${node.name} )","level": 1,"hasChildrenWithCoordinates": $!{node.hasChildrenWithCoordinates()},"expanded": true}#if($velocityCount<$rootNodes.size()),#end#end],
-"dimensions":[#foreach($dim in $dimensions){"id":"$!{dim.uid}","name":"$!encoder.jsonEncode($!{dim.name})"}#if($velocityCount<$dimensions.size()),#end#end],
-"organisationUnitLevels":[#foreach($level in $levels){"id":"$!{level.uid}","name":"$!encoder.jsonEncode($!{level.name})","level":"$!{level.level}"}#if($velocityCount<$levels.size()),#end#end],
+"dimensions":[#foreach($dim in $dimensions){"id":"$!{dim.uid}","name":"$!encoder.jsonEncode($!{dim.displayName})"}#if($velocityCount<$dimensions.size()),#end#end],
+"organisationUnitLevels":[#foreach($level in $levels){"id":"$!{level.uid}","name":"$!encoder.jsonEncode($!{level.displayName})","level":"$!{level.level}"}#if($velocityCount<$levels.size()),#end#end],
 "i18n":{
 "title": "$encoder.jsEscape($i18n.getString( 'title' ) , "'")",
 "chart_type": "$encoder.jsEscape($i18n.getString( 'chart_type' ) , "'")",
