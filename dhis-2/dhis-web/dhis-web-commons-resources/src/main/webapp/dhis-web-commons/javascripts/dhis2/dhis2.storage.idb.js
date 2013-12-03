@@ -150,31 +150,6 @@ dhis2.util.namespace( 'dhis2.storage' );
             },
             enumerable: true
         },
-        /*
-         'setAll': {
-         value: function( store, arr ) {
-         var self = this;
-         var deferred1 = $.Deferred();
-         var deferred2 = $.Deferred();
-         var chained = deferred2.promise();
-
-         $.each( arr, function( idx, item ) {
-         chained = chained.then( function() {
-         return self.set( store, item );
-         } );
-         } );
-
-         chained = chained.then( function() {
-         deferred1.resolveWith( this );
-         } );
-
-         deferred2.resolve();
-
-         return deferred1.promise();
-         },
-         enumerable: true
-         },
-         */
         'setAll': {
             value: function( store, arr ) {
                 var self = this;
@@ -338,7 +313,7 @@ dhis2.util.namespace( 'dhis2.storage' );
             },
             enumerable: true
         },
-        'delete': {
+        'remove': {
             value: function( store, key ) {
                 var self = this;
 
@@ -374,7 +349,7 @@ dhis2.util.namespace( 'dhis2.storage' );
             },
             enumerable: true
         },
-        'clear': {
+        'removeAll': {
             value: function( store ) {
                 var self = this;
 

@@ -237,7 +237,7 @@ dhis2.util.namespace( 'dhis2.storage' );
             },
             enumerable: true
         },
-        'delete': {
+        'remove': {
             value: function ( store, key ) {
                 var self = this;
 
@@ -256,14 +256,14 @@ dhis2.util.namespace( 'dhis2.storage' );
             },
             enumerable: true
         },
-        'clear': {
+        'removeAll': {
             value: function ( store ) {
                 var self = this;
                 var deferred = $.Deferred();
 
                 this.getKeys( store ).done( function ( keys ) {
                     $.each( keys, function ( idx, item ) {
-                        self.delete( store, item );
+                        self.remove( store, item );
                     } );
 
                     deferred.resolveWith( self );
@@ -317,7 +317,7 @@ dhis2.util.namespace( 'dhis2.storage' );
                 var deferred = $.Deferred();
 
                 $.each( self.objectStoreNames, function ( idx, item ) {
-                    self.clear( item );
+                    self.removeAll( item );
                     self.indexer[item].destroy();
                 } );
 
