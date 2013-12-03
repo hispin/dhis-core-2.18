@@ -254,12 +254,20 @@ public class DataElement
     }
 
     /**
+     * Indicates whether the value type of this data element is numeric.
+     */
+    public boolean isNumericType()
+    {
+        return VALUE_TYPE_INT.equals( type );
+    }
+    
+    /**
      * Returns the value type. If value type is int and the number type exists,
      * the number type is returned, otherwise the type is returned.
      */
     public String getDetailedNumberType()
     {
-        return (type != null && type.equals( VALUE_TYPE_INT ) && numberType != null) ? numberType : type;
+        return ( type != null && type.equals( VALUE_TYPE_INT ) && numberType != null) ? numberType : type;
     }
 
     /**
@@ -269,7 +277,7 @@ public class DataElement
      */
     public String getDetailedTextType()
     {
-        return (type != null && type.equals( VALUE_TYPE_STRING ) && textType != null) ? textType : type;
+        return ( type != null && type.equals( VALUE_TYPE_STRING ) && textType != null) ? textType : type;
     }
     
     /** Returns whether aggregation should be skipped for this data element, based
@@ -416,7 +424,7 @@ public class DataElement
     {
         return optionSet != null;
     }
-
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
