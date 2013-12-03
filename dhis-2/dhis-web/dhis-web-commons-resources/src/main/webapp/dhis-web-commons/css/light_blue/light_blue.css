@@ -360,7 +360,7 @@ a.menuLink:hover
   width: 100%;
 }
 
-.page 
+.page
 {
   font-size: 9pt;
 }
@@ -442,6 +442,7 @@ a.menuLink:hover
   width: 100%;
   border-collapse: collapse;
   padding-top: 10px;
+  cursor: pointer;
 }
 
 .listTable th
