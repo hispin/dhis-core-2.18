@@ -47,6 +47,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroupAccess;
 
 import java.util.ArrayList;
@@ -129,6 +130,21 @@ public class Interpretation
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Overriding getUser in order to expose user in web api. Sharing is not enabled
+     * for interpretations but "user" is used for representing the creator. Must
+     * be removed when sharing is enabled for this class.
+     */
+    @Override
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public User getUser()
+    {
+        return user;
+    }
+    
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getType()
