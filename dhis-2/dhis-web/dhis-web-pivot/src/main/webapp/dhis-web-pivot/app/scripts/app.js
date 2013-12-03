@@ -2313,15 +2313,6 @@ Ext.onReady( function() {
 					web.storage.session.set(layout, 'table');
 				}
 
-
-
-							//valueEl.dom.onValueMouseClick = web.events.onValueMouseClick;
-							//valueEl.dom.layout = layout;
-							//valueEl.dom.response = response;
-							//valueEl.dom.uuidDimUuidsMap = uuidDimUuidsMap;
-							//valueEl.dom.uuidObjectMap = uuidObjectMap;
-							//valueEl.dom.setAttribute('onclick', 'this.onValueMouseClick(this.layout, this.response, this.uuidDimUuidsMap, this.uuidObjectMap, this.id);');
-
 				ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
 
 				web.mask.hide(ns.app.centerRegion);
