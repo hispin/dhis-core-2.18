@@ -153,6 +153,12 @@ body.x-windows {
 	background-position: right center;
 	padding-right: 15px !important;
 }
+.td-sortable-asc {
+	background-image: url('../images/arrowup.png');
+}
+.td-sortable-desc {
+	background-image: url('../images/arrowdown.png');
+}
 
 .text-weak {
 	color: #303038;
@@ -209,7 +215,7 @@ table.pivot {
 	text-align: right;
 }
 .pivot-value.highlighted {
-	background-color: #f5f5f5;
+	background-color: #f3f3f3;
 }
 
 .pivot-value-subtotal {

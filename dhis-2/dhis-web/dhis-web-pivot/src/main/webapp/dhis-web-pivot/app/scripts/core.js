@@ -1874,7 +1874,7 @@ Ext.onReady( function() {
 				};
 
 				doSortableColumnHeaders = function() {
-					return (xRowAxis && xRowAxis.dims === 1);// && !doSubTotals(
+					return (xRowAxis && xRowAxis.dims === 1);
 				};
 
 				getColAxisHtmlArray = function() {
@@ -1912,9 +1912,9 @@ Ext.onReady( function() {
 							obj.hidden = !(obj.rowSpan || obj.colSpan);
 							obj.htmlValue = service.layout.getItemName(xLayout, xResponse, obj.id, true);
 
-							// sortable column headers. only if last dim and no subtotals.
+							// sortable column headers. last dim only.
 							if (i === xColAxis.dims - 1 && doSortableColumnHeaders()) {
-								condoId = xColAxis.ids[j];
+								condoId = xColAxis.ids[j].split('-').join('');
 							}
 
 							dimHtml.push(getTdHtml(obj, condoId));
