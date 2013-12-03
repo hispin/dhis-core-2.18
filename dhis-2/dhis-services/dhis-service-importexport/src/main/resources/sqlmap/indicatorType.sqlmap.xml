@@ -16,6 +16,7 @@
 		<result property="id" column="IndicatorTypeID"/>
 		<result property="name" column="IndicatorTypeName"/>
 		<result property="factor" column="Factor"/>
+		<result property="uid" column="UID"/>
 	</resultMap>
 	
 	<!-- Statement -->

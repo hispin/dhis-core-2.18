@@ -15,6 +15,7 @@
 	<resultMap class="organisationUnitGroup" id="organisationUnitGroupResultMap">
 		<result property="id" column="OrgUnitGroupID"/>
 		<result property="name" column="OrgUnitGroupName"/>
+		<result property="uid" column="UID"/>
 	</resultMap>
 	
 	<!-- Statement -->

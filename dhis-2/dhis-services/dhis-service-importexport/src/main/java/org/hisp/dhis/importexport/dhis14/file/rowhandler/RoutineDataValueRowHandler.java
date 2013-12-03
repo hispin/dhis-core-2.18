@@ -133,6 +133,7 @@ public class RoutineDataValueRowHandler
         value.setPeriod( period );
         value.setSource( source );
         value.setStoredBy( dhis14Value.getStoredBy() );
+        value.setComment( dhis14Value.getComment() );
 
         if ( dhis14Value.getValue() != null )
         {

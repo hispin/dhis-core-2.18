@@ -796,6 +796,16 @@ public class DefaultDhis14FileImportService
                 return false;
             }
             
+            count = (Integer) queryManager.queryForObject( "getRoutineDataArchiveValuesOutOfRange", null );
+            
+            if ( count != null && count > 0 )
+            {
+                state.setMessage( "routine_data_archive_contains_values_out_of_range" );
+                log.error( "Table RoutineDataArchive contains values larger than 2^31 which is out of range"  );
+                
+                return false;
+            }
+            
             count = (Integer) queryManager.queryForObject( "getSemiPermanentDataValuesOutOfRange", null );
             
             if ( count != null && count > 0 )
