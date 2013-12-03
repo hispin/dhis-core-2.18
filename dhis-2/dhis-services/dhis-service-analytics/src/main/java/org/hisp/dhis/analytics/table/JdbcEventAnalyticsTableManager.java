@@ -241,9 +241,7 @@ public class JdbcEventAnalyticsTableManager
             String[] col = { quote( identifierType.getUid() ), "character varying(31)", sql };
             columns.add( col );
         }
-        
-        String[] gender = { "gender", "character varying(5)", "pa.gender" };
-        String[] isdead = { "isdead", "boolean", "pa.isdead" };            
+                
         String[] psi = { "psi", "character(11) not null", "psi.uid" };
         String[] ps = { "ps", "character(11) not null", "ps.uid" };
         String[] ed = { "executiondate", "date", "psi.executiondate" };
@@ -253,7 +251,7 @@ public class JdbcEventAnalyticsTableManager
         String[] oun = { "ouname", "character varying(230) not null", "ou.name" };
         String[] ouc = { "oucode", "character varying(50)", "ou.code" };
         
-        columns.addAll( Arrays.asList( gender, isdead, psi, ps, ed, longitude, latitude, ou, oun, ouc ) );
+        columns.addAll( Arrays.asList( psi, ps, ed, longitude, latitude, ou, oun, ouc ) );
         
         return columns;
     }
