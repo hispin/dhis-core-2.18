@@ -85,7 +85,7 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
     return false;
   });
 
-  $list.on('click.context', 'td', function( e ) {
+  $list.on('click.context', 'tr', function( e ) {
     if(dhis2.contextmenu.disable()) {
       return false;
     }
@@ -94,6 +94,10 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
     $menu.css({left: e.pageX, top: e.pageY});
 
     var $target = $(e.target);
+
+    if( $target.data('id') === undefined ) {
+      $target = $target.closest('tr');
+    }
 
     $target.addClass(config.menuItemActiveClass);
 
@@ -120,6 +124,8 @@ dhis2.contextmenu.disable = function() {
   var config = dhis2.contextmenu.config;
   var $list = $('#' + config.listId);
   var $menu = $('#' + config.menuId);
+
+  $list.find('tr').removeClass(config.menuItemActiveClass);
   $list.find('td').removeClass(config.menuItemActiveClass);
 
   if( $menu.is(":visible") ) {
