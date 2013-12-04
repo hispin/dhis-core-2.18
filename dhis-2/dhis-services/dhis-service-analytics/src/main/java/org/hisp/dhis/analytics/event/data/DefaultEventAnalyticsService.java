@@ -31,8 +31,8 @@ package org.hisp.dhis.analytics.event.data;
 import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
 import static org.hisp.dhis.analytics.AnalyticsService.OU_HIERARCHY_KEY;
 import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_NAME_SEP;
-import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.NameableObjectUtils.asTypedList;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 
@@ -52,8 +52,6 @@ import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.analytics.event.EventQueryPlanner;
-import org.hisp.dhis.common.QueryItem;
-import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DimensionType;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
@@ -62,6 +60,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -94,8 +93,6 @@ public class DefaultEventAnalyticsService
     private static final String ITEM_ORG_UNIT = "ou";
     private static final String ITEM_ORG_UNIT_NAME = "ouname";
     private static final String ITEM_ORG_UNIT_CODE = "oucode";
-    private static final String ITEM_GENDER = "gender";
-    private static final String ITEM_ISDEAD = "isdead";
     
     private static final String COL_NAME_EVENTDATE = "executiondate";
 
@@ -480,16 +477,6 @@ public class DefaultEventAnalyticsService
     
     private QueryItem getItem( Program program, String item, String operator, String filter )
     {
-        if ( ITEM_GENDER.equalsIgnoreCase( item ) )
-        {
-            return new QueryItem( new BaseIdentifiableObject( ITEM_GENDER, ITEM_GENDER, ITEM_GENDER ), operator, filter );
-        }
-        
-        if ( ITEM_ISDEAD.equalsIgnoreCase( item ) )
-        {
-            return new QueryItem( new BaseIdentifiableObject( ITEM_ISDEAD, ITEM_ISDEAD, ITEM_ISDEAD ), operator, filter );
-        }
-        
         DataElement de = dataElementService.getDataElement( item );
         
         if ( de != null && program.getAllDataElements().contains( de ) )
