@@ -15,21 +15,6 @@
 
 <h3>$i18n.getString( "user_management" ) #openHelp( "user_by_org_unit" )</h3>
 
-<!--
-<td>$encoder.htmlEncode( $userCredentials.username )</td>
-<td>$encoder.htmlEncode( $userCredentials.user.surname ), $encoder.htmlEncode( $userCredentials.user.firstName )</td>
-<td style="text-align:right">
-<a href="showUpdateUserForm.action?id=$userCredentials.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-#if($currentUserName != $userCredentials.username)
-<a href="javascript:removeUser( $userCredentials.id, '$encoder.jsEncode( $userCredentials.username )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-#else
-<img src="../images/delete-denied.png" alt="$i18n.getString( 'remove' )"/>
-#end
-<a href="javascript:showUserDetails( $userCredentials.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-</td>
-</tr>
--->
-
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
     <li><a data-target-fn="showUpdateUserForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
