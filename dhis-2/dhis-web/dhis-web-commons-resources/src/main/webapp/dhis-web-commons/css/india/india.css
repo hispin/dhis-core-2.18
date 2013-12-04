@@ -455,6 +455,11 @@ a.menuLink:hover
   padding: 2px 2px 2px 5px;
 }
 
+.listTable > tbody > tr > td
+{
+  padding: 12px 0 12px 5px;
+}
+
 .listRow
 {
   border-bottom: 1px solid #cad5e5;
