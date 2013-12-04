@@ -36,10 +36,11 @@
 				<tbody id="list">
 				#foreach( $concept in $concepts )
 				#if( $concept.id != $defaultConcept.id )
-				<tr id="tr${concept.id}">
-          <td style="padding: 12px 0 12px 5px;" data-id="$!concept.id" data-uid="$!concept.uid" data-type="Concept" data-name="$encoder.htmlEncode( $!concept.displayName )">
-            $encoder.htmlEncode( $!concept.displayName )
-          </td>
+				<tr id="tr${concept.id}" data-id="$!concept.id" data-uid="$!concept.uid" data-type="Concept" data-name="$encoder.htmlEncode( $!concept.displayName )"
+            data-can-manage="$security.canManage( $concept )"
+            data-can-update="$security.canUpdate( $concept )"
+            data-can-delete="$security.canDelete( $concept )">
+          <td>$encoder.htmlEncode( $!concept.displayName )</td>
 				</tr>
 				#end
 				#end

@@ -36,10 +36,11 @@
       <tbody id="list">
         #foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
         #if( $dataElementCategoryCombo.id != $defaultCombo.id )
-        <tr id="tr${dataElementCategoryCombo.id}">
-          <td style="padding: 12px 0 12px 5px;" data-id="$!dataElementCategoryCombo.id" data-uid="$!dataElementCategoryCombo.uid" data-type="DataElementCategoryCombo" data-name="$encoder.htmlEncode( $!dataElementCategoryCombo.displayName )">
-            $encoder.htmlEncode( $!dataElementCategoryCombo.displayName )
-          </td>
+        <tr id="tr${dataElementCategoryCombo.id}" data-id="$!dataElementCategoryCombo.id" data-uid="$!dataElementCategoryCombo.uid" data-type="DataElementCategoryCombo" data-name="$encoder.htmlEncode( $!dataElementCategoryCombo.displayName )"
+            data-can-manage="$security.canManage( $dataElementCategoryCombo )"
+            data-can-update="$security.canUpdate( $dataElementCategoryCombo )"
+            data-can-delete="$security.canDelete( $dataElementCategoryCombo )">
+          <td>$encoder.htmlEncode( $!dataElementCategoryCombo.displayName )</td>
         </tr>
         #end
         #end
