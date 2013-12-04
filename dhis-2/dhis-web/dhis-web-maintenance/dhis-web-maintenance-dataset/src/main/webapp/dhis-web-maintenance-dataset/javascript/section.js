@@ -2,9 +2,17 @@
 // Section details form
 // -----------------------------------------------------------------------------
 
-function showSectionDetails( sectionId )
+function editSectionShow( context ) {
+  location.href = 'editSection.action?sectionId=' + context.id;
+}
+
+function greySectionShow( context ) {
+  location.href = 'greySection.action?sectionId=' + context.id;
+}
+
+function showSectionDetails( context )
 {
-	jQuery.get( 'getSection.action', { sectionId: sectionId }, function ( json ) {
+	jQuery.get( 'getSection.action', { sectionId: context.id }, function ( json ) {
 		setInnerHTML( 'nameField', json.section.name );
 		setInnerHTML( 'dataSetField', json.section.dataSet );
 		setInnerHTML( 'categoryComboField', json.section.categoryCombo );
