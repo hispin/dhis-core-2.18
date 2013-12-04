@@ -19,10 +19,10 @@
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">
-    #if( $security.canManage( $indicator ) )<li><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>#end
-    #if( $security.canUpdate( $indicator ) )<li><a data-target-fn="showUpdateIndicatorForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>#end
-    #if( $security.canUpdate( $indicator ) )<li><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>#end
-    #if( $security.canDelete( $indicator ) )<li><a data-target-fn="removeIndicator"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>#end
+    <li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
+    <li data-enabled="canUpdate"><a data-target-fn="showUpdateIndicatorForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
+    <li data-enabled="canUpdate"><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
+    <li data-enabled="canDelete"><a data-target-fn="removeIndicator"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
     <li><a data-target-fn="showIndicatorDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
   </ul>
 </div>
@@ -61,10 +61,11 @@
 				</thead>
 				<tbody id="list">
 				#foreach( $indicator in $indicators )
-				<tr id="tr${indicator.id}">
-          <td style="padding: 12px 0 12px 5px;" data-id="$!indicator.id" data-uid="$!indicator.uid" data-type="Indicator" data-name="$encoder.htmlEncode( $!indicator.displayName )">
-            $encoder.htmlEncode( $!indicator.displayName )
-          </td>
+				<tr id="tr${indicator.id}" data-id="$!indicator.id" data-uid="$!indicator.uid" data-type="Indicator" data-name="$encoder.htmlEncode( $!indicator.displayName )"
+            data-can-manage="$security.canManage( $indicator )"
+            data-can-update="$security.canUpdate( $indicator )"
+            data-can-delete="$security.canDelete( $indicator )">
+          <td>$encoder.htmlEncode( $!indicator.displayName )</td>
 				</tr>
 				#end
 				</tbody>

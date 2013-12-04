@@ -86,12 +86,9 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
   });
 
   $list.on('click.context', 'tr', function( e ) {
-    if(dhis2.contextmenu.disable()) {
+    if( dhis2.contextmenu.disable() ) {
       return false;
     }
-
-    $menu.show();
-    $menu.css({left: e.pageX, top: e.pageY});
 
     var $target = $(e.target);
 
@@ -104,6 +101,18 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
     $.each(config.listItemProps, function( idx, val ) {
       $menu.data(val, $target.data(val));
     });
+
+    $menu.find('ul > li').each(function( idx, val ) {
+      var $val = $(val);
+      var enabledProperty = $val.data('enabled');
+
+      if( enabledProperty ) {
+        $target.data(enabledProperty) ? $val.show() : $val.hide();
+      }
+    });
+
+    $menu.show();
+    $menu.css({left: e.pageX, top: e.pageY});
 
     return false;
   });

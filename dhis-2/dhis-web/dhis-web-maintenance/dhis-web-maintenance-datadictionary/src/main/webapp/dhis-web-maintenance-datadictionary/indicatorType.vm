@@ -58,10 +58,11 @@
         </thead>
 				<tbody id="list">
 				#foreach( $indicatorType in $indicatorTypes )
-				<tr id="tr${indicatorType.id}">
-          <td style="padding: 12px 0 12px 5px;" data-id="$!indicatorType.id" data-uid="$!indicatorType.uid" data-type="IndicatorType" data-name="$encoder.htmlEncode( $!indicatorType.displayName )">
-            $encoder.htmlEncode( $!indicatorType.displayName )
-          </td>
+				<tr id="tr${indicatorType.id}" data-id="$!indicatorType.id" data-uid="$!indicatorType.uid" data-type="IndicatorType" data-name="$encoder.htmlEncode( $!indicatorType.displayName )"
+            data-can-manage="$security.canManage( $indicatorType )"
+            data-can-update="$security.canUpdate( $indicatorType )"
+            data-can-delete="$security.canDelete( $indicatorType )">
+          <td>$encoder.htmlEncode( $!indicatorType.displayName )</td>
 				</tr>
 				#end
 				</tbody>

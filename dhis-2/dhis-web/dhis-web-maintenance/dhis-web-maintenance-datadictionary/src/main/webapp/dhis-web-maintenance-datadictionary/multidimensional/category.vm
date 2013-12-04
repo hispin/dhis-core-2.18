@@ -59,10 +59,11 @@
       <tbody id="list">
         #foreach( $dataElementCategory in $dataElementCategories )
         #if( $dataElementCategory.id != $defaultCategory.id )
-        <tr id="tr${dataElementCategory.id}">
-          <td style="padding: 12px 0 12px 5px;" data-id="$!dataElementCategory.id" data-uid="$!dataElementCategory.uid" data-type="DataElementCategory" data-name="$encoder.htmlEncode( $!dataElementCategory.displayName )">
-            $encoder.htmlEncode( $!dataElementCategory.displayName )
-          </td>
+        <tr id="tr${dataElementCategory.id}" data-id="$!dataElementCategory.id" data-uid="$!dataElementCategory.uid" data-type="DataElementCategory" data-name="$encoder.htmlEncode( $!dataElementCategory.displayName )"
+            data-can-manage="$security.canManage( $dataElementCategory )"
+            data-can-update="$security.canUpdate( $dataElementCategory )"
+            data-can-delete="$security.canDelete( $dataElementCategory )">
+          <td>$encoder.htmlEncode( $!dataElementCategory.displayName )</td>
         </tr>
         #end
         #end

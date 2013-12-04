@@ -38,10 +38,11 @@
 				</thead>
 				<tbody id="list">
 					#foreach( $dataElementGroupSet in $dataElementGroupSets )
-					<tr id="tr${dataElementGroupSet.id}">
-            <td style="padding: 12px 0 12px 5px;" ata-id="$!dataElementGroupSet.id" data-uid="$!dataElementGroupSet.uid" data-type="DataElementGroupSet" data-name="$encoder.htmlEncode( $!dataElementGroupSet.displayName )">
-              $encoder.htmlEncode( $!dataElementGroupSet.displayName )
-            </td>
+					<tr id="tr${dataElementGroupSet.id}"  data-id="$!dataElementGroupSet.id" data-uid="$!dataElementGroupSet.uid" data-type="DataElementGroupSet" data-name="$encoder.htmlEncode( $!dataElementGroupSet.displayName )"
+              data-can-manage="$security.canManage( $dataElementGroupSet )"
+              data-can-update="$security.canUpdate( $dataElementGroupSet )"
+              data-can-delete="$security.canDelete( $dataElementGroupSet )">
+            <td>$encoder.htmlEncode( $!dataElementGroupSet.displayName )</td>
 					</tr>
 					#end
 				</tbody>
