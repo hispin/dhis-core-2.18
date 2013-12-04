@@ -380,7 +380,7 @@ public class JdbcEventAnalyticsManager
         {
             if ( item.hasFilter() )
             {                
-                sql += "and lower(" + statementBuilder.columnQuote( item.getItem().getUid() ) + ") " + item.getSqlOperator() + " " + getSqlFilter( item ) + " ";
+                sql += "and " + statementBuilder.columnQuote( item.getItem().getUid() ) + " " + item.getSqlOperator() + " " + getSqlFilter( item ) + " ";
             }
         }
         
@@ -388,7 +388,7 @@ public class JdbcEventAnalyticsManager
         {
             if ( filter.hasFilter() )
             {                
-                sql += "and lower(" + statementBuilder.columnQuote( filter.getItem().getUid() ) + ") " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
+                sql += "and " + statementBuilder.columnQuote( filter.getItem().getUid() ) + " " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
             }
         }
 
@@ -409,7 +409,7 @@ public class JdbcEventAnalyticsManager
         }
         
         operator = operator.toLowerCase();
-        filter = statementBuilder.encode( filter, false ).toLowerCase();
+        filter = statementBuilder.encode( filter, false );
         
         if ( operator.equals( "like" ) )
         {
