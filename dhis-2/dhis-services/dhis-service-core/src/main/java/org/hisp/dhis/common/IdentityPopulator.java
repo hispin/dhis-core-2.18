@@ -137,11 +137,9 @@ public class IdentityPopulator
                     log.info( count + " timestamps set on " + table );
                 }
             }
-            catch ( Exception ex )
+            catch ( Exception ex ) // Log and continue
             {
                 log.error( "Problem updating: " + table + ", id column: " + getIdColumn( table ), ex );
-
-                throw ex;
             }
         }
 
@@ -170,7 +168,7 @@ public class IdentityPopulator
                 final String sql = "ALTER TABLE " + table + " ADD CONSTRAINT " + table + "_uid_key UNIQUE(uid)";
                 jdbcTemplate.execute( sql );
             }
-            catch ( BadSqlGrammarException ex )
+            catch ( Exception ex ) // Log and continue, will fail after first run
             {
                 log.debug( "Could not create uid constraint on table " + table +
                     ", might already be created or column contains duplicates", ex );
@@ -198,9 +196,9 @@ public class IdentityPopulator
                 log.info( count + " UUIDs updated on organisationunit" );
             }
         }
-        catch ( BadSqlGrammarException ex )
+        catch ( Exception ex ) // Log and continue
         {
-            log.debug( "Problem updating organisationunit: ", ex );
+            log.error( "Problem updating organisationunit: ", ex );
         }
     }
 }
