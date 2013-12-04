@@ -6,9 +6,9 @@
 // View details
 // -----------------------------------------------------------------------------
 
-function showOrganisationUnitGroupSetDetails( groupSetId )
+function showOrganisationUnitGroupSetDetails( context )
 {
-	jQuery.post( 'getOrganisationUnitGroupSet.action', { id: groupSetId },
+	jQuery.post( 'getOrganisationUnitGroupSet.action', { id: context.id },
 		function ( json ) {
 			setInnerHTML( 'nameField', json.organisationUnitGroupSet.name );
 			setInnerHTML( 'descriptionField', json.organisationUnitGroupSet.description );
@@ -22,13 +22,17 @@ function showOrganisationUnitGroupSetDetails( groupSetId )
 	});
 }
 
+function showUpdateOrganisationUnitGroupSetForm( context ) {
+  location.href = 'showUpdateOrganisationUnitGroupSetForm.action?id=' + context.id;
+}
+
 // -----------------------------------------------------------------------------
 // Remove organisation unit group set
 // -----------------------------------------------------------------------------
 
-function removeOrganisationUnitGroupSet( groupSetId, groupSetName )
+function removeOrganisationUnitGroupSet( context )
 {
-	removeItem( groupSetId, groupSetName, confirm_to_delete_org_unit_group_set, 'removeOrganisationUnitGroupSet.action' );
+	removeItem( context.id, context.name, confirm_to_delete_org_unit_group_set, 'removeOrganisationUnitGroupSet.action' );
 }
 
 function changeCompulsory( value )
