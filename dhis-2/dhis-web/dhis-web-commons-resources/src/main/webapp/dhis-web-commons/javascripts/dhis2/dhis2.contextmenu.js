@@ -79,7 +79,7 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
     var targetFn = $target.data('target-fn');
     var fn = config.functionResolver(targetFn);
 
-    $menu.hide();
+    dhis2.contextmenu.disable();
     fn(context);
 
     return false;
