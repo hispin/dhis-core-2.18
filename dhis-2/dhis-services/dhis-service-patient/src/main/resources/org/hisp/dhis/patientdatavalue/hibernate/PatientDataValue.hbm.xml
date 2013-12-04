@@ -15,7 +15,7 @@
     
     <property name="value" />
 
-    <property name="timestamp" type="date" />
+    <property name="timestamp" type="timestamp" />
     
     <property name="providedElsewhere" />
 	
