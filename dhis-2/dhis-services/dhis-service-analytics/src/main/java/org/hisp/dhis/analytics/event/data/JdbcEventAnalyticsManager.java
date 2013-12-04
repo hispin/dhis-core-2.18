@@ -28,12 +28,13 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.DimensionalObject.ORGUNIT_DIM_ID;
+import static org.hisp.dhis.common.DimensionalObject.PERIOD_DIM_ID;
 import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.removeLast;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
-import static org.hisp.dhis.common.DimensionalObject.*;
 
 import java.util.Arrays;
 
@@ -42,11 +43,11 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventQueryParams;
-import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.grid.ListGrid;
@@ -304,14 +305,14 @@ public class JdbcEventAnalyticsManager
         
         for ( DimensionalObject dimension : params.getDimensions() )
         {
-            sql += dimension.getDimensionName() + ",";
+            sql += statementBuilder.columnQuote( dimension.getDimensionName() ) + ",";
         }
         
         for ( QueryItem queryItem : params.getItems() )
         {
             IdentifiableObject item = queryItem.getItem();
             
-            sql += item.getUid() + ",";
+            sql += statementBuilder.columnQuote( item.getUid() ) + ",";
         }
         
         return removeLast( sql, 1 );
@@ -422,5 +423,5 @@ public class JdbcEventAnalyticsManager
         }
         
         return "'" + filter + "'";
-    }    
+    }
 }
