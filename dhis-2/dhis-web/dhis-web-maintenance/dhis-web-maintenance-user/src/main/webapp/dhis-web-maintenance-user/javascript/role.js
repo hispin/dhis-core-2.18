@@ -1,24 +1,21 @@
-
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
 
-function showRoleDetails( roleId )
-{
-    jQuery.post( 'getRole.action', { id: roleId }, function ( json ) {
-		setInnerHTML( 'nameField', json.userRole.name );
-		setInnerHTML( 'membersField', json.userRole.members );
-		setInnerHTML( 'dataSetsField', json.userRole.dataSets );
+function showRoleDetails( context ) {
+  jQuery.post('getRole.action', { id: context.id }, function( json ) {
+    setInnerHTML('nameField', json.userRole.name);
+    setInnerHTML('membersField', json.userRole.members);
+    setInnerHTML('dataSetsField', json.userRole.dataSets);
 
-		showDetails();
-	});
+    showDetails();
+  });
 }
 
 // -----------------------------------------------------------------------------
 // Remove role
 // -----------------------------------------------------------------------------
 
-function removeRole(id, role)
-{
-	removeItem( id, role, i18n_confirm_delete, 'removeRole.action' );
+function removeRole( context ) {
+  removeItem(context.id, context.name, i18n_confirm_delete, 'removeRole.action');
 }

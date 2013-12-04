@@ -6,6 +6,14 @@
 
 <h3>$i18n.getString( "user_role_management" ) #openHelp( "user_user_roles" )</h3>
 
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
+    <li><a data-target-fn="showUpdateRoleForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
+    <li><a data-target-fn="removeRole"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showRoleDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
+  </ul>
+</div>
+
 <table style="width:100%">
 	<tr>
 		<td style="vertical-align:top">
@@ -16,23 +24,20 @@
 				</tr>
 			</table>
 			<table class="listTable" id="listTable">  				
-                <thead>				
+      <thead>
 				<tr>
 					<th>$i18n.getString( "role" )</th>
 					<th>$i18n.getString( "description" )</th>
-					<th class="{sorter: false}" style="width:120px;">$i18n.getString( "operations" )</th>
 				</tr>
 				</thead>
 				<tbody id="list">
 				#foreach( $userAuthorityGroup in $userAuthorityGroups )
-				<tr id="tr${userAuthorityGroup.id}">
-					<td onclick="showRoleDetails( $userAuthorityGroup.id )">$!encoder.htmlEncode( $userAuthorityGroup.name )</td>
-					<td onclick="showRoleDetails( $userAuthorityGroup.id )">$!encoder.htmlEncode( $userAuthorityGroup.description )</td>
-					<td style="text-align:right">
-						<a href="showUpdateRoleForm.action?id=$userAuthorityGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>					
-						<a href="javascript:removeRole( $userAuthorityGroup.id, '$encoder.jsEncode( $userAuthorityGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-						<a href="javascript:showRoleDetails( $userAuthorityGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-					</td>
+				<tr id="tr${userAuthorityGroup.id}" data-id="$!userAuthorityGroup.id" data-uid="$!userAuthorityGroup.uid" data-type="UserAuthorityGroup" data-name="$encoder.htmlEncode( $!userAuthorityGroup.displayName )"
+				    data-can-manage="$security.canManage( $userAuthorityGroup )"
+				    data-can-update="$security.canUpdate( $userAuthorityGroup )"
+				    data-can-delete="$security.canDelete( $userAuthorityGroup )">
+				    <td>$encoder.htmlEncode( $!userAuthorityGroup.displayName )</td>
+				    <td>$encoder.htmlEncode( $!userAuthorityGroup.description )</td>
 				</tr>
 				#end
 				</tbody>
@@ -44,15 +49,14 @@
 			
 		</td>
 		<td id="detailsData">
-
-            <div id="detailsArea">
-                <div id="hideDetailsArea">
-                    <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
-                </div>  
-                <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
-                <p><label>$i18n.getString( "members" ):</label><br/><span id="membersField"></span></p>
-                <p><label>$i18n.getString( "data_sets" ):</label><br/><span id="dataSetsField"></span></p>
-            </div>
+      <div id="detailsArea">
+        <div id="hideDetailsArea">
+          <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"/></a>
+        </div>
+        <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
+        <p><label>$i18n.getString( "members" ):</label><br/><span id="membersField"></span></p>
+        <p><label>$i18n.getString( "data_sets" ):</label><br/><span id="dataSetsField"></span></p>
+      </div>
 			
 			<div id="warningArea">
 				<div id="hideDetailsArea">
@@ -61,6 +65,6 @@
 				<p><span id="warningField"></span></p>
 			</div>
 
-        </td>
+    </td>
 	</tr>
 </table>
