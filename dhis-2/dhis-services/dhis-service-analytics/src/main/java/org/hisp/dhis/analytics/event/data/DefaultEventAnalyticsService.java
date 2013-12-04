@@ -475,7 +475,7 @@ public class DefaultEventAnalyticsService
         
         item = ITEM_EXECUTION_DATE.equalsIgnoreCase( item ) ? COL_NAME_EVENTDATE : item;
         
-        return item.toLowerCase();
+        return item;
     }
     
     private QueryItem getItem( Program program, String item, String operator, String filter )
