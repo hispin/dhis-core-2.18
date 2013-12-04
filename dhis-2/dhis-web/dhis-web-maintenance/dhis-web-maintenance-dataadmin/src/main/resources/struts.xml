@@ -515,6 +515,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/attribute.vm</param>
+      <param name="javascripts">javascript/attribute.js</param>
     </action>
 
     <action name="showAddAttributeForm" class="org.hisp.dhis.dataadmin.action.NoAction">
