@@ -197,12 +197,12 @@ public class JdbcEventAnalyticsManager
         
             for ( String item : params.getAsc() )
             {
-                sql += item + " asc,";
+                sql += statementBuilder.columnQuote( item ) + " asc,";
             }
             
             for  ( String item : params.getDesc() )
             {
-                sql += item + " desc,";
+                sql += statementBuilder.columnQuote( item ) + " desc,";
             }
             
             sql = removeLast( sql, 1 ) + " ";
@@ -380,7 +380,7 @@ public class JdbcEventAnalyticsManager
         {
             if ( item.hasFilter() )
             {                
-                sql += "and lower(" + item.getItem().getUid() + ") " + item.getSqlOperator() + " " + getSqlFilter( item ) + " ";
+                sql += "and lower(" + statementBuilder.columnQuote( item.getItem().getUid() ) + ") " + item.getSqlOperator() + " " + getSqlFilter( item ) + " ";
             }
         }
         
@@ -388,7 +388,7 @@ public class JdbcEventAnalyticsManager
         {
             if ( filter.hasFilter() )
             {                
-                sql += "and lower(" + filter.getItem().getUid() + ") " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
+                sql += "and lower(" + statementBuilder.columnQuote( filter.getItem().getUid() ) + ") " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
             }
         }
 
