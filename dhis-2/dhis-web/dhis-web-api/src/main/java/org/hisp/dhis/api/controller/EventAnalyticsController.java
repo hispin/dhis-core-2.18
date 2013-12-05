@@ -133,7 +133,7 @@ public class EventAnalyticsController
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.csv", true );
         Grid grid = analyticsService.getAggregatedEventData( params );
-        GridUtils.toXls( grid, response.getOutputStream() );
+        GridUtils.toCsv( grid, response.getOutputStream() );
     }
     
     // -------------------------------------------------------------------------
@@ -190,6 +190,31 @@ public class EventAnalyticsController
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
         Grid grid = analyticsService.getEvents( params );
         GridUtils.toXls( grid, response.getOutputStream() );
+    }
+
+    @RequestMapping( value = RESOURCE_PATH + "/query/{program}.csv", method = RequestMethod.GET )
+    public void getQueryCsv(
+        @PathVariable String program,
+        @RequestParam(required=false) String stage,
+        @RequestParam(required=false) String startDate,
+        @RequestParam(required=false) String endDate,
+        @RequestParam Set<String> dimension,
+        @RequestParam(required=false) Set<String> filter,
+        @RequestParam(required=false) String ouMode,
+        @RequestParam(required=false) Set<String> asc,
+        @RequestParam(required=false) Set<String> desc,
+        @RequestParam(required=false) boolean hierarchyMeta,
+        @RequestParam(required=false) Integer page,
+        @RequestParam(required=false) Integer pageSize,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        EventQueryParams params = analyticsService.getFromUrl( program, stage, startDate, endDate, dimension, filter, 
+            ouMode, asc, desc, hierarchyMeta, page, pageSize, i18nManager.getI18nFormat() );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.csv", true );
+        Grid grid = analyticsService.getEvents( params );
+        GridUtils.toCsv( grid, response.getOutputStream() );
     }
     
     // -------------------------------------------------------------------------
