@@ -79,9 +79,15 @@ public class ShowEquipmentStatusFormAction implements Action
         
         Constant optionSetConstant = constantService.getConstantByName( WORKING_STATUS_OPTION_SET );
         
-        optionSet = new OptionSet();
-        optionSet = optionService.getOptionSet( (int) optionSetConstant.getValue() );
-        
+        if( optionSetConstant != null )
+        {
+            optionSet = new OptionSet();
+            optionSet = optionService.getOptionSet( (int) optionSetConstant.getValue() );
+        }
+        else
+        {
+            System.out.println( "constant for working status option set is not defined");
+        }
         
         //equipment.getOrganisationUnit().getName();
         //equipment.getModel().getName();
