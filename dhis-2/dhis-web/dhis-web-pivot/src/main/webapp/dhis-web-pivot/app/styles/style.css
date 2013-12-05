@@ -985,4 +985,5 @@ table.pivot {
 .ns-textarea.monospaced textarea {
 	font-family: monospace, consolas, courier new;
 	padding: 4px;
+	border: 0 none;
 }
