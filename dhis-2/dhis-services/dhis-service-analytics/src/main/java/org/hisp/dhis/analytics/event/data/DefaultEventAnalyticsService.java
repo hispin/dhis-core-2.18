@@ -422,7 +422,14 @@ public class DefaultEventAnalyticsService
         {
             map.put( stage.getUid(), stage.getName() );
         }
-        
+        else
+        {
+            for ( ProgramStage st : program.getProgramStages() )
+            {
+                map.put( st.getUid(), st.getName() );
+            }
+        }
+
         for ( QueryItem item : params.getItems() )
         {
             map.put( item.getItem().getUid(), item.getItem().getDisplayName() );
