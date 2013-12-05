@@ -244,7 +244,7 @@ public class JdbcEventAnalyticsTableManager
                 
         String[] psi = { "psi", "character(11) not null", "psi.uid" };
         String[] ps = { "ps", "character(11) not null", "ps.uid" };
-        String[] ed = { "executiondate", "date", "psi.executiondate" };
+        String[] ed = { "executiondate", "timestamp", "psi.executiondate" };
         String[] longitude = { "longitude", dbl, "psi.longitude" };
         String[] latitude = { "latitude", dbl, "psi.latitude" };
         String[] ou = { "ou", "character(11) not null", "ou.uid" };

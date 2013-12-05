@@ -26,7 +26,7 @@
 
 		<property name="dueDate" column="duedate" />
 
-		<property name="executionDate" column="executiondate" />
+		<property name="executionDate" column="executiondate" type="timestamp" />
 
 		<property name="completed" not-null="true" />
 
