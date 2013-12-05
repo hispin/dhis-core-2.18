@@ -560,6 +560,15 @@ gis-combo .x-form-item-label {
     padding-left: 18px;
 }
 
+.gis-menu-item-tablelayout {
+    background-image:url('../images/dl_tablelayout.png');
+    padding-left: 18px;
+}
+.gis-menu-item-datasource {
+    background-image:url('../images/dl_datasource.png');
+    padding-left: 18px;
+}
+
 	/* Menu align */
 .gis-btn-menu {
 	margin-top: 2px;
@@ -795,6 +804,12 @@ gis-combo .x-form-item-label {
 
 .gis-textarea .x-form-field {
 	font-size: 11px;
+}
+
+.gis-textarea.monospaced textarea {
+	font-family: monospace, consolas, courier new !important;
+	padding: 4px;
+	border: 0 none;
 }
 
 

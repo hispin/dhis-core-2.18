@@ -88,6 +88,100 @@ Ext.onReady( function() {
 				return new OpenLayers.LonLat(point.x, point.y);
 			};
 
+			util.map.map2plugin = function(map) {
+				if (map.id) {
+					return {id: map.id};
+				}
+
+				delete map.access;
+				delete map.created;
+				delete lastUpdated;
+				delete name;
+
+				for (var i = 0, dimensions, layout; i < map.mapViews.length; i++) {
+					layout = map.mapViews[i];
+
+					dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));dimension = dimensions[i];
+
+					for (var j = 0, dimension; j < dimensions.length; j++) {
+						dimension = dimensions[j];
+
+						delete dimension.id;
+						delete dimension.ids;
+						delete dimension.type;
+						delete dimension.dimensionName;
+						delete dimension.objectName;
+
+						for (var k = 0, item; k < dimension.items.length; k++) {
+							item = dimension.items[k];
+
+							delete item.name;
+							delete item.code;
+							delete item.created;
+							delete item.lastUpdated;
+						}
+					}
+
+					if (layout.legendSet) {
+						delete layout.method;
+						delete layout.classes;
+						delete layout.colorLow;
+						delete layout.colorHigh;
+						delete layout.radiusLow;
+						delete layout.radiusHigh;
+					}
+					else {
+						if (layout.method === 2) {
+							delete layout.method;
+						}
+
+						if (layout.classes === 5) {
+							delete layout.classes;
+						}
+
+						if (layout.colorLow === "ff0000") {
+							delete layout.colorLow;
+						}
+
+						if (layout.colorHigh === "00ff00") {
+							delete layout.colorHigh;
+						}
+
+						if (layout.radiusLow === 5) {
+							delete layout.radiusLow;
+						}
+
+						if (layout.radiusHigh === 15) {
+							delete layout.radiusHigh;
+						}
+					}
+
+					if (layout.opacity === 0.8) {
+						delete layout.opacity;
+					}
+
+					if (!layout.userOrganisationUnit) {
+						delete layout.userOrganisationUnit;
+					}
+
+					if (!layout.userOrganisationUnitChildren) {
+						delete layout.userOrganisationUnitChildren;
+					}
+
+					if (!layout.userOrganisationUnitGrandChildren) {
+						delete layout.userOrganisationUnitGrandChildren;
+					}
+
+					if (!layout.organisationUnitGroupSet) {
+						delete layout.organisationUnitGroupSet;
+					}
+
+					delete layout.parentGraphMap;
+				}
+
+				return map;
+			};
+
 			util.url = util.url || {};
 
 			util.url.getUrlParam = function(s) {
@@ -334,6 +428,29 @@ Ext.onReady( function() {
 				}
 
 				return;
+			};
+
+			util.layout.getPluginConfig = function() {
+				var layers = gis.util.map.getVisibleVectorLayers(),
+					map = {};
+
+				if (gis.map) {
+					return gis.map;
+				}
+
+				map.mapViews = [];
+
+				for (var i = 0, layer; i < layers.length; i++) {
+					layer = layers[i];
+
+					if (layer.core.view) {
+						layer.core.view.layer = layer.id;
+
+						map.mapViews.push(layer.core.view);
+					}
+				}
+
+				return map;
 			};
 
 			util.layout.setSessionStorage = function(session, obj, url) {
@@ -905,8 +1022,6 @@ Ext.onReady( function() {
 			text: GIS.i18n.close,
 			iconCls: 'gis-menu-item-icon-clear',
 			handler: function() {
-				gis.viewport.interpretationButton.disable();
-
 				layer.core.reset();
 			}
 		};
@@ -1961,7 +2076,7 @@ Ext.onReady( function() {
 
 							gis.store.maps.loadStore();
 
-							gis.viewport.interpretationButton.enable();
+							gis.viewport.shareButton.enable();
 
 							window.destroy();
 						}
@@ -2181,7 +2296,7 @@ Ext.onReady( function() {
 												params: Ext.encode(map),
 												success: function() {
 													gis.map = map;
-													gis.viewport.interpretationButton.enable();
+													gis.viewport.shareButton.enable();
 													gis.store.maps.loadStore();
 												}
 											});
@@ -3189,7 +3304,6 @@ Ext.onReady( function() {
 			fieldStyle: 'padding-left: 4px; padding-top: 3px',
 			emptyText: GIS.i18n.write_your_interpretation
 		});
-		console.log(gis);
 
 		panel = Ext.create('Ext.panel.Panel', {
 			cls: 'gis-container-inner',
@@ -6229,7 +6343,7 @@ Ext.onReady( function() {
 		var centerRegion,
 			eastRegion,
 			downloadButton,
-			interpretationButton,
+			shareButton,
 			defaultButton,
 			layersPanel,
 			resizeButton,
@@ -6252,6 +6366,112 @@ Ext.onReady( function() {
 			handler: function() {
 				if (!this.pressed) {
 					this.toggle();
+				}
+			}
+		});
+
+		interpretationItem = Ext.create('Ext.menu.Item', {
+			text: 'Write interpretation' + '&nbsp;&nbsp;',
+			iconCls: 'gis-menu-item-tablelayout',
+			disabled: true,
+			xable: function() {
+				if (gis.map) {
+					this.enable();
+				}
+				else {
+					this.disable();
+				}
+			},
+			handler: function() {
+				if (viewport.interpretationWindow) {
+					viewport.interpretationWindow.destroy();
+					viewport.interpretationWindow = null;
+				}
+
+				viewport.interpretationWindow = GIS.app.InterpretationWindow();
+				viewport.interpretationWindow.show();
+			}
+		});
+
+		pluginItem = Ext.create('Ext.menu.Item', {
+			text: 'Embed as plugin' + '&nbsp;&nbsp;',
+			iconCls: 'gis-menu-item-datasource',
+			disabled: true,
+			xable: function() {
+				if (gis.util.map.hasVisibleFeatures()) {
+					this.enable();
+				}
+				else {
+					this.disable();
+				}
+			},
+			handler: function() {
+				var textArea,
+					window;
+
+				textArea = Ext.create('Ext.form.field.TextArea', {
+					width: 400,
+					height: 200,
+					readOnly: true,
+					cls: 'gis-textarea monospaced',
+					value: JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()))
+				});
+
+				window = Ext.create('Ext.window.Window', {
+					title: 'Plugin configuration',
+					layout: 'fit',
+					modal: true,
+					resizable: false,
+					items: textArea,
+					destroyOnBlur: true,
+					bbar: [
+						'->',
+						{
+							text: 'Format',
+							handler: function() {
+								textArea.setValue(JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()), null, 2));
+
+							}
+						},
+						{
+							text: 'Select',
+							handler: function() {
+								textArea.selectText();
+							}
+						}
+					],
+					listeners: {
+						show: function(w) {
+							this.setPosition(215, 33);
+						}
+					}
+				});
+
+				window.show();
+			}
+		});
+
+		shareButton = Ext.create('Ext.button.Button', {
+			text: GIS.i18n.share,
+			xableItems: function() {
+				interpretationItem.xable();
+				pluginItem.xable();
+			},
+			menu: {
+				cls: 'gis-menu',
+				shadow: false,
+				showSeparator: false,
+				items: [
+					interpretationItem,
+					pluginItem
+				],
+				listeners: {
+					afterrender: function() {
+						this.getEl().addCls('gis-toolbar-btn-menu');
+					},
+					show: function() {
+						shareButton.xableItems();
+					}
 				}
 			}
 		});
@@ -6361,24 +6581,7 @@ Ext.onReady( function() {
 							}
 						}
 					});
-					a.push({
-						text: GIS.i18n.share,
-						menu: {},
-						disabled: true,
-						handler: function() {
-							if (viewport.interpretationWindow && viewport.interpretationWindow.destroy) {
-								viewport.interpretationWindow.destroy();
-							}
-
-							viewport.interpretationWindow = GIS.app.InterpretationWindow();
-							viewport.interpretationWindow.show();
-						},
-						listeners: {
-							added: function() {
-								interpretationButton = this;
-							}
-						}
-					});
+					a.push(shareButton);
 					a.push('->');
 
 					a.push({
@@ -6713,7 +6916,7 @@ Ext.onReady( function() {
 			eastRegion: eastRegion,
 			centerRegion: centerRegion,
 			downloadButton: downloadButton,
-			interpretationButton: interpretationButton,
+			shareButton: shareButton,
 			layersPanel: layersPanel,
 			items: [
 				centerRegion,

@@ -1194,8 +1194,8 @@ Ext.onReady( function() {
 				}
 			}
 
-			if (gis.viewport.interpretationButton) {
-				gis.viewport.interpretationButton.enable();
+			if (gis.viewport.shareButton) {
+				gis.viewport.shareButton.enable();
 			}
 
 			gis.olmap.mask.hide();
@@ -1399,7 +1399,7 @@ Ext.onReady( function() {
 			}
 			else {
 				gis.map = null;
-				gis.viewport.interpretationButton.disable();
+				gis.viewport.shareButton.disable();
 			}
 		};
 
@@ -1867,8 +1867,8 @@ Ext.onReady( function() {
 			}
 			else {
 				gis.map = null;
-				if (gis.viewport.interpretationButton) {
-					gis.viewport.interpretationButton.disable();
+				if (gis.viewport.shareButton) {
+					gis.viewport.shareButton.disable();
 				}
 			}
 		};
@@ -2104,7 +2104,7 @@ Ext.onReady( function() {
 			}
 			else {
 				gis.map = null;
-				gis.viewport.interpretationButton.disable();
+				gis.viewport.shareButton.disable();
 			}
 		};
 

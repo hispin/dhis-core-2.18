@@ -4636,8 +4636,21 @@ Ext.onReady( function() {
 
 		openTableLayoutTab = function(type, isNewTab) {
 			if (ns.core.init.contextPath && ns.app.paramString) {
-				var url = ns.core.init.contextPath + '/api/analytics.' + type + ns.core.web.analytics.getParamString(ns.app.xLayout);
-				url += '&tableLayout=true&columns=' + ns.app.xLayout.columnDimensionNames.join(';') + '&rows=' + ns.app.xLayout.rowDimensionNames.join(';');
+				var colDimNames = Ext.clone(ns.app.xLayout.columnDimensionNames),
+					colObjNames = ns.app.xLayout.columnObjectNames,
+					rowDimNames = Ext.clone(ns.app.xLayout.rowDimensionNames),
+					rowObjNames = ns.app.xLayout.rowObjectNames,
+					dc = ns.core.conf.finals.dimension.operand.objectName,
+					co = ns.core.conf.finals.dimension.category.dimensionName,
+					columnNames = Ext.Array.clean([].concat(colDimNames, (Ext.Array.contains(colObjNames, dc) ? co : []))),
+					rowNames = Ext.Array.clean([].concat(rowDimNames, (Ext.Array.contains(rowObjNames, dc) ? co : []))),
+					url = '';
+
+				url += ns.core.init.contextPath + '/api/analytics.' + type;
+				url += ns.core.web.analytics.getParamString(ns.app.xLayout);
+				url += '&tableLayout=true';
+				url += '&columns=' + columnNames.join(';');
+				url += '&rows=' + rowNames.join(';');
 
 				window.open(url, isNewTab ? '_blank' : '_top');
 			}
