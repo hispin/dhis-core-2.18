@@ -589,17 +589,17 @@ public class ListGrid
         {
             GridHeader header = headers.get( colIndex );
             
+            // Header
+            
+            Object headerMetaName = metaDataMap.get( header.getName() );
+            
+            if ( headerMetaName != null )
+            {
+                header.setName( String.valueOf( headerMetaName ) );
+            }
+
             if ( header.isMeta() )
             {
-                // Header
-                
-                Object headerMetaName = metaDataMap.get( header.getName() );
-                
-                if ( headerMetaName != null )
-                {
-                    header.setName( String.valueOf( headerMetaName ) );
-                }
-                
                 // Column cells
                 
                 List<Object> col = getColumn( colIndex );
