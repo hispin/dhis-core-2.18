@@ -273,6 +273,7 @@ public class TableAlteror
         executeSql( "alter table patient alter column organisationunitid set not null" );        
 
         executeSql( "ALTER TABLE patientdatavalue ALTER COLUMN timestamp TYPE timestamp" );
+        executeSql( "ALTER TABLE programstageinstance ALTER COLUMN executiondate TYPE timestamp" );
         
         updateCoordinatesProgramStageInstance();
     }
