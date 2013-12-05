@@ -204,6 +204,10 @@ table.pivot {
 	background-color: #bac6d8;
 	text-align: center;
 }
+.pivot-dim-total.highlighted {
+	background-color: #adb8c9;
+}
+
 .pivot-dim-empty {
 	background-color: #dae6f8;
 	text-align: center;
@@ -976,4 +980,9 @@ table.pivot {
 
 .ns-textarea .x-form-field {
 	font-size: 11px;
+}
+
+.ns-textarea.monospaced textarea {
+	font-family: monospace, consolas, courier new;
+	padding: 4px;
 }

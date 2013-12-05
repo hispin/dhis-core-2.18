@@ -643,6 +643,7 @@ Ext.onReady( function() {
 			support.prototype.str.toggleDirection = function(direction) {
 				return direction === 'DESC' ? 'ASC' : 'DESC';
 			};
+
 				// number
 			support.prototype.number = {};
 
@@ -1514,6 +1515,81 @@ Ext.onReady( function() {
 
 			service.layout.isHierarchy = function(layout, response, id) {
 				return layout.showHierarchy && Ext.isObject(response.metaData.ouHierarchy) && response.metaData.ouHierarchy.hasOwnProperty(id);
+			};
+
+			service.layout.layout2plugin = function(layout) {
+				var layout = Ext.clone(layout),
+					dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
+
+				if (Ext.isString(layout.id)) {
+					return {id: layout.id};
+				}
+
+				for (var i = 0, dimension, item; i < dimensions.length; i++) {
+					dimension = dimensions[i];
+
+					delete dimension.id;
+					delete dimension.ids;
+					delete dimension.type;
+					delete dimension.dimensionName;
+					delete dimension.objectName;
+
+					for (var j = 0, item; j < dimension.items.length; j++) {
+						item = dimension.items[j];
+
+						delete item.name;
+						delete item.code;
+						delete item.created;
+						delete item.lastUpdated;
+					}
+				}
+
+				if (layout.showTotals) {
+					delete layout.showTotals;
+				}
+
+				if (layout.showSubTotals) {
+					delete layout.showSubTotals;
+				}
+
+				if (!layout.hideEmptyRows) {
+					delete layout.hideEmptyRows;
+				}
+
+				if (!layout.showHierarchy) {
+					delete layout.showHierarchy;
+				}
+
+				if (layout.displayDensity === 'normal') {
+					delete layout.displayDensity;
+				}
+
+				if (layout.fontSize === 'normal') {
+					delete layout.fontSize;
+				}
+
+				if (layout.digitGroupSeparator === 'space') {
+					delete layout.digitGroupSeparator;
+				}
+
+				if (!layout.legendSet) {
+					delete layout.legendSet;
+				}
+
+				if (!layout.sorting) {
+					delete layout.sorting;
+				}
+
+				delete layout.parentGraphMap;
+				delete layout.reportingPeriod;
+				delete layout.organisationUnit;
+				delete layout.parentOrganisationUnit;
+				delete layout.regression;
+				delete layout.cumulative;
+				delete layout.sortOrder;
+				delete layout.topLimit;
+
+				return layout;
 			};
 
 			// response
