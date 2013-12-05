@@ -39,7 +39,7 @@
 	 			#end
 			 	#foreach( $equipmentTypeAttribute in $equipmentTypeAttributeList )
 			 		#set( $mapId = $equipment.id + ':' + $equipmentTypeAttribute.equipmentTypeAttribute.id )
-			 			#if( $equipmentType.tracking && $equipmentTypeAttribute.equipmentTypeAttribute.getDescription().equalsIgnoreCase("WORKING_STATUS"))
+			 			#if( $equipmentType.tracking && $equipmentTypeAttribute.equipmentTypeAttribute.getDescription().equalsIgnoreCase("WorkingStatus"))
 			 				<td><a href="javascript:showEquipmentStatusHistoryForm( '$equipment.id','$equipment.getOrganisationUnit().getName()','$!equipment.model.name' ); " title='$i18n.getString( "equipment_tracking_history" )'>$!equipmentDetailsMap.get( $mapId )</a></td>
 			 			#else
 			 			<td>$!equipmentDetailsMap.get( $mapId )</td>

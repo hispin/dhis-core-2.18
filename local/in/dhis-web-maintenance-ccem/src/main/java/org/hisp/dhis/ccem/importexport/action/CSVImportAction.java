@@ -15,7 +15,6 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.hisp.dhis.coldchain.equipment.Equipment;
 import org.hisp.dhis.coldchain.equipment.EquipmentAttributeValue;
 import org.hisp.dhis.coldchain.equipment.EquipmentService;
@@ -30,6 +29,8 @@ import org.hisp.dhis.coldchain.model.ModelType;
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeService;
 import org.hisp.dhis.coldchain.model.ModelTypeService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -101,8 +102,8 @@ public class CSVImportAction
     
     public void setEquipmentTypeAttributeService( EquipmentTypeAttributeService equipmentTypeAttributeService) 
     {
-		this.equipmentTypeAttributeService = equipmentTypeAttributeService;
-	}
+        this.equipmentTypeAttributeService = equipmentTypeAttributeService;
+    }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
@@ -110,8 +111,15 @@ public class CSVImportAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
+    
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
-	private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
@@ -215,7 +223,14 @@ public class CSVImportAction
         OrganisationUnitGroup ouGroup = null;
         if( ouGroups != null )
         {
-        	ouGroup = ouGroups.get( 0 );
+            ouGroup = ouGroups.get( 0 );
+        }
+        
+        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetByShortName( "FMD" ) ); 
+        DataSet dataSet = null;
+        if( dataSets != null )
+        {
+            dataSet = dataSets.get( 0 );
         }
 
         try
@@ -245,9 +260,15 @@ public class CSVImportAction
                     orgUnitMap.put( nodeId, organisationUnit );
                     ouGroup.addOrganisationUnit( organisationUnit );
                     organisationUnitGroupService.updateOrganisationUnitGroup( ouGroup );
+                    if( dataSet != null )
+                    {
+                        dataSet.getSources().add( organisationUnit );                        
+                    }
                 }
             }
                 
+            dataSetService.updateDataSet( dataSet );
+            
             csvReader.close();                       
         }
         catch( Exception e )
@@ -270,41 +291,36 @@ public class CSVImportAction
     	
     	try
     	{
-    		CsvReader csvReader = new CsvReader( adminHierarchyCSVFilePath, ',', Charset.forName( "UTF-8" ) );
-    		csvReader.readHeaders();
-    		String headers[] = csvReader.getHeaders();
+		CsvReader csvReader = new CsvReader( adminHierarchyCSVFilePath, ',', Charset.forName( "UTF-8" ) );
+		csvReader.readHeaders();
+		String headers[] = csvReader.getHeaders();
 
-    		Integer colCount = headers.length;
-    		while( csvReader.readRecord() )
-    		{
-    			String nodeId = csvReader.get( "NodeID" );
-    			String ouName = csvReader.get( "Name" );
-    			Integer ouLevel = Integer.parseInt( csvReader.get( "Level" ) );    			
-    			String parentId = csvReader.get( "Parent" );
-    			String ouCode = csvReader.get( "Code" );
-    			
-    			if( ouCode != null && ouCode.trim().equals("") )
-    				ouCode = null;
-    			
-            	List<OrganisationUnit> tempList = levelwiseOrgunits.get( ouLevel );
-                if( tempList == null )
-                {
-                    tempList = new ArrayList<OrganisationUnit>();                        
-                }
-                
-                OrganisationUnit organisationUnit = new OrganisationUnit( ouName, ouName, ouCode, new Date(), null, true, parentId );
-                organisationUnit.setDescription( nodeId );
-                orgUnitMap.put( nodeId, organisationUnit );
-                
-                //tempList.add( nodeId + "#@#" + ouName + "#@#" + parentId + "#@#" + ouCode );
-                //tempList.add( ouName );
-                //tempList.add( parentId );
-                //tempList.add( ouCode );
-                
-                tempList.add( organisationUnit );
-                
-                levelwiseOrgunits.put( ouLevel, tempList );
-    		}
+		Integer colCount = headers.length;
+		while( csvReader.readRecord() )
+		{
+		    String nodeId = csvReader.get( "NodeID" );
+		    String ouName = csvReader.get( "Name" );
+		    Integer ouLevel = Integer.parseInt( csvReader.get( "Level" ) );    			
+		    String parentId = csvReader.get( "Parent" );
+		    String ouCode = csvReader.get( "Code" );
+			
+		    if( ouCode != null && ouCode.trim().equals("") )
+		        ouCode = null;
+			
+        	    List<OrganisationUnit> tempList = levelwiseOrgunits.get( ouLevel );
+        	    if( tempList == null )
+        	    {
+        	        tempList = new ArrayList<OrganisationUnit>();                        
+        	    }
+            
+        	    OrganisationUnit organisationUnit = new OrganisationUnit( ouName, ouName, ouCode, new Date(), null, true, parentId );
+        	    organisationUnit.setDescription( nodeId );
+        	    orgUnitMap.put( nodeId, organisationUnit );
+                          
+        	    tempList.add( organisationUnit );
+            
+        	    levelwiseOrgunits.put( ouLevel, tempList );
+		}
     		
             csvReader.close();
             
@@ -372,28 +388,36 @@ public class CSVImportAction
             	
             	if( tempList == null )
             	{
-            		System.out.println( "tempList is null for : " + uniqueId );
-            		continue;
+            	    System.out.println( "tempList is null for : " + uniqueId );
+            	    continue;
             	}
+            	
             	OrganisationUnit orgUnit = faclityMap.get( tempList.get(0) );
             	
-            	Equipment equipment = new Equipment();
+            	if( orgUnit == null )
+            	{
+            	    System.out.println(" ********************* " + tempList.get(0) + " IS NULL ********************* ");
+            	    continue;
+            	}
+            	
+            	Equipment equipment = new Equipment();	            
+            	equipment.setEquipmentType( refrigeratorEquipment );
+	        equipment.setOrganisationUnit( orgUnit );
 	            
-	            equipment.setEquipmentType( refrigeratorEquipment );
-	            equipment.setOrganisationUnit( orgUnit );
-	            
-	            Model model = refrigeratorModelMap.get( catalogID );
-	            if( model == null )
-	            {
-	            	System.out.println( "model is null for : " + catalogID );
-	            	continue;
-	            }
+	        Model model = refrigeratorModelMap.get( catalogID );
+	        if( model == null )
+	        {
+	            System.out.println( "model is null for : " + catalogID );
+	            continue;
+	        }
+	        
+	        equipment.setModel( model );
 
-	            List<EquipmentAttributeValue> equipmentAttributeValueDetailsList = new ArrayList<EquipmentAttributeValue>();
+	        List<EquipmentAttributeValue> equipmentAttributeValueDetailsList = new ArrayList<EquipmentAttributeValue>();
 
-	            for( int i = 2; i < headers.length; i++ )
+	        for( int i = 2; i < headers.length; i++ )
                 {
-	            	EquipmentTypeAttribute equipmentTypeAttribute = equipmentTypeAttributeMap.get( headers[i] );
+	            EquipmentTypeAttribute equipmentTypeAttribute = equipmentTypeAttributeMap.get( headers[i] );
                     
                     if ( equipmentTypeAttribute != null )
                     {
@@ -403,38 +427,44 @@ public class CSVImportAction
                         
                         if( equipmentTypeAttribute.getOptionSet() != null )
                         {
-                        	List<String> lookupOptions = lookupDataMap.get( headers[i] );
-                        	if( lookupOptions != null )
+                            List<String> lookupOptions = lookupDataMap.get( headers[i] );
+                            if( lookupOptions != null )
+                            {
+                        	try
                         	{
-                        		try
-                        		{
-                        			equipmentAttributeValueDetails.setValue( lookupOptions.get( Integer.parseInt( csvReader.get( headers[i] ) ) + 1  ) );
-                        			equipmentAttributeValueDetailsList.add( equipmentAttributeValueDetails );
-                        		}
-                        		catch( Exception e )
-                        		{
+                        	    //System.out.println( orgUnit.getName() + " : " + equipmentTypeAttribute.getName() + " : " + csvReader.get( headers[i] ) + " : " + lookupOptions.get( Integer.parseInt( csvReader.get( headers[i] ) ) + 1  ) );
+                        	    equipmentAttributeValueDetails.setValue( lookupOptions.get( Integer.parseInt( csvReader.get( headers[i] ) ) - 1  ) );
+                        	    equipmentAttributeValueDetailsList.add( equipmentAttributeValueDetails );
+                        	}
+                        	catch( Exception e )
+                        	{
                         			
-                        		}
                         	}
-                        	else
-                        	{
+                            }
+                            else
+                            {
                         		
-                        	}
+                            }
                         }
                         else
                         {
-                            equipmentAttributeValueDetails.setValue( csvReader.get( headers[i] ) );
-                            equipmentAttributeValueDetailsList.add( equipmentAttributeValueDetails );
+                            if( csvReader.get( headers[i] ) != null && !csvReader.get( headers[i] ).trim().equals( "" ) )
+                            {
+                                //System.out.print( orgUnit.getName()  + " : " );
+                                System.out.print( equipmentTypeAttribute.getName() + " : " );
+                                System.out.println( csvReader.get( headers[i] ) );
+                                equipmentAttributeValueDetails.setValue( csvReader.get( headers[i] ) );
+                                equipmentAttributeValueDetailsList.add( equipmentAttributeValueDetails );
+                            }
                         }
                     }
 	            	
                 }
 	            
-	            // -----------------------------------------------------------------------------
-	            // Creating EquipmentAttributeValue Instance and saving equipmentAttributeValue data
-	            // -----------------------------------------------------------------------------
-	            Integer id = equipmentService.createEquipment( equipment, equipmentAttributeValueDetailsList );
-
+	        // -----------------------------------------------------------------------------
+	        // Creating EquipmentAttributeValue Instance and saving equipmentAttributeValue data
+	        // -----------------------------------------------------------------------------
+	        Integer id = equipmentService.createEquipment( equipment, equipmentAttributeValueDetailsList );
             }
             
             csvReader.close();
@@ -512,15 +542,15 @@ public class CSVImportAction
                         	List<String> lookupOptions = lookupDataMap.get( headers[i] );
                         	if( lookupOptions != null )
                         	{
-                        		try
-                        		{
-                        			modelAttributeValue.setValue( lookupOptions.get( Integer.parseInt( csvReader.get( headers[i] ) ) + 1  ) );
-                        			modelAttributeValues.add( modelAttributeValue );
-                        		}
-                        		catch( Exception e )
-                        		{
+                        	    try
+                        	    {                        	        
+                        		modelAttributeValue.setValue( lookupOptions.get( Integer.parseInt( csvReader.get( headers[i] ) ) - 1  ) );
+                        		modelAttributeValues.add( modelAttributeValue );
+                        	    }
+                        	    catch( Exception e )
+                        	    {
                         			
-                        		}
+                        	    }
                         	}
                         	else
                         	{
@@ -606,11 +636,11 @@ public class CSVImportAction
             
             Integer colCount = headers.length;
             
-            System.out.println( colCount );
+            //System.out.println( colCount );
             
             while( csvReader.readRecord() )
             {
-                System.out.println( csvReader.get(0) );
+                //System.out.println( csvReader.get(0) );
                 for( int i = 0; i < colCount; i++ )
                 {
                     List<String> tempList = lookupDataMap.get( headers[i] );
