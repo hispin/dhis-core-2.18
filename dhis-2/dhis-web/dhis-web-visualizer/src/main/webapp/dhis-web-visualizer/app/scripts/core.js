@@ -1199,6 +1199,93 @@ Ext.onReady( function() {
 				return null;
 			};
 
+			service.layout.layout2plugin = function(layout) {
+				var layout = Ext.clone(layout),
+					dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
+
+				if (Ext.isString(layout.id)) {
+					return {id: layout.id};
+				}
+
+				for (var i = 0, dimension, item; i < dimensions.length; i++) {
+					dimension = dimensions[i];
+
+					delete dimension.id;
+					delete dimension.ids;
+					delete dimension.type;
+					delete dimension.dimensionName;
+					delete dimension.objectName;
+
+					for (var j = 0, item; j < dimension.items.length; j++) {
+						item = dimension.items[j];
+
+						delete item.name;
+						delete item.code;
+						delete item.created;
+						delete item.lastUpdated;
+					}
+				}
+
+				if (!layout.showTrendLine) {
+					delete layout.showTrendLine;
+				}
+
+				if (!layout.targetLineValue) {
+					delete layout.targetLineValue;
+				}
+
+				if (!layout.targetLineTitle) {
+					delete layout.targetLineTitle;
+				}
+
+				if (!layout.baseLineValue) {
+					delete layout.baseLineValue;
+				}
+
+				if (!layout.baseLineTitle) {
+					delete layout.baseLineTitle;
+				}
+
+				if (layout.showValues) {
+					delete layout.showValues;
+				}
+
+				if (!layout.hideLegend) {
+					delete layout.hideLegend;
+				}
+
+				if (!layout.hideTitle) {
+					delete layout.hideTitle;
+				}
+
+				if (!layout.title) {
+					delete layout.title;
+				}
+
+				if (!layout.domainAxisTitle) {
+					delete layout.domainAxisTitle;
+				}
+
+				if (!layout.rangeAxisTitle) {
+					delete layout.rangeAxisTitle;
+				}
+
+				if (!layout.sorting) {
+					delete layout.sorting;
+				}
+
+				delete layout.parentGraphMap;
+				delete layout.reportingPeriod;
+				delete layout.organisationUnit;
+				delete layout.parentOrganisationUnit;
+				delete layout.regression;
+				delete layout.cumulative;
+				delete layout.sortOrder;
+				delete layout.topLimit;
+
+				return layout;
+			};
+
 			// response
 			service.response = {};
 

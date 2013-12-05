@@ -397,6 +397,10 @@ body.x-windows {
     background-image:url('../images/dl_image.png');
     padding-left: 18px;
 }
+.ns-menu-item-tablelayout {
+    background-image:url('../images/dl_tablelayout.png');
+    padding-left: 18px;
+}
 .ns-menu-item-datasource {
     background-image:url('../images/dl_datasource.png');
     padding-left: 18px;
@@ -810,6 +814,12 @@ body.x-windows {
 
 .ns-textarea .x-form-field {
 	font-size: 11px;
+}
+
+.ns-textarea.monospaced textarea {
+	font-family: monospace, consolas, courier new;
+	padding: 4px;
+	border: 0 none;
 }
 
 

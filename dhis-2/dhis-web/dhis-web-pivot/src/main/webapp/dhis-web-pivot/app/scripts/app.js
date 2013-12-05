@@ -4726,20 +4726,6 @@ Ext.onReady( function() {
 								window.open(ns.core.init.contextPath + '/api/analytics.jrxml' + ns.app.paramString, '_blank');
 							}
 						}
-					},
-					{
-						xtype: 'label',
-						text: NS.i18n.plugin_config,
-						style: 'padding:7px 5px 5px 7px; font-weight:bold'
-					},
-					{
-						text: 'JSON',
-						iconCls: 'ns-menu-item-datasource',
-						handler: function() {
-							if (ns.app.layout) {
-								alert(JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout)));
-							}
-						}
 					}
 				],
 				listeners: {
@@ -4797,14 +4783,7 @@ Ext.onReady( function() {
 					height: 200,
 					readOnly: true,
 					cls: 'ns-textarea monospaced',
-					value: JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout)),
-					listeners: {
-						afterrender: function(ta) {
-							Ext.defer(function() {
-								ta.selectText();
-							}, 50);
-						}
-					}
+					value: JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout))
 				});
 
 				window = Ext.create('Ext.window.Window', {
@@ -4813,8 +4792,23 @@ Ext.onReady( function() {
 					modal: true,
 					resizable: false,
 					items: textArea,
-					bodyStyle: 'color:blue',
 					destroyOnBlur: true,
+					bbar: [
+						'->',
+						{
+							text: 'Format',
+							handler: function() {
+								textArea.setValue(JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout), null, 2));
+
+							}
+						},
+						{
+							text: 'Select',
+							handler: function() {
+								textArea.selectText();
+							}
+						}
+					],
 					listeners: {
 						show: function(w) {
 							ns.core.web.window.setAnchorPosition(w, ns.app.shareButton);
