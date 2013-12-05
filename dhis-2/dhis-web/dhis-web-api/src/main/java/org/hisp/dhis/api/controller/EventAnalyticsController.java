@@ -28,6 +28,9 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.AnalyticsService.NAMES_META_KEY;
+
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -112,7 +115,7 @@ public class EventAnalyticsController
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
         Grid grid = analyticsService.getAggregatedEventData( params );
-        GridUtils.toXls( grid, response.getOutputStream() );
+        GridUtils.toXls( substituteMetaData( grid ), response.getOutputStream() );
     }
 
     @RequestMapping( value = RESOURCE_PATH + "/aggregate/{program}.csv", method = RequestMethod.GET )
@@ -133,7 +136,7 @@ public class EventAnalyticsController
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.csv", true );
         Grid grid = analyticsService.getAggregatedEventData( params );
-        GridUtils.toCsv( grid, response.getOutputStream() );
+        GridUtils.toCsv( substituteMetaData( grid ), response.getOutputStream() );
     }
     
     // -------------------------------------------------------------------------
@@ -189,7 +192,7 @@ public class EventAnalyticsController
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.xls", true );
         Grid grid = analyticsService.getEvents( params );
-        GridUtils.toXls( grid, response.getOutputStream() );
+        GridUtils.toXls( substituteMetaData( grid ), response.getOutputStream() );
     }
 
     @RequestMapping( value = RESOURCE_PATH + "/query/{program}.csv", method = RequestMethod.GET )
@@ -214,7 +217,7 @@ public class EventAnalyticsController
         
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "events.csv", true );
         Grid grid = analyticsService.getEvents( params );
-        GridUtils.toCsv( grid, response.getOutputStream() );
+        GridUtils.toCsv( substituteMetaData( grid ), response.getOutputStream() );
     }
     
     // -------------------------------------------------------------------------
@@ -225,5 +228,26 @@ public class EventAnalyticsController
     public void handleError( IllegalQueryException ex, HttpServletResponse response )
     {
         ContextUtils.conflictResponse( response, ex.getMessage() );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void handleError( IllegalArgumentException ex, HttpServletResponse response )
+    {
+        ContextUtils.conflictResponse( response, ex.getMessage() );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+  
+    @SuppressWarnings("unchecked")
+    private Grid substituteMetaData( Grid grid )
+    {
+        if ( grid.getMetaData() != null && grid.getMetaData().containsKey( NAMES_META_KEY ) )
+        {
+            grid.substituteMetaData( (Map<Object, Object>) grid.getMetaData().get( NAMES_META_KEY ) );
+        }
+        
+        return grid;
     }
 }
