@@ -109,6 +109,8 @@ public interface PatientStore
     Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
         Integer max );
 
+    List<Patient> query( TrackedEntityQueryParams params );
+    
     /**
      * Search patient who has the same representative
      * 

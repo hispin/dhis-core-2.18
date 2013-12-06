@@ -157,9 +157,6 @@ public class PatientDataValueServiceTest
         stageInstanceA = programStageInstanceService.getProgramStageInstance( programInstance, stageA );
         stageInstanceB = programStageInstanceService.getProgramStageInstance( programInstance, stageB );
 
-        System.out.println( "\n\n\n ===== \n 1 stageInstanceA : " + stageInstanceA );
-        System.out.println( "\n 2 stageInstanceB : " + stageInstanceB );
-        
         dataValueA = new PatientDataValue( stageInstanceA, dataElementA, "A" );
         dataValueB = new PatientDataValue( stageInstanceA, dataElementB, "B" );
         dataValueC = new PatientDataValue( stageInstanceB, dataElementA, "C" );
