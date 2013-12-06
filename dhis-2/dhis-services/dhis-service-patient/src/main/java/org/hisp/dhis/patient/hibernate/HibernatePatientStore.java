@@ -57,6 +57,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.QueryItem;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -66,11 +67,13 @@ import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.PatientStore;
+import org.hisp.dhis.patient.TrackedEntityQueryParams;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.grid.GridUtils;
+import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.jdbc.core.RowMapper;
@@ -171,7 +174,7 @@ public class HibernatePatientStore
     public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
         Integer max )
     {
-        String hql = "select pt from Patient pt " + "inner join pt.programInstances pi "
+        String hql = "select pt from Patient pt inner join pt.programInstances pi "
             + "where pt.organisationUnit = :organisationUnit " + "and pi.program = :program "
             + "and pi.status = :status";
 
@@ -180,6 +183,26 @@ public class HibernatePatientStore
         query.setEntity( "program", program );
         query.setInteger( "status", ProgramInstance.STATUS_ACTIVE );
 
+        return query.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public List<Patient> query( TrackedEntityQueryParams params )
+    {
+        SqlHelper hlp = new SqlHelper();
+        
+        String hql = 
+            "select pt from Patient pt " +
+            "inner join PatientAttributeValue av " +
+            "inner join PatientAttribute at ";
+        
+        for ( QueryItem at : params.getAttributes() )
+        {
+            hlp.whereAnd();
+        }
+        
+        Query query = getQuery( hql );
+        
         return query.list();
     }
 

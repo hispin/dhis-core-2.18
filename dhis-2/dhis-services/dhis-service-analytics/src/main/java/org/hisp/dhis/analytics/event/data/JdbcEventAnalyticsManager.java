@@ -36,11 +36,8 @@ import static org.hisp.dhis.system.util.TextUtils.getQuotedCommaDelimitedString;
 import static org.hisp.dhis.system.util.TextUtils.removeLast;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
 
-import java.util.Arrays;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.analytics.event.EventAnalyticsManager;
 import org.hisp.dhis.analytics.event.EventQueryParams;
 import org.hisp.dhis.common.DimensionalObject;
@@ -400,28 +397,8 @@ public class JdbcEventAnalyticsManager
      */
     private String getSqlFilter( QueryItem item )
     {
-        String operator = item.getOperator();
-        String filter = item.getFilter();
+        String encodedFilter = statementBuilder.encode( item.getFilter(), false );
         
-        if ( operator == null || filter == null )
-        {
-            return null;
-        }
-        
-        operator = operator.toLowerCase();
-        filter = statementBuilder.encode( filter, false );
-        
-        if ( operator.equals( "like" ) )
-        {
-            return "'%" + filter + "%'";
-        }
-        else if ( operator.equals( "in" ) )
-        {
-            String[] split = filter.split( DataQueryParams.OPTION_SEP );
-                        
-            return "(" + getQuotedCommaDelimitedString( Arrays.asList( split ) ) + ")";
-        }
-        
-        return "'" + filter + "'";
+        return item.getSqlFilter( encodedFilter );
     }
 }
