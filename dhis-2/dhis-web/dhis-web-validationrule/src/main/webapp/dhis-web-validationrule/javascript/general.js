@@ -1,6 +1,11 @@
-function showValidationRuleDetails( validationId )
+
+function showUpdateValidationRuleForm( context ) {
+  location.href = 'showUpdateValidationRuleForm.action?id=' + context.id;
+}
+
+function showValidationRuleDetails( context )
 {
-    jQuery.post( 'getValidationRule.action', { id: validationId }, function ( json ) {
+    jQuery.post( 'getValidationRule.action', { id: context.id }, function ( json ) {
 		setText( 'nameField', json.validationRule.name );
 		
 		var description = json.validationRule.description;
@@ -123,7 +128,6 @@ function i18nalizeOperator( operator )
     return null;
 }
 
-function removeValidationRule( ruleId, ruleName )
-{
-	removeItem( ruleId, ruleName, i18n_confirm_delete, 'removeValidationRule.action' );
+function removeValidationRule( context ) {
+	removeItem( context.id, context.name, i18n_confirm_delete, 'removeValidationRule.action' );
 }
