@@ -488,21 +488,21 @@ public class DefaultEventAnalyticsService
         
         if ( de != null && program.getAllDataElements().contains( de ) )
         {
-            return new QueryItem( de, operator, filter );
+            return new QueryItem( de, operator, filter, de.isNumericType() );
         }
         
         PatientAttribute at = attributeService.getPatientAttribute( item );
         
         if ( at != null && program.getPatientAttributes().contains( at ) )
         {
-            return new QueryItem( at, operator, filter );
+            return new QueryItem( at, operator, filter, at.isNumericType() );
         }
         
         PatientIdentifierType it = identifierTypeService.getPatientIdentifierType( item );
         
         if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
         {
-            return new QueryItem( it, operator, filter );
+            return new QueryItem( it, operator, filter, false );
         }
         
         throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );           

@@ -54,6 +54,8 @@ public class QueryItem
     private String operator;
 
     private String filter;
+    
+    private boolean numeric;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -64,11 +66,12 @@ public class QueryItem
         this.item = item;
     }
     
-    public QueryItem( IdentifiableObject item, String operator, String filter )
+    public QueryItem( IdentifiableObject item, String operator, String filter, boolean numeric )
     {
         this.item = item;
         this.operator = operator;
         this.filter = filter;
+        this.numeric = numeric;
     }
 
     // -------------------------------------------------------------------------
@@ -156,5 +159,15 @@ public class QueryItem
     public void setFilter( String filter )
     {
         this.filter = filter;
+    }
+
+    public boolean isNumeric()
+    {
+        return numeric;
+    }
+
+    public void setNumeric( boolean numeric )
+    {
+        this.numeric = numeric;
     }
 }

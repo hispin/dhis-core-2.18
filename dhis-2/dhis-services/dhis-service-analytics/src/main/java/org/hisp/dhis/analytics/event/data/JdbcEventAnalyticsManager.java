@@ -376,20 +376,30 @@ public class JdbcEventAnalyticsManager
         for ( QueryItem item : params.getItems() )
         {
             if ( item.hasFilter() )
-            {                
-                sql += "and " + statementBuilder.columnQuote( item.getItem().getUid() ) + " " + item.getSqlOperator() + " " + getSqlFilter( item ) + " ";
+            {
+                sql += "and " + getColumn( item ) + " " + item.getSqlOperator() + " " + getSqlFilter( item ) + " ";
             }
         }
         
         for ( QueryItem filter : params.getItemFilters() )
         {
             if ( filter.hasFilter() )
-            {                
-                sql += "and " + statementBuilder.columnQuote( filter.getItem().getUid() ) + " " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
+            {
+                sql += "and " + getColumn( filter ) + " " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
             }
         }
 
         return sql;
+    }
+    
+    /**
+     * Returns an encoded column name wrapped in lower directive if not numeric.
+     */
+    private String getColumn( QueryItem item )
+    {
+        String col = statementBuilder.columnQuote( item.getItem().getUid() );
+        
+        return item.isNumeric() ? col : "lower(" + col + ")"; 
     }
     
     /**
