@@ -121,6 +121,11 @@ public class QueryItem
         return "'" + encodedFilter + "'";
     }
     
+    public String getItemId()
+    {
+        return item.getUid();
+    }
+    
     @Override
     public String toString()
     {

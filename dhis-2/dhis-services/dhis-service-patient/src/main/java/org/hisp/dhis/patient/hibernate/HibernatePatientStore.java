@@ -191,17 +191,21 @@ public class HibernatePatientStore
     {
         SqlHelper hlp = new SqlHelper();
         
-        String hql = 
-            "select pt from Patient pt " +
-            "inner join PatientAttributeValue av " +
-            "inner join PatientAttribute at ";
+        String hql = "select pt from Patient pt left join pt.attributeValues av";
         
         for ( QueryItem at : params.getAttributes() )
         {
-            hlp.whereAnd();
+            hql += " " + hlp.whereAnd();
+            hql += " (av.patientAttribute = :attr" + at.getItemId() + " and av.value = :filt" + at.getItemId() + ")";
         }
         
         Query query = getQuery( hql );
+        
+        for ( QueryItem at : params.getAttributes() )
+        {
+            query.setEntity( "attr" + at.getItemId(), at.getItem() );
+            query.setString( "filt" + at.getItemId(), at.getFilter() );
+        }
         
         return query.list();
     }

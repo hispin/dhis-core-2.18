@@ -373,4 +373,20 @@ public class PatientStoreTest
         assertEquals( 0, validatePatientA1 );
         assertEquals( 2, validatePatientB1 );
     }
+    
+    @Test
+    public void testQuery()
+    {
+        patientStore.save( patientA1 );
+        patientStore.save( patientA2 );
+        patientStore.save( patientA3 );
+        patientStore.save( patientB1 );
+        patientStore.save( patientB2 );
+        
+        TrackedEntityQueryParams params = new TrackedEntityQueryParams();
+        
+        List<Patient> list = patientStore.query( params );
+        
+        assertEquals( 5, list.size() );
+    }
 }
