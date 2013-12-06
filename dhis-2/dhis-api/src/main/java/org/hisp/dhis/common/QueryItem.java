@@ -31,13 +31,13 @@ package org.hisp.dhis.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.common.IdentifiableObject;
-
 /**
  * @author Lars Helge Overland
  */
 public class QueryItem
 {
+    public static final String OPTION_SEP = ";";
+    
     public static final Map<String, String> OPERATOR_MAP = new HashMap<String, String>() { {
         put( "eq", "=" );
         put( "gt", ">" );
@@ -88,6 +88,34 @@ public class QueryItem
         }
         
         return OPERATOR_MAP.get( operator.toLowerCase() );
+    }
+    
+    public String getSqlFilter( String encodedFilter )
+    {
+        if ( operator == null || encodedFilter == null )
+        {
+            return null;
+        }
+                
+        if ( operator.equalsIgnoreCase( "like" ) )
+        {
+            return "'%" + encodedFilter + "%'";
+        }
+        else if ( operator.equalsIgnoreCase( "in" ) )
+        {
+            String[] split = encodedFilter.split( OPTION_SEP );
+            
+            final StringBuffer buffer = new StringBuffer( "(" );        
+            
+            for ( String el : split )
+            {
+                buffer.append( "'" ).append( el.toString() ).append( "'," );
+            }
+            
+            return buffer.deleteCharAt( buffer.length() - 1 ).append( ")" ).toString();
+        }
+        
+        return "'" + encodedFilter + "'";
     }
     
     @Override

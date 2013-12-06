@@ -39,39 +39,17 @@ import org.hisp.dhis.program.Program;
 /**
  * @author Lars Helge Overland
  */
-public class PersonQueryParams
+public class TrackedEntityQueryParams
 {
     private Program program;
 
     private List<QueryItem> attributes = new ArrayList<QueryItem>();
-    
-    private List<QueryItem> identifiers = new ArrayList<QueryItem>();
     
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
     private OrganisationUnitSelectionMode orgUnitSelectionMode;
     
     private Integer enrollmentStatus; // 0, 1 or null
-
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    /**
-     * Indicates whether any identifiers are part of this query.
-     */
-    public boolean hasIdentifiers()
-    {
-        return identifiers != null && !identifiers.isEmpty();
-    }
-
-    /**
-     * Indicates whether any attributes are part of this query.
-     */
-    public boolean hasAttributes()
-    {
-        return attributes != null && !attributes.isEmpty();
-    }
     
     // -------------------------------------------------------------------------
     // Getters and setters
@@ -95,16 +73,6 @@ public class PersonQueryParams
     public void setAttributes( List<QueryItem> attributes )
     {
         this.attributes = attributes;
-    }
-
-    public List<QueryItem> getIdentifiers()
-    {
-        return identifiers;
-    }
-
-    public void setIdentifiers( List<QueryItem> identifiers )
-    {
-        this.identifiers = identifiers;
     }
 
     public List<OrganisationUnit> getOrganisationUnits()
