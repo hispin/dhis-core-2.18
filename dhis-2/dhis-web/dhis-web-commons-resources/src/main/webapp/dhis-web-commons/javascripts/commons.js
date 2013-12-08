@@ -1880,7 +1880,11 @@ function pingNotifications( category, tableId, completedCallback )
 				
 				html += '<tr><td>' + time + '</td><td>' + notification.message + ' &nbsp;';
 				
-				if ( notification.completed ) {
+				if ( notification.level == "ERROR" ) {
+					html += '<img src="../images/error_small.png">';
+					isComplete = true;
+				}
+				else if ( notification.completed ) {
 					html += '<img src="../images/completed.png">';
 					isComplete = true;
 				}
