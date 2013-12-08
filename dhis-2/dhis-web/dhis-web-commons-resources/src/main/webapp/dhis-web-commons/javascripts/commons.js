@@ -1857,38 +1857,43 @@ function pingNotifications( category, tableId, completedCallback )
 	
 	$.getJSON( '../api/system/tasks/' + category + param, function( notifications )
 	{
-		var html = '', 
-			isComplete = false;
+		var html = '',
+		    isComplete = false;
 
-		if ( isDefined( notifications ) && notifications.length )
-		{
+		if ( isDefined( notifications ) && notifications.length ) {
 			$.each( notifications, function( i, notification )
 			{
 				var first = i == 0,
 					loaderHtml = '';
 
-                if( notification.completed === "true" || notification.completed === true ) {
-                    isComplete = true;
-                }
-
-                if ( first )
-				{
+                if ( first ) {
 					$( '#' + tableId ).prop( 'lastUid', notification.uid );
 					loaderHtml = _loading_bar_html;
 					$( '#loaderSpan' ).replaceWith ( '' ); // Hide previous loader bar
 				}
 				
-				var time = ( undefined != notification.time ) ? notification.time.replace( 'T', ' ' ).substring( 0, 19 ) : '';
+				var time = '';
+				
+				if ( undefined !== notification.time ) {
+					time = notification.time.replace( 'T', ' ' ).substring( 0, 19 );
+				}
 				
 				html += '<tr><td>' + time + '</td><td>' + notification.message + ' &nbsp;';
-				html += isComplete ?  '<img src="../images/completed.png">' : loaderHtml;
+				
+				if ( notification.completed ) {
+					html += '<img src="../images/completed.png">';
+					isComplete = true;
+				}
+				else {
+					html += loaderHtml;
+				}
+				
 				html += '</td></tr>';
 			} );
 		
 			$( '#' + tableId ).show().prepend( html );
 		
-			if ( isComplete && completedCallback && completedCallback.call )
-			{
+			if ( isComplete && completedCallback && completedCallback.call ) {
 				completedCallback();				
 			}
 		}
