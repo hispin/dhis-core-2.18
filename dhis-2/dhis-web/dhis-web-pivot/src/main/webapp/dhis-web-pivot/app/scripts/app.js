@@ -1642,7 +1642,6 @@ Ext.onReady( function() {
 							headers: {'Content-Type': 'text/html'},
 							success: function() {
 								textArea.reset();
-								ns.app.shareButton.disable();
 								window.hide();
 							}
 						});
@@ -2247,7 +2246,7 @@ Ext.onReady( function() {
 					timeout: 60000,
 					headers: {
 						'Content-Type': 'application/json',
-						'Accens': 'application/json'
+						'Accepts': 'application/json'
 					},
 					disableCaching: false,
 					failure: function(r) {
