@@ -378,6 +378,24 @@ public class DataSet
         compulsoryDataElementOperands.remove( dataElementOperand );
     }
 
+    /**
+     * Returns all organisation units assigned to this data set, including 
+     * org units assigned directly and organisation units assigned through groups.
+     */
+    public Set<OrganisationUnit> getAllOrganisationUnits()
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        
+        units.addAll( sources );
+        
+        for ( OrganisationUnitGroup group : organisationUnitGroups )
+        {
+            units.addAll( group.getMembers() );
+        }
+        
+        return units;
+    }
+    
     public boolean hasDataEntryForm()
     {
         return dataEntryForm != null;
