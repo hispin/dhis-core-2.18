@@ -3,7 +3,7 @@
 #foreach( $parent in $parents )
 	<parent parentId="$parent.id">
 	#foreach( $child in $childrenMap.get( $parent ) )
-  		<child id="$child.id" hasChildren="$child.children.size()">$encoder.xmlEncode( $child.name )</child>
+  		<child id="$child.id" uid="$encoder.xmlEncode( $child.uid )" hasChildren="$child.children.size()">$encoder.xmlEncode( $child.name )</child>
   	#end
   	</parent>
 #end

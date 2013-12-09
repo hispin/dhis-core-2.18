@@ -2,9 +2,8 @@
 { "selectedUnits": [
 #foreach( $unit in $selectedUnits )
   {
-	"id":"${unit.id}",
-	"name":"$encoder.jsonEncode( ${unit.name} )",
-	"uid":"$encoder.jsonEncode( ${unit.uid} )"
+  "id":"$encoder.jsonEncode( ${unit.uid} )",
+	"name":"$encoder.jsonEncode( ${unit.name} )"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

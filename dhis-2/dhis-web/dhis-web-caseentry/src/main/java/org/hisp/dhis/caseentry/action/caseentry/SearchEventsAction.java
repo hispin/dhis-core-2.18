@@ -27,19 +27,6 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_DATA_ELEMENT;
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_NUMBER_DATA_ELEMENT;
-import static org.hisp.dhis.patientreport.PatientTabularReport.VALUE_TYPE_OPTION_SET;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.hibernate.exception.SQLGrammarException;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
@@ -56,12 +43,23 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.TabularEventColumn;
+import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.patientreport.PatientTabularReport.*;
+
 /**
  * @author Chau Thu Tran
- * 
  * @version $ SearchEventsAction.java Nov 22, 2013 1:06:04 PM $
  */
 public class SearchEventsAction
@@ -124,9 +122,9 @@ public class SearchEventsAction
         return patientAttributes;
     }
 
-    private Collection<Integer> orgunitIds = new HashSet<Integer>();
+    private Collection<String> orgunitIds = new HashSet<String>();
 
-    public void setOrgunitIds( Collection<Integer> orgunitIds )
+    public void setOrgunitIds( Collection<String> orgunitIds )
     {
         this.orgunitIds = orgunitIds;
     }
@@ -285,16 +283,19 @@ public class SearchEventsAction
         // Get user orgunits
         // ---------------------------------------------------------------------
 
+        Set<OrganisationUnit> ous = new HashSet<OrganisationUnit>( organisationUnitService.getOrganisationUnitsByUid( orgunitIds ) );
+        Set<Integer> orgUnitIds = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, ous ) );
+
         if ( userOrganisationUnit || userOrganisationUnitChildren )
         {
             Collection<OrganisationUnit> userOrgunits = currentUserService.getCurrentUser().getOrganisationUnits();
-            orgunitIds = new HashSet<Integer>();
+            orgUnitIds = new HashSet<Integer>();
 
             if ( userOrganisationUnit )
             {
                 for ( OrganisationUnit userOrgunit : userOrgunits )
                 {
-                    orgunitIds.add( userOrgunit.getId() );
+                    orgUnitIds.add( userOrgunit.getId() );
                 }
             }
 
@@ -306,7 +307,7 @@ public class SearchEventsAction
                     {
                         for ( OrganisationUnit childOrgunit : userOrgunit.getSortedChildren() )
                         {
-                            orgunitIds.add( childOrgunit.getId() );
+                            orgUnitIds.add( childOrgunit.getId() );
                         }
                     }
                 }
@@ -321,11 +322,11 @@ public class SearchEventsAction
 
         if ( facilityLB.equals( "selected" ) )
         {
-            organisationUnits.addAll( orgunitIds );
+            organisationUnits.addAll( orgUnitIds );
         }
         else if ( facilityLB.equals( "childrenOnly" ) )
         {
-            for ( Integer orgunitId : orgunitIds )
+            for ( Integer orgunitId : orgUnitIds )
             {
                 OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy()
@@ -335,7 +336,7 @@ public class SearchEventsAction
         }
         else
         {
-            for ( Integer orgunitId : orgunitIds )
+            for ( Integer orgunitId : orgUnitIds )
             {
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy()
                     .getChildren( orgunitId ) );

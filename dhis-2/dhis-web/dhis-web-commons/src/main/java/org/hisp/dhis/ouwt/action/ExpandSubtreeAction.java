@@ -28,20 +28,18 @@ package org.hisp.dhis.ouwt.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.ouwt.manager.TreeStateManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.ouwt.manager.TreeStateManager;
-
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: ExpandSubtreeAction.java 6251 2008-11-10 14:37:05Z larshelg $
  */
 public class ExpandSubtreeAction
     implements Action
@@ -68,9 +66,9 @@ public class ExpandSubtreeAction
     // Input
     // -------------------------------------------------------------------------
 
-    private int parentId;
+    private String parentId;
 
-    public void setParentId( int organisationUnitId )
+    public void setParentId( String organisationUnitId )
     {
         this.parentId = organisationUnitId;
     }

@@ -28,8 +28,7 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -43,7 +42,7 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Date;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -104,9 +103,9 @@ public class SaveExecutionDateAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer organisationUnitId;
+    private String organisationUnitId;
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
@@ -157,16 +156,17 @@ public class SaveExecutionDateAction
 
         if ( dateValue != null )
         {
-            OrganisationUnit organisationUnit = organisationUnitId == null ? selectionManager
-                .getSelectedOrganisationUnit() : organisationUnitService.getOrganisationUnit( organisationUnitId );
-            ProgramStageInstance programStageInstance = programStageInstanceService
-                .getProgramStageInstance( programStageInstanceId );
+            OrganisationUnit organisationUnit = organisationUnitId == null ?
+                selectionManager.getSelectedOrganisationUnit() : organisationUnitService.getOrganisationUnit( organisationUnitId );
+
+            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
             if ( programStageInstance == null )
             {
                 Program program = (programId == null) ? null : programService.getProgram( programId );
                 Patient patient = patientService.getPatient( patientId );
-                programStageInstanceService.createProgramStageInstance( patient, program, dateValue, organisationUnit );
+
+                programStageInstance = programStageInstanceService.createProgramStageInstance( patient, program, dateValue, organisationUnit );
             }
             else
             {

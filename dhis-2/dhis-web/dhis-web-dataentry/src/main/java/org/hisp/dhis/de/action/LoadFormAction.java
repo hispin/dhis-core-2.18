@@ -104,9 +104,9 @@ public class LoadFormAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataSetId;
+    private String dataSetId;
 
-    public void setDataSetId( Integer dataSetId )
+    public void setDataSetId( String dataSetId )
     {
         this.dataSetId = dataSetId;
     }

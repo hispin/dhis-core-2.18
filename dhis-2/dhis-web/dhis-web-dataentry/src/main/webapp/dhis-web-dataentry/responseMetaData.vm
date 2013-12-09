@@ -38,7 +38,7 @@
 "dataSets": {
 #set( $size = $dataSets.size() )
 #foreach( $dataSet in $dataSets )
-"${dataSet.id}":{"name":"$encoder.jsonEncode( ${dataSet.displayName} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )",
+"${dataSet.uid}":{"name":"$encoder.jsonEncode( ${dataSet.displayName} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )",
 "version":"${dataSet.version}","type":"${dataSet.getDataSetType()}","expiryDays":"${dataSet.expiryDays}",
 "allowFuturePeriods":${dataSet.allowFuturePeriods},"fieldCombinationRequired":${dataSet.fieldCombinationRequired},"validCompleteOnly":${dataSet.validCompleteOnly},
 "skipOffline":${dataSet.skipOffline}, "renderAsTabs":${dataSet.renderAsTabs}, "renderHorizontally":${dataSet.renderHorizontally}
@@ -53,7 +53,7 @@
 #set( $index = $index + 1 )
 #set( $size2 = $associationSet.size() )
 #foreach( $id in $associationSet )
-${id}#if( $velocityCount < $size2 ),#end
+"$encoder.jsonEncode( $id )"#if( $velocityCount < $size2 ),#end
 #end ]#if( $velocityCount < $size1 ),#end
 #end },
 

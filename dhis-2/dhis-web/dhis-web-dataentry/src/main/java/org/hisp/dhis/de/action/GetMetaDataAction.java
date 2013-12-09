@@ -139,16 +139,16 @@ public class GetMetaDataAction
         return dataSets;
     }
 
-    private List<Set<Integer>> dataSetAssociationSets;
+    private List<Set<String>> dataSetAssociationSets;
 
-    public List<Set<Integer>> getDataSetAssociationSets()
+    public List<Set<String>> getDataSetAssociationSets()
     {
         return dataSetAssociationSets;
     }
 
-    private Map<Integer, Integer> organisationUnitAssociationSetMap;
+    private Map<String, Integer> organisationUnitAssociationSetMap;
 
-    public Map<Integer, Integer> getOrganisationUnitAssociationSetMap()
+    public Map<String, Integer> getOrganisationUnitAssociationSetMap()
     {
         return organisationUnitAssociationSetMap;
     }
@@ -195,7 +195,7 @@ public class GetMetaDataAction
 
         organisationUnitAssociationSetMap = organisationUnitSet.getOrganisationUnitAssociationSetMap();
 
-        dataSets = dataSetService.getDataSets( organisationUnitSet.getDistinctDataSets() );
+        dataSets = dataSetService.getDataSetsByUid( organisationUnitSet.getDistinctDataSets() );
 
         return SUCCESS;
     }

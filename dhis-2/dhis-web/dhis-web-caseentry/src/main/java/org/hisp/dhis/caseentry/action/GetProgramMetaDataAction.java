@@ -83,9 +83,9 @@ public class GetProgramMetaDataAction implements Action
         return programs;
     }
 
-    private Map<Integer, Set<Integer>> programAssociations = new HashMap<Integer, Set<Integer>>();
+    private Map<String, Set<String>> programAssociations = new HashMap<String, Set<String>>();
 
-    public Map<Integer, Set<Integer>> getProgramAssociations()
+    public Map<String, Set<String>> getProgramAssociations()
     {
         return programAssociations;
     }
@@ -116,11 +116,11 @@ public class GetProgramMetaDataAction implements Action
         for ( Program program : programs )
         {
             Set<OrganisationUnit> organisationUnits = program.getOrganisationUnits();
-            programAssociations.put( program.getId(), new HashSet<Integer>() );
+            programAssociations.put( program.getUid(), new HashSet<String>() );
 
             for ( OrganisationUnit organisationUnit : organisationUnits )
             {
-                programAssociations.get( program.getId() ).add( organisationUnit.getId() );
+                programAssociations.get( program.getUid() ).add( organisationUnit.getUid() );
             }
 
             populateOptionSets( program );

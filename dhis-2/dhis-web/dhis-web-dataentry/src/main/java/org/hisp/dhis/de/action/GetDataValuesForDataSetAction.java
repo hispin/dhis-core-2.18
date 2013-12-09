@@ -103,16 +103,16 @@ public class GetDataValuesForDataSetAction
         this.periodId = periodId;
     }
 
-    private Integer dataSetId;
+    private String dataSetId;
 
-    public void setDataSetId( Integer dataSetId )
+    public void setDataSetId( String dataSetId )
     {
         this.dataSetId = dataSetId;
     }
 
-    private Integer organisationUnitId;
+    private String organisationUnitId;
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
@@ -185,17 +185,17 @@ public class GetDataValuesForDataSetAction
         Set<OrganisationUnit> children = organisationUnit.getChildren();
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        
+
         Period period = PeriodType.getPeriodFromIsoString( periodId );
 
         // TODO null-checks
-        
+
         // ---------------------------------------------------------------------
         // Data values & Min-max data elements
         // ---------------------------------------------------------------------
 
         dataValues.addAll( dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() ) );
-        
+
         minMaxDataElements.addAll( minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet
             .getDataElements() ) );
 

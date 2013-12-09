@@ -9,22 +9,22 @@ function organisationUnitToMoveSelected( orgUnitIds )
 {
 	hideHeaderMessage();
 
-    if ( orgUnitIds.length == 1 )
+  if ( orgUnitIds.length == 1 )
+  {
+    var id = orgUnitIds[0];
+
+    $.getJSON( '../dhis-web-commons-ajax-json/getOrganisationUnit.action', { id:id }, function( json )
     {
-    	var id = orgUnitIds[0];
-    	
-    	$.getJSON( '../dhis-web-commons-ajax-json/getOrganisationUnit.action', { id:id }, function( json ) 
-    	{
-    		$( '#organisationUnitToMoveId' ).val( id );
-    		$( '#toMoveNameField' ).html( json.organisationUnit.name );
-    		$( '#confirmOrganisationUnitToMoveButton' ).removeAttr( 'disabled' );
-    	} );
-    }
+      $( '#organisationUnitToMoveId' ).val( json.organisationUnit.id );
+      $( '#toMoveNameField' ).html( json.organisationUnit.name );
+      $( '#confirmOrganisationUnitToMoveButton' ).removeAttr( 'disabled' );
+    } );
+  }
 }
 
 function organisationUnitToMoveConfirmed()
 {
-    var id = $( '#organisationUnitToMoveId' ).val();
+  var id = $( '#organisationUnitToMoveId' ).val();
 
 	$.getJSON( 'validateOrganisationUnitToMove.action', { organisationUnitToMoveId:id }, function( json ) 
 	{
@@ -58,7 +58,7 @@ function newParentSelected( orgUnitIds )
     	
     	$.getJSON( '../dhis-web-commons-ajax-json/getOrganisationUnit.action', { id:id }, function( json )
     	{
-    		$( '#newParentOrganisationUnitId' ).val( id );
+    		$( '#newParentOrganisationUnitId' ).val( json.organisationUnit.id );
     		$( '#newParentNameField' ).html( json.organisationUnit.name );
         	$( '#confirmNewParentOrganisationUnitButton' ).removeAttr( 'disabled' );
     	} );
@@ -72,8 +72,8 @@ function newParentSelected( orgUnitIds )
 
 function newParentOrganisationUnitConfirmed()
 {
-    var toMoveId = $( '#organisationUnitToMoveId' ).val();
-    var newParentId = $( '#newParentOrganisationUnitId' ).val();
+  var toMoveId = $( '#organisationUnitToMoveId' ).val();
+  var newParentId = $( '#newParentOrganisationUnitId' ).val();
 
 	$.getJSON( 'validateNewParentOrganisationUnit.action', {
 		organisationUnitToMoveId:toMoveId, newParentOrganisationUnitId:newParentId }, function( json ) 

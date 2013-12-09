@@ -28,13 +28,12 @@ package org.hisp.dhis.ouwt.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -65,9 +64,9 @@ public class RemoveSelectedOrganisationUnitAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private String id;
 
-    public void setId( int organisationUnitId )
+    public void setId( String organisationUnitId )
     {
         this.id = organisationUnitId;
     }

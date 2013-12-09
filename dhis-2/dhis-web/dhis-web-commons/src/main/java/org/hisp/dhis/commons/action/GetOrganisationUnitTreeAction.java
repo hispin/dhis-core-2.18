@@ -129,9 +129,9 @@ public class GetOrganisationUnitTreeAction
         return versionOnly;
     }
 
-    private Integer parentId;
+    private String parentId;
 
-    public void setParentId( Integer parentId )
+    public void setParentId( String parentId )
     {
         this.parentId = parentId;
     }

@@ -35,12 +35,12 @@ var OU_SELECTED_KEY = "ouSelected";
 dhis2.ou.store = new dhis2.storage.Store( {
     name: OU_STORE_NAME,
     objectStores: [ {
-            name: OU_KEY,
-            adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ]
-        }, {
-            name: OU_PARTIAL_KEY,
-            adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ]
-        }
+      name: OU_KEY,
+      adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ]
+    }, {
+      name: OU_PARTIAL_KEY,
+      adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ]
+    }
     ]
 } );
 
@@ -410,7 +410,7 @@ function Selection()
                 var idx = undefined;
 
                 $.each( selected, function( i, item ) {
-                    if( +item === unitId ) {
+                    if( item === unitId ) {
                         idx = i;
                     }
                 } );
@@ -479,13 +479,13 @@ function Selection()
         if( multipleSelectionAllowed ) {
             $.each( selected, function( i, item ) {
                 var name = organisationUnits[item].n;
-                ids.push( +item );
+                ids.push( item );
                 names.push( name );
             } );
 
             listenerFunction( ids, names, children );
         } else {
-            selected = +selected[0];
+            selected = selected[0];
 
             if( 'undefined' !== typeof organisationUnits[selected]) {
                 // we only support includeChildren for single selects
@@ -788,7 +788,7 @@ function Subtree() {
         $toggleTag.addClass( "toggle" );
 
         if( ou.c.length > 0 ) {
-            $toggleTag.bind( "click", new Function( 'subtree.toggle( ' + ou.id + ' )' ) );
+            $toggleTag.bind( "click", new Function( 'subtree.toggle( \"' + ou.id + '\" )' ) );
             $toggleTag.append( getToggleExpand() );
         }
         else {
@@ -796,7 +796,7 @@ function Subtree() {
         }
 
         var $linkTag = $( "<a/>" );
-        $linkTag.attr( "href", "javascript:void selection.select( " + ou.id + ")" );
+        $linkTag.attr( "href", "javascript:void selection.select( \"" + ou.id + "\" )" );
         $linkTag.append( ou.n );
 
         var $childTag = $( "<li/>" );
