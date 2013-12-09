@@ -210,6 +210,7 @@
 		<property name="programExpressionService" ref="org.hisp.dhis.program.ProgramExpressionService" />
 		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService"/>
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 	</bean>
 
 	<bean
