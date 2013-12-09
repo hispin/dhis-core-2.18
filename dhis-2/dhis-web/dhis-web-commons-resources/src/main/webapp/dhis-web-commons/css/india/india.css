@@ -194,7 +194,8 @@ a.menuLink:hover
 /* DropDown Menu                                                              */
 /*----------------------------------------------------------------------------*/
 
-.gearDropDown {
+.gearDropDown 
+{
   background-color : #f7f7f7;
   float            : right;
   border           : 1px solid #eaeaea;
@@ -204,11 +205,13 @@ a.menuLink:hover
   border-top-right-radius : 3px;
 }
 
-.gearDropDown.active {
+.gearDropDown.active 
+{
   background-color : #ddd;
 }
 
-.dropDown {
+.dropDown 
+{
   position                   : absolute;
   display                    : none;
   font-size                  : 9pt;
@@ -226,17 +229,20 @@ a.menuLink:hover
   box-shadow                 : #ccc 0 1px 1px 0;
 }
 
-.dropDown > ul {
+.dropDown > ul 
+{
   margin: 6px 0;
 }
 
-.dropDown > ul > li {
+.dropDown > ul > li 
+{
   list-style-type : none;
   padding         : 0;
   margin          : 0;
 }
 
-.dropDown > ul > li > a {
+.dropDown > ul > li > a 
+{
   display       : block;
   padding       : 8px 5px;
   color         : #000;
@@ -244,7 +250,8 @@ a.menuLink:hover
   cursor        : pointer;
 }
 
-.dropDown > ul > li > a:hover {
+.dropDown > ul > li > a:hover 
+{
   text-decoration  : none;
   background-color : #eee;
 }
@@ -457,7 +464,7 @@ a.menuLink:hover
 
 .listTable > tbody > tr > td
 {
-  padding: 12px 0 12px 5px;
+  padding: 11px 0 10px 5px;
 }
 
 .listRow

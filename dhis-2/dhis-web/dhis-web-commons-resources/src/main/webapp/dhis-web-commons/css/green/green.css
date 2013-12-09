@@ -253,7 +253,8 @@ a.menuLink:hover
 /* Context Menu                                                               */
 /*----------------------------------------------------------------------------*/
 
-.contextMenu {
+.contextMenu 
+{
   position                   : absolute;
   font-size                  : 9pt;
   color                      : #000;
@@ -273,13 +274,15 @@ a.menuLink:hover
   box-shadow                 : #ccc 0px 1px 1px 0px;
 }
 
-.contextMenuItems {
+.contextMenuItems 
+{
   list-style-type : none;
   padding         : 0;
   margin          : 10px 0;
 }
 
-.contextMenuItems a {
+.contextMenuItems a 
+{
   display       : block;
   padding       : 10px 10px;
   color         : #000;
@@ -287,12 +290,14 @@ a.menuLink:hover
   cursor        : pointer;
 }
 
-.contextMenuItems a:hover {
+.contextMenuItems a:hover 
+{
   text-decoration  : none;
   background-color : #eee;
 }
 
-.contextMenuItemActive {
+.contextMenuItemActive 
+{
   background-color: #668cb9 !important;
   color: #fff !important;
 }
@@ -418,7 +423,6 @@ a.menuLink:hover
   text-align: left;
   color: #39547d;
   padding: 3px 0 2px 6px;
-  border: 0;
   font-family: LiberationSansBold, arial;
   font-size: 13px;
   font-weight: normal;
@@ -464,7 +468,7 @@ a.menuLink:hover
 
 .listTable > tbody > tr > td
 {
-  padding: 12px 0 12px 5px;
+  padding: 11px 0 10px 5px;
 }
 
 .listRow
