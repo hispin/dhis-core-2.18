@@ -559,17 +559,18 @@ public abstract class BaseAnalyticalObject
     {
         List<String> ids = new ArrayList<String>();
         
-        if ( column != null )
-        {
-            for ( NameableObject item : column )
-            {
-                ids.add( item.getUid() );
-            }
-        }
+        List<NameableObject> dimensions = new ArrayList<NameableObject>();
+        dimensions.addAll( column != null ? column : new ArrayList<NameableObject>() );
+        dimensions.addAll( row != null ? row : new ArrayList<NameableObject>() );
         
-        if ( row != null )
+        for ( NameableObject item : dimensions )
         {
-            for ( NameableObject item : row )
+            if ( item.getClass().isAssignableFrom( DataElementOperand.class ) )
+            {
+                ids.add( ((DataElementOperand) item).getDataElement().getUid() );
+                ids.add( ((DataElementOperand) item).getCategoryOptionCombo().getUid() );
+            }
+            else
             {
                 ids.add( item.getUid() );
             }
@@ -579,7 +580,7 @@ public abstract class BaseAnalyticalObject
         
         return StringUtils.join( ids, DIMENSION_SEP );
     }
-
+    
     /**
      * Returns meta-data mapping for this analytical object. Includes a identifier
      * to name mapping for dynamic dimensions.
