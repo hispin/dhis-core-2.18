@@ -260,7 +260,8 @@ a.menuLink:hover
 /* Context Menu                                                               */
 /*----------------------------------------------------------------------------*/
 
-.contextMenu {
+.contextMenu 
+{
   position                   : absolute;
   font-size                  : 9pt;
   color                      : #000;
@@ -280,13 +281,15 @@ a.menuLink:hover
   box-shadow                 : #ccc 0 1px 1px 0;
 }
 
-.contextMenuItems {
+.contextMenuItems 
+{
   list-style-type : none;
   padding         : 0;
   margin          : 10px 0;
 }
 
-.contextMenuItems a {
+.contextMenuItems a 
+{
   display       : block;
   padding       : 10px 10px;
   color         : #000;
@@ -294,12 +297,14 @@ a.menuLink:hover
   cursor        : pointer;
 }
 
-.contextMenuItems a:hover {
+.contextMenuItems a:hover 
+{
   text-decoration  : none;
   background-color : #eee;
 }
 
-.contextMenuItemActive {
+.contextMenuItemActive 
+{
   background-color: #668cb9 !important;
   color: #fff !important;
 }
