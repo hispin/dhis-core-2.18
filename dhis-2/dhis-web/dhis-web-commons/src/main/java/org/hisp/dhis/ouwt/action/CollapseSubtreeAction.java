@@ -28,17 +28,15 @@ package org.hisp.dhis.ouwt.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.TreeStateManager;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: CollapseSubtreeAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class CollapseSubtreeAction
     implements Action
@@ -65,9 +63,9 @@ public class CollapseSubtreeAction
     // Input
     // -------------------------------------------------------------------------
 
-    private int parentId;
+    private String parentId;
 
-    public void setParentId( int parentId )
+    public void setParentId( String parentId )
     {
         this.parentId = parentId;
     }

@@ -38,7 +38,6 @@ import java.util.HashSet;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: SetSelectedOrganisationUnitAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class SetSelectedOrganisationUnitAction
     implements Action
@@ -65,11 +64,11 @@ public class SetSelectedOrganisationUnitAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private String id;
 
-    public void setId( int organisationUnitId )
+    public void setId( String id )
     {
-        this.id = organisationUnitId;
+        this.id = id;
     }
 
     private Collection<OrganisationUnit> selectedUnits;
@@ -86,7 +85,7 @@ public class SetSelectedOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        if ( id == 0 )
+        if ( id == null )
         {
             selectionManager.clearSelectedOrganisationUnits();
             return SUCCESS;

@@ -2,16 +2,14 @@
 // Organisation unit selection listener
 // -----------------------------------------------------------------------------
 
-$( document ).ready( function()
-{
-    selection.setAutoSelectRoot( false );
-    selection.setRootUnselectAllowed( true );
-    selection.setListenerFunction( organisationUnitSelected, true );
-} );
+$( document ).ready( function() {
+  selection.setAutoSelectRoot( false );
+  selection.setRootUnselectAllowed( true );
+  selection.setListenerFunction( organisationUnitSelected, true );
+});
 
-function organisationUnitSelected( orgUnitIds )
-{
-    window.location.href = 'organisationUnit.action';
+function organisationUnitSelected( orgUnitIds ) {
+  window.location.href = 'organisationUnit.action';
 }
 
 // -----------------------------------------------------------------------------

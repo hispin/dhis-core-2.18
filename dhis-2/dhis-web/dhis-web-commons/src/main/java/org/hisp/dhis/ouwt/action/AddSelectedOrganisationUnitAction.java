@@ -65,9 +65,9 @@ public class AddSelectedOrganisationUnitAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private String id;
 
-    public void setId( int organisationUnitId )
+    public void setId( String organisationUnitId )
     {
         this.id = organisationUnitId;
     }

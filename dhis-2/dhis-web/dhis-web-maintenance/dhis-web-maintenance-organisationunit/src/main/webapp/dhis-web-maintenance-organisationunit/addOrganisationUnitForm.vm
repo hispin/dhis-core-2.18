@@ -1,39 +1,40 @@
 <script type="text/javascript">
-    var previousName = '';
-    var adding_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "adding_the_org_unit_failed" ) , "'" )';
+  var previousName = '';
+  var adding_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "adding_the_org_unit_failed" ) , "'" )';
 
 	jQuery(document).ready(function() {
 		validation2('addOrganisationUnitForm', function(form) {
-            $.ajax({
-               url: '../dhis-web-commons/ouwt/getselected.action',
-               dataType: 'json'
-            } ).done(function(data) {
-                if(data.selectedUnits.length == 0) {
-                    if ( confirm( '$i18n.getString( "create_new_root" )' ) ) {
-                        selectAllById( "dataSets" );
-                        form.submit();
-                    }
-                } else {
-                    selectAllById( "dataSets" );
-                    form.submit();
-                }
-            });
+      $.ajax({
+         url: '../dhis-web-commons/ouwt/getselected.action',
+         dataType: 'json'
+      } ).done(function(data) {
+        console.log(data);
+        if(data.selectedUnits.length == 0) {
+            if ( confirm( '$i18n.getString( "create_new_root" )' ) ) {
+                selectAllById( "dataSets" );
+                form.submit();
+            }
+        } else {
+            selectAllById( "dataSets" );
+            form.submit();
+        }
+      });
 		}, {
-	        'beforeValidateHandler' : function()
-	        {
-				#tblDynamicAttributesJavascript()
-	        },
+    'beforeValidateHandler' : function()
+    {
+      #tblDynamicAttributesJavascript()
+    },
 			'rules' : getValidationRules("organisationUnit")
 		});
 
-        checkValueIsExistWarning("name", "validateOrganisationUnit.action");
-        checkValueIsExist("code", "validateOrganisationUnit.action");
-        datePickerValid('openingDate', false);
+    checkValueIsExistWarning("name", "validateOrganisationUnit.action");
+    checkValueIsExist("code", "validateOrganisationUnit.action");
+    datePickerValid('openingDate', false);
 
 		jQuery( "div[id=dynamicAttributesContainer] table tr td:first-child" ).attr( "style", "width: 120px" );
 		jQuery( "div[id=dynamicAttributesContainer] table tr td:last-child *" ).attr( "style", "" );
-		
-        jQuery("#name").focus();
+
+    jQuery("#name").focus();
 	});
 </script>
 

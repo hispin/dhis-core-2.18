@@ -121,9 +121,9 @@ public interface OrganisationUnitStore
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query, Collection<OrganisationUnitGroup> groups, boolean limit );
 
-    Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap();
+    Map<String, Set<String>> getOrganisationUnitDataSetAssocationMap();
 
-    Map<Integer, Set<Integer>> getOrganisationUnitGroupDataSetAssocationMap();
+    Map<String, Set<String>> getOrganisationUnitGroupDataSetAssocationMap();
 
     Set<Integer> getOrganisationUnitIdsWithoutData();
 

@@ -11,7 +11,7 @@
 		<parent parentId="$parent.id">
 		#foreach( $child in $childrenMap.get( $parent ) )
   			<child id="${child.id}" uid="${child.uid}" hasChildren="$child.children.size()" #if( $selected.contains( $child )) selected="true" #end>$encoder.xmlEncode( $child.name )</child>
-		#end		
+		#end
   		</parent>
 	#end
 	</children>

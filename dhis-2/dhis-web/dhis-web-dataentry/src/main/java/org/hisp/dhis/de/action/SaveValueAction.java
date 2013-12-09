@@ -121,9 +121,9 @@ public class SaveValueAction
         this.dataElementId = dataElementId;
     }
 
-    private int organisationUnitId;
+    private String organisationUnitId;
 
-    public void setOrganisationUnitId( int organisationUnitId )
+    public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }

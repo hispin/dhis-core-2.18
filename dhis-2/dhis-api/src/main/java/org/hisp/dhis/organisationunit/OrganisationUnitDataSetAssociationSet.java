@@ -43,48 +43,48 @@ public class OrganisationUnitDataSetAssociationSet
     /**
      * List of data set association sets.
      */
-    private List<Set<Integer>> dataSetAssociationSets = new ArrayList<Set<Integer>>();
-    
+    private List<Set<String>> dataSetAssociationSets = new ArrayList<Set<String>>();
+
     /**
      * Mapping between organisation unit identifier and index of association set in list.
      */
-    private Map<Integer, Integer> organisationUnitAssociationSetMap = new HashMap<Integer, Integer>();
+    private Map<String, Integer> organisationUnitAssociationSetMap = new HashMap<String, Integer>();
 
     /**
      * Set of distinct data sets in all association sets.
      */
-    private Set<Integer> distinctDataSets = new HashSet<Integer>();
-    
+    private Set<String> distinctDataSets = new HashSet<String>();
+
     public OrganisationUnitDataSetAssociationSet()
     {
     }
 
-    public List<Set<Integer>> getDataSetAssociationSets()
+    public List<Set<String>> getDataSetAssociationSets()
     {
         return dataSetAssociationSets;
     }
 
-    public void setDataSetAssociationSets( List<Set<Integer>> dataSetAssociationSets )
+    public void setDataSetAssociationSets( List<Set<String>> dataSetAssociationSets )
     {
         this.dataSetAssociationSets = dataSetAssociationSets;
     }
 
-    public Map<Integer, Integer> getOrganisationUnitAssociationSetMap()
+    public Map<String, Integer> getOrganisationUnitAssociationSetMap()
     {
         return organisationUnitAssociationSetMap;
     }
 
-    public void setOrganisationUnitAssociationSetMap( Map<Integer, Integer> organisationUnitAssociationSetMap )
+    public void setOrganisationUnitAssociationSetMap( Map<String, Integer> organisationUnitAssociationSetMap )
     {
         this.organisationUnitAssociationSetMap = organisationUnitAssociationSetMap;
     }
 
-    public Set<Integer> getDistinctDataSets()
+    public Set<String> getDistinctDataSets()
     {
         return distinctDataSets;
     }
 
-    public void setDistinctDataSets( Set<Integer> distinctDataSets )
+    public void setDistinctDataSets( Set<String> distinctDataSets )
     {
         this.distinctDataSets = distinctDataSets;
     }

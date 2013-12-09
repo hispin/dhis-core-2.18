@@ -188,24 +188,25 @@ public class HibernateOrganisationUnitStore
         return q.list();
     }
 
-    public Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap()
+    public Map<String, Set<String>> getOrganisationUnitDataSetAssocationMap()
     {
-        final String sql = "select datasetid, sourceid from datasetsource";
+        final String sql = "select ds.uid as ds_uid, ou.uid as ou_uid from datasetsource d " +
+            "left join organisationunit ou on ou.organisationunitid=d.sourceid left join dataset ds on ds.datasetid=d.datasetid";
 
-        final Map<Integer, Set<Integer>> map = new HashMap<Integer, Set<Integer>>();
+        final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
             public void processRow( ResultSet rs ) throws SQLException
             {
-                int dataSetId = rs.getInt( 1 );
-                int organisationUnitId = rs.getInt( 2 );
+                String dataSetId = rs.getString( "ds_uid" );
+                String organisationUnitId = rs.getString( "ou_uid" );
 
-                Set<Integer> dataSets = map.get( organisationUnitId );
+                Set<String> dataSets = map.get( organisationUnitId );
 
                 if ( dataSets == null )
                 {
-                    dataSets = new HashSet<Integer>();
+                    dataSets = new HashSet<String>();
                     map.put( organisationUnitId, dataSets );
                 }
 
@@ -217,26 +218,27 @@ public class HibernateOrganisationUnitStore
     }
 
     @Override
-    public Map<Integer, Set<Integer>> getOrganisationUnitGroupDataSetAssocationMap()
+    public Map<String, Set<String>> getOrganisationUnitGroupDataSetAssocationMap()
     {
-        final String sql = "select ougds.datasetid, ou.organisationunitid from orgunitgroupdatasets ougds " +
-            "left join orgunitgroupmembers ougm on ougds.orgunitgroupid=ougm.orgunitgroupid " +
-            "left join organisationunit ou on ou.organisationunitid=ougm.organisationunitid";
+        final String sql = "select ds.uid as ds_uid, ou.uid as ou_uid from orgunitgroupdatasets ougds\n" +
+            "\tleft join orgunitgroupmembers ougm on ougds.orgunitgroupid=ougm.orgunitgroupid\n" +
+            "\tleft join organisationunit ou on ou.organisationunitid=ougm.organisationunitid\n" +
+            "\tleft join dataset ds on ds.datasetid=ougds.datasetid;\n";
 
-        final Map<Integer, Set<Integer>> map = new HashMap<Integer, Set<Integer>>();
+        final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
             public void processRow( ResultSet rs ) throws SQLException
             {
-                int dataSetId = rs.getInt( 1 );
-                int organisationUnitId = rs.getInt( 2 );
+                String dataSetId = rs.getString( "ds_uid" );
+                String organisationUnitId = rs.getString( "ou_uid" );
 
-                Set<Integer> dataSets = map.get( organisationUnitId );
+                Set<String> dataSets = map.get( organisationUnitId );
 
                 if ( dataSets == null )
                 {
-                    dataSets = new HashSet<Integer>();
+                    dataSets = new HashSet<String>();
                     map.put( organisationUnitId, dataSets );
                 }
 
@@ -305,13 +307,13 @@ public class HibernateOrganisationUnitStore
             + " where o.featureType='Point'"
             + " and o.coordinates is not null"
             + " and CAST( SUBSTRING(o.coordinates, 2, LOCATE(',', o.coordinates) - 2) AS big_decimal ) >= " + box[3]
-            + " and CAST( SUBSTRING(o.coordinates, 2, LOCATE(',', o.coordinates) - 2) AS big_decimal ) <= " + box[1] 
-            + " and CAST( SUBSTRING(coordinates, LOCATE(',', o.coordinates) + 1, LOCATE(']', o.coordinates) - LOCATE(',', o.coordinates) - 1 ) AS big_decimal ) >= " + box[2] 
-            + " and CAST( SUBSTRING(coordinates, LOCATE(',', o.coordinates) + 1, LOCATE(']', o.coordinates) - LOCATE(',', o.coordinates) - 1 ) AS big_decimal ) <= " + box[0] 
-            ).list();
+            + " and CAST( SUBSTRING(o.coordinates, 2, LOCATE(',', o.coordinates) - 2) AS big_decimal ) <= " + box[1]
+            + " and CAST( SUBSTRING(coordinates, LOCATE(',', o.coordinates) + 1, LOCATE(']', o.coordinates) - LOCATE(',', o.coordinates) - 1 ) AS big_decimal ) >= " + box[2]
+            + " and CAST( SUBSTRING(coordinates, LOCATE(',', o.coordinates) + 1, LOCATE(']', o.coordinates) - LOCATE(',', o.coordinates) - 1 ) AS big_decimal ) <= " + box[0]
+        ).list();
     }
-    
-        
+
+
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

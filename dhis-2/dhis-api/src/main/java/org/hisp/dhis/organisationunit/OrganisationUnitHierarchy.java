@@ -175,7 +175,7 @@ public class OrganisationUnitHierarchy
         
         return new HashSet<Integer>( children );
     }
-    
+
     public Set<Integer> getChildren( Collection<Integer> parentIds )
     {
         int capacity = parentIds.size() + 5;

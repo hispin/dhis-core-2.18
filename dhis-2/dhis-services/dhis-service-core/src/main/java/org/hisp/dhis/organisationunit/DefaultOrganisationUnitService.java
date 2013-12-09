@@ -28,20 +28,6 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.dataset.DataSet;
@@ -57,6 +43,20 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.VersionService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -278,39 +278,39 @@ public class DefaultOrganisationUnitService
     public Collection<OrganisationUnit> getOrganisationUnits( Collection<OrganisationUnitGroup> groups, Collection<OrganisationUnit> parents )
     {
         Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
-        
+
         for ( OrganisationUnitGroup group : groups )
         {
             members.addAll( group.getMembers() );
         }
-        
+
         if ( parents != null && !parents.isEmpty() )
         {
             Collection<OrganisationUnit> children = getOrganisationUnitsWithChildren( IdentifiableObjectUtils.getUids( parents ) );
-            
+
             members.retainAll( children );
         }
-        
+
         return members;
     }
-    
+
     public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( Collection<String> parentUids )
     {
         Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
-        
+
         for ( String uid : parentUids )
         {
             units.addAll( getOrganisationUnitsWithChildren( uid ) );
         }
-        
+
         return units;
     }
-    
+
     public Collection<OrganisationUnit> getOrganisationUnitsWithChildren( String uid )
     {
         return getOrganisationUnitWithChildren( getOrganisationUnit( uid ).getId() );
     }
-    
+
     public Collection<OrganisationUnit> getOrganisationUnitWithChildren( int id )
     {
         OrganisationUnit organisationUnit = getOrganisationUnit( id );
@@ -384,7 +384,7 @@ public class DefaultOrganisationUnitService
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level )
     {
         Collection<OrganisationUnit> roots = getRootOrganisationUnits();
-        
+
         if ( level == 1 )
         {
             return roots;
@@ -397,7 +397,7 @@ public class DefaultOrganisationUnitService
     {
         Set<OrganisationUnit> parents = new HashSet<OrganisationUnit>();
         parents.add( parent );
-        
+
         return getOrganisationUnitsAtLevel( level, parent != null ? parents : null );
     }
 
@@ -405,10 +405,10 @@ public class DefaultOrganisationUnitService
     {
         Set<Integer> levels = new HashSet<Integer>();
         levels.add( level );
-        
+
         return getOrganisationUnitsAtLevels( levels, parents );
     }
-    
+
     public Collection<OrganisationUnit> getOrganisationUnitsAtLevels( Collection<Integer> levels, Collection<OrganisationUnit> parents )
     {
         if ( parents == null || parents.isEmpty() )
@@ -417,24 +417,24 @@ public class DefaultOrganisationUnitService
         }
 
         Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
-        
+
         for ( Integer level : levels )
         {
             if ( level < 1 )
             {
                 throw new IllegalArgumentException( "Level must be greater than zero" );
             }
-            
+
             for ( OrganisationUnit parent : parents )
             {
                 int parentLevel = parent.getOrganisationUnitLevel();
-    
+
                 if ( level < parentLevel )
                 {
                     throw new IllegalArgumentException(
                         "Level must be greater than or equal to level of parent organisation unit" );
                 }
-    
+
                 if ( level == parentLevel )
                 {
                     parent.setLevel( level );
@@ -446,7 +446,7 @@ public class DefaultOrganisationUnitService
                 }
             }
         }
-        
+
         return result;
     }
 
@@ -553,7 +553,7 @@ public class DefaultOrganisationUnitService
 
     public OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet()
     {
-        Map<Integer, Set<Integer>> associationSet = organisationUnitStore.getOrganisationUnitDataSetAssocationMap();
+        Map<String, Set<String>> associationSet = organisationUnitStore.getOrganisationUnitDataSetAssocationMap();
         associationSet.putAll( organisationUnitStore.getOrganisationUnitGroupDataSetAssocationMap() );
 
         filterUserDataSets( associationSet );
@@ -561,7 +561,7 @@ public class DefaultOrganisationUnitService
 
         OrganisationUnitDataSetAssociationSet set = new OrganisationUnitDataSetAssociationSet();
 
-        for ( Map.Entry<Integer, Set<Integer>> entry : associationSet.entrySet() )
+        for ( Map.Entry<String, Set<String>> entry : associationSet.entrySet() )
         {
             int index = set.getDataSetAssociationSets().indexOf( entry.getValue() );
 
@@ -578,7 +578,7 @@ public class DefaultOrganisationUnitService
         return set;
     }
 
-    private void filterUserDataSets( Map<Integer, Set<Integer>> associationMap )
+    private void filterUserDataSets( Map<String, Set<String>> associationMap )
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -587,25 +587,28 @@ public class DefaultOrganisationUnitService
             Collection<Integer> userDataSets = ConversionUtils.getIdentifiers( DataSet.class, currentUser
                 .getUserCredentials().getAllDataSets() );
 
-            for ( Set<Integer> dataSets : associationMap.values() )
+            for ( Set<String> dataSets : associationMap.values() )
             {
                 dataSets.retainAll( userDataSets );
             }
         }
     }
 
-    private void filterChildOrganisationUnits( Map<Integer, Set<Integer>> associatonMap )
+    private void filterChildOrganisationUnits( Map<String, Set<String>> associationMap )
     {
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser != null )
         {
-            Collection<Integer> parentIds = ConversionUtils.getIdentifiers( OrganisationUnit.class,
+            Collection<String> parentIds = ConversionUtils.getUids( OrganisationUnit.class,
                 currentUser.getOrganisationUnits() );
 
-            Collection<Integer> children = getOrganisationUnitHierarchy().getChildren( parentIds );
+            // Collection<Integer> children = getOrganisationUnitHierarchy().getChildren( parentIds );
 
-            associatonMap.keySet().retainAll( children );
+            Collection<OrganisationUnit> organisationUnitsWithChildren = getOrganisationUnitsWithChildren( parentIds );
+            Collection<String> children = ConversionUtils.getUids( OrganisationUnit.class, organisationUnitsWithChildren );
+
+            associationMap.keySet().retainAll( children );
         }
     }
 
@@ -789,7 +792,7 @@ public class DefaultOrganisationUnitService
 
         return levelMap;
     }
-    
+
     @Override
     public int getNumberOfOrganisationUnits()
     {
@@ -831,7 +834,7 @@ public class DefaultOrganisationUnitService
 
         return objects;
     }
-    
+
     // -------------------------------------------------------------------------
     // Version
     // -------------------------------------------------------------------------

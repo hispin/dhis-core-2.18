@@ -4,10 +4,10 @@
 "programs": {
 #set( $psize = $programs.size() )
 #foreach( $program in $programs )
-"${program.id}":{
+"$encoder.jsonEncode( $program.uid )":{
     "id":"${program.id}",
-    "name":"$encoder.jsonEncode( ${program.displayName} )",
     "uid":"$encoder.jsonEncode( ${program.uid} )",
+    "name":"$encoder.jsonEncode( ${program.displayName} )",
     "description":"$encoder.jsonEncode( ${program.description} )",
     "enrollmentDescription":"$encoder.jsonEncode( ${program.dateOfEnrollmentDescription} )",
     "incidentDescription":"$encoder.jsonEncode( ${program.dateOfIncidentDescription} )",
@@ -15,20 +15,24 @@
     "programStages":[#set( $pssize = $program.programStages.size() )
     #foreach( $ps in $program.programStages )
     {
-        "id": "${ps.id}",
-        "uid": "$encoder.jsonEncode( ${ps.uid} )",
-        "name": "$encoder.jsonEncode( ${ps.displayName} )",
-        "reportDateDescription": "$encoder.jsonEncode( ${ps.reportDateDescription} )",
-        "irregular": "$!{ps.irregular}",
-        "displayGenerateEventBox": "$!{ps.displayGenerateEventBox}",
-        "validCompleteOnly": "$!{ps.validCompleteOnly}",
-        "captureCoordinates": "$!{ps.captureCoordinates}",
-        "blockEntryForm": "$!ps.blockEntryForm",
-        "remindCompleted": "$!ps.remindCompleted",
-		"allowGenerateNextVisit": "$!ps.allowGenerateNextVisit"
+      "id": "${ps.id}",
+      "uid": "$encoder.jsonEncode( ${ps.uid} )",
+      "name": "$encoder.jsonEncode( ${ps.displayName} )",
+      "reportDateDescription": "$encoder.jsonEncode( ${ps.reportDateDescription} )",
+      "irregular": "$!{ps.irregular}",
+      "displayGenerateEventBox": "$!{ps.displayGenerateEventBox}",
+      "validCompleteOnly": "$!{ps.validCompleteOnly}",
+      "captureCoordinates": "$!{ps.captureCoordinates}",
+      "blockEntryForm": "$!ps.blockEntryForm",
+      "remindCompleted": "$!ps.remindCompleted",
+		  "allowGenerateNextVisit": "$!ps.allowGenerateNextVisit"
     }#if( $velocityCount < $pssize ),#end
     #end],
-    "programAssociations": $programAssociations.get( ${program.id} )
+    "programAssociations": [
+    #set( $asize = $programAssociations.get( ${program.uid} ).size() )
+    #foreach( $assoc in $programAssociations.get( ${program.uid} ) )
+      "$encoder.jsonEncode( $assoc )"#if( $velocityCount < $asize ),#end
+    #end]
 }#if( $velocityCount < $psize ),#end
 #end }
 }}
