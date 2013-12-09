@@ -257,19 +257,13 @@ public class OrganisationUnitController
     
     
     @RequestMapping(value = "/withinRange", method = RequestMethod.GET, produces = { "*/*", "application/json" })
-    public void getEntitiesWithinRange( @RequestParam Map<String, String> parameters,
+    public void getEntitiesWithinRange( @RequestParam Double longitude, @RequestParam Double latitude, 
+        @RequestParam Double distance, @RequestParam(required = false) String orgUnitGroupSetId,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        WebOptions options = new WebOptions( parameters );
-
-        Double longitude = Double.parseDouble( options.getOptions().get( "longitude" ) );
-        Double latitude = Double.parseDouble( options.getOptions().get( "latitude" ) );
-        Double distance = Double.parseDouble( options.getOptions().get( "distance" ) );
-        String orgUnitGroupSetId = options.getOptions().get( "orgUnitGroupSetId" );
-                
         List<OrganisationUnit> entityList = new ArrayList<OrganisationUnit>( organisationUnitService.getWithinCoordinateArea( longitude, latitude, distance ) );
                  
-        for( OrganisationUnit orgunit : entityList )
+        for ( OrganisationUnit orgunit : entityList )
         {
             Set<AttributeValue> attributeValues = orgunit.getAttributeValues();
             attributeValues.clear();
