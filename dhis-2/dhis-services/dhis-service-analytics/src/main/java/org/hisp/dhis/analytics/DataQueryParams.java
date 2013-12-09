@@ -118,6 +118,11 @@ public class DataQueryParams
     private boolean skipMeta;
 
     /**
+     * Indicates that full precision should be provided for values.
+     */
+    private boolean skipRounding;
+    
+    /**
      * Indicates i) if the names of all ancestors of the organisation units part
      * of the query should be included in the "names" key and ii) if the hierarchy 
      * path of all organisation units part of the query should be included as a
@@ -1063,6 +1068,16 @@ public class DataQueryParams
     public void setSkipMeta( boolean skipMeta )
     {
         this.skipMeta = skipMeta;
+    }
+
+    public boolean isSkipRounding()
+    {
+        return skipRounding;
+    }
+
+    public void setSkipRounding( boolean skipRounding )
+    {
+        this.skipRounding = skipRounding;
     }
 
     public boolean isHierarchyMeta()

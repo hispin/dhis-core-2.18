@@ -268,7 +268,7 @@ public class DefaultAnalyticsService
                                                     
                         grid.addRow();
                         grid.addValues( DimensionItem.getItemIdentifiers( row ) );
-                        grid.addValue( MathUtils.getRounded( value ) );
+                        grid.addValue( params.isSkipRounding() ? value : MathUtils.getRounded( value ) );
                     }
                 }
             }
@@ -290,7 +290,7 @@ public class DefaultAnalyticsService
             {
                 grid.addRow();
                 grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
-                grid.addValue( MathUtils.getRounded( entry.getValue() ) );
+                grid.addValue( params.isSkipRounding() ? entry.getValue() : MathUtils.getRounded( entry.getValue() ) );
             }
         }
 
@@ -356,7 +356,7 @@ public class DefaultAnalyticsService
                     
                     grid.addRow();
                     grid.addValues( dataRow.toArray() );
-                    grid.addValue( MathUtils.getRounded( value ) );
+                    grid.addValue( params.isSkipRounding() ? value : MathUtils.getRounded( value ) );
                 }
             }
         }
@@ -373,7 +373,7 @@ public class DefaultAnalyticsService
             {
                 grid.addRow();
                 grid.addValues( entry.getKey().split( DIMENSION_SEP ) );
-                grid.addValue( MathUtils.getRounded( entry.getValue() ) );
+                grid.addValue( params.isSkipRounding() ? entry.getValue() : MathUtils.getRounded( entry.getValue() ) );
             }
         }
 
@@ -587,7 +587,7 @@ public class DefaultAnalyticsService
     
     @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean hierarchyMeta, boolean ignoreLimit, I18nFormat format )
+        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
@@ -628,6 +628,7 @@ public class DefaultAnalyticsService
         }
         
         params.setSkipMeta( skipMeta );
+        params.setSkipRounding( skipRounding );
         params.setHierarchyMeta( hierarchyMeta );
 
         return params;

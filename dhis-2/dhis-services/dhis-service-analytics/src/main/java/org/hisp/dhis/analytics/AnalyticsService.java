@@ -148,6 +148,7 @@ public interface AnalyticsService
      * @param aggregationType the aggregation type.
      * @param measureCriteria the measure criteria.
      * @param skipMeta whether to skip the meta data part of the response.
+     * @param skipRounding whether to skip rounding and provide full precision for values.
      * @param hierarchyMeta whether to include meta data about the org units 
      *        in the hierarchy.
      * @param ignoreLimit whether to ignore the max number of cells limit.
@@ -155,7 +156,7 @@ public interface AnalyticsService
      * @return a data query parameter object created based on the given URL info.
      */
     DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean hierarchyMeta, boolean ignoreLimit, I18nFormat format );
+        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, I18nFormat format );
     
     /**
      * Creates a data query parameter object from the given BaseAnalyticalObject.
