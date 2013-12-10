@@ -119,16 +119,19 @@ public abstract class AbstractJdbcTableManager
     public List<AnalyticsTable> getTables( Date earliest, Date latest )
     {
         log.info( "Get tables using earliest: " + earliest + ", latest: " + latest );
-        
-        String baseName = getTableName();
-        
-        List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
 
         List<AnalyticsTable> tables = new ArrayList<AnalyticsTable>();
         
-        for ( Period period : periods )
-        {
-            tables.add( new AnalyticsTable( baseName, getDimensionColumns( null ), period ) );
+        if ( earliest != null && latest != null )
+        {        
+            String baseName = getTableName();
+            
+            List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
+    
+            for ( Period period : periods )
+            {
+                tables.add( new AnalyticsTable( baseName, getDimensionColumns( null ), period ) );
+            }
         }
         
         return tables;
