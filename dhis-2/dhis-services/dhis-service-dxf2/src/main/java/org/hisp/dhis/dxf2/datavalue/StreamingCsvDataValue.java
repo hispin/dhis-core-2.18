@@ -28,28 +28,28 @@ package org.hisp.dhis.dxf2.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.TextUtils.valueOf;
+import com.csvreader.CsvWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.csvreader.CsvWriter;
+import static org.hisp.dhis.system.util.TextUtils.valueOf;
 
 public class StreamingCsvDataValue
     extends DataValue
 {
     private CsvWriter writer;
-    
+
     private List<String> values;
-    
+
     public StreamingCsvDataValue( CsvWriter writer )
     {
         this.writer = writer;
         this.values = new ArrayList<String>();
     }
-    
+
     public StreamingCsvDataValue( String[] row )
     {
         this.values = Arrays.asList( row );
@@ -63,7 +63,7 @@ public class StreamingCsvDataValue
     {
         return index >= 0 && index < values.size() ? values.get( index ) : null;
     }
-    
+
     //--------------------------------------------------------------------------
     // Getters
     //--------------------------------------------------------------------------
@@ -105,9 +105,9 @@ public class StreamingCsvDataValue
     }
 
     @Override
-    public String getTimestamp()
+    public String getLastUpdated()
     {
-        return timestamp = timestamp == null ? getValue( 6 ) : timestamp;
+        return lastUpdated = lastUpdated == null ? getValue( 6 ) : lastUpdated;
     }
 
     @Override
@@ -163,9 +163,9 @@ public class StreamingCsvDataValue
     }
 
     @Override
-    public void setTimestamp( String timestamp )
+    public void setLastUpdated( String lastUpdated )
     {
-        values.add( timestamp );
+        values.add( lastUpdated );
     }
 
     @Override
@@ -184,7 +184,7 @@ public class StreamingCsvDataValue
     public void close()
     {
         String[] row = new String[values.size()];
-        
+
         try
         {
             writer.writeRecord( values.toArray( row ) );
@@ -194,14 +194,14 @@ public class StreamingCsvDataValue
             throw new RuntimeException( "Failed to write CSV record", ex );
         }
     }
-    
+
     public static String[] getHeaders()
     {
-        String[] headers = { 
-            "dataelement", "period", "orgunit", 
-            "categoryoptioncombo", "value", "storedby", 
-            "timestamp", "comment", "followup" };
-        
+        String[] headers = {
+            "dataelement", "period", "orgunit",
+            "categoryoptioncombo", "value", "storedby",
+            "lastupdated", "comment", "followup" };
+
         return headers;
     }
 }
