@@ -16,43 +16,37 @@ var selectedOrganisationUnitUid = new Array();
 
 function SelectionTreeSelection()
 {
-    var onSelectFunction = undefined;
+  var onSelectFunction = undefined;
 
-    var listenerFunction = undefined;
+  var listenerFunction = undefined;
 
-    var multipleSelectionAllowed = true;
+  var multipleSelectionAllowed = true;
 
-    this.setOnSelectFunction = function( onSelectFunction_ )
-    {
-        onSelectFunction = onSelectFunction_;
-    };
+  this.setOnSelectFunction = function( onSelectFunction_ ) {
+    onSelectFunction = onSelectFunction_;
+  };
 
-    this.setListenerFunction = function( listenerFunction_ )
-    {
-        listenerFunction = listenerFunction_;
-    };
+  this.setListenerFunction = function( listenerFunction_ ) {
+    listenerFunction = listenerFunction_;
+  };
 
-    this.setMultipleSelectionAllowed = function( allowed )
-    {
-        multipleSelectionAllowed = allowed;
-    };
-	
-	this.getSelected = function()
-	{
-		return selectedOrganisationUnit;
-	};
-	
-	this.getSelectedUid = function()
-	{
-		return selectedOrganisationUnitUid;
-	}
-	
-	this.isSelected = function()
-	{
-		return selectedOrganisationUnit && selectedOrganisationUnit.length > 0;
-	}
+  this.setMultipleSelectionAllowed = function( allowed ) {
+    multipleSelectionAllowed = allowed;
+  };
 
-    this.select = function( unitId )
+  this.getSelected = function() {
+    return selectedOrganisationUnit;
+  };
+
+  this.getSelectedUid = function() {
+    return selectedOrganisationUnitUid;
+  }
+
+  this.isSelected = function() {
+    return selectedOrganisationUnit && selectedOrganisationUnit.length > 0;
+  }
+
+  this.select = function( unitId )
     {
        if ( onSelectFunction )
         {
@@ -99,27 +93,25 @@ function SelectionTreeSelection()
 
     function responseReceived( json )
     {
-		selectedOrganisationUnit = new Array();
-		selectedOrganisationUnitUid = new Array();
+      selectedOrganisationUnit = [];
+      selectedOrganisationUnitUid = [];
 
-		var unitIds = new Array();
-		var unitUids = new Array();
+      var unitIds = [];
+      var unitUids = [];
 
-        for ( i in json.selectedUnits )
-        {
-            unitIds[i] = json.selectedUnits[i].id;
-			selectedOrganisationUnit.push( unitIds[i] );
-			
-			unitUids[i] = json.selectedUnits[i].uid;
-			selectedOrganisationUnitUid.push( unitUids[i] );
-        }
+      for( i in json.selectedUnits ) {
+        unitIds[i] = json.selectedUnits[i].id;
+        selectedOrganisationUnit.push(unitIds[i]);
 
-        jQuery( 'body' ).trigger( 'oust.selected', selectedOrganisationUnit );
-        
-        if ( listenerFunction )
-        {
-        	listenerFunction( unitIds );
-        }
+        unitUids[i] = json.selectedUnits[i].uid;
+        selectedOrganisationUnitUid.push(unitUids[i]);
+      }
+
+      jQuery('body').trigger('oust.selected', selectedOrganisationUnit);
+
+      if( listenerFunction ) {
+        listenerFunction(unitIds);
+      }
     }
 
     function getTagId( unitId )
@@ -270,7 +262,7 @@ function SelectionTree()
 
         if ( hasChildren )
         {
-            toggleTag.onclick = new Function( 'selectionTree.toggle( ' + childId + ' )' );
+            toggleTag.onclick = new Function( 'selectionTree.toggle( \"' + childId + '\" )' );
             toggleTag.appendChild( getToggleExpand() );
         }
         else
@@ -279,7 +271,7 @@ function SelectionTree()
         }
 
         var linkTag = document.createElement( 'a' );
-        linkTag.href = 'javascript:void selectionTreeSelection.select( ' + childId + ' )';
+        linkTag.href = 'javascript:void selectionTreeSelection.select( \"' + childId + '\" )';
         linkTag.appendChild( document.createTextNode( child.firstChild.nodeValue ));
 
         if ( child.getAttribute( 'selected' ) == 'true' )

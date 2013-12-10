@@ -28,21 +28,18 @@ package org.hisp.dhis.oust.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: RemoveSelectedOrganisationUnitAction.java 2869 2007-02-20
- *          14:26:09Z andegje $
  */
 public class RemoveSelectedOrganisationUnitAction
     implements Action
@@ -76,9 +73,9 @@ public class RemoveSelectedOrganisationUnitAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String id;
 
-    public void setId( Integer organisationUnitId )
+    public void setId( String organisationUnitId )
     {
         this.id = organisationUnitId;
     }
@@ -138,13 +135,11 @@ public class RemoveSelectedOrganisationUnitAction
 
         if ( organisationUnitGroupId != null )
         {
-            selectedUnits.removeAll( organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId )
-                .getMembers() );
+            selectedUnits.removeAll( organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId ).getMembers() );
         }
 
         if ( children != null && children == true )
         {
-
             Set<OrganisationUnit> selectedOrganisationUnits = new HashSet<OrganisationUnit>( selectedUnits );
 
             for ( OrganisationUnit selected : selectedOrganisationUnits )

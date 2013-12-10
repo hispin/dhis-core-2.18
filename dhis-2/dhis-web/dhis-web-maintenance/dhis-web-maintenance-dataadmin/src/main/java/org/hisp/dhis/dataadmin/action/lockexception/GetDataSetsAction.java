@@ -29,7 +29,6 @@ package org.hisp.dhis.dataadmin.action.lockexception;
  */
 
 import com.opensymphony.xwork2.Action;
-
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -95,7 +94,7 @@ public class GetDataSetsAction
         dataSets = getDataSetsForCurrentUser( id );
 
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         return SUCCESS;
     }
 
@@ -110,7 +109,7 @@ public class GetDataSetsAction
 
         for ( String id : ids.split( "," ) )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
             if ( organisationUnit == null )
             {
