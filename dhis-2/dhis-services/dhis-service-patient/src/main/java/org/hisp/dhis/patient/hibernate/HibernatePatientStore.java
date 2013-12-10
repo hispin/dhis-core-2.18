@@ -504,22 +504,25 @@ public class HibernatePatientStore
             String id = keys[1];
             String value = "";
 
+            Integer orgUnitId = -1;
+
             if ( keys.length >= 3 )
             {
                 value = keys[2];
             }
 
-            Integer orgUnitId = -1;
-
-            try
+            if ( keys.length > 4 )
             {
-                orgUnitId = Integer.parseInt( keys[4] );
-            }
-            catch ( NumberFormatException e )
-            {
-                // handle as uid
-                OrganisationUnit ou = organisationUnitService.getOrganisationUnit( keys[4] );
-                orgUnitId = ou.getId();
+                try
+                {
+                    orgUnitId = Integer.parseInt( keys[4] );
+                }
+                catch ( NumberFormatException e )
+                {
+                    // handle as uid
+                    OrganisationUnit ou = organisationUnitService.getOrganisationUnit( keys[4] );
+                    orgUnitId = ou.getId();
+                }
             }
 
             if ( keys[0].equals( PREFIX_FIXED_ATTRIBUTE ) )
