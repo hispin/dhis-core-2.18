@@ -245,7 +245,8 @@ public class JdbcAnalyticsTableManager
     public Date getEarliestData()
     {
         final String sql = "select min(pe.startdate) from datavalue dv " +
-            "join period pe on dv.periodid=pe.periodid";
+            "join period pe on dv.periodid=pe.periodid " +
+            "where pe.startdate is not null";
         
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
@@ -253,7 +254,8 @@ public class JdbcAnalyticsTableManager
     public Date getLatestData()
     {
         final String sql = "select max(pe.enddate) from datavalue dv " +
-            "join period pe on dv.periodid=pe.periodid";
+            "join period pe on dv.periodid=pe.periodid " + 
+            "where pe.enddate is not null ";
         
         return jdbcTemplate.queryForObject( sql, Date.class );
     }

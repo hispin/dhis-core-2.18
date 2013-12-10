@@ -177,7 +177,8 @@ public class JdbcCompletenessTableManager
     public Date getEarliestData()
     {
         final String sql = "select min(pe.startdate) from completedatasetregistration cdr " +
-            "join period pe on cdr.periodid=pe.periodid";
+            "join period pe on cdr.periodid=pe.periodid " +
+            "where pe.startdate is not null";
         
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
@@ -185,7 +186,8 @@ public class JdbcCompletenessTableManager
     public Date getLatestData()
     {
         final String sql = "select max(pe.enddate) from completedatasetregistration cdr " +
-            "join period pe on cdr.periodid=pe.periodid";
+            "join period pe on cdr.periodid=pe.periodid " +
+            "where pe.enddate is not null";
         
         return jdbcTemplate.queryForObject( sql, Date.class );
     }

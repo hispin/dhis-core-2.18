@@ -258,14 +258,16 @@ public class JdbcEventAnalyticsTableManager
     
     public Date getEarliestData()
     {
-        final String sql = "select min(psi.executiondate) from programstageinstance psi;";
+        final String sql = "select min(psi.executiondate) from programstageinstance psi " +
+            "where psi.executiondate is not null";
         
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
 
     public Date getLatestData()
     {
-        final String sql = "select max(psi.executiondate) from programstageinstance psi;";
+        final String sql = "select max(psi.executiondate) from programstageinstance psi " +
+            "where psi.executiondate is not null";
         
         return jdbcTemplate.queryForObject( sql, Date.class );
     }
