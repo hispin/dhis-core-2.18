@@ -33,6 +33,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsListener;
+import org.hisp.dhis.sms.incoming.IncomingSmsService;
+import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class SmsPublisher
@@ -119,17 +121,19 @@ public class SmsPublisher
                         }
                     }
                     smsSender.sendMessage( "No command found", message.getOriginator() );
+                    message.setStatus( SmsMessageStatus.UNHANDLED );
                 }
                 catch ( Exception e )
                 {
-                    e.printStackTrace();
                     log.error( e );
                     smsSender.sendMessage( e.getMessage(), message.getOriginator() );
+                    message.setStatus( SmsMessageStatus.FAILED );
                 }
-
-                messageQueue.remove( message );
-                message = messageQueue.get();
-                log.info( "Queue Size: " + messageQueue.get() );
+                finally
+                {
+                    messageQueue.remove( message );
+                    message = messageQueue.get();
+                }
             }
         }
 
