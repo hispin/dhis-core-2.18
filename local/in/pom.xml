@@ -15,9 +15,11 @@
     <module>dhis-in-services</module>
 	
 	<module>dhis-web-maintenance-in</module>
-	<module>dhis-web-maintenance-ccem</module>
+	<module>dhis-web-maintenance-pbf</module>
+	<module>dhis-web-maintenance-ccem</module>	
 	<module>dhis-web-coldchain</module>
     <module>dhis-web-dataentry-ccem</module>
+	
 
     <!--<module>dhis-web-dashboard</module>
     <module>dhis-web-dataentry-linelisting</module>

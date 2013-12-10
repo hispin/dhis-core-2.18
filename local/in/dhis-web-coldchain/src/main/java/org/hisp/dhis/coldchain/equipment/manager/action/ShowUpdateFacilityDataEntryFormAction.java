@@ -78,7 +78,7 @@ public class ShowUpdateFacilityDataEntryFormAction implements Action
         organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
 
         // Data set and sections Information
-		List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetByShortName( "FMD" ) ); 
+        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetByShortName( "FMD" ) ); 
         dataSet = dataSets.get( 0 );
         
         
