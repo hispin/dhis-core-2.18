@@ -255,7 +255,7 @@ public class PdfDataEntryFormUtil
                         dataValue.setStoredBy( DATAVALUE_IMPORT_STOREBY );
                         dataValue.setComment( DATAVALUE_IMPORT_COMMENT );
                         dataValue.setFollowup( false );
-                        dataValue.setTimestamp( new SimpleDateFormat( DATAVALUE_IMPORT_TIMESTAMP_DATEFORMAT )
+                        dataValue.setLastUpdated( new SimpleDateFormat( DATAVALUE_IMPORT_TIMESTAMP_DATEFORMAT )
                             .format( new Date() ) );
 
                         dataValueList.add( dataValue );

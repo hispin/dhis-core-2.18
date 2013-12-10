@@ -51,11 +51,11 @@ public class StreamingDataValueSet
     private static final String FIELD_COMPLETEDATE = "completeDate";
     private static final String FIELD_PERIOD = "period";
     private static final String FIELD_ORGUNIT = "orgUnit";
-    
+
     private XMLWriter writer;
-    
+
     private XMLReader reader;
-    
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ public class StreamingDataValueSet
     public StreamingDataValueSet( XMLWriter writer )
     {
         this.writer = writer;
-        
+
         this.writer.openDocument();
         this.writer.openElement( FIELD_DATAVALUESET );
         this.writer.writeAttribute( XMLNS, NS );
@@ -72,10 +72,9 @@ public class StreamingDataValueSet
     public StreamingDataValueSet( XMLReader reader )
     {
         this.reader = reader;
-        
-        this.reader.moveToStartElement( FIELD_DATAVALUESET );        
+        this.reader.moveToStartElement( FIELD_DATAVALUESET );
     }
-    
+
     //--------------------------------------------------------------------------
     // Getters
     //--------------------------------------------------------------------------
@@ -91,11 +90,11 @@ public class StreamingDataValueSet
     {
         return orgUnitIdScheme = orgUnitIdScheme == null ? reader.getAttributeValue( FIELD_ORGUNITIDSCHEME ) : orgUnitIdScheme;
     }
-    
+
     @Override
     public Boolean getDryRun()
     {
-        return dryRun = dryRun == null ? ( TRUE.equals( reader.getAttributeValue( FIELD_DRYRUN ) ) ? Boolean.TRUE : null ) : dryRun;
+        return dryRun = dryRun == null ? (TRUE.equals( reader.getAttributeValue( FIELD_DRYRUN ) ) ? Boolean.TRUE : null) : dryRun;
     }
 
     @Override
@@ -113,7 +112,7 @@ public class StreamingDataValueSet
     @Override
     public String getCompleteDate()
     {
-        return completeDate = completeDate == null ? reader.getAttributeValue( FIELD_COMPLETEDATE ) : completeDate; 
+        return completeDate = completeDate == null ? reader.getAttributeValue( FIELD_COMPLETEDATE ) : completeDate;
     }
 
     @Override
@@ -131,9 +130,9 @@ public class StreamingDataValueSet
     @Override
     public boolean hasNextDataValue()
     {
-        return reader.moveToStartElement( FIELD_DATAVALUE, FIELD_DATAVALUESET );        
+        return reader.moveToStartElement( FIELD_DATAVALUE, FIELD_DATAVALUESET );
     }
-    
+
     @Override
     public DataValue getNextDataValue()
     {
@@ -179,7 +178,7 @@ public class StreamingDataValueSet
     {
         writer.writeAttribute( FIELD_ORGUNIT, orgUnit );
     }
-    
+
     @Override
     public DataValue getDataValueInstance()
     {

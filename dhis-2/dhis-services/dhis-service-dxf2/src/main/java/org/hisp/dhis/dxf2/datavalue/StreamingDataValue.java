@@ -28,10 +28,10 @@ package org.hisp.dhis.dxf2.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.TextUtils.valueOf;
-
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
+
+import static org.hisp.dhis.system.util.TextUtils.valueOf;
 
 public class StreamingDataValue
     extends DataValue
@@ -43,12 +43,12 @@ public class StreamingDataValue
     private static final String FIELD_ORGUNIT = "orgUnit";
     private static final String FIELD_VALUE = "value";
     private static final String FIELD_STOREDBY = "storedBy";
-    private static final String FIELD_TIMESTAMP = "timestamp";
+    private static final String FIELD_LAST_UPDATED = "lastUpdated";
     private static final String FIELD_COMMENT = "comment";
     private static final String FIELD_FOLLOWUP = "followUp";
-    
+
     private XMLWriter writer;
-    
+
     private XMLReader reader;
 
     //--------------------------------------------------------------------------
@@ -58,10 +58,10 @@ public class StreamingDataValue
     public StreamingDataValue( XMLWriter writer )
     {
         this.writer = writer;
-        
+
         this.writer.openElement( FIELD_DATAVALUE );
     }
-    
+
     public StreamingDataValue( XMLReader reader )
     {
         this.reader = reader;
@@ -108,9 +108,9 @@ public class StreamingDataValue
     }
 
     @Override
-    public String getTimestamp()
+    public String getLastUpdated()
     {
-        return timestamp = timestamp == null ? reader.getAttributeValue( FIELD_TIMESTAMP ) : timestamp;
+        return lastUpdated = lastUpdated == null ? reader.getAttributeValue( FIELD_LAST_UPDATED ) : lastUpdated;
     }
 
     @Override
@@ -166,9 +166,9 @@ public class StreamingDataValue
     }
 
     @Override
-    public void setTimestamp( String timestamp )
+    public void setLastUpdated( String lastUpdated )
     {
-        writer.writeAttribute( FIELD_TIMESTAMP, timestamp );
+        writer.writeAttribute( FIELD_LAST_UPDATED, lastUpdated );
     }
 
     @Override

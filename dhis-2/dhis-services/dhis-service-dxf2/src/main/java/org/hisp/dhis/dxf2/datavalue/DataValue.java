@@ -53,10 +53,10 @@ public class DataValue
     protected String categoryOptionCombo;
 
     protected String value;
-    
+
     protected String storedBy;
 
-    protected String timestamp;
+    protected String lastUpdated;
 
     protected String comment;
 
@@ -70,7 +70,7 @@ public class DataValue
     {
     }
 
-    
+
     //--------------------------------------------------------------------------
     // Getters and setters
     //--------------------------------------------------------------------------
@@ -156,14 +156,14 @@ public class DataValue
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
-    public String getTimestamp()
+    public String getLastUpdated()
     {
-        return timestamp;
+        return lastUpdated;
     }
 
-    public void setTimestamp( String timestamp )
+    public void setLastUpdated( String lastUpdated )
     {
-        this.timestamp = timestamp;
+        this.lastUpdated = lastUpdated;
     }
 
     @JsonProperty
