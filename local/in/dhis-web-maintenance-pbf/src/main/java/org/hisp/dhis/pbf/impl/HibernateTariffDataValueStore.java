@@ -35,7 +35,8 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
     // -------------------------------------------------------------------------
     // TariffDataValue
     // -------------------------------------------------------------------------
-
+    
+    
     @Override
     public void addTariffDataValue( TariffDataValue tariffDataValue )
     {
@@ -104,7 +105,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( DataValue.class );
+        Criteria criteria = session.createCriteria( TariffDataValue.class );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
         criteria.add( Restrictions.eq( "organisationUnitGroup", organisationUnitGroup ) );
 
@@ -116,7 +117,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( DataValue.class );
+        Criteria criteria = session.createCriteria( TariffDataValue.class );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
 

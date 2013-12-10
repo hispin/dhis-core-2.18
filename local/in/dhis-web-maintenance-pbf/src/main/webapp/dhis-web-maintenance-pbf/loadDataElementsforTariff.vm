@@ -1,0 +1,71 @@
+
+<script >
+$(function() {
+var availableTags = $dataElementList;
+$( "#dataElementName" ).autocomplete({
+			source: availableTags,
+			select: function( event, ui ) {
+				for(var i=0;i<=availableTags.length-1;i++)
+				{
+					if(availableTags[i] == ui.item.value)
+					{
+						var dataElementName = ui.item.value;
+        				$('#loadTariffDetails').load("loadTariffDetails.action", 
+            				{
+            					dataElementName:dataElementName,
+								orgUnitId:$("#orgUnitId").val()
+            				}
+            				, function( ){            										
+        				});
+					}
+				}
+			
+			}
+			});
+});
+function getTariffData()
+{
+			var availableTags = $dataElementList;	
+				for(var i=0;i<=availableTags.length-1;i++)
+				{
+					if(availableTags[i] == $("#dataElementName").val())
+					{
+						var dataElementName = $("#dataElementName").val();
+        				$('#loadTariffDetails').load("loadTariffDetails.action", 
+            				{
+            					dataElementName:dataElementName,
+								orgUnitId:$("#orgUnitId").val()
+            				}
+            				, function( ){            										
+        				});
+					}
+				}
+		
+}
+
+function organisationUnitSelected( orgUnits, orgUnitNames )
+{ 
+	setFieldValue("orgUnit", orgUnitNames[0]);
+	setFieldValue("orgUnitId", orgUnits[0]);
+}
+
+selection.setListenerFunction( organisationUnitSelected );
+</script>
+<h3>Data Element Tariff Management</h3>
+<input type="hidden" name="orgUnitId" id="orgUnitId">
+<table width="100%">
+	<tr>
+		<td >Orgainsation Unit <input type="text" id="orgUnit" name="orgUnit" readonly/></td>
+		<td >Tariff Setting Authority <input type="text" readonly/></td>
+	</tr>
+	<tr >
+		<td >&nbsp;</td>
+		<td >&nbsp;</td>
+    </tr>
+	<tr>
+		<td ><input id="dataElementName" name="dataElementName" onkeyup="getTariffData()" size="55" placeholder="Type the name of dataelement" /> &nbsp;</td>
+		<td >&nbsp;</td>
+	</tr>
+</table>
+<br/><br/><br/>
+<div id="loadTariffDetails" style="width:80%"></div>
