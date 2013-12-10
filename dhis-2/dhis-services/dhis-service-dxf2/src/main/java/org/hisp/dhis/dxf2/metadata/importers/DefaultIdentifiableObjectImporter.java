@@ -163,7 +163,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 deleteExpression( object, "leftSide" );
                 deleteExpression( object, "rightSide" );
                 deleteDataEntryForm( object, "dataEntryForm" );
-                // deleteDataElementOperands( idObject, "compulsoryDataElementOperands" );
+                // deleteDataElementOperands( object, "compulsoryDataElementOperands" );
                 deleteDataElementOperands( object, "greyedFields" );
             }
         }
@@ -174,7 +174,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveExpression( object, "leftSide", leftSide );
             saveExpression( object, "rightSide", rightSide );
             saveDataEntryForm( object, "dataEntryForm", dataEntryForm );
-            // saveDataElementOperands( idObject, "compulsoryDataElementOperands", compulsoryDataElementOperands );
+            saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
             saveDataElementOperands( object, "greyedFields", greyedFields );
         }
 
@@ -291,16 +291,33 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             if ( dataElementOperands.size() > 0 )
             {
-                for ( DataElementOperand dataElementOperand : dataElementOperands )
+                // need special handling for compulsoryDataElementOperands since they cascade with all-delete-orphan
+                if ( "compulsoryDataElementOperands".equals( fieldName ) )
                 {
-                    Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
-                    reattachFields( dataElementOperand, identifiableObjects );
+                    for ( DataElementOperand dataElementOperand : dataElementOperands )
+                    {
+                        Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
+                        reattachFields( dataElementOperand, identifiableObjects );
+                    }
 
-                    dataElementOperand.setId( 0 );
-                    dataElementOperandService.addDataElementOperand( dataElementOperand );
+                    Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
+                    detachedDataElementOperands.clear();
+                    detachedDataElementOperands.addAll( dataElementOperands );
+                    sessionFactory.getCurrentSession().flush();
                 }
+                else
+                {
+                    for ( DataElementOperand dataElementOperand : dataElementOperands )
+                    {
+                        Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
+                        reattachFields( dataElementOperand, identifiableObjects );
 
-                ReflectionUtils.invokeSetterMethod( fieldName, object, dataElementOperands );
+                        dataElementOperand.setId( 0 );
+                        dataElementOperandService.addDataElementOperand( dataElementOperand );
+                    }
+
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, dataElementOperands );
+                }
             }
         }
 
