@@ -755,6 +755,9 @@
         <property name="equipmentService" ref="org.hisp.dhis.coldchain.equipment.EquipmentService" />
         <property name="equipmentTypeAttributeService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService" />
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     </bean> 
 		
 	
