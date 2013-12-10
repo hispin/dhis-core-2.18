@@ -3,6 +3,7 @@ package org.hisp.dhis.pbf.impl;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.Session;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;

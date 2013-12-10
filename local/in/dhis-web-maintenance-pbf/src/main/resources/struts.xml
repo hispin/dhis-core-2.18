@@ -14,7 +14,24 @@
 			<param name="page">/dhis-web-maintenance-pbf/welcome.vm</param>
 			<param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
 		</action>
-	
+		<action name="dataElementTariffManagement" class="org.hisp.dhis.pbf.action.GetDataElementforTariffAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-pbf/loadDataElementsforTariff.vm</param>
+			<param name="menu">/dhis-web-maintenance-pbf/tariffMenu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>			
+		</action>
+		<action name="loadTariffDetails" class="org.hisp.dhis.pbf.action.LoadTariffDetailsAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-maintenance-pbf/loadTariffData.vm</param>			
+		</action>
+		 <action name="addTariffData" class="org.hisp.dhis.pbf.action.AddTariffDataAction">
+			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>					
+		</action>
+		<action name="deleteTariffData" class="org.hisp.dhis.pbf.action.DeleteTariffDataAction">
+			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>					
+		</action>
 	</package>
 	
 </struts>

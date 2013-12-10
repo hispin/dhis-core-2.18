@@ -1,0 +1,114 @@
+<script >
+$(function() {
+$("#openAddTariff").button()
+			.click(function() {
+				$( "#addTariff" ).dialog( "open" );
+});
+
+$( "#addTariff" ).dialog({
+			autoOpen: false,
+			height: 450,
+			width: 350,
+			modal: true,
+			buttons: {
+			"Save": function() {
+			
+							var dataValue = {
+        		        			'pbfType' : $("#pbfType").val(),
+        		        			'tariff' : $("#tariff").val(),
+        		        			'startDate' : $("#startDate").val(),
+        							'endDate' : $("#endDate").val(),
+									'orgUnitId': $("#orgUnitId").val(),
+									'dataElementId' : $("#dataElementId").val()
+        		    			};
+								jQuery.ajax( {
+                                url: 'addTariffData.action', 
+								data: dataValue,
+                                dataType: 'json',
+                                success: handleSuccess,
+                                error: handleError
+                            } );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			close: function() {				
+			}
+		});
+		 function handleSuccess( json )
+	    {	
+			$( "#addTariff" ).dialog( "close" );
+	    }
+	    function handleError( json )
+	    {
+			$( "#addTariff" ).dialog( "close" );
+	    }
+});
+function deleteTariffDataValue(tariffId)
+{
+				var dataValue = {
+        		        		
+        		    			};
+								
+								jQuery.ajax( {
+                                url: 'deleteTariffData.action', 
+								data: dataValue,
+                                dataType: 'json'
+                              } );
+}
+</script>
+<div style="width:100%">
+	<input type="button" value="Add New Tariff" style="float:right;" id="openAddTariff"/>
+</div>
+<br/><br/>
+<input type="hidden" id="dataElementId" name="dataElementId" value="$!selecteddataElement.id"/>
+<table style="width:100%" class="mainPageTable">
+	<thead >
+		<tr >
+			<th >PBF Type</th>
+			<th >Tariff</th>
+			<th >Start Date</th>
+			<th >End Date</th>
+			<th >Operations</th>
+        </tr>
+	</thead>
+	<tbody id="list">
+		#foreach($tariff in $tariffList )
+		<tr >
+			<td >$!tariff.organisationUnitGroup.name</td>
+			<td >$!tariff.value</td>
+			<td >$!tariff.startDate</td>
+			<td >$!tariff.endDate</td>
+            <td><img src="images/delete.png" width="17px" onclick="deleteTariffDataValue('')"/></td>
+        </tr>
+		#end
+    </tbody>
+</table>
+<div id="addTariff" title="Add New Tariff">
+	<table style="width:100%">
+		<tr >
+			<td>&nbsp;</td>
+			<td>
+				<select id="pbfType">
+					<option >Select PBF Type</option>
+					#foreach($orGrp in $orGroupList)
+						<option value="$orGrp.id">$orGrp.name</option>
+					#end
+                </select>
+			</td>
+        </tr>
+		<tr >
+			<td>Tariff</td>
+			<td><input type="text" id="tariff"/></td>
+        </tr>
+		<tr >
+			<td>Start Date</td>
+			<td><input type="text" id="startDate"/></td>
+        </tr>
+		<tr >
+			<td>End Date</td>
+			<td><input type="text" id="endDate"/></td>
+        </tr>
+    </table>
+</div>
