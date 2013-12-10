@@ -44,6 +44,7 @@ import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -452,7 +453,7 @@ public class DataSet
     @JsonProperty
     @JsonSerialize( using = JacksonPeriodTypeSerializer.class )
     @JsonDeserialize( using = JacksonPeriodTypeDeserializer.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public PeriodType getPeriodType()
     {
@@ -465,7 +466,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataEntryForm getDataEntryForm()
     {
@@ -479,7 +480,7 @@ public class DataSet
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlElementWrapper( localName = "dataElements", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "dataElement", namespace = DxfNamespaces.DXF_2_0 )
     public Set<DataElement> getDataElements()
@@ -494,7 +495,7 @@ public class DataSet
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlElementWrapper( localName = "indicators", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "indicator", namespace = DxfNamespaces.DXF_2_0 )
     public Set<Indicator> getIndicators()
@@ -508,7 +509,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlElementWrapper( localName = "compulsoryDataElementOperands", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "compulsoryDataElementOperand", namespace = DxfNamespaces.DXF_2_0 )
     public Set<DataElementOperand> getCompulsoryDataElementOperands()
@@ -523,7 +524,7 @@ public class DataSet
 
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class })
     @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "organisationUnit", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnit> getSources()
@@ -538,7 +539,7 @@ public class DataSet
 
     @JsonProperty( value = "organisationUnitGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
@@ -563,7 +564,7 @@ public class DataSet
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class } )
+    @JsonView({ DetailedView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlElementWrapper( localName = "sections", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "section", namespace = DxfNamespaces.DXF_2_0 )
     public Set<Section> getSections()
@@ -577,7 +578,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isMobile()
     {
@@ -590,7 +591,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getVersion()
     {
@@ -603,7 +604,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getExpiryDays()
     {
@@ -616,7 +617,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public int getTimelyDays()
     {
@@ -629,7 +630,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isSkipAggregation()
     {
@@ -642,7 +643,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public UserGroup getNotificationRecipients()
     {
@@ -655,7 +656,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isNotifyCompletingUser()
     {
@@ -668,7 +669,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isAllowFuturePeriods()
     {
@@ -681,7 +682,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isFieldCombinationRequired()
     {
@@ -694,7 +695,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isValidCompleteOnly()
     {
@@ -707,7 +708,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isSkipOffline()
     {
@@ -720,7 +721,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRenderAsTabs()
     {
@@ -733,7 +734,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isRenderHorizontally()
     {
@@ -746,7 +747,7 @@ public class DataSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isDataElementDecoration()
     {
@@ -760,7 +761,7 @@ public class DataSet
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public MapLegendSet getLegendSet()
     {
