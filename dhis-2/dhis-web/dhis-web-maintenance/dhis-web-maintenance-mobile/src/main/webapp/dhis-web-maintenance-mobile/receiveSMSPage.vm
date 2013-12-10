@@ -111,6 +111,7 @@
 	
 	function makeVisible( idInput, idText )
 	{
+	
 		if ( document.getElementById( idInput ).type == 'hidden')
 		{
 			document.getElementById( idInput ).type = 'text';
@@ -142,7 +143,28 @@
 			);
 		}
 	};
+	function sendQuickSMS(message, originator)
+	{
+		var p = {};
+		 p.recipients.push( originator );
+		
+		jQuery.postUTF8( sendSMS.action,
+	{
+		recipient: JSON.stringify(  p.recipients ),
+		text: getFieldValue('sm' + message),
+		sendTarget: 'phone',
+	}, function ( json )
+	{
+		if ( json.response == "success" ) {
+			setHeaderDelayMessage( json.message );
+		}
+		else {
+			setHeaderDelayMessage( json.message, 7000 );
+		}
+	} );
 	
+	};
+
 	function criteriaChanged(list)
 	{	
     var status = list.options[list.selectedIndex].value;
@@ -153,11 +175,30 @@
 	};
 
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_sms" ) , "'")';
+	
+	function conceal() {      
+        if(document.getElementById('idDiv').style.display=='block') {
+          document.getElementById('idDiv').style.display='none';
+        }
+		}  
+
+	function show(divId) {
+    if(document.getElementById('dv' + divId).style.display=='none') {
+      document.getElementById('dv' + divId).style.display='block';
+		}
+		}
+
+
+	
 </script>
 
 <input id="pollingInterval" name="pollingInterval" type="hidden" value="$pollingInterval"/>
 <h3>$i18n.getString( "show_receive_sms_form" )</h3>
 <form id="receiveSmsPage" name="receiveSmsPage" action="showReceivingPage.action" method="get" >
+
+
+				
+				
 	<table border="0px" style="width:100%">
 		<tr>
 			<td style="width:130px">$i18n.getString('filter_by_status'):</td>
@@ -175,7 +216,7 @@
 			<td style="width:135px">$i18n.getString('filter_by_phone_number'):</td>
 			<td style="width:150px"><input type="text" name="keyword" #if($keyword) value="$keyword" #else value="" #end style="width: 150px; height: 10px"/></td>
 			<td style="width:50px"><input type="submit" name="filter" value="Filter"/></td>
-			<td style="text-align:right"><input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/></td>
+			<td style="text-align:right"><input type="button" name="btnDelete"  value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/></td>
 		</tr>
 		<tr>
 			<td style="width:130px">$i18n.getString( "total_number_of_result" ):</td>
@@ -198,14 +239,28 @@
 			<th style="text-align:center">$i18n.getString( "delete" )</th>
 		</thead>
 		<tbody>
+		
 			#foreach( $incomingSms in $listIncomingSms )
+			
 			<tr id="tr${incomingSms.id}" height="40">
 				<td style="text-align:center"><input type="checkbox" name="mycheck" value="$incomingSms.id"/></td>			
 				<td style="text-align:center">$velocityCount</td>
 				<td>
+				
 					<a id="$velocityCount" style="display: block" href="#" onclick="makeVisible( $incomingSms.id, $velocityCount )">$incomingSms.text</a>
 					<input type="hidden" id="$incomingSms.id" value="$incomingSms.text" onblur="makeVisible( $incomingSms.id, $velocityCount )"/></td>
-				<td>$incomingSms.originator</td>
+				
+				<td>
+				
+				<a id="$incomingSms.id" href="#" onclick="show($velocityCount)" >$incomingSms.originator</a><br/>
+				<div id="dv$velocityCount" style="display: none;">
+				<textarea  name="textArea"  id="sm$velocityCount" rows="3" style="width:160px;"></textarea><br/>
+				<input type="submit" name="send" value="$i18n.getString( 'send' )" style="float: center;" onclick="sendQuickSMS($velocityCount, $incomingSms.originator)"/>
+				<input type="submit" name="btnCancel" value="$i18n.getString( 'cancel' )" style="float: center;"/>
+				</div>
+				
+				</td>
+				
 				<td>$senderNames.get($velocityCount)</td>
 				<td>$incomingSms.status</td>
 				<td>$incomingSms.sentDate.toLocaleString()</td>

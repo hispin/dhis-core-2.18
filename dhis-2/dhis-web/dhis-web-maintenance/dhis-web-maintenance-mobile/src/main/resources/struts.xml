@@ -14,6 +14,16 @@
       <param name="page">/dhis-web-maintenance-mobile/index.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
     </action>
+    
+     <!-- Sending SMS Action -->
+     
+    <action name="sendSMS"
+      class="org.hisp.dhis.mobile.action.ProcessingSendQuickSMSAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
+    </action>
 
     <!-- Sent SMS -->
 
