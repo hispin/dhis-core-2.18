@@ -120,7 +120,7 @@ public class AddLockExceptionAction
 
         for ( String id : organisationUnitId.split( "," ) )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
             if ( organisationUnit == null )
             {

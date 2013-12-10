@@ -28,15 +28,14 @@ package org.hisp.dhis.oust.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -60,9 +59,9 @@ public class ExpandSubtreeAction
     // Input
     // -------------------------------------------------------------------------
 
-    private int parentId;
+    private String parentId;
 
-    public void setParentId( int organisationUnitId )
+    public void setParentId( String organisationUnitId )
     {
         this.parentId = organisationUnitId;
     }
