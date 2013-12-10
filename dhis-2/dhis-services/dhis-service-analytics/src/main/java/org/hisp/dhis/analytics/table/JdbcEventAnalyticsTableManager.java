@@ -70,20 +70,25 @@ public class JdbcEventAnalyticsTableManager
     @Transactional
     public List<AnalyticsTable> getTables( Date earliest, Date latest )
     {
-        String baseName = getTableName();
-        
-        List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
+        log.info( "Get tables using earliest: " + earliest + ", latest: " + latest );
 
         List<AnalyticsTable> tables = new ArrayList<AnalyticsTable>();
-        
-        for ( Period period : periods )
-        {
-            for ( Program program : programService.getAllPrograms() )
+
+        if ( earliest != null && latest != null )
+        {        
+            String baseName = getTableName();
+            
+            List<Period> periods = PartitionUtils.getPeriods( earliest, latest );
+    
+            for ( Period period : periods )
             {
-                AnalyticsTable table = new AnalyticsTable( baseName, null, period, program );
-                List<String[]> dimensionColumns = getDimensionColumns( table );
-                table.setDimensionColumns( dimensionColumns );                
-                tables.add( table );
+                for ( Program program : programService.getAllPrograms() )
+                {
+                    AnalyticsTable table = new AnalyticsTable( baseName, null, period, program );
+                    List<String[]> dimensionColumns = getDimensionColumns( table );
+                    table.setDimensionColumns( dimensionColumns );                
+                    tables.add( table );
+                }
             }
         }
         
