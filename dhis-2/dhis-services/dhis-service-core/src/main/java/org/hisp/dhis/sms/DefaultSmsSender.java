@@ -70,7 +70,7 @@ public class DefaultSmsSender
     {
         this.userService = userService;
     }
-    
+
     private OutboundSmsService outboundSmsService;
 
     public void setOutboundSmsService( OutboundSmsService outboundSmsService )
@@ -97,7 +97,7 @@ public class DefaultSmsSender
             resultMessage = isWastedSMS( sms );
             if ( resultMessage == null )
             {
-                resultMessage = transportService.sendMessage( sms, gatewayId ); 
+                resultMessage = transportService.sendMessage( sms, gatewayId );
             }
             return resultMessage;
         }
@@ -110,7 +110,7 @@ public class DefaultSmsSender
     public String sendMessage( OutboundSms sms )
         throws SmsServiceException
     {
-        String message = null;
+        // String message = null;
         if ( !transportService.isEnabled() )
         {
             throw new SmsServiceNotEnabledException();
@@ -118,19 +118,14 @@ public class DefaultSmsSender
 
         if ( transportService != null )
         {
-            message = isWastedSMS( sms );
-            if ( message == null )
-            {
-                message = transportService.sendMessage( sms, transportService.getDefaultGateway() );
-            }
-            return message;
+            return transportService.sendMessage( sms, transportService.getDefaultGateway() );
         }
         else
         {
             return "outboundsms_saved";
         }
     }
-    
+
     @Transactional
     @Override
     public String sendMessage( String message, String phoneNumber )
@@ -150,7 +145,7 @@ public class DefaultSmsSender
 
         return "outboundsms_saved";
     }
-    
+
     @Transactional
     @Override
     public String sendMessage( String subject, String text, User sender, List<User> users, boolean forceSend )
@@ -190,7 +185,6 @@ public class DefaultSmsSender
             {
                 toSendList.addAll( users );
             }
-            
 
             Set<String> phoneNumbers = null;
 
@@ -300,7 +294,7 @@ public class DefaultSmsSender
         sms.setRecipients( recipients );
         message = isWastedSMS( sms );
 
-        if( message == null )
+        if ( message == null )
         {
             try
             {
@@ -313,7 +307,7 @@ public class DefaultSmsSender
                 log.warn( "Unable to send message through sms: " + sms, e );
             }
         }
-        
+
         return message;
     }
 
@@ -343,13 +337,14 @@ public class DefaultSmsSender
             return splitLongUnicodeString( secondTempString, result );
         }
     }
-    
+
     public String isWastedSMS( OutboundSms sms )
     {
         List<OutboundSms> listOfRecentOutboundSms = outboundSmsService.getAllOutboundSms( 0, 10 );
-        for( OutboundSms each: listOfRecentOutboundSms )
+        for ( OutboundSms each : listOfRecentOutboundSms )
         {
-            if( each.getRecipients().equals( sms.getRecipients() )&& each.getMessage().equalsIgnoreCase( sms.getMessage() ) )
+            if ( each.getRecipients().equals( sms.getRecipients() )
+                && each.getMessage().equalsIgnoreCase( sms.getMessage() ) )
             {
                 return "system is trying to send out wasted SMS";
             }
