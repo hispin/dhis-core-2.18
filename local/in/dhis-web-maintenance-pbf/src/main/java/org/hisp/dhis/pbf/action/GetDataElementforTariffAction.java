@@ -74,8 +74,8 @@ public class GetDataElementforTariffAction implements Action
     {
 		if(constantService.getConstantByName( TARIFF_SETTING_AUTHORITY) == null)
 		{
-			tariff_setting_authority = "Level 1";
-			List<OrganisationUnit> allLevelOrg =new ArrayList<OrganisationUnit>(organisationUnitService.getOrganisationUnitsAtLevel(1)) ;
+			tariff_setting_authority = "Level 3";
+			List<OrganisationUnit> allLevelOrg =new ArrayList<OrganisationUnit>(organisationUnitService.getOrganisationUnitsAtLevel(3)) ;
 			for(OrganisationUnit org : allLevelOrg)
 			{
 				levelOrgUnitIds.add(org.getId());
@@ -84,7 +84,7 @@ public class GetDataElementforTariffAction implements Action
 		else
 		{
 			Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
-			tariff_setting_authority = "Level "+Integer.parseInt(tariff_authority.getValue()+"");
+			tariff_setting_authority = "Level "+(int)tariff_authority.getValue();
 			List<OrganisationUnit> allLevelOrg =new ArrayList<OrganisationUnit>(organisationUnitService.getOrganisationUnitsAtLevel(Integer.parseInt(tariff_authority.getValue()+""))) ;
 			for(OrganisationUnit org : allLevelOrg)
 			{
