@@ -35,6 +35,7 @@ public class DeleteTariffDataAction implements Action {
 	private String startDate;
 	
 	private String endDate;
+	
 	// -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

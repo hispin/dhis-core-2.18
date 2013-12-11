@@ -1,14 +1,24 @@
 <script >
 $(function() {
+
+$( "#startDate" ).datepicker();
+$( "#endDate" ).datepicker();
+
 $("#openAddTariff").button()
 			.click(function() {
 				$( "#addTariff" ).dialog( "open" );
+				$("#pbfType option:selected").remove();
+			$("#pbfType ").removeAttr('disabled');
+			$("#tariff").val('');			
+			$("#startDate").val('');
+			$("#startDate ").removeAttr('disabled');
+			$("#endDate").val('');
+			$("#endDate ").removeAttr('disabled');
 });
-
+			
+			
 $( "#addTariff" ).dialog({
-			autoOpen: false,
-			height: 450,
-			width: 350,
+			autoOpen: false,			
 			modal: true,
 			buttons: {
 			"Save": function() {
@@ -38,24 +48,69 @@ $( "#addTariff" ).dialog({
 		});
 		 function handleSuccess( json )
 	    {	
+			$("#pbfType option:selected").remove();
+			$("#pbfType ").removeAttr('disabled');
+			$("#tariff").val('');			
+			$("#startDate").val('');
+			$("#startDate ").removeAttr('disabled');
+			$("#endDate").val('');
+			$("#endDate ").removeAttr('disabled');
+			
+			getTariffData();
 			$( "#addTariff" ).dialog( "close" );
 	    }
 	    function handleError( json )
 	    {
+			$("#pbfType option:selected").remove();
+			$("#pbfType ").removeAttr('disabled');
+			$("#tariff").val('');			
+			$("#startDate").val('');
+			$("#startDate ").removeAttr('disabled');
+			$("#endDate").val('');
+			$("#endDate ").removeAttr('disabled');
+			getTariffData();
 			$( "#addTariff" ).dialog( "close" );
 	    }
 });
-function deleteTariffDataValue(tariffId)
+function deleteTariffDataValue(organisationUnitId,dataElementId,optionComboId,organisationUnitGroupId,startDate,endDate)
 {
 				var dataValue = {
-        		        		
+        		        		'organisationUnitId' : organisationUnitId ,
+								'dataElementId' : dataElementId,
+								'categoryOptionComboId' : optionComboId,
+								'organisationUnitGroupId' : organisationUnitGroupId,
+								'startDate' : startDate,
+								'endDate' : endDate
         		    			};
 								
 								jQuery.ajax( {
                                 url: 'deleteTariffData.action', 
 								data: dataValue,
-                                dataType: 'json'
+                                dataType: 'json',
+								success: handleSuccess,
+                                error: handleError
                               } );
+		function handleSuccess( json )
+	    {
+			getTariffData();			
+	    }
+	    function handleError( json )
+	    {
+			getTariffData();			
+	    }
+}
+function editTariffDataValue ( organisationUnitId,dataElementId,optionComboId,organisationUnitGroupId,startDate,endDate,value )
+{
+	$( "#addTariff" ).attr('selected','Edit Tariff')
+	$('#pbfType option[value='+organisationUnitGroupId+']').attr('selected','selected');
+	$('#pbfType').attr('disabled','disabled');
+	$('#tariff').val(value);
+	$('#startDate').val(startDate);
+	$('#startDate').attr('disabled','disabled');
+	$('#endDate').val(endDate);
+	$('#endDate').attr('disabled','disabled');
+	
+	$( "#addTariff" ).dialog( "open" );
 }
 </script>
 <div style="width:100%">
@@ -74,23 +129,32 @@ function deleteTariffDataValue(tariffId)
         </tr>
 	</thead>
 	<tbody id="list">
+		#set( $mark = false )
 		#foreach($tariff in $tariffList )
-		<tr >
+			#if( $mark )
+    						#set( $mark = false )
+    					#else
+    						#set( $mark = true )
+    					#end
+		<tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8"  #end>
 			<td >$!tariff.organisationUnitGroup.name</td>
 			<td >$!tariff.value</td>
 			<td >$!tariff.startDate</td>
 			<td >$!tariff.endDate</td>
-            <td><img src="images/delete.png" width="17px" onclick="deleteTariffDataValue('')"/></td>
+            <td>
+				<img src="images/delete.png" width="17px" onclick="deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.optionCombo.id','$tariff.organisationUnitGroup.id','$tariff.startDate','$tariff.endDate')"/>
+				<img src="../images/edit.png" alt="$i18n.getString( 'edit' )" onclick="editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.optionCombo.id','$tariff.organisationUnitGroup.id','$tariff.startDate','$tariff.endDate','$tariff.value')">
+			</td>
         </tr>
 		#end
     </tbody>
 </table>
 <div id="addTariff" title="Add New Tariff">
-	<table style="width:100%">
+	<table style="width:100%;table-layout:fixed;">
 		<tr >
-			<td>&nbsp;</td>
-			<td>
-				<select id="pbfType">
+			<td style="width:40%;">&nbsp;</td>
+			<td style="width:60%;">
+				<select id="pbfType" style="width:100%;">
 					<option >Select PBF Type</option>
 					#foreach($orGrp in $orGroupList)
 						<option value="$orGrp.id">$orGrp.name</option>
@@ -99,16 +163,16 @@ function deleteTariffDataValue(tariffId)
 			</td>
         </tr>
 		<tr >
-			<td>Tariff</td>
-			<td><input type="text" id="tariff"/></td>
+			<td style="width:40%;">Tariff</td>
+			<td style="width:60%;"><input type="text" id="tariff" style="width:100%;"/></td>
         </tr>
 		<tr >
-			<td>Start Date</td>
-			<td><input type="text" id="startDate"/></td>
+			<td style="width:40%;">Start Date</td>
+			<td style="width:60%;"><input type="text" id="startDate" style="width:100%;"/></td>
         </tr>
 		<tr >
-			<td>End Date</td>
-			<td><input type="text" id="endDate"/></td>
+			<td style="width:40%;">End Date</td>
+			<td style="width:60%;"><input type="text" id="endDate" style="width:100%;"/></td>
         </tr>
     </table>
 </div>

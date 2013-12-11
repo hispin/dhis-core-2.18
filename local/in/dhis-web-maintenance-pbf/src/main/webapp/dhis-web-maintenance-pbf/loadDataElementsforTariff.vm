@@ -44,9 +44,26 @@ function getTariffData()
 }
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
-{ 
-	setFieldValue("orgUnit", orgUnitNames[0]);
-	setFieldValue("orgUnitId", orgUnits[0]);
+{
+	var countryTags = $levelOrgUnitIds;
+	var bValue = false;
+	for(var i=0;i<=countryTags.length-1;i++)
+	{
+    	if(countryTags[i] == orgUnits[0] )
+    	{
+    		bValue = true;
+    	}
+	}
+	if(bValue == false)
+	{
+		alert('Please Select Correct level OrgUnit');
+	}
+	else
+	{
+		setFieldValue("orgUnit", orgUnitNames[0]);
+		setFieldValue("orgUnitId", orgUnits[0]);
+	}
+	
 }
 
 selection.setListenerFunction( organisationUnitSelected );
@@ -56,7 +73,7 @@ selection.setListenerFunction( organisationUnitSelected );
 <table width="100%">
 	<tr>
 		<td >Orgainsation Unit <input type="text" id="orgUnit" name="orgUnit" readonly/></td>
-		<td >Tariff Setting Authority <input type="text" readonly/></td>
+		<td >Tariff Setting Authority <input type="text" readonly id="tariff_authority" value="$!tariff_setting_authority"/></td>
 	</tr>
 	<tr >
 		<td >&nbsp;</td>

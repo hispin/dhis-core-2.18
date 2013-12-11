@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -124,22 +125,39 @@ public class AddTariffDataAction implements Action {
 		OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit(Integer.parseInt(orgUnitId));
 		
 		OrganisationUnitGroup orgUnitGrp = organisationUnitGroupService.getOrganisationUnitGroup(Integer.parseInt(pbfType));
+		DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 		
-		TariffDataValue tariffDataValue = new TariffDataValue();
+		TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue(orgUnit, dataElement, optionCombo, orgUnitGrp, sDate, eDate);
 		
+		TariffDataValue tariffDataValue1;
 		
-		tariffDataValue.setValue(Double.parseDouble(tariff));
-		tariffDataValue.setStartDate(sDate);
-		tariffDataValue.setEndDate(eDate);
-		tariffDataValue.setTimestamp(new Date());
-		tariffDataValue.setStoredBy(currentUserService.getCurrentUsername());
-		tariffDataValue.setDataElement(dataElement);
-		tariffDataValue.setOptionCombo(categoryService.getDefaultDataElementCategoryOptionCombo());
-		tariffDataValue.setOrganisationUnitGroup(orgUnitGrp);
-		tariffDataValue.setOrganisationUnit(orgUnit);
+		if(tariffDataValue == null)
+		{
+			tariffDataValue1 = new TariffDataValue();
+		}
+		else
+		{
+			tariffDataValue1 = tariffDataValueService.getTariffDataValue(orgUnit, dataElement, optionCombo, orgUnitGrp, sDate, eDate);
+		}
 		
-		tariffDataValueService.addTariffDataValue(tariffDataValue);
+		tariffDataValue1.setValue(Double.parseDouble(tariff));
+		tariffDataValue1.setStartDate(sDate);
+		tariffDataValue1.setEndDate(eDate);
+		tariffDataValue1.setTimestamp(new Date());
+		tariffDataValue1.setStoredBy(currentUserService.getCurrentUsername());
+		tariffDataValue1.setDataElement(dataElement);
+		tariffDataValue1.setOptionCombo(optionCombo);
+		tariffDataValue1.setOrganisationUnitGroup(orgUnitGrp);
+		tariffDataValue1.setOrganisationUnit(orgUnit);
 		
+		if(tariffDataValue == null)
+		{
+			tariffDataValueService.addTariffDataValue(tariffDataValue1);
+		}
+		else
+		{
+			tariffDataValueService.updateTariffDataValue(tariffDataValue1);
+		}		
 		return SUCCESS;
 	}
 }
