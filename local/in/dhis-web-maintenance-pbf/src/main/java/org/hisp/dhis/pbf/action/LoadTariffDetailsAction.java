@@ -86,7 +86,7 @@ public class LoadTariffDetailsAction implements Action
 	
 	public String execute()
     {
-		OrganisationUnitGroupSet organisationUnitGroupSet =  organisationUnitGroupService.getOrganisationUnitGroupSet(3);
+		OrganisationUnitGroupSet organisationUnitGroupSet =  organisationUnitGroupService.getOrganisationUnitGroupSet(6709);
 		orGroupList = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupSet.getOrganisationUnitGroups()) ;
 		selecteddataElement = dataElementService.getDataElementByName(dataElementName);
 		OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit(Integer.parseInt(orgUnitId));

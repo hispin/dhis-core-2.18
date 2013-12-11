@@ -22,6 +22,8 @@
 	<!-- Data Element for Tariff -->
 	<bean id="org.hisp.dhis.pbf.action.GetDataElementforTariffAction" class="org.hisp.dhis.pbf.action.GetDataElementforTariffAction" scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
     
     <!-- Get Tariff Data -->
