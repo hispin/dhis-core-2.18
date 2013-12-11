@@ -83,6 +83,8 @@ input[type=text],textarea
 {
   text-align: center;
   min-width: 46px;
+  background-color: #CBDDEB;
+  border: 1px solid #CBDDEB;
 }
 
 .sectionFilter
