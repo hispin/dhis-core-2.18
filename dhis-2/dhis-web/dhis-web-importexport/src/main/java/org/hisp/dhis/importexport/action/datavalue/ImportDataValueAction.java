@@ -145,7 +145,7 @@ public class ImportDataValueAction
 
         in = StreamUtils.wrapAndCheckCompressionFormat( in );
 
-        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy, skipExistingCheck );
+        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, true, strategy, skipExistingCheck );
 
         log.info( options );
 

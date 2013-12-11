@@ -164,7 +164,7 @@ public class PDFFormController
         boolean dryRun = false;
         boolean skipExistingCheck = false;
         
-        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy,
+        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, true, strategy,
             skipExistingCheck );
                 
         log.info( options );

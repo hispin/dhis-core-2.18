@@ -179,7 +179,7 @@ public class DataValueSetServiceTest
     public void testImportDataValuesXmlWithCode()
         throws Exception
     {
-        ImportOptions options = new ImportOptions( CODE, CODE, false, NEW_AND_UPDATES, false );
+        ImportOptions options = new ImportOptions( CODE, CODE, false, true, NEW_AND_UPDATES, false );
         ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetBcode.xml" ).getInputStream(), options );
         
         assertImportDataValues( summary );
@@ -222,7 +222,7 @@ public class DataValueSetServiceTest
     public void testImportDataValuesXmlDryRun()
         throws Exception
     {
-        ImportOptions options = new ImportOptions( UID, UID, true, NEW_AND_UPDATES, false );
+        ImportOptions options = new ImportOptions( UID, UID, true, true, NEW_AND_UPDATES, false );
         
         dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream(), options );
         
@@ -236,7 +236,7 @@ public class DataValueSetServiceTest
     public void testImportDataValuesXmlUpdatesOnly()
         throws Exception
     {
-        ImportOptions options = new ImportOptions( UID, UID, false, UPDATES, false );
+        ImportOptions options = new ImportOptions( UID, UID, false, true, UPDATES, false );
         
         dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream(), options );
         
