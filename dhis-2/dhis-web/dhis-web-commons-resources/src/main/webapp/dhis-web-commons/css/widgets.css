@@ -540,12 +540,18 @@ div.inputCriteria
   margin-bottom: 15px;
 }
 
-.setting input[type=text],input[type=password],select
+.setting input[type=text], 
+.setting input[type=password], 
+.setting select,
+.inputForm input[type=text], 
+.inputForm input[type=password], 
+.inputForm select
 {
   width: 25em;
 }
 
-.setting textarea
+.setting textarea,
+.inputForm textarea
 {
   width: 25em;
   height: 8em;
@@ -659,21 +665,6 @@ ul.pageSizeSelection input
   border: 1px solid #D0D0D0; 
   border-radius: 2px; cursor: pointer;
   max-width: 160px;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Forms                                                                      */
-/*----------------------------------------------------------------------------*/
-
-.inputForm input[type=text],select
-{
-  width: 25em;
-}
-
-.inputForm textarea
-{
-  width: 25em;
-  height: 8em;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -834,4 +825,3 @@ input:-moz-placeholder
 {
 	color: #777;
 }
-
