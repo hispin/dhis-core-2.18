@@ -60,7 +60,7 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
   var config = dhis2.contextmenu.config;
 
   var $list = $('#' + config.listId);
-  var $menu = $('#' + config.menuId);
+  window.$menu = $('#' + config.menuId);
   var $menuItems = $menu.find('ul');
 
   // make sure that all old event handler are removed (with .context namespace)
@@ -111,8 +111,25 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
       }
     });
 
+    var menuHeight = $menu.height();
+    var menuWidth = $menu.width();
+    var winHeight = $(window).height();
+    var winWidth = $(window).width();
+
+    var pageX = e.pageX;
+    var pageY = e.pageY;
+
     $menu.show();
-    $menu.css({left: e.pageX, top: e.pageY});
+
+    if( (menuWidth + pageX) > winWidth ) {
+      pageX -= menuWidth;
+    }
+
+    if( (menuHeight + pageY) > winHeight ) {
+      pageY -= menuHeight;
+    }
+
+    $menu.css({left: pageX, top: pageY});
 
     return false;
   });
