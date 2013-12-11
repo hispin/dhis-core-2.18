@@ -42,13 +42,15 @@ public class ImportOptions
 
     private boolean dryRun;
 
+    private boolean preheatCache = true;
+
     private boolean async;
 
     private ImportStrategy importStrategy;
 
     private boolean skipExistingCheck;
 
-    private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES, false );
+    private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, true, ImportStrategy.NEW_AND_UPDATES, false );
 
     public static ImportOptions getDefaultImportOptions()
     {
@@ -64,10 +66,11 @@ public class ImportOptions
         this.importStrategy = importStrategy;
     }
 
-    public ImportOptions( IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy importStrategy, boolean skipExistingCheck )
+    public ImportOptions( IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, boolean preheatCache, ImportStrategy importStrategy, boolean skipExistingCheck )
     {
         this.dataElementIdScheme = dataElementIdScheme;
         this.orgUnitIdScheme = orgUnitIdScheme;
+        this.preheatCache = preheatCache;
         this.dryRun = dryRun;
         this.importStrategy = importStrategy;
         this.skipExistingCheck = skipExistingCheck;
@@ -90,6 +93,11 @@ public class ImportOptions
     public boolean isDryRun()
     {
         return dryRun;
+    }
+
+    public boolean isPreheatCache()
+    {
+        return preheatCache;
     }
 
     public ImportStrategy getImportStrategy()
@@ -119,6 +127,11 @@ public class ImportOptions
     public void setDryRun( boolean dryRun )
     {
         this.dryRun = dryRun;
+    }
+
+    public void setPreheatCache( boolean preheatCache )
+    {
+        this.preheatCache = preheatCache;
     }
 
     public boolean isAsync()

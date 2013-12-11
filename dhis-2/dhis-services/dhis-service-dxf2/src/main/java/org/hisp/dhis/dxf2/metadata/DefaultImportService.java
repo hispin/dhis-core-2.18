@@ -33,6 +33,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
+import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
@@ -41,7 +43,6 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class DefaultImportService
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
     @Autowired
@@ -116,15 +117,14 @@ public class DefaultImportService
         log.info( "User '" + username + "' started import at " + new Date() );
 
         notifier.clear( taskId ).notify( taskId, "Importing meta-data" );
+        Timer timer = new SystemNanoTimer();
+        timer.start();
 
         ImportSummary importSummary = new ImportSummary();
 
+        objectBridge.setWriteEnabled( !importOptions.isDryRun() );
+        objectBridge.setPreheatCache( importOptions.isPreheatCache() );
         objectBridge.init();
-
-        if ( importOptions.isDryRun() )
-        {
-            objectBridge.setWriteEnabled( false );
-        }
 
         for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getImportMap().entrySet() )
         {
@@ -177,14 +177,16 @@ public class DefaultImportService
         cacheManager.clearCache();
         objectBridge.destroy();
 
+        timer.stop();
+
         if ( taskId != null )
         {
-            notifier.notify( taskId, NotificationLevel.INFO, "Import done", true ).
+            notifier.notify( taskId, NotificationLevel.INFO, "Import done. Completed in " + timer.toString() + ".", true ).
                 addTaskSummary( taskId, importSummary );
         }
         else
         {
-            log.info( "Import done." );
+            log.info( "Import done. Completed in " + timer.toString() + "." );
         }
 
         return importSummary;

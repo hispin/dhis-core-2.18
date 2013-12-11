@@ -97,4 +97,19 @@ public interface ObjectBridge
      * @return {@code boolean} indicating status of {@code writeEnabled}
      */
     boolean isWriteEnabled();
+
+    /**
+     * Enable or disable preheating the internal cache. This should be left on for most cases,
+     * but for very small imports (1-10 objects) turning this off will generally speed up import by a factor of 100.
+     *
+     * @param enabled {@code boolean} turning preheating on or off
+     */
+    void setPreheatCache( boolean enabled );
+
+    /**
+     * Is preheat cache enabled?
+     *
+     * @return {@code boolean} indicating status of {@code preheatCache}
+     */
+    boolean isPreheatCache();
 }
