@@ -1,8 +1,11 @@
 package org.hisp.dhis.pbf.action;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -15,6 +18,8 @@ import com.opensymphony.xwork2.Action;
 public class GetDataElementforTariffAction implements Action
 {
 	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
+	
+	private final static String TARIFF_DATAELEMENT = "TARIFF_DATAELEMENT";
 	
 	// -------------------------------------------------------------------------
     // Dependencies
@@ -60,9 +65,9 @@ public class GetDataElementforTariffAction implements Action
 		return tariff_setting_authority;
 	}
 	
-	private List<Integer> levelOrgUnitIds = new ArrayList<Integer>();
+	private List<String> levelOrgUnitIds = new ArrayList<String>();
 	
-	public List<Integer> getLevelOrgUnitIds() {
+	public List<String> getLevelOrgUnitIds() {
 		return levelOrgUnitIds;
 	}
 	
@@ -72,32 +77,39 @@ public class GetDataElementforTariffAction implements Action
 
 	public String execute()
     {
-		if(constantService.getConstantByName( TARIFF_SETTING_AUTHORITY) == null)
+		Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+		Constant tariffDataElement = constantService.getConstantByName( TARIFF_DATAELEMENT );
+		if(tariff_authority == null)
 		{
 			tariff_setting_authority = "Level 3";
 			List<OrganisationUnit> allLevelOrg =new ArrayList<OrganisationUnit>(organisationUnitService.getOrganisationUnitsAtLevel(3)) ;
 			for(OrganisationUnit org : allLevelOrg)
 			{
-				levelOrgUnitIds.add(org.getId());
+				levelOrgUnitIds.add("\""+org.getUid()+"\"");
 			}
 		}
 		else
 		{
-			Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+			
 			tariff_setting_authority = "Level "+(int)tariff_authority.getValue();
-			List<OrganisationUnit> allLevelOrg =new ArrayList<OrganisationUnit>(organisationUnitService.getOrganisationUnitsAtLevel(Integer.parseInt(tariff_authority.getValue()+""))) ;
+			List<OrganisationUnit> allLevelOrg =new ArrayList<OrganisationUnit>(organisationUnitService.getOrganisationUnitsAtLevel((int)tariff_authority.getValue())) ;
 			for(OrganisationUnit org : allLevelOrg)
 			{
-				levelOrgUnitIds.add(org.getId());
+				levelOrgUnitIds.add("\""+org.getUid()+"\"");
 			}
 		}
     	List<DataElement> dataElements = new ArrayList<DataElement>(dataElementService.getAllDataElements());
+    	
     	for(DataElement de : dataElements)
     	{
-    		if(!(dataElementList.contains("\""+de.getName()+"\"")))
-    		{
-    			dataElementList.add("\""+de.getName()+"\"");
-    		}
+    		Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
+    		for ( AttributeValue attValue : attrValueSet )
+            {
+                if (!(dataElementList.contains("\""+de.getName()+"\"")) && attValue.getAttribute().getId() == tariffDataElement.getValue() )
+                {
+                	dataElementList.add("\""+de.getName()+"\"");
+                }
+            }    		
     	}
     	
         return SUCCESS;

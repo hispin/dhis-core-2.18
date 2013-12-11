@@ -30,7 +30,8 @@
 		</action>
 		<action name="deleteTariffData" class="org.hisp.dhis.pbf.action.DeleteTariffDataAction">
 			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>					
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_TARIFFDATAVALUE_UPDATE</param>					
 		</action>
 	</package>
 	

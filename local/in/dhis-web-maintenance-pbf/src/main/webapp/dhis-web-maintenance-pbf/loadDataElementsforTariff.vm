@@ -13,7 +13,7 @@ $( "#dataElementName" ).autocomplete({
         				$('#loadTariffDetails').load("loadTariffDetails.action", 
             				{
             					dataElementName:dataElementName,
-								orgUnitId:$("#orgUnitId").val()
+								orgUnitUid:$("#orgUnitUid").val()
             				}
             				, function( ){            										
         				});
@@ -34,7 +34,7 @@ function getTariffData()
         				$('#loadTariffDetails').load("loadTariffDetails.action", 
             				{
             					dataElementName:dataElementName,
-								orgUnitId:$("#orgUnitId").val()
+								orgUnitUid:$("#orgUnitUid").val()
             				}
             				, function( ){            										
         				});
@@ -61,7 +61,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	else
 	{
 		setFieldValue("orgUnit", orgUnitNames[0]);
-		setFieldValue("orgUnitId", orgUnits[0]);
+		setFieldValue("orgUnitUid", orgUnits[0]);
 	}
 	
 }
@@ -69,10 +69,10 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 selection.setListenerFunction( organisationUnitSelected );
 </script>
 <h3>Data Element Tariff Management</h3>
-<input type="hidden" name="orgUnitId" id="orgUnitId">
-<table width="100%">
+<input type="hidden" name="orgUnitUid" id="orgUnitUid">
+<table width="60%">
 	<tr>
-		<td >Orgainsation Unit <input type="text" id="orgUnit" name="orgUnit" readonly/></td>
+		<td >Orgainsation Unit <input type="text" id="orgUnit" name="orgUnit" readonly size="40"/></td>
 		<td >Tariff Setting Authority <input type="text" readonly id="tariff_authority" value="$!tariff_setting_authority"/></td>
 	</tr>
 	<tr >
@@ -81,8 +81,9 @@ selection.setListenerFunction( organisationUnitSelected );
     </tr>
 	<tr>
 		<td ><input id="dataElementName" name="dataElementName" onkeyup="getTariffData()" size="55" placeholder="Type the name of dataelement" /> &nbsp;</td>
-		<td >&nbsp;</td>
+		<td ><input type="button" id="addDataElement" value="Add DataElement" disabled /></td>
 	</tr>
 </table>
 <br/><br/><br/>
 <div id="loadTariffDetails" style="width:80%"></div>
+	
