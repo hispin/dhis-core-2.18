@@ -1,13 +1,12 @@
 <script >
 $(function() {
-
-$( "#startDate" ).datepicker();
-$( "#endDate" ).datepicker();
+datePickerValid( 'startDate', true );
+datePickerValid( 'endDate', true );
 
 $("#openAddTariff").button()
 			.click(function() {
 				$( "#addTariff" ).dialog( "open" );
-				$("#pbfType option:selected").remove();
+				$('#pbfType option[value=-1]').attr('selected','selected');
 			$("#pbfType ").removeAttr('disabled');
 			$("#tariff").val('');			
 			$("#startDate").val('');
@@ -18,17 +17,23 @@ $("#openAddTariff").button()
 			
 			
 $( "#addTariff" ).dialog({
+			width: 320,
 			autoOpen: false,			
 			modal: true,
 			buttons: {
 			"Save": function() {
-			
-							var dataValue = {
+						var date1 = Date.parse($("#startDate").val());
+						var date2 = Date.parse($("#endDate").val());
+							if (date1 > date2) {
+    								alert ("Please enter correct date");
+                                }
+                         else{
+                                    var dataValue = {
         		        			'pbfType' : $("#pbfType").val(),
         		        			'tariff' : $("#tariff").val(),
         		        			'startDate' : $("#startDate").val(),
         							'endDate' : $("#endDate").val(),
-									'orgUnitId': $("#orgUnitId").val(),
+									'orgUnitUid': $("#orgUnitUid").val(),
 									'dataElementId' : $("#dataElementId").val()
         		    			};
 								jQuery.ajax( {
@@ -38,6 +43,8 @@ $( "#addTariff" ).dialog({
                                 success: handleSuccess,
                                 error: handleError
                             } );
+                      }
+							
 				},
 				Cancel: function() {
 					$( this ).dialog( "close" );
@@ -48,7 +55,7 @@ $( "#addTariff" ).dialog({
 		});
 		 function handleSuccess( json )
 	    {	
-			$("#pbfType option:selected").remove();
+			$('#pbfType option[value=-1]').attr('selected','selected');
 			$("#pbfType ").removeAttr('disabled');
 			$("#tariff").val('');			
 			$("#startDate").val('');
@@ -61,7 +68,7 @@ $( "#addTariff" ).dialog({
 	    }
 	    function handleError( json )
 	    {
-			$("#pbfType option:selected").remove();
+			$('#pbfType option[value=-1]').attr('selected','selected');
 			$("#pbfType ").removeAttr('disabled');
 			$("#tariff").val('');			
 			$("#startDate").val('');
@@ -125,7 +132,9 @@ function editTariffDataValue ( organisationUnitId,dataElementId,optionComboId,or
 			<th >Tariff</th>
 			<th >Start Date</th>
 			<th >End Date</th>
-			<th >Operations</th>
+			#if($updateAuthority == 'Yes')
+				<th >Operations</th>
+			#end
         </tr>
 	</thead>
 	<tbody id="list">
@@ -141,10 +150,17 @@ function editTariffDataValue ( organisationUnitId,dataElementId,optionComboId,or
 			<td >$!tariff.value</td>
 			<td >$!tariff.startDate</td>
 			<td >$!tariff.endDate</td>
+			#if($updateAuthority == 'Yes')
             <td>
-				<img src="images/delete.png" width="17px" onclick="deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.optionCombo.id','$tariff.organisationUnitGroup.id','$tariff.startDate','$tariff.endDate')"/>
-				<img src="../images/edit.png" alt="$i18n.getString( 'edit' )" onclick="editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.optionCombo.id','$tariff.organisationUnitGroup.id','$tariff.startDate','$tariff.endDate','$tariff.value')">
+				<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.optionCombo.id','$tariff.organisationUnitGroup.id','$tariff.startDate','$tariff.endDate')">
+					<img src="images/delete.png" width="17px"/>
+				</a>
+				<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.optionCombo.id','$tariff.organisationUnitGroup.id','$tariff.startDate','$tariff.endDate','$tariff.value')">
+					<img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/>
+				</a>
+				
 			</td>
+			#end
         </tr>
 		#end
     </tbody>
@@ -152,10 +168,10 @@ function editTariffDataValue ( organisationUnitId,dataElementId,optionComboId,or
 <div id="addTariff" title="Add New Tariff">
 	<table style="width:100%;table-layout:fixed;">
 		<tr >
-			<td style="width:40%;">&nbsp;</td>
+			<td style="width:40%;">PBF Type</td>
 			<td style="width:60%;">
 				<select id="pbfType" style="width:100%;">
-					<option >Select PBF Type</option>
+					<option value="-1">Select PBF Type</option>
 					#foreach($orGrp in $orGroupList)
 						<option value="$orGrp.id">$orGrp.name</option>
 					#end

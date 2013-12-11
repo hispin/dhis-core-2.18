@@ -1,7 +1,9 @@
 package org.hisp.dhis.pbf.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -72,37 +74,27 @@ public class AddTariffDataAction implements Action {
 	private String endDate;
 	
 	private String dataElementId;
-	private String orgUnitId;
+	private String orgUnitUid;
 	
 	public void setDataElementId(String dataElementId) {
 		this.dataElementId = dataElementId;
 	}
 
-
-
-	public void setOrgUnitId(String orgUnitId) {
-		this.orgUnitId = orgUnitId;
+	public void setOrgUnitUid(String orgUnitUid) {
+		this.orgUnitUid = orgUnitUid;
 	}
-
-
 
 	public void setPbfType(String pbfType) {
 		this.pbfType = pbfType;
 	}
 
-
-
 	public void setTariff(String tariff) {
 		this.tariff = tariff;
 	}
 
-
-
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
-
-
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
@@ -122,12 +114,14 @@ public class AddTariffDataAction implements Action {
 		
 		DataElement dataElement = dataElementService.getDataElement(Integer.parseInt(dataElementId));
 		
-		OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit(Integer.parseInt(orgUnitId));
+		List<String> orgUids = new ArrayList<String>();
+		orgUids.add(orgUnitUid);
+		List<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsByUid(orgUids);
 		
 		OrganisationUnitGroup orgUnitGrp = organisationUnitGroupService.getOrganisationUnitGroup(Integer.parseInt(pbfType));
 		DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 		
-		TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue(orgUnit, dataElement, optionCombo, orgUnitGrp, sDate, eDate);
+		TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue(organisationUnits.get(0), dataElement, optionCombo, orgUnitGrp, sDate, eDate);
 		
 		TariffDataValue tariffDataValue1;
 		
@@ -137,7 +131,7 @@ public class AddTariffDataAction implements Action {
 		}
 		else
 		{
-			tariffDataValue1 = tariffDataValueService.getTariffDataValue(orgUnit, dataElement, optionCombo, orgUnitGrp, sDate, eDate);
+			tariffDataValue1 = tariffDataValueService.getTariffDataValue(organisationUnits.get(0), dataElement, optionCombo, orgUnitGrp, sDate, eDate);
 		}
 		
 		tariffDataValue1.setValue(Double.parseDouble(tariff));
@@ -148,7 +142,7 @@ public class AddTariffDataAction implements Action {
 		tariffDataValue1.setDataElement(dataElement);
 		tariffDataValue1.setOptionCombo(optionCombo);
 		tariffDataValue1.setOrganisationUnitGroup(orgUnitGrp);
-		tariffDataValue1.setOrganisationUnit(orgUnit);
+		tariffDataValue1.setOrganisationUnit(organisationUnits.get(0));
 		
 		if(tariffDataValue == null)
 		{
