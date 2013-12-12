@@ -9,7 +9,7 @@
 
 <h3>$i18n.getString( "edit_aggregation_query_builder" )</h3>
 
-<form id="updateCaseAggregationForm" action="updateCaseAggregation.action" method="post" onsubmit='setFieldValue("dataSetId",getFieldValue("dataSets") );' >
+<form id="updateCaseAggregationForm" action="updateCaseAggregation.action" method="post" onsubmit='setFieldValue("dataSetId",getFieldValue("dataSets") );' class="inputForm">
 
 <input type='hidden' id='id' name='id' value='$caseAggregation.id'>
 <input type='hidden' id='dataSetId' name='dataSetId' value='$dataSet.id'>
