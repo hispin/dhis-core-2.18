@@ -38,6 +38,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.SharingUtils;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -425,16 +426,27 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         log.debug( "Trying to delete object => " + ImportUtils.getDisplayName( persistedObject ) + " (" + persistedObject.getClass().getSimpleName() + ")" );
 
+        /*
         persistedObject.setUser( null );
         NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects();
         nonIdentifiableObjects.delete( persistedObject );
 
         Map<Field, Object> fields = detachFields( persistedObject );
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( persistedObject );
+        */
 
         sessionFactory.getCurrentSession().flush();
 
-        objectBridge.deleteObject( persistedObject );
+        try
+        {
+            objectBridge.deleteObject( persistedObject );
+        }
+        catch ( Exception ex )
+        {
+            summaryType.getImportConflicts().add(
+                new ImportConflict( ImportUtils.getDisplayName( persistedObject ), ex.getMessage() ) );
+            return false;
+        }
 
         sessionFactory.getCurrentSession().flush();
 
@@ -842,6 +854,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         else if ( objects.size() > 1 )
         {
             conflict = reportMoreThanOneConflict( object );
+        }
+
+        if ( !OrganisationUnit.class.isAssignableFrom( object.getClass() ) )
+        {
+            conflict = new ImportConflict( "NoOrg", "no no no" );
         }
 
         if ( conflict != null )

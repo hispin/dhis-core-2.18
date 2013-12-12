@@ -36,6 +36,7 @@ import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.deletion.DeletionManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
@@ -69,6 +70,9 @@ public class DefaultObjectBridge
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DeletionManager deletionManager;
 
     //-------------------------------------------------------------------------------------------------------
     // Internal and Semi-Public maps
@@ -307,6 +311,7 @@ public class DefaultObjectBridge
         {
             if ( writeEnabled )
             {
+                deletionManager.execute( object );
                 manager.delete( (IdentifiableObject) object );
             }
 
