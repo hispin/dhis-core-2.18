@@ -28,11 +28,11 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
+
+import java.util.Iterator;
 
 /**
  * @author Lars Helge Overland
@@ -65,28 +65,28 @@ public class OrganisationUnitDeletionHandler
     public void deleteDataSet( DataSet dataSet )
     {
         Iterator<OrganisationUnit> iterator = dataSet.getSources().iterator();
-        
+
         while ( iterator.hasNext() )
         {
             OrganisationUnit unit = iterator.next();
-            
+
             unit.getDataSets().remove( unit );
-            
+
             organisationUnitService.updateOrganisationUnit( unit );
-        }        
+        }
     }
 
     @Override
     public void deleteUser( User user )
     {
         Iterator<OrganisationUnit> iterator = user.getOrganisationUnits().iterator();
-        
+
         while ( iterator.hasNext() )
         {
             OrganisationUnit unit = iterator.next();
-            
+
             unit.getUsers().remove( user );
-            
+
             organisationUnitService.updateOrganisationUnit( unit );
         }
     }
@@ -95,14 +95,20 @@ public class OrganisationUnitDeletionHandler
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
         Iterator<OrganisationUnit> iterator = group.getMembers().iterator();
-        
+
         while ( iterator.hasNext() )
         {
             OrganisationUnit unit = iterator.next();
-            
+
             unit.getGroups().remove( unit );
-            
+
             organisationUnitService.updateOrganisationUnit( unit );
-        }            
+        }
+    }
+
+    @Override
+    public String allowDeleteOrganisationUnit( OrganisationUnit unit )
+    {
+        return unit.getChildren().isEmpty() ? null : ERROR;
     }
 }
