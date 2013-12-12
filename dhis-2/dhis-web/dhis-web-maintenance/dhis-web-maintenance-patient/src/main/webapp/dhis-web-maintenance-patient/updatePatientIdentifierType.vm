@@ -5,7 +5,7 @@
 
 <h3>$i18n.getString( "edit_patient_identifier_type" )</h3>
 
-<form id="updatePatientIdentifierTypeForm" action="updatePatientIdentifierType.action" method="post" >
+<form id="updatePatientIdentifierTypeForm" action="updatePatientIdentifierType.action" method="post" class="inputForm">
 <input type="hidden" id="id" name="id" value="$patientIdentifierType.id"/>
 <table>	
 	 <thead>

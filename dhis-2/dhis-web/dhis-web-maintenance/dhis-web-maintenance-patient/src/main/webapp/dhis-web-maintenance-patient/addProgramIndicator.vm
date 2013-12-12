@@ -13,7 +13,7 @@ jQuery( document ).ready( function()
 
 <h3>$i18n.getString( "create_new_program_indicator" )</h3>
 									
-<form id="programIndicatorForm" action="addProgramIndicator.action" method="post" >
+<form id="programIndicatorForm" action="addProgramIndicator.action" method="post" class="inputForm">
 <input type='hidden' id='programId' name='programId' value='$program.id'>
 
 <table>	 

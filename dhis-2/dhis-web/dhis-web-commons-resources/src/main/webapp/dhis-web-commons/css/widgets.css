@@ -549,7 +549,7 @@ div.inputCriteria
 {
   width: 25em;
   border: 1px solid #aaa;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   border-radius: 3px;
   padding: 6px 5px;
   margin: 2px 0;

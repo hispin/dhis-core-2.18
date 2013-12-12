@@ -48,7 +48,7 @@
 }
 </style>
 
-<form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="get">
+<form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="get" class="inputForm">
 
 <input type="hidden" name="programId" id="programId" value="$!program.id"/>
 <input type="hidden" name="dataEntryFormId" id="dataEntryFormId" value="$!registrationForm.dataEntryForm.id"/>
