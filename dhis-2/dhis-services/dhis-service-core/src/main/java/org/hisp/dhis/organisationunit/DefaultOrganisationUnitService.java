@@ -584,8 +584,7 @@ public class DefaultOrganisationUnitService
 
         if ( currentUser != null && !currentUser.getUserCredentials().isSuper() )
         {
-            Collection<Integer> userDataSets = ConversionUtils.getIdentifiers( DataSet.class, currentUser
-                .getUserCredentials().getAllDataSets() );
+            Collection<String> userDataSets = ConversionUtils.getUids( DataSet.class, currentUser.getUserCredentials().getAllDataSets() );
 
             for ( Set<String> dataSets : associationMap.values() )
             {
@@ -602,8 +601,6 @@ public class DefaultOrganisationUnitService
         {
             Collection<String> parentIds = ConversionUtils.getUids( OrganisationUnit.class,
                 currentUser.getOrganisationUnits() );
-
-            // Collection<Integer> children = getOrganisationUnitHierarchy().getChildren( parentIds );
 
             Collection<OrganisationUnit> organisationUnitsWithChildren = getOrganisationUnitsWithChildren( parentIds );
             Collection<String> children = ConversionUtils.getUids( OrganisationUnit.class, organisationUnitsWithChildren );
