@@ -30,11 +30,11 @@ package org.hisp.dhis.importexport;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ImportStrategy.java 4646 2008-02-26 14:54:29Z larshelg $
  */
 public enum ImportStrategy 
 {
     NEW_AND_UPDATES,
     NEW,
-    UPDATES
+    UPDATES,
+    DELETES
 }
