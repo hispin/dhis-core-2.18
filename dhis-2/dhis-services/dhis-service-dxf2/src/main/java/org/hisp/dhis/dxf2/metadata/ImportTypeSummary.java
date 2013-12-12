@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "typeSummary", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement(localName = "typeSummary", namespace = DxfNamespaces.DXF_2_0)
 public class ImportTypeSummary
     extends ImportSummary
 {
@@ -59,7 +59,7 @@ public class ImportTypeSummary
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty(isAttribute = true)
     public String getType()
     {
         return type;
@@ -71,7 +71,7 @@ public class ImportTypeSummary
     }
 
     @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public ImportCount getImportCount()
     {
         return importCount;
@@ -83,8 +83,8 @@ public class ImportTypeSummary
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "conflicts", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "conflict", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper(localName = "conflicts", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty(localName = "conflict", namespace = DxfNamespaces.DXF_2_0)
     public List<ImportConflict> getImportConflicts()
     {
         return importConflicts;
@@ -112,6 +112,11 @@ public class ImportTypeSummary
     public void incrementIgnored()
     {
         importCount.incrementIgnored();
+    }
+
+    public void incrementDeleted()
+    {
+        importCount.incrementDeleted();
     }
 
     @Override

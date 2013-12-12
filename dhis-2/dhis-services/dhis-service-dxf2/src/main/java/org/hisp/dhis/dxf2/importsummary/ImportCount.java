@@ -33,7 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.DxfNamespaces;
 
-@JacksonXmlRootElement( localName = "count", namespace = DxfNamespaces.DXF_2_0 )
+@JacksonXmlRootElement(localName = "count", namespace = DxfNamespaces.DXF_2_0)
 public class ImportCount
 {
     private int imported;
@@ -42,19 +42,22 @@ public class ImportCount
 
     private int ignored;
 
+    private int deleted;
+
     public ImportCount()
     {
     }
 
-    public ImportCount( int imported, int updated, int ignored )
+    public ImportCount( int imported, int updated, int ignored, int deleted )
     {
         this.imported = imported;
         this.updated = updated;
         this.ignored = ignored;
+        this.deleted = deleted;
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty(isAttribute = true)
     public int getImported()
     {
         return imported;
@@ -66,7 +69,7 @@ public class ImportCount
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty(isAttribute = true)
     public int getUpdated()
     {
         return updated;
@@ -78,7 +81,7 @@ public class ImportCount
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty(isAttribute = true)
     public int getIgnored()
     {
         return ignored;
@@ -87,6 +90,18 @@ public class ImportCount
     public void setIgnored( int ignored )
     {
         this.ignored = ignored;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty(isAttribute = true)
+    public int getDeleted()
+    {
+        return deleted;
+    }
+
+    public void setDeleted( int deleted )
+    {
+        this.deleted = deleted;
     }
 
     @Override
@@ -110,6 +125,11 @@ public class ImportCount
         ignored++;
     }
 
+    public void incrementDeleted()
+    {
+        deleted++;
+    }
+
     public void incrementImported( int n )
     {
         imported += n;
@@ -123,5 +143,10 @@ public class ImportCount
     public void incrementIgnored( int n )
     {
         ignored += n;
+    }
+
+    public void incrementDeleted( int n )
+    {
+        deleted += n;
     }
 }

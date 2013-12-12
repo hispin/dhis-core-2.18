@@ -301,6 +301,24 @@ public class DefaultObjectBridge
     }
 
     @Override
+    public void deleteObject( Object object )
+    {
+        if ( _typeSupported( object.getClass() ) && IdentifiableObject.class.isInstance( object ) )
+        {
+            if ( writeEnabled )
+            {
+                manager.delete( (IdentifiableObject) object );
+            }
+
+            // _updateInternalMaps( object );
+        }
+        else
+        {
+            log.warn( "Trying to delete unsupported type + " + object.getClass() + " with object " + object + " object discarded." );
+        }
+    }
+
+    @Override
     public <T> T getObject( T object )
     {
         Set<T> objects = _findMatches( object );

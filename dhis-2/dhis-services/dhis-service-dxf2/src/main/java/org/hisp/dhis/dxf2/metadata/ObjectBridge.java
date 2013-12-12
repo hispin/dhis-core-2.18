@@ -53,9 +53,16 @@ public interface ObjectBridge
     /**
      * Update object. Will save to persistence layer if {@code writeEnabled} is {@code true}.
      *
-     * @param object
+     * @param object Object to update
      */
     void updateObject( Object object );
+
+    /**
+     * Delete object. Will delete from persistence layer if {@code writeEnabled} is {@code true}.
+     *
+     * @param object Object to delete
+     */
+    void deleteObject( Object object );
 
     /**
      * Get an object from the internal store. This object might not be a persisted object

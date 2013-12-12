@@ -28,26 +28,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.ImportStrategy.NEW;
-import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
-import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
-import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
-import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
-import static org.hisp.dhis.system.util.ConversionUtils.wrap;
-import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.csvreader.CsvReader;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
@@ -85,7 +66,23 @@ import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.csvreader.CsvReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
+import static org.hisp.dhis.importexport.ImportStrategy.*;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+import static org.hisp.dhis.system.util.ConversionUtils.wrap;
+import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
 /**
  * @author Lars Helge Overland
@@ -129,7 +126,7 @@ public class DefaultDataValueSetService
 
     @Autowired
     private Notifier notifier;
-    
+
     //--------------------------------------------------------------------------
     // DataValueSet implementation
     //--------------------------------------------------------------------------
@@ -172,7 +169,7 @@ public class DefaultDataValueSetService
         {
             throw new IllegalArgumentException( "At least one period must be specified" );
         }
-                
+
         dataValueSetStore.writeDataValueSetXml( null, null, null, null, getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), out );
     }
 
@@ -184,7 +181,7 @@ public class DefaultDataValueSetService
         {
             throw new IllegalArgumentException( "At least one period must be specified" );
         }
-                
+
         dataValueSetStore.writeDataValueSetCsv( getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), writer );
     }
 
@@ -317,7 +314,7 @@ public class DefaultDataValueSetService
         DataElementCategoryOptionCombo fallbackCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         String currentUser = currentUserService.getCurrentUsername();
-        
+
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class ).init();
 
         int importCount = 0;
@@ -377,7 +374,7 @@ public class DefaultDataValueSetService
             }
 
             String commentValid = ValidationUtils.commentIsValid( dataValue.getComment() );
-            
+
             if ( commentValid != null )
             {
                 summary.getConflicts().add( new ImportConflict( DataValue.class.getSimpleName(), commentValid ) );
@@ -443,14 +440,14 @@ public class DefaultDataValueSetService
 
         int ignores = totalCount - importCount - updateCount;
 
-        summary.setDataValueCount( new ImportCount( importCount, updateCount, ignores ) );
+        summary.setDataValueCount( new ImportCount( importCount, updateCount, ignores, 0 ) );
         summary.setStatus( ImportStatus.SUCCESS );
         summary.setDescription( "Import process completed successfully" );
 
         notifier.notify( id, INFO, "Import done", true ).addTaskSummary( id, summary );
 
         dataValueSet.close();
-        
+
         return summary;
     }
 
@@ -536,14 +533,14 @@ public class DefaultDataValueSetService
     private Map<String, OrganisationUnit> getUuidOrgUnitMap()
     {
         Map<String, OrganisationUnit> orgUnitMap = new HashMap<String, OrganisationUnit>();
-        
+
         Collection<OrganisationUnit> allOrganisationUnits = organisationUnitService.getAllOrganisationUnits();
 
         for ( OrganisationUnit organisationUnit : allOrganisationUnits )
         {
             orgUnitMap.put( organisationUnit.getUuid(), organisationUnit );
         }
-        
+
         return orgUnitMap;
-    }    
+    }
 }
