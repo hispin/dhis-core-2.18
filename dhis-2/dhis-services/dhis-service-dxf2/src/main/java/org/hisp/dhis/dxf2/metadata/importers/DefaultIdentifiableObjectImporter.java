@@ -54,6 +54,7 @@ import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandlerUtils;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -163,7 +164,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 deleteExpression( object, "leftSide" );
                 deleteExpression( object, "rightSide" );
                 deleteDataEntryForm( object, "dataEntryForm" );
-                // deleteDataElementOperands( object, "compulsoryDataElementOperands" );
+
+                if ( ImportStrategy.DELETES.equals( options.getImportStrategy() ) )
+                {
+                    deleteDataElementOperands( object, "compulsoryDataElementOperands" );
+                }
+
                 deleteDataElementOperands( object, "greyedFields" );
             }
         }
@@ -419,7 +425,18 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         log.debug( "Trying to delete object => " + ImportUtils.getDisplayName( persistedObject ) + " (" + persistedObject.getClass().getSimpleName() + ")" );
 
+        persistedObject.setUser( null );
+        NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects();
+        nonIdentifiableObjects.delete( persistedObject );
+
+        Map<Field, Object> fields = detachFields( persistedObject );
+        Map<Field, Collection<Object>> collectionFields = detachCollectionFields( persistedObject );
+
+        sessionFactory.getCurrentSession().flush();
+
         objectBridge.deleteObject( persistedObject );
+
+        sessionFactory.getCurrentSession().flush();
 
         log.debug( "Delete successful." );
 
@@ -707,8 +724,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         }
         else if ( ImportStrategy.DELETES.equals( options.getImportStrategy() ) )
         {
-            sessionFactory.getCurrentSession().flush();
-
             if ( deleteObject( user, persistedObject ) )
             {
                 summaryType.incrementDeleted();
