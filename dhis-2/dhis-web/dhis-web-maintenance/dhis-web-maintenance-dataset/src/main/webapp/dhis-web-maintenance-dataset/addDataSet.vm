@@ -52,9 +52,9 @@
 #sharingCreateNotification( "dataSet" )
 
 <form id="addDataSetForm" name="addDataSetForm" action="addDataSet.action" method="post" class="inputForm">
-  <table id="detailsList" style="width: 600px;">
-    <col style="width: 400px;"/> ## Labels
-    <col /> ## Input
+  <table style="width: 600px">
+    <col style="width: 400px">
+    <col>
     <thead>
       <tr>
         <th colspan="2">$i18n.getString( "dataset_details" )</th>
