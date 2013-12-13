@@ -153,7 +153,7 @@ public class ContextUtils
         }
     }
 
-    public static void okResponse( HttpServletResponse response, String message )
+    public static void okResponse( HttpServletResponse response, String message ) //TODO remove message
     {
         setResponse( response, HttpServletResponse.SC_OK, message );
     }
