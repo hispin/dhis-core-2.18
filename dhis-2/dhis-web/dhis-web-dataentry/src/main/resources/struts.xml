@@ -38,12 +38,6 @@
       <result name="input" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
     </action>
 
-    <action name="saveValue" class="org.hisp.dhis.de.action.SaveValueAction">
-      <result name="success" type="velocity-json">/dhis-web-dataentry/status.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_DELETE</param>
-    </action>
-
     <action name="saveComment" class="org.hisp.dhis.de.action.SaveCommentAction">
       <result name="success" type="velocity-json">/dhis-web-dataentry/status.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
