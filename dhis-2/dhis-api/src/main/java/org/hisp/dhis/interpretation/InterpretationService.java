@@ -28,6 +28,8 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.mapping.Map;
+
 import java.util.Date;
 import java.util.List;
 
@@ -57,4 +59,6 @@ public interface InterpretationService
     void updateCurrentUserLastChecked();
 
     long getNewInterpretationCount();
+
+    int countMapInterpretations( Map map );
 }

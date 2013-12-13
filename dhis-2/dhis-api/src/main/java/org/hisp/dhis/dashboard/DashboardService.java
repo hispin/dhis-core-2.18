@@ -1,9 +1,11 @@
 package org.hisp.dhis.dashboard;
 
+import org.hisp.dhis.interpretation.Interpretation;
+import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.user.User;
+
 import java.util.List;
 import java.util.Set;
-
-import org.hisp.dhis.user.User;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -42,24 +44,26 @@ public interface DashboardService
     final String ID = DashboardService.class.getName();
 
     DashboardSearchResult search( String query );
-    
+
     DashboardSearchResult search( String query, Set<String> maxTypes );
-    
+
     boolean addItemContent( String dashboardUid, String type, String contentUid );
-    
+
     void mergeDashboard( Dashboard dashboard );
-    
+
     void mergeDashboardItem( DashboardItem item );
-    
+
     int saveDashboard( Dashboard dashboard );
-    
+
     void updateDashboard( Dashboard dashboard );
-    
+
     void deleteDashboard( Dashboard dashboard );
-    
+
     Dashboard getDashboard( int id );
-    
+
     Dashboard getDashboard( String uid );
-    
+
     List<Dashboard> getByUser( User user );
+
+    int countMapDashboardItems( Map map );
 }

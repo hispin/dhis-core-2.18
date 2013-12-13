@@ -29,6 +29,7 @@ package org.hisp.dhis.interpretation;
  */
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.mapping.Map;
 
 /**
  * @author Lars Helge Overland
@@ -36,4 +37,5 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 public interface InterpretationStore
     extends GenericIdentifiableObjectStore<Interpretation>
 {
+    int countMapInterpretations( Map map );
 }
