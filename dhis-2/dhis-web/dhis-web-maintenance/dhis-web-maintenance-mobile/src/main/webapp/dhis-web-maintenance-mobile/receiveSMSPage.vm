@@ -143,16 +143,22 @@
 			);
 		}
 	};
-	function sendQuickSMS(message, originator)
+	function sendQuickSMS(idMessage, originator)
 	{
 		var p = {};
-		 p.recipients.push( originator );
+		p.recipients = [];
+		 p.recipients.push( "+" + originator );
 		
-		jQuery.postUTF8( sendSMS.action,
+		
+		
+		jQuery.postUTF8( 'sendSMS.action',
 	{
-		recipient: JSON.stringify(  p.recipients ),
-		text: getFieldValue('sm' + message),
-		sendTarget: 'phone',
+		recipients: JSON.stringify(  p.recipients ),
+		
+		
+		text: getFieldValue('sm' + idMessage),
+		
+		sendTarget: 'phone'
 	}, function ( json )
 	{
 		if ( json.response == "success" ) {
@@ -255,8 +261,8 @@
 				<a id="$incomingSms.id" href="#" onclick="show($velocityCount)" >$incomingSms.originator</a><br/>
 				<div id="dv$velocityCount" style="display: none;">
 				<textarea  name="textArea"  id="sm$velocityCount" rows="3" style="width:160px;"></textarea><br/>
-				<input type="submit" name="send" value="$i18n.getString( 'send' )" style="float: center;" onclick="sendQuickSMS($velocityCount, $incomingSms.originator)"/>
-				<input type="submit" name="btnCancel" value="$i18n.getString( 'cancel' )" style="float: center;"/>
+				<input type="button" name="send" value="$i18n.getString( 'send' )" style="float: center;" onclick="sendQuickSMS($velocityCount, $incomingSms.originator)"/>
+				<input type="submit" name="btnClose" value="$i18n.getString( 'close' )" style="float: center;"/>
 				</div>
 				
 				</td>
