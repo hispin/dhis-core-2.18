@@ -272,13 +272,13 @@ function onValueSave( fn )
 // Saver objects
 // -----------------------------------------------------------------------------
 
-function ValueSaver( dataElementId, optionComboId, organisationUnitId, periodId, value, fieldId, resultColor )
+function ValueSaver( de, cc, ou, pe, value, fieldId, resultColor )
 {
     var dataValue = {
-        'de' : dataElementId,
-        'cc' : optionComboId,
-        'ou' : organisationUnitId,
-        'pe' : periodId,
+        'de' : de,
+        'cc' : cc,
+        'ou' : ou,
+        'pe' : pe,
         'value' : value
     };
 
@@ -309,7 +309,7 @@ function ValueSaver( dataElementId, optionComboId, organisationUnitId, periodId,
     		markValue( fieldId, COLOR_RED );
     		setHeaderMessage( xhr.responseText );
     	}
-    	else // Offline
+    	else // No connection
     	{
     		setHeaderMessage( i18n_offline_notification );
     		markValue( fieldId, resultColor );
