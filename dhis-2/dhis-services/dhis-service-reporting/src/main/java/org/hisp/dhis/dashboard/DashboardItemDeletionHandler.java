@@ -29,7 +29,9 @@ package org.hisp.dhis.dashboard;
  */
 
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +66,17 @@ public class DashboardItemDeletionHandler extends DeletionHandler
     public String allowDeleteReportTable( ReportTable reportTable )
     {
         return dashboardService.countReportTableDashboardItems( reportTable ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteReport( Report report )
+    {
+        return dashboardService.countReportDashboardItems( report ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteDocument( Document document )
+    {
+        return dashboardService.countDocumentDashboardItems( document ) == 0 ? null : ERROR;
     }
 }

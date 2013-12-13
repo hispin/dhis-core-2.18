@@ -288,6 +288,18 @@ public class DefaultDashboardService
         return dashboardItemStore.countReportTableDashboardItems( reportTable );
     }
 
+    @Override
+    public int countReportDashboardItems( Report report )
+    {
+        return dashboardItemStore.countReportDashboardItems( report );
+    }
+
+    @Override
+    public int countDocumentDashboardItems( Document document )
+    {
+        return dashboardItemStore.countDocumentDashboardItems( document );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

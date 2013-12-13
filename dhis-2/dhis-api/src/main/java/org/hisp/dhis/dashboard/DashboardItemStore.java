@@ -30,7 +30,9 @@ package org.hisp.dhis.dashboard;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -44,4 +46,8 @@ public interface DashboardItemStore
     int countChartDashboardItems( Chart chart );
 
     int countReportTableDashboardItems( ReportTable reportTable );
+
+    int countReportDashboardItems( Report report );
+
+    int countDocumentDashboardItems( Document document );
 }
