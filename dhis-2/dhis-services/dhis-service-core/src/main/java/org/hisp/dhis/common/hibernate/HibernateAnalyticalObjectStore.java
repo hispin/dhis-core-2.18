@@ -1,4 +1,4 @@
-package org.hisp.dhis.chart.hibernate;
+package org.hisp.dhis.common.hibernate;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,25 +28,23 @@ package org.hisp.dhis.chart.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartStore;
-import org.hisp.dhis.common.hibernate.HibernateAnalyticalObjectStore;
-import org.hisp.dhis.user.User;
-
-import java.util.Collection;
+import org.hibernate.Query;
+import org.hisp.dhis.common.AnalyticalObjectStore;
+import org.hisp.dhis.common.BaseAnalyticalObject;
+import org.hisp.dhis.dataset.DataSet;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class HibernateChartStore
-    extends HibernateAnalyticalObjectStore<Chart> implements ChartStore
+public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
+    extends HibernateIdentifiableObjectStore<T> implements AnalyticalObjectStore<T>
 {
-    @SuppressWarnings( "unchecked" )
-    public Collection<Chart> getSystemAndUserCharts( User user )
+    @Override
+    public int countDataSetAnalyticalObject( DataSet dataSet )
     {
-        return getCriteria(
-            Restrictions.or( Restrictions.isNull( "user" ),
-                Restrictions.eq( "user", user ) ) ).list();
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where :dataSet in elements(c.dataSets)" );
+        query.setEntity( "dataSet", dataSet );
+
+        return ((Long) query.uniqueResult()).intValue();
     }
 }

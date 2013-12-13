@@ -848,6 +848,6 @@ public class DefaultChartService
     @Override
     public int countDataSetCharts( DataSet dataSet )
     {
-        return chartStore.countDataSetCharts( dataSet );
+        return chartStore.countDataSetAnalyticalObject( dataSet );
     }
 }

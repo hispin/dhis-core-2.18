@@ -28,19 +28,16 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.common.AnalyticalObjectStore;
 import org.hisp.dhis.user.User;
+
+import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
  */
 public interface ChartStore
-    extends GenericIdentifiableObjectStore<Chart>
+    extends AnalyticalObjectStore<Chart>
 {
     Collection<Chart> getSystemAndUserCharts( User user );
-
-    int countDataSetCharts( DataSet dataSet );
 }
