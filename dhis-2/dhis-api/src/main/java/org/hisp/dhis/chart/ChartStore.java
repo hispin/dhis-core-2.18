@@ -31,6 +31,7 @@ package org.hisp.dhis.chart;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.user.User;
 
 /**
@@ -40,4 +41,6 @@ public interface ChartStore
     extends GenericIdentifiableObjectStore<Chart>
 {
     Collection<Chart> getSystemAndUserCharts( User user );
+
+    int countDataSetCharts( DataSet dataSet );
 }

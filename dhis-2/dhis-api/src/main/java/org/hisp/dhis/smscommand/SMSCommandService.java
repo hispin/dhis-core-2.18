@@ -31,6 +31,7 @@ package org.hisp.dhis.smscommand;
 import java.util.Collection;
 import java.util.Set;
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.sms.parse.ParserType;
 
 public interface SMSCommandService
@@ -56,4 +57,6 @@ public interface SMSCommandService
     void deleteSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters );
     
     void deleteCodeSet( Set<SMSCode> codes );
+
+    int countDataSetSmsCommands( DataSet dataSet );
 }

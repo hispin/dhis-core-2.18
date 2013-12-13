@@ -215,6 +215,12 @@
     <property name="cacheable" value="true" />
   </bean>
 
+  <bean id="org.hisp.dhis.user.UserAuthorityGroupStore" class="org.hisp.dhis.user.hibernate.HibernateUserAuthorityGroupStore">
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="clazz" value="org.hisp.dhis.user.UserAuthorityGroup" />
+    <property name="cacheable" value="true" />
+  </bean>
+
   <bean id="org.hisp.dhis.user.UserCredentialsStore" class="org.hisp.dhis.user.hibernate.HibernateUserCredentialsStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
@@ -249,12 +255,6 @@
   <bean id="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueStore"
     class="org.hisp.dhis.aggregation.jdbc.JdbcAggregatedOrgUnitDataValueStore">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
-  </bean>
-
-  <bean id="org.hisp.dhis.user.UserAuthorityGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
-    <property name="clazz" value="org.hisp.dhis.user.UserAuthorityGroup" />
-    <property name="sessionFactory" ref="sessionFactory" />
-    <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.message.MessageConversationStore" class="org.hisp.dhis.message.hibernate.HibernateMessageConversationStore">
@@ -1076,7 +1076,9 @@
   <bean id="org.hisp.dhis.mapping.MapDeletionHandler" class="org.hisp.dhis.mapping.MapDeletionHandler">
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
-  
+
+  <bean id="org.hisp.dhis.sms.SMSCommandDeletionHandler" class="org.hisp.dhis.sms.SMSCommandDeletionHandler" />
+
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -1118,6 +1120,7 @@
           <ref local="org.hisp.dhis.attribute.AttributeValueDeletionHandler" />
           <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler" />
           <ref local="org.hisp.dhis.mapping.MapViewDeletionHandler" />
+          <ref local="org.hisp.dhis.sms.SMSCommandDeletionHandler" />
         </list>
       </list>
     </property>

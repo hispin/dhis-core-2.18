@@ -28,12 +28,11 @@ package org.hisp.dhis.smscommand;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-import java.util.Set;
-
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.user.UserGroup;
+
+import java.util.Set;
 
 public class SMSCommand
 {
@@ -54,13 +53,13 @@ public class SMSCommand
     private String codeSeparator;
 
     private String defaultMessage;
-    
+
     private String receivedMessage;
-    
+
     private UserGroup userGroup;
-    
+
     private Set<SMSSpecialCharacter> specialCharacters;
-    
+
     private boolean currentPeriodUsedForReporting = false; // default is prev
 
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
@@ -79,7 +78,7 @@ public class SMSCommand
         this.receivedMessage = receivedMessage;
         this.specialCharacters = specialCharacters;
     }
-    
+
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
         Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup, String receivedMessage )
     {
@@ -95,9 +94,9 @@ public class SMSCommand
         this.userGroup = userGroup;
         this.receivedMessage = receivedMessage;
     }
-    
+
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
-        Set<SMSCode> codes, String codeSeparator, String defaultMessage)
+        Set<SMSCode> codes, String codeSeparator, String defaultMessage )
     {
         super();
         this.name = name;
@@ -296,5 +295,5 @@ public class SMSCommand
     {
         this.specialCharacters = specialCharacters;
     }
-    
+
 }

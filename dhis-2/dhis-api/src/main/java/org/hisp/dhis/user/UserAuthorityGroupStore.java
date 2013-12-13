@@ -1,4 +1,4 @@
-package org.hisp.dhis.smscommand;
+package org.hisp.dhis.user;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,33 +28,14 @@ package org.hisp.dhis.smscommand;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Set;
-
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.sms.parse.ParserType;
 
-public interface SMSCommandStore
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public interface UserAuthorityGroupStore
+    extends GenericIdentifiableObjectStore<UserAuthorityGroup>
 {
-    Collection<SMSCommand> getSMSCommands();
-
-    SMSCommand getSMSCommand( int id );
-
-    int save( SMSCommand cmd );
-
-    void delete( SMSCommand cmd );
-
-    void save( Set<SMSCode> codes );
-    
-    Collection<SMSCommand> getJ2MESMSCommands();
-    
-    SMSCommand getSMSCommand( String commandName, ParserType parserType );
-    
-    void saveSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters );
-    
-    void deleteSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters );
-    
-    void deleteCodeSet( Set<SMSCode> codes );
-
-    int countDataSetSmsCommands( DataSet dataSet );
+    int countDataSetUserAuthorityGroups( DataSet dataSet );
 }

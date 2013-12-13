@@ -67,16 +67,9 @@ public class ChartDeletionHandler
     }
 
     @Override
-    public void deleteUser( User user )
+    public String allowDeleteDataSet( DataSet dataSet )
     {
-        for ( Chart chart : chartService.getAllCharts() )
-        {
-            if ( chart.getUser() != null && chart.getUser().equals( user ) )
-            {
-                chart.setUser( null );                
-                chartService.updateChart( chart );
-            }
-        }
+        return chartService.countDataSetCharts( dataSet ) == 0 ? null : ERROR;
     }
 
     @Override
@@ -89,8 +82,21 @@ public class ChartDeletionHandler
                 return chart.getName();
             }
         }
-        
+
         return null;
+    }
+
+    @Override
+    public void deleteUser( User user )
+    {
+        for ( Chart chart : chartService.getAllCharts() )
+        {
+            if ( chart.getUser() != null && chart.getUser().equals( user ) )
+            {
+                chart.setUser( null );
+                chartService.updateChart( chart );
+            }
+        }
     }
 
     @Override
@@ -128,7 +134,7 @@ public class ChartDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
@@ -140,7 +146,7 @@ public class ChartDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deleteDataElementGroup( DataElementGroup group )
     {
@@ -152,7 +158,7 @@ public class ChartDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {

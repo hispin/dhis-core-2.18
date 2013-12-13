@@ -35,6 +35,7 @@ import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -112,4 +113,6 @@ public interface ChartService
     int getChartCountByName( String name );
     
     Collection<Chart> getChartsByUser( User user );
+
+    int countDataSetCharts( DataSet dataSet );
 }
