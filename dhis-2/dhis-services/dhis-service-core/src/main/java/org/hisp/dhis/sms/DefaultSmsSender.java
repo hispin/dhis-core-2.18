@@ -94,11 +94,12 @@ public class DefaultSmsSender
 
         if ( transportService != null )
         {
-            resultMessage = isWastedSMS( sms );
-            if ( resultMessage == null )
-            {
-                resultMessage = transportService.sendMessage( sms, gatewayId );
-            }
+            // Disable wasted messsage check due to incorrect detection
+            // resultMessage = isWastedSMS( sms );
+            // if ( resultMessage == null )
+
+            resultMessage = transportService.sendMessage( sms, gatewayId );
+
             return resultMessage;
         }
 
@@ -292,20 +293,19 @@ public class DefaultSmsSender
         OutboundSms sms = new OutboundSms();
         sms.setMessage( text );
         sms.setRecipients( recipients );
-        message = isWastedSMS( sms );
 
-        if ( message == null )
+        // Disable wasted messsage check due to incorrect detection
+        // message = isWastedSMS( sms );
+        // if ( message == null )
+
+        try
         {
-            try
-            {
-                message = transportService.sendMessage( sms, gateWayId );
-            }
-            catch ( SmsServiceException e )
-            {
-                message = "Unable to send message through sms: " + sms + e.getCause().getMessage();
-
-                log.warn( "Unable to send message through sms: " + sms, e );
-            }
+            message = transportService.sendMessage( sms, gateWayId );
+        }
+        catch ( SmsServiceException e )
+        {
+            message = "Unable to send message through sms: " + sms + e.getCause().getMessage();
+            log.warn( "Unable to send message through sms: " + sms, e );
         }
 
         return message;
