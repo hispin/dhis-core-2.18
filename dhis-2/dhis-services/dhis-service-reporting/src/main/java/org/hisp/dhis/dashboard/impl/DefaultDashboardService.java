@@ -276,6 +276,18 @@ public class DefaultDashboardService
         return dashboardItemStore.countMapDashboardItems( map );
     }
 
+    @Override
+    public int countChartDashboardItems( Chart chart )
+    {
+        return dashboardItemStore.countChartDashboardItems( chart );
+    }
+
+    @Override
+    public int countReportTableDashboardItems( ReportTable reportTable )
+    {
+        return dashboardItemStore.countReportTableDashboardItems( reportTable );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

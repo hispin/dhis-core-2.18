@@ -28,6 +28,7 @@ package org.hisp.dhis.interpretation.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationComment;
@@ -35,6 +36,7 @@ import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.interpretation.InterpretationStore;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -198,5 +200,17 @@ public class DefaultInterpretationService
     public int countMapInterpretations( Map map )
     {
         return interpretationStore.countMapInterpretations( map );
+    }
+
+    @Override
+    public int countChartInterpretations( Chart chart )
+    {
+        return interpretationStore.countChartInterpretations( chart );
+    }
+
+    @Override
+    public int countReportTableInterpretations( ReportTable reportTable )
+    {
+        return interpretationStore.countReportTableInterpretations( reportTable );
     }
 }

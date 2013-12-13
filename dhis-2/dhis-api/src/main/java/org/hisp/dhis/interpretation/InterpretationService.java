@@ -28,7 +28,9 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.reporttable.ReportTable;
 
 import java.util.Date;
 import java.util.List;
@@ -61,4 +63,8 @@ public interface InterpretationService
     long getNewInterpretationCount();
 
     int countMapInterpretations( Map map );
+
+    int countChartInterpretations( Chart chart );
+
+    int countReportTableInterpretations( ReportTable reportTable );
 }

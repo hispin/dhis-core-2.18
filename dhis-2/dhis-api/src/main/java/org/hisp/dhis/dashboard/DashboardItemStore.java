@@ -28,8 +28,10 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.reporttable.ReportTable;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -38,4 +40,8 @@ public interface DashboardItemStore
     extends GenericIdentifiableObjectStore<DashboardItem>
 {
     int countMapDashboardItems( Map map );
+
+    int countChartDashboardItems( Chart chart );
+
+    int countReportTableDashboardItems( ReportTable reportTable );
 }

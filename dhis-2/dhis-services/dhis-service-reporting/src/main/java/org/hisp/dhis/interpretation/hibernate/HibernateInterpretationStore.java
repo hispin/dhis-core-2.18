@@ -29,10 +29,12 @@ package org.hisp.dhis.interpretation.hibernate;
  */
 
 import org.hibernate.Query;
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationStore;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
 import java.util.List;
@@ -74,6 +76,24 @@ public class HibernateInterpretationStore
     {
         Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.map=:map" );
         query.setEntity( "map", map );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int countChartInterpretations( Chart chart )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.chart=:chart" );
+        query.setEntity( "chart", chart );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int countReportTableInterpretations( ReportTable reportTable )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.reportTable=:reportTable" );
+        query.setEntity( "reportTable", reportTable );
 
         return ((Long) query.uniqueResult()).intValue();
     }
