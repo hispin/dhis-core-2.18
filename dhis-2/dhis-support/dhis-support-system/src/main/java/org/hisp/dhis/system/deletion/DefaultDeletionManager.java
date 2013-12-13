@@ -83,14 +83,14 @@ public class DefaultDeletionManager
 
         try
         {
-            Method allowMethod = DeletionHandler.class.getMethod( allowMethodName, new Class[] { clazz } );
+            Method allowMethod = DeletionHandler.class.getMethod( allowMethodName, new Class[]{ clazz } );
 
             for ( DeletionHandler handler : handlers )
             {
                 currentHandler = handler.getClass().getSimpleName();
 
                 log.debug( "Check if allowed using " + currentHandler + " for class " + className );
-                
+
                 Object allow = allowMethod.invoke( handler, object );
 
                 if ( allow != null )
@@ -127,17 +127,17 @@ public class DefaultDeletionManager
 
         try
         {
-            Method deleteMethod = DeletionHandler.class.getMethod( deleteMethodName, new Class[] { clazz } );
+            Method deleteMethod = DeletionHandler.class.getMethod( deleteMethodName, new Class[]{ clazz } );
 
             for ( DeletionHandler handler : handlers )
             {
                 currentHandler = handler.getClass().getSimpleName();
 
                 log.debug( "Deleting object using " + currentHandler + " for class " + className );
-                
+
                 deleteMethod.invoke( handler, object );
             }
-        } 
+        }
         catch ( Exception ex )
         {
             log.error( "Failed to invoke method " + deleteMethodName + " on DeletionHandler '" + currentHandler + "'", ex );

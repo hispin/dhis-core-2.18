@@ -1,4 +1,4 @@
-package org.hisp.dhis.mapping;
+package org.hisp.dhis.dashboard;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,57 +28,27 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.user.User;
-
-import java.util.Iterator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class MapDeletionHandler
-    extends DeletionHandler
+public class DashboardItemDeletionHandler extends DeletionHandler
 {
-    private MappingService mappingService;
-
-    public void setMappingService( MappingService mappingService )
-    {
-        this.mappingService = mappingService;
-    }
-
-    // -------------------------------------------------------------------------
-    // DeletionHandler implementation
-    // -------------------------------------------------------------------------
+    @Autowired
+    private DashboardService dashboardService;
 
     @Override
     protected String getClassName()
     {
-        return Map.class.getSimpleName();
+        return DashboardItem.class.getSimpleName();
     }
 
     @Override
-    public void deleteUser( User user )
+    public String allowDeleteMap( Map map )
     {
-        for ( Map map : mappingService.getAllMaps() )
-        {
-            if ( map.getUser() != null && map.getUser().equals( user ) )
-            {
-                map.setUser( null );
-                mappingService.updateMap( map );
-            }
-        }
-    }
-
-    @Override
-    public void deleteMap( Map map )
-    {
-        Iterator<MapView> views = map.getMapViews().iterator();
-
-        while ( views.hasNext() )
-        {
-            MapView view = views.next();
-            views.remove();
-            mappingService.deleteMapView( view );
-        }
+        return ERROR;
     }
 }

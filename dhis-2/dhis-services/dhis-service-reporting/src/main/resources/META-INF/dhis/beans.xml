@@ -130,6 +130,15 @@
     <property name="dashboardStore" ref="org.hisp.dhis.dashboard.DashboardStore" />
   </bean>
 
+  <bean id="org.hisp.dhis.dashboard.impl.DashboardItemDeletionHandler" class="org.hisp.dhis.dashboard.DashboardItemDeletionHandler">
+  </bean>
+
+  <bean id="org.hisp.dhis.dashboard.DashboardItemStore" class="org.hisp.dhis.dashboard.hibernate.HibernateDashboardItemStore">
+    <property name="clazz" value="org.hisp.dhis.dashboard.DashboardItem" />
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
+  </bean>
+
   <!-- Organisation Unit Distribution -->
 
   <bean id="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService"
@@ -215,6 +224,7 @@
           <ref local="org.hisp.dhis.reporttable.ReportTableDeletionHandler" />
           <ref local="org.hisp.dhis.chart.ChartDeletionHandler" />
           <ref local="org.hisp.dhis.interpretation.InterpretationDeletionHandler" />
+          <ref local="org.hisp.dhis.dashboard.impl.DashboardItemDeletionHandler" />
         </list>
       </list>
     </property>
