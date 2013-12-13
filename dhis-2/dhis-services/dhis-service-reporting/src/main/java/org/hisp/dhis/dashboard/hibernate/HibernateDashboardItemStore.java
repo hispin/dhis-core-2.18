@@ -33,7 +33,9 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dashboard.DashboardItemStore;
+import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -45,7 +47,7 @@ public class HibernateDashboardItemStore extends HibernateIdentifiableObjectStor
     @Override
     public int countMapDashboardItems( Map map )
     {
-        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.map=:map" );
+        Query query = getQuery( "select count(distinct c) from DashboardItem c where c.map=:map" );
         query.setEntity( "map", map );
 
         return ((Long) query.uniqueResult()).intValue();
@@ -54,7 +56,7 @@ public class HibernateDashboardItemStore extends HibernateIdentifiableObjectStor
     @Override
     public int countChartDashboardItems( Chart chart )
     {
-        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.chart=:chart" );
+        Query query = getQuery( "select count(distinct c) from DashboardItem c where c.chart=:chart" );
         query.setEntity( "chart", chart );
 
         return ((Long) query.uniqueResult()).intValue();
@@ -63,8 +65,27 @@ public class HibernateDashboardItemStore extends HibernateIdentifiableObjectStor
     @Override
     public int countReportTableDashboardItems( ReportTable reportTable )
     {
-        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.reportTable=:reportTable" );
+        Query query = getQuery( "select count(distinct c) from DashboardItem c where c.reportTable=:reportTable" +
+            " or :reportTable in elements(c.reportTables)" );
         query.setEntity( "reportTable", reportTable );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int countReportDashboardItems( Report report )
+    {
+        Query query = getQuery( "select count(distinct c) from DashboardItem c where :report in elements(c.reports)" );
+        query.setEntity( "report", report );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int countDocumentDashboardItems( Document document )
+    {
+        Query query = getQuery( "select count(distinct c) from DashboardItem c where :document in elements(c.resources)" );
+        query.setEntity( "document", document );
 
         return ((Long) query.uniqueResult()).intValue();
     }
