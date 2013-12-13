@@ -325,39 +325,40 @@ function uploadLocalData()
         log( 'Uploading data value: ' + key + ', with value: ' + value );
 
         $.ajax( {
-            url: 'saveValue.action',
+            url: '../api/dataValues',
             data: value,
             dataType: 'json',
-            success: function( data, textStatus, jqXHR )
+            success: function( data, textStatus, xhr )
             {
-                if ( data.c == 2 ) {
-                    log( 'DataSet is locked' );
-                    setHeaderMessage( i18n_saving_value_failed_dataset_is_locked );
-                } 
+            	storageManager.clearDataValueJSON( value );
+                log( 'Successfully saved data value with value: ' + value );
+                ( array = array.slice( 1 ) ).length && pushDataValues( array );
+
+                if ( array.length < 1 && completeDataSetsArray.length > 0 )
+                {
+                    pushCompleteDataSets( completeDataSetsArray );
+                }
                 else
                 {
-                    storageManager.clearDataValueJSON( value );
-                    log( 'Successfully saved data value with value: ' + value );
-                    ( array = array.slice( 1 ) ).length && pushDataValues( array );
-
-                    if ( array.length < 1 && completeDataSetsArray.length > 0 )
-                    {
-                        pushCompleteDataSets( completeDataSetsArray );
-                    }
-                    else
-                    {
-                        setHeaderDelayMessage( i18n_sync_success );
-                    }
+                    setHeaderDelayMessage( i18n_sync_success );
                 }
             },
-            error: function( jqXHR, textStatus, errorThrown )
+            error: function( xhr, textStatus, errorThrown )
             {
-                var message = i18n_sync_failed
-                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
-
-                setHeaderMessage( message );
-
-                $( '#sync_button' ).bind( 'click', uploadLocalData );
+            	if ( 409 == xhr.status ) // Invalid value or locked
+            	{
+            		// Ignore value for now TODO needs better handling for locking
+            		
+            		storageManager.clearDataValueJSON( value );
+            	}
+            	else // Connection lost during upload
+            	{
+	                var message = i18n_sync_failed
+	                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
+	
+	                setHeaderMessage( message );
+	                $( '#sync_button' ).bind( 'click', uploadLocalData );
+            	}
             }
         } );
     } )( dataValuesArray );
@@ -1136,7 +1137,7 @@ function getOfflineDataValueJson( params )
 		var dataValue = dataValues[i];
 		
 		json.dataValues.push( { 
-			'id': dataValue.dataElementId + '-' + dataValue.optionComboId,
+			'id': dataValue.de + '-' + dataValue.cc,
 			'val': dataValue.value
 		} );
 	}
@@ -1985,8 +1986,8 @@ function StorageManager()
      */
     this.saveDataValue = function( dataValue )
     {
-        var id = this.getDataValueIdentifier( dataValue.dataElementId, 
-        		dataValue.optionComboId, dataValue.periodId, dataValue.organisationUnitId );
+        var id = this.getDataValueIdentifier( dataValue.de, 
+        		dataValue.cc, dataValue.pe, dataValue.ou );
 
         var dataValues = {};
 
@@ -2013,16 +2014,16 @@ function StorageManager()
      * Gets the value for the data value with the given arguments, or null if it
      * does not exist.
      *
-     * @param dataElementId the data element identifier.
-     * @param categoryOptionComboId the category option combo identifier.
-     * @param periodId the period identifier.
-     * @param organisationUnitId the organisation unit identifier.
+     * @param de the data element identifier.
+     * @param cc the category option combo identifier.
+     * @param pe the period identifier.
+     * @param ou the organisation unit identifier.
      * @return the value for the data value with the given arguments, null if
      *         non-existing.
      */
-    this.getDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+    this.getDataValue = function( de, cc, pe, ou )
     {
-        var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
+        var id = this.getDataValueIdentifier( de, cc, pe, ou );
 
         if ( localStorage[KEY_DATAVALUES] != null )
         {
@@ -2049,7 +2050,7 @@ function StorageManager()
 		{
 			var val = dataValues[i];
 			
-			if ( val.periodId == json.periodId && val.organisationUnitId == json.organisationUnitId )
+			if ( val.pe == json.periodId && val.ou == json.organisationUnitId )
 			{
 				valuesInForm.push( val );
 			}
@@ -2065,21 +2066,21 @@ function StorageManager()
      */
     this.clearDataValueJSON = function( dataValue )
     {
-        this.clearDataValue( dataValue.dataElementId, dataValue.optionComboId, dataValue.periodId,
-                dataValue.organisationUnitId );
+        this.clearDataValue( dataValue.de, dataValue.cc, dataValue.pe,
+                dataValue.ou );
     };
 
     /**
      * Removes the given dataValue from localStorage.
      *
-     * @param dataElementId the data element identifier.
-     * @param categoryOptionComboId the category option combo identifier.
-     * @param periodId the period identifier.
-     * @param organisationUnitId the organisation unit identifier.
+     * @param de the data element identifier.
+     * @param cc the category option combo identifier.
+     * @param pe the period identifier.
+     * @param ou the organisation unit identifier.
      */
-    this.clearDataValue = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+    this.clearDataValue = function( de, cc, pe, ou )
     {
-        var id = this.getDataValueIdentifier( dataElementId, categoryOptionComboId, periodId, organisationUnitId );
+        var id = this.getDataValueIdentifier( de, cc, pe, ou );
         var dataValues = this.getAllDataValues();
 
         if ( dataValues != null && dataValues[id] != null )
@@ -2129,9 +2130,9 @@ function StorageManager()
     /**
      * Generates an identifier.
      */
-    this.getDataValueIdentifier = function( dataElementId, categoryOptionComboId, periodId, organisationUnitId )
+    this.getDataValueIdentifier = function( de, cc, pe, ou )
     {
-        return dataElementId + '-' + categoryOptionComboId + '-' + periodId + '-' + organisationUnitId;
+        return de + '-' + cc + '-' + pe + '-' + ou;
     };
 
     /**
