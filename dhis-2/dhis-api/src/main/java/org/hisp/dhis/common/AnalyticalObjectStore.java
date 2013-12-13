@@ -1,4 +1,4 @@
-package org.hisp.dhis.chart.hibernate;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,25 +28,13 @@ package org.hisp.dhis.chart.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartStore;
-import org.hisp.dhis.common.hibernate.HibernateAnalyticalObjectStore;
-import org.hisp.dhis.user.User;
-
-import java.util.Collection;
+import org.hisp.dhis.dataset.DataSet;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class HibernateChartStore
-    extends HibernateAnalyticalObjectStore<Chart> implements ChartStore
+public interface AnalyticalObjectStore<T extends BaseAnalyticalObject>
+    extends GenericIdentifiableObjectStore<T>
 {
-    @SuppressWarnings( "unchecked" )
-    public Collection<Chart> getSystemAndUserCharts( User user )
-    {
-        return getCriteria(
-            Restrictions.or( Restrictions.isNull( "user" ),
-                Restrictions.eq( "user", user ) ) ).list();
-    }
+    int countDataSetAnalyticalObject( DataSet dataSet );
 }
