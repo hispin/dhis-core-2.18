@@ -137,6 +137,11 @@ public class DefaultImportService
             types = Lists.newArrayList( ExchangeClasses.getImportMap().values() );
         }
 
+        /*
+        types.clear();
+        types.add( "dataSets" );
+        */
+
         for ( String type : types )
         {
             Object value = ReflectionUtils.invokeGetterMethod( type, metaData );

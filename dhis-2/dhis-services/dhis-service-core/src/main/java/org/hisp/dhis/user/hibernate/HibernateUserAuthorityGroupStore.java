@@ -1,4 +1,4 @@
-package org.hisp.dhis.smscommand;
+package org.hisp.dhis.user.hibernate;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,33 +28,25 @@ package org.hisp.dhis.smscommand;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Set;
-
+import org.hibernate.Query;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.sms.parse.ParserType;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserAuthorityGroupStore;
 
-public interface SMSCommandStore
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public class HibernateUserAuthorityGroupStore
+    extends HibernateIdentifiableObjectStore<UserAuthorityGroup>
+    implements UserAuthorityGroupStore
 {
-    Collection<SMSCommand> getSMSCommands();
+    @Override
+    public int countDataSetUserAuthorityGroups( DataSet dataSet )
+    {
+        Query query = getQuery( "select count(distinct c) from UserAuthorityGroup c where :dataSet in elements(c.dataSets)" );
+        query.setEntity( "dataSet", dataSet );
 
-    SMSCommand getSMSCommand( int id );
-
-    int save( SMSCommand cmd );
-
-    void delete( SMSCommand cmd );
-
-    void save( Set<SMSCode> codes );
-    
-    Collection<SMSCommand> getJ2MESMSCommands();
-    
-    SMSCommand getSMSCommand( String commandName, ParserType parserType );
-    
-    void saveSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters );
-    
-    void deleteSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters );
-    
-    void deleteCodeSet( Set<SMSCode> codes );
-
-    int countDataSetSmsCommands( DataSet dataSet );
+        return ((Long) query.uniqueResult()).intValue();
+    }
 }

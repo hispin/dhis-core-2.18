@@ -28,13 +28,15 @@ package org.hisp.dhis.chart.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartStore;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.user.User;
+
+import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
@@ -45,8 +47,17 @@ public class HibernateChartStore
     @SuppressWarnings("unchecked")
     public Collection<Chart> getSystemAndUserCharts( User user )
     {
-        return getCriteria( 
-            Restrictions.or( Restrictions.isNull( "user" ), 
-            Restrictions.eq( "user", user ) ) ).list();
+        return getCriteria(
+            Restrictions.or( Restrictions.isNull( "user" ),
+                Restrictions.eq( "user", user ) ) ).list();
+    }
+
+    @Override
+    public int countDataSetCharts( DataSet dataSet )
+    {
+        Query query = getQuery( "select count(distinct c) from Chart c where :dataSet in elements(c.dataSets)" );
+        query.setEntity( "dataSet", dataSet );
+
+        return ((Long) query.uniqueResult()).intValue();
     }
 }

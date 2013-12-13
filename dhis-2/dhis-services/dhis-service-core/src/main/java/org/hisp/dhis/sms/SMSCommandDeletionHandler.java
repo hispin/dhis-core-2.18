@@ -1,4 +1,4 @@
-package org.hisp.dhis.user;
+package org.hisp.dhis.sms;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -29,68 +29,28 @@ package org.hisp.dhis.user;
  */
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.smscommand.SMSCommand;
+import org.hisp.dhis.smscommand.SMSCommandService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-
-import java.util.Iterator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class UserAuthorityGroupDeletionHandler
-    extends DeletionHandler
+public class SMSCommandDeletionHandler extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
-    // -------------------------------------------------------------------------
-    // DeletionHandler implementation
-    // -------------------------------------------------------------------------
+    @Autowired
+    private SMSCommandService smsCommandService;
 
     @Override
-    public String getClassName()
+    protected String getClassName()
     {
-        return UserAuthorityGroup.class.getSimpleName();
-    }
-
-    @Override
-    public void deleteDataSet( DataSet dataSet )
-    {
-        for ( UserAuthorityGroup group : userService.getAllUserAuthorityGroups() )
-        {
-            if ( group.getDataSets().remove( dataSet ) )
-            {
-                userService.updateUserAuthorityGroup( group );
-            }
-        }
-    }
-
-    @Override
-    public void deleteUser( User user )
-    {
-        UserCredentials credentials = user.getUserCredentials();
-
-        Iterator<UserAuthorityGroup> iterator = credentials.getUserAuthorityGroups().iterator();
-
-        while ( iterator.hasNext() )
-        {
-            UserAuthorityGroup group = iterator.next();
-            group.getMembers().remove( credentials );
-            userService.updateUserAuthorityGroup( group );
-        }
+        return SMSCommand.class.getSimpleName();
     }
 
     @Override
     public String allowDeleteDataSet( DataSet dataSet )
     {
-        return userService.countDataSetUserAuthorityGroups( dataSet ) == 0 ? null : ERROR;
+        return smsCommandService.countDataSetSmsCommands( dataSet ) == 0 ? null : ERROR;
     }
 }

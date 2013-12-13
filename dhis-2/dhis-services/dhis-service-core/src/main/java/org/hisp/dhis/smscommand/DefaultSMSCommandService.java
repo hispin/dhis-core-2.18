@@ -31,6 +31,7 @@ package org.hisp.dhis.smscommand;
 import java.util.Collection;
 import java.util.Set;
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCommandStore;
 
@@ -98,6 +99,12 @@ public class DefaultSMSCommandService
     {
         smsCommandStore.deleteCodeSet( codes );
         
+    }
+
+    @Override
+    public int countDataSetSmsCommands( DataSet dataSet )
+    {
+        return smsCommandStore.countDataSetSmsCommands(dataSet);
     }
 
     @Override

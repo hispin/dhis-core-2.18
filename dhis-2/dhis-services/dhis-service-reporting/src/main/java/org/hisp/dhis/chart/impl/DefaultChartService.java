@@ -28,27 +28,6 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.chart.Chart.TYPE_AREA;
-import static org.hisp.dhis.chart.Chart.TYPE_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_COLUMN;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE;
-import static org.hisp.dhis.chart.Chart.TYPE_PIE;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
-import static org.hisp.dhis.chart.Chart.TYPE_RADAR;
-import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
-import static org.hisp.dhis.system.util.ConversionUtils.getArray;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
@@ -63,6 +42,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -106,6 +86,18 @@ import org.jfree.ui.RectangleInsets;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static org.hisp.dhis.chart.Chart.*;
+import static org.hisp.dhis.common.DimensionalObject.DIMENSION_SEP;
+import static org.hisp.dhis.system.util.ConversionUtils.getArray;
+
 /**
  * @author Lars Helge Overland
  */
@@ -125,7 +117,7 @@ public class DefaultChartService
         Color.decode( "#b7404c" ), Color.decode( "#ff9f3a" ), Color.decode( "#968f8f" ), Color.decode( "#b7409f" ),
         Color.decode( "#ffda64" ), Color.decode( "#4fbdae" ), Color.decode( "#b78040" ), Color.decode( "#676767" ),
         Color.decode( "#6a33cf" ), Color.decode( "#4a7833" ) };
-    
+
     private static final Color COLOR_TRANSPARENT = new Color( 255, 255, 255, 0 );
 
     // -------------------------------------------------------------------------
@@ -168,7 +160,7 @@ public class DefaultChartService
     }
 
     private OrganisationUnitService organisationUnitService;
-    
+
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
@@ -212,17 +204,17 @@ public class DefaultChartService
 
         List<OrganisationUnit> atLevels = new ArrayList<OrganisationUnit>();
         List<OrganisationUnit> inGroups = new ArrayList<OrganisationUnit>();
-        
+
         if ( chart.hasOrganisationUnitLevels() )
         {
             atLevels.addAll( organisationUnitService.getOrganisationUnitsAtLevels( chart.getOrganisationUnitLevels(), chart.getOrganisationUnits() ) );
         }
-        
+
         if ( chart.hasItemOrganisationUnitGroups() )
         {
             inGroups.addAll( organisationUnitService.getOrganisationUnits( chart.getItemOrganisationUnitGroups(), chart.getOrganisationUnits() ) );
         }
-        
+
         chart.init( user, date, organisationUnit, atLevels, inGroups, format );
 
         return getJFreeChart( chart );
@@ -478,7 +470,7 @@ public class DefaultChartService
 
     /**
      * Returns an area renderer.
-     * 
+     * <p/>
      * TODO centralize these renderer methods.
      */
     private AreaRenderer getAreaRenderer()
@@ -614,41 +606,41 @@ public class DefaultChartService
 
     private JFreeChart getAreaChart( Chart chart, CategoryDataset dataSet )
     {
-        JFreeChart areaChart = ChartFactory.createAreaChart( chart.getName(), chart.getDomainAxisLabel(), 
+        JFreeChart areaChart = ChartFactory.createAreaChart( chart.getName(), chart.getDomainAxisLabel(),
             chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
-        
+
         CategoryPlot plot = (CategoryPlot) areaChart.getPlot();
         plot.setOrientation( PlotOrientation.VERTICAL );
         plot.setRenderer( getAreaRenderer() );
         plot.setBackgroundPaint( COLOR_TRANSPARENT );
         plot.setOutlinePaint( COLOR_TRANSPARENT );
-        
+
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
         xAxis.setLabelFont( labelFont );
-        
+
         areaChart.getTitle().setFont( titleFont );
         areaChart.addSubtitle( getSubTitle( chart ) );
         areaChart.setBackgroundPaint( COLOR_TRANSPARENT );
         areaChart.setAntiAlias( true );
-        
+
         return areaChart;
     }
-    
+
     private JFreeChart getRadarChart( Chart chart, CategoryDataset dataSet )
     {
         SpiderWebPlot plot = new SpiderWebPlot( dataSet, TableOrder.BY_ROW );
         plot.setBackgroundPaint( COLOR_TRANSPARENT );
         plot.setOutlinePaint( COLOR_TRANSPARENT );
         plot.setLabelFont( labelFont );
-        
+
         JFreeChart radarChart = new JFreeChart( chart.getName(), titleFont, plot, !chart.isHideLegend() );
         radarChart.setAntiAlias( true );
         radarChart.setBackgroundPaint( COLOR_TRANSPARENT );
-        
+
         return radarChart;
     }
-    
+
     private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet, boolean horizontal )
     {
         JFreeChart stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
@@ -710,7 +702,7 @@ public class DefaultChartService
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
         Map<String, Double> valueMap = analyticsService.getAggregatedDataValueMapping( chart, chart.getFormat() );
-        
+
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
 
@@ -727,11 +719,11 @@ public class DefaultChartService
                 String key = series.getUid() + DIMENSION_SEP + category.getUid();
 
                 // Replace potential operand separator with dimension separator
-                
+
                 key = key.replace( DataElementOperand.SEPARATOR, DIMENSION_SEP );
 
                 Double value = valueMap.get( key );
-                
+
                 regularDataSet.addValue( value, series.getShortName(), category.getShortName() );
 
                 if ( chart.isRegression() && value != null && !MathUtils.isEqual( value, MathUtils.ZERO ) )
@@ -794,7 +786,7 @@ public class DefaultChartService
     {
         return chartStore.getByUid( uid );
     }
-    
+
     public Chart getChartNoAcl( String uid )
     {
         return chartStore.getByUidNoAcl( uid );
@@ -851,5 +843,11 @@ public class DefaultChartService
     public Collection<Chart> getChartsByUser( User user )
     {
         return chartStore.getByUser( user );
+    }
+
+    @Override
+    public int countDataSetCharts( DataSet dataSet )
+    {
+        return chartStore.countDataSetCharts( dataSet );
     }
 }

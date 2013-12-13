@@ -28,14 +28,13 @@ package org.hisp.dhis.sms.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Set;
-
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
@@ -43,6 +42,9 @@ import org.hisp.dhis.smscommand.SMSCommandStore;
 import org.hisp.dhis.smscommand.SMSSpecialCharacter;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Set;
 
 public class HibernateSMSCommandStore
     implements SMSCommandStore
@@ -55,7 +57,7 @@ public class HibernateSMSCommandStore
         this.sessionFactory = sessionFactory;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
     public Collection<SMSCommand> getSMSCommands()
     {
@@ -76,7 +78,7 @@ public class HibernateSMSCommandStore
     public void save( Set<SMSCode> codes )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         for ( SMSCode x : codes )
         {
             session.saveOrUpdate( x );
@@ -100,21 +102,21 @@ public class HibernateSMSCommandStore
     public void delete( SMSCommand cmd )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         for ( SMSCode x : cmd.getCodes() )
         {
             session.delete( x );
         }
-        
+
         for ( SMSSpecialCharacter x : cmd.getSpecialCharacters() )
         {
             session.delete( x );
         }
-        
+
         session.delete( cmd );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     @Override
     public Collection<SMSCommand> getJ2MESMSCommands()
     {
@@ -128,8 +130,8 @@ public class HibernateSMSCommandStore
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( SMSCommand.class );
         criteria.add( Restrictions.eq( "parserType", parserType ) );
-        criteria.add( Restrictions.ilike( "name", "%"+commandName+"%") );
-        
+        criteria.add( Restrictions.ilike( "name", "%" + commandName + "%" ) );
+
         if ( criteria.list() != null && criteria.list().size() > 0 )
         {
             return (SMSCommand) criteria.list().get( 0 );
@@ -142,7 +144,7 @@ public class HibernateSMSCommandStore
     public void saveSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         for ( SMSSpecialCharacter x : specialCharacters )
         {
             session.saveOrUpdate( x );
@@ -154,7 +156,7 @@ public class HibernateSMSCommandStore
     public void deleteCodeSet( Set<SMSCode> codes )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         for ( SMSCode x : codes )
         {
             session.delete( x );
@@ -162,13 +164,27 @@ public class HibernateSMSCommandStore
     }
 
     @Override
+    public int countDataSetSmsCommands( DataSet dataSet )
+    {
+        Query query = getQuery( "select count(distinct c) from SMSCommand c where c.dataSet=:dataSet", true );
+        query.setEntity( "dataSet", dataSet );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
     public void deleteSpecialCharacterSet( Set<SMSSpecialCharacter> specialCharacters )
     {
         Session session = sessionFactory.getCurrentSession();
-        
+
         for ( SMSSpecialCharacter x : specialCharacters )
         {
             session.delete( x );
         }
+    }
+
+    public Query getQuery( String hql, boolean cacheable )
+    {
+        return sessionFactory.getCurrentSession().createQuery( hql ).setCacheable( cacheable );
     }
 }
