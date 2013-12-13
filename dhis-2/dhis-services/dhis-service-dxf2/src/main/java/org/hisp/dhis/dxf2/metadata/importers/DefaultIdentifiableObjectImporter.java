@@ -842,11 +842,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             conflict = reportMoreThanOneConflict( object );
         }
 
-        if ( !SqlView.class.isAssignableFrom( object.getClass() ) )
-        {
-            conflict = new ImportConflict( "NoOrg", "no no no" );
-        }
-
         if ( conflict != null )
         {
             summaryType.getImportConflicts().add( conflict );
