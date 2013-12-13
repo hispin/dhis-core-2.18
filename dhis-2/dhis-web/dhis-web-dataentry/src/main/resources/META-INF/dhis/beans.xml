@@ -43,15 +43,6 @@
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <bean id="org.hisp.dhis.de.action.SaveValueAction" class="org.hisp.dhis.de.action.SaveValueAction" scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-  </bean>
-
   <bean id="org.hisp.dhis.de.action.SaveCommentAction" class="org.hisp.dhis.de.action.SaveCommentAction"
       scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />

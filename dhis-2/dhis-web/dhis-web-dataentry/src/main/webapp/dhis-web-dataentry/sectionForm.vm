@@ -1,6 +1,6 @@
 
 #set( $tabIndex = 1 )
-#set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )
+#set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveComment" ) )
 #set( $decoration = $dataSet.dataElementDecoration )
 
 #if( $dataSet.renderAsTabs )
