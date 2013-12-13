@@ -265,6 +265,7 @@ public class ProcessingSendSMSAction
         
         TaskId taskId = new TaskId( TaskCategory.SENDING_SMS, currentUser );
         notifier.clear( taskId );
+        System.out.println("text: " + text);
 
         sendSmsTask.setTaskId( taskId );
         sendSmsTask.setCurrentUser( currentUser );

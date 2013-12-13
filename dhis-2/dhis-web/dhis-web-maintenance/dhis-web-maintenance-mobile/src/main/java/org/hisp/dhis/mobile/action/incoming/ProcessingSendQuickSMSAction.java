@@ -155,6 +155,7 @@ public class ProcessingSendQuickSMSAction
     public String execute()
         throws Exception
     {
+
         gatewayId = transportService.getDefaultGateway();
 
         if ( gatewayId == null || gatewayId.trim().length() == 0 )
