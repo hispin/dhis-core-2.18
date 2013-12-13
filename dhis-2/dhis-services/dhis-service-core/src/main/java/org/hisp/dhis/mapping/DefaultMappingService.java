@@ -28,11 +28,6 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
@@ -43,6 +38,11 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jan Henrik Overland
@@ -273,7 +273,7 @@ public class DefaultMappingService
     {
         return mapStore.getAll();
     }
-    
+
     public List<Map> getMapsBetweenLikeName( String name, int first, int max )
     {
         return mapStore.getAllLikeNameOrderedName( name, first, max );
@@ -449,5 +449,11 @@ public class DefaultMappingService
     public Collection<MapLayer> getAllMapLayers()
     {
         return mapLayerStore.getAll();
+    }
+
+    @Override
+    public int countMapViewMaps( MapView mapView )
+    {
+        return mapStore.countMapViewMaps( mapView );
     }
 }

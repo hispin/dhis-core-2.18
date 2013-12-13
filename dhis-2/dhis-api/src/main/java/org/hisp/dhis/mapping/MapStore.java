@@ -36,4 +36,5 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 public interface MapStore
     extends GenericIdentifiableObjectStore<Map>
 {
+    int countMapViewMaps( MapView mapView );
 }
