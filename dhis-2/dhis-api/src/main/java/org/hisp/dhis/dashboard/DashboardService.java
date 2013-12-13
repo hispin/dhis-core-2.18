@@ -1,7 +1,9 @@
 package org.hisp.dhis.dashboard;
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
 import java.util.List;
@@ -66,4 +68,8 @@ public interface DashboardService
     List<Dashboard> getByUser( User user );
 
     int countMapDashboardItems( Map map );
+
+    int countChartDashboardItems( Chart chart );
+
+    int countReportTableDashboardItems( ReportTable reportTable );
 }

@@ -29,10 +29,12 @@ package org.hisp.dhis.dashboard.hibernate;
  */
 
 import org.hibernate.Query;
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dashboard.DashboardItemStore;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.reporttable.ReportTable;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -45,6 +47,24 @@ public class HibernateDashboardItemStore extends HibernateIdentifiableObjectStor
     {
         Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.map=:map" );
         query.setEntity( "map", map );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int countChartDashboardItems( Chart chart )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.chart=:chart" );
+        query.setEntity( "chart", chart );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int countReportTableDashboardItems( ReportTable reportTable )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.reportTable=:reportTable" );
+        query.setEntity( "reportTable", reportTable );
 
         return ((Long) query.uniqueResult()).intValue();
     }

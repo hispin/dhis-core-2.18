@@ -28,7 +28,9 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,5 +52,17 @@ public class DashboardItemDeletionHandler extends DeletionHandler
     public String allowDeleteMap( Map map )
     {
         return dashboardService.countMapDashboardItems( map ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteChart( Chart chart )
+    {
+        return dashboardService.countChartDashboardItems( chart ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteReportTable( ReportTable reportTable )
+    {
+        return dashboardService.countReportTableDashboardItems( reportTable ) == 0 ? null : ERROR;
     }
 }
