@@ -88,6 +88,7 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserGroup;
@@ -125,21 +126,21 @@ public abstract class DeletionHandler
     public void deleteAttribute( Attribute attribute )
     {
     }
-    
+
     public String allowDeleteAttribute( Attribute attribute )
     {
         return null;
     }
-    
+
     public void deleteAttributeValue( AttributeValue attributeValue )
     {
     }
-    
+
     public String allowDeleteAttributeValue( AttributeValue attributeValue )
     {
         return null;
     }
-    
+
     public void deleteChart( Chart chart )
     {
     }
@@ -323,12 +324,12 @@ public abstract class DeletionHandler
     public void deleteRelativePeriods( RelativePeriods relativePeriods )
     {
     }
-    
+
     public String allowDeleteRelativePeriods( RelativePeriods relativePeriods )
     {
         return null;
     }
-    
+
     public void deleteValidationRule( ValidationRule validationRule )
     {
     }
@@ -476,12 +477,12 @@ public abstract class DeletionHandler
     public void deleteMap( Map map )
     {
     }
-    
+
     public String allowDeleteMap( Map map )
     {
         return null;
     }
-    
+
     public void deleteMapView( MapView mapView )
     {
     }
@@ -598,11 +599,11 @@ public abstract class DeletionHandler
     public void deleteProgramStage( ProgramStage programStage )
     {
     }
-    
+
     public void deleteProgramStageSection( ProgramStageSection programStageSection )
     {
     }
-    
+
     public String allowDeleteProgramStageSection( ProgramStageSection programStageSection )
     {
         return null;
@@ -661,7 +662,7 @@ public abstract class DeletionHandler
     public void deletePatientRegistrationForm( PatientRegistrationForm patientRegistrationForm )
     {
     }
-    
+
     public String allowDeleteConstant( Constant constant )
     {
         return null;
@@ -697,7 +698,7 @@ public abstract class DeletionHandler
     public void deleteLockException( LockException lockException )
     {
     }
-    
+
     public void deletePatientAudit( PatientAudit patientAudit )
     {
     }
@@ -706,22 +707,32 @@ public abstract class DeletionHandler
     {
         return null;
     }
-    
+
     public void deleteIntepretation( Interpretation interpretation )
     {
     }
-    
+
     public String allowDeleteInterpretation( Interpretation interpretation )
     {
         return null;
     }
-    
+
     public void deleteI18nLocale( I18nLocale i18nLocale )
     {
     }
-    
+
     public String allowDeleteI18nLocale( I18nLocale i18nLocale )
-    {        
+    {
+        return null;
+    }
+
+    public void deleteSqlView( SqlView sqlView )
+    {
+
+    }
+
+    public String allowDeleteSqlView( SqlView sqlView )
+    {
         return null;
     }
 }
