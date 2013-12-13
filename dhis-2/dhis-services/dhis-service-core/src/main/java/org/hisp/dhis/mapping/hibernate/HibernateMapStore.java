@@ -28,9 +28,11 @@ package org.hisp.dhis.mapping.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapStore;
+import org.hisp.dhis.mapping.MapView;
 
 /**
  * @author Lars Helge Overland
@@ -38,4 +40,12 @@ import org.hisp.dhis.mapping.MapStore;
 public class HibernateMapStore
     extends HibernateIdentifiableObjectStore<Map> implements MapStore
 {
+    @Override
+    public int countMapViewMaps( MapView mapView )
+    {
+        Query query = getQuery( "select count(distinct c) from Map c where :mapView in elements(c.mapViews)" );
+        query.setEntity( "mapView", mapView );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
 }
