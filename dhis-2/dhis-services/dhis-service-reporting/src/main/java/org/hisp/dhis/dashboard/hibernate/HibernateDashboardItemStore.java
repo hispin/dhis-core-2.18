@@ -28,9 +28,11 @@ package org.hisp.dhis.dashboard.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dashboard.DashboardItem;
 import org.hisp.dhis.dashboard.DashboardItemStore;
+import org.hisp.dhis.mapping.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -38,4 +40,12 @@ import org.hisp.dhis.dashboard.DashboardItemStore;
 public class HibernateDashboardItemStore extends HibernateIdentifiableObjectStore<DashboardItem>
     implements DashboardItemStore
 {
+    @Override
+    public int countMapDashboardItems( Map map )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.map=:map" );
+        query.setEntity( "map", map );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
 }

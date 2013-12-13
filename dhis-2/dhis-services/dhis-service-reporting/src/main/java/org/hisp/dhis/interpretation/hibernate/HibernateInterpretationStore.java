@@ -32,6 +32,7 @@ import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationStore;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.user.User;
 
 import java.util.List;
@@ -42,7 +43,7 @@ import java.util.List;
 public class HibernateInterpretationStore
     extends HibernateIdentifiableObjectStore<Interpretation> implements InterpretationStore
 {
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public List<Interpretation> getInterpretations( User user )
     {
         String hql = "select distinct i from Interpretation i left join i.comments c " +
@@ -66,5 +67,14 @@ public class HibernateInterpretationStore
         query.setMaxResults( max );
 
         return query.list();
+    }
+
+    @Override
+    public int countMapInterpretations( Map map )
+    {
+        Query query = getQuery( "select count(distinct c) from " + clazz.getName() + " c where c.map=:map" );
+        query.setEntity( "map", map );
+
+        return ((Long) query.uniqueResult()).intValue();
     }
 }

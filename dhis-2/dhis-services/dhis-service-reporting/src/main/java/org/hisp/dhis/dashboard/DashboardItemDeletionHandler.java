@@ -49,6 +49,6 @@ public class DashboardItemDeletionHandler extends DeletionHandler
     @Override
     public String allowDeleteMap( Map map )
     {
-        return ERROR;
+        return dashboardService.countMapDashboardItems( map ) == 0 ? null : ERROR;
     }
 }

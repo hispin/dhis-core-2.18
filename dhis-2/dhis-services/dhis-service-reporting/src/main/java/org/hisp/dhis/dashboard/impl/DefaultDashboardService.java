@@ -37,6 +37,7 @@ import org.hisp.dhis.dashboard.DashboardItemStore;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.report.Report;
@@ -268,6 +269,13 @@ public class DefaultDashboardService
     {
         return dashboardStore.getByUser( user );
     }
+
+    @Override
+    public int countMapDashboardItems( Map map )
+    {
+        return dashboardItemStore.countMapDashboardItems( map );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

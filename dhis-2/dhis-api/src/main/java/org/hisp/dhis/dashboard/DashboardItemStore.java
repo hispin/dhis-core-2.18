@@ -29,6 +29,7 @@ package org.hisp.dhis.dashboard;
  */
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.mapping.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -36,4 +37,5 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 public interface DashboardItemStore
     extends GenericIdentifiableObjectStore<DashboardItem>
 {
+    int countMapDashboardItems( Map map );
 }

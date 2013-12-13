@@ -33,6 +33,7 @@ import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationComment;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.interpretation.InterpretationStore;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -191,5 +192,11 @@ public class DefaultInterpretationService
         }
 
         return count;
+    }
+
+    @Override
+    public int countMapInterpretations( Map map )
+    {
+        return interpretationStore.countMapInterpretations( map );
     }
 }
