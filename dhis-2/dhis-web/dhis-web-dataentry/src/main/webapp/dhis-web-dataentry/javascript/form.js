@@ -222,12 +222,12 @@ function loadMetaData()
 	    {
 	        var metaData = JSON.parse( sessionStorage[KEY_METADATA] );
 
-          emptyOrganisationUnits = metaData.emptyOrganisationUnits;
+            emptyOrganisationUnits = metaData.emptyOrganisationUnits;
 	        significantZeros = metaData.significantZeros;
 	        dataElements = metaData.dataElements;
 	        indicatorFormulas = metaData.indicatorFormulas;
 	        dataSets = metaData.dataSets;
-          optionSets = metaData.optionSets;
+            optionSets = metaData.optionSets;
 	        dataSetAssociationSets = metaData.dataSetAssociationSets;
 	        organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
 

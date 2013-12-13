@@ -275,10 +275,10 @@ function onValueSave( fn )
 function ValueSaver( dataElementId, optionComboId, organisationUnitId, periodId, value, fieldId, resultColor )
 {
     var dataValue = {
-        'dataElementId' : dataElementId,
-        'optionComboId' : optionComboId,
-        'organisationUnitId' : organisationUnitId,
-        'periodId' : periodId,
+        'de' : dataElementId,
+        'cc' : optionComboId,
+        'ou' : organisationUnitId,
+        'pe' : periodId,
         'value' : value
     };
 
@@ -287,7 +287,7 @@ function ValueSaver( dataElementId, optionComboId, organisationUnitId, periodId,
         storageManager.saveDataValue( dataValue );
 
         $.ajax( {
-            url: 'saveValue.action',
+            url: '../api/dataValues',
             data: dataValue,
             dataType: 'json',
             success: handleSuccess,
@@ -295,33 +295,25 @@ function ValueSaver( dataElementId, optionComboId, organisationUnitId, periodId,
         } );
     };
 
-    function handleSuccess( json )
+    function handleSuccess()
     {
-        var code = json.c;
-
-        if ( code == 0 ) // Value successfully saved on server
-        {
-        	storageManager.clearDataValueJSON( dataValue );
-            markValue( fieldId, resultColor );
-        }
-        else if ( code == 2 )
-        {
-            markValue( fieldId, COLOR_RED );
-            window.alert( i18n_saving_value_failed_dataset_is_locked );
-        }
-        else // Server error during save
-        {
-            markValue( fieldId, COLOR_RED );
-            window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
-        }
-        
+    	storageManager.clearDataValueJSON( dataValue );
+        markValue( fieldId, resultColor );
         $( 'body' ).trigger( EVENT_VALUE_SAVED, dataValue );
     }
 
-    function handleError( jqXHR, textStatus, errorThrown )
+    function handleError( xhr, textStatus, errorThrown )
     {
-        setHeaderMessage( i18n_offline_notification );
-        markValue( fieldId, resultColor );
+    	if ( 409 == xhr.status ) // Invalid value or locked
+    	{
+    		markValue( fieldId, COLOR_RED );
+    		setHeaderMessage( xhr.responseText );
+    	}
+    	else // Offline
+    	{
+    		setHeaderMessage( i18n_offline_notification );
+    		markValue( fieldId, resultColor );
+    	}
     }
 
     function markValue( fieldId, color )
