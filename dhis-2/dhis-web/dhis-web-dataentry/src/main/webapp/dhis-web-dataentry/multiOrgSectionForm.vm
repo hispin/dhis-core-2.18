@@ -1,6 +1,6 @@
 #set( $marker = 0 )
 #set( $tabIndex = 1 )
-#set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveComment" ) )
+#set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )
 
 #foreach( $section in $sections )
 
