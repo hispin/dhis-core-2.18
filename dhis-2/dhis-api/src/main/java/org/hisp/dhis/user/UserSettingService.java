@@ -45,14 +45,13 @@ public interface UserSettingService
     String ID = UserSettingService.class.getName();
 
     final String AUTO_SAVE_DATA_ENTRY_FORM = "autoSaveDataEntryForm";
-    final String KEY_CURRENT_DATADICTIONARY = "currentDataDictionary";
     final String KEY_CURRENT_DOMAIN_TYPE = "currentDomainType";
     final String KEY_STYLE = "stylesheet";
     final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";
     final String KEY_MESSAGE_EMAIL_NOTIFICATION = "keyMessageEmailNotification";
     final String KEY_MESSAGE_SMS_NOTIFICATION = "keyMessageSmsNotification";
-    final String KEY_UI_LOCALE = "currentLocale";
-    final String KEY_DB_LOCALE = "keyLocaleUserSetting";
+    final String KEY_UI_LOCALE = "keyUiLocale";
+    final String KEY_DB_LOCALE = "keyDbLocale";
     final String KEY_GENERATE_REPORT_INTERFACE = "keyGenerateReportInterface";
     final String KEY_ANALYSIS_DISPLAY_PROPERTY = "keyAnalysisDisplayProperty";
     final String AUTO_SAVE_CASE_ENTRY_FORM = "autoSaveCaseEntryForm";

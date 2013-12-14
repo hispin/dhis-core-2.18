@@ -163,7 +163,7 @@ public class GetGeneralSettingsAction
         availableLocales = localeManager.getAvailableLocales();
 
         currentLocale = localeManager.getCurrentLocale();
-
+        
         // ---------------------------------------------------------------------
         // Get available DB locales
         // ---------------------------------------------------------------------

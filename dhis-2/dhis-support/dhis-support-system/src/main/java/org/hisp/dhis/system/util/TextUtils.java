@@ -357,4 +357,16 @@ public class TextUtils
         
         return builder.toString();
     }
+    
+    /**
+     * Returns the string representation of the object, or null if the object is
+     * null.
+     * 
+     * @param object the object.
+     * @return the string representation.
+     */
+    public static String toString( Object object )
+    {
+        return object != null ? object.toString() : null;
+    }
 }
