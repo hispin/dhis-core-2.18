@@ -628,7 +628,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataelement ALTER COLUMN domaintype SET NOT NULL" );
         executeSql( "update dataelementcategory set datadimension = false where datadimension is null" );
         
-		executeSql( "UPDATE dataset SET dataelementdecoration=false WHERE dataelementdecoration is null" );
+	executeSql( "UPDATE dataset SET dataelementdecoration=false WHERE dataelementdecoration is null" );
 
         executeSql( "alter table validationrulegroup rename column validationgroupid to validationrulegroupid" );
         executeSql( "alter table sqlview rename column viewid to sqlviewid" );
@@ -643,15 +643,16 @@ public class TableAlteror
         executeSql( "ALTER TABLE message ALTER COLUMN messagetext TYPE text" );
         
         executeSql( "delete from usersetting where name = 'dashboardConfig' or name = 'dashboardConfiguration'" );
+        executeSql( "update usersetting set name = 'keyUiLocale' where name = 'currentLocale'" );
+        executeSql( "update usersetting set name = 'keyDbLocale' where name = 'keyLocaleUserSetting'" );
         executeSql( "ALTER TABLE interpretation ALTER COLUMN userid DROP NOT NULL" );
         executeSql( "UPDATE interpretation SET publicaccess='r-------' WHERE publicaccess IS NULL;" );
 
         executeSql( "ALTER TABLE dataset DROP COLUMN symbol" );
+	executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );
 
         upgradeMapViewsToAnalyticalObject();
 
-	executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );
-        
         log.info( "Tables updated" );
     }
 

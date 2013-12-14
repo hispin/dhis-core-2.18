@@ -28,6 +28,21 @@ package org.hisp.dhis.dashboard.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_CHART;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MAP;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_MESSAGES;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_PATIENT_TABULAR_REPORTS;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORTS;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLE;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_REPORT_TABLES;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_RESOURCES;
+import static org.hisp.dhis.dashboard.DashboardItem.TYPE_USERS;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -37,7 +52,6 @@ import org.hisp.dhis.dashboard.DashboardItemStore;
 import org.hisp.dhis.dashboard.DashboardSearchResult;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
-import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.report.Report;
@@ -45,13 +59,6 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.hisp.dhis.common.IdentifiableObjectUtils.getUids;
-import static org.hisp.dhis.dashboard.DashboardItem.*;
 
 /**
  * Note: The remove associations methods must be altered if caching is introduced.

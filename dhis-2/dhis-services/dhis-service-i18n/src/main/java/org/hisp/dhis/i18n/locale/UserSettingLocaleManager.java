@@ -101,7 +101,7 @@ public class UserSettingLocaleManager
 
     private Locale getUserSelectedLocale()
     {
-        return (Locale) userSettingService.getUserSetting( UserSettingService.KEY_UI_LOCALE, null );
+        return (Locale) userSettingService.getUserSetting( UserSettingService.KEY_UI_LOCALE );
     }
 
     public Locale getFallbackLocale()

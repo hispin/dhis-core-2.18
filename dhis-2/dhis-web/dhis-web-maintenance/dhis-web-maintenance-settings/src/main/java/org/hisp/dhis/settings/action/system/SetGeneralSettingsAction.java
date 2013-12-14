@@ -207,8 +207,7 @@ public class SetGeneralSettingsAction
             configuration.setOfflineOrganisationUnitLevel( organisationUnitService
                 .getOrganisationUnitLevel( offlineOrganisationUnitLevel ) );
 
-            // if the level is changed, we need to make sure that the version is
-            // also changed.
+            // When level is changed, make sure that the version is updated
             organisationUnitService.updateVersion();
         }
 

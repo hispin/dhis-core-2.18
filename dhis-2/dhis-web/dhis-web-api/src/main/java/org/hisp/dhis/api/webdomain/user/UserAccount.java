@@ -28,6 +28,9 @@ package org.hisp.dhis.api.webdomain.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -63,6 +66,8 @@ public class UserAccount
 
     private String languages;
 
+    private Map<String, String> settings = new HashMap<String, String>();
+    
     public UserAccount()
     {
     }
@@ -208,5 +213,16 @@ public class UserAccount
     public void setLanguages( String languages )
     {
         this.languages = languages;
+    }
+
+    @JsonProperty
+    public Map<String, String> getSettings()
+    {
+        return settings;
+    }
+
+    public void setSettings( Map<String, String> settings )
+    {
+        this.settings = settings;
     }
 }

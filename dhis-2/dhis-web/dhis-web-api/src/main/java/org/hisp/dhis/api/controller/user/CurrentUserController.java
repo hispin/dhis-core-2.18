@@ -55,11 +55,13 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.system.util.TextUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,6 +78,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.hisp.dhis.user.UserSettingService.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -114,6 +118,9 @@ public class CurrentUserController
     @Autowired
     private ProgramService programService;
 
+    @Autowired
+    private UserSettingService userSettingService;
+    
     @Autowired
     private ContextUtils contextUtils;
 
@@ -200,6 +207,11 @@ public class CurrentUserController
         userAccount.setEducation( currentUser.getEducation() );
         userAccount.setInterests( currentUser.getInterests() );
         userAccount.setLanguages( currentUser.getLanguages() );
+        
+        userAccount.getSettings().put( KEY_UI_LOCALE, TextUtils.toString( userSettingService.getUserSetting( KEY_UI_LOCALE ) ) );
+        userAccount.getSettings().put( KEY_DB_LOCALE, TextUtils.toString( userSettingService.getUserSetting( KEY_DB_LOCALE ) ) );
+        userAccount.getSettings().put( KEY_MESSAGE_EMAIL_NOTIFICATION, TextUtils.toString( userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION ) ) );
+        userAccount.getSettings().put( KEY_MESSAGE_SMS_NOTIFICATION, TextUtils.toString( userSettingService.getUserSetting( KEY_MESSAGE_SMS_NOTIFICATION ) ) );
 
         JacksonUtils.toJson( response.getOutputStream(), userAccount );
     }
