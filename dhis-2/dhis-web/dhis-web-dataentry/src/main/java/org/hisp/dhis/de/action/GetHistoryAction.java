@@ -52,7 +52,7 @@ import java.util.List;
 /**
  * @author Torgeir Lorange Ostby
  */
-public class HistoryAction
+public class GetHistoryAction
     implements Action
 {
     private static final int HISTORY_LENGTH = 13;

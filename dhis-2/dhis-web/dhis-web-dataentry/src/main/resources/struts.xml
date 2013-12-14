@@ -56,7 +56,7 @@
       <param name="requiredAuthorities">F_DATAELEMENT_MINMAX_DELETE</param>
     </action>
 
-    <action name="viewHistory" class="org.hisp.dhis.de.action.HistoryAction">
+    <action name="viewHistory" class="org.hisp.dhis.de.action.GetHistoryAction">
       <result name="success" type="velocity">/dhis-web-dataentry/history.vm</result>
     </action>
 

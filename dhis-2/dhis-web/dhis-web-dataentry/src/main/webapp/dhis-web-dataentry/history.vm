@@ -78,7 +78,7 @@ var currentOptionComboId = '$!{optionComboId}';
 			<div class="historyHeader">$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</div>	
 			#else
 			<div class="historyHeader">$encoder.htmlEncode( $i18n.getString( "dataelement_history" ) )</div>
-			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.uid}&categoryOptionComboId=${dataElementHistory.optionCombo.uid}&organisationUnitId=${dataElementHistory.organisationUnit.id}&periodId=${periodId}"/>
+			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.uid}&categoryOptionComboId=${dataElementHistory.optionCombo.uid}&organisationUnitId=${dataElementHistory.organisationUnit.uid}&periodId=${periodId}"/>
 			#end
         </td>
     </tr>
