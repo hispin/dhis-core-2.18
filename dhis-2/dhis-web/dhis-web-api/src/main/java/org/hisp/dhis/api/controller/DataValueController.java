@@ -83,7 +83,7 @@ public class DataValueController
     
     @PreAuthorize("hasRole('ALL') or hasRole('F_DATAVALUE_ADD')")
     @RequestMapping( method = RequestMethod.POST, produces = "text/plain" )
-    public void saveDataValue( @RequestParam String de, @RequestParam String co, 
+    public void saveDataValue( @RequestParam String de, @RequestParam(required=false) String co, 
         @RequestParam String pe, @RequestParam String ou, 
         @RequestParam(required=false) String value, @RequestParam(required=false) String comment,
         @RequestParam(required=false) boolean followUp, HttpServletResponse response )
@@ -96,7 +96,16 @@ public class DataValueController
             return;
         }
         
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( co );
+        DataElementCategoryOptionCombo categoryOptionCombo = null;
+        
+        if ( co == null )
+        {
+            categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        }
+        else
+        {
+            categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( co );
+        }
         
         if ( categoryOptionCombo == null )
         {
