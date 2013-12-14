@@ -24,12 +24,12 @@ function saveComment()
 function CommentSaver( de, co, ou, pe, comment )
 {
 	var dataValue = {
-	        'de' : de,
-	        'co' : co,
-	        'ou' : ou,
-	        'pe' : pe,
-	        'comment' : comment
-	    };
+	    'de' : de,
+	    'co' : co,
+	    'ou' : ou,
+	    'pe' : pe,
+	    'comment' : comment
+	};
 	
     this.save = function()
     {
@@ -170,23 +170,25 @@ function markValueForFollowup()
 {
 	var periodId = $( '#selectedPeriodId' ).val();
 	
-    $.ajax( { url: 'markValueForFollowup.action',
-    	data:
-    	{
-    		dataElementId: currentDataElementId,
-    		categoryOptionComboId: currentOptionComboId,
-    		periodId: periodId,
-    		organisationUnitId: currentOrganisationUnitId
-    	},
+	var dataValue = {
+	    'de' : currentDataElementId,
+	    'co' : currentOptionComboId,
+	    'ou' : currentOrganisationUnitId,
+	    'pe' : periodId,
+	    'followUp' : true
+	};
+	
+    $.ajax( { url: '../api/dataValues',
+    	data: dataValue,
     	dataType: 'json',
     	success: function( json )
 	    {
-	        if ( json.message == 'marked' )
+	        if ( $( '#followup' ).attr( 'src' ) == '../images/unmarked.png' )
 	        {
 	            $( '#followup' ).attr( 'src', '../images/marked.png' );
 	            $( '#followup' ).attr( 'alt', i18n_unmark_value_for_followup );
 	        }
-	        else if ( json.message == 'unmarked' )
+	        else
 	        {
 	            $( '#followup' ).attr( 'src', '../images/unmarked.png' );
 	            $( '#followup' ).attr( 'alt', i18n_mark_value_for_followup );

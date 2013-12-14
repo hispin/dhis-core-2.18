@@ -86,7 +86,7 @@ public class DataValueController
     public void saveDataValue( @RequestParam String de, @RequestParam String co, 
         @RequestParam String pe, @RequestParam String ou, 
         @RequestParam(required=false) String value, @RequestParam(required=false) String comment,
-        HttpServletResponse response )
+        @RequestParam(required=false) boolean followUp, HttpServletResponse response )
     {
         DataElement dataElement = dataElementService.getDataElement( de );
         
@@ -174,6 +174,11 @@ public class DataValueController
             if ( comment != null )
             {
                 dataValue.setComment( StringUtils.trimToNull( comment ) );
+            }
+            
+            if ( followUp )
+            {
+                dataValue.toggleFollowUp();
             }
             
             dataValue.setTimestamp( now );
