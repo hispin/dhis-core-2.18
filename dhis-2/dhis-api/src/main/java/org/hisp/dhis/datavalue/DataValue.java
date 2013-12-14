@@ -189,6 +189,18 @@ public class DataValue
         return comment != null && !comment.isEmpty();
     }
     
+    public void toggleFollowUp()
+    {
+        if ( this.followup == null )
+        {
+            this.followup = true;
+        }
+        else
+        {
+            this.followup = !this.followup;
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
