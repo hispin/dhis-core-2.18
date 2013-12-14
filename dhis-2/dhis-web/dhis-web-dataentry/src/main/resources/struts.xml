@@ -38,10 +38,8 @@
       <result name="input" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
     </action>
 
-    <action name="saveComment" class="org.hisp.dhis.de.action.SaveCommentAction">
-      <result name="success" type="velocity-json">/dhis-web-dataentry/status.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_DELETE</param>
+    <action name="saveValue" class="org.hisp.dhis.commons.action.NoAction">
+      <param name="requiredAuthorities">F_DATAVALUE_ADD</param>
     </action>
 
     <action name="saveMinMaxLimits" class="org.hisp.dhis.de.action.SaveMinMaxLimitsAction">
@@ -70,7 +68,7 @@
 
     <action name="undoCompleteDataSet" class="org.hisp.dhis.de.action.UndoCompleteDataSetAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATAVALUE_DELETE</param>
+      <param name="requiredAuthorities">F_DATAVALUE_ADD</param>
     </action>
 
     <action name="getValidationViolations" class="org.hisp.dhis.de.action.ValidationAction">
