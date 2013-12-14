@@ -29,7 +29,6 @@ package org.hisp.dhis.dd.action.indicator;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.hisp.dhis.user.UserSettingService.KEY_CURRENT_DATADICTIONARY;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,16 +36,12 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.user.UserSettingService;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: GetIndicatorListAction.java 5573 2008-08-22 03:39:55Z
- *          ch_bharath1 $
  */
 public class GetIndicatorListAction
     extends ActionPagingSupport<Indicator>
@@ -60,20 +55,6 @@ public class GetIndicatorListAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
-    }
-
-    private UserSettingService userSettingService;
-
-    public void setUserSettingService( UserSettingService userSettingService )
-    {
-        this.userSettingService = userSettingService;
-    }
-
-    private DataDictionaryService dataDictionaryService;
-
-    public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
-    {
-        this.dataDictionaryService = dataDictionaryService;
     }
 
     // -------------------------------------------------------------------------
@@ -128,42 +109,11 @@ public class GetIndicatorListAction
 
     public String execute()
     {
-        if ( dataDictionaryId == null ) // None, get current data dictionary
-        {
-            dataDictionaryId = (Integer) userSettingService.getUserSetting( KEY_CURRENT_DATADICTIONARY );
-        }
-        else if ( dataDictionaryId == -1 ) // All, reset current data dictionary
-        {
-            userSettingService.saveUserSetting( KEY_CURRENT_DATADICTIONARY, null );
-            
-            dataDictionaryId = null;
-        }
-        else // Specified, set current data dictionary
-        {
-            userSettingService.saveUserSetting( KEY_CURRENT_DATADICTIONARY, dataDictionaryId );
-        }
-        
-        dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
-
-        Collections.sort( dataDictionaries, IdentifiableObjectNameComparator.INSTANCE );
-
-        // -------------------------------------------------------------------------
-        // Criteria
-        // -------------------------------------------------------------------------
-
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( indicatorService.getIndicatorCountByName( key ) );
             
             indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
-        }
-        else if ( dataDictionaryId != null )
-        {
-            indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators() );
-            
-            this.paging = createPaging( indicators.size() );
-            
-            indicators = getBlockElement( indicators, paging.getStartPos(), paging.getPageSize() );
         }
         else
         {

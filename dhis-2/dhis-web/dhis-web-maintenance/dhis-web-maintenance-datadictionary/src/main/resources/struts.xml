@@ -484,10 +484,6 @@
 
     <!-- DataDictionary -->
 
-    <action name="setCurrentDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.SetCurrentDataDictionaryAction">
-      <result name="success" type="redirect">dataElement.action</result>
-    </action>
-
     <action name="dataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/dataDictionary.vm</param>
