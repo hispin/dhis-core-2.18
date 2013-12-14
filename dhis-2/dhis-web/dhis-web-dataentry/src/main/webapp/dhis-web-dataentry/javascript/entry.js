@@ -272,11 +272,11 @@ function onValueSave( fn )
 // Saver objects
 // -----------------------------------------------------------------------------
 
-function ValueSaver( de, cc, ou, pe, value, fieldId, resultColor )
+function ValueSaver( de, co, ou, pe, value, fieldId, resultColor )
 {
     var dataValue = {
         'de' : de,
-        'cc' : cc,
+        'co' : co,
         'ou' : ou,
         'pe' : pe,
         'value' : value

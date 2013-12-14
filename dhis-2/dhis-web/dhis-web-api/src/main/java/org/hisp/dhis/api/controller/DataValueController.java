@@ -81,7 +81,7 @@ public class DataValueController
     private DataSetService dataSetService;
 
     @RequestMapping( method = RequestMethod.POST, produces = "text/plain" )
-    public void saveDataValue( @RequestParam String de, @RequestParam String cc, 
+    public void saveDataValue( @RequestParam String de, @RequestParam String co, 
         @RequestParam String pe, @RequestParam String ou, @RequestParam String value,
         HttpServletResponse response )
     {
@@ -93,11 +93,11 @@ public class DataValueController
             return;
         }
         
-        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( cc );
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( co );
         
         if ( categoryOptionCombo == null )
         {
-            ContextUtils.conflictResponse( response, "Illegal category option combo identifier: " + cc );
+            ContextUtils.conflictResponse( response, "Illegal category option combo identifier: " + co );
             return;
         }
         

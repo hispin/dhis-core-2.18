@@ -1137,7 +1137,7 @@ function getOfflineDataValueJson( params )
 		var dataValue = dataValues[i];
 		
 		json.dataValues.push( { 
-			'id': dataValue.de + '-' + dataValue.cc,
+			'id': dataValue.de + '-' + dataValue.co,
 			'val': dataValue.value
 		} );
 	}
@@ -1987,7 +1987,7 @@ function StorageManager()
     this.saveDataValue = function( dataValue )
     {
         var id = this.getDataValueIdentifier( dataValue.de, 
-        		dataValue.cc, dataValue.pe, dataValue.ou );
+        		dataValue.co, dataValue.pe, dataValue.ou );
 
         var dataValues = {};
 
@@ -2015,15 +2015,15 @@ function StorageManager()
      * does not exist.
      *
      * @param de the data element identifier.
-     * @param cc the category option combo identifier.
+     * @param co the category option combo identifier.
      * @param pe the period identifier.
      * @param ou the organisation unit identifier.
      * @return the value for the data value with the given arguments, null if
      *         non-existing.
      */
-    this.getDataValue = function( de, cc, pe, ou )
+    this.getDataValue = function( de, co, pe, ou )
     {
-        var id = this.getDataValueIdentifier( de, cc, pe, ou );
+        var id = this.getDataValueIdentifier( de, co, pe, ou );
 
         if ( localStorage[KEY_DATAVALUES] != null )
         {
@@ -2066,7 +2066,7 @@ function StorageManager()
      */
     this.clearDataValueJSON = function( dataValue )
     {
-        this.clearDataValue( dataValue.de, dataValue.cc, dataValue.pe,
+        this.clearDataValue( dataValue.de, dataValue.co, dataValue.pe,
                 dataValue.ou );
     };
 
@@ -2074,13 +2074,13 @@ function StorageManager()
      * Removes the given dataValue from localStorage.
      *
      * @param de the data element identifier.
-     * @param cc the category option combo identifier.
+     * @param co the category option combo identifier.
      * @param pe the period identifier.
      * @param ou the organisation unit identifier.
      */
-    this.clearDataValue = function( de, cc, pe, ou )
+    this.clearDataValue = function( de, co, pe, ou )
     {
-        var id = this.getDataValueIdentifier( de, cc, pe, ou );
+        var id = this.getDataValueIdentifier( de, co, pe, ou );
         var dataValues = this.getAllDataValues();
 
         if ( dataValues != null && dataValues[id] != null )
@@ -2130,9 +2130,9 @@ function StorageManager()
     /**
      * Generates an identifier.
      */
-    this.getDataValueIdentifier = function( de, cc, pe, ou )
+    this.getDataValueIdentifier = function( de, co, pe, ou )
     {
-        return de + '-' + cc + '-' + pe + '-' + ou;
+        return de + '-' + co + '-' + pe + '-' + ou;
     };
 
     /**
