@@ -86,16 +86,16 @@ public class UndoCompleteDataSetAction
         this.periodId = periodId;
     }
 
-    private Integer dataSetId;
+    private String dataSetId;
 
-    public void setDataSetId( Integer dataSetId )
+    public void setDataSetId( String dataSetId )
     {
         this.dataSetId = dataSetId;
     }
 
-    private Integer organisationUnitId;
+    private String organisationUnitId;
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
@@ -129,28 +129,14 @@ public class UndoCompleteDataSetAction
         // Check locked status
         // ---------------------------------------------------------------------
 
-        if ( !multiOrganisationUnit )
+        if ( dataSetService.isLocked( dataSet, period, organisationUnit, null, multiOrganisationUnit ) )
         {
-            if ( dataSetService.isLocked( dataSet, period, organisationUnit, null ) )
-            {
-                return logError( "Entry locked for combination: " + dataSet + ", " + period + ", " + organisationUnit, 2 );
-            }
-        }
-        else
-        {
-            for ( OrganisationUnit ou : children )
-            {
-                if ( ou.getDataSets().contains( dataSet ) && dataSetService.isLocked( dataSet, period, ou, null ) )
-                {
-                    return logError( "Entry locked for combination: " + dataSet + ", " + period + ", " + ou, 2 );
-                }
-            }
+            return logError( "Entry locked: " + dataSet + ", " + period + ", " + organisationUnit, 2 );
         }
 
         // ---------------------------------------------------------------------
         // Un-register as completed dataSet
         // ---------------------------------------------------------------------
-
 
         if ( !multiOrganisationUnit )
         {

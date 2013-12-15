@@ -469,6 +469,30 @@ public class DefaultDataSetService
     }
 
     @Override
+    public boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now, boolean useOrgUnitChildren )
+    {
+        if ( !useOrgUnitChildren )
+        {
+            return isLocked( dataSet, period, organisationUnit, now );
+        }
+        
+        if ( organisationUnit == null || !organisationUnit.hasChild() )
+        {
+            return false;
+        }
+        
+        for ( OrganisationUnit child : organisationUnit.getChildren() )
+        {
+            if ( isLocked( dataSet, period, child, now ) )
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    @Override
     public void mergeWithCurrentUserOrganisationUnits( DataSet dataSet, Collection<OrganisationUnit> mergeOrganisationUnits )
     {
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( dataSet.getSources() );

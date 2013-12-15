@@ -359,6 +359,18 @@ public interface DataSetService
     /**
      * Checks whether the system is locked for data entry for the given input.
      *
+     * @param dataSet            the data set
+     * @param period             Period the period.s
+     * @param organisationUnit   the organisation unit.
+     * @param now                the base date for deciding locked date, current date if null.
+     * @param useOrgUnitChildren whether to check children of the given org unit or the org unit only.
+     * @return true or false indicating whether the system is locked or not.
+     */
+    boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now, boolean useOrgUnitChildren );
+
+    /**
+     * Checks whether the system is locked for data entry for the given input.
+     *
      * @param dataElement      the data element.
      * @param period           the period.
      * @param organisationUnit the organisation unit.
