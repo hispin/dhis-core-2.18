@@ -121,16 +121,16 @@ public class ValidationAction
         this.periodId = periodId;
     }
 
-    private Integer dataSetId;
+    private String dataSetId;
 
-    public void setDataSetId( Integer dataSetId )
+    public void setDataSetId( String dataSetId )
     {
         this.dataSetId = dataSetId;
     }
 
-    private Integer organisationUnitId;
+    private String organisationUnitId;
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
+    public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
