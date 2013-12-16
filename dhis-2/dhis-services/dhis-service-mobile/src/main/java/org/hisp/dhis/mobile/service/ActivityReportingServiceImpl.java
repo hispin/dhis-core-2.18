@@ -100,8 +100,6 @@ import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -153,24 +151,24 @@ public class ActivityReportingServiceImpl
     private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
-    
+
     private CurrentUserService currentUserService;
-    
+
     private MessageService messageService;
-    
+
     private SmsSender smsSender;
-    
+
     private PatientAttributeService patientAttributeService;
-    
+
     private Collection<PatientIdentifierType> patientIdentifierTypes;
 
     private Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes;
-    
+
     private Integer patientId;
-    
+
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
+
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -330,7 +328,7 @@ public class ActivityReportingServiceImpl
             }
         }
 
-        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( ) );
+        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy() );
 
         if ( items.isEmpty() )
         {
@@ -358,7 +356,7 @@ public class ActivityReportingServiceImpl
             }
         }
 
-        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy(  ) );
+        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy() );
 
         if ( items.isEmpty() )
         {
@@ -510,12 +508,9 @@ public class ActivityReportingServiceImpl
             {
                 String patientsInfo = new String();
 
-                DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-
                 for ( Patient each : patients )
                 {
-                    patientsInfo += each.getId() + "/" + each.getName() + "/" + dateFormat.format( each.getBirthDate() )
-                        + "$";
+                    patientsInfo += each.getId() + "/" + each.getName() + "$";
                 }
 
                 throw new NotAllowedException( patientsInfo );
@@ -709,13 +704,14 @@ public class ActivityReportingServiceImpl
                 }
                 if ( mobileProgramStage.isRepeatable() )
                 {
-                    Date nextDate = DateUtils.getDateAfterAddition( new Date(), mobileProgramStage.getStandardInterval() );
-                    
-                    return PROGRAM_STAGE_UPLOADED+"$"+PeriodUtil.dateToString( nextDate );
+                    Date nextDate = DateUtils.getDateAfterAddition( new Date(),
+                        mobileProgramStage.getStandardInterval() );
+
+                    return PROGRAM_STAGE_UPLOADED + "$" + PeriodUtil.dateToString( nextDate );
                 }
                 else
                 {
-                    return PROGRAM_STAGE_UPLOADED;    
+                    return PROGRAM_STAGE_UPLOADED;
                 }
             }
         }
@@ -788,9 +784,9 @@ public class ActivityReportingServiceImpl
         programInstanceService.updateProgramInstance( programInstance );
         patient.getProgramInstances().add( programInstance );
         patientService.updatePatient( patient );
-        
+
         patient = patientService.getPatient( patientId );
-        
+
         return getPatientModel( patient );
     }
 
@@ -835,30 +831,10 @@ public class ActivityReportingServiceImpl
         beneficiary.setId( patient.getId() );
         beneficiary.setName( patient.getName() );
 
-        Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
-        beneficiary.setAge( period.getYears() );
-
         this.setSetting( getSettings() );
 
         if ( setting != null )
         {
-            if ( setting.getGender() )
-            {
-                beneficiary.setGender( patient.getGender() );
-            }
-            if ( setting.getDobtype() )
-            {
-                beneficiary.setDobType( patient.getDobType() );
-            }
-            if ( setting.getBirthdate() )
-            {
-                beneficiary.setBirthDate( patient.getBirthDate() );
-            }
-            if ( setting.getRegistrationdate() )
-            {
-                beneficiary.setRegistrationDate( patient.getRegistrationDate() );
-            }
-
             atts = setting.getPatientAttributes();
             for ( org.hisp.dhis.patient.PatientAttribute each : atts )
             {
@@ -934,8 +910,7 @@ public class ActivityReportingServiceImpl
         {
             patientModel.setName( patient.getName() );
         }
-        Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
-        patientModel.setAge( period.getYears() );
+
         /*
          * DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
          * patientModel.setAge( dateFormat.format( patient.getBirthDate() ) );
@@ -953,24 +928,6 @@ public class ActivityReportingServiceImpl
 
         if ( setting != null )
         {
-            if ( setting.getGender() )
-            {
-                patientModel.setGender( patient.getGender() );
-            }
-            if ( setting.getDobtype() )
-            {
-                patientModel.setDobType( patient.getDobType() );
-            }
-            if ( setting.getBirthdate() && patient.getBirthDate() != null )
-            {
-                DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
-                patientModel.setBirthDate( dateFormat.format( patient.getBirthDate() ) );
-            }
-            if ( setting.getRegistrationdate() )
-            {
-                patientModel.setRegistrationDate( patient.getRegistrationDate() );
-            }
-
             atts = setting.getPatientAttributes();
             for ( org.hisp.dhis.patient.PatientAttribute each : atts )
             {
@@ -1169,7 +1126,7 @@ public class ActivityReportingServiceImpl
 
                 // is repeatable
                 mobileProgramStage.setRepeatable( programStage.getIrregular() );
-                
+
                 if ( programStage.getStandardInterval() == null )
                 {
                     mobileProgramStage.setStandardInterval( 0 );
@@ -1327,11 +1284,11 @@ public class ActivityReportingServiceImpl
                 }
                 else
                 {
-                    System.out.println("program name: "+program.getName());
+                    System.out.println( "program name: " + program.getName() );
                 }
             }
         }
-        System.out.println("final size: "+programs.size());
+        System.out.println( "final size: " + programs.size() );
         return programs;
     }
 
@@ -1372,12 +1329,9 @@ public class ActivityReportingServiceImpl
             {
                 String patientsInfo = new String();
 
-                DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-
                 for ( Patient each : patients )
                 {
-                    patientsInfo += each.getId() + "/" + each.getName() + "/" + dateFormat.format( each.getBirthDate() )
-                        + "$";
+                    patientsInfo += each.getId() + "/" + each.getName() + "$";
                 }
 
                 throw new NotAllowedException( patientsInfo );
@@ -1789,12 +1743,8 @@ public class ActivityReportingServiceImpl
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
 
         patientWeb.setName( patient.getName() );
-        patientWeb.setGender( patient.getGender() );
-        patientWeb.setDobType( patient.getDobType() );
         patientWeb.setPhoneNumber( patient.getPhoneNumber() );
-        patientWeb.setBirthDate( PeriodUtil.stringToDate( patient.getBirthDate() ) );
         patientWeb.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
-        patientWeb.setRegistrationDate( new Date() );
 
         Set<org.hisp.dhis.patient.PatientIdentifier> patientIdentifierSet = new HashSet<org.hisp.dhis.patient.PatientIdentifier>();
         Set<org.hisp.dhis.patient.PatientAttribute> patientAttributeSet = new HashSet<org.hisp.dhis.patient.PatientAttribute>();
@@ -1925,11 +1875,8 @@ public class ActivityReportingServiceImpl
         {
             String patientsInfo = new String();
 
-            DateFormat dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
-
             int i = 1;
             String name = "";
-            String DOB = "";
             for ( Patient each : patients )
             {
                 if ( i > 10 )
@@ -1946,15 +1893,7 @@ public class ActivityReportingServiceImpl
                     name = "unknown";
                 }
 
-                if ( each.getBirthDate() != null )
-                {
-                    DOB = dateFormat.format( each.getBirthDate() );
-                }
-                else
-                {
-                    DOB = "unknown";
-                }
-                patientsInfo += each.getId() + "/" + name + ", DOB: " + DOB + "$";
+                patientsInfo += each.getId() + "/" + name + "$";
                 i++;
             }
 
@@ -1981,20 +1920,20 @@ public class ActivityReportingServiceImpl
         throws NotAllowedException
     {
         String[] searchEventInfosArray = searchEventInfos.split( "-" );
-        
+
         int programStageStatus = 0;
-        
-        if ( searchEventInfosArray[1].equalsIgnoreCase("Scheduled in future") )
+
+        if ( searchEventInfosArray[1].equalsIgnoreCase( "Scheduled in future" ) )
         {
             programStageStatus = ProgramStageInstance.FUTURE_VISIT_STATUS;
         }
-        else if ( searchEventInfosArray[1].equalsIgnoreCase("Overdue") )
+        else if ( searchEventInfosArray[1].equalsIgnoreCase( "Overdue" ) )
         {
             programStageStatus = ProgramStageInstance.LATE_VISIT_STATUS;
         }
-        
+
         boolean followUp;
-        
+
         if ( searchEventInfosArray[2].equalsIgnoreCase( "true" ) )
         {
             followUp = true;
@@ -2003,9 +1942,9 @@ public class ActivityReportingServiceImpl
         {
             followUp = false;
         }
-            
+
         String eventsInfo = "";
-        
+
         DateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd" );
 
         List<String> searchTextList = new ArrayList<String>();
@@ -2114,43 +2053,46 @@ public class ActivityReportingServiceImpl
             return notification;
         }
     }
-    
-    
+
     @Override
     public org.hisp.dhis.api.mobile.model.LWUITmodel.Patient generateRepeatableEvent( int orgUnitId, String eventInfo )
         throws NotAllowedException
     {
-        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId ); 
-        
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+
         String mobileProgramStageId = eventInfo.substring( 0, eventInfo.indexOf( "$" ) );
-        
-        String nextDueDate = eventInfo.substring( eventInfo.indexOf( "$" )+1, eventInfo.length() );
-        
-        ProgramStageInstance oldProgramStageIntance = programStageInstanceService.getProgramStageInstance( Integer.valueOf( mobileProgramStageId ) );
-        
+
+        String nextDueDate = eventInfo.substring( eventInfo.indexOf( "$" ) + 1, eventInfo.length() );
+
+        ProgramStageInstance oldProgramStageIntance = programStageInstanceService.getProgramStageInstance( Integer
+            .valueOf( mobileProgramStageId ) );
+
         ProgramInstance programInstance = oldProgramStageIntance.getProgramInstance();
-        
-        ProgramStageInstance newProgramStageInstance = new ProgramStageInstance( programInstance, oldProgramStageIntance.getProgramStage() );
-        
+
+        ProgramStageInstance newProgramStageInstance = new ProgramStageInstance( programInstance,
+            oldProgramStageIntance.getProgramStage() );
+
         newProgramStageInstance.setDueDate( PeriodUtil.stringToDate( nextDueDate ) );
-        
+
         newProgramStageInstance.setOrganisationUnit( orgUnit );
-        
+
         programInstance.getProgramStageInstances().add( newProgramStageInstance );
-        
-        List<ProgramStageInstance> proStageInstanceList = new ArrayList<ProgramStageInstance>( programInstance.getProgramStageInstances() );
-        
+
+        List<ProgramStageInstance> proStageInstanceList = new ArrayList<ProgramStageInstance>(
+            programInstance.getProgramStageInstances() );
+
         Collections.sort( proStageInstanceList, new ProgramStageInstanceVisitDateComparator() );
-        
+
         programInstance.getProgramStageInstances().removeAll( proStageInstanceList );
         programInstance.getProgramStageInstances().addAll( proStageInstanceList );
-        
+
         programStageInstanceService.addProgramStageInstance( newProgramStageInstance );
-        
+
         programInstanceService.updateProgramInstance( programInstance );
-        
-        org.hisp.dhis.api.mobile.model.LWUITmodel.Patient mobilePatient = getPatientModel( patientService.getPatient( programInstance.getPatient().getId() ));
-        
+
+        org.hisp.dhis.api.mobile.model.LWUITmodel.Patient mobilePatient = getPatientModel( patientService
+            .getPatient( programInstance.getPatient().getId() ) );
+
         return mobilePatient;
     }
 

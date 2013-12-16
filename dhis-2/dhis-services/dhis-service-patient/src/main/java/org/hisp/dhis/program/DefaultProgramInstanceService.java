@@ -282,31 +282,6 @@ public class DefaultProgramInstanceService
         // Add fixed attribues
         // ---------------------------------------------------------------------
 
-        if ( patient.getGender() != null )
-        {
-            attrGrid.addRow();
-            attrGrid.addValue( i18n.getString( "gender" ) );
-            attrGrid.addValue( i18n.getString( patient.getGender() ) );
-        }
-
-        if ( patient.getBirthDate() != null )
-        {
-            attrGrid.addRow();
-            attrGrid.addValue( i18n.getString( "date_of_birth" ) );
-            attrGrid.addValue( format.formatDate( patient.getBirthDate() ) );
-
-            attrGrid.addRow();
-            attrGrid.addValue( i18n.getString( "age" ) );
-            attrGrid.addValue( patient.getAge() );
-        }
-
-        if ( patient.getDobType() != null )
-        {
-            attrGrid.addRow();
-            attrGrid.addValue( i18n.getString( "dob_type" ) );
-            attrGrid.addValue( i18n.getString( patient.getDobType() + "" ) );
-        }
-
         attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "phoneNumber" ) );
         attrGrid
@@ -542,7 +517,7 @@ public class DefaultProgramInstanceService
     {
         return programInstanceStore.getByStatus( status, program, orgunitIds, startDate, endDate );
     }
-    
+
     public Collection<SchedulingProgramObject> getScheduleMesssages()
     {
         Collection<SchedulingProgramObject> result = programInstanceStore
@@ -607,16 +582,6 @@ public class DefaultProgramInstanceService
     public ProgramInstance enrollPatient( Patient patient, Program program, Date enrollmentDate, Date dateOfIncident,
         OrganisationUnit organisationUnit, I18nFormat format )
     {
-        if ( enrollmentDate == null )
-        {
-            enrollmentDate = program.getUseBirthDateAsIncidentDate() ? patient.getBirthDate() : new Date();
-        }
-
-        if ( dateOfIncident == null )
-        {
-            dateOfIncident = program.getUseBirthDateAsIncidentDate() ? patient.getBirthDate() : enrollmentDate;
-        }
-
         // ---------------------------------------------------------------------
         // Add program instance
         // ---------------------------------------------------------------------
@@ -624,10 +589,26 @@ public class DefaultProgramInstanceService
         ProgramInstance programInstance = new ProgramInstance();
 
         programInstance.enrollPatient( patient, program );
-        programInstance.setEnrollmentDate( enrollmentDate );
-        programInstance.setDateOfIncident( dateOfIncident );
-        programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
 
+        if ( enrollmentDate != null )
+        {
+            programInstance.setEnrollmentDate( enrollmentDate );
+        }
+        else
+        {
+            programInstance.setEnrollmentDate( new Date() );
+        }
+
+        if ( dateOfIncident != null )
+        {
+            programInstance.setDateOfIncident( dateOfIncident );
+        }
+        else
+        {
+            programInstance.setDateOfIncident( new Date() );
+        }
+
+        programInstance.setStatus( ProgramInstance.STATUS_ACTIVE );
         addProgramInstance( programInstance );
 
         // ---------------------------------------------------------------------
@@ -637,10 +618,10 @@ public class DefaultProgramInstanceService
         for ( ProgramStage programStage : program.getProgramStages() )
         {
             if ( programStage.getAutoGenerateEvent() )
-            {
+            {  
                 ProgramStageInstance programStageInstance = generateEvent( programInstance, programStage,
-                    enrollmentDate, dateOfIncident, organisationUnit );
-
+                    programInstance.getEnrollmentDate(), programInstance.getDateOfIncident(), organisationUnit );
+                
                 if ( programStageInstance != null )
                 {
                     programStageInstanceService.addProgramStageInstance( programStageInstance );

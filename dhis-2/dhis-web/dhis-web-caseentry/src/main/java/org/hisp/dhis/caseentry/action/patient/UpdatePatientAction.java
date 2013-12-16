@@ -28,13 +28,15 @@ package org.hisp.dhis.caseentry.action.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -50,10 +52,7 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserService;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -66,8 +65,6 @@ public class UpdatePatientAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private I18nFormat format;
-
     private PatientService patientService;
 
     private PatientAttributeService patientAttributeService;
@@ -77,8 +74,6 @@ public class UpdatePatientAction
     private PatientIdentifierService patientIdentifierService;
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    private OrganisationUnitSelectionManager selectionManager;
 
     private PatientAttributeOptionService patientAttributeOptionService;
 
@@ -99,21 +94,7 @@ public class UpdatePatientAction
 
     private String fullName;
 
-    private String birthDate;
-
-    private boolean isDead;
-
-    private String deathDate;
-
-    private Integer age;
-
-    private Boolean verified;
-
-    private String gender;
-
     private String[] phoneNumber;
-
-    private boolean underAge;
 
     private Integer representativeId;
 
@@ -134,11 +115,8 @@ public class UpdatePatientAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patient = patientService.getPatient( id );
-
-        verified = (verified == null) ? false : verified;
 
         // ---------------------------------------------------------------------
         // Set FullName
@@ -167,46 +145,10 @@ public class UpdatePatientAction
             phone = (phone.isEmpty()) ? null : phone.substring( 0, phone.length() - 1 );
             patient.setPhoneNumber( phone );
         }
-        
-        patient.setGender( gender );
-        patient.setIsDead( false );
-        patient.setUnderAge( underAge );
-        patient.setOrganisationUnit( organisationUnit );
-        patient.setIsDead( isDead );
-
-        if ( deathDate != null )
-        {
-            deathDate = deathDate.trim();
-            patient.setDeathDate( format.parseDate( deathDate ) );
-        }
 
         if ( healthWorker != null )
         {
-            patient.setAssociate(  userService.getUser( healthWorker ) );
-        }
-
-        if ( birthDate != null || age != null )
-        {
-            verified = (verified == null) ? false : verified;
-
-            Character dobType = (verified) ? Patient.DOB_TYPE_VERIFIED : Patient.DOB_TYPE_DECLARED;
-
-            if ( !verified && age != null )
-            {
-                dobType = 'A';
-            }
-
-            if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
-            {
-                birthDate = birthDate.trim();
-                patient.setBirthDate( format.parseDate( birthDate ) );
-            }
-            else
-            {
-                patient.setBirthDateFromAge( age.intValue(), Patient.AGE_TYPE_YEAR );
-            }
-
-            patient.setDobType( dobType );
+            patient.setAssociate( userService.getUser( healthWorker ) );
         }
 
         // -------------------------------------------------------------------------------------
@@ -351,11 +293,6 @@ public class UpdatePatientAction
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
@@ -376,39 +313,14 @@ public class UpdatePatientAction
         this.patientIdentifierService = patientIdentifierService;
     }
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
     public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public void setIsDead( boolean isDead )
-    {
-        this.isDead = isDead;
-    }
-
-    public void setDeathDate( String deathDate )
-    {
-        this.deathDate = deathDate;
-    }
-
     public void setFullName( String fullName )
     {
         this.fullName = fullName;
-    }
-
-    public void setBirthDate( String birthDate )
-    {
-        this.birthDate = birthDate;
-    }
-
-    public void setGender( String gender )
-    {
-        this.gender = gender;
     }
 
     public void setPhoneNumber( String[] phoneNumber )
@@ -421,19 +333,9 @@ public class UpdatePatientAction
         return patient;
     }
 
-    public void setAge( Integer age )
-    {
-        this.age = age;
-    }
-
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
-    }
-
-    public void setUnderAge( boolean underAge )
-    {
-        this.underAge = underAge;
     }
 
     public void setRepresentativeId( Integer representativeId )
@@ -444,11 +346,6 @@ public class UpdatePatientAction
     public void setRelationshipTypeId( Integer relationshipTypeId )
     {
         this.relationshipTypeId = relationshipTypeId;
-    }
-
-    public void setVerified( Boolean verified )
-    {
-        this.verified = verified;
     }
 
 }

@@ -219,7 +219,8 @@ public class SaveIdentifierAndAttributeAction
         String value = null;
 
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
-
+        patient.getAttributeValues().clear();
+        
         PatientAttributeValue attributeValue = null;
 
         if ( attributes != null && attributes.size() > 0 )
@@ -258,6 +259,7 @@ public class SaveIdentifierAndAttributeAction
                             attributeValue.setValue( value.trim() );
                         }
                         patientAttributeValueService.savePatientAttributeValue( attributeValue );
+                        patient.getAttributeValues().add( attributeValue );
                     }
                     else
                     {
@@ -280,6 +282,7 @@ public class SaveIdentifierAndAttributeAction
                             attributeValue.setValue( value.trim() );
                         }
                         patientAttributeValueService.updatePatientAttributeValue( attributeValue );
+                        patient.getAttributeValues().add( attributeValue );
                     }
                 }
                 else if ( attributeValue != null )

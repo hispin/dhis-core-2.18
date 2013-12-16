@@ -33,7 +33,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -52,7 +51,6 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +117,7 @@ public class PatientServiceTest
     {
         organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
-        
+
         OrganisationUnit organisationUnitB = createOrganisationUnit( 'B' );
         organisationUnitService.addOrganisationUnit( organisationUnitB );
 
@@ -129,10 +127,10 @@ public class PatientServiceTest
         patientAttribute = createPatientAttribute( 'A' );
         attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
 
-        patientA1 = createPatient( 'A', "F", organisationUnit );
-        patientA2 = createPatient( 'A', "F", organisationUnitB );
+        patientA1 = createPatient( 'A', organisationUnit );
+        patientA2 = createPatient( 'A', organisationUnitB );
         patientA3 = createPatient( 'A', organisationUnit, patientIdentifierType );
-        patientB1 = createPatient( 'B', "M", organisationUnit );
+        patientB1 = createPatient( 'B', organisationUnit );
         patientB2 = createPatient( 'B', organisationUnit );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
@@ -215,20 +213,6 @@ public class PatientServiceTest
     }
 
     @Test
-    public void testGetByNameGenderBirthdate()
-    {
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientA2 );
-
-        Collection<Patient> patients = patientService.getPatients( "NameA", patientA1.getBirthDate(),
-            patientA1.getGender() );
-
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientA1 ) );
-        assertTrue( patients.contains( patientA2 ) );
-    }
-
-    @Test
     public void testGetPatientsByNames()
     {
         patientService.savePatient( patientA1 );
@@ -292,7 +276,7 @@ public class PatientServiceTest
     public void testGetPatientsbyOuProgram()
     {
         programService.addProgram( programA );
-        
+
         patientService.savePatient( patientA1 );
         patientService.savePatient( patientA2 );
         patientService.savePatient( patientA3 );
@@ -333,12 +317,12 @@ public class PatientServiceTest
         patientAttributeValues.add( attributeValue );
 
         patientService.createPatient( patientA3, null, null, patientAttributeValues );
-        
+
         Collection<Patient> patients = patientService.getPatient( null, attributeId, "AttributeA" );
 
         assertEquals( 1, patients.size() );
         assertTrue( patients.contains( patientA3 ) );
-        
+
         Patient patient = patients.iterator().next();
         assertEquals( 1, patient.getAttributeValues().size() );
         assertTrue( patient.getAttributeValues().contains( attributeValue ) );
@@ -416,7 +400,6 @@ public class PatientServiceTest
         RelationshipType relationshipType = createRelationshipType( 'A' );
         int relationshipTypeId = relationshipTypeService.saveRelationshipType( relationshipType );
 
-        patientA1.setUnderAge( true );
         PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA1, patientAttribute );
         Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
         patientAttributeValues.add( attributeValue );
@@ -433,7 +416,6 @@ public class PatientServiceTest
         RelationshipType relationshipType = createRelationshipType( 'A' );
         int relationshipTypeId = relationshipTypeService.saveRelationshipType( relationshipType );
 
-        patientA3.setUnderAge( true );
         patientA3.setName( "B" );
         PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA3, patientAttribute );
         Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
@@ -442,10 +424,11 @@ public class PatientServiceTest
         assertNotNull( patientService.getPatient( idA ) );
 
         attributeValue.setValue( "AttributeB" );
-        List<PatientAttributeValue> attributeValues = new ArrayList<PatientAttributeValue>(); //TODO use set
+        List<PatientAttributeValue> attributeValues = new ArrayList<PatientAttributeValue>();
         attributeValues.add( attributeValue );
 
-        patientService.updatePatient( patientA3, idB, relationshipTypeId, attributeValues, new ArrayList<PatientAttributeValue>(), new ArrayList<PatientAttributeValue>() );
+        patientService.updatePatient( patientA3, idB, relationshipTypeId, attributeValues,
+            new ArrayList<PatientAttributeValue>(), new ArrayList<PatientAttributeValue>() );
         assertEquals( "B", patientService.getPatient( idA ).getName() );
     }
 
@@ -614,43 +597,4 @@ public class PatientServiceTest
         assertTrue( patients.contains( patientB2 ) );
     }
 
-    @Test
-    public void testGetRegistrationOrgunitIds()
-    {
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientB1 );
-        patientService.savePatient( patientB2 );
-
-        Calendar yesterday = Calendar.getInstance();
-        yesterday.add( Calendar.DATE, -1 );
-        Calendar tomorrow = Calendar.getInstance();
-        tomorrow.add( Calendar.DATE, 1 );
-
-        Collection<Integer> orgunitIds = patientService.getRegistrationOrgunitIds( yesterday.getTime(),
-            tomorrow.getTime() );
-
-        assertEquals( 1, orgunitIds.size() );
-        assertEquals( organisationUnit.getId(), orgunitIds.iterator().next().intValue() );
-    }
-
-    @Test
-    public void testValidatePatient()
-    {
-        programService.addProgram( programA );
-
-        ValidationCriteria validationCriteria = createValidationCriteria( 'A', "gender", 0, "F" );
-        validationCriteriaService.saveValidationCriteria( validationCriteria );
-
-        programA.getPatientValidationCriteria().add( validationCriteria );
-        programService.updateProgram( programA );
-
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientB1 );
-
-        int validatePatientA1 = patientService.validatePatient( patientA1, programA );
-        int validatePatientB1 = patientService.validatePatient( patientB1, programA );
-
-        assertEquals( 0, validatePatientA1 );
-        assertEquals( 2, validatePatientB1 );
-    }
 }

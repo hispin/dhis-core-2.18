@@ -107,10 +107,10 @@ public class RegistrationSingleEventServiceTest
         manager.save( organisationUnitA );
         manager.save( organisationUnitB );
 
-        maleA = createPatient( 'A', Patient.MALE, organisationUnitA );
-        maleB = createPatient( 'B', Patient.MALE, organisationUnitB );
-        femaleA = createPatient( 'C', Patient.FEMALE, organisationUnitA );
-        femaleB = createPatient( 'D', Patient.FEMALE, organisationUnitB );
+        maleA = createPatient( 'A',  organisationUnitA );
+        maleB = createPatient( 'B',  organisationUnitB );
+        femaleA = createPatient( 'C',  organisationUnitA );
+        femaleB = createPatient( 'D', organisationUnitB );
 
         manager.save( maleA );
         manager.save( maleB );

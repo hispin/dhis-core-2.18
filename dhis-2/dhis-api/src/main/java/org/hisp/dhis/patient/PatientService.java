@@ -28,17 +28,16 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -104,16 +103,6 @@ public interface PatientService
     Collection<Patient> getAllPatients();
 
     /**
-     * Retrieve patients who is the same name, birthdate and gender
-     * 
-     * @param name
-     * @param birthDate
-     * @param gender
-     * @return Patient List
-     * **/
-    Collection<Patient> getPatients( String name, Date birthdate, String gender );
-
-    /**
      * Retrieve patients by full name (performs partial search )
      * 
      * @param name fullName
@@ -171,7 +160,7 @@ public interface PatientService
      * @return
      */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program );
-    
+
     /**
      * Retrieve patients base on organisationUnit and identifier value name
      * 
@@ -426,16 +415,6 @@ public interface PatientService
      * @return List of patient
      */
     Collection<Patient> getPatientByFullname( String fullName, OrganisationUnit organisationUnit );
-
-    /**
-     * Get ids of orgunits where patient registered in a certain period
-     * 
-     * @param startDate Start date
-     * @param endDate End date
-     * 
-     * @return List of patient
-     */
-    Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate );
 
     /**
      * Get events of patients who meet the criteria for searching

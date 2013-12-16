@@ -122,8 +122,6 @@ public class LoadDataElementsAction
             ProgramStage programStage = programStageService.getProgramStage( programStageId );
             psDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
             program = programStage.getProgram();
-            
-            System.out.println("psd " + psDataElements.size());
         }
         else if ( sectionId != null )
         {

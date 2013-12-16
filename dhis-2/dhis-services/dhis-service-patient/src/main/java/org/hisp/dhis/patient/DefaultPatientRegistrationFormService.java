@@ -218,20 +218,8 @@ public class DefaultPatientRegistrationFormService
                     value = suggestedMarcher.group( 2 );
                 }
 
-                String dobType = "";
-                if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_BIRTHDATE ) )
-                {
-                    hasBirthdate = true;
-                    dobType = DOB_FIELD;
-                }
-                else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_AGE ) )
-                {
-                    hasAge = true;
-                    dobType = DOB_FIELD;
-                }
-
-                inputHtml = dobType + getFixedAttributeField( inputHtml, fixedAttr, value.toString(), healthWorkers, i18n,
-                    index, hidden, style );
+                inputHtml = getFixedAttributeField( inputHtml, fixedAttr, value.toString(), healthWorkers, i18n, index,
+                    hidden, style );
             }
             else if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -367,7 +355,7 @@ public class DefaultPatientRegistrationFormService
         {
             dobType = "<input type=\'hidden\' id=\'dobType\' name=\"dobType\" value=\'A\'>";
         }
-        
+
         entryForm = entryForm.replaceFirst( DOB_FIELD, dobType );
         entryForm = entryForm.replaceAll( DOB_FIELD, "" );
 
@@ -455,101 +443,11 @@ public class DefaultPatientRegistrationFormService
     private String getFixedAttributeField( String inputHtml, String fixedAttr, String value,
         Collection<User> healthWorkers, I18n i18n, int index, String hidden, String style )
     {
-       
         inputHtml = TAG_OPEN + "input id=\"" + fixedAttr + "\" name=\"" + fixedAttr + "\" tabindex=\"" + index
             + "\" value=\"" + value + "\"  style=\"" + style + "\"";
 
-        // Fullname fields
-        if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_FULLNAME ) )
-        {
-            inputHtml += " class=\"{validate:{required:true, rangelength:[3,50]}}\" " + hidden + " " + TAG_CLOSE;
-        }
-
-        // Phone number fields
-        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_PHONE_NUMBER ) )
-        {
-            inputHtml += " class=\"{validate:{phone:true}}\" " + hidden + " " + TAG_CLOSE;
-            inputHtml += " <input type=\"button\" value=\"+\" style=\"width:20px;\" class=\"phoneNumberTR\" onclick=\"addCustomPhoneNumberField(\'\');\" />";
-        }
-
-        // Age fields
-        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_AGE ) )
-        {
-            inputHtml += " class=\"{validate:{number:true}}\" " + hidden + " " + TAG_CLOSE;
-        }
-
-        // Gender selector
-        if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_GENDER ) )
-        {
-            inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >";
-
-            if ( value.equals( "" ) || value.equals( Patient.FEMALE ) )
-            {
-                inputHtml += "<option value=\"M\" >" + i18n.getString( "male" ) + "</option>";
-                inputHtml += "<option value=\"F\" selected >" + i18n.getString( "female" ) + "</option>";
-                inputHtml += "<option value=\"T\">" + i18n.getString( "transgender" ) + "</option>";
-            }
-            else if ( value.equals( Patient.MALE ) )
-            {
-                inputHtml += "<option value=\"M\" selected >" + i18n.getString( "male" ) + "</option>";
-                inputHtml += "<option value=\"F\">" + i18n.getString( "female" ) + "</option>";
-                inputHtml += "<option value=\"T\">" + i18n.getString( "transgender" ) + "</option>";
-            }
-            else if ( value.equals( Patient.TRANSGENDER ) )
-            {
-                inputHtml += "<option value=\"M\">" + i18n.getString( "male" ) + "</option>";
-                inputHtml += "<option value=\"F\">" + i18n.getString( "female" ) + "</option>";
-                inputHtml += "<option value=\"T\" selected >" + i18n.getString( "transgender" ) + "</option>";
-            }
-            inputHtml += "</select>";
-        }
-
-        // Date field
-        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_BIRTHDATE )
-            || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_DEATH_DATE )
-            || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_REGISTRATION_DATE ) )
-        {
-            inputHtml += " class='" + hidden + "' " + TAG_CLOSE;
-            if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_BIRTHDATE )
-                || fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_REGISTRATION_DATE ) )
-            {
-                inputHtml += "<script>datePickerValid(\"" + fixedAttr + "\", true);</script>";
-            }
-            else
-            {
-                inputHtml += "<script>datePickerValid(\"" + fixedAttr + "\", false);</script>";
-            }
-        }
-
-        // DobType field
-        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_DOB_TYPE ) )
-        {
-            inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >";
-
-            if ( value.equals( "" ) || value.equals( Patient.DOB_TYPE_VERIFIED + "" ) )
-            {
-                inputHtml += "<option value=\"V\" selected >" + i18n.getString( "verified" ) + "</option>";
-                inputHtml += "<option value=\"D\">" + i18n.getString( "declared" ) + "</option>";
-                inputHtml += "<option value=\"A\">" + i18n.getString( "approximated" ) + "</option>";
-            }
-            else if ( value.equals( Patient.DOB_TYPE_DECLARED + "" ) )
-            {
-                inputHtml += "<option value=\"V\">" + i18n.getString( "verified" ) + "</option>";
-                inputHtml += "<option value=\"D\" selected >" + i18n.getString( "declared" ) + "</option>";
-                inputHtml += "<option value=\"A\">" + i18n.getString( "approximated" ) + "</option>";
-            }
-            else if ( value.equals( Patient.DOB_TYPE_APPROXIMATED + "" ) )
-            {
-                inputHtml += "<option value=\"V\">" + i18n.getString( "verified" ) + "</option>";
-                inputHtml += "<option value=\"D\">" + i18n.getString( "declared" ) + "</option>";
-                inputHtml += "<option value=\"A\" selected >" + i18n.getString( "approximated" ) + "</option>";
-            }
-
-            inputHtml += "</select>";
-        }
-
         // Health-worker field
-        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_ASSOCIATE ) )
+        if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_ASSOCIATE ) )
         {
             inputHtml = inputHtml.replaceFirst( "input", "select" ) + " class='" + hidden + "' >";
             inputHtml += "<option value=\"\" selected >" + i18n.getString( "please_select" ) + "</option>";
@@ -566,28 +464,11 @@ public class DefaultPatientRegistrationFormService
             inputHtml += "</select>";
         }
 
-        // IsDead field
-        else if ( fixedAttr.equals( PatientRegistrationForm.FIXED_ATTRIBUTE_IS_DEAD ) )
-        {
-            inputHtml += " type='checkbox' class='" + hidden + "' ";
-
-            if ( value.equals( "true" ) )
-            {
-                inputHtml += " checked ";
-            }
-
-            inputHtml += TAG_CLOSE;
-        }
-
         return inputHtml;
     }
 
     private Object getValueFromPatient( String property, Patient patient )
     {
-        if ( property.equals( Patient.FIXED_ATTR_AGE ) )
-        {
-            property = Patient.FIXED_ATTR_INTEGER_AGE;
-        }
         property = StringUtils.capitalize( property );
 
         try

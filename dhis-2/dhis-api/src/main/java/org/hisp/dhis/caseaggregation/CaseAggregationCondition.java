@@ -66,8 +66,6 @@ public class CaseAggregationCondition
 
     public static String OBJECT_PATIENT_ATTRIBUTE = "CA";
 
-    public static String OBJECT_PATIENT_PROPERTY = "CP";
-
     public static String OBJECT_PROGRAM_PROPERTY = "PP";
 
     public static String OBJECT_PROGRAM = "PG";
@@ -97,8 +95,8 @@ public class CaseAggregationCondition
     public static final String regExp = "\\[(" + OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE + "|" + OBJECT_PATIENT + "|"
         + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE + "|"
         + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|"
-        + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")"
-        + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)" + "\\]";
+        + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+["
+        + SEPARATOR_ID + "[a-zA-Z0-9]*]*)" + "\\]";
 
     public static final String dataelementRegExp = MINUS_OPERATOR + "{1}\\s*\\(\\s*(\\["
         + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+" + SEPARATOR_ID + "[0-9]+" + SEPARATOR_ID

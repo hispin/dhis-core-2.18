@@ -102,7 +102,6 @@ public class SaveRepresentativeAction
 
         patient = patientService.getPatient( patientId );
         patient.setRepresentative( representative );
-        patient.setUnderAge( true );
 
         patientService.updatePatient( patient );
 

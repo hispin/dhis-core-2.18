@@ -49,7 +49,6 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,10 +120,10 @@ public class PatientStoreTest
         patientAttribute = createPatientAttribute( 'A' );
         attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
 
-        patientA1 = createPatient( 'A', "F", organisationUnit );
-        patientA2 = createPatient( 'A', "F", organisationUnitB );
+        patientA1 = createPatient( 'A', organisationUnit );
+        patientA2 = createPatient( 'A', organisationUnitB );
         patientA3 = createPatient( 'A', organisationUnit, patientIdentifierType );
-        patientB1 = createPatient( 'B', "M", organisationUnit );
+        patientB1 = createPatient( 'B', organisationUnit );
         patientB2 = createPatient( 'B', organisationUnit );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
@@ -271,19 +270,6 @@ public class PatientStoreTest
     }
 
     @Test
-    public void testGetByNameGenderBirthdate()
-    {
-        patientStore.save( patientA1 );
-        patientStore.save( patientA2 );
-
-        Collection<Patient> patients = patientStore.get( "NameA", patientA1.getBirthDate(), patientA1.getGender() );
-
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientA1 ) );
-        assertTrue( patients.contains( patientA2 ) );
-    }
-
-    @Test
     public void testGetByOrgUnitAndNameLike()
     {
         patientStore.save( patientA1 );
@@ -354,27 +340,6 @@ public class PatientStoreTest
     }
 
     @Test
-    public void testValidate()
-    {
-        programService.addProgram( programA );
-
-        ValidationCriteria validationCriteria = createValidationCriteria( 'A', "gender", 0, "F" );
-        validationCriteriaService.saveValidationCriteria( validationCriteria );
-
-        programA.getPatientValidationCriteria().add( validationCriteria );
-        programService.updateProgram( programA );
-
-        patientStore.save( patientA1 );
-        patientStore.save( patientB1 );
-
-        int validatePatientA1 = patientStore.validate( patientA1, programA );
-        int validatePatientB1 = patientStore.validate( patientB1, programA );
-
-        assertEquals( 0, validatePatientA1 );
-        assertEquals( 2, validatePatientB1 );
-    }
-    
-    @Test
     public void testQuery()
     {
         patientStore.save( patientA1 );
@@ -382,11 +347,11 @@ public class PatientStoreTest
         patientStore.save( patientA3 );
         patientStore.save( patientB1 );
         patientStore.save( patientB2 );
-        
+
         TrackedEntityQueryParams params = new TrackedEntityQueryParams();
-        
+
         List<Patient> list = patientStore.query( params );
-        
+
         assertEquals( 5, list.size() );
     }
 }

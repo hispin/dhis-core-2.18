@@ -1005,27 +1005,7 @@ public abstract class DhisConvenienceTest
         patient.setAutoFields();
 
         patient.setName( "Name" + uniqueChar );
-        patient.setGender( Patient.MALE );
-        patient.setDobType( Patient.DOB_TYPE_VERIFIED );
-        patient.setBirthDate( getDate( 1970, 1, 1 ) );
         patient.setPhoneNumber( "123456789" );
-        patient.setRegistrationDate( new Date() );
-        patient.setOrganisationUnit( organisationUnit );
-
-        return patient;
-    }
-
-    public static Patient createPatient( char uniqueChar, String gender, OrganisationUnit organisationUnit )
-    {
-        Patient patient = new Patient();
-        patient.setAutoFields();
-
-        patient.setName( "Name" + uniqueChar );
-        patient.setGender( gender );
-        patient.setDobType( Patient.DOB_TYPE_VERIFIED );
-        patient.setBirthDate( getDate( 1970, 1, 1 ) );
-        patient.setPhoneNumber( "123456789" );
-        patient.setRegistrationDate( new Date() );
         patient.setOrganisationUnit( organisationUnit );
 
         return patient;
@@ -1038,10 +1018,6 @@ public abstract class DhisConvenienceTest
         patient.setAutoFields();
 
         patient.setName( "Name" + uniqueChar );
-        patient.setGender( Patient.MALE );
-        patient.setDobType( Patient.DOB_TYPE_VERIFIED );
-        patient.setBirthDate( getDate( 1970, 1, 1 ) );
-        patient.setRegistrationDate( new Date() );
         patient.setOrganisationUnit( organisationUnit );
 
         PatientIdentifier pIdentifier = new PatientIdentifier();

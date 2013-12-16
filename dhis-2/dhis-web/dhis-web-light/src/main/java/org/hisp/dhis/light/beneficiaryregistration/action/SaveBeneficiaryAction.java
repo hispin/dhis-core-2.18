@@ -29,7 +29,6 @@ package org.hisp.dhis.light.beneficiaryregistration.action;
  */
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -51,14 +50,10 @@ import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.util.ContextUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -358,35 +353,6 @@ public class SaveBeneficiaryAction
             patient.setName( patientFullName.trim() );
         }
 
-        patient.setGender( gender );
-        patient.setRegistrationDate( new Date() );
-        patient.setDobType( dobType.charAt( 0 ) );
-
-        if ( dobType.equals( "A" ) )
-        {
-            try
-            {
-                patient.setBirthDateFromAge( Integer.parseInt( dateOfBirth ), Patient.AGE_TYPE_YEAR );
-            }
-            catch ( NumberFormatException nfe )
-            {
-                validationMap.put( "dob", "is_invalid_number" );
-            }
-        }
-        else
-        {
-            try
-            {
-                DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
-                DateTime date = sdf.parseDateTime( dateOfBirth );
-                patient.setBirthDate( date.toDate() );
-            }
-            catch ( Exception e )
-            {
-                validationMap.put( "dob", "is_invalid_date" );
-            }
-        }
-
         if ( phoneNumber.matches( "^(\\+)?\\d+$" ) )
         {
             patient.setPhoneNumber( phoneNumber );
@@ -452,14 +418,6 @@ public class SaveBeneficiaryAction
                 }
             }
         }
-
-        String identifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), gender );
-
-        PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, identifier );
-        systemGenerateIdentifier = new PatientIdentifier();
-        systemGenerateIdentifier.setIdentifier( identifier );
-        systemGenerateIdentifier.setPatient( patient );
-        patientIdentifierSet.add( systemGenerateIdentifier );
 
         for ( PatientAttribute patientAttribute : patientAttributes )
         {

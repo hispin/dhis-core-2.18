@@ -30,9 +30,6 @@ package org.hisp.dhis.dxf2.events;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.events.person.DateOfBirth;
-import org.hisp.dhis.dxf2.events.person.DateOfBirthType;
-import org.hisp.dhis.dxf2.events.person.Gender;
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -85,10 +82,10 @@ public class PersonServiceTest
 
         organisationUnitB.setParent( organisationUnitA );
 
-        maleA = createPatient( 'A', Patient.MALE, organisationUnitA );
-        maleB = createPatient( 'B', Patient.MALE, organisationUnitB );
-        femaleA = createPatient( 'C', Patient.FEMALE, organisationUnitA );
-        femaleB = createPatient( 'D', Patient.FEMALE, organisationUnitB );
+        maleA = createPatient( 'A',  organisationUnitA );
+        maleB = createPatient( 'B', organisationUnitB );
+        femaleA = createPatient( 'C',  organisationUnitA );
+        femaleB = createPatient( 'D',  organisationUnitB );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         programA.setUseBirthDateAsEnrollmentDate( true );
@@ -161,13 +158,11 @@ public class PersonServiceTest
     {
         Person person = personService.getPerson( maleA.getUid() );
         person.setName( "UPDATED_NAME" );
-        person.setGender( Gender.TRANSGENDER );
 
         ImportSummary importSummary = personService.updatePerson( person );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( "UPDATED_NAME", personService.getPerson( maleA.getUid() ).getName() );
-        assertEquals( Gender.TRANSGENDER, personService.getPerson( maleA.getUid() ).getGender() );
     }
 
     @Test
@@ -175,18 +170,12 @@ public class PersonServiceTest
     {
         Person person = new Person();
         person.setName( "NAME" );
-        person.setGender( Gender.MALE );
         person.setOrgUnit( organisationUnitA.getUid() );
-
-        DateOfBirth dateOfBirth = new DateOfBirth( new Date(), DateOfBirthType.VERIFIED );
-        person.setDateOfBirth( dateOfBirth );
 
         ImportSummary importSummary = personService.savePerson( person );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
 
         assertEquals( "NAME", personService.getPerson( importSummary.getReference() ).getName() );
-        assertEquals( Gender.MALE, personService.getPerson( importSummary.getReference() ).getGender() );
-        assertEquals( DateOfBirthType.VERIFIED, personService.getPerson( importSummary.getReference() ).getDateOfBirth().getType() );
     }
 
     @Test

@@ -28,13 +28,27 @@ package org.hisp.dhis.patient.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.patient.Patient.PREFIX_IDENTIFIER_TYPE;
+import static org.hisp.dhis.patient.Patient.PREFIX_PATIENT_ATTRIBUTE;
+import static org.hisp.dhis.patient.Patient.PREFIX_PROGRAM;
+import static org.hisp.dhis.patient.Patient.PREFIX_PROGRAM_EVENT_BY_STATUS;
+import static org.hisp.dhis.patient.Patient.PREFIX_PROGRAM_INSTANCE;
+import static org.hisp.dhis.patient.Patient.PREFIX_PROGRAM_STAGE;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
@@ -56,20 +70,9 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
-import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.hisp.dhis.patient.Patient.*;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -105,22 +108,6 @@ public class HibernatePatientStore
         }
 
         return getAllLikeNameOrderedName( fullName, min, max );
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<Patient> get( String name, Date birthdate, String gender )
-    {
-        Criteria criteria = getCriteria();
-        Conjunction con = Restrictions.conjunction();
-        con.add( Restrictions.ilike( "name", name ) );
-        con.add( Restrictions.eq( "gender", gender ) );
-        con.add( Restrictions.eq( "birthDate", birthdate ) );
-        criteria.add( con );
-
-        criteria.addOrder( Order.asc( "name" ) );
-
-        return criteria.list();
     }
 
     @Override
@@ -433,15 +420,15 @@ public class HibernatePatientStore
             }
         }
 
-        if ( program != null )
-        {
-            ValidationCriteria validationCriteria = program.isValid( patient );
-
-            if ( validationCriteria != null )
-            {
-                return PatientService.ERROR_ENROLLMENT;
-            }
-        }
+//        if ( program != null )
+//        {
+//            ValidationCriteria validationCriteria = program.isValid( patient );
+//
+//            if ( validationCriteria != null )
+//            {
+//                return PatientService.ERROR_ENROLLMENT;
+//            }
+//        }
 
         return PatientService.ERROR_NONE;
     }
@@ -455,7 +442,7 @@ public class HibernatePatientStore
         Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
     {
         String selector = count ? "count(*) " : "* ";
-        String sql = "select " + selector + " from ( select distinct p.patientid, p.name, p.gender, p.phonenumber,";
+        String sql = "select " + selector + " from ( select distinct p.patientid, p.name, p.phonenumber,";
 
         if ( identifierTypes != null )
         {
@@ -478,7 +465,7 @@ public class HibernatePatientStore
 
         String patientWhere = "";
         String patientOperator = " where ";
-        String patientGroupBy = " GROUP BY  p.patientid, p.name, p.gender, p.phonenumber ";
+        String patientGroupBy = " GROUP BY  p.patientid, p.name, p.phonenumber ";
         String otherWhere = "";
         String operator = " where ";
         String orderBy = "";
@@ -509,29 +496,7 @@ public class HibernatePatientStore
                 value = keys[2];
             }
 
-            if ( keys[0].equals( PREFIX_FIXED_ATTRIBUTE ) )
-            {
-                patientWhere += patientOperator;
-
-                if ( id.equals( FIXED_ATTR_BIRTH_DATE ) )
-                {
-                    patientWhere += " p." + id + value;
-                }
-                else if ( id.equals( FIXED_ATTR_AGE ) )
-                {
-                    patientWhere += " ((DATE(now()) - DATE(birthdate))/365) " + value;
-                }
-                else if ( id.equals( FIXED_ATTR_REGISTRATION_DATE ) )
-                {
-                    patientWhere += "p." + id + value;
-                }
-                else
-                {
-                    patientWhere += " lower(p." + id + ")='" + value + "'";
-                }
-                patientOperator = " and ";
-            }
-            else if ( keys[0].equals( PREFIX_IDENTIFIER_TYPE ) )
+            if ( keys[0].equals( PREFIX_IDENTIFIER_TYPE ) )
             {
 
                 String[] keyValues = id.split( " " );
@@ -852,7 +817,8 @@ public class HibernatePatientStore
         {
             for ( OrganisationUnit orgunit : orgunits )
             {
-                orgUnitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunit.getId() ) );
+                orgUnitIds
+                    .addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunit.getId() ) );
                 orgUnitIds.remove( orgunit.getId() );
             }
         }
