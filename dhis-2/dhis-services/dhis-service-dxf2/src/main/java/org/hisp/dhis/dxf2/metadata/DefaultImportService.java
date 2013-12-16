@@ -129,7 +129,7 @@ public class DefaultImportService
 
         if ( importOptions.getImportStrategy().isDelete() )
         {
-            types = Lists.reverse( Lists.newArrayList( ExchangeClasses.getImportMap().values() ) );
+            types = Lists.reverse( Lists.newArrayList( ExchangeClasses.getDeletableMap().values() ) );
         }
         else
         {

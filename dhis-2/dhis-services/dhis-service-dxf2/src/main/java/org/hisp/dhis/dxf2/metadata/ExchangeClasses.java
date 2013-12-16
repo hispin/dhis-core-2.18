@@ -98,6 +98,9 @@ final public class ExchangeClasses
     // these are the ones that are available for dxf2 import
     private final static Map<Class<? extends IdentifiableObject>, String> importClasses;
 
+    // these are the ones that are available for dxf2 delete
+    private final static Map<Class<? extends IdentifiableObject>, String> deletableClasses;
+
     static
     {
         allExportClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>();
@@ -202,6 +205,11 @@ final public class ExchangeClasses
         allExportClasses.put( MetaDataFilter.class, "metaDataFilters" );
         exportClasses.remove( MetaDataFilter.class );
         importClasses.remove( MetaDataFilter.class );
+
+        deletableClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>( importClasses );
+        deletableClasses.remove( User.class );
+        deletableClasses.remove( UserGroup.class );
+        deletableClasses.remove( UserAuthorityGroup.class );
     }
 
     public static Map<Class<? extends IdentifiableObject>, String> getAllExportMap()
@@ -222,5 +230,15 @@ final public class ExchangeClasses
     public static List<Class<? extends IdentifiableObject>> getImportClasses()
     {
         return new ArrayList<Class<? extends IdentifiableObject>>( importClasses.keySet() );
+    }
+
+    public static Map<Class<? extends IdentifiableObject>, String> getDeletableMap()
+    {
+        return Collections.unmodifiableMap( deletableClasses );
+    }
+
+    public static List<Class<? extends IdentifiableObject>> getDeletableClasses()
+    {
+        return new ArrayList<Class<? extends IdentifiableObject>>( deletableClasses.keySet() );
     }
 }
