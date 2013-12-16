@@ -1079,6 +1079,8 @@
 
   <bean id="org.hisp.dhis.sms.SMSCommandDeletionHandler" class="org.hisp.dhis.sms.SMSCommandDeletionHandler" />
 
+  <bean id="org.hisp.dhis.sms.SMSCodesDeletionHandler" class="org.hisp.dhis.sms.SMSCodesDeletionHandler" />
+
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -1121,6 +1123,7 @@
           <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler" />
           <ref local="org.hisp.dhis.mapping.MapViewDeletionHandler" />
           <ref local="org.hisp.dhis.sms.SMSCommandDeletionHandler" />
+          <ref local="org.hisp.dhis.sms.SMSCodesDeletionHandler" />
         </list>
       </list>
     </property>
