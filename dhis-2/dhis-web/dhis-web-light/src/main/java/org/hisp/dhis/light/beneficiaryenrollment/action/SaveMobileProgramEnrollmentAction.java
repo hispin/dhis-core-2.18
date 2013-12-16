@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.StrutsStatics;
 import org.hisp.dhis.light.utils.FormUtils;
+import org.hisp.dhis.light.utils.ValueUtils;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -311,12 +312,12 @@ public class SaveMobileProgramEnrollmentAction
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
         DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
 
-        if ( !FormUtils.isDate( enrollmentDate ) )
+        if ( !ValueUtils.isDate( enrollmentDate ) )
         {
             validationMap.put( "enrollmentDate", "is_invalid_date" );
         }
 
-        if ( !FormUtils.isDate( incidentDate ) )
+        if ( !ValueUtils.isDate( incidentDate ) )
         {
             validationMap.put( "incidentDate", "is_invalid_date" );
         }
@@ -384,7 +385,7 @@ public class SaveMobileProgramEnrollmentAction
                     }
                     else if ( value.trim().length() > 0
                         && patientAttribute.getValueType().equals( PatientAttribute.TYPE_DATE )
-                        && !FormUtils.isDate( value ) )
+                        && !ValueUtils.isDate( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_date" );
                     }

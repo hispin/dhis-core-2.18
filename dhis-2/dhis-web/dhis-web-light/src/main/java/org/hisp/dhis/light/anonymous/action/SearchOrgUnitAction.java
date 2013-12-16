@@ -41,7 +41,6 @@ import com.opensymphony.xwork2.Action;
 public class SearchOrgUnitAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -111,5 +110,4 @@ public class SearchOrgUnitAction
 
         return SUCCESS;
     }
-
 }
