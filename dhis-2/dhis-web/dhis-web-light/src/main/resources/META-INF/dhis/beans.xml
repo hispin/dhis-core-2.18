@@ -3,6 +3,31 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+    <!-- Utils / services -->
+
+    <bean id="org.hisp.dhis.light.utils.NamebasedUtils" class="org.hisp.dhis.light.utils.NamebasedUtilsImpl">
+        <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+        <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtilsImpl">
+        <property name="organisationUnitService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="stdDevOutlierAnalysisService"
+            ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
+        <property name="minMaxOutlierAnalysisService"
+            ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
+        <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+        <property name="validationRuleService"
+            ref="org.hisp.dhis.validation.ValidationRuleService" />
+        <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+    </bean>
+
+    <!-- Menu -->
+
 	<bean id="org.hisp.dhis.light.action.NoAction" class="org.hisp.dhis.light.action.NoAction"
 		scope="prototype" />
 
@@ -18,23 +43,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- Data entry -->
 
-	<bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtils"
-    scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="stdDevOutlierAnalysisService"
-			ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
-		<property name="minMaxOutlierAnalysisService"
-			ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
-		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-		<property name="validationRuleService"
-			ref="org.hisp.dhis.validation.ValidationRuleService" />
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction"
 		class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction"
 		scope="prototype">
@@ -43,7 +51,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.GetDataSetsAction"
-		class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction" scope="prototype">
+		class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction" 
+		scope="prototype">
 		<property name="formUtils"
 			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
 		<property name="organisationUnitService"
@@ -51,7 +60,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.GetPeriodsAction"
-		class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction" scope="prototype">
+		class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction" 
+		scope="prototype">
 		<property name="formUtils"
 			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
 		<property name="organisationUnitService"
@@ -75,7 +85,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.MarkComplete"
-		class="org.hisp.dhis.light.dataentry.action.MarkComplete" scope="prototype">
+		class="org.hisp.dhis.light.dataentry.action.MarkComplete" 
+		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -86,7 +97,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean id="org.hisp.dhis.light.dataentry.action.UndoCompleteAction"
-		class="org.hisp.dhis.light.dataentry.action.UndoCompleteAction" scope="prototype">
+		class="org.hisp.dhis.light.dataentry.action.UndoCompleteAction" 
+		scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -191,11 +203,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageSectionService"/>
 		<property name="userService"
 			ref="org.hisp.dhis.user.UserService"/>
-	</bean>
-
-	<bean id="org.hisp.dhis.light.utils.NamebasedUtils" class="org.hisp.dhis.light.utils.NamebasedUtils">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<bean
@@ -507,7 +514,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Settings -->
 
 	<bean id="org.hisp.dhis.light.settings.action.GetSettingsAction"
-		class="org.hisp.dhis.light.settings.action.GetSettingsAction" scope="prototype">
+		class="org.hisp.dhis.light.settings.action.GetSettingsAction" 
+		scope="prototype">
 		<property name="resourceBundleManager"
 			ref="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
 		<property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
@@ -525,23 +533,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Messages -->
 
 	<bean id="org.hisp.dhis.light.message.action.GetMessagesAction"
-		class="org.hisp.dhis.light.message.action.GetMessagesAction" scope="prototype">
+		class="org.hisp.dhis.light.message.action.GetMessagesAction" 
+		scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.message.action.GetMessageAction"
-		class="org.hisp.dhis.light.message.action.GetMessageAction" scope="prototype">
+		class="org.hisp.dhis.light.message.action.GetMessageAction" 
+		scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.message.action.SendReplyAction"
-		class="org.hisp.dhis.light.message.action.SendReplyAction" scope="prototype">
+		class="org.hisp.dhis.light.message.action.SendReplyAction" 
+		scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.message.action.SendFeedbackAction"
-		class="org.hisp.dhis.light.message.action.SendFeedbackAction" scope="prototype">
+		class="org.hisp.dhis.light.message.action.SendFeedbackAction" 
+		scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 	

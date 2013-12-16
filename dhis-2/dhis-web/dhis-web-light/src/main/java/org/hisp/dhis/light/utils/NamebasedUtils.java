@@ -28,161 +28,24 @@ package org.hisp.dhis.light.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.mobile.service.ModelMapping;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.system.util.MathUtils;
 
-public class NamebasedUtils
+public interface NamebasedUtils
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    //private IProgramService IprgramService;   
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
+    ProgramStage getProgramStage( int programId, int programStageId );
     
-    private ProgramStageService programStageService;
+    String getTypeViolation( DataElement dataElement, String value );
     
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
+    ProgramStageInstance getNextStage( Set<ProgramStageInstance> programStageInstances );
     
-    public ProgramStage getProgramStage( int programId, int programStageId )
-    {
-        //Program program = programService.getProgram( programId, "" );
-        Program program = programService.getProgram( programId );
-
-        Collection<ProgramStage> stages = program.getProgramStages();
-
-        for ( ProgramStage programStage : stages )
-        {
-            if ( programStage.getId() == programStageId )
-            {
-                return programStage;
-            }
-        }
-        return null;
-    }
-  
-    public String getTypeViolation( DataElement dataElement, String value )
-    {
-        String type = dataElement.getType();
-        String numberType = dataElement.getNumberType();
-
-        if ( type.equals( DataElement.VALUE_TYPE_STRING ) )
-        {
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_BOOL ) )
-        {
-            if ( !ValueUtils.isBoolean( value ) )
-            {
-                return "is_invalid_boolean";
-            }
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_DATE ) )
-        {
-            if ( !ValueUtils.isDate( value ) )
-            {
-                return "is_invalid_date";
-            }
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_NUMBER ) )
-        {
-            if ( !MathUtils.isNumeric( value ) )
-            {
-                return "is_invalid_number";
-            }
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_INT ) )
-        {
-            if ( !MathUtils.isInteger( value ) )
-            {
-                return "is_invalid_integer";
-            }
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_POSITIVE_INT ) )
-        {
-            if ( !MathUtils.isPositiveInteger( value ) )
-            {
-                return "is_invalid_positive_integer";
-            }
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_NEGATIVE_INT ) )
-        {
-            if ( !MathUtils.isNegativeInteger( value ) )
-            {
-                return "is_invalid_negative_integer";
-            }
-        }
-        else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_ZERO_OR_POSITIVE_INT ) )
-        {
-            if ( !MathUtils.isZeroOrPositiveInteger( value ) )
-            {
-                return "is_invalid_zero_or_positive_integer";
-            }
-        }
-        return null;
-    }
-
-    public ProgramStageInstance getNextStage( Set<ProgramStageInstance> programStageInstances )
-    {
-        for ( ProgramStageInstance programStageInstance : programStageInstances )
-        {
-            if ( !programStageInstance.isCompleted() )
-            {
-                return programStageInstance;
-            }
-        }
-
-        return null;
-    }
+    List<org.hisp.dhis.api.mobile.model.DataElement> transformDataElementsToMobileModel( Integer programStageId );
     
-    public List<org.hisp.dhis.api.mobile.model.DataElement> transformDataElementsToMobileModel( Integer programStageId )
-    {
-        ProgramStage programStage = programStageService.getProgramStage( programStageId );
-        
-        List<org.hisp.dhis.api.mobile.model.DataElement> des = new ArrayList<org.hisp.dhis.api.mobile.model.DataElement>();
+    List<org.hisp.dhis.api.mobile.model.DataElement> transformDataElementsToMobileModel( List<ProgramStageDataElement> programStageDataElements );
 
-        List<ProgramStageDataElement> programStageDataElements =  new ArrayList<ProgramStageDataElement>(programStage.getProgramStageDataElements());
-
-        des = transformDataElementsToMobileModel( programStageDataElements );
-        
-        return des;
-    }
-    
-    public List<org.hisp.dhis.api.mobile.model.DataElement> transformDataElementsToMobileModel( List<ProgramStageDataElement> programStageDataElements)
-    {
-        List<org.hisp.dhis.api.mobile.model.DataElement> des = new ArrayList<org.hisp.dhis.api.mobile.model.DataElement>();
-
-        for ( ProgramStageDataElement programStagedataElement : programStageDataElements )
-        {
-            //programStagedataElement = i18n( i18nService, locale, programStagedataElement );
-
-            DataElement dataElement = programStagedataElement.getDataElement();
-
-            org.hisp.dhis.api.mobile.model.DataElement de = ModelMapping.getDataElement( dataElement );
-
-            de.setCompulsory( programStagedataElement.isCompulsory() );
-
-            des.add( de );
-        }
-        return des;
-    }
 }
