@@ -43,11 +43,6 @@ public class GetBeneficiaryDetailAction
 
     private PatientService patientService;
 
-    public PatientService getPatientService()
-    {
-        return patientService;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;

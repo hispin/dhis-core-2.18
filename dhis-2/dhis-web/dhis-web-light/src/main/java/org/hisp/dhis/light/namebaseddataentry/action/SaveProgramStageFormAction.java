@@ -112,22 +112,12 @@ public class SaveProgramStageFormAction
 
     private PatientService patientService;
 
-    public PatientService getPatientService()
-    {
-        return patientService;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
     }
 
     private DataElementCategoryService dataElementCategoryService;
-
-    public DataElementCategoryService getDataElementCategoryService()
-    {
-        return dataElementCategoryService;
-    }
 
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
@@ -136,22 +126,12 @@ public class SaveProgramStageFormAction
 
     private ProgramStageService programStageService;
 
-    public ProgramStageService getProgramStageService()
-    {
-        return programStageService;
-    }
-
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
     }
 
     private ProgramStageDataElementService programStageDataElementService;
-
-    public ProgramStageDataElementService getProgramStageDataElementService()
-    {
-        return programStageDataElementService;
-    }
 
     public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
@@ -160,11 +140,6 @@ public class SaveProgramStageFormAction
 
     private PatientDataValueService patientDataValueService;
 
-    public PatientDataValueService getPatientDataValueService()
-    {
-        return patientDataValueService;
-    }
-
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
@@ -172,22 +147,12 @@ public class SaveProgramStageFormAction
 
     private ProgramValidationService programValidationService;
 
-    public ProgramValidationService getProgramValidationService()
-    {
-        return programValidationService;
-    }
-
     public void setProgramValidationService( ProgramValidationService programValidationService )
     {
         this.programValidationService = programValidationService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
-
-    public ProgramStageInstanceService getProgramStageInstanceService()
-    {
-        return programStageInstanceService;
-    }
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
@@ -202,11 +167,6 @@ public class SaveProgramStageFormAction
     }
 
     private ProgramExpressionService programExpressionService;
-
-    public ProgramExpressionService getProgramExpressionService()
-    {
-        return programExpressionService;
-    }
 
     public void setProgramExpressionService( ProgramExpressionService programExpressionService )
     {
