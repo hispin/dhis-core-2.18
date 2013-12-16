@@ -134,7 +134,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryListAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryListAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryListAction"
+        scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="activityReportingService"
@@ -148,7 +149,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction"
+        scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="activityReportingService"
@@ -158,7 +160,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageSectionAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageSectionAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageSectionAction"
+        scope="prototype">
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -168,14 +171,16 @@
 	
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.MarkCompleteProgramStageAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.MarkCompleteProgramStageAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.MarkCompleteProgramStageAction"
+        scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction"
+        scope="prototype">
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
@@ -195,7 +200,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction"
+        scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
@@ -214,19 +220,22 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction"
+        scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction"
+        scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction"
+        scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
@@ -248,21 +257,24 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction"
+        scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction"
+        scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction"
+        scope="prototype">
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programStageInstanceService"
@@ -271,7 +283,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetAddNewRelationshipFormAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetAddNewRelationshipFormAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetAddNewRelationshipFormAction"
+        scope="prototype">
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
@@ -290,7 +303,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction"
+        scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -298,7 +312,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction"
+        scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
@@ -458,7 +473,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction"
-		class="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction">
+		class="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction"
+        scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 	
@@ -575,7 +591,8 @@
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
+        scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
@@ -583,7 +600,8 @@
 	
 	<bean
 		id="org.hisp.dhis.light.messaging.action.FindUserAction"
-		class="org.hisp.dhis.light.messaging.action.FindUserAction">
+		class="org.hisp.dhis.light.messaging.action.FindUserAction"
+        scope="prototype">
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 </beans>
