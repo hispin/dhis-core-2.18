@@ -5,24 +5,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
     <!-- Utils / services -->
 
-    <bean id="org.hisp.dhis.light.utils.NamebasedUtils" class="org.hisp.dhis.light.utils.NamebasedUtilsImpl">
+    <bean id="org.hisp.dhis.light.utils.NamebasedUtils" class="org.hisp.dhis.light.utils.NamebasedUtilsImpl"
+        scope="prototype">
         <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
         <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
     </bean>
 
-    <bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtilsImpl">
-        <property name="organisationUnitService"
-            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <bean id="org.hisp.dhis.light.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtilsImpl"
+        scope="prototype">
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
         <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-        <property name="stdDevOutlierAnalysisService"
-            ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
-        <property name="minMaxOutlierAnalysisService"
-            ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
+        <property name="stdDevOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
+        <property name="minMaxOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
         <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-        <property name="validationRuleService"
-            ref="org.hisp.dhis.validation.ValidationRuleService" />
+        <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
         <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     </bean>
 
@@ -47,14 +45,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction"
 		scope="prototype">
 		<property name="formUtils"
-			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+			ref="org.hisp.dhis.light.utils.FormUtils" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.GetDataSetsAction"
 		class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction" 
 		scope="prototype">
 		<property name="formUtils"
-			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+			ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
@@ -63,7 +61,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction" 
 		scope="prototype">
 		<property name="formUtils"
-			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+			ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -79,7 +77,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="formUtils"
-			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+			ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="registrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 	</bean>
@@ -115,7 +113,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="formUtils"
-			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+			ref="org.hisp.dhis.light.utils.FormUtils" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.SaveSectionFormAction"
@@ -133,7 +131,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="formUtils"
-			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+			ref="org.hisp.dhis.light.utils.FormUtils" />
 	</bean>
 
 	<!-- Namebased Data entry -->
@@ -413,7 +411,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="formUtils"
-			ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+			ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="patientAttributeOptionService"
