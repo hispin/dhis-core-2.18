@@ -119,21 +119,21 @@ public class NamebasedUtils
         }
         else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_POSITIVE_INT ) )
         {
-            if ( !FormUtils.isPositiveInteger( value ) )
+            if ( !MathUtils.isPositiveInteger( value ) )
             {
                 return "is_invalid_positive_integer";
             }
         }
         else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_NEGATIVE_INT ) )
         {
-            if ( !FormUtils.isNegativeInteger( value ) )
+            if ( !MathUtils.isNegativeInteger( value ) )
             {
                 return "is_invalid_negative_integer";
             }
         }
         else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_ZERO_OR_POSITIVE_INT ) )
         {
-            if ( !FormUtils.isZeroOrPositiveInteger( value ) )
+            if ( !MathUtils.isZeroOrPositiveInteger( value ) )
             {
                 return "is_invalid_zero_or_positive_integer";
             }

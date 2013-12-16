@@ -38,7 +38,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.StrutsStatics;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -115,13 +114,6 @@ public class SaveProgramStageFormAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
-    }
-
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     private ProgramStageService programStageService;

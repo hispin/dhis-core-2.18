@@ -156,7 +156,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="activityReportingService"
 			ref="org.hisp.dhis.mobile.api.ActivityReportingService" />
-		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 	</bean>
 
 	<bean

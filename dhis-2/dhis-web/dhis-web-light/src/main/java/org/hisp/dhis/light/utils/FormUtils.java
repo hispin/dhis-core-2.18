@@ -299,21 +299,6 @@ public class FormUtils
     // Static Utils
     // -------------------------------------------------------------------------
 
-    public static boolean isPositiveInteger( String value )
-    {
-        return valueHigher( value, 0 );
-    }
-    
-    public static boolean isZeroOrPositiveInteger( String value )
-    {
-        return valueHigherOrEqual( value, 0 );
-    }
-
-    public static boolean isNegativeInteger( String value )
-    {
-        return valueLower( value, 0 );
-    }
-
     public static boolean valueHigher( String value, int max )
     {
         int integerValue;
