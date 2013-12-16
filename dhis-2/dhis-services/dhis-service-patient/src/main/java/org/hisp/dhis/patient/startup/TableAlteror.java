@@ -611,12 +611,12 @@ public class TableAlteror
             + max + ".age]";
         updateFixedAttributeInCaseAggregate( source, target );
 
-        // executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
-        // executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
-        // executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
-        // executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
-        // executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
-        // executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
+         executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
+         executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
+         executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
+         executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
+         executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
+         executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
     }
 
     private void updateFixedAttributeInCaseAggregate( String source, String target )
