@@ -590,7 +590,6 @@
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
-  <!--@author Ovidiu Rosu <rosu.ovi@gmail.com>-->
   <bean id="org.hisp.dhis.filter.MetaDataFilterService" class="org.hisp.dhis.filter.DefaultMetaDataFilterService">
     <property name="metaDataFilterStore" ref="org.hisp.dhis.filter.MetaDataFilterStore" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
