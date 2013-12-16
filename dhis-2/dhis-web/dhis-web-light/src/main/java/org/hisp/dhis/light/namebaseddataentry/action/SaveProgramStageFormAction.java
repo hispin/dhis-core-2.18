@@ -215,11 +215,6 @@ public class SaveProgramStageFormAction
 
     private OrganisationUnitService organisationUnitService;
 
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
-    }
-
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
