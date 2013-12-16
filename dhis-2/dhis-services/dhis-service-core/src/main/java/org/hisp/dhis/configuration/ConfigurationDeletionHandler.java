@@ -30,6 +30,7 @@ package org.hisp.dhis.configuration;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.UserGroup;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -73,6 +74,14 @@ public class ConfigurationDeletionHandler
     public String allowDeleteDataElementGroup( DataElementGroup dataElementGroup )
     {
         String sql = "SELECT COUNT(*) FROM configuration where infrastructuraldataelementsid=" + dataElementGroup.getId();
+
+        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteOrganisationUnitLevel( OrganisationUnitLevel level )
+    {
+        String sql = "SELECT COUNT(*) FROM configuration where offlineorgunitlevelid=" + level.getId();
 
         return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }
