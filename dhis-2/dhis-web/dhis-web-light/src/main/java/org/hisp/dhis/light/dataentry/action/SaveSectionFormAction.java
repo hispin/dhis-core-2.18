@@ -59,6 +59,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.util.ContextUtils;
 
@@ -345,7 +346,7 @@ public class SaveSectionFormAction
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
                         && numberType.equals( DataElement.VALUE_TYPE_NUMBER ) )
                     {
-                        if ( !FormUtils.isNumber( value ) )
+                        if ( !MathUtils.isNumeric( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_number" ) );
@@ -354,7 +355,7 @@ public class SaveSectionFormAction
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
                         && numberType.equals( DataElement.VALUE_TYPE_INT ) )
                     {
-                        if ( !FormUtils.isInteger( value ) )
+                        if ( !MathUtils.isInteger( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_integer" ) );

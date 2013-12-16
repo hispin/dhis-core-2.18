@@ -60,6 +60,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -341,7 +342,7 @@ public class SaveMobileProgramEnrollmentAction
                     {
                         this.validationMap.put( key, "is_mandatory" );
                     }
-                    else if ( patientIdentifierType.getType().equals( "number" ) && !FormUtils.isNumber( value ) )
+                    else if ( patientIdentifierType.getType().equals( "number" ) && !MathUtils.isNumeric( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_number" );
                     }
@@ -377,7 +378,7 @@ public class SaveMobileProgramEnrollmentAction
                     }
                     else if ( value.trim().length() > 0
                         && patientAttribute.getValueType().equals( PatientAttribute.TYPE_INT )
-                        && !FormUtils.isInteger( value ) )
+                        && !MathUtils.isInteger( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_number" );
                     }

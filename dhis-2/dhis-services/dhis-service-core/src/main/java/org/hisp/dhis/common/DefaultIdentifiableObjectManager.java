@@ -73,6 +73,7 @@ public class DefaultIdentifiableObjectManager
 
         for ( GenericIdentifiableObjectStore<IdentifiableObject> store : identifiableObjectStores )
         {
+            System.out.println("id store '" + store + "' - '" + store.getClazz() + "' - '" + store.getClass());
             if ( store != null && store.getClazz() != null )
             {
                 identifiableObjectStoreMap.put( store.getClazz(), store );

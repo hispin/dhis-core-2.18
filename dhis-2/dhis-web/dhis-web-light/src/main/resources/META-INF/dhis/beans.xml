@@ -3,7 +3,6 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-
 	<bean id="org.hisp.dhis.light.action.NoAction" class="org.hisp.dhis.light.action.NoAction"
 		scope="prototype" />
 
@@ -471,7 +470,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService"/>
 	</bean>
-
 
 	<bean
 		id="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction"
