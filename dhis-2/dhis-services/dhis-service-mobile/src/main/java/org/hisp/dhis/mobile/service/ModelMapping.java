@@ -41,7 +41,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
 public class ModelMapping
 {
-    public DataElement getDataElement( org.hisp.dhis.dataelement.DataElement dataElement )
+    public static DataElement getDataElement( org.hisp.dhis.dataelement.DataElement dataElement )
     {
         DataElement de = new DataElement();
         de.setId( dataElement.getId() );
@@ -58,7 +58,7 @@ public class ModelMapping
         return de;
     }
 
-    public ProgramStageDataElement getDataElementLWUIT( org.hisp.dhis.dataelement.DataElement dataElement )
+    public static ProgramStageDataElement getDataElementLWUIT( org.hisp.dhis.dataelement.DataElement dataElement )
     {
         ProgramStageDataElement de = new ProgramStageDataElement();
         de.setId( dataElement.getId() );
@@ -76,7 +76,7 @@ public class ModelMapping
         return de;
     }
 
-    public OptionSet getOptionSet( org.hisp.dhis.dataelement.DataElement dataElement )
+    public static OptionSet getOptionSet( org.hisp.dhis.dataelement.DataElement dataElement )
     {
         org.hisp.dhis.option.OptionSet dhisOptionSet = dataElement.getOptionSet();
         OptionSet mobileOptionSet = new OptionSet();
@@ -94,7 +94,7 @@ public class ModelMapping
         return mobileOptionSet;
     }
 
-    public ModelList getCategoryOptionCombos( org.hisp.dhis.dataelement.DataElement dataElement )
+    public static ModelList getCategoryOptionCombos( org.hisp.dhis.dataelement.DataElement dataElement )
     {
         DataElementCategoryCombo categoryCombo = dataElement.getCategoryCombo();
 
