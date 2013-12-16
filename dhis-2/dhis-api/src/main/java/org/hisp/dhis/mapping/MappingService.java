@@ -172,4 +172,6 @@ public interface MappingService
     int countIndicatorCharts( Indicator indicator );
 
     int countDataElementCharts( DataElement dataElement );
+
+    int countMapLegendSetMapViews( MapLegendSet mapLegendSet );
 }

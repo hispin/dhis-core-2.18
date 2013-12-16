@@ -36,4 +36,5 @@ import org.hisp.dhis.common.AnalyticalObjectStore;
 public interface MapViewStore
     extends AnalyticalObjectStore<MapView>
 {
+    int countMapLegendSetMapViews( MapLegendSet mapLegendSet );
 }

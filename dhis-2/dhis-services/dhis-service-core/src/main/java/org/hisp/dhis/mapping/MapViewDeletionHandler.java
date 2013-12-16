@@ -170,4 +170,10 @@ public class MapViewDeletionHandler
     {
         return mappingService.countDataElementCharts( dataElement ) == 0 ? null : ERROR;
     }
+
+    @Override
+    public String allowDeleteMapLegendSet( MapLegendSet mapLegendSet )
+    {
+        return mappingService.countMapLegendSetMapViews( mapLegendSet ) == 0 ? null : ERROR;
+    }
 }

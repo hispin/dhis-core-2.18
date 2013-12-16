@@ -31,6 +31,8 @@ package org.hisp.dhis.indicator;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.mapping.MapLegend;
+import org.hisp.dhis.mapping.MapLegendSet;
 
 /**
  * @author Lars Helge Overland
@@ -46,4 +48,6 @@ public interface IndicatorStore
     Collection<Indicator> getIndicatorsWithoutGroups();
     
     Collection<Indicator> getIndicatorsWithDataSets();
+
+    int countMapLegendSetIndicators( MapLegendSet mapLegendSet );
 }
