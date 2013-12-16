@@ -299,36 +299,6 @@ public class FormUtils
     // Static Utils
     // -------------------------------------------------------------------------
 
-    public static boolean isNumber( String value )
-    {
-        try
-        {
-            Double.parseDouble( value );
-        }
-        catch ( NumberFormatException e )
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    public static boolean isInteger( String value )
-    {
-        try
-        {
-            Integer.parseInt( value );
-        }
-        catch ( NumberFormatException e )
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    //TODO re-use ValidationUtils
-    
     public static boolean isPositiveInteger( String value )
     {
         return valueHigher( value, 0 );

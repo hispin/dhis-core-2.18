@@ -97,7 +97,6 @@ public class HibernateGenericStore<T>
     /**
      * Could be injected through container.
      */
-    @Required
     public void setClazz( Class<T> clazz )
     {
         this.clazz = clazz;

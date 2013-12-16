@@ -41,6 +41,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.system.util.MathUtils;
 
 public class NamebasedUtils
 {
@@ -104,14 +105,14 @@ public class NamebasedUtils
         }
         else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_NUMBER ) )
         {
-            if ( !FormUtils.isNumber( value ) )
+            if ( !MathUtils.isNumeric( value ) )
             {
                 return "is_invalid_number";
             }
         }
         else if ( type.equals( DataElement.VALUE_TYPE_INT ) && numberType.equals( DataElement.VALUE_TYPE_INT ) )
         {
-            if ( !FormUtils.isInteger( value ) )
+            if ( !MathUtils.isInteger( value ) )
             {
                 return "is_invalid_integer";
             }

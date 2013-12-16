@@ -53,6 +53,7 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -397,7 +398,7 @@ public class SaveBeneficiaryAction
                     {
                         this.validationMap.put( key, "is_mandatory" );
                     }
-                    else if ( patientIdentifierType.getType().equals( "number" ) && !FormUtils.isNumber( value ) )
+                    else if ( patientIdentifierType.getType().equals( "number" ) && !MathUtils.isNumeric( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_number" );
                     }
@@ -434,7 +435,7 @@ public class SaveBeneficiaryAction
                     }
                     else if ( value.trim().length() > 0
                         && patientAttribute.getValueType().equals( PatientAttribute.TYPE_INT )
-                        && !FormUtils.isInteger( value ) )
+                        && !MathUtils.isInteger( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_number" );
                     }
