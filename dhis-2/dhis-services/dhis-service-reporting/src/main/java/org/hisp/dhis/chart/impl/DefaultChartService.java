@@ -850,4 +850,16 @@ public class DefaultChartService
     {
         return chartStore.countDataSetAnalyticalObject( dataSet );
     }
+
+    @Override
+    public int countIndicatorCharts( Indicator indicator )
+    {
+        return chartStore.countIndicatorAnalyticalObject( indicator );
+    }
+
+    @Override
+    public int countDataElementCharts( DataElement dataElement )
+    {
+        return chartStore.countDataElementAnalyticalObject( dataElement );
+    }
 }

@@ -28,6 +28,10 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.indicator.Indicator;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -162,4 +166,10 @@ public interface MappingService
     Collection<MapLayer> getAllMapLayers();
 
     int countMapViewMaps( MapView mapView );
+
+    int countDataSetCharts( DataSet dataSet );
+
+    int countIndicatorCharts( Indicator indicator );
+
+    int countDataElementCharts( DataElement dataElement );
 }

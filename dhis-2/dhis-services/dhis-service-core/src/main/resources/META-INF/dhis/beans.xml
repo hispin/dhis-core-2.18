@@ -318,7 +318,7 @@
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MapViewStore"
-    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+    class="org.hisp.dhis.mapping.hibernate.HibernateMapViewStore">
     <property name="clazz" value="org.hisp.dhis.mapping.MapView" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
