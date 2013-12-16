@@ -57,7 +57,6 @@ import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
@@ -111,7 +110,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
@@ -165,7 +164,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 deleteExpression( object, "rightSide" );
                 deleteDataEntryForm( object, "dataEntryForm" );
 
-                if ( ImportStrategy.DELETES.equals( options.getImportStrategy() ) )
+                if ( options.getImportStrategy().isDelete() )
                 {
                     deleteDataElementOperands( object, "compulsoryDataElementOperands" );
                 }
@@ -677,14 +676,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     {
         T persistedObject = objectBridge.getObject( object );
 
-        if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
+        if ( options.getImportStrategy().isCreate() )
         {
             if ( newObject( user, object ) )
             {
                 summaryType.incrementImported();
             }
         }
-        else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
+        else if ( options.getImportStrategy().isUpdate() )
         {
             if ( updateObject( user, object, persistedObject ) )
             {
@@ -695,7 +694,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 summaryType.incrementIgnored();
             }
         }
-        else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
+        else if ( options.getImportStrategy().isCreateAndUpdate() )
         {
             if ( persistedObject != null )
             {
@@ -720,7 +719,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
             }
         }
-        else if ( ImportStrategy.DELETES.equals( options.getImportStrategy() ) )
+        else if ( options.getImportStrategy().isDelete() )
         {
             if ( deleteObject( user, persistedObject ) )
             {
@@ -738,7 +737,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         ImportConflict conflict = null;
         boolean success = true;
 
-        if ( ImportStrategy.DELETES.equals( options.getImportStrategy() ) )
+        if ( options.getImportStrategy().isDelete() )
         {
             success = validateForDeleteStrategy( object );
             return success;
@@ -764,15 +763,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             summaryType.getImportConflicts().add( conflict );
         }
 
-        if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
+        if ( options.getImportStrategy().isCreate() )
         {
             success = validateForNewStrategy( object );
         }
-        else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
+        else if ( options.getImportStrategy().isUpdate() )
         {
             success = validateForUpdatesStrategy( object );
         }
-        else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
+        else if ( options.getImportStrategy().isCreateAndUpdate() )
         {
             // if we have a match on at least one of the objects, then assume update
             if ( objectBridge.getObjects( object ).size() > 0 )

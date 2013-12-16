@@ -106,7 +106,7 @@ public abstract class AbstractImporter<T extends ImportableObject>
                     }
                 }
             }
-            else if ( params.getImportStrategy() == NEW_AND_UPDATES ) // Similar object exists
+            else if ( params.getImportStrategy().isCreateAndUpdate() ) // Similar object exists
             {
                 if ( !params.isPreview() ) // Import object
                 {
