@@ -19,7 +19,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- Data entry -->
 
-	<bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtils">
+	<bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtils"
+    scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
