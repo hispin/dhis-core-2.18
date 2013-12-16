@@ -1,25 +1,3 @@
-$(function() {
-  dhis2.contextmenu.makeContextMenu({
-    menuId: 'contextMenu',
-    menuItemActiveClass: 'contextMenuItemActive'
-  });
-});
-
-function removeProgramStage( context ) {
-  removeItem( context.id, context.name, i18n_confirm_delete , 'removeProgramStage.action' );
-}
-
-function showUpdateProgramStageForm( context ) {
-  location.href = 'showUpdateProgramStageForm.action?id=' + context.id;
-}
-
-function viewDataEntryForm( context ) {
-  location.href = 'viewDataEntryForm.action?programStageId=' + context.id;
-}
-
-function programStageSectionList( context ) {
-  location.href = 'programStageSectionList.action?id=' + context.id;
-}
 
 function getStageByProgram( programId )
 {
@@ -71,9 +49,9 @@ function loadProgramStageList( programId )
 // View details
 // -----------------------------------------------------------------------------
 
-function showProgramStageDetails( context )
+function showProgramStageDetails( programStageId )
 {
-	jQuery.getJSON( 'getProgramStage.action', { id: context.id }, function ( json ) {
+	jQuery.getJSON( 'getProgramStage.action', { id: programStageId }, function ( json ) {
 		setInnerHTML( 'nameField', json.programStage.name );	
 		setInnerHTML( 'descriptionField', json.programStage.description );
 		setInnerHTML( 'scheduledDaysFromStartField', json.programStage.minDaysFromStart ); 

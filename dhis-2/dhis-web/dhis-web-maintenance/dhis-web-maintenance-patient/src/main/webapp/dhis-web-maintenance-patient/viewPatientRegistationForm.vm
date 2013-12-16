@@ -48,7 +48,7 @@
 }
 </style>
 
-<form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="get" class="inputForm">
+<form id="saveDataEntryForm" name="saveDataEntryForm" action="savePatientRegistrationForm.action" method="get">
 
 <input type="hidden" name="programId" id="programId" value="$!program.id"/>
 <input type="hidden" name="dataEntryFormId" id="dataEntryFormId" value="$!registrationForm.dataEntryForm.id"/>
@@ -119,36 +119,10 @@
 		</tr>
 		<tr>
 			<td>
-				<select id="fixedAttrSelector" multiple="multiple" style="width:450px;height:270px" onclick='suggestionSelectorToggle()' ondblclick="insertElement( 'fixedAttr' )">
-					<option value="registrationDate">$i18n.getString('registration_date')</option>
-					<option value="fullName">$i18n.getString('full_name')</option>
-					<option value="gender">$i18n.getString('gender')</option>
-					<option value="birthDate">$i18n.getString('birth_date')</option>
-					<option value="age">$i18n.getString('age_years')</option>
+				<select id="fixedAttrSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'fixedAttr' )">
 					<option value="phoneNumber">$i18n.getString('phone_number')</option>
-					<option value="deathDate">$i18n.getString('death_date')</option>
-					<option value="isDead">$i18n.getString('is_dead')</option>
-					<option value="healthWorker">$i18n.getString('health_worker')</option>
+					<option value="associate">$i18n.getString('health_worker')</option>
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				$i18n.getString("default_value")
-				<input type='text' id='suggestedField' style='width:295px;'>
-				<select style='width:300px;display:none;' id='genderSelector'>
-					<option value="">[$i18n.getString( "please_select" )]</option>
-					<option value="M">$i18n.getString( "male" )</option>
-					<option value="F">$i18n.getString( "female" )</option>
-					<option value="T">$i18n.getString( "transgender" )</option>
-				</select>
-				<select style='width:300px;display:none;' id='dobTypeSelector'>
-					<option value="">[$i18n.getString( "please_select" )]</option>
-					<option value="V">$i18n.getString( "verified" )</option>
-					<option value="D">$i18n.getString( "declared" )</option>
-					<option value="A">$i18n.getString( "approximated" )</option>
-				</select>
-				<input type='checkbox' id='hiddenField'/>$i18n.getString("is_hidden")
 			</td>
 		</tr>
 	</table>

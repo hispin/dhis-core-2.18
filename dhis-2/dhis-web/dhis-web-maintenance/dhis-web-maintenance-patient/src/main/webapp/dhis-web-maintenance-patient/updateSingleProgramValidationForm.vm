@@ -2,7 +2,7 @@
 
 <h4>$validation.program.displayName</h4>
 
-<form id='programValidationForm' name='programValidationForm' method='post' action='updateProgramValidation.action' class="inputForm">
+<form id='programValidationForm' name='programValidationForm' method='post' action='updateProgramValidation.action'>
 
 <input type='hidden' id='id' name='id' value='$validation.id'>
 <input type='hidden' id='programId' name='programId' value='$validation.program.id'>

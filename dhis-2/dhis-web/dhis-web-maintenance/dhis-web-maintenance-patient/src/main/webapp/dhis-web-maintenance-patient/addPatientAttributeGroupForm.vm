@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "create_new_patient_attribute_group" )</h3>
 																			
-<form id="addPatientAttributeGroupForm" name="addPatientAttributeGroupForm" action="addPatientAttributeGroup.action" method="post" class="inputForm">
+<form id="addPatientAttributeGroupForm" name="addPatientAttributeGroupForm" action="addPatientAttributeGroup.action" method="post" >
 
 <table>
 	<tr>

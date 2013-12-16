@@ -85,7 +85,7 @@
 
 <h3>$i18n.getString( "create_new_program" )</h3>
 									
-<form id="addProgramForm" name="addProgramForm" action="addProgram.action" method="get" class="inputForm">
+<form id="addProgramForm" name="addProgramForm" action="addProgram.action" method="get" >
 	<select id='daysAllowedSendMessages' name="daysAllowedSendMessages" multiple="multiple" class="hidden"></select>
 	<select id='templateMessages' name="templateMessages" multiple="multiple" class="hidden"></select>
 	<select id='datesToCompare' name="datesToCompare" multiple="multiple" class="hidden"></select>

@@ -2,17 +2,6 @@
 
 <h4>$program.displayName</h4>
 
-<div id="contextMenu" class="contextMenu">
-  <ul id="contextMenuItems" class="contextMenuItems">
-    <li><a data-target-fn="showUpdateProgramStageForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
-    <li><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
-    <li data-enabled="canRemove"><a data-target-fn="removeProgramStage"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
-    <li><a data-target-fn="showProgramStageDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
-    <li><a data-target-fn="programStageSectionList"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "section_management" )</a></li>
-    <li><a data-target-fn="viewDataEntryForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "design_data_entry_form" )</a></li>
-  </ul>
-</div>
-
 <input type='hidden' id='id' name='id' value='$program.id'>
 
 <table class="mainPageTable">
@@ -30,31 +19,43 @@
 			<table class="listTable" id="listTable">
 				<col>
 				<col>     
+				<col width="180">	 
 				<thead>
-					<tr>
+					<tr>            
 						<th>$i18n.getString( "name" )</th>
 						<th>$i18n.getString( "description" )</th>
+						<th>$i18n.getString( "operations" )</th>
 					</tr>
 				</thead>
 		  
 				<tbody id="list">
+					#set( $mark = false )
 					#foreach( $association in $associations )
-						<tr id="tr${association.id}" data-id="$!association.id" data-uid="$!association.uid" data-type="ProgramStage" data-name="$encoder.htmlEncode( $!association.displayName )"
-						    data-can-manage="$security.canManage( $association )"
-						    data-can-update="$security.canUpdate( $association )"
-						    data-can-delete="$security.canDelete( $association )"
-						    data-can-remove="#if( $program.type=='1' )true#{else}false#end">
-						    <td>$encoder.htmlEncode( $!association.displayName )</td>
-						    <td>$encoder.htmlEncode( $!association.description )</td>
+						<tr id="tr${association.id}" #alternate( $mark )>			  
+							<td onclick="showProgramStageDetails( $association.id )">$encoder.htmlEncode( $association.displayName )</td>                
+							<td onclick="showProgramStageDetails( $association.id )">$encoder.htmlEncode( $association.description )</td>
+							
+							<td style="text-align:center"#alternate( $mark )>
+							  <a href="showUpdateProgramStageForm.action?id=$association.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+							  <a href="javascript:translate( 'ProgramStage', '$association.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+							  #if( $program.type=='1' )
+								<a href="javascript:removeItem( '$association.id', '$encoder.jsEncode( $association.name )', i18n_confirm_delete , 'removeProgramStage.action' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+							  #end
+							  <a href="javascript:showProgramStageDetails( $association.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
+							  <a href="programStageSectionList.action?id=$association.id" title="$i18n.getString( 'section_management' )"><img src="images/sections.png" alt="$i18n.getString( 'section_management' )"></a>
+							  <a href="viewDataEntryForm.action?programStageId=$association.id" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
+							</td>
 						</tr>
+						#set( $mark = !$mark )
 					#end
 				</tbody>
 			</table>
 		</td>
 		
 		<td id="detailsData">
-      <div id="detailsArea">
-        <div id="hideDetailsArea">
+
+            <div id="detailsArea">
+                <div id="hideDetailsArea">
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"></a>
 				</div>				
 				<p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>

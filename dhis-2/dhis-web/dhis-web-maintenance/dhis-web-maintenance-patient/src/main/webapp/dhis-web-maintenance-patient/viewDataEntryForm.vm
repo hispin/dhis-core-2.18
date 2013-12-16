@@ -66,7 +66,7 @@
 
 </style>
 
-<form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post" class="inputForm">
+<form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post">
 <input type="hidden" name="programStageId" id="programStageId" uid="$!programStage.uid" value="$!programStage.id"/>
 <h3>$i18n.getString( "dataentryform_management_for_program_stage" )</h3>
 <h4>$programStage.displayName</h4>
