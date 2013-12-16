@@ -73,14 +73,20 @@ public class DefaultIdentifiableObjectManager
 
         for ( GenericIdentifiableObjectStore<IdentifiableObject> store : identifiableObjectStores )
         {
-            identifiableObjectStoreMap.put( store.getClazz(), store );
+            if ( store != null && store.getClass() != null )
+            {
+                identifiableObjectStoreMap.put( store.getClazz(), store );
+            }
         }
 
         nameableObjectStoreMap = new HashMap<Class<NameableObject>, GenericNameableObjectStore<NameableObject>>();
 
         for ( GenericNameableObjectStore<NameableObject> store : nameableObjectStores )
         {
-            nameableObjectStoreMap.put( store.getClazz(), store );
+            if ( store != null && store.getClass() != null )
+            {
+                nameableObjectStoreMap.put( store.getClazz(), store );
+            }
         }
     }
 
