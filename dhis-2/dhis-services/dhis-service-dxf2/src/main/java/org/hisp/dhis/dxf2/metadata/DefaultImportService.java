@@ -142,16 +142,6 @@ public class DefaultImportService
             types = Lists.newArrayList( ExchangeClasses.getImportMap().values() );
         }
 
-        /*
-        types.clear();
-        types.add( "attributeTypes" );
-        types.add( "optionSets" );
-        types.add( "documents" );
-        types.add( "constants" );
-        types.add( "concepts" );
-        types.add( "sqlViews" );
-        */
-
         for ( String type : types )
         {
             Object value = ReflectionUtils.invokeGetterMethod( type, metaData );
