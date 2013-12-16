@@ -371,17 +371,7 @@ function insertElement( type )
 	
 	var htmlCode = "<input " + id + " value=\"[" + value + "]\" title=\"" + value + "\" ";
 	
-	var suggestedValue = getFieldValue('genderSelector');
-	if( jQuery('#genderSelector').is(":visible") )
-	{
-		htmlCode += " suggested='" + suggestedValue + "' ";
-	}
-	suggestedValue = getFieldValue('dobTypeSelector');
-	if( jQuery('#dobTypeSelector').is(":visible") )
-	{
-		htmlCode += " suggested='" + suggestedValue + "' ";
-	}
-	suggestedValue = getFieldValue('suggestedField');
+	var suggestedValue = getFieldValue('suggestedField');
 	if( jQuery('#suggestedField').is(":visible") )
 	{
 		htmlCode += " suggested='" + suggestedValue + "' ";
@@ -505,19 +495,3 @@ function deleteRegistrationFormFromView()
 		window.location.href = 'delRegistrationEntryFormAction.action?id=' + getFieldValue('id');
 	}
 }
-
-function suggestionSelectorToggle()
-{
-	hideById('genderSelector');
-	hideById('dobTypeSelector');
-	showById('suggestedField');
-	if( getFieldValue('fixedAttrSelector')=='gender' ){
-		hideById('suggestedField');
-		showById('genderSelector');
-	}
-	else if(getFieldValue('fixedAttrSelector')=='dobType'){
-		hideById('suggestedField');
-		showById('dobTypeSelector');
-	}
-}
-

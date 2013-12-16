@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "create_new_relationship_type" )</h3>
 																					
-<form id="addRelationshipTypeForm" name="addRelationshipTypeForm" action="addRelationshipType.action" method="post" class="inputForm">
+<form id="addRelationshipTypeForm" name="addRelationshipTypeForm" action="addRelationshipType.action" method="post">
 
 <table> 
 	 <thead>

@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "edit_validation_criteria" )</h3>
 
-<form id="validationCriteriaForm" action="updateValidationCriteria.action" method="post" class="inputForm">
+<form id="validationCriteriaForm" action="updateValidationCriteria.action" method="post" >
 	<table>
 		<input type='hidden' id='id' name='id' value='$validationCriteria.id'/>
 		<tr>

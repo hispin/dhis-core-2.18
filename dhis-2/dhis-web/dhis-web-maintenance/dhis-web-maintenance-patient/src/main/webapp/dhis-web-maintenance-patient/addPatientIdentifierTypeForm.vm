@@ -5,7 +5,7 @@
 
 <h3>$i18n.getString( "create_new_patient_identifier_type" )</h3>
 								
-<form id="addPatientIdentifierTypeForm" name="addPatientIdentifierTypeForm" action="addPatientIdentifierType.action" method="post" class="inputForm">
+<form id="addPatientIdentifierTypeForm" name="addPatientIdentifierTypeForm" action="addPatientIdentifierType.action" method="post" >
 
 <table>	
 	 <thead>

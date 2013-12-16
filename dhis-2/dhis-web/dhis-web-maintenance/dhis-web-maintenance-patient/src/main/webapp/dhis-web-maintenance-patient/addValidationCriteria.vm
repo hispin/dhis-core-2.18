@@ -1,7 +1,7 @@
 <script type="text/javascript" src="javascript/addValidationCriteria.js"></script>																
 
 <h3>$i18n.getString( "create_validation_criteria" )</h3>
-<form id="validationCriteriaForm" action="addValidationCriteria.action" method="post" class="inputForm">
+<form id="validationCriteriaForm" action="addValidationCriteria.action" method="post" >
 <table>
 	<tr><th colspan="3">$i18n.getString('validation_criteria_details')</th></tr>
     <tr>
