@@ -73,7 +73,7 @@ public class DefaultIdentifiableObjectManager
 
         for ( GenericIdentifiableObjectStore<IdentifiableObject> store : identifiableObjectStores )
         {
-            if ( store != null && store.getClass() != null )
+            if ( store != null && store.getClazz() != null )
             {
                 identifiableObjectStoreMap.put( store.getClazz(), store );
             }
@@ -83,7 +83,7 @@ public class DefaultIdentifiableObjectManager
 
         for ( GenericNameableObjectStore<NameableObject> store : nameableObjectStores )
         {
-            if ( store != null && store.getClass() != null )
+            if ( store != null && store.getClazz() != null )
             {
                 nameableObjectStoreMap.put( store.getClazz(), store );
             }
