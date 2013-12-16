@@ -91,14 +91,14 @@ public class NamebasedUtils
         }
         else if ( type.equals( DataElement.VALUE_TYPE_BOOL ) )
         {
-            if ( !FormUtils.isBoolean( value ) )
+            if ( !ValueUtils.isBoolean( value ) )
             {
                 return "is_invalid_boolean";
             }
         }
         else if ( type.equals( DataElement.VALUE_TYPE_DATE ) )
         {
-            if ( !FormUtils.isDate( value ) )
+            if ( !ValueUtils.isDate( value ) )
             {
                 return "is_invalid_date";
             }

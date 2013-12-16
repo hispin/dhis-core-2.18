@@ -55,6 +55,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.light.utils.FormUtils;
+import org.hisp.dhis.light.utils.ValueUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -329,7 +330,7 @@ public class SaveSectionFormAction
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_BOOL ) )
                     {
-                        if ( !valueIsEmpty && !FormUtils.isBoolean( value ) )
+                        if ( !valueIsEmpty && !ValueUtils.isBoolean( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_boolean" ) );
@@ -337,7 +338,7 @@ public class SaveSectionFormAction
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_DATE ) )
                     {
-                        if ( !FormUtils.isDate( value ) )
+                        if ( !ValueUtils.isDate( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_date" ) );
