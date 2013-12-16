@@ -48,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.security.access.AccessDeniedException;
 
+import javax.annotation.PostConstruct;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -69,6 +70,11 @@ public class HibernateOrganisationUnitStore
 
     @Autowired
     private CurrentUserService currentUserService;
+
+    public HibernateOrganisationUnitStore()
+    {
+        setClazz( OrganisationUnit.class );
+    }
 
     // -------------------------------------------------------------------------
     // OrganisationUnit
