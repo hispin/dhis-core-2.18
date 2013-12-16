@@ -148,8 +148,6 @@ public class ActivityReportingServiceImpl
 
     private ProgramStageService programStageService;
 
-    private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
-
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private CurrentUserService currentUserService;
@@ -227,12 +225,6 @@ public class ActivityReportingServiceImpl
     public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
     {
         this.patientMobileSettingService = patientMobileSettingService;
-    }
-
-    @Required
-    public void setModelMapping( org.hisp.dhis.mobile.service.ModelMapping modelMapping )
-    {
-        this.modelMapping = modelMapping;
     }
 
     public void setSetting( PatientMobileSetting setting )
@@ -1235,7 +1227,7 @@ public class ActivityReportingServiceImpl
             // Option set
             if ( programStageDataElement.getDataElement().getOptionSet() != null )
             {
-                mobileDataElement.setOptionSet( modelMapping.getOptionSet( programStageDataElement.getDataElement() ) );
+                mobileDataElement.setOptionSet( ModelMapping.getOptionSet( programStageDataElement.getDataElement() ) );
             }
             else
             {
@@ -1245,7 +1237,7 @@ public class ActivityReportingServiceImpl
             // Category Option Combo
             if ( programStageDataElement.getDataElement().getCategoryCombo() != null )
             {
-                mobileDataElement.setCategoryOptionCombos( modelMapping
+                mobileDataElement.setCategoryOptionCombos( ModelMapping
                     .getCategoryOptionCombos( programStageDataElement.getDataElement() ) );
             }
             else
@@ -1521,7 +1513,7 @@ public class ActivityReportingServiceImpl
                 if ( programStageDataElement.getDataElement().getOptionSet() != null )
                 {
                     mobileDataElement
-                        .setOptionSet( modelMapping.getOptionSet( programStageDataElement.getDataElement() ) );
+                        .setOptionSet( ModelMapping.getOptionSet( programStageDataElement.getDataElement() ) );
                 }
                 else
                 {
@@ -1529,7 +1521,7 @@ public class ActivityReportingServiceImpl
                 }
                 if ( programStageDataElement.getDataElement().getCategoryCombo() != null )
                 {
-                    mobileDataElement.setCategoryOptionCombos( modelMapping
+                    mobileDataElement.setCategoryOptionCombos( ModelMapping
                         .getCategoryOptionCombos( programStageDataElement.getDataElement() ) );
                 }
                 else

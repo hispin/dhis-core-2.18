@@ -191,7 +191,6 @@
 	<bean id="org.hisp.dhis.light.utils.NamebasedUtils" class="org.hisp.dhis.light.utils.NamebasedUtils">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="modelMapping" ref="org.hisp.dhis.mobile.service.ModelMapping" />
 	</bean>
 
 	<bean

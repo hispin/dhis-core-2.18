@@ -55,8 +55,6 @@ public class DefaultProgramService
 
     private org.hisp.dhis.program.ProgramService programService;
 
-    private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
-    
     // -------------------------------------------------------------------------
     // ProgramService
     // -------------------------------------------------------------------------
@@ -159,7 +157,7 @@ public class DefaultProgramService
 
                 org.hisp.dhis.dataelement.DataElement dataElement = programStagedataElement.getDataElement();
 
-                DataElement de = modelMapping.getDataElement( dataElement );
+                DataElement de = ModelMapping.getDataElement( dataElement );
 
                 de.setCompulsory( programStagedataElement.isCompulsory() );
 
@@ -233,7 +231,7 @@ public class DefaultProgramService
 
                 org.hisp.dhis.dataelement.DataElement dataElement = programStageDataElement.getDataElement();
 
-                org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement de = modelMapping.getDataElementLWUIT( dataElement );
+                org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStageDataElement de = ModelMapping.getDataElementLWUIT( dataElement );
                 
                 de.setCompulsory( programStageDataElement.isCompulsory() );
                 
@@ -280,11 +278,5 @@ public class DefaultProgramService
     public void setProgramService( org.hisp.dhis.program.ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    @Required
-    public void setModelMapping( org.hisp.dhis.mobile.service.ModelMapping modelMapping )
-    {
-        this.modelMapping = modelMapping;
     }
 }

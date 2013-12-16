@@ -12,7 +12,6 @@
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="modelMapping" ref="org.hisp.dhis.mobile.service.ModelMapping" />
 	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	<property name="oUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"></property>
   </bean>
@@ -31,7 +30,6 @@
 	<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 	<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	<property name="modelMapping" ref="org.hisp.dhis.mobile.service.ModelMapping" />
 	<property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService"></property>
 	<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService"></property>
 	<property name="relationshipTypeService" ref="org.hisp.dhis.relationship.RelationshipTypeService"></property>
@@ -43,10 +41,7 @@
 
   <bean id="org.hisp.dhis.mobile.api.IProgramService" class="org.hisp.dhis.mobile.service.DefaultProgramService">
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-    <property name="modelMapping" ref="org.hisp.dhis.mobile.service.ModelMapping" />
   </bean>
-
-  <bean id="org.hisp.dhis.mobile.service.ModelMapping" class="org.hisp.dhis.mobile.service.ModelMapping"/>
 
   <bean id="org.hisp.dhis.mobile.service.PatientMobileSettingService" class="org.hisp.dhis.mobile.service.DefaultPatientMobileSettingService">
     <property name="patientMobileSettingStore" ref="org.hisp.dhis.mobile.service.PatientMobileSettingStore" />
