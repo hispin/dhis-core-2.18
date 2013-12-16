@@ -134,37 +134,34 @@ public class DefaultPatientService
             patientAttributeValueService.savePatientAttributeValue( pav );
             patient.getAttributeValues().add( pav );
         }
-        
+
         // ---------------------------------------------------------------------
         // If under age, save representative information
         // ---------------------------------------------------------------------
 
-        if ( patient.isUnderAge() )
+        if ( representativeId != null )
         {
-            if ( representativeId != null )
+            Patient representative = patientStore.get( representativeId );
+            if ( representative != null )
             {
-                Patient representative = patientStore.get( representativeId );
-                if ( representative != null )
+                patient.setRepresentative( representative );
+
+                Relationship rel = new Relationship();
+                rel.setPatientA( representative );
+                rel.setPatientB( patient );
+
+                if ( relationshipTypeId != null )
                 {
-                    patient.setRepresentative( representative );
-
-                    Relationship rel = new Relationship();
-                    rel.setPatientA( representative );
-                    rel.setPatientB( patient );
-
-                    if ( relationshipTypeId != null )
+                    RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                    if ( relType != null )
                     {
-                        RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
-                        if ( relType != null )
-                        {
-                            rel.setRelationshipType( relType );
-                            relationshipService.saveRelationship( rel );
-                        }
+                        rel.setRelationshipType( relType );
+                        relationshipService.saveRelationship( rel );
                     }
                 }
             }
         }
-        
+
         updatePatient( patient ); // Save patient to update associations
 
         return id;
@@ -200,12 +197,6 @@ public class DefaultPatientService
         return patientStore.getAll();
     }
 
-    @Override
-    public Collection<Patient> getPatients( String name, Date birthdate, String gender )
-    {
-        return patientStore.get( name, birthdate, gender );
-    }
-    
     @Override
     public Collection<Patient> getPatients( String searchText, Integer min, Integer max )
     {
@@ -276,30 +267,35 @@ public class DefaultPatientService
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Integer min, Integer max )
     {
         return patientStore.getByOrgUnit( organisationUnit, min, max );
     }
-    
+
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatients( Program program )
     {
         return patientStore.getByProgram( program, 0, Integer.MAX_VALUE );
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program )
     {
         return patientStore.getByOrgUnitProgram( organisationUnit, program, 0, Integer.MAX_VALUE );
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min,
         Integer max )
     {
         return patientStore.getByOrgUnitAndNameLike( organisationUnit, name, min, max );
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Patient> getPatient( Integer identifierTypeId, Integer attributeId, String value )
     {
@@ -327,12 +323,9 @@ public class DefaultPatientService
                 }
             }
         }
-        else
-        {
-            return patientStore.getByNames( value, null, null );
-        }
+
+        return patientStore.getByNames( value, null, null );
         
-        return null;
     }
 
     @Override
@@ -371,6 +364,7 @@ public class DefaultPatientService
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsByNames( String name, Integer min, Integer max )
     {
         return patientStore.getByNames( name.toLowerCase(), min, max );
@@ -444,16 +438,16 @@ public class DefaultPatientService
 
     private boolean shouldSaveRepresentativeInformation( Patient patient, Integer representativeId )
     {
-        if ( !patient.isUnderAge() )
-            return false;
-
         if ( representativeId == null )
+        {
             return false;
+        }
 
         return patient.getRepresentative() == null || !(patient.getRepresentative().getId() == representativeId);
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, Integer min, Integer max )
     {
         return patientStore.getByOrgUnitProgram( organisationUnit, program, min, max );
@@ -499,11 +493,15 @@ public class DefaultPatientService
         return null;
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getRepresentatives( Patient patient )
     {
         return patientStore.getRepresentatives( patient );
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Collection<PatientAttribute> patientAttributes,
         Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
@@ -512,12 +510,15 @@ public class DefaultPatientService
             statusEnrollment, min, max );
     }
 
+    @Override
     public int countSearchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunits, Boolean followup,
         Integer statusEnrollment )
     {
         return patientStore.countSearch( searchKeys, orgunits, followup, statusEnrollment );
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
@@ -537,6 +538,8 @@ public class DefaultPatientService
         return phoneNumbers;
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
@@ -545,6 +548,7 @@ public class DefaultPatientService
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max )
     {
         return patientStore.getByPhoneNumber( phoneNumber, min, max );
@@ -640,15 +644,10 @@ public class DefaultPatientService
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientByFullname( String fullName, OrganisationUnit organisationUnit )
     {
         return patientStore.getByFullName( fullName, organisationUnit );
-    }
-
-    @Override
-    public Collection<Integer> getRegistrationOrgunitIds( Date startDate, Date endDate )
-    {
-        return patientStore.getRegistrationOrgunitIds( startDate, endDate );
     }
 
     @Override
@@ -656,4 +655,5 @@ public class DefaultPatientService
     {
         return patientStore.validate( patient, program );
     }
+
 }

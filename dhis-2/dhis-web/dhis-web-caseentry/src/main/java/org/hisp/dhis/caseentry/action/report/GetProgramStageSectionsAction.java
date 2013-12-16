@@ -83,7 +83,7 @@ public class GetProgramStageSectionsAction
         throws Exception
     {
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
-        
+
         if ( programStage.getProgramStageSections() != null )
         {
             sections = new ArrayList<ProgramStageSection>( programStage.getProgramStageSections() );

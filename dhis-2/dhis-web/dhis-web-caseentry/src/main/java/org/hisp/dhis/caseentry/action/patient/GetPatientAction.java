@@ -283,16 +283,13 @@ public class GetPatientAction
             Patient representative = patient.getRepresentative();
             relationship = relationshipService.getRelationship( representative, patient );
 
-            if ( patient.isUnderAge() && representative != null )
+            for ( PatientIdentifier representativeIdentifier : representative.getIdentifiers() )
             {
-                for ( PatientIdentifier representativeIdentifier : representative.getIdentifiers() )
+                if ( representativeIdentifier.getIdentifierType() != null
+                    && representativeIdentifier.getIdentifierType().isRelated() )
                 {
-                    if ( representativeIdentifier.getIdentifierType() != null
-                        && representativeIdentifier.getIdentifierType().isRelated() )
-                    {
-                        identiferMap.put( representativeIdentifier.getIdentifierType().getId(),
-                            representativeIdentifier.getIdentifier() );
-                    }
+                    identiferMap.put( representativeIdentifier.getIdentifierType().getId(),
+                        representativeIdentifier.getIdentifier() );
                 }
             }
 
@@ -315,8 +312,8 @@ public class GetPatientAction
 
             for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
             {
-               patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                        patientAttributeValue.getValue() );
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                    patientAttributeValue.getValue() );
             }
         }
 

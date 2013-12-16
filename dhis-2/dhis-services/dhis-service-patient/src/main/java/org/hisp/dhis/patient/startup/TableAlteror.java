@@ -38,15 +38,20 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -94,6 +99,9 @@ public class TableAlteror
     {
         this.dataEntryFormService = dataEntryFormService;
     }
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -276,6 +284,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE programstageinstance ALTER COLUMN executiondate TYPE timestamp" );
         
         updateCoordinatesProgramStageInstance();
+
+        addPatientAttributes();
     }
 
     // -------------------------------------------------------------------------
@@ -442,6 +452,204 @@ public class TableAlteror
         }
     }
 
+    private void addPatientAttributes()
+    {
+        int max = jdbcTemplate.queryForInt( "select max(patientattributeid) from patientattribute" );
+
+        // ---------------------------------------------------------------------
+        // Gender
+        // ---------------------------------------------------------------------
+        
+        max++;
+        executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+            + max
+            + ",'"
+            + CodeGenerator.generateCode()
+            + "','"
+            + DateUtils.getMediumDateString()
+            + "','Gender', 'Gender','" + PatientAttribute.TYPE_COMBO + "', false, false, false)" );
+
+        int maxOpt = jdbcTemplate.queryForInt( "select max(patientattributeoptionid) from patientattributeoption" );
+        maxOpt++;
+        executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
+            + maxOpt + "', 'F'," + max + ")" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
+            + max + ",'F'," + maxOpt + " from patient where gender='F'" );
+
+        maxOpt++;
+        executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
+            + maxOpt + "', 'M'," + max + ")" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
+            + max + ",'M'," + maxOpt + " from patient where gender='M'" );
+
+        maxOpt++;
+        executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
+            + maxOpt + "', 'T'," + max + ")" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
+            + max + ",'T'," + maxOpt + " from patient where gender='T'" );
+
+        // Update Case Aggregate Query Builder
+        String source = "[CP" + CaseAggregationCondition.SEPARATOR_OBJECT + "gender]";
+        String target = "[" + CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE
+            + CaseAggregationCondition.SEPARATOR_OBJECT + max + "]";
+        updateFixedAttributeInCaseAggregate( source, target );
+
+        // ---------------------------------------------------------------------
+        // Death date
+        // ---------------------------------------------------------------------
+        max++;
+        executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+            + max
+            + ",'"
+            + CodeGenerator.generateCode()
+            + "','"
+            + DateUtils.getMediumDateString()
+            + "','Death date', 'Death date','" + PatientAttribute.TYPE_DATE + "', false, false, false)" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid," + max
+            + ",deathDate from patient where deathDate is not null" );
+
+        // ---------------------------------------------------------------------
+        // registrationDate
+        // ---------------------------------------------------------------------
+        max++;
+        executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+            + max
+            + ",'"
+            + CodeGenerator.generateCode()
+            + "','"
+            + DateUtils.getMediumDateString()
+            + "','Registration date', 'Registration date','" + PatientAttribute.TYPE_DATE + "', false, false, false)" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid," + max
+            + ",registrationDate from patient where registrationDate is not null" );
+
+        // ---------------------------------------------------------------------
+        // isDead
+        // ---------------------------------------------------------------------
+        max++;
+        executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+            + max
+            + ",'"
+            + CodeGenerator.generateCode()
+            + "','"
+            + DateUtils.getMediumDateString()
+            + "','Is Dead', 'Is Dead','" + PatientAttribute.TYPE_TRUE_ONLY + "', false, false, false)" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid," + max
+            + ",isDead from patient where isDead is not null" );
+
+        // ---------------------------------------------------------------------
+        // underAge
+        // ---------------------------------------------------------------------
+
+        max++;
+        executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, description, name, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+            + max
+            + ",'"
+            + CodeGenerator.generateCode()
+            + "','"
+            + DateUtils.getMediumDateString()
+            + "','Is under age', 'Is under age','" + PatientAttribute.TYPE_TRUE_ONLY + "', false, false, false)" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid," + max
+            + ",isDead from patient where underAge=true" );
+
+        // ---------------------------------------------------------------------
+        // DobType
+        // ---------------------------------------------------------------------
+
+        max++;
+        executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, description, name, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+            + max
+            + ",'"
+            + CodeGenerator.generateCode()
+            + "','"
+            + DateUtils.getMediumDateString()
+            + "','DOB type', 'DOB type','" + PatientAttribute.TYPE_COMBO + "', false, false, false)" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid," + max
+            + ",dobType from patient where dobType is not null" );
+
+        maxOpt++;
+        executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
+            + maxOpt + "', 'A'," + max + ")" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
+            + max + ",'A'," + maxOpt + " from patient where dobType='A'" );
+
+        maxOpt++;
+        executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
+            + maxOpt + "', 'D'," + max + ")" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
+            + max + ",'D'," + maxOpt + " from patient where dobType='D'" );
+
+        maxOpt++;
+        executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
+            + maxOpt + "', 'V'," + max + ")" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
+            + max + ",'V'," + maxOpt + " from patient where dobType='V'" );
+
+        // Update Case Aggregate Query Builder
+        source = "[CP" + CaseAggregationCondition.SEPARATOR_OBJECT + "dobType]";
+        target = "[" + CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE + CaseAggregationCondition.SEPARATOR_OBJECT
+            + max + "]";
+        updateFixedAttributeInCaseAggregate( source, target );
+
+        // ---------------------------------------------------------------------
+        // Birthdate
+        // ---------------------------------------------------------------------
+
+        max++;
+        executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+            + max
+            + ",'"
+            + CodeGenerator.generateCode()
+            + "','"
+            + DateUtils.getMediumDateString()
+            + "','Birth date', 'Birth date','" + PatientAttribute.TYPE_DATE + "', false, false, false)" );
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid," + max
+            + ",birthdate from patient where birthdate is not null" );
+
+        // Update Case Aggregate Query Builder
+        source = "[CP" + CaseAggregationCondition.SEPARATOR_OBJECT + "age]";
+        target = "[" + CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE + CaseAggregationCondition.SEPARATOR_OBJECT
+            + max + ".age]";
+        updateFixedAttributeInCaseAggregate( source, target );
+
+        // executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
+        // executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
+        // executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
+        // executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
+        // executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
+        // executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
+    }
+
+    private void updateFixedAttributeInCaseAggregate( String source, String target )
+    {
+        StatementHolder holder = statementManager.getHolder();
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT caseaggregationconditionid, aggregationExpression FROM caseaggregationcondition where aggregationExpression like '%"
+                    + source + "%'" );
+
+            while ( resultSet.next() )
+            {
+                String id = resultSet.getString( "caseaggregationconditionid" );
+                String expression = resultSet.getString( "aggregationExpression" );
+
+                expression = expression.replaceAll( source, target );
+                executeSql( "UPDATE caseaggregationcondition SET aggregationExpression='" + expression
+                    + "'  WHERE caseaggregationconditionid=" + id );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
     private int executeSql( String sql )
     {
         try
@@ -451,7 +659,6 @@ public class TableAlteror
         catch ( Exception ex )
         {
             log.debug( ex );
-
             return -1;
         }
     }

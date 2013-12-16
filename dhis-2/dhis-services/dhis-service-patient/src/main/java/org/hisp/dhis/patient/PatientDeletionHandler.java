@@ -65,7 +65,6 @@ public class PatientDeletionHandler
         for ( Patient representative : representatives )
         {
             representative.setRepresentative( null );
-            representative.setUnderAge( false );
             patientService.updatePatient( representative );
         }
     }

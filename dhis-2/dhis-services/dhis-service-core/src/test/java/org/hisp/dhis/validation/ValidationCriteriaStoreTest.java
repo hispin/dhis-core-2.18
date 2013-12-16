@@ -34,11 +34,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.patient.Patient;
 import org.junit.Test;
 
 /**
@@ -69,13 +67,11 @@ public class ValidationCriteriaStoreTest
     {
         validationCriteriaStore = (GenericIdentifiableObjectStore<ValidationCriteria>) getBean( "org.hisp.dhis.validation.ValidationCriteriaStore" );
 
-        propertyA = Patient.class.getDeclaredField( "birthDate" ).getName();
-
-        propertyB = Patient.class.getDeclaredField( "dobType" ).getName();
-
-        valueA = new Date();
-
-        valueB = (char) 'A';
+        propertyA = "name";
+        propertyB = "name";
+        
+        valueA = "A";
+        valueB = "B";
     }
 
     // -------------------------------------------------------------------------

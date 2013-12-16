@@ -71,7 +71,6 @@ public class RemoveRepresentativeAction
     {
         Patient patient = patientService.getPatient( patientId );
         patient.setRepresentative( null );
-        patient.setUnderAge( false );
 
         patientService.updatePatient( patient );
 

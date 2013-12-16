@@ -13,23 +13,9 @@
     &identifiableProperties;
 
     <property name="name" column="name" length="230" />
-
-    <property name="birthDate" column="birthdate" />
-
-    <property name="deathDate" column="deathdate" />
-
-    <property name="registrationDate" column="registrationdate" not-null="true" />
-
-    <property name="isDead" column="isdead" />
-
-    <property name="gender" column="gender" length="5" />
-
+   
     <property name="phoneNumber" length="25" />
-
-    <property name="underAge" column="underage" />
-
-    <property name="dobType" column="dobType" />
-
+    
     <set name="identifiers" inverse="true">
       <key column="patientid" />
       <one-to-many class="org.hisp.dhis.patient.PatientIdentifier" />

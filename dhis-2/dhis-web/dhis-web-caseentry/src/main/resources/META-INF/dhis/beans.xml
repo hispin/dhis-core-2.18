@@ -455,8 +455,6 @@
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.AddPatientAction"
 		class="org.hisp.dhis.caseentry.action.patient.AddPatientAction" scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="patientIdentifierService"
 			ref="org.hisp.dhis.patient.PatientIdentifierService" />
@@ -494,8 +492,6 @@
 		</property>
 		<property name="patientIdentifierService"
 			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="patientAttributeOptionService"
 			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
@@ -627,8 +623,6 @@
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientIdentifierService"
 			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>

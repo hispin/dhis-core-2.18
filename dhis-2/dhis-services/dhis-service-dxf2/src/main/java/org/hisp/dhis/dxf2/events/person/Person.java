@@ -28,14 +28,14 @@ package org.hisp.dhis.dxf2.events.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.common.DxfNamespaces;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.DxfNamespaces;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -48,16 +48,6 @@ public class Person
     private String orgUnit;
 
     private String name;
-
-    private Gender gender;
-
-    private DateOfBirth dateOfBirth;
-
-    private boolean deceased;
-
-    private Date dateOfDeath;
-
-    private Date dateOfRegistration = new Date();
 
     private Contact contact;
 
@@ -105,66 +95,6 @@ public class Person
     public void setName( String name )
     {
         this.name = name;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Gender getGender()
-    {
-        return gender;
-    }
-
-    public void setGender( Gender gender )
-    {
-        this.gender = gender;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public DateOfBirth getDateOfBirth()
-    {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth( DateOfBirth dateOfBirth )
-    {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public boolean isDeceased()
-    {
-        return deceased;
-    }
-
-    public void setDeceased( boolean deceased )
-    {
-        this.deceased = deceased;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Date getDateOfDeath()
-    {
-        return dateOfDeath;
-    }
-
-    public void setDateOfDeath( Date dateOfDeath )
-    {
-        this.dateOfDeath = dateOfDeath;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Date getDateOfRegistration()
-    {
-        return dateOfRegistration;
-    }
-
-    public void setDateOfRegistration( Date dateOfRegistration )
-    {
-        this.dateOfRegistration = dateOfRegistration;
     }
 
     @JsonProperty
@@ -218,24 +148,26 @@ public class Person
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
+        if ( this == o )
+            return true;
+        if ( o == null || getClass() != o.getClass() )
+            return false;
 
         Person person1 = (Person) o;
-
-        if ( deceased != person1.deceased ) return false;
-        if ( attributes != null ? !attributes.equals( person1.attributes ) : person1.attributes != null ) return false;
-        if ( contact != null ? !contact.equals( person1.contact ) : person1.contact != null ) return false;
-        if ( dateOfBirth != null ? !dateOfBirth.equals( person1.dateOfBirth ) : person1.dateOfBirth != null ) return false;
-        if ( dateOfDeath != null ? !dateOfDeath.equals( person1.dateOfDeath ) : person1.dateOfDeath != null ) return false;
-        if ( dateOfRegistration != null ? !dateOfRegistration.equals( person1.dateOfRegistration ) : person1.dateOfRegistration != null )
+        if ( attributes != null ? !attributes.equals( person1.attributes ) : person1.attributes != null )
             return false;
-        if ( gender != person1.gender ) return false;
-        if ( identifiers != null ? !identifiers.equals( person1.identifiers ) : person1.identifiers != null ) return false;
-        if ( name != null ? !name.equals( person1.name ) : person1.name != null ) return false;
-        if ( orgUnit != null ? !orgUnit.equals( person1.orgUnit ) : person1.orgUnit != null ) return false;
-        if ( person != null ? !person.equals( person1.person ) : person1.person != null ) return false;
-        if ( relationships != null ? !relationships.equals( person1.relationships ) : person1.relationships != null ) return false;
+        if ( contact != null ? !contact.equals( person1.contact ) : person1.contact != null )
+            return false;
+        if ( identifiers != null ? !identifiers.equals( person1.identifiers ) : person1.identifiers != null )
+            return false;
+        if ( name != null ? !name.equals( person1.name ) : person1.name != null )
+            return false;
+        if ( orgUnit != null ? !orgUnit.equals( person1.orgUnit ) : person1.orgUnit != null )
+            return false;
+        if ( person != null ? !person.equals( person1.person ) : person1.person != null )
+            return false;
+        if ( relationships != null ? !relationships.equals( person1.relationships ) : person1.relationships != null )
+            return false;
 
         return true;
     }
@@ -246,11 +178,6 @@ public class Person
         int result = person != null ? person.hashCode() : 0;
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
-        result = 31 * result + (deceased ? 1 : 0);
-        result = 31 * result + (dateOfDeath != null ? dateOfDeath.hashCode() : 0);
-        result = 31 * result + (dateOfRegistration != null ? dateOfRegistration.hashCode() : 0);
         result = 31 * result + (contact != null ? contact.hashCode() : 0);
         result = 31 * result + (relationships != null ? relationships.hashCode() : 0);
         result = 31 * result + (identifiers != null ? identifiers.hashCode() : 0);
@@ -258,21 +185,11 @@ public class Person
         return result;
     }
 
-    @Override public String toString()
+    @Override
+    public String toString()
     {
-        return "Person{" +
-            "person='" + person + '\'' +
-            ", orgUnit='" + orgUnit + '\'' +
-            ", name='" + name + '\'' +
-            ", gender=" + gender +
-            ", dateOfBirth=" + dateOfBirth +
-            ", deceased=" + deceased +
-            ", dateOfDeath=" + dateOfDeath +
-            ", dateOfRegistration=" + dateOfRegistration +
-            ", contact=" + contact +
-            ", relationships=" + relationships +
-            ", identifiers=" + identifiers +
-            ", attributes=" + attributes +
-            '}';
+        return "Person{" + "person='" + person + '\'' + ", orgUnit='" + orgUnit + '\'' + ", name='" + name + '\''
+            + ", contact=" + contact + ", relationships=" + relationships + ", identifiers=" + identifiers
+            + ", attributes=" + attributes + '}';
     }
 }

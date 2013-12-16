@@ -124,7 +124,7 @@ public abstract class AbstractPersonService
 
     // -------------------------------------------------------------------------
     // READ
-    // -------------------------------------------------------------------------
+    // --------------------T-----------------------------------------------------
 
     @Override
     public Persons getPersons()
@@ -136,7 +136,8 @@ public abstract class AbstractPersonService
     @Override
     public Person getPerson( Identifier identifier )
     {
-        PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierTypeByUid( identifier.getType() );
+        PatientIdentifierType patientIdentifierType = patientIdentifierTypeService
+            .getPatientIdentifierTypeByUid( identifier.getType() );
         Patient patient = patientIdentifierService.getPatient( patientIdentifierType, identifier.getValue() );
         return getPerson( patient );
     }
@@ -151,7 +152,8 @@ public abstract class AbstractPersonService
     @Override
     public Persons getPersons( OrganisationUnit organisationUnit, String nameLike )
     {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getPatientsLikeName( organisationUnit, nameLike, 0, Integer.MAX_VALUE ) );
+        List<Patient> patients = new ArrayList<Patient>( patientService.getPatientsLikeName( organisationUnit,
+            nameLike, 0, Integer.MAX_VALUE ) );
         return getPersons( patients );
     }
 
@@ -201,10 +203,6 @@ public abstract class AbstractPersonService
         person.setOrgUnit( patient.getOrganisationUnit().getUid() );
 
         person.setName( patient.getName() );
-        person.setGender( Gender.fromString( patient.getGender() ) );
-
-        person.setDeceased( patient.getIsDead() );
-        person.setDateOfDeath( patient.getDeathDate() );
 
         Contact contact = new Contact();
         contact.setPhoneNumber( nullIfEmpty( patient.getPhoneNumber() ) );
@@ -213,28 +211,6 @@ public abstract class AbstractPersonService
         {
             person.setContact( contact );
         }
-
-        DateOfBirth dateOfBirth;
-
-        Character dobType = patient.getDobType();
-
-        if ( dobType != null && patient.getBirthDate() != null )
-        {
-            if ( dobType.equals( Patient.DOB_TYPE_VERIFIED ) || dobType.equals( Patient.DOB_TYPE_DECLARED ) )
-            {
-                dateOfBirth = new DateOfBirth( patient.getBirthDate(),
-                    DateOfBirthType.fromString( String.valueOf( dobType ) ) );
-            }
-            else
-            {
-                // assume APPROXIMATE
-                dateOfBirth = new DateOfBirth( patient.getIntegerValueOfAge() );
-            }
-
-            person.setDateOfBirth( dateOfBirth );
-        }
-
-        person.setDateOfRegistration( patient.getRegistrationDate() );
 
         Collection<Relationship> relationshipsForPatient = relationshipService.getRelationshipsForPatient( patient );
 
@@ -250,15 +226,18 @@ public abstract class AbstractPersonService
 
         for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
         {
-            String identifierType = patientIdentifier.getIdentifierType() == null ? null : patientIdentifier.getIdentifierType().getUid();
-            String displayName = patientIdentifier.getIdentifierType() != null ? patientIdentifier.getIdentifierType().getDisplayName() : null;
+            String identifierType = patientIdentifier.getIdentifierType() == null ? null : patientIdentifier
+                .getIdentifierType().getUid();
+            String displayName = patientIdentifier.getIdentifierType() != null ? patientIdentifier.getIdentifierType()
+                .getDisplayName() : null;
 
             Identifier identifier = new Identifier( identifierType, patientIdentifier.getIdentifier() );
             identifier.setDisplayName( displayName );
             person.getIdentifiers().add( identifier );
         }
 
-        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
+        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
+            .getPatientAttributeValues( patient );
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
@@ -279,45 +258,17 @@ public abstract class AbstractPersonService
 
         Patient patient = new Patient();
         patient.setName( person.getName() );
-        patient.setGender( person.getGender().getValue() );
 
         OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
         Assert.notNull( organisationUnit );
 
         patient.setOrganisationUnit( organisationUnit );
 
-        DateOfBirth dateOfBirth = person.getDateOfBirth();
-
-        if ( dateOfBirth != null )
-        {
-            if ( dateOfBirth.getDate() != null && (dateOfBirth.getType().equals( DateOfBirthType.DECLARED ) ||
-                dateOfBirth.getType().equals( DateOfBirthType.VERIFIED )) )
-            {
-                char dobType = dateOfBirth.getType().getValue().charAt( 0 );
-                patient.setDobType( dobType );
-                patient.setBirthDate( dateOfBirth.getDate() );
-            }
-            else if ( dateOfBirth.getAge() != null && dateOfBirth.getType().equals( DateOfBirthType.APPROXIMATE ) )
-            {
-                char dobType = dateOfBirth.getType().getValue().charAt( 0 );
-                patient.setDobType( dobType );
-                patient.setBirthDateFromAge( dateOfBirth.getAge(), dobType );
-            }
-        }
-
         if ( person.getContact() != null && person.getContact().getPhoneNumber() != null )
         {
             patient.setPhoneNumber( person.getContact().getPhoneNumber() );
         }
 
-        patient.setIsDead( person.isDeceased() );
-
-        if ( person.isDeceased() && person.getDateOfDeath() != null )
-        {
-            patient.setDeathDate( person.getDateOfDeath() );
-        }
-
-        patient.setRegistrationDate( person.getDateOfRegistration() );
         updateIdentifiers( person, patient );
 
         return patient;
@@ -380,24 +331,16 @@ public abstract class AbstractPersonService
 
         if ( patient == null )
         {
-            importConflicts.add(
-                new ImportConflict( "Person", "person " + person.getPerson() + " does not point to valid person" ) );
+            importConflicts.add( new ImportConflict( "Person", "person " + person.getPerson()
+                + " does not point to valid person" ) );
         }
 
         OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
 
         if ( organisationUnit == null )
         {
-            importConflicts.add(
-                new ImportConflict( "OrganisationUnit", "orgUnit " + person.getOrgUnit() + " does not point to valid organisation unit" ) );
-        }
-
-        DateOfBirth dateOfBirth = person.getDateOfBirth();
-
-        if ( dateOfBirth == null )
-        {
-            importConflicts.add(
-                new ImportConflict( "DateOfBirth", "dateOfBirth is not present" ) );
+            importConflicts.add( new ImportConflict( "OrganisationUnit", "orgUnit " + person.getOrgUnit()
+                + " does not point to valid organisation unit" ) );
         }
 
         importSummary.setConflicts( importConflicts );
@@ -410,22 +353,8 @@ public abstract class AbstractPersonService
         }
 
         patient.setName( person.getName() );
-        patient.setGender( person.getGender().getValue() );
-        patient.setIsDead( person.isDeceased() );
-        patient.setDeathDate( person.getDateOfDeath() );
-        // TODO should we allow update of this property?
-        patient.setRegistrationDate( person.getDateOfRegistration() );
-
         String phoneNumber = person.getContact() != null ? person.getContact().getPhoneNumber() : null;
         patient.setPhoneNumber( phoneNumber );
-
-        if ( DateOfBirthType.APPROXIMATE.equals( dateOfBirth.getType() ) )
-        {
-            dateOfBirth = new DateOfBirth( dateOfBirth.getAge() );
-        }
-
-        patient.setDobType( dateOfBirth.getType().getValue().charAt( 0 ) );
-        patient.setBirthDate( dateOfBirth.getDate() );
 
         updateSystemIdentifier( person );
         removeRelationships( patient );
@@ -489,23 +418,24 @@ public abstract class AbstractPersonService
             {
                 if ( !cacheMap.keySet().contains( patientIdentifierType.getUid() ) )
                 {
-                    importConflicts.add(
-                        new ImportConflict( "Identifier.type", "Missing required identifier type " + patientIdentifierType.getUid() ) );
+                    importConflicts.add( new ImportConflict( "Identifier.type", "Missing required identifier type "
+                        + patientIdentifierType.getUid() ) );
                 }
             }
 
-            List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>( patientIdentifierService.getAll(
-                patientIdentifierType, cacheMap.get( patientIdentifierType.getUid() ) ) );
+            List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>(
+                patientIdentifierService.getAll( patientIdentifierType, cacheMap.get( patientIdentifierType.getUid() ) ) );
 
             if ( !patientIdentifiers.isEmpty() )
             {
-                // if .size() > 1, there is something wrong with the db.. but we for-loop for now
+                // if .size() > 1, there is something wrong with the db.. but we
+                // for-loop for now
                 for ( PatientIdentifier patientIdentifier : patientIdentifiers )
                 {
                     if ( !patientIdentifier.getPatient().equals( patient ) )
                     {
-                        importConflicts.add(
-                            new ImportConflict( "Identifier.value", "Value already exists for patient " + patientIdentifier.getPatient().getUid()
+                        importConflicts.add( new ImportConflict( "Identifier.value",
+                            "Value already exists for patient " + patientIdentifier.getPatient().getUid()
                                 + " with identifier type " + patientIdentifierType.getUid() ) );
                     }
                 }
@@ -514,12 +444,12 @@ public abstract class AbstractPersonService
 
         for ( Identifier identifier : person.getIdentifiers() )
         {
-            PatientIdentifierType patientIdentifierType = manager.get( PatientIdentifierType.class, identifier.getType() );
+            PatientIdentifierType patientIdentifierType = manager.get( PatientIdentifierType.class,
+                identifier.getType() );
 
             if ( patientIdentifierType == null )
             {
-                importConflicts.add(
-                    new ImportConflict( "Identifier.type", "Invalid type " + identifier.getType() ) );
+                importConflicts.add( new ImportConflict( "Identifier.type", "Invalid type " + identifier.getType() ) );
             }
         }
 
@@ -546,8 +476,8 @@ public abstract class AbstractPersonService
             {
                 if ( !cache.contains( patientAttribute.getUid() ) )
                 {
-                    importConflicts.add(
-                        new ImportConflict( "Attribute.type", "Missing required attribute type " + patientAttribute.getUid() ) );
+                    importConflicts.add( new ImportConflict( "Attribute.type", "Missing required attribute type "
+                        + patientAttribute.getUid() ) );
                 }
             }
         }
@@ -558,8 +488,7 @@ public abstract class AbstractPersonService
 
             if ( patientAttribute == null )
             {
-                importConflicts.add(
-                    new ImportConflict( "Attribute.type", "Invalid type " + attribute.getType() ) );
+                importConflicts.add( new ImportConflict( "Attribute.type", "Invalid type " + attribute.getType() ) );
             }
         }
 
@@ -576,22 +505,21 @@ public abstract class AbstractPersonService
 
             if ( relationshipType == null )
             {
-                importConflicts.add(
-                    new ImportConflict( "Relationship.type", "Invalid type " + relationship.getType() ) );
+                importConflicts
+                    .add( new ImportConflict( "Relationship.type", "Invalid type " + relationship.getType() ) );
             }
 
             Patient patient = manager.get( Patient.class, relationship.getPerson() );
 
             if ( patient == null )
             {
-                importConflicts.add(
-                    new ImportConflict( "Relationship.person", "Invalid person " + relationship.getPerson() ) );
+                importConflicts.add( new ImportConflict( "Relationship.person", "Invalid person "
+                    + relationship.getPerson() ) );
             }
         }
 
         return importConflicts;
     }
-
 
     private void updateAttributeValues( Person person, Patient patient )
     {
@@ -613,15 +541,6 @@ public abstract class AbstractPersonService
 
     private void updateSystemIdentifier( Person person )
     {
-        Date birthDate = person.getDateOfBirth() != null ? person.getDateOfBirth().getDate() : null;
-        String gender = person.getGender() != null ? person.getGender().getValue() : null;
-
-        if ( birthDate == null || gender == null )
-        {
-            birthDate = new Date();
-            gender = "F";
-        }
-
         Iterator<Identifier> iterator = person.getIdentifiers().iterator();
 
         // remove any old system identifiers
@@ -634,12 +553,9 @@ public abstract class AbstractPersonService
                 iterator.remove();
             }
         }
-
-        Identifier identifier = generateSystemIdentifier( birthDate, gender );
-
+        Identifier identifier = null;
         if ( person.getPerson() != null )
         {
-            identifier = generateSystemIdentifier( birthDate, gender );
             Patient patient = manager.get( Patient.class, person.getPerson() );
 
             for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
@@ -652,25 +568,10 @@ public abstract class AbstractPersonService
             }
         }
 
-        person.getIdentifiers().add( identifier );
-    }
-
-    private Identifier generateSystemIdentifier( Date birthDate, String gender )
-    {
-        String systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
-
-        PatientIdentifier patientIdentifier = patientIdentifierService.get( null, systemId );
-
-        while ( patientIdentifier != null )
+        if ( identifier != null )
         {
-            systemId = PatientIdentifierGenerator.getNewIdentifier( birthDate, gender );
-            patientIdentifier = patientIdentifierService.get( null, systemId );
+            person.getIdentifiers().add( identifier );
         }
-
-        Identifier identifier = new Identifier();
-        identifier.setValue( systemId );
-
-        return identifier;
     }
 
     // add identifiers from person => patient

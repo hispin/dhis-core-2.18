@@ -96,10 +96,10 @@ public class EnrollmentServiceTest
         manager.save( organisationUnitA );
         manager.save( organisationUnitB );
 
-        maleA = createPatient( 'A', Patient.MALE, organisationUnitA );
-        maleB = createPatient( 'B', Patient.MALE, organisationUnitB );
-        femaleA = createPatient( 'C', Patient.FEMALE, organisationUnitA );
-        femaleB = createPatient( 'D', Patient.FEMALE, organisationUnitB );
+        maleA = createPatient( 'A', organisationUnitA );
+        maleB = createPatient( 'B',  organisationUnitB );
+        femaleA = createPatient( 'C', organisationUnitA );
+        femaleB = createPatient( 'D',  organisationUnitB );
 
         manager.save( maleA );
         manager.save( maleB );
@@ -152,6 +152,7 @@ public class EnrollmentServiceTest
     @Test
     public void testGetEnrollmentsByPerson()
     {
+
         programInstanceService.enrollPatient( maleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
         programInstanceService.enrollPatient( femaleA, programA, null, null, organisationUnitA, mock( I18nFormat.class ) );
 
@@ -191,6 +192,8 @@ public class EnrollmentServiceTest
         Enrollment enrollment = new Enrollment();
         enrollment.setPerson( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
+        enrollment.setDateOfIncident( new Date() );
+        enrollment.setDateOfEnrollment( new Date() );
 
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
@@ -238,6 +241,8 @@ public class EnrollmentServiceTest
         Enrollment enrollment = new Enrollment();
         enrollment.setPerson( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
+        enrollment.setDateOfIncident( new Date() );
+        enrollment.setDateOfEnrollment( new Date() );
 
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
@@ -260,6 +265,8 @@ public class EnrollmentServiceTest
         Enrollment enrollment = new Enrollment();
         enrollment.setPerson( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
+        enrollment.setDateOfIncident( new Date() );
+        enrollment.setDateOfEnrollment( new Date() );
 
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
@@ -282,6 +289,8 @@ public class EnrollmentServiceTest
         Enrollment enrollment = new Enrollment();
         enrollment.setPerson( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
+        enrollment.setDateOfIncident( new Date() );
+        enrollment.setDateOfEnrollment( new Date() );
 
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
@@ -310,6 +319,8 @@ public class EnrollmentServiceTest
         Enrollment enrollment = new Enrollment();
         enrollment.setPerson( maleA.getUid() );
         enrollment.setProgram( programA.getUid() );
+        enrollment.setDateOfIncident( new Date() );
+        enrollment.setDateOfEnrollment( new Date() );
 
         ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );

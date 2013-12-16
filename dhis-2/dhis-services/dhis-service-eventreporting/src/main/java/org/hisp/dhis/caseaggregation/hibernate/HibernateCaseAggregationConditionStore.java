@@ -32,7 +32,6 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_ORGU
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY;
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE;
@@ -91,8 +90,6 @@ public class HibernateCaseAggregationConditionStore
     implements CaseAggregationConditionStore
 {
     private final String IS_NULL = "is null";
-
-    private final String PROPERTY_AGE = "age";
 
     private final String IN_CONDITION_GET_ALL = "*";
 
@@ -505,14 +502,9 @@ public class HibernateCaseAggregationConditionStore
             {
                 condition = getConditionForPatient( orgunitIds, operator, startDate, endDate );
             }
-            else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_PROPERTY ) )
-            {
-                String propertyName = info[1];
-                condition = getConditionForPatientProperty( propertyName, operator, startDate, endDate );
-            }
             else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
             {
-                int attributeId = Integer.parseInt( info[1] );
+                String attributeId = info[1];
 
                 String compareValue = expression[index].replace( "[" + match + "]", "" ).trim();
 
@@ -651,14 +643,19 @@ public class HibernateCaseAggregationConditionStore
      * Return standard SQL of a dynamic patient-attribute expression. E.g [CA:1]
      * 
      */
-    private String getConditionForPatientAttribute( int attributeId, Collection<Integer> orgunitIds, boolean isExist )
+    private String getConditionForPatientAttribute( String attributeId, Collection<Integer> orgunitIds,
+        boolean isExist )
     {
-        String sql = " EXISTS ( SELECT * FROM patientattributevalue _pav "
-            + " WHERE _pav.patientid=pi.patientid AND _pav.patientattributeid=" + attributeId;
 
+        String sql = " EXISTS ( SELECT * FROM patientattributevalue _pav " + " WHERE _pav.patientid=pi.patientid  ";
+
+        if ( attributeId.split( SEPARATOR_ID ).length==2) 
+        {
+            sql += " AND _pav.patientattributeid=" + attributeId.split( "." )[0] + " AND DATE(now) - DATE( _pav.value )";
+        }
         if ( isExist )
         {
-            sql += "  AND _pav.value ";
+            sql += " AND _pav.patientattributeid=" + attributeId + " AND _pav.value ";
         }
         else
         {
@@ -676,31 +673,9 @@ public class HibernateCaseAggregationConditionStore
     private String getConditionForPatient( Collection<Integer> orgunitIds, String operator, String startDate,
         String endDate )
     {
-        String sql = " EXISTS ( SELECT * " + "FROM patient _p " + "WHERE _p.patientid = pi.patientid "
+        String sql = " EXISTS ( SELECT * FROM patient _p WHERE _p.patientid = pi.patientid "
             + "AND _p.registrationdate>='" + startDate + "' AND _p.registrationdate<='" + endDate + "' "
-            + "AND p.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds ) + ") ";
-
-        return sql;
-    }
-
-    /**
-     * Return standard SQL of the patient-fixed-attribute expression. E.g
-     * [CP:gender]
-     * 
-     */
-    private String getConditionForPatientProperty( String propertyName, String operator, String startDate,
-        String endDate )
-    {
-        String sql = " EXISTS (SELECT _p.patientid FROM patient _p WHERE _p.patientid = pi.patientid AND ";
-
-        if ( propertyName.equals( PROPERTY_AGE ) )
-        {
-            sql += "DATE(registrationdate) - DATE(birthdate) ";
-        }
-        else
-        {
-            sql += propertyName + " ";
-        }
+            + "AND _p.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds ) + ") ";
 
         return sql;
     }
@@ -1101,7 +1076,6 @@ public class HibernateCaseAggregationConditionStore
             String[] info = match.split( SEPARATOR_OBJECT );
 
             if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT )
-                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_PROPERTY )
                 || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE ) )
             {
                 return true;

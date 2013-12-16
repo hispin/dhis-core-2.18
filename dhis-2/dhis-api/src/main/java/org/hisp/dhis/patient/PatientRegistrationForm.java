@@ -40,24 +40,6 @@ public class PatientRegistrationForm
 {
     private static final long serialVersionUID = -6000530171659755186L;
 
-    public static String FIXED_ATTRIBUTE_FULLNAME = "fullName";
-
-    public static String FIXED_ATTRIBUTE_GENDER = "gender";
-
-    public static String FIXED_ATTRIBUTE_BIRTHDATE = "birthDate";
-
-    public static String FIXED_ATTRIBUTE_AGE = "age";
-
-    public static String FIXED_ATTRIBUTE_PHONE_NUMBER = "phoneNumber";
-
-    public static String FIXED_ATTRIBUTE_DEATH_DATE = "deathDate";
-
-    public static String FIXED_ATTRIBUTE_REGISTRATION_DATE = "registrationDate";
-
-    public static String FIXED_ATTRIBUTE_IS_DEAD = "isDead";
-
-    public static String FIXED_ATTRIBUTE_DOB_TYPE = "dobType";
-
     public static String FIXED_ATTRIBUTE_ASSOCIATE = "associate";
 
     private Program program;

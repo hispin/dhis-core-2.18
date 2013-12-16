@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
@@ -63,8 +62,6 @@ public class ValidatePatientAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private I18nFormat format;
-
     private PatientService patientService;
 
     private PatientIdentifierTypeService identifierTypeService;
@@ -78,12 +75,6 @@ public class ValidatePatientAction
     // -------------------------------------------------------------------------
 
     private String fullName;
-
-    private String birthDate;
-
-    private Integer age;
-
-    private String gender;
 
     private Integer id;
 
@@ -126,21 +117,6 @@ public class ValidatePatientAction
             patient = new Patient();
         }
 
-        if ( gender != null )
-        {
-            patient.setGender( gender );
-        }
-
-        if ( birthDate != null && !birthDate.isEmpty() )
-        {
-            birthDate = birthDate.trim();
-            patient.setBirthDate( format.parseDate( birthDate ) );
-
-        }
-        else if ( age != null )
-        {
-            patient.setBirthDateFromAge( age, Patient.AGE_TYPE_YEAR );
-        }
         patient.setName( fullName );
         patient.setOrganisationUnit( orgunit );
 
@@ -209,11 +185,6 @@ public class ValidatePatientAction
         this.identifierTypeService = identifierTypeService;
     }
 
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
@@ -227,16 +198,6 @@ public class ValidatePatientAction
     public void setFullName( String fullName )
     {
         this.fullName = fullName;
-    }
-
-    public void setBirthDate( String birthDate )
-    {
-        this.birthDate = birthDate;
-    }
-
-    public void setAge( Integer age )
-    {
-        this.age = age;
     }
 
     public String getMessage()
@@ -257,11 +218,6 @@ public class ValidatePatientAction
     public void setId( Integer id )
     {
         this.id = id;
-    }
-
-    public void setGender( String gender )
-    {
-        this.gender = gender;
     }
 
     public void setUnderAge( boolean underAge )

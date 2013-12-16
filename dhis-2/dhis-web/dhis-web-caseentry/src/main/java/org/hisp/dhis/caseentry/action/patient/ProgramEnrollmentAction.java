@@ -67,8 +67,6 @@ public class ProgramEnrollmentAction
 
     private PatientIdentifierService patientIdentifierService;
 
-    private PatientAttributeValueService patientAttributeValueService;
-
     private OrganisationUnitSelectionManager selectionManager;
 
     // -------------------------------------------------------------------------
@@ -117,12 +115,7 @@ public class ProgramEnrollmentAction
     {
         return patientAttributeValueMap;
     }
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
+    
     public Map<Integer, String> getIdentiferMap()
     {
         return identiferMap;
@@ -231,8 +224,8 @@ public class ProgramEnrollmentAction
 
         if ( patientAttributes != null )
         {
-            Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-                .getPatientAttributeValues( programInstance.getPatient() );
+            Collection<PatientAttributeValue> patientAttributeValues = programInstance.getPatient()
+                .getAttributeValues();
 
             for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
             {
