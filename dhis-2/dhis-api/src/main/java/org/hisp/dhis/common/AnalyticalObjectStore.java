@@ -28,7 +28,9 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.indicator.Indicator;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -37,4 +39,8 @@ public interface AnalyticalObjectStore<T extends BaseAnalyticalObject>
     extends GenericIdentifiableObjectStore<T>
 {
     int countDataSetAnalyticalObject( DataSet dataSet );
+
+    int countIndicatorAnalyticalObject( Indicator indicator );
+
+    int countDataElementAnalyticalObject( DataElement dataElement );
 }

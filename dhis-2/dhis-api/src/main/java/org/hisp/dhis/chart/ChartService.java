@@ -115,4 +115,8 @@ public interface ChartService
     Collection<Chart> getChartsByUser( User user );
 
     int countDataSetCharts( DataSet dataSet );
+
+    int countIndicatorCharts( Indicator indicator );
+
+    int countDataElementCharts( DataElement dataElement );
 }

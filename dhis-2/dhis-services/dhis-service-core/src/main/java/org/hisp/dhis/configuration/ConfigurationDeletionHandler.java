@@ -28,6 +28,8 @@ package org.hisp.dhis.configuration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.UserGroup;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -63,6 +65,14 @@ public class ConfigurationDeletionHandler
     public String allowDeleteUserGroup( UserGroup userGroup )
     {
         String sql = "SELECT COUNT(*) FROM configuration where feedbackrecipientsid=" + userGroup.getId();
+
+        return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        String sql = "SELECT COUNT(*) FROM configuration where infrastructuraldataelementsid=" + dataElementGroup.getId();
 
         return jdbcTemplate.queryForObject( sql, Integer.class ) == 0 ? null : ERROR;
     }

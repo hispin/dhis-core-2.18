@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -150,5 +151,23 @@ public class MapViewDeletionHandler
     public String allowDeleteMapView( MapView mapView )
     {
         return mappingService.countMapViewMaps( mapView ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteDataSet( DataSet dataSet )
+    {
+        return mappingService.countDataSetCharts( dataSet ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteIndicator( Indicator indicator )
+    {
+        return mappingService.countIndicatorCharts( indicator ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteDataElement( DataElement dataElement )
+    {
+        return mappingService.countDataElementCharts( dataElement ) == 0 ? null : ERROR;
     }
 }

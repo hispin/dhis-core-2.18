@@ -73,6 +73,18 @@ public class ChartDeletionHandler
     }
 
     @Override
+    public String allowDeleteIndicator( Indicator indicator )
+    {
+        return chartService.countIndicatorCharts( indicator ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteDataElement( DataElement dataElement )
+    {
+        return chartService.countDataElementCharts( dataElement ) == 0 ? null : ERROR;
+    }
+
+    @Override
     public String allowDeletePeriod( Period period )
     {
         for ( Chart chart : chartService.getAllCharts() )
