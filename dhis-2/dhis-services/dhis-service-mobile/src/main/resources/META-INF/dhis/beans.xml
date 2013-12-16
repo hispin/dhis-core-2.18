@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
   <!-- Services -->
 
@@ -12,8 +12,8 @@
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	<property name="oUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"></property>
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="oUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
   <bean id="org.hisp.dhis.mobile.api.ActivityReportingService" class="org.hisp.dhis.mobile.service.ActivityReportingServiceImpl">
@@ -23,33 +23,34 @@
     <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="patientMobileSettingService" ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
     <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
-    <property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService"/>
-	<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-	<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-	<property name="relationshipService" ref="org.hisp.dhis.relationship.RelationshipService" />
-	<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-	<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	<property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService"></property>
-	<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService"></property>
-	<property name="relationshipTypeService" ref="org.hisp.dhis.relationship.RelationshipTypeService"></property>
-	<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-	<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
-	<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
+    <property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
+    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+    <property name="relationshipService" ref="org.hisp.dhis.relationship.RelationshipService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+    <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+    <property name="relationshipTypeService" ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+    <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
   </bean>
 
   <bean id="org.hisp.dhis.mobile.api.IProgramService" class="org.hisp.dhis.mobile.service.DefaultProgramService">
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
   </bean>
 
-  <bean id="org.hisp.dhis.mobile.service.PatientMobileSettingService" class="org.hisp.dhis.mobile.service.DefaultPatientMobileSettingService">
+  <bean id="org.hisp.dhis.mobile.service.PatientMobileSettingService"
+    class="org.hisp.dhis.mobile.service.DefaultPatientMobileSettingService">
     <property name="patientMobileSettingStore" ref="org.hisp.dhis.mobile.service.PatientMobileSettingStore" />
   </bean>
-  
+
   <bean id="org.hisp.dhis.mobile.service.PatientMobileSettingStore" class="org.hisp.dhis.mobile.service.HibernatePatientMobileSettingStore">
-    <property name="clazz" value="org.hisp.dhis.patient.PatientMobileSetting"/>
-    <property name="sessionFactory" ref="sessionFactory"/>
+    <property name="clazz" value="org.hisp.dhis.patient.PatientMobileSetting" />
+    <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
 </beans>
