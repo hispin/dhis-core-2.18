@@ -28,16 +28,16 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.api.mobile.model.Activity;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.api.mobile.ActivityReportingService;
+import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import com.opensymphony.xwork2.Action;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GetActivityListAction
     implements Action
@@ -65,11 +65,6 @@ public class GetActivityListAction
     public void setUtil( NamebasedUtils util )
     {
         this.util = util;
-    }
-
-    public NamebasedUtils getUtil()
-    {
-        return util;
     }
 
     // -------------------------------------------------------------------------

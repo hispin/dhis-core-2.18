@@ -42,22 +42,12 @@ public class GetAddNewRelationshipFormAction
     // -------------------------------------------------------------------------
     private RelationshipTypeService relationshipTypeService;
 
-    public RelationshipTypeService getRelationshipTypeService()
-    {
-        return relationshipTypeService;
-    }
-
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
     }
 
     private PatientService patientService;
-
-    public PatientService getPatientService()
-    {
-        return patientService;
-    }
 
     public void setPatientService( PatientService patientService )
     {

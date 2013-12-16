@@ -64,11 +64,6 @@ public class GetProgramStageListAction
 
     private ProgramInstanceService programInstanceService;
 
-    public ProgramInstanceService getProgramInstanceService()
-    {
-        return programInstanceService;
-    }
-
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;

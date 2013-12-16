@@ -71,11 +71,6 @@ public class GetProgramStageFormAction
 
     private ProgramStageInstanceService programStageInstanceService;
 
-    public ProgramStageInstanceService getProgramStageInstanceService()
-    {
-        return programStageInstanceService;
-    }
-
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
@@ -83,22 +78,12 @@ public class GetProgramStageFormAction
 
     private PatientDataValueService patientDataValueService;
 
-    public PatientDataValueService getPatientDataValueService()
-    {
-        return patientDataValueService;
-    }
-
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
     }
 
     private PatientService patientService;
-
-    public PatientService getPatientService()
-    {
-        return patientService;
-    }
 
     public void setPatientService( PatientService patientService )
     {

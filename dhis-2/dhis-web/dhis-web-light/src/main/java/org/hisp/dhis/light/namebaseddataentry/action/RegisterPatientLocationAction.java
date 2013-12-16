@@ -28,11 +28,10 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-
-import com.opensymphony.xwork2.Action;
 
 public class RegisterPatientLocationAction
     implements Action
@@ -40,32 +39,27 @@ public class RegisterPatientLocationAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private PatientService patientService;
 
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
-    
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
-    }
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    
+
     private Integer patientId;
-    
+
     public Integer getPatientId()
     {
         return patientId;
@@ -75,7 +69,7 @@ public class RegisterPatientLocationAction
     {
         this.patientId = patientId;
     }
-    
+
     private Integer orgUnitId;
 
     public Integer getOrgUnitId()
@@ -95,7 +89,7 @@ public class RegisterPatientLocationAction
         Patient patient = patientService.getPatient( patientId );
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
         patientService.savePatient( patient );
-        
+
         return SUCCESS;
     }
 

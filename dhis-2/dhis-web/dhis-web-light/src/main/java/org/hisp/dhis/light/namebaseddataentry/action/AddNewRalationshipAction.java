@@ -28,13 +28,12 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-
-import com.opensymphony.xwork2.Action;
 
 public class AddNewRalationshipAction
     implements Action
@@ -47,11 +46,6 @@ public class AddNewRalationshipAction
 
     private RelationshipService relationshipService;
 
-    public RelationshipService getRelationshipService()
-    {
-        return relationshipService;
-    }
-
     public void setRelationshipService( RelationshipService relationshipService )
     {
         this.relationshipService = relationshipService;
@@ -59,22 +53,12 @@ public class AddNewRalationshipAction
 
     private RelationshipTypeService relationshipTypeService;
 
-    public RelationshipTypeService getRelationshipTypeService()
-    {
-        return relationshipTypeService;
-    }
-
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
     }
 
     private PatientService patientService;
-
-    public PatientService getPatientService()
-    {
-        return patientService;
-    }
 
     public void setPatientService( PatientService patientService )
     {

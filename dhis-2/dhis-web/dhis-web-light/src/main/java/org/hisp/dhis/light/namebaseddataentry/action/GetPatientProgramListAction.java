@@ -63,22 +63,12 @@ public class GetPatientProgramListAction
 
     private ProgramInstanceService programInstanceService;
 
-    public ProgramInstanceService getProgramInstanceService()
-    {
-        return programInstanceService;
-    }
-
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
     }
 
     private PatientIdentifierService patientIdentifierService;
-
-    public PatientIdentifierService getPatientIdentifierService()
-    {
-        return patientIdentifierService;
-    }
 
     public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
     {
@@ -87,22 +77,12 @@ public class GetPatientProgramListAction
 
     private ProgramService programService;
 
-    public ProgramService getProgramService()
-    {
-        return programService;
-    }
-
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
     }
 
     private PatientService patientService;
-
-    public PatientService getPatientService()
-    {
-        return patientService;
-    }
 
     public void setPatientService( PatientService patientService )
     {
@@ -123,11 +103,6 @@ public class GetPatientProgramListAction
 
     private RelationshipService relationshipService;
 
-    public RelationshipService getRelationshipService()
-    {
-        return relationshipService;
-    }
-
     public void setRelationshipService( RelationshipService relationshipService )
     {
         this.relationshipService = relationshipService;
@@ -135,22 +110,12 @@ public class GetPatientProgramListAction
 
     public RelationshipTypeService relationshipTypeService;
 
-    public RelationshipTypeService getRelationshipTypeService()
-    {
-        return relationshipTypeService;
-    }
-
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
     }
 
     private CurrentUserService currentUserService;
-
-    public CurrentUserService getCurrentUserService()
-    {
-        return currentUserService;
-    }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {

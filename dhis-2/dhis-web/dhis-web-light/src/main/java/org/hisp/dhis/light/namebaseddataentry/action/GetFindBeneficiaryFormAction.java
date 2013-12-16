@@ -48,11 +48,6 @@ public class GetFindBeneficiaryFormAction
 
     private CurrentUserService currentUserService;
 
-    public CurrentUserService getCurrentUserService()
-    {
-        return currentUserService;
-    }
-
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;

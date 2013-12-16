@@ -61,22 +61,12 @@ public class SaveRepeatableEventAction
 
     private ProgramStageService programStageService;
 
-    public ProgramStageService getProgramStageService()
-    {
-        return programStageService;
-    }
-
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
-
-    public ProgramStageInstanceService getProgramStageInstanceService()
-    {
-        return programStageInstanceService;
-    }
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {

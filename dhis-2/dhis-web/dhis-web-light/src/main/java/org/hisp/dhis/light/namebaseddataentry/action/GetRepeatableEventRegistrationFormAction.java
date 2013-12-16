@@ -45,22 +45,12 @@ public class GetRepeatableEventRegistrationFormAction
 
     private ProgramStageService programStageService;
 
-    public ProgramStageService getProgramStageService()
-    {
-        return programStageService;
-    }
-
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
     }
 
     private ProgramInstanceService programInstanceService;
-
-    public ProgramInstanceService getProgramInstanceService()
-    {
-        return programInstanceService;
-    }
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
