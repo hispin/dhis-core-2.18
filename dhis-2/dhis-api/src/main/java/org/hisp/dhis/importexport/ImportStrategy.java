@@ -31,10 +31,35 @@ package org.hisp.dhis.importexport;
 /**
  * @author Lars Helge Overland
  */
-public enum ImportStrategy 
+public enum ImportStrategy
 {
+    CREATE,
+    UPDATE,
+    CREATE_AND_UPDATE,
+    DELETE,
+
     NEW_AND_UPDATES,
     NEW,
     UPDATES,
-    DELETES
+    DELETES;
+
+    public boolean isCreate()
+    {
+        return this.equals( NEW ) || this.equals( CREATE );
+    }
+
+    public boolean isUpdate()
+    {
+        return this.equals( UPDATES ) || this.equals( UPDATE );
+    }
+
+    public boolean isCreateAndUpdate()
+    {
+        return this.equals( NEW_AND_UPDATES ) || this.equals( CREATE_AND_UPDATE );
+    }
+
+    public boolean isDelete()
+    {
+        return this.equals( DELETE ) || this.equals( DELETES );
+    }
 }

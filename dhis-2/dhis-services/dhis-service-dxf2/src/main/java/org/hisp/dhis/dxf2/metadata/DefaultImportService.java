@@ -35,7 +35,6 @@ import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
-import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
@@ -68,7 +67,7 @@ public class DefaultImportService
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
 
-    @Autowired( required = false )
+    @Autowired(required = false)
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
     @Autowired
@@ -128,7 +127,7 @@ public class DefaultImportService
 
         List<String> types;
 
-        if ( ImportStrategy.DELETES.equals( importOptions.getImportStrategy() ) )
+        if ( importOptions.getImportStrategy().isDelete() )
         {
             types = Lists.reverse( Lists.newArrayList( ExchangeClasses.getImportMap().values() ) );
         }

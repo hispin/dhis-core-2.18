@@ -412,7 +412,7 @@ public class DefaultDataValueSetService
 
             if ( !skipExistingCheck && batchHandler.objectExists( internalValue ) )
             {
-                if ( NEW_AND_UPDATES.equals( strategy ) || UPDATES.equals( strategy ) )
+                if ( strategy.isCreateAndUpdate() || strategy.isUpdate() )
                 {
                     if ( !dryRun )
                     {
@@ -424,7 +424,7 @@ public class DefaultDataValueSetService
             }
             else
             {
-                if ( NEW_AND_UPDATES.equals( strategy ) || NEW.equals( strategy ) )
+                if ( strategy.isCreateAndUpdate() || strategy.isCreate() )
                 {
                     if ( !dryRun )
                     {
