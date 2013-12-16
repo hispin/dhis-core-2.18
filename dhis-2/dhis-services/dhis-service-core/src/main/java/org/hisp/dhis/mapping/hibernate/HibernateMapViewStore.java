@@ -28,7 +28,9 @@ package org.hisp.dhis.mapping.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateAnalyticalObjectStore;
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MapViewStore;
 
@@ -38,4 +40,12 @@ import org.hisp.dhis.mapping.MapViewStore;
 public class HibernateMapViewStore
     extends HibernateAnalyticalObjectStore<MapView> implements MapViewStore
 {
+    @Override
+    public int countMapLegendSetMapViews( MapLegendSet mapLegendSet )
+    {
+        Query query = getQuery( "select count(distinct c) from MapView c where c.legendSet=:mapLegendSet" );
+        query.setEntity( "mapLegendSet", mapLegendSet );
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
 }

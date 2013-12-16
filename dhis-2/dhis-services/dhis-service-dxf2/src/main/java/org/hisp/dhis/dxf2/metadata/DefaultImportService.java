@@ -32,10 +32,16 @@ import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.document.Document;
 import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -67,7 +73,7 @@ public class DefaultImportService
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
 
-    @Autowired(required = false)
+    @Autowired( required = false )
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
     @Autowired
@@ -135,6 +141,16 @@ public class DefaultImportService
         {
             types = Lists.newArrayList( ExchangeClasses.getImportMap().values() );
         }
+
+        /*
+        types.clear();
+        types.add( "attributeTypes" );
+        types.add( "optionSets" );
+        types.add( "documents" );
+        types.add( "constants" );
+        types.add( "concepts" );
+        types.add( "sqlViews" );
+        */
 
         for ( String type : types )
         {

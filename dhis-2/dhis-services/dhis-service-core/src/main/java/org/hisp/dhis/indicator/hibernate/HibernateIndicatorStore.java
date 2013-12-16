@@ -28,11 +28,13 @@ package org.hisp.dhis.indicator.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
+import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorStore;
+import org.hisp.dhis.mapping.MapLegendSet;
+
+import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
@@ -46,7 +48,7 @@ public class HibernateIndicatorStore
     // Indicator
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<Indicator> getIndicatorsWithGroupSets()
     {
         final String hql = "from Indicator d where d.groupSets.size > 0";
@@ -54,7 +56,7 @@ public class HibernateIndicatorStore
         return getQuery( hql ).setCacheable( true ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<Indicator> getIndicatorsWithoutGroups()
     {
         final String hql = "from Indicator d where d.groups.size = 0";
@@ -62,11 +64,20 @@ public class HibernateIndicatorStore
         return getQuery( hql ).setCacheable( true ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public Collection<Indicator> getIndicatorsWithDataSets()
     {
         final String hql = "from Indicator d where d.dataSets.size > 0";
 
         return getQuery( hql ).setCacheable( true ).list();
+    }
+
+    @Override
+    public int countMapLegendSetIndicators( MapLegendSet mapLegendSet )
+    {
+        Query query = getQuery( "select count(distinct c) from Indicator c where c.legendSet=:mapLegendSet" );
+        query.setEntity( "mapLegendSet", mapLegendSet );
+
+        return ((Long) query.uniqueResult()).intValue();
     }
 }

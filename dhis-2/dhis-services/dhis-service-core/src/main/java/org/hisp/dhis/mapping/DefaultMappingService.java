@@ -476,4 +476,10 @@ public class DefaultMappingService
     {
         return mapViewStore.countDataElementAnalyticalObject( dataElement );
     }
+
+    @Override
+    public int countMapLegendSetMapViews( MapLegendSet mapLegendSet )
+    {
+        return mapViewStore.countMapLegendSetMapViews( mapLegendSet );
+    }
 }

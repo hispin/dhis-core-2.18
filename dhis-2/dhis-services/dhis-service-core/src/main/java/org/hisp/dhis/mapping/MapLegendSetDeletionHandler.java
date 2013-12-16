@@ -57,7 +57,7 @@ public class MapLegendSetDeletionHandler
     {
         return MapLegendSet.class.getSimpleName();
     }
-    
+
     @Override
     public void deleteMapLegend( MapLegend mapLegend )
     {
