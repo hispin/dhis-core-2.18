@@ -38,7 +38,7 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Christian and Magnus
  */
-public class SMSInput
+public class SMSInputAction
     implements Action
 {
     private String sender, phone, number, msisdn;

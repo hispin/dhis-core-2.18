@@ -17,7 +17,7 @@
       <param name="page">/dhis-web-sms/testsms.vm</param>
     </action>
 
-    <action name="smsinput" class="org.hisp.dhis.sms.input.SMSInput">
+    <action name="smsinput" class="org.hisp.dhis.sms.input.SMSInputAction">
       <result name="success" type="velocity">/dhis-web-sms/smssuccess.vm</result>
       <result name="error" type="velocity">/dhis-web-sms/smserror.vm</result>
     </action>
