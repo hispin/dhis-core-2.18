@@ -175,7 +175,8 @@ function SelectionTree()
 
     function processExpand( rootElement )
     {
-        var parentElements = $(rootElement).find( 'parent' );
+        var xml = $.parseXML(rootElement);
+        var parentElements = $(xml).find( 'parent' );
 
         for ( var i = 0, parentElement; ( parentElement = parentElements[i] ); ++i )
         {
