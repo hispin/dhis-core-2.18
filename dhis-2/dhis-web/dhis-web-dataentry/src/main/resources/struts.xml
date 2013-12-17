@@ -22,6 +22,10 @@
       <result name="success" type="velocity-json">/dhis-web-dataentry/responseMetaData.vm</result>
     </action>
 
+    <action name="getMultiOrgUnitForms" class="org.hisp.dhis.de.action.GetMultiOrgSettingAction">
+      <result name="success" type="velocity-json">/dhis-web-dataentry/responseMultiOrgForms.vm</result>
+    </action>
+
     <action name="getDataValues" class="org.hisp.dhis.de.action.GetDataValuesForDataSetAction">
       <result name="success" type="velocity-json">/dhis-web-dataentry/responseDataValues.vm</result>
     </action>
