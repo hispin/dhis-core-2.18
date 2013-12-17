@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "edit_relationship_type" )</h3>
 
-<form id="updateRelationshipTypeForm" name="updateRelationshipTypeForm" action="updateRelationshipType.action" method="post">
+<form id="updateRelationshipTypeForm" name="updateRelationshipTypeForm" action="updateRelationshipType.action" method="post" class="inputForm">
 
 <input type="hidden" id="id" name="id" value="$relationshipType.id"/>
   

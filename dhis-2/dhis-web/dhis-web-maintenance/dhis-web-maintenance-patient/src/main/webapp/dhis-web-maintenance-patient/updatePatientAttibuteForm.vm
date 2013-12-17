@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "edit_patient_attribute" )</h3>
 
-<form id="updatePatientAttributeForm" name="updatePatientAttributeForm" action="updatePatientAttribute.action" method="post" >
+<form id="updatePatientAttributeForm" name="updatePatientAttributeForm" action="updatePatientAttribute.action" method="post" class="inputForm">
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$patientAttribute.id">

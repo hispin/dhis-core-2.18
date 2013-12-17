@@ -1,10 +1,21 @@
+
+$(function() {
+  dhis2.contextmenu.makeContextMenu({
+    menuId: 'contextMenu',
+    menuItemActiveClass: 'contextMenuItemActive'
+  });
+});
+
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
 
-function showPatientAttributeDetails( patientAttributeId )
-{
-	jQuery.getJSON( 'getPatientAttribute.action', { id: patientAttributeId },
+function showUpdatePatientAttributeForm( context ) {
+  location.href = 'showUpdatePatientAttributeForm.action?id=' + context.id;
+}
+
+function showPatientAttributeDetails( context ) {
+	jQuery.getJSON( 'getPatientAttribute.action', { id: context.id },
 		function ( json ) {
 			setInnerHTML( 'nameField', json.patientAttribute.name );	
 			setInnerHTML( 'descriptionField', json.patientAttribute.description );
@@ -37,9 +48,9 @@ function patientAttributeTypeMap()
 // Remove Patient Attribute
 // -----------------------------------------------------------------------------
 
-function removePatientAttribute( patientAttributeId, name )
+function removePatientAttribute( context )
 {
-	removeItem( patientAttributeId, name, i18n_confirm_delete, 'removePatientAttribute.action' );	
+	removeItem( context.id, context.name, i18n_confirm_delete, 'removePatientAttribute.action' );
 }
 
 ATTRIBUTE_OPTION = 

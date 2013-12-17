@@ -129,10 +129,6 @@ public class UpdateMobileSettingAction
                 List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
                 fillValues( attributes );
-                setting.setGender( Boolean.parseBoolean( gender ) );
-                setting.setDobtype( Boolean.parseBoolean( dobtype ) );
-                setting.setBirthdate( Boolean.parseBoolean( birthdate ) );
-                setting.setRegistrationdate( Boolean.parseBoolean( registrationdate ) );
                 patientMobileSettingService.updatePatientMobileSetting( setting );
             }
             else
@@ -140,10 +136,6 @@ public class UpdateMobileSettingAction
                 setting = new PatientMobileSetting();
                 List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
-                setting.setGender( Boolean.parseBoolean( gender ) );
-                setting.setDobtype( Boolean.parseBoolean( dobtype ) );
-                setting.setBirthdate( Boolean.parseBoolean( birthdate ) );
-                setting.setRegistrationdate( Boolean.parseBoolean( registrationdate ) );
                 fillValues( attributes );
                 patientMobileSettingService.savePatientMobileSetting( setting );
             }
@@ -156,10 +148,6 @@ public class UpdateMobileSettingAction
                 setting = patientMobileSettingService.getCurrentSetting().iterator().next();
                 List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
-                setting.setGender( Boolean.parseBoolean( gender ) );
-                setting.setDobtype( Boolean.parseBoolean( dobtype ) );
-                setting.setBirthdate( Boolean.parseBoolean( birthdate ) );
-                setting.setRegistrationdate( Boolean.parseBoolean( registrationdate ) );
                 fillValues( attributes );
                 patientMobileSettingService.updatePatientMobileSetting( setting );
             }
@@ -168,10 +156,6 @@ public class UpdateMobileSettingAction
                 setting = new PatientMobileSetting();
                 List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
-                setting.setGender( Boolean.parseBoolean( gender ) );
-                setting.setDobtype( Boolean.parseBoolean( dobtype ) );
-                setting.setBirthdate( Boolean.parseBoolean( birthdate ) );
-                setting.setRegistrationdate( Boolean.parseBoolean( registrationdate ) );
                 fillValues( attributes );
                 patientMobileSettingService.savePatientMobileSetting( setting );
             }
