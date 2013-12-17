@@ -29,4 +29,6 @@
 
   <bean id="notifier" class="org.hisp.dhis.system.notification.InMemoryNotifier" />
 
+  <bean id="debugger" class="org.hisp.dhis.system.debug.DebuggerImpl" />
+
 </beans>
