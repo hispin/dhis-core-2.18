@@ -88,10 +88,6 @@ public class J2meClientUpdateAction
         if( list.size() == 0 )
         {
             this.patientMobileSetting = new PatientMobileSetting();
-            patientMobileSetting.setGender( false );
-            patientMobileSetting.setDobtype( false );
-            patientMobileSetting.setBirthdate( false );
-            patientMobileSetting.setRegistrationdate( false );
         }
         else
         {

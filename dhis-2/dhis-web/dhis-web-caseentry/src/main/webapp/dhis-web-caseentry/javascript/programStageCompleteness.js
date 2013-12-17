@@ -1,15 +1,16 @@
 isAjax = true;
 
+$(function() {
+  selectionTreeSelection.setListenerFunction( orgunitSelected );
+});
+
 function orgunitSelected( orgUnits, orgUnitNames )
 {
 	showById('selectDiv');
 	hideById('showDataBtn');
 	hideById("listPatientDiv");
-	setFieldValue('orgunitName', orgUnitNames[0]);
 	setFieldValue('orgunitId', orgUnits[0]);
 }
-
-selection.setListenerFunction( orgunitSelected );
 
 function generateStageCompleteness()
 {

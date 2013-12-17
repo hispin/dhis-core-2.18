@@ -1,56 +1,57 @@
 
 <h3>$i18n.getString( "relationship_type_management" ) #openHelp( "relationship_type" )</h3>
 
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
+    <li><a data-target-fn="showUpdateRelationshipTypeForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
+    <li><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
+    <li><a data-target-fn="removeRelationshipType"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showRelationshipTypeDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
+  </ul>
+</div>
+
 <table class="mainPageTable">
   <tr>
     <td style="vertical-align:top">
-    
-      <table class="listTable">          
-          <col>
-		  <col>
-          <col width="120">
-		  <tr>
-		  	<td></td>
-		  	<td></td>
-			<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddRelationshipTypeForm.action'" style="width:70px"></td>
-		  </tr>
-          <tr>
-            <th>$i18n.getString( "relationship_type" )</th>            
-            <th>$i18n.getString( "name" )</th>
-            <th>$i18n.getString( "operations" )</th>
+    <table width="100%">
+      <tr>
+        <td>
+          $i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+        </td>
+        <td colspan="3" style="text-align:right">
+          <input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddRelationshipTypeForm.action'" style="width:70px">
+        </td>
+      </tr>
+    </table>
+
+      <table class="listTable">
+        <tr>
+          <th>$i18n.getString( "relationship_type" )</th>
+          <th>$i18n.getString( "name" )</th>
+        </tr>
+        <tbody id="list">
+        #foreach( $relationshipType in $relationshipTypes )
+          <tr id="tr${relationshipType.id}" data-id="$!relationshipType.id" data-uid="$!relationshipType.uid" data-type="RelationshipType" data-name="$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )"
+              data-can-manage="$security.canManage( $relationshipType )"
+              data-can-update="$security.canUpdate( $relationshipType )"
+              data-can-delete="$security.canDelete( $relationshipType )">
+              <td>$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )</td>
+              <td>$encoder.htmlEncode( $!relationshipType.displayName )</td>
           </tr>
-
-          <tbody id="list">
-            #foreach( $relationshipType in $relationshipTypes )
-              <tr id="tr${relationshipType.id}">
-              
-                <td onclick="showRelationshipTypeDetails( $relationshipType.id )">$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )</td>
-                
-                <td onclick="showRelationshipTypeDetails( $relationshipType.id )">$encoder.htmlEncode( $relationshipType.displayName )</td>               
-                
-                <td style="text-align:center"#alternate( $mark )>
-                  <a href="showUpdateRelationshipTypeForm.action?id=$relationshipType.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-				  <a href="javascript:translate( 'RelationshipType', '$relationshipType.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>  
-				  <a href="javascript:removeRelationshipType( '$relationshipType.id', '$encoder.jsEncode( $relationshipType.aIsToB )', '$encoder.jsEncode( $relationshipType.bIsToA )'  )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
-                  <a href="javascript:showRelationshipTypeDetails( $relationshipType.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
-                </td>           
-                
-              </tr>
-            #end
-
-          </tbody>
-
+        #end
+        </tbody>
         </table>
     </td>
+
     <td id="detailsData">
-            <div id="detailsArea">
-                <div id="hideDetailsArea">
-                <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"></a>
-            </div>              
-            <p><label class="bold">$i18n.getString( "a_is_to_b" ):</label><br><span id="aIsToBField"></span></p>
-            <p><label class="bold">$i18n.getString( "b_is_to_a" ):</label><br><span id="bIsToAField"></span></p>
-            <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>                            
-        </div>
+        <div id="detailsArea">
+          <div id="hideDetailsArea">
+            <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"></a>
+          </div>
+          <p><label class="bold">$i18n.getString( "a_is_to_b" ):</label><br><span id="aIsToBField"></span></p>
+          <p><label class="bold">$i18n.getString( "b_is_to_a" ):</label><br><span id="bIsToAField"></span></p>
+          <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
+      </div>
     </td>
   </tr>
 </table>

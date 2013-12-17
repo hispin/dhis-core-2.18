@@ -1,3 +1,9 @@
+<style>
+  .listTable > tbody > tr > td {
+    padding: 8px 0 8px 5px;
+  }
+</style>
+
 <h3>$i18n.getString( "patient_registration_form_management" ) #openHelp( "person_registration_form" )</h3>
 
 <table class='mainPageTable'>
@@ -30,7 +36,7 @@
 							$i18n.getString('no_program')
 							#set($hasCommonForm = 'true')
 						#end	
-					</td>					
+					</td>
 					<td style="text-align:center">
 					  <a href="javascript:updateNewForm($registrationForm.id, '$!registrationForm.program.id')" title="$i18n.getString( 'edit' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"></a>
 					  <a href="javascript:removeRegistrationForm( '$!registrationForm.program.id', '$!encoder.jsEncode( $registrationForm.program.name )')" title="$i18n.getString( "remove" )"><img id='active_$registrationForm.program.id' src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
