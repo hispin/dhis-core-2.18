@@ -172,7 +172,8 @@
 
             $( '#data-entry-page' ).trigger( 'pagecreate' );
             $( '#data-entry-list' ).listview( 'refresh' );
-            $( '#send_button' ).bind( 'click', saveValues );
+            $( '#send_button' ).bind( 'click', saveValuesNotCompleted );
+            $( '#send_and_complete_button' ).bind( 'click', saveValuesCompleted );
         }
 
         var dvs = {
@@ -213,7 +214,20 @@
         }
     }
 
-    function saveValues() {
+    function getCurrentDate() {
+        var d = new Date();
+        return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+    }
+
+    function saveValuesCompleted() {
+        saveValues(true);
+    }
+
+    function saveValuesNotCompleted() {
+        saveValues(false);
+    }
+
+    function saveValues(completed) {
         $.mobile.loading( 'show' );
 
         var fields = $('#data-entry-form :input[name]');
@@ -223,6 +237,10 @@
           orgUnit: Selected.orgUnit,
           period: Selected.period.toString()
         };
+
+        if( completed ) {
+            dataValueSet.completeDate = getCurrentDate();
+        }
 
         var dataValues = [];
 
@@ -368,6 +386,7 @@
         <% }); %>
 
         <li><input type="button" id="send_button" value="$i18n.getString("send")" /></li>
+        <li><input type="button" id="send_and_complete_button" value="$i18n.getString("send_and_complete")" /></li>
     </ul>
     </form>
 </script>
