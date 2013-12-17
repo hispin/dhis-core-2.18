@@ -15,6 +15,7 @@
 
     function selectOrganisationUnit( e ) {
         Selected.orgUnit = $(this).data('id');
+        Selected.orgUnitName = $(this).html();
     }
 
     function selectDataSet( e ) {
@@ -23,6 +24,7 @@
 
     function selectPeriod( e ) {
         Selected.period = $(this).data('id');
+        Selected.periodName = $(this).html();
     }
 
     function loadOrganisationUnitsPage() {
@@ -162,7 +164,9 @@
             $( '#data-entry-page section[data-role="content"]' ).html(
                 _.template( tmpl, {
                     'form': form,
-                    'valueMap': valueMap
+                    'valueMap': valueMap,
+                    periodName: Selected.periodName,
+                    orgUnitName: Selected.orgUnitName
                 })
             );
 
@@ -309,11 +313,15 @@
 </script>
 
 <script id="data-entry-template" type="text/template">
-    <h1><%= form.label %></h1>
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider"><%= form.label %></li>
+        <li><%= orgUnitName %> / <%= periodName %></li>
+    </ul>
+
     <form id='data-entry-form'>
     <ul id="data-entry-list" data-role="listview" data-inset="true">
         <% _( form.groups ).each( function(group, idx) { %>
-            <li data-role="list-divider"><%= group.label %></li>
+            <% if(group.label !== 'default') { %><li data-role="list-divider"><%= group.label %></li><% } %>
 
             <% _( group.fields ).each( function(field, idx) { %>
             <% var fieldId = _.uniqueId('field'); %>
