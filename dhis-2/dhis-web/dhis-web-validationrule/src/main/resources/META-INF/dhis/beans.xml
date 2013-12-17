@@ -7,7 +7,8 @@
 
   <!-- ValidationRule CRUD operations -->
 
-  <bean id="org.hisp.dhis.validationrule.action.AddValidationRuleAction" class="org.hisp.dhis.validationrule.action.AddValidationRuleAction"
+  <bean id="org.hisp.dhis.validationrule.action.AddValidationRuleAction" 
+    class="org.hisp.dhis.validationrule.action.AddValidationRuleAction"
     scope="prototype">
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
@@ -23,7 +24,8 @@
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <bean id="org.hisp.dhis.validationrule.action.GetValidationRuleAction" class="org.hisp.dhis.validationrule.action.GetValidationRuleAction"
+  <bean id="org.hisp.dhis.validationrule.action.GetValidationRuleAction" 
+    class="org.hisp.dhis.validationrule.action.GetValidationRuleAction"
     scope="prototype">
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
