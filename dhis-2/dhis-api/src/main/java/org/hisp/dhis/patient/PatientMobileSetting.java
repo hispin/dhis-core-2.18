@@ -36,14 +36,6 @@ public class PatientMobileSetting
 
     private int id;
 
-    private Boolean gender = false;
-
-    private Boolean dobtype = false;
-
-    private Boolean birthdate = false;
-
-    private Boolean registrationdate = false;
-
     private Boolean autoUpdateClient = false;
 
     private Double versionToUpdate;
@@ -72,46 +64,6 @@ public class PatientMobileSetting
     public void setPatientAttributes( List<PatientAttribute> patientAttributes )
     {
         this.patientAttributes = patientAttributes;
-    }
-
-    public Boolean getGender()
-    {
-        return gender;
-    }
-
-    public void setGender( Boolean gender )
-    {
-        this.gender = gender;
-    }
-
-    public Boolean getDobtype()
-    {
-        return dobtype;
-    }
-
-    public void setDobtype( Boolean dobtype )
-    {
-        this.dobtype = dobtype;
-    }
-
-    public Boolean getBirthdate()
-    {
-        return birthdate;
-    }
-
-    public void setBirthdate( Boolean birthdate )
-    {
-        this.birthdate = birthdate;
-    }
-
-    public Boolean getRegistrationdate()
-    {
-        return registrationdate;
-    }
-
-    public void setRegistrationdate( Boolean registrationdate )
-    {
-        this.registrationdate = registrationdate;
     }
 
     public Boolean getAutoUpdateClient()
