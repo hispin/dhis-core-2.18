@@ -39,6 +39,7 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.common.SharingUtils;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // GET
     //--------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.GET )
+    @RequestMapping(method = RequestMethod.GET)
     public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -108,7 +109,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
 
-    @RequestMapping( value = "/query/{query}", method = RequestMethod.GET )
+    @RequestMapping(value = "/query/{query}", method = RequestMethod.GET)
     public String query( @PathVariable String query, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -137,8 +138,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+    public String getObject( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -168,7 +169,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping( value = "/search/{query}", method = RequestMethod.GET )
+    @RequestMapping(value = "/search/{query}", method = RequestMethod.GET)
     public String search( @PathVariable String query, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
@@ -198,13 +199,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // POST
     //--------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @RequestMapping(method = RequestMethod.POST, consumes = { "application/xml", "text/xml" })
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -214,16 +215,16 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // PUT
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" })
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void putXmlObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    @RequestMapping(value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -232,9 +233,9 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // DELETE
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    @RequestMapping(value = "/{uid}", method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable("uid") String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
@@ -359,6 +360,11 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             WebUtils.generateLinks( metaData, deep );
         }
 
+        if ( !JacksonUtils.isSharingView( options.getViewClass( "basic" ) ) )
+        {
+            return;
+        }
+
         if ( entityList != null && SharingUtils.isSupported( getEntityClass() ) )
         {
             for ( T object : entityList )
@@ -410,7 +416,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return entitySimpleName;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     protected T getEntityInstance()
     {
         try

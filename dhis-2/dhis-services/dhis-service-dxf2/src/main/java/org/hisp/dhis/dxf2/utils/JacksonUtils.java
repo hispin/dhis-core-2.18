@@ -108,6 +108,12 @@ public class JacksonUtils
         viewClasses.put( "withoutOrganisationUnits", WithoutOrganisationUnitsView.class );
     }
 
+    public static boolean isSharingView( String view )
+    {
+        return view.equals( "sharing" ) || view.equals( "sharingBasic" ) || view.equals( "sharingDetailed" )
+            || view.equals( "sharingExport" );
+    }
+
     public static Class<?> getViewClass( Object viewName )
     {
         if ( viewName == null || !(viewName instanceof String && ((String) viewName).length() != 0) )
