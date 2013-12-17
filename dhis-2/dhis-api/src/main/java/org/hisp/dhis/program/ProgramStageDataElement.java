@@ -118,7 +118,6 @@ public class ProgramStageDataElement
 
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JsonSerialize( as = BaseIdentifiableObject.class )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public DataElement getDataElement()
     {
@@ -191,7 +190,7 @@ public class ProgramStageDataElement
     {
         this.allowDateInFuture = allowDateInFuture;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
