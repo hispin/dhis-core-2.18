@@ -7,28 +7,6 @@
   }#if( $velocityCount < $size ),#end
   #end
   ],
-  "fixedAttributes": [
-	{
-		"id": "[PT:count]",
-		"name": "$i18n.getString( 'total_of_patient_registration' )",
-		"suggested": ""
-	},
-	{
-		"id": "[CP:gender]",
-		"name": "$i18n.getString( 'gender' )",
-		"suggested": "F, M"
-	},
-	{
-		"id": "[CP:dobType]",
-		"name": "$i18n.getString( 'dob_type' )",
-		"suggested": "V, D, A"
-	},
-	{
-		"id": "[CP:age]",
-		"name": "$i18n.getString( "age_days" )",
-		"suggested": ""
-	}
-  ],
   "patientAttributes":[
 	#set( $size = $!{patientAttributes.size()} )
 	#foreach( $patientAttribute in $!{patientAttributes} )

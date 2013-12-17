@@ -120,35 +120,10 @@
 		<tr>
 			<td>
 				<select id="fixedAttrSelector" multiple="multiple" style="width:450px;height:270px" onclick='suggestionSelectorToggle()' ondblclick="insertElement( 'fixedAttr' )">
-					<option value="registrationDate">$i18n.getString('registration_date')</option>
 					<option value="fullName">$i18n.getString('full_name')</option>
-					<option value="gender">$i18n.getString('gender')</option>
-					<option value="birthDate">$i18n.getString('birth_date')</option>
-					<option value="age">$i18n.getString('age_years')</option>
 					<option value="phoneNumber">$i18n.getString('phone_number')</option>
-					<option value="deathDate">$i18n.getString('death_date')</option>
-					<option value="isDead">$i18n.getString('is_dead')</option>
-					<option value="healthWorker">$i18n.getString('health_worker')</option>
+					<option value="associate">$i18n.getString('health_worker')</option>
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				$i18n.getString("default_value")
-				<input type='text' id='suggestedField' style='width:295px;'>
-				<select style='width:300px;display:none;' id='genderSelector'>
-					<option value="">[$i18n.getString( "please_select" )]</option>
-					<option value="M">$i18n.getString( "male" )</option>
-					<option value="F">$i18n.getString( "female" )</option>
-					<option value="T">$i18n.getString( "transgender" )</option>
-				</select>
-				<select style='width:300px;display:none;' id='dobTypeSelector'>
-					<option value="">[$i18n.getString( "please_select" )]</option>
-					<option value="V">$i18n.getString( "verified" )</option>
-					<option value="D">$i18n.getString( "declared" )</option>
-					<option value="A">$i18n.getString( "approximated" )</option>
-				</select>
-				<input type='checkbox' id='hiddenField'/>$i18n.getString("is_hidden")
 			</td>
 		</tr>
 	</table>
@@ -251,16 +226,12 @@
 	var i18n_property_is_inserted = '$encoder.jsEscape( $i18n.getString( "property_is_inserted" ) , "'" )';
 	var i18n_please_insert_all_required_fields = '$encoder.jsEscape( $i18n.getString( "please_insert_all_required_fields" ) , "'" )';
 	var i18n_required_fields_valivation = '$encoder.jsEscape( $i18n.getString( "required_fields_valivation" ) , "'" )';
-	var i18n_registration_date = '$encoder.jsEscape( $i18n.getString( "registration_date" ) , "'" )';
 	var i18n_full_name = '$encoder.jsEscape( $i18n.getString( "full_name" ) , "'" )';
-	var i18n_gender = '$encoder.jsEscape( $i18n.getString( "gender" ) , "'" )';
-	var i18n_date_of_birth = '$encoder.jsEscape( $i18n.getString( "date_of_birth" ) , "'" )';
 	var i18n_properties = '$encoder.jsEscape( $i18n.getString( "properties" ) , "'" )';
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient_registration_form" ) , "'" )';
 	var i18n_save_unsuccess_please_insert_all_required_fields = '$encoder.jsEscape( $i18n.getString( "save_unsuccess" ) , "'" )' + '. ' + '$encoder.jsEscape( $i18n.getString( "please_insert_all_required_fields" ) , "'" )';
 	var i18n_validate_success = '$encoder.jsEscape( $i18n.getString( "validate_success" ) , "'" )';
 	var i18n_name_exists = '$encoder.jsEscape( $i18n.getString( "name_exists" ) , "'" )';
-	var i18n_dob_type = '$encoder.jsEscape( $i18n.getString( "dob_type" ) , "'" )';
 	jQuery(document).ready(	function(){
 		openPropertiesSelector();
 	});
