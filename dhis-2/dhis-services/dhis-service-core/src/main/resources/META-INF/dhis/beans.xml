@@ -55,7 +55,6 @@
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
-  <!--@author Ovidiu Rosu <rosu.ovi@gmail.com>-->
   <bean id="org.hisp.dhis.filter.MetaDataFilterStore" class="org.hisp.dhis.metadatafilter.hibernate.HibernateMetaDataFilterStore">
     <property name="clazz" value="org.hisp.dhis.filter.MetaDataFilter" />
     <property name="sessionFactory" ref="sessionFactory" />

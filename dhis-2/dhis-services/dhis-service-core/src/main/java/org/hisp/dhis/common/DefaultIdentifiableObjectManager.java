@@ -28,15 +28,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
-import org.hisp.dhis.common.NameableObject.NameableProperty;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,6 +37,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.common.NameableObject.NameableProperty;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -65,30 +64,6 @@ public class DefaultIdentifiableObjectManager
     private Map<Class<IdentifiableObject>, GenericIdentifiableObjectStore<IdentifiableObject>> identifiableObjectStoreMap;
 
     private Map<Class<NameableObject>, GenericNameableObjectStore<NameableObject>> nameableObjectStoreMap;
-
-    @PostConstruct
-    public void init()
-    {
-        identifiableObjectStoreMap = new HashMap<Class<IdentifiableObject>, GenericIdentifiableObjectStore<IdentifiableObject>>();
-
-        for ( GenericIdentifiableObjectStore<IdentifiableObject> store : identifiableObjectStores )
-        {
-            if ( store != null && store.getClazz() != null )
-            {
-                identifiableObjectStoreMap.put( store.getClazz(), store );
-            }
-        }
-
-        nameableObjectStoreMap = new HashMap<Class<NameableObject>, GenericNameableObjectStore<NameableObject>>();
-
-        for ( GenericNameableObjectStore<NameableObject> store : nameableObjectStores )
-        {
-            if ( store != null && store.getClazz() != null )
-            {
-                nameableObjectStoreMap.put( store.getClazz(), store );
-            }
-        }
-    }
 
     //--------------------------------------------------------------------------
     // IdentifiableObjectManager implementation
@@ -571,8 +546,14 @@ public class DefaultIdentifiableObjectManager
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Supportive methods
+    //--------------------------------------------------------------------------
+
     private <T extends IdentifiableObject> GenericIdentifiableObjectStore<IdentifiableObject> getIdentifiableObjectStore( Class<T> clazz )
     {
+        initMaps();
+        
         GenericIdentifiableObjectStore<IdentifiableObject> store = identifiableObjectStoreMap.get( clazz );
 
         if ( store == null )
@@ -590,6 +571,8 @@ public class DefaultIdentifiableObjectManager
 
     private <T extends NameableObject> GenericNameableObjectStore<NameableObject> getNameableObjectStore( Class<T> clazz )
     {
+        initMaps();
+        
         GenericNameableObjectStore<NameableObject> store = nameableObjectStoreMap.get( clazz );
 
         if ( store == null )
@@ -603,5 +586,27 @@ public class DefaultIdentifiableObjectManager
         }
 
         return store;
+    }
+
+    private void initMaps()
+    {
+        if ( identifiableObjectStoreMap != null )
+        {
+            return; // Already initialized
+        }
+        
+        identifiableObjectStoreMap = new HashMap<Class<IdentifiableObject>, GenericIdentifiableObjectStore<IdentifiableObject>>();
+
+        for ( GenericIdentifiableObjectStore<IdentifiableObject> store : identifiableObjectStores )
+        {
+            identifiableObjectStoreMap.put( store.getClazz(), store );
+        }
+
+        nameableObjectStoreMap = new HashMap<Class<NameableObject>, GenericNameableObjectStore<NameableObject>>();
+
+        for ( GenericNameableObjectStore<NameableObject> store : nameableObjectStores )
+        {
+            nameableObjectStoreMap.put( store.getClazz(), store );
+        }
     }
 }
