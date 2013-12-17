@@ -73,7 +73,6 @@ ATTRIBUTE_OPTION =
 					function ( json ) {
 						var patientAttributes = jQuery("#availableAttribute");
 						patientAttributes.append( "<option value='[current_date:0]' title='" + i18n_current_date + "'>" + i18n_current_date + "</option>" );
-						patientAttributes.append( "<option value='[CP:0]' title='" + i18n_date_of_birth + "'>" + i18n_date_of_birth + "</option>" );
 						for ( i in json.programs ) 
 						{ 
 							var id = "[PG:" + json.programs[i].id + ".dateOfIncident]";

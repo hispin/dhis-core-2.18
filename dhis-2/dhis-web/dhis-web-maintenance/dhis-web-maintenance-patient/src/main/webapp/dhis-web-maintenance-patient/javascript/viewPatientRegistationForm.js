@@ -123,11 +123,7 @@ function getDefaultRequiredFields()
 	var requiredFields = {};
 	if( getFieldValue("disableRegistrationFields")!='true' )
 	{
-		requiredFields['fixedattributeid=registrationDate'] = i18n_registration_date;
 		requiredFields['fixedattributeid=fullName'] = i18n_full_name;
-		requiredFields['fixedattributeid=gender'] = i18n_gender;
-		requiredFields['fixedattributeid=dobType'] = i18n_dob_type;
-		requiredFields['fixedattributeid=birthDate'] = i18n_date_of_birth;
 			
 		jQuery('#identifiersSelector option').each(function() {
 			var item = jQuery(this);
@@ -371,16 +367,6 @@ function insertElement( type )
 	
 	var htmlCode = "<input " + id + " value=\"[" + value + "]\" title=\"" + value + "\" ";
 	
-	var suggestedValue = getFieldValue('genderSelector');
-	if( jQuery('#genderSelector').is(":visible") )
-	{
-		htmlCode += " suggested='" + suggestedValue + "' ";
-	}
-	suggestedValue = getFieldValue('dobTypeSelector');
-	if( jQuery('#dobTypeSelector').is(":visible") )
-	{
-		htmlCode += " suggested='" + suggestedValue + "' ";
-	}
 	suggestedValue = getFieldValue('suggestedField');
 	if( jQuery('#suggestedField').is(":visible") )
 	{
@@ -505,19 +491,3 @@ function deleteRegistrationFormFromView()
 		window.location.href = 'delRegistrationEntryFormAction.action?id=' + getFieldValue('id');
 	}
 }
-
-function suggestionSelectorToggle()
-{
-	hideById('genderSelector');
-	hideById('dobTypeSelector');
-	showById('suggestedField');
-	if( getFieldValue('fixedAttrSelector')=='gender' ){
-		hideById('suggestedField');
-		showById('genderSelector');
-	}
-	else if(getFieldValue('fixedAttrSelector')=='dobType'){
-		hideById('suggestedField');
-		showById('dobTypeSelector');
-	}
-}
-

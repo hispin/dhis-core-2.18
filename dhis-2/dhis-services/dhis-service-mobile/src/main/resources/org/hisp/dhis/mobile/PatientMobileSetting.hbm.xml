@@ -9,15 +9,7 @@
     <id name="id" column="patientmobilesettingid">
       <generator class="native" />
     </id>
-
-    <property name="gender" column="gender" not-null="true" />
-
-    <property name="dobtype" column="dobtype" not-null="true" />
-
-    <property name="birthdate" column="birthdate" not-null="true" />
-
-    <property name="registrationdate" column="registrationdate" not-null="true" />
-    
+   
     <property name="autoUpdateClient" column="autoUpdateClient" not-null="false" />
     
     <property name="versionToUpdate" column="versionToUpdate" not-null="false" />
