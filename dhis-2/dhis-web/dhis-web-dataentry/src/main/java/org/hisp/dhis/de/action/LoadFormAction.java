@@ -339,7 +339,7 @@ public class LoadFormAction
         }
 
         // ---------------------------------------------------------------------
-        // For multi-org unit we only support custom forms
+        // For multi-org unit we only support section forms
         // ---------------------------------------------------------------------
 
         if ( multiOrganisationUnit != null && multiOrganisationUnit != 0 )
