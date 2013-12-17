@@ -30,6 +30,7 @@ package org.hisp.dhis.de.action;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 
 /**
  * @author Lars Helge Overland
@@ -48,6 +49,24 @@ public class PageInitAction
         this.selectionManager = selectionManager;
     }
 
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private boolean multiOrgUnitForms;
+
+    public boolean isMultiOrgUnitForms()
+    {
+        return multiOrgUnitForms;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -55,7 +74,9 @@ public class PageInitAction
     public String execute()
     {
         selectionManager.clearSelectedOrganisationUnits();
-
+        
+        multiOrgUnitForms = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_MULTI_ORGANISATION_UNIT_FORMS, false );
+        
         return SUCCESS;
     }
 }
