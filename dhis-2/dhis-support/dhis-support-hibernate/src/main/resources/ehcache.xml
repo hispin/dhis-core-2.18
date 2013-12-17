@@ -50,7 +50,7 @@
   
   <cache name="org.hisp.dhis.period.RelativePeriods" maxElementsInMemory="30" />
 
-  <cache name="org.hisp.dhis.dataset.DataSet" maxElementsInMemory="100" />
+  <cache name="org.hisp.dhis.dataset.DataSet" maxElementsInMemory="400" />
 
   <cache name="org.hisp.dhis.dataset.Section" maxElementsInMemory="400" />
 
