@@ -50,19 +50,6 @@ public class DataEntryFormUpgrader
 
     private final static Pattern ID_PATTERN = Pattern.compile( ID_EXPRESSION );
 
-    private final Pattern SELECT_PATTERN = Pattern.compile( "(<select.*?)[/]?</select>", Pattern.DOTALL );
-
-    private final Pattern ID_PROGRAM_ENTRY_TEXTBOX = Pattern
-        .compile( "id=\"value\\[(\\d+)\\].value:value\\[(\\d+)\\].value:value\\[(\\d+)\\].value\"" );
-
-    private final Pattern ID_PROGRAM_ENTRY_OPTION = Pattern
-        .compile( "id=\"value\\[(\\d+)\\].(combo|boolean){1}:value\\[(\\d+)\\].(combo|boolean){1}\"" );
-
-    private final Pattern ID_PROGRAM_ENTRY_DATE = Pattern
-        .compile( "id=\"value\\[(\\d+)\\].date:value\\[(\\d+)\\].date\"" );
-    
-    private final Pattern IDENTIFIER_PATTERN_TEXTBOX = Pattern.compile( "id=\"(\\d+)-(\\d+)-(\\d+)-val\"" );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -84,28 +71,26 @@ public class DataEntryFormUpgrader
     {
         Collection<DataEntryForm> dataEntryForms = dataEntryFormService.getAllDataEntryForms();
 
-        int i = 0;
-
-        for ( DataEntryForm programDataEntryForm : dataEntryForms )
+        for ( DataEntryForm form : dataEntryForms )
         {
-            String customForm = upgradeDataEntryForm( programDataEntryForm.getHtmlCode() );
-
-            customForm = upgradeProgramDataEntryFormForTextBox( customForm );
-
-            customForm = upgradeProgramDataEntryFormForDate( customForm );
-
-            customForm = upgradeProgramDataEntryFormForOption( customForm );
-            
-            customForm = upgradeProgramDataEntryForm( customForm );
-
-            programDataEntryForm.setHtmlCode( customForm );
-
-            dataEntryFormService.updateDataEntryForm( programDataEntryForm );
-
-            i++;
+            try
+            {
+                String customForm = upgradeDataEntryForm( form.getHtmlCode() );
+    
+                if ( customForm != null && !customForm.equals( form.getHtmlCode() ) )
+                {
+                    form.setHtmlCode( customForm );
+                    dataEntryFormService.updateDataEntryForm( form );
+                }
+            }
+            catch ( Exception ex )
+            {
+                log.error( "Upgrading data entry form failed: " + form.getName() );
+                log.error( ex ); // Log and continue
+            }
         }
-
-        log.info( "Upgraded custom case entry form identifiers: " + i );
+        
+        log.info( "Upgraded custom case entry form identifiers" );
     }
 
     // -------------------------------------------------------------------------
@@ -128,86 +113,5 @@ public class DataEntryFormUpgrader
         matcher.appendTail( out );
 
         return out.toString().replaceAll( "view=\"@@deshortname@@\"", "" );
-    }
-
-    private String upgradeProgramDataEntryFormForTextBox( String htmlCode )
-    {
-        Matcher matcher = ID_PROGRAM_ENTRY_TEXTBOX.matcher( htmlCode );
-
-        StringBuffer out = new StringBuffer();
-
-        while ( matcher.find() )
-        {
-            String upgradedId = "id=\"" + matcher.group( 1 ) + "-" + matcher.group( 2 ) + "-" + matcher.group( 3 )
-                + "-val\"";
-
-            matcher.appendReplacement( out, upgradedId );
-        }
-
-        matcher.appendTail( out );
-
-        return out.toString().replaceAll( "view=\"@@deshortname@@\"", "" );
-    }
-
-    private String upgradeProgramDataEntryFormForOption( String htmlCode )
-    {
-        StringBuffer out = new StringBuffer();
-        Matcher inputMatcher = SELECT_PATTERN.matcher( htmlCode );
-
-        while ( inputMatcher.find() )
-        {
-            String inputHtml = inputMatcher.group();
-
-            Matcher matcher = ID_PROGRAM_ENTRY_OPTION.matcher( inputHtml );
-
-            if ( matcher.find() )
-            {
-                String upgradedId = matcher.group( 1 ) + "-" + matcher.group( 3 ) + "-val";
-
-                inputHtml = "<input name=\"entryselect\" id=\"" + upgradedId + "\" >";
-            }
-
-            inputMatcher.appendReplacement( out, inputHtml );
-        }
-
-        inputMatcher.appendTail( out );
-
-        return out.toString().replaceAll( "view=\"@@deshortname@@\"", "" );
-    }
-
-    private String upgradeProgramDataEntryFormForDate( String htmlCode )
-    {
-        Matcher matcher = ID_PROGRAM_ENTRY_DATE.matcher( htmlCode );
-
-        StringBuffer out = new StringBuffer();
-
-        while ( matcher.find() )
-        {
-            String upgradedId = "id=\"" + matcher.group( 1 ) + "-" + matcher.group( 2 ) + "-val\" ";
-
-            matcher.appendReplacement( out, upgradedId );
-        }
-
-        matcher.appendTail( out );
-
-        return out.toString().replaceAll( "view=\"@@deshortname@@\"", "" );
-    }
-    
-    private String upgradeProgramDataEntryForm( String htmlCode )
-    {
-        Matcher matcher = IDENTIFIER_PATTERN_TEXTBOX.matcher( htmlCode );
-
-        StringBuffer out = new StringBuffer();
-
-        while ( matcher.find() )
-        {
-            String upgradedId = "id=\"" + matcher.group( 1 ) + "-" + matcher.group( 2 ) + "-val\"";
-
-            matcher.appendReplacement( out, upgradedId );
-        }
-
-        matcher.appendTail( out );
-        
-        return out.toString();
     }
 }
