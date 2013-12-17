@@ -52,6 +52,8 @@ public interface OptionService
 
     Collection<OptionSet> getAllOptionSets();
 
+    List<String> getOptions( String optionSetUid, String key, Integer max );
+    
     List<String> getOptions( int optionSetId, String name, Integer max );
 
     Integer getOptionSetsCountByName( String name );

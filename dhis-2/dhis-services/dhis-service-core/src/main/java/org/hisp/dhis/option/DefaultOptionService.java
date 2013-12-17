@@ -102,6 +102,13 @@ public class DefaultOptionService
         return i18n( i18nService, optionStore.getAll() );
     }
 
+    public List<String> getOptions( String optionSetUid, String key, Integer max )
+    {
+        OptionSet optionSet = getOptionSet( optionSetUid );
+        
+        return getOptions( optionSet.getId(), key, max );
+    }
+    
     public List<String> getOptions( int optionSetId, String key, Integer max )
     {
         List<String> options = null;
