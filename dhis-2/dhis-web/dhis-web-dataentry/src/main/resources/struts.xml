@@ -34,7 +34,6 @@
       <result name="custom" type="velocity">/dhis-web-dataentry/customForm.vm</result>
       <result name="section" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
       <result name="multiorg_section" type="velocity">/dhis-web-dataentry/multiOrgSectionForm.vm</result>
-      <result name="default" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
       <result name="input" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
     </action>
 
