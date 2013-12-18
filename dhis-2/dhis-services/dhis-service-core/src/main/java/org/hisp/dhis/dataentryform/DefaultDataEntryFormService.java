@@ -28,6 +28,11 @@ package org.hisp.dhis.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_LONG_TEXT;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_TRUE_ONLY;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +41,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
@@ -51,9 +55,6 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.dataelement.DataElement.*;
-import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
 /**
  * @author Bharath Kumar
