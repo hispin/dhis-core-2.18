@@ -27,8 +27,8 @@
 
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
     <sec:form-login default-target-url="/" always-use-default-target="false"
+      authentication-failure-handler-ref="securityExceptionTranslationHandler"
       login-processing-url="/dhis-web-commons-security/login.action"
-      authentication-failure-url="/dhis-web-commons/security/login.action?failed=true"
       login-page="/dhis-web-commons/security/login.action"
       authentication-success-handler-ref="defaultAuthenticationSuccessHandler" />
     <sec:http-basic />
@@ -43,6 +43,16 @@
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
     <sec:custom-filter ref="customAuthenticationFilter" before="FORM_LOGIN_FILTER" />
   </sec:http>
+
+  <bean id="securityExceptionTranslationHandler"
+    class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
+    <property name="exceptionMappings">
+      <props>
+        <prop key="org.springframework.security.authentication.AccountExpiredException">/dhis-web-commons/security/login.action?expired=true</prop>
+      </props>
+    </property>
+    <property name="defaultFailureUrl" value="/dhis-web-commons/security/login.action?failed=true" />
+  </bean>
 
   <!-- Security : Action -->
   <bean id="restrictOrganisationUnitsAction" class="org.hisp.dhis.security.action.RestrictOrganisationUnitsAction"
