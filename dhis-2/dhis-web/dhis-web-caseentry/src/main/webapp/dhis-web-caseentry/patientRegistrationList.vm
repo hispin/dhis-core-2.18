@@ -47,11 +47,7 @@
 			#if( $identifierTypes.size()==0 )
 				<col/>       
 			#end
-			<col/>
-			<col/>
-			<col/>
 		  #end
-		  <col/>
 		  
 		  #if($mapPatientOrgunit.size()!=0)
 		  <col/>
