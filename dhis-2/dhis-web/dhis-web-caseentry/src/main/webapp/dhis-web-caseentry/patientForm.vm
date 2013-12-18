@@ -12,13 +12,6 @@
 		{validate:{required:true}}
 	  #end
 	#end
-	
-	<tr id='registrationDateTR' name='propertiesField'>
-		<td class='text-column'><label for="registration_date">$i18n.getString( "registration_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td class="input-column" colspan='2'>
-			<input type="text" id="registrationDate" name="registrationDate" class="{validate:{required:true}}" value='$!format.formatDate($!patient.registrationDate)'/>
-		</td>		
-	</tr>
 
 	<tr>
 		<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
@@ -63,7 +56,7 @@
 			<tr name='idenFields'> 
 				<td class='text-column'><label>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory) <em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">
-					<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$!identifier" data="{related:$identifierType.related}" #if($identifierType.related && $!patient.underAge) disabled="disabled" #end 
+					<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$!identifier" data="{related:$identifierType.related}" #if($identifierType.related) disabled="disabled" #end 
 						class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" 
 						#if($identifierType.type=='orgunitCount') readonly #end />
 				</td>	
@@ -100,13 +93,19 @@
 									datePickerValid( 'attr$attribute.id', false, false );
 								</script>                    
 							#elseif( $attribute.valueType == "combo" )  
-								<select  id="attr$attribute.id"  name="attr$attribute.id" inherit="$!attribute.inherit" class='#validate( "default"  $attribute.mandatory )'>
+								<select id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class='#validate( "default"  $attribute.mandatory )'>
 									<option value="">[$i18n.getString( "please_select" )]</option>
 									#foreach ($option in $attribute.attributeOptions )
 										<option value="$option.id" #if("$value"=="$option.name") selected #end>$option.name</option>
 									#end
 								</select>
-							#else
+							#elseif( $attribute.valueType == "phoneNumber" ) 
+								<input type='text' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true}}"/>
+							#elseif( $attribute.valueType == "trackerAssociate" ) 
+								<input type="checkbox" value='true' id="attr$attribute.id" name="attr$attribute.id" 
+									inherit="$!attribute.inherit" #if($value=='true') checked #end
+									onclick="toggleUnderAge(this);" class='underAge' />
+							#else 
 								<input type="text" id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value='$value' class="{validate:{required:$attribute.mandatory #if($attribute.valueType=='NUMBER'),number:true #end }}" />
 							#end
 						</td>		
@@ -149,6 +148,12 @@
 							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 						#end
 						</select>
+					#elseif( $attribute.valueType == "phoneNumber" ) 
+						<input type='text' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true}}"/>
+					#elseif( $attribute.valueType == "trackerAssociate" ) 
+						<input type="checkbox" value='true' id="attr$attribute.id" name="attr$attribute.id" 
+							inherit="$!attribute.inherit" #if($value=='true') checked #end
+							onclick="toggleUnderAge(this);" class='underAge' />
 					#else  
 						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value="$!attributeValue" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" >
 					#end

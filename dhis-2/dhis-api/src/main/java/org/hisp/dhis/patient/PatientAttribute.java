@@ -67,6 +67,8 @@ public class PatientAttribute
     public static final String TYPE_COMBO = "combo";
     
     public static final String TYPE_PHONE_NUMBER = "phoneNumber";
+    
+    public static final String TYPE_TRACKER_ASSOCIATE = "trackerAssociate";
 
     private String description;
 

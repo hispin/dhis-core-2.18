@@ -508,6 +508,7 @@ public class TableAlteror
                 // ---------------------------------------------------------------------
                 // Death date
                 // ---------------------------------------------------------------------
+                
                 max++;
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -522,6 +523,7 @@ public class TableAlteror
                 // ---------------------------------------------------------------------
                 // registrationDate
                 // ---------------------------------------------------------------------
+               
                 max++;
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -538,6 +540,7 @@ public class TableAlteror
                 // ---------------------------------------------------------------------
                 // isDead
                 // ---------------------------------------------------------------------
+               
                 max++;
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -545,7 +548,7 @@ public class TableAlteror
                     + CodeGenerator.generateCode()
                     + "','"
                     + DateUtils.getMediumDateString()
-                    + "','Is Dead', 'Is Dead','" + PatientAttribute.TYPE_TRUE_ONLY + "', false, false, false)" );
+                    + "','Is Dead', 'Is Dead','" + PatientAttribute.TYPE_TRACKER_ASSOCIATE + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",isDead from patient where isDead is not null" );
 
@@ -561,7 +564,7 @@ public class TableAlteror
                     + "','"
                     + DateUtils.getMediumDateString()
                     + "','Is under age', 'Is under age','"
-                    + PatientAttribute.TYPE_TRUE_ONLY
+                    + PatientAttribute.TYPE_TRACKER_ASSOCIATE
                     + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",isDead from patient where underAge=true" );

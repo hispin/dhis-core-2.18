@@ -1106,28 +1106,14 @@ function toggleUnderAge(this_)
 	if( $(this_).is(":checked")) {
         $('#representativeDiv').dialog('destroy').remove();
         $('<div id="representativeDiv">' ).load( 'showAddRepresentative.action',{}, function() {
-            $('#patientForm [id=birthDate]').attr('id','birthDate_id');
-            $('#patientForm [id=birthDate_id]').attr('name','birthDate_id');
-
-            $('#patientForm [id=registrationDate]').attr('id','registrationDate_id');
-            $('#patientForm [id=registrationDate_id]').attr('name','registrationDate_id');
-
-            datePickerValid( 'representativeDiv [id=registrationDate]' );
         }).dialog({
-            title: i18n_child_representative,
+            title: i18n_tracker_associate,
             maximize: true,
             closable: true,
             modal:true,
             overlay:{background:'#000000', opacity:0.1},
             width: 800,
-            height: 450,
-            close:function() {
-                $('#patientForm [id=birthDate_id]').attr('id','birthDate');
-                $('#patientForm [id=birthDate]').attr('name','birthDate');
-
-                $('#patientForm [id=registrationDate_id]').attr('id','registrationDate');
-                $('#patientForm [id=registrationDate]').attr('name','registrationDate');
-            }
+            height: 450
 		});
 	} else {
         $("#representativeDiv :input.idfield").each(function(){

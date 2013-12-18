@@ -1,13 +1,3 @@
-
-#if($patientRegistrationForm.fixedAttributes.contains( 'registrationDate' ))
-	<tr id='registrationDateTR'>
-		<td class='text-column'><label for="registration_date">$i18n.getString( "registration_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td class="input-column" colspan='2'>
-			<input type="text" id="registrationDate" name="registrationDate" class="{validate:{required:true}}" value='$!format.formatDate($!patient.registrationDate)'/>
-		</td>		
-	</tr>
-#end
-
 <tr>
 	<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 </tr>
@@ -55,7 +45,7 @@
 			<tr> 
 				<td class='text-column'><label>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory) <em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">
-					<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$!identifier" data="{related:$identifierType.related}" #if($identifierType.related && $!patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" />
+					<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$!identifier" data="{related:$identifierType.related}" #if($identifierType.related) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" />
 				</td>	
 			</tr>
 		#end
@@ -63,8 +53,7 @@
 #end
 
 <!-- ATTRIBUTES IN GROUPS -->
-	
-	
+
 #foreach($attribute in $$patientRegistrationForm.dynamicAttributes )
 	#if( $attribute )
 		#set($value = "")
