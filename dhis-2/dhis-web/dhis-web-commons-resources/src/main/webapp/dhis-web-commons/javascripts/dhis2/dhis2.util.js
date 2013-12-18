@@ -26,7 +26,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 var dhis2 = dhis2 || {};
 dhis2['util'] = dhis2['util'] || {};
 
@@ -154,14 +153,3 @@ window.log = function( str ) {
         console.log(str);
     }
 };
-
-$(function() {
-    $(window.applicationCache).on('updateready', function( e ) {
-        if( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
-            // Browser downloaded a new app cache.
-            if( confirm('A new version of this site is available. Load it?') ) {
-                window.location.reload();
-            }
-        }
-    });
-});
