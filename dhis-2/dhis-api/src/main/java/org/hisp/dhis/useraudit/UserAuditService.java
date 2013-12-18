@@ -38,4 +38,6 @@ public interface UserAuditService
     void registerLogout( String username );
     
     void registerLoginFailure( String username, String ip );
+
+    void registerLoginExpired( String username, String ip );
 }

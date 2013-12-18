@@ -30,7 +30,6 @@ package org.hisp.dhis.useraudit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Saptarshi Purkayastha
@@ -58,9 +57,14 @@ public class DefaultUserAuditService
     }
 
     @Override
-    @Transactional
     public void registerLoginFailure( String username, String ip )
     {
         log.info( "Login failure for user: '" + username + "', ip: '" + ip + "'" );
+    }
+
+    @Override
+    public void registerLoginExpired( String username, String ip )
+    {
+        log.info( "Login failure (account expired) for user: '" + username + "', ip: '" + ip + "'" );
     }
 }
