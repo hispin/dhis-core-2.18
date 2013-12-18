@@ -43,6 +43,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Months;
 
 /**
  * @author Lars Helge Overland
@@ -303,6 +304,22 @@ public class DateUtils
         final Days days = Days.daysBetween( new DateTime( startDate ), new DateTime( endDate ) );
 
         return days.getDays();
+    }
+
+    /**
+     * Calculates the number of months between the start and end-date. Note this
+     * method is taking daylight saving time into account and has a performance
+     * overhead.
+     *
+     * @param startDate the start date.
+     * @param endDate the end date.
+     * @return the number of months between the start and end date.
+     */
+    public static int monthsBetween( Date startDate, Date endDate )
+    {
+        final Months days = Months.monthsBetween( new DateTime( startDate ), new DateTime( endDate ) );
+
+        return days.getMonths();
     }
 
     /**

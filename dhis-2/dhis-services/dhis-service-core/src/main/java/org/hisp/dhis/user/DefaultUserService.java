@@ -36,6 +36,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -608,13 +609,15 @@ public class DefaultUserService
     @Override
     public boolean credentialsNonExpired( UserCredentials credentials )
     {
-        Integer credentialsExpires = systemSettingManager.credentialsExpires();
+        int credentialsExpires = systemSettingManager.credentialsExpires();
 
-        if ( credentialsExpires == null || credentialsExpires == 0 )
+        if ( credentialsExpires == 0 )
         {
             return true;
         }
+    
+        int months = DateUtils.monthsBetween( credentials.getPasswordLastUpdated(), new Date() );
 
-        return true;
+        return months < credentialsExpires;
     }
 }
