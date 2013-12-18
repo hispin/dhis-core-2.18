@@ -28,9 +28,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-import java.util.UUID;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
@@ -38,6 +35,9 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author bobj
@@ -133,7 +133,7 @@ public class IdentityPopulator
 
                 if ( count > 0 )
                 {
-                    log.info( count + " timestamps set on " + table );
+                    log.info( count + " created timestamps set on " + table );
                 }
             }
             catch ( Exception ex ) // Log and continue
@@ -151,6 +151,30 @@ public class IdentityPopulator
         createOrgUnitUuids();
 
         log.debug( "Organisation unit uuids updated" );
+
+        updatePasswordLastUpdated();
+
+        log.debug( "UserCredential passwordLastUpdated updated" );
+    }
+
+    private void updatePasswordLastUpdated()
+    {
+        try
+        {
+            String timestamp = DateUtils.getLongDateString();
+
+            SqlRowSet resultSet = jdbcTemplate.queryForRowSet( "SELECT * from users WHERE passwordlastupdated IS NULL" );
+
+            while ( resultSet.next() )
+            {
+                String sql = "UPDATE users SET passwordlastupdated = '" + timestamp + "' WHERE passwordlastupdated IS NULL";
+                jdbcTemplate.update( sql );
+            }
+        }
+        catch ( Exception ex ) // Log and continue
+        {
+            log.error( "Problem updating passwordLastUpdated on table user: " + ex.getMessage() );
+        }
     }
 
     private String getIdColumn( String table )
