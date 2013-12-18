@@ -383,7 +383,6 @@ public class Program
     }
 
     @JsonProperty(value = "attributes")
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
     @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
     @JacksonXmlElementWrapper(localName = "attributes", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty(localName = "attribute", namespace = DxfNamespaces.DXF_2_0)
