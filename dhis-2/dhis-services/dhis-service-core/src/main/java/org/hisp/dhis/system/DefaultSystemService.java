@@ -28,15 +28,6 @@ package org.hisp.dhis.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-
 import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
@@ -47,6 +38,15 @@ import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
+
 /**
  * @author Lars Helge Overland
  */
@@ -55,12 +55,14 @@ public class DefaultSystemService
 {
     @Autowired
     private LocationManager locationManager;
-    
+
     @Autowired
     private DatabaseInfoProvider databaseInfoProvider;
-    
+
     @Autowired
     private ConfigurationService configurationService;
+
+    private SystemInfo systemInfo = null;
 
     // -------------------------------------------------------------------------
     // SystemService implementation
@@ -69,34 +71,39 @@ public class DefaultSystemService
     @Override
     public SystemInfo getSystemInfo()
     {
-        SystemInfo info = new SystemInfo();
-        
+        if ( systemInfo != null )
+        {
+            return systemInfo;
+        }
+
+        systemInfo = new SystemInfo();
+
         // ---------------------------------------------------------------------
         // Version
         // ---------------------------------------------------------------------
 
         ClassPathResource resource = new ClassPathResource( "build.properties" );
-        
+
         if ( resource.isReadable() )
         {
             InputStream in = null;
-            
+
             try
             {
                 in = resource.getInputStream();
-                
+
                 Properties properties = new Properties();
-        
+
                 properties.load( in );
-        
-                info.setVersion( properties.getProperty( "build.version" ) );
-                info.setRevision( properties.getProperty( "build.revision" ) );
-        
+
+                systemInfo.setVersion( properties.getProperty( "build.version" ) );
+                systemInfo.setRevision( properties.getProperty( "build.revision" ) );
+
                 String buildTime = properties.getProperty( "build.time" );
-    
+
                 DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-    
-                info.setBuildTime( dateFormat.parse( buildTime ) );
+
+                systemInfo.setBuildTime( dateFormat.parse( buildTime ) );
             }
             catch ( IOException ex )
             {
@@ -111,29 +118,29 @@ public class DefaultSystemService
                 IOUtils.closeQuietly( in );
             }
         }
-        
+
         // ---------------------------------------------------------------------
         // External directory
         // ---------------------------------------------------------------------
 
-        info.setEnvironmentVariable( locationManager.getEnvironmentVariable() );
-        
+        systemInfo.setEnvironmentVariable( locationManager.getEnvironmentVariable() );
+
         try
         {
             File directory = locationManager.getExternalDirectory();
-        
-            info.setExternalDirectory( directory.getAbsolutePath() );
+
+            systemInfo.setExternalDirectory( directory.getAbsolutePath() );
         }
         catch ( LocationManagerException ex )
         {
-            info.setExternalDirectory( "Not set" );
+            systemInfo.setExternalDirectory( "Not set" );
         }
-        
+
         // ---------------------------------------------------------------------
         // Database
         // ---------------------------------------------------------------------
 
-        info.setDatabaseInfo( databaseInfoProvider.getDatabaseInfo() );
+        systemInfo.setDatabaseInfo( databaseInfoProvider.getDatabaseInfo() );
 
         // ---------------------------------------------------------------------
         // System env variables and properties
@@ -141,30 +148,30 @@ public class DefaultSystemService
 
         try
         {
-            info.setJavaOpts( System.getenv( "JAVA_OPTS" ) );
+            systemInfo.setJavaOpts( System.getenv( "JAVA_OPTS" ) );
         }
         catch ( SecurityException ex )
         {
-            info.setJavaOpts( "Unknown" );
+            systemInfo.setJavaOpts( "Unknown" );
         }
-        
+
         Properties props = System.getProperties();
-        
-        info.setJavaIoTmpDir( props.getProperty( "java.io.tmpdir" ) );
-        info.setJavaVersion( props.getProperty( "java.version" ) );
-        info.setJavaVendor( props.getProperty( "java.vendor" ) );
-        info.setOsName( props.getProperty( "os.name" ) );
-        info.setOsArchitecture( props.getProperty( "os.arch" ) );
-        info.setOsVersion( props.getProperty( "os.version" ) );
-        
-        info.setMemoryInfo( SystemUtils.getMemoryString() );        
-        info.setCpuCores( SystemUtils.getCpuCores() );
-        info.setServerDate( new Date() );
-        
+
+        systemInfo.setJavaIoTmpDir( props.getProperty( "java.io.tmpdir" ) );
+        systemInfo.setJavaVersion( props.getProperty( "java.version" ) );
+        systemInfo.setJavaVendor( props.getProperty( "java.vendor" ) );
+        systemInfo.setOsName( props.getProperty( "os.name" ) );
+        systemInfo.setOsArchitecture( props.getProperty( "os.arch" ) );
+        systemInfo.setOsVersion( props.getProperty( "os.version" ) );
+
+        systemInfo.setMemoryInfo( SystemUtils.getMemoryString() );
+        systemInfo.setCpuCores( SystemUtils.getCpuCores() );
+        systemInfo.setServerDate( new Date() );
+
         Configuration config = configurationService.getConfiguration();
-        
-        info.setSystemId( config.getSystemId() );
-        
-        return info;
+
+        systemInfo.setSystemId( config.getSystemId() );
+
+        return systemInfo;
     }
 }
