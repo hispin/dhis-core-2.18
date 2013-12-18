@@ -365,6 +365,9 @@ public class ProgramStage
         return "Dear {person-name}, please come to your appointment on {program-stage-name} at {due-date}";
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getCaptureCoordinates()
     {
         return captureCoordinates;
