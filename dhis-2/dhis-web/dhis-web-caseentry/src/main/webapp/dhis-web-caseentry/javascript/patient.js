@@ -69,7 +69,7 @@ function Patient()
 	this.validate = function( programId )
 	{
 		setMessage('');
-		if( byId('underAge').checked ){
+		if( jQuery('.underAge').prop('checked')=='true' ){
 			if ( getFieldValue('representativeId') == '' )
 			{
 				setMessage( i18n_please_choose_representative_for_this_under_age_patient );
@@ -179,8 +179,7 @@ function Patient()
 					{    
 						if(isContinue){
 							jQuery("#patientForm :input").each( function(){
-								if( $(this).attr('id') != "registrationDate" 
-									&& $(this).attr('type') != 'button'
+								if( $(this).attr('type') != 'button'
 									&& $(this).attr('type') != 'submit' 
 									&& $(this).attr('id') !='enrollmentDate' )
 								{
@@ -195,8 +194,7 @@ function Patient()
 				}
 				else if(isContinue){
 						jQuery("#patientForm :input").each( function(){
-							if( $(this).attr('id') != "registrationDate" 
-								&& $(this).attr('type') != 'button'
+							if( $(this).attr('type') != 'button'
 								&& $(this).attr('type') != 'submit'  )
 							{
 								$(this).val("");

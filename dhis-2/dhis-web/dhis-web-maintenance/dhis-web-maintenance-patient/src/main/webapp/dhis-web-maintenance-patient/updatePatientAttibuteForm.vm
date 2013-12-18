@@ -50,6 +50,7 @@
                 <option value="trueOnly" #if( $patientAttribute.valueType == 'trueOnly' ) selected="selected" #end >$i18n.getString( "yes_only" )</option>
 				<option value="date" #if( $patientAttribute.valueType == 'date' ) selected="selected" #end>$i18n.getString( "date" )</option>
                 <option value="phoneNumber" #if( $patientAttribute.valueType == 'phoneNumber' ) selected="selected" #end>$i18n.getString( "phone_number" )</option>
+				 <option value="trackerAssociate" #if( $patientAttribute.valueType == 'trackerAssociate' ) selected="selected" #end>$i18n.getString( "tracker_associate" )</option>
 				<option value="combo" #if( $patientAttribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
             </select>
         </td>

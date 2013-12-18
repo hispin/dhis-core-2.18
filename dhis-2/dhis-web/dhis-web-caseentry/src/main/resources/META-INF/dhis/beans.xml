@@ -469,6 +469,8 @@
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.RemovePatientAction"
@@ -494,6 +496,8 @@
 		<property name="patientAttributeOptionService"
 			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.ShowAddPatientFormAction"
@@ -771,8 +775,7 @@
 	</bean>
 
 	<!-- Tabular report -->
-	<bean
-		id="org.hisp.dhis.caseentry.action.caseentry.SearchEventsAction"
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.SearchEventsAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.SearchEventsAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />

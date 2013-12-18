@@ -38,6 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -89,6 +91,8 @@ public class AddPatientAction
 
     private RelationshipService relationshipService;
 
+    private OrganisationUnitSelectionManager selectionManager;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -115,13 +119,17 @@ public class AddPatientAction
 
     public String execute()
     {
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+
         Patient patient = new Patient();
 
         // ---------------------------------------------------------------------
-        // Set FullName
+        // Set FullName && location
         // ---------------------------------------------------------------------
 
         patient.setName( fullName );
+
+        patient.setOrganisationUnit( organisationUnit );
 
         // ---------------------------------------------------------------------
         // Set Other information for patient
@@ -270,7 +278,7 @@ public class AddPatientAction
             }
         }
 
-        message = id + "_" + systemGenerateIdentifier.getIdentifier();
+        message = patient.getUid() + "_" + systemGenerateIdentifier.getIdentifier();
 
         return SUCCESS;
     }
@@ -302,6 +310,11 @@ public class AddPatientAction
     public void setRelationshipService( RelationshipService relationshipService )
     {
         this.relationshipService = relationshipService;
+    }
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
     }
 
     public String getMessage()

@@ -37,6 +37,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -79,6 +81,8 @@ public class UpdatePatientAction
 
     private UserService userService;
 
+    private OrganisationUnitSelectionManager selectionManager;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -106,14 +110,17 @@ public class UpdatePatientAction
     public String execute()
         throws Exception
     {
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patient = patientService.getPatient( id );
 
         // ---------------------------------------------------------------------
-        // Set FullName
+        // Set FullName && location
         // ---------------------------------------------------------------------
 
         patient.setName( fullName );
+
+        patient.setOrganisationUnit( organisationUnit );
 
         // ---------------------------------------------------------------------
         // Set Other information for patient
@@ -284,6 +291,11 @@ public class UpdatePatientAction
     public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
     {
         this.patientIdentifierService = patientIdentifierService;
+    }
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
     }
 
     public void setId( Integer id )
