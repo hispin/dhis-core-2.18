@@ -28,10 +28,6 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
@@ -43,6 +39,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -57,7 +57,7 @@ public class DefaultUserDetailsService
     // -------------------------------------------------------------------------
 
     private UserService userService;
-    
+
     public void setUserService( UserService userService )
     {
         this.userService = userService;
@@ -78,8 +78,10 @@ public class DefaultUserDetailsService
             throw new UsernameNotFoundException( "Username does not exist" );
         }
 
+        boolean credentialsExpired = userService.credentialsNonExpired( credentials );
+
         return new User( credentials.getUsername(), credentials.getPassword(),
-            !credentials.isDisabled(), true, true, true, getGrantedAuthorities( credentials ) );
+            !credentials.isDisabled(), true, credentialsExpired, true, getGrantedAuthorities( credentials ) );
     }
 
     // -------------------------------------------------------------------------

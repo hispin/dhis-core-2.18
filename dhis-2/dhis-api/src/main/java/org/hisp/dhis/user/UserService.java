@@ -402,4 +402,6 @@ public interface UserService
     Collection<String> getUsernames( String query, Integer max );
 
     int countDataSetUserAuthorityGroups( DataSet dataSet );
+
+    boolean credentialsNonExpired( UserCredentials credentials );
 }
