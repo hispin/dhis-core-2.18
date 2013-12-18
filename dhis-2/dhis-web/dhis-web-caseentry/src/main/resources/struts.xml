@@ -128,9 +128,8 @@
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
 
-		<action name="cacheManifest" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="velocity-cache-manifest">/dhis-web-caseentry/cacheManifest.vm
-			</result>
+    <action name="cacheManifest" class="org.hisp.dhis.appcache.AppCacheAction">
+			<result name="success" type="velocity-cache-manifest">/dhis-web-caseentry/cacheManifest.vm</result>
 		</action>
 
 		<action name="getProgramMetaData"

@@ -605,4 +605,6 @@
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
+  <bean id="org.hisp.dhis.appcache.AppCacheAction" class="org.hisp.dhis.appcache.AppCacheAction" />
+
 </beans>

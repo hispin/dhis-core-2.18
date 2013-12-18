@@ -294,7 +294,7 @@
 
     <!-- TODO give i18n its own namespace and move cacheManifest action to dhis-web-commons package -->
 
-    <action name="cacheManifest" class="org.hisp.dhis.commons.action.NoAction">
+    <action name="cacheManifest" class="org.hisp.dhis.appcache.AppCacheAction">
       <result name="success" type="velocity-cache-manifest">/cacheManifest.vm</result>
     </action>
 
