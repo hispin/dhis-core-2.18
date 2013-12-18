@@ -615,7 +615,7 @@ public class DefaultUserService
         {
             return true;
         }
-    
+
         int months = DateUtils.monthsBetween( credentials.getPasswordLastUpdated(), new Date() );
 
         return months < credentialsExpires;
