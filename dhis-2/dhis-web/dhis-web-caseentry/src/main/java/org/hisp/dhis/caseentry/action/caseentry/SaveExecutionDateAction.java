@@ -164,7 +164,7 @@ public class SaveExecutionDateAction
             if ( programStageInstance == null )
             {
                 Program program = (programId == null) ? null : programService.getProgram( programId );
-                Patient patient = patientService.getPatient( patientId );
+                Patient patient = (patientId == null) ? null : patientService.getPatient( patientId );
 
                 programStageInstance = programStageInstanceService.createProgramStageInstance( patient, program, dateValue, organisationUnit );
             }
