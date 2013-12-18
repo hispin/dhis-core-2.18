@@ -42,8 +42,10 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,6 +76,11 @@ public class UserCredentials
      * Required. Will be stored as a hash.
      */
     private String password;
+
+    /**
+     * Date when password was changed.
+     */
+    private Date passwordLastUpdated;
 
     /**
      * Set of user roles.
@@ -120,6 +127,7 @@ public class UserCredentials
     {
         this.lastLogin = new Date();
         this.created = new Date();
+        this.passwordLastUpdated = new Date();
     }
 
     // -------------------------------------------------------------------------
@@ -293,9 +301,9 @@ public class UserCredentials
      * Returns false if any of the given token or code arguments are not equal to
      * the respective properties the the credentials. Returns true otherwise.
      *
-     * @param token  the restore token.
-     * @param code   the restore code.
-     * @param date the expiry date.
+     * @param token the restore token.
+     * @param code  the restore code.
+     * @param date  the expiry date.
      * @return true or false.
      */
     public boolean canRestore( String token, String code, Date date )
@@ -375,6 +383,16 @@ public class UserCredentials
     public void setPassword( String password )
     {
         this.password = password;
+    }
+
+    public Date getPasswordLastUpdated()
+    {
+        return passwordLastUpdated;
+    }
+
+    public void setPasswordLastUpdated( Date passwordLastUpdated )
+    {
+        this.passwordLastUpdated = passwordLastUpdated;
     }
 
     @JsonProperty
