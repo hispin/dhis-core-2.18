@@ -37,12 +37,12 @@ dhis2['util'] = dhis2['util'] || {};
  *
  * @returns {object} Namespace object
  */
-dhis2.util.namespace = function ( path ) {
-    var parts = path.split( '.' );
+dhis2.util.namespace = function( path ) {
+    var parts = path.split('.');
     var parent = window;
     var currentPart = '';
 
-    for ( var i = 0, length = parts.length; i < length; i++ ) {
+    for( var i = 0, length = parts.length; i < length; i++ ) {
         currentPart = parts[i];
         parent[currentPart] = parent[currentPart] || {};
         parent = parent[currentPart];
@@ -54,49 +54,49 @@ dhis2.util.namespace = function ( path ) {
 /**
  * Escape function for regular expressions.
  */
-dhis2.util.escape = function ( text ) {
-    return text.replace( /[-[\]{}()*+?.,\/\\^$|#\s]/g, "\\$&" );
+dhis2.util.escape = function( text ) {
+    return text.replace(/[-[\]{}()*+?.,\/\\^$|#\s]/g, "\\$&");
 };
 
 /**
  * jQuery cannot correctly filter strings with () in them, so here is a fix
  * until jQuery gets updated.
  */
-dhis2.util.jqTextFilterCaseSensitive = function ( key, not ) {
-    key = dhis2.util.escape( key );
+dhis2.util.jqTextFilterCaseSensitive = function( key, not ) {
+    key = dhis2.util.escape(key);
     not = not || false;
 
-    if ( not ) {
-        return function ( i, el ) {
-            return !!!$( el ).text().match( "" + key );
+    if( not ) {
+        return function( i, el ) {
+            return !!!$(el).text().match("" + key);
         };
     }
     else {
-        return function ( i, el ) {
-            return !!$( el ).text().match( "" + key );
+        return function( i, el ) {
+            return !!$(el).text().match("" + key);
         };
     }
 };
 
-dhis2.util.jqTextFilter = function ( key, not ) {
-    key = dhis2.util.escape( key ).toLowerCase();
+dhis2.util.jqTextFilter = function( key, not ) {
+    key = dhis2.util.escape(key).toLowerCase();
     not = not || false;
 
-    if ( not ) {
-        return function ( i, el ) {
-            return !!!$( el ).text().toLowerCase().match( "" + key );
+    if( not ) {
+        return function( i, el ) {
+            return !!!$(el).text().toLowerCase().match("" + key);
         };
     }
     else {
-        return function ( i, el ) {
-            return !!$( el ).text().toLowerCase().match( "" + key );
+        return function( i, el ) {
+            return !!$(el).text().toLowerCase().match("" + key);
         };
     }
 };
 
-dhis2.util.uuid = function () {
-    var S4 = function () {
-        return (((1 + Math.random()) * 0x10000) | 0).toString( 16 ).substring( 1 );
+dhis2.util.uuid = function() {
+    var S4 = function() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     };
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
@@ -106,17 +106,17 @@ dhis2.util.uuid = function () {
  * adds ':containsNC' to filtering.
  * $(sel).find(':containsNC(key)').doSomething();
  */
-$.expr[":"].containsNC = function ( a, i, m, r ) {
-    var search = dhis2.util.escape( m[3] );
-    return jQuery( a ).text().toUpperCase().indexOf( m[search].toUpperCase() ) >= 0;
+$.expr[":"].containsNC = function( a, i, m, r ) {
+    var search = dhis2.util.escape(m[3]);
+    return jQuery(a).text().toUpperCase().indexOf(m[search].toUpperCase()) >= 0;
 };
 
 /**
  * adds ':regex' to filtering, use to filter by regular expression
  */
-$.expr[":"].regex = function ( a, i, m, r ) {
-    var re = new RegExp( m[3], 'i' );
-    return re.test( jQuery( a ).text() );
+$.expr[":"].regex = function( a, i, m, r ) {
+    var re = new RegExp(m[3], 'i');
+    return re.test(jQuery(a).text());
 };
 
 /**
@@ -124,9 +124,9 @@ $.expr[":"].regex = function ( a, i, m, r ) {
  *
  * (this is the case sensitive version)
  */
-$.expr[":"].regexCS = function ( a, i, m, r ) {
-    var re = new RegExp( m[3] );
-    return re.test( jQuery( a ).text() );
+$.expr[":"].regexCS = function( a, i, m, r ) {
+    var re = new RegExp(m[3]);
+    return re.test(jQuery(a).text());
 };
 
 /**
@@ -135,12 +135,12 @@ $.expr[":"].regexCS = function ( a, i, m, r ) {
  *
  * @returns array of keys
  */
-if ( !Object.keys ) {
-    Object.keys = function ( obj ) {
+if( !Object.keys ) {
+    Object.keys = function( obj ) {
         var keys = new Array();
-        for ( k in obj )
-            if ( obj.hasOwnProperty( k ) )
-                keys.push( k );
+        for( k in obj )
+            if( obj.hasOwnProperty(k) )
+                keys.push(k);
         return keys;
     };
 }
@@ -149,8 +149,19 @@ if ( !Object.keys ) {
  * Define a window.log object, and output to console.log if it exists. (this is
  * a fix for IE8 and FF 3.6).
  */
-window.log = function ( str ) {
-    if ( this.console ) {
-        console.log( str );
+window.log = function( str ) {
+    if( this.console ) {
+        console.log(str);
     }
 };
+
+$(function() {
+    $(window.applicationCache).on('updateready', function( e ) {
+        if( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
+            // Browser downloaded a new app cache.
+            if( confirm('A new version of this site is available. Load it?') ) {
+                window.location.reload();
+            }
+        }
+    });
+});
