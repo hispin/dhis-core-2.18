@@ -535,15 +535,24 @@ public class PatientServiceTest
         int idA = programService.addProgram( programA );
         programService.addProgram( programB );
 
-        patientA3.setPhoneNumber( "123456789" );
         patientService.savePatient( patientA1 );
         patientService.savePatient( patientA2 );
         patientService.savePatient( patientA3 );
         patientService.savePatient( patientB1 );
         patientService.savePatient( patientB2 );
 
-        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA3, patientAttribute );
+        PatientAttribute phoneAttribute = createPatientAttribute( 'B' );
+        phoneAttribute.setValueType( PatientAttribute.TYPE_PHONE_NUMBER );
+        patientAttributeService.savePatientAttribute( phoneAttribute );
+
+        Set<PatientAttributeValue> attributeValues = new HashSet<PatientAttributeValue>();
+        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA3, phoneAttribute );
+        attributeValue.setValue( "123456789" );
         patientAttributeValueService.savePatientAttributeValue( attributeValue );
+
+        attributeValues.add( attributeValue );
+        patientA3.addAttributeValue( attributeValue );
+        patientService.updatePatient( patientA3 );
 
         programInstanceService.enrollPatient( patientA3, programA, date, date, organisationUnit, null );
         programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
@@ -551,8 +560,6 @@ public class PatientServiceTest
         List<String> searchKeys = new ArrayList<String>();
         searchKeys.add( Patient.PREFIX_IDENTIFIER_TYPE + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE
             + organisationUnit.getId() );
-        searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
-            + Patient.SEARCH_SAPERATE + "a" );
         searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
 
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
@@ -571,6 +578,23 @@ public class PatientServiceTest
         patientService.savePatient( patientA2 );
         patientService.savePatient( patientA3 );
 
+        PatientAttribute patientAttribute = createPatientAttribute( 'B' );
+        patientAttribute.setValueType( PatientAttribute.TYPE_PHONE_NUMBER );
+        patientAttributeService.savePatientAttribute( patientAttribute );
+
+        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA1, patientAttribute );
+        attributeValue.setValue( "123456789" );
+        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+
+        patientA1.addAttributeValue( attributeValue );
+        patientService.updatePatient( patientA1 );
+
+        attributeValue = createPatientAttributeValue( 'A', patientA2, patientAttribute );
+        attributeValue.setValue( "123456789" );
+        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+        patientA2.addAttributeValue( attributeValue );
+        patientService.updatePatient( patientA2 );
+        
         Collection<Patient> patients = patientService.getPatientsByPhone( "123456789", null, null );
         assertEquals( 2, patients.size() );
         assertTrue( patients.contains( patientA1 ) );

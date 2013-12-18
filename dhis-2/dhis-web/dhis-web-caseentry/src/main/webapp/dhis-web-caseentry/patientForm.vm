@@ -1,6 +1,3 @@
-<script>
-	var phoneNumberAreaCode =  '$!encoder.jsEscape( $phoneNumberAreaCode , "'" )';
-</script>
 
 #if($!customRegistrationForm)
 	$customRegistrationForm
@@ -33,45 +30,6 @@
 	</tr>
 
 	<tr name='propertiesField'>
-		<td class='text-column'><label for="gender">$i18n.getString( "gender" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td class="input-column">
-			<select id="gender" name="gender">
-				<option value="M" #if( $!patient.gender == 'M' ) selected="selected" #end>$i18n.getString( "male" )</option>
-				<option value="F" #if( $!patient.gender == 'F' ) selected="selected" #end>$i18n.getString( "female" )</option>
-				<option value="T" #if( $!patient.gender == 'T' ) selected="selected" #end>$i18n.getString( "transgender" )</option>
-			</select>
-		</td>					
-	</tr>
-
-	<tr name='propertiesField'>
-		<td class='text-column' ><label for="birthDate">$i18n.getString( "date_of_birth" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td class="input-column">
-			<select id='dobType' name="dobType" style='width:120px' onchange='dobTypeOnChange("patientForm")' >
-				<option value="V" #if($patient.dobType=='V') selected #end >$i18n.getString( "verified" )</option>
-				<option value="D" #if($patient.dobType=='D') selected #end >$i18n.getString( "declared" )</option>
-				<option value="A" #if($patient.dobType=='A') selected #end >$i18n.getString( "approximated" )</option>
-			</select>
-			<input type="text" id="birthDate" name="birthDate" value='$!format.formatDate($!patient.birthDate)' style='width:136px;' />
-			<input type="text" id="age" name="age" placeholder="$i18n.getString('enter_age_in_years')" value='$!patient.getIntegerValueOfAge()' class="{validate:{number:true}}" style='width:136px;' />
-		</td>
-	</tr>
-
-	<tr>
-		<td></td>
-		<td class="input-column">
-			<input id="memberValidator" class="hidden {validate:{required:true}}"/>
-		</td>
-	</tr>
-
-	<tr class='phoneNumberTR' name='propertiesField'>
-		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-		<td class="input-column">
-			<input type="text" id="phoneNumber" name="phoneNumber" class="{validate:{phone:true}}"/>
-			<input type="button" value='+' style='width:20px;' onclick='addPhoneNumberField(phoneNumberAreaCode);' />
-		</td>
-	</tr>
-
-	<tr name='propertiesField'>
 		<td class='text-column'><label for="healthWorker">$i18n.getString( "health_worker" )</label></td>
 		<td class="input-column">
 			<select id="healthWorker" name="healthWorker">
@@ -82,42 +40,7 @@
 			</select>
 		</td>
 	</tr>
-
-	<!-- UNDERAGE -->
-
-	#if($!patient.underAge)
-		#set( $representative = $!patient.representative ) 
-		<tr id="representativeFormDiv" name='propertiesField'>
-			<td class='text-column'>$i18n.getString("guardian")</td>
-			<td> 
-				$!patient.representative.name <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='img-button'>
-			</td>
-		</tr>
-	#else
-		<tr id="underAgeDiv" name="underAgeDiv">
-			<td class='text-column'>$i18n.getString("has_guardian")</td>
-			<td>
-				<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($!patient.underAge == "true") checked="checked" #end/>
-			</td>
-		</tr>
-	#end
-
-	<!-- DEAD -->
-
-	<tr id="deathCheckboxTR" name='propertiesField'>
-		<td class='text-column'>$i18n.getString("is_dead")</td>
-		<td>
-			<input type="checkbox" name="isDead" id="isDead" value="true" #if($!patient.isDead) checked="checked" #end onchange='isDeathOnChange();'/>
-		</td>
-	</tr>
-
-	<tr id='deathDateTR' #if($!patient.isDead) #else class="hidden" #end name='propertiesField'>
-		<td class='text-column'><label for="deathDate">$i18n.getString("death_date")</label></td>
-		<td class="input-column">
-			<input type="text" name="deathDate" id="deathDate" #if($!patient.deathDate) value="$format.formatDate( $!patient.deathDate )" #end>
-		</td>
-	</tr>
-
+	
 	<tr>
 		<td></td>
 		<td><input type="button" class='button' id='checkDuplicateBtn' name='checkDuplicateBtn' value="$i18n.getString('check_duplicate')" /></td>
@@ -296,35 +219,4 @@
 	if(disableButtons){
 		jQuery('#patientForm .button').attr('disabled',true);
 	}
-
-	if(getFieldValue('dobType')=='A'){
-		showById('age');
-		hideById('birthDate');
-		setFieldValue('birthDate',"");
-	}
-	else{
-		hideById('age');
-		showById('birthDate');
-	}
-	
-	#if( $!patient.phoneNumber )
-		if(!addRelationship){
-			var phoneNumbers = '$!encoder.jsEscape( $patient.phoneNumber , "'" )'.split(";");
-			setFieldValue('phoneNumber',phoneNumbers[0]);
-			#if($!customRegistrationForm)
-				for( var i = 1;i<phoneNumbers.length;i++ )
-				{
-					addCustomPhoneNumberField(phoneNumbers[i]);
-				}
-			#elseif( $!patient.phoneNumber && $patient.phoneNumber!="")
-				for( var i = 1;i<phoneNumbers.length;i++ )
-				{
-					addPhoneNumberField(phoneNumbers[i]);
-				}
-			#end
-		}
-	#else
-		setFieldValue('phoneNumber',phoneNumberAreaCode)
-	#end
-	
 </script>

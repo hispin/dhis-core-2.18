@@ -38,6 +38,8 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -83,6 +85,12 @@ public class PatientReminderServiceTest
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PatientAttributeService patientAttributeService;
+
+    @Autowired
+    private PatientAttributeValueService patientAttributeValueService;
+
     private MockI18nFormat mockFormat;
 
     private ProgramInstance programInstance;
@@ -106,7 +114,7 @@ public class PatientReminderServiceTest
 
         OrganisationUnit organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitService.addOrganisationUnit( organisationUnit );
-        
+
         Set<OrganisationUnit> orgUnits = new HashSet<OrganisationUnit>();
         orgUnits.add( organisationUnit );
 
@@ -181,6 +189,17 @@ public class PatientReminderServiceTest
     @Test
     public void testGetPhonenumbers()
     {
+        PatientAttribute attribute = createPatientAttribute( 'A' );
+        attribute.setValueType( PatientAttribute.TYPE_PHONE_NUMBER );
+        patientAttributeService.savePatientAttribute( attribute );
+
+        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patient, attribute );
+        attributeValue.setValue( "123456789" );
+        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+        
+        patient.getAttributeValues().add( attributeValue );
+        patientService.updatePatient( patient );
+
         Set<String> phoneNumbers = patientReminderService.getPhonenumbers( patientReminderA, patient );
         assertEquals( 1, phoneNumbers.size() );
         assertTrue( phoneNumbers.contains( "123456789" ) );

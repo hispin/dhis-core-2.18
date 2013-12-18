@@ -267,35 +267,30 @@ public class DefaultPatientService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Integer min, Integer max )
     {
         return patientStore.getByOrgUnit( organisationUnit, min, max );
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatients( Program program )
     {
         return patientStore.getByProgram( program, 0, Integer.MAX_VALUE );
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program )
     {
         return patientStore.getByOrgUnitProgram( organisationUnit, program, 0, Integer.MAX_VALUE );
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min,
         Integer max )
     {
         return patientStore.getByOrgUnitAndNameLike( organisationUnit, name, min, max );
     }
 
-    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Patient> getPatient( Integer identifierTypeId, Integer attributeId, String value )
     {
@@ -325,7 +320,7 @@ public class DefaultPatientService
         }
 
         return patientStore.getByNames( value, null, null );
-        
+
     }
 
     @Override
@@ -364,7 +359,6 @@ public class DefaultPatientService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsByNames( String name, Integer min, Integer max )
     {
         return patientStore.getByNames( name.toLowerCase(), min, max );
@@ -447,7 +441,6 @@ public class DefaultPatientService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, Integer min, Integer max )
     {
         return patientStore.getByOrgUnitProgram( organisationUnit, program, min, max );
@@ -494,14 +487,12 @@ public class DefaultPatientService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getRepresentatives( Patient patient )
     {
         return patientStore.getRepresentatives( patient );
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> searchPatients( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Collection<PatientAttribute> patientAttributes,
         Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
@@ -518,20 +509,26 @@ public class DefaultPatientService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
         Collection<Patient> patients = patientStore.search( searchKeys, orgunits, followup, null, null,
             statusEnrollment, min, max );
-
         Set<String> phoneNumbers = new HashSet<String>();
-
+		
         for ( Patient patient : patients )
         {
-            if ( patient.getPhoneNumber() != null )
+            Collection<PatientAttributeValue> attributeValues = patient.getAttributeValues();
+            if ( attributeValues != null )
             {
-                phoneNumbers.add( patient.getPhoneNumber() );
+                for ( PatientAttributeValue attributeValue : attributeValues )
+                {
+                    if ( attributeValue.getPatientAttribute().getValueType()
+                        .equals( PatientAttribute.TYPE_PHONE_NUMBER ) )
+                    {
+                        phoneNumbers.add( attributeValue.getValue() );
+                    }
+                }
             }
         }
 
@@ -539,7 +536,6 @@ public class DefaultPatientService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
         Boolean followup, Integer statusEnrollment, Integer min, Integer max )
     {
@@ -548,7 +544,6 @@ public class DefaultPatientService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max )
     {
         return patientStore.getByPhoneNumber( phoneNumber, min, max );
@@ -644,7 +639,6 @@ public class DefaultPatientService
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getPatientByFullname( String fullName, OrganisationUnit organisationUnit )
     {
         return patientStore.getByFullName( fullName, organisationUnit );

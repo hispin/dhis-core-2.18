@@ -73,7 +73,7 @@ public interface PatientReminderService
      * @param patientReminder PatientReminder
      * @param patient Patient
      * 
-     * @return The list of the phone numbers ( patient phone numbers, orgunit
+     * @return The list of the phone numbers ( patient attribute phone numbers, orgunit
      *         phone numbers, phone numbers of DHIS users at the orgunit OR
      *         phone numbers of DHIS users in a user group.
      */

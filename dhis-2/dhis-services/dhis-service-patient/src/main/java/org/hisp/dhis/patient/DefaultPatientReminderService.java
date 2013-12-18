@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.util.DateUtils;
@@ -150,19 +151,15 @@ public class DefaultPatientReminderService
             }
             break;
         default:
-            if ( patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
+            if ( patient.getAttributeValues() != null )
             {
-                if ( patient.getPhoneNumber().contains( ";" ) )
+                for ( PatientAttributeValue attributeValue : patient.getAttributeValues() )
                 {
-                    String token[] = patient.getPhoneNumber().split( ";" );
-                    for ( String phoneNumber : token )
+                    if ( attributeValue.getPatientAttribute().getValueType()
+                        .equals( PatientAttribute.TYPE_PHONE_NUMBER ) )
                     {
-                        phoneNumbers.add( phoneNumber );
+                        phoneNumbers.add( attributeValue.getValue() );
                     }
-                }
-                else
-                {
-                    phoneNumbers.add( patient.getPhoneNumber() );
                 }
             }
             break;

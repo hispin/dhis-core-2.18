@@ -277,17 +277,7 @@ public class DefaultProgramInstanceService
         attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
         attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
         attrGrid.addHeader( new GridHeader( "", true, false ) );
-
-        // ---------------------------------------------------------------------
-        // Add fixed attribues
-        // ---------------------------------------------------------------------
-
-        attrGrid.addRow();
-        attrGrid.addValue( i18n.getString( "phoneNumber" ) );
-        attrGrid
-            .addValue( (patient.getPhoneNumber() == null || patient.getPhoneNumber().isEmpty()) ? PatientAttributeValue.UNKNOWN
-                : patient.getPhoneNumber() );
-
+      
         // ---------------------------------------------------------------------
         // Add dynamic attribues
         // ---------------------------------------------------------------------

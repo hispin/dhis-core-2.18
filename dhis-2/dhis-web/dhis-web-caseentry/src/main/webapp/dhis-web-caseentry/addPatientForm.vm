@@ -1,10 +1,7 @@
 <script>
-	
 	jQuery(document).ready(	function(){
-
 		currentDiv = 'patientForm';
 		checkedDuplicate = false;
-		
 		jQuery("#patientForm").validate({
 				 meta:"validate"
 				,errorElement:"span"
@@ -18,29 +15,8 @@
 							addPatient(programId, false, isContinue);
 						#end
 					}
-				,beforeValidateHandler: function(form)
-					{
-						var dobType = $('#patientForm [id=dobType]').val();
-						
-						if( dobType=='V' || dobType=='D' ) 
-						{
-							var birthDate = $('#patientForm [id=birthDate]').val();
-							if( birthDate != '' ){
-								$("#patientForm [id=memberValidator]").val(birthDate);
-							}
-						}else{
-							var age = $('#patientForm [id=age]').val();
-							$("#patientForm [id=memberValidator]").val(age);
-						}
-					}
 			});
 		
-		#if($!customRegistrationForm)
-		#else
-			datePickerValid( 'patientForm [id=registrationDate]', true );
-			datePickerValid( 'patientForm [id=birthDate]' );
-			datePickerValid( 'patientForm [id=deathDate]', false );
-		#end
 		addEventForPatientForm( 'patientForm' );
 	});	
 	

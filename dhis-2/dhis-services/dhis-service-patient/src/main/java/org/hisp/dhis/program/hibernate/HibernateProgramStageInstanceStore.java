@@ -569,7 +569,7 @@ public class HibernateProgramStageInstanceStore
 
     private String sendMessageToPatientSql()
     {
-        return "select psi.programstageinstanceid, p.phonenumber, prm.templatemessage, p.name, org.name as orgunitName "
+        return "select psi.programstageinstanceid, pav.value as phonenumber, prm.templatemessage, p.name, org.name as orgunitName "
             + ",pg.name as programName, ps.name as programStageName, psi.duedate,(DATE(now()) - DATE(psi.duedate) ) as days_since_due_date "
             + "from patient p INNER JOIN programinstance pi "
             + "     ON p.patientid=pi.patientid "
@@ -583,9 +583,12 @@ public class HibernateProgramStageInstanceStore
             + "     ON org.organisationunitid = p.organisationunitid "
             + " INNER JOIN patientreminder prm  "
             + "     ON prm.programstageid = ps.programstageid "
+            + " INNER JOIN patientattributevalue pav "
+            + "     ON pav.patientid=p.patientid "
+            + " INNER JOIN patientattribute pa "
+            + "     ON pa.patientattributeid=pav.patientattributeid "
             + "WHERE pi.status="
             + ProgramInstance.STATUS_ACTIVE
-            + "     and p.phonenumber is not NULL and p.phonenumber != '' "
             + "     and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "     and pg.type=1 and prm.daysallowedsendmessage is not null  "
             + "     and psi.executiondate is null "

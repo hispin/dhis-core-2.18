@@ -918,7 +918,7 @@ public class HibernateCaseAggregationConditionStore
         {
             if ( hasPatients || operator.equals( CaseAggregationCondition.AGGRERATION_COUNT ) )
             {
-                sql += "p.name, p.gender, p.birthDate, p.phoneNumber,";
+                sql += "p.name,";
             }
 
             if ( hasDataelement )

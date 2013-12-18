@@ -911,10 +911,6 @@ public class ActivityReportingServiceImpl
         {
             patientModel.setOrganisationUnitName( patient.getOrganisationUnit().getName() );
         }
-        if ( patient.getPhoneNumber() != null )
-        {
-            patientModel.setPhoneNumber( patient.getPhoneNumber() );
-        }
 
         this.setSetting( getSettings() );
 
@@ -1735,7 +1731,6 @@ public class ActivityReportingServiceImpl
         org.hisp.dhis.patient.Patient patientWeb = new org.hisp.dhis.patient.Patient();
 
         patientWeb.setName( patient.getName() );
-        patientWeb.setPhoneNumber( patient.getPhoneNumber() );
         patientWeb.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
         Set<org.hisp.dhis.patient.PatientIdentifier> patientIdentifierSet = new HashSet<org.hisp.dhis.patient.PatientIdentifier>();
@@ -2021,14 +2016,21 @@ public class ActivityReportingServiceImpl
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
             // send SMS
-            if ( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() != null
+            if ( programStageInstance.getProgramInstance().getPatient().getAttributeValues() != null
                 && lostEvent.getSMS() != null )
             {
-                User user = new User();
-                user.setPhoneNumber( programStageInstance.getProgramInstance().getPatient().getPhoneNumber() );
                 List<User> recipientsList = new ArrayList<User>();
-                recipientsList.add( user );
+                for ( PatientAttributeValue attrValue : programStageInstance.getProgramInstance().getPatient()
+                    .getAttributeValues() )
+                {
+                    if ( attrValue.getPatientAttribute().getValueType().equals( "phoneNumber" ) )
+                    {
+                        User user = new User();
+                        user.setPhoneNumber( attrValue.getValue() );
+                        recipientsList.add( user );
+                    }
 
+                }
                 smsSender.sendMessage( lostEvent.getName(), lostEvent.getSMS(), currentUserService.getCurrentUser(),
                     recipientsList, false );
             }

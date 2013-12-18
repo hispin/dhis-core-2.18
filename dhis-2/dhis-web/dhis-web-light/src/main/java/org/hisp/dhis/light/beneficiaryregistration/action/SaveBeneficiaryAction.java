@@ -354,15 +354,6 @@ public class SaveBeneficiaryAction
             patient.setName( patientFullName.trim() );
         }
 
-        if ( phoneNumber.matches( "^(\\+)?\\d+$" ) )
-        {
-            patient.setPhoneNumber( phoneNumber );
-        }
-        else
-        {
-            validationMap.put( "phoneNumber", "invalid_phone_number" );
-        }
-
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             StrutsStatics.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );

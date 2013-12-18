@@ -22,7 +22,6 @@
 		<tr>
 			<th>$i18n.getString('risk')</th>
 			<th>$i18n.getString('full_name')</th>
-			<th>$i18n.getString('phone_number')</th>
 			<th>$i18n.getString( "events" )</th>
 			<th>$i18n.getString( "operations" )</th>
 		</tr>
@@ -61,22 +60,6 @@
 				
 				$value
 			</a></td>
-			
-			<td name='infor_$patient.id' class='$class'>$!patient.phoneNumber</td>
-				#set($rowspan=1)
-				#if($class=='listRow')
-					#set($class='listAlternateRow')
-					#set($alterclass='listRow')
-				#else
-					#set($class='listRow')
-					#set($alterclass='listAlternateRow')
-				#end
-			#else
-				#set($rowspan=$rowspan+1)
-				<script>
-					jQuery("[name=infor_" + "$patient.id]").attr('rowspan',$rowspan)
-				</script>
-			#end
 			
 			<td class='$alterclass'>
 				<a href="javascript:programTrackingList( $programStageInstance.id, false );">

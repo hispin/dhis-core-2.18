@@ -1005,7 +1005,6 @@ public abstract class DhisConvenienceTest
         patient.setAutoFields();
 
         patient.setName( "Name" + uniqueChar );
-        patient.setPhoneNumber( "123456789" );
         patient.setOrganisationUnit( organisationUnit );
 
         return patient;

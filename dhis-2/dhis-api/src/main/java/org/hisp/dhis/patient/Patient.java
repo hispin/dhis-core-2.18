@@ -80,8 +80,6 @@ public class Patient
 
     private OrganisationUnit organisationUnit;
 
-    private String phoneNumber;
-
     private Patient representative;
 
     private User associate;
@@ -196,20 +194,6 @@ public class Patient
     {
         attributeValues.remove( attributeValue );
         attributeValue.setPatient( null );
-    }
-
-    // -------------------------------------------------------------------------
-    // Getter && Setter
-    // -------------------------------------------------------------------------
-
-    public String getPhoneNumber()
-    {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber( String phoneNumber )
-    {
-        this.phoneNumber = phoneNumber;
     }
 
 }

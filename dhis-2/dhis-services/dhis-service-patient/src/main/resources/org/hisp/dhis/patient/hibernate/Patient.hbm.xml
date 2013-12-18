@@ -13,8 +13,6 @@
     &identifiableProperties;
 
     <property name="name" column="name" length="230" />
-   
-    <property name="phoneNumber" length="25" />
     
     <set name="identifiers" inverse="true">
       <key column="patientid" />

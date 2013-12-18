@@ -13,7 +13,6 @@
 	   <col style="width: 10%;">
        <col style="width: 10%;">
        <col style="width: 10%;">
-	   <col style="width: 10%;">
        <col style="width: 10%;">
    </colgroup>
    
@@ -182,18 +181,6 @@
 			<td>
 				<input type='button' class='normal-button' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')" value="$i18n.getString('save')" >
 			</td>
-			<td>
-				#if(($auth.hasAccess( "dhis-web-caseentry", "sendSMS" ) ) 
-					&& ($!programInstance.patient.phoneNumber 
-					|| $!programInstance.patient.associate.phoneNumber 
-					|| $!programInstance.patient.associate.organisationUnit.phoneNumber 
-					|| $hasUsers ))
-				<img src="images/send_sms.png" class='img-button' title="$i18n.getString( 'send_message' )" onclick="setFieldValue('sendFromEvent','true');setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatientForm();"/>
-				#end
-				#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
-					<a href="javascript:removeEvent($programStageInstance.id, false)" link="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" id='del_$programStageInstance.id' name='del_$programStageInstance.id' alt='$i18n.getString( "remove" )' #if( $status==1 ) class='hidden' #end></a>
-				#end
-			</td>
 		</tr>
 		#set( $mark = !$mark  )
 	#end
@@ -207,8 +194,14 @@
 				<td>$i18n.getString("send_to")</td>
 				<td>
 					<select id='sendTo' name='sendTo' style='width:260px;'>
-						#if($!programInstance.patient.phoneNumber)
-						<option value='1'>$i18n.getString('patient')</option>
+						#set($valueType='')
+						#foreach($attrValue in $!programInstance.patient.attributeValues)
+							#if($attrValue.patientAttribute.valueType=='phoneNumber')
+								#set($valueType = $attrValue.patientAttribute.valueType )
+							#end
+						#end
+						#if($valueType!='')
+							<option value='1'>$i18n.getString('patient')</option>
 						#end
 						
 						#if($!programInstance.patient.associate.phoneNumber)

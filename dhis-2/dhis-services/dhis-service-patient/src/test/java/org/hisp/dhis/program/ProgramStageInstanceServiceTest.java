@@ -49,8 +49,12 @@ import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
@@ -93,6 +97,12 @@ public class ProgramStageInstanceServiceTest
 
     @Autowired
     private SmsConfigurationManager smsConfigurationManager;
+
+    @Autowired
+    private PatientAttributeService patientAttributeService;
+
+    @Autowired
+    private PatientAttributeValueService patientAttributeValueService;
 
     private OrganisationUnit organisationUnitA;
 
@@ -164,6 +174,17 @@ public class ProgramStageInstanceServiceTest
 
         patientB = createPatient( 'B', organisationUnitB );
         patientService.savePatient( patientB );
+
+        PatientAttribute attribute = createPatientAttribute( 'A' );
+        attribute.setValueType( PatientAttribute.TYPE_PHONE_NUMBER );
+        patientAttributeService.savePatientAttribute( attribute );
+
+        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA, attribute );
+        attributeValue.setValue( "123456789" );
+        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+
+        patientA.getAttributeValues().add( attributeValue );
+        patientService.updatePatient( patientA );
 
         /**
          * Program A

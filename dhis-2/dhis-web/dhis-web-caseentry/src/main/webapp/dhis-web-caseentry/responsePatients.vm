@@ -4,10 +4,6 @@
 <patient>
   <id>$patient.id</id>  
   <fullName>$!encoder.xmlEncode( $patient.name )</fullName>
-  <gender>$!encoder.xmlEncode( $i18n.getString( $patient.gender ))</gender>
-  <dateOfBirth>$format.formatDate( $patient.birthDate )</dateOfBirth>
-  <age>$!encoder.xmlEncode( $patient.getAge() )</age>
-  <phoneNumber>#if( $patient.phoneNumber ) $!encoder.xmlEncode( $patient.phoneNumber ) #else N/A #end</phoneNumber>
   #foreach( $identifier in $patient.identifiers )
   	#if( $identifier.identifierType )
 	    <identifier>

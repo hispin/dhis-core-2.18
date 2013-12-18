@@ -2,24 +2,7 @@
 	<tr>
 	    <td class="bold">$i18n.getString( "full_name" ):</td>
 	    <td>$encoder.htmlEncode( $patient.name )</td>
-	</tr>
-	<tr>
-	    <td class="bold">$i18n.getString( "gender" ):</td>
-	    <td>#if($patient.gender=='F')
-				<img src='images/female_small.png'>
-			#else
-				<img src='images/male_small.png'>
-			#end
-		</td>
-	</tr>    
-	<tr>
-	    <td class="bold">$i18n.getString( "date_of_birth" ):</td>
-	    <td>$format.formatDate( $patient.birthDate )</td>
-	</tr>
-	<tr>
-	    <td class="bold">$i18n.getString( "age" ):</td>
-	    <td>$encoder.htmlEncode( $patient.getAge() )</td>
-	</tr>    
+	</tr>   
 </table>
 
 <h4>$i18n.getString( "records_for" ) $encoder.htmlEncode( $programStageInstance.programStage.displayName ) </h4>
