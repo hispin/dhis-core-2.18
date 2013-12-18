@@ -53,6 +53,7 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hisp.dhis.dataelement.DataElement.*;
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
 /**
  * @author Bharath Kumar
@@ -195,14 +196,14 @@ public class DefaultDataEntryFormService
 
                 String optionComboId = identifierMatcher.group( 2 );
                 DataElementCategoryOptionCombo categegoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-                String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
+                String optionComboName = categegoryOptionCombo != null ? escapeHtml( categegoryOptionCombo.getName() ) : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
 
                 StringBuilder title = dataElement != null ?
                     new StringBuilder( "title=\"" ).append( dataElementId ).append( " - " ).
-                        append( dataElement.getDisplayName() ).append( " - " ).append( optionComboId ).append( " - " ).
+                        append( escapeHtml( dataElement.getDisplayName() ) ).append( " - " ).append( optionComboId ).append( " - " ).
                         append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" ) : new StringBuilder();
 
-                displayValue = dataElement != null ? "value=\"[ " + dataElement.getDisplayName() + " " + optionComboName + " ]\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
+                displayValue = dataElement != null ? "value=\"[ " + escapeHtml( dataElement.getDisplayName() ) + " " + optionComboName + " ]\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
                 displayTitle = dataElement != null ? title.toString() : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
             }
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
@@ -210,16 +211,16 @@ public class DefaultDataEntryFormService
                 String dataElementId = dataElementTotalMatcher.group( 1 );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                displayValue = dataElement != null ? "value=\"[ " + dataElement.getDisplayName() + " ]\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
-                displayTitle = dataElement != null ? "title=\"" + dataElement.getDisplayName() + "\"" : "[ " + i18n.getString( "dat_aelement_not_exist" ) + " ]";
+                displayValue = dataElement != null ? "value=\"[ " + escapeHtml( dataElement.getDisplayName() ) + " ]\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
+                displayTitle = dataElement != null ? "title=\"" + escapeHtml( dataElement.getDisplayName() ) + "\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
             }
             else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
             {
                 String indicatorId = indicatorMatcher.group( 1 );
                 Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-                displayValue = indicator != null ? "value=\"[ " + indicator.getDisplayName() + " ]\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
-                displayTitle = indicator != null ? "title=\"" + indicator.getDisplayName() + "\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
+                displayValue = indicator != null ? "value=\"[ " + escapeHtml( indicator.getDisplayName() ) + " ]\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
+                displayTitle = indicator != null ? "title=\"" + escapeHtml( indicator.getDisplayName() ) + "\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
             }
 
             // -----------------------------------------------------------------
@@ -292,7 +293,7 @@ public class DefaultDataEntryFormService
                 
                 if ( dataSet.isDataElementDecoration() && dataElement.hasDescription() ) 
                 {
-                    String titleTag = " title=\"" +  StringEscapeUtils.escapeHtml( dataElement.getDisplayDescription() ) + "\" ";
+                    String titleTag = " title=\"" +  escapeHtml( dataElement.getDisplayDescription() ) + "\" ";
                     inputHtml = inputHtml.replaceAll( "title=\".*?\"", "" ).replace( TAG_CLOSE, titleTag + TAG_CLOSE );
                 }                
                 
