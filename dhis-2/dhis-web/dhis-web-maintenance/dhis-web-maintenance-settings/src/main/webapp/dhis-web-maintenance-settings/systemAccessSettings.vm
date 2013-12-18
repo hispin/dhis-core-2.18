@@ -4,7 +4,8 @@ jQuery( document ).ready( function() {
         jQuery.postUTF8( "setSystemAccessSettings.action", {
             selfRegistrationRole: jQuery( "#selfRegistrationRole" ).val(),
             selfRegistrationOrgUnit: jQuery( "#selfRegistrationOrgUnit" ).val(),
-            accountRecovery: jQuery( '#accountRecovery' ).is( ':checked' )
+            accountRecovery: jQuery( '#accountRecovery' ).is( ':checked' ),
+            credentialsExpires: jQuery( '#credentialsExpires' ).val()
         }, function( json ) {
             if ( json.response == "success" ) {
                 setHeaderDelayMessage( json.message );
@@ -45,6 +46,17 @@ jQuery( document ).ready( function() {
 <div class="setting">
 	<input type="checkbox" id="accountRecovery" name="accountRecovery"#if( $keyAccountRecovery ) checked="checked"#end>
 	<label for="accountRecovery">$i18n.getString( "enable_user_account_recovery" )</label>
+</div>
+
+<div class="settingLabel">$i18n.getString( "user_credentials_expires" )</div>
+
+<div class="setting">
+<select id="credentialsExpires" name="credentialsExpires">
+	<option value="0">[ $i18n.getString( "never" ) ]</option>
+	<option value="3" #if( $credentialsExpires == 3 )selected="selected"#end>3 $i18n.getString( "months" )</option>
+	<option value="6" #if( $credentialsExpires == 6 )selected="selected"#end>6 $i18n.getString( "months" )</option>
+	<option value="12" #if( $credentialsExpires == 12 )selected="selected"#end>12 $i18n.getString( "months" )</option>
+</select>
 </div>
 
 <div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>

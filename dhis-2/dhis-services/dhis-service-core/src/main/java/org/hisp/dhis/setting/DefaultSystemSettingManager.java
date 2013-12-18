@@ -172,4 +172,10 @@ public class DefaultSystemSettingManager
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_GOOGLE_ANALYTICS_UA ) );
     }
+
+    @Override
+    public Integer credentialsExpires()
+    {
+        return (Integer) (getSystemSetting( KEY_CREDENTIALS_EXPIRES ) == null ? 0 : getSystemSetting( KEY_CREDENTIALS_EXPIRES ));
+    }
 }

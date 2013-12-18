@@ -28,6 +28,7 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.i18n.I18n;
@@ -38,9 +39,8 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
-
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCOUNT_RECOVERY;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CREDENTIALS_EXPIRES;
 
 /**
  * @author Lars Helge Overland
@@ -50,13 +50,13 @@ public class SetAccessSettingsAction
 {
     @Autowired
     private ConfigurationService configurationService;
-    
+
     @Autowired
     private SystemSettingManager systemSettingManager;
-    
+
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
@@ -84,7 +84,14 @@ public class SetAccessSettingsAction
     {
         this.accountRecovery = accountRecovery;
     }
-    
+
+    private Integer credentialsExpires;
+
+    public void setCredentialsExpires( Integer credentialsExpires )
+    {
+        this.credentialsExpires = credentialsExpires;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -111,24 +118,29 @@ public class SetAccessSettingsAction
     {
         UserAuthorityGroup group = null;
         OrganisationUnit unit = null;
-        
+
         if ( selfRegistrationRole != null )
         {
             group = userService.getUserAuthorityGroup( selfRegistrationRole );
         }
-        
+
         if ( selfRegistrationOrgUnit != null )
         {
             unit = organisationUnitService.getOrganisationUnit( selfRegistrationOrgUnit );
         }
-        
+
         Configuration config = configurationService.getConfiguration();
         config.setSelfRegistrationRole( group );
         config.setSelfRegistrationOrgUnit( unit );
         configurationService.setConfiguration( config );
 
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_RECOVERY, accountRecovery );
-        
+
+        if ( credentialsExpires != null )
+        {
+            systemSettingManager.saveSystemSetting( KEY_CREDENTIALS_EXPIRES, credentialsExpires );
+        }
+
         message = i18n.getString( "settings_updated" );
 
         return SUCCESS;

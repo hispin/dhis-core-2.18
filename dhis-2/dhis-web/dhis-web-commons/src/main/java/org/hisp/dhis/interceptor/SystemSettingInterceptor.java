@@ -97,6 +97,7 @@ public class SystemSettingInterceptor
         map.put( KEY_CONFIGURATION, configurationService.getConfiguration() );
         map.put( KEY_APP_BASE_URL, systemSettingManager.getSystemSetting( KEY_APP_BASE_URL ) );
         map.put( KEY_GOOGLE_ANALYTICS_UA, systemSettingManager.getSystemSetting( KEY_GOOGLE_ANALYTICS_UA, "" ) );
+        map.put( KEY_CREDENTIALS_EXPIRES, systemSettingManager.credentialsExpires() );
 
         map.put( SYSPROP_PORTAL, defaultIfEmpty( System.getProperty( SYSPROP_PORTAL ), String.valueOf( false ) ) );
 
