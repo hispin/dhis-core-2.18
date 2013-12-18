@@ -48,7 +48,8 @@
     class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
     <property name="exceptionMappings">
       <props>
-        <prop key="org.springframework.security.authentication.AccountExpiredException">/dhis-web-commons/security/login.action?expired=true</prop>
+        <prop key="org.springframework.security.authentication.CredentialsExpiredException">/dhis-web-commons/security/login.action?expired1=true</prop>
+        <prop key="org.springframework.security.authentication.AccountExpiredException">/dhis-web-commons/security/login.action?expired2=true</prop>
       </props>
     </property>
     <property name="defaultFailureUrl" value="/dhis-web-commons/security/login.action?failed=true" />

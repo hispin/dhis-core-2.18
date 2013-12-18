@@ -33,7 +33,7 @@ import org.hisp.dhis.useraudit.UserAuditService;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
-import org.springframework.security.authentication.event.AuthenticationFailureExpiredEvent;
+import org.springframework.security.authentication.event.AuthenticationFailureCredentialsExpiredEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -85,9 +85,9 @@ public class AuthenticationListener
 
             userService.setLastLogin( username );
         }
-        else if ( applicationEvent instanceof AuthenticationFailureExpiredEvent )
+        else if ( applicationEvent instanceof AuthenticationFailureCredentialsExpiredEvent )
         {
-            AuthenticationFailureExpiredEvent event = (AuthenticationFailureExpiredEvent) applicationEvent;
+            AuthenticationFailureCredentialsExpiredEvent event = (AuthenticationFailureCredentialsExpiredEvent) applicationEvent;
 
             WebAuthenticationDetails details = (WebAuthenticationDetails) event.getAuthentication().getDetails();
 
