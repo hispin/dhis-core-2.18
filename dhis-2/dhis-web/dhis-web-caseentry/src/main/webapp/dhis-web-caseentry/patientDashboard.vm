@@ -30,33 +30,6 @@
 					<td>$i18n.getString("location")</td>
 					<td>$encoder.htmlEncode($!patient.organisationUnit.name)</td>
 				</tr>
-				#if( $!patient.gender )
-				<tr>
-					<td>$i18n.getString("gender")</td>
-					<td>#if($patient.gender=='F')
-							<img src='images/female_small.png'>
-						#else
-							<img src='images/male_small.png'>
-						#end
-					</td>
-				</tr>
-				#end
-				#if( $!patient.birthDate )
-				<tr>
-					<td>$i18n.getString("date_of_birth")</td>
-					<td>$format.formatDate( $!patient.birthDate) ($!patient.getAge())</td>
-				</tr>
-				#end
-				<tr>
-					<td>$i18n.getString("phone_number")</td>
-					<td>
-						#if($!patient.phoneNumber && $!patient.phoneNumber!='')
-							$!patient.phoneNumber
-						#else
-							[$i18n.getString('none')]
-						#end
-					</td>
-				</tr>
 				
 				<tr>
 					<td>$i18n.getString("health_worker")</td>

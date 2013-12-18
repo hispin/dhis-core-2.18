@@ -82,6 +82,9 @@ public class PatientStoreTest
 
     @Autowired
     private ValidationCriteriaService validationCriteriaService;
+    
+    @Autowired
+    private PatientService patientService;
 
     private Patient patientA1;
 
@@ -300,6 +303,24 @@ public class PatientStoreTest
     {
         patientStore.save( patientA1 );
         patientStore.save( patientB1 );
+
+        PatientAttribute attribute = createPatientAttribute( 'B' );
+        attribute.setValueType( PatientAttribute.TYPE_PHONE_NUMBER );
+        patientAttributeService.savePatientAttribute( attribute );
+
+        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA1, attribute );
+        attributeValue.setValue( "123456789" );
+        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+
+        patientA1.addAttributeValue( attributeValue );
+        patientService.updatePatient( patientA1 );
+
+        attributeValue = createPatientAttributeValue( 'A', patientB1, attribute );
+        attributeValue.setValue( "123456789" );
+        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+
+        patientB1.addAttributeValue( attributeValue );
+        patientService.updatePatient( patientB1 );
 
         assertEquals( 2, patientStore.getByPhoneNumber( "123456789", null, null ).size() );
     }

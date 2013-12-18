@@ -29,7 +29,6 @@ package org.hisp.dhis.patient;
  */
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;

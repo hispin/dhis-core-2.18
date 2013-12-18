@@ -10,30 +10,6 @@
 	</tr>
 	#end
 	
-	#if($partner.gender)
-	<tr>
-		<td>$i18n.getString( "gender" )</td>
-		<td>: $i18n.getString($partner.gender)</td>
-	</tr>
-	#end
-	
-	#if($partner.birthDate)
-	<tr>
-		<td>$i18n.getString( "date_of_birth" )</td>
-		<td>: $format.formatDate( $partner.birthDate )</td>
-	</tr>
-	
-	<tr>
-		<td>$i18n.getString( "age" )</td>
-		<td>: $partner.getAge()</td>
-	</tr>
-	#end
-	
-	<tr>
-		<td>$i18n.getString( "phone_number" )</td>
-		<td>: $!patient.phoneNumber</td>
-	</tr>
-	
 	<tr><td>&nbsp;</td></tr>
 	<tr>
 		<td><label class="bold">$i18n.getString( "identifiers" )</td>

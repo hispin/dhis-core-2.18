@@ -1,9 +1,6 @@
 <script type="text/javascript">
 	jQuery("#representativeDiv").ready(function() {
-		hideById('addRepresentativeForm [id=age]');
 		addEventForPatientForm('addRepresentativeForm');
-		$('#addRepresentativeForm [id=dobType]').removeAttr('onchange');
-		$('#addRepresentativeForm [id=dobType]').attr('onchange', 'dobTypeOnChange( "addRepresentativeForm" );');
 				
 		jQuery("#searchForm").validate({
 			meta:"validate"
@@ -23,26 +20,7 @@
 				{
 					validateAddRepresentative('addRepresentativeForm');
 				}
-			,beforeValidateHandler: function(form)
-				{
-					var dobType = $('#addRepresentativeForm [id=dobType]').val();
-					
-					if( dobType=='V' || dobType=='D' ) 
-					{
-						var birthDate = $('#addRepresentativeForm [id=birthDate]').val();
-						if( birthDate != '' ){
-							$("#addRepresentativeForm [id=memberValidator]").val(birthDate);
-						}
-					}else{
-						var age = $('#addRepresentativeForm [id=age]').val();
-						$("#addRepresentativeForm [id=memberValidator]").val(age);
-					}
-				}
 		});
-		datePickerValid( 'addRepresentativeForm [id=birthDate]' );
-		hideById('addRepresentativeForm [id=deathCheckboxTR]');
-		hideById('addRepresentativeForm [id=representativeFormDiv]');
-		hideById('addRepresentativeForm [id=underAgeDiv]');
 	}); 
 	
 	jQuery("#addRepresentativeTabs").tabs();

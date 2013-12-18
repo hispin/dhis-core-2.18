@@ -44,8 +44,12 @@ import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
@@ -80,6 +84,12 @@ public class ProgramInstanceServiceTest
 
     @Autowired
     private SmsConfigurationManager smsConfigurationManager;
+
+    @Autowired
+    private PatientAttributeService patientAttributeService;
+
+    @Autowired
+    private PatientAttributeValueService patientAttributeValueService;
 
     private Date incidenDate;
 
@@ -553,6 +563,18 @@ public class ProgramInstanceServiceTest
     @Test
     public void testSendMessages()
     {
+        PatientAttribute attribute = createPatientAttribute( 'A' );
+        attribute.setValueType( PatientAttribute.TYPE_PHONE_NUMBER );
+        patientAttributeService.savePatientAttribute( attribute );
+
+        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA,
+            attribute );
+        attributeValue.setValue( "123456789" );
+        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+
+        patientA.getAttributeValues().add( attributeValue );
+        patientService.updatePatient( patientA );
+
         programInstanceService.addProgramInstance( programInstanceA );
         Collection<OutboundSms> outboundSmsList = programInstanceService.sendMessages( programInstanceA,
             PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
@@ -572,7 +594,8 @@ public class ProgramInstanceServiceTest
         Collection<MessageConversation> messages = programInstanceService.sendMessageConversations( programInstanceA,
             PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
         assertEquals( 1, messages.size() );
-        assertEquals( "Test program message template NameA", messages.iterator().next().getMessages().get( 0 ).getText() );
+        assertEquals( "Test program message template NameA", messages.iterator().next().getMessages().get( 0 )
+            .getText() );
     }
 
     @Test

@@ -37,29 +37,6 @@
 				<td>$value</td>
 			</tr>
 			<tr>
-				<td>$i18n.getString("gender"):</td>
-				<td>#if($patient.gender=='F')
-						<img src='images/female_small.png'>
-					#else
-						<img src='images/male_small.png'>
-					#end
-				</td>
-			</tr>
-			<tr>
-				<td>$i18n.getString( "date_of_birth" ):</td>
-				<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate ) ( $programStageInstance.programInstance.patient.getAge() )</td>
-			</tr>
-			<tr>
-				<td>$i18n.getString("phone_number"):</td>
-				<td>
-					#if($!programStageInstance.programInstance.patient.phoneNumber && $!programStageInstance.programInstance.patient.phoneNumber!='')
-						$!programStageInstance.programInstance.patient.phoneNumber
-					#else
-						[$i18n.getString('none')]
-					#end
-				</td>
-			</tr>
-			<tr>
 				<td>$i18n.getString("health_worker"):</td>
 				<td>
 					#if($!programStageInstance.programInstance.patient.associate )
@@ -143,8 +120,14 @@
 					#set($patient=$!programInstance.patient)
 					
 					<select id='sendTo' name='sendTo' style='width:260px;'>
-					#if($!patient.phoneNumber)
-					<option value='1'>$i18n.getString('patient')</option>
+					#set($valueType='')
+					#foreach($attrValue in $!patient.attributeValues)
+						#if($attrValue.patientAttribute.valueType=='phoneNumber')
+							#set($valueType = $attrValue.patientAttribute.valueType )
+						#end
+					#end
+					#if($valueType!='')
+						<option value='1'>$i18n.getString('patient')</option>
 					#end
 					
 					#if($!patient.associate.phoneNumber)

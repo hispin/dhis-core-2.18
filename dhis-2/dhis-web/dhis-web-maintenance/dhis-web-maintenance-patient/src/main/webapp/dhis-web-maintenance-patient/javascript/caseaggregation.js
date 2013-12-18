@@ -144,13 +144,6 @@ function getParams() {
       var type = jQuery('#programId option:selected').attr('programType');
       if( type != '3' ) {
         var caseProperty = jQuery('#caseProperty');
-        for( i in json.fixedAttributes ) {
-          var id = json.fixedAttributes[i].id;
-          var name = json.fixedAttributes[i].name;
-
-          caseProperty.append("<option value='" + id + "' title='" + name + "' suggested='" + json.fixedAttributes[i].suggested + "'>" + name + "</option>");
-        }
-
         for( i in json.patientAttributes ) {
           var id = json.patientAttributes[i].id;
           var name = json.patientAttributes[i].name;

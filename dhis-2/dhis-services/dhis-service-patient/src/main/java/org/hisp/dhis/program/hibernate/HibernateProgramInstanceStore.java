@@ -292,7 +292,7 @@ public class HibernateProgramInstanceStore
 
     private String sendToPatientSql( String dateToCompare )
     {
-        return "SELECT pi.programinstanceid, p.phonenumber, prm.templatemessage, "
+        return "SELECT pi.programinstanceid, pav.value as phonenumber, prm.templatemessage, "
             + "         p.name, org.name as orgunitName, " + "         pg.name as programName, pi.dateofincident , "
             + "         pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
             + "         (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
@@ -300,8 +300,10 @@ public class HibernateProgramInstanceStore
             + "              ON p.patientid=pi.patientid INNER JOIN program pg "
             + "              ON pg.programid=pi.programid INNER JOIN organisationunit org "
             + "              ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
-            + "              ON prm.programid = pi.programid " + "       WHERE pi.status= "
-            + ProgramInstance.STATUS_ACTIVE + "         and p.phonenumber is not NULL and p.phonenumber != ''   "
+            + "              ON prm.programid = pi.programid INNER JOIN patientattributevalue pav "
+            + "              ON pav.patientid=p.patientid INNER JOIN patientattribute pa "
+            + "              ON pa.patientattributeid=pav.patientattributeid " + "       WHERE pi.status= "
+            + ProgramInstance.STATUS_ACTIVE
             + "         and prm.templatemessage is not NULL and prm.templatemessage != ''   "
             + "         and pg.type=1 and prm.daysallowedsendmessage is not null    "
             + "         and ( DATE(now()) - DATE(pi." + dateToCompare + ") ) = prm.daysallowedsendmessage "

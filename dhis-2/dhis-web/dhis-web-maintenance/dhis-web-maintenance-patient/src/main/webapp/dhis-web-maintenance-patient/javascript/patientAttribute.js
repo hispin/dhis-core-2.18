@@ -40,6 +40,7 @@ function patientAttributeTypeMap()
 	typeMap['bool'] = i18n_yes_no;
 	typeMap['trueOnly'] = i18n_yes_only;
 	typeMap['date'] = i18n_date;
+	typeMap['phoneNumber'] = i18n_phone_number;
 	typeMap['combo'] = i18n_attribute_combo_type;
 	return typeMap;
 }

@@ -111,18 +111,6 @@
 			<td class="bold text-column">$i18n.getString("relationship"): </td>
 			<td>$encoder.htmlEncode($!relationship.relationshipType.aIsToB)</td>
 		</tr>
-		<tr>
-			<td class="bold text-column">$i18n.getString("gender"): </td>
-			<td>$!representative.gender</td>
-		</tr>
-		<tr>
-			<td class="bold text-column">$i18n.getString("date_of_birth"): </td>
-			<td>$!format.formatDate( $!representative.birthDate )</td>
-		</tr>
-		<tr>
-			<td class="bold text-column">$i18n.getString("age"): </td>
-			<td> $!representative.getAge() </td>
-		</tr>
 		#foreach( $patientIdentifier in $representative.identifiers )
 		  <tr>  
 			<td class="bold text-column">#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.displayName: #else $i18n.getString("system_identifier"): #end</td>      

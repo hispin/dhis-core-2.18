@@ -79,13 +79,6 @@ public class UpdatePatientAction
 
     private UserService userService;
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -93,8 +86,6 @@ public class UpdatePatientAction
     private Integer id;
 
     private String fullName;
-
-    private String[] phoneNumber;
 
     private Integer representativeId;
 
@@ -127,24 +118,6 @@ public class UpdatePatientAction
         // ---------------------------------------------------------------------
         // Set Other information for patient
         // ---------------------------------------------------------------------
-
-        String phone = "";
-        if ( phoneNumber != null )
-        {
-            for ( String _phoneNumber : phoneNumber )
-            {
-                _phoneNumber = (_phoneNumber != null && _phoneNumber.isEmpty() && _phoneNumber.trim().equals(
-                    systemSettingManager.getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE ) )) ? null
-                    : _phoneNumber;
-                if ( _phoneNumber != null )
-                {
-                    phone += _phoneNumber + ";";
-                }
-            }
-
-            phone = (phone.isEmpty()) ? null : phone.substring( 0, phone.length() - 1 );
-            patient.setPhoneNumber( phone );
-        }
 
         if ( healthWorker != null )
         {
@@ -321,11 +294,6 @@ public class UpdatePatientAction
     public void setFullName( String fullName )
     {
         this.fullName = fullName;
-    }
-
-    public void setPhoneNumber( String[] phoneNumber )
-    {
-        this.phoneNumber = phoneNumber;
     }
 
     public Patient getPatient()

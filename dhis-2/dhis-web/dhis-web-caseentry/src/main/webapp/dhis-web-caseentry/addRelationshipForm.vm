@@ -27,27 +27,6 @@
 
 <table>
 	<tr>
-		<td class='information'>
-			<table>
-				<tr align='justify'>
-					<td colspan='2'>$!patient.name
-						#if($patient.gender=='F')
-							<img src='images/female_small.png'>
-						#else
-							<img src='images/male_small.png'>
-						#end
-					</td>
-				</tr>
-				<tr>
-					<td>$i18n.getString('date_of_birth'):</td>
-					<td>$!format.formatDate($!patient.birthDate)</td>
-				</tr>
-				<tr>
-					<td>$i18n.getString('age'):</td>
-					<td>$!patient.getAge()</td>
-				</tr>
-			</table>
-		</td>
 		
     <td class='information'>
         <table>  

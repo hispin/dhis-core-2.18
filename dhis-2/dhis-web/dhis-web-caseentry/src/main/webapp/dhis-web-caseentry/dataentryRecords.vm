@@ -31,7 +31,6 @@
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 			<th>$i18n.getString('full_name')</th>
-			<th>$i18n.getString('phone_number')</th>
 			#else
 			<th>$i18n.getString('system_identifier')</th>
 			#end
@@ -74,8 +73,6 @@
 				
 				$value
 			</a></td>
-			
-			<td>$!patient.phoneNumber</td>
 			
 			#else
 				#set($value="")

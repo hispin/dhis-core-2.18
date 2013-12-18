@@ -19,7 +19,6 @@
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 				<th>$i18n.getString('full_name')</th>
-				<th>$i18n.getString('phone_number')</th>
 				#foreach( $patientAttribute in $patientAttributes)
 				<th>$patientAttribute.displayName</th>
 				#end
@@ -73,8 +72,6 @@
 				
 				$value
 			</a></td>
-			
-			<td>$!patient.phoneNumber</td>
 			
 			#set( $attributeValues = $patientAttributeValueMap.get($programStageInstance.programInstance.patient.id))
 			#foreach( $attributeValue in $attributeValues)

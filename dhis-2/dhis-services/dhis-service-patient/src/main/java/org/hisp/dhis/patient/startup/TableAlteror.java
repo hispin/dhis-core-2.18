@@ -463,8 +463,7 @@ public class TableAlteror
             ResultSet resultSet = statement.executeQuery( "SELECT gender1 FROM patient" );
 
             if ( resultSet.next() )
-            {System.out.println("\n\n 1");
-
+            {
                 int max = jdbcTemplate.queryForInt( "select max(patientattributeid) from patientattribute" );
 
                 // ---------------------------------------------------------------------
@@ -606,9 +605,9 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + "]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
-                // ---------------------------------------------------------------------
+                // -------------------------------------------------------------
                 // Birthdate
-                // ---------------------------------------------------------------------
+                // -------------------------------------------------------------
 
                 max++;
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
@@ -621,18 +620,40 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",birthdate from patient where birthdate is not null" );
 
+                // -------------------------------------------------------------
+                // Phone number
+                // -------------------------------------------------------------
+
+                max++;
+                executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+                    + max
+                    + ",'"
+                    + CodeGenerator.generateCode()
+                    + "','"
+                    + DateUtils.getMediumDateString()
+                    + "','Phone number', 'Phone number','"
+                    + PatientAttribute.TYPE_PHONE_NUMBER
+                    + "', false, false, false)" );
+                executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
+                    + max + ",phoneNumber from patient where phoneNumber is not null" );
+
+                // -------------------------------------------------------------
                 // Update Case Aggregate Query Builder
+                // -------------------------------------------------------------
+
                 source = "[CP" + CaseAggregationCondition.SEPARATOR_OBJECT + "age]";
                 target = "[" + CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + ".age]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
-                executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
-                executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
-                executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
-                executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
-                executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
-                executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
+                // executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
+                // executeSql(
+                // "ALTER TABLE patient DROP COLUMN registrationDate" );
+                // executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
+                // executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
+                // executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
+                // executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
+                // executeSql( "ALTER TABLE patient DROP COLUMN phoneNumber" );
             }
         }
         catch ( Exception ex )

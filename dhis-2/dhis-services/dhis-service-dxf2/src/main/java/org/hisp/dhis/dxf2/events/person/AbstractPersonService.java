@@ -205,7 +205,6 @@ public abstract class AbstractPersonService
         person.setName( patient.getName() );
 
         Contact contact = new Contact();
-        contact.setPhoneNumber( nullIfEmpty( patient.getPhoneNumber() ) );
 
         if ( contact.getPhoneNumber() != null )
         {
@@ -263,11 +262,6 @@ public abstract class AbstractPersonService
         Assert.notNull( organisationUnit );
 
         patient.setOrganisationUnit( organisationUnit );
-
-        if ( person.getContact() != null && person.getContact().getPhoneNumber() != null )
-        {
-            patient.setPhoneNumber( person.getContact().getPhoneNumber() );
-        }
 
         updateIdentifiers( person, patient );
 
@@ -354,7 +348,6 @@ public abstract class AbstractPersonService
 
         patient.setName( person.getName() );
         String phoneNumber = person.getContact() != null ? person.getContact().getPhoneNumber() : null;
-        patient.setPhoneNumber( phoneNumber );
 
         updateSystemIdentifier( person );
         removeRelationships( patient );
