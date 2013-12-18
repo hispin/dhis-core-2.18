@@ -29,17 +29,73 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = ProgramStageController.RESOURCE_PATH )
+@RequestMapping(value = ProgramStageController.RESOURCE_PATH)
 public class ProgramStageController
     extends AbstractCrudController<ProgramStage>
 {
     public static final String RESOURCE_PATH = "/programStages";
+
+    private ProgramService programService;
+
+    @Autowired
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    @Override
+    protected List<ProgramStage> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<ProgramStage> entityList = new ArrayList<ProgramStage>();
+
+        Date lastUpdated = options.getLastUpdated();
+
+        if ( lastUpdated != null )
+        {
+            entityList = new ArrayList<ProgramStage>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
+        }
+        else if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
+
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<ProgramStage>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+        }
+        else if ( options.getOptions().containsKey( "program" ) )
+        {
+            String programId = options.getOptions().get( "program" );
+            Program program = programService.getProgram( programId );
+
+            if ( program != null )
+            {
+                entityList = new ArrayList<ProgramStage>( program.getProgramStages() );
+            }
+        }
+        else
+        {
+            entityList = new ArrayList<ProgramStage>( manager.getAllSorted( getEntityClass() ) );
+        }
+
+        return entityList;
+    }
 }
