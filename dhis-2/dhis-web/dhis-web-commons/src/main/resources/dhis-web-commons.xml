@@ -18,7 +18,6 @@
 
   <package name="dhis-web-commons" extends="struts-default" namespace="/dhis-web-commons">
 
-	
     <result-types>
       <result-type name="plainTextErrorResult" class="org.hisp.dhis.result.PlainTextErrorResult" />
       <result-type name="chart" class="org.hisp.dhis.result.ChartResult" />
@@ -291,7 +290,6 @@
   <!-- i18n -->
 
   <package name="dhis-web-commons-i18n" extends="dhis-web-commons" namespace="/dhis-web-commons">
-
     <!-- TODO give i18n its own namespace and move cacheManifest action to dhis-web-commons package -->
 
     <action name="cacheManifest" class="org.hisp.dhis.appcache.AppCacheAction">
@@ -855,11 +853,11 @@
     </action>
 
     <action name="getHelpContent" class="org.hisp.dhis.help.action.GetHelpContentAction">
-      <result name="success" type="outputStreamResult"></result>
+      <result name="success" type="outputStreamResult" />
     </action>
 
     <action name="getHelpItems" class="org.hisp.dhis.help.action.GetHelpItemsAction">
-      <result name="success" type="outputStreamResult"></result>
+      <result name="success" type="outputStreamResult" />
     </action>
 
     <action name="showUpdateUserAccountForm" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction">

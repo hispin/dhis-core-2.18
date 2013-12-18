@@ -6,7 +6,7 @@
     <meta name="keywords" content="DHIS 2">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link type="text/css" rel="stylesheet" href="../dhis-web-commons/font-awesome/css/font-awesome.min.css" />
-	  <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css" />
+    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.9.1.custom.css" />
     <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/${stylesheet}" />
     <link type="text/css" rel="stylesheet" media="screen,print" href="../dhis-web-commons/css/widgets.css" />
     <link type="text/css" rel="stylesheet" media="print" href="../dhis-web-commons/css/print.css" />
