@@ -17,7 +17,8 @@
 <table class='listTable gridTable'>
 	<col/>
 	<col/>
-	<col width='30%'/>
+	<col/>
+	<col width='20%'/>
 	<thead>
 		<tr>
 			<th>$i18n.getString('risk')</th>
@@ -45,7 +46,7 @@
 				#end
 			</td>
 			
-			<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
+			<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">
 				#set($value="")
 				#foreach( $identifierType in $identifierTypes)
 					#foreach( $identifier in $patient.identifiers)
@@ -61,6 +62,21 @@
 				$value
 			</a></td>
 			
+				#set($rowspan=1)
+				#if($class=='listRow')
+					#set($class='listAlternateRow')
+					#set($alterclass='listRow')
+				#else
+					#set($class='listRow')
+					#set($alterclass='listAlternateRow')
+				#end
+			#else
+				#set($rowspan=$rowspan+1)
+				<script>
+					jQuery("[name=infor_" + "$patient.id]").attr('rowspan',$rowspan)
+				</script>
+			#end
+			
 			<td class='$alterclass'>
 				<a href="javascript:programTrackingList( $programStageInstance.id, false );">
 					$programStageInstance.programStage.displayName
@@ -74,7 +90,7 @@
 			
 			#if( $patientId != $patient.id ) 
 			<td class='$alterclass' name='opt_$patient.id'>
-				<a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )" title="$i18n.getString( 'patient_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
+				<a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )" title="$i18n.getString( 'patient_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
 				<a href="javascript:programTrackingReport( $programStageInstance.programInstance.id )" title='$i18n.getString( "program_report" )'><img src="../images/information.png" alt='$i18n.getString( "program_report" )'></a>
 			</td>
 			#else
