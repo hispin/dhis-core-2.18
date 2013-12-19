@@ -159,7 +159,7 @@ public class DataValueController
         
         if ( dataValue == null )
         {
-            dataValue = new DataValue( dataElement, period, organisationUnit, null, storedBy, now, null, categoryOptionCombo );
+            dataValue = new DataValue( dataElement, period, organisationUnit, categoryOptionCombo, null, storedBy, now, null );
             
             if ( value != null )
             {

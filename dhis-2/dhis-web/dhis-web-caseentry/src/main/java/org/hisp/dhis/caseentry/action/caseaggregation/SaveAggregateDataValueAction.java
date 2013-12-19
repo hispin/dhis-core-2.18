@@ -151,8 +151,7 @@ public class SaveAggregateDataValueAction
             {
                 if ( dataValue == null )
                 {
-                    dataValue = new DataValue( dataElement, period, orgunit, "" + resultValue, "", new Date(), null,
-                        optionCombo );
+                    dataValue = new DataValue( dataElement, period, orgunit, optionCombo, "" + resultValue, "", new Date(), null );
 
                     dataValueService.addDataValue( dataValue );
                 }
