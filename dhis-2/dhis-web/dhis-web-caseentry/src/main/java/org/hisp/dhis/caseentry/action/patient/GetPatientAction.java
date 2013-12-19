@@ -31,6 +31,7 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -281,15 +282,18 @@ public class GetPatientAction
 
             PatientIdentifierType idType = null;
             Patient representative = patient.getRepresentative();
-            relationship = relationshipService.getRelationship( representative, patient );
-
-            for ( PatientIdentifier representativeIdentifier : representative.getIdentifiers() )
+            if ( representative != null )
             {
-                if ( representativeIdentifier.getIdentifierType() != null
-                    && representativeIdentifier.getIdentifierType().isRelated() )
+                relationship = relationshipService.getRelationship( representative, patient );
+
+                for ( PatientIdentifier representativeIdentifier : representative.getIdentifiers() )
                 {
-                    identiferMap.put( representativeIdentifier.getIdentifierType().getId(),
-                        representativeIdentifier.getIdentifier() );
+                    if ( representativeIdentifier.getIdentifierType() != null
+                        && representativeIdentifier.getIdentifierType().isRelated() )
+                    {
+                        identiferMap.put( representativeIdentifier.getIdentifierType().getId(),
+                            representativeIdentifier.getIdentifier() );
+                    }
                 }
             }
 
@@ -312,8 +316,14 @@ public class GetPatientAction
 
             for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
             {
-                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                    patientAttributeValue.getValue() );
+                String value = patientAttributeValue.getValue();
+                if ( patientAttributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_AGE ) )
+                {
+                    Date date = format.parseDate( value );
+                    value = PatientAttribute.getAgeFromDate( date ) + "";
+                }
+
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), value );
             }
         }
 

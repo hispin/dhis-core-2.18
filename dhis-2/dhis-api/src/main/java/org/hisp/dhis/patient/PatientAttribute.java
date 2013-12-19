@@ -39,6 +39,8 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,10 +67,12 @@ public class PatientAttribute
     public static final String TYPE_TRUE_ONLY = "trueOnly";
 
     public static final String TYPE_COMBO = "combo";
-    
+
     public static final String TYPE_PHONE_NUMBER = "phoneNumber";
-    
+
     public static final String TYPE_TRACKER_ASSOCIATE = "trackerAssociate";
+
+    public static final String TYPE_AGE = "age";
 
     private String description;
 
@@ -108,7 +112,7 @@ public class PatientAttribute
         this.mandatory = mandatory;
         this.inherit = inherit;
         this.displayOnVisitSchedule = displayOnVisitSchedule;
-        
+
         setAutoFields();
     }
 
@@ -123,7 +127,7 @@ public class PatientAttribute
     {
         return TYPE_INT.equals( valueType );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -268,5 +272,40 @@ public class PatientAttribute
     public void setSortOrderInVisitSchedule( Integer sortOrderInVisitSchedule )
     {
         this.sortOrderInVisitSchedule = sortOrderInVisitSchedule;
+    }
+
+    public static Date getDateFromAge( int age )
+    {
+        Calendar todayCalendar = Calendar.getInstance();
+        todayCalendar.clear( Calendar.MILLISECOND );
+        todayCalendar.clear( Calendar.SECOND );
+        todayCalendar.clear( Calendar.MINUTE );
+        todayCalendar.set( Calendar.HOUR_OF_DAY, 0 );
+
+        todayCalendar.add( Calendar.YEAR, -1 * age );
+
+        return todayCalendar.getTime();
+    }
+    
+    public static int getAgeFromDate( Date date )
+    {
+        Calendar birthCalendar = Calendar.getInstance();
+        birthCalendar.setTime( date );
+
+        Calendar todayCalendar = Calendar.getInstance();
+
+        int age = todayCalendar.get( Calendar.YEAR ) - birthCalendar.get( Calendar.YEAR );
+
+        if ( todayCalendar.get( Calendar.MONTH ) < birthCalendar.get( Calendar.MONTH ) )
+        {
+            age--;
+        }
+        else if ( todayCalendar.get( Calendar.MONTH ) == birthCalendar.get( Calendar.MONTH )
+            && todayCalendar.get( Calendar.DAY_OF_MONTH ) < birthCalendar.get( Calendar.DAY_OF_MONTH ) )
+        {
+            age--;
+        }
+
+        return age;
     }
 }
