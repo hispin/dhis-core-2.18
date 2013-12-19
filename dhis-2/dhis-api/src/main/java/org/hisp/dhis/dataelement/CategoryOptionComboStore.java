@@ -1,4 +1,4 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.dataelement;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,16 +28,15 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import org.hisp.dhis.concept.Concept;
+import java.util.Set;
+
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 /**
- *
- * @author bobj
- * @version created 23-Nov-2011
+ * @author Lars Helge Overland
  */
-public interface GenericDimensionalObjectStore<T> 
-    extends GenericIdentifiableObjectStore<T>
+public interface CategoryOptionComboStore
+    extends GenericIdentifiableObjectStore<DataElementCategoryOptionCombo>
 {
-    Collection<T> getByConcept( Concept concept );    
+    DataElementCategoryOptionCombo getCategoryOptionCombo( DataElementCategoryCombo categoryCombo, Set<DataElementCategoryOption> categoryOptions );
 }

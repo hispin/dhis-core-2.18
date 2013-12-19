@@ -127,6 +127,12 @@ public class DefaultDataValueService
         
         return dataValueStore.getDataValue( dataElement, period, source, categoryOptionCombo, defaultOptionCombo );
     }
+
+    public DataValue getDataValue( DataElement dataElement, Period period, OrganisationUnit source, 
+        DataElementCategoryOptionCombo categoryOptionCombo, DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        return dataValueStore.getDataValue( dataElement, period, source, categoryOptionCombo, attributeOptionCombo );
+    }
     
     public DataValue getDataValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId )
     {
