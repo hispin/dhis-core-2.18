@@ -257,7 +257,7 @@ public class DataValueConverter
 
                 value.setComment( values[13] );
                 value.setTimestamp( DateUtils.getDefaultDate( values[15] ) );
-                value.setOptionCombo( proxyCategoryOptionCombo );
+                value.setCategoryOptionCombo( proxyCategoryOptionCombo );
                 value.setStoredBy( owner );
 
                 if ( validValue )

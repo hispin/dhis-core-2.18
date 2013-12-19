@@ -28,7 +28,16 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.csvreader.CsvWriter;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
+import java.io.OutputStream;
+import java.io.Writer;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
+
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -44,16 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import java.io.OutputStream;
-import java.io.Writer;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
-
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.DateUtils.getLongDateString;
-import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+import com.csvreader.CsvWriter;
 
 public class SpringDataValueSetStore
     implements DataValueSetStore

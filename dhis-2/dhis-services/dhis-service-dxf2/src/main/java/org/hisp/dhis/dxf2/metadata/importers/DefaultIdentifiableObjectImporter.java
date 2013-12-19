@@ -28,6 +28,17 @@ package org.hisp.dhis.dxf2.metadata.importers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.PredicateUtils.idObjectCollectionsWithScanned;
+import static org.hisp.dhis.system.util.PredicateUtils.idObjects;
+
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -53,7 +64,6 @@ import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandler;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandlerUtils;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -63,17 +73,6 @@ import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.hisp.dhis.system.util.PredicateUtils.idObjectCollectionsWithScanned;
-import static org.hisp.dhis.system.util.PredicateUtils.idObjects;
 
 /**
  * Importer that can handle IdentifiableObject and NameableObject.

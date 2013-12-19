@@ -87,7 +87,7 @@ public class ImportDataValue
     public void setDataValue( DataValue dataValue, ImportObjectStatus status )
     {   
         this.dataElementId = dataValue.getDataElement().getId();
-        this.categoryOptionComboId = dataValue.getOptionCombo().getId();
+        this.categoryOptionComboId = dataValue.getCategoryOptionCombo().getId();
         this.periodId = dataValue.getPeriod().getId();
         this.sourceId = dataValue.getSource().getId();
         this.value = dataValue.getValue();
@@ -105,7 +105,7 @@ public class ImportDataValue
         value.setDataElement( element );
         
         DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
-        value.setOptionCombo( optionCombo );
+        value.setCategoryOptionCombo( optionCombo );
         
         Period period = new Period();
         value.setPeriod( period );
@@ -114,7 +114,7 @@ public class ImportDataValue
         value.setSource( source );
         
         value.getDataElement().setId( this.dataElementId );
-        value.getOptionCombo().setId( this.categoryOptionComboId );
+        value.getCategoryOptionCombo().setId( this.categoryOptionComboId );
         value.getPeriod().setId( this.periodId );
         value.getSource().setId( this.sourceId );
         value.setValue( this.value );

@@ -126,7 +126,7 @@ public class SemiPermanentDataValueRowHandler
         period.setId( periodMapping.get( period ) );
         
         value.setDataElement( element );
-        value.setOptionCombo( categoryOptionCombo );
+        value.setCategoryOptionCombo( categoryOptionCombo );
         value.setPeriod( period );
         value.setSource( source );
 

@@ -129,7 +129,7 @@ public class RoutineDataValueRowHandler
         source.setId( organisationUnitMapping.get( dhis14Value.getOrganisationUnitId() ) );
         
         value.setDataElement( element );
-        value.setOptionCombo( categoryOptionCombo );
+        value.setCategoryOptionCombo( categoryOptionCombo );
         value.setPeriod( period );
         value.setSource( source );
         value.setStoredBy( dhis14Value.getStoredBy() );

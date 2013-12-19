@@ -28,6 +28,17 @@ package org.hisp.dhis.dxf2.events.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -43,7 +54,6 @@ import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
@@ -52,18 +62,6 @@ import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -347,8 +345,7 @@ public abstract class AbstractPersonService
         }
 
         patient.setName( person.getName() );
-        String phoneNumber = person.getContact() != null ? person.getContact().getPhoneNumber() : null;
-
+        
         updateSystemIdentifier( person );
         removeRelationships( patient );
         removeIdentifiers( patient );

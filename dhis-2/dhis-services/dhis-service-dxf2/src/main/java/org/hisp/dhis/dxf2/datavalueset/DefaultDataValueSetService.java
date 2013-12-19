@@ -28,7 +28,23 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.csvreader.CsvReader;
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+import static org.hisp.dhis.system.util.ConversionUtils.wrap;
+import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
@@ -66,23 +82,7 @@ import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UUID;
-import static org.hisp.dhis.importexport.ImportStrategy.*;
-import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
-import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
-import static org.hisp.dhis.system.util.ConversionUtils.wrap;
-import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
+import com.csvreader.CsvReader;
 
 /**
  * @author Lars Helge Overland
@@ -394,7 +394,7 @@ public class DefaultDataValueSetService
             internalValue.setDataElement( dataElement );
             internalValue.setPeriod( period );
             internalValue.setSource( orgUnit );
-            internalValue.setOptionCombo( categoryOptionCombo );
+            internalValue.setCategoryOptionCombo( categoryOptionCombo );
             internalValue.setValue( dataValue.getValue() );
 
             if ( dataValue.getStoredBy() == null || dataValue.getStoredBy().trim().isEmpty() )

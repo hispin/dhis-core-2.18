@@ -164,7 +164,7 @@ public class HibernateDataValueStore
         criteria.add( Restrictions.eq( "source", source ) );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
-        criteria.add( Restrictions.eq( "optionCombo", optionCombo ) );
+        criteria.add( Restrictions.eq( "categoryOptionCombo", optionCombo ) );
 
         return (DataValue) criteria.uniqueResult();
     }
@@ -287,7 +287,7 @@ public class HibernateDataValueStore
         criteria.add( Restrictions.eq( "source", source ) );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
         criteria.add( Restrictions.in( "dataElement", dataElements ) );
-        criteria.add( Restrictions.in( "optionCombo", optionCombos ) );
+        criteria.add( Restrictions.in( "categoryOptionCombo", optionCombos ) );
 
         return criteria.list();
     }
@@ -369,7 +369,7 @@ public class HibernateDataValueStore
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
-        criteria.add( Restrictions.eq( "optionCombo", optionCombo ) );
+        criteria.add( Restrictions.eq( "categoryOptionCombo", optionCombo ) );
         criteria.add( Restrictions.in( "period", storedPeriods ) );
         criteria.add( Restrictions.in( "source", sources ) );
 
@@ -387,7 +387,7 @@ public class HibernateDataValueStore
         }
         
         Criteria criteria = session.createCriteria( DataValue.class );
-        criteria.add( Restrictions.in( "optionCombo", optionCombos ) );
+        criteria.add( Restrictions.in( "categoryOptionCombo", optionCombos ) );
 
         return criteria.list();
     }
@@ -493,8 +493,6 @@ public class HibernateDataValueStore
             "and p.enddate >= '" + DateUtils.getMediumDateString( date ) + "' " +
         	"and p.periodtypeid in (" + TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( PeriodType.class, periodTypes ) ) + ") ";
 
-        log.trace( "getDataValueMap sql = " + sql );
-        
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
         
         Map<DataElementOperand, Long> checkForDuplicates = new HashMap<DataElementOperand, Long>();
@@ -518,8 +516,7 @@ public class HibernateDataValueStore
                 
                 if ( existingPeriodInterval != null && existingPeriodInterval < periodInterval )
                 {
-                    // Don't overwrite the previously-stored value if it was 
-                    // for a shorter interval.
+                    // Don't overwrite the previous value if for a shorter interval
                     continue; 
                 }
                 

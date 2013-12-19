@@ -28,20 +28,22 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
+import static org.springframework.util.Assert.notNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
-import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.cache.HibernateCacheManager;
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.constant.Constant;
-import org.hisp.dhis.document.Document;
 import org.hisp.dhis.dxf2.timer.SystemNanoTimer;
 import org.hisp.dhis.dxf2.timer.Timer;
-import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.scheduling.TaskId;
-import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -51,14 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.springframework.util.Assert.notNull;
+import com.google.common.collect.Lists;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

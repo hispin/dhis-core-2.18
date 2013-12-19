@@ -207,7 +207,7 @@ public class J2MEDataValueSMSListener
             if ( dv == null )
             {
                 dv = new DataValue();
-                dv.setOptionCombo( optionCombo );
+                dv.setCategoryOptionCombo( optionCombo );
                 dv.setSource( orgUnit );
                 dv.setDataElement( code.getDataElement() );
                 dv.setPeriod( period );

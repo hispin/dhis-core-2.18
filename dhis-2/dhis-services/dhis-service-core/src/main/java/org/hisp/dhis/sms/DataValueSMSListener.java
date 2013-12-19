@@ -355,7 +355,7 @@ public class DataValueSMSListener
             if ( dv == null )
             {
                 dv = new DataValue();
-                dv.setOptionCombo( optionCombo );
+                dv.setCategoryOptionCombo( optionCombo );
                 dv.setSource( orgunit );
                 dv.setDataElement( code.getDataElement() );
                 dv.setPeriod( period );

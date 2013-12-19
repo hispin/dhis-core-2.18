@@ -1032,13 +1032,13 @@ public class DefaultImportObjectManager
                 if  ( dataElementMapping.containsKey( value.getDataElement().getId() )
                         && periodMapping.containsKey( value.getPeriod().getId())
                         && sourceMapping.containsKey( value.getSource().getId())
-                        && categoryOptionComboMapping.containsKey(value.getOptionCombo().getId()))
+                        && categoryOptionComboMapping.containsKey(value.getCategoryOptionCombo().getId()))
                 {
 
                     value.getDataElement().setId( dataElementMapping.get( value.getDataElement().getId() ) );
                     value.getPeriod().setId( periodMapping.get( value.getPeriod().getId() ) );
                     value.getSource().setId( sourceMapping.get( value.getSource().getId() ) );
-                    value.getOptionCombo().setId( categoryOptionComboMapping.get( value.getOptionCombo().getId() ) );
+                    value.getCategoryOptionCombo().setId( categoryOptionComboMapping.get( value.getCategoryOptionCombo().getId() ) );
                     importer.importObject( value, params );
                     importedObjects++;
                 }
