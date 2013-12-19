@@ -19,7 +19,7 @@
 
 <div id="accountInput">
 
-<h3><span id="create_new_account">$i18n.getString( "change_password" )</span></h3>
+<h3><span id="create_new_account">$i18n.getString( "expired_password" )</span></h3>
 
 <form id="accountForm">
 
