@@ -5041,9 +5041,7 @@ Ext.onReady( function() {
 						xtype: 'button',
 						text: NS.i18n.home,
 						handler: function() {
-							//window.location.href = ns.core.init.contextPath + '/dhis-web-commons-about/redirect.action';
-
-							ns.core.web.pivot.sort(ns.app.xLayout, ns.app.response, 'Uvn6LCg7dVU');
+							window.location.href = ns.core.init.contextPath + '/dhis-web-commons-about/redirect.action';
 						}
 					}
 				]
