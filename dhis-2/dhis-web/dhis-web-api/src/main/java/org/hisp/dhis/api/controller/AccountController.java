@@ -378,6 +378,24 @@ public class AccountController
             return objectMapper.writeValueAsString( result );
         }
 
+        if ( password == null || !ValidationUtils.passwordIsValid( password ) )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            result.put( "status", "PASSWORD_INVALID" );
+            result.put( "message", "Password is not specified or invalid" );
+
+            return objectMapper.writeValueAsString( result );
+        }
+
+        if ( password.trim().equals( username.trim() ) )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            result.put( "status", "PASSWORD_EQUAL_TO_USERNAME" );
+            result.put( "message", "Password cannot be equal to username" );
+
+            return objectMapper.writeValueAsString( result );
+        }
+
         String passwordEncoded = passwordManager.encodePassword( username, password );
 
         credentials.setPassword( passwordEncoded );
