@@ -395,6 +395,7 @@ public class DefaultDataValueSetService
             internalValue.setPeriod( period );
             internalValue.setSource( orgUnit );
             internalValue.setCategoryOptionCombo( categoryOptionCombo );
+            internalValue.setAttributeOptionCombo( fallbackCategoryOptionCombo ); // TODO
             internalValue.setValue( dataValue.getValue() );
 
             if ( dataValue.getStoredBy() == null || dataValue.getStoredBy().trim().isEmpty() )

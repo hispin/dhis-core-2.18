@@ -166,7 +166,7 @@ public class EditDataValueAction
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
         
-        DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, categoryOptionCombo );
+        DataValue dataValue = dataValueService.getDataValue( dataElement, period, unit, categoryOptionCombo );
 
         String storedBy = currentUserService.getCurrentUsername();
 

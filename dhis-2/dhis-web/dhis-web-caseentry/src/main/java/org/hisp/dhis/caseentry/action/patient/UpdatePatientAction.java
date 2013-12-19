@@ -52,7 +52,6 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;

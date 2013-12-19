@@ -198,8 +198,8 @@ public class ExpressionServiceTest
         dataElements.add( dataElementD );
         dataElements.add( dataElementE );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, period, source, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, period, source, "5", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, period, source, "10", categoryOptionCombo, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, period, source, "5", categoryOptionCombo, categoryOptionCombo ) );
     }
 
     // -------------------------------------------------------------------------

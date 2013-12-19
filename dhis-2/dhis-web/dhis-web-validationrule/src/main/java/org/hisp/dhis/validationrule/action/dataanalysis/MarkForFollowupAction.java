@@ -144,7 +144,7 @@ public class MarkForFollowupAction
         OrganisationUnit source = organisationUnitService.getOrganisationUnit( sourceId );
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
         
-        DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo ); 
+        DataValue dataValue = dataValueService.getDataValue( dataElement, period, source, categoryOptionCombo ); 
 
         if ( dataValue != null )
         {

@@ -68,6 +68,8 @@ public class DataValueDimensionTest
     
     private DataElementCategoryCombo genderAndAgeGroup;
     
+    private DataElementCategoryOptionCombo defaultOptionCombo;
+    
     private DataElement dataElementA;
     
     private Period periodA;
@@ -82,6 +84,7 @@ public class DataValueDimensionTest
         dataValueService = (DataValueService) getBean( DataValueService.ID );
         periodService = (PeriodService) getBean( PeriodService.ID );
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+        categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         male = new DataElementCategoryOption( "Male" );
         female = new DataElementCategoryOption( "Female" );
@@ -124,9 +127,11 @@ public class DataValueDimensionTest
         
         organisationUnitService.addOrganisationUnit( sourceA );
         
+        defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
         for ( DataElementCategoryOptionCombo categoryOptionCombo : genderAndAgeGroup.getOptionCombos() )
         {
-            dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "10", categoryOptionCombo ) );
+            dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "10", categoryOptionCombo, defaultOptionCombo ) );
         }
     }
     
@@ -139,7 +144,7 @@ public class DataValueDimensionTest
         
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptions );
         
-        DataValue dataValue = dataValueService.getDataValue( sourceA, dataElementA, periodA, categoryOptionCombo );
+        DataValue dataValue = dataValueService.getDataValue( dataElementA, periodA, sourceA, categoryOptionCombo );
         
         assertNotNull( dataValue );
     }

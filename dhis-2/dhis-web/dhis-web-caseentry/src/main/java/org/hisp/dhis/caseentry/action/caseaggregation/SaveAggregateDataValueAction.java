@@ -141,7 +141,7 @@ public class SaveAggregateDataValueAction
 
             OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
 
-            DataValue dataValue = dataValueService.getDataValue( orgunit, dataElement, period, optionCombo );
+            DataValue dataValue = dataValueService.getDataValue( dataElement, period, orgunit, optionCombo );
             
             // -----------------------------------------------------------------
             // Save/Update/Delete data-values
@@ -151,7 +151,7 @@ public class SaveAggregateDataValueAction
             {
                 if ( dataValue == null )
                 {
-                    dataValue = new DataValue( dataElement, period, orgunit, optionCombo, "" + resultValue, "", new Date(), null );
+                    dataValue = new DataValue( dataElement, period, orgunit, optionCombo, null, "" + resultValue, "", new Date(), null );
 
                     dataValueService.addDataValue( dataValue );
                 }

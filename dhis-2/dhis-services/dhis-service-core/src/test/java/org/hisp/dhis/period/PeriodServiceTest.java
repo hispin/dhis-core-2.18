@@ -500,23 +500,23 @@ public class PeriodServiceTest
         OrganisationUnit sourceB = createOrganisationUnit( 'B' );
         OrganisationUnit sourceC = createOrganisationUnit( 'C' );
         
-        DataValue dataValueA = new DataValue( dataElementA, jan, sourceA, optionCombo );
+        DataValue dataValueA = new DataValue( dataElementA, jan, sourceA, optionCombo, optionCombo );
         dataValueA.setValue( "1" );
-        DataValue dataValueB = new DataValue( dataElementA, feb, sourceB, optionCombo );
+        DataValue dataValueB = new DataValue( dataElementA, feb, sourceB, optionCombo, optionCombo );
         dataValueB.setValue( "2" );
-        DataValue dataValueC = new DataValue( dataElementA, apr, sourceB, optionCombo );
+        DataValue dataValueC = new DataValue( dataElementA, apr, sourceB, optionCombo, optionCombo );
         dataValueC.setValue( "3" );
-        DataValue dataValueD = new DataValue( dataElementA, qu1, sourceA, optionCombo );
+        DataValue dataValueD = new DataValue( dataElementA, qu1, sourceA, optionCombo, optionCombo );
         dataValueD.setValue( "4" );
-        DataValue dataValueE = new DataValue( dataElementB, w01, sourceA, optionCombo );
+        DataValue dataValueE = new DataValue( dataElementB, w01, sourceA, optionCombo, optionCombo );
         dataValueE.setValue( "5" );
-        DataValue dataValueF = new DataValue( dataElementB, w02, sourceB, optionCombo );
+        DataValue dataValueF = new DataValue( dataElementB, w02, sourceB, optionCombo, optionCombo );
         dataValueF.setValue( "6" );
-        DataValue dataValueG = new DataValue( dataElementB, w03, sourceA, optionCombo );
+        DataValue dataValueG = new DataValue( dataElementB, w03, sourceA, optionCombo, optionCombo );
         dataValueG.setValue( "7" );
-        DataValue dataValueH = new DataValue( dataElementB, w04, sourceB, optionCombo );
+        DataValue dataValueH = new DataValue( dataElementB, w04, sourceB, optionCombo, optionCombo );
         dataValueH.setValue( "8" );
-        DataValue dataValueI = new DataValue( dataElementB, w05, sourceA, optionCombo );
+        DataValue dataValueI = new DataValue( dataElementB, w05, sourceA, optionCombo, optionCombo );
         dataValueI.setValue( "9" );
         
         dataElementService.addDataElement( dataElementA );

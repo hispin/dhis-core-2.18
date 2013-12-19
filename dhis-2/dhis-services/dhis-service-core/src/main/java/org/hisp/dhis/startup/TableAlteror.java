@@ -42,6 +42,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -651,11 +653,37 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataset DROP COLUMN symbol" );
 	executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );
 
+	upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
 
         log.info( "Tables updated" );
     }
 
+    private void upgradeDataValuesWithAttributeOptionCombo()
+    {
+        if ( columnExists( "datavalue", "attributeoptioncomboid" ) )
+        {
+            return;
+        }
+        
+        int optionComboId = getDefaultOptionCombo();
+        
+        executeSql( "alter table datavalue_audit drop constraint fk_datavalueaudit_datavalue;" );
+
+        executeSql( "alter table datavalue drop constraint datavalue_pkey;" );
+
+        executeSql( "alter table datavalue add column attributeoptioncomboid integer;" );
+        executeSql( "update datavalue set attributeoptioncomboid = " + optionComboId + " where attributeoptioncomboid is null;" );
+        executeSql( "alter table datavalue alter column attributeoptioncomboid set not null;" );
+        executeSql( "alter table datavalue add constraint fk_datavalue_attributeoptioncomboid foreign key (attributeoptioncomboid) references categoryoptioncombo (categoryoptioncomboid) match simple;" );
+        executeSql( "alter table datavalue add constraint datavalue_pkey primary key(dataelementid, periodid, sourceid, categoryoptioncomboid, attributeoptioncomboid);" );
+        
+        executeSql( "alter table datavalue_audit add constraint fk_datavalueaudit_datavalue foreign key (dataelementid, periodid, sourceid, categoryoptioncomboid, attributeoptioncomboid) " + 
+            "references datavalue (dataelementid, periodid, sourceid, categoryoptioncomboid, attributeoptioncomboid) match simple;" );
+        
+        log.info( "Data value table upgraded with attributeoptioncomboid column" );
+    }
+    
     private void upgradeMapViewsToAnalyticalObject()
     {
         executeSql( "insert into mapview_dataelements ( mapviewid, sort_order, dataelementid ) select mapviewid, 0, dataelementid from mapview where dataelementid is not null" );
@@ -997,6 +1025,8 @@ public class TableAlteror
     {
         try
         {
+            //TODO use jdbcTemplate
+            
             return statementManager.getHolder().executeUpdate( sql );
         }
         catch ( Exception ex )
@@ -1007,6 +1037,40 @@ public class TableAlteror
         }
     }
 
+    private boolean columnExists( String table, String column )
+    {
+        try
+        {
+            ResultSetMetaData metaData = statementManager.getHolder().getStatement().executeQuery( "select * from datavalue limit 1" ).getMetaData();
+            
+            for ( int i = 1; i <= metaData.getColumnCount(); i++ )
+            {
+                if ( column.equalsIgnoreCase( metaData.getColumnName( i ) ) )
+                {
+                    return true;
+                }
+            }
+        }
+        catch ( SQLException ex )
+        {
+            log.error( "Column detection failed: " + ex.getMessage() );
+            log.error( ex );
+        }
+        
+        return false;
+    }
+    
+    private int getDefaultOptionCombo()
+    {
+        String sql = 
+            "select coc.categoryoptioncomboid from categoryoptioncombo coc " +
+            "inner join categorycombos_optioncombos cco on coc.categoryoptioncomboid=cco.categoryoptioncomboid " +
+            "inner join categorycombo cc on cco.categorycomboid=cc.categorycomboid " +
+            "where cc.name='default';";
+        
+        return statementManager.getHolder().queryForInteger( sql );
+    }
+    
     private boolean updateDataSetAssociation()
     {
         StatementHolder holder = statementManager.getHolder();
@@ -1044,7 +1108,6 @@ public class TableAlteror
         {
             holder.close();
         }
-
     }
 
     private boolean updateProgramStageAssociation()

@@ -179,7 +179,7 @@ public class GetValidationResultDetailsAction
             DataElementCategoryOptionCombo categoryOptionCombo = categoryService
                 .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
 
-            DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
+            DataValue dataValue = dataValueService.getDataValue( dataElement, period, source, categoryOptionCombo );
             
             String value = dataValue != null ? dataValue.getValue() : NULL_REPLACEMENT;
             
@@ -192,7 +192,7 @@ public class GetValidationResultDetailsAction
             DataElementCategoryOptionCombo categoryOptionCombo = categoryService
                 .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
 
-            DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
+            DataValue dataValue = dataValueService.getDataValue( dataElement, period, source, categoryOptionCombo );
 
             String value = dataValue != null ? dataValue.getValue() : NULL_REPLACEMENT;
             

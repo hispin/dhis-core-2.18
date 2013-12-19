@@ -121,10 +121,10 @@ public class DataValueBatchHandlerTest
         organisationUnitService.addOrganisationUnit( unitA );
         organisationUnitService.addOrganisationUnit( unitB );        
         
-        dataValueA = createDataValue( dataElementA, periodA, unitA, "10", categoryOptionComboA );
-        dataValueB = createDataValue( dataElementA, periodA, unitB, "10", categoryOptionComboA );
-        dataValueC = createDataValue( dataElementA, periodB, unitA, "10", categoryOptionComboA );
-        dataValueD = createDataValue( dataElementA, periodB, unitB, "10", categoryOptionComboA );     
+        dataValueA = createDataValue( dataElementA, periodA, unitA, "10", categoryOptionComboA, categoryOptionComboA );
+        dataValueB = createDataValue( dataElementA, periodA, unitB, "10", categoryOptionComboA, categoryOptionComboA );
+        dataValueC = createDataValue( dataElementA, periodB, unitA, "10", categoryOptionComboA, categoryOptionComboA );
+        dataValueD = createDataValue( dataElementA, periodB, unitB, "10", categoryOptionComboA, categoryOptionComboA );     
         
         batchHandler.init();
     }
@@ -174,10 +174,10 @@ public class DataValueBatchHandlerTest
         batchHandler.insertObject( dataValueC, false );
         batchHandler.insertObject( dataValueD, false );
         
-        assertNotNull( dataValueService.getDataValue( unitA, dataElementA, periodA, categoryOptionComboA ) );
-        assertNotNull( dataValueService.getDataValue( unitB, dataElementA, periodA, categoryOptionComboA ) );
-        assertNotNull( dataValueService.getDataValue( unitA, dataElementA, periodB, categoryOptionComboA ) );
-        assertNotNull( dataValueService.getDataValue( unitB, dataElementA, periodB, categoryOptionComboA ) );
+        assertNotNull( dataValueService.getDataValue( dataElementA, periodA, unitA, categoryOptionComboA ) );
+        assertNotNull( dataValueService.getDataValue( dataElementA, periodA, unitB, categoryOptionComboA ) );
+        assertNotNull( dataValueService.getDataValue( dataElementA, periodB, unitA, categoryOptionComboA ) );
+        assertNotNull( dataValueService.getDataValue( dataElementA, periodB, unitB, categoryOptionComboA ) );
     }
 
     @Test
@@ -189,7 +189,7 @@ public class DataValueBatchHandlerTest
         
         batchHandler.updateObject( dataValueA );
         
-        dataValueA = dataValueService.getDataValue( unitA, dataElementA, periodA, categoryOptionComboA );
+        dataValueA = dataValueService.getDataValue( dataElementA, periodA, unitA, categoryOptionComboA );
         
         assertEquals( "20", dataValueA.getValue() );
     }

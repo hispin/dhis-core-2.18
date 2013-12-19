@@ -66,6 +66,7 @@ public class DataValueBatchHandler
         statementBuilder.setIdentifierColumn( "periodid" );
         statementBuilder.setIdentifierColumn( "sourceid" );
         statementBuilder.setIdentifierColumn( "categoryoptioncomboid" );
+        statementBuilder.setIdentifierColumn( "attributeoptioncomboid" );
     }
 
     @Override
@@ -75,6 +76,7 @@ public class DataValueBatchHandler
         statementBuilder.setIdentifierValue( value.getPeriod().getId() );
         statementBuilder.setIdentifierValue( value.getSource().getId() );
         statementBuilder.setIdentifierValue( value.getCategoryOptionCombo().getId() );
+        statementBuilder.setIdentifierValue( value.getAttributeOptionCombo().getId() );
     }
     
     protected void setUniqueColumns()
@@ -83,6 +85,7 @@ public class DataValueBatchHandler
         statementBuilder.setUniqueColumn( "periodid" );
         statementBuilder.setUniqueColumn( "sourceid" );
         statementBuilder.setUniqueColumn( "categoryoptioncomboid" );
+        statementBuilder.setUniqueColumn( "attributeoptioncomboid" );
     }
     
     protected void setUniqueValues( DataValue value )
@@ -91,6 +94,7 @@ public class DataValueBatchHandler
         statementBuilder.setUniqueValue( value.getPeriod().getId() );
         statementBuilder.setUniqueValue( value.getSource().getId() );
         statementBuilder.setUniqueValue( value.getCategoryOptionCombo().getId() );
+        statementBuilder.setUniqueValue( value.getAttributeOptionCombo().getId() );
     }
     
     protected void setColumns()
@@ -98,11 +102,12 @@ public class DataValueBatchHandler
         statementBuilder.setColumn( "dataelementid" );
         statementBuilder.setColumn( "periodid" );
         statementBuilder.setColumn( "sourceid" );
+        statementBuilder.setColumn( "categoryoptioncomboid" );
+        statementBuilder.setColumn( "attributeoptioncomboid" );
         statementBuilder.setColumn( "value" );
         statementBuilder.setColumn( "storedby" );
         statementBuilder.setColumn( "lastupdated" );
         statementBuilder.setColumn( "comment" );
-        statementBuilder.setColumn( "categoryoptioncomboid" );
         statementBuilder.setColumn( "followup" );
     }
     
@@ -111,11 +116,12 @@ public class DataValueBatchHandler
         statementBuilder.setValue( value.getDataElement().getId() );
         statementBuilder.setValue( value.getPeriod().getId() );
         statementBuilder.setValue( value.getSource().getId() );
+        statementBuilder.setValue( value.getCategoryOptionCombo().getId() );
+        statementBuilder.setValue( value.getAttributeOptionCombo().getId() );
         statementBuilder.setValue( value.getValue() );
         statementBuilder.setValue( value.getStoredBy() );
         statementBuilder.setValue( getLongDateString( value.getTimestamp() ) );
         statementBuilder.setValue( value.getComment() );
-        statementBuilder.setValue( value.getCategoryOptionCombo().getId() );
         statementBuilder.setValue( value.isFollowup() );
     }
 }

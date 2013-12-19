@@ -166,9 +166,10 @@ public class HibernateSMSCommandStore
     @Override
     public int countDataSetSmsCommands( DataSet dataSet )
     {
-        Query query = getQuery( "select count(distinct c) from SMSCommand c where c.dataSet=:dataSet", true );
+        Query query = getQuery( "select count(distinct c) from SMSCommand c where c.dataset=:dataSet", true );
         query.setEntity( "dataSet", dataSet );
-
+        //TODO rename dataset prop
+        
         return ((Long) query.uniqueResult()).intValue();
     }
 

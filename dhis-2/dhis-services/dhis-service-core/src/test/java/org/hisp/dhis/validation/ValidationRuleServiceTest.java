@@ -48,7 +48,6 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -96,9 +95,7 @@ public class ValidationRuleServiceTest
 
     private Set<DataElementCategoryOptionCombo> optionCombos;
 
-    private DataElementCategoryCombo categoryCombo;
-
-    private DataElementCategoryOptionCombo categoryOptionCombo;
+    private DataElementCategoryOptionCombo optionCombo;
 
     private Expression expressionA;
 
@@ -260,15 +257,12 @@ public class ValidationRuleServiceTest
         dataElementsD.add( dataElementB );
         dataElementsD.add( dataElementE );
 
-        categoryCombo = categoryService
-            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
-        categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
-
-        String suffix = SEPARATOR + categoryOptionCombo.getUid();
+        String suffix = SEPARATOR + optionCombo.getUid();
 
         optionCombos = new HashSet<DataElementCategoryOptionCombo>();
-        optionCombos.add( categoryOptionCombo );
+        optionCombos.add( optionCombo );
 
         expressionA = new Expression( "#{" + dataElementA.getUid() + suffix + "} + #{" + dataElementB.getUid() + suffix + "}",
             "descriptionA", dataElementsA, optionCombos );
@@ -456,25 +450,25 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateDateDateSources()
     {
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", optionCombo, optionCombo ) );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", optionCombo, optionCombo ) );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceB, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceB, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceB, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceB, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceB, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceB, "4", optionCombo, optionCombo ) );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceB, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceB, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceB, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceB, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceB, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceB, "4", optionCombo, optionCombo ) );
 
         validationRuleService.saveValidationRule( validationRuleA ); // Invalid
         validationRuleService.saveValidationRule( validationRuleB ); // Invalid
@@ -512,25 +506,25 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateDateDateSourcesGroup()
     {
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", optionCombo, optionCombo ) );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", optionCombo, optionCombo ) );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceB, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceB, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceB, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceB, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceB, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceB, "4", optionCombo, optionCombo ) );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceB, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceB, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceB, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceB, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceB, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceB, "4", optionCombo, optionCombo ) );
 
         validationRuleService.saveValidationRule( validationRuleA ); // Invalid
         validationRuleService.saveValidationRule( validationRuleB ); // Invalid
@@ -565,15 +559,15 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateDateDateSource()
     {
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", optionCombo, optionCombo ) );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, sourceA, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodB, sourceA, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodB, sourceA, "4", optionCombo, optionCombo ) );
 
         validationRuleService.saveValidationRule( validationRuleA );
         validationRuleService.saveValidationRule( validationRuleB );
@@ -603,10 +597,10 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateDataSetPeriodSource()
     {
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, sourceA, "1", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "2", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodA, sourceA, "3", optionCombo, optionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementD, periodA, sourceA, "4", optionCombo, optionCombo ) );
 
         validationRuleService.saveValidationRule( validationRuleA );
         validationRuleService.saveValidationRule( validationRuleB );
@@ -637,23 +631,23 @@ public class ValidationRuleServiceTest
     	// System.out.println("\ntestValidateMonitoring1Sequential");
     	// Note: for some monitoring tests, we enter more data than needed, to be sure the extra data *isn't* used.
     	
-    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", optionCombo, optionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", optionCombo, optionCombo ) ); // Jul 2000
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "30", categoryOptionCombo ) ); // Mar 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "35", categoryOptionCombo ) ); // Apr 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "40", categoryOptionCombo ) ); // May 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "45", categoryOptionCombo ) ); // Jun 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "50", categoryOptionCombo ) ); // Jul 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "30", optionCombo, optionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "35", optionCombo, optionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "40", optionCombo, optionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "45", optionCombo, optionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "50", optionCombo, optionCombo ) ); // Jul 2001
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", optionCombo, optionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", optionCombo, optionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", optionCombo, optionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", optionCombo, optionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", optionCombo, optionCombo ) ); // Jul 2002
     	
         validationRuleService.saveValidationRule( monitoringRuleE );
         
@@ -681,23 +675,23 @@ public class ValidationRuleServiceTest
     {
     	// System.out.println("\ntestValidateMonitoring1Annual");
 
-    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", optionCombo, optionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", optionCombo, optionCombo ) ); // Jul 2000
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", optionCombo, optionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", optionCombo, optionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", optionCombo, optionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", optionCombo, optionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", optionCombo, optionCombo ) ); // Jul 2001
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", optionCombo, optionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", optionCombo, optionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", optionCombo, optionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", optionCombo, optionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", optionCombo, optionCombo ) ); // Jul 2002
     	
         validationRuleService.saveValidationRule( monitoringRuleF );
         
@@ -725,23 +719,23 @@ public class ValidationRuleServiceTest
     {
     	// System.out.println("\ntestValidateMonitoring1Sequential2Annual");
 
-    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", optionCombo, optionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", optionCombo, optionCombo ) ); // Jul 2000
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", optionCombo, optionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", optionCombo, optionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", optionCombo, optionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", optionCombo, optionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", optionCombo, optionCombo ) ); // Jul 2001
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", optionCombo, optionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", optionCombo, optionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", optionCombo, optionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", optionCombo, optionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", optionCombo, optionCombo ) ); // Jul 2002
     	
         validationRuleService.saveValidationRule( monitoringRuleG ); // 1 sequential and 2 annual periods
         
@@ -771,23 +765,23 @@ public class ValidationRuleServiceTest
     {
     	// System.out.println("\ntestValidateMonitoring2Sequential2Annual");
 
-    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", optionCombo, optionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", optionCombo, optionCombo ) ); // Jul 2000
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", optionCombo, optionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", optionCombo, optionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", optionCombo, optionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", optionCombo, optionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", optionCombo, optionCombo ) ); // Jul 2001
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", optionCombo, optionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", optionCombo, optionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", optionCombo, optionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", optionCombo, optionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", optionCombo, optionCombo ) ); // Jul 2002
     	
         validationRuleService.saveValidationRule( monitoringRuleH ); // 2 sequential and 2 annual periods
         
@@ -817,23 +811,23 @@ public class ValidationRuleServiceTest
     {
     	// System.out.println("\ntestValidateMonitoring2HighOutliers");
 
-    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", optionCombo, optionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", optionCombo, optionCombo ) ); // Jul 2000
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", optionCombo, optionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", optionCombo, optionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", optionCombo, optionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", optionCombo, optionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", optionCombo, optionCombo ) ); // Jul 2001
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", optionCombo, optionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", optionCombo, optionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", optionCombo, optionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", optionCombo, optionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", optionCombo, optionCombo ) ); // Jul 2002
     	
         validationRuleService.saveValidationRule( monitoringRuleI ); // discard 2 highest outliers
         
@@ -863,23 +857,23 @@ public class ValidationRuleServiceTest
     {
     	// System.out.println("\ntestValidateMonitoring2LowOutliers");
 
-    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", optionCombo, optionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", optionCombo, optionCombo ) ); // Jul 2000
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", optionCombo, optionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", optionCombo, optionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", optionCombo, optionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", optionCombo, optionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", optionCombo, optionCombo ) ); // Jul 2001
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", optionCombo, optionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", optionCombo, optionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", optionCombo, optionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", optionCombo, optionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", optionCombo, optionCombo ) ); // Jul 2002
     	
         validationRuleService.saveValidationRule( monitoringRuleJ ); // 2 sequential and 2 annual periods
         
@@ -909,23 +903,23 @@ public class ValidationRuleServiceTest
     {
     	// System.out.println("\ntestValidateMonitoring2High2LowOutliers");
 
-    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", categoryOptionCombo ) ); // Mar 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", categoryOptionCombo ) ); // Apr 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", categoryOptionCombo ) ); // May 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", categoryOptionCombo ) ); // Jun 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", categoryOptionCombo ) ); // Jul 2000
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceA, "14", optionCombo, optionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceA, "15", optionCombo, optionCombo ) ); // Jul 2000
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", categoryOptionCombo ) ); // Mar 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", categoryOptionCombo ) ); // Apr 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", categoryOptionCombo ) ); // May 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", categoryOptionCombo ) ); // Jun 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", categoryOptionCombo ) ); // Jul 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceA, "50", optionCombo, optionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceA, "150", optionCombo, optionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceA, "200", optionCombo, optionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceA, "600", optionCombo, optionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceA, "400", optionCombo, optionCombo ) ); // Jul 2001
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", categoryOptionCombo ) ); // Mar 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", categoryOptionCombo ) ); // Apr 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", categoryOptionCombo ) ); // May 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", categoryOptionCombo ) ); // Jun 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", categoryOptionCombo ) ); // Jul 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceA, "100", optionCombo, optionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceA, "200", optionCombo, optionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceA, "400", optionCombo, optionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceA, "700", optionCombo, optionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceA, "800", optionCombo, optionCombo ) ); // Jul 2002
     	
         validationRuleService.saveValidationRule( monitoringRuleK ); // discard 2 highest outliers
         
@@ -955,30 +949,30 @@ public class ValidationRuleServiceTest
     {
     	// System.out.println("\ntestValidateMonitoringWithBaseline");
 
-    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "11", categoryOptionCombo ) ); // Mar 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "12", categoryOptionCombo ) ); // Apr 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceB, "13", categoryOptionCombo ) ); // May 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceB, "14", categoryOptionCombo ) ); // Jun 2000
-        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceB, "15", categoryOptionCombo ) ); // Jul 2000
+    	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "11", optionCombo, optionCombo ) ); // Mar 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "12", optionCombo, optionCombo ) ); // Apr 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceB, "13", optionCombo, optionCombo ) ); // May 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodD, sourceB, "14", optionCombo, optionCombo ) ); // Jun 2000
+        dataValueService.addDataValue( createDataValue( dataElementB, periodE, sourceB, "15", optionCombo, optionCombo ) ); // Jul 2000
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceB, "50", categoryOptionCombo ) ); // Mar 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceB, "150", categoryOptionCombo ) ); // Apr 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceB, "200", categoryOptionCombo ) ); // May 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceB, "600", categoryOptionCombo ) ); // Jun 2001
-        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceB, "400", categoryOptionCombo ) ); // Jul 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodF, sourceB, "50", optionCombo, optionCombo ) ); // Mar 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodG, sourceB, "150", optionCombo, optionCombo ) ); // Apr 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodH, sourceB, "200", optionCombo, optionCombo ) ); // May 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodI, sourceB, "600", optionCombo, optionCombo ) ); // Jun 2001
+        dataValueService.addDataValue( createDataValue( dataElementB, periodJ, sourceB, "400", optionCombo, optionCombo ) ); // Jul 2001
 
-        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceB, "100", categoryOptionCombo ) ); // Mar 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceB, "200", categoryOptionCombo ) ); // Apr 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceB, "400", categoryOptionCombo ) ); // May 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceB, "700", categoryOptionCombo ) ); // Jun 2002
-        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceB, "800", categoryOptionCombo ) ); // Jul 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodK, sourceB, "100", optionCombo, optionCombo ) ); // Mar 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodL, sourceB, "200", optionCombo, optionCombo ) ); // Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodM, sourceB, "400", optionCombo, optionCombo ) ); // May 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodN, sourceB, "700", optionCombo, optionCombo ) ); // Jun 2002
+        dataValueService.addDataValue( createDataValue( dataElementB, periodO, sourceB, "800", optionCombo, optionCombo ) ); // Jul 2002
         
         // This weekly baseline data should be ignored because the period length is less than monthly:
-        dataValueService.addDataValue( createDataValue( dataElementE, periodW, sourceB, "1000", categoryOptionCombo ) ); // Week: 1-7 Apr 2002
+        dataValueService.addDataValue( createDataValue( dataElementE, periodW, sourceB, "1000", optionCombo, optionCombo ) ); // Week: 1-7 Apr 2002
 
-        dataValueService.addDataValue( createDataValue( dataElementE, periodX, sourceB, "40", categoryOptionCombo ) ); // Year: 2000
-        dataValueService.addDataValue( createDataValue( dataElementE, periodY, sourceB, "50", categoryOptionCombo ) ); // Year: 2001
-        dataValueService.addDataValue( createDataValue( dataElementE, periodZ, sourceB, "10", categoryOptionCombo ) ); // Year: 2002
+        dataValueService.addDataValue( createDataValue( dataElementE, periodX, sourceB, "40", optionCombo, optionCombo ) ); // Year: 2000
+        dataValueService.addDataValue( createDataValue( dataElementE, periodY, sourceB, "50", optionCombo, optionCombo ) ); // Year: 2001
+        dataValueService.addDataValue( createDataValue( dataElementE, periodZ, sourceB, "10", optionCombo, optionCombo ) ); // Year: 2002
         
         validationRuleService.saveValidationRule( monitoringRuleL );
         

@@ -367,6 +367,7 @@
 
   <bean id="org.hisp.dhis.datavalue.DataValueService" class="org.hisp.dhis.datavalue.DefaultDataValueService">
     <property name="dataValueStore" ref="org.hisp.dhis.datavalue.DataValueStore" />
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
   <bean id="org.hisp.dhis.datavalue.DataValueAuditService" class="org.hisp.dhis.datavalue.DefaultDataValueAuditService">

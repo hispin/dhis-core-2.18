@@ -37,6 +37,7 @@ import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -61,6 +62,13 @@ public class DefaultDataValueService
         this.dataValueStore = dataValueStore;
     }
 
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     // -------------------------------------------------------------------------
     // Basic DataValue
     // -------------------------------------------------------------------------
@@ -69,6 +77,16 @@ public class DefaultDataValueService
     {
         if ( !dataValue.isNullValue() && dataValueIsValid( dataValue.getValue(), dataValue.getDataElement() ) == null )
         {
+            if ( dataValue.getCategoryOptionCombo() == null )
+            {
+                dataValue.setCategoryOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
+            }
+            
+            if ( dataValue.getAttributeOptionCombo() == null )
+            {
+                dataValue.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
+            }
+            
             dataValueStore.addDataValue( dataValue );
         }
     }
@@ -103,15 +121,18 @@ public class DefaultDataValueService
         return dataValueStore.deleteDataValuesByDataElement( dataElement );
     }
 
-    public DataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period,
-        DataElementCategoryOptionCombo optionCombo )
+    public DataValue getDataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo categoryOptionCombo )
     {
-        return dataValueStore.getDataValue( source, dataElement, period, optionCombo );
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
+        return dataValueStore.getDataValue( dataElement, period, source, categoryOptionCombo, defaultOptionCombo );
     }
     
-    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
+    public DataValue getDataValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId )
     {
-        return dataValueStore.getDataValue( dataElementId, categoryOptionComboId, periodId, sourceId );
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
+        return dataValueStore.getDataValue( dataElementId, periodId, sourceId, categoryOptionComboId, defaultOptionCombo.getId() );
     }
     
     // -------------------------------------------------------------------------

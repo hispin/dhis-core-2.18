@@ -317,7 +317,7 @@ public class DefaultChartService
 
             period.setName( format.formatPeriod( period ) );
 
-            DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period,
+            DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit,
                 categoryOptionCombo );
 
             double value = 0;

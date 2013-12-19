@@ -227,7 +227,7 @@ public class DefaultHistoryRetriever
     private Double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
         OrganisationUnit organisationUnit, Period period )
     {
-        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
+        DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo );
 
         if ( dataValue != null )
         {

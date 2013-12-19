@@ -102,18 +102,26 @@ public interface DataValueService
     /**
      * Returns a DataValue.
      * 
-     * @param source the Source of the DataValue.
      * @param dataElement the DataElement of the DataValue.
      * @param period the Period of the DataValue.
+     * @param source the Source of the DataValue.
+     * @param categoryOptionCombo the category option combo.
+     * @param attributeOptionCombo the attribute option combo.
      * @return the DataValue which corresponds to the given parameters, or null
      *         if no match.
      */
-    DataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
+    DataValue getDataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo optionCombo );
 
     /**
-     * Returns a non-persisted data value.
+     * Returns a non-persisted DataValue.
+     * 
+     * @param dataElementId data element id
+     * @param periodId period id
+     * @param sourceId source id
+     * @param categoryOptionComboId category option combo id
+     * @param attributeOptionComboId attribute option combo id
      */
-    DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId );
+    DataValue getDataValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId );
     
     // -------------------------------------------------------------------------
     // Collections of DataValues

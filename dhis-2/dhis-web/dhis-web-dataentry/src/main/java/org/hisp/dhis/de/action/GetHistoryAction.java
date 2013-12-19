@@ -235,7 +235,7 @@ public class GetHistoryAction
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
+        dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo );
 
         if ( dataValue != null )
         {
