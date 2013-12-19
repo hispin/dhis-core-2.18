@@ -163,7 +163,7 @@ public class DataValueController
             {
                 DataElementCategoryOption categoryOption = categoryService.getDataElementCategoryOption( id );
                 
-                if ( categoryOption != null )
+                if ( categoryOption == null )
                 {
                     ContextUtils.conflictResponse( response, "Illegal category option identifier: " + id );
                     return;
