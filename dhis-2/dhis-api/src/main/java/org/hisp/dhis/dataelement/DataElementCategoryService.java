@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
@@ -353,6 +354,8 @@ public interface DataElementCategoryService
      * @return a DataElementCategoryOptionCombo.
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo );
+    
+    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryCombo categoryCombo, Set<DataElementCategoryOption> categoryOptions );
 
     /**
      * Retrieves all DataElementCategoryOptionCombos.

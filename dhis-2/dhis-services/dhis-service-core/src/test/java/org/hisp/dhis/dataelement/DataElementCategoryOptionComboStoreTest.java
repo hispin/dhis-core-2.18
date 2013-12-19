@@ -37,19 +37,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-@SuppressWarnings( "unchecked" )
 public class DataElementCategoryOptionComboStoreTest
     extends DhisSpringTest
 {
-    private GenericStore<DataElementCategoryOptionCombo> categoryOptionComboStore;
+    private CategoryOptionComboStore categoryOptionComboStore;
     
     private DataElementCategory categoryA;
     private DataElementCategory categoryB;
@@ -76,8 +72,7 @@ public class DataElementCategoryOptionComboStoreTest
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryOptionComboStore = (HibernateGenericStore<DataElementCategoryOptionCombo>) 
-            getBean( "org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore" );
+        categoryOptionComboStore = (CategoryOptionComboStore) getBean( "org.hisp.dhis.dataelement.CategoryOptionComboStore" );
         
         categoryOptionA = new DataElementCategoryOption( "Male" );
         categoryOptionB = new DataElementCategoryOption( "Female" );
@@ -218,6 +213,60 @@ public class DataElementCategoryOptionComboStoreTest
             categoryOptionComboStore.getAll();
         
         assertNotNull( categoryOptionCombos );
-        assertEquals( 4, categoryOptionCombos.size() ); // Including default category option combo
+        assertEquals( 4, categoryOptionCombos.size() ); // Including default
+    }
+    
+    @Test
+    public void testGenerateCategoryOptionCombos()
+    {
+        categoryService.generateOptionCombos( categoryComboA );
+        categoryService.generateOptionCombos( categoryComboB );
+        
+        Collection<DataElementCategoryOptionCombo> optionCombos = categoryService.getAllDataElementCategoryOptionCombos();
+        
+        assertEquals( 7, optionCombos.size() ); // Including default
+    }
+    
+    @Test
+    public void testGetCategoryOptionCombo()
+    {
+        categoryService.generateOptionCombos( categoryComboA );
+        categoryService.generateOptionCombos( categoryComboB );
+        
+        Set<DataElementCategoryOption> categoryOptions1 = new HashSet<DataElementCategoryOption>();
+        categoryOptions1.add( categoryOptionA );
+        categoryOptions1.add( categoryOptionC );
+
+        Set<DataElementCategoryOption> categoryOptions2 = new HashSet<DataElementCategoryOption>();
+        categoryOptions2.add( categoryOptionA );
+        categoryOptions2.add( categoryOptionD );
+
+        Set<DataElementCategoryOption> categoryOptions3 = new HashSet<DataElementCategoryOption>();
+        categoryOptions3.add( categoryOptionB );
+        categoryOptions3.add( categoryOptionC );
+
+        Set<DataElementCategoryOption> categoryOptions4 = new HashSet<DataElementCategoryOption>();
+        categoryOptions4.add( categoryOptionB );
+        categoryOptions4.add( categoryOptionC );
+        
+        DataElementCategoryOptionCombo coc1 = categoryOptionComboStore.getCategoryOptionCombo( categoryComboA, categoryOptions1 );
+        DataElementCategoryOptionCombo coc2 = categoryOptionComboStore.getCategoryOptionCombo( categoryComboA, categoryOptions2 );
+        DataElementCategoryOptionCombo coc3 = categoryOptionComboStore.getCategoryOptionCombo( categoryComboA, categoryOptions3 );
+        DataElementCategoryOptionCombo coc4 = categoryOptionComboStore.getCategoryOptionCombo( categoryComboA, categoryOptions4 );
+        
+        assertNotNull( coc1 );
+        assertNotNull( coc2 );
+        assertNotNull( coc3 );
+        assertNotNull( coc4 );
+        
+        assertEquals( categoryComboA, coc1.getCategoryCombo() );
+        assertEquals( categoryComboA, coc2.getCategoryCombo() );
+        assertEquals( categoryComboA, coc3.getCategoryCombo() );
+        assertEquals( categoryComboA, coc4.getCategoryCombo() );
+        
+        assertEquals( categoryOptions1, coc1.getCategoryOptions() );
+        assertEquals( categoryOptions2, coc2.getCategoryOptions() );
+        assertEquals( categoryOptions3, coc3.getCategoryOptions() );
+        assertEquals( categoryOptions4, coc4.getCategoryOptions() );
     }
 }

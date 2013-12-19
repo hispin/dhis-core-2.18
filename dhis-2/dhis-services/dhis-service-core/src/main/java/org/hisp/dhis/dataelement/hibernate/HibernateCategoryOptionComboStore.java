@@ -1,4 +1,4 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.dataelement.hibernate;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,16 +28,40 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import org.hisp.dhis.concept.Concept;
+import java.util.Set;
+
+import org.hibernate.Query;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.dataelement.CategoryOptionComboStore;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
 /**
- *
- * @author bobj
- * @version created 23-Nov-2011
+ * @author Lars Helge Overland
  */
-public interface GenericDimensionalObjectStore<T> 
-    extends GenericIdentifiableObjectStore<T>
+public class HibernateCategoryOptionComboStore
+    extends HibernateIdentifiableObjectStore<DataElementCategoryOptionCombo>
+    implements CategoryOptionComboStore
 {
-    Collection<T> getByConcept( Concept concept );    
+    public DataElementCategoryOptionCombo getCategoryOptionCombo( DataElementCategoryCombo categoryCombo, Set<DataElementCategoryOption> categoryOptions )
+    {
+        String hql = "from DataElementCategoryOptionCombo co where co.categoryCombo = :categoryCombo";
+        
+        for ( DataElementCategoryOption option : categoryOptions )
+        {
+            hql += " and :option" + option.getId() + " in elements (co.categoryOptions)";
+        }
+        
+        Query query = getQuery( hql );
+        
+        query.setEntity( "categoryCombo", categoryCombo );
+        
+        for ( DataElementCategoryOption option : categoryOptions )
+        {
+            query.setEntity( "option" + option.getId(), option );
+        }
+        
+        return (DataElementCategoryOptionCombo) query.uniqueResult();
+    }
 }
