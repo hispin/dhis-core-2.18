@@ -202,7 +202,7 @@ public class FormUtilsImpl
         for ( DataValue dataValue : values )
         {
             DataElement dataElement = dataValue.getDataElement();
-            DataElementCategoryOptionCombo optionCombo = dataValue.getOptionCombo();
+            DataElementCategoryOptionCombo optionCombo = dataValue.getCategoryOptionCombo();
 
             String key = String.format( "DE%dOC%d", dataElement.getId(), optionCombo.getId() );
             String value = dataValue.getValue();

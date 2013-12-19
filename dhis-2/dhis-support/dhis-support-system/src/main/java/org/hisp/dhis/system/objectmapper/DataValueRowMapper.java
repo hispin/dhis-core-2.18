@@ -51,14 +51,14 @@ public class DataValueRowMapper
         final DataValue dataValue = new DataValue();
         
         dataValue.setDataElement( new DataElement() );
-        dataValue.setOptionCombo( new DataElementCategoryOptionCombo() );
+        dataValue.setCategoryOptionCombo( new DataElementCategoryOptionCombo() );
         dataValue.setSource( new OrganisationUnit() );
         dataValue.setPeriod( new Period() );
         
         dataValue.getDataElement().setId( resultSet.getInt( 1 ) );
         dataValue.getPeriod().setId( resultSet.getInt( 2 ) );
         dataValue.getSource().setId( resultSet.getInt( 3 ) );
-        dataValue.getOptionCombo().setId( resultSet.getInt( 4 ) );
+        dataValue.getCategoryOptionCombo().setId( resultSet.getInt( 4 ) );
         dataValue.setValue( resultSet.getString( 5 ) );
         dataValue.setStoredBy( resultSet.getString( 6 ) );
         dataValue.setTimestamp( resultSet.getDate( 7 ) );

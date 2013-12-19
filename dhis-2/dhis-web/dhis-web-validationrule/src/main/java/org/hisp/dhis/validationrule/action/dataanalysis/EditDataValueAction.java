@@ -178,7 +178,7 @@ public class EditDataValueAction
             dataValue.setDataElement( dataElement );
             dataValue.setPeriod( period );
             dataValue.setSource( unit );
-            dataValue.setOptionCombo( categoryOptionCombo );
+            dataValue.setCategoryOptionCombo( categoryOptionCombo );
             dataValue.setValue( value );
             dataValue.setStoredBy( storedBy );
             

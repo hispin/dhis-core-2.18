@@ -73,7 +73,7 @@ public class DataValue
     /**
      * Part of the DataValue's composite ID
      */
-    private DataElementCategoryOptionCombo optionCombo;
+    private DataElementCategoryOptionCombo categoryOptionCombo;
 
     private String value;
 
@@ -100,12 +100,12 @@ public class DataValue
         this.source = source;
     }
 
-    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo optionCombo )
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
         this.source = source;
-        this.optionCombo = optionCombo;
+        this.categoryOptionCombo = categoryOptionCombo;
     }
 
     public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value )
@@ -116,13 +116,13 @@ public class DataValue
         this.value = value;
     }
 
-    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, DataElementCategoryOptionCombo optionCombo )
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
         this.source = source;
         this.value = value;
-        this.optionCombo = optionCombo;
+        this.categoryOptionCombo = categoryOptionCombo;
     }
 
     public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
@@ -138,7 +138,7 @@ public class DataValue
     }
 
     public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
-                      Date timestamp, String comment, DataElementCategoryOptionCombo optionCombo )
+                      Date timestamp, String comment, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -147,7 +147,7 @@ public class DataValue
         this.storedBy = storedBy;
         this.timestamp = timestamp;
         this.comment = comment;
-        this.optionCombo = optionCombo;
+        this.categoryOptionCombo = categoryOptionCombo;
     }
 
     // -------------------------------------------------------------------------
@@ -168,6 +168,14 @@ public class DataValue
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Alias for getCategoryOptionCombo(). TODO remove.
+     */
+    public DataElementCategoryOptionCombo getOptionCombo()
+    {
+        return getCategoryOptionCombo();
+    }
+    
     public boolean isZero()
     {
         return dataElement != null && dataElement.getType().equals( DataElement.VALUE_TYPE_INT )
@@ -225,7 +233,7 @@ public class DataValue
 
         final DataValue other = (DataValue) o;
 
-        return dataElement.equals( other.getDataElement() ) && optionCombo.equals( other.getOptionCombo() )
+        return dataElement.equals( other.getDataElement() ) && categoryOptionCombo.equals( other.getCategoryOptionCombo() )
             && period.equals( other.getPeriod() ) && source.equals( other.getSource() );
     }
 
@@ -235,7 +243,7 @@ public class DataValue
         final int prime = 31;
         int result = 1;
 
-        result = result * prime + optionCombo.hashCode();
+        result = result * prime + categoryOptionCombo.hashCode();
         result = result * prime + period.hashCode();
         result = result * prime + dataElement.hashCode();
         result = result * prime + source.hashCode();
@@ -277,14 +285,14 @@ public class DataValue
         this.source = source;
     }
 
-    public DataElementCategoryOptionCombo getOptionCombo()
+    public DataElementCategoryOptionCombo getCategoryOptionCombo()
     {
-        return optionCombo;
+        return categoryOptionCombo;
     }
 
-    public void setOptionCombo( DataElementCategoryOptionCombo optionCombo )
+    public void setCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
-        this.optionCombo = optionCombo;
+        this.categoryOptionCombo = categoryOptionCombo;
     }
 
     public String getValue()

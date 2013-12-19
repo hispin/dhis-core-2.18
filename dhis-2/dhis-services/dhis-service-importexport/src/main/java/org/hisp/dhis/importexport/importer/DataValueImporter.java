@@ -93,7 +93,7 @@ public class DataValueImporter
             return null;
         }
         
-        return dataValueService.getDataValue( object.getDataElement().getId(), object.getOptionCombo().getId(), 
+        return dataValueService.getDataValue( object.getDataElement().getId(), object.getCategoryOptionCombo().getId(), 
             object.getPeriod().getId(), object.getSource().getId() );
     }
 

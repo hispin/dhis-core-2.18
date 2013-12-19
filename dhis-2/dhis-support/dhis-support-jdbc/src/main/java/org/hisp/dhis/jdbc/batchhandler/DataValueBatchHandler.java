@@ -74,7 +74,7 @@ public class DataValueBatchHandler
         statementBuilder.setIdentifierValue( value.getDataElement().getId() );
         statementBuilder.setIdentifierValue( value.getPeriod().getId() );
         statementBuilder.setIdentifierValue( value.getSource().getId() );
-        statementBuilder.setIdentifierValue( value.getOptionCombo().getId() );
+        statementBuilder.setIdentifierValue( value.getCategoryOptionCombo().getId() );
     }
     
     protected void setUniqueColumns()
@@ -90,7 +90,7 @@ public class DataValueBatchHandler
         statementBuilder.setUniqueValue( value.getDataElement().getId() );
         statementBuilder.setUniqueValue( value.getPeriod().getId() );
         statementBuilder.setUniqueValue( value.getSource().getId() );
-        statementBuilder.setUniqueValue( value.getOptionCombo().getId() );
+        statementBuilder.setUniqueValue( value.getCategoryOptionCombo().getId() );
     }
     
     protected void setColumns()
@@ -115,7 +115,7 @@ public class DataValueBatchHandler
         statementBuilder.setValue( value.getStoredBy() );
         statementBuilder.setValue( getLongDateString( value.getTimestamp() ) );
         statementBuilder.setValue( value.getComment() );
-        statementBuilder.setValue( value.getOptionCombo().getId() );
+        statementBuilder.setValue( value.getCategoryOptionCombo().getId() );
         statementBuilder.setValue( value.isFollowup() );
     }
 }

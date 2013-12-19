@@ -297,7 +297,7 @@ public class FormUtils
         for ( DataValue dataValue : dataValues )
         {
             DataElement dataElement = dataValue.getDataElement();
-            DataElementCategoryOptionCombo categoryOptionCombo = dataValue.getOptionCombo();
+            DataElementCategoryOptionCombo categoryOptionCombo = dataValue.getCategoryOptionCombo();
 
             cacheMap.get( dataElement.getUid() + "-" + categoryOptionCombo.getUid() ).setValue( dataValue.getValue() );
         }

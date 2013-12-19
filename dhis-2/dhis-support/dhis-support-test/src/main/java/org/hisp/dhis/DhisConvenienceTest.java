@@ -744,7 +744,7 @@ public abstract class DhisConvenienceTest
         dataValue.setComment( "Comment" );
         dataValue.setStoredBy( "StoredBy" );
         dataValue.setTimestamp( date );
-        dataValue.setOptionCombo( categoryOptionCombo );
+        dataValue.setCategoryOptionCombo( categoryOptionCombo );
 
         return dataValue;
     }
@@ -769,7 +769,7 @@ public abstract class DhisConvenienceTest
         dataValue.setComment( "Comment" );
         dataValue.setStoredBy( "StoredBy" );
         dataValue.setTimestamp( lastupdated );
-        dataValue.setOptionCombo( categoryOptionCombo );
+        dataValue.setCategoryOptionCombo( categoryOptionCombo );
 
         return dataValue;
     }

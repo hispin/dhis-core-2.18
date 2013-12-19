@@ -92,7 +92,7 @@ public class DefaultImportAnalyser
             
             values.add( new EntityPropertyValue( DataValue.class, PROP_PRIMARY_KEY, 
                 value.getDataElement().getId() + SEPARARATOR +
-                value.getOptionCombo().getId() + SEPARARATOR +
+                value.getCategoryOptionCombo().getId() + SEPARARATOR +
                 value.getPeriod().getId() + SEPARARATOR +
                 value.getSource().getId() ) );
         }
