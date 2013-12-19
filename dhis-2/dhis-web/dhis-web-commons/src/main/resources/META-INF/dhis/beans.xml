@@ -551,6 +551,9 @@
 
   <!-- User Account -->
 
+  <bean id="org.hisp.dhis.useraccount.action.ExpiredAccountAction" class="org.hisp.dhis.useraccount.action.ExpiredAccountAction"
+    scope="prototype" />
+
   <bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />

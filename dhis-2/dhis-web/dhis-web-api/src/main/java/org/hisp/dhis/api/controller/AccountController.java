@@ -28,13 +28,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,6 +59,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Lars Helge Overland
  */
@@ -73,35 +78,37 @@ import org.springframework.web.client.RestTemplate;
 public class AccountController
 {
     private static final Log log = LogFactory.getLog( AccountController.class );
-    
+
     private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/verify";
     protected static final String PUB_KEY = "6LcM6tcSAAAAANwYsFp--0SYtcnze_WdYn8XwMMk";
     private static final String KEY = "6LcM6tcSAAAAAFnHo1f3lLstk3rZv3EVinNROfRq";
     private static final String TRUE = "true";
     private static final String SPLIT = "\n";
     private static final int MAX_LENGTH = 80;
-    
+
     @Autowired
     private RestTemplate restTemplate;
-    
+
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private AuthenticationManager authenticationManager;
-    
+
     @Autowired
     private ConfigurationService configurationService;
-    
+
     @Autowired
     private PasswordManager passwordManager;
-    
+
     @Autowired
     private SecurityService securityService;
-    
+
     @Autowired
     private SystemSettingManager systemSettingManager;
-    
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @RequestMapping( value = "/recovery", method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String recoverAccount(
         @RequestParam String username,
@@ -109,15 +116,15 @@ public class AccountController
         HttpServletResponse response )
     {
         String rootPath = ContextUtils.getContextPath( request );
-        
+
         if ( !systemSettingManager.accountRecoveryEnabled() )
         {
             response.setStatus( HttpServletResponse.SC_CONFLICT );
             return "Account recovery is not enabled";
         }
-        
+
         boolean recover = securityService.sendRestoreMessage( username, rootPath );
-        
+
         if ( !recover )
         {
             response.setStatus( HttpServletResponse.SC_CONFLICT );
@@ -125,11 +132,11 @@ public class AccountController
         }
 
         log.info( "Recovery message sent for user: " + username );
-        
+
         response.setStatus( HttpServletResponse.SC_OK );
         return "Recovery message sent";
     }
-    
+
     @RequestMapping( value = "/restore", method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String restoreAccount(
         @RequestParam String username,
@@ -137,42 +144,42 @@ public class AccountController
         @RequestParam String code,
         @RequestParam String password,
         HttpServletRequest request,
-        HttpServletResponse response )        
+        HttpServletResponse response )
     {
         if ( !systemSettingManager.accountRecoveryEnabled() )
         {
             response.setStatus( HttpServletResponse.SC_CONFLICT );
             return "Account recovery is not enabled";
         }
-        
+
         if ( password == null || !ValidationUtils.passwordIsValid( password ) )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Password is not specified or invalid";
         }
-        
+
         if ( password.trim().equals( username.trim() ) )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Password cannot be equal to username";
         }
-        
+
         boolean restore = securityService.restore( username, token, code, password );
-        
+
         if ( !restore )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Account could not be restored";
-        }        
+        }
 
         log.info( "Account restored for user: " + username );
-        
+
         response.setStatus( HttpServletResponse.SC_OK );
         return "Account restored";
     }
-    
+
     @RequestMapping( method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String createAccount( 
+    public @ResponseBody String createAccount(
         @RequestParam String username,
         @RequestParam String firstName,
         @RequestParam String surname,
@@ -186,17 +193,17 @@ public class AccountController
         HttpServletResponse response )
     {
         boolean allowed = configurationService.getConfiguration().selfRegistrationAllowed();
-        
+
         if ( !allowed )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "User self registration is not allowed";
         }
-        
+
         // ---------------------------------------------------------------------
         // Trim input
         // ---------------------------------------------------------------------
-        
+
         username = StringUtils.trimToNull( username );
         firstName = StringUtils.trimToNull( firstName );
         surname = StringUtils.trimToNull( surname );
@@ -210,21 +217,21 @@ public class AccountController
         // ---------------------------------------------------------------------
         // Validate input, return 400 if invalid
         // ---------------------------------------------------------------------
-        
+
         if ( username == null || username.trim().length() > MAX_LENGTH )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "User name is not specified or invalid";
         }
-        
+
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-        
+
         if ( credentials != null )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "User name is alread taken";
         }
-        
+
         if ( firstName == null || firstName.trim().length() > MAX_LENGTH )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
@@ -242,19 +249,19 @@ public class AccountController
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Password is not specified or invalid";
         }
-        
+
         if ( password.trim().equals( username.trim() ) )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Password cannot be equal to username";
         }
-        
+
         if ( email == null || !ValidationUtils.emailIsValid( email ) )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Email is not specified or invalid";
         }
-        
+
         if ( phoneNumber == null || phoneNumber.trim().length() > 30 )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
@@ -278,11 +285,11 @@ public class AccountController
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Recaptcha response must be specified";
         }
-        
+
         // ---------------------------------------------------------------------
         // Check result from API, return 500 if not
         // ---------------------------------------------------------------------
-        
+
         String[] results = checkRecaptcha( KEY, request.getRemoteAddr(), recapChallenge, recapResponse );
 
         if ( results == null || results.length == 0 )
@@ -294,10 +301,10 @@ public class AccountController
         // ---------------------------------------------------------------------
         // Check if verification was successful, return 400 if not
         // ---------------------------------------------------------------------
-        
+
         if ( !TRUE.equalsIgnoreCase( results[0] ) )
-        {            
-            log.info( "Recaptcha failed with code: " + ( results.length > 0 ? results[1] : "" ) );
+        {
+            log.info( "Recaptcha failed with code: " + (results.length > 0 ? results[1] : "") );
 
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "The characters you entered did not match the word verification, try again";
@@ -306,10 +313,10 @@ public class AccountController
         // ---------------------------------------------------------------------
         // Create and save user, return 201
         // ---------------------------------------------------------------------
-        
+
         UserAuthorityGroup userRole = configurationService.getConfiguration().getSelfRegistrationRole();
         OrganisationUnit orgUnit = configurationService.getConfiguration().getSelfRegistrationOrgUnit();
-        
+
         User user = new User();
         user.setFirstName( firstName );
         user.setSurname( surname );
@@ -317,38 +324,84 @@ public class AccountController
         user.setPhoneNumber( phoneNumber );
         user.setEmployer( employer );
         user.getOrganisationUnits().add( orgUnit );
-        
+
         credentials = new UserCredentials();
         credentials.setUsername( username );
         credentials.setPassword( passwordManager.encodePassword( username, password ) );
         credentials.setSelfRegistered( true );
         credentials.setUser( user );
         credentials.getUserAuthorityGroups().add( userRole );
-        
+
         user.setUserCredentials( credentials );
-        
+
         userService.addUser( user );
         userService.addUserCredentials( credentials );
 
         authenticate( username, password, userRole, request );
-        
+
         log.info( "Created user with username: " + username );
-        
+
         response.setStatus( HttpServletResponse.SC_CREATED );
         return "Account created";
     }
-    
+
+    @RequestMapping( method = RequestMethod.PUT, produces = ContextUtils.CONTENT_TYPE_TEXT )
+    public @ResponseBody String updatePassword(
+        @RequestParam String oldPassword,
+        @RequestParam String password,
+        HttpServletRequest request,
+        HttpServletResponse response ) throws IOException
+    {
+        String username = (String) request.getSession().getAttribute( "username" );
+        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put( "status", "OK" );
+
+        if ( userService.credentialsNonExpired( credentials ) )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            result.put( "status", "NON_EXPIRED" );
+            result.put( "message", "Account is not expired, redirecting to login." );
+
+            return objectMapper.writeValueAsString( result );
+        }
+
+        String oldPasswordEncoded = passwordManager.encodePassword( username, oldPassword );
+
+        if ( !credentials.getPassword().equals( oldPasswordEncoded ) )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            result.put( "status", "NON_MATCHING_PASSWORD" );
+            result.put( "message", "Old password is wrong, please correct and try again." );
+
+            return objectMapper.writeValueAsString( result );
+        }
+
+        String passwordEncoded = passwordManager.encodePassword( username, password );
+
+        credentials.setPassword( passwordEncoded );
+        credentials.setPasswordLastUpdated( new Date() );
+        userService.updateUserCredentials( credentials );
+
+        authenticate( username, password, getAuthorities( credentials.getUserAuthorityGroups() ), request );
+
+        result.put( "message", "Account was updated." );
+
+        return objectMapper.writeValueAsString( result );
+    }
+
     @RequestMapping( value = "/username", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
     public @ResponseBody String validateUserName( @RequestParam String username )
     {
         boolean valid = username != null && userService.getUserCredentialsByUsername( username ) == null;
-        
+
         // Custom code required because of our hacked jQuery validation
-        
+
         return valid ? "{ \"response\": \"success\", \"message\": \"\" }" :
             "{ \"response\": \"error\", \"message\": \"Username is already taken\" }";
     }
-    
+
     // ---------------------------------------------------------------------
     // Supportive methods
     // ---------------------------------------------------------------------
@@ -356,7 +409,7 @@ public class AccountController
     private String[] checkRecaptcha( String privateKey, String remoteIp, String challenge, String response )
     {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        
+
         params.add( "privatekey", privateKey );
         params.add( "remoteip", remoteIp );
         params.add( "challenge", challenge );
@@ -365,33 +418,59 @@ public class AccountController
         String result = restTemplate.postForObject( RECAPTCHA_VERIFY_URL, params, String.class );
 
         log.info( "Recaptcha result: " + result );
-        
+
         return result != null ? result.split( SPLIT ) : null;
     }
-    
-    private void authenticate( String username, String rawPassword, UserAuthorityGroup userRole, HttpServletRequest request )
+
+    private void authenticate( String username, String rawPassword, Collection<GrantedAuthority> authorities, HttpServletRequest request )
     {
-        UsernamePasswordAuthenticationToken token = 
-            new UsernamePasswordAuthenticationToken( username, rawPassword, getAuthorities( userRole ) );
+        UsernamePasswordAuthenticationToken token =
+            new UsernamePasswordAuthenticationToken( username, rawPassword, authorities );
 
         Authentication auth = authenticationManager.authenticate( token );
-        
+
         SecurityContextHolder.getContext().setAuthentication( auth );
 
         HttpSession session = request.getSession();
-        
+
         session.setAttribute( "SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext() );
     }
-    
+
+    private void authenticate( String username, String rawPassword, UserAuthorityGroup userRole, HttpServletRequest request )
+    {
+        UsernamePasswordAuthenticationToken token =
+            new UsernamePasswordAuthenticationToken( username, rawPassword, getAuthorities( userRole ) );
+
+        Authentication auth = authenticationManager.authenticate( token );
+
+        SecurityContextHolder.getContext().setAuthentication( auth );
+
+        HttpSession session = request.getSession();
+
+        session.setAttribute( "SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext() );
+    }
+
+    private Collection<GrantedAuthority> getAuthorities( Set<UserAuthorityGroup> userRoles )
+    {
+        Collection<GrantedAuthority> auths = new HashSet<GrantedAuthority>();
+
+        for ( UserAuthorityGroup userRole : userRoles )
+        {
+            auths.addAll( getAuthorities( userRole ) );
+        }
+
+        return auths;
+    }
+
     private Collection<GrantedAuthority> getAuthorities( UserAuthorityGroup userRole )
     {
         Collection<GrantedAuthority> auths = new HashSet<GrantedAuthority>();
-        
+
         for ( String auth : userRole.getAuthorities() )
         {
             auths.add( new SimpleGrantedAuthority( auth ) );
         }
-        
+
         return auths;
     }
 }

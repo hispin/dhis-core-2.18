@@ -135,6 +135,11 @@
       <result name="error" type="redirect">login.action</result>
     </action>
 
+    <action name="expired" class="org.hisp.dhis.useraccount.action.ExpiredAccountAction">
+      <result name="success" type="velocity">/dhis-web-commons/useraccount/expired.vm</result>
+      <result name="error" type="redirect">login.action</result>
+    </action>
+
     <action name="recovery" class="org.hisp.dhis.useraccount.action.IsAccountRecoveryAllowedAction">
       <result name="success" type="velocity">/dhis-web-commons/useraccount/recovery.vm</result>
       <result name="error" type="redirect">login.action</result>
