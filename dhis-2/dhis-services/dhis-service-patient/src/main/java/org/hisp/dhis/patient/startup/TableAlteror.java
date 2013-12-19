@@ -704,6 +704,8 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + ".age]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
+
+                executeSql( "ALTER TABLE patient DROP COLUMN gender" );
                 executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
                 executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
                 executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
