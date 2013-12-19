@@ -163,6 +163,12 @@ public class DefaultSystemSettingManager
         return (Boolean) getSystemSetting( KEY_ACCOUNT_RECOVERY, false );
     }
 
+    @Override
+    public boolean selfRegistrationNoRecaptcha()
+    {
+        return (Boolean) getSystemSetting( KEY_SELF_REGISTRATION_NO_RECAPTCHA, false );
+    }
+
     public boolean emailEnabled()
     {
         return getEmailHostName() != null;
