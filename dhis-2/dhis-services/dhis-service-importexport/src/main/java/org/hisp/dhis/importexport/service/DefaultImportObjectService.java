@@ -613,8 +613,8 @@ public class DefaultImportObjectService<T>
         {
             DataValue dataValue = (DataValue) object;
 
-            dataValue = updateDataValue( dataValue, dataValueService.getDataValue( dataValue.getSource(), dataValue
-                .getDataElement(), dataValue.getPeriod(), dataValue.getCategoryOptionCombo() ) );
+            dataValue = updateDataValue( dataValue, dataValueService.getDataValue( dataValue.getDataElement(), 
+                dataValue.getPeriod(), dataValue.getSource(), dataValue.getCategoryOptionCombo() ) );
         }
 
         // ---------------------------------------------------------------------

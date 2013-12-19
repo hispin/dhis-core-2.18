@@ -55,25 +55,15 @@ public class DataValue
     public static final String TRUE = "true";
     public static final String FALSE = "false";
 
-    /**
-     * Part of the DataValue's composite ID
-     */
     private DataElement dataElement;
 
-    /**
-     * Part of the DataValue's composite ID
-     */
     private Period period;
 
-    /**
-     * Part of the DataValue's composite ID
-     */
     private OrganisationUnit source;
 
-    /**
-     * Part of the DataValue's composite ID
-     */
     private DataElementCategoryOptionCombo categoryOptionCombo;
+
+    private DataElementCategoryOptionCombo attributeOptionCombo;
 
     private String value;
 
@@ -99,12 +89,14 @@ public class DataValue
      * @param source the organisation unit.
      * @param categoryOptionCombo the category option combo.
      */
-    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo categoryOptionCombo )
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, 
+        DataElementCategoryOptionCombo categoryOptionCombo, DataElementCategoryOptionCombo attributeOptionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
         this.source = source;
         this.categoryOptionCombo = categoryOptionCombo;
+        this.attributeOptionCombo = attributeOptionCombo;
     }
 
     /**
@@ -112,18 +104,20 @@ public class DataValue
      * @param period the period.
      * @param source the organisation unit.
      * @param categoryOptionCombo the category option combo.
+     * @param attributeOptionCombo the attribute option combo.
      * @param value the value.
      * @param storedBy the user that stored this data value.
      * @param timestamp the time of creation of this data value.
      * @param comment the comment.
      */
     public DataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo categoryOptionCombo, 
-        String value, String storedBy, Date timestamp, String comment )
+        DataElementCategoryOptionCombo attributeOptionCombo, String value, String storedBy, Date timestamp, String comment )
     {
         this.dataElement = dataElement;
         this.period = period;
         this.source = source;
         this.categoryOptionCombo = categoryOptionCombo;
+        this.attributeOptionCombo = attributeOptionCombo;
         this.value = value;
         this.storedBy = storedBy;
         this.timestamp = timestamp;
@@ -278,6 +272,16 @@ public class DataValue
     public String getValue()
     {
         return value;
+    }
+
+    public DataElementCategoryOptionCombo getAttributeOptionCombo()
+    {
+        return attributeOptionCombo;
+    }
+
+    public void setAttributeOptionCombo( DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        this.attributeOptionCombo = attributeOptionCombo;
     }
 
     public void setValue( String value )

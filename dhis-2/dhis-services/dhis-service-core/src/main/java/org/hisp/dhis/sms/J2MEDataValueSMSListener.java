@@ -198,7 +198,7 @@ public class J2MEDataValueSMSListener
         DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( code
             .getOptionId() );
 
-        DataValue dv = dataValueService.getDataValue( orgUnit, code.getDataElement(), period, optionCombo );
+        DataValue dv = dataValueService.getDataValue( code.getDataElement(), period, orgUnit, optionCombo );
 
         String value = parsedMessage.get( upperCaseCode );
         if ( !StringUtils.isEmpty( value ) )
@@ -357,7 +357,7 @@ public class J2MEDataValueSMSListener
             DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
                 .getDataElementCategoryOptionCombo( code.getOptionId() );
 
-            DataValue dv = dataValueService.getDataValue( orgunit, code.getDataElement(), period, optionCombo );
+            DataValue dv = dataValueService.getDataValue( code.getDataElement(), period, orgunit, optionCombo );
 
             if ( dv == null && !StringUtils.isEmpty( code.getCode() ) )
             {

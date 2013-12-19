@@ -208,7 +208,7 @@ public class DefaultDataSetReportService
 
                     if ( selectedUnitOnly )
                     {
-                        DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
+                        DataValue dataValue = dataValueService.getDataValue( dataElement, period, unit, optionCombo );
                         value = dataValue != null && dataValue.getValue() != null ? Double.parseDouble( dataValue
                             .getValue() ) : null;
                     }

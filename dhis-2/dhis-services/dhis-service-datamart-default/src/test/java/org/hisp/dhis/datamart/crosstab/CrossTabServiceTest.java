@@ -78,6 +78,8 @@ public class CrossTabServiceTest
     private List<DataElementOperand> operands;
     private Collection<Integer> periodIds;
     private Collection<Integer> organisationUnitIds;
+    
+    private DataElementCategoryOptionCombo defaultOptionCombo;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -166,6 +168,8 @@ public class CrossTabServiceTest
             organisationUnitIds.add( organisationUnitService.addOrganisationUnit( organisationUnit ) );
         }
         
+        defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
         operands = new ArrayList<DataElementOperand>( categoryService.getOperands( dataElements ) );
         
         for ( DataElement dataElement : dataElements )
@@ -176,7 +180,7 @@ public class CrossTabServiceTest
                 {
                     for ( OrganisationUnit organisationUnit : organisationUnits )
                     {
-                        dataValueService.addDataValue( createDataValue( dataElement, period, organisationUnit, "10", categoryOptionCombo ) );
+                        dataValueService.addDataValue( createDataValue( dataElement, period, organisationUnit, "10", categoryOptionCombo, defaultOptionCombo ) );
                     }
                 }
             }

@@ -93,18 +93,27 @@ public interface DataValueStore
     /**
      * Returns a DataValue.
      * 
-     * @param source the Source of the DataValue.
      * @param dataElement the DataElement of the DataValue.
      * @param period the Period of the DataValue.
+     * @param source the Source of the DataValue.
+     * @param categoryOptionCombo the category option combo.
+     * @param attributeOptionCombo the attribute option combo.
      * @return the DataValue which corresponds to the given parameters, or null
      *         if no match.
      */
-    DataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period, DataElementCategoryOptionCombo optionCombo );
+    DataValue getDataValue( DataElement dataElement, Period period, OrganisationUnit source, 
+        DataElementCategoryOptionCombo categoryOptionCombo, DataElementCategoryOptionCombo attributeOptionCombo );
 
     /**
      * Returns a non-persisted DataValue.
+     * 
+     * @param dataElementId data element id
+     * @param periodId period id
+     * @param sourceId source id
+     * @param categoryOptionComboId category option combo id
+     * @param attributeOptionComboId attribute option combo id
      */
-    DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId );
+    DataValue getDataValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId, int attributeOptionComboId );
     
     // -------------------------------------------------------------------------
     // Collections of DataValues
@@ -173,7 +182,7 @@ public interface DataValueStore
      *         Period, and any of the DataElements, or an empty collection if no
      *         values match.
      */
-    Collection<DataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> optionCombos );
+    Collection<DataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements, Collection<DataElementCategoryOptionCombo> categoryOptionCombos );
     
     /**
      * Returns all DataValues for a given DataElement, Period, and collection of 
@@ -211,7 +220,7 @@ public interface DataValueStore
      * @return a collection of all DataValues which match the given DataElement,
      *         Periods, and Sources.
      */
-    Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, 
+    Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombos, 
         Collection<Period> periods, Collection<OrganisationUnit> sources );
     
     /**
@@ -221,7 +230,7 @@ public interface DataValueStore
      * @return a collection of all DataValues which match the given collection of
      *         DataElementCategoryOptionCombos.
      */
-    Collection<DataValue> getDataValues( Collection<DataElementCategoryOptionCombo> optionCombos );
+    Collection<DataValue> getDataValues( Collection<DataElementCategoryOptionCombo> categoryOptionCombos );
     
     /**
      * Returns all DataValues for a given collection of DataElements.

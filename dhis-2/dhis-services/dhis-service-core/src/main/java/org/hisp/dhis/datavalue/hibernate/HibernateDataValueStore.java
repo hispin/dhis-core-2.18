@@ -148,8 +148,8 @@ public class HibernateDataValueStore
         return query.executeUpdate();
     }
 
-    public DataValue getDataValue( OrganisationUnit source, DataElement dataElement, Period period,
-        DataElementCategoryOptionCombo optionCombo )
+    public DataValue getDataValue( DataElement dataElement, Period period, OrganisationUnit source, 
+        DataElementCategoryOptionCombo categoryOptionCombo, DataElementCategoryOptionCombo attributeOptionCombo )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -164,19 +164,21 @@ public class HibernateDataValueStore
         criteria.add( Restrictions.eq( "source", source ) );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
-        criteria.add( Restrictions.eq( "categoryOptionCombo", optionCombo ) );
+        criteria.add( Restrictions.eq( "categoryOptionCombo", categoryOptionCombo ) );
+        criteria.add( Restrictions.eq( "attributeOptionCombo", attributeOptionCombo ) );
 
         return (DataValue) criteria.uniqueResult();
     }
     
-    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
+    public DataValue getDataValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId, int attributeOptionComboId )
     {
         final String sql =
             "SELECT * FROM datavalue " +
             "WHERE dataelementid = " + dataElementId + " " +
-            "AND categoryoptioncomboid = " + categoryOptionComboId + " " +
             "AND periodid = " + periodId + " " +
-            "AND sourceid = " + sourceId;
+            "AND sourceid = " + sourceId + " " +
+            "AND categoryoptioncomboid = " + categoryOptionComboId + " " +
+            "AND attributeoptioncomboid = " + attributeOptionComboId;
         
         try
         {
@@ -272,11 +274,11 @@ public class HibernateDataValueStore
 
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements,
-        Collection<DataElementCategoryOptionCombo> optionCombos )
+        Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         Period storedPeriod = periodStore.reloadPeriod( period );
 
-        if ( storedPeriod == null || dataElements == null || dataElements.isEmpty() || optionCombos == null || optionCombos.isEmpty() )
+        if ( storedPeriod == null || dataElements == null || dataElements.isEmpty() || categoryOptionCombos == null || categoryOptionCombos.isEmpty() )
         {
             return Collections.emptySet();
         }
@@ -287,7 +289,7 @@ public class HibernateDataValueStore
         criteria.add( Restrictions.eq( "source", source ) );
         criteria.add( Restrictions.eq( "period", storedPeriod ) );
         criteria.add( Restrictions.in( "dataElement", dataElements ) );
-        criteria.add( Restrictions.in( "categoryOptionCombo", optionCombos ) );
+        criteria.add( Restrictions.in( "categoryOptionCombo", categoryOptionCombos ) );
 
         return criteria.list();
     }
@@ -345,7 +347,7 @@ public class HibernateDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
+    public Collection<DataValue> getDataValues( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
         Collection<Period> periods, Collection<OrganisationUnit> sources )
     {
         Collection<Period> storedPeriods = new ArrayList<Period>();
@@ -369,7 +371,7 @@ public class HibernateDataValueStore
 
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
-        criteria.add( Restrictions.eq( "categoryOptionCombo", optionCombo ) );
+        criteria.add( Restrictions.eq( "categoryOptionCombo", categoryOptionCombo ) );
         criteria.add( Restrictions.in( "period", storedPeriods ) );
         criteria.add( Restrictions.in( "source", sources ) );
 
@@ -377,17 +379,17 @@ public class HibernateDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataValue> getDataValues( Collection<DataElementCategoryOptionCombo> optionCombos )
+    public Collection<DataValue> getDataValues( Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        if ( optionCombos == null || optionCombos.isEmpty() )
+        if ( categoryOptionCombos == null || categoryOptionCombos.isEmpty() )
         {
             return new HashSet<DataValue>();
         }
         
         Criteria criteria = session.createCriteria( DataValue.class );
-        criteria.add( Restrictions.in( "categoryOptionCombo", optionCombos ) );
+        criteria.add( Restrictions.in( "categoryOptionCombo", categoryOptionCombos ) );
 
         return criteria.list();
     }
@@ -459,12 +461,12 @@ public class HibernateDataValueStore
         while ( rowSet.next() )
         {
             String dataElement = rowSet.getString( 1 );
-            String optionCombo = rowSet.getString( 2 );
+            String categoryOptionCombo = rowSet.getString( 2 );
             Double value = MathUtils.parseDouble( rowSet.getString( 3 ) );
             
             if ( value != null )
             {
-                map.put( new DataElementOperand( dataElement, optionCombo ), value );
+                map.put( new DataElementOperand( dataElement, categoryOptionCombo ), value );
             }
         }
         
@@ -500,7 +502,7 @@ public class HibernateDataValueStore
         while ( rowSet.next() )
         {
             String dataElement = rowSet.getString( 1 );
-            String optionCombo = rowSet.getString( 2 );
+            String categoryOptionCombo = rowSet.getString( 2 );
             Double value = MathUtils.parseDouble( rowSet.getString( 3 ) );
             Date lastUpdated = rowSet.getDate( 4 );
             Date periodStartDate = rowSet.getDate( 5 );
@@ -511,7 +513,7 @@ public class HibernateDataValueStore
 
             if ( value != null )
             {
-                DataElementOperand dataElementOperand = new DataElementOperand( dataElement, optionCombo );
+                DataElementOperand dataElementOperand = new DataElementOperand( dataElement, categoryOptionCombo );
                 Long existingPeriodInterval = checkForDuplicates.get( dataElementOperand );
                 
                 if ( existingPeriodInterval != null && existingPeriodInterval < periodInterval )

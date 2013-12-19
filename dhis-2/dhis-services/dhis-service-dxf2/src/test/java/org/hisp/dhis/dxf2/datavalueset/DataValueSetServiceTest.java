@@ -153,9 +153,9 @@ public class DataValueSetServiceTest
         
         assertNotNull( dataValues );
         assertEquals( 3, dataValues.size() );
-        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, optionComboA, optionComboA ) ) );
         
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dsA, peA, ouA );
         
@@ -204,18 +204,18 @@ public class DataValueSetServiceTest
 
         assertNotNull( dataValues );
         assertEquals( 12, dataValues.size() );
-        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deA, peA, ouB, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deA, peB, ouA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deA, peB, ouB, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peA, ouB, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peB, ouA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deB, peB, ouB, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peA, ouB, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peB, ouA, optionComboA ) ) );
-        assertTrue( dataValues.contains( new DataValue( deC, peB, ouB, optionComboA ) ) );        
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouB, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peB, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peB, ouB, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouB, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peB, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peB, ouB, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouB, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peB, ouA, optionComboA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peB, ouB, optionComboA, optionComboA ) ) );        
     }
     
     @Test

@@ -15,6 +15,7 @@
       <column name="periodid" />
       <column name="sourceid" />
       <column name="categoryoptioncomboid" />
+      <column name="attributeoptioncomboid" />
     </many-to-one>
 
     <property name="value" />

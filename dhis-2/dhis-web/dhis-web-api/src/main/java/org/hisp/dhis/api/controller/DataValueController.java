@@ -155,11 +155,11 @@ public class DataValueController
 
         Date now = new Date();
 
-        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, categoryOptionCombo );
+        DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, categoryOptionCombo );
         
         if ( dataValue == null )
         {
-            dataValue = new DataValue( dataElement, period, organisationUnit, categoryOptionCombo, null, storedBy, now, null );
+            dataValue = new DataValue( dataElement, period, organisationUnit, categoryOptionCombo, null, null, storedBy, now, null );
             
             if ( value != null )
             {

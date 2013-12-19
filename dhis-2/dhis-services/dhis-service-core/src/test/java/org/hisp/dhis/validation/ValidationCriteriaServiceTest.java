@@ -36,7 +36,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.patient.Patient;
 import org.junit.Test;
 
 /**

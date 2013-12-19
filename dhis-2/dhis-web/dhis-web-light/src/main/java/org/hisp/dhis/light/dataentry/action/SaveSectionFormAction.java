@@ -309,11 +309,11 @@ public class SaveSectionFormAction
                 String value = parameterMap.get( key );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = categoryService
+                DataElementCategoryOptionCombo categoryOptionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
                 DataValue dataValue = dataValueService
-                    .getDataValue( organisationUnit, dataElement, period, optionCombo );
+                    .getDataValue( dataElement, period, organisationUnit, categoryOptionCombo );
 
                 value = value.trim();
                 Boolean valueIsEmpty = (value == null || value.length() == 0);
@@ -406,7 +406,7 @@ public class SaveSectionFormAction
                     {
                         needsValidation = true;
 
-                        dataValue = new DataValue( dataElement, period, organisationUnit, optionCombo, value, storedBy, new Date(), null );
+                        dataValue = new DataValue( dataElement, period, organisationUnit, categoryOptionCombo, null, value, storedBy, new Date(), null );
                         dataValueService.addDataValue( dataValue );
                     }
                     else

@@ -411,15 +411,15 @@ public class FacilityReportingServiceImpl
     {
         String value = dv.getValue().trim();
 
-        DataElementCategoryOptionCombo cateOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
+        DataElementCategoryOptionCombo catOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
             .getCategoryOptComboID() );
 
-        org.hisp.dhis.datavalue.DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period,
-            cateOptCombo );
+        org.hisp.dhis.datavalue.DataValue dataValue = dataValueService.getDataValue( dataElement, period,
+            unit, catOptCombo );
 
         if ( dataValue == null )
         {
-            dataValue = new org.hisp.dhis.datavalue.DataValue( dataElement, period, unit, cateOptCombo, value, "", new Date(), "" );
+            dataValue = new org.hisp.dhis.datavalue.DataValue( dataElement, period, unit, catOptCombo, catOptCombo, value, "", new Date(), "" );
             dataValueService.addDataValue( dataValue );
         }
         else
