@@ -39,7 +39,7 @@ function SelectionTreeSelection()
   };
 
   this.getSelectedUid = function() {
-    return selectedOrganisationUnitUid;
+    return selectedOrganisationUnit;
   }
 
   this.isSelected = function() {
