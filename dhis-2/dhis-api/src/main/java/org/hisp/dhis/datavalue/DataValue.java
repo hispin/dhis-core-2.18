@@ -93,13 +93,12 @@ public class DataValue
     {
     }
 
-    public DataValue( DataElement dataElement, Period period, OrganisationUnit source )
-    {
-        this.dataElement = dataElement;
-        this.period = period;
-        this.source = source;
-    }
-
+    /**
+     * @param dataElement the data element.
+     * @param period the period.
+     * @param source the organisation unit.
+     * @param categoryOptionCombo the category option combo.
+     */
     public DataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         this.dataElement = dataElement;
@@ -108,46 +107,27 @@ public class DataValue
         this.categoryOptionCombo = categoryOptionCombo;
     }
 
-    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value )
+    /**
+     * @param dataElement the data element.
+     * @param period the period.
+     * @param source the organisation unit.
+     * @param categoryOptionCombo the category option combo.
+     * @param value the value.
+     * @param storedBy the user that stored this data value.
+     * @param timestamp the time of creation of this data value.
+     * @param comment the comment.
+     */
+    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, DataElementCategoryOptionCombo categoryOptionCombo, 
+        String value, String storedBy, Date timestamp, String comment )
     {
         this.dataElement = dataElement;
         this.period = period;
         this.source = source;
-        this.value = value;
-    }
-
-    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, DataElementCategoryOptionCombo categoryOptionCombo )
-    {
-        this.dataElement = dataElement;
-        this.period = period;
-        this.source = source;
-        this.value = value;
         this.categoryOptionCombo = categoryOptionCombo;
-    }
-
-    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
-                      Date timestamp, String comment )
-    {
-        this.dataElement = dataElement;
-        this.period = period;
-        this.source = source;
         this.value = value;
         this.storedBy = storedBy;
         this.timestamp = timestamp;
         this.comment = comment;
-    }
-
-    public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
-                      Date timestamp, String comment, DataElementCategoryOptionCombo categoryOptionCombo )
-    {
-        this.dataElement = dataElement;
-        this.period = period;
-        this.source = source;
-        this.value = value;
-        this.storedBy = storedBy;
-        this.timestamp = timestamp;
-        this.comment = comment;
-        this.categoryOptionCombo = categoryOptionCombo;
     }
 
     // -------------------------------------------------------------------------

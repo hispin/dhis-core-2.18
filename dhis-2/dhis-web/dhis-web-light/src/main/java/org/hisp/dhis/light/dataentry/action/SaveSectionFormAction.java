@@ -406,8 +406,7 @@ public class SaveSectionFormAction
                     {
                         needsValidation = true;
 
-                        dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(),
-                            null, optionCombo );
+                        dataValue = new DataValue( dataElement, period, organisationUnit, optionCombo, value, storedBy, new Date(), null );
                         dataValueService.addDataValue( dataValue );
                     }
                     else
