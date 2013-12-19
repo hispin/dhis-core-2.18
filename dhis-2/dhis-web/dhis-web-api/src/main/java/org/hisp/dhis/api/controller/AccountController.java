@@ -187,8 +187,8 @@ public class AccountController
         @RequestParam String email,
         @RequestParam String phoneNumber,
         @RequestParam String employer,
-        @RequestParam( value = "recaptcha_challenge_field" ) String recapChallenge,
-        @RequestParam( value = "recaptcha_response_field" ) String recapResponse,
+        @RequestParam( value = "recaptcha_challenge_field", required = false ) String recapChallenge,
+        @RequestParam( value = "recaptcha_response_field", required = false ) String recapResponse,
         HttpServletRequest request,
         HttpServletResponse response )
     {
@@ -274,40 +274,43 @@ public class AccountController
             return "Employer is not specified or invalid";
         }
 
-        if ( recapChallenge == null )
+        if ( !systemSettingManager.selfRegistrationNoRecaptcha() )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Recaptcha challenge must be specified";
-        }
+            if ( recapChallenge == null )
+            {
+                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+                return "Recaptcha challenge must be specified";
+            }
 
-        if ( recapResponse == null )
-        {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Recaptcha response must be specified";
-        }
+            if ( recapResponse == null )
+            {
+                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+                return "Recaptcha response must be specified";
+            }
 
-        // ---------------------------------------------------------------------
-        // Check result from API, return 500 if not
-        // ---------------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // Check result from API, return 500 if not
+            // ---------------------------------------------------------------------
 
-        String[] results = checkRecaptcha( KEY, request.getRemoteAddr(), recapChallenge, recapResponse );
+            String[] results = checkRecaptcha( KEY, request.getRemoteAddr(), recapChallenge, recapResponse );
 
-        if ( results == null || results.length == 0 )
-        {
-            response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-            return "Captcha could not be verified due to a server error";
-        }
+            if ( results == null || results.length == 0 )
+            {
+                response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+                return "Captcha could not be verified due to a server error";
+            }
 
-        // ---------------------------------------------------------------------
-        // Check if verification was successful, return 400 if not
-        // ---------------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // Check if verification was successful, return 400 if not
+            // ---------------------------------------------------------------------
 
-        if ( !TRUE.equalsIgnoreCase( results[0] ) )
-        {
-            log.info( "Recaptcha failed with code: " + (results.length > 0 ? results[1] : "") );
+            if ( !TRUE.equalsIgnoreCase( results[0] ) )
+            {
+                log.info( "Recaptcha failed with code: " + (results.length > 0 ? results[1] : "") );
 
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "The characters you entered did not match the word verification, try again";
+                response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+                return "The characters you entered did not match the word verification, try again";
+            }
         }
 
         // ---------------------------------------------------------------------

@@ -28,14 +28,14 @@ package org.hisp.dhis.setting;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.QuarterlyPeriodType;
-import org.hisp.dhis.period.YearlyPeriodType;
 
 /**
  * @author Stian Strandli
@@ -44,7 +44,7 @@ import org.hisp.dhis.period.YearlyPeriodType;
 public interface SystemSettingManager
 {
     final String ID = SystemSettingManager.class.getName();
-    
+
     final String KEY_APPLICATION_TITLE = "applicationTitle";
     final String KEY_APPLICATION_INTRO = "keyApplicationIntro";
     final String KEY_APPLICATION_NOTIFICATION = "keyApplicationNotification";
@@ -82,55 +82,61 @@ public interface SystemSettingManager
     final String KEY_LAST_MONITORING_RUN = "keyLastMonitoringRun";
     final String KEY_GOOGLE_ANALYTICS_UA = "googleAnalyticsUA";
     final String KEY_CREDENTIALS_EXPIRES = "credentialsExpires";
+    final String KEY_SELF_REGISTRATION_NO_RECAPTCHA = "keySelfRegistrationNoRecaptcha";
 
     final String DEFAULT_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASK_STRATEGY = "lastMonth";
     final String DEFAULT_FLAG = "dhis2";
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
     final double DEFAULT_FACTOR_OF_DEVIATION = 2.0;
-    final int DEFAULT_ORGUNITGROUPSET_AGG_LEVEL = 3;    
+    final int DEFAULT_ORGUNITGROUPSET_AGG_LEVEL = 3;
     final String DEFAULT_GOOGLE_MAPS_API_KEY = "ABQIAAAAut6AhySExnYIXm5s2OFIkxRKNzJ-_9njnryRTbvC6CtrS4sRvRREWnxwlZUa630pLuPf3nD9i4fq9w";
     final String DEFAULT_START_MODULE = "dhis-web-dashboard-integration";
     final String DEFAULT_APPLICATION_TITLE = "District Health Information Software 2";
-    final int DEFAULT_EMAIL_PORT = 587;    
+    final int DEFAULT_EMAIL_PORT = 587;
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
     final String DEFAULT_TIME_FOR_SENDING_MESSAGE = "08:00";
     final String DEFAULT_CACHE_STRATEGY = "CACHE_6AM_TOMORROW";
-    
+
     final String SYSPROP_PORTAL = "runningAsPortal";
-    
-    final HashSet<String> DEFAULT_SCHEDULED_PERIOD_TYPES = new HashSet<String>() { {
-        add( MonthlyPeriodType.NAME ); 
-        add( QuarterlyPeriodType.NAME );
-        add( YearlyPeriodType.NAME );
-    } };
-    
+
+    final HashSet<String> DEFAULT_SCHEDULED_PERIOD_TYPES = new HashSet<String>()
+    {
+        {
+            add( MonthlyPeriodType.NAME );
+            add( QuarterlyPeriodType.NAME );
+            add( YearlyPeriodType.NAME );
+        }
+    };
+
     void saveSystemSetting( String name, Serializable value );
 
     Serializable getSystemSetting( String name );
-    
+
     Serializable getSystemSetting( String name, Serializable defaultValue );
 
     Collection<SystemSetting> getAllSystemSettings();
 
     void deleteSystemSetting( String name );
-    
+
     List<String> getFlags();
-        
+
     String getFlagImage();
-    
+
     String getEmailHostName();
-    
+
     int getEmailPort();
-    
+
     String getEmailUsername();
-    
+
     String getEmailPassword();
-    
+
     boolean getEmailTls();
-    
+
     boolean accountRecoveryEnabled();
-    
+
+    boolean selfRegistrationNoRecaptcha();
+
     boolean emailEnabled();
 
     String googleAnalyticsUA();

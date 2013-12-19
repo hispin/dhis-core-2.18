@@ -39,8 +39,7 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCOUNT_RECOVERY;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CREDENTIALS_EXPIRES;
+import static org.hisp.dhis.setting.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -76,6 +75,13 @@ public class SetAccessSettingsAction
     public void setSelfRegistrationOrgUnit( Integer selfRegistrationOrgUnit )
     {
         this.selfRegistrationOrgUnit = selfRegistrationOrgUnit;
+    }
+
+    private Boolean selfRegistrationNoRecaptcha;
+
+    public void setSelfRegistrationNoRecaptcha( Boolean selfRegistrationNoRecaptcha )
+    {
+        this.selfRegistrationNoRecaptcha = selfRegistrationNoRecaptcha;
     }
 
     private Boolean accountRecovery;
@@ -135,6 +141,7 @@ public class SetAccessSettingsAction
         configurationService.setConfiguration( config );
 
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_RECOVERY, accountRecovery );
+        systemSettingManager.saveSystemSetting( KEY_SELF_REGISTRATION_NO_RECAPTCHA, selfRegistrationNoRecaptcha );
 
         if ( credentialsExpires != null )
         {
