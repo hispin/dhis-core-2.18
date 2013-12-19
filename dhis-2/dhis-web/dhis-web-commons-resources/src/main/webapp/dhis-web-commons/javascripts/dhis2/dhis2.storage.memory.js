@@ -158,12 +158,9 @@ dhis2.util.namespace( 'dhis2.storage' );
             value: function ( store, arr ) {
                 var self = this;
                 var deferred = $.Deferred();
-                var chained = deferred.then();
 
                 $.each( arr, function ( idx, item ) {
-                    chained = chained.then( function () {
-                        return self.set( store, item );
-                    } );
+                    self.set( store, item );
                 } );
 
                 deferred.resolveWith( this );
