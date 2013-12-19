@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
@@ -82,6 +83,8 @@ public class UpdatePatientAction
     private UserService userService;
 
     private OrganisationUnitSelectionManager selectionManager;
+
+    private I18nFormat format;
 
     // -------------------------------------------------------------------------
     // Input
@@ -198,6 +201,11 @@ public class UpdatePatientAction
 
                 if ( StringUtils.isNotBlank( value ) )
                 {
+                    if ( attribute.getValueType().equals( PatientAttribute.TYPE_AGE ) )
+                    {
+                        value = format.formatDate( PatientAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                    }
+
                     attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, attribute );
 
                     if ( attributeValue == null )
@@ -261,6 +269,11 @@ public class UpdatePatientAction
     public void setUserService( UserService userService )
     {
         this.userService = userService;
+    }
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     public void setHealthWorker( Integer healthWorker )

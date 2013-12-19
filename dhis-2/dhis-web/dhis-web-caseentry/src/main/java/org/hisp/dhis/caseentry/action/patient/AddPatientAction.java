@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
@@ -92,6 +93,8 @@ public class AddPatientAction
     private RelationshipService relationshipService;
 
     private OrganisationUnitSelectionManager selectionManager;
+
+    private I18nFormat format;
 
     // -------------------------------------------------------------------------
     // Input
@@ -210,6 +213,11 @@ public class AddPatientAction
                     attributeValue = new PatientAttributeValue();
                     attributeValue.setPatient( patient );
                     attributeValue.setPatientAttribute( attribute );
+
+                    if ( attribute.getValueType().equals( PatientAttribute.TYPE_AGE ) )
+                    {
+                        value = format.formatDate( PatientAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                    }
                     attributeValue.setValue( value );
 
                     if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
@@ -225,10 +233,6 @@ public class AddPatientAction
                             // Someone deleted this option ...
                         }
                     }
-                    else
-                    {
-                        attributeValue.setValue( value.trim() );
-                    }
                     patientAttributeValues.add( attributeValue );
                 }
             }
@@ -238,7 +242,7 @@ public class AddPatientAction
         // Save patient
         // -------------------------------------------------------------------------
 
-        Integer id = patientService.createPatient( patient, representativeId, relationshipTypeId,
+       patientService.createPatient( patient, representativeId, relationshipTypeId,
             patientAttributeValues );
 
         // -------------------------------------------------------------------------
@@ -335,6 +339,11 @@ public class AddPatientAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
