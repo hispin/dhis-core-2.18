@@ -54,21 +54,6 @@
 				{
 					validateData();
 				}
-				,beforeValidateHandler: function(form)
-				{
-					var dobType = $('#singleEventForm [id=dobType]').val();
-					
-					if( dobType=='V' || dobType=='D' ) 
-					{
-						var birthDate = $('#singleEventForm [id=birthDate]').val();
-						if( birthDate != '' ){
-							$("#singleEventForm [id=memberValidator]").val(birthDate);
-						}
-					}else{
-						var age = $('#singleEventForm [id=age]').val();
-						$("#singleEventForm [id=memberValidator]").val(age);
-					}
-				}
 			});
 	});
 </script>

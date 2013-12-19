@@ -460,7 +460,7 @@ public class TableAlteror
         {
             Statement statement = holder.getStatement();
 
-            ResultSet resultSet = statement.executeQuery( "SELECT gender1 FROM patient" );
+            ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patient" );
 
             if ( resultSet.next() )
             {
@@ -471,13 +471,15 @@ public class TableAlteror
                 // ---------------------------------------------------------------------
 
                 max++;
+                String uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
                     + ",'"
-                    + CodeGenerator.generateCode()
+                    + uid
                     + "','"
                     + DateUtils.getMediumDateString()
-                    + "','Gender', 'Gender','" + PatientAttribute.TYPE_COMBO + "', false, false, false)" );
+                    + "','Gender', 'Gender','"
+                    + PatientAttribute.TYPE_COMBO + "', false, false, false)" );
 
                 int maxOpt = jdbcTemplate
                     .queryForInt( "select max(patientattributeoptionid) from patientattributeoption" );
@@ -505,30 +507,39 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + "]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "gender", uid );
+
                 // ---------------------------------------------------------------------
                 // Death date
                 // ---------------------------------------------------------------------
-                
+
                 max++;
+                uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
                     + ",'"
-                    + CodeGenerator.generateCode()
+                    + uid
                     + "','"
                     + DateUtils.getMediumDateString()
-                    + "','Death date', 'Death date','" + PatientAttribute.TYPE_DATE + "', false, false, false)" );
+                    + "','Death date', 'Death date','"
+                    + PatientAttribute.TYPE_DATE + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",deathDate from patient where deathDate is not null" );
+
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "deathDate", uid );
 
                 // ---------------------------------------------------------------------
                 // registrationDate
                 // ---------------------------------------------------------------------
-               
+
                 max++;
+                uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
                     + ",'"
-                    + CodeGenerator.generateCode()
+                    + uid
                     + "','"
                     + DateUtils.getMediumDateString()
                     + "','Registration date', 'Registration date','"
@@ -537,50 +548,63 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",registrationDate from patient where registrationDate is not null" );
 
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "registrationDate", uid );
+
                 // ---------------------------------------------------------------------
                 // isDead
                 // ---------------------------------------------------------------------
-               
+
                 max++;
+                uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
                     + ",'"
-                    + CodeGenerator.generateCode()
+                    + uid
                     + "','"
                     + DateUtils.getMediumDateString()
-                    + "','Is Dead', 'Is Dead','" + PatientAttribute.TYPE_TRACKER_ASSOCIATE + "', false, false, false)" );
+                    + "','Is Dead', 'Is Dead','"
+                    + PatientAttribute.TYPE_TRACKER_ASSOCIATE + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",isDead from patient where isDead is not null" );
+
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "isDead", uid );
 
                 // ---------------------------------------------------------------------
                 // underAge
                 // ---------------------------------------------------------------------
 
                 max++;
+                uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, description, name, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
                     + ",'"
-                    + CodeGenerator.generateCode()
+                    + uid
                     + "','"
                     + DateUtils.getMediumDateString()
                     + "','Is under age', 'Is under age','"
-                    + PatientAttribute.TYPE_TRACKER_ASSOCIATE
-                    + "', false, false, false)" );
+                    + PatientAttribute.TYPE_TRACKER_ASSOCIATE + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",isDead from patient where underAge=true" );
+
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "underAge", uid );
 
                 // ---------------------------------------------------------------------
                 // DobType
                 // ---------------------------------------------------------------------
 
                 max++;
+                uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, description, name, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
                     + ",'"
-                    + CodeGenerator.generateCode()
+                    + uid
                     + "','"
                     + DateUtils.getMediumDateString()
-                    + "','DOB type', 'DOB type','" + PatientAttribute.TYPE_COMBO + "', false, false, false)" );
+                    + "','DOB type', 'DOB type','"
+                    + PatientAttribute.TYPE_COMBO + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",dobType from patient where dobType is not null" );
 
@@ -608,37 +632,68 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + "]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "dobType", uid );
+
                 // -------------------------------------------------------------
                 // Birthdate
                 // -------------------------------------------------------------
 
                 max++;
+                uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
                     + ",'"
-                    + CodeGenerator.generateCode()
+                    + uid
                     + "','"
                     + DateUtils.getMediumDateString()
-                    + "','Birth date', 'Birth date','" + PatientAttribute.TYPE_DATE + "', false, false, false)" );
+                    + "','Birth date', 'Birth date','"
+                    + PatientAttribute.TYPE_DATE + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
-                    + max + ",birthdate from patient where birthdate is not null" );
+                    + max + ",birthdate from patient where birthdate is not null and dobType in ('D','V') " );
+
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "birthDate", uid );
+                
+                // -------------------------------------------------------------
+                // Age
+                // -------------------------------------------------------------
+
+                max++;
+                uid = CodeGenerator.generateCode();
+                executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+                    + max
+                    + ",'"
+                    + uid
+                    + "','"
+                    + DateUtils.getMediumDateString()
+                    + "','Age', 'Age','"
+                    + PatientAttribute.TYPE_AGE + "', false, false, false)" );
+                executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
+                    + max + ",birthdate from patient where birthdate is not null and dobType='A' " );
+
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "age", uid );
 
                 // -------------------------------------------------------------
                 // Phone number
                 // -------------------------------------------------------------
 
                 max++;
+                uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
                     + ",'"
-                    + CodeGenerator.generateCode()
+                    + uid
                     + "','"
                     + DateUtils.getMediumDateString()
                     + "','Phone number', 'Phone number','"
-                    + PatientAttribute.TYPE_PHONE_NUMBER
-                    + "', false, false, false)" );
+                    + PatientAttribute.TYPE_PHONE_NUMBER + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",phoneNumber from patient where phoneNumber is not null" );
+
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "phoneNumber", uid );
 
                 // -------------------------------------------------------------
                 // Update Case Aggregate Query Builder
@@ -649,14 +704,13 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + ".age]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
-                // executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
-                // executeSql(
-                // "ALTER TABLE patient DROP COLUMN registrationDate" );
-                // executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
-                // executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
-                // executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
-                // executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
-                // executeSql( "ALTER TABLE patient DROP COLUMN phoneNumber" );
+                executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
+                executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
+                executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
+                executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
+                executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
+                executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
+                executeSql( "ALTER TABLE patient DROP COLUMN phoneNumber" );
             }
         }
         catch ( Exception ex )
@@ -683,6 +737,35 @@ public class TableAlteror
                 expression = expression.replaceAll( source, target );
                 executeSql( "UPDATE caseaggregationcondition SET aggregationExpression='" + expression
                     + "'  WHERE caseaggregationconditionid=" + id );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    public void removeFixedAttributeInCustomRegistrationForm( String property, String uid )
+    {
+        StatementHolder holder = statementManager.getHolder();
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT df.dataentryformid, df.htmlcode FROM dataentryform df INNER JOIN patientregistrationform pf on df.dataentryformid=pf.dataentryform" );
+
+            while ( resultSet.next() )
+            {
+                String htmlCode = resultSet.getString( "htmlcode" );
+                htmlCode = htmlCode.replaceAll( "fixedattributeid=\"" + property + "\"", "attributeid=\"" + uid + "\"" );
+                
+                executeSql( "UPDATE dataentryform SET htmlcode='" + htmlCode + "' WHERE dataentryformid="
+                    + resultSet.getInt( "dataentryformid" ) );
             }
         }
         catch ( Exception ex )

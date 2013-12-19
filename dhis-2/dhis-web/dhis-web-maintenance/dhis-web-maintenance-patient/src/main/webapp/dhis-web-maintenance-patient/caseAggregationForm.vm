@@ -79,7 +79,11 @@
 				<td>
 					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
 						#foreach($patientAttribute in $patientAttributes)
-							<option suggested="" title="$patientAttribute.displayName" value="[CA:$patientAttribute.id]">$patientAttribute.displayName</option>
+							#if($patientAttribute.valueType=='age')
+								<option suggested="" title="$patientAttribute.displayName" value="[CA:$patientAttribute.id.age]">$patientAttribute.displayName</option>
+							#else
+								<option suggested="" title="$patientAttribute.displayName" value="[CA:$patientAttribute.id]">$patientAttribute.displayName</option>
+							#end
 						#end
 					</select>
 				</td>

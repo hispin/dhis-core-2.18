@@ -72,10 +72,6 @@ function addEventForPatientForm( divname )
 	jQuery("#" + divname + " [id=checkDuplicateBtn]").click(function() {
 		checkDuplicate( divname );
 	});
-	
-	jQuery("#" + divname + " [id=dobType]").change(function() {
-		dobTypeOnChange( divname );
-	});
 }
 
 function validateData()

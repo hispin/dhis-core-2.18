@@ -26,31 +26,6 @@ $( document ).ready( function() {
 	});
 } );
 
-function dobTypeOnChange( container ){
-
-	var type = $('#' + container + ' [id=dobType]').val();
-	if(type == 'V' || type == 'D')
-	{
-		$('#' + container + ' [id=age]').rules("remove");
-        $('#' + container + ' [id=age]').css("display","none");
-        $('#' + container + ' [id=age]').val("");
-		
-        $('#' + container + ' [id=birthDate]').rules("add",{required:true});
-		datePickerValid( container + ' [id=birthDate]' );
-        $('#' + container + ' [id=birthDate]').css("display","");
-	}
-	else if(type == 'A')
-	{
-        $('#' + container + ' [id=age]').rules("add",{required:true, number: true});
-        $('#' + container + ' [id=age]').css("display","");
-		
-        $('#' + container + ' [id=birthDate]').val("");
-        $('#' + container + ' [id=birthDate]').rules("remove","required");
-		$('#' + container+ ' [id=birthDate]').datepicker("destroy");
-        $('#' + container + ' [id=birthDate]').css("display","none");
-	}
-}
-
 // -----------------------------------------------------------------------------
 // Advanced search
 // -----------------------------------------------------------------------------
@@ -998,10 +973,6 @@ function addEventForPatientForm( divname )
 {
     $("#" + divname + " [id=checkDuplicateBtn]").click(function() {
 		checkDuplicate( divname );
-	});
-	
-    $("#" + divname + " [id=dobType]").change(function() {
-		dobTypeOnChange( divname );
 	});
 }
 
