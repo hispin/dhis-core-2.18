@@ -21,7 +21,6 @@
 	});	
 	
 	addRelationship = false;
-	hideById('patientForm [id=age]');
 	hideById('mainLinkLbl');
 </script>
 
