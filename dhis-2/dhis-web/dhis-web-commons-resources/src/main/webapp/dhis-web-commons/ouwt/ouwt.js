@@ -32,24 +32,40 @@ var OU_VERSION_KEY = "ouVersion";
 var OU_USERNAME_KEY = "ouUsername";
 var OU_SELECTED_KEY = "ouSelected";
 
-dhis2.ou.store = new dhis2.storage.Store( {
-    name: OU_STORE_NAME,
-    objectStores: [ {
-      name: OU_KEY,
-      adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ]
-    }, {
-      name: OU_PARTIAL_KEY,
-      adapters: [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ]
-    }
-    ]
-} );
+dhis2.ou.store = null;
+dhis2.ou.memoryOnly = $('html').hasClass('ie7') || $('html').hasClass('ie8');
 
-$( document ).ready( function ()
+$(function ()
 {
+    var adapters = [];
+    var partial_adapters = [];
+
+    if( dhis2.ou.memoryOnly ) {
+        adapters = [ dhis2.storage.InMemoryAdapter ];
+        partial_adapters = [ dhis2.storage.InMemoryAdapter ];
+    } else {
+        adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomLocalStorageAdapter, dhis2.storage.InMemoryAdapter ];
+        partial_adapters = [ dhis2.storage.IndexedDBAdapter, dhis2.storage.DomSessionStorageAdapter, dhis2.storage.InMemoryAdapter ];
+    }
+
+    dhis2.ou.store = new dhis2.storage.Store({
+        name: OU_STORE_NAME,
+        objectStores: [
+            {
+                name: OU_KEY,
+                adapters: adapters
+            },
+            {
+                name: OU_PARTIAL_KEY,
+                adapters: partial_adapters
+            }
+        ]
+    });
+
     dhis2.ou.store.open().done( function() {
         selection.load();
     } );
-} );
+});
 
 // -----------------------------------------------------------------------------
 // Selection
@@ -125,6 +141,10 @@ function Selection()
     };
 
     this.getVersion = function() {
+        if(dhis2.ou.memoryOnly) {
+            return -1;
+        }
+
         return localStorage[ OU_VERSION_KEY ] ? localStorage[ OU_VERSION_KEY ] : 0;
     };
 
@@ -304,14 +324,17 @@ function Selection()
             }
         } ).always( function() {
             if( should_update ) {
+                console.log('update');
                 selection.ajaxOrganisationUnits( false ).done(function( data ) {
                     selection.setRoots( data.roots );
                     selection.setVersion( data.version );
                     selection.setUsername( data.username );
+
                     selection.setOrganisationUnits( data.organisationUnits ).done(function() {
                         sync_and_reload();
                         $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                     });
+
                 } ).fail( function() {
                     sync_and_reload();
                     $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
