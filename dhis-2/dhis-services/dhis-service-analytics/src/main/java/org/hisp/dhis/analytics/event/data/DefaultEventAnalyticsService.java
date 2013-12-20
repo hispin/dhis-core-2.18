@@ -129,10 +129,8 @@ public class DefaultEventAnalyticsService
     // EventAnalyticsService implementation
     // -------------------------------------------------------------------------
 
-    //TODO order the event analytics tables up front to avoid default sorting in queries
-    //TODO filter items support
+    //TODO order event analytics tables on execution date to avoid default sorting in queries
     //TODO parallel processing of queries
-    //TODO proper query when start/end period or period filter span multiple partitions
     
     public Grid getAggregatedEventData( EventQueryParams params )
     {
