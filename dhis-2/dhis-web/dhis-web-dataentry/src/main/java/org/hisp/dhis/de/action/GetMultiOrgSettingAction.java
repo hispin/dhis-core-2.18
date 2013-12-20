@@ -63,7 +63,6 @@ public class GetMultiOrgSettingAction
     // Action Implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute() throws Exception
     {
         multiOrganisationUnitForms = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_MULTI_ORGANISATION_UNIT_FORMS );
