@@ -29,7 +29,15 @@
 var dhis2 = dhis2 || {};
 dhis2['appcache'] = dhis2['appcache'] || {};
 
+function applicationCacheSupported() {
+    return typeof window.applicationCache !== 'undefined';
+}
+
 $(function() {
+    if(!applicationCacheSupported()) {
+        return;
+    }
+
     $(window.applicationCache).on('updateready', function( e ) {
         if( window.applicationCache.status == window.applicationCache.UPDATEREADY ) {
             // Browser downloaded a new app cache.
