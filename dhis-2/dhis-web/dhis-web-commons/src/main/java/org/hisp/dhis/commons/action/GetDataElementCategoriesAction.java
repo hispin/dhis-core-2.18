@@ -93,12 +93,12 @@ public class GetDataElementCategoriesAction
         else if ( type.equals( DataElementCategoryType.ATTRIBUTE ) )
         {
             dataElementCategories = new ArrayList<DataElementCategory>(
-                dataElementCategoryService.getDisaggregationCategories() );
+                dataElementCategoryService.getAttributeCategories() );
         }
         else if ( type.equals( DataElementCategoryType.DISAGGREGATION ) )
         {
             dataElementCategories = new ArrayList<DataElementCategory>(
-                dataElementCategoryService.getAttributeCategories() );
+                dataElementCategoryService.getDisaggregationCategories() );
         }
 
         Collections.sort( dataElementCategories, IdentifiableObjectNameComparator.INSTANCE );
