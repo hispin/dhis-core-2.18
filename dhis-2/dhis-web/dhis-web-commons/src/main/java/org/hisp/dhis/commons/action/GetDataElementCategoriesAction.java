@@ -28,14 +28,14 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.paging.ActionPagingSupport;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author mortenoh
@@ -43,6 +43,12 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetDataElementCategoriesAction
     extends ActionPagingSupport<DataElementCategory>
 {
+    static enum DataElementCategoryType
+    {
+        DISAGGREGATION,
+        ATTRIBUTE
+    }
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -65,6 +71,13 @@ public class GetDataElementCategoriesAction
         return dataElementCategories;
     }
 
+    private DataElementCategoryType type;
+
+    public void setType( DataElementCategoryType type )
+    {
+        this.type = type;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -72,8 +85,21 @@ public class GetDataElementCategoriesAction
     public String execute()
         throws Exception
     {
-        dataElementCategories = new ArrayList<DataElementCategory>(
-            dataElementCategoryService.getAllDataElementCategories() );
+        if ( type == null )
+        {
+            dataElementCategories = new ArrayList<DataElementCategory>(
+                dataElementCategoryService.getAllDataElementCategories() );
+        }
+        else if ( type.equals( DataElementCategoryType.ATTRIBUTE ) )
+        {
+            dataElementCategories = new ArrayList<DataElementCategory>(
+                dataElementCategoryService.getDisaggregationCategories() );
+        }
+        else if ( type.equals( DataElementCategoryType.DISAGGREGATION ) )
+        {
+            dataElementCategories = new ArrayList<DataElementCategory>(
+                dataElementCategoryService.getAttributeCategories() );
+        }
 
         Collections.sort( dataElementCategories, IdentifiableObjectNameComparator.INSTANCE );
 
