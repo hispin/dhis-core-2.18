@@ -307,7 +307,7 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
-    public Collection<DataElementCategoryOption> getDataElementCategorOptionsByConcept( Concept concept )
+    public Collection<DataElementCategoryOption> getDataElementCategoryOptionsByConcept( Concept concept )
     {
         return categoryOptionStore.getByConcept( concept );
     }
