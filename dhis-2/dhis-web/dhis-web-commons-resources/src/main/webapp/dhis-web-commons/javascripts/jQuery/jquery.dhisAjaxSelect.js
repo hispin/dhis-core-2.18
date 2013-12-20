@@ -281,7 +281,8 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
                 });
             }
 
-            var $filter_table = $("<table/>");
+            $('#selectSearchTable').remove();
+            var $filter_table = $("<table id='selectSearchTable' />");
 
             $filter_table.css({
                 "padding" : "1px",
