@@ -28,12 +28,12 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.hierarchy.HierarchyViolationException;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-
-import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
  * @author Abyot Asalefew
@@ -94,10 +94,10 @@ public interface DataElementCategoryService
      * @return a collection of DataElementCategories.
      */
     Collection<DataElementCategory> getDataElementCategories( Collection<Integer> identifiers );
-    
+
     /**
      * Retrieves the DataElementCategories with the given uids.
-     * 
+     *
      * @param uids the uids of the DataElementCategories to retrieve.
      * @return a collection of DataElementCategories.
      */
@@ -113,16 +113,16 @@ public interface DataElementCategoryService
 
     /**
      * Returns DataElementCategories which are considered data dimensions.
-     * 
+     *
      * @return DataElementCategories which are considered data dimensions.
      */
     Collection<DataElementCategory> getDataDimensionDataElementCategories();
-    
+
     /**
      * Returns all DataElementCategories.
      *
      * @return a collection of all DataElementCategories, or an empty collection if there
-     *         are no DataElementCategories.
+     * are no DataElementCategories.
      */
     Collection<DataElementCategory> getAllDataElementCategories();
 
@@ -197,7 +197,7 @@ public interface DataElementCategoryService
      * @return a Collection of DataElementCategoryOptions.
      */
     Collection<DataElementCategoryOption> getDataElementCategoryOptionsByUid( Collection<String> uids );
-    
+
     /**
      * Retrieves the DataElementCategoryOption with the given name.
      *
@@ -218,7 +218,7 @@ public interface DataElementCategoryService
      * Returns all DataElementCategoryOptions.
      *
      * @return a collection of all DataElementCategoryOptions, or an empty collection if there
-     *         are no DataElementCategoryOptions.
+     * are no DataElementCategoryOptions.
      */
     Collection<DataElementCategoryOption> getAllDataElementCategoryOptions();
 
@@ -227,9 +227,9 @@ public interface DataElementCategoryService
      *
      * @param concept the Concept
      * @return a collection of all DataElementCategoryOptions, or an empty collection if there
-     *         are no DataElementCategoryOptions.
+     * are no DataElementCategoryOptions.
      */
-    Collection<DataElementCategoryOption> getDataElementCategorOptionsByConcept( Concept concept );
+    Collection<DataElementCategoryOption> getDataElementCategoryOptionsByConcept( Concept concept );
 
     // -------------------------------------------------------------------------
     // CategoryCombo
@@ -362,7 +362,7 @@ public interface DataElementCategoryService
      * @return a Collection of DataElementCategoryOptionCombos.
      */
     Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos( Collection<Integer> identifiers );
-    
+
     Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosByUid( Collection<String> uids );
 
     /**
@@ -382,7 +382,7 @@ public interface DataElementCategoryService
      * @return a DataElementCategoryOptionCombo.
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo );
-    
+
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( DataElementCategoryCombo categoryCombo, Set<DataElementCategoryOption> categoryOptions );
 
     /**
@@ -436,7 +436,7 @@ public interface DataElementCategoryService
      * combos.
      */
     void updateAllOptionCombos();
-    
+
     /**
      * Populates all transient properties on each Operand in the given collection.
      *
@@ -489,9 +489,9 @@ public interface DataElementCategoryService
      * @return a collection of all DataElementCategories, or an empty collection.
      */
     Collection<DataElementCategory> getDataElementCategorysByConcept( Concept concept );
-    
+
     Map<String, Integer> getDataElementCategoryOptionComboUidIdMap();
-    
+
     int getDataElementCategoryCount();
 
     int getDataElementCategoryCountByName( String name );
