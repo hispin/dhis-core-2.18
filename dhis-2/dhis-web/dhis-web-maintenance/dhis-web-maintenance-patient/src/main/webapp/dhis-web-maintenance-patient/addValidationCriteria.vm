@@ -1,4 +1,7 @@
 <script type="text/javascript" src="javascript/addValidationCriteria.js"></script>																
+<script type="text/javascript">
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient_attribute" ) , "'" )';
+</script>
 
 <h3>$i18n.getString( "create_validation_criteria" )</h3>
 <form id="validationCriteriaForm" action="addValidationCriteria.action" method="post" class="inputForm">
@@ -18,61 +21,26 @@
 		<table>
 			<tr>
 				<td>
-				<!-- Property -->
-					<select id='property' name='property' style='width: 16em' onChange="showDivValue();">
+					<select id='property' name='property' style='width:16em' onChange="showDivValue();">
 						<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-						<option value="gender">$i18n.getString( "gender" )</option>
-						<option value="dobType">$i18n.getString( "dob_type" )</option>
-						<option value="birthDate">$i18n.getString( "date_of_birth" )</option>
-						<option value="integerValueOfAge">$i18n.getString( "age" )</option>
-					</select>
-
-					<!-- Operator -->
-					<select id='operator' name='operator' style='width: 7em'>
-						<option value='-1'>$i18n.getString('operator_less_then')</option>
-						<option value='0'>$i18n.getString('operator_equal_to')</option>
-						<option value='1'>$i18n.getString('operator_greater_then')</option>
+						#foreach($patientAttribute in $patientAttributes)
+							#set($opt="")
+							#foreach($option in $patientAttribute.attributeOptions)
+								#set($opt=$opt + ';' + $option.name )
+							#end 
+						<option value="$patientAttribute.uid" opt="$opt">$patientAttribute.displayName</option>
+						#end
 					</select>
 				</td>
-			   <td>
-				<!-- Displayed when no criteria is selected -->
-				<input type="text" style="width:16em" id='emptyCriteria'>
-				
-				<!-- gender -->
-				<div id="genderDiv" style="display:none">
-					<select id='genderValue' name='genderValue' onChange="fillValue(this.value);" style="width: 16em">
-						<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-						<option value="M" >$i18n.getString( "male" )</option>
-						<option value="F">$i18n.getString( "female" )</option>
-						<option value="T">$i18n.getString( "transgender" )</option>
+				<td>
+					<select id='operator' name='operator' style='width: 7em'>
+						<option value='-1' #if( "$validationCriteria.operator"=='-1') selected #end>$i18n.getString('operator_less_then')</option>
+						<option value='0'  #if( "$validationCriteria.operator"=='0') selected #end>$i18n.getString('operator_equal_to')</option>
+						<option value='1'  #if( "$validationCriteria.operator"=='1') selected #end>$i18n.getString('operator_greater_then')</option>
 					</select>
-				</div>
-				
-				<!-- dobType -->
-				<div id="dobTypeDiv" style="display:none ">
-					<select type="text" id='dobTypeValue' name='dobTypeValue' onChange="fillValue(this.value);" style="width: 16em">
-						<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-						<option value="V" >$i18n.getString( "verified" )</option>
-						<option value="D" >$i18n.getString( "declared" )</option>
-						<option value="A" >$i18n.getString( "approximated" )</option>
-					</select>
-				</div>
-				
-				<!-- age -->
-				<div id="integerValueOfAgeDiv" style="display:none ">
-					<input type="text" id='integerValueOfAgeValue' name='integerValueOfAgeValue' onChange="fillValue(this.value);"  class="{validate:{digits:true,rangelength:[1,2]}}" style="width: 16em"/>
-				</div>
-				
-				<!-- birthDate -->
-				<div id="birthDateDiv" style="display:none ">
-					<input type="text" id="birthDateValue" name="birthDateValue" onChange="fillValue(this.value);" style="width:215px"/>			
-					<script type="text/javascript">
-						datePickerValid( 'birthDateValue' );
-					</script> 
-				</div>
-				
-				<!-- value -->
-				<input type="hidden" id="value" name="value" class="{validate:{required:true,rangelength:[1,160]}}"/>
+				</td>
+				<td id='valueTD'>
+					<input id='value' name='value' class="{validate:{required:true}}" style="width:200px;"/>
 				</td>
 			</tr>
 		</table>
@@ -87,3 +55,4 @@
     </tr>
   </table>
 </form>
+

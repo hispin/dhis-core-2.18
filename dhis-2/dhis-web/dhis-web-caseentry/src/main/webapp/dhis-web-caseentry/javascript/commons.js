@@ -1231,7 +1231,6 @@ function validateProgramEnrollment()
 		url: 'validatePatientProgramEnrollment.action',
 		data: getParamsForDiv('programEnrollmentSelectDiv'),
 		success: function(json) {
-			hideById('message');
 			var type = json.response;
 
             if( type == 'success' ) {

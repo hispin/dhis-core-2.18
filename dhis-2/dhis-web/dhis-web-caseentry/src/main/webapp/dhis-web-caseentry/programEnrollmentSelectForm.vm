@@ -72,6 +72,7 @@
 			<td colspan='3'><span id='message'></span></td>
 		</tr>
 	</table>
+	<span id='message'></span>
 </form>
 
 #end

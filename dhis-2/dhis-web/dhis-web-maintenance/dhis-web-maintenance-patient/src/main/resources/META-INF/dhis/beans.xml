@@ -918,7 +918,6 @@
     <property name="validationCriteriaService">
       <ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
     </property>
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
   </bean>
 
   <bean
@@ -952,6 +951,9 @@
     <property name="validationCriteriaService">
       <ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
     </property>
+    <property name="patientAttributeService">
+      <ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+    </property>
   </bean>
 
   <bean
@@ -979,7 +981,6 @@
     <property name="validationCriteriaService">
       <ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
     </property>
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
   </bean>
 
   <bean

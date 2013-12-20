@@ -212,23 +212,16 @@ public class UpdatePatientAction
                         attributeValue = new PatientAttributeValue();
                         attributeValue.setPatient( patient );
                         attributeValue.setPatientAttribute( attribute );
+                        attributeValue.setValue( value.trim() );
                         if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
-                            PatientAttributeOption option = patientAttributeOptionService.get( NumberUtils.toInt(
-                                value, 0 ) );
+                            PatientAttributeOption option = patientAttributeOptionService
+                                .get( Integer.parseInt( value ) );
                             if ( option != null )
                             {
                                 attributeValue.setPatientAttributeOption( option );
+                                attributeValue.setValue( option.getName() );
                             }
-                            else
-                            {
-                                // This option was deleted ???
-                            }
-                            attributeValue.setValue( value );
-                        }
-                        else
-                        {
-                            attributeValue.setValue( value.trim() );
                         }
                         valuesForSave.add( attributeValue );
                     }
@@ -241,13 +234,14 @@ public class UpdatePatientAction
                             if ( option != null )
                             {
                                 attributeValue.setPatientAttributeOption( option );
-                            }
-                            else
-                            {
-                                // This option was deleted ???
+                                attributeValue.setValue( option.getName() );
                             }
                         }
-                        attributeValue.setValue( value.trim() );
+                        else
+                        {
+                            attributeValue.setValue( value.trim() );
+                        }
+
                         valuesForUpdate.add( attributeValue );
                         valuesForDelete.remove( attributeValue );
                     }

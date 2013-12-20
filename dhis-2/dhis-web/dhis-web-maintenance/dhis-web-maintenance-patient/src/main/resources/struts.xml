@@ -924,7 +924,7 @@
 			<param name="javascripts">javascript/validationcriteria.js</param>
 		</action>
 
-		<action name="showAddValidationCriteriaForm" class="org.hisp.dhis.patient.action.NoAction">
+		<action name="showAddValidationCriteriaForm" class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addValidationCriteria.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>

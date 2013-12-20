@@ -51,33 +51,25 @@ function showValidationCriteriaDetails( context ) {
 // ----------------------------------------------------------------------------------------
 // Show div to Add or Update Validation-Criteria
 // ----------------------------------------------------------------------------------------
+
 function showDivValue() {
-
-  var propertyName = byId('property').value;
-  hideDiv();
-  if( propertyName != '' ) {
-    hideById('emptyCriteria');
-
-    var div = byId(propertyName + 'Div');
-    div.style.display = 'block';
-    if( propertyName == 'gender' ||
-      propertyName == 'dobType' ) {
-
-      byId('operator').selectedIndex = 1;
-      disable('operator');
-    }
-    else {
-      enable('operator');
-    }
+  var value = getFieldValue('value');
+  var property = jQuery('#property option:selected');
+  var propertyName = property.val();
+  if( propertyName != '' && property.attr('opt')!='') {
+	var opts = property.attr('opt').split(";");
+	var selectField = "<select id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:200px;\">";
+	for(var i=1;i<opts.length;i++){
+		selectField += "<option value=\"" + opts[i] + "\" >" + opts[i] + "</option>";
+	}
+	selectField += "</select>";
+	setInnerHTML('valueTD', selectField);
   }
-}
-
-function hideDiv() {
-  hideById('genderDiv');
-  hideById('integerValueOfAgeDiv');
-  hideById('birthDateDiv');
-  hideById('dobTypeDiv');
-  showById('emptyCriteria');
+  else
+  {
+	var inputField = "<input id='value' name='value' class=\"{validate:{required:true}}\" style=\"width:200px;\"/>";
+  }
+  setFieldValue('value', value);
 }
 
 function fillValue( value ) {

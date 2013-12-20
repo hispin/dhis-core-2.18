@@ -1151,7 +1151,7 @@ public abstract class DhisConvenienceTest
      * @return ValidationCriteria
      */
     public static ValidationCriteria createValidationCriteria( char uniqueCharacter, String property, int operator,
-        Object value )
+        String value )
     {
         ValidationCriteria validationCriteria = new ValidationCriteria();
 

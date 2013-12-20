@@ -53,9 +53,9 @@ public class ValidationCriteriaStoreTest
 
     private String propertyB;
 
-    private Object valueA;
+    private String valueA;
 
-    private Object valueB;
+    private String valueB;
 
     // -------------------------------------------------------------------------
     // Fixture

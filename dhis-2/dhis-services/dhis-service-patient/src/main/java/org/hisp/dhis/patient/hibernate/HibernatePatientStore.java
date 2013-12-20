@@ -70,6 +70,7 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.system.util.TextUtils;
+import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
@@ -424,15 +425,15 @@ public class HibernatePatientStore
             }
         }
 
-        // if ( program != null )
-        // {
-        // ValidationCriteria validationCriteria = program.isValid( patient );
-        //
-        // if ( validationCriteria != null )
-        // {
-        // return PatientService.ERROR_ENROLLMENT;
-        // }
-        // }
+        if ( program != null )
+        {
+            ValidationCriteria validationCriteria = program.isValid( patient );
+
+            if ( validationCriteria != null )
+            {
+                return PatientService.ERROR_ENROLLMENT;
+            }
+        }
 
         return PatientService.ERROR_NONE;
     }

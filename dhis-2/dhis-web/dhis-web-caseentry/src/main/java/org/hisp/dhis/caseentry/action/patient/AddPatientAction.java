@@ -213,24 +213,20 @@ public class AddPatientAction
                     attributeValue = new PatientAttributeValue();
                     attributeValue.setPatient( patient );
                     attributeValue.setPatientAttribute( attribute );
+                    attributeValue.setValue( value.trim() );
 
                     if ( attribute.getValueType().equals( PatientAttribute.TYPE_AGE ) )
                     {
                         value = format.formatDate( PatientAttribute.getDateFromAge( Integer.parseInt( value ) ) );
                     }
-                    attributeValue.setValue( value );
 
                     if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                     {
-                        PatientAttributeOption option = patientAttributeOptionService
-                            .get( NumberUtils.toInt( value, 0 ) );
+                        PatientAttributeOption option = patientAttributeOptionService.get( Integer.parseInt( value ) );
                         if ( option != null )
                         {
                             attributeValue.setPatientAttributeOption( option );
-                        }
-                        else
-                        {
-                            // Someone deleted this option ...
+                            attributeValue.setValue( option.getName() );
                         }
                     }
                     patientAttributeValues.add( attributeValue );
@@ -242,8 +238,7 @@ public class AddPatientAction
         // Save patient
         // -------------------------------------------------------------------------
 
-       patientService.createPatient( patient, representativeId, relationshipTypeId,
-            patientAttributeValues );
+        patientService.createPatient( patient, representativeId, relationshipTypeId, patientAttributeValues );
 
         // -------------------------------------------------------------------------
         // Create relationship
