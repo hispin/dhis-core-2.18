@@ -177,7 +177,7 @@ Ext.onReady( function() {
 
 	GIS.core.createSelectHandlers = function(gis, layer) {
 		var isRelocate = !!GIS.app ? (gis.init.user.isAdmin ? true : false) : false,
-
+			options = {},
 			window,
 			infrastructuralPeriod,
 			onHoverSelect,
@@ -524,11 +524,14 @@ Ext.onReady( function() {
 			menu.showAt([gis.olmap.mouseMove.x, gis.olmap.mouseMove.y]);
 		};
 
-		selectHandlers = new OpenLayers.Control.newSelectFeature(layer, {
-			onHoverSelect: onHoverSelect,
-			onHoverUnselect: onHoverUnselect,
-			onClickSelect: onClickSelect
-		});
+		options.onHoverSelect = onHoverSelect;
+		options.onHoverUnselect = onHoverUnselect;
+console.log(layer);
+		if (layer.id !== 'event') {
+			options.onClickSelect = onClickSelect;
+		}
+
+		selectHandlers = new OpenLayers.Control.newSelectFeature(layer, options);
 
 		gis.olmap.addControl(selectHandlers);
 		selectHandlers.activate();
@@ -916,6 +919,7 @@ Ext.onReady( function() {
                         }
 
                         obj[gis.conf.finals.widget.value] = 0;
+                        obj['label'] = obj.ouname;
 
                         events.push(obj);
                     }
