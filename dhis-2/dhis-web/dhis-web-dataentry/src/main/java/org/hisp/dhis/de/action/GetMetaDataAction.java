@@ -40,6 +40,7 @@ import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -95,6 +96,13 @@ public class GetMetaDataAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     private CurrentUserService currentUserService;
@@ -177,6 +185,13 @@ public class GetMetaDataAction
     {
         return categories;
     }
+    
+    private DataElementCategoryCombo defaultCategoryCombo;
+
+    public DataElementCategoryCombo getDefaultCategoryCombo()
+    {
+        return defaultCategoryCombo;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -234,6 +249,8 @@ public class GetMetaDataAction
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( categories, IdentifiableObjectNameComparator.INSTANCE );
+        
+        defaultCategoryCombo = categoryService.getDefaultDataElementCategoryCombo();
         
         return SUCCESS;
     }

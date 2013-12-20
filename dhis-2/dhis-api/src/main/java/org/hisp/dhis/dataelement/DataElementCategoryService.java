@@ -288,6 +288,11 @@ public interface DataElementCategoryService
      * @return the DataElementCategoryCombo.
      */
     DataElementCategoryCombo getDataElementCategoryComboByName( String name );
+    
+    /**
+     * Returns the default category combo.
+     */
+    DataElementCategoryCombo getDefaultDataElementCategoryCombo();
 
     /**
      * Retrieves all DataElementCategoryCombos.
