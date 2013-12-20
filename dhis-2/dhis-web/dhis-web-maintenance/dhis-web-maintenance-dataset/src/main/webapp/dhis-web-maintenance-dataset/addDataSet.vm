@@ -89,11 +89,21 @@
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
           <select id="frequencySelect" name="frequencySelect">
-            #foreach ( $periodType in $periodTypes )
+            #foreach( $periodType in $periodTypes )
               <option value="$periodType.name">$i18n.getString( $periodType.name )</option>
             #end
           </select>
         </td>
+      </tr>
+      <tr>
+      	<td><label>$i18n.getString( "category_combo" )</label></td>
+      	<td>
+      	  <select id="categoryComboId" name="categoryComboId">
+      	  	#foreach( $categoryCombo in $categoryCombos )
+      	  	  <option value="$categoryCombo.id">$encoder.htmlEncode( $categoryCombo.displayName )</option>
+	  	    #end
+  	      </select>
+	    </td>
       </tr>
       <tr>
       	<td><label>$i18n.getString( "notification_recipients" )</label></td>
@@ -104,7 +114,7 @@
       	  	  <option value="$group.id">$encoder.htmlEncode( $group.name )</option>
 	  	    #end
   	      </select>
-	    </td>
+	    </td>  
       </tr>
       <tr>
         <td><label>$i18n.getString( "notify_completing_user" )</label></td>

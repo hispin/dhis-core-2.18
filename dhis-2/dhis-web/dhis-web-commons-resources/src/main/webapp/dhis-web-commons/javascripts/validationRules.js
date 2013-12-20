@@ -137,7 +137,7 @@ var validationRules = {
     "dataEntry" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 4, 100 ]
+            "rangelength" : [ 2, 100 ]
         }
     },
     "section" : {
@@ -153,7 +153,7 @@ var validationRules = {
         "name" : {
             "required" : true,
             "alphanumericwithbasicpuncspaces" : true,
-            "rangelength" : [ 4, 150 ]
+            "rangelength" : [ 2, 150 ]
         },
         "shortName" : {
             "required" : true,
@@ -211,7 +211,7 @@ var validationRules = {
     "dataElement" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 3, 150 ],
+            "rangelength" : [ 2, 150 ],
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : true
         },
@@ -222,7 +222,7 @@ var validationRules = {
             "notOnlyDigits" : true
         },
         "alternativeName" : {
-            "rangelength" : [ 3, 150 ],
+            "rangelength" : [ 2, 150 ],
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : true
         },
@@ -306,7 +306,7 @@ var validationRules = {
     "indicator" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 3, 150 ],
+            "rangelength" : [ 2, 150 ],
             "alphanumericwithbasicpuncspaces" : true,
             "nostartwhitespace" : true
         },
@@ -316,7 +316,7 @@ var validationRules = {
             "alphanumericwithbasicpuncspaces" : true
         },
         "alternativeName" : {
-            "rangelength" : [ 3, 150 ],
+            "rangelength" : [ 2, 150 ],
             "alphanumericwithbasicpuncspaces" : true
         },
         "code" : {
@@ -355,7 +355,7 @@ var validationRules = {
     "indicatorType" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 3, 150 ],
+            "rangelength" : [ 2, 150 ],
             "alphanumericwithbasicpuncspaces" : true
         },
         "factor" : {
@@ -432,27 +432,6 @@ var validationRules = {
         },
         "value" : {
             "required" : true
-        }
-    },
-    "chartGroup" : {
-        "name" : {
-            "required" : true,
-            "rangelength" : [ 3, 230 ],
-            "alphanumericwithbasicpuncspaces" : true
-        }
-    },
-    "reportGroup" : {
-        "name" : {
-            "required" : true,
-            "rangelength" : [ 3, 230 ],
-            "alphanumericwithbasicpuncspaces" : true
-        }
-    },
-    "reportTableGroup" : {
-        "name" : {
-            "required" : true,
-            "rangelength" : [ 3, 230 ],
-            "alphanumericwithbasicpuncspaces" : true
         }
     },
     "attribute" : {

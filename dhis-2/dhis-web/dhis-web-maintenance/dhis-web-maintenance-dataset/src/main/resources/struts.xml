@@ -14,15 +14,6 @@
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
     </action>
 
-    <!-- Dataset -->
-
-    <action name="dataSet" class="org.hisp.dhis.dataset.action.DataSetListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataset/dataSetList.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <param name="javascripts">javascript/dataSet.js</param>
-    </action>
-
     <!-- Section -->
 
     <action name="section" class="org.hisp.dhis.dataset.action.section.SectionListAction">
@@ -112,7 +103,14 @@
       <result name="success" type="redirect">dataSet.action</result>
     </action>
 
-    <!-- Show add DataSet form -->
+    <!-- Dataset -->
+
+    <action name="dataSet" class="org.hisp.dhis.dataset.action.DataSetListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/dataSetList.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
+      <param name="javascripts">javascript/dataSet.js</param>
+    </action>
 
     <action name="addDataSetForm" class="org.hisp.dhis.dataset.action.EditDataSetFormAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -121,16 +119,12 @@
       <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
 
-    <!-- Show edit DataSet form -->
-
     <action name="editDataSetForm" class="org.hisp.dhis.dataset.action.EditDataSetFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editDataSet.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>
       <param name="anyAuthorities">F_DATASET_PUBLIC_ADD, F_DATASET_PRIVATE_ADD</param>
     </action>
-
-    <!-- Validation, add, update, and delete -->
 
     <action name="validateDataSet" class="org.hisp.dhis.dataset.action.ValidateDataSetAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>

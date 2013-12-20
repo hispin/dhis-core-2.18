@@ -79,6 +79,8 @@ public class TableAlteror
     @Transactional
     public void execute()
     {
+        int defaultCategoryComboId = getDefaultCategoryCombo();
+        
         // ---------------------------------------------------------------------
         // Drop outdated tables
         // ---------------------------------------------------------------------
@@ -656,7 +658,8 @@ public class TableAlteror
 	
 	executeSql( "update categorycombo set dimensiontype = '" + DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION + "' where dimensiontype is null" );
         executeSql( "update dataelementcategory set dimensiontype = '" + DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION + "' where dimensiontype is null" );
-	
+	executeSql( "update dataset set categorycomboid = " + defaultCategoryComboId + " where categorycomboid is null" );
+        
 	upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
 
@@ -1071,6 +1074,13 @@ public class TableAlteror
             "inner join categorycombos_optioncombos cco on coc.categoryoptioncomboid=cco.categoryoptioncomboid " +
             "inner join categorycombo cc on cco.categorycomboid=cc.categorycomboid " +
             "where cc.name='default';";
+        
+        return statementManager.getHolder().queryForInteger( sql );
+    }
+    
+    private int getDefaultCategoryCombo()
+    {
+        String sql = "select categorycomboid from categorycombo where name = 'default'";
         
         return statementManager.getHolder().queryForInteger( sql );
     }
