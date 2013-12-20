@@ -4964,7 +4964,7 @@ Ext.onReady( function() {
 
                 view.dataElements.push(panel.getRecord());
             }
-console.log(view);
+            
             view.organisationUnits = treePanel.getDimension().items;
 
 			return view;
