@@ -1223,11 +1223,17 @@ Ext.onReady( function() {
 			layout: 'column',
             bodyStyle: 'border:0 none',
             getRecord: function() {
+				var valueArray = this.valueCmp.getValue().split(';');
+
+				for (var i = 0; i < valueArray.length; i++) {
+					valueArray[i] = Ext.String.trim(valueArray[i]);
+				}
+				
                 return {
                     id: this.dataElement.id,
                     name: this.dataElement.name,
                     operator: this.operatorCmp.getValue(),
-                    value: this.valueCmp.getValue()
+                    value: valueArray.join(';')
                 };
             },
             initComponent: function() {
@@ -4958,7 +4964,7 @@ Ext.onReady( function() {
 
                 view.dataElements.push(panel.getRecord());
             }
-
+console.log(view);
             view.organisationUnits = treePanel.getDimension().items;
 
 			return view;
