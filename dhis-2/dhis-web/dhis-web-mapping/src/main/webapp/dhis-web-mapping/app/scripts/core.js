@@ -871,8 +871,12 @@ Ext.onReady( function() {
             paramString += '&startDate=' + view.startDate;
             paramString += '&endDate=' + view.endDate;
 
-            // ou //todo
-            paramString += '&dimension=ou:' + view.organisationUnits[0].id;
+            // ou
+            if (Ext.isArray(view.organisationUnits)) {
+				for (var i = 0; i < view.organisationUnits.length; i++) {
+					paramString += '&dimension=ou:' + view.organisationUnits[i].id;
+				}
+			}
 
             // de
             for (var i = 0, element; i < view.dataElements.length; i++) {
