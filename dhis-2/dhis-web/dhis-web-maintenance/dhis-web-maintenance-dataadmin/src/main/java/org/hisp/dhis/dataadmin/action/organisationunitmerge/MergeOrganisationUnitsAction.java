@@ -28,13 +28,12 @@ package org.hisp.dhis.dataadmin.action.organisationunitmerge;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.datamerge.DataMergeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
@@ -54,7 +53,7 @@ public class MergeOrganisationUnitsAction
     {
         this.dataMergeService = dataMergeService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -66,16 +65,16 @@ public class MergeOrganisationUnitsAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer organisationUnitToEliminate;
-    
-    public void setOrganisationUnitToEliminate( Integer organisationUnitToEliminate )
+    private String organisationUnitToEliminate;
+
+    public void setOrganisationUnitToEliminate( String organisationUnitToEliminate )
     {
         this.organisationUnitToEliminate = organisationUnitToEliminate;
     }
 
-    private Integer organisationUnitToKeep;
-    
-    public void setOrganisationUnitToKeep( Integer organisationUnitToKeep )
+    private String organisationUnitToKeep;
+
+    public void setOrganisationUnitToKeep( String organisationUnitToKeep )
     {
         this.organisationUnitToKeep = organisationUnitToKeep;
     }
@@ -90,14 +89,14 @@ public class MergeOrganisationUnitsAction
         OrganisationUnit keep = organisationUnitService.getOrganisationUnit( organisationUnitToKeep );
 
         log.info( "Merging " + eliminate + " into " + keep );
-        
-        if ( !( organisationUnitToEliminate == organisationUnitToKeep ) )
+
+        if ( !(organisationUnitToEliminate.equals( organisationUnitToKeep )) )
         {
             dataMergeService.mergeOrganisationUnits( keep, eliminate );
         }
-        
+
         log.info( "Merging complete" );
-        
+
         return SUCCESS;
     }
 }
