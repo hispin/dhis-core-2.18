@@ -149,12 +149,13 @@ $( document ).ready( function()
 	        }
 	        else
 	        {
-            if( emptyOrganisationUnits ) {
-              setHeaderMessage(i18n_no_orgunits);
-            } else {
-              setHeaderDelayMessage(i18n_online_notification);
+	            if ( emptyOrganisationUnits ) {
+	                setHeaderMessage( i18n_no_orgunits );
+	            } 
+	            else {
+	                setHeaderDelayMessage( i18n_online_notification );
+	            }
             }
-          }
 	    }
 	    else
 	    {
@@ -175,10 +176,11 @@ $( document ).ready( function()
 
     $( document ).bind( 'dhis2.offline', function()
     {
-      if( emptyOrganisationUnits ) {
-        setHeaderMessage(i18n_no_orgunits);
-      } else {
-        setHeaderMessage( i18n_offline_notification );
+      if ( emptyOrganisationUnits ) {
+          setHeaderMessage( i18n_no_orgunits );
+      } 
+      else {
+          setHeaderMessage( i18n_offline_notification );
       }
     } );
 
@@ -596,7 +598,7 @@ function loadForm( dataSetId, multiOrg )
         {
             multiOrganisationUnit = !!$('.formSection').data('multiorg');
 
-            if( !multiOrganisationUnit )
+            if ( !multiOrganisationUnit )
             {
                 if ( dataSets[dataSetId].renderAsTabs ) {
                     $( "#tabs" ).tabs();
@@ -868,7 +870,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
     {
         var childrenDataSets = getSortedDataSetListForOrgUnits( children );
 
-        if( childrenDataSets && childrenDataSets.length > 0 )
+        if ( childrenDataSets && childrenDataSets.length > 0 )
         {
             $( '#selectedDataSetId' ).append( '<optgroup label="' + i18n_childrens_forms + '">' );
 
@@ -894,7 +896,8 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
             showLoader();
             loadDataValues();
         }
-    } else if ( multiOrganisationUnit && multiDataSetValid && dataSetId != null ) {
+    } 
+    else if ( multiOrganisationUnit && multiDataSetValid && dataSetId != null ) {
         $( '#selectedDataSetId' ).val( dataSetId );
         dataSetSelected();
 
@@ -1653,7 +1656,7 @@ function updateForms()
     updateExistingLocalForms();
     downloadRemoteForms();
 
-    DAO.store.open().done(function() {
+    DAO.store.open().done( function() {
         loadOptionSets();
     });
 }
@@ -2384,7 +2387,7 @@ function loadOptionSets() {
 }
 
 function insertOptionSets() {
-  $('.entryoptionset').each(function( idx, item ) {
+  $('.entryoptionset').each( function( idx, item ) {
     var optionSetKey = splitFieldId(item.id);
 
     if( multiOrganisationUnit ) {
@@ -2397,7 +2400,7 @@ function insertOptionSets() {
     optionSetKey = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
 
     autocompleteOptionSetField(item, optionSets[optionSetKey].uid);
-  });
+  } );
 }
 
 function autocompleteOptionSetField( idField, optionSetUid ) {
