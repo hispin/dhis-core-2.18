@@ -33,7 +33,7 @@ function showUpdateOrganisationUnitForm( context ) {
 
 function showOrganisationUnitDetails( context ) {
     jQuery.post( '../dhis-web-commons-ajax-json/getOrganisationUnit.action',
-		{ id: context.id }, function ( json ) {
+		{ id: context.uid }, function ( json ) {
 		setInnerHTML( 'nameField', json.organisationUnit.name );
 		setInnerHTML( 'shortNameField', json.organisationUnit.shortName );
 		setInnerHTML( 'descriptionField', json.organisationUnit.description );
