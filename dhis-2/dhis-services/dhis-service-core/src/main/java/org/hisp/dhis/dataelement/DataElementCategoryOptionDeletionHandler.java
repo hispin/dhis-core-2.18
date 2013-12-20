@@ -28,8 +28,6 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -63,13 +61,10 @@ public class DataElementCategoryOptionDeletionHandler
     @Override
     public void deleteDataElementCategory( DataElementCategory category )
     {
-        Iterator<DataElementCategoryOption> iterator = category.getCategoryOptions().iterator();
-        
-        while ( iterator.hasNext() )
+        for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
         {
-            DataElementCategoryOption categoryOption = iterator.next();
-            iterator.remove();
-            categoryService.deleteDataElementCategoryOption( categoryOption );            
+            categoryOption.getCategories().remove( category );
+            categoryService.updateDataElementCategoryOption( categoryOption );
         }
     }
 }
