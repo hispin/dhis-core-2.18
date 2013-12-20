@@ -56,7 +56,16 @@
 			</select>
 		</div>
 	  </td>
-    </tr>   
+    </tr>
+    <tr>
+      <td><label>$i18n.getString( "dimension_type" )</td>
+      <td>
+        <select id="dimensionType" name="dimensionType">
+          <option value="disaggregation" selected="selected">$i18n.getString( "disaggregation" )</option>
+          <option value="attribute">$i18n.getString( "attribute" )</option>
+        </select>
+      </td>
+    </tr>
     <tr>
       <td colspan="2" style="height:15px"></td>
     </tr>

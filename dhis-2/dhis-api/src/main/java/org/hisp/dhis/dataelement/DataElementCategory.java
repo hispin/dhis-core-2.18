@@ -70,6 +70,8 @@ public class DataElementCategory
     public static final String DEFAULT_NAME = "default";
 
     private Concept concept;
+    
+    private String dimensionType;
 
     @Scanned
     private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
@@ -201,6 +203,19 @@ public class DataElementCategory
     public void setConcept( Concept concept )
     {
         this.concept = concept;
+    }
+
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public String getDimensionType()
+    {
+        return dimensionType;
+    }
+
+    public void setDimensionType( String dimensionType )
+    {
+        this.dimensionType = dimensionType;
     }
 
     @JsonProperty

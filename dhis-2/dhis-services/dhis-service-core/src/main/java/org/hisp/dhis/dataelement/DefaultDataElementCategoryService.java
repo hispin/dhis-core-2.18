@@ -61,9 +61,9 @@ public class DefaultDataElementCategoryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericDimensionalObjectStore<DataElementCategory> categoryStore;
+    private CategoryStore categoryStore;
 
-    public void setCategoryStore( GenericDimensionalObjectStore<DataElementCategory> categoryStore )
+    public void setCategoryStore( CategoryStore categoryStore )
     {
         this.categoryStore = categoryStore;
     }
@@ -188,7 +188,17 @@ public class DefaultDataElementCategoryService
     {
         return i18n( i18nService, categoryStore.getByConcept( concept ) );
     }
+    
+    public Collection<DataElementCategory> getDisaggregationCategories()
+    {
+        return i18n( i18nService, categoryStore.getCategoriesByDimensionType( DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION ) );
+    }
 
+    public Collection<DataElementCategory> getAttributeCategories()
+    {
+        return i18n( i18nService, categoryStore.getCategoriesByDimensionType( DataElementCategoryCombo.DIMENSION_TYPE_ATTTRIBUTE ) );        
+    }
+    
     @Override
     public Collection<DataElementCategory> getDataElementCategoryBetween( int first, int max )
     {
