@@ -112,7 +112,7 @@ public class QueryItem
             
             for ( String el : split )
             {
-                buffer.append( "'" ).append( el.toString() ).append( "'," );
+                buffer.append( "'" ).append( el ).append( "'," );
             }
             
             return buffer.deleteCharAt( buffer.length() - 1 ).append( ")" ).toString();

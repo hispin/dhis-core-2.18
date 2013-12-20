@@ -409,6 +409,8 @@ public class JdbcEventAnalyticsManager
     {
         String encodedFilter = statementBuilder.encode( item.getFilter(), false );
         
-        return item.getSqlFilter( encodedFilter );
+        String sqlFilter = item.getSqlFilter( encodedFilter );
+        
+        return item.isNumeric() ? sqlFilter : sqlFilter.toLowerCase();
     }
 }
