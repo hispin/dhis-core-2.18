@@ -342,7 +342,7 @@ public class DataValueSMSListener
         //Check for special character cases
         for( SMSSpecialCharacter each: specialCharacters )
         {
-            if ( each.getName().equals( value ) )
+            if ( each.getName().equalsIgnoreCase( value ) )
             {
                 value = each.getValue();
                 break;
