@@ -25,6 +25,7 @@
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"

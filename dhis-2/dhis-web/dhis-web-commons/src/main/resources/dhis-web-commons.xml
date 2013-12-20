@@ -899,12 +899,14 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/about/modules.vm</param>
       <param name="menu">/dhis-web-commons/about/menu.vm</param>
+      <param name="hideMenu">true</param>
     </action>
 
     <action name="functions" class="org.hisp.dhis.commons.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/about/functions.vm</param>
       <param name="menu">/dhis-web-commons/about/menu.vm</param>
+      <param name="hideMenu">true</param>
     </action>
 
     <action name="userSettings" class="org.hisp.dhis.settings.user.action.GetGeneralSettingsAction">
