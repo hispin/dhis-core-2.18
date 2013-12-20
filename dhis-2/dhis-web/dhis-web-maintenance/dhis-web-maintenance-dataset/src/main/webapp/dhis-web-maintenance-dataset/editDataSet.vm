@@ -94,7 +94,17 @@
             #end
           </select>
         </td>
-      </tr>	   
+      </tr>
+      <tr>
+        <td><label>$i18n.getString( "category_combo" )</label></td>
+        <td>
+          <select id="categoryComboId" name="categoryComboId">
+            #foreach( $categoryCombo in $categoryCombos )
+              <option value="$categoryCombo.id"#if( $dataSet.categoryCombo.id == $categoryCombo.id ) selected="selected"#end>$encoder.htmlEncode( $categoryCombo.displayName )</option>
+            #end
+          </select>
+        </td>
+      </tr>
       <tr>
         <td><label>$i18n.getString( "notification_recipients" )</label></td>
         <td>

@@ -34,6 +34,8 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
@@ -45,7 +47,6 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author mortenoh
@@ -78,9 +79,15 @@ public class EditDataSetFormAction
         this.userGroupService = userGroupService;
     }
 
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     private MappingService mappingService;
 
-    @Autowired
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
@@ -132,6 +139,13 @@ public class EditDataSetFormAction
         return indicators;
     }
 
+    private List<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
+    
+    public List<DataElementCategoryCombo> getCategoryCombos()
+    {
+        return categoryCombos;
+    }
+
     private List<MapLegendSet> legendSets;
 
     public List<MapLegendSet> getLegendSets()
@@ -148,8 +162,9 @@ public class EditDataSetFormAction
     {
         periodTypes = periodService.getAllPeriodTypes();
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAttributeCategoryCombos() );
         legendSets = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
-
+        
         if ( dataSetId != null )
         {
             dataSet = dataSetService.getDataSet( dataSetId, true, true, false );

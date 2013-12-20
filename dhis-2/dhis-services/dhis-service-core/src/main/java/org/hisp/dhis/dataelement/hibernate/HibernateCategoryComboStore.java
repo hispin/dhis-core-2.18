@@ -45,6 +45,8 @@ public class HibernateCategoryComboStore
     @SuppressWarnings("unchecked")
     public Collection<DataElementCategoryCombo> getCategoryCombosByDimensionType( String dimensionType )
     {
-        return getCriteria( Restrictions.eq( "dimensionType", dimensionType ) ).list();
+        return getCriteria( Restrictions.or( 
+            Restrictions.eq( "dimensionType", dimensionType ),
+            Restrictions.eq( "name", "default" ) ) ).list();
     }
 }

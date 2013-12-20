@@ -61,6 +61,10 @@
       <one-to-many class="org.hisp.dhis.dataset.Section" />
     </set>
 
+    <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo"
+      column="categorycomboid"
+      foreign-key="fk_dataset_categorycomboid" />
+
     <property name="sortOrder" />
 
     <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm"
