@@ -30,11 +30,16 @@ package org.hisp.dhis.de.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -98,7 +103,7 @@ public class GetMetaDataAction
     {
         this.currentUserService = currentUserService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -131,9 +136,9 @@ public class GetMetaDataAction
         return indicators;
     }
 
-    private Collection<DataSet> dataSets;
+    private List<DataSet> dataSets;
 
-    public Collection<DataSet> getDataSets()
+    public List<DataSet> getDataSets()
     {
         return dataSets;
     }
@@ -157,6 +162,20 @@ public class GetMetaDataAction
     public boolean isEmptyOrganisationUnits()
     {
         return emptyOrganisationUnits;
+    }
+    
+    private List<DataElementCategoryCombo> categoryCombos;
+
+    public List<DataElementCategoryCombo> getCategoryCombos()
+    {
+        return categoryCombos;
+    }
+    
+    private List<DataElementCategory> categories;
+
+    public List<DataElementCategory> getCategories()
+    {
+        return categories;
     }
 
     // -------------------------------------------------------------------------
@@ -194,8 +213,28 @@ public class GetMetaDataAction
 
         organisationUnitAssociationSetMap = organisationUnitSet.getOrganisationUnitAssociationSetMap();
 
-        dataSets = dataSetService.getDataSetsByUid( organisationUnitSet.getDistinctDataSets() );
+        dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByUid( organisationUnitSet.getDistinctDataSets() ) );
 
+        Set<DataElementCategoryCombo> categoryComboSet = new HashSet<DataElementCategoryCombo>();
+        Set<DataElementCategory> categorySet = new HashSet<DataElementCategory>();
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            categoryComboSet.add( dataSet.getCategoryCombo() );
+        }
+        
+        for ( DataElementCategoryCombo categoryCombo : categoryComboSet )
+        {
+            categorySet.addAll( categoryCombo.getCategories() );
+        }
+        
+        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryComboSet );
+        categories = new ArrayList<DataElementCategory>( categorySet );
+        
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( categories, IdentifiableObjectNameComparator.INSTANCE );
+        
         return SUCCESS;
     }
 }
