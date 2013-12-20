@@ -507,8 +507,10 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + "]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
-                // Update custom entry form
+                // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "gender", uid );
+                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='gender' ");
 
                 // ---------------------------------------------------------------------
                 // Death date
@@ -527,8 +529,11 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",deathDate from patient where deathDate is not null" );
 
-                // Update custom entry form
+                // Update custom entry form && Validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "deathDate", uid );
+                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='deathDate' ");
+
 
                 // ---------------------------------------------------------------------
                 // registrationDate
@@ -548,8 +553,10 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",registrationDate from patient where registrationDate is not null" );
 
-                // Update custom entry form
+                // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "registrationDate", uid );
+                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='registrationDate' ");
 
                 // ---------------------------------------------------------------------
                 // isDead
@@ -568,8 +575,11 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",isDead from patient where isDead is not null" );
 
-                // Update custom entry form
+                // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "isDead", uid );
+                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='isDead' ");
+
 
                 // ---------------------------------------------------------------------
                 // underAge
@@ -588,8 +598,10 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",isDead from patient where underAge=true" );
 
-                // Update custom entry form
+                // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "underAge", uid );
+                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='underAge' ");
 
                 // ---------------------------------------------------------------------
                 // DobType
@@ -632,8 +644,10 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + "]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
-                // Update custom entry form
+                // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "dobType", uid );
+                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='dobType' ");
 
                 // -------------------------------------------------------------
                 // Birthdate
@@ -652,9 +666,11 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",birthdate from patient where birthdate is not null and dobType in ('D','V') " );
 
-                // Update custom entry form
+                // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "birthDate", uid );
-                
+                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='birthDate' ");
+
                 // -------------------------------------------------------------
                 // Age
                 // -------------------------------------------------------------
@@ -672,8 +688,10 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",birthdate from patient where birthdate is not null and dobType='A' " );
 
-                // Update custom entry form
+                // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "age", uid );
+                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='age' ");
 
                 // -------------------------------------------------------------
                 // Phone number
@@ -694,7 +712,7 @@ public class TableAlteror
 
                 // Update custom entry form
                 removeFixedAttributeInCustomRegistrationForm( "phoneNumber", uid );
-
+                
                 // -------------------------------------------------------------
                 // Update Case Aggregate Query Builder
                 // -------------------------------------------------------------
@@ -703,7 +721,6 @@ public class TableAlteror
                 target = "[" + CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + ".age]";
                 updateFixedAttributeInCaseAggregate( source, target );
-
 
                 executeSql( "ALTER TABLE patient DROP COLUMN gender" );
                 executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
@@ -765,7 +782,7 @@ public class TableAlteror
             {
                 String htmlCode = resultSet.getString( "htmlcode" );
                 htmlCode = htmlCode.replaceAll( "fixedattributeid=\"" + property + "\"", "attributeid=\"" + uid + "\"" );
-                
+
                 executeSql( "UPDATE dataentryform SET htmlcode='" + htmlCode + "' WHERE dataentryformid="
                     + resultSet.getInt( "dataentryformid" ) );
             }

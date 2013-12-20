@@ -22,57 +22,35 @@
 				<table>
 					<tr>
 						<td>
-							<select id='property' name='property' style='width: 16em' onChange="showDivValue();">
-								<option value="">[$i18n.getString( "please_select" )]</option>
-								<option value="gender" #if("$validationCriteria.property" == "gender") selected #end>$i18n.getString( "gender" )</option>
-								<option value="birthDate" #if("$validationCriteria.property" == "birthDate") selected #end>$i18n.getString( "date_of_birth" )</option>
-								<option value="dobType" #if("$validationCriteria.property" == "dobType") selected #end>$i18n.getString( "dob_type" )</option>
-								<option value="integerValueOfAge" #if("$validationCriteria.property" == "integerValueOfAge") selected #end>$i18n.getString( "age" )</option>
+							<select id='property' name='property' style='width:16em' onChange="showDivValue();">
+								<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
+								#set($attribute = '')
+								#foreach($patientAttribute in $patientAttributes)
+									#set($opt="")
+									#foreach($option in $patientAttribute.attributeOptions)
+										#set($opt=$opt + ';' + $option.name )
+									#end 
+								<option value="$patientAttribute.uid" opt="$opt" #if($validationCriteria.property==$patientAttribute.uid) #set($attribute = $patientAttribute) selected #end>$patientAttribute.displayName</option>
+								#end
 							</select>
-								<select id='operator' name='operator' style='width: 7em'>
+						</td>
+						<td>
+							<select id='operator' name='operator' style='width: 7em'>
 								<option value='-1' #if( "$validationCriteria.operator"=='-1') selected #end>$i18n.getString('operator_less_then')</option>
 								<option value='0'  #if( "$validationCriteria.operator"=='0') selected #end>$i18n.getString('operator_equal_to')</option>
 								<option value='1'  #if( "$validationCriteria.operator"=='1') selected #end>$i18n.getString('operator_greater_then')</option>
 							</select>
-							</td>
-
-							<td>
-							
-							<!-- Displayed when no criteria is selected -->
-							<input type="text" style="width:16em" id='emptyCriteria'>
-				
-							<!-- gender -->
-							<div id="genderDiv" style="display:none">
-								<select id='genderValue' name='genderValue' onChange="fillValue(this.value);" style="width: 16em">
-									<option value="">[$i18n.getString( "please_select" )]</option>
-									<option value="M">$i18n.getString( "male" )</option>
-									<option value="F">$i18n.getString( "female" )</option>
-									<option value="T">$i18n.getString( "transgender" )</option>
+						</td>
+						<td id='valueTD'>
+							#if($attribute.attributeOptions)
+								<select id='value' name='value' class="{validate:{required:true}}" style="width:200px;">
+									#foreach($option in $attribute.attributeOptions)
+									<option value="$option.name" #if($validationCriteria.value==$option.name) selected #end>$option.name</option>
+									#end
 								</select>
-							</div>
-
-							<!-- dobType -->
-							<div id="dobTypeDiv" style="display:none ">
-								<select type="text" id='dobTypeValue' name='dobTypeValue' onChange="fillValue(this.value);" style="width: 16em">
-									<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-									<option value="V" >$i18n.getString( "verified" )</option>
-									<option value="D" >$i18n.getString( "declared" )</option>
-									<option value="A" >$i18n.getString( "approximated" )</option>
-								</select>
-							</div>
-
-							<!-- age -->
-							<div id="integerValueOfAgeDiv" style="display:none ">
-								<input type="text" id='integerValueOfAgeValue' name='integerValueOfAgeValue' onChange="fillValue(this.value);" class="{validate:{digits:true,rangelength:[1,2]}}" style="width: 15.5em"/>
-							</div>
-
-							<!-- birthDate -->
-							<div id="birthDateDiv" style="display:none ">
-								<input type="text" id="birthDateValue" name="birthDateValue" onChange="fillValue(this.value);"style="width:215px"/>
-								<script type="text/javascript">datePickerValid( 'birthDateValue' );</script> 
-							</div>
-
-							<input type='hidden' id='value' name='value' value="$validationCriteria.value" class="{validate:{required:true}}"/>
+							#else
+								<input id='value' name='value' class="{validate:{required:true}}" style="width:200px;"/>
+							#end
 						</td>
 					</tr>
 				</table>
@@ -87,25 +65,3 @@
 		</tr>
 	</table>
 </form>
-
-<script language="javascript">
-	
-	var name = '$validationCriteria.property';
-	var divName = name+ "Div";
-	byId(divName).style.display = 'block';
-	
-	if(divName == 'birthDateDiv'){
-		var year = eval('$validationCriteria.value.getYear()') + 1900;
-		var month = eval('$validationCriteria.value.getMonth()' ) + 1;
-		month = ( month < 10 ) ? ( '0' + month ) : month;
-		var date = '$validationCriteria.value.getDate()';
-		date = ( date < 10 ) ? ( '0' + date ) : date;
-		
-		byId(name + "Value").value = year + '-' + month + '-' + date;
-	}else{
-		byId(name + "Value").value = '$validationCriteria.value';
-	}
-	byId('value').value = byId(name + "Value").value;
-	showDivValue();
-	
-</script>

@@ -62,7 +62,7 @@ public class ValidationCriteria
 
     private int operator;
 
-    private Object value;
+    private String value;
 
     // -------------------------------------------------------------------------
     // Constructor method
@@ -118,12 +118,12 @@ public class ValidationCriteria
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Object getValue()
+    public String getValue()
     {
         return value;
     }
 
-    public void setValue( Object value )
+    public void setValue( String value )
     {
         this.value = value;
     }

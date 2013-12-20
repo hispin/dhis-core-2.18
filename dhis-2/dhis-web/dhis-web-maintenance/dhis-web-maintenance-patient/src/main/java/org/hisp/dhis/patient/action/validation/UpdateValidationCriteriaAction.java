@@ -48,9 +48,10 @@ public class UpdateValidationCriteriaAction
 
     private ValidationCriteriaService validationCriteriaService;
 
-    private PatientService patientService;
-
-    private I18nFormat format;
+    public void setValidationCriteriaService( ValidationCriteriaService validationCriteriaService )
+    {
+        this.validationCriteriaService = validationCriteriaService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -71,21 +72,6 @@ public class UpdateValidationCriteriaAction
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
-
-    public void setValidationCriteriaService( ValidationCriteriaService validationCriteriaService )
-    {
-        this.validationCriteriaService = validationCriteriaService;
-    }
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
 
     public void setName( String name )
     {
@@ -131,11 +117,10 @@ public class UpdateValidationCriteriaAction
         criteria.setDescription( description );
         criteria.setProperty( property );
         criteria.setOperator( operator );
-        criteria.setValue( patientService.getObjectValue( property, value, format ) );
+        criteria.setValue( value );
 
         validationCriteriaService.updateValidationCriteria( criteria );
 
         return SUCCESS;
     }
-
 }

@@ -28,7 +28,14 @@ package org.hisp.dhis.patient.action.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 
@@ -52,11 +59,20 @@ public class GetValidationCriteriaAction
         this.validationCriteriaService = validationCriteriaService;
     }
 
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
 
     private int id;
+
+    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
     private ValidationCriteria validationCriteria;
 
@@ -86,6 +102,11 @@ public class GetValidationCriteriaAction
         return validationCriteria;
     }
 
+    public List<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -95,6 +116,10 @@ public class GetValidationCriteriaAction
         throws Exception
     {
         validationCriteria = validationCriteriaService.getValidationCriteria( id );
+
+        patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
+
+        Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
