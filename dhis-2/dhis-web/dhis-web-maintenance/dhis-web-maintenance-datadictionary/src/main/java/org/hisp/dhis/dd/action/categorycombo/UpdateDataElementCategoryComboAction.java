@@ -75,6 +75,13 @@ public class UpdateDataElementCategoryComboAction
         this.name = name;
     }
 
+    private String dimensionType;
+
+    public void setDimensionType( String dimensionType )
+    {
+        this.dimensionType = dimensionType;
+    }
+
     private boolean skipTotal;
     
     public void setSkipTotal( boolean skipTotal )
@@ -95,11 +102,12 @@ public class UpdateDataElementCategoryComboAction
 
     public String execute()
     {
-        DataElementCategoryCombo dataElementCategoryCombo = dataElementCategoryService
+        DataElementCategoryCombo categoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( id );
 
-        dataElementCategoryCombo.setName( name );
-        dataElementCategoryCombo.setSkipTotal( skipTotal );
+        categoryCombo.setName( name );
+        categoryCombo.setDimensionType( dimensionType );
+        categoryCombo.setSkipTotal( skipTotal );
         
         List<DataElementCategory> updatedCategories = new ArrayList<DataElementCategory>();
 
@@ -111,9 +119,9 @@ public class UpdateDataElementCategoryComboAction
             updatedCategories.add( dataElementCategory );
         }
 
-        dataElementCategoryCombo.setCategories( updatedCategories );
+        categoryCombo.setCategories( updatedCategories );
 
-        dataElementCategoryService.updateDataElementCategoryCombo( dataElementCategoryCombo );       
+        dataElementCategoryService.updateDataElementCategoryCombo( categoryCombo );       
 
         return SUCCESS;
     }

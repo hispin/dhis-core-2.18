@@ -32,7 +32,9 @@
         foreign-key="fk_categorycombo_categoryoptioncomboid" unique="true" />
     </set>
     
-    <property name="skipTotal" />
-
+    <property name="dimensionType" column="dimensiontype" />
+    
+    <property name="skipTotal" column="skiptotal" />
+    
   </class>
 </hibernate-mapping>

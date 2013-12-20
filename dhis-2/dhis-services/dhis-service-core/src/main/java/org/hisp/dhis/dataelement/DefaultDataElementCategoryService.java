@@ -42,7 +42,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericDimensionalObjectStore;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
@@ -76,9 +75,9 @@ public class DefaultDataElementCategoryService
         this.categoryOptionStore = categoryOptionStore;
     }
 
-    private GenericIdentifiableObjectStore<DataElementCategoryCombo> categoryComboStore;
+    private CategoryComboStore categoryComboStore;
 
-    public void setCategoryComboStore( GenericIdentifiableObjectStore<DataElementCategoryCombo> categoryComboStore )
+    public void setCategoryComboStore( CategoryComboStore categoryComboStore )
     {
         this.categoryComboStore = categoryComboStore;
     }
@@ -386,6 +385,16 @@ public class DefaultDataElementCategoryService
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetweenByName( String name, int first, int max )
     {
         return i18n( i18nService, categoryComboStore.getAllLikeNameOrderedName( name, first, max ) );
+    }
+    
+    public Collection<DataElementCategoryCombo> getDisaggregationCategoryCombos()
+    {
+        return i18n( i18nService, categoryComboStore.getCategoryCombosByDimensionType( DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION ) );
+    }
+
+    public Collection<DataElementCategoryCombo> getAttributeCategoryCombos()
+    {
+        return i18n( i18nService, categoryComboStore.getCategoryCombosByDimensionType( DataElementCategoryCombo.DIMENSION_TYPE_ATTTRIBUTE ) );
     }
     
     // -------------------------------------------------------------------------

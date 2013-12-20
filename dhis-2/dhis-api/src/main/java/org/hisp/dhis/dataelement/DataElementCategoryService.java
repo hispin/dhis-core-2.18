@@ -282,6 +282,20 @@ public interface DataElementCategoryService
      */
     Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos();
 
+    /**
+     * Retrieves all DataElementCategoryCombos of dimension type disaggregation.
+     *
+     * @return a collection of DataElementCategoryCombos.
+     */
+    Collection<DataElementCategoryCombo> getDisaggregationCategoryCombos();
+
+    /**
+     * Retrieves all DataElementCategoryCombos of dimension type attribute.
+     *
+     * @return a collection of DataElementCategoryCombos.
+     */
+    Collection<DataElementCategoryCombo> getAttributeCategoryCombos();
+
     // -------------------------------------------------------------------------
     // CategoryOptionCombo
     // -------------------------------------------------------------------------
