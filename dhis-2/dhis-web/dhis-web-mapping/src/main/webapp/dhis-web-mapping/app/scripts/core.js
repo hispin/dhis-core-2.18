@@ -526,7 +526,7 @@ Ext.onReady( function() {
 
 		options.onHoverSelect = onHoverSelect;
 		options.onHoverUnselect = onHoverUnselect;
-console.log(layer);
+		
 		if (layer.id !== 'event') {
 			options.onClickSelect = onClickSelect;
 		}
