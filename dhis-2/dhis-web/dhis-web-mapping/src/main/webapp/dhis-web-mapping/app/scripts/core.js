@@ -76,12 +76,13 @@ Ext.onReady( function() {
 		};
 
 		olmap.closeAllLayers = function() {
+			gis.layer.event.core.reset();
+			gis.layer.facility.core.reset();
 			gis.layer.boundary.core.reset();
 			gis.layer.thematic1.core.reset();
 			gis.layer.thematic2.core.reset();
 			gis.layer.thematic3.core.reset();
 			gis.layer.thematic4.core.reset();
-			gis.layer.facility.core.reset();
 		};
 
 		addControl('zoomIn', olmap.zoomIn);
@@ -141,6 +142,12 @@ Ext.onReady( function() {
 			}
 		});
 		layers.openStreetMap.id = 'openStreetMap';
+
+		layers.event = GIS.core.VectorLayer(gis, 'event', GIS.i18n.event_layer, {opacity: 0.8});
+		layers.event.core = new mapfish.GeoStat.Event(gis.olmap, {
+			layer: layers.event,
+			gis: gis
+		});
 
 		layers.facility = GIS.core.VectorLayer(gis, 'facility', GIS.i18n.facility_layer, {opacity: 1});
 		layers.facility.core = new mapfish.GeoStat.Facility(gis.olmap, {
@@ -418,7 +425,7 @@ Ext.onReady( function() {
 				// parent graph map
 				view.parentGraphMap = {};
 				view.parentGraphMap[parentId] = parentGraph;
-console.log(view.parentGraphMap);
+
 				// dimension
 				view.rows = [{
 					dimension: dimConf.organisationUnit.objectName,
@@ -832,6 +839,406 @@ console.log(view.parentGraphMap);
 					setMap();
 				}
 			}
+		};
+
+		return loader;
+	};
+
+	GIS.core.LayerLoaderEvent = function(gis, layer) {
+		var olmap = layer.map,
+			compareView,
+			loadOrganisationUnits,
+			loadData,
+			loadLegend,
+			afterLoad,
+			loader,
+			dimConf = gis.conf.finals.dimension;
+
+		loadOrganisationUnits = function(view) {
+            loadData(view);
+		};
+
+		loadData = function(view) {
+			view = view || layer.core.view;
+
+            var paramString = '?',
+                features = [];
+
+            // stage
+            paramString += 'stage=' + view.stage.id;
+
+            // dates
+            paramString += '&startDate=' + view.startDate;
+            paramString += '&endDate=' + view.endDate;
+
+            // ou //todo
+            paramString += '&dimension=ou:' + view.organisationUnits[0].id;
+
+            // de
+            for (var i = 0, element; i < view.dataElements.length; i++) {
+                element = view.dataElements[i];
+
+                paramString += '&dimension=' + element.id;
+
+                if (element.value) {
+					if (element.operator) {
+						paramString += ':' + element.operator;
+					}
+
+					paramString += ':' + element.value;
+                }
+            }
+
+			Ext.data.JsonP.request({
+				url: gis.init.contextPath + '/api/analytics/events/query/' + view.program.id + '.jsonp' + paramString,
+				disableCaching: false,
+				scope: this,
+				success: function(r) {
+                    var events = [],
+                        features = [];
+
+                    if (!r.rows) {
+                        alert('No coordinates found');
+                        return;
+                    }
+
+                    // events
+                    for (var i = 0, row, obj; i < r.rows.length; i++) {
+                        row = r.rows[i];
+                        obj = {};
+
+                        for (var j = 0; j < row.length; j++) {
+                            obj[r.headers[j].name] = row[j];
+                        }
+
+                        obj[gis.conf.finals.widget.value] = 0;
+
+                        events.push(obj);
+                    }
+
+                    // features
+                    for (var i = 0, event, point; i < events.length; i++) {
+                        event = events[i];
+
+                        point = gis.util.map.getTransformedPointByXY(event.longitude, event.latitude);
+
+                        features.push(new OpenLayers.Feature.Vector(point, event));
+                    }
+
+                    layer.removeFeatures(layer.features);
+                    layer.addFeatures(features);
+
+                    loadLegend(view);
+                }
+            });
+		};
+
+		loadLegend = function(view) {
+			view = view || layer.core.view;
+
+            // classification optionsvar options = {
+            var options = {
+            	indicator: gis.conf.finals.widget.value,
+				method: 2,
+				numClasses: 5,
+				colors: layer.core.getColors('ffffff', 'ff0000'),
+				minSize: 4,
+				maxSize: 4
+			};
+
+            layer.core.view = view;
+
+            layer.core.applyClassification(options);
+
+            afterLoad(view);
+		};
+
+		afterLoad = function(view) {
+
+			// Layer
+			if (layer.item) {
+				layer.item.setValue(true, view.opacity);
+			}
+			else {
+				layer.setLayerOpacity(view.opacity);
+			}
+
+			// Gui
+			if (loader.updateGui && Ext.isObject(layer.widget)) {
+				layer.widget.setGui(view);
+			}
+
+			// Zoom
+			if (loader.zoomToVisibleExtent) {
+				olmap.zoomToVisibleExtent();
+			}
+
+			// Mask
+			if (loader.hideMask) {
+				olmap.mask.hide();
+			}
+
+			// Map callback
+			if (loader.callBack) {
+				loader.callBack(layer);
+			}
+			else {
+				gis.map = null;
+			}
+
+			// session storage
+			//if (GIS.isSessionStorage) {
+				//gis.util.layout.setSessionStorage('map', gis.util.layout.getAnalytical());
+			//}
+		};
+
+		loader = {
+			compare: false,
+			updateGui: false,
+			zoomToVisibleExtent: false,
+			hideMask: false,
+			callBack: null,
+			load: function(view) {
+				gis.olmap.mask.show();
+
+                loadOrganisationUnits(view);
+			},
+			loadData: loadData,
+			loadLegend: loadLegend
+		};
+
+		return loader;
+	};
+
+	GIS.core.LayerLoaderFacility = function(gis, layer) {
+		var olmap = layer.map,
+			compareView,
+			loadOrganisationUnits,
+			loadData,
+			loadLegend,
+			addCircles,
+			afterLoad,
+			loader;
+
+		compareView = function(view, doExecute) {
+			var src = layer.core.view,
+				viewIds,
+				viewDim,
+				srcIds,
+				srcDim;
+
+			loader.zoomToVisibleExtent = true;
+
+			if (!src) {
+				if (doExecute) {
+					loadOrganisationUnits(view);
+				}
+				return gis.conf.finals.widget.loadtype_organisationunit;
+			}
+
+			// organisation units
+			viewIds = [];
+			viewDim = view.rows[0];
+			srcIds = [];
+			srcDim = src.rows[0];
+
+			if (viewDim.items.length === srcDim.items.length) {
+				for (var i = 0; i < viewDim.items.length; i++) {
+					viewIds.push(viewDim.items[i].id);
+				}
+
+				for (var i = 0; i < srcDim.items.length; i++) {
+					srcIds.push(srcDim.items[i].id);
+				}
+
+				if (Ext.Array.difference(viewIds, srcIds).length !== 0) {
+					if (doExecute) {
+						loadOrganisationUnits(view);
+					}
+					return gis.conf.finals.widget.loadtype_organisationunit;
+				}
+			}
+			else {
+				if (doExecute) {
+					loadOrganisationUnits(view);
+				}
+				return gis.conf.finals.widget.loadtype_organisationunit;
+			}
+
+			// Group set
+			loader.zoomToVisibleExtent = false;
+
+			if (view.organisationUnitGroupSet.id !== src.organisationUnitGroupSet.id) {
+				if (doExecute) {
+					loadOrganisationUnits(view);
+				}
+				return gis.conf.finals.widget.loadtype_organisationunit;
+			}
+
+			//if (view.areaRadius !== src.areaRadius) {
+				//if (doExecute) {
+					//loadLegend(view);
+				//}
+				//return gis.conf.finals.widget.loadtype_legend;
+			//}
+
+			// always reload legend
+			if (doExecute) {
+				loadLegend(view);
+				return gis.conf.finals.widget.loadtype_legend;
+			}
+
+			//gis.olmap.mask.hide();
+		};
+
+		loadOrganisationUnits = function(view) {
+			var items = view.rows[0].items,
+				idParamString = '';
+
+			for (var i = 0; i < items.length; i++) {
+				idParamString += 'ids=' + items[i].id;
+				idParamString += i !== items.length - 1 ? '&' : '';
+			}
+
+			Ext.data.JsonP.request({
+				url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJsonFacilities.action?' + idParamString,
+				scope: this,
+				disableCaching: false,
+				success: function(r) {
+					var geojson = layer.core.decode(r),
+						format = new OpenLayers.Format.GeoJSON(),
+						features = gis.util.map.getTransformedFeatureArray(format.read(geojson));
+
+					if (!Ext.isArray(features)) {
+						olmap.mask.hide();
+						alert(GIS.i18n.invalid_coordinates);
+						return;
+					}
+
+					if (!features.length) {
+						olmap.mask.hide();
+						alert(GIS.i18n.no_valid_coordinates_found);
+						return;
+					}
+
+					layer.core.featureStore.loadFeatures(features.slice(0));
+
+					loadData(view, features);
+				},
+				failure: function(r) {
+					olmap.mask.hide();
+					alert(GIS.i18n.coordinates_could_not_be_loaded);
+				}
+			});
+		};
+
+		loadData = function(view, features) {
+			view = view || layer.core.view;
+			features = features || layer.core.featureStore.features;
+
+			for (var i = 0; i < features.length; i++) {
+				features[i].attributes.label = features[i].attributes.name;
+			}
+
+			layer.removeFeatures(layer.features);
+			layer.addFeatures(features);
+
+			loadLegend(view);
+		};
+
+		loadLegend = function(view) {
+			view = view || layer.core.view;
+
+			var store = gis.store.groupsByGroupSet;
+
+			store.proxy.url = gis.init.contextPath + gis.conf.finals.url.path_module + 'getOrganisationUnitGroupsByGroupSet.action?id=' + view.organisationUnitGroupSet.id;
+			store.load({
+				scope: this,
+				callback: function() {
+					var options = {
+						indicator: view.organisationUnitGroupSet.id
+					};
+
+					layer.core.view = view;
+
+					layer.core.applyClassification(options);
+
+					addCircles(view);
+
+					afterLoad(view);
+				}
+			});
+		};
+
+		addCircles = function(view) {
+			var radius = view.areaRadius;
+
+			if (layer.circleLayer) {
+				layer.circleLayer.deactivateControls();
+				layer.circleLayer = null;
+			}
+			if (Ext.isDefined(radius) && radius) {
+				layer.circleLayer = GIS.app.CircleLayer(layer.features, radius);
+				nissa = layer.circleLayer;
+			}
+		};
+
+		afterLoad = function(view) {
+
+			// Legend
+			gis.viewport.eastRegion.doLayout();
+			layer.legendPanel.expand();
+
+			// Layer
+			if (layer.item) {
+				layer.item.setValue(true, view.opacity);
+			}
+			else {
+				layer.setLayerOpacity(view.opacity);
+			}
+
+			// Gui
+			if (loader.updateGui && Ext.isObject(layer.widget)) {
+				layer.widget.setGui(view);
+			}
+
+			// Zoom
+			if (loader.zoomToVisibleExtent) {
+				olmap.zoomToVisibleExtent();
+			}
+
+			// Mask
+			if (loader.hideMask) {
+				olmap.mask.hide();
+			}
+
+			// Map callback
+			if (loader.callBack) {
+				loader.callBack(layer);
+			}
+			else {
+				gis.map = null;
+			}
+		};
+
+		loader = {
+			compare: false,
+			updateGui: false,
+			zoomToVisibleExtent: false,
+			hideMask: false,
+			callBack: null,
+			load: function(view) {
+				gis.olmap.mask.show();
+
+				if (this.compare) {
+					compareView(view, true);
+				}
+				else {
+					loadOrganisationUnits(view);
+				}
+			},
+			loadData: loadData,
+			loadLegend: loadLegend
 		};
 
 		return loader;
@@ -1456,240 +1863,6 @@ console.log(view.parentGraphMap);
 			// session storage
 			if (GIS.isSessionStorage) {
 				gis.util.layout.setSessionStorage('map', gis.util.layout.getAnalytical());
-			}
-		};
-
-		loader = {
-			compare: false,
-			updateGui: false,
-			zoomToVisibleExtent: false,
-			hideMask: false,
-			callBack: null,
-			load: function(view) {
-				gis.olmap.mask.show();
-
-				if (this.compare) {
-					compareView(view, true);
-				}
-				else {
-					loadOrganisationUnits(view);
-				}
-			},
-			loadData: loadData,
-			loadLegend: loadLegend
-		};
-
-		return loader;
-	};
-
-	GIS.core.LayerLoaderFacility = function(gis, layer) {
-		var olmap = layer.map,
-			compareView,
-			loadOrganisationUnits,
-			loadData,
-			loadLegend,
-			addCircles,
-			afterLoad,
-			loader;
-
-		compareView = function(view, doExecute) {
-			var src = layer.core.view,
-				viewIds,
-				viewDim,
-				srcIds,
-				srcDim;
-
-			loader.zoomToVisibleExtent = true;
-
-			if (!src) {
-				if (doExecute) {
-					loadOrganisationUnits(view);
-				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
-			}
-
-			// organisation units
-			viewIds = [];
-			viewDim = view.rows[0];
-			srcIds = [];
-			srcDim = src.rows[0];
-
-			if (viewDim.items.length === srcDim.items.length) {
-				for (var i = 0; i < viewDim.items.length; i++) {
-					viewIds.push(viewDim.items[i].id);
-				}
-
-				for (var i = 0; i < srcDim.items.length; i++) {
-					srcIds.push(srcDim.items[i].id);
-				}
-
-				if (Ext.Array.difference(viewIds, srcIds).length !== 0) {
-					if (doExecute) {
-						loadOrganisationUnits(view);
-					}
-					return gis.conf.finals.widget.loadtype_organisationunit;
-				}
-			}
-			else {
-				if (doExecute) {
-					loadOrganisationUnits(view);
-				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
-			}
-
-			// Group set
-			loader.zoomToVisibleExtent = false;
-
-			if (view.organisationUnitGroupSet.id !== src.organisationUnitGroupSet.id) {
-				if (doExecute) {
-					loadOrganisationUnits(view);
-				}
-				return gis.conf.finals.widget.loadtype_organisationunit;
-			}
-
-			//if (view.areaRadius !== src.areaRadius) {
-				//if (doExecute) {
-					//loadLegend(view);
-				//}
-				//return gis.conf.finals.widget.loadtype_legend;
-			//}
-
-			// always reload legend
-			if (doExecute) {
-				loadLegend(view);
-				return gis.conf.finals.widget.loadtype_legend;
-			}
-
-			//gis.olmap.mask.hide();
-		};
-
-		loadOrganisationUnits = function(view) {
-			var items = view.rows[0].items,
-				idParamString = '';
-
-			for (var i = 0; i < items.length; i++) {
-				idParamString += 'ids=' + items[i].id;
-				idParamString += i !== items.length - 1 ? '&' : '';
-			}
-
-			Ext.data.JsonP.request({
-				url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getGeoJsonFacilities.action?' + idParamString,
-				scope: this,
-				disableCaching: false,
-				success: function(r) {
-					var geojson = layer.core.decode(r),
-						format = new OpenLayers.Format.GeoJSON(),
-						features = gis.util.map.getTransformedFeatureArray(format.read(geojson));
-
-					if (!Ext.isArray(features)) {
-						olmap.mask.hide();
-						alert(GIS.i18n.invalid_coordinates);
-						return;
-					}
-
-					if (!features.length) {
-						olmap.mask.hide();
-						alert(GIS.i18n.no_valid_coordinates_found);
-						return;
-					}
-
-					layer.core.featureStore.loadFeatures(features.slice(0));
-
-					loadData(view, features);
-				},
-				failure: function(r) {
-					olmap.mask.hide();
-					alert(GIS.i18n.coordinates_could_not_be_loaded);
-				}
-			});
-		};
-
-		loadData = function(view, features) {
-			view = view || layer.core.view;
-			features = features || layer.core.featureStore.features;
-
-			for (var i = 0; i < features.length; i++) {
-				features[i].attributes.label = features[i].attributes.name;
-			}
-
-			layer.removeFeatures(layer.features);
-			layer.addFeatures(features);
-
-			loadLegend(view);
-		};
-
-		loadLegend = function(view) {
-			view = view || layer.core.view;
-
-			var store = gis.store.groupsByGroupSet;
-
-			store.proxy.url = gis.init.contextPath + gis.conf.finals.url.path_module + 'getOrganisationUnitGroupsByGroupSet.action?id=' + view.organisationUnitGroupSet.id;
-			store.load({
-				scope: this,
-				callback: function() {
-					var options = {
-						indicator: view.organisationUnitGroupSet.id
-					};
-
-					layer.core.view = view;
-
-					layer.core.applyClassification(options);
-
-					addCircles(view);
-
-					afterLoad(view);
-				}
-			});
-		};
-
-		addCircles = function(view) {
-			var radius = view.areaRadius;
-
-			if (layer.circleLayer) {
-				layer.circleLayer.deactivateControls();
-				layer.circleLayer = null;
-			}
-			if (Ext.isDefined(radius) && radius) {
-				layer.circleLayer = GIS.app.CircleLayer(layer.features, radius);
-				nissa = layer.circleLayer;
-			}
-		};
-
-		afterLoad = function(view) {
-
-			// Legend
-			gis.viewport.eastRegion.doLayout();
-			layer.legendPanel.expand();
-
-			// Layer
-			if (layer.item) {
-				layer.item.setValue(true, view.opacity);
-			}
-			else {
-				layer.setLayerOpacity(view.opacity);
-			}
-
-			// Gui
-			if (loader.updateGui && Ext.isObject(layer.widget)) {
-				layer.widget.setGui(view);
-			}
-
-			// Zoom
-			if (loader.zoomToVisibleExtent) {
-				olmap.zoomToVisibleExtent();
-			}
-
-			// Mask
-			if (loader.hideMask) {
-				olmap.mask.hide();
-			}
-
-			// Map callback
-			if (loader.callBack) {
-				loader.callBack(layer);
-			}
-			else {
-				gis.map = null;
 			}
 		};
 
@@ -2389,12 +2562,14 @@ console.log(view.parentGraphMap);
 			gis.layer.thematic2,
 			gis.layer.thematic1,
 			gis.layer.boundary,
-			gis.layer.facility
+			gis.layer.facility,
+			gis.layer.event
 		);
 
 		gis.olmap.addLayers(layers);
 
 		GIS.core.instances.push(gis);
+e = gis.layer.event;
 
 		return gis;
 	};

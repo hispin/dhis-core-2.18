@@ -613,17 +613,20 @@ Ext.onReady( function() {
 			enableKeyEvents: true,
 			currentValue: '',
 			listeners: {
-				keyup: function() {
-					if (this.getValue() !== this.currentValue) {
-						this.currentValue = this.getValue();
+				keyup: {
+					fn: function() {
+						if (this.getValue() !== this.currentValue) {
+							this.currentValue = this.getValue();
 
-						var value = this.getValue(),
-							url = value ? ns.core.init.contextPath + '/api/charts/query/' + value + '.json?viewClass=sharing&links=false' : null,
-							store = ns.app.stores.chart;
+							var value = this.getValue(),
+								url = value ? ns.core.init.contextPath + '/api/charts/query/' + value + '.json?viewClass=sharing&links=false' : null,
+								store = ns.app.stores.chart;
 
-						store.page = 1;
-						store.loadStore(url);
-					}
+							store.page = 1;
+							store.loadStore(url);
+						}
+					},
+					buffer: 100
 				}
 			}
 		});
