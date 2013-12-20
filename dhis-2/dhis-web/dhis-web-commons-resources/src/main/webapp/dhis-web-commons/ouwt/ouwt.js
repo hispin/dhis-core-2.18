@@ -324,7 +324,6 @@ function Selection()
             }
         } ).always( function() {
             if( should_update ) {
-                console.log('update');
                 selection.ajaxOrganisationUnits( false ).done(function( data ) {
                     selection.setRoots( data.roots );
                     selection.setVersion( data.version );
