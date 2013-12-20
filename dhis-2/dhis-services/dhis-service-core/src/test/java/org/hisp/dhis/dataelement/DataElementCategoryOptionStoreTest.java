@@ -59,7 +59,7 @@ public class DataElementCategoryOptionStoreTest
     @Override
     public void setUpTest()
     {
-        categoryOptionStore = (GenericIdentifiableObjectStore<DataElementCategoryOption>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryOptionStore" );    
+        categoryOptionStore = (GenericIdentifiableObjectStore<DataElementCategoryOption>) getBean( "org.hisp.dhis.dataelement.CategoryOptionStore" );    
     }
 
     // -------------------------------------------------------------------------

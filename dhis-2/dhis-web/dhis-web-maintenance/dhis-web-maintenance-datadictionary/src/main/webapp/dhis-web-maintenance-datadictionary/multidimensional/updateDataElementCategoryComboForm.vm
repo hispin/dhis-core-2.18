@@ -43,7 +43,7 @@
       <tr>
         <td style="width:120px"><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementCategoryCombo.displayName )"/></td>
-      </tr>  
+      </tr>
       <tr>
         <td><label>$i18n.getString( "dimension_type" )</td>
         <td>

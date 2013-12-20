@@ -81,7 +81,7 @@ public class DataElementCategoryStoreTest
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
-        categoryStore = (GenericIdentifiableObjectStore<DataElementCategory>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryStore" );
+        categoryStore = (GenericIdentifiableObjectStore<DataElementCategory>) getBean( "org.hisp.dhis.dataelement.CategoryStore" );
 
         conceptA = new Concept( "ConceptA" );
         conceptB = new Concept( "ConceptB" );

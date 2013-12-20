@@ -655,6 +655,7 @@ public class TableAlteror
 	executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );
 	
 	executeSql( "update categorycombo set dimensiontype = '" + DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION + "' where dimensiontype is null" );
+        executeSql( "update dataelementcategory set dimensiontype = '" + DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION + "' where dimensiontype is null" );
 	
 	upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();

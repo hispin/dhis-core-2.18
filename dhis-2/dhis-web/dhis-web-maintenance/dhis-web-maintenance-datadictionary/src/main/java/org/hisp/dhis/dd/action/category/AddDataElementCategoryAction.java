@@ -87,6 +87,13 @@ public class AddDataElementCategoryAction
         this.conceptId = conceptId;
     }
 
+    private String dimensionType;
+
+    public void setDimensionType( String dimensionType )
+    {
+        this.dimensionType = dimensionType;
+    }
+
     private List<String> selectedList = new ArrayList<String>();
 
     public void setSelectedList( List<String> selectedList )
@@ -104,6 +111,7 @@ public class AddDataElementCategoryAction
         dataElementCategory.setName( name );
         dataElementCategory.setDataDimension( dataDimension );
         dataElementCategory.setConcept( conceptService.getConcept( conceptId ) );
+        dataElementCategory.setDimensionType( dimensionType );
 
         List<DataElementCategoryOption> options = new ArrayList<DataElementCategoryOption>();
 
