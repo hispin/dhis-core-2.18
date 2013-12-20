@@ -62,6 +62,8 @@
 #end }
 },
 
+"defaultCategoryCombo":"${defaultCategoryCombo.uid}",
+
 "categoryCombos": {
 #set( $size1 = $categoryCombos.size() )
 #foreach( $categoryCombo in $categoryCombos )

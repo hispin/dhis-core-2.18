@@ -376,6 +376,11 @@ public class DefaultDataElementCategoryService
     {
         return i18n( i18nService, categoryComboStore.getByName( name ) );
     }
+    
+    public DataElementCategoryCombo getDefaultDataElementCategoryCombo()
+    {
+        return getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+    }
 
     public int getDataElementCategoryComboCount()
     {
