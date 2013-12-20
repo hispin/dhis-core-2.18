@@ -45,6 +45,15 @@
         <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementCategoryCombo.displayName )"/></td>
       </tr>  
       <tr>
+        <td><label>$i18n.getString( "dimension_type" )</td>
+        <td>
+          <select id="dimensionType" name="dimensionType" disabled="disabled">
+            <option value="disaggregation"#if( "disaggregation" == $dataElementCategoryCombo.dimensionType ) selected="selected"#end>$i18n.getString( "disaggregation" )</option>
+            <option value="attribute"#if( "attribute" == $dataElementCategoryCombo.dimensionType ) selected="selected"#end>$i18n.getString( "attribute" )</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
         <td><label for="skipTotal">$i18n.getString( "skip_total_in_reports" )</label></td>
         <td><input type="checkbox" id="skipTotal" name="skipTotal" value="true"#if( $dataElementCategoryCombo.skipTotal ) checked="checked"#end/></td>
       </tr>

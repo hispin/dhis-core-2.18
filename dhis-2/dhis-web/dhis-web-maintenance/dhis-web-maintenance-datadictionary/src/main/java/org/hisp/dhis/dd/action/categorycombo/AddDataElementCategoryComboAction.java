@@ -68,13 +68,20 @@ public class AddDataElementCategoryComboAction
         this.name = name;
     }
 
+    private String dimensionType;
+
+    public void setDimensionType( String dimensionType )
+    {
+        this.dimensionType = dimensionType;
+    }
+
     private boolean skipTotal;
     
     public void setSkipTotal( boolean skipTotal )
     {
         this.skipTotal = skipTotal;
     }
-
+    
     private Collection<String> selectedList = new HashSet<String>();
 
     public void setSelectedList( Collection<String> selectedList )
@@ -88,9 +95,10 @@ public class AddDataElementCategoryComboAction
 
     public String execute()
     {
-        DataElementCategoryCombo dataElementCategoryCombo = new DataElementCategoryCombo();
-        dataElementCategoryCombo.setName( name );
-        dataElementCategoryCombo.setSkipTotal( skipTotal );
+        DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
+        categoryCombo.setName( name );
+        categoryCombo.setDimensionType( dimensionType );
+        categoryCombo.setSkipTotal( skipTotal );
 
         List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
 
@@ -102,11 +110,11 @@ public class AddDataElementCategoryComboAction
             categories.add( dataElementCategory );
         }
 
-        dataElementCategoryCombo.setCategories( categories );
+        categoryCombo.setCategories( categories );
 
-        dataElementCategoryService.addDataElementCategoryCombo( dataElementCategoryCombo );
+        dataElementCategoryService.addDataElementCategoryCombo( categoryCombo );
 
-        dataElementCategoryService.generateOptionCombos( dataElementCategoryCombo );
+        dataElementCategoryService.generateOptionCombos( categoryCombo );
         
         return SUCCESS;
     }

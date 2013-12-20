@@ -34,6 +34,7 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.jdbc.batchhandler.RelativePeriodsBatchHandler;
 import org.hisp.dhis.period.RelativePeriods;
@@ -652,7 +653,9 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE dataset DROP COLUMN symbol" );
 	executeSql( "ALTER TABLE users ALTER COLUMN password DROP NOT NULL" );
-
+	
+	executeSql( "update categorycombo set dimensiontype = '" + DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION + "' where dimensiontype is null" );
+	
 	upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
 

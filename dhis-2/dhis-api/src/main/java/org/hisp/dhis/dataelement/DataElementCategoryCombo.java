@@ -61,6 +61,9 @@ public class DataElementCategoryCombo
     private static final long serialVersionUID = 1549406078091077760L;
 
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
+    
+    public static final String DIMENSION_TYPE_DISAGGREGATION = "disaggregation";
+    public static final String DIMENSION_TYPE_ATTTRIBUTE = "attribute";
 
     /**
      * A set with categories.
@@ -74,8 +77,10 @@ public class DataElementCategoryCombo
      */
     private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
 
-    private boolean skipTotal;
+    private String dimensionType;
 
+    private boolean skipTotal;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -274,6 +279,19 @@ public class DataElementCategoryCombo
     public void setOptionCombos( Set<DataElementCategoryOptionCombo> optionCombos )
     {
         this.optionCombos = optionCombos;
+    }
+
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public String getDimensionType()
+    {
+        return dimensionType;
+    }
+
+    public void setDimensionType( String dimensionType )
+    {
+        this.dimensionType = dimensionType;
     }
 
     @JsonProperty

@@ -40,6 +40,15 @@
         <td><input type="text" id="name" name="name" /></td>
       </tr>
       <tr>
+      	<td><label>$i18n.getString( "dimension_type" )</td>
+      	<td>
+          <select id="dimensionType" name="dimensionType">
+            <option value="disaggregation" selected="selected">$i18n.getString( "disaggregation" )</option>
+            <option value="attribute">$i18n.getString( "attribute" )</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
       	<td><label for="skipTotal">$i18n.getString( "skip_total_in_reports" )</label></td>
       	<td><input type="checkbox" id="skipTotal" name="skipTotal" value="true" /></td>
       </tr>

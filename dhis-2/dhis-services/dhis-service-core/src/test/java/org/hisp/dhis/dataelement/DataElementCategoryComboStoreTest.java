@@ -68,7 +68,7 @@ public class DataElementCategoryComboStoreTest
     @Override
     public void setUpTest()
     {
-        categoryComboStore = (GenericIdentifiableObjectStore<DataElementCategoryCombo>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryComboStore" );
+        categoryComboStore = (GenericIdentifiableObjectStore<DataElementCategoryCombo>) getBean( "org.hisp.dhis.dataelement.CategoryComboStore" );
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
