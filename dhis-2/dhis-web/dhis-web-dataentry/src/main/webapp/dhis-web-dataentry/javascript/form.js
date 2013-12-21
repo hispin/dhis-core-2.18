@@ -1399,9 +1399,8 @@ dhis2.de.getAttributeComboMarkup = function( categoryCombos )
 		return html;
 	}
 	
-	html = '<div class="selectionBoxRow">';
-	
 	$.safeEach( categoryCombos, function( idx, combo ) {
+		html += '<div class="selectionBoxRow">';
 		html += '<div class="selectionLabel">' + combo.name + '</div>';
 		html += '<select id="combo-' + combo.id + '" class="selectionBoxSelect">';
 		
@@ -1411,9 +1410,9 @@ dhis2.de.getAttributeComboMarkup = function( categoryCombos )
 		} );
 		
 		html += '</select>';
+		html += '</div>';
 	} );
 
-	html += '</div>';
 	return html;
 }
 
