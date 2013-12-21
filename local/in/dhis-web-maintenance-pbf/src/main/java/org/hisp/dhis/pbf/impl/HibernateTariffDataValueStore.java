@@ -8,16 +8,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.pbf.api.TariffDataValue;
 import org.hisp.dhis.pbf.api.TariffDataValueStore;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public class HibernateTariffDataValueStore implements TariffDataValueStore
 {
@@ -35,7 +29,6 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
     // -------------------------------------------------------------------------
     // TariffDataValue
     // -------------------------------------------------------------------------
-    
     
     @Override
     public void addTariffDataValue( TariffDataValue tariffDataValue )
@@ -62,31 +55,18 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
     }
 
     @Override
-    public TariffDataValue getTariffDataValue( OrganisationUnit organisationUnit, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnitGroup organisationUnitGroup, Date startDate,
-        Date endDate )
+    public TariffDataValue getTariffDataValue( OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( TariffDataValue.class );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );        
-        criteria.add( Restrictions.eq( "optionCombo", optionCombo ) );
-        criteria.add( Restrictions.eq( "organisationUnitGroup", organisationUnitGroup ) );
+        criteria.add( Restrictions.eq( "dataSet", dataSet ) );
         criteria.add( Restrictions.eq( "startDate", startDate ) );
         criteria.add( Restrictions.eq( "endDate", endDate ) );
 
         return (TariffDataValue) criteria.uniqueResult();
-    }
-
-    @Override
-    public TariffDataValue getTariffDataValue( int organisationUnitId, int dataElementId, int categoryOptionComboId,
-        int organisationUnitGroupId, Date startDate, Date endDate )
-    {
-        /**
-         * TODO
-         */
-       return null;
     }
 
     @Override
@@ -100,14 +80,13 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
     }
 
     @Override
-    public Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit,
-        OrganisationUnitGroup organisationUnitGroup )
+    public Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( TariffDataValue.class );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
-        criteria.add( Restrictions.eq( "organisationUnitGroup", organisationUnitGroup ) );
+        criteria.add( Restrictions.eq( "organisationUnitGroup", dataSet ) );
 
         return criteria.list();
     }

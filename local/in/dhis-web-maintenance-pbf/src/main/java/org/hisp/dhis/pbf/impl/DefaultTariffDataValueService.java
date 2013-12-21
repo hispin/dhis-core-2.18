@@ -3,11 +3,9 @@ package org.hisp.dhis.pbf.impl;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hibernate.Session;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.pbf.api.TariffDataValue;
 import org.hisp.dhis.pbf.api.TariffDataValueService;
 import org.hisp.dhis.pbf.api.TariffDataValueStore;
@@ -50,18 +48,9 @@ public class DefaultTariffDataValueService implements TariffDataValueService
     }
 
     @Override
-    public TariffDataValue getTariffDataValue( OrganisationUnit organisationUnit, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnitGroup organisationUnitGroup, Date startDate,
-        Date endDate )
+    public TariffDataValue getTariffDataValue( OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate )
     {
-        return tariffDataValueStore.getTariffDataValue( organisationUnit, dataElement, optionCombo, organisationUnitGroup, startDate, endDate );
-    }
-
-    @Override
-    public TariffDataValue getTariffDataValue( int organisationUnitId, int dataElementId, int categoryOptionComboId,
-        int organisationUnitGroupId, Date startDate, Date endDate )
-    {
-        return tariffDataValueStore.getTariffDataValue( organisationUnitId, dataElementId, categoryOptionComboId, organisationUnitGroupId, startDate, endDate );
+        return tariffDataValueStore.getTariffDataValue( organisationUnit, dataElement, dataSet, startDate, endDate );
     }
 
     @Override
@@ -71,9 +60,9 @@ public class DefaultTariffDataValueService implements TariffDataValueService
     }
 
     @Override
-    public Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, OrganisationUnitGroup organisationUnitGroup )
+    public Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet )
     {
-        return tariffDataValueStore.getTariffDataValues( organisationUnit, organisationUnitGroup );
+        return tariffDataValueStore.getTariffDataValues( organisationUnit, dataSet );
     }
 
     @Override

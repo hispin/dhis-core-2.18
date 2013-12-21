@@ -1,17 +1,13 @@
 package org.hisp.dhis.pbf.action;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.pbf.api.TariffDataValue;
 import org.hisp.dhis.pbf.api.TariffDataValueService;
@@ -19,139 +15,137 @@ import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddTariffDataAction implements Action {
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+public class AddTariffDataAction
+    implements Action
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private TariffDataValueService tariffDataValueService;
+    private TariffDataValueService tariffDataValueService;
 
-	public void setTariffDataValueService(TariffDataValueService tariffDataValueService) 
-	{
-		this.tariffDataValueService = tariffDataValueService;
-	}
-	
-	private DataElementService dataElementService;
-	
-	public void setDataElementService(DataElementService dataElementService) {
-		this.dataElementService = dataElementService;
-	}
+    public void setTariffDataValueService( TariffDataValueService tariffDataValueService )
+    {
+        this.tariffDataValueService = tariffDataValueService;
+    }
 
-	private OrganisationUnitService organisationUnitService;
-	
-	public void setOrganisationUnitService(
-			OrganisationUnitService organisationUnitService) {
-		this.organisationUnitService = organisationUnitService;
-	}
-	
-	private OrganisationUnitGroupService organisationUnitGroupService;
-	
-	public void setOrganisationUnitGroupService(
-			OrganisationUnitGroupService organisationUnitGroupService) {
-		this.organisationUnitGroupService = organisationUnitGroupService;
-	}
-	
-	private DataElementCategoryService categoryService;
-	
-	public void setCategoryService(DataElementCategoryService categoryService) {
-		this.categoryService = categoryService;
-	}
-	
-	private CurrentUserService currentUserService;
-	
-	public void setCurrentUserService(CurrentUserService currentUserService) {
-		this.currentUserService = currentUserService;
-	}
+    private DataElementService dataElementService;
 
-	// -------------------------------------------------------------------------
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+    
+    // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-	
-	
-	private String pbfType;
-	private String tariff;
-	private String startDate;
-	private String endDate;
-	
-	private String dataElementId;
-	private String orgUnitUid;
-	
-	public void setDataElementId(String dataElementId) {
-		this.dataElementId = dataElementId;
-	}
 
-	public void setOrgUnitUid(String orgUnitUid) {
-		this.orgUnitUid = orgUnitUid;
-	}
+    private String pbfType;
 
-	public void setPbfType(String pbfType) {
-		this.pbfType = pbfType;
-	}
+    private String tariff;
 
-	public void setTariff(String tariff) {
-		this.tariff = tariff;
-	}
+    private String startDate;
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
+    private String endDate;
 
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
+    private String dataElementId;
 
-	// -------------------------------------------------------------------------
+    private String orgUnitUid;
+
+    public void setDataElementId( String dataElementId )
+    {
+        this.dataElementId = dataElementId;
+    }
+
+    public void setOrgUnitUid( String orgUnitUid )
+    {
+        this.orgUnitUid = orgUnitUid;
+    }
+
+    public void setPbfType( String pbfType )
+    {
+        this.pbfType = pbfType;
+    }
+
+    public void setTariff( String tariff )
+    {
+        this.tariff = tariff;
+    }
+
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
-		
-		Date sDate;
-		Date eDate;
-		SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-		sDate = dateFormat.parse(startDate);
-		eDate = dateFormat.parse(endDate);
-		
-		DataElement dataElement = dataElementService.getDataElement(Integer.parseInt(dataElementId));
-		
-		List<String> orgUids = new ArrayList<String>();
-		orgUids.add(orgUnitUid);
-		List<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsByUid(orgUids);
-		
-		OrganisationUnitGroup orgUnitGrp = organisationUnitGroupService.getOrganisationUnitGroup(Integer.parseInt(pbfType));
-		DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-		
-		TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue(organisationUnits.get(0), dataElement, optionCombo, orgUnitGrp, sDate, eDate);
-		
-		TariffDataValue tariffDataValue1;
-		
-		if(tariffDataValue == null)
-		{
-			tariffDataValue1 = new TariffDataValue();
-		}
-		else
-		{
-			tariffDataValue1 = tariffDataValueService.getTariffDataValue(organisationUnits.get(0), dataElement, optionCombo, orgUnitGrp, sDate, eDate);
-		}
-		
-		tariffDataValue1.setValue(Double.parseDouble(tariff));
-		tariffDataValue1.setStartDate(sDate);
-		tariffDataValue1.setEndDate(eDate);
-		tariffDataValue1.setTimestamp(new Date());
-		tariffDataValue1.setStoredBy(currentUserService.getCurrentUsername());
-		tariffDataValue1.setDataElement(dataElement);
-		tariffDataValue1.setOptionCombo(optionCombo);
-		tariffDataValue1.setOrganisationUnitGroup(orgUnitGrp);
-		tariffDataValue1.setOrganisationUnit(organisationUnits.get(0));
-		
-		if(tariffDataValue == null)
-		{
-			tariffDataValueService.addTariffDataValue(tariffDataValue1);
-		}
-		else
-		{
-			tariffDataValueService.updateTariffDataValue(tariffDataValue1);
-		}		
-		return SUCCESS;
-	}
+    public String execute()
+        throws Exception
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        Date sDate = dateFormat.parse( startDate );
+        Date eDate = dateFormat.parse( endDate );
+
+        DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+
+        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( pbfType ) );
+        
+        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, dataElement, dataSet, sDate, eDate );
+
+        if ( tariffDataValue == null )
+        {
+            tariffDataValue = new TariffDataValue();
+            
+            tariffDataValue.setValue( Double.parseDouble( tariff ) );
+            tariffDataValue.setStartDate( sDate );
+            tariffDataValue.setEndDate( eDate );
+            tariffDataValue.setTimestamp( new Date() );
+            tariffDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+            tariffDataValue.setDataElement( dataElement );
+            tariffDataValue.setDataSet( dataSet );
+            tariffDataValue.setOrganisationUnit( organisationUnit );
+            
+            tariffDataValueService.addTariffDataValue( tariffDataValue );
+        }
+        else
+        {
+            tariffDataValue.setValue( Double.parseDouble( tariff ) );
+            tariffDataValue.setTimestamp( new Date() );
+            tariffDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+            
+            tariffDataValueService.updateTariffDataValue( tariffDataValue );
+        }
+
+        return SUCCESS;
+    }
 }
