@@ -18,7 +18,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-pbf/loadDataElementsforTariff.vm</param>
 			<param name="menu">/dhis-web-maintenance-pbf/tariffMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>			
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
 		</action>
 		<action name="loadTariffDetails" class="org.hisp.dhis.pbf.action.LoadTariffDetailsAction">
 			<result name="success" type="velocity">/content.vm</result>
@@ -33,6 +33,15 @@
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_TARIFFDATAVALUE_UPDATE</param>					
 		</action>
+		
+		<!-- Load Bank Details -->
+        <action name="bankDetailsManagement" class="org.hisp.dhis.pbf.action.LoadBankDetailsAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-maintenance-pbf/loadBankData.vm</param>
+            <param name="menu">/dhis-web-maintenance-pbf/tariffMenu.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+        </action>
+		
 	</package>
 	
 </struts>
