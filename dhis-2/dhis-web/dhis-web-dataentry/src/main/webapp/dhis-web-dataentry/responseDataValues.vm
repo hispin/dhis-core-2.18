@@ -4,7 +4,7 @@
   #foreach( $value in $dataValues )
   {
     #if( $multiOrganisationUnit )
-    "id":"${value.source.id}-${value.dataElement.uid}-${value.optionCombo.uid}",
+    "id":"${value.source.uid}-${value.dataElement.uid}-${value.optionCombo.uid}",
     #else
     "id":"${value.dataElement.uid}-${value.optionCombo.uid}",
     #end
@@ -16,7 +16,7 @@
   #foreach( $element in $minMaxDataElements )
   {
     #if( $multiOrganisationUnit )
-    "id":"${element.source.id}-${element.dataElement.uid}-${element.optionCombo.uid}",
+    "id":"${element.source.uid}-${element.dataElement.uid}-${element.optionCombo.uid}",
     #else
     "id":"${element.dataElement.uid}-${element.optionCombo.uid}",
     #end
