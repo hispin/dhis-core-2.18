@@ -32,6 +32,10 @@ import com.opensymphony.xwork2.Action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -48,6 +52,7 @@ import org.hisp.dhis.period.PeriodType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -96,6 +101,13 @@ public class GetDataValuesForDataSetAction
     {
         this.organisationUnitService = organisationUnitService;
     }
+    
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -132,6 +144,20 @@ public class GetDataValuesForDataSetAction
     public boolean isMultiOrganisationUnit()
     {
         return multiOrganisationUnit;
+    }
+    
+    private String cc;
+
+    public void setCc( String cc )
+    {
+        this.cc = cc;
+    }
+
+    private Set<String> cp;
+
+    public void setCp( Set<String> cp )
+    {
+        this.cp = cp;
     }
 
     // -------------------------------------------------------------------------
@@ -186,6 +212,10 @@ public class GetDataValuesForDataSetAction
 
     public String execute()
     {
+        // ---------------------------------------------------------------------
+        // Validation
+        // ---------------------------------------------------------------------
+
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         Period period = PeriodType.getPeriodFromIsoString( periodId );
@@ -195,9 +225,41 @@ public class GetDataValuesForDataSetAction
         if ( organisationUnit == null || period == null || dataSet == null )
         {
             log.warn( "Illegal input, org unit: " + organisationUnit + ", period: " + period + ", data set: " + dataSet );
+            return SUCCESS;
         }
 
         Set<OrganisationUnit> children = organisationUnit.getChildren();
+
+        // ---------------------------------------------------------------------
+        // Attributes
+        // ---------------------------------------------------------------------
+
+        DataElementCategoryOptionCombo attributeOptionCombo = null;
+        
+        if ( cc != null && cp != null )
+        {
+            DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( cc );
+
+            Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
+
+            for ( String id : cp )
+            {
+                categoryOptions.add( categoryService.getDataElementCategoryOption( id ) );
+            }
+            
+            attributeOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryCombo, categoryOptions );
+            
+            if ( attributeOptionCombo == null )
+            {
+                log.warn( "Illegal input, attribute option combo does not exist" );
+                return SUCCESS;
+            }            
+        }
+
+        if ( attributeOptionCombo == null )
+        {
+            attributeOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        }
         
         // ---------------------------------------------------------------------
         // Data values & Min-max data elements
@@ -207,7 +269,7 @@ public class GetDataValuesForDataSetAction
 
         if ( !multiOrganisationUnit )
         {
-            dataValues.addAll( dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() ) );
+            dataValues.addAll( dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements(), attributeOptionCombo ) );
         }
         else
         {
@@ -215,7 +277,7 @@ public class GetDataValuesForDataSetAction
             {
                 if ( ou.getDataSets().contains( dataSet ) )
                 {
-                    dataValues.addAll( dataValueService.getDataValues( ou, period, dataSet.getDataElements() ) );
+                    dataValues.addAll( dataValueService.getDataValues( ou, period, dataSet.getDataElements(), attributeOptionCombo ) );
                     minMaxDataElements.addAll( minMaxDataElementService.getMinMaxDataElements( ou, dataSet
                         .getDataElements() ) );
                 }
