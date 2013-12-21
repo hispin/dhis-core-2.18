@@ -1,4 +1,4 @@
-package org.hisp.dhis.de.history;
+package org.hisp.dhis.dataelementhistory;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -43,8 +43,6 @@ import org.hisp.dhis.period.PeriodService;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: DefaultHistoryRetriever.java 5131 2008-05-11 21:06:23Z larshelg
- *          $
  */
 public class DefaultHistoryRetriever
     implements HistoryRetriever

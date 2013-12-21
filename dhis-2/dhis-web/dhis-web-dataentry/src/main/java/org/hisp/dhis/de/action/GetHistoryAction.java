@@ -28,17 +28,19 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelementhistory.DataElementHistory;
+import org.hisp.dhis.dataelementhistory.HistoryRetriever;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.de.history.DataElementHistory;
-import org.hisp.dhis.de.history.HistoryRetriever;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -46,8 +48,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
-import java.util.Collection;
-import java.util.List;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby

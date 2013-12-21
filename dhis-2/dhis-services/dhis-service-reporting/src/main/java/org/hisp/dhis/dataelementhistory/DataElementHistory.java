@@ -1,4 +1,4 @@
-package org.hisp.dhis.de.history;
+package org.hisp.dhis.dataelementhistory;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo

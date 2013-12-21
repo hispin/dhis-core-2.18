@@ -70,8 +70,6 @@ dhis2.de.multiOrganisationUnit = false;
 
 // "organisationUnits" object inherited from ouwt.js
 
-// TODO remove all usage of name="entryfield" etc and migrate to class="entryfield" etc
-
 var COLOR_GREEN = '#b9ffb9';
 var COLOR_YELLOW = '#fffe8c';
 var COLOR_RED = '#ff8a8a';

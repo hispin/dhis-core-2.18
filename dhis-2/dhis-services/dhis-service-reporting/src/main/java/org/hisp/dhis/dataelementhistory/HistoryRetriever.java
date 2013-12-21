@@ -1,4 +1,4 @@
-package org.hisp.dhis.de.history;
+package org.hisp.dhis.dataelementhistory;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,51 +28,20 @@ package org.hisp.dhis.de.history;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: DataElementHistoryPoint.java 2869 2007-02-20 14:26:09Z andegje $
+ * @version $Id: HistoryRetriever.java 4438 2008-01-26 16:35:24Z abyot $
  */
-public class DataElementHistoryPoint
+public interface HistoryRetriever
 {
-    private Period period;
+    String ID = HistoryRetriever.class.getName();
 
-    private Double value;
-
-    private double average;
-
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public double getAverage()
-    {
-        return average;
-    }
-
-    public void setAverage( double average )
-    {
-        this.average = average;
-    }
-
-    public Period getPeriod()
-    {
-        return period;
-    }
-
-    public void setPeriod( Period period )
-    {
-        this.period = period;
-    }
-
-    public Double getValue()
-    {
-        return value;
-    }
-
-    public void setValue( Double value )
-    {
-        this.value = value;
-    }
+    DataElementHistory getHistory( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, 
+        OrganisationUnit organisationUnit, Period lastPeriod, int historyLength );
+    
 }
