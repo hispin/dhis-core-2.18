@@ -52,6 +52,9 @@ dhis2.de.currentOrganisationUnitId = null;
 // Currently selected data set identifier
 dhis2.de.currentDataSetId = null;
 
+// Array with category objects, null if default category combo / no categories
+dhis2.de.currentCategories = null;
+
 // Current offset, next or previous corresponding to increasing or decreasing
 // value with one
 dhis2.de.currentPeriodOffset = 0;
@@ -935,6 +938,9 @@ function dataSetSelected()
 
     var dataSetId = $( '#selectedDataSetId' ).val();
     var periodId = $( '#selectedPeriodId' ).val();
+    
+    dhis2.de.currentCategories = dhis2.de.getCategories( dataSetId );
+    
     var periodType = dhis2.de.dataSets[dataSetId].periodType;
     var allowFuturePeriods = dhis2.de.dataSets[dataSetId].allowFuturePeriods;
     var periods = dhis2.de.periodTypeFactory.get( periodType ).generatePeriods( dhis2.de.currentPeriodOffset );
@@ -949,6 +955,9 @@ function dataSetSelected()
     {
         clearListById( 'selectedPeriodId' );
         clearSectionFilters();
+        
+        var attributeMarkup = dhis2.de.getAttributesMarkup();
+        $( '#attributeComboDiv' ).html( attributeMarkup );
 
         if ( periods.length > 0 )
         {
@@ -1056,6 +1065,124 @@ function displayPeriodsInternal()
         addOptionById( 'selectedPeriodId', item.iso, item.name );
     } );
 }
+
+//------------------------------------------------------------------------------
+// Attributes / Categories
+//------------------------------------------------------------------------------
+
+/**
+* Returns an array of category objects for the given data set identifier. Categories 
+* are looked up using the category combo of the data set. Null is returned if 
+* the given data set has the default category combo.
+*/
+dhis2.de.getCategories = function( dataSetId )
+{
+	var dataSet = dhis2.de.dataSets[dataSetId];
+	
+	if ( !dataSet || !dataSet.categoryCombo || dhis2.de.defaultCategoryCombo === dataSet.categoryCombo ) {
+		return null;
+	}
+	
+	var categoryCombo = dhis2.de.categoryCombos[dataSet.categoryCombo];
+	
+	var categories = [];
+	
+	$.safeEach( categoryCombo.categories, function( idx, cat ) {
+		var category = dhis2.de.categories[cat];
+		categories.push( category );
+	} );
+	
+	return categories;
+};
+
+/**
+ * Indicates whether all present categories have been selected. True is returned
+ * if no categories are present. False is returned if less selections have been
+ * made thant here are categories present.
+ */
+dhis2.de.categoriesSelected = function()
+{
+	if ( !dhis2.de.currentCategories || dhis2.de.currentCategories.length == 0 ) {
+		return true; // No categories present which can be selected
+	}
+	
+	var options = dhis2.de.getCurrentCategoryOptions();
+	
+	if ( !options || options.length < dhis2.de.currentCategories.length ) {
+		return false; // Less selected options than categories present
+	}
+	
+	return true;
+};
+
+/**
+* Returns the identifier of the current attribute category combo. Based on the
+* dhis2.de.currentDataSetId global variable. Returns null if there is no 
+* current data set or if current data set has the default category combo.
+*/
+dhis2.de.getCurrentCategoryCombo = function()
+{
+	var dataSet = dhis2.de.dataSets[dhis2.de.currentDataSetId];
+	
+	if ( !dataSet || !dataSet.categoryCombo || dhis2.de.defaultCategoryCombo === dataSet.categoryCombo ) {
+		return null;
+	}
+	
+	return dataSet.categoryCombo.id;
+};
+
+/**
+* Returns an array of the currently selected attribute category options. Based
+* on the dhis2.de.currentCategories global variable. Returns null if there are
+* no current categories.
+*/
+dhis2.de.getCurrentCategoryOptions = function()
+{
+	if ( !dhis2.de.currentCategories || dhis2.de.currentCategories.length == 0 ) {
+		return null;
+	}
+	
+	var options = [];
+	
+	$.safeEach( dhis2.de.currentCategories, function( idx, category ) {
+		var option = $( '#category-' + category.id ).val();
+		
+		if ( option && option != -1 ) {
+			options.push( option );
+		}
+	} );
+	
+	return options;
+};
+
+/**
+* Returns markup for drop down boxes to be put in the selection box for the
+* given categories. The empty string is returned if no categories are given. 
+*/
+dhis2.de.getAttributesMarkup = function()
+{
+	var html = '';
+	
+	if ( !dhis2.de.currentCategories || dhis2.de.currentCategories.length == 0 ) {
+		return html;
+	}
+	
+	$.safeEach( dhis2.de.currentCategories, function( idx, category ) {
+		html += '<div class="selectionBoxRow">';
+		html += '<div class="selectionLabel">' + category.name + '</div>&nbsp;';
+		html += '<select id="category-' + category.id + '" class="selectionBoxSelect">';
+		html += '<option value="-1">[ Please select ]</option>';
+		
+		$.safeEach( category.options, function( idx, option ) {
+			html += '<option value="' + option.id + '">' + option.name + '</option>';
+		} );
+		
+		html += '</select>';
+		html += '</div>';
+	} );
+
+	return html;
+};
 
 // -----------------------------------------------------------------------------
 // Form
@@ -1364,59 +1491,6 @@ function getPreviousEntryField( field )
 function onFormLoad( fn )
 {
 	$( 'body' ).off( EVENT_FORM_LOADED ).on( EVENT_FORM_LOADED, fn );
-}
-
-/**
- * Returns an array of category objects for the given data set identifier. Categories 
- * are looked up using the category combo of the data set. Null is returned if 
- * the given data set has the default category combo.
- */
-dhis2.de.getCategories = function( dataSetId )
-{
-	var dataSet = dhis2.de.dataSets[dataSetId];
-	
-	if ( !dataSet || dhis2.de.defaultCategoryCombo === dataSet.categoryCombo ) {
-		return null;
-	}
-	
-	var categoryCombo = dhis2.de.categoryCombos[dataSet.categoryCombo];
-	
-	var categories = [];
-	
-	$.safeEach( combo.categories, function( idx, cat ) {
-		var category = dhis2.de.categories[cat];
-		categories.push( category );
-	} );
-	
-	return categories;
-}
-
-/**
- * Returns markup for drop down boxes to be put in the selection box for the
- * given categories. If no categories are given the empty string is returned.
- */
-dhis2.de.getAttributesMarkup = function( categories )
-{
-	var html = '';
-	
-	if ( !categories || categories.length == 0 ) {
-		return html;
-	}
-	
-	$.safeEach( categories, function( idx, category ) {
-		html += '<div class="selectionBoxRow">';
-		html += '<div class="selectionLabel">' + category.name + '</div>';
-		html += '<select id="category-' + category.id + '" class="selectionBoxSelect">';
-		
-		$.safeEach( category.options, function( idx, option ) {
-			html += '<option value="' + option.id + '">' + option.name + '</option>';
-		} );
-		
-		html += '</select>';
-		html += '</div>';
-	} );
-
-	return html;
 }
 
 // -----------------------------------------------------------------------------
