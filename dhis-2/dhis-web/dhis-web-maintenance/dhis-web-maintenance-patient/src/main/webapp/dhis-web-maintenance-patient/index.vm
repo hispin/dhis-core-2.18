@@ -9,7 +9,6 @@
     #introListImgItem( "patientRegistrationForm.action" "patient_registration_form" "pivottable" )
     #introListImgItem( "program.action" "program" "program" )
     #introListImgItem( "caseAggregation.action" "patient_aggregation_query_builder" "caseaggregationmapping" )
-	#introListImgItem( "validationCriteria.action" "validation_criteria" "validationrule" )
 	
 	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
 		#introListImgItem( "viewScheduleTasks.action" "schedule_automated_message_reminder" "scheduling" )

@@ -10,7 +10,7 @@ function showProgramsForValidationCriteriaForm( context ) {
 }
 
 function showUpdateValidationCriteriaForm( context ) {
-  location.href = 'showUpdateValidationCriteriaForm.action?id=' + context.id;
+  location.href = 'showUpdateValidationCriteriaForm.action?id=' + context.id + '&programId=' + getFieldValue('programId');
 }
 
 // -----------------------------------------------------------------------------

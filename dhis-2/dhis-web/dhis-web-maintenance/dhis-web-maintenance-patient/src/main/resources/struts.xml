@@ -917,14 +917,14 @@
 		<!-- Validation - PatientValidationCriteria -->
 
 		<action name="validationCriteria"
-			class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaListAction">
+			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/validationCriteria.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
 		</action>
 
-		<action name="showAddValidationCriteriaForm" class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeListAction">
+		<action name="showAddValidationCriteriaForm" class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addValidationCriteria.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
@@ -933,7 +933,7 @@
 
 		<action name="addValidationCriteria"
 			class="org.hisp.dhis.patient.action.validation.AddValidationCriteriaAction">
-			<result name="success" type="redirect">validationCriteria.action
+			<result name="success" type="redirect">validationCriteria.action?id=${programId}
 			</result>
 			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
@@ -955,7 +955,7 @@
 
 		<action name="updateValidationCriteria"
 			class="org.hisp.dhis.patient.action.validation.UpdateValidationCriteriaAction">
-			<result name="success" type="redirect">validationCriteria.action
+			<result name="success" type="redirect">validationCriteria.action?id=${programId}
 			</result>
 			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
