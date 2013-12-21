@@ -705,8 +705,9 @@ function filterInSection( $this )
 // Supportive methods
 //------------------------------------------------------------------------------
 
-// splits a id based on the multiOrgUnit var
-
+/**
+ * Splits an id based on the multi org unit variable.
+ */
 function splitFieldId( id )
 {
     var split = {};
@@ -832,7 +833,7 @@ function getSortedDataSetListForOrgUnits( orgUnits )
         {
             filteredDataSetList.push(item);
         }
-    });
+    } );
 
     return filteredDataSetList;
 }
@@ -923,55 +924,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 }
 
 // -----------------------------------------------------------------------------
-// Next/Previous Periods Selection
-// -----------------------------------------------------------------------------
-
-function nextPeriodsSelected()
-{
-    if ( dhis2.de.currentPeriodOffset < 0 ) // Cannot display future periods
-    {
-    	dhis2.de.currentPeriodOffset++;
-        displayPeriodsInternal();
-    }
-}
-
-function previousPeriodsSelected()
-{
-	dhis2.de.currentPeriodOffset--;
-    displayPeriodsInternal();
-}
-
-function displayPeriodsInternal()
-{
-    var dataSetId = $( '#selectedDataSetId' ).val();
-    var periodType = dhis2.de.dataSets[dataSetId].periodType;
-    var allowFuturePeriods = dhis2.de.dataSets[dataSetId].allowFuturePeriods;
-    var periods = dhis2.de.periodTypeFactory.get( periodType ).generatePeriods( dhis2.de.currentPeriodOffset );
-    periods = dhis2.de.periodTypeFactory.reverse( periods );
-    
-    if ( allowFuturePeriods == false )
-    {
-    	periods = dhis2.de.periodTypeFactory.filterFuturePeriods( periods );
-    }
-
-    clearListById( 'selectedPeriodId' );
-
-    if ( periods.length > 0 )
-    {
-    	addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
-    }
-    else
-    {
-    	addOptionById( 'selectedPeriodId', '-1', i18n_no_periods_click_prev_year_button );
-    }
-    
-    $.safeEach( periods, function( idx, item ) 
-    {
-        addOptionById( 'selectedPeriodId', item.iso, item.name );
-    } );
-}
-
-// -----------------------------------------------------------------------------
 // DataSet Selection
 // -----------------------------------------------------------------------------
 
@@ -1058,6 +1010,51 @@ function periodSelected()
             loadForm( dataSetId, isMultiOrganisationUnitForm );
         }
     }
+}
+
+function nextPeriodsSelected()
+{
+    if ( dhis2.de.currentPeriodOffset < 0 ) // Cannot display future periods
+    {
+    	dhis2.de.currentPeriodOffset++;
+        displayPeriodsInternal();
+    }
+}
+
+function previousPeriodsSelected()
+{
+	dhis2.de.currentPeriodOffset--;
+    displayPeriodsInternal();
+}
+
+function displayPeriodsInternal()
+{
+    var dataSetId = $( '#selectedDataSetId' ).val();
+    var periodType = dhis2.de.dataSets[dataSetId].periodType;
+    var allowFuturePeriods = dhis2.de.dataSets[dataSetId].allowFuturePeriods;
+    var periods = dhis2.de.periodTypeFactory.get( periodType ).generatePeriods( dhis2.de.currentPeriodOffset );
+    periods = dhis2.de.periodTypeFactory.reverse( periods );
+    
+    if ( allowFuturePeriods == false )
+    {
+    	periods = dhis2.de.periodTypeFactory.filterFuturePeriods( periods );
+    }
+
+    clearListById( 'selectedPeriodId' );
+
+    if ( periods.length > 0 )
+    {
+    	addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
+    }
+    else
+    {
+    	addOptionById( 'selectedPeriodId', '-1', i18n_no_periods_click_prev_year_button );
+    }
+    
+    $.safeEach( periods, function( idx, item ) 
+    {
+        addOptionById( 'selectedPeriodId', item.iso, item.name );
+    } );
 }
 
 // -----------------------------------------------------------------------------
@@ -1370,43 +1367,49 @@ function onFormLoad( fn )
 }
 
 /**
- * Returns an array of category combo objects for the given data set. Default
- * category combos are omitted.
+ * Returns an array of category objects for the given data set identifier. Categories 
+ * are looked up using the category combo of the data set. Null is returned if 
+ * the given data set has the default category combo.
  */
-dhis2.de.getCategoryCombos = function( dataSets )
+dhis2.de.getCategories = function( dataSetId )
 {
-	var combos = [];
+	var dataSet = dhis2.de.dataSets[dataSetId];
 	
-	$.safeEach( dataSets, function( idx, item ) {
-		if ( item.categoryCombo && dhis2.de.defaultCategoryCombo != item.categoryCombo ) {
-			var combo = dhis2.de.categoryCombos[item.categoryCombo];
-			combos.push( combo );
-		}
+	if ( !dataSet || dhis2.de.defaultCategoryCombo === dataSet.categoryCombo ) {
+		return null;
+	}
+	
+	var categoryCombo = dhis2.de.categoryCombos[dataSet.categoryCombo];
+	
+	var categories = [];
+	
+	$.safeEach( combo.categories, function( idx, cat ) {
+		var category = dhis2.de.categories[cat];
+		categories.push( category );
 	} );
 	
-	return combos;
+	return categories;
 }
 
 /**
  * Returns markup for drop down boxes to be put in the selection box for the
- * given category combos.
+ * given categories. If no categories are given the empty string is returned.
  */
-dhis2.de.getAttributeComboMarkup = function( categoryCombos )
+dhis2.de.getAttributesMarkup = function( categories )
 {
 	var html = '';
 	
-	if ( undefined === categoryCombos || categoryCombos.length == 0 ) {
+	if ( !categories || categories.length == 0 ) {
 		return html;
 	}
 	
-	$.safeEach( categoryCombos, function( idx, combo ) {
+	$.safeEach( categories, function( idx, category ) {
 		html += '<div class="selectionBoxRow">';
-		html += '<div class="selectionLabel">' + combo.name + '</div>';
-		html += '<select id="combo-' + combo.id + '" class="selectionBoxSelect">';
+		html += '<div class="selectionLabel">' + category.name + '</div>';
+		html += '<select id="category-' + category.id + '" class="selectionBoxSelect">';
 		
-		$.safeEach( combo.categories, function( idx, cat ) {
-			var category = dhis2.de.categories[cat];
-			html += '<option value="' + category.id + '">' + category.name + '</option>';
+		$.safeEach( category.options, function( idx, option ) {
+			html += '<option value="' + option.id + '">' + option.name + '</option>';
 		} );
 		
 		html += '</select>';

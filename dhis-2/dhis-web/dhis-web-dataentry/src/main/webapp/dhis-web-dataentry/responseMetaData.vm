@@ -82,7 +82,7 @@
 "${category.uid}":{"name":"$encoder.jsonEncode( ${category.displayName} )","options":[
 #set( $size2 = $category.categoryOptions.size() )
 #foreach( $option in $category.categoryOptions )
-{"id":"${option.uid}","id":"${option.uid}","name":"$encoder.jsonEncode( ${option.displayName} )"}#if( $velocityCount < $size2 ),#end
+{"id":"${option.uid}","name":"$encoder.jsonEncode( ${option.displayName} )"}#if( $velocityCount < $size2 ),#end
 #end
 ] }#if( $velocityCount < $size1 ),#end
 #end
