@@ -15,7 +15,7 @@ function saveComment()
         return;
     }
 
-    var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, currentOrganisationUnitId,
+    var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, dhis2.de.currentOrganisationUnitId,
             periodId, commentValue );
 
     commentSaver.save();
@@ -72,7 +72,7 @@ function removeMinMaxLimit()
     	{
     		dataElementId: currentDataElementId,
     		categoryOptionComboId: currentOptionComboId,
-    		organisationUnitId: currentOrganisationUnitId
+    		organisationUnitId: dhis2.de.currentOrganisationUnitId
     	},
     	success: function() {    		
     		$( '#minLimit' ).css( 'background-color', COLOR_WHITE );
@@ -129,14 +129,14 @@ function saveMinMaxLimit()
     var minId = currentDataElementId + '-' + currentOptionComboId + '-min';
     var maxId = currentDataElementId + '-' + currentOptionComboId + '-max';
 
-    currentMinMaxValueMap[minId] = minValue;
-    currentMinMaxValueMap[maxId] = maxValue;
+    dhis2.de.currentMinMaxValueMap[minId] = minValue;
+    dhis2.de.currentMinMaxValueMap[maxId] = maxValue;
 
     $.ajax( {
     	url: 'saveMinMaxLimits.action',
     	data:
     	{
-    		organisationUnitId: currentOrganisationUnitId,
+    		organisationUnitId: dhis2.de.currentOrganisationUnitId,
     		dataElementId: currentDataElementId,
     		categoryOptionComboId: currentOptionComboId,
     		minLimit: minValue,
@@ -161,7 +161,8 @@ function refreshChart()
     var periodId = $( '#selectedPeriodId' ).val();
     
     var source = 'getHistoryChart.action?dataElementId=' + currentDataElementId + '&categoryOptionComboId='
-            + currentOptionComboId + '&periodId=' + periodId + '&organisationUnitId=' + currentOrganisationUnitId + '&r=' + Math.random();
+    	+ currentOptionComboId + '&periodId=' + periodId + 
+    	'&organisationUnitId=' + dhis2.de.currentOrganisationUnitId + '&r=' + Math.random();
 
     $( '#historyChart' ).attr( 'src', source );
 }
@@ -173,7 +174,7 @@ function markValueForFollowup()
 	var dataValue = {
 	    'de' : currentDataElementId,
 	    'co' : currentOptionComboId,
-	    'ou' : currentOrganisationUnitId,
+	    'ou' : dhis2.de.currentOrganisationUnitId,
 	    'pe' : periodId,
 	    'followUp' : true
 	};
