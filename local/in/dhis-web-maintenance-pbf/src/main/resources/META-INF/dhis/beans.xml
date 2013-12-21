@@ -13,7 +13,15 @@
     <bean id="org.hisp.dhis.pbf.api.TariffDataValueService" class="org.hisp.dhis.pbf.impl.DefaultTariffDataValueService">
         <property name="tariffDataValueStore" ref="org.hisp.dhis.pbf.api.TariffDataValueStore" />
     </bean>
+
+    <bean id="org.hisp.dhis.pbf.api.LookupStore" class="org.hisp.dhis.pbf.impl.HibernateLookupStore">
+        <property name="clazz" value="org.hisp.dhis.pbf.api.Lookup"/>
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
     
+    <bean id="org.hisp.dhis.pbf.api.LookupService" class="org.hisp.dhis.pbf.impl.DefaultLookupService">
+        <property name="lookupStore" ref="org.hisp.dhis.pbf.api.LookupStore" />
+    </bean>
     
 	<!-- Home page -->
 	<bean id="org.hisp.dhis.pbf.action.NoAction" class="org.hisp.dhis.pbf.action.NoAction" scope="prototype">
@@ -31,9 +39,9 @@
 		<property name="tariffDataValueService" ref="org.hisp.dhis.pbf.api.TariffDataValueService" />	
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />	
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
     </bean>
     
     <!-- Add Tariff -->
@@ -41,17 +49,16 @@
 		<property name="tariffDataValueService" ref="org.hisp.dhis.pbf.api.TariffDataValueService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     </bean>
+    
     <!-- Delete Tariff -->
     <bean id="org.hisp.dhis.pbf.action.DeleteTariffDataAction" class="org.hisp.dhis.pbf.action.DeleteTariffDataAction" scope="prototype">
 		<property name="tariffDataValueService" ref="org.hisp.dhis.pbf.api.TariffDataValueService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     </bean>
     
 </beans>

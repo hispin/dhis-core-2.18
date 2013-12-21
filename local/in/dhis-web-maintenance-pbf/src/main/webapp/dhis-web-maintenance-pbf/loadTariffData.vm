@@ -79,25 +79,25 @@ $( "#addTariff" ).dialog({
 			$( "#addTariff" ).dialog( "close" );
 	    }
 });
-function deleteTariffDataValue(organisationUnitId,dataElementId,optionComboId,organisationUnitGroupId,startDate,endDate)
-{
-				var dataValue = {
-        		        		'organisationUnitId' : organisationUnitId ,
-								'dataElementId' : dataElementId,
-								'categoryOptionComboId' : optionComboId,
-								'organisationUnitGroupId' : organisationUnitGroupId,
-								'startDate' : startDate,
-								'endDate' : endDate
-        		    			};
-								
-								jQuery.ajax( {
-                                url: 'deleteTariffData.action', 
-								data: dataValue,
-                                dataType: 'json',
-								success: handleSuccess,
-                                error: handleError
-                              } );
-		function handleSuccess( json )
+
+	function deleteTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate)
+	{
+		var dataValue = {
+		        		'organisationUnitId' : organisationUnitId ,
+						'dataElementId' : dataElementId,								
+						'dataSetId' : dataSetId,
+						'startDate' : startDate,
+						'endDate' : endDate
+		    			};
+									
+		jQuery.ajax( {
+	                url: 'deleteTariffData.action', 
+					data: dataValue,
+	                dataType: 'json',
+					success: handleSuccess,
+	                error: handleError
+	              } );
+	    function handleSuccess( json )
 	    {
 			getTariffData();			
 	    }
@@ -105,26 +105,29 @@ function deleteTariffDataValue(organisationUnitId,dataElementId,optionComboId,or
 	    {
 			getTariffData();			
 	    }
-}
-function editTariffDataValue ( organisationUnitId,dataElementId,optionComboId,organisationUnitGroupId,startDate,endDate,value )
-{
-	$( "#addTariff" ).attr('selected','Edit Tariff')
-	$('#pbfType option[value='+organisationUnitGroupId+']').attr('selected','selected');
-	$('#pbfType').attr('disabled','disabled');
-	$('#tariff').val(value);
-	$('#startDate').val(startDate);
-	$('#startDate').attr('disabled','disabled');
-	$('#endDate').val(endDate);
-	$('#endDate').attr('disabled','disabled');
-	
-	$( "#addTariff" ).dialog( "open" );
-}
+	}
+
+	function editTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate, value )
+	{
+		$( "#addTariff" ).attr('selected','Edit Tariff')
+		$('#pbfType option[value='+organisationUnitGroupId+']').attr('selected','selected');
+		$('#pbfType').attr('disabled','disabled');
+		$('#tariff').val(value);
+		$('#startDate').val(startDate);
+		$('#startDate').attr('disabled','disabled');
+		$('#endDate').val(endDate);
+		$('#endDate').attr('disabled','disabled');
+		
+		$( "#addTariff" ).dialog( "open" );
+	}
 </script>
+
 <div style="width:100%">
 	<input type="button" value="Add New Tariff" style="float:right;" id="openAddTariff"/>
 </div>
 <br/><br/>
 <input type="hidden" id="dataElementId" name="dataElementId" value="$!selecteddataElement.id"/>
+
 <table style="width:100%" class="mainPageTable">
 	<thead >
 		<tr >
@@ -132,39 +135,39 @@ function editTariffDataValue ( organisationUnitId,dataElementId,optionComboId,or
 			<th >Tariff</th>
 			<th >Start Date</th>
 			<th >End Date</th>
-			#if($updateAuthority == 'Yes')
+			#if( $updateAuthority == 'Yes' )
 				<th >Operations</th>
 			#end
         </tr>
 	</thead>
 	<tbody id="list">
 		#set( $mark = false )
-		#foreach($tariff in $tariffList )
+		#foreach( $tariff in $tariffList )
 			#if( $mark )
-    						#set( $mark = false )
-    					#else
-    						#set( $mark = true )
-    					#end
-		<tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8"  #end>
-			<td >$!tariff.organisationUnitGroup.name</td>
-			<td >$!tariff.value</td>
-			<td >$!tariff.startDate</td>
-			<td >$!tariff.endDate</td>
+                #set( $mark = false )
+			#else
+				#set( $mark = true )
+			#end
+            <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8"  #end>
+				<td >$!tariff.dataSet.name</td>
+				<td >$!tariff.value</td>
+				<td >$!tariff.startDate</td>
+				<td >$!tariff.endDate</td>
 			#if($updateAuthority == 'Yes')
-            <td>
-				<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.optionCombo.id','$tariff.organisationUnitGroup.id','$tariff.startDate','$tariff.endDate')">
-					<img src="images/delete.png" width="17px"/>
-				</a>
-				<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.optionCombo.id','$tariff.organisationUnitGroup.id','$tariff.startDate','$tariff.endDate','$tariff.value')">
-					<img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/>
-				</a>
-				
-			</td>
+	            <td>
+					<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate')">
+						<img src="images/delete.png" width="17px"/>
+					</a>
+					<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value')">
+						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/>
+					</a>				
+				</td>
 			#end
         </tr>
 		#end
     </tbody>
 </table>
+
 <div id="addTariff" title="Add New Tariff">
 	<table style="width:100%;table-layout:fixed;">
 		<tr >
@@ -172,8 +175,8 @@ function editTariffDataValue ( organisationUnitId,dataElementId,optionComboId,or
 			<td style="width:60%;">
 				<select id="pbfType" style="width:100%;">
 					<option value="-1">Select PBF Type</option>
-					#foreach($orGrp in $orGroupList)
-						<option value="$orGrp.id">$orGrp.name</option>
+					#foreach( $dataSet in $dataSets )
+						<option value="$dataSet.id">$dataSet.name</option>
 					#end
                 </select>
 			</td>

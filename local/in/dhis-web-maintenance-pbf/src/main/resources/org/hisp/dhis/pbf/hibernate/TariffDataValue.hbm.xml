@@ -8,9 +8,8 @@
 
     <composite-id>
       <key-many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid" foreign-key="fk_tariffdatavalue_organisationunitid" />      
-      <key-many-to-one name="organisationUnitGroup" class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid" foreign-key="fk_datavalue_organisationunitgroupid" />
+      <key-many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid" foreign-key="fk_tariffdatavalue_datasetid" />
       <key-many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_tariffdatavalue_dataelementid" />
-      <key-many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid" foreign-key="fk_tariffdatavalue_categoryoptioncomboid" />
       <key-property name="startDate" column="startdate" />
       <key-property name="endDate" column="enddate" />
     </composite-id>
