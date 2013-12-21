@@ -36,7 +36,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/systemAppearanceSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
-      <param name="javascripts">/dhis-web-maintenance-settings/javascripts/systemAppearanceSettings.js</param>
+      <param name="javascripts">javascripts/systemAppearanceSettings.js</param>
       <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
     </action>
 
