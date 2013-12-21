@@ -1,5 +1,7 @@
 
-// does current user have any organisation units?
+dhis2.util.namespace( 'dhis2.de' );
+
+// whether current user has any organisation units
 var emptyOrganisationUnits = false;
 
 // Identifiers for which zero values are insignificant, also used in entry.js
@@ -24,6 +26,15 @@ var dataSetAssociationSets = [];
 // Associate array with mapping between organisation unit identifier and data
 // set association set identifier
 var organisationUnitAssociationSetMap = [];
+
+// Default category combo uid
+dhis2.de.defaultCategoryCombo = undefined;
+
+// Category combinations for data value attributes
+dhis2.de.categoryCombos = {};
+
+// Categories for data value attributes
+dhis2.de.categories = {};
 
 // Array with keys on form {dataelementid}-{optioncomboid}-min/max with min/max
 // values
@@ -232,6 +243,9 @@ function loadMetaData()
             optionSets = metaData.optionSets;
 	        dataSetAssociationSets = metaData.dataSetAssociationSets;
 	        organisationUnitAssociationSetMap = metaData.organisationUnitAssociationSetMap;
+	        dhis2.de.defaultCategoryCombo = metaData.defaultCategoryCombo;
+	        dhis2.de.categoryCombos = metaData.categoryCombos;
+	        dhis2.de.categories = metaData.categories;
 
 	        metaDataIsLoaded = true;
 	        selection.responseReceived(); // Notify that meta data is loaded
