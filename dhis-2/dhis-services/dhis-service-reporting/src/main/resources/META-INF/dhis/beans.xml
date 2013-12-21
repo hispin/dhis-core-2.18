@@ -161,6 +161,14 @@
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
+  <!-- Data element history -->
+
+  <bean id="org.hisp.dhis.dataelementhistory.HistoryRetriever" class="org.hisp.dhis.dataelementhistory.DefaultHistoryRetriever">
+    <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+  </bean>
+
   <!-- Scheduling -->
 
   <bean id="org.hisp.dhis.scheduling.SchedulingManager" class="org.hisp.dhis.scheduling.DefaultSchedulingManager"
