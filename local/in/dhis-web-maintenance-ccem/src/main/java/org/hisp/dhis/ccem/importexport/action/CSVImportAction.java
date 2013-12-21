@@ -213,24 +213,17 @@ public class CSVImportAction
             
             EquipmentType refrigeratorEquipment = equipmentTypeService.getEquipmentTypeByName( "Refrigerators" );
             
+            EquipmentType coldroomsEquipment = equipmentTypeService.getEquipmentTypeByName( "Coldrooms" );
+            
             Map<String, OrganisationUnit> orgUnitMap = importAdminHierarchy( uncompressedFolderPath );
             
             Map<String, OrganisationUnit> faclityMap = importFacility( uncompressedFolderPath, orgUnitMap, lookupDataMap );
             
-            //Map<String, Model> refrigeratorModelMap = importRefrigeratorCatalogData( uncompressedFolderPath, refrigeratorModel, lookupDataMap );
+            Map<String, Model> refrigeratorModelMap = importRefrigeratorCatalogData( uncompressedFolderPath, refrigeratorModel, lookupDataMap );
             
-            //importRefrigetaorDetails( uncompressedFolderPath, refrigeratorEquipment, assetMap, faclityMap, refrigeratorModelMap, lookupDataMap );
+            importRefrigetaorDetails( uncompressedFolderPath, refrigeratorEquipment, assetMap, faclityMap, refrigeratorModelMap, lookupDataMap );
             
-            /*
-            for( String lookupKey : lookupDataMap.keySet() )
-            {
-                //System.out.println( "******************** "+ lookupKey + " ***************");
-                for( String lookupVal : lookupDataMap.get( lookupKey ) )
-                {
-                    System.out.println( lookupVal );
-                }
-            }
-            */
+            importColdroomsDetails( uncompressedFolderPath, coldroomsEquipment, assetMap, faclityMap, lookupDataMap );
             
         }
         catch ( Exception e )
@@ -267,9 +260,12 @@ public class CSVImportAction
                     organisationUnitGroup.setShortName( facilityType );
                     
                     organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
-                    
                     orgunitGroups.put( facilityType, organisationUnitGroup );
                 }
+                else
+                {
+                    orgunitGroups.put( facilityType, organisationUnitGroups.get( 0 ) );
+                }                
             }
         }
         
@@ -290,19 +286,32 @@ public class CSVImportAction
                     
                     ownershiOrgunitGroups.put( ownershiptype, organisationUnitGroup );
                 }
+                else
+                {
+                    ownershiOrgunitGroups.put( ownershiptype, organisationUnitGroups.get( 0 ) );
+                }
             }
         }
         
-
-        System.out.println("************************************************************************************************************");
-        System.out.println("************************************************************************************************************");
+       
+        //System.out.println("************************************************************************************************************");
+        //System.out.println("************************************************************************************************************");
         
         List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) ); 
         OrganisationUnitGroup ouGroup = null;
-        if( ouGroups != null )
+        if( ouGroups == null || ouGroups.isEmpty() )
+        {
+            ouGroup = new OrganisationUnitGroup();
+            ouGroup.setName( EquipmentAttributeValue.HEALTHFACILITY );
+            ouGroup.setShortName( EquipmentAttributeValue.HEALTHFACILITY );
+            
+            organisationUnitGroupService.addOrganisationUnitGroup( ouGroup );
+        }
+        else
         {
             ouGroup = ouGroups.get( 0 );
         }
+
         
         List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetByShortName( "FMD" ) ); 
         DataSet dataSet = null;
@@ -353,7 +362,7 @@ public class CSVImportAction
                 //if( ouCode != null && ouCode.trim().equals("") )
                 //        ouCode = null;
                 
-                OrganisationUnit organisationUnit = new OrganisationUnit( ouName, ouName, null, new Date(), null, true, parentId );
+                OrganisationUnit organisationUnit = new OrganisationUnit( ouName, ouName, nodeId, new Date(), null, true, parentId );
                 if( parentId != null && Integer.parseInt( parentId ) != -1 )
                 {
                     OrganisationUnit parentOU = orgUnitMap.get( parentId );
@@ -375,7 +384,7 @@ public class CSVImportAction
                                 organisationUnit.setPhoneNumber( contactDetails[1] );
                                 organisationUnit.setEmail( contactDetails[2] );
                             }
-                            else if( contactDetails.length == 3 )
+                            else if( contactDetails.length == 2 )
                             {
                                 organisationUnit.setContactPerson( contactDetails[0] );
                                 organisationUnit.setPhoneNumber( contactDetails[1] );
@@ -395,26 +404,26 @@ public class CSVImportAction
                     //System.out.println( facilityType + " : " + facilityTypes.get( facilityType ) );
                     if( facilityType != null )
                     {
-                        System.out.println( facilityType + " : " + facilityTypes.get( facilityType ) + " : " + orgunitGroups.get( facilityTypes.get( facilityType ) ) );
+                        //System.out.println( facilityType + " : " + facilityTypes.get( facilityType ) + " : " + orgunitGroups.get( facilityTypes.get( facilityType ) ) );
                         OrganisationUnitGroup orgUnitGroup = orgunitGroups.get( facilityTypes.get( facilityType ) );
                         if( orgUnitGroup != null )
                         {
                             orgUnitGroup.addOrganisationUnit( organisationUnit );
                             orgunitGroups.put( facilityTypes.get( facilityType ), orgUnitGroup );
-                            System.out.println( orgUnitGroup.getName() +" Size : " + orgUnitGroup.getMembers().size() );
+                            //System.out.println( orgUnitGroup.getName() +" Size : " + orgUnitGroup.getMembers().size() );
                             //organisationUnitGroupService.updateOrganisationUnitGroup( orgUnitGroup );
                         }
                     }
 
                     if( facilityOwnership != null )
                     {
-                        System.out.println( facilityOwnership + " : " + ownership.get( facilityOwnership ) + " : " + ownershiOrgunitGroups.get( ownership.get( facilityOwnership ) ) );
+                        //System.out.println( facilityOwnership + " : " + ownership.get( facilityOwnership ) + " : " + ownershiOrgunitGroups.get( ownership.get( facilityOwnership ) ) );
                         OrganisationUnitGroup orgUnitGroup = ownershiOrgunitGroups.get( ownership.get( facilityOwnership ) );
                         if( orgUnitGroup != null )
                         {
                             orgUnitGroup.addOrganisationUnit( organisationUnit );
                             ownershiOrgunitGroups.put( ownership.get( facilityOwnership ), orgUnitGroup );
-                            System.out.println( orgUnitGroup.getName() +" Size : " + orgUnitGroup.getMembers().size() );
+                            //System.out.println( orgUnitGroup.getName() +" Size : " + orgUnitGroup.getMembers().size() );
                             //organisationUnitGroupService.updateOrganisationUnitGroup( orgUnitGroup );
                         }
                     }
@@ -722,6 +731,116 @@ public class CSVImportAction
 
         message += "<br><font color=black>Importing finished for Refrigerators.csv " + new Date() + " </font><br>";
     }
+
+    public void importColdroomsDetails( String coldroomDetailsCSVFilePath, EquipmentType coldroomsEquipment, Map<Integer, List<String>> assetMap, Map<String, OrganisationUnit> faclityMap, Map<String, List<String>> lookupDataMap )
+    {
+        coldroomDetailsCSVFilePath += File.separator + "Coldrooms.csv";
+        
+        message += "<br><font color=black>Importing started for Coldrooms.csv " + new Date() + " </font><br>";
+        
+        try
+        {
+            CsvReader csvReader = new CsvReader( coldroomDetailsCSVFilePath, ',', Charset.forName( "UTF-8" ) );
+            
+            csvReader.readHeaders();
+
+            Map<String, EquipmentTypeAttribute> equipmentTypeAttributeMap = new HashMap<String, EquipmentTypeAttribute>();
+            String headers[] = csvReader.getHeaders();            
+            for( int i = 0; i < headers.length; i++ )
+            {
+                EquipmentTypeAttribute equipmentTypeAttribute = equipmentTypeAttributeService.getEquipmentTypeAttributeByDescription( headers[i] );
+                equipmentTypeAttributeMap.put( headers[i], equipmentTypeAttribute );
+            }
+
+            while( csvReader.readRecord() )
+            {
+                
+                String uniqueId = csvReader.get( "UniqueID" );
+                
+                List<String> tempList = assetMap.get( Integer.parseInt( uniqueId ) );
+                if( tempList == null )
+                {
+                    //System.out.println( "tempList is null for : " + uniqueId );
+                    message += "<br><font color=red>Orgunit with the id : " + uniqueId +" is missing</font><br>";
+                    continue;
+                }
+                
+                OrganisationUnit orgUnit = faclityMap.get( tempList.get(0) );
+                
+                if( orgUnit == null )
+                {
+                    //System.out.println(" ********************* " + tempList.get(0) + " IS NULL ********************* ");
+                    message += "<br><font color=red>Orgunit with the id : " + tempList.get(0) +" is missing</font><br>";
+                    continue;
+                }
+                
+                Equipment equipment = new Equipment();              
+                equipment.setEquipmentType( coldroomsEquipment );
+                equipment.setOrganisationUnit( orgUnit );
+                    
+                List<EquipmentAttributeValue> equipmentAttributeValueDetailsList = new ArrayList<EquipmentAttributeValue>();
+
+                for( int i = 0; i < headers.length; i++ )
+                {
+                    EquipmentTypeAttribute equipmentTypeAttribute = equipmentTypeAttributeMap.get( headers[i] );
+                    
+                    if ( equipmentTypeAttribute != null )
+                    {
+                        EquipmentAttributeValue equipmentAttributeValueDetails = new EquipmentAttributeValue();
+                        equipmentAttributeValueDetails.setEquipment( equipment );
+                        equipmentAttributeValueDetails.setEquipmentTypeAttribute( equipmentTypeAttribute );
+                        
+                        if( equipmentTypeAttribute.getOptionSet() != null )
+                        {
+                            List<String> lookupOptions = lookupDataMap.get( headers[i] );
+                            if( lookupOptions != null )
+                            {
+                                try
+                                {
+                                    //System.out.println( orgUnit.getName() + " : " + equipmentTypeAttribute.getName() + " : " + csvReader.get( headers[i] ) + " : " + lookupOptions.get( Integer.parseInt( csvReader.get( headers[i] ) ) + 1  ) );
+                                    equipmentAttributeValueDetails.setValue( lookupOptions.get( Integer.parseInt( csvReader.get( headers[i] ) ) - 1  ) );
+                                    equipmentAttributeValueDetailsList.add( equipmentAttributeValueDetails );
+                                }
+                                catch( Exception e )
+                                {
+                                                
+                                }
+                            }
+                            else
+                            {
+                                        
+                            }
+                        }
+                        else
+                        {
+                            if( csvReader.get( headers[i] ) != null && !csvReader.get( headers[i] ).trim().equals( "" ) )
+                            {
+                                equipmentAttributeValueDetails.setValue( csvReader.get( headers[i] ) );
+                                equipmentAttributeValueDetailsList.add( equipmentAttributeValueDetails );
+                            }
+                        }
+                    }
+                        
+                }
+                    
+                // -----------------------------------------------------------------------------
+                // Creating EquipmentAttributeValue Instance and saving equipmentAttributeValue data
+                // -----------------------------------------------------------------------------
+                Integer id = equipmentService.createEquipment( equipment, equipmentAttributeValueDetailsList );
+            }
+            
+            csvReader.close();
+
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+            message += "<br><font color=red>Error while importing for Coldrooms.csv " + e.getMessage() + " </font><br>";
+        }
+
+        message += "<br><font color=black>Importing finished for Coldrooms.csv " + new Date() + " </font><br>";
+    }
+
     
     public Map<String, Model> importRefrigeratorCatalogData( String refrigeratorCatalogDataCSVFilePath, ModelType refrigeratorModel, Map<String, List<String>> lookupDataMap )
     {

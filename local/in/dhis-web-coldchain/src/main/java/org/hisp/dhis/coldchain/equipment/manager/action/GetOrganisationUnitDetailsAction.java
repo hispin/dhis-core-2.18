@@ -88,9 +88,9 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
     // Input/output
     // -------------------------------------------------------------------------
     
-    private Integer orgUnitId;
+    private String orgUnitId;
     
-    public void setOrgUnitId( Integer orgUnitId )
+    public void setOrgUnitId( String orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }
@@ -290,12 +290,6 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
-
-
-
-
-
-
 
     public String execute()
         throws Exception
