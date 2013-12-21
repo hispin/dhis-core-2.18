@@ -3,11 +3,12 @@ jQuery(document).ready(function() {
     selection.setListenerFunction( organisationUnitSelected );
 
     $.ajax({
-       url: 'getMultiOrgUnitForms.action',
+       url: '../api/systemSettings/multiOrganisationUnitForms',
        dataType: 'json',
        async: false,
+       type: 'get',
        success: function(data) {
-           selection.setIncludeChildren( data.enabled );
+           selection.setIncludeChildren( data );
        }
     });
 });

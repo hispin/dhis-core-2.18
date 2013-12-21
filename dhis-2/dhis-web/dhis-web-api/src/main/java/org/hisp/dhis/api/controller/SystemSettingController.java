@@ -28,6 +28,8 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.ContextUtils;
@@ -80,7 +82,9 @@ public class SystemSettingController
     @RequestMapping( value = "/{key}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String getSystemSetting( @PathVariable( "key" ) String key )
     {
-        return (String) systemSettingManager.getSystemSetting( key );
+        Serializable setting = systemSettingManager.getSystemSetting( key );
+        
+        return setting != null ? String.valueOf( setting ) : null;
     }
 
     @RequestMapping( value = "/{key}", method = RequestMethod.DELETE )
