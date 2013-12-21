@@ -540,16 +540,14 @@ function addEventListeners()
 
 function resetSectionFilters()
 {
-    $( '#selectionBox' ).css( 'height', '93px' );
-    $( '#filterDataSetSectionTr' ).hide();
+    $( '#filterDataSetSectionDiv' ).hide();
     $( '.formSection' ).show();
 }
 
 function clearSectionFilters()
 {
     $( '#filterDataSetSection' ).children().remove();
-    $( '#selectionBox' ).css( 'height', '93px' );
-    $( '#filterDataSetSectionTr' ).hide();
+    $( '#filterDataSetSectionDiv' ).hide();
     $( '.formSection' ).show();
 }
 
@@ -640,8 +638,6 @@ function enableSectionFilter()
 
     if ( $sectionHeaders.size() > 1)
     {
-        $( '#selectionBox' ).css( 'height', '123px' );
-
         $( '#filterDataSetSection' ).append( "<option value='all'>" + i18n_show_all_sections + "</option>" );
 
         $sectionHeaders.each( function( idx, value ) 
@@ -649,12 +645,11 @@ function enableSectionFilter()
             $( '#filterDataSetSection' ).append( "<option value='" + idx + "'>" + value.innerHTML + "</option>" );
         } );
 
-        $( '#filterDataSetSectionTr' ).show();
+        $( '#filterDataSetSectionDiv' ).show();
     }
     else
     {
-        $( '#selectionBox' ).css( 'height', '93px' );
-        $( '#filterDataSetSectionTr' ).hide();
+        $( '#filterDataSetSectionDiv' ).hide();
     }
 }
 

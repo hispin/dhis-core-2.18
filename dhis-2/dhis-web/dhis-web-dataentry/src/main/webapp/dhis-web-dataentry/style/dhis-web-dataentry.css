@@ -71,6 +71,17 @@ input[type=text],textarea
   margin-bottom: 1px;
 }
 
+.selectionBoxRow
+{
+  padding: 2px 0;
+}
+
+.selectionLabel
+{
+  display: inline-block;
+  width: 100px;
+}
+
 .formSection td
 {
   padding-right: 2px;
