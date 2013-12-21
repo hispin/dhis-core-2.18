@@ -76,6 +76,11 @@ input[type=text],textarea
   padding: 2px 0;
 }
 
+.selectionBoxSelect
+{
+  width: 401px;
+}
+
 .selectionLabel
 {
   display: inline-block;

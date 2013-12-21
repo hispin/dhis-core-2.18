@@ -1369,6 +1369,54 @@ function onFormLoad( fn )
 	$( 'body' ).off( EVENT_FORM_LOADED ).on( EVENT_FORM_LOADED, fn );
 }
 
+/**
+ * Returns an array of category combo objects for the given data set. Default
+ * category combos are omitted.
+ */
+dhis2.de.getCategoryCombos = function( dataSets )
+{
+	var combos = [];
+	
+	$.safeEach( dataSets, function( idx, item ) {
+		if ( item.categoryCombo && dhis2.de.defaultCategoryCombo != item.categoryCombo ) {
+			var combo = dhis2.de.categoryCombos[item.categoryCombo];
+			combos.push( combo );
+		}
+	} );
+	
+	return combos;
+}
+
+/**
+ * Returns markup for drop down boxes to be put in the selection box for the
+ * given category combos.
+ */
+dhis2.de.getAttributeComboMarkup = function( categoryCombos )
+{
+	var html = '';
+	
+	if ( undefined === categoryCombos || categoryCombos.length == 0 ) {
+		return html;
+	}
+	
+	html = '<div class="selectionBoxRow">';
+	
+	$.safeEach( categoryCombos, function( idx, combo ) {
+		html += '<div class="selectionLabel">' + combo.name + '</div>';
+		html += '<select id="combo-' + combo.id + '" class="selectionBoxSelect">';
+		
+		$.safeEach( combo.categories, function( idx, cat ) {
+			var category = dhis2.de.categories[cat];
+			html += '<option value="' + category.id + '">' + category.name + '</option>';
+		} );
+		
+		html += '</select>';
+	} );
+
+	html += '</div>';
+	return html;
+}
+
 // -----------------------------------------------------------------------------
 // Data completeness
 // -----------------------------------------------------------------------------
