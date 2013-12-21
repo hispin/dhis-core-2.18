@@ -22,6 +22,14 @@
     <bean id="org.hisp.dhis.pbf.api.LookupService" class="org.hisp.dhis.pbf.impl.DefaultLookupService">
         <property name="lookupStore" ref="org.hisp.dhis.pbf.api.LookupStore" />
     </bean>
+
+    <bean id="org.hisp.dhis.pbf.api.BankDetailsStore" class="org.hisp.dhis.pbf.impl.HibernateBankDetailsStore">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="org.hisp.dhis.pbf.api.BankDetailsService" class="org.hisp.dhis.pbf.impl.DefaultBankDetailsService">
+        <property name="bankDetailsStore" ref="org.hisp.dhis.pbf.api.BankDetailsStore" />
+    </bean>
     
 	<!-- Home page -->
 	<bean id="org.hisp.dhis.pbf.action.NoAction" class="org.hisp.dhis.pbf.action.NoAction" scope="prototype">
@@ -59,6 +67,14 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    </bean>
+
+    <!-- Load Bank Details -->
+    <bean id="org.hisp.dhis.pbf.action.LoadBankDetailsAction" class="org.hisp.dhis.pbf.action.LoadBankDetailsAction" scope="prototype">
+        <property name="bankDetailsService" ref="org.hisp.dhis.pbf.api.BankDetailsService" />   
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
     </bean>
     
 </beans>

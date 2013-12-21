@@ -6,6 +6,8 @@ public class Lookup extends BaseNameableObject
 {
     public static final String DS_PBF_TYPE = "DS_PBF_TYPE";
     
+    public static final String BANK = "BANK";
+    
     private String type;
     
     private String value;
