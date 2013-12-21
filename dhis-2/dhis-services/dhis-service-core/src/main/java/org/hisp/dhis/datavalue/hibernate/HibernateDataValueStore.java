@@ -273,6 +273,28 @@ public class HibernateDataValueStore
     }
 
     @SuppressWarnings( "unchecked" )
+    public Collection<DataValue> getDataValues( OrganisationUnit source, Period period, 
+        Collection<DataElement> dataElements, DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        Period storedPeriod = periodStore.reloadPeriod( period );
+
+        if ( storedPeriod == null || dataElements == null || dataElements.isEmpty() )
+        {
+            return Collections.emptySet();
+        }
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataValue.class );
+        criteria.add( Restrictions.eq( "source", source ) );
+        criteria.add( Restrictions.eq( "period", storedPeriod ) );
+        criteria.add( Restrictions.in( "dataElement", dataElements ) );
+        criteria.add( Restrictions.eq( "attributeOptionCombo", attributeOptionCombo ) );
+
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements,
         Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
     {

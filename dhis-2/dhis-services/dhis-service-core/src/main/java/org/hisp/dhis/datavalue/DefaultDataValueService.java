@@ -170,6 +170,12 @@ public class DefaultDataValueService
         return dataValueStore.getDataValues( source, period, dataElements );
     }
 
+    public Collection<DataValue> getDataValues( OrganisationUnit source, Period period, 
+        Collection<DataElement> dataElements, DataElementCategoryOptionCombo attributeOptionCombo )
+    {
+        return dataValueStore.getDataValues( source, period, dataElements, attributeOptionCombo );
+    }
+
     public Collection<DataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements,
         Collection<DataElementCategoryOptionCombo> optionCombos )
     {
