@@ -57,6 +57,8 @@ public class UpdateValidationCriteriaAction
     // Input
     // -------------------------------------------------------------------------
 
+    private int programId;
+
     private int id;
 
     private String name;
@@ -76,6 +78,16 @@ public class UpdateValidationCriteriaAction
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    public int getProgramId()
+    {
+        return programId;
+    }
+
+    public void setProgramId( int programId )
+    {
+        this.programId = programId;
     }
 
     public void setId( int id )

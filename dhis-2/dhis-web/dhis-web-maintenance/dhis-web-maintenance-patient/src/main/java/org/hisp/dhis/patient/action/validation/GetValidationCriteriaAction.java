@@ -33,9 +33,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 
@@ -59,11 +59,11 @@ public class GetValidationCriteriaAction
         this.validationCriteriaService = validationCriteriaService;
     }
 
-    private PatientAttributeService patientAttributeService;
+    private ProgramService programService;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setProgramService( ProgramService programService )
     {
-        this.patientAttributeService = patientAttributeService;
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
@@ -72,11 +72,13 @@ public class GetValidationCriteriaAction
 
     private int id;
 
+    private int programId;
+
     private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
     private ValidationCriteria validationCriteria;
 
-    private I18nFormat format;
+    private Program program;
 
     // -------------------------------------------------------------------------
     // Getter && Setter
@@ -87,14 +89,9 @@ public class GetValidationCriteriaAction
         this.id = id;
     }
 
-    public I18nFormat getFormat()
+    public void setProgramId( int programId )
     {
-        return format;
-    }
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
+        this.programId = programId;
     }
 
     public ValidationCriteria getValidationCriteria()
@@ -107,6 +104,11 @@ public class GetValidationCriteriaAction
         return patientAttributes;
     }
 
+    public Program getProgram()
+    {
+        return program;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -117,7 +119,9 @@ public class GetValidationCriteriaAction
     {
         validationCriteria = validationCriteriaService.getValidationCriteria( id );
 
-        patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
+        program = programService.getProgram( programId );
+
+        patientAttributes = new ArrayList<PatientAttribute>( program.getPatientAttributes() );
 
         Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 

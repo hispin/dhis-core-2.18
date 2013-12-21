@@ -4,7 +4,10 @@
 </script>
 
 <h3>$i18n.getString( "create_validation_criteria" )</h3>
+<h5>$program.displayName</h5>
+
 <form id="validationCriteriaForm" action="addValidationCriteria.action" method="post" class="inputForm">
+<input type='hidden' id='programId' name='programId' value='$program.id' />
 <table>
 	<tr><th colspan="3">$i18n.getString('validation_criteria_details')</th></tr>
     <tr>
@@ -23,7 +26,7 @@
 				<td>
 					<select id='property' name='property' style='width:16em' onChange="showDivValue();">
 						<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-						#foreach($patientAttribute in $patientAttributes)
+						#foreach($patientAttribute in $program.patientAttributes)
 							#set($opt="")
 							#foreach($option in $patientAttribute.attributeOptions)
 								#set($opt=$opt + ';' + $option.name )
@@ -50,7 +53,7 @@
 		<td>&nbsp;</td>
 		<td colspan="2">
 			<input type="submit" value="$i18n.getString('save')" style="width:10em"/>
-			<input name="button" type="button" style="width:10em" onclick="javascript:window.location.href= 'validationCriteria.action'" value="$i18n.getString('cancel')"/>
+			<input name="button" type="button" style="width:10em" onclick="javascript:window.location.href= 'validationCriteria.action?id=$program.id'" value="$i18n.getString('cancel')"/>
 		</td>
     </tr>
   </table>

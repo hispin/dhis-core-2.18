@@ -219,13 +219,9 @@ public class Program
                 if ( !value.isEmpty() )
                 {
                     // Compare property value with compare value
-System.out.println("\n\n value : " + value );
-System.out.println("\n\n criteria.getValue() : " + criteria.getValue() );
-System.out.println("\n\n operator : " + value.compareTo( criteria.getValue() ) );
                     int i = value.compareTo( criteria.getValue() );
 
                     // Return validation criteria if criteria is not met
-
                     if ( i != criteria.getOperator() )
                     {
                         return criteria;

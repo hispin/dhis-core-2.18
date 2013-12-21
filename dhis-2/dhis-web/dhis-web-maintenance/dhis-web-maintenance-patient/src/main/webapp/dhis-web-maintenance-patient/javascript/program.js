@@ -33,6 +33,10 @@ function defineProgramAssociationsForm( context ) {
   location.href = 'defineProgramAssociationsForm.action?id=' + context.id;
 }
 
+function validationCriteria( context ) {
+  location.href = 'validationCriteria.action?id=' + context.id;
+}
+
 function showProgramDetails( context ) {
   jQuery.getJSON("getProgram.action", {
     id: context.id
