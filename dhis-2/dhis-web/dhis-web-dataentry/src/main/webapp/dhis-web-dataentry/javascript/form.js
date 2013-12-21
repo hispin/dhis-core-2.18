@@ -55,8 +55,10 @@ dhis2.de.currentDataSetId = null;
 // Array with category objects, null if default category combo / no categories
 dhis2.de.currentCategories = null;
 
-// Current offset, next or previous corresponding to increasing or decreasing
-// value with one
+// Currently selected iso period
+dhis2.de.currentPeriodId = null;
+
+// Current offset, next or previous corresponding to increasing or decreasing value
 dhis2.de.currentPeriodOffset = 0;
 
 // Username of user who marked the current data set as complete if any
@@ -572,8 +574,11 @@ function clearEntryForm()
     $( '#infoDiv' ).hide();
 }
 
-function loadForm( dataSetId, multiOrg )
+function loadForm()
 {
+	var dataSetId = dhis2.de.currentDataSetId;
+	var multiOrg = !!$( '#selectedDataSetId :selected' ).data( 'multiorg' );
+	
 	dhis2.de.currentOrganisationUnitId = selection.getSelected()[0];
 
     if ( !multiOrg && dhis2.de.storageManager.formExists( dataSetId ) )
@@ -975,20 +980,19 @@ function dataSetSelected()
 
         var previousPeriodType = dhis2.de.currentDataSetId ? dhis2.de.dataSets[dhis2.de.currentDataSetId].periodType : null;
 
+        dhis2.de.currentDataSetId = dataSetId;
+        
         if ( periodId && periodId != -1 && previousPeriodType && previousPeriodType == periodType )
         {
             showLoader();
             $( '#selectedPeriodId' ).val( periodId );
 
-            var isMultiOrganisationUnitForm = !!$( '#selectedDataSetId :selected' ).data( 'multiorg' );
-            loadForm( dataSetId, isMultiOrganisationUnitForm );
+            loadForm();
         }
         else
         {
             clearEntryForm();
         }
-
-        dhis2.de.currentDataSetId = dataSetId;
     }
 }
 
@@ -1007,6 +1011,8 @@ function periodSelected()
 
     if ( periodId && periodId != -1 )
     {
+    	dhis2.de.currentPeriodId = periodId;
+    	
         showLoader();
 
         if ( dhis2.de.dataEntryFormIsLoaded )
@@ -1015,8 +1021,7 @@ function periodSelected()
         }
         else
         {
-            var isMultiOrganisationUnitForm = !!$( '#selectedDataSetId :selected' ).data( 'multiorg' );
-            loadForm( dataSetId, isMultiOrganisationUnitForm );
+            loadForm();
         }
     }
 }
@@ -1067,7 +1072,7 @@ function displayPeriodsInternal()
 }
 
 //------------------------------------------------------------------------------
-// Attributes / Categories
+// Attributes / Categories Selection
 //------------------------------------------------------------------------------
 
 /**
