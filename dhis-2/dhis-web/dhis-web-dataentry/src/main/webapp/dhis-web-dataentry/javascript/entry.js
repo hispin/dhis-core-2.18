@@ -54,7 +54,7 @@ function updateIndicators()
     {
         var indicatorId = $( this ).attr( 'indicatorid' );
 
-        var formula = indicatorFormulas[indicatorId];
+        var formula = dhis2.de.indicatorFormulas[indicatorId];
         
         if ( isDefined( formula ) )
         {        
@@ -118,7 +118,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
 
 	if ( fieldIds.length > 3 )
 	{
-		currentOrganisationUnitId = fieldIds[0];
+		dhis2.de.currentOrganisationUnitId = fieldIds[0];
 	}
 
     fieldId = '#' + fieldId;
@@ -168,15 +168,15 @@ function saveVal( dataElementId, optionComboId, fieldId )
             {
                 // If value = 0 and zero not significant for data element, skip
 
-                if ( significantZeros.indexOf( dataElementId ) == -1 )
+                if ( dhis2.de.significantZeros.indexOf( dataElementId ) == -1 )
                 {
                     $( fieldId ).css( 'background-color', COLOR_GREEN );
                     return false;
                 }
             }
 
-            var minString = currentMinMaxValueMap[dataElementId + '-' + optionComboId + '-min'];
-            var maxString = currentMinMaxValueMap[dataElementId + '-' + optionComboId + '-max'];
+            var minString = dhis2.de.currentMinMaxValueMap[dataElementId + '-' + optionComboId + '-min'];
+            var maxString = dhis2.de.currentMinMaxValueMap[dataElementId + '-' + optionComboId + '-max'];
 
             if ( minString && maxString ) // TODO if only one exists?
             {
@@ -284,7 +284,7 @@ function ValueSaver( de, co, ou, pe, value, fieldId, resultColor )
 
     this.save = function()
     {
-        storageManager.saveDataValue( dataValue );
+    	dhis2.de.storageManager.saveDataValue( dataValue );
 
         $.ajax( {
             url: '../api/dataValues',
@@ -297,7 +297,7 @@ function ValueSaver( de, co, ou, pe, value, fieldId, resultColor )
 
     function handleSuccess()
     {
-    	storageManager.clearDataValueJSON( dataValue );
+    	dhis2.de.storageManager.clearDataValueJSON( dataValue );
         markValue( fieldId, resultColor );
         $( 'body' ).trigger( EVENT_VALUE_SAVED, dataValue );
     }
