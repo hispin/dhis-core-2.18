@@ -111,9 +111,9 @@ public class LoadFormAction
         this.dataSetId = dataSetId;
     }
 
-    private Integer multiOrganisationUnit;
+    private String multiOrganisationUnit;
 
-    public void setMultiOrganisationUnit( Integer multiOrganisationUnit )
+    public void setMultiOrganisationUnit( String multiOrganisationUnit )
     {
         this.multiOrganisationUnit = multiOrganisationUnit;
     }
@@ -345,7 +345,7 @@ public class LoadFormAction
         // For multi-org unit we only support section forms
         // ---------------------------------------------------------------------
 
-        if ( multiOrganisationUnit != null && multiOrganisationUnit != 0 )
+        if ( multiOrganisationUnit != null )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( multiOrganisationUnit );
             List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();
