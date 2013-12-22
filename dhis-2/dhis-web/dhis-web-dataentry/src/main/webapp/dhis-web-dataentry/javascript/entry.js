@@ -201,8 +201,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
     
     var color = warning ? COLOR_ORANGE : COLOR_GREEN;
     
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, 
-    	getCurrentOrganisationUnit(), periodId, value, fieldId, color );
+    var valueSaver = new ValueSaver( dataElementId,	periodId, optionComboId, value, fieldId, color );
     valueSaver.save();
 
     updateIndicators(); // Update indicators for custom form
@@ -224,8 +223,7 @@ function saveBoolean( dataElementId, optionComboId, fieldId )
 
     var periodId = $( '#selectedPeriodId' ).val();
 
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, 
-    	getCurrentOrganisationUnit(), periodId, value, fieldId, COLOR_GREEN );
+    var valueSaver = new ValueSaver( dataElementId, periodId, optionComboId, value, fieldId, COLOR_GREEN );
     valueSaver.save();
 }
 
@@ -241,8 +239,7 @@ function saveTrueOnly( dataElementId, optionComboId, fieldId )
 
     var periodId = $( '#selectedPeriodId' ).val();
 
-    var valueSaver = new ValueSaver( dataElementId, optionComboId,
-        getCurrentOrganisationUnit(), periodId, value, fieldId, COLOR_GREEN );
+    var valueSaver = new ValueSaver( dataElementId, periodId, optionComboId, value, fieldId, COLOR_GREEN );
     valueSaver.save();
 }
 
@@ -271,8 +268,18 @@ function onValueSave( fn )
 // Saver objects
 // -----------------------------------------------------------------------------
 
-function ValueSaver( de, co, ou, pe, value, fieldId, resultColor )
+/**
+ * @param de data element identifier.
+ * @param pe iso period.
+ * @param co category option combo.
+ * @param value value.
+ * @param fieldId identifier of data input field.
+ * @param resultColor the color code to set on input field for success.
+ */
+function ValueSaver( de, pe, co, value, fieldId, resultColor )
 {
+	var ou = getCurrentOrganisationUnit();
+	
     var dataValue = {
         'de' : de,
         'co' : co,
@@ -281,6 +288,15 @@ function ValueSaver( de, co, ou, pe, value, fieldId, resultColor )
         'value' : value
     };
 
+    var cc = dhis2.de.getCurrentCategoryCombo();
+    var cp = dhis2.de.getCurrentCategoryOptionsQueryValue();
+    
+    if ( cc && cp )
+    {
+    	dataValue.cc = cc;
+    	dataValue.cp = cp;
+    }
+    
     this.save = function()
     {
     	dhis2.de.storageManager.saveDataValue( dataValue );

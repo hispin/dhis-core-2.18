@@ -78,7 +78,7 @@
 "categories": {
 #set( $size1 = $categories.size() )
 #foreach( $category in $categories )
-"${category.uid}":{"name":"$encoder.jsonEncode( ${category.displayName} )","options":[
+"${category.uid}":{"id":"${category.uid}","name":"$encoder.jsonEncode( ${category.displayName} )","options":[
 #set( $size2 = $category.categoryOptions.size() )
 #foreach( $option in $category.categoryOptions )
 {"id":"${option.uid}","name":"$encoder.jsonEncode( ${option.displayName} )"}#if( $velocityCount < $size2 ),#end
