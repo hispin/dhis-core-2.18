@@ -47,7 +47,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.trimToNull;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
@@ -80,6 +83,8 @@ public class ContextUtils
     public static final String HEADER_LOCATION = "Location";
     
     public static final String DATE_PATTERN = "yyyy-MM-dd";
+    
+    public static final String QUERY_PARAM_SEP = ";";
 
     @Autowired
     private SystemSettingManager systemSettingManager;
@@ -282,6 +287,25 @@ public class ContextUtils
         builder.append( request.getServletPath() );
 
         return builder.toString();
+    }
+    
+    /**
+     * Splits the given query param value into independent values using ; as
+     * separator.
+     * 
+     * @param value the query param value.
+     * @return the list of independent values.
+     */
+    public static List<String> getQueryParamValues( String value )
+    {
+        if ( value == null || value.isEmpty() )
+        {
+            return null;
+        }
+
+        String[] values = value.split( QUERY_PARAM_SEP );
+        
+        return new ArrayList<String>( Arrays.asList( values ) );
     }
 
     /**

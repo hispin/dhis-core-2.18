@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -91,13 +92,15 @@ public class DataValueController
         @RequestParam String de, 
         @RequestParam( required = false ) String co, 
         @RequestParam( required = false ) String cc, 
-        @RequestParam( required = false ) Set<String> cp, 
+        @RequestParam( required = false ) String cp, 
         @RequestParam String pe, 
         @RequestParam String ou, 
         @RequestParam( required = false ) String value, 
         @RequestParam( required = false ) String comment, 
         @RequestParam( required = false ) boolean followUp, HttpServletResponse response )
     {
+        List<String> opts = ContextUtils.getQueryParamValues( cp );
+        
         // ---------------------------------------------------------------------
         // Data element validation
         // ---------------------------------------------------------------------
@@ -135,7 +138,7 @@ public class DataValueController
         // Attribute category combo validation
         // ---------------------------------------------------------------------
 
-        if ( ( cc == null && ( cp != null && !cp.isEmpty() ) || ( cc != null && ( cp == null || cp.isEmpty() ) ) ) )
+        if ( ( cc == null && opts != null || ( cc != null && opts == null ) ) )
         {
             ContextUtils.conflictResponse( response, "Both or none of category combination and category options must be present" );
             return;
@@ -155,11 +158,11 @@ public class DataValueController
 
         DataElementCategoryOptionCombo attributeOptionCombo = null;
 
-        if ( cp != null )
+        if ( opts != null )
         {
             Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
 
-            for ( String id : cp )
+            for ( String id : opts )
             {
                 DataElementCategoryOption categoryOption = categoryService.getDataElementCategoryOption( id );
                 
