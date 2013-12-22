@@ -1121,9 +1121,9 @@ dhis2.de.categoriesSelected = function()
 };
 
 /**
-* Returns the identifier of the current attribute category combo. Based on the
-* dhis2.de.currentDataSetId global variable. Returns null if there is no 
-* current data set or if current data set has the default category combo.
+* Returns attribute category combo identifier. Based on the dhis2.de.currentDataSetId 
+* global variable. Returns null if there is no current data set or if current 
+* data set has the default category combo.
 */
 dhis2.de.getCurrentCategoryCombo = function()
 {
@@ -1133,13 +1133,13 @@ dhis2.de.getCurrentCategoryCombo = function()
 		return null;
 	}
 	
-	return dataSet.categoryCombo.id;
+	return dataSet.categoryCombo;
 };
 
 /**
-* Returns an array of the currently selected attribute category options. Based
-* on the dhis2.de.currentCategories global variable. Returns null if there are
-* no current categories.
+* Returns an array of the currently selected attribute category option identifiers. 
+* Based on the dhis2.de.currentCategories global variable. Returns null if there 
+* are no current categories.
 */
 dhis2.de.getCurrentCategoryOptions = function()
 {
@@ -1159,6 +1159,29 @@ dhis2.de.getCurrentCategoryOptions = function()
 	
 	return options;
 };
+
+/**
+ * Returns a query param value for the currently selected category options where
+ * each option is separated by the ; character.
+ */
+dhis2.de.getCurrentCategoryOptionsQueryValue = function()
+{
+	if ( !dhis2.de.getCurrentCategoryOptions() ) {
+		return null;
+	}
+	
+	var value = '';
+	
+	$.safeEach( dhis2.de.getCurrentCategoryOptions(), function( idx, option ) {
+		value += option + ';';
+	} );
+	
+	if ( value ) {
+		value = value.slice( 0, -1 );
+	}
+	
+	return value;
+}
 
 /**
 * Returns markup for drop down boxes to be put in the selection box for the
@@ -1234,6 +1257,15 @@ function getAndInsertDataValues()
         organisationUnitId : getCurrentOrganisationUnit(),
         multiOrganisationUnit: dhis2.de.multiOrganisationUnit
     };
+
+    var cc = dhis2.de.getCurrentCategoryCombo();
+    var cp = dhis2.de.getCurrentCategoryOptionsQueryValue();
+    
+    if ( cc && cp )
+    {
+    	params.cc = cc;
+    	params.cp = cp;
+    }
     
     $.ajax( {
     	url: 'getDataValues.action',
