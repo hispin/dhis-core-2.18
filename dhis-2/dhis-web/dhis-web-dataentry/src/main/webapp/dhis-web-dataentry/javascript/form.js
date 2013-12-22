@@ -853,12 +853,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
     else if ( dhis2.de.multiOrganisationUnit && multiDataSetValid && dataSetId != null ) {
         $( '#selectedDataSetId' ).val( dataSetId );
         dataSetSelected();
-
-        if ( periodId && periodId != -1 && dhis2.de.dataEntryFormIsLoaded ) {
-            resetSectionFilters();
-            showLoader();
-            loadDataValues();
-        }
     }
     else {
     	dhis2.de.multiOrganisationUnit = false;
