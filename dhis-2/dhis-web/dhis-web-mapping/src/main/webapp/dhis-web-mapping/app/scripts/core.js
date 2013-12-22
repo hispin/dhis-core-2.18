@@ -178,18 +178,20 @@ Ext.onReady( function() {
 	GIS.core.createSelectHandlers = function(gis, layer) {
 		var isRelocate = !!GIS.app ? (gis.init.user.isAdmin ? true : false) : false,
 			options = {},
-			window,
 			infrastructuralPeriod,
-			onHoverSelect,
-			onHoverUnselect,
-			onClickSelect,
-			dimConf = gis.conf.finals.dimension;
+			defaultHoverSelect,
+			defaultHoverUnselect,
+			defaultClickSelect,
+            selectHandlers,
+			dimConf = gis.conf.finals.dimension,
+            defaultHoverWindow,
+            eventWindow;
 
-		onHoverSelect = function fn(feature) {
-			if (window) {
-				window.destroy();
+		defaultHoverSelect = function fn(feature) {
+			if (defaultHoverWindow) {
+				defaultHoverWindow.destroy();
 			}
-			window = Ext.create('Ext.window.Window', {
+			defaultHoverWindow = Ext.create('Ext.window.Window', {
 				cls: 'gis-window-widget-feature gis-plugin',
 				preventHeader: true,
 				shadow: false,
@@ -199,21 +201,21 @@ Ext.onReady( function() {
 				}
 			});
 
-			window.show();
+			defaultHoverWindow.show();
 
 			var eastX = gis.viewport.eastRegion.getPosition()[0],
 				centerX = gis.viewport.centerRegion.getPosition()[0],
 				centerRegionCenterX = centerX + ((eastX - centerX) / 2),
 				centerRegionY = gis.viewport.centerRegion.getPosition()[1] + (GIS.app ? 32 : 0);
 
-			window.setPosition(centerRegionCenterX - (window.getWidth() / 2), centerRegionY);
+			defaultHoverWindow.setPosition(centerRegionCenterX - (defaultHoverWindow.getWidth() / 2), centerRegionY);
 		};
 
-		onHoverUnselect = function fn(feature) {
-			window.destroy();
+		defaultHoverUnselect = function fn(feature) {
+			defaultHoverWindow.destroy();
 		};
 
-		onClickSelect = function fn(feature) {
+		defaultClickSelect = function fn(feature) {
 			var showInfo,
 				showRelocate,
 				drill,
@@ -524,11 +526,48 @@ Ext.onReady( function() {
 			menu.showAt([gis.olmap.mouseMove.x, gis.olmap.mouseMove.y]);
 		};
 
-		options.onHoverSelect = onHoverSelect;
-		options.onHoverUnselect = onHoverUnselect;
-		
-		if (layer.id !== 'event') {
-			options.onClickSelect = onClickSelect;
+		options = {
+            onHoverSelect: defaultHoverSelect,
+            onHoverUnselect: defaultHoverUnselect,
+            onClickSelect: defaultClickSelect
+        };
+
+		if (layer.id === 'event') {
+			options.onClickSelect = function fn(feature) {
+                var ignoreKeys = ['label', 'value', 'nameColumnMap', 'psi', 'ps', 'longitude', 'latitude', 'eventdate', 'ou', 'oucode', 'ouname'],
+                    attributes = feature.attributes,
+                    map = attributes.nameColumnMap,
+                    html = '<table>',
+                    titleStyle = ' style="font-weight:bold; padding-right:10px"';
+
+                // default properties
+                html += '<tr><td' + titleStyle + '>' + map['ou'] + '</td><td>' + attributes['ouname'] + '</td></tr>';
+                html += '<tr><td' + titleStyle + '>' + map['eventdate'] + '</td><td>' + attributes['eventdate'] + '</td></tr>';
+                html += '<tr><td' + titleStyle + '>' + map['longitude'] + '</td><td>' + attributes['longitude'] + '</td></tr>';
+                html += '<tr><td' + titleStyle + '>' + map['latitude'] + '</td><td>' + attributes['latitude'] + '</td></tr>';
+
+                for (var key in attributes) {
+                    if (attributes.hasOwnProperty(key) && !Ext.Array.contains(ignoreKeys, key)) {
+                        html += '<tr><td' + titleStyle + '>' + map[key] + '</td><td>' + attributes[key] + '</td></tr>';
+                    }
+                }
+
+                html += '</table>';
+
+                if (Ext.isObject(eventWindow) && eventWindow.destroy) {
+                    eventWindow.destroy();
+                }
+
+                eventWindow = Ext.create('Ext.window.Window', {
+                    title: 'Event',
+                    resizable: false,
+                    bodyStyle: 'background-color:#fff; padding:5px',
+                    html: html
+                });
+
+                eventWindow.show();
+                gis.util.gui.window.setPositionTopRight(eventWindow);
+            };
 		}
 
 		selectHandlers = new OpenLayers.Control.newSelectFeature(layer, options);
@@ -902,11 +941,19 @@ Ext.onReady( function() {
 				scope: this,
 				success: function(r) {
                     var events = [],
-                        features = [];
+                        features = [],
+                        map;
 
                     if (!r.rows) {
                         alert('No coordinates found');
                         return;
+                    }
+
+                    // name-column map
+                    map = Ext.clone(r.metaData.names);
+
+                    for (var i = 0; i < r.headers.length; i++) {
+                        map[r.headers[i].name] = r.headers[i].column;
                     }
 
                     // events
@@ -919,7 +966,8 @@ Ext.onReady( function() {
                         }
 
                         obj[gis.conf.finals.widget.value] = 0;
-                        obj['label'] = obj.ouname;
+                        obj.label = obj.ouname;
+                        obj.nameColumnMap = map;
 
                         events.push(obj);
                     }
@@ -949,9 +997,9 @@ Ext.onReady( function() {
             	indicator: gis.conf.finals.widget.value,
 				method: 2,
 				numClasses: 5,
-				colors: layer.core.getColors('ffffff', 'ff0000'),
-				minSize: 4,
-				maxSize: 4
+				colors: layer.core.getColors('000000', '222222'),
+				minSize: 5,
+				maxSize: 5
 			};
 
             layer.core.view = view;

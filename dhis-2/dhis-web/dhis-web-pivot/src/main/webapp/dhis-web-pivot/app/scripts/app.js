@@ -2508,7 +2508,7 @@ Ext.onReady( function() {
 					path = '/dataElementGroups/' + uid + '.json?domainType=aggregate&links=false&paging=false';
 				}
 				else if (uid === 0) {
-					path = 'dataElements.json?domainType=aggregate&paging=false&links=false';
+					path = '/dataElements.json?domainType=aggregate&paging=false&links=false';
 				}
 
 				if (!path) {
@@ -2556,7 +2556,8 @@ Ext.onReady( function() {
 					});
 				}
 				else {
-					alert('Invalid parameter');
+					this.removeAll();
+                    dataElementGroupComboBox.clearValue();
 				}
 			},
 			listeners: {
@@ -2993,7 +2994,7 @@ Ext.onReady( function() {
 				var store = dataElementAvailableStore,
 					detailLevel = dataElementDetailLevel.getValue(),
 					value = this.getValue();
-
+                    
 				if (value !== null) {
 					if (detailLevel === dimConf.dataElement.objectName) {
 						store.setTotalsProxy(value);
