@@ -464,7 +464,7 @@ public class TableAlteror
 
             if ( resultSet.next() )
             {
-                int max = jdbcTemplate.queryForInt( "select max(patientattributeid) from patientattribute" );
+                int max = jdbcTemplate.queryForObject( "select max(patientattributeid) from patientattribute", Integer.class );
 
                 // ---------------------------------------------------------------------
                 // Gender
@@ -482,7 +482,7 @@ public class TableAlteror
                     + PatientAttribute.TYPE_COMBO + "', false, false, false)" );
 
                 int maxOpt = jdbcTemplate
-                    .queryForInt( "select max(patientattributeoptionid) from patientattributeoption" );
+                    .queryForObject( "select max(patientattributeoptionid) from patientattributeoption", Integer.class );
                 maxOpt++;
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
                     + maxOpt + "', 'F'," + max + ")" );
