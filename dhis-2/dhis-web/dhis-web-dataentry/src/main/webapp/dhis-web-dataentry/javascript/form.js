@@ -70,7 +70,7 @@ dhis2.de.periodTypeFactory = new PeriodType();
 // Instance of the StorageManager
 dhis2.de.storageManager = new StorageManager();
 
-// Is this form a multiOrg form?
+// Indicates whether current form is multi org unit
 dhis2.de.multiOrganisationUnit = false;
 
 // "organisationUnits" object inherited from ouwt.js
@@ -589,7 +589,7 @@ function loadForm()
 
         $( '#contentDiv' ).html( html );
 
-        dhis2.de.multiOrganisationUnit = !!$('.formSection').data('multiorg');
+        dhis2.de.multiOrganisationUnit = !!$( '.formSection' ).data( 'multiorg' );
 
         if ( !dhis2.de.multiOrganisationUnit )
         {
@@ -614,7 +614,7 @@ function loadForm()
         }, 
         function() 
         {
-        	dhis2.de.multiOrganisationUnit = !!$( '.formSection').data('multiorg' );
+        	dhis2.de.multiOrganisationUnit = !!$( '.formSection' ).data( 'multiorg' );
 
             if ( !dhis2.de.multiOrganisationUnit )
             {
@@ -783,6 +783,91 @@ function getOptionComboName( optionComboId )
 // OrganisationUnit Selection
 // -----------------------------------------------------------------------------
 
+function organisationUnitSelected( orgUnits, orgUnitNames, children )
+{
+	if ( dhis2.de.metaDataIsLoaded == false )
+	{
+	    return false;
+	}
+
+	dhis2.de.currentOrganisationUnitId = orgUnits[0];
+    var organisationUnitName = orgUnitNames[0];
+
+    $( '#selectedOrganisationUnit' ).val( organisationUnitName );
+    $( '#currentOrganisationUnit' ).html( organisationUnitName );
+
+    var dataSetList = getSortedDataSetList();
+
+    $( '#selectedDataSetId' ).removeAttr( 'disabled' );
+
+    var dataSetId = $( '#selectedDataSetId' ).val();
+    var periodId = $( '#selectedPeriodId' ).val();
+
+    clearListById( 'selectedDataSetId' );
+    addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
+
+    var dataSetValid = false;
+    var multiDataSetValid = false;
+
+    $.safeEach( dataSetList, function( idx, item ) 
+    {
+        addOptionById( 'selectedDataSetId', item.id, item.name );
+
+        if ( dataSetId == item.id )
+        {
+            dataSetValid = true;
+        }
+    } );
+
+    if ( children )
+    {
+        var childrenDataSets = getSortedDataSetListForOrgUnits( children );
+
+        if ( childrenDataSets && childrenDataSets.length > 0 )
+        {
+            $( '#selectedDataSetId' ).append( '<optgroup label="' + i18n_childrens_forms + '">' );
+
+            $.safeEach( childrenDataSets, function( idx, item )
+            {
+                if ( dataSetId == item.id && dhis2.de.multiOrganisationUnit )
+                {
+                    multiDataSetValid = true;
+                }
+
+                $( '<option />' ).attr( 'data-multiorg', true ).attr( 'value', item.id).html(item.name).appendTo( '#selectedDataSetId' );
+            } );
+
+            $( '#selectDataSetId' ).append( '</optgroup>' );
+        }
+    }
+
+    if ( !dhis2.de.multiOrganisationUnit && dataSetValid && dataSetId != null ) {
+        $( '#selectedDataSetId' ).val( dataSetId );
+
+        if ( periodId && periodId != -1 && dhis2.de.dataEntryFormIsLoaded ) {
+            resetSectionFilters();
+            showLoader();
+            loadDataValues();
+        }
+    } 
+    else if ( dhis2.de.multiOrganisationUnit && multiDataSetValid && dataSetId != null ) {
+        $( '#selectedDataSetId' ).val( dataSetId );
+        dataSetSelected();
+
+        if ( periodId && periodId != -1 && dhis2.de.dataEntryFormIsLoaded ) {
+            resetSectionFilters();
+            showLoader();
+            loadDataValues();
+        }
+    }
+    else {
+    	dhis2.de.multiOrganisationUnit = false;
+
+        clearSectionFilters();
+        clearPeriod();
+    }
+}
+
 /**
  * Returns an array containing associative array elements with id and name
  * properties. The array is sorted on the element name property.
@@ -844,91 +929,6 @@ function getSortedDataSetListForOrgUnits( orgUnits )
     } );
 
     return filteredDataSetList;
-}
-
-function organisationUnitSelected( orgUnits, orgUnitNames, children )
-{
-	if ( dhis2.de.metaDataIsLoaded == false )
-	{
-	    return false;
-	}
-
-	dhis2.de.currentOrganisationUnitId = orgUnits[0];
-    var organisationUnitName = orgUnitNames[0];
-
-    $( '#selectedOrganisationUnit' ).val( organisationUnitName );
-    $( '#currentOrganisationUnit' ).html( organisationUnitName );
-
-    var dataSetList = getSortedDataSetList();
-
-    $( '#selectedDataSetId' ).removeAttr( 'disabled' );
-
-    var dataSetId = $( '#selectedDataSetId' ).val();
-    var periodId = $( '#selectedPeriodId' ).val();
-
-    clearListById( 'selectedDataSetId' );
-    addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
-
-    var dataSetValid = false;
-    var multiDataSetValid = false;
-
-    $.safeEach( dataSetList, function( idx, item ) 
-    {
-        addOptionById( 'selectedDataSetId', item.id, item.name );
-
-        if ( dataSetId == item.id )
-        {
-            dataSetValid = true;
-        }
-    } );
-
-    if ( children )
-    {
-        var childrenDataSets = getSortedDataSetListForOrgUnits( children );
-
-        if ( childrenDataSets && childrenDataSets.length > 0 )
-        {
-            $( '#selectedDataSetId' ).append( '<optgroup label="' + i18n_childrens_forms + '">' );
-
-            $.safeEach( childrenDataSets, function( idx, item )
-            {
-                if ( dataSetId == item.id && dhis2.de.multiOrganisationUnit )
-                {
-                    multiDataSetValid = true;
-                }
-
-                $( '<option />' ).attr( 'data-multiorg', true).attr( 'value', item.id).html(item.name).appendTo( '#selectedDataSetId' );
-            } );
-
-            $( '#selectDataSetId' ).append( '</optgroup>' );
-        }
-    }
-
-    if ( !dhis2.de.multiOrganisationUnit && dataSetValid && dataSetId != null ) {
-        $( '#selectedDataSetId' ).val( dataSetId );
-
-        if ( periodId && periodId != -1 && dhis2.de.dataEntryFormIsLoaded ) {
-            resetSectionFilters();
-            showLoader();
-            loadDataValues();
-        }
-    } 
-    else if ( dhis2.de.multiOrganisationUnit && multiDataSetValid && dataSetId != null ) {
-        $( '#selectedDataSetId' ).val( dataSetId );
-        dataSetSelected();
-
-        if ( periodId && periodId != -1 && dhis2.de.dataEntryFormIsLoaded ) {
-            resetSectionFilters();
-            showLoader();
-            loadDataValues();
-        }
-    }
-    else {
-    	dhis2.de.multiOrganisationUnit = false;
-
-        clearSectionFilters();
-        clearPeriod();
-    }
 }
 
 // -----------------------------------------------------------------------------
@@ -1215,6 +1215,22 @@ dhis2.de.getAttributesMarkup = function()
 // -----------------------------------------------------------------------------
 // Form
 // -----------------------------------------------------------------------------
+
+/**
+ * Indicates whether all required inpout selections have been made.
+ */
+dhis2.de.inputSelected = function()
+{
+	if (
+	    dhis2.de.currentOrganisationUnitId &&
+	    dhis2.de.currentDataSetId &&
+	    dhis2.de.currentPeriodId &&
+	    dhis2.de.categoriesSelected ) {
+		return true;
+	}
+
+	return false;
+};
 
 function loadDataValues()
 {
