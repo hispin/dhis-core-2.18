@@ -8,32 +8,9 @@
 
 	<package name="dhis-web-pivot" extends="dhis-web-commons" namespace="/dhis-web-pivot">
 
-		<!-- Default -->
-
-		<action name="index" class="org.hisp.dhis.pivot.action.NoAction">
+		<action name="index" class="org.hisp.dhis.commons.action.NoAction">
 			<result name="success" type="redirect">app/index.html</result>
 		</action>
 
-		<!-- Initialize -->
-
-        <action name="initialize" class="org.hisp.dhis.pivot.action.InitializeAction">
-            <result name="success" type="velocity-json">/dhis-web-pivot/jsonInitialize.vm</result>
-        </action>
-
-        <!-- OrganisationUnit -->
-
-		<action name="getOrganisationUnitChildren"
-			class="org.hisp.dhis.pivot.action.GetOrganisationUnitChildrenAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-pivot/jsonminOrganisationUnitChildren.vm</result>
-		</action>
-	
-	    <!-- i18n -->
-	
-	    <action name="i18n" class="org.hisp.dhis.pivot.action.NoAction">
-			<result name="success" type="velocity-javascript">/dhis-web-pivot/i18n.vm</result>
-      		<interceptor-ref name="cacheStack" />
-	    </action>
-	
 		</package>
 </struts>
