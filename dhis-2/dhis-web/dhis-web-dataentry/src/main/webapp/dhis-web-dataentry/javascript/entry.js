@@ -136,6 +136,8 @@ function saveVal( dataElementId, optionComboId, fieldId )
 		value = '';
 	}
 
+	var warning = undefined;
+	
     if ( value != '' )
     {
         if ( type == 'string' || type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' || type == 'zeroPositiveInt' )
@@ -186,33 +188,30 @@ function saveVal( dataElementId, optionComboId, fieldId )
 
                 if ( valueNo < min )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, getCurrentOrganisationUnit(), periodId,
-                            value, fieldId, COLOR_ORANGE );
-                    valueSaver.save();
-
-                    window.alert( i18n_value_of_data_element_less + ': ' + min + '\n\n' + dataElementName );
-                    return;
+                    warning = i18n_value_of_data_element_less + ': ' + min + '\n\n' + dataElementName;
                 }
 
                 if ( valueNo > max )
                 {
-                    var valueSaver = new ValueSaver( dataElementId, optionComboId, getCurrentOrganisationUnit(), periodId,
-                            value, fieldId, COLOR_ORANGE );
-                    valueSaver.save();
-
-                    window.alert( i18n_value_of_data_element_greater + ': ' + max + '\n\n' + dataElementName );
-                    return;
+                    warning = i18n_value_of_data_element_greater + ': ' + max + '\n\n' + dataElementName;
                 }
             }
         }
     }
-
+    
+    var color = warning ? COLOR_ORANGE : COLOR_GREEN;
+    
     var valueSaver = new ValueSaver( dataElementId, optionComboId, 
-    	getCurrentOrganisationUnit(), periodId, value, fieldId, COLOR_GREEN );
+    	getCurrentOrganisationUnit(), periodId, value, fieldId, color );
     valueSaver.save();
 
     updateIndicators(); // Update indicators for custom form
     updateDataElementTotals(); // Update data element totals for custom forms
+    
+    if ( warning )
+    {
+    	window.alert( warning );
+    }
 }
 
 function saveBoolean( dataElementId, optionComboId, fieldId )
