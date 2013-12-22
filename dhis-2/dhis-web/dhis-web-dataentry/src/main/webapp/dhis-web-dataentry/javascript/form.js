@@ -1199,7 +1199,7 @@ dhis2.de.getAttributesMarkup = function()
 		html += '<div class="selectionBoxRow">';
 		html += '<div class="selectionLabel">' + category.name + '</div>&nbsp;';
 		html += '<select id="category-' + category.id + '" class="selectionBoxSelect">';
-		html += '<option value="-1">[ Please select ]</option>';
+		html += '<option value="-1">[ ' + i18n_select_option + ' ]</option>';
 		
 		$.safeEach( category.options, function( idx, option ) {
 			html += '<option value="' + option.id + '">' + option.name + '</option>';
