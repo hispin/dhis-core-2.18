@@ -32,6 +32,7 @@ import com.opensymphony.xwork2.Action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -53,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -153,9 +155,9 @@ public class GetDataValuesForDataSetAction
         this.cc = cc;
     }
 
-    private Set<String> cp;
+    private String cp;
 
-    public void setCp( Set<String> cp )
+    public void setCp( String cp )
     {
         this.cp = cp;
     }
@@ -212,6 +214,8 @@ public class GetDataValuesForDataSetAction
 
     public String execute()
     {
+        List<String> opts = ContextUtils.getQueryParamValues( cp );
+        
         // ---------------------------------------------------------------------
         // Validation
         // ---------------------------------------------------------------------
@@ -236,13 +240,13 @@ public class GetDataValuesForDataSetAction
 
         DataElementCategoryOptionCombo attributeOptionCombo = null;
         
-        if ( cc != null && cp != null )
+        if ( cc != null && opts != null )
         {
             DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( cc );
 
             Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
 
-            for ( String id : cp )
+            for ( String id : opts )
             {
                 categoryOptions.add( categoryService.getDataElementCategoryOption( id ) );
             }

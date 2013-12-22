@@ -1340,7 +1340,7 @@ function insertDataValues( json )
 
     // Set min-max values and colorize violation fields
 
-    if( !json.locked ) 
+    if ( !json.locked ) 
     {
         $.safeEach( json.minMaxDataElements, function( i, value )
         {
