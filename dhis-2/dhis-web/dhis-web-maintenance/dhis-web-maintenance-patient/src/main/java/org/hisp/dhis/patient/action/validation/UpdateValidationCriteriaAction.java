@@ -28,8 +28,6 @@ package org.hisp.dhis.patient.action.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 

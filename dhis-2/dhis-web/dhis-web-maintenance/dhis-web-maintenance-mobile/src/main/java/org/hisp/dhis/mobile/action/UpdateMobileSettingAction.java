@@ -82,23 +82,6 @@ public class UpdateMobileSettingAction
         this.selectedList = selectedList;
     }
 
-    private String gender, dobtype, birthdate, registrationdate;
-
-    public void setGender( String gender )
-    {
-        this.gender = gender;
-    }
-
-    public void setDobtype( String dobtype )
-    {
-        this.dobtype = dobtype;
-    }
-
-    public void setBirthdate( String birthdate )
-    {
-        this.birthdate = birthdate;
-    }
-
     private Integer groupingAttributeId;
 
     public Integer getGroupingAttributeId()
