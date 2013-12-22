@@ -1,6 +1,7 @@
 <script type="text/javascript">
 var i18n_select_data_set = '$encoder.jsEscape( $i18n.getString( "select_data_set" ) , "'")';
 var i18n_select_period = '$encoder.jsEscape( $i18n.getString( "select_period" ) , "'")';
+var i18n_select_option = '$encoder.jsEscape( $i18n.getString( "select_option" ) , "'")';
 var i18n_register_complete_dataset_success = '$encoder.jsEscape( $i18n.getString( "register_complete_dataset_success" ) , "'")';
 var i18n_register_complete_dataset_failed = '$encoder.jsEscape( $i18n.getString( "register_complete_dataset_failed" ) , "'")';
 var i18n_undo_register_complete_dataset_success = '$encoder.jsEscape( $i18n.getString( "undo_register_complete_dataset_success" ) , "'")';
