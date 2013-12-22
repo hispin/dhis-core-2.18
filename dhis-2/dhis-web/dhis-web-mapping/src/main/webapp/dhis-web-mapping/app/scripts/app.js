@@ -344,8 +344,7 @@ Ext.onReady( function() {
 			util.gui.window = util.gui.window || {};
 
 			util.gui.window.setPositionTopRight = function(window) {
-				var center = gis.viewport.centerRegion;
-				window.setPosition(gis.viewport.width - (window.width + 7), center.y + 8);
+				window.setPosition(gis.viewport.centerRegion.getWidth() - (window.getWidth() + 3), gis.viewport.centerRegion.y + 58);
 			};
 
 			util.gui.window.setPositionTopLeft = function(window) {
@@ -1228,7 +1227,7 @@ Ext.onReady( function() {
 				for (var i = 0; i < valueArray.length; i++) {
 					valueArray[i] = Ext.String.trim(valueArray[i]);
 				}
-				
+
                 return {
                     id: this.dataElement.id,
                     name: this.dataElement.name,
@@ -1257,7 +1256,7 @@ Ext.onReady( function() {
                         data: [
                             {id: 'IN', name: 'One of'}
                         ]
-                    }							
+                    }
                 });
 
                 this.valueStore = Ext.create('Ext.data.Store', {
@@ -1320,8 +1319,8 @@ Ext.onReady( function() {
 							fn: function(cb) {
 								var value = cb.getValue(),
 									optionSetId = container.dataElement.optionSet.id;
-								
-								// search									
+
+								// search
 								container.valueStore.loadOptionSet(optionSetId, value);
 
                                 // trigger
@@ -1608,7 +1607,7 @@ Ext.onReady( function() {
 	GIS.app.WidgetWindow = function(layer, width, padding) {
 		width = width || gis.conf.layout.widget.window_width;
 		padding = padding || 5;
-		
+
 		return Ext.create('Ext.window.Window', {
 			//autoShow: true,
 			title: layer.name,
@@ -4212,15 +4211,15 @@ Ext.onReady( function() {
 			},
 			hasDataElement: function(dataElementId) {
 				var hasDataElement = false;
-				
-				this.items.each(function(item) {				
+
+				this.items.each(function(item) {
 					if (item.dataElement.id === dataElementId) {
 						hasDataElement = true;
 					}
 				});
 
 				return hasDataElement;
-			}					
+			}
         });
 
         addUxFromDataElement = function(element, index) {
@@ -4270,7 +4269,7 @@ Ext.onReady( function() {
 			};
 
 			dataElementsByStageStore.removeAt(dataElementsByStageStore.findExact('id', element.id));
-		};			
+		};
 
         selectDataElements = function(items) {
             var dataElements = [];
@@ -4278,7 +4277,7 @@ Ext.onReady( function() {
 			// data element objects
             for (var i = 0, item; i < items.length; i++) {
 				item = items[i];
-				
+
                 if (Ext.isString(item)) {
                     dataElements.push(dataElementsByStageStore.getAt(dataElementsByStageStore.findExact('id', item)).data);
                 }
@@ -4329,8 +4328,7 @@ Ext.onReady( function() {
 			columnWidth: 0.5,
 			style: 'margin-right: 1px',
 			format: 'Y-m-d',
-			//value: new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))
-            value: new Date('2012-01-01') //todo
+			value: new Date( (new Date()).setMonth( (new Date()).getMonth() - 3))
 		});
 
 		endDate = Ext.create('Ext.form.field.Date', {
@@ -4964,7 +4962,7 @@ Ext.onReady( function() {
 
                 view.dataElements.push(panel.getRecord());
             }
-            
+
             view.organisationUnits = treePanel.getDimension().items;
 
 			return view;
