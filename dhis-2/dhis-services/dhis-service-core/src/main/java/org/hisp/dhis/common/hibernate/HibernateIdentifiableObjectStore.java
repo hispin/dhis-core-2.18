@@ -336,7 +336,7 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
 
     @Override
     @SuppressWarnings("unchecked")
-    public final List<T> getAllOrderedName()
+    public List<T> getAllOrderedName()
     {
         Query query = sharingEnabled() ? getQueryAllOrderedNameAcl() : getQueryAllOrderedName();
 
