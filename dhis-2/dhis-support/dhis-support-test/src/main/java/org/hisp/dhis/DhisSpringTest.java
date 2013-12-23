@@ -41,7 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Trygve Laugst&oslash;l
  * @author Lars Helge Overland
- * @version $Id: DhisSpringTest.java 6335 2008-11-20 11:11:26Z larshelg $
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath*:/META-INF/dhis/beans.xml","classpath*:/META-INF/dhis/beans-test.xml"})
