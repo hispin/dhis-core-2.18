@@ -8414,23 +8414,34 @@ Ext.onReady( function() {
 			gis.olmap.events.register('click', null, function(e) {
 				if (gis.olmap.relocate.active) {
 					var el = Ext.query('#mouseposition')[0],
+                        id = gis.olmap.relocate.feature.attributes.id,
 						coordinates = '[' + el.childNodes[1].data + ',' + el.childNodes[3].data + ']',
 						center = gis.viewport.centerRegion;
 
-					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.finals.url.path_module + 'updateOrganisationUnitCoordinates.action',
-						method: 'POST',
-						params: {id: gis.olmap.relocate.feature.attributes.id, coordinates: coordinates},
-						success: function(r) {
-							gis.olmap.relocate.active = false;
-							gis.olmap.relocate.window.destroy();
+                    Ext.Ajax.request({
+                        url: gis.init.contextPath + '/api/organisationUnits/' + id + '.json?links=false',
+                        success: function(r) {
+                            var orgUnit = Ext.decode(r.responseText);
 
-							gis.olmap.relocate.feature.move({x: parseFloat(e.clientX - center.x), y: parseFloat(e.clientY - 28)});
-							gis.olmap.getViewport().style.cursor = 'auto';
+                            orgUnit.coordinates = coordinates;
 
-							console.log(gis.olmap.relocate.feature.attributes.name + ' relocated to ' + coordinates);
-						}
-					});
+                            Ext.Ajax.request({
+                                url: gis.init.contextPath + '/api/metaData?preheatCache=false',
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                params: Ext.encode({organisationUnits: [orgUnit]}),
+                                success: function(r) {
+                                    gis.olmap.relocate.active = false;
+                                    gis.olmap.relocate.window.destroy();
+
+                                    gis.olmap.relocate.feature.move({x: parseFloat(e.clientX - center.x), y: parseFloat(e.clientY - 28)});
+                                    gis.olmap.getViewport().style.cursor = 'auto';
+
+                                    console.log(gis.olmap.relocate.feature.attributes.name + ' relocated to ' + coordinates);
+                                }
+                            });
+                        }
+                    });
 				}
 			});
 
