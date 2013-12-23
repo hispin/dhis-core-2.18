@@ -1073,35 +1073,6 @@ function displayPeriodsInternal()
 */
 dhis2.de.getCategories = function( dataSetId )
 {
-	/**
-	* Returns markup for drop down boxes to be put in the selection box for the
-	* given categories. The empty string is returned if no categories are given. 
-	*/
-	dhis2.de.getAttributesMarkup = function()
-	{
-		var html = '';
-		
-		if ( !dhis2.de.currentCategories || dhis2.de.currentCategories.length == 0 ) {
-			return html;
-		}
-		
-		$.safeEach( dhis2.de.currentCategories, function( idx, category ) {
-			html += '<div class="selectionBoxRow">';
-			html += '<div class="selectionLabel">' + category.name + '</div>&nbsp;';
-			html += '<select id="category-' + category.id + '" class="selectionBoxSelect" onchange="dhis2.de.attributeSelected(\'' + category.id + '\')">';
-			html += '<option value="-1">[ ' + i18n_select_option + ' ]</option>';
-			
-			$.safeEach( category.options, function( idx, option ) {
-				html += '<option value="' + option.id + '">' + option.name + '</option>';
-			} );
-			
-			html += '</select>';
-			html += '</div>';
-		} );
-
-		return html;
-	};
-
 	var dataSet = dhis2.de.dataSets[dataSetId];
 	
 	if ( !dataSet || !dataSet.categoryCombo || dhis2.de.defaultCategoryCombo === dataSet.categoryCombo ) {
