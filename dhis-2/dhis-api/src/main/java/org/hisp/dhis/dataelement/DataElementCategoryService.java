@@ -121,8 +121,7 @@ public interface DataElementCategoryService
     /**
      * Returns all DataElementCategories.
      *
-     * @return a collection of all DataElementCategories, or an empty collection if there
-     * are no DataElementCategories.
+     * @return a collection of all DataElementCategories.
      */
     Collection<DataElementCategory> getAllDataElementCategories();
 
@@ -134,11 +133,27 @@ public interface DataElementCategoryService
     Collection<DataElementCategory> getDisaggregationCategories();
 
     /**
+     * Retrieves all DataElementCategories of dimension type disaggregation and
+     * data dimensional.
+     *
+     * @return a collection of DataElementCategoryCombos.
+     */
+    Collection<DataElementCategory> getDisaggregationDataDimensionCategories();
+
+    /**
      * Retrieves all DataElementCategories of dimension type attribute.
      *
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategory> getAttributeCategories();
+
+    /**
+     * Retrieves all DataElementCategories of dimension type attribute and
+     * data dimensional.
+     *
+     * @return a collection of DataElementCategoryCombos.
+     */
+    Collection<DataElementCategory> getAttributeDataDimensionCategories();
 
     // -------------------------------------------------------------------------
     // CategoryOption

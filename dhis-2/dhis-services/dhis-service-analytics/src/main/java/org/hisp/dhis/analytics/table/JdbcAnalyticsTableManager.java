@@ -165,7 +165,8 @@ public class JdbcAnalyticsTableManager
             "from datavalue dv " +
             "left join _dataelementgroupsetstructure degs on dv.dataelementid=degs.dataelementid " +
             "left join _organisationunitgroupsetstructure ougs on dv.sourceid=ougs.organisationunitid " +
-            "left join _categorystructure cs on dv.categoryoptioncomboid=cs.categoryoptioncomboid " +
+            "left join _categorystructure dcs on dv.categoryoptioncomboid=dcs.categoryoptioncomboid " +
+            "left join _categorystructure acs on dv.attributeoptioncomboid=acs.categoryoptioncomboid " +
             "left join _orgunitstructure ous on dv.sourceid=ous.organisationunitid " +
             "left join _periodstructure ps on dv.periodid=ps.periodid " +
             "left join dataelement de on dv.dataelementid=de.dataelementid " +
@@ -193,8 +194,11 @@ public class JdbcAnalyticsTableManager
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
             organisationUnitGroupService.getAllOrganisationUnitGroupSets();
 
-        Collection<DataElementCategory> categories =
-            categoryService.getDataDimensionDataElementCategories();
+        Collection<DataElementCategory> disaggregationCategories =
+            categoryService.getDisaggregationDataDimensionCategories();
+        
+        Collection<DataElementCategory> attributeCategories =
+            categoryService.getAttributeDataDimensionCategories();
 
         Collection<OrganisationUnitLevel> levels =
             organisationUnitService.getOrganisationUnitLevels();
@@ -211,9 +215,15 @@ public class JdbcAnalyticsTableManager
             columns.add( col );
         }
         
-        for ( DataElementCategory category : categories )
+        for ( DataElementCategory category : disaggregationCategories )
         {
-            String[] col = { quote( category.getUid() ), "character(11)", "cs." + quote( category.getUid() ) };
+            String[] col = { quote( category.getUid() ), "character(11)", "dcs." + quote( category.getUid() ) };
+            columns.add( col );
+        }
+        
+        for ( DataElementCategory category : attributeCategories )
+        {
+            String[] col = { quote( category.getUid() ), "character(11)", "acs." + quote( category.getUid() ) };
             columns.add( col );
         }
         
