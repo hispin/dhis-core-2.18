@@ -57,10 +57,11 @@ public class SvgConversionController
     @Autowired
     private ContextUtils contextUtils;
     
-    @RequestMapping( value = "/svg.png", method = RequestMethod.POST )
+    @RequestMapping( value = "/svg.png", method = RequestMethod.POST, consumes = ContextUtils.CONTENT_TYPE_XML )
     public void toPng( @RequestBody String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {
+        System.out.println("--" + svg + "--");
         String name = filename != null ? ( CodecUtils.filenameEncode( filename ) + ".png" ) : "file.png";
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, name, true );        
@@ -68,7 +69,7 @@ public class SvgConversionController
         convertToPng( svg, response.getOutputStream() );
     }
 
-    @RequestMapping( value = "/svg.pdf", method = RequestMethod.POST )
+    @RequestMapping( value = "/svg.pdf", method = RequestMethod.POST, consumes = ContextUtils.CONTENT_TYPE_XML )
     public void toPdf( @RequestBody String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {
