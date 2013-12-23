@@ -2586,16 +2586,29 @@ Ext.onReady( function() {
 			updateButton = Ext.create('Ext.button.Button', {
 				text: GIS.i18n.update,
 				handler: function() {
-					var name = nameTextfield.getValue();
+					var name = nameTextfield.getValue(),
+                        map;
 
-					Ext.Ajax.request({
-						url: gis.init.contextPath + gis.conf.finals.url.path_module + 'renameMap.action?id=' + id + '&name=' + name + '&user=true',
-						success: function() {
-							gis.store.maps.loadStore();
+                    Ext.Ajax.request({
+                        url: gis.init.contextPath + '/api/maps/' + id + '.json?viewClass=dimensional&links=false',
+                        success: function(r) {
+                            map = Ext.decode(r.responseText);
 
-							window.destroy();
-						}
-					});
+                            map.name = name;
+
+                            Ext.Ajax.request({
+                                url: gis.init.contextPath + '/api/maps/' + id,
+                                method: 'PUT',
+                                headers: {'Content-Type': 'application/json'},
+                                params: Ext.encode(map),
+                                success: function() {
+                                    gis.store.maps.loadStore();
+
+                                    window.destroy();
+                                }
+                            });
+                        }
+                    });
 				}
 			});
 
