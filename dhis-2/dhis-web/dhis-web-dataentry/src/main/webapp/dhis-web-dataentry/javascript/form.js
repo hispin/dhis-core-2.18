@@ -938,23 +938,23 @@ function dataSetSelected()
     var dataSetId = $( '#selectedDataSetId' ).val();
     var periodId = $( '#selectedPeriodId' ).val();
     
-    dhis2.de.currentCategories = dhis2.de.getCategories( dataSetId );
-    
-    var periodType = dhis2.de.dataSets[dataSetId].periodType;
-    var allowFuturePeriods = dhis2.de.dataSets[dataSetId].allowFuturePeriods;
-    var periods = dhis2.de.periodTypeFactory.get( periodType ).generatePeriods( dhis2.de.currentPeriodOffset );
-    periods = dhis2.de.periodTypeFactory.reverse( periods );
-    
-    if ( allowFuturePeriods == false )
-    {
-    	periods = dhis2.de.periodTypeFactory.filterFuturePeriods( periods );
-    }
-
     if ( dataSetId && dataSetId != -1 )
     {
+	    var periodType = dhis2.de.dataSets[dataSetId].periodType;
+	    var allowFuturePeriods = dhis2.de.dataSets[dataSetId].allowFuturePeriods;
+	    var periods = dhis2.de.periodTypeFactory.get( periodType ).generatePeriods( dhis2.de.currentPeriodOffset );
+	    periods = dhis2.de.periodTypeFactory.reverse( periods );
+	    
+	    if ( allowFuturePeriods == false )
+	    {
+	    	periods = dhis2.de.periodTypeFactory.filterFuturePeriods( periods );
+	    }
+
         clearListById( 'selectedPeriodId' );
         clearSectionFilters();
-        
+
+        dhis2.de.currentCategories = dhis2.de.getCategories( dataSetId );
+
         var attributeMarkup = dhis2.de.getAttributesMarkup();
         $( '#attributeComboDiv' ).html( attributeMarkup );
 
@@ -987,6 +987,10 @@ function dataSetSelected()
         {
             clearEntryForm();
         }
+    }
+    else
+    {
+        clearEntryForm();
     }
 }
 
