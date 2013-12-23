@@ -538,7 +538,8 @@ Ext.onReady( function() {
                     attributes = feature.attributes,
                     map = attributes.nameColumnMap,
                     html = '<table>',
-                    titleStyle = ' style="font-weight:bold; padding-right:10px"';
+                    titleStyle = ' style="font-weight:bold; padding-right:10px"',
+                    windowPosition;
 
                 // default properties
                 html += '<tr><td' + titleStyle + '>' + map['ou'] + '</td><td>' + attributes['ouname'] + '</td></tr>';
@@ -555,18 +556,31 @@ Ext.onReady( function() {
                 html += '</table>';
 
                 if (Ext.isObject(eventWindow) && eventWindow.destroy) {
+                    windowPosition = eventWindow.getPosition();
                     eventWindow.destroy();
+                    eventWindow = null;
                 }
 
                 eventWindow = Ext.create('Ext.window.Window', {
                     title: 'Event',
                     resizable: false,
                     bodyStyle: 'background-color:#fff; padding:5px',
-                    html: html
+                    html: html,
+                    autoShow: true,
+                    listeners: {
+                        show: function(w) {
+                            if (windowPosition) {
+                                w.setPosition(windowPosition);
+                            }
+                            else {
+                                gis.util.gui.window.setPositionTopRight(w);
+                            }
+                        },
+                        destroy: function() {
+                            eventWindow = null;
+                        }
+                    }
                 });
-
-                eventWindow.show();
-                gis.util.gui.window.setPositionTopRight(eventWindow);
             };
 		}
 
