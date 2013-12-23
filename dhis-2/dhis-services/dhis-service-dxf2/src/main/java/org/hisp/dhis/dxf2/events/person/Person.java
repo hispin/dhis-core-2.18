@@ -49,8 +49,6 @@ public class Person
 
     private String name;
 
-    private Contact contact;
-
     private List<Relationship> relationships = new ArrayList<Relationship>();
 
     private List<Identifier> identifiers = new ArrayList<Identifier>();
@@ -95,18 +93,6 @@ public class Person
     public void setName( String name )
     {
         this.name = name;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Contact getContact()
-    {
-        return contact;
-    }
-
-    public void setContact( Contact contact )
-    {
-        this.contact = contact;
     }
 
     @JsonProperty
@@ -156,8 +142,6 @@ public class Person
         Person person1 = (Person) o;
         if ( attributes != null ? !attributes.equals( person1.attributes ) : person1.attributes != null )
             return false;
-        if ( contact != null ? !contact.equals( person1.contact ) : person1.contact != null )
-            return false;
         if ( identifiers != null ? !identifiers.equals( person1.identifiers ) : person1.identifiers != null )
             return false;
         if ( name != null ? !name.equals( person1.name ) : person1.name != null )
@@ -178,7 +162,6 @@ public class Person
         int result = person != null ? person.hashCode() : 0;
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (contact != null ? contact.hashCode() : 0);
         result = 31 * result + (relationships != null ? relationships.hashCode() : 0);
         result = 31 * result + (identifiers != null ? identifiers.hashCode() : 0);
         result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
@@ -188,8 +171,13 @@ public class Person
     @Override
     public String toString()
     {
-        return "Person{" + "person='" + person + '\'' + ", orgUnit='" + orgUnit + '\'' + ", name='" + name + '\''
-            + ", contact=" + contact + ", relationships=" + relationships + ", identifiers=" + identifiers
-            + ", attributes=" + attributes + '}';
+        return "Person{" +
+            "person='" + person + '\'' +
+            ", orgUnit='" + orgUnit + '\'' +
+            ", name='" + name + '\'' +
+            ", relationships=" + relationships +
+            ", identifiers=" + identifiers +
+            ", attributes=" + attributes +
+            '}';
     }
 }
