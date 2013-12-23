@@ -61,7 +61,6 @@ public class SvgConversionController
     public void toPng( @RequestBody String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {
-        System.out.println("--" + svg + "--");
         String name = filename != null ? ( CodecUtils.filenameEncode( filename ) + ".png" ) : "file.png";
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, name, true );        
