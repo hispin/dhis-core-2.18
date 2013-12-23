@@ -464,12 +464,12 @@ public class CSVImportAction
                             value = csvReader.get( headers[i] );
                         }
                         
-                        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, decoc );
+                        DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, decoc );
                         if ( dataValue == null )
                         {
                             if ( value != null )
                             {
-                                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, curDate, null, decoc );
+                                dataValue = new DataValue( dataElement, period, organisationUnit, decoc, null, value, storedBy, curDate, null  );
                                 dataValueService.addDataValue( dataValue );
                             }
                         }

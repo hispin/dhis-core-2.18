@@ -223,7 +223,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>	
 	
 	
-	
 	<!-- ModelTypeAttributeGroup -->
     <bean id="org.hisp.dhis.coldchain.model.ModelTypeAttributeGroupStore"
         class="org.hisp.dhis.coldchain.model.hibernate.HibernateModelTypeAttributeGroupStore">

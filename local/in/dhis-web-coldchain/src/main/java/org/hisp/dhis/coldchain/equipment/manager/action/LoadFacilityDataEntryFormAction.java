@@ -169,7 +169,7 @@ public class LoadFacilityDataEntryFormAction implements Action
             
             DataValue dataValue = new DataValue();
             
-            dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, decoc );
+            dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, decoc );
             
             String value = "";
             

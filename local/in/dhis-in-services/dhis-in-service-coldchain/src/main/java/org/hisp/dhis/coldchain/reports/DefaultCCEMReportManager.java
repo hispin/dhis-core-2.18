@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hisp.dhis.coldchain.equipment.EquipmentStatus;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.database.DatabaseInfo;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
@@ -97,8 +98,7 @@ public class DefaultCCEMReportManager
         return orgUnitGroupMap;
     }
 
-    public Map<String, String> getOrgUnitGroupAttribDataForRequirement( String orgUnitGroupIdsByComma,
-        String orgUnitGroupAttribIds )
+    public Map<String, String> getOrgUnitGroupAttribDataForRequirement( String orgUnitGroupIdsByComma, String orgUnitGroupAttribIds )
     {
         Map<String, String> orgUnitGroupAttribDataForRequirement = new HashMap<String, String>();
         try
@@ -130,16 +130,16 @@ public class DefaultCCEMReportManager
         return orgUnitGroupAttribDataForRequirement;
     }
 
-    public Map<String, String> getDataElementDataForModelOptionsForRequirement( String orgUnitIdsByComma,
-        String modelOption_DataelementIds, Integer periodId )
+    public Map<String, String> getDataElementDataForCatalogOptionsForRequirement( String orgUnitIdsByComma, String catalogOption_DataelementIds, Integer periodId )
     {
         Map<String, String> dataElementDataForRequirement = new HashMap<String, String>();
         try
         {
             String query = "SELECT dataelementid, periodid, sourceid, value FROM datavalue " + " WHERE "
-                + " dataelementid IN ( " + modelOption_DataelementIds + ") AND " + " sourceid IN ( "
+                + " dataelementid IN ( " + catalogOption_DataelementIds + ") AND " + " sourceid IN ( "
                 + orgUnitIdsByComma + " ) AND " + " periodid = " + periodId;
 
+            System.out.println( query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
@@ -148,6 +148,7 @@ public class DefaultCCEMReportManager
                 Integer sourceId = rs.getInt( 3 );
                 String value = rs.getString( 4 );
 
+                System.out.println("********DE : " + deId + ":" + pId + ":" + sourceId + " : " + value );
                 dataElementDataForRequirement.put( deId + ":" + pId + ":" + sourceId, value );
             }
         }
@@ -159,10 +160,10 @@ public class DefaultCCEMReportManager
         return dataElementDataForRequirement;
     }
 
-    public Map<String, String> getModelDataForRequirement( Integer vsReqModelTypeId, Integer vsReqStorageTempId,
-        String vsReqStorageTemp, Integer vsReqNationalSupplyId, String vsReqNationalSupply, String vsReqModelAttribIds )
+    public Map<String, String> getCatalogDataForRequirement( Integer vsReqCatalogTypeId, Integer vsReqStorageTempId,
+        String vsReqStorageTemp, Integer vsReqNationalSupplyId, String vsReqNationalSupply, String vsReqCatalogAttribIds )
     {
-        Map<String, String> modelDataForRequirement = new HashMap<String, String>();
+        Map<String, String> catalogDataForRequirement = new HashMap<String, String>();
         try
         {
             String query = "SELECT model.modelid, modeltypeattributeid, value FROM modelattributevalue "
@@ -173,16 +174,16 @@ public class DefaultCCEMReportManager
                 + " WHERE cd1.modeltypeattributeid = " + vsReqNationalSupplyId + " AND cd1.value = '"
                 + vsReqNationalSupply + "' AND cd2.modeltypeattributeid = " + vsReqStorageTempId
                 + " AND cd2.value = '" + vsReqStorageTemp + "') " + " AND modeltypeattributeid IN ("
-                + vsReqModelAttribIds + ") AND " + " model.modeltypeid = " + vsReqModelTypeId;
+                + vsReqCatalogAttribIds + ") AND " + " model.modeltypeid = " + vsReqCatalogTypeId;
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                Integer modelId = rs.getInt( 1 );
-                Integer modelTypeAttribId = rs.getInt( 2 );
+                Integer catalogId = rs.getInt( 1 );
+                Integer catalogTypeAttribId = rs.getInt( 2 );
                 String value = rs.getString( 3 );
 
-                modelDataForRequirement.put( modelId + ":" + modelTypeAttribId, value );
+                catalogDataForRequirement.put( catalogId + ":" + catalogTypeAttribId, value );
             }
         }
         catch ( Exception e )
@@ -190,13 +191,13 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return modelDataForRequirement;
+        return catalogDataForRequirement;
     }
 
-    public List<Integer> getModelIdsForRequirement( Integer vsReqModelTypeId, Integer vsReqStorageTempId,
+    public List<Integer> getCatalogIdsForRequirement( Integer vsReqCatalogTypeId, Integer vsReqStorageTempId,
         String vsReqStorageTemp, Integer vsReqNationalSupplyId, String vsReqNationalSupply )
     {
-        List<Integer> modelIdsForRequirement = new ArrayList<Integer>();
+        List<Integer> catalogIdsForRequirement = new ArrayList<Integer>();
         try
         {
             String query = "SELECT DISTINCT(model.modelid) FROM modelattributevalue "
@@ -207,14 +208,14 @@ public class DefaultCCEMReportManager
                 + " WHERE cd1.modeltypeattributeid = " + vsReqNationalSupplyId + " AND cd1.value = '"
                 + vsReqNationalSupply + "' AND cd2.modeltypeattributeid = " + vsReqStorageTempId
                 + " AND cd2.value = '" + vsReqStorageTemp + "') " + " AND model.modeltypeid = "
-                + vsReqModelTypeId;
+                + vsReqCatalogTypeId;
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                Integer modelId = rs.getInt( 1 );
+                Integer catalogId = rs.getInt( 1 );
 
-                modelIdsForRequirement.add( modelId );
+                catalogIdsForRequirement.add( catalogId );
             }
         }
         catch ( Exception e )
@@ -222,30 +223,50 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return modelIdsForRequirement;
+        return catalogIdsForRequirement;
     }
 
-    public Map<Integer, Double> getSumOfEquipmentDatabyEquipmentType( String orgUnitIdsByComma,
-        Integer equipmentTypeId, Integer equipmentTypeAttributeId, Double factor )
+    public Map<Integer, Double> getSumOfEquipmentDatabyInventoryType( String orgUnitIdsByComma,
+        Integer inventoryTypeId, Integer inventoryTypeAttributeId, Double factor )
     {
-        Map<Integer, Double> equipmentSumByEquipmentTypeMap = new HashMap<Integer, Double>();
+        Map<Integer, Double> equipmentSumByInventoryTypeMap = new HashMap<Integer, Double>();
+        
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        
         try
         {
-            String query = "SELECT organisationunitid, SUM(value*"
-                + factor
-                + ") FROM equipmentAttributeValue "
-                + " INNER JOIN equipment on equipmentAttributeValue.equipmentid = equipment.equipmentid "
-                + " WHERE " + " equipment.working = 1 AND " + " equipment.equipmenttypeid =  "
-                + equipmentTypeId + " AND " + " equipment.organisationunitid in (" + orgUnitIdsByComma
-                + ") AND " + " equipmentAttributeValue.equipmenttypeattributeid = " + equipmentTypeAttributeId + " "
-                + " GROUP BY organisationunitid";
+            String query = "";
+            if ( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT organisationunitid, SUM(value*"
+                    + factor
+                    + ") FROM equipmentattributevalue "
+                    + " INNER JOIN equipment on equipmentattributevalue.equipmentid = equipment.equipmentid "
+                    + " WHERE " + " equipment.working = 1 AND " + " equipment.equipmenttypeid =  "
+                    + inventoryTypeId + " AND " + " equipment.organisationunitid in (" + orgUnitIdsByComma
+                    + ") AND " + " equipmentattributevalue.equipmenttypeattributeid = " + inventoryTypeAttributeId + " "
+                    + " GROUP BY organisationunitid";
+            }
+            
+            else if ( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT organisationunitid, SUM( cast ( value as numeric ) *"+ factor
+                    + " ) FROM equipmentattributevalue "
+                    + " INNER JOIN equipment on equipmentattributevalue.equipmentid = equipment.equipmentid "
+                    + " WHERE " + " equipment.working = TRUE AND " + " equipment.equipmenttypeid =  "
+                    + inventoryTypeId + " AND " + " equipment.organisationunitid in (" + orgUnitIdsByComma
+                    + ") AND " + " equipmentattributevalue.equipmenttypeattributeid = " + inventoryTypeAttributeId + " "
+                    + " GROUP BY organisationunitid";
+            }
 
+            //System.out.println( "SumOfEquipmentDatabyInventoryType Query : " + query );
+            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
                 Integer orgUnitId = rs.getInt( 1 );
-                Double modelAttributeValueSum = rs.getDouble( 2 );
-                equipmentSumByEquipmentTypeMap.put( orgUnitId, modelAttributeValueSum );
+                Double catalogDataValueSum = rs.getDouble( 2 );
+                equipmentSumByInventoryTypeMap.put( orgUnitId, catalogDataValueSum );
             }
         }
         catch ( Exception e )
@@ -253,42 +274,75 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return equipmentSumByEquipmentTypeMap;
+        return equipmentSumByInventoryTypeMap;
+        
     }
 
-    public Map<Integer, Double> getModelDataSumByEquipmentData( String orgUnitIdsByComma, Integer equipmentTypeId,
-        Integer modelTypeAttributeId, Integer equipmentTypeAttributeId, String equipmentValue )
+    public Map<Integer, Double> getCatalogDataSumByEquipmentData( String orgUnitIdsByComma, Integer inventoryTypeId,
+        Integer catalogTypeAttributeId, Integer inventoryTypeAttributeId, String equipmentValue )
     {
-        Map<Integer, Double> modelSumByEquipmentDataMap = new HashMap<Integer, Double>();
+        Map<Integer, Double> catalogSumByEquipmentDataMap = new HashMap<Integer, Double>();
+        
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        
         try
         {
-            String query = "SELECT equipment.organisationunitid, sum(modelattributevalue.value) FROM modelattributevalue "
-                + " INNER JOIN equipment on modelattributevalue.modelid = equipment.modelid "
-                + " WHERE "
-                + " equipment.working = 1 AND "
-                + " equipment.equipmenttypeid =  "
-                + equipmentTypeId
-                + " AND "
-                + " modelattributevalue.modeltypeattributeid =  "
-                + modelTypeAttributeId
-                + " AND "
-                + " equipment.organisationunitid in ("
-                + orgUnitIdsByComma
-                + ") AND "
-                + " equipment.equipmentid in "
-                + "( SELECT equipmentid FROM equipmentAttributeValue WHERE equipmenttypeattributeid = "
-                + equipmentTypeAttributeId
-                + " AND equipmentAttributeValue.value IN ('"
-                + equipmentValue
-                + "') ) "
-                + " GROUP BY equipment.organisationunitid";
-
+            String query = "";
+            if ( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT equipmentinstance.organisationunitid, sum(catalogdatavalue.value) FROM catalogdatavalue "
+                    + " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                    + " WHERE "
+                    + " equipmentinstance.working = 1 AND "
+                    + " equipmentinstance.inventorytypeid =  "
+                    + inventoryTypeId
+                    + " AND "
+                    + " catalogdatavalue.catalogtypeattributeid =  "
+                    + catalogTypeAttributeId
+                    + " AND "
+                    + " equipmentinstance.organisationunitid in ("
+                    + orgUnitIdsByComma
+                    + ") AND "
+                    + " equipmentinstance.equipmentinstanceid in "
+                    + "( SELECT equipmentinstanceid FROM equipment WHERE inventorytypeattributeid = "
+                    + inventoryTypeAttributeId
+                    + " AND equipment.value IN ('"
+                    + equipmentValue
+                    + "') ) "
+                    + " GROUP BY equipmentinstance.organisationunitid";
+            }
+            else if ( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT equipmentinstance.organisationunitid, sum( cast ( catalogdatavalue.value as numeric ) ) FROM catalogdatavalue "
+                    + " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                    + " WHERE "
+                    + " equipmentinstance.working = TRUE AND "
+                    + " equipmentinstance.inventorytypeid =  "
+                    + inventoryTypeId
+                    + " AND "
+                    + " catalogdatavalue.catalogtypeattributeid =  "
+                    + catalogTypeAttributeId
+                    + " AND "
+                    + " equipmentinstance.organisationunitid in ("
+                    + orgUnitIdsByComma
+                    + ") AND "
+                    + " equipmentinstance.equipmentinstanceid in "
+                    + "( SELECT equipmentinstanceid FROM equipment WHERE inventorytypeattributeid = "
+                    + inventoryTypeAttributeId
+                    + " AND equipment.value IN ('"
+                    + equipmentValue
+                    + "') ) "
+                    + " GROUP BY equipmentinstance.organisationunitid";
+            }
+            
+            //System.out.println("CatalogDataSumByEquipmentData : " + query );
+            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
                 Integer orgUnitId = rs.getInt( 1 );
-                Double modelAttributeValueSum = rs.getDouble( 2 );
-                modelSumByEquipmentDataMap.put( orgUnitId, modelAttributeValueSum );
+                Double catalogDataValueSum = rs.getDouble( 2 );
+                catalogSumByEquipmentDataMap.put( orgUnitId, catalogDataValueSum );
             }
         }
         catch ( Exception e )
@@ -296,7 +350,7 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return modelSumByEquipmentDataMap;
+        return catalogSumByEquipmentDataMap;
     }
 
     public Map<String, Integer> getFacilityWiseEquipmentRoutineData( String orgUnitIdsByComma, String periodIdsByComma,
@@ -305,11 +359,11 @@ public class DefaultCCEMReportManager
         Map<String, Integer> equipmentDataValueMap = new HashMap<String, Integer>();
         try
         {
-            String query = "SELECT equipment.organisationunitid, dataelementid, periodid, value FROM equipmentdatavalue "
-                + "INNER JOIN equipment "
-                + " ON equipment.equipmentid = equipmentdatavalue.equipmentid "
+            String query = "SELECT equipmentinstance.organisationunitid, dataelementid, periodid, value FROM equipmentdatavalue "
+                + "INNER JOIN equipmentinstance "
+                + " ON equipmentinstance.equipmentinstanceid = equipmentdatavalue.equipmentinstanceid "
                 + " WHERE "
-                + " equipment.organisationunitid IN ("
+                + " equipmentinstance.organisationunitid IN ("
                 + orgUnitIdsByComma
                 + ") AND "
                 + " dataelementid IN ("
@@ -357,8 +411,7 @@ public class DefaultCCEMReportManager
         return periodId;
     }
 
-    public Map<String, Integer> getDataValueCountforDataElements( String dataElementIdsByComma,
-        String optComboIdsByComma, Integer periodId, String orgUnitIdsBycomma )
+    public Map<String, Integer> getDataValueCountforDataElements( String dataElementIdsByComma, String optComboIdsByComma, Integer periodId, String orgUnitIdsBycomma )
     {
         Map<String, Integer> dataValueCountMap = new HashMap<String, Integer>();
         try
@@ -483,35 +536,36 @@ public class DefaultCCEMReportManager
         return orgUnitIdsByComma;
     }
 
-    public Map<String, Integer> getModelTypeAttributeValueByAge( String orgUnitIdsByComma, Integer equipmentTypeId,
-        Integer modelTypeAttributeId, Integer yearInvTypeAttId, Integer ageStart, Integer ageEnd )
+/*	
+    public Map<String, Integer> getCatalogTypeAttributeValueByAge( String orgUnitIdsByComma, Integer inventoryTypeId,
+        Integer catalogTypeAttributeId, Integer yearInvTypeAttId, Integer ageStart, Integer ageEnd )
     {
-        Map<String, Integer> ModelTypeAttributeValueMap = new HashMap<String, Integer>();
+        Map<String, Integer> CatalogTypeAttributeValueMap = new HashMap<String, Integer>();
         try
         {
 
-            String query = "SELECT modelattributevalue.value, COUNT(*) FROM modelattributevalue "
-                + " INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid "
-                + " INNER JOIN equipmentAttributeValue on equipment.equipmentid = equipmentAttributeValue.equipmentid "
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmentTypeId + " AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipmentAttributeValue.equipmenttypeattributeid = " + yearInvTypeAttId + " AND "
-                + " ( YEAR(CURDATE()) - equipmentAttributeValue.value ) >= " + ageStart + " AND ";
+            String query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue "
+                + " INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " INNER JOIN equipment on equipmentinstance.equipmentinstanceid = equipment.equipmentinstanceid "
+                + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                + " equipment.inventorytypeattributeid = " + yearInvTypeAttId + " AND "
+                + " ( YEAR(CURDATE()) - equipment.value ) >= " + ageStart + " AND ";
 
             if ( ageEnd != -1 )
             {
-                query += " ( YEAR(CURDATE()) - equipmentAttributeValue.value ) <= " + ageEnd + " AND ";
+                query += " ( YEAR(CURDATE()) - equipment.value ) <= " + ageEnd + " AND ";
             }
 
-            query += " equipment.organisationunitid IN ( " + orgUnitIdsByComma + " ) "
-                + " GROUP BY modelattributevalue.value";
+            query += " equipmentinstance.organisationunitid IN ( " + orgUnitIdsByComma + " ) "
+                + " GROUP BY catalogdatavalue.value";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                String modelAttributeValue = rs.getString( 1 );
-                Integer modelAttributeValueCount = rs.getInt( 2 );
-                ModelTypeAttributeValueMap.put( modelAttributeValue, modelAttributeValueCount );
+                String catalogDataValue = rs.getString( 1 );
+                Integer catalogDataValueCount = rs.getInt( 2 );
+                CatalogTypeAttributeValueMap.put( catalogDataValue, catalogDataValueCount );
             }
         }
         catch ( Exception e )
@@ -519,28 +573,66 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return ModelTypeAttributeValueMap;
+        return CatalogTypeAttributeValueMap;
     }
+*/
 
-    public Map<String, Integer> getModelTypeAttributeValue( String orgUnitIdsByComma, Integer equipmentTypeId,
-        Integer modelTypeAttributeId )
+    public Map<String, Integer> getCatalogTypeAttributeValueByAge( String orgUnitIdsByComma, Integer inventoryTypeId,
+        Integer catalogTypeAttributeId, Integer yearInvTypeAttId, Integer ageStart, Integer ageEnd )
     {
-        Map<String, Integer> ModelTypeAttributeValueMap = new HashMap<String, Integer>();
+        Map<String, Integer> CatalogTypeAttributeValueMap = new HashMap<String, Integer>();
+        
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        
         try
         {
-            String query = "SELECT modelattributevalue.value, COUNT(*) FROM modelattributevalue "
-                + " INNER JOIN equipment on modelattributevalue.modelid = equipment.modelid "
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmentTypeId + " AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipment.organisationunitid in (" + orgUnitIdsByComma + ")"
-                + " GROUP BY modelattributevalue.value";
+            
+            String query = "";
+            
+            if ( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue "
+                    + " INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                    + " INNER JOIN equipment on equipmentinstance.equipmentinstanceid = equipment.equipmentinstanceid "
+                    + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                    + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                    + " equipment.inventorytypeattributeid = " + yearInvTypeAttId + " AND "
+                    + " ( YEAR(CURDATE()) - equipment.value ) >= " + ageStart + " AND ";
 
+                if ( ageEnd != -1 )
+                {
+                    query += " ( YEAR(CURDATE()) - equipment.value ) <= " + ageEnd + " AND ";
+                }
+
+                query += " equipmentinstance.organisationunitid IN ( " + orgUnitIdsByComma + " ) "
+                    + " GROUP BY catalogdatavalue.value";
+            }
+            
+            else if ( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue "
+                    + " INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                    + " INNER JOIN equipment on equipmentinstance.equipmentinstanceid = equipment.equipmentinstanceid "
+                    + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                    + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                    + " equipment.inventorytypeattributeid = " + yearInvTypeAttId + " AND "
+                    + " ( date_part('year', current_date ) - CAST( equipment.value AS NUMERIC ) ) >= " + ageStart + " AND ";
+
+                if ( ageEnd != -1 )
+                {
+                    query += " ( date_part('year', current_date ) - CAST( equipment.value AS NUMERIC ) ) <= " + ageEnd + " AND ";
+                }
+
+                query += " equipmentinstance.organisationunitid IN ( " + orgUnitIdsByComma + " ) "
+                    + " GROUP BY catalogdatavalue.value";
+            }
+            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                String modelAttributeValue = rs.getString( 1 );
-                Integer modelAttributeValueCount = rs.getInt( 2 );
-                ModelTypeAttributeValueMap.put( modelAttributeValue, modelAttributeValueCount );
+                String catalogDataValue = rs.getString( 1 );
+                Integer catalogDataValueCount = rs.getInt( 2 );
+                CatalogTypeAttributeValueMap.put( catalogDataValue, catalogDataValueCount );
             }
         }
         catch ( Exception e )
@@ -548,7 +640,41 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return ModelTypeAttributeValueMap;
+        return CatalogTypeAttributeValueMap;
+    }
+
+
+
+
+
+
+    public Map<String, Integer> getCatalogTypeAttributeValue( String orgUnitIdsByComma, Integer inventoryTypeId,
+        Integer catalogTypeAttributeId )
+    {
+        Map<String, Integer> CatalogTypeAttributeValueMap = new HashMap<String, Integer>();
+        try
+        {
+            String query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue "
+                + " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                + " equipmentinstance.organisationunitid in (" + orgUnitIdsByComma + ")"
+                + " GROUP BY catalogdatavalue.value";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                String catalogDataValue = rs.getString( 1 );
+                Integer catalogDataValueCount = rs.getInt( 2 );
+                CatalogTypeAttributeValueMap.put( catalogDataValue, catalogDataValueCount );
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+
+        return CatalogTypeAttributeValueMap;
     }
 
     public Map<String, String> getCCEMSettings()
@@ -853,25 +979,25 @@ public class DefaultCCEMReportManager
         return grandTotal;
     }
 
-    public Map<String, Integer> getModelAttributevalueId( String orgUnitIdsByComma, Integer equipmentTypeId,
-        Integer modelTypeAttributeId )
+    public Map<String, Integer> getCatalogDatavalueId( String orgUnitIdsByComma, Integer inventoryTypeId,
+        Integer catalogTypeAttributeId )
     {
-        Map<String, Integer> ModelTypeAttributeValueMap = new HashMap<String, Integer>();
+        Map<String, Integer> CatalogTypeAttributeValueMap = new HashMap<String, Integer>();
         try
         {
-            String query = "SELECT modelattributevalue.modelid, modelattributevalue.value FROM modelattributevalue "
-                + " INNER JOIN equipment on modelattributevalue.modelid = equipment.modelid "
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmentTypeId + " AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipment.organisationunitid IN (" + orgUnitIdsByComma + ")"
-                + " GROUP BY modelattributevalue.value";
+            String query = "SELECT catalogdatavalue.catalogid, catalogdatavalue.value FROM catalogdatavalue "
+                + " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                + " GROUP BY catalogdatavalue.value";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                Integer modelAttributeValueId = rs.getInt( 1 );
-                String modelAttributeValue = rs.getString( 2 );
-                ModelTypeAttributeValueMap.put( modelAttributeValue, modelAttributeValueId );
+                Integer catalogDataValueId = rs.getInt( 1 );
+                String catalogDataValue = rs.getString( 2 );
+                CatalogTypeAttributeValueMap.put( catalogDataValue, catalogDataValueId );
             }
         }
         catch ( Exception e )
@@ -879,25 +1005,25 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return ModelTypeAttributeValueMap;
+        return CatalogTypeAttributeValueMap;
     }
 
-    public List<String> getModelName( Integer equipmentTypeId, Integer modelTypeAttributeId, String orgUnitIds )
+    public List<String> getModelName( Integer inventoryTypeId, Integer catalogTypeAttributeId, String orgUnitIds )
     {
         List<String> ModelNameList = new ArrayList<String>();
         try
         {
-            String query = "SELECT modelattributevalue.value FROM modelattributevalue "
-                + " INNER JOIN equipment on modelattributevalue.modelid = equipment.modelid "
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmentTypeId + " AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipment.organisationunitid IN (" + orgUnitIds + ")" + " GROUP BY modelattributevalue.value";
+            String query = "SELECT catalogdatavalue.value FROM catalogdatavalue "
+                + " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                + " equipmentinstance.organisationunitid IN (" + orgUnitIds + ")" + " GROUP BY catalogdatavalue.value ORDER BY catalogdatavalue.value";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                String modelAttributeValue = rs.getString( 1 );
-                ModelNameList.add( modelAttributeValue );
+                String catalogDataValue = rs.getString( 1 );
+                ModelNameList.add( catalogDataValue );
             }
         }
         catch ( Exception e )
@@ -908,17 +1034,17 @@ public class DefaultCCEMReportManager
         return ModelNameList;
     }
 
-    public String getEquipmentValue( String modelTypeAttributeValue, Integer modelid, String euipmentValue,
-        String orgUnitIdsByComma, Integer equipmentTypeId )
+    public String getEquipmentValue( String catalogTypeAttributeValue, Integer catalogid, String euipmentValue,
+        String orgUnitIdsByComma, Integer inventoryTypeId )
     {
         String EquipmentValue = null;
         try
         {
-            String query = "SELECT COUNT(*) FROM equipmentAttributeValue "
-                + "INNER JOIN equipment on equipmentAttributeValue.equipmentid =equipment.equipmentid"
-                + " WHERE " + " equipment.modelid = " + modelid + " AND " + " equipmentAttributeValue.value like '%"
-                + euipmentValue + "%' AND " + " equipment.organisationunitid IN (" + orgUnitIdsByComma
-                + ") AND " + " equipment.equipmenttypeid = " + equipmentTypeId + "";
+            String query = "SELECT COUNT(*) FROM equipment "
+                + "INNER JOIN equipmentinstance on equipment.equipmentinstanceid =equipmentinstance.equipmentinstanceid"
+                + " WHERE " + " equipmentinstance.catalogid = " + catalogid + " AND " + " equipment.value like '%"
+                + euipmentValue + "%' AND " + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma
+                + ") AND " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + "";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -933,20 +1059,28 @@ public class DefaultCCEMReportManager
         return EquipmentValue;
     }
 
-    public Map<String, Integer> getModelNameAndCount( Integer modelTypeAttributeId, Integer equipmentTypeId,
-        String equipmentValue, String orgUnitIdsByComma )
+    public Map<String, Integer> getModelNameAndCount( Integer catalogTypeAttributeId, Integer inventoryTypeId, String equipmentValue, String orgUnitIdsByComma )
     {
         Map<String, Integer> EquipmentValue = new HashMap<String, Integer>();
+        
         try
         {
-            String query = "SELECT modelattributevalue.value, COUNT(*) FROM modelattributevalue "
-                + "INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid "
-                + "INNER JOIN equipmentAttributeValue ON equipmentAttributeValue.equipmentid = equipment.equipmentid "
-                + " WHERE " + " equipment.equipmenttypeid =" + equipmentTypeId + " AND "
-                + " equipmentAttributeValue.value LIKE '%" + equipmentValue + "%' AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipment.organisationunitid IN (" + orgUnitIdsByComma + ")"
-                + " GROUP BY modelattributevalue.value ";
+            String query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue " + 
+                            " INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid " + 
+                            " INNER JOIN equipment ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid " + 
+                            " WHERE " + 
+                                " equipmentinstance.inventorytypeid =" + inventoryTypeId + " AND " +
+                                " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND " +
+                                " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ") ";                                
+                                if( equipmentValue != null )
+                                {
+                                    query += " AND equipment.value LIKE '%" + equipmentValue + "%' ";
+                                }
+                                else
+                                {
+                                    query += " AND equipment.value IN ( '"+EquipmentStatus.STATUS_WORKING_WELL+"', '"+ EquipmentStatus.STATUS_WORKING_NEEDS_MAINTENANCE+"', '"+EquipmentStatus.STATUS_NOT_WORKING+"' )";
+                                }
+                                query += " GROUP BY catalogdatavalue.value";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -961,18 +1095,18 @@ public class DefaultCCEMReportManager
         return EquipmentValue;
     }
 
-    public Map<String, Integer> getEquipmentValue_Count( Integer equipmentTypeId, Integer equipmentTypeAttributeId, String orgUnitIds )
+    public Map<String, Integer> getEquipmentValue_Count( Integer inventoryTypeId, Integer inventoryTypeAttributeId, String orgUnitIds )
     {
         Map<String, Integer> equipmentValue_CountMap = new HashMap<String, Integer>();
         try
         {
-        	String query = "SELECT equipmentAttributeValue.value, COUNT(*) FROM equipmentAttributeValue " +
-					" INNER JOIN equipment ON equipmentAttributeValue.equipmentid = equipment.equipmentid " + 
+        	String query = "SELECT equipment.value, COUNT(*) FROM equipment " +
+					" INNER JOIN equipmentinstance ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid " + 
 					" WHERE " + 
-						" equipment.equipmenttypeid = "+ equipmentTypeId +" AND " + 
-						" equipmentAttributeValue.equipmenttypeattributeid = "+ equipmentTypeAttributeId +" AND "+ 
-						" equipment.organisationunitid IN ( "+ orgUnitIds+" ) " +
-						" GROUP BY equipmentAttributeValue.value";
+						" equipmentinstance.inventorytypeid = "+ inventoryTypeId +" AND " + 
+						" equipment.inventorytypeattributeid = "+ inventoryTypeAttributeId +" AND "+ 
+						" equipmentinstance.organisationunitid IN ( "+ orgUnitIds+" ) " +
+						" GROUP BY equipment.value";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -989,23 +1123,23 @@ public class DefaultCCEMReportManager
         return equipmentValue_CountMap;
     }
     
-    public Map<String, Integer> getModelName_Count( Integer equipmentTypeId, Integer modelTypeAttributeId, String orgUnitIds )
+    public Map<String, Integer> getModelName_Count( Integer inventoryTypeId, Integer catalogTypeAttributeId, String orgUnitIds )
     {
         Map<String, Integer> modelName_CountMap = new HashMap<String, Integer>();
         try
         {
-            String query = "SELECT modelattributevalue.value, COUNT(*) FROM modelattributevalue "
-                + " INNER JOIN equipment on modelattributevalue.modelid = equipment.modelid "
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmentTypeId + " AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipment.organisationunitid IN (" + orgUnitIds + ")" + " GROUP BY modelattributevalue.value";
+            String query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue "
+                + " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                + " equipmentinstance.organisationunitid IN (" + orgUnitIds + ")" + " GROUP BY catalogdatavalue.value";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                String modelAttributeValue = rs.getString( 1 );
+                String catalogDataValue = rs.getString( 1 );
                 Integer count = rs.getInt( 2 );
-                modelName_CountMap.put( modelAttributeValue, count );
+                modelName_CountMap.put( catalogDataValue, count );
             }
         }
         catch ( Exception e )
@@ -1015,21 +1149,21 @@ public class DefaultCCEMReportManager
         return modelName_CountMap;
     }
     
-    public Map<String, Map<String,Integer>> getModelName_EquipmentUtilization_Count( Integer equipmentTypeId, Integer modelTypeAttributeId, Integer equipmentTypeAttributeId, String orgUnitIdsByComma )
+    public Map<String, Map<String,Integer>> getModelName_EquipmentUtilization_Count( Integer inventoryTypeId, Integer catalogTypeAttributeId, Integer inventoryTypeAttributeId, String orgUnitIdsByComma )
     {
     	Map<String, Map<String,Integer>> modelName_EquipmentUnilization_CountMap = new HashMap<String, Map<String,Integer>>();
         
     	try
         {
-        	String query = "SELECT modelattributevalue.value, equipmentAttributeValue.value, COUNT(*) FROM equipmentAttributeValue " +
-        						" INNER JOIN equipment ON equipmentAttributeValue.equipmentid = equipment.equipmentid " + 
-        						" INNER JOIN modelattributevalue ON modelattributevalue.modelid = equipment.modelid " + 
+        	String query = "SELECT catalogdatavalue.value, equipment.value, COUNT(*) FROM equipment " +
+        						" INNER JOIN equipmentinstance ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid " + 
+        						" INNER JOIN catalogdatavalue ON catalogdatavalue.catalogid = equipmentinstance.catalogid " + 
         						" WHERE " + 
-        							" equipment.equipmenttypeid = "+ equipmentTypeId +" AND " + 
-        							" modelattributevalue.modeltypeattributeid = "+ modelTypeAttributeId +" AND " + 
-        							" equipmentAttributeValue.equipmenttypeattributeid = "+ equipmentTypeAttributeId +" AND "+ 
-        							" equipment.organisationunitid IN ( "+ orgUnitIdsByComma+" ) " +
-        							" GROUP BY modelattributevalue.value,equipmentAttributeValue.value";
+        							" equipmentinstance.inventorytypeid = "+ inventoryTypeId +" AND " + 
+        							" catalogdatavalue.catalogtypeattributeid = "+ catalogTypeAttributeId +" AND " + 
+        							" equipment.inventorytypeattributeid = "+ inventoryTypeAttributeId +" AND "+ 
+        							" equipmentinstance.organisationunitid IN ( "+ orgUnitIdsByComma+" ) " +
+        							" GROUP BY catalogdatavalue.value,equipment.value";
         	
         	//System.out.println( query );
         	
@@ -1065,23 +1199,23 @@ public class DefaultCCEMReportManager
     }
     
 
-    public Map<String, Map<String,Integer>> getEquipmentType_ElectricityAvailability_Count( Integer equipmentTypeId, Integer modelTypeAttributeId, Integer dataElementId, String periodIdsByComma, String orgUnitIdsByComma )
+    public Map<String, Map<String,Integer>> getEquipmentType_ElectricityAvailability_Count( Integer inventoryTypeId, Integer catalogTypeAttributeId, Integer dataElementId, String periodIdsByComma, String orgUnitIdsByComma )
     {
     	Map<String, Map<String,Integer>> equiplmentType_ElectricityAvailability_CountMap = new HashMap<String, Map<String,Integer>>();
         
     	try
         {
-        	String query = "SELECT modelattributevalue.value, datavalue.value, COUNT(*) FROM modelattributevalue " + 
-        						" INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid " + 
-        						" INNER JOIN datavalue ON datavalue.sourceid = equipment.organisationunitid " +
+        	String query = "SELECT catalogdatavalue.value, datavalue.value, COUNT(*) FROM catalogdatavalue " + 
+        						" INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid " + 
+        						" INNER JOIN datavalue ON datavalue.sourceid = equipmentinstance.organisationunitid " +
         						" WHERE " +
-        							" equipment.equipmenttypeid = "+ equipmentTypeId +" AND " + 
-        							" modelattributevalue.modeltypeattributeid = "+ modelTypeAttributeId +" AND " + 
+        							" equipmentinstance.inventorytypeid = "+ inventoryTypeId +" AND " + 
+        							" catalogdatavalue.catalogtypeattributeid = "+ catalogTypeAttributeId +" AND " + 
         							" datavalue.dataelementid = " + dataElementId + " AND " + 
         							" datavalue.periodid in ( " + periodIdsByComma + " ) AND " +  
         							" datavalue.sourceid IN ( "+ orgUnitIdsByComma +" ) " + 
-        							" GROUP BY modelattributevalue.value, datavalue.value " + 
-        							" ORDER BY modelattributevalue.value"; 
+        							" GROUP BY catalogdatavalue.value, datavalue.value " + 
+        							" ORDER BY catalogdatavalue.value"; 
         		
         	SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -1123,7 +1257,7 @@ public class DefaultCCEMReportManager
             
                 if(dataValue != null)
                 {
-                    query+= " AND value LIKE '%" + dataValue + "%'";
+                    query+= " AND LOWER( value ) LIKE LOWER('%" + dataValue + "%')";
                 } 
                 if(periodId != null)
                 {
@@ -1194,30 +1328,30 @@ public class DefaultCCEMReportManager
     }
     
     
-    public List<String> getEquipmentValueAndData( Integer modelTypeAttributeId, String orgUnitIdsByComma,
-        Integer equipmentTypeId )
+    public List<String> getEquipmentValueAndData( Integer catalogTypeAttributeId, String orgUnitIdsByComma,
+        Integer inventoryTypeId )
     {
         List<String> values = new ArrayList<String>();
 
         try
         {
-            String query = "SELECT equipment.organisationunitid ,modelattributevalue.value , count(*) ,equipmentAttributeValue.value ,modelattributevalue.modelid FROM modelattributevalue "
-                + "INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid "
-                + "INNER JOIN equipmentAttributeValue ON equipmentAttributeValue.equipmentid = equipment.equipmentid "
+            String query = "SELECT equipmentinstance.organisationunitid ,catalogdatavalue.value , count(*) ,equipment.value ,catalogdatavalue.catalogid FROM catalogdatavalue "
+                + "INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + "INNER JOIN equipment ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid "
                 + " WHERE "
-                + " equipment.equipmenttypeid ="
-                + equipmentTypeId
+                + " equipmentinstance.inventorytypeid ="
+                + inventoryTypeId
                 + " AND "
-                + " modelattributevalue.modeltypeattributeid = "
-                + modelTypeAttributeId
+                + " catalogdatavalue.catalogtypeattributeid = "
+                + catalogTypeAttributeId
                 + " AND "
-                + " equipmentAttributeValue.value = "
+                + " equipment.value = "
                 + "'Not working'"
-                + " OR equipmentAttributeValue.value = "
+                + " OR equipment.value = "
                 + "'Working but needs maintenance'"
                 + " AND "
-                + " equipment.organisationunitid IN ("
-                + orgUnitIdsByComma + ") " + " GROUP BY equipment.organisationunitid";
+                + " equipmentinstance.organisationunitid IN ("
+                + orgUnitIdsByComma + ") " + " GROUP BY equipmentinstance.organisationunitid";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -1235,22 +1369,22 @@ public class DefaultCCEMReportManager
         return values;
     }
 
-    public List<String> equipmentModelies( String orgUnitIdsByComma, Integer equipmentTypeId )
+    public List<String> equipmentCatalogies( String orgUnitIdsByComma, Integer inventoryTypeId )
     {
-        List<String> modelIds = new ArrayList<String>();
+        List<String> catalogIds = new ArrayList<String>();
         try
         {
-            String query = "SELECT equipment.modelid FROM equipment"
-                + " INNER JOIN equipmentAttributeValue ON equipmentAttributeValue.equipmentid = equipment.equipmentid "
-                + " WHERE equipment.equipmenttypeid = " + equipmentTypeId + " AND "
-                + " equipment.organisationunitid IN (" + orgUnitIdsByComma + ") "
-                + " AND equipmentAttributeValue.value = 'Not working' OR equipmentAttributeValue.value = 'Working but needs maintenance'"
-                + " AND equipment.modelid IS NOT NULL" + " GROUP BY equipment.modelid";
+            String query = "SELECT equipmentinstance.catalogid FROM equipmentinstance"
+                + " INNER JOIN equipment ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid "
+                + " WHERE equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ") "
+                + " AND equipment.value = 'Not working' OR equipment.value = 'Working but needs maintenance'"
+                + " AND equipmentinstance.catalogid IS NOT NULL" + " GROUP BY equipmentinstance.catalogid";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs != null && rs.next() )
             {
-                modelIds.add( rs.getString( 1 ) );
+                catalogIds.add( rs.getString( 1 ) );
             }
         }
         catch ( Exception e )
@@ -1258,26 +1392,26 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return modelIds;
+        return catalogIds;
     }
 
-    public Map<String, String> equipmentModelyValues( String orgUnitIdsByComma, Integer equipmentTypeId,
-        Integer equipmentTypeAttributeId )
+    public Map<String, String> equipmentCatalogyValues( String orgUnitIdsByComma, Integer inventoryTypeId,
+        Integer inventoryTypeAttributeId )
     {
-        Map<String, String> modelValues = new HashMap<String, String>();
+        Map<String, String> catalogValues = new HashMap<String, String>();
         try
         {
-            String query = "SELECT equipment.modelid , equipmentAttributeValue.value FROM equipmentAttributeValue"
-                + " INNER JOIN equipment ON equipmentAttributeValue.equipmentid = equipment.equipmentid"
-                + " WHERE equipment.equipmenttypeid = " + equipmentTypeId
-                + " AND equipmentAttributeValue.equipmenttypeattributeid = " + equipmentTypeAttributeId
-                + " AND equipment.organisationunitid IN (" + orgUnitIdsByComma + ") "
-                + " GROUP BY equipment.modelid";
+            String query = "SELECT equipmentinstance.catalogid , equipment.value FROM equipment"
+                + " INNER JOIN equipmentinstance ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid"
+                + " WHERE equipmentinstance.inventorytypeid = " + inventoryTypeId
+                + " AND equipment.inventorytypeattributeid = " + inventoryTypeAttributeId
+                + " AND equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ") "
+                + " GROUP BY equipmentinstance.catalogid";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs != null && rs.next() )
             {
-                modelValues.put( rs.getString( 1 ), rs.getString( 2 ) );
+                catalogValues.put( rs.getString( 1 ), rs.getString( 2 ) );
             }
         }
         catch ( Exception e )
@@ -1285,29 +1419,29 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return modelValues;
+        return catalogValues;
     }
 
-    public Map<String, String> equipmentOrgUnit( String orgUnitIdsByComma, Integer equipmentTypeId )
+    public Map<String, String> equipmentOrgUnit( String orgUnitIdsByComma, Integer inventoryTypeId )
     {
-        Map<String, String> models = new HashMap<String, String>();
+        Map<String, String> catalogs = new HashMap<String, String>();
         try
         {
-            String query = "SELECT equipment.modelid, equipment.organisationunitid FROM equipment"
-                + " INNER JOIN equipmentAttributeValue ON equipmentAttributeValue.equipmentid = equipment.equipmentid "
-                + " WHERE equipment.equipmenttypeid = "
-                + equipmentTypeId
+            String query = "SELECT equipmentinstance.catalogid, equipmentinstance.organisationunitid FROM equipmentinstance"
+                + " INNER JOIN equipment ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid "
+                + " WHERE equipmentinstance.inventorytypeid = "
+                + inventoryTypeId
                 + " AND "
-                + " equipment.organisationunitid IN ("
+                + " equipmentinstance.organisationunitid IN ("
                 + orgUnitIdsByComma
                 + ") "
-                + " AND equipmentAttributeValue.value = 'Not working' OR equipmentAttributeValue.value = 'Working but needs maintenance'"
-                + " AND equipment.modelid IS NOT NULL" + " GROUP BY equipment.modelid";
+                + " AND equipment.value = 'Not working' OR equipment.value = 'Working but needs maintenance'"
+                + " AND equipmentinstance.catalogid IS NOT NULL" + " GROUP BY equipmentinstance.catalogid";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                models.put( rs.getString( 1 ), rs.getString( 2 ) );
+                catalogs.put( rs.getString( 1 ), rs.getString( 2 ) );
             }
         }
         catch ( Exception e )
@@ -1315,30 +1449,30 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return models;
+        return catalogs;
     }
 
-    public Map<String, String> getEquipmentNameWithOrgUnit( Integer equipmentTypeId, Integer modelTypeAttributeId,
+    public Map<String, String> getEquipmentNameWithOrgUnit( Integer inventoryTypeId, Integer catalogTypeAttributeId,
         String orgUnitIds )
     {
         Map<String, String> equipmentMap = new HashMap<String, String>();
         try
         {
-            String query = "SELECT modelattributevalue.value ,equipment.organisationunitid FROM modelattributevalue "
-                + " INNER JOIN equipment on modelattributevalue.modelid = equipment.modelid "
-                + " INNER JOIN equipmentAttributeValue on equipment.equipmentid = equipmentAttributeValue.equipmentid "
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmentTypeId + " AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipment.organisationunitid IN (" + orgUnitIds + ") ORDER BY modelattributevalue.value";
+            String query = "SELECT catalogdatavalue.value ,equipmentinstance.organisationunitid FROM catalogdatavalue "
+                + " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " INNER JOIN equipment on equipmentinstance.equipmentinstanceid = equipment.equipmentinstanceid "
+                + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                + " equipmentinstance.organisationunitid IN (" + orgUnitIds + ") ORDER BY catalogdatavalue.value";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             String orgUnitIdByComma = null;
             while ( rs.next() )
             {
-                String modelAttributeValue = rs.getString( 1 );
+                String catalogDataValue = rs.getString( 1 );
                 String orgUnitId = rs.getString( 2 );
 
-                if ( equipmentMap.containsKey( modelAttributeValue ) )
+                if ( equipmentMap.containsKey( catalogDataValue ) )
                 {
                     orgUnitIdByComma = orgUnitIdByComma + "," + orgUnitId;
                 }
@@ -1346,7 +1480,7 @@ public class DefaultCCEMReportManager
                 {
                     orgUnitIdByComma = orgUnitId;
                 }
-                equipmentMap.put( modelAttributeValue, orgUnitIdByComma );
+                equipmentMap.put( catalogDataValue, orgUnitIdByComma );
             }
         }
         catch ( Exception e )
@@ -1378,26 +1512,25 @@ public class DefaultCCEMReportManager
         return totalValue;
     }
 
-    public Map<String, String> getTotalColdRoomValue( Integer equipmenttypeid, String orgUnitIdByComma,
-        String equipmentTypeAttributeId, String equipmentValue )
+    public Map<String, String> getTotalColdRoomValue( Integer inventorytypeid, String orgUnitIdByComma,
+        String inventoryTypeAttributeId, String equipmentValue )
     {
         Map<String, String> countMap = new HashMap<String, String>();
 
         try
         {
-            String query = "SELECT equipmentAttributeValue.equipmenttypeattributeid ,equipmentAttributeValue.value FROM equipment"
-                + " INNER JOIN equipmentAttributeValue ON equipmentAttributeValue.equipmentid = equipment.equipmentid"
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmenttypeid
-                + " AND  equipment.organisationunitid IN (" + orgUnitIdByComma
-                + ") AND equipmentAttributeValue.equipmenttypeattributeid IN (" + equipmentTypeAttributeId + ")";
+            String query = "SELECT equipment.inventorytypeattributeid ,equipment.value FROM equipmentinstance"
+                + " INNER JOIN equipment ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid"
+                + " WHERE " + " equipmentinstance.inventorytypeid = " + inventorytypeid
+                + " AND  equipmentinstance.organisationunitid IN (" + orgUnitIdByComma
+                + ") AND equipment.inventorytypeattributeid IN (" + inventoryTypeAttributeId + ")";
 
             if ( equipmentValue != null )
             {
-                query = query + " AND equipmentAttributeValue.value like '%" + equipmentValue + "%'";
+                query = query + " AND equipment.value like '%" + equipmentValue + "%'";
             }
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-            
             //Integer count = 1;
             //String eValue = null;
             while ( rs.next() )
@@ -1410,26 +1543,67 @@ public class DefaultCCEMReportManager
         {
             throw new RuntimeException( "Exception: ", e );
         }
-        
         System.out.println( "Size is: " + countMap.size() );
-        
         return countMap;
     }
 
-    public Map<String, Integer> getModelNameAndCountForColdBox( Integer modelTypeAttributeId,
-        Integer equipmentTypeId, String workingStatus, String orgUnitIdsByComma )
+    public Map<String, Integer> getModelNameAndCountForColdBox( Integer catalogTypeAttributeId,
+        Integer inventoryTypeId, String workingStatus, String orgUnitIdsByComma )
     {
         Map<String, Integer> EquipmentValue = new HashMap<String, Integer>();
+        
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        
         try
         {
-            String query = "SELECT modelattributevalue.value, COUNT(*) FROM modelattributevalue "
-                + " INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid "
-                + " WHERE " + " equipment.equipmenttypeid =" + equipmentTypeId + " AND "
-                + " equipment.working = " + workingStatus + " AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipment.organisationunitid IN (" + orgUnitIdsByComma + ")"
-                + " GROUP BY modelattributevalue.value ";
+            String query = "";
+            
+            if ( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                if( workingStatus.equalsIgnoreCase( "1" ) )
+                {
+                    workingStatus = "TRUE";
+                }
+                else if( workingStatus.equalsIgnoreCase( "0" ) )
+                {
+                    workingStatus = "FALSE";
+                }
+                
+                query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue "
+                        + " INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                        + " WHERE " + " equipmentinstance.inventorytypeid =" + inventoryTypeId + " AND "
+                        + " equipmentinstance.working = " + workingStatus + " AND "
+                        + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                        + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                        + " GROUP BY catalogdatavalue.value ";
+                
+               //System.out.println( " Query   " + query );
+            }
+            else if ( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue "
+                        + " INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                        + " WHERE " + " equipmentinstance.inventorytypeid =" + inventoryTypeId + " AND "
+                        + " equipmentinstance.working = " + workingStatus + " AND "
+                        + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                        + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                        + " GROUP BY catalogdatavalue.value ";
+            }
+            
+            System.out.println( " Query   " + query );
+            
+            /*
+            String query = "SELECT catalogdatavalue.value, COUNT(*) FROM catalogdatavalue "
+                + " INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " WHERE " + " equipmentinstance.inventorytypeid =" + inventoryTypeId + " AND "
+                + " equipmentinstance.working = " + workingStatus + " AND "
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                + " GROUP BY catalogdatavalue.value ";
 
+            */
+            
+            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
@@ -1443,23 +1617,23 @@ public class DefaultCCEMReportManager
         return EquipmentValue;
     }
 
-    public String getModelNameAndCountForQuantityOfColdbox( Integer equipmentTypeId, String modelValue,
+    public String getModelNameAndCountForQuantityOfColdbox( Integer inventoryTypeId, String catalogValue,
         String orgUnitIdsByComma )
     {
         String EquipmentValue = null;
         try
         {
-            String query = "SELECT MIN(CAST(equipmentAttributeValue.value AS SIGNED)),MAx(CAST(equipmentAttributeValue.value AS SIGNED)),AVG(CAST(equipmentAttributeValue.value AS SIGNED)) FROM modelattributevalue "
-                + "INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid "
-                + " INNER JOIN equipmentAttributeValue ON equipmentAttributeValue.equipmentid = equipment.equipmentid"
+            String query = "SELECT MIN(CAST(equipment.value AS SIGNED)),MAx(CAST(equipment.value AS SIGNED)),AVG(CAST(equipment.value AS SIGNED)) FROM catalogdatavalue "
+                + "INNER JOIN equipmentinstance ON catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " INNER JOIN equipment ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid"
                 + " WHERE "
-                + " equipment.equipmenttypeid ="
-                + equipmentTypeId
+                + " equipmentinstance.inventorytypeid ="
+                + inventoryTypeId
                 + " AND "
-                + " modelattributevalue.value like '%"
-                + modelValue
+                + " catalogdatavalue.value like '%"
+                + catalogValue
                 + "%' AND"
-                + " equipment.organisationunitid IN (" + orgUnitIdsByComma + ")" + " ";
+                + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")" + " ";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -1474,45 +1648,129 @@ public class DefaultCCEMReportManager
         return EquipmentValue;
     }
 
-    public Map<String, Double> getSumOfEquipmentAndModelValue( Integer equipmentTypeId,
-        Integer equipmentTypeAttributeId, Integer modelTypeAttributeId, String orgUnitIdsByComma )
+    public Map<String, Double> getSumOfEquipmentAndCatalogValue( Integer inventoryTypeId,
+        Integer inventoryTypeAttributeId, Integer catalogTypeAttributeId, String orgUnitIdsByComma )
     {
-        Map<String, Double> modelSumAndValue = new HashMap<String, Double>();
+        Map<String, Double> catalogSumAndValue = new HashMap<String, Double>();
+
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        
         try
         {
-            String query = "SELECT modelattributevalue.value, SUM(equipmentAttributeValue.value) FROM equipmentAttributeValue"
-                + " INNER JOIN equipment ON equipmentAttributeValue.equipmentid = equipment.equipmentid "
-                + " INNER JOIN model ON model.modelid = equipment.modelid "
-                + " INNER JOIN modelattributevalue ON modelattributevalue.modelid = equipment.modelid"
-                + " WHERE " + " equipment.equipmenttypeid =" + equipmentTypeId + " AND "
-                + " equipmentAttributeValue.equipmenttypeattributeid = " + equipmentTypeAttributeId + " AND"
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND"
-                + " equipment.organisationunitid IN (" + orgUnitIdsByComma + ")"
-                + " GROUP BY equipment.modelid";
-
+            String query = "";
+            if ( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT catalogdatavalue.value, SUM( cast( equipment.value as numeric ) ) FROM equipment"
+                    + " INNER JOIN equipmentinstance ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid "
+                    + " INNER JOIN catalog ON catalog.catalogid = equipmentinstance.catalogid "
+                    + " INNER JOIN catalogdatavalue ON catalogdatavalue.catalogid = equipmentinstance.catalogid"
+                    + " WHERE " + " equipmentinstance.inventorytypeid =" + inventoryTypeId + " AND "
+                    + " equipment.inventorytypeattributeid = " + inventoryTypeAttributeId + " AND"
+                    + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND"
+                    + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                    + " GROUP BY catalogdatavalue.value"; 
+            }
+            
+            else if ( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT catalogdatavalue.value, SUM(equipment.value) FROM equipment"
+                    + " INNER JOIN equipmentinstance ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid "
+                    + " INNER JOIN catalog ON catalog.catalogid = equipmentinstance.catalogid "
+                    + " INNER JOIN catalogdatavalue ON catalogdatavalue.catalogid = equipmentinstance.catalogid"
+                    + " WHERE " + " equipmentinstance.inventorytypeid =" + inventoryTypeId + " AND "
+                    + " equipment.inventorytypeattributeid = " + inventoryTypeAttributeId + " AND"
+                    + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND"
+                    + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                    + " GROUP BY catalogdatavalue.value";
+            }
+            
+            /*
+            String query = "SELECT catalogdatavalue.value, SUM(equipment.value) FROM equipment"
+                + " INNER JOIN equipmentinstance ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid "
+                + " INNER JOIN catalog ON catalog.catalogid = equipmentinstance.catalogid "
+                + " INNER JOIN catalogdatavalue ON catalogdatavalue.catalogid = equipmentinstance.catalogid"
+                + " WHERE " + " equipmentinstance.inventorytypeid =" + inventoryTypeId + " AND "
+                + " equipment.inventorytypeattributeid = " + inventoryTypeAttributeId + " AND"
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND"
+                + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                + " GROUP BY equipmentinstance.catalogid";
+            */
+            
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                String modelValue = rs.getString( 1 );
+                String catalogValue = rs.getString( 1 );
                 Double equipmentSum = rs.getDouble( 2 );
-                modelSumAndValue.put( modelValue, equipmentSum );
+                catalogSumAndValue.put( catalogValue, equipmentSum );
             }
         }
         catch ( Exception e )
         {
             throw new RuntimeException( "Exception: ", e );
         }
-        return modelSumAndValue;
+        return catalogSumAndValue;
     } 
-    public List<String> getDataValueFacility( Integer dataElementId, String dataValue, String orgUnitIdByComma,
-        String periodIds )
+
+    
+    public Map<String, Integer> getSumOfColdBoxByOrgUnitGroup( Integer coldBoxInventoryTypeId, Integer qtyPresent_qtyWorking_inventoryTypeAttributeId, Integer modelNameCatalogTypeAttributeId, String orgUnitIdsByComma, Integer orgUnitGroupId )
+        {
+            Map<String, Integer> catalogSumAndValue = new HashMap<String, Integer>();
+
+            DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+            
+            try
+            {
+                String query = "";
+                if ( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+                {
+                    query = "SELECT catalogdatavalue.value, SUM( cast( equipment.value as numeric ) ) FROM equipment"
+                        + " INNER JOIN equipmentinstance ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid "
+                        + " INNER JOIN catalog ON catalog.catalogid = equipmentinstance.catalogid "
+                        + " INNER JOIN catalogdatavalue ON catalogdatavalue.catalogid = equipmentinstance.catalogid"
+                        + " WHERE " + " equipmentinstance.inventorytypeid =" + coldBoxInventoryTypeId + " AND "
+                        + " equipment.inventorytypeattributeid = " + qtyPresent_qtyWorking_inventoryTypeAttributeId + " AND"
+                        + " catalogdatavalue.catalogtypeattributeid = " + modelNameCatalogTypeAttributeId + " AND"
+                        + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                        + " GROUP BY catalogdatavalue.value"; 
+                }
+                
+                else if ( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+                {
+                    query = "SELECT catalogdatavalue.value, SUM(equipment.value) FROM equipment"
+                        + " INNER JOIN equipmentinstance ON equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid "
+                        + " INNER JOIN catalog ON catalog.catalogid = equipmentinstance.catalogid "
+                        + " INNER JOIN catalogdatavalue ON catalogdatavalue.catalogid = equipmentinstance.catalogid"
+                        + " WHERE " + " equipmentinstance.inventorytypeid =" + coldBoxInventoryTypeId + " AND "
+                        + " equipment.inventorytypeattributeid = " + qtyPresent_qtyWorking_inventoryTypeAttributeId + " AND"
+                        + " catalogdatavalue.catalogtypeattributeid = " + modelNameCatalogTypeAttributeId + " AND"
+                        + " equipmentinstance.organisationunitid IN (" + orgUnitIdsByComma + ")"
+                        + " GROUP BY catalogdatavalue.value";
+                }
+                
+                SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+                while ( rs.next() )
+                {
+                    String catalogValue = rs.getString( 1 );
+                    Integer equipmentSum = rs.getInt( 2 );
+                    catalogSumAndValue.put( orgUnitGroupId+":"+catalogValue, equipmentSum );
+                    //System.out.println( "in service: "+ catalogValue + " - " + equipmentSum + " - " + orgUnitGroupId );
+                }
+            }
+            catch ( Exception e )
+            {
+                throw new RuntimeException( "Exception: ", e );
+            }
+            return catalogSumAndValue;
+        } 
+
+    public List<String> getDataValueFacility( Integer dataElementId, String dataValue, String orgUnitIdByComma, String periodIds )
     {
         List<String> facilityList = new ArrayList<String>();
         try
         {
             String query = "SELECT distinct(sourceid) FROM datavalue " + " WHERE " + " datavalue.dataelementid = "
                 + dataElementId + "" + " AND datavalue.sourceid IN (" + orgUnitIdByComma + ")"
-                + " AND datavalue.value IN (" + dataValue + ")" + " AND datavalue.periodid IN (" + periodIds + ")";
+                + " AND LOWER(datavalue.value) IN (" + dataValue + ")" + " AND datavalue.periodid IN (" + periodIds + ")";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -1528,20 +1786,20 @@ public class DefaultCCEMReportManager
     }
 
     
-    public Integer getEquipmentCount( Integer equipmentTypeId, String orgUnitIds )
+    public Integer getEquipmentInstanceCount( Integer inventoryTypeId, String orgUnitIds )
     {
-    	Integer equipmentCount = 0;
+    	Integer equipmentInstanceCount = 0;
         try
         {
-            String query = "SELECT COUNT(*) FROM equipment " +
+            String query = "SELECT COUNT(*) FROM equipmentinstance " +
             					" WHERE " +
-            						" equipmenttypeid = "+ equipmentTypeId +" AND " +
+            						" inventorytypeid = "+ inventoryTypeId +" AND " +
             						" organisationunitid IN ( "+ orgUnitIds +")";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-            	equipmentCount = rs.getInt( 1 );
+            	equipmentInstanceCount = rs.getInt( 1 );
             }
         }
         catch ( Exception e )
@@ -1549,30 +1807,30 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return equipmentCount;
+        return equipmentInstanceCount;
     }
     
     
-    public Integer getModelAttributeValueCount( Integer equipmentTypeId, Integer modelTypeAttributeId,
+    public Integer getCatalogDataValueCount( Integer inventoryTypeId, Integer catalogTypeAttributeId,
         String catogDataValue, String orgUnitIds )
     {
-        Integer modelValueCount = 0;
+        Integer catalogValueCount = 0;
         try
         {
-            String query = "SELECT COUNT(*) FROM modelattributevalue "
-                + " INNER JOIN equipment on modelattributevalue.modelid = equipment.modelid "
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmentTypeId + " AND "
-                + " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId + " AND "
-                + " equipment.organisationunitid in (" + orgUnitIds + ")";
+            String query = "SELECT COUNT(*) FROM catalogdatavalue "
+                + " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid "
+                + " WHERE " + " equipmentinstance.inventorytypeid = " + inventoryTypeId + " AND "
+                + " catalogdatavalue.catalogtypeattributeid = " + catalogTypeAttributeId + " AND "
+                + " equipmentinstance.organisationunitid in (" + orgUnitIds + ")";
             if ( catogDataValue != null )
             {
-                query += " AND modelattributevalue.value in (" + catogDataValue + ")";
+                query += " AND LOWER(catalogdatavalue.value) in (" + catogDataValue + ")";
             }
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
             {
-                modelValueCount = rs.getInt( 1 );
+                catalogValueCount = rs.getInt( 1 );
             }
         }
         catch ( Exception e )
@@ -1580,6 +1838,6 @@ public class DefaultCCEMReportManager
             throw new RuntimeException( "Exception: ", e );
         }
 
-        return modelValueCount;
+        return catalogValueCount;
     }
 }

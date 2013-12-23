@@ -265,20 +265,20 @@ public class TraferFacilityDataResultAction implements Action
                 String previousValue = "";
                 String currentValue = "";
                 
-                previousDataValue = dataValueService.getDataValue( organisationUnit, dataElement, previousPeriod, decoc );
+                previousDataValue = dataValueService.getDataValue( dataElement, previousPeriod, organisationUnit, decoc );
                 
                 if ( previousDataValue != null )
                 {
                     previousValue = previousDataValue.getValue();
                     
-                    DataValue currentDataValue = dataValueService.getDataValue( organisationUnit, dataElement, currentPeriod, decoc );
+                    DataValue currentDataValue = dataValueService.getDataValue( dataElement, currentPeriod, organisationUnit, decoc );
                     
                     if ( currentDataValue == null )
                     {
                         if ( previousValue != null )
                         {
                             flag = 2;
-                            currentDataValue = new DataValue( dataElement, currentPeriod, organisationUnit, previousValue, storedBy, now, null, decoc );
+                            currentDataValue = new DataValue( dataElement, currentPeriod, organisationUnit, decoc, null, previousValue, storedBy, now, null  ); 
                             dataValueService.addDataValue( currentDataValue );
                         }
                     }

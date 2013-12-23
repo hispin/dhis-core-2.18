@@ -189,13 +189,13 @@ public class SaveFacilityDataValueAction implements Action
                     value = value.trim();
                 }
                 
-                DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, decoc );
+                DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, decoc );
 
                 if ( dataValue == null )
                 {
                     if ( value != null )
                     {
-                        dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, now, null, decoc );
+                        dataValue = new DataValue( dataElement, period, organisationUnit, decoc, null, value, storedBy, now, null  ); 
                         dataValueService.addDataValue( dataValue );
                     }
                 }
