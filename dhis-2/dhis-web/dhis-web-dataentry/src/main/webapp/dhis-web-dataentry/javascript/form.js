@@ -55,9 +55,6 @@ dhis2.de.currentDataSetId = null;
 // Array with category objects, null if default category combo / no categories
 dhis2.de.currentCategories = null;
 
-// Currently selected iso period
-dhis2.de.currentPeriodId = null;
-
 // Current offset, next or previous corresponding to increasing or decreasing value
 dhis2.de.currentPeriodOffset = 0;
 
@@ -834,16 +831,16 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
     }
 
     if ( !dhis2.de.multiOrganisationUnit && dataSetValid && dataSetId != null ) {
-        $( '#selectedDataSetId' ).val( dataSetId );
+        $( '#selectedDataSetId' ).val( dataSetId ); // Restore selected data set
 
-        if ( periodId && periodId != -1 && dhis2.de.dataEntryFormIsLoaded ) {
+        if ( dhis2.de.inputSelected() && dhis2.de.dataEntryFormIsLoaded ) {
             resetSectionFilters();
             showLoader();
             loadDataValues();
         }
     } 
     else if ( dhis2.de.multiOrganisationUnit && multiDataSetValid && dataSetId != null ) {
-        $( '#selectedDataSetId' ).val( dataSetId );
+        $( '#selectedDataSetId' ).val( dataSetId ); // Restore selected data set
         dataSetSelected();
     }
     else {
@@ -927,8 +924,15 @@ function dataSetSelected()
     $( '#prevButton' ).removeAttr( 'disabled' );
     $( '#nextButton' ).removeAttr( 'disabled' );
 
+    var x = dhis2.de.currentDataSetId;
+    
     var dataSetId = $( '#selectedDataSetId' ).val();
     var periodId = $( '#selectedPeriodId' ).val();
+
+    var previousDataSetValid = ( dhis2.de.currentDataSetId && dhis2.de.currentDataSetId != -1 );    
+    var previousPeriodType = previousDataSetValid ? dhis2.de.dataSets[dhis2.de.currentDataSetId].periodType : null;
+
+    dhis2.de.currentDataSetId = dataSetId;
     
     if ( dataSetId && dataSetId != -1 )
     {
@@ -966,15 +970,10 @@ function dataSetSelected()
             addOptionById( 'selectedPeriodId', item.iso, item.name );
         } );
 
-        var previousPeriodType = dhis2.de.currentDataSetId ? dhis2.de.dataSets[dhis2.de.currentDataSetId].periodType : null;
-
-        dhis2.de.currentDataSetId = dataSetId;
-        
-        if ( periodId && periodId != -1 && previousPeriodType && previousPeriodType == periodType )
+        if ( dhis2.de.inputSelected() && previousPeriodType && previousPeriodType == periodType )
         {
-            showLoader();
+            showLoader();            
             $( '#selectedPeriodId' ).val( periodId );
-
             loadForm();
         }
         else
@@ -1000,11 +999,9 @@ function periodSelected()
     $( '#currentPeriod' ).html( periodName );
 
     var periodId = $( '#selectedPeriodId' ).val();
-
-    if ( periodId && periodId != -1 )
-    {
-    	dhis2.de.currentPeriodId = periodId;
-    	
+	
+    if ( dhis2.de.inputSelected() )
+    {    	
         showLoader();
 
         if ( dhis2.de.dataEntryFormIsLoaded )
@@ -1213,11 +1210,14 @@ dhis2.de.getAttributesMarkup = function()
  */
 dhis2.de.inputSelected = function()
 {
+    var dataSetId = $( '#selectedDataSetId' ).val();
+    var periodId = $( '#selectedPeriodId' ).val();
+
 	if (
 	    dhis2.de.currentOrganisationUnitId &&
-	    dhis2.de.currentDataSetId &&
-	    dhis2.de.currentPeriodId &&
-	    dhis2.de.categoriesSelected ) {
+	    dataSetId && dataSetId != -1 &&
+	    periodId && periodId != -1 &&
+	    dhis2.de.categoriesSelected() ) {
 		return true;
 	}
 
