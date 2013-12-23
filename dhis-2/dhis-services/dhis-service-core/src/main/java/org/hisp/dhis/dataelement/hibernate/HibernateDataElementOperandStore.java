@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataelement;
+package org.hisp.dhis.dataelement.hibernate;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,35 +28,52 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.Query;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementOperandStore;
+
 import java.util.Collection;
 import java.util.List;
 
 /**
- * @author Abyot Asalefew
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface DataElementOperandService
+public class HibernateDataElementOperandStore
+    extends HibernateIdentifiableObjectStore<DataElementOperand>
+    implements DataElementOperandStore
 {
-    String ID = DataElementOperandService.class.getName();
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<DataElementOperand> getAllOrderedName()
+    {
+        String hql = "from DataElementOperand d";
+        Query query = getQuery( hql );
 
-    int addDataElementOperand( DataElementOperand dataElementOperand );
+        return query.list();
+    }
 
-    void deleteDataElementOperand( DataElementOperand dataElementOperand );
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<DataElementOperand> getAllOrderedName( int first, int max )
+    {
+        String hql = "from DataElementOperand d";
+        Query query = getQuery( hql );
+        query.setFirstResult( first );
+        query.setMaxResults( max );
 
-    DataElementOperand getDataElementOperand( int id );
+        return query.list();
+    }
 
-    DataElementOperand getDataElementOperandByUid( String uid );
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElementOperand> getByDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        String hql = "select d from DataElementOperand d, DataElementGroup deg where deg=:dataElementGroup and d.dataElement in elements(deg.members)";
+        Query query = getQuery( hql );
+        query.setEntity( "dataElementGroup", dataElementGroup );
 
-    List<DataElementOperand> getDataElementOperandsByUid( Collection<String> uids );
-
-    DataElementOperand getDataElementOperand( DataElementOperand dataElementOperand );
-
-    Collection<DataElementOperand> getAllDataElementOperands();
-
-    Collection<DataElementOperand> getAllDataElementOperands(int first, int max);
-
-    Collection<DataElementOperand> getDataElementOperandByDataElements( Collection<DataElement> dataElements );
-
-    Collection<DataElementOperand> getDataElementOperandByOptionCombos( Collection<DataElementCategoryOptionCombo> optionCombos );
-
-    Collection<DataElementOperand> getDataElementOperandByDataElementGroup( DataElementGroup dataElementGroup );
+        return query.list();
+    }
 }

@@ -28,15 +28,15 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.expression.ExpressionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
-
-import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.expression.ExpressionService;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 /**
  * @author Abyot Asalefew
@@ -49,13 +49,13 @@ public class DefaultDataElementOperandService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericStore<DataElementOperand> dataElementOperandStore;
+    private DataElementOperandStore dataElementOperandStore;
 
-    public void setDataElementOperandStore( GenericStore<DataElementOperand> dataElementOperandStore )
+    public void setDataElementOperandStore( DataElementOperandStore dataElementOperandStore )
     {
         this.dataElementOperandStore = dataElementOperandStore;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -88,50 +88,50 @@ public class DefaultDataElementOperandService
     {
         return dataElementOperandStore.get( id );
     }
-    
+
     public DataElementOperand getDataElementOperandByUid( String uid )
     {
         if ( StringUtils.isEmpty( uid ) )
         {
             return null;
         }
-        
+
         Matcher matcher = ExpressionService.OPERAND_UID_PATTERN.matcher( uid );
-        
+
         matcher.find();
-        
+
         String deUid = matcher.group( 1 );
         String cocUid = matcher.group( 2 );
-                
+
         DataElement dataElement = dataElementService.getDataElement( deUid );
-        
+
         if ( dataElement == null )
         {
             return null;
         }
-        
+
         DataElementCategoryOptionCombo categoryOptionCombo = null;
-        
+
         if ( cocUid != null )
         {
             categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( cocUid );
         }
-        
+
         return new DataElementOperand( dataElement, categoryOptionCombo );
     }
 
     public List<DataElementOperand> getDataElementOperandsByUid( Collection<String> uids )
     {
         List<DataElementOperand> list = new ArrayList<DataElementOperand>();
-        
+
         for ( String uid : uids )
         {
             list.add( getDataElementOperandByUid( uid ) );
         }
-        
+
         return list;
     }
-    
+
     public DataElementOperand getDataElementOperand( DataElementOperand dataElementOperand )
     {
         for ( DataElementOperand operand : getAllDataElementOperands() )
@@ -148,7 +148,13 @@ public class DefaultDataElementOperandService
 
     public Collection<DataElementOperand> getAllDataElementOperands()
     {
-        return dataElementOperandStore.getAll();
+        return dataElementOperandStore.getAllOrderedName();
+    }
+
+    @Override
+    public Collection<DataElementOperand> getAllDataElementOperands( int first, int max )
+    {
+        return dataElementOperandStore.getAllOrderedName( first, max );
     }
 
     public Collection<DataElementOperand> getDataElementOperandByDataElements( Collection<DataElement> dataElements )
@@ -180,5 +186,11 @@ public class DefaultDataElementOperandService
         }
 
         return operands;
+    }
+
+    @Override
+    public Collection<DataElementOperand> getDataElementOperandByDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        return dataElementOperandStore.getByDataElementGroup( dataElementGroup );
     }
 }
