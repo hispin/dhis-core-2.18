@@ -589,44 +589,6 @@
 		<result name="success" type="velocity">/content.vm</result>
 	</action>	
 
-	<!-- CCEM Reports -->
-	<action name="jrxmlReportsPage" class="org.hisp.dhis.ccem.reports.action.CCEMReportPageAction">
-        <result name="success" type="velocity">/main.vm</result>
-        <param name="page">/dhis-web-maintenance-ccem/jrxmlReportsPage.vm</param>
-        <param name="menu">/dhis-web-maintenance-ccem/jrxmlReportMenu.vm</param>
-        <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/ccemReports.js</param>
-        <interceptor-ref name="organisationUnitTreeStack" />
-    </action>
-	
-	<action name="ccemReportsPage" class="org.hisp.dhis.ccem.reports.action.CCEMReportPageAction">
-        <result name="success" type="velocity">/main.vm</result>
-        <param name="page">/dhis-web-maintenance-ccem/ccemReportsPage.vm</param>
-		<param name="menu">/dhis-web-maintenance-ccem/ccemReportMenu.vm</param>
-		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/ccemReports.js</param>
-		<interceptor-ref name="organisationUnitTreeStack" />
-    </action>
-    <action name="generateCCEMReport" class="org.hisp.dhis.ccem.reports.action.GenerateCCEMReportAction">
-        <result name="success" type="velocity">/content.vm</result>
-        <param name="page">/dhis-web-maintenance-ccem/ccemReportOutput.vm</param>
-        <param name="requiredAuthorities">F_CCEM_REPORT</param>
-    </action>
-	
-	<!--<action name="exportToExcel" class="org.hisp.dhis.ccem.action.ExportToExcelAction">
-		<result name="success" type="stream">
-			<param name="contentType">application/vnd.ms-excel</param>
-            <param name="inputName">inputStream</param>
-            <param name="contentDisposition">attachment;filename="${fileName}"</param>
-            <param name="bufferSize">1024</param>
-		</result>
-    </action>-->
-	
-	<action name="exportTable" class="org.hisp.dhis.ccem.reports.action.GenerateJRXMLReportAction">     
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
-			<param name="page">/dhis-web-maintenance-ccem/welcome.vm</param>		  
-    </action>
-		
-		
 	<!-- ModelType Attribute Group List -->
 	<action name="showCalatogTypeAttributeGroupList" class="org.hisp.dhis.ccem.model.action.ModelTypeAttributeGroupListAction">
 		<result name="success" type="velocity">/main.vm</result>

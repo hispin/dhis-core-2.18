@@ -393,7 +393,7 @@ public class GetFullOrganisationUnitDetailsAction implements Action
             */    
             
             
-            dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, decoc );
+            dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, decoc );
             
            // System.out.println( dataElement.getName()  + " -- " + dataValue  );
             String value = "";

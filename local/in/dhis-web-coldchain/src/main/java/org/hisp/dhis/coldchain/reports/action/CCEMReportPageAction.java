@@ -2,12 +2,14 @@ package org.hisp.dhis.coldchain.reports.action;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hisp.dhis.coldchain.reports.CCEMReport;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -25,7 +27,9 @@ import com.opensymphony.xwork2.Action;
 public class CCEMReportPageAction
     implements Action
 {
-    public static final String OWNERSHIP_GROUP_SET = "Ownership";// 2.0
+    public static final String OWNERSHIP_GROUP_SET = "Ownership";// 17.0
+    public static final String HEALTH_FACILITY_GROUP_SET = "Health Facility type of Service";// 287.0
+    public static final String COLD_STORE_GROUP_SET = "Cold Store";// 4420.0
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -75,13 +79,27 @@ public class CCEMReportPageAction
         return facilityType;
     }
     
-    private List<OrganisationUnitGroup> orgUnitGroups;
+    private List<OrganisationUnitGroup> orgUnitGroupsOwnership = new ArrayList<OrganisationUnitGroup>();
     
-    public List<OrganisationUnitGroup> getOrgUnitGroups()
+    public List<OrganisationUnitGroup> getOrgUnitGroupsOwnership()
     {
-        return orgUnitGroups;
+        return orgUnitGroupsOwnership;
+    }
+
+    private List<OrganisationUnitGroup> orgUnitGroupsHealthFacility = new ArrayList<OrganisationUnitGroup>();
+    
+    public List<OrganisationUnitGroup> getOrgUnitGroupsHealthFacility()
+    {
+        return orgUnitGroupsHealthFacility;
     }
     
+    private List<OrganisationUnitGroup> orgUnitGroupsColdStore = new ArrayList<OrganisationUnitGroup>();
+    
+    public List<OrganisationUnitGroup> getOrgUnitGroupsColdStore()
+    {
+        return orgUnitGroupsColdStore;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -90,8 +108,10 @@ public class CCEMReportPageAction
     public String execute() throws Exception
     {
         // System.out.println("fff  "+facilityType);
-        orgUnitGroupList = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
-            .getAllOrganisationUnitGroups() );
+        orgUnitGroupList = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
+        
+        Collections.sort( orgUnitGroupList, new IdentifiableObjectNameComparator() );
+        
         //CCEMReport ccem = new CCEMReport();
         // if(ccem.getCategoryType() == facilityType)
         {
@@ -100,14 +120,42 @@ public class CCEMReportPageAction
             getCCEMReportList();
         }
         
+        // Health Facility type of Service
+        Constant healthFacilityGroupConstant = constantService.getConstantByName( HEALTH_FACILITY_GROUP_SET );
+        
+        OrganisationUnitGroupSet organisationUnitGroupSetHealthFacility = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) healthFacilityGroupConstant.getValue() );
+        
+        if( organisationUnitGroupSetHealthFacility != null )
+        {
+            orgUnitGroupsHealthFacility = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSetHealthFacility.getOrganisationUnitGroups() );            
+            Collections.sort( orgUnitGroupsHealthFacility, new IdentifiableObjectNameComparator() );
+        }
+
+               
+        
+        // Ownership
         Constant ownerShipGroupConstant = constantService.getConstantByName( OWNERSHIP_GROUP_SET );
         
-        OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) ownerShipGroupConstant.getValue() );
+        OrganisationUnitGroupSet organisationUnitGroupSetOwnership = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) ownerShipGroupConstant.getValue() );
         
-        if( organisationUnitGroupSet != null )
+        if( organisationUnitGroupSetOwnership != null )
         {
-            orgUnitGroups = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupSet.getOrganisationUnitGroups());            
+            orgUnitGroupsOwnership = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupSetOwnership.getOrganisationUnitGroups());            
+            Collections.sort( orgUnitGroupsOwnership, new IdentifiableObjectNameComparator() );
         }
+        
+ 
+        // Cold Store
+        Constant coldStoreGroupConstant = constantService.getConstantByName( COLD_STORE_GROUP_SET );
+        
+        OrganisationUnitGroupSet organisationUnitGroupSetColdStore = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) coldStoreGroupConstant.getValue() );
+        
+        if( organisationUnitGroupSetColdStore != null )
+        {
+            orgUnitGroupsColdStore = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSetColdStore.getOrganisationUnitGroups() );            
+            Collections.sort( orgUnitGroupsColdStore, new IdentifiableObjectNameComparator() );
+        }        
+        
         
         /*
         for( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
