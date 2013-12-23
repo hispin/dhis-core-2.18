@@ -202,13 +202,6 @@ public abstract class AbstractPersonService
 
         person.setName( patient.getName() );
 
-        Contact contact = new Contact();
-
-        if ( contact.getPhoneNumber() != null )
-        {
-            person.setContact( contact );
-        }
-
         Collection<Relationship> relationshipsForPatient = relationshipService.getRelationshipsForPatient( patient );
 
         for ( Relationship relationshipPatient : relationshipsForPatient )
