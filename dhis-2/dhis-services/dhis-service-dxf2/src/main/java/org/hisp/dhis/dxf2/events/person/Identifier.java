@@ -41,6 +41,8 @@ public class Identifier
 {
     private String displayName;
 
+    private String identifier;
+
     private String type;
 
     private String value;
@@ -54,8 +56,9 @@ public class Identifier
         this.value = value;
     }
 
-    public Identifier( String type, String value )
+    public Identifier( String identifier, String type, String value )
     {
+        this.identifier = identifier;
         this.type = type;
         this.value = value;
     }
@@ -70,6 +73,18 @@ public class Identifier
     public void setDisplayName( String name )
     {
         this.displayName = name;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+    public void setIdentifier( String identifier )
+    {
+        this.identifier = identifier;
     }
 
     @JsonProperty
@@ -105,6 +120,7 @@ public class Identifier
         Identifier that = (Identifier) o;
 
         if ( displayName != null ? !displayName.equals( that.displayName ) : that.displayName != null ) return false;
+        if ( identifier != null ? !identifier.equals( that.identifier ) : that.identifier != null ) return false;
         if ( type != null ? !type.equals( that.type ) : that.type != null ) return false;
         if ( value != null ? !value.equals( that.value ) : that.value != null ) return false;
 
@@ -115,15 +131,18 @@ public class Identifier
     public int hashCode()
     {
         int result = displayName != null ? displayName.hashCode() : 0;
+        result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 
-    @Override public String toString()
+    @Override
+    public String toString()
     {
         return "Identifier{" +
             "displayName='" + displayName + '\'' +
+            ", identifier='" + identifier + '\'' +
             ", type='" + type + '\'' +
             ", value='" + value + '\'' +
             '}';
