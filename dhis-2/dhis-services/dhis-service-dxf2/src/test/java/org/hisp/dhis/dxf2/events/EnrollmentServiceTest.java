@@ -28,16 +28,8 @@ package org.hisp.dhis.dxf2.events;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
 import org.hamcrest.CoreMatchers;
-import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.events.enrollment.Enrollment;
 import org.hisp.dhis.dxf2.events.enrollment.EnrollmentService;
@@ -57,11 +49,19 @@ import org.hisp.dhis.program.ProgramStage;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class EnrollmentServiceTest
-    extends DhisTest
+    extends DhisSpringTest
 {
     @Autowired
     private PersonService personService;
@@ -97,9 +97,9 @@ public class EnrollmentServiceTest
         manager.save( organisationUnitB );
 
         maleA = createPatient( 'A', organisationUnitA );
-        maleB = createPatient( 'B',  organisationUnitB );
+        maleB = createPatient( 'B', organisationUnitB );
         femaleA = createPatient( 'C', organisationUnitA );
-        femaleB = createPatient( 'D',  organisationUnitB );
+        femaleB = createPatient( 'D', organisationUnitB );
 
         manager.save( maleA );
         manager.save( maleB );
@@ -122,12 +122,6 @@ public class EnrollmentServiceTest
         // mocked format
         I18nFormat mockFormat = mock( I18nFormat.class );
         enrollmentService.setFormat( mockFormat );
-    }
-
-    @Override
-    public boolean emptyDatabaseAfterTest()
-    {
-        return true;
     }
 
     @Test
@@ -327,5 +321,28 @@ public class EnrollmentServiceTest
         importSummary = enrollmentService.saveEnrollment( enrollment );
         assertEquals( ImportStatus.ERROR, importSummary.getStatus() );
         assertThat( importSummary.getDescription(), CoreMatchers.containsString( "already have an active enrollment in program" ) );
+    }
+
+    @Test
+    public void testUpdatePersonShouldKeepEnrollments()
+    {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setPerson( maleA.getUid() );
+        enrollment.setProgram( programA.getUid() );
+        enrollment.setDateOfIncident( new Date() );
+        enrollment.setDateOfEnrollment( new Date() );
+
+        ImportSummary importSummary = enrollmentService.saveEnrollment( enrollment );
+        assertEquals( ImportStatus.SUCCESS, importSummary.getStatus() );
+
+        Person person = personService.getPerson( maleA );
+        person.setName( "Changed Name" );
+        personService.updatePerson( person );
+
+        List<Enrollment> enrollments = enrollmentService.getEnrollments( person ).getEnrollments();
+
+        assertEquals( 1, enrollments.size() );
+        assertEquals( maleA.getUid(), enrollments.get( 0 ).getPerson() );
+        assertEquals( programA.getUid(), enrollments.get( 0 ).getProgram() );
     }
 }
