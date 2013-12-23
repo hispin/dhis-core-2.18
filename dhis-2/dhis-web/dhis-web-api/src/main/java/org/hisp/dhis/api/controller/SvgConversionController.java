@@ -61,7 +61,7 @@ public class SvgConversionController
     public void toPng( @RequestBody String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {
-        String name = filename != null ? CodecUtils.filenameEncode( filename ) : "file.png";
+        String name = filename != null ? ( CodecUtils.filenameEncode( filename ) + ".png" ) : "file.png";
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, name, true );        
         
@@ -72,7 +72,7 @@ public class SvgConversionController
     public void toPdf( @RequestBody String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {
-        String name = filename != null ? CodecUtils.filenameEncode( filename ) : "file.pdf";
+        String name = filename != null ? ( CodecUtils.filenameEncode( filename ) + ".pdf" ) : "file.pdf";
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.NO_CACHE, name, true );        
         
