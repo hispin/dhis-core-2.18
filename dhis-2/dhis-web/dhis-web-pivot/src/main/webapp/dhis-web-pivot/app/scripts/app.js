@@ -2489,7 +2489,7 @@ Ext.onReady( function() {
 		ns.app.stores.indicatorGroup = indicatorGroupStore;
 
 		dataElementAvailableStore = Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'dataElementId', 'optionComboId', 'operandName'],
+			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
 				reader: {
@@ -2536,10 +2536,10 @@ Ext.onReady( function() {
 				if (Ext.isString(uid)) {
 					this.setProxy({
 						type: 'ajax',
-						url: ns.core.init.contextPath + '/dhis-web-commons-ajax-json/getOperands.action?uid=' + uid,
+						url: ns.core.init.contextPath + '/api/dataElementOperands.json?links=false&dataElementGroup=' + uid,
 						reader: {
 							type: 'json',
-							root: 'operands'
+							root: 'dataElementOperands'
 						}
 					});
 
@@ -2547,8 +2547,7 @@ Ext.onReady( function() {
 						scope: this,
 						callback: function() {
 							this.each(function(r) {
-								r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
-								r.set('name', r.data.operandName);
+								r.set('id', r.data.id.split('.').join('-'));
 							});
 
 							ns.core.web.multiSelect.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});

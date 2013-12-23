@@ -6473,7 +6473,7 @@ Ext.onReady( function() {
 		});
 
 		dataElementsByGroupStore = Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'dataElementId', 'optionComboId', 'operandName'],
+			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
 				url: '',
@@ -6498,10 +6498,10 @@ Ext.onReady( function() {
 				var path;
 
 				if (Ext.isString(uid)) {
-					path = 'dataElementGroups/' + uid + '.json?domainType=aggregate&links=false&paging=false';
+					path = '/dataElementGroups/' + uid + '.json?domainType=aggregate&links=false&paging=false';
 				}
 				else if (uid === 0) {
-					path = 'dataElements.json?domainType=aggregate&paging=false&links=false';
+					path = '/dataElements.json?domainType=aggregate&paging=false&links=false';
 				}
 
 				if (!path) {
@@ -6511,7 +6511,7 @@ Ext.onReady( function() {
 
 				this.setProxy({
 					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.finals.url.path_api + path,
+					url: gis.init.contextPath + '/api' + path,
 					reader: {
 						type: 'json',
 						root: 'dataElements'
@@ -6535,10 +6535,10 @@ Ext.onReady( function() {
 				if (Ext.isString(uid)) {
 					this.setProxy({
 						type: 'ajax',
-						url: gis.init.contextPath + '/dhis-web-commons-ajax-json/getOperands.action?uid=' + uid,
+						url: gis.init.contextPath + '/api/dataElementOperands.json?links=false&dataElementGroup=' + uid,
 						reader: {
 							type: 'json',
-							root: 'operands'
+							root: 'dataElementOperands'
 						}
 					});
 
@@ -6547,8 +6547,7 @@ Ext.onReady( function() {
 							scope: this,
 							callback: function() {
 								this.each(function(r) {
-									r.set('id', r.data.dataElementId + '-' + r.data.optionComboId);
-									r.set('name', r.data.operandName);
+                                    r.set('id', r.data.id.split('.').join('-'));
 								});
 
 								this.sortStore();
