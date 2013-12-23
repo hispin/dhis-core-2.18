@@ -577,11 +577,10 @@ function clearEntryForm()
 function loadForm()
 {
 	var dataSetId = dhis2.de.currentDataSetId;
-	var multiOrg = !!$( '#selectedDataSetId :selected' ).data( 'multiorg' );
 	
 	dhis2.de.currentOrganisationUnitId = selection.getSelected()[0];
 
-    if ( !multiOrg && dhis2.de.storageManager.formExists( dataSetId ) )
+    if ( !dhis2.de.multiOrganisationUnit && dhis2.de.storageManager.formExists( dataSetId ) )
     {
         log( 'Loading form locally: ' + dataSetId );
 
@@ -589,16 +588,11 @@ function loadForm()
 
         $( '#contentDiv' ).html( html );
 
-        dhis2.de.multiOrganisationUnit = !!$( '.formSection' ).data( 'multiorg' );
-
-        if ( !dhis2.de.multiOrganisationUnit )
-        {
-            if ( dhis2.de.dataSets[dataSetId].renderAsTabs ) {
-                $( "#tabs" ).tabs();
-            }
-
-            enableSectionFilter();
+        if ( dhis2.de.dataSets[dataSetId].renderAsTabs ) {
+            $( "#tabs" ).tabs();
         }
+
+        enableSectionFilter();
 
         loadDataValues();
         insertOptionSets();
@@ -610,12 +604,10 @@ function loadForm()
         $( '#contentDiv' ).load( 'loadForm.action', 
         {
             dataSetId : dataSetId,
-            multiOrganisationUnit: multiOrg ? getCurrentOrganisationUnit() : 0
+            multiOrganisationUnit: dhis2.de.multiOrganisationUnit ? getCurrentOrganisationUnit() : 0
         }, 
         function() 
         {
-        	dhis2.de.multiOrganisationUnit = !!$( '.formSection' ).data( 'multiorg' );
-
             if ( !dhis2.de.multiOrganisationUnit )
             {
                 if ( dhis2.de.dataSets[dataSetId].renderAsTabs ) {
@@ -954,6 +946,8 @@ function dataSetSelected()
         clearSectionFilters();
 
         dhis2.de.currentCategories = dhis2.de.getCategories( dataSetId );
+        
+        dhis2.de.multiOrganisationUnit = !!$( '#selectedDataSetId :selected' ).data( 'multiorg' );
 
         var attributeMarkup = dhis2.de.getAttributesMarkup();
         $( '#attributeComboDiv' ).html( attributeMarkup );
