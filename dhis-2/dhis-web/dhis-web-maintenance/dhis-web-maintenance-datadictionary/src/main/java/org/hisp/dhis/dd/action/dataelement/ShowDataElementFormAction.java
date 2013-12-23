@@ -217,7 +217,7 @@ public class ShowDataElementFormAction
             .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
         dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
-            .getAllDataElementCategoryCombos() );
+            .getDisaggregationCategoryCombos() );
 
         dataElementGroups = dataElementService.getAllDataElementGroups();
 
