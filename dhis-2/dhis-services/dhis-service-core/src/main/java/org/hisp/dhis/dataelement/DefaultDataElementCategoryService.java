@@ -194,9 +194,39 @@ public class DefaultDataElementCategoryService
         return i18n( i18nService, categoryStore.getCategoriesByDimensionType( DataElementCategoryCombo.DIMENSION_TYPE_DISAGGREGATION ) );
     }
 
+    public Collection<DataElementCategory> getDisaggregationDataDimensionCategories()
+    {
+        Collection<DataElementCategory> categories = getDisaggregationCategories();
+        
+        FilterUtils.filter( categories, new Filter<DataElementCategory>()
+        {
+            public boolean retain( DataElementCategory category )
+            {
+                return category != null && category.isDataDimension();
+            }            
+        } );
+        
+        return categories;
+    }
+
     public Collection<DataElementCategory> getAttributeCategories()
     {
         return i18n( i18nService, categoryStore.getCategoriesByDimensionType( DataElementCategoryCombo.DIMENSION_TYPE_ATTTRIBUTE ) );        
+    }
+
+    public Collection<DataElementCategory> getAttributeDataDimensionCategories()
+    {
+        Collection<DataElementCategory> categories = getAttributeCategories();
+
+        FilterUtils.filter( categories, new Filter<DataElementCategory>()
+        {
+            public boolean retain( DataElementCategory category )
+            {
+                return category != null && category.isDataDimension();
+            }            
+        } );
+        
+        return categories;        
     }
     
     @Override
