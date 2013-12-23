@@ -2706,7 +2706,7 @@ Ext.onReady( function() {
 				{
 					dataIndex: 'name',
 					sortable: false,
-					width: windowCmpWidth - 108,
+					width: windowCmpWidth - 88,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
 							var element = Ext.get(record.data.id);
@@ -2731,7 +2731,7 @@ Ext.onReady( function() {
 				{
 					xtype: 'actioncolumn',
 					sortable: false,
-					width: 100,
+					width: 80,
 					items: [
 						{
 							iconCls: 'gis-grid-row-icon-edit',
@@ -2832,29 +2832,6 @@ Ext.onReady( function() {
 											window.show();
 										}
 									});
-								}
-							}
-						},
-						{
-							iconCls: 'gis-grid-row-icon-dashboard',
-							getClass: function(value, metaData, record) {
-								return 'tooltip-favorite-dashboard' + (!record.data.access.read ? ' disabled' : '');
-							},
-							handler: function(grid, rowIndex) {
-								var record = this.up('grid').store.getAt(rowIndex),
-									message;
-
-								if (record.data.access.read) {
-									message = 'Add to dashboard?\n\n' + record.data.name;
-
-									if (confirm(message)) {
-										Ext.Ajax.request({
-											url: gis.init.contextPath + gis.conf.finals.url.path_module + 'addMapViewToDashboard.action',
-											params: {
-												id: record.data.id
-											}
-										});
-									}
 								}
 							}
 						},
