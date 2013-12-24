@@ -74,6 +74,7 @@ public class ContextUtils
     public static final String CONTENT_TYPE_JPG = "image/jpeg";
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
     public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript; charset=UTF-8";
+    public static final String CONTENT_TYPE_FORM_ENCODED = "application/x-www-form-urlencoded";
 
     public static final String HEADER_USER_AGENT = "User-Agent";
     public static final String HEADER_CACHE_CONTROL = "Cache-Control";
