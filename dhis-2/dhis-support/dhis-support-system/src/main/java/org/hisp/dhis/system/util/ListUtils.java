@@ -170,6 +170,24 @@ public class ListUtils
         
         return list;
     }
+
+    /**
+     * Returns a List with the given items.
+     * 
+     * @param items the items which should be included in the List.
+     * @return a List.
+     */
+    public static <T> List<T> getList( T... items )
+    {
+        List<T> list = new ArrayList<T>();
+        
+        for ( T item : items )
+        {
+            list.add( item );
+        }
+        
+        return list;
+    }
     
     /**
      * Removes empty strings from the given list. Empty includes null.
