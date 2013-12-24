@@ -8,19 +8,26 @@
     <li><a href="equipmentTypeList.action">$i18n.getString( "equipmenttype" )</a></li>
 </ul>
 
+<h2>$i18n.getString( "aggregation_builder" )</h2>
+<ul>
+    <li><a href="aggregationQueryList.action">$i18n.getString( "aggregation_query_list" )</a></li>
+</ul>
+
 <h2>$i18n.getString( "transfer" )</h2>
 <ul>
 	<li><a href="transferFacilityDataForm.action">$i18n.getString( "transfer_facility_data" )</a></li>
 </ul>
 
-<h2>$i18n.getString( "coldchain_management" )</h2>
-<ul>
-	<li><a href="../dhis-web-coldchain/index.action">$i18n.getString( "equipment_manager" )</a></li>
-</ul>
 <h2>$i18n.getString( "import_export_data" )</h2>
 <ul>
 	<li><a href="importDataForm.action">$i18n.getString( "import_data" )</a></li>
 </ul>
+
+<h2>$i18n.getString( "coldchain_management" )</h2>
+<ul>
+    <li><a href="../dhis-web-coldchain/index.action">$i18n.getString( "equipment_manager" )</a></li>
+</ul>
+
 <!--
 <h2>$i18n.getString( "ccem_entry" )</h2>
 <ul>

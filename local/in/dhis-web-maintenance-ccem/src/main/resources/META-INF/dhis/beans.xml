@@ -733,6 +733,12 @@
         <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
         <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     </bean> 
-		
+
+    <!--  Aggregation Engine -->
+     <bean id="org.hisp.dhis.ccem.aggregation.action.AggregationQueryListAction"
+        class="org.hisp.dhis.ccem.aggregation.action.AggregationQueryListAction"
+        scope="prototype">
+        <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+    </bean>   
 	
 </beans>

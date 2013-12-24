@@ -74,6 +74,11 @@
             <artifactId>dhis-in-service-coldchain</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hisp.dhis</groupId>
+            <artifactId>dhis-in-service-lookup</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 	
 		<!-- Other -->
 		<dependency>
