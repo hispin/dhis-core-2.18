@@ -19,20 +19,20 @@ function getDataSetReport()
         offset: dhis2.dsr.currentPeriodOffset
     };
     
-    var groups = "";
+    var dims = [];
     
     $( "[name='groupSet']" ).each( function( index, value ) {
+    	var dim = $( this ).data( "uid" );
     	var item = $( this ).val();
-    	if ( item )
+    	
+    	if ( dim && item )
     	{
-    		groups += item + ";";
+    		var dimQuery = dim + ":" + item;
+    		dims.push( dimQuery );
     	}
     } );
     
-    if ( groups )
-    {
-    	dataSetReport["groups"] = groups;
-    }
+    dataSetReport.dimension = dims;
     
     return dataSetReport;
 }
@@ -140,7 +140,15 @@ function displayDataSetReport( dataSetReport )
     delete dataSetReport.periodType;
     delete dataSetReport.offset;
     
-    $.get( 'generateDataSetReport.action', dataSetReport, function( data ) {
+    var url = "generateDataSetReport.action?ds=" + dataSetReport.ds +
+    	"&pe=" + dataSetReport.pe + "&ou=" + dataSetReport.ou +
+    	"&selectedUnitOnly=" + dataSetReport.selectedUnitOnly;
+    
+    $.each( dataSetReport.dimension, function( inx, val ) {
+    	url += "&dimension=" + val;
+    } );
+    
+    $.get( url, function( data ) {
     	$( '#content' ).html( data );
     	hideLoader();
     	showContent();

@@ -28,12 +28,14 @@ package org.hisp.dhis.reporting.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.analytics.DataQueryParams.DIMENSION_NAME_SEP;
 import static org.hisp.dhis.dataset.DataSet.TYPE_CUSTOM;
 import static org.hisp.dhis.dataset.DataSet.TYPE_SECTION;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -50,8 +52,6 @@ import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -66,9 +66,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class GenerateDataSetReportAction
     implements Action
-{
-    private static final String SEP = ";";
-    
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -101,13 +99,6 @@ public class GenerateDataSetReportAction
         this.organisationUnitService = organisationUnitService;
     }
     
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
     private PeriodService periodService;
     
     public void setPeriodService( PeriodService periodService )
@@ -157,11 +148,11 @@ public class GenerateDataSetReportAction
         this.ou = ou;
     }
     
-    private String groups;    
+    private Set<String> dimension;
 
-    public void setGroups( String groups )
+    public void setDimension( Set<String> dimension )
     {
-        this.groups = groups;
+        this.dimension = dimension;
     }
 
     private boolean selectedUnitOnly;
@@ -259,19 +250,17 @@ public class GenerateDataSetReportAction
      
         selectedOrgunit = organisationUnitService.getOrganisationUnit( ou );
 
-        Set<OrganisationUnitGroup> ouGroups = new HashSet<OrganisationUnitGroup>();
-            
-        if ( groups != null && groups.split( SEP ).length > 0 )
+        Map<String, String> dimensions = new HashMap<String, String>();
+        
+        if ( dimension != null )
         {
-            String[] groupIds = groups.split( SEP );
-            
-            for ( String groupId : groupIds )
-            {                
-                OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( groupId );
+            for ( String dim : dimension )
+            {
+                String[] dims = dim.split( DIMENSION_NAME_SEP );
                 
-                if ( group != null )
+                if ( dims.length == 2 && dims[0] != null && dims[1] != null )
                 {
-                    ouGroups.add( group );
+                    dimensions.put( dims[0], dims[1] );
                 }
             }
         }
@@ -284,20 +273,20 @@ public class GenerateDataSetReportAction
         {
             if ( type != null )
             {
-                grids = dataSetReportService.getCustomDataSetReportAsGrid( selectedDataSet, selectedPeriod, selectedOrgunit, ouGroups, selectedUnitOnly, format );
+                grids = dataSetReportService.getCustomDataSetReportAsGrid( selectedDataSet, selectedPeriod, selectedOrgunit, dimensions, selectedUnitOnly, format );
             }
             else
             {
-                customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, ouGroups, selectedUnitOnly, format );
+                customDataEntryFormCode = dataSetReportService.getCustomDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimensions, selectedUnitOnly, format );
             }
         }
         else if ( TYPE_SECTION.equals( dataSetType ) )
         {
-            grids = dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, ouGroups, selectedUnitOnly, format, i18n );
+            grids = dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimensions, selectedUnitOnly, format, i18n );
         }
         else
         {
-            grids = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, ouGroups, selectedUnitOnly, format, i18n );
+            grids = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, dimensions, selectedUnitOnly, format, i18n );
         }
         
         return type != null ? type : dataSetType;
