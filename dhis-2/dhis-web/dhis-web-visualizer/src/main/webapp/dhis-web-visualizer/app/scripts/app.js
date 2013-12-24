@@ -1356,10 +1356,9 @@ Ext.onReady( function() {
 				svg = svg.parent().dom.innerHTML;
 
 				Ext.query('#svgField')[0].value = svg;
-				Ext.query('#typeField')[0].value = type;
-				Ext.query('#nameField')[0].value = 'test';
+				Ext.query('#filenameField')[0].value = 'test';
 
-				form.action = '../exportImage.action';
+				form.action = '../../api/svg.' + type;
 				form.submit();
 			};
 		}());

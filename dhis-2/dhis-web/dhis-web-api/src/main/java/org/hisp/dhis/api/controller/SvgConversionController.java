@@ -45,7 +45,6 @@ import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,8 +56,8 @@ public class SvgConversionController
     @Autowired
     private ContextUtils contextUtils;
     
-    @RequestMapping( value = "/svg.png", method = RequestMethod.POST, consumes = ContextUtils.CONTENT_TYPE_XML )
-    public void toPng( @RequestBody String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
+    @RequestMapping( value = "/svg.png", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_XML, ContextUtils.CONTENT_TYPE_FORM_ENCODED } )
+    public void toPng( @RequestParam String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {
         String name = filename != null ? ( CodecUtils.filenameEncode( filename ) + ".png" ) : "file.png";
@@ -68,8 +67,8 @@ public class SvgConversionController
         convertToPng( svg, response.getOutputStream() );
     }
 
-    @RequestMapping( value = "/svg.pdf", method = RequestMethod.POST, consumes = ContextUtils.CONTENT_TYPE_XML )
-    public void toPdf( @RequestBody String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
+    @RequestMapping( value = "/svg.pdf", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_XML, ContextUtils.CONTENT_TYPE_FORM_ENCODED } )
+    public void toPdf( @RequestParam String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {
         String name = filename != null ? ( CodecUtils.filenameEncode( filename ) + ".pdf" ) : "file.pdf";
