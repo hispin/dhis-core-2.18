@@ -3,6 +3,7 @@ package org.hisp.dhis.pbf.api;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;

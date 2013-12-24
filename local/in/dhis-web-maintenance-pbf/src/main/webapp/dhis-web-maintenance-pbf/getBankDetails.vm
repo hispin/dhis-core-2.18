@@ -1,0 +1,210 @@
+<script >
+$(function() {
+$("#bankDetails").tablesorter(); 
+$("#openAddBankDetail").button()
+			.click(function() {	
+			$( "#addBankDetail" ).dialog('option', 'title', 'Add Bank Detail');
+           	$('#dataSetId option[value=-1]').attr('selected','selected');
+			$("#dataSetId ").removeAttr('disabled');
+			$("#bank").val('');			
+			$("#branchName").val('');			
+			$("#accountName").val('');
+			$("#accountNumber").val('');
+			
+			$( "#addBankDetail" ).dialog( "open" );
+});
+			
+			
+$( "#addBankDetail" ).dialog({
+			width: 320,
+			autoOpen: false,			
+			modal: true,
+			buttons: {
+			"Save": function() {
+						
+                    var dataValue = {
+        		        			'dataSetId' : $("#dataSetId").val(),
+        		        			'bank' : $("#bank").val(),
+        		        			'branchName' : $("#branchName").val(),
+        							'accountName' : $("#accountName").val(),
+									'orgUnitUid': $("#orgUnitUid").val(),
+									'accountNumber' : $("#accountNumber").val()
+        		    			};
+								jQuery.ajax( {
+                                url: 'addBankData.action', 
+								data: dataValue,
+                                dataType: 'json',
+                                success: handleSuccess,
+                                error: handleError
+                            } );
+                    	
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			close: function() {				
+			}
+		});
+		 function handleSuccess( json )
+	    {
+			$('#dataSetId option[value=-1]').attr('selected','selected');
+			$("#dataSetId ").removeAttr('disabled');
+			$("#bank").val('');			
+			$("#branchName").val('');			
+			$("#accountName").val('');
+			$("#accountNumber").val('');
+			
+			loadBankDetails();
+			$( "#addBankDetail" ).dialog( "close" );
+	    }
+	    function handleError( json )
+	    {
+			$('#dataSetId option[value=-1]').attr('selected','selected');
+			$("#dataSetId ").removeAttr('disabled');
+			$("#bank").val('');			
+			$("#branchName").val('');			
+			$("#accountName").val('');
+			$("#accountNumber").val('');
+			loadBankDetails();
+			$( "#addBankDetail" ).dialog( "close" );
+	    }
+});
+
+	function deleteBankData( organisationUnitId, dataSetId)
+	{
+		var dataValue = {
+		        		'organisationUnitId' : organisationUnitId ,														
+						'dataSetId' : dataSetId
+		    			};
+									
+		jQuery.ajax( {
+	                url: 'deleteBankData.action', 
+					data: dataValue,
+	                dataType: 'json',
+					success: handleSuccess,
+	                error: handleError
+	              } );
+	    function handleSuccess( json )
+	    {
+			loadBankDetails();			
+	    }
+	    function handleError( json )
+	    {
+			loadBankDetails();			
+	    }
+	}
+
+	function editBankData( organisationUnitId, dataSetId, bank, branchName, accountName, accountNumber)
+	{
+		$( "#addBankDetail" ).dialog('option', 'title', 'Edit Bank Detail');
+		$('#dataSetId option[value='+dataSetId+']').attr('selected','selected');
+		$('#dataSetId').attr('disabled','disabled');
+		$('#bank').val(bank);
+		$('#branchName').val(branchName);		
+		$('#accountName').val(accountName);
+		$('#accountNumber').val(accountNumber);
+		
+		$( "#addBankDetail" ).dialog( "open" );
+	}
+	
+function organisationUnitSelected( orgUnits, orgUnitNames )
+{
+		setFieldValue("orgUnit", orgUnitNames[0]);
+		setFieldValue("orgUnitUid", orgUnits[0]);
+		loadBankDetails();
+}
+
+function loadBankDetails()
+{
+	$('#loadBankDetails').load("loadbankDetails.action", 
+            				{
+            					dataElementName : $('#dataElementName').val(),
+								orgUnitUid : $("#orgUnitUid").val()
+            				}
+            				, function( ){            										
+        				});  	
+}
+selection.setListenerFunction( organisationUnitSelected );
+</script>
+
+<table style="width:100%" id="bankDetails">
+	<thead >
+		<tr >
+			<th >PBF Type</th>
+			<th >Bank</th>
+			<th >Branch Name</th>
+			<th >Account Name</th>
+			<th >Account Number</th>
+			##if( $updateAuthority == 'Yes' )
+				<th >Operations</th>
+			##end
+        </tr>
+	</thead>
+	<tbody id="list">
+		#set( $mark = false )
+		#foreach( $bankDetails in $bankDetailsList )
+			#if( $mark )
+                #set( $mark = false )
+			#else
+				#set( $mark = true )
+			#end
+            <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8"  #end>
+				<td >$!bankDetails.dataSet.name</td>
+				<td >$!bankDetails.bank</td>
+				<td >$!bankDetails.branchName</td>
+				<td >$!bankDetails.accountName</td>
+				<td >$!bankDetails.accountNumber</td>
+			##if($updateAuthority == 'Yes')
+	            <td>
+					<a href="javascript:deleteBankData('$bankDetails.organisationUnit.id','$bankDetails.dataSet.id')">
+						<img src="images/delete.png" width="17px"/>
+					</a>
+					<a href="javascript:editBankData('$bankDetails.organisationUnit.uid','$bankDetails.dataSet.id','$bankDetails.bank','$bankDetails.branchName','$bankDetails.accountName','$bankDetails.accountNumber')">
+						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/>
+					</a>				
+				</td>
+			##end
+        </tr>
+		#end
+    </tbody>
+</table>
+
+<div id="addBankDetail" title="Add New Bank Detail">
+	<table style="width:100%;table-layout:fixed;">
+		<tr >
+			<td style="width:40%;">PBF Type</td>
+			<td style="width:60%;">
+				<select id="dataSetId" style="width:100%;">
+					<option value="-1">Select PBF Type</option>
+					#foreach( $dataSet in $dataSets )
+						<option value="$dataSet.id">$dataSet.name</option>
+					#end
+                </select>
+			</td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Bank</td>
+            <td style="width:60%;">
+                <select id="bank" style="width:100%;">
+                    <option value="-1">Select Bank</option>
+                    #foreach( $bank in $banks )
+                        <option value="$bank">$bank</option>
+                    #end
+                </select>
+            </td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Branch Name</td>
+			<td style="width:60%;"><input type="text" id="branchName" style="width:100%;"/></td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Account Name</td>
+			<td style="width:60%;"><input type="text" id="accountName" style="width:100%;"/></td>
+        </tr>
+        <tr >
+            <td style="width:40%;">Account Number</td>
+            <td style="width:60%;"><input type="text" id="accountNumber" style="width:100%;"/></td>
+        </tr>
+    </table>
+</div>

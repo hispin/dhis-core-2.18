@@ -41,27 +41,13 @@
 		</action>
 		
 		<!-- Load Bank Details -->
-		<action name="bankDetailsManagement" class="org.hisp.dhis.pbf.action.NoAction">
+        <action name="bankDetailsManagement" class="org.hisp.dhis.pbf.action.LoadBankDetailsAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-maintenance-pbf/loadBankData.vm</param>
             <param name="menu">/dhis-web-maintenance-pbf/tariffMenu.vm</param>
             <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
         </action>
-        
-        <action name="loadbankDetails" class="org.hisp.dhis.pbf.action.LoadBankDetailsAction">
-            <result name="success" type="velocity">/content.vm</result>
-            <param name="page">/dhis-web-maintenance-pbf/getBankDetails.vm</param>            
-        </action>
 		
-		<action name="addBankData" class="org.hisp.dhis.pbf.action.AddBankDataAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>					
-		</action>
-		<action name="deleteBankData" class="org.hisp.dhis.pbf.action.DeleteBankDataAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_BANKDATA_UPDATE</param>					
-		</action>
 	</package>
 	
 </struts>

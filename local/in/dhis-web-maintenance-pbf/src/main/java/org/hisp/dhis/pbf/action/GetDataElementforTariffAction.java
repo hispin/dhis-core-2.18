@@ -112,10 +112,10 @@ public class GetDataElementforTariffAction
             Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
             for ( AttributeValue attValue : attrValueSet )
             {
-                if ( dataElementList != null && !( dataElementList.contains( "\"" + de.getName() + "\"" ) )
+                if ( dataElementList != null && !( dataElementList.contains( "{\"name\" : \"" + de.getName() + "\"}" ) )
                     && attValue.getAttribute().getId() == tariffDataElement.getValue() )
                 {
-                    dataElementList.add( "\"" + de.getName() + "\"" );
+                    dataElementList.add( "{\"name\" : \"" + de.getName() + "\"}" );
                 }
             }
         }

@@ -86,17 +86,4 @@
         <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
     </bean>
     
-    <!-- Add Bank Detail -->
-	<bean id="org.hisp.dhis.pbf.action.AddBankDataAction" class="org.hisp.dhis.pbf.action.AddBankDataAction" scope="prototype">
-		<property name="bankDetailsService" ref="org.hisp.dhis.pbf.api.BankDetailsService" />		
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />		
-    </bean>
-    
-    <!-- Add Bank Detail -->
-	<bean id="org.hisp.dhis.pbf.action.DeleteBankDataAction" class="org.hisp.dhis.pbf.action.DeleteBankDataAction" scope="prototype">
-		<property name="bankDetailsService" ref="org.hisp.dhis.pbf.api.BankDetailsService" />		
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />		
-    </bean>
 </beans>

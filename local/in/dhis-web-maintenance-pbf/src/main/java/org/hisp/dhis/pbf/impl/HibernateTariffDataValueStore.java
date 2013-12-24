@@ -6,6 +6,7 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -99,6 +100,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         Criteria criteria = session.createCriteria( TariffDataValue.class );
         criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
+        criteria.addOrder(Order.asc("dataSet"));
 
         return criteria.list();
     }

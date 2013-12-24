@@ -1,7 +1,9 @@
 package org.hisp.dhis.pbf.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -15,7 +17,7 @@ import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddTariffDataAction
+public class ValidateTariffDataAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -62,9 +64,7 @@ public class AddTariffDataAction
     // -------------------------------------------------------------------------
 
     private String pbfType;
-
-    private String tariff;
-
+    
     private String startDate;
 
     private String endDate;
@@ -88,11 +88,6 @@ public class AddTariffDataAction
         this.pbfType = pbfType;
     }
 
-    public void setTariff( String tariff )
-    {
-        this.tariff = tariff;
-    }
-
     public void setStartDate( String startDate )
     {
         this.startDate = startDate;
@@ -102,16 +97,37 @@ public class AddTariffDataAction
     {
         this.endDate = endDate;
     }
+    public String getPbfType() {
+		return pbfType;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public String getOrgUnitUid() {
+		return orgUnitUid;
+	}
+
+	private String message;
+    
+    public String getMessage() {
+		return message;
+	}
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
+	public String execute()
         throws Exception
-    {
+    {	
+		System.out.println(startDate);
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-        
         Date sDate = dateFormat.parse( startDate );
         Date eDate = dateFormat.parse( endDate );
 
@@ -119,34 +135,27 @@ public class AddTariffDataAction
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
 
-        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( pbfType ) );
+        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( pbfType ) );        
         
-        TariffDataValue tariffDataValue = tariffDataValueService.getTariffDataValue( organisationUnit, dataElement, dataSet, sDate, eDate );
-
-        if ( tariffDataValue == null )
+        List<TariffDataValue> tariffDataValues = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues(organisationUnit, dataElement));
+        //boolean status = false;
+        for(TariffDataValue tdv : tariffDataValues)
         {
-            tariffDataValue = new TariffDataValue();
-            
-            tariffDataValue.setValue( Double.parseDouble( tariff ) );
-            tariffDataValue.setStartDate( sDate );
-            tariffDataValue.setEndDate( eDate );
-            tariffDataValue.setTimestamp( new Date() );
-            tariffDataValue.setStoredBy( currentUserService.getCurrentUsername() );
-            tariffDataValue.setDataElement( dataElement );
-            tariffDataValue.setDataSet( dataSet );
-            tariffDataValue.setOrganisationUnit( organisationUnit );
-            
-            tariffDataValueService.addTariffDataValue( tariffDataValue );
+        	System.out.println(tdv.getDataSet().getId());
+        	System.out.println(dataSet.getId());
+        	System.out.println(tdv.getStartDate().before(sDate));
+        	System.out.println(tdv.getEndDate().after(eDate));
+        	if(tdv.getDataSet().getId() == dataSet.getId() && tdv.getStartDate().before(sDate) && tdv.getEndDate().after(eDate) )
+        	{
+        		message = "true";
+        		break;
+        	}
+        	else
+        	{
+        		message = "false";
+        	}
         }
-        else
-        {
-            tariffDataValue.setValue( Double.parseDouble( tariff ) );
-            tariffDataValue.setTimestamp( new Date() );
-            tariffDataValue.setStoredBy( currentUserService.getCurrentUsername() );
-            
-            tariffDataValueService.updateTariffDataValue( tariffDataValue );
-        }
-
+        
         return SUCCESS;
     }
 }
