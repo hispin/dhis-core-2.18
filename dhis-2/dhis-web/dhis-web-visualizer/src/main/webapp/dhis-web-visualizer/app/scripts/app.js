@@ -1344,40 +1344,23 @@ Ext.onReady( function() {
 			support.svg = support.svg || {};
 
 			support.svg.submitForm = function(type) {
-                var svg = Ext.query('svg');
-                
-                if (!(Ext.isArray(svg) && svg.length)) {
+				var svg = Ext.query('svg'),
+					form = Ext.query('#exportForm')[0];
+
+				if (!(Ext.isArray(svg) && svg.length)) {
 					alert('Browser does not support SVG');
 					return;
 				}
 
-                svg = Ext.get(svg[0]).parent().dom.innerHTML;
+				svg = Ext.get(svg[0]);
+				svg = svg.parent().dom.innerHTML;
 
-                Ext.Ajax.request({
-                    url: ns.core.init.contextPath + '/api/svg.' + type,
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/xml'},
-                    params: Ext.encode(svg)
-                });
-                
-				//var svg = Ext.query('svg'),
-					//form = Ext.query('#exportForm')[0];
+				Ext.query('#svgField')[0].value = svg;
+				Ext.query('#typeField')[0].value = type;
+				Ext.query('#nameField')[0].value = 'test';
 
-				//if (!(Ext.isArray(svg) && svg.length)) {
-					//alert('Browser does not support SVG');
-					//return;
-				//}
-
-				//svg = Ext.get(svg[0]);
-				//svg = svg.parent().dom.innerHTML;
-
-				//Ext.query('#svgField')[0].value = svg;
-				//Ext.query('#typeField')[0].value = type;
-				//Ext.query('#nameField')[0].value = 'test';
-
-				//form.action = ns.core.init.contextPath + '/api/svg.' + type;
-                //form.method = 'post';
-				//form.submit();
+				form.action = '../exportImage.action';
+				form.submit();
 			};
 		}());
 

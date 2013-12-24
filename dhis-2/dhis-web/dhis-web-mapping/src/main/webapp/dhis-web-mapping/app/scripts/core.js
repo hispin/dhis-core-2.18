@@ -746,7 +746,7 @@ Ext.onReady( function() {
 			listeners: {
 				show: function() {
 					var x = gis.viewport.eastRegion.getPosition()[0] - this.getWidth() - 3,
-						y = gis.viewport.centerRegion.getPosition()[1] + 58;
+						y = gis.viewport.centerRegion.getPosition()[1] + 26;
 					this.setPosition(x, y);
 				},
 				destroy: function() {
