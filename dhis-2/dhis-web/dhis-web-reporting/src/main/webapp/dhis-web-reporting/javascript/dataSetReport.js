@@ -1,6 +1,8 @@
 
-var currentPeriodOffset = 0;
-var periodTypeFactory = new PeriodType();
+dhis2.util.namespace( 'dhis2.dsr' );
+
+dhis2.dsr.currentPeriodOffset = 0;
+dhis2.dsr.periodTypeFactory = new PeriodType();
 
 //------------------------------------------------------------------------------
 // Get and set methods
@@ -14,7 +16,7 @@ function getDataSetReport()
         pe: $( "#periodId" ).val(),
         ou: selectionTreeSelection.getSelectedUid()[0],
         selectedUnitOnly: $( "#selectedUnitOnly" ).is( ":checked" ),
-        offset: currentPeriodOffset
+        offset: dhis2.dsr.currentPeriodOffset
     };
     
     var groups = "";
@@ -40,7 +42,7 @@ function setDataSetReport( dataSetReport )
 	$( "#dataSetId" ).val( dataSetReport.dataSet );
 	$( "#periodType" ).val( dataSetReport.periodType );
 	
-	currentPeriodOffset = dataSetReport.offset;
+	dhis2.dsr.currentPeriodOffset = dataSetReport.offset;
 	
 	displayPeriods();
 	$( "#periodId" ).val( dataSetReport.period );
@@ -62,9 +64,9 @@ function setDataSetReport( dataSetReport )
 function displayPeriods()
 {
     var periodType = $( "#periodType" ).val();
-    var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
-    periods = periodTypeFactory.reverse( periods );
-    periods = periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
+    var periods = dhis2.dsr.periodTypeFactory.get( periodType ).generatePeriods( dhis2.dsr.currentPeriodOffset );
+    periods = dhis2.dsr.periodTypeFactory.reverse( periods );
+    periods = dhis2.dsr.periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
 
     $( "#periodId" ).removeAttr( "disabled" );
     clearListById( "periodId" );
@@ -77,16 +79,16 @@ function displayPeriods()
 
 function displayNextPeriods()
 {
-    if ( currentPeriodOffset < 0 ) // Cannot display future periods
+    if ( dhis2.dsr.currentPeriodOffset < 0 ) // Cannot display future periods
     {
-        currentPeriodOffset++;
+        dhis2.dsr.currentPeriodOffset++;
         displayPeriods();
     }
 }
 
 function displayPreviousPeriods()
 {
-    currentPeriodOffset--;
+    dhis2.dsr.currentPeriodOffset--;
     displayPeriods();
 }
 
