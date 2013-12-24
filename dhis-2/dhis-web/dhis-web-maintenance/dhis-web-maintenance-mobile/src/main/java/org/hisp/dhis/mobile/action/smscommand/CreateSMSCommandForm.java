@@ -30,6 +30,7 @@ package org.hisp.dhis.mobile.action.smscommand;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
@@ -66,6 +67,13 @@ public class CreateSMSCommandForm
         this.userGroupService = userGroupService;
     }
 
+    // private ProgramService programService;
+    //
+    // public void setProgramService( ProgramService programService )
+    // {
+    // this.programService = programService;
+    // }
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -98,6 +106,13 @@ public class CreateSMSCommandForm
         this.userGroupID = userGroupID;
     }
 
+    private Integer selectedAnonymousProgramID;
+
+    public void setSelectedAnonymousProgramID( Integer selectedAnonymousProgramID )
+    {
+        this.selectedAnonymousProgramID = selectedAnonymousProgramID;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -121,7 +136,11 @@ public class CreateSMSCommandForm
             userGroup = userGroupService.getUserGroup( userGroupID );
             command.setUserGroup( userGroup );
         }
-        
+        else if ( parserType.equals( ParserType.ANONYMOUS_PROGRAM_PARSER ) )
+        {
+
+        }
+
         smsCommandService.save( command );
         return SUCCESS;
     }
