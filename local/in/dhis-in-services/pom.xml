@@ -23,6 +23,7 @@
 	<!--<module>dhis-service-aggregationengine-default</module>-->
 	<module>dhis-in-service-configuration</module>
 	<module>dhis-in-service-coldchain</module>
+	<module>dhis-in-service-lookup</module>
   </modules>
   
   <dependencies>

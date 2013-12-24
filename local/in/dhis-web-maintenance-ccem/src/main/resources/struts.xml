@@ -6,7 +6,6 @@
 <include file="dhis-web-commons.xml"/>
 	
 <package name="dhis-web-maintenance-ccem" extends="dhis-web-commons" namespace="/dhis-web-maintenance-ccem">
-
 	
 <!-- Home page -->
 	<action name="index" class="org.hisp.dhis.ccem.action.NoAction">
@@ -663,6 +662,22 @@
         <result name="success" type="velocity">/main.vm</result>
         <param name="page">/dhis-web-maintenance-ccem/csvImportResult.vm</param>
         <param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
+        <interceptor-ref name="fileUploadStack"/>
+    </action>
+    
+    <!--  Aggregation Engine -->
+    <action name="aggregationQueryList" class="org.hisp.dhis.ccem.aggregation.action.AggregationQueryListAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-ccem/aggregationQueryList.vm</param>
+        <param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
+        <param name="javascripts">javascript/aggregationEngine.js</param>
+    </action>
+
+    <action name="addAggregationQueryForm" class="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryFormAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-ccem/addAggregationQueryForm.vm</param>
+        <param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
+        <param name="javascripts">javascript/aggregationEngine.js</param>
         <interceptor-ref name="fileUploadStack"/>
     </action>
 	
