@@ -1,0 +1,205 @@
+<script >
+$(function() {
+
+$("#openAddTariff").button()
+			.click(function() {
+				$( "#addTariff" ).dialog( "open" );
+                $('#pbfType option[value=-1]').attr('selected','selected');
+                $('#bank option[value=-1]').attr('selected','selected');			
+                $("#branchName").val('');
+                $("#accountName").val('');
+                $("#accountNumber").val('');
+});
+			
+			
+$( "#addTariff" ).dialog({
+			width: 320,
+			autoOpen: false,			
+			modal: true,
+			buttons: {
+			"Save": function() {
+						var date1 = Date.parse($("#startDate").val());
+						var date2 = Date.parse($("#endDate").val());
+							if (date1 > date2) {
+    								alert ("Please enter correct date");
+                                }
+                         else{
+                                    var dataValue = {
+        		        			'pbfType' : $("#pbfType").val(),
+        		        			'tariff' : $("#tariff").val(),
+        		        			'startDate' : $("#startDate").val(),
+        							'endDate' : $("#endDate").val(),
+									'orgUnitUid': $("#orgUnitUid").val(),
+									'dataElementId' : $("#dataElementId").val()
+        		    			};
+								jQuery.ajax( {
+                                url: 'addTariffData.action', 
+								data: dataValue,
+                                dataType: 'json',
+                                success: handleSuccess,
+                                error: handleError
+                            } );
+                      }
+							
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			close: function() {				
+			}
+		});
+		 function handleSuccess( json )
+	    {	
+			$('#pbfType option[value=-1]').attr('selected','selected');
+			$("#pbfType ").removeAttr('disabled');
+			$("#tariff").val('');			
+			$("#startDate").val('');
+			$("#startDate ").removeAttr('disabled');
+			$("#endDate").val('');
+			$("#endDate ").removeAttr('disabled');
+			
+			getTariffData();
+			$( "#addTariff" ).dialog( "close" );
+	    }
+	    function handleError( json )
+	    {
+			$('#pbfType option[value=-1]').attr('selected','selected');
+			$("#pbfType ").removeAttr('disabled');
+			$("#tariff").val('');			
+			$("#startDate").val('');
+			$("#startDate ").removeAttr('disabled');
+			$("#endDate").val('');
+			$("#endDate ").removeAttr('disabled');
+			getTariffData();
+			$( "#addTariff" ).dialog( "close" );
+	    }
+});
+
+	function deleteTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate)
+	{
+		var dataValue = {
+		        		'organisationUnitId' : organisationUnitId ,
+						'dataElementId' : dataElementId,								
+						'dataSetId' : dataSetId,
+						'startDate' : startDate,
+						'endDate' : endDate
+		    			};
+									
+		jQuery.ajax( {
+	                url: 'deleteTariffData.action', 
+					data: dataValue,
+	                dataType: 'json',
+					success: handleSuccess,
+	                error: handleError
+	              } );
+	    function handleSuccess( json )
+	    {
+			getTariffData();			
+	    }
+	    function handleError( json )
+	    {
+			getTariffData();			
+	    }
+	}
+
+	function editTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate, value )
+	{
+		$( "#addTariff" ).attr('selected','Edit Tariff')
+		$('#pbfType option[value='+organisationUnitGroupId+']').attr('selected','selected');
+		$('#pbfType').attr('disabled','disabled');
+		$('#tariff').val(value);
+		$('#startDate').val(startDate);
+		$('#startDate').attr('disabled','disabled');
+		$('#endDate').val(endDate);
+		$('#endDate').attr('disabled','disabled');
+		
+		$( "#addTariff" ).dialog( "open" );
+	}
+</script>
+
+<div style="width:100%">
+	<input type="button" value="Add New Tariff" style="float:right;" id="openAddTariff"/>
+</div>
+<br/><br/>
+
+<table style="width:100%" class="mainPageTable">
+	<thead >
+		<tr >
+			<th >PBF Type</th>
+			<th >Bank</th>
+			<th >Branch Name</th>
+			<th >Account Name</th>
+			<th >Account Number</th>
+			#if( $updateAuthority == 'Yes' )
+				<th >Operations</th>
+			#end
+        </tr>
+	</thead>
+	<tbody id="list">
+		#set( $mark = false )
+		#foreach( $bankDetails in $bankDetailsList )
+			#if( $mark )
+                #set( $mark = false )
+			#else
+				#set( $mark = true )
+			#end
+            <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8"  #end>
+				<td >$!bankDetails.dataSet.name</td>
+				<td >$!bankDetails.bank</td>
+				<td >$!bankDetails.branchName</td>
+				<td >$!bankDetails.accountName</td>
+				<td >$!bankDetails.accountNumber</td>
+			#if($updateAuthority == 'Yes')
+	            <td>
+					<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate')">
+						<img src="images/delete.png" width="17px"/>
+					</a>
+					<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value')">
+						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/>
+					</a>				
+				</td>
+			#end
+        </tr>
+		#end
+    </tbody>
+</table>
+
+<div id="addTariff" title="Add New Tariff">
+	<table style="width:100%;table-layout:fixed;">
+		<tr >
+			<td style="width:40%;">PBF Type</td>
+			<td style="width:60%;">
+				<select id="pbfType" style="width:100%;">
+					<option value="-1">Select PBF Type</option>
+					#foreach( $dataSet in $dataSets )
+						<option value="$dataSet.id">$dataSet.name</option>
+					#end
+                </select>
+			</td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Bank</td>
+            <td style="width:60%;">
+                <select id="bank" style="width:100%;">
+                    <option value="-1">Select Bank</option>
+                    #foreach( $bank in $banks )
+                        <option value="$bank">$bank</option>
+                    #end
+                </select>
+            </td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Branch Name</td>
+			<td style="width:60%;"><input type="text" id="branchName" style="width:100%;"/></td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Account Name</td>
+			<td style="width:60%;"><input type="text" id="accountName" style="width:100%;"/></td>
+        </tr>
+        <tr >
+            <td style="width:40%;">Account Number</td>
+            <td style="width:60%;"><input type="text" id="accountNumber" style="width:100%;"/></td>
+        </tr>
+    </table>
+</div>
