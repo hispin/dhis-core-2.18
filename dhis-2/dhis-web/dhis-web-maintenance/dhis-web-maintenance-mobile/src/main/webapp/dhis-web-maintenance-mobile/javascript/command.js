@@ -6,6 +6,8 @@ function changeParserType( value )
         showById( "dataSetParser" );
     } else if ( value == 'ALERT_PARSER' || value == 'UNREGISTERED_PARSER' ) {
     	showById( "alertParser" );
+    } else if (value == 'ANONYMOUS_PROGRAM_PARSER') {
+    	showById( "anonymousProgramParser" );
     }
 	currentType = value;
 }
@@ -14,6 +16,7 @@ function hideAll()
 {
 	 hideById( "dataSetParser" ); 
 	 hideById( "alertParser" );
+	 hideById( "anonymousProgramParser" );
 }
 
 function generateSpecialCharactersForm()

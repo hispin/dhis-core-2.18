@@ -26,7 +26,7 @@
             <td>
 				<select id="parserType" name="parserType" style="width:100%;" onchange="changeParserType( this.value )">
 				#foreach( $type in $parserType )
-					<option value="$type">$type</option>
+					<option value="$type">$i18n.getString( "$type" )</option>
 				#end
 				</select>	  
             </td>
@@ -51,6 +51,19 @@
 					<select name="userGroupID" >
 					#foreach( $userGroup in $userGroupList )
 						<option value="$userGroup.id">$userGroup.name</option>
+					#end
+					</select>
+				</td>
+			</tr>
+		</tbody>
+		
+		<tbody id="anonymousProgramParser">
+			<tr>
+				<td>$i18n.getString( "program" )</td>
+				<td>
+					<select name="programId" >
+					#foreach( $anonymousProgram in $anonymousProgramList )
+						<option value="$userGroup.id">$anonymousProgram.name</option>
 					#end
 					</select>
 				</td>
