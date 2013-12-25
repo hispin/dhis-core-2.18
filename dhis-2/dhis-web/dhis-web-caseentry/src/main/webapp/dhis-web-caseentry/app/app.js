@@ -1906,12 +1906,25 @@ Ext.onReady( function() {
 				
 				if( type)
 				{
-					document.location =  url + programId + "." + type + "?stage=" + programStageId + TR.state.getURLParams();
+					url +=  programId + "." + type 
+					if (Ext.getCmp('programStageCombobox').getValue() != '') {
+						url += "?stage=" + programStageId
+						return false;
+					}
+					else{
+						url += "?";
+					}
+					url+= TR.state.getURLParams();
+					document.location = url;
 				}
 				// Show report on grid
 				else
 				{
-					url += programId + ".json?stage=" + programStageId;
+					url += programId + ".json";
+					if (Ext.getCmp('programStageCombobox').getValue() != '') {
+						url += "?stage=" + programStageId;
+						return false;
+					}
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 					Ext.Ajax.request({
 						url: url,
@@ -1989,17 +2002,7 @@ Ext.onReady( function() {
 						return false;
 					}
 					
-					if (Ext.getCmp('programStageCombobox').getValue() == '') {
-						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
-						return false;
-					}
-					
-					if(TR.cmp.params.dataelement.selected.store.data.items.length == 0 )
-					{
-						TR.util.notification.error(TR.i18n.em_no_data_element, TR.i18n.em_no_data_element);
-						return false;
-					}
-					else
+					if(TR.cmp.params.dataelement.selected.store.data.items.length > 0 )
 					{
 						var isvalid = true;
 						TR.cmp.params.dataelement.selected.store.each( function(r) {
@@ -2073,12 +2076,26 @@ Ext.onReady( function() {
 				// Export to XLS
 				if( type)
 				{
-					document.location =  url + programId + "." + type + "?stage=" + programStageId + TR.state.getURLParams();
+					url += programId + "." + type 
+					if (Ext.getCmp('programStageCombobox').getValue() != '') {
+						url += "?stage=" + programStageId
+						return false;
+					}
+					else{
+						url += "?";
+					}
+					url +=  TR.state.getURLParams();
+					document.location = url;
 				}
 				// Show report on grid
 				else
 				{
-					url += programId + ".json?stage=" + programStageId;
+					url += programId + ".json";
+					if (Ext.getCmp('programStageCombobox').getValue() != '') {
+						url += "?stage=" + programStageId;
+						return false;
+					}
+					
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 					Ext.Ajax.request({
 						url: url,
@@ -2264,11 +2281,6 @@ Ext.onReady( function() {
 						return false;
 					}
 					
-					if (Ext.getCmp('programStageCombobox').getValue() == '') {
-						TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
-						return false;
-					}
-					
 					// Validate date
 					
 					if( TR.cmp.settings.startDate.rawValue != "" 
@@ -2316,12 +2328,7 @@ Ext.onReady( function() {
 					
 					// Validate data element
 					
-					if(TR.cmp.params.dataelement.selected.store.data.items.length == 0 )
-					{
-						TR.util.notification.error(TR.i18n.em_no_data_element, TR.i18n.em_no_data_element);
-						return false;
-					}
-					else
+					if(TR.cmp.params.dataelement.selected.store.data.items.length > 0 )
 					{
 						var isvalid = true;
 						TR.cmp.params.dataelement.selected.store.each( function(r) {
@@ -2658,10 +2665,24 @@ Ext.onReady( function() {
 		createCaseColTable: function(){
 			var cols = [];
 			
-			for( var i =0; i <TR.value.columns.length; i++ )
+			for( var i=0; i <TR.value.columns.length; i++ )
 			{
+				// hidden cols
+				if( i<2 || i==6 || i==7 ){
+					cols[i] = {
+						header: TR.value.columns[i].column, 
+						dataIndex: TR.value.columns[i].name,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: TR.value.columns[i].column,
+						sortable: true,
+						draggable: false,
+						hideable: true,
+						hidden: true,
+						menuDisabled: true
+					}
+				}
 				// Sortable columns
-				if( i==2 || i== 3 || i>= 6 ){
+				else if( i==2 || i== 5 ){
 					cols[i] = {
 						header: TR.value.columns[i].column, 
 						dataIndex: TR.value.columns[i].name,
@@ -2673,7 +2694,6 @@ Ext.onReady( function() {
 						menuDisabled: true
 					}
 				}
-				// Hiden event UID column and other columnsS
 				else{
 					cols[i] = {
 						header: TR.value.columns[i].column, 
@@ -2682,12 +2702,10 @@ Ext.onReady( function() {
 						name: TR.value.columns[i].column,
 						sortable: false,
 						draggable: false,
-						hidden: true,
-						hideable: true,
+						hideable: false,
 						menuDisabled: false
 					}
 				}
-				
 			}
 				
 			return cols;
