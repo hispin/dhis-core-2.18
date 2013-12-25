@@ -126,6 +126,15 @@
         </td>
       </tr>
       <tr>
+          <td><label>$i18n.getString( "approve_data" )</label></td>
+          <td>
+              <select id="approveData" name="approveData">
+                  <option value="false">$i18n.getString( "no" )</option>
+                  <option value="true"#if( $dataSet.approveData == true ) selected="selected"#end>$i18n.getString( "yes" )</option>
+              </select>
+          </td>
+      </tr>
+      <tr>
         <td><label>$i18n.getString( "skip_aggregation" )</label></td>
         <td>
           <select id="skipAggregation" name="skipAggregation">
