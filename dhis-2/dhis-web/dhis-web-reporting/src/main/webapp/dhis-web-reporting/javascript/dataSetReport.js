@@ -21,7 +21,7 @@ function getDataSetReport()
     
     var dims = [];
     
-    $( "[name='groupSet']" ).each( function( index, value ) {
+    $( ".dimension" ).each( function( index, value ) {
     	var dim = $( this ).data( "uid" );
     	var item = $( this ).val();
     	
@@ -56,6 +56,67 @@ function setDataSetReport( dataSetReport )
 		generateDataSetReport();
 	} );
 }
+
+//------------------------------------------------------------------------------
+// Data set
+//------------------------------------------------------------------------------
+
+/**
+ * Callback for changes to data set selection.
+ */
+dhis2.dsr.dataSetSelected = function()
+{
+	var ds = $( "#dataSetId" ).val();
+	var cc = $( "#dataSetId :selected" ).data( "categorycombo" );
+	
+	if ( cc && cc != dhis2.dsr.metaData.defaultCategoryCombo ) {
+		var categoryCombo = dhis2.dsr.metaData.categoryCombos[cc];
+		var categoryIds = categoryCombo.categories;
+		
+		dhis2.dsr.setAttributesMarkup( categoryIds );		
+	}
+	else {
+		$( "#attributeComboDiv" ).html( "" ).hide();
+	}
+}
+
+/**
+* Set markup for drop down boxes to be put in the selection box for the
+* given categories.
+*/
+dhis2.dsr.setAttributesMarkup = function( categoryIds )
+{
+	if ( !categoryIds || categoryIds.length == 0 ) {
+		return;
+	}
+	
+	var categoryRx = [];	
+	$.each( categoryIds, function( idx, id ) {
+		categoryRx.push( $.get( "../api/dimensions/" + id + ".json" ) );
+	} );
+
+	var defer = $.when.apply( $, categoryRx ).done( function() {
+		var html = '';
+		
+		$.each( arguments, function( idx, cat ) {
+			var category = cat[0];
+			
+			html += '<div class="inputSection">';
+			html += '<label>' + category.name + '</label>';
+			html += '<select class="dimension" data-uid="' + category.id + '" style="width:330px">';
+			html += '<option value="-1">[ ' + 'Select option / View all' + ' ]</option>';
+			
+			$.each( category.items, function( idx, option ) {
+				html += '<option value="' + option.id + '">' + option.name + '</option>';
+			} );
+			
+			html += '</select>';
+			html += '</div>';
+		} );
+
+		$( "#attributeComboDiv" ).show().html( html );
+	} );
+};
 
 //------------------------------------------------------------------------------
 // Period
