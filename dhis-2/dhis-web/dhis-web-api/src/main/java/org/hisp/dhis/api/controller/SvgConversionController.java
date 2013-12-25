@@ -56,7 +56,7 @@ public class SvgConversionController
     @Autowired
     private ContextUtils contextUtils;
     
-    @RequestMapping( value = "/svg.png", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_XML, ContextUtils.CONTENT_TYPE_FORM_ENCODED } )
+    @RequestMapping( value = "/svg.png", method = RequestMethod.POST, consumes = ContextUtils.CONTENT_TYPE_FORM_ENCODED )
     public void toPng( @RequestParam String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {
@@ -67,7 +67,7 @@ public class SvgConversionController
         convertToPng( svg, response.getOutputStream() );
     }
 
-    @RequestMapping( value = "/svg.pdf", method = RequestMethod.POST, consumes = { ContextUtils.CONTENT_TYPE_XML, ContextUtils.CONTENT_TYPE_FORM_ENCODED } )
+    @RequestMapping( value = "/svg.pdf", method = RequestMethod.POST, consumes = ContextUtils.CONTENT_TYPE_FORM_ENCODED )
     public void toPdf( @RequestParam String svg, @RequestParam( required = false ) String filename, HttpServletResponse response )
         throws Exception
     {

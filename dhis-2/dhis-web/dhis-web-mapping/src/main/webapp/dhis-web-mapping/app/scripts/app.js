@@ -3747,10 +3747,9 @@ Ext.onReady( function() {
 					return;
 				}
 
-				document.getElementById('typeField').value = type;
-				document.getElementById('titleField').value = title;
+				document.getElementById('filenameField').value = title;
 				document.getElementById('svgField').value = svg;
-				exportForm.action = '../exportImage.action';
+				exportForm.action = '../../api/svg.' + type;
 				exportForm.method = 'post';
 				exportForm.submit();
 
