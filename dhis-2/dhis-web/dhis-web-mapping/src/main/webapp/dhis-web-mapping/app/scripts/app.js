@@ -3749,8 +3749,7 @@ Ext.onReady( function() {
 
 				document.getElementById('filenameField').value = title;
 				document.getElementById('svgField').value = svg;
-				exportForm.action = '../../api/svg.' + type;
-				exportForm.method = 'post';
+				exportForm.action = gis.init.contextPath + '/api/svg.' + type;
 				exportForm.submit();
 
 				window.destroy();
