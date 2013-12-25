@@ -81,8 +81,7 @@ dhis2.dsr.dataSetSelected = function()
 }
 
 /**
-* Set markup for drop down boxes to be put in the selection box for the
-* given categories.
+* Sets markup for drop down boxes for the given categories in the selection div.
 */
 dhis2.dsr.setAttributesMarkup = function( categoryIds )
 {
@@ -95,7 +94,7 @@ dhis2.dsr.setAttributesMarkup = function( categoryIds )
 		categoryRx.push( $.get( "../api/dimensions/" + id + ".json" ) );
 	} );
 
-	var defer = $.when.apply( $, categoryRx ).done( function() {
+	$.when.apply( $, categoryRx ).done( function() {
 		var html = '';
 		
 		$.each( arguments, function( idx, cat ) {
@@ -104,7 +103,7 @@ dhis2.dsr.setAttributesMarkup = function( categoryIds )
 			html += '<div class="inputSection">';
 			html += '<label>' + category.name + '</label>';
 			html += '<select class="dimension" data-uid="' + category.id + '" style="width:330px">';
-			html += '<option value="-1">[ ' + 'Select option / View all' + ' ]</option>';
+			html += '<option value="-1">[ ' + i18n_select_option_view_all + ' ]</option>';
 			
 			$.each( category.items, function( idx, option ) {
 				html += '<option value="' + option.id + '">' + option.name + '</option>';
