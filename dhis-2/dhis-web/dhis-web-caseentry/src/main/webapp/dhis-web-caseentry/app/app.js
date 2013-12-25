@@ -4634,7 +4634,12 @@ Ext.onReady( function() {
 											
 											// Filter value fields
 											Ext.getCmp('filterPanel').removeAll();
-										} 
+										},
+										specialKey :  function(field,e) {
+											if(e.getKey() === e.TAB){
+												Ext.getCmp('dateRangeDiv').expand();
+											}
+										}
 									}
 								}
 								]
@@ -4708,6 +4713,19 @@ Ext.onReady( function() {
 													change:function(){
 														var endDate =  TR.cmp.settings.endDate.getValue();
 														Ext.getCmp('startDate').setMaxValue( endDate );
+													},
+													specialKey :  function(field,e) {
+														if(e.getKey() === e.TAB){
+															Ext.getCmp('dateRangeDiv').collapse();
+															if(Ext.getCmp('reportTypeGroup').getValue().reportType=='true')
+															{
+																Ext.getCmp('orgunitDiv').expand();
+															}
+															else
+															{
+																Ext.getCmp('relativePeriodsDiv').expand();
+															}
+														}
 													}
 												}
 											}
@@ -5835,7 +5853,7 @@ Ext.onReady( function() {
                 if (TR.datatable.datatable) {
                     TR.datatable.datatable.setHeight( TR.util.viewport.getSize().y - 68 );
                 }
-            } 
+            }
         }
     });
     
