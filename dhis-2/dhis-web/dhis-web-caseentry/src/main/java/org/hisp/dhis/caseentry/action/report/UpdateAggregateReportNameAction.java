@@ -56,9 +56,9 @@ public class UpdateAggregateReportNameAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String id;
 
-    public void setId( Integer id )
+    public void setId( String id )
     {
         this.id = id;
     }
@@ -78,7 +78,7 @@ public class UpdateAggregateReportNameAction
     public String execute()
         throws Exception
     {
-        PatientAggregateReport aggregateReport = aggregateReportService.getPatientAggregateReport( id );
+        PatientAggregateReport aggregateReport = aggregateReportService.getPatientAggregateReportByUid( id );
 
         aggregateReport.setName( name );
 

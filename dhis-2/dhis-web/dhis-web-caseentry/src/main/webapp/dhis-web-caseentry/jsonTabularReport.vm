@@ -2,7 +2,7 @@
 	"id": "${tabularReport.id}",
 	"name": "$!encoder.jsonEncode( ${tabularReport.name} )",
 	"lastUpdated": "$!format.formatDate( ${tabularReport.lastUpdated} )",
-	"programId": "${programStage.program.uid}",
+	"programId": "${tabularReport.program.uid}",
 	"singleEvent": 
 		#if($tabularReport.program.programStages.size() == 1 )
 			"true",
@@ -13,7 +13,7 @@
 		#set($programStage = $tabularReport.programStage)
 	#end
 	
-	"type": "${programStage.program.type}",
+	"type": "$!{programStage.program.type}",
 	"programStageId": "$!{tabularReport.programStage.uid}",
 	"programStages": [
 		#set( $programStages = $tabularReport.program.programStages )

@@ -2,7 +2,7 @@
 	"id": "${aggregateReport.id}",
 	"name": "$!encoder.jsonEncode( ${aggregateReport.name} )",
 	"lastUpdated": "$!format.formatDate( ${aggregateReport.lastUpdated} )",
-	"programId": "${programStage.program.uid}",
+	"programId": "$!{tabularReport.program.uid}",
 	"singleEvent": 
 		#if($aggregateReport.program.programStages.size() == 1 )
 			"true",
