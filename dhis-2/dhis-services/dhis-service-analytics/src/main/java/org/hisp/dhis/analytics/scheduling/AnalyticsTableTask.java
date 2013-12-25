@@ -63,11 +63,32 @@ public class AnalyticsTableTask
     @Autowired
     private MessageService messageService;
 
-    private boolean last3Years;
+    private boolean last3Years = false;
 
     public void setLast3Years( boolean last3Years )
     {
         this.last3Years = last3Years;
+    }
+    
+    private boolean skipResourceTables = false;
+
+    public void setSkipResourceTables( boolean skipResourceTables )
+    {
+        this.skipResourceTables = skipResourceTables;
+    }
+    
+    private boolean skipAggregate = false;
+    
+    public void setSkipAggregate( boolean skipAggregate )
+    {
+        this.skipAggregate = skipAggregate;
+    }
+
+    private boolean skipEvents = false;
+
+    public void setSkipEvents( boolean skipEvents )
+    {
+        this.skipEvents = skipEvents;
     }
 
     private TaskId taskId;
@@ -88,25 +109,29 @@ public class AnalyticsTableTask
 
         try
         {
-            analyticsTableService.generateResourceTables();
-    
-            notifier.notify( taskId, "Updating analytics tables" );
+            if ( !skipResourceTables )
+            {
+                analyticsTableService.generateResourceTables();    
+                notifier.notify( taskId, "Updating analytics tables" );
+            }
             
-            analyticsTableService.update( last3Years, taskId );
+            if ( !skipAggregate )
+            {
+                analyticsTableService.update( last3Years, taskId );
+                notifier.notify( taskId, "Updating completeness tables" );
             
-            notifier.notify( taskId, "Updating completeness tables" );
+                completenessTableService.update( last3Years, taskId );    
+                notifier.notify( taskId, "Updating compeleteness target table" );
             
-            completenessTableService.update( last3Years, taskId );
-    
-            notifier.notify( taskId, "Updating compeleteness target table" );
+                completenessTargetTableService.update( last3Years, taskId );            
+                notifier.notify( taskId, "Updating event analytics tables" );
+            }
             
-            completenessTargetTableService.update( last3Years, taskId );
-            
-            notifier.notify( taskId, "Updating event analytics tables" );
-            
-            eventAnalyticsTableService.update( last3Years, taskId );
-            
-            notifier.notify( taskId, INFO, "Analytics tables updated", true );
+            if ( !skipEvents )
+            {
+                eventAnalyticsTableService.update( last3Years, taskId );
+                notifier.notify( taskId, INFO, "Analytics tables updated", true );
+            }
         }
         catch ( RuntimeException ex )
         {
