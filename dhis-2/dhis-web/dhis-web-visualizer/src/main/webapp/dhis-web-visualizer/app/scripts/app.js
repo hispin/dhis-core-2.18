@@ -1358,7 +1358,7 @@ Ext.onReady( function() {
 				Ext.query('#svgField')[0].value = svg;
 				Ext.query('#filenameField')[0].value = 'test';
 
-				form.action = '../../api/svg.' + type;
+				form.action = ns.core.init.contextPath + '/api/svg.' + type;
 				form.submit();
 			};
 		}());

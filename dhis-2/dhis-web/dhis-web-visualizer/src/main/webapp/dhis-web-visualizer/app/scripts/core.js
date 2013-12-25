@@ -34,20 +34,7 @@ Ext.onReady( function() {
                     dataelement_get: 'dataElementGroups/',
                     dataelement_getall: 'dataElements.json?domainType=aggregate&paging=false&links=false',
                     dataelementgroup_get: 'dataElementGroups.json?paging=false&links=false',
-                    dataset_get: 'dataSets.json?paging=false&links=false',
-                    organisationunit_getbygroup: 'getOrganisationUnitPathsByGroup.action',
-                    organisationunit_getbylevel: 'getOrganisationUnitPathsByLevel.action',
-                    organisationunit_getbyids: 'getOrganisationUnitPaths.action',
-                    organisationunitgroup_getall: 'organisationUnitGroups.json?paging=false&links=false',
-                    organisationunitgroupset_get: 'getOrganisationUnitGroupSetsMinified.action',
-                    organisationunitlevel_getall: 'organisationUnitLevels.json?paging=false&links=false&viewClass=detailed',
-                    organisationunitchildren_get: 'getOrganisationUnitChildren.action',
-                    favorite_addorupdate: 'addOrUpdateChart.action',
-                    favorite_addorupdatesystem: 'addOrUpdateSystemChart.action',
-                    favorite_updatename: 'updateChartName.action',
-                    favorite_get: 'charts/',
-                    favorite_getall: 'getSystemAndCurrentUserCharts.action',
-                    favorite_delete: 'deleteCharts.action'
+                    dataset_get: 'dataSets.json?paging=false&links=false'
                 },
                 dimension: {
                     data: {
