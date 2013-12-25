@@ -36,6 +36,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -77,6 +79,13 @@ public class GetDataSetReportOptionsAction
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     private SelectionTreeManager selectionTreeManager;
@@ -160,7 +169,21 @@ public class GetDataSetReportOptionsAction
         return periodType;
     }
 
-    private List<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>();
+    private DataElementCategoryCombo defaultCategoryCombo;
+
+    public DataElementCategoryCombo getDefaultCategoryCombo()
+    {
+        return defaultCategoryCombo;
+    }
+
+    private List<DataElementCategoryCombo> categoryCombos;
+    
+    public List<DataElementCategoryCombo> getCategoryCombos()
+    {
+        return categoryCombos;
+    }
+
+    private List<OrganisationUnitGroupSet> groupSets;
 
     public List<OrganisationUnitGroupSet> getGroupSets()
     {
@@ -192,7 +215,14 @@ public class GetDataSetReportOptionsAction
             selectionTreeManager.setSelectedOrganisationUnit( organisationUnitService.getOrganisationUnit( ou ) ); //TODO set unit state in client instead
         }
 
+        defaultCategoryCombo = categoryService.getDefaultDataElementCategoryCombo();
+        
+        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAttributeCategoryCombos() );
+        
         groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+
+        Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }
