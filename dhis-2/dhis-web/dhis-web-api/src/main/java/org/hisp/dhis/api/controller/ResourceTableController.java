@@ -45,6 +45,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Lars Helge Overland
@@ -77,8 +78,15 @@ public class ResourceTableController
     
     @RequestMapping( value = "/analytics", method = { RequestMethod.PUT, RequestMethod.POST } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
-    public void analytics( HttpServletResponse response )
+    public void analytics( 
+        @RequestParam(required=false) boolean skipResourceTables, 
+        @RequestParam(required=false) boolean skipAggregate,
+        @RequestParam(required=false) boolean skipEvents,
+        HttpServletResponse response )
     {
+        analyticsTableTask.setSkipResourceTables( skipResourceTables );
+        analyticsTableTask.setSkipAggregate( skipAggregate );
+        analyticsTableTask.setSkipEvents( skipEvents );
         analyticsTableTask.setTaskId( new TaskId( TaskCategory.DATAMART, currentUserService.getCurrentUser() ) );
         
         scheduler.executeTask( analyticsTableTask );
