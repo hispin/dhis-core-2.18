@@ -1,0 +1,47 @@
+<form id="addAggregationForm" action="addAggregationQuery.action" method="post" >
+
+<table> 
+	<thead>
+      <tr>
+        <th colspan="2">$i18n.getString( "aggregation_query_builder_detail" )</th>
+      </tr>
+    </thead>
+	
+    <tbody>
+    	<tr>
+        	<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        	<td><input type="text" id="name" name="name" class="{validate:{required:true,minlength:2}}"></td>
+    	</tr>    
+    	<tr>
+			<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td>			
+				<select style='width:20px; margin-bottom:-5px;height:20px;' id="dataElementId" name="dataElementId" >
+					#foreach( $dataElement in $dataElementList )
+						<option value="$dataElement.id">$dataElement.name</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><label for="operator">$i18n.getString( "type" )</label></td>
+			<td>			
+				<select style='width:20px; margin-bottom:-5px;height:20px;' id="aggType" name="aggType" >
+					#foreach( $lookup in $lookups )
+						<option value="$lookup.id">$lookup.value</option>
+					#end
+				</select>
+			</td>
+		</tr>
+	
+		
+    </tbody>
+</table>
+
+
+<p>	
+	<input type="submit" value="$i18n.getString( 'add' )" />
+	<input type="button" value="$i18n.getString( 'test_condition' )" onclick='testCaseAggregationCondition();'/>
+	<input type="button" value="$i18n.getString( 'cancel' )" onClick="cancelOnClick();" />
+</p>
+
+</form>

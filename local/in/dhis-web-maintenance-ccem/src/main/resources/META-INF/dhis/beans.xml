@@ -740,5 +740,11 @@
         scope="prototype">
         <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
     </bean>   
+     <bean id="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryFormAction"
+        class="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryFormAction"
+        scope="prototype">
+        <property name="lookupService" ref="org.hisp.dhis.lookup.LookupService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean>   
 	
 </beans>
