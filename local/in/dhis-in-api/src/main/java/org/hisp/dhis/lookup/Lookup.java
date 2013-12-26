@@ -8,6 +8,8 @@ public class Lookup extends BaseNameableObject
     
     public static final String BANK = "BANK";
     
+    public static final String CCEI_AGG_TYPE = "CCEI_AGG_TYPE";
+    
     private String type;
     
     private String value;

@@ -675,10 +675,9 @@
 
     <action name="addAggregationQueryForm" class="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryFormAction">
         <result name="success" type="velocity">/main.vm</result>
-        <param name="page">/dhis-web-maintenance-ccem/addAggregationQueryForm.vm</param>
+        <param name="page">/dhis-web-maintenance-ccem/addAggregationQuery.vm</param>
         <param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
         <param name="javascripts">javascript/aggregationEngine.js</param>
-        <interceptor-ref name="fileUploadStack"/>
     </action>
 	
 </package>

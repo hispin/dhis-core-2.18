@@ -2,6 +2,6 @@
 
 function showAddAggregationForm() 
 {
-	window.location.href = 'showAddAggregationForm.action';
+	window.location.href = 'addAggregationQueryForm.action';
 }
 
