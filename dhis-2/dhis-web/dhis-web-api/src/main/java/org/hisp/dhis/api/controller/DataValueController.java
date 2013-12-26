@@ -29,17 +29,13 @@ package org.hisp.dhis.api.controller;
  */
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.InputUtils;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -85,6 +81,9 @@ public class DataValueController
 
     @Autowired
     private DataSetService dataSetService;
+    
+    @Autowired
+    private InputUtils inputUtils;
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     @RequestMapping( method = RequestMethod.POST, produces = "text/plain" )
@@ -99,12 +98,10 @@ public class DataValueController
         @RequestParam( required = false ) String comment, 
         @RequestParam( required = false ) boolean followUp, HttpServletResponse response )
     {
-        List<String> opts = ContextUtils.getQueryParamValues( cp );
+        // ---------------------------------------------------------------------
+        // Input validation
+        // ---------------------------------------------------------------------
         
-        // ---------------------------------------------------------------------
-        // Data element validation
-        // ---------------------------------------------------------------------
-
         DataElement dataElement = dataElementService.getDataElement( de );
 
         if ( dataElement == null )
@@ -112,10 +109,6 @@ public class DataValueController
             ContextUtils.conflictResponse( response, "Illegal data element identifier: " + de );
             return;
         }
-
-        // ---------------------------------------------------------------------
-        // Category option combo validation
-        // ---------------------------------------------------------------------
 
         DataElementCategoryOptionCombo categoryOptionCombo = null;
 
@@ -134,65 +127,13 @@ public class DataValueController
             return;
         }
 
-        // ---------------------------------------------------------------------
-        // Attribute category combo validation
-        // ---------------------------------------------------------------------
-
-        if ( ( cc == null && opts != null || ( cc != null && opts == null ) ) )
-        {
-            ContextUtils.conflictResponse( response, "Both or none of category combination and category options must be present" );
-            return;
-        }
-
-        DataElementCategoryCombo categoryCombo = null;
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
         
-        if ( cc != null && ( categoryCombo = categoryService.getDataElementCategoryCombo( cc ) ) == null )
-        {
-            ContextUtils.conflictResponse( response, "Illegal category combo identifier: " + cc );
-            return;
-        }
-
-        // ---------------------------------------------------------------------
-        // Attribute category options validation
-        // ---------------------------------------------------------------------
-
-        DataElementCategoryOptionCombo attributeOptionCombo = null;
-
-        if ( opts != null )
-        {
-            Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
-
-            for ( String id : opts )
-            {
-                DataElementCategoryOption categoryOption = categoryService.getDataElementCategoryOption( id );
-                
-                if ( categoryOption == null )
-                {
-                    ContextUtils.conflictResponse( response, "Illegal category option identifier: " + id );
-                    return;
-                }
-                
-                categoryOptions.add( categoryOption );
-            }
-            
-            attributeOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryCombo, categoryOptions );
-            
-            if ( attributeOptionCombo == null )
-            {
-                ContextUtils.conflictResponse( response, "Attribute option combo does not exist for given category combo and category options" );
-                return;
-            }
-        }
-
         if ( attributeOptionCombo == null )
         {
-            attributeOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+            return;
         }
         
-        // ---------------------------------------------------------------------
-        // Period validation
-        // ---------------------------------------------------------------------
-
         Period period = PeriodType.getPeriodFromIsoString( pe );
 
         if ( period == null )
@@ -201,10 +142,6 @@ public class DataValueController
             return;
         }
 
-        // ---------------------------------------------------------------------
-        // Organisation unit validation
-        // ---------------------------------------------------------------------
-
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
 
         if ( organisationUnit == null )
@@ -212,10 +149,6 @@ public class DataValueController
             ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
             return;
         }
-
-        // ---------------------------------------------------------------------
-        // Data value and comment validation
-        // ---------------------------------------------------------------------
 
         String valid = ValidationUtils.dataValueIsValid( value, dataElement );
 

@@ -114,7 +114,6 @@ public class DefaultDataApprovalService
                 case APPROVAL_NOT_NEEDED:
                     break; // Do nothing.
             }
-
         }
 
         //
@@ -136,15 +135,15 @@ public class DefaultDataApprovalService
         return DataApprovalState.APPROVAL_NOT_NEEDED;
     }
 
-    public boolean mayApprove( OrganisationUnit source, User user,
+    public boolean mayApprove( OrganisationUnit organisationUnit, User user,
         boolean mayApproveAtSameLevel, boolean mayApproveAtLowerLevels )
     {
-        if ( mayApproveAtSameLevel && user.getOrganisationUnits().contains( source ) )
+        if ( mayApproveAtSameLevel && user.getOrganisationUnits().contains( organisationUnit ) )
         {
             return true;
         }
 
-        if ( mayApproveAtLowerLevels && CollectionUtils.containsAny( user.getOrganisationUnits(), source.getAncestors() ) )
+        if ( mayApproveAtLowerLevels && CollectionUtils.containsAny( user.getOrganisationUnits(), organisationUnit.getAncestors() ) )
         {
             return true;
         }
