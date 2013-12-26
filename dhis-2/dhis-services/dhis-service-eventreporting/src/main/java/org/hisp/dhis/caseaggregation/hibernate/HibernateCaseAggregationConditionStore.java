@@ -351,7 +351,7 @@ public class HibernateCaseAggregationConditionStore
         }
 
         sql = sql.replaceAll( "COMBINE", "" );
-        System.out.println( "\n\n === \n " + sql );
+        
         return sql;
     }
 
