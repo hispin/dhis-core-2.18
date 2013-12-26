@@ -29,7 +29,6 @@ package org.hisp.dhis.caseaggregation;
  */
 
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE;
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE;
@@ -75,8 +74,6 @@ public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
     private final String INVALID_CONDITION = "Invalid condition";
-
-    private final String TOTAL_OF_PATIENTS_REGISTERED = "Total of patient registration";
 
     private final String IN_CONDITION_GET_ALL = "*";
 
@@ -225,12 +222,7 @@ public class DefaultCaseAggregationConditionService
             {
                 String[] ids = info[1].split( SEPARATOR_ID );
 
-                if ( info[0].equalsIgnoreCase( OBJECT_PATIENT ) )
-                {
-                    matcher.appendReplacement( description, "[" + OBJECT_PATIENT + SEPARATOR_OBJECT
-                        + TOTAL_OF_PATIENTS_REGISTERED + "]" );
-                }
-                else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
+                if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
                 {
                     int objectId = Integer.parseInt( ids[0] );
 

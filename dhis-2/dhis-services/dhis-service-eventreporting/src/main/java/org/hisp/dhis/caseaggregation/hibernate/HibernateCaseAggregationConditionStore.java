@@ -29,7 +29,6 @@ package org.hisp.dhis.caseaggregation.hibernate;
  */
 
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_ORGUNIT_COMPLETE_PROGRAM_STAGE;
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM;
@@ -154,8 +153,7 @@ public class HibernateCaseAggregationConditionStore
     public Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
         Period period, I18nFormat format, I18n i18n )
     {
-        Collection<Integer> _orgunitIds = getServiceOrgunit( DateUtils.getMediumDateString( period.getStartDate() ),
-            DateUtils.getMediumDateString( period.getEndDate() ) );
+        Collection<Integer> _orgunitIds = getServiceOrgunit();
         _orgunitIds.retainAll( orgunitIds );
 
         if ( _orgunitIds.size() > 0 )
@@ -380,9 +378,7 @@ public class HibernateCaseAggregationConditionStore
                 String caseOperator = rs.getString( "caseoperator" );
                 int deSumId = rs.getInt( "desumid" );
 
-                Collection<Integer> _orgunitIds = getServiceOrgunit(
-                    DateUtils.getMediumDateString( period.getStartDate() ),
-                    DateUtils.getMediumDateString( period.getEndDate() ) );
+                Collection<Integer> _orgunitIds = getServiceOrgunit();
 
                 if ( orgunitIds == null )
                 {
@@ -498,11 +494,7 @@ public class HibernateCaseAggregationConditionStore
             match = match.replaceAll( "[\\[\\]]", "" );
 
             String[] info = match.split( SEPARATOR_OBJECT );
-            if ( info[0].equalsIgnoreCase( OBJECT_PATIENT ) )
-            {
-                condition = getConditionForPatient( orgunitIds, operator, startDate, endDate );
-            }
-            else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
+            if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
             {
                 String attributeId = info[1];
 
@@ -640,17 +632,18 @@ public class HibernateCaseAggregationConditionStore
     }
 
     /**
-     * Return standard SQL of a dynamic patient-attribute expression. E.g [CA:1] OR [CA:1.age]
+     * Return standard SQL of a dynamic patient-attribute expression. E.g [CA:1]
+     * OR [CA:1.age]
      * 
      */
-    private String getConditionForPatientAttribute( String attributeId, Collection<Integer> orgunitIds,
-        boolean isExist )
+    private String getConditionForPatientAttribute( String attributeId, Collection<Integer> orgunitIds, boolean isExist )
     {
         String sql = " EXISTS ( SELECT * FROM patientattributevalue _pav " + " WHERE _pav.patientid=pi.patientid ";
 
-        if ( attributeId.split( SEPARATOR_ID ).length==2) 
+        if ( attributeId.split( SEPARATOR_ID ).length == 2 )
         {
-            sql += " AND _pav.patientattributeid=" + attributeId.split( "." )[0] + " AND DATE(now) - DATE( _pav.value ) ";
+            sql += " AND _pav.patientattributeid=" + attributeId.split( "." )[0]
+                + " AND DATE(now) - DATE( _pav.value ) ";
         }
         if ( isExist )
         {
@@ -660,21 +653,6 @@ public class HibernateCaseAggregationConditionStore
         {
             sql = " NOT " + sql;
         }
-
-        return sql;
-    }
-
-    /**
-     * Return standard SQL of the expression which is used for calculating total
-     * of person registration
-     * 
-     */
-    private String getConditionForPatient( Collection<Integer> orgunitIds, String operator, String startDate,
-        String endDate )
-    {
-        String sql = " EXISTS ( SELECT * FROM patient _p WHERE _p.patientid = pi.patientid "
-            + "AND _p.registrationdate>='" + startDate + "' AND _p.registrationdate<='" + endDate + "' "
-            + "AND _p.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgunitIds ) + ") ";
 
         return sql;
     }
@@ -868,19 +846,9 @@ public class HibernateCaseAggregationConditionStore
      * happened.
      * 
      */
-    private Collection<Integer> getServiceOrgunit( String startDate, String endDate )
+    private Collection<Integer> getServiceOrgunit()
     {
-        String sql = "(select organisationunitid from programstageinstance where executiondate>= '" + startDate
-            + "' and executiondate<='" + endDate + "')";
-        sql += " UNION ";
-        sql += "( select distinct organisationunitid from patient where registrationdate BETWEEN '" + startDate
-            + "' AND '" + endDate + "')";
-        sql += " UNION ";
-        sql += "( select distinct organisationunitid from patient p INNER JOIN programinstance pi ON p.patientid=pi.patientid "
-            + "  where pi.enrollmentdate BETWEEN '" + startDate + "' AND '" + endDate + "')";
-        sql += " UNION ";
-        sql += "( select distinct organisationunitid from patient p INNER JOIN programinstance pi ON p.patientid=pi.patientid "
-            + "  where pi.enrollmentdate BETWEEN '" + startDate + "' AND '" + endDate + "')";
+        String sql = "select distinct organisationunitid from patient";
 
         Collection<Integer> orgunitIds = new HashSet<Integer>();
         orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
@@ -1074,8 +1042,7 @@ public class HibernateCaseAggregationConditionStore
 
             String[] info = match.split( SEPARATOR_OBJECT );
 
-            if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT )
-                || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE ) )
+            if ( info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE ) )
             {
                 return true;
             }
@@ -1083,31 +1050,6 @@ public class HibernateCaseAggregationConditionStore
 
         return false;
     }
-
-    // private boolean hasProgramInstanceCriteria( String expresstion )
-    // {
-    // Pattern pattern = Pattern.compile( CaseAggregationCondition.regExp );
-    // Matcher matcher = pattern.matcher( expresstion );
-    // while ( matcher.find() )
-    // {
-    // String match = matcher.group();
-    //
-    // match = match.replaceAll( "[\\[\\]]", "" );
-    //
-    // String[] info = match.split( SEPARATOR_OBJECT );
-    //
-    // if ( info[0].equalsIgnoreCase(
-    // CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY )
-    // || info[0].equalsIgnoreCase( CaseAggregationCondition.OBJECT_PROGRAM )
-    // || info[0].equalsIgnoreCase(
-    // CaseAggregationCondition.OBJECT_PROGRAM_STAGE ) )
-    // {
-    // return true;
-    // }
-    // }
-    //
-    // return false;
-    // }
 
     private boolean hasDataelementCriteria( String expresstion )
     {
