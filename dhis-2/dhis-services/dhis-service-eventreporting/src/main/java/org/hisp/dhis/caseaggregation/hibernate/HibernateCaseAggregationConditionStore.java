@@ -300,18 +300,22 @@ public class HibernateCaseAggregationConditionStore
 
                 sql += "FROM ";
                 boolean hasDataelement = hasDataelementCriteria( caseExpression );
-
-                if ( hasDataelement )
+                boolean hasPatient = hasPatientCriteria( caseExpression );
+                if ( hasPatient && hasDataelement )
                 {
                     sql += " programinstance as pi ";
                     sql += " INNER JOIN patient p on p.patientid=pi.patientid ";
                     sql += " INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
                     sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
                 }
-                else
+                else if ( hasPatient )
                 {
                     sql += " programinstance as pi INNER JOIN patient p on p.patientid=pi.patientid ";
                     sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=p.organisationunitid ";
+                }
+                else
+                {
+                    sql += " programstageinstance psi INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
                 }
 
                 sql += " WHERE "
@@ -347,7 +351,7 @@ public class HibernateCaseAggregationConditionStore
         }
 
         sql = sql.replaceAll( "COMBINE", "" );
-
+        System.out.println( "\n\n === \n " + sql );
         return sql;
     }
 
@@ -848,7 +852,9 @@ public class HibernateCaseAggregationConditionStore
      */
     private Collection<Integer> getServiceOrgunit()
     {
-        String sql = "select distinct organisationunitid from patient";
+        String sql = "(select distinct organisationunitid from patient)";
+        sql += " UNION ";
+        sql += "(select distinct organisationunitid from programstageinstance where organisationunitid is not null)";
 
         Collection<Integer> orgunitIds = new HashSet<Integer>();
         orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
