@@ -34,8 +34,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
@@ -70,9 +73,6 @@ public class DataApprovalServiceTest
     @Autowired
     private DataSetService dataSetService;
     
-    @Autowired
-    private UserService userService;
-
     @Autowired
     private OrganisationUnitService organisationUnitService;
     
@@ -109,6 +109,9 @@ public class DataApprovalServiceTest
     @Override
     public void setUpTest() throws Exception
     {
+        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
+        userService = (UserService) getBean( UserService.ID );
+        
         // ---------------------------------------------------------------------
         // Add supporting data
         // ---------------------------------------------------------------------
@@ -298,32 +301,34 @@ public class DataApprovalServiceTest
     }
 
     @Test
-    @Ignore
     public void testMayApprove() throws Exception
     {
-        userB.addOrganisationUnit( organisationUnitB );
-
-        assertEquals( false, dataApprovalService.mayApprove( organisationUnitA ) );
-        assertEquals( false, dataApprovalService.mayApprove( organisationUnitB ) );
-        assertEquals( false, dataApprovalService.mayApprove( organisationUnitC ) );
-        assertEquals( false, dataApprovalService.mayApprove( organisationUnitD ) );
-
-        assertEquals( false, dataApprovalService.mayApprove( organisationUnitA ) );
-        assertEquals( false, dataApprovalService.mayApprove( organisationUnitB ) );
-        assertEquals( true, dataApprovalService.mayApprove( organisationUnitC ) );
-        assertEquals( true, dataApprovalService.mayApprove( organisationUnitD ) );
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        units.add( organisationUnitB );        
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE );
 
         assertEquals( false, dataApprovalService.mayApprove( organisationUnitA ) );
         assertEquals( true, dataApprovalService.mayApprove( organisationUnitB ) );
         assertEquals( false, dataApprovalService.mayApprove( organisationUnitC ) );
         assertEquals( false, dataApprovalService.mayApprove( organisationUnitD ) );
-
-        assertEquals( false, dataApprovalService.mayApprove( organisationUnitA ) );
-        assertEquals( true, dataApprovalService.mayApprove( organisationUnitB ) );
-        assertEquals( true, dataApprovalService.mayApprove( organisationUnitC ) );
-        assertEquals( true, dataApprovalService.mayApprove( organisationUnitD ) );
     }
 
+    @Test
+    public void testMayApproveLowerLevels() throws Exception
+    {
+        Set<OrganisationUnit> units = new HashSet<OrganisationUnit>();
+        units.add( organisationUnitC );
+        createUserAndInjectSecurityContext( units, false, DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+
+        assertEquals( false, dataApprovalService.mayApprove( organisationUnitB ) );
+        assertEquals( false, dataApprovalService.mayApprove( organisationUnitC ) );
+        assertEquals( true, dataApprovalService.mayApprove( organisationUnitD ) );
+    }
+    
+    //TODO better test coverage
+    //TODO split testMayUnapprove into multiple tests with an injected user in each
+    //TODO remove ignore from testMayUnapprove
+    
     @Test
     @Ignore
     public void testMayUnapprove() throws Exception

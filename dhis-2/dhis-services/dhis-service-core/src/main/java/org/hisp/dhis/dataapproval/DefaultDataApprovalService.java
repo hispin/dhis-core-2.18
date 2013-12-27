@@ -149,14 +149,14 @@ public class DefaultDataApprovalService
     {
         User user = currentUserService.getCurrentUser();
         
-        boolean mayApprove = user != null && user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE );
+        boolean mayApprove = ( user != null && user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE ) );
         
         if ( mayApprove && user.getOrganisationUnits().contains( organisationUnit ) )
         {
             return true;
         }
 
-        boolean mayApproveAtLowerLevels = user != null && user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS );
+        boolean mayApproveAtLowerLevels = ( user != null && user.getUserCredentials().isAuthorized( DataApproval.AUTH_APPROVE_LOWER_LEVELS ) );
         
         if ( mayApproveAtLowerLevels && CollectionUtils.containsAny( user.getOrganisationUnits(), organisationUnit.getAncestors() ) )
         {

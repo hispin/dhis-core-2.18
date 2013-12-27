@@ -1346,15 +1346,49 @@ public abstract class DhisConvenienceTest
      */
     public User createUserAndInjectSecurityContext( boolean allAuth, String... auths )
     {
-        Assert.notNull( identifiableObjectManager );
-        Assert.notNull( userService );
+        return createUserAndInjectSecurityContext( null, allAuth, auths );
+    }
+    
+    /**
+     * Creates a user and injects into the security context with username 
+     * "username". Requires <code>identifiableObjectManager</code> and 
+     * <code>userService</code> to be injected into the test.
+     * 
+     * @param organisationUnits the organisation units of the user.
+     * @param allAuth whether to grant the ALL authority to user.
+     * @param auths authorities to grant to user.
+     * @return the user.
+     */
+    public User createUserAndInjectSecurityContext( Set<OrganisationUnit> organisationUnits, boolean allAuth, String... auths )
+    {
+        Assert.notNull( identifiableObjectManager, "IdentifiableObjectManager must be injected in test" );
+        Assert.notNull( userService, "UserService must be injected in test" );
         
         UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
         userAuthorityGroup.setName( "Superuser" );
-        userAuthorityGroup.getAuthorities().add( "ALL" );
+        
+        if ( allAuth )
+        {
+            userAuthorityGroup.getAuthorities().add( "ALL" );
+        }
+        
+        if ( auths != null )
+        {
+            for ( String auth : auths )
+            {
+                userAuthorityGroup.getAuthorities().add( auth );
+            }
+        }
+        
         identifiableObjectManager.save( userAuthorityGroup );
 
         User user = createUser( 'A' );
+        
+        if ( organisationUnits != null )
+        {
+            user.setOrganisationUnits( organisationUnits );
+        }
+        
         user.getUserCredentials().getUserAuthorityGroups().add( userAuthorityGroup );
         userService.addUser( user );
         user.getUserCredentials().setUser( user );
