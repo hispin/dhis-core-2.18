@@ -486,6 +486,46 @@ Ext.onReady( function() {
 				}));
 
 				menuItems.push( Ext.create('Ext.menu.Item', {
+                    text: 'Swap lon/lat',
+					iconCls: 'gis-menu-item-icon-relocate',
+					disabled: !gis.init.user.isAdmin,
+					handler: function(item) {
+                        var id = feature.attributes.id,
+                            geo = Ext.clone(feature.geometry).transform('EPSG:900913', 'EPSG:4326');
+
+                        if (Ext.isNumber(geo.x) && Ext.isNumber(geo.y) && gis.init.user.isAdmin) {
+                            Ext.Ajax.request({
+                                url: gis.init.contextPath + '/api/organisationUnits/' + id + '.json?links=false',
+                                success: function(r) {
+                                    var orgUnit = Ext.decode(r.responseText);
+
+                                    orgUnit.coordinates = '[' + geo.y.toFixed(5) + ',' + geo.x.toFixed(5) + ']';
+
+                                    Ext.Ajax.request({
+                                        url: gis.init.contextPath + '/api/metaData?preheatCache=false',
+                                        method: 'POST',
+                                        headers: {'Content-Type': 'application/json'},
+                                        params: Ext.encode({organisationUnits: [orgUnit]}),
+                                        success: function(r) {
+                                            var x = feature.geometry.x,
+                                                y = feature.geometry.y;
+
+                                            delete feature.geometry.bounds;
+                                            feature.geometry.x = y;
+                                            feature.geometry.y = x;
+
+                                            layer.redraw();
+
+                                            console.log(feature.attributes.name + ' relocated to ' + orgUnit.coordinates);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+					}
+				}));
+
+				menuItems.push( Ext.create('Ext.menu.Item', {
 					text: GIS.i18n.show_information_sheet,
 					iconCls: 'gis-menu-item-icon-information',
 					handler: function(item) {

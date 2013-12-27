@@ -8433,7 +8433,6 @@ Ext.onReady( function() {
                                 success: function(r) {
                                     gis.olmap.relocate.active = false;
                                     gis.olmap.relocate.window.destroy();
-
                                     gis.olmap.relocate.feature.move({x: parseFloat(e.clientX - center.x), y: parseFloat(e.clientY - 28)});
                                     gis.olmap.getViewport().style.cursor = 'auto';
 
