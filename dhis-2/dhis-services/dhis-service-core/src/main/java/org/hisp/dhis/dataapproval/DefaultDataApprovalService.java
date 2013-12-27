@@ -35,10 +35,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Jim Grace
  */
+@Transactional
 public class DefaultDataApprovalService
     implements DataApprovalService
 {
@@ -107,10 +109,11 @@ public class DefaultDataApprovalService
         {
             switch ( getDataApprovalState( dataSet, period, child, attributeOptionCombo ) )
             {
-                //
+                // -------------------------------------------------------------
                 // If ready or waiting at a lower level, return
                 // WAITING_FOR_LOWER_LEVEL_APPROVAL at this level.
-                //
+                // -------------------------------------------------------------
+            
                 case READY_FOR_APPROVAL:
                 case WAITING_FOR_LOWER_LEVEL_APPROVAL:
                     return DataApprovalState.WAITING_FOR_LOWER_LEVEL_APPROVAL;
@@ -127,21 +130,23 @@ public class DefaultDataApprovalService
             }
         }
 
-        //
+        // ---------------------------------------------------------------------
         // If approved at lower levels (and not ready or waiting at any),
         // and/or if data is configured for entry at this level (whether or
         // not it has been entered), return READY_FOR_APPROVAL.
-        //
+        // ---------------------------------------------------------------------
+        
         if ( approvedAtLowerLevels || organisationUnit.getAllDataSets().contains ( dataSet ) )
         {
             return DataApprovalState.READY_FOR_APPROVAL;
         }
 
-        //
+        // ---------------------------------------------------------------------
         // Finally, if we haven't seen any approval action at lower levels,
         // and this level is not configured for data entry from this data set,
         // then return APPROVAL_NOT_NEEDED.
-        //
+        // ---------------------------------------------------------------------
+        
         return DataApprovalState.APPROVAL_NOT_NEEDED;
     }
 
