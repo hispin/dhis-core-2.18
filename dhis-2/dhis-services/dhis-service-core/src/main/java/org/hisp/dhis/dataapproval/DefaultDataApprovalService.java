@@ -206,7 +206,7 @@ public class DefaultDataApprovalService
      * also on whether there are higher-level approvals that the user is
      * authorized to unapprove.
      *
-     * @param source OrganisationUnit to check for approval.
+     * @param organisationUnit OrganisationUnit to check for approval.
      * @return true if the user may approve, otherwise false
      */
     private boolean isAuthorizedToUnapprove( OrganisationUnit organisationUnit )
