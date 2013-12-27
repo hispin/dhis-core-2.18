@@ -60,7 +60,6 @@ public enum DataApprovalState
      * Data in this data set does not need approval for this period and
      * organisation unit, for one of the following reasons:
      * <ul>
-     *     <li>Data approval is not enabled globally.</li>
      *     <li>Data approval is not enabled for this data set.</li>
      *     <li>No data is collected for this data set for this organisation
      *         unit or any lower-level organisation units under it.</li>

@@ -36,8 +36,7 @@
 #completenessDiv
 {
   display: none;
-  width: 386px;
-  height: 29px;
+  width: 399px;
 }
 
 #infoDiv
@@ -69,6 +68,12 @@ input[type=text],textarea
   padding-right: 0;
   margin-top: 1px;
   margin-bottom: 1px;
+}
+
+.separator
+{
+  color: #aaa;
+  padding: 0 4px;
 }
 
 .selectionBoxRow

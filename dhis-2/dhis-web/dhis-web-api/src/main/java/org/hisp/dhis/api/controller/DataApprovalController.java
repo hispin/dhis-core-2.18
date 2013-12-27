@@ -171,6 +171,12 @@ public class DataApprovalController
         
         User user = currentUserService.getCurrentUser();
         
+        if ( !dataApprovalService.mayApprove( organisationUnit ) )
+        {
+            ContextUtils.conflictResponse( response, "Current user is not authorized to approve for organisation unit: " + ou );
+            return;
+        }
+        
         DataApprovalState state = dataApprovalService.getDataApprovalState( dataSet, period, organisationUnit, attributeOptionCombo );
         
         if ( DataApprovalState.READY_FOR_APPROVAL.equals( state ) )
