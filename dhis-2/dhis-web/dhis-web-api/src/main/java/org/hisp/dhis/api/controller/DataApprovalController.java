@@ -233,9 +233,12 @@ public class DataApprovalController
         
         DataApproval approval = dataApprovalService.getDataApproval( dataSet, period, organisationUnit, attributeOptionCombo );
         
-        if ( approval != null )
+        if ( approval == null )
         {
-            dataApprovalService.deleteDataApproval( approval );
+            ContextUtils.conflictResponse( response, "Data is not approved and cannot be unapproved" );
+            return;
         }
+        
+        dataApprovalService.deleteDataApproval( approval );
     }
 }

@@ -13,14 +13,16 @@ function getDataSetReport()
 {
     var dataSetReport = {
         ds: $( "#dataSetId" ).val(),
+        cc: $( "#dataSetId :selected" ).data( "categorycombo" ),
         periodType: $( "#periodType" ).val(),
         pe: $( "#periodId" ).val(),
         ou: selectionTreeSelection.getSelectedUid()[0],
         selectedUnitOnly: $( "#selectedUnitOnly" ).is( ":checked" ),
         offset: dhis2.dsr.currentPeriodOffset
     };
-    
+        
     var dims = [];
+    var cps = [];
     
     $( ".dimension" ).each( function( index, value ) {
     	var dim = $( this ).data( "uid" );
@@ -30,10 +32,12 @@ function getDataSetReport()
     	{
     		var dimQuery = dim + ":" + item;
     		dims.push( dimQuery );
+    		cps.push( item );
     	}
     } );
     
     dataSetReport.dimension = dims;
+    dataSetReport.cp = cps;
     
     return dataSetReport;
 }
@@ -201,7 +205,7 @@ function displayDataSetReport( dataSetReport )
     delete dataSetReport.periodType;
     delete dataSetReport.offset;
     
-    var url = "generateDataSetReport.action" + dhis2.dsr.getDatSetReportQueryParams( dataSetReport );
+    var url = dhis2.dsr.getDataSetReportUrl( dataSetReport );
     
     $.get( url, function( data ) {
     	$( '#content' ).html( data );
@@ -213,11 +217,11 @@ function displayDataSetReport( dataSetReport )
 }
 
 /**
- * Generates the query params part of the URL for the given data set report.
+ * Generates the URL for the given data set report.
  */
-dhis2.dsr.getDatSetReportQueryParams = function( dataSetReport )
+dhis2.dsr.getDataSetReportUrl = function( dataSetReport )
 {
-    var url = 
+    var url = "generateDataSetReport.action" +
     	"?ds=" + dataSetReport.ds + 
     	"&pe=" + dataSetReport.pe + 
     	"&ou=" + dataSetReport.ou +
@@ -230,13 +234,35 @@ dhis2.dsr.getDatSetReportQueryParams = function( dataSetReport )
     return url;
 }
 
+/**
+ * Generates the URL for the approval of the given data set report.
+ */
+dhis2.dsr.getDataApprovalUrl = function( dataSetReport )
+{
+	var url = "../api/dataApprovals" +
+		"?ds=" + dataSetReport.ds + 
+		"&pe=" + dataSetReport.pe + 
+		"&ou=" + dataSetReport.ou;
+	
+	if ( dataSetReport.cc && dataSetReport.cc.length > 0 ) {
+		url += "&cc=" + dataSetReport.cc;
+		url += "&cp=";
+		
+		$.each( dataSetReport.cp, function( idx, item ) {
+			url += item + ";";
+		} );
+		
+		url = url.slice( 0, -1 );
+	}
+	
+	return url;
+}
+
 function exportDataSetReport( type )
 {
 	var dataSetReport = dhis2.dsr.currentDataSetReport;
 	
-	var url = "generateDataSetReport.action" + 
-		dhis2.dsr.getDatSetReportQueryParams( dataSetReport ) +
-	    "&type=" + type;
+	var url = dhis2.dsr.getDataSetReportUrl( dataSetReport ) + "&type=" + type;
 	    
 	window.location.href = url;
 }
@@ -293,7 +319,7 @@ dhis2.dsr.showApproval = function()
 	
 	var dataSetReport = dhis2.dsr.currentDataSetReport;
 	
-	var url = "../api/dataApprovals" + dhis2.dsr.getDatSetReportQueryParams( dataSetReport );
+	var url = dhis2.dsr.getDataApprovalUrl( dataSetReport );
 	
 	$.get( url, function( status ) {
 		if ( status && '"READY_FOR_APPROVAL"' == status ) {
@@ -321,14 +347,12 @@ dhis2.dsr.showApproval = function()
 
 dhis2.dsr.approveData = function()
 {
-	var check = confirm( i18n_confirm_approval );
-	
-	if ( !check ) {
+	if ( !confirm( i18n_confirm_approval ) ) {
 		return false;
 	}
 	
 	var dataSetReport = dhis2.dsr.currentDataSetReport;
-	var url = "../api/dataApprovals" + dhis2.dsr.getDatSetReportQueryParams( dataSetReport );
+	var url = dhis2.dsr.getDataApprovalUrl( dataSetReport );
 	
 	$.ajax( {
 		url: url,
@@ -345,14 +369,12 @@ dhis2.dsr.approveData = function()
 
 dhis2.dsr.unapproveData = function()
 {
-	var check = confirm( i18n_confirm_unapproval );
-	
-	if ( !check ) {
+	if ( !confirm( i18n_confirm_unapproval ) ) {
 		return false;
 	}
 	
 	var dataSetReport = dhis2.dsr.currentDataSetReport;
-	var url = "../api/dataApprovals" + dhis2.dsr.getDatSetReportQueryParams( dataSetReport );
+	var url = dhis2.dsr.getDataApprovalUrl( dataSetReport );
 	
 	$.ajax( {
 		url: url,
