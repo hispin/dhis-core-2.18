@@ -16,6 +16,8 @@ public interface ModelAttributeValueStore
     
     Collection<ModelAttributeValue> getAllModelAttributeValuesByModel( Model model );
     
+    Collection<ModelAttributeValue> getAllModelAttributeValuesByModelTypeAttribute( ModelTypeAttribute modelTypeAttribute );
+    
     ModelAttributeValue modelAttributeValue( Model model ,ModelTypeAttribute modelTypeAttribute );
     
     ModelAttributeValue modelAttributeValue( Model model ,ModelTypeAttribute modelTypeAttribute, ModelTypeAttributeOption modelTypeAttributeOption );

@@ -10,6 +10,8 @@ public class Lookup extends BaseNameableObject
     
     public static final String CCEI_AGG_TYPE = "CCEI_AGG_TYPE";
     
+    public static final String WS_REF_TYPE = "WS_REF_TYPE";
+    
     private String type;
     
     private String value;
