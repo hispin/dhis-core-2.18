@@ -1490,24 +1490,26 @@ Ext.onReady( function() {
 			items.push(item);
 		}
 
-		item = {
-			text: GIS.i18n.search,
-			iconCls: 'gis-menu-item-icon-search',
-			handler: function() {
-				if (layer.searchWindow) {
-					if (layer.searchWindow.isVisible()) {
-						return;
-					}
-					else {
-						layer.searchWindow.destroy();
-					}
-				}
+        if (!(layer.id === gis.layer.event.id)) {
+            item = {
+                text: GIS.i18n.search,
+                iconCls: 'gis-menu-item-icon-search',
+                handler: function() {
+                    if (layer.searchWindow) {
+                        if (layer.searchWindow.isVisible()) {
+                            return;
+                        }
+                        else {
+                            layer.searchWindow.destroy();
+                        }
+                    }
 
-				layer.searchWindow = GIS.app.SearchWindow(layer);
-				layer.searchWindow.show();
-			}
-		};
-		items.push(item);
+                    layer.searchWindow = GIS.app.SearchWindow(layer);
+                    layer.searchWindow.show();
+                }
+            };
+            items.push(item);
+        }
 
 		items.push({
 			xtype: 'menuseparator',
@@ -4840,7 +4842,7 @@ Ext.onReady( function() {
             program.clearValue();
             stage.clearValue();
 
-            dataElementAvailable.removeAll();
+            dataElementsByStageStore.removeAll();
             dataElementSelected.removeAll();
 
             startDate.reset();
