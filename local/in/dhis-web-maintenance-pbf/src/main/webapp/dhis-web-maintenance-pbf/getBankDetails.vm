@@ -1,8 +1,17 @@
+<style >
+	.mandatory
+	{
+		color:red;
+		font-size: 1.5em;
+	}
+</style>
 <script >
 $(function() {
 $("#bankDetails").tablesorter(); 
 $("#openAddBankDetail").button()
 			.click(function() {	
+			
+			validateAddBank();
 			$( "#addBankDetail" ).dialog('option', 'title', 'Add Bank Detail');
            	$('#dataSetId option[value=-1]').attr('selected','selected');
 			$("#dataSetId ").removeAttr('disabled');
@@ -20,9 +29,11 @@ $( "#addBankDetail" ).dialog({
 			autoOpen: false,			
 			modal: true,
 			buttons: {
-			"Save": function() {
-						
-                    var dataValue = {
+			"save" : {
+         		text: "Save",
+         		id: "button-save",
+         		click: function(){
+              		var dataValue = {
         		        			'dataSetId' : $("#dataSetId").val(),
         		        			'bank' : $("#bank").val(),
         		        			'branchName' : $("#branchName").val(),
@@ -37,8 +48,8 @@ $( "#addBankDetail" ).dialog({
                                 success: handleSuccess,
                                 error: handleError
                             } );
-                    	
-				},
+         		}   
+      		},
 				Cancel: function() {
 					$( this ).dialog( "close" );
 				}
@@ -97,6 +108,7 @@ $( "#addBankDetail" ).dialog({
 
 	function editBankData( organisationUnitId, dataSetId, bank, branchName, accountName, accountNumber)
 	{
+		validateAddBank();
 		$( "#addBankDetail" ).dialog('option', 'title', 'Edit Bank Detail');
 		$('#dataSetId option[value='+dataSetId+']').attr('selected','selected');
 		$('#dataSetId').attr('disabled','disabled');
@@ -126,6 +138,17 @@ function loadBankDetails()
         				});  	
 }
 selection.setListenerFunction( organisationUnitSelected );
+function validateAddBank()
+	{
+		if($("#dataSetId").val() != '-1' && $("#bank").val() != '-1' && $("#branchName").val() != "" && $("#accountName").val() != "" && $("#accountNumber").val() != "")
+        {
+        	$("#button-save").button( "option", "disabled", false ).removeClass("ui-state-disabled");
+        }
+        else
+        {
+			$("#button-save").button( "option", "disabled", true ).addClass("ui-state-disabled");       	
+        }
+	}
 </script>
 
 <table style="width:100%" id="bankDetails">
@@ -136,9 +159,9 @@ selection.setListenerFunction( organisationUnitSelected );
 			<th >Branch Name</th>
 			<th >Account Name</th>
 			<th >Account Number</th>
-			##if( $updateAuthority == 'Yes' )
+			#if( $auth.hasAccess("dhis-web-maintenance-pbf","deleteBankData"))
 				<th >Operations</th>
-			##end
+			#end
         </tr>
 	</thead>
 	<tbody id="list">
@@ -155,7 +178,7 @@ selection.setListenerFunction( organisationUnitSelected );
 				<td >$!bankDetails.branchName</td>
 				<td >$!bankDetails.accountName</td>
 				<td >$!bankDetails.accountNumber</td>
-			##if($updateAuthority == 'Yes')
+			#if( $auth.hasAccess("dhis-web-maintenance-pbf","deleteBankData"))
 	            <td>
 					<a href="javascript:deleteBankData('$bankDetails.organisationUnit.id','$bankDetails.dataSet.id')">
 						<img src="images/delete.png" width="17px"/>
@@ -164,7 +187,7 @@ selection.setListenerFunction( organisationUnitSelected );
 						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/>
 					</a>				
 				</td>
-			##end
+			#end
         </tr>
 		#end
     </tbody>
@@ -173,9 +196,9 @@ selection.setListenerFunction( organisationUnitSelected );
 <div id="addBankDetail" title="Add New Bank Detail">
 	<table style="width:100%;table-layout:fixed;">
 		<tr >
-			<td style="width:40%;">PBF Type</td>
+			<td style="width:40%;">PBF Type <b class="mandatory">*</b></td>
 			<td style="width:60%;">
-				<select id="dataSetId" style="width:100%;">
+				<select id="dataSetId" style="width:100%;" onchange="validateAddBank()">
 					<option value="-1">Select PBF Type</option>
 					#foreach( $dataSet in $dataSets )
 						<option value="$dataSet.id">$dataSet.name</option>
@@ -184,9 +207,9 @@ selection.setListenerFunction( organisationUnitSelected );
 			</td>
         </tr>
 		<tr >
-			<td style="width:40%;">Bank</td>
+			<td style="width:40%;">Bank <b class="mandatory">*</b></td>
             <td style="width:60%;">
-                <select id="bank" style="width:100%;">
+                <select id="bank" style="width:100%;" onchange="validateAddBank()">
                     <option value="-1">Select Bank</option>
                     #foreach( $bank in $banks )
                         <option value="$bank">$bank</option>
@@ -195,16 +218,16 @@ selection.setListenerFunction( organisationUnitSelected );
             </td>
         </tr>
 		<tr >
-			<td style="width:40%;">Branch Name</td>
-			<td style="width:60%;"><input type="text" id="branchName" style="width:100%;"/></td>
+			<td style="width:40%;">Branch Name <b class="mandatory">*</b></td>
+			<td style="width:60%;"><input type="text" id="branchName" style="width:100%;" onblur="validateAddBank()"/></td>
         </tr>
 		<tr >
-			<td style="width:40%;">Account Name</td>
-			<td style="width:60%;"><input type="text" id="accountName" style="width:100%;"/></td>
+			<td style="width:40%;">Account Name <b class="mandatory">*</b></td>
+			<td style="width:60%;"><input type="text" id="accountName" style="width:100%;" onblur="validateAddBank()"/></td>
         </tr>
         <tr >
-            <td style="width:40%;">Account Number</td>
-            <td style="width:60%;"><input type="text" id="accountNumber" style="width:100%;"/></td>
+            <td style="width:40%;">Account Number <b class="mandatory">*</b></td>
+            <td style="width:60%;"><input type="text" id="accountNumber" style="width:100%;" onblur="validateAddBank()"/></td>
         </tr>
     </table>
 </div>
