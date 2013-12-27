@@ -202,23 +202,17 @@ public class ShowUpdateProgramFormAction
         program = programService.getProgram( id );
 
         availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        availableIdentifierTypes.removeAll( new HashSet<PatientIdentifierType>( program.getPatientIdentifierTypes() ) );
 
         availableAttributes = patientAttributeService.getAllPatientAttributes();
         availableAttributes.removeAll( new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
-        
+
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
-        
-        for ( Program p : programs )
-        {
-            availableIdentifierTypes
-                .removeAll( new HashSet<PatientIdentifierType>( p.getPatientIdentifierTypes() ) );
-        }
-
-        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-
         programs.remove( program );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
+
+        userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
         relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
         Collections.sort( relationshipTypes, IdentifiableObjectNameComparator.INSTANCE );
