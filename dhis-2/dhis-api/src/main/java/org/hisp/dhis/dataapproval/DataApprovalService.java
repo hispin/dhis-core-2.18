@@ -32,7 +32,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.user.User;
 
 /**
  * @author Jim Grace
@@ -88,15 +87,9 @@ public interface DataApprovalService
      * organisation unit.
      *
      * @param organisationUnit OrganisationUnit to check for approval.
-     * @param user The current user.
-     * @param mayApproveAtSameLevel Tells whether the user has the authority
-     *        to approve data for the user's assigned organisation unit(s).
-     * @param mayApproveAtLowerLevels Tells whether the user has the authority
-     *        to approve data below the user's assigned organisation unit(s).
      * @return true if the user may approve, otherwise false
      */
-    boolean mayApprove( OrganisationUnit organisationUnit, User user,
-        boolean mayApproveAtSameLevel, boolean mayApproveAtLowerLevels );
+    boolean mayApprove( OrganisationUnit organisationUnit );
 
     /**
      * Checks to see whether a user may unapprove a given data approval.
@@ -114,13 +107,6 @@ public interface DataApprovalService
      * data set, and the user is not authorized to remove that approval as well.
      *
      * @param dataApproval The data approval to check for access.
-     * @param user The current user.
-     * @param mayApproveAtSameLevel Tells whether the user has the authority
-     *        to approve data for the user's assigned organisation unit(s).
-     * @param mayApproveAtLowerLevels Tells whether the user has the authority
-     *        to approve data below the user's assigned organisation unit(s).
-     * @return true if the user may unapprove, otherwise false
      */
-    boolean mayUnapprove( DataApproval dataApproval, User user,
-        boolean mayApproveAtSameLevel, boolean mayApproveAtLowerLevels );
+    boolean mayUnapprove( DataApproval dataApproval );
 }

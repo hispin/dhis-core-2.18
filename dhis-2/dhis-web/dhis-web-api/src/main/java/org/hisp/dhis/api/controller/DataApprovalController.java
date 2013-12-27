@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +42,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -48,11 +50,13 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Lars Helge Overland
@@ -81,8 +85,52 @@ public class DataApprovalController
     @Autowired
     private InputUtils inputUtils;
 
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA')" )
-    @RequestMapping( method = RequestMethod.POST, produces = "text/plain" )
+    @RequestMapping( method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
+    public void getApprovalState(
+        @RequestParam String ds,
+        @RequestParam String pe,
+        @RequestParam String ou,
+        @RequestParam( required = false ) String cc, 
+        @RequestParam( required = false ) String cp, HttpServletResponse response ) throws IOException
+    {
+        DataSet dataSet = dataSetService.getDataSet( ds );
+        
+        if ( dataSet == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal data set identifier: " + ds );
+            return;
+        }
+
+        Period period = PeriodType.getPeriodFromIsoString( pe );
+
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
+            return;
+        }
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+
+        if ( organisationUnit == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
+            return;
+        }
+        
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+        
+        if ( attributeOptionCombo == null )
+        {
+            return;
+        }
+                
+        DataApprovalState state = dataApprovalService.getDataApprovalState( dataSet, period, organisationUnit, attributeOptionCombo );
+        
+        JacksonUtils.toJson( response.getOutputStream(), state );
+    }
+    
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
+    @RequestMapping( method = RequestMethod.POST )
     public void saveApproval(
         @RequestParam String ds,
         @RequestParam String pe,
@@ -133,8 +181,9 @@ public class DataApprovalController
         }
     }
 
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA')" )
-    @RequestMapping( method = RequestMethod.DELETE, produces = "text/plain" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
+    @RequestMapping( method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void removeApproval(
         @RequestParam String ds,
         @RequestParam String pe,

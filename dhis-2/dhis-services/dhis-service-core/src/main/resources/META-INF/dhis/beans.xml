@@ -384,6 +384,7 @@
 
   <bean id="org.hisp.dhis.dataapproval.DataApprovalService" class="org.hisp.dhis.dataapproval.DefaultDataApprovalService">
       <property name="dataApprovalStore" ref="org.hisp.dhis.dataapproval.DataApprovalStore" />
+      <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementService" class="org.hisp.dhis.dataelement.DefaultDataElementService">
