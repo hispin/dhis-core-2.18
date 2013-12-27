@@ -38,7 +38,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
 
@@ -51,12 +50,6 @@ public class DataElementCategoryStoreTest
     extends DhisSpringTest
 {
     private GenericIdentifiableObjectStore<DataElementCategory> categoryStore;
-
-    private Concept conceptA;
-
-    private Concept conceptB;
-
-    private Concept conceptC;
 
     private DataElementCategoryOption categoryOptionA;
 
@@ -83,10 +76,6 @@ public class DataElementCategoryStoreTest
 
         categoryStore = (GenericIdentifiableObjectStore<DataElementCategory>) getBean( "org.hisp.dhis.dataelement.CategoryStore" );
 
-        conceptA = new Concept( "ConceptA" );
-        conceptB = new Concept( "ConceptB" );
-        conceptC = new Concept( "ConceptC" );
-
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
         categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
         categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
@@ -110,9 +99,9 @@ public class DataElementCategoryStoreTest
     @Test
     public void testAddGet()
     {
-        categoryA = new DataElementCategory( "CategoryA", conceptA, categoryOptions );
-        categoryB = new DataElementCategory( "CategoryB", conceptB, categoryOptions );
-        categoryC = new DataElementCategory( "CategoryC", conceptC, categoryOptions );
+        categoryA = new DataElementCategory( "CategoryA", categoryOptions );
+        categoryB = new DataElementCategory( "CategoryB", categoryOptions );
+        categoryC = new DataElementCategory( "CategoryC", categoryOptions );
 
         int idA = categoryStore.save( categoryA );
         int idB = categoryStore.save( categoryB );
@@ -121,10 +110,6 @@ public class DataElementCategoryStoreTest
         assertEquals( categoryA, categoryStore.get( idA ) );
         assertEquals( categoryB, categoryStore.get( idB ) );
         assertEquals( categoryC, categoryStore.get( idC ) );
-
-        assertEquals( "ConceptA", categoryStore.get( idA ).getConcept().getName() );
-        assertEquals( "ConceptB", categoryStore.get( idB ).getConcept().getName() );
-        assertEquals( "ConceptC", categoryStore.get( idC ).getConcept().getName() );
 
         assertEquals( categoryOptions, categoryStore.get( idA ).getCategoryOptions() );
         assertEquals( categoryOptions, categoryStore.get( idB ).getCategoryOptions() );

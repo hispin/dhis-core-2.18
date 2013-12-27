@@ -184,10 +184,9 @@ public class UserCredentials
         
         final Set<String> auths = getAllAuthorities();
         
-        return auths.contains( UserAuthorityGroup.AUTHORITY_ALL ) || auths.contains( auths );
+        return auths.contains( UserAuthorityGroup.AUTHORITY_ALL ) || auths.contains( auth );
     }
     
-
     /**
      * Indicates whether this user credentials is a super user, implying that the
      * ALL authority is present in at least one of the user authority groups of

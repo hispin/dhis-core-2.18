@@ -32,7 +32,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -81,22 +80,10 @@ public class DataElementStoreTest
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
         DataElement dataElementC = createDataElement( 'C' );
-        DataElement dataElementD = createDataElement( 'A' );
 
         int idA = dataElementStore.save( dataElementA );
         int idB = dataElementStore.save( dataElementB );
         int idC = dataElementStore.save( dataElementC );
-
-        try
-        {
-            // Should give unique constraint violation
-            dataElementStore.save( dataElementD );
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Expected
-        }
 
         dataElementA = dataElementStore.get( idA );
         assertNotNull( dataElementA );
