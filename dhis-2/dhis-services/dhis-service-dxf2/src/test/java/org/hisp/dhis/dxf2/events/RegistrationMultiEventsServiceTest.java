@@ -179,7 +179,7 @@ public class RegistrationMultiEventsServiceTest
         identifiableObjectManager.update( programStageB );
         identifiableObjectManager.update( programA );
 
-        createUserAndInjectSecurityContext( 'A', true );
+        createUserAndInjectSecurityContext( true );
 
         // mocked format
         I18nFormat mockFormat = mock( I18nFormat.class );
