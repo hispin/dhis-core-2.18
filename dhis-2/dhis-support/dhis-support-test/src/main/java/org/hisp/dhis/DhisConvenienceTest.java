@@ -1336,16 +1336,15 @@ public abstract class DhisConvenienceTest
     // -------------------------------------------------------------------------
 
     /**
-     * Creates a user and injects into the security context. Requires 
-     * <code>identifiableObjectManager</code> and <code>userService</code> to be
-     * injected into the test.
+     * Creates a user and injects into the security context with username 
+     * "username". Requires <code>identifiableObjectManager</code> and 
+     * <code>userService</code> to be injected into the test.
      * 
-     * @param uniqueCharacter uniquey character for username.
      * @param allAuth whether to grant ALL authority to user.
      * @param auths authorities to grant to user.
      * @return the user.
      */
-    public User createUserAndInjectSecurityContext( char uniqueCharacter, boolean allAuth, String... auths )
+    public User createUserAndInjectSecurityContext( boolean allAuth, String... auths )
     {
         Assert.notNull( identifiableObjectManager );
         Assert.notNull( userService );

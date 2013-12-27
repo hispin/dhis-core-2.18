@@ -124,7 +124,7 @@ public class NoRegistrationSingleEventServiceTest
         programA.getProgramInstances().add( programInstance );
         identifiableObjectManager.update( programA );
 
-        createUserAndInjectSecurityContext( 'A', true );
+        createUserAndInjectSecurityContext( true );
 
         // mocked format
         I18nFormat mockFormat = mock( I18nFormat.class );
