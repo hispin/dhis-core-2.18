@@ -679,6 +679,10 @@
         <param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
         <param name="javascripts">javascript/aggregationEngine.js</param>
     </action>
-	
+    
+	<action name="loadAggregationParam" class="org.hisp.dhis.ccem.aggregation.action.GetAggregationParameterAction">
+        <result name="success" type="velocity">/content.vm</result>
+        <param name="page">/dhis-web-maintenance-ccem/addAggregationParam.vm</param>            
+    </action>
 </package>
 </struts>

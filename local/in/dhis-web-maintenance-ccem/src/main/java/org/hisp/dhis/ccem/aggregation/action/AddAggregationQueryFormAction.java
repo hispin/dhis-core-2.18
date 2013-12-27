@@ -53,7 +53,7 @@ public class AddAggregationQueryFormAction implements Action
         throws Exception
     {
 		lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.CCEI_AGG_TYPE ) );
-
+		
 		dataElementList = new ArrayList<DataElement>( dataElementService.getAllActiveDataElements() );
 		
     	return SUCCESS;

@@ -745,6 +745,15 @@
         scope="prototype">
         <property name="lookupService" ref="org.hisp.dhis.lookup.LookupService" />
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    </bean>   
-	
+    </bean> 
+      
+	<bean id="org.hisp.dhis.ccem.aggregation.action.GetAggregationParameterAction"
+        class="org.hisp.dhis.ccem.aggregation.action.GetAggregationParameterAction"
+        scope="prototype">
+        <property name="lookupService" ref="org.hisp.dhis.lookup.LookupService" />
+        <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+        <property name="modelTypeAttributeService" ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />
+        <property name="modelAttributeValueService" ref="org.hisp.dhis.coldchain.model.ModelAttributeValueService" />
+    </bean>
+    
 </beans>
