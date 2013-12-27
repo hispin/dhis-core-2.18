@@ -93,7 +93,7 @@ public class DefaultDataApprovalService
 
     public DataApprovalState getDataApprovalState( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        if ( !dataSet.isApproveData() )
+        if ( ! dataSet.isApproveData() || ! period.getPeriodType().equals( dataSet.getPeriodType() ) )
         {
             return DataApprovalState.APPROVAL_NOT_NEEDED;
         }

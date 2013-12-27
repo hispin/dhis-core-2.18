@@ -87,6 +87,8 @@ public class DataApprovalServiceTest
 
     private Period periodB;
 
+    private Period periodC;
+
     private OrganisationUnit organisationUnitA;
 
     private OrganisationUnit organisationUnitB;
@@ -129,6 +131,7 @@ public class DataApprovalServiceTest
 
         periodA = createPeriod( getDay( 5 ), getDay( 6 ) );
         periodB = createPeriod( getDay( 6 ), getDay( 7 ) );
+        periodC = createPeriod( PeriodType.getPeriodTypeByName( "Yearly" ), getDay( 1 ), getDay( 365 ) );
 
         periodService.addPeriod( periodA );
         periodService.addPeriod( periodB );
@@ -366,6 +369,18 @@ public class DataApprovalServiceTest
         assertEquals( DataApprovalState.APPROVED, dataApprovalService.getDataApprovalState( dataSetA, periodA, organisationUnitD, attributeOptionCombo ) );
         assertEquals( DataApprovalState.APPROVED, dataApprovalService.getDataApprovalState( dataSetA, periodA, organisationUnitE, attributeOptionCombo ) );
         assertEquals( DataApprovalState.APPROVED, dataApprovalService.getDataApprovalState( dataSetA, periodA, organisationUnitF, attributeOptionCombo ) );
+    }
+
+    @Test
+    public void testGetDataApprovalStateWrongPeriod() throws Exception
+    {
+        dataSetA.setApproveData( true );
+
+        organisationUnitA.addDataSet( dataSetA );
+
+        assertEquals( DataApprovalState.READY_FOR_APPROVAL, dataApprovalService.getDataApprovalState( dataSetA, periodA, organisationUnitA, attributeOptionCombo ) );
+        assertEquals( DataApprovalState.READY_FOR_APPROVAL, dataApprovalService.getDataApprovalState( dataSetA, periodB, organisationUnitA, attributeOptionCombo ) );
+        assertEquals( DataApprovalState.APPROVAL_NOT_NEEDED, dataApprovalService.getDataApprovalState( dataSetA, periodC, organisationUnitA, attributeOptionCombo ) );
     }
 
     @Test

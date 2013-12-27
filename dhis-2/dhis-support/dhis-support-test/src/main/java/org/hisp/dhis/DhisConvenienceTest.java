@@ -744,8 +744,7 @@ public abstract class DhisConvenienceTest
      * @param period The period.
      * @param source The source.
      * @param value The value.
-     * @param categoryOptionCombo The category option combo.
-     * @param attributeOptionCombo The attribute option combo.
+     * @param categoryOptionCombo The category (and attribute) option combo.
      */
     public static DataValue createDataValue( DataElement dataElement, Period period, OrganisationUnit source,
         String value, DataElementCategoryOptionCombo categoryOptionCombo )
