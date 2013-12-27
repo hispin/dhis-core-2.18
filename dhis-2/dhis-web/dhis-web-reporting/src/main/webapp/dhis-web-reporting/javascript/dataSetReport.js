@@ -28,7 +28,7 @@ function getDataSetReport()
     	var dim = $( this ).data( "uid" );
     	var item = $( this ).val();
     	
-    	if ( dim && item )
+    	if ( dim && item && item != -1 )
     	{
     		var dimQuery = dim + ":" + item;
     		dims.push( dimQuery );
@@ -120,6 +120,28 @@ dhis2.dsr.setAttributesMarkup = function( categoryIds )
 
 		$( "#attributeComboDiv" ).show().html( html );
 	} );
+}
+
+/**
+ * Indicates whether all attributes have a valid selection.
+ */
+dhis2.dsr.attributesSelected = function( dataSetReport )
+{
+	if ( dhis2.dsr.metaData.defaultCategoryCombo == dataSetReport.cc ) {
+		return true; // Default category combo requires no selection
+	}
+	
+	var cc = dataSetReport.cc;
+	var categoryCombo = dhis2.dsr.metaData.categoryCombos[cc];
+	
+	if ( !categoryCombo || !categoryCombo.categories ) {
+		return false;
+	}
+		
+	var expected = categoryCombo.categories.length;
+	var actual = dataSetReport.cp.length;
+	
+	return !!( expected == actual );
 }
 
 //------------------------------------------------------------------------------
@@ -310,14 +332,15 @@ function showAdvancedOptions()
 
 dhis2.dsr.showApproval = function()
 {
-	var approval = $( "#dataSetId :selected" ).data( "approval" );
+	var dataSetReport = dhis2.dsr.currentDataSetReport;
 	
-	if ( !approval ) {
+	var approval = $( "#dataSetId :selected" ).data( "approval" );
+	var attributesSelected = dhis2.dsr.attributesSelected( dataSetReport );
+
+	if ( !approval || !attributesSelected ) {
 		$( "#approvalDiv" ).hide();
 		return false;
 	}
-	
-	var dataSetReport = dhis2.dsr.currentDataSetReport;
 	
 	var url = dhis2.dsr.getDataApprovalUrl( dataSetReport );
 	

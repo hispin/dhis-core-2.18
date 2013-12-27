@@ -169,8 +169,6 @@ public class DataApprovalController
             return;
         }
         
-        User user = currentUserService.getCurrentUser();
-        
         if ( !dataApprovalService.mayApprove( organisationUnit ) )
         {
             ContextUtils.conflictResponse( response, "Current user is not authorized to approve for organisation unit: " + ou );
@@ -184,6 +182,8 @@ public class DataApprovalController
             ContextUtils.conflictResponse( response, "Data is not ready for approval: " + state );
             return;
         }
+
+        User user = currentUserService.getCurrentUser();
         
         DataApproval approval = new DataApproval( dataSet, period, organisationUnit, attributeOptionCombo, new Date(), user );
         
@@ -230,12 +230,18 @@ public class DataApprovalController
         {
             return;
         }
-        
+
         DataApproval approval = dataApprovalService.getDataApproval( dataSet, period, organisationUnit, attributeOptionCombo );
         
         if ( approval == null )
         {
             ContextUtils.conflictResponse( response, "Data is not approved and cannot be unapproved" );
+            return;
+        }
+
+        if ( !dataApprovalService.mayUnapprove( approval ) )
+        {
+            ContextUtils.conflictResponse( response, "Current user is not authorized to unapprove for organisation unit: " + ou );
             return;
         }
         
