@@ -179,12 +179,15 @@ public class DataApprovalController
         
         DataApprovalState state = dataApprovalService.getDataApprovalState( dataSet, period, organisationUnit, attributeOptionCombo );
         
-        if ( DataApprovalState.READY_FOR_APPROVAL.equals( state ) )
+        if ( !DataApprovalState.READY_FOR_APPROVAL.equals( state ) )
         {
-            DataApproval approval = new DataApproval( dataSet, period, organisationUnit, attributeOptionCombo, new Date(), user );
-            
-            dataApprovalService.addDataApproval( approval );
+            ContextUtils.conflictResponse( response, "Data is not ready for approval: " + state );
+            return;
         }
+        
+        DataApproval approval = new DataApproval( dataSet, period, organisationUnit, attributeOptionCombo, new Date(), user );
+        
+        dataApprovalService.addDataApproval( approval );
     }
 
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )

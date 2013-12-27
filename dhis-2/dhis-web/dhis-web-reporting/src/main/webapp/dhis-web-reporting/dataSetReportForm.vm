@@ -39,6 +39,9 @@ var i18n_generating_report = '$encoder.jsEscape( $i18n.getString( "generating_re
 var i18n_share_your_interpretation = '$encoder.jsEscape( $i18n.getString( "share_your_interpretation" ), "'")';
 var i18n_interpretation_was_shared = '$encoder.jsEscape( $i18n.getString( "interpretation_was_shared" ), "'")';
 var i18n_select_option_view_all = '$encoder.jsEscape( $i18n.getString( "select_option_view_all" ) , "'")';
+var i18n_waiting_for_lower_level_approval = '$encoder.jsEscape( $i18n.getString( "waiting_for_lower_level_approval" ) , "'")';
+var i18n_confirm_approval = '$encoder.jsEscape( $i18n.getString( "confirm_approval" ) , "'")';
+var i18n_confirm_unapproval = '$encoder.jsEscape( $i18n.getString( "confirm_unapproval" ) , "'")';
 </script>
 
 <style type="text/css" media="print">
@@ -92,7 +95,9 @@ div.inputSection {
 <select id="dataSetId" name="dataSetId" style="width:330px" onchange="dhis2.dsr.dataSetSelected()">
   <option value="">[ $i18n.getString( "select" ) ]</option>
   #foreach( $dataSet in $dataSets )
-  <option value="$dataSet.uid" data-categorycombo="${dataSet.categoryCombo.uid}">$encoder.htmlEncode( $dataSet.displayName )</option>
+  <option value="$dataSet.uid" data-categorycombo="${dataSet.categoryCombo.uid}" data-approval="${dataSet.approveData}">
+  $encoder.htmlEncode( $dataSet.displayName )
+  </option>
   #end
 </select>
 </div>
@@ -152,3 +157,10 @@ div.inputSection {
 #parse( "dhis-web-commons/loader/loader.vm" )
 
 <div id="content"></div>
+
+<div id="approvalDiv" class="page inputCriteria" style="width: 263px; display:none;">
+<input type="button" id="approveButton" value="$i18n.getString( 'approve' )" onclick="dhis2.dsr.approveData()" style="width:120px">
+<input type="button" id="unapproveButton" value="$i18n.getString( 'unapprove' )" onclick="dhis2.dsr.unapproveData()" style="width:120px">
+</div>
+
+<div id="message" class="messageBox"></div>

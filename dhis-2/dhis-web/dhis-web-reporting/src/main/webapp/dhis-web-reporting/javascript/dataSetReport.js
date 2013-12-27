@@ -3,6 +3,7 @@ dhis2.util.namespace( 'dhis2.dsr' );
 
 dhis2.dsr.currentPeriodOffset = 0;
 dhis2.dsr.periodTypeFactory = new PeriodType();
+dhis2.dsr.currentDataSetReport = null;
 
 //------------------------------------------------------------------------------
 // Get and set methods
@@ -115,7 +116,7 @@ dhis2.dsr.setAttributesMarkup = function( categoryIds )
 
 		$( "#attributeComboDiv" ).show().html( html );
 	} );
-};
+}
 
 //------------------------------------------------------------------------------
 // Period
@@ -156,8 +157,6 @@ function displayPreviousPeriods()
 // Run report
 //------------------------------------------------------------------------------
 
-//TODO rewrite to use uid only
-
 function drillDownDataSetReport( orgUnitId, orgUnitUid )
 {
 	selectionTree.clearSelectedOrganisationUnits();
@@ -192,6 +191,8 @@ function displayDataSetReport( dataSetReport )
         return false;
     }
     
+    dhis2.dsr.currentDataSetReport = dataSetReport;
+    
     hideHeaderMessage();
     hideCriteria();
     hideContent();
@@ -200,31 +201,41 @@ function displayDataSetReport( dataSetReport )
     delete dataSetReport.periodType;
     delete dataSetReport.offset;
     
-    var url = "generateDataSetReport.action?ds=" + dataSetReport.ds +
-    	"&pe=" + dataSetReport.pe + "&ou=" + dataSetReport.ou +
+    var url = "generateDataSetReport.action" + dhis2.dsr.getDatSetReportQueryParams( dataSetReport );
+    
+    $.get( url, function( data ) {
+    	$( '#content' ).html( data );
+    	hideLoader();
+    	showContent();
+    	dhis2.dsr.showApproval();
+    	setTableStyles();
+    } );
+}
+
+/**
+ * Generates the query params part of the URL for the given data set report.
+ */
+dhis2.dsr.getDatSetReportQueryParams = function( dataSetReport )
+{
+    var url = 
+    	"?ds=" + dataSetReport.ds + 
+    	"&pe=" + dataSetReport.pe + 
+    	"&ou=" + dataSetReport.ou +
     	"&selectedUnitOnly=" + dataSetReport.selectedUnitOnly;
     
     $.each( dataSetReport.dimension, function( inx, val ) {
     	url += "&dimension=" + val;
     } );
     
-    $.get( url, function( data ) {
-    	$( '#content' ).html( data );
-    	hideLoader();
-    	showContent();
-    	setTableStyles();
-    } );
+    return url;
 }
 
 function exportDataSetReport( type )
 {
-	var dataSetReport = getDataSetReport();
+	var dataSetReport = dhis2.dsr.currentDataSetReport;
 	
 	var url = "generateDataSetReport.action" + 
-		"?ds=" + dataSetReport.ds +
-	    "&pe=" + dataSetReport.pe +
-	    "&selectedUnitOnly=" + dataSetReport.selectedUnitOnly +
-	    "&ou=" + dataSetReport.ou +
+		dhis2.dsr.getDatSetReportQueryParams( dataSetReport ) +
 	    "&type=" + type;
 	    
 	window.location.href = url;
@@ -271,19 +282,94 @@ function showAdvancedOptions()
 	$( "#advancedOptions" ).show();
 }
 
+dhis2.dsr.showApproval = function()
+{
+	var approval = $( "#dataSetId :selected" ).data( "approval" );
+	
+	if ( !approval ) {
+		$( "#approvalDiv" ).hide();
+		return false;
+	}
+	
+	var dataSetReport = dhis2.dsr.currentDataSetReport;
+	
+	var url = "../api/dataApprovals" + dhis2.dsr.getDatSetReportQueryParams( dataSetReport );
+	
+	$.get( url, function( status ) {
+		if ( status && '"READY_FOR_APPROVAL"' == status ) {
+			$( "#approvalDiv" ).show();
+			$( "#approveButton" ).prop( "disabled", false );
+			$( "#unapproveButton" ).prop( "disabled", true );
+			$( "#message" ).hide();
+		}
+		else if ( status && '"APPROVED"' == status ) {
+			$( "#approvalDiv" ).show();
+			$( "#approveButton" ).prop( "disabled", true );
+			$( "#unapproveButton" ).prop( "disabled", false );
+			$( "#message" ).hide();		
+		}
+		else if ( status && '"WAITING_FOR_LOWER_LEVEL_APPROVAL"' == status ) {
+			$( "#approvalDiv" ).hide();
+			$( "#message" ).show().html( i18n_waiting_for_lower_level_approval );		
+		}
+	} );
+}
+
+//------------------------------------------------------------------------------
+// Approval
+//------------------------------------------------------------------------------
+
+dhis2.dsr.approveData = function()
+{
+	var check = confirm( i18n_confirm_approval );
+	
+	if ( !check ) {
+		return false;
+	}
+	
+	var dataSetReport = dhis2.dsr.currentDataSetReport;
+	var url = "../api/dataApprovals" + dhis2.dsr.getDatSetReportQueryParams( dataSetReport );
+	
+	$.ajax( {
+		url: url,
+		type: "post",
+		success: function() {
+			$( "#approveButton" ).prop( "disabled", true );
+			$( "#unapproveButton" ).prop( "disabled", false );			
+		},
+		error: function( xhr, status, error ) {
+			alert( xhr.responseText );
+		}
+	} );
+}
+
+dhis2.dsr.unapproveData = function()
+{
+	var check = confirm( i18n_confirm_unapproval );
+	
+	if ( !check ) {
+		return false;
+	}
+	
+	var dataSetReport = dhis2.dsr.currentDataSetReport;
+	var url = "../api/dataApprovals" + dhis2.dsr.getDatSetReportQueryParams( dataSetReport );
+	
+	$.ajax( {
+		url: url,
+		type: "delete",
+		success: function() {
+			$( "#approveButton" ).prop( "disabled", false );
+			$( "#unapproveButton" ).prop( "disabled", true );			
+		},
+		error: function( xhr, status, error ) {
+			alert( xhr.responseText );
+		}
+	} );
+}
+
 //------------------------------------------------------------------------------
 // Share
 //------------------------------------------------------------------------------
-
-function viewShareForm() // Not in use
-{
-	$( "#shareForm" ).dialog( {
-		modal : true,
-		width : 550,
-		resizable: false,
-		title : i18n_share_your_interpretation
-	} );
-}
 
 function shareInterpretation()
 {
