@@ -56,6 +56,12 @@ public class Identifier
         this.value = value;
     }
 
+    public Identifier( String identifier, String value )
+    {
+        this.identifier = identifier;
+        this.value = value;
+    }
+
     public Identifier( String identifier, String type, String value )
     {
         this.identifier = identifier;

@@ -351,7 +351,7 @@ public class InterpretationController
         interpretationService.updateInterpretation( interpretation );
     }
 
-    @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    @RequestMapping( value = { "/{uid}/comment", "/{uid}/comments" }, method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void postComment(
         @PathVariable( "uid" ) String uid,
         @RequestBody String text, HttpServletResponse response )

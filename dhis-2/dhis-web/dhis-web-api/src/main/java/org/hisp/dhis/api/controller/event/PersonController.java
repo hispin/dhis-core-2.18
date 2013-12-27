@@ -96,7 +96,7 @@ public class PersonController
 
         if ( identifier != null )
         {
-            Identifier id = new Identifier( identifierType, "", identifier );
+            Identifier id = new Identifier( identifierType, identifier );
             persons.getPersons().add( personService.getPerson( id ) );
         }
         else if ( orgUnitUid != null )
