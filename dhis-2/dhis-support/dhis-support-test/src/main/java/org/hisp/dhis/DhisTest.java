@@ -29,16 +29,10 @@ package org.hisp.dhis;
  */
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dbms.DbmsManager;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -47,12 +41,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.orm.hibernate4.SessionHolder;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -187,36 +175,4 @@ public abstract class DhisTest
 
         SessionFactoryUtils.closeSession( sessionHolder.getSession() );
     }
-
-    private UserService _userService;
-
-    private IdentifiableObjectManager _manager;
-
-    public User createSuperuserAndInjectSecurityContext( char uniqueCharacter )
-    {
-        _userService = (UserService) getBean( "org.hisp.dhis.user.UserService" );
-        _manager = (IdentifiableObjectManager) getBean( "org.hisp.dhis.common.IdentifiableObjectManager" );
-
-        UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
-        userAuthorityGroup.setName( "Superuser" );
-        userAuthorityGroup.getAuthorities().add( "ALL" );
-        _manager.save( userAuthorityGroup );
-
-        User user = createUser( 'A' );
-        user.getUserCredentials().getUserAuthorityGroups().add( userAuthorityGroup );
-        _userService.addUser( user );
-        user.getUserCredentials().setUser( user );
-        _userService.addUserCredentials( user.getUserCredentials() );
-
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add( new SimpleGrantedAuthority( "ALL" ) );
-
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User( "username", "password", authorities );
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken( userDetails, "", authorities );
-        SecurityContextHolder.getContext().setAuthentication( authentication );
-
-        return user;
-    }
-
 }

@@ -31,6 +31,7 @@ package org.hisp.dhis;
 import java.io.File;
 import java.io.StringReader;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,6 +53,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
@@ -110,6 +112,7 @@ import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserService;
@@ -120,6 +123,13 @@ import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.Assert;
 import org.xml.sax.InputSource;
 
 /**
@@ -195,6 +205,8 @@ public abstract class DhisConvenienceTest
     protected UserService userService;
 
     protected MessageService messageService;
+    
+    protected IdentifiableObjectManager identifiableObjectManager;
 
     static
     {
@@ -1317,5 +1329,46 @@ public abstract class DhisConvenienceTest
         {
             return null;
         }
+    }
+
+    // -------------------------------------------------------------------------
+    // Allow xpath testing of DXF2
+    // -------------------------------------------------------------------------
+
+    /**
+     * Creates a user and injects into the security context. Requires 
+     * <code>identifiableObjectManager</code> and <code>userService</code> to be
+     * injected into the test.
+     * 
+     * @param uniqueCharacter uniquey character for username.
+     * @param allAuth whether to grant ALL authority to user.
+     * @param auths authorities to grant to user.
+     * @return the user.
+     */
+    public User createUserAndInjectSecurityContext( char uniqueCharacter, boolean allAuth, String... auths )
+    {
+        Assert.notNull( identifiableObjectManager );
+        Assert.notNull( userService );
+        
+        UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
+        userAuthorityGroup.setName( "Superuser" );
+        userAuthorityGroup.getAuthorities().add( "ALL" );
+        identifiableObjectManager.save( userAuthorityGroup );
+
+        User user = createUser( 'A' );
+        user.getUserCredentials().getUserAuthorityGroups().add( userAuthorityGroup );
+        userService.addUser( user );
+        user.getUserCredentials().setUser( user );
+        userService.addUserCredentials( user.getUserCredentials() );
+
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add( new SimpleGrantedAuthority( "ALL" ) );
+
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User( "username", "password", authorities );
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken( userDetails, "", authorities );
+        SecurityContextHolder.getContext().setAuthentication( authentication );
+
+        return user;
     }
 }

@@ -57,6 +57,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
+import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -77,9 +78,6 @@ public class RegistrationMultiEventsServiceTest
 
     @Autowired
     private EnrollmentService enrollmentService;
-
-    @Autowired
-    private IdentifiableObjectManager manager;
 
     private Patient maleA;
 
@@ -115,20 +113,23 @@ public class RegistrationMultiEventsServiceTest
     protected void setUpTest()
         throws Exception
     {
+        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
+        userService = (UserService) getBean( UserService.ID );
+        
         organisationUnitA = createOrganisationUnit( 'A' );
         organisationUnitB = createOrganisationUnit( 'B' );
-        manager.save( organisationUnitA );
-        manager.save( organisationUnitB );
+        identifiableObjectManager.save( organisationUnitA );
+        identifiableObjectManager.save( organisationUnitB );
 
         maleA = createPatient( 'A', organisationUnitA );
         maleB = createPatient( 'B', organisationUnitB );
         femaleA = createPatient( 'C', organisationUnitA );
         femaleB = createPatient( 'D', organisationUnitB );
 
-        manager.save( maleA );
-        manager.save( maleB );
-        manager.save( femaleA );
-        manager.save( femaleB );
+        identifiableObjectManager.save( maleA );
+        identifiableObjectManager.save( maleB );
+        identifiableObjectManager.save( femaleA );
+        identifiableObjectManager.save( femaleB );
 
         personMaleA = personService.getPerson( maleA );
         personMaleB = personService.getPerson( maleB );
@@ -140,19 +141,19 @@ public class RegistrationMultiEventsServiceTest
         dataElementA.setType( DataElement.VALUE_TYPE_INT );
         dataElementB.setType( DataElement.VALUE_TYPE_INT );
 
-        manager.save( dataElementA );
-        manager.save( dataElementB );
+        identifiableObjectManager.save( dataElementA );
+        identifiableObjectManager.save( dataElementB );
 
         programStageA = createProgramStage( 'A', 0 );
         programStageB = createProgramStage( 'B', 0 );
         programStageB.setIrregular( true );
 
-        manager.save( programStageA );
-        manager.save( programStageB );
+        identifiableObjectManager.save( programStageA );
+        identifiableObjectManager.save( programStageB );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         programA.setType( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
-        manager.save( programA );
+        identifiableObjectManager.save( programA );
 
         ProgramStageDataElement programStageDataElement = new ProgramStageDataElement();
         programStageDataElement.setDataElement( dataElementA );
@@ -174,11 +175,11 @@ public class RegistrationMultiEventsServiceTest
         programA.getProgramStages().add( programStageA );
         programA.getProgramStages().add( programStageB );
 
-        manager.update( programStageA );
-        manager.update( programStageB );
-        manager.update( programA );
+        identifiableObjectManager.update( programStageA );
+        identifiableObjectManager.update( programStageB );
+        identifiableObjectManager.update( programA );
 
-        createSuperuserAndInjectSecurityContext( 'A' );
+        createUserAndInjectSecurityContext( 'A', true );
 
         // mocked format
         I18nFormat mockFormat = mock( I18nFormat.class );

@@ -42,6 +42,8 @@ import java.util.Set;
  */
 public interface IdentifiableObjectManager
 {
+    final String ID = IdentifiableObjectManager.class.getName();
+    
     void save( IdentifiableObject object );
 
     void update( IdentifiableObject object );

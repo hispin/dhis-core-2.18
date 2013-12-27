@@ -56,6 +56,7 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -77,9 +78,6 @@ public class NoRegistrationSingleEventServiceTest
     @Autowired
     private ProgramStageInstanceService programStageInstanceService;
 
-    @Autowired
-    private IdentifiableObjectManager manager;
-
     private OrganisationUnit organisationUnitA;
     private DataElement dataElementA;
     private Program programA;
@@ -88,19 +86,22 @@ public class NoRegistrationSingleEventServiceTest
     @Override
     protected void setUpTest() throws Exception
     {
+        identifiableObjectManager = (IdentifiableObjectManager) getBean( IdentifiableObjectManager.ID );
+        userService = (UserService) getBean( UserService.ID );
+        
         organisationUnitA = createOrganisationUnit( 'A' );
-        manager.save( organisationUnitA );
+        identifiableObjectManager.save( organisationUnitA );
 
         dataElementA = createDataElement( 'A' );
         dataElementA.setType( DataElement.VALUE_TYPE_INT );
-        manager.save( dataElementA );
+        identifiableObjectManager.save( dataElementA );
 
         programStageA = createProgramStage( 'A', 0 );
-        manager.save( programStageA );
+        identifiableObjectManager.save( programStageA );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
         programA.setType( Program.SINGLE_EVENT_WITHOUT_REGISTRATION );
-        manager.save( programA );
+        identifiableObjectManager.save( programA );
 
         ProgramStageDataElement programStageDataElement = new ProgramStageDataElement();
         programStageDataElement.setDataElement( dataElementA );
@@ -111,8 +112,8 @@ public class NoRegistrationSingleEventServiceTest
         programStageA.setProgram( programA );
         programA.getProgramStages().add( programStageA );
 
-        manager.update( programStageA );
-        manager.update( programA );
+        identifiableObjectManager.update( programStageA );
+        identifiableObjectManager.update( programA );
 
         ProgramInstance programInstance = new ProgramInstance();
         programInstance.setProgram( programA );
@@ -121,9 +122,9 @@ public class NoRegistrationSingleEventServiceTest
 
         programInstanceService.addProgramInstance( programInstance );
         programA.getProgramInstances().add( programInstance );
-        manager.update( programA );
+        identifiableObjectManager.update( programA );
 
-        createSuperuserAndInjectSecurityContext( 'A' );
+        createUserAndInjectSecurityContext( 'A', true );
 
         // mocked format
         I18nFormat mockFormat = mock( I18nFormat.class );
