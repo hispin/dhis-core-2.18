@@ -46,6 +46,9 @@ import org.hisp.dhis.user.User;
 public class DataApproval
     implements Serializable
 {
+    public static final String AUTH_APPROVE = "F_APPROVE_DATA";
+    public static final String AUTH_APPROVE_LOWER_LEVELS = "F_APPROVE_DATA_LOWER_LEVELS";
+    
     private static final long serialVersionUID = -4034531921928532366L;
 
     /**
