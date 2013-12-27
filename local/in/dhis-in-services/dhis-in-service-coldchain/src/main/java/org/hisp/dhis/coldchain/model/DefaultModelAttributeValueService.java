@@ -76,5 +76,12 @@ public class DefaultModelAttributeValueService implements ModelAttributeValueSer
     {
         return modelAttributeValueStore.modelAttributeValue( model, modelTypeAttribute, modelTypeAttributeOption );
     }
+
+	@Override
+	public Collection<ModelAttributeValue> getAllModelAttributeValuesByModelTypeAttribute(
+			ModelTypeAttribute modelTypeAttribute) {
+		
+		return modelAttributeValueStore.getAllModelAttributeValuesByModelTypeAttribute( modelTypeAttribute );
+	}
     
 }

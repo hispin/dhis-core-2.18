@@ -98,4 +98,17 @@ public class HibernateModelAttributeValueStore implements ModelAttributeValueSto
 
         return (ModelAttributeValue) criteria.uniqueResult();
     }
+
+	@Override
+	public Collection<ModelAttributeValue> getAllModelAttributeValuesByModelTypeAttribute(
+			ModelTypeAttribute modelTypeAttribute) 
+	{
+		
+		Session session = sessionFactory.getCurrentSession();
+        
+        Criteria criteria = session.createCriteria( ModelAttributeValue.class );
+        
+        criteria.add( Restrictions.eq( "modelTypeAttribute", modelTypeAttribute ) );
+        return criteria.list();
+	}
 }
