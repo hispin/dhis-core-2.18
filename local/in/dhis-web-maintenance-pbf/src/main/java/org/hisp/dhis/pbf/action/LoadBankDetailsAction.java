@@ -1,6 +1,8 @@
 package org.hisp.dhis.pbf.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -64,9 +66,13 @@ public class LoadBankDetailsAction implements Action
     public List<DataSet> getDataSets()
     {
         return dataSets;
-    }
+    }    
 
-    private List<String> banks = new ArrayList<String>();
+    public void setDataSets(List<DataSet> dataSets) {
+		this.dataSets = dataSets;
+	}
+
+	private List<String> banks = new ArrayList<String>();
 
     public List<String> getBanks()
     {
@@ -88,15 +94,31 @@ public class LoadBankDetailsAction implements Action
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
         
         bankDetailsList.addAll( bankDetailsService.getBankDetails( organisationUnit ) );
-        
+        dataSets.clear();
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
         for( Lookup lookup : lookups )
         {
             Integer dataSetId = Integer.parseInt( lookup.getValue() );
             
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
+            if(bankDetailsList.size() > 0)
+            {
+	            for(BankDetails bd : bankDetailsList)
+	            {
+	            	if(bd.getDataSet().getId() == dataSet.getId() && !dataSets.contains(bd.getDataSet()))
+	            	{}
+	            	else
+	            	{
+	            		dataSets.add(dataSet);
+	            		break;
+	            	}
+	            }
+            }
+            else
+            {
+            	dataSets.add( dataSet );
+            }
             
-            dataSets.add( dataSet );
         }
         
         lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.BANK ) );
@@ -104,7 +126,9 @@ public class LoadBankDetailsAction implements Action
         {
             banks.add( lookup.getValue() );
         }
-
+        
+        Collections.sort(dataSets);
+        System.out.println(dataSets.size());
         return SUCCESS;
     }
 }

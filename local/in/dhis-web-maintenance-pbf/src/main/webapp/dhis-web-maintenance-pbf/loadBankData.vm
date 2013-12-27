@@ -1,5 +1,13 @@
 <script >
 $(function() {
+	if($dataSets.size() <= 0)
+        {
+        	$("#openAddBankDetail").removeAttr( "disabled" );
+        }
+        else
+        {
+			$("#openAddBankDetail").attr( "disabled", true ).addClass("ui-state-disabled");       	
+        }
 });
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
@@ -24,7 +32,7 @@ selection.setListenerFunction( organisationUnitSelected );
 <h3>Bank Detail Management</h3>
 <div style="width:100%">
 	Orgainsation Unit: &nbsp; <input type="text" id="orgUnit" name="orgUnit" readonly size="40"/>
-	<input type="button" value="Add New Bank Detail" style="float:right;" id="openAddBankDetail"/>
+	<input type="button" value="Add New Bank Detail" style="float:right;" id="openAddBankDetail" />
 </div>
 <br/><br/>
 <div id="loadBankDetails">
