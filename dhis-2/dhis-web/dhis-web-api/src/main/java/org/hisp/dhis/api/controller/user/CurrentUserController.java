@@ -64,6 +64,7 @@ import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -252,6 +253,16 @@ public class CurrentUserController
         userService.updateUser( currentUser );
     }
 
+    @RequestMapping( value = "/authorization/{auth}", produces = { "application/json", "text/*" } )
+    public void hasAuthorization( @PathVariable String auth, HttpServletResponse response ) throws IOException
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        boolean hasAuth = currentUser != null && currentUser.getUserCredentials().isAuthorized( auth );
+        
+        JacksonUtils.toJson( response.getOutputStream(), hasAuth );
+    }
+    
     @RequestMapping( value = "/recipients", produces = { "application/json", "text/*" } )
     public void recipientsJson( HttpServletResponse response,
         @RequestParam( value = "filter" ) String filter ) throws IOException, NotAuthenticatedException, FilterTooShortException
