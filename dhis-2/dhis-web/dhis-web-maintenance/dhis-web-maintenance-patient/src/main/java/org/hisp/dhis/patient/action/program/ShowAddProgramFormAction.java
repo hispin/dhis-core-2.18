@@ -143,22 +143,15 @@ public class ShowAddProgramFormAction
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
-       
-      
+
         availableAttributes = patientAttributeService.getAllPatientAttributes();
- 
         availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        for ( Program p : programs )
-        {
-            availableIdentifierTypes
-                .removeAll( new HashSet<PatientIdentifierType>( p.getPatientIdentifierTypes() ) );
-        }
-        
+
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
-        
-        relationshipTypes = new ArrayList<RelationshipType>(relationshipTypeService.getAllRelationshipTypes());
+
+        relationshipTypes = new ArrayList<RelationshipType>( relationshipTypeService.getAllRelationshipTypes() );
         Collections.sort( relationshipTypes, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         return SUCCESS;
     }
 }
