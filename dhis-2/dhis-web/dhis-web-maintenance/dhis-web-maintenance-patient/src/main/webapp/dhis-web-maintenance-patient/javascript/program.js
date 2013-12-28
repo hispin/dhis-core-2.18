@@ -63,12 +63,6 @@ function showProgramDetails( context ) {
     var displayOnAllOrgunit = ( json.program.displayOnAllOrgunit == 'true') ? i18n_yes : i18n_no;
     setInnerHTML('displayOnAllOrgunitField', displayOnAllOrgunit);
 
-    var useBirthDateAsIncidentDate = ( json.program.useBirthDateAsIncidentDate == 'true') ? i18n_yes : i18n_no;
-    setInnerHTML('useBirthDateAsIncidentDateField', useBirthDateAsIncidentDate);
-
-    var useBirthDateAsEnrollmentDate = ( json.program.useBirthDateAsEnrollmentDate == 'true') ? i18n_yes : i18n_no;
-    setInnerHTML('useBirthDateAsEnrollmentDateField', useBirthDateAsEnrollmentDate);
-
     var selectEnrollmentDatesInFuture = ( json.program.selectEnrollmentDatesInFuture == 'true') ? i18n_yes : i18n_no;
     setInnerHTML('selectEnrollmentDatesInFutureField', selectEnrollmentDatesInFuture);
 

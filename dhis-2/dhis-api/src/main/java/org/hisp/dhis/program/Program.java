@@ -129,10 +129,6 @@ public class Program
      */
     private Boolean displayOnAllOrgunit = true;
 
-    private Boolean useBirthDateAsIncidentDate = false;
-
-    private Boolean useBirthDateAsEnrollmentDate = false;
-
     private Boolean selectEnrollmentDatesInFuture = false;
 
     private Boolean selectIncidentDatesInFuture = false;
@@ -520,33 +516,7 @@ public class Program
     {
         this.displayOnAllOrgunit = displayOnAllOrgunit;
     }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getUseBirthDateAsIncidentDate()
-    {
-        return useBirthDateAsIncidentDate;
-    }
-
-    public void setUseBirthDateAsIncidentDate( Boolean useBirthDateAsIncidentDate )
-    {
-        this.useBirthDateAsIncidentDate = useBirthDateAsIncidentDate;
-    }
-
-    @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getUseBirthDateAsEnrollmentDate()
-    {
-        return useBirthDateAsEnrollmentDate;
-    }
-
-    public void setUseBirthDateAsEnrollmentDate( Boolean useBirthDateAsEnrollmentDate )
-    {
-        this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
-    }
-
+    
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )

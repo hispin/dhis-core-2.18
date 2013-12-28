@@ -90,9 +90,6 @@ public class PersonServiceTest
         femaleB = createPatient( 'D',  organisationUnitB );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
-        programA.setUseBirthDateAsEnrollmentDate( true );
-        programA.setUseBirthDateAsIncidentDate( true );
-
         manager.save( organisationUnitA );
         manager.save( organisationUnitB );
         manager.save( maleA );

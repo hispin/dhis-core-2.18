@@ -264,20 +264,6 @@ public class UpdateProgramAction
         this.messageType = messageType;
     }
 
-    private Boolean useBirthDateAsIncidentDate;
-
-    public void setUseBirthDateAsIncidentDate( Boolean useBirthDateAsIncidentDate )
-    {
-        this.useBirthDateAsIncidentDate = useBirthDateAsIncidentDate;
-    }
-
-    private Boolean useBirthDateAsEnrollmentDate;
-
-    public void setUseBirthDateAsEnrollmentDate( Boolean useBirthDateAsEnrollmentDate )
-    {
-        this.useBirthDateAsEnrollmentDate = useBirthDateAsEnrollmentDate;
-    }
-
     private List<Integer> userGroup = new ArrayList<Integer>();
 
     public void setUserGroup( List<Integer> userGroup )
@@ -348,8 +334,6 @@ public class UpdateProgramAction
         blockEntryForm = (blockEntryForm == null) ? false : blockEntryForm;
         remindCompleted = (remindCompleted == null) ? false : remindCompleted;
         displayOnAllOrgunit = (displayOnAllOrgunit == null) ? false : displayOnAllOrgunit;
-        useBirthDateAsIncidentDate = (useBirthDateAsIncidentDate == null) ? false : useBirthDateAsIncidentDate;
-        useBirthDateAsEnrollmentDate = (useBirthDateAsEnrollmentDate == null) ? false : useBirthDateAsEnrollmentDate;
         selectEnrollmentDatesInFuture = (selectEnrollmentDatesInFuture == null) ? false : selectEnrollmentDatesInFuture;
         selectIncidentDatesInFuture = (selectIncidentDatesInFuture == null) ? false : selectIncidentDatesInFuture;
         dataEntryMethod = (dataEntryMethod == null) ? false : dataEntryMethod;
@@ -364,8 +348,6 @@ public class UpdateProgramAction
         program.setDisplayIncidentDate( displayIncidentDate );
         program.setOnlyEnrollOnce( onlyEnrollOnce );
         program.setDisplayOnAllOrgunit( displayOnAllOrgunit );
-        program.setUseBirthDateAsIncidentDate( useBirthDateAsIncidentDate );
-        program.setUseBirthDateAsEnrollmentDate( useBirthDateAsEnrollmentDate );
         program.setSelectEnrollmentDatesInFuture( selectEnrollmentDatesInFuture );
         program.setSelectIncidentDatesInFuture( selectIncidentDatesInFuture );
         program.setDataEntryMethod( dataEntryMethod );

@@ -81,10 +81,6 @@
 
 		<property name="displayOnAllOrgunit" />
 
-		<property name="useBirthDateAsIncidentDate" />
-
-		<property name="useBirthDateAsEnrollmentDate" />
-
 		<property name="selectEnrollmentDatesInFuture" />
 
 		<property name="selectIncidentDatesInFuture" />

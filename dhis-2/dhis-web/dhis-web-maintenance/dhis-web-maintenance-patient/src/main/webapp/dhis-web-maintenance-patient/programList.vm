@@ -65,10 +65,8 @@
 				<p><label class="bold">$i18n.getString( "skip_to_generate_overdue_events" ):</label><br><span id="ignoreOverdueEventsField"></span></p>
 				<p><label class="bold">$i18n.getString( "only_enroll_once" ):</label><br><span id="onlyEnrollOnceField"></span></p>
 				<p><label class="bold">$i18n.getString( "allow_enrollment_at_all_orgunits" ):</label><br><span id="displayOnAllOrgunitField"></span></p>
-				<p><label class="bold">$i18n.getString( "use_birth_date_as_incident_date" ):</label><br><span id="useBirthDateAsIncidentDate"></span></p>                              
 				<p><label class="bold">$i18n.getString( "show_incident_date" ):</label><br><span id="displayIncidentDate"></span></p>                              
 				<p><label class="bold">$i18n.getString( "date_of_incident_description" ):</label><br><span id="dateOfIncidentDescriptionField"></span></p>                              
-				<p><label class="bold">$i18n.getString( "use_birth_date_as_enrollment_date" ):</label><br><span id="useBirthDateAsEnrollmentDate"></span></p>                              
 				<p><label class="bold">$i18n.getString( "date_of_enrollment_description" ):</label><br><span id="dateOfEnrollmentDescriptionField"></span></p>                          
 				<p><label class="bold">$i18n.getString( "number_of_attributes" ):</label><br><span id="noAttributesField"></span></p>
 				<p><label class="bold">$i18n.getString( "number_of_identifier_types" ):</label><br><span id="noIdentifierTypesField"></span></p>
