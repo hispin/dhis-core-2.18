@@ -139,7 +139,6 @@ public class ShowAddProgramFormAction
 
     public String execute()
     {
-
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
