@@ -223,10 +223,7 @@ function displayDataSetReport( dataSetReport )
     hideCriteria();
     hideContent();
     showLoader();
-	
-    delete dataSetReport.periodType;
-    delete dataSetReport.offset;
-    
+	    
     var url = dhis2.dsr.getDataSetReportUrl( dataSetReport );
     
     $.get( url, function( data ) {
@@ -337,6 +334,8 @@ dhis2.dsr.showApproval = function()
 	var approval = $( "#dataSetId :selected" ).data( "approval" );
 	var attributesSelected = dhis2.dsr.attributesSelected( dataSetReport );
 
+	$( "#approvalNotification" ).hide();
+	
 	if ( !approval || !attributesSelected ) {
 		$( "#approvalDiv" ).hide();
 		return false;
@@ -349,17 +348,17 @@ dhis2.dsr.showApproval = function()
 			$( "#approvalDiv" ).show();
 			$( "#approveButton" ).prop( "disabled", false );
 			$( "#unapproveButton" ).prop( "disabled", true );
-			$( "#message" ).hide();
+			$( "#approvalNotification" ).show().html( i18n_ready_for_approval );
 		}
 		else if ( status && '"APPROVED"' == status ) {
 			$( "#approvalDiv" ).show();
 			$( "#approveButton" ).prop( "disabled", true );
 			$( "#unapproveButton" ).prop( "disabled", false );
-			$( "#message" ).hide();		
+			$( "#approvalNotification" ).show().html( i18n_approved );
 		}
 		else if ( status && '"WAITING_FOR_LOWER_LEVEL_APPROVAL"' == status ) {
 			$( "#approvalDiv" ).hide();
-			$( "#message" ).show().html( i18n_waiting_for_lower_level_approval );		
+			$( "#approvalNotification" ).show().html( i18n_waiting_for_lower_level_approval );		
 		}
 	} );
 }
