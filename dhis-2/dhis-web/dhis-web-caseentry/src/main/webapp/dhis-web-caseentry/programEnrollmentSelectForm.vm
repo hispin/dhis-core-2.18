@@ -24,7 +24,7 @@
 				<select id="programId" name="programId" onchange='programOnchange(this.value);'>
 					#if($programs.size()==0)
 					<option value="">[$i18n.getString( "none_program" )]</option>
-					#elseif($programs.size()>1)
+					#else
 					<option value="">[$i18n.getString( "please_select" )]</option>
 					#end
 					#foreach( $program in $programs )
