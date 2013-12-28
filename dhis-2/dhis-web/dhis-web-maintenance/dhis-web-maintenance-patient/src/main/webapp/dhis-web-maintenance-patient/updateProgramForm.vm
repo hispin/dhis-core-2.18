@@ -158,20 +158,7 @@
 			<td><input type="checkbox" id="selectIncidentDatesInFuture" name="selectIncidentDatesInFuture" value='true' #if($program.selectIncidentDatesInFuture=='true') checked #end ></td>
 			<td></td>
 		</tr>
-
-        <tr name='nonAnonymous'>
-            <td><label>$i18n.getString( "use_birth_date_as_incident_date" )</label></td>
-            <td><input type="checkbox" id="useBirthDateAsIncidentDate" name="useBirthDateAsIncidentDate" value='true' #if($program.useBirthDateAsIncidentDate=='true') checked #end /></td>
-            <td></td>
-        </tr>
-
-        <tr name='nonAnonymous'>
-            <td><label>$i18n.getString( "use_birth_date_as_enrollment_date" )</label></td>
-            <td><input type="checkbox" id="useBirthDateAsEnrollmentDate" name="useBirthDateAsEnrollmentDate" value='true' #if($program.useBirthDateAsEnrollmentDate=='true') checked #end  ></td>
-            <td></td>
-        </tr>
-
-
+		
 		<tr name='nonAnonymous'>
 			<td><label>$i18n.getString( "only_enroll_once" )</label></td>
 			<td><input type="checkbox" id="onlyEnrollOnce" name="onlyEnrollOnce" value='true' onchange='programOnChange();' #if( $program.type!='1' ) disabled #end #if($program.onlyEnrollOnce=='true') checked #end></td>

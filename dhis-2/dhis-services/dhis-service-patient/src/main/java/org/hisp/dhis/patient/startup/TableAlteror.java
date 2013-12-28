@@ -286,6 +286,10 @@ public class TableAlteror
         updateCoordinatesProgramStageInstance();
 
         addPatientAttributes();
+        
+
+        executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
+        executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
     }
 
     // -------------------------------------------------------------------------

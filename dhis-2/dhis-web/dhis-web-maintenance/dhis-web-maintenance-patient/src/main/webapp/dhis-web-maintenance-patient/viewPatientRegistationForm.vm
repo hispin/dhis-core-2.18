@@ -175,9 +175,9 @@
 		<tr>
 			<td>
 				<select id="programAttrSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'prg' )">
-					<option value="enrollmentDate" #if($program.useBirthDateAsEnrollmentDate=='false') mandatory='true' #end >$encoder.htmlEncode($program.dateOfEnrollmentDescription) #if($program.useBirthDateAsEnrollmentDate=='false') * #end</option>
+					<option value="enrollmentDate" >$encoder.htmlEncode($program.dateOfEnrollmentDescription)</option>
 					#if($program.displayIncidentDate=='true')
-					<option value="dateOfIncident" #if($program.useBirthDateAsIncidentDate=='false') mandatory='true' #end>$encoder.htmlEncode($program.dateOfIncidentDescription) #if($program.useBirthDateAsIncidentDate=='false') * #end</option>
+					<option value="dateOfIncident" >$encoder.htmlEncode($program.dateOfIncidentDescription)</option>
 					#end
 				</select>
 			</td>

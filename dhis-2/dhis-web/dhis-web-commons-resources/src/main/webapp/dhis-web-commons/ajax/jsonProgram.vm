@@ -14,8 +14,6 @@
 	"noIdentifierTypes": "$!program.patientIdentifierTypes.size()",
 	"onlyEnrollOnce": "$!program.onlyEnrollOnce",
 	"displayOnAllOrgunit": "$!program.displayOnAllOrgunit",
-	"useBirthDateAsIncidentDate": "$!program.useBirthDateAsIncidentDate",
-	"useBirthDateAsEnrollmentDate": "$!program.useBirthDateAsEnrollmentDate",
 	"selectEnrollmentDatesInFuture": "$!program.selectEnrollmentDatesInFuture",
 	"selectIncidentDatesInFuture": "$!program.selectIncidentDatesInFuture"
   }
