@@ -627,8 +627,7 @@ public abstract class AbstractEventService
 
     private boolean validateDataElement( DataElement dataElement, String value, ImportSummary importSummary )
     {
-        InputValidationService.Status status = inputValidationService.validateDataElement( dataElement, value,
-            getFormat() );
+        InputValidationService.Status status = inputValidationService.validateDataElement( dataElement, value );
 
         if ( !status.isSuccess() )
         {
