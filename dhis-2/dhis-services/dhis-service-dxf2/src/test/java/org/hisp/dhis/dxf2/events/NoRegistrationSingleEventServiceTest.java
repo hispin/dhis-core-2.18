@@ -264,6 +264,7 @@ public class NoRegistrationSingleEventServiceTest
         Event event = new Event();
         event.setProgram( program );
         event.setOrgUnit( orgUnit );
+        event.setEventDate( "2013-01-01" );
 
         event.getDataValues().add( new DataValue( dataElementA.getUid(), "10" ) );
 

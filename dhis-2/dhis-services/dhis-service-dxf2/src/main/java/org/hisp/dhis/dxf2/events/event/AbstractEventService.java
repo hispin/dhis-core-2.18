@@ -57,6 +57,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -747,7 +748,7 @@ public abstract class AbstractEventService
         importSummary.setStatus( ImportStatus.SUCCESS );
         boolean dryRun = importOptions != null && importOptions.isDryRun();
 
-        Date eventDate = getFormat().parseDate( event.getEventDate() );
+        Date eventDate = DateUtils.getMediumDate( event.getEventDate() );
 
         if ( eventDate == null )
         {

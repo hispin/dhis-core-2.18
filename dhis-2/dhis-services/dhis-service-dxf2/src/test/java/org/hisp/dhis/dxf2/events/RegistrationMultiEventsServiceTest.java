@@ -317,6 +317,7 @@ public class RegistrationMultiEventsServiceTest
         event.setProgramStage( programStage );
         event.setOrgUnit( orgUnit );
         event.setPerson( person );
+        event.setEventDate( "2013-01-01" );
 
         event.getDataValues().add( new DataValue( dataElement, "10" ) );
 

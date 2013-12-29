@@ -248,6 +248,7 @@ public class RegistrationSingleEventServiceTest
         event.setProgram( program );
         event.setOrgUnit( orgUnit );
         event.setPerson( person );
+        event.setEventDate( "2013-01-01" );
 
         event.getDataValues().add( new DataValue( dataElementA.getUid(), "10" ) );
 
