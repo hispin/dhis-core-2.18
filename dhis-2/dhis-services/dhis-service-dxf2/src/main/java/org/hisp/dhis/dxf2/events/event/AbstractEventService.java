@@ -60,6 +60,7 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -152,12 +153,14 @@ public abstract class AbstractEventService
     // -------------------------------------------------------------------------
 
     @Override
+    @Transactional
     public ImportSummary saveEvent( Event event )
     {
         return saveEvent( event, null );
     }
 
     @Override
+    @Transactional
     public ImportSummary saveEvent( Event event, ImportOptions importOptions )
     {
         Program program = programService.getProgram( event.getProgram() );
