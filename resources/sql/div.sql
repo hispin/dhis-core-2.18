@@ -1,4 +1,4 @@
-
+﻿
 -- Delete all data values for category combo
 
 delete from datavalue where categoryoptioncomboid in (
@@ -109,6 +109,14 @@ from reporttable rt;
 update organisationunit set coordinates=regexp_replace(coordinates,'\[(.+?\..+?),(.+?\..+?)\]','[\2,\1]')
 where coordinates like '[0%'
 and featuretype='Point';
+
+-- Fetch longitude/latitude from organisationunit
+
+select name, coordinates, 
+regexp_replace(coordinates, '\[(-?\d+\.?\d*)[,](-?\d+\.?\d*)\]', '\1') as longitude,
+regexp_replace(coordinates, '\[(-?\d+\.?\d*)[,](-?\d+\.?\d*)\]', '\2') as latitude 
+from organisationunit
+where featuretype='Point';
 
 -- Nullify coordinates with longitude outside range (adjust where clause values)
 
