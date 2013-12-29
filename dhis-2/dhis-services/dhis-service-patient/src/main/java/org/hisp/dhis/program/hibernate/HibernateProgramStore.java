@@ -95,7 +95,7 @@ public class HibernateProgramStore
     {
         Collection<Program> programs = new HashSet<Program>();
 
-        if ( !currentUserService.currentUserIsSuper() )
+        if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
         {
             Set<UserAuthorityGroup> userRoles = userService.getUserCredentials( currentUserService.getCurrentUser() )
                 .getUserAuthorityGroups();
@@ -113,6 +113,7 @@ public class HibernateProgramStore
         {
             programs = getAll();
         }
+        
         return programs;
     }
 
@@ -121,7 +122,7 @@ public class HibernateProgramStore
     {
         Collection<Program> programs = new HashSet<Program>();
 
-        if ( !currentUserService.currentUserIsSuper() )
+        if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
         {
             Set<UserAuthorityGroup> userRoles = userService.getUserCredentials( currentUserService.getCurrentUser() )
                 .getUserAuthorityGroups();
@@ -139,6 +140,7 @@ public class HibernateProgramStore
         {
             programs = getByType( type );
         }
+        
         return programs;
     }
 
