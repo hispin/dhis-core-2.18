@@ -554,6 +554,7 @@ public abstract class AbstractEventService
         if ( programStageInstance.getProgramStage().getCaptureCoordinates() )
         {
             Coordinate coordinate = null;
+
             if ( programStageInstance.getLongitude() != null && programStageInstance.getLongitude() != null )
             {
                 coordinate = new Coordinate( programStageInstance.getLongitude(), programStageInstance.getLatitude() );
@@ -572,7 +573,7 @@ public abstract class AbstractEventService
                 }
             }
 
-            if ( coordinate.isValid() )
+            if ( coordinate != null && coordinate.isValid() )
             {
                 event.setCoordinate( coordinate );
             }
