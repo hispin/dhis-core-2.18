@@ -281,6 +281,8 @@
         <value>F_METADATA_IMPORT</value>
         <value>F_METADATA_SUBSET_IMPORT</value>
         <value>F_METADATA_SUBSET_EXPORT</value>
+        <value>F_APPROVE_DATA</value>
+        <value>F_APPROVE_DATA_LOWER_LEVELS</value>
       </set>
     </property>
   </bean>
