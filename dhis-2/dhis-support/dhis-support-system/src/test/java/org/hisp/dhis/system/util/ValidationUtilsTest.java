@@ -136,14 +136,12 @@ public class ValidationUtilsTest
         assertNull( dataValueIsValid( "3", de ) );
         assertNotNull( dataValueIsValid( "-4", de ) );
 
-
         de.setNumberType( DataElement.VALUE_TYPE_NEGATIVE_INT );
         
         assertNull( dataValueIsValid( "-3", de ) );
         assertNotNull( dataValueIsValid( "4", de ) );
 
-        de.setNumberType( DataElement.VALUE_TYPE_INT );
-        
+        de.setNumberType( DataElement.VALUE_TYPE_INT );        
         assertNotNull( dataValueIsValid( "0", de ) );
         
         de.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
@@ -151,8 +149,24 @@ public class ValidationUtilsTest
         assertNull( dataValueIsValid( "0", de ) );
 
         de.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
+        
         de.setType( DataElement.VALUE_TYPE_TEXT );
 
         assertNull( dataValueIsValid( "0", de ) );
+        
+        de.setType( DataElement.VALUE_TYPE_BOOL );
+        
+        assertNull( dataValueIsValid( "true", de ) );
+        assertNotNull( dataValueIsValid( "yes", de ) );
+        
+        de.setType( DataElement.VALUE_TYPE_TRUE_ONLY );
+
+        assertNull( dataValueIsValid( "true", de ) );
+        assertNotNull( dataValueIsValid( "false", de ) );
+        
+        de.setType( DataElement.VALUE_TYPE_DATE );
+        assertNull( dataValueIsValid( "2013-04-01", de ) );
+        assertNotNull( dataValueIsValid( "2012304-01", de ) );
+        assertNotNull( dataValueIsValid( "Date", de ) );        
     }
 }
