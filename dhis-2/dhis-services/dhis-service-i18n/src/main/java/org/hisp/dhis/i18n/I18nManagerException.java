@@ -31,11 +31,9 @@ package org.hisp.dhis.i18n;
 /**
  * @author Pham Thi Thuy
  * @author Nguyen Dang Quang
- * @version $Id: I18nManagerException.java 2869 2007-02-20 14:26:09Z andegje $
  */
-@SuppressWarnings("serial")
 public class I18nManagerException
-    extends Exception
+    extends RuntimeException
 {
     public I18nManagerException( String message )
     {
