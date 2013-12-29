@@ -128,7 +128,7 @@ public abstract class AbstractEventService
         this._format = format;
     }
 
-    I18nFormat getFormat()
+    private I18nFormat getFormat()
     {
         if ( _format != null )
         {
