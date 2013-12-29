@@ -113,8 +113,8 @@ and featuretype='Point';
 -- Fetch longitude/latitude from organisationunit
 
 select name, coordinates, 
-regexp_replace(coordinates, '\[(-?\d+\.?\d*)[,](-?\d+\.?\d*)\]', '\1') as longitude,
-regexp_replace(coordinates, '\[(-?\d+\.?\d*)[,](-?\d+\.?\d*)\]', '\2') as latitude 
+cast( regexp_replace( coordinates, '\[(-?\d+\.?\d*)[,](-?\d+\.?\d*)\]', '\1' ) as double precision ) as longitude,
+cast( regexp_replace( coordinates, '\[(-?\d+\.?\d*)[,](-?\d+\.?\d*)\]', '\2' ) as double precision ) as latitude 
 from organisationunit
 where featuretype='Point';
 
@@ -163,7 +163,7 @@ from categoryoptioncombo cc
 join _categoryoptioncomboname cn
 on (cc.categoryoptioncomboid=cn.categoryoptioncomboid);
 
--- Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
+-- (Write) Populate dashboards for all users (7666 is userinfoid for target dashboard, replace with preferred id)
 
 insert into usersetting (userinfoid, name, value)
 select userinfoid, 'dashboardConfig', (
@@ -177,11 +177,23 @@ where userinfoid not in (
   from usersetting
   where name='dashboardConfig')
   
--- Reset password to "district" for account with given username
+-- (Write) Reset password to "district" for account with given username
 
 update users set password='48e8f1207baef1ef7fe478a57d19f2e5' where username='admin';
 
--- Insert random org unit codes
+-- (Write) Generate random coordinates based on org unit location for events
+
+update programstageinstance psi
+set longitude = (
+  select ( cast( regexp_replace( coordinates, '\[(-?\d+\.?\d*)[,](-?\d+\.?\d*)\]', '\1' ) as double precision ) + ( random() / 10 ) )
+  from organisationunit ou
+  where psi.organisationunitid=ou.organisationunitid ),
+latitude = (
+  select ( cast( regexp_replace( coordinates, '\[(-?\d+\.?\d*)[,](-?\d+\.?\d*)\]', '\2' ) as double precision ) + ( random() / 10 ) )
+  from organisationunit ou
+  where psi.organisationunitid=ou.organisationunitid );
+
+-- (Write) Insert random org unit codes
 
 create function setrandomcode() returns integer AS $$
 declare ou integer;
