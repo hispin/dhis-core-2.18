@@ -193,6 +193,13 @@ latitude = (
   from organisationunit ou
   where psi.organisationunitid=ou.organisationunitid );
 
+-- (Write) Move startdate and enddate in period to next year
+
+update period set 
+startdate = (startdate + interval '1 year')::date,
+enddate = (enddate + interval '1 year')::date
+where extract(year from startdate) = 2013;
+
 -- (Write) Insert random org unit codes
 
 create function setrandomcode() returns integer AS $$
