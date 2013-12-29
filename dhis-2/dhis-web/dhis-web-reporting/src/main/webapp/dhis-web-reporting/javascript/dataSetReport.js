@@ -263,7 +263,7 @@ dhis2.dsr.getDataApprovalUrl = function( dataSetReport )
 		"&pe=" + dataSetReport.pe + 
 		"&ou=" + dataSetReport.ou;
 	
-	if ( dataSetReport.cc && dataSetReport.cc.length > 0 ) {
+	if ( dataSetReport.cc && dataSetReport.cp && dataSetReport.cp.length > 0 ) {
 		url += "&cc=" + dataSetReport.cc;
 		url += "&cp=";
 		
