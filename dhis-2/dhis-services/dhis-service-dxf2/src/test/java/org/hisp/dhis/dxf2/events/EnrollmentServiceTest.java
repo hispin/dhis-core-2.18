@@ -28,6 +28,14 @@ package org.hisp.dhis.dxf2.events;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 import org.hamcrest.CoreMatchers;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -48,14 +56,6 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -118,10 +118,6 @@ public class EnrollmentServiceTest
         programStage.setProgram( programA );
 
         manager.save( programA );
-
-        // mocked format
-        I18nFormat mockFormat = mock( I18nFormat.class );
-        enrollmentService.setFormat( mockFormat );
     }
 
     @Test
