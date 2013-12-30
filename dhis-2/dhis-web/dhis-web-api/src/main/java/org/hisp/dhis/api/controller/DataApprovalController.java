@@ -142,10 +142,10 @@ public class DataApprovalController
             mayUnapprove = dataApprovalService.mayUnapprove( approval );
         }
         
-        Map<String, String> approvalState = new HashMap<String, String>();
+        Map<String, Object> approvalState = new HashMap<String, Object>();
         approvalState.put( APPROVAL_STATE, state.toString() );
-        approvalState.put( APPROVAL_MAY_APPROVE, String.valueOf( mayApprove ) );
-        approvalState.put( APPROVAL_MAY_UNAPPROVE, String.valueOf( mayUnapprove ) );
+        approvalState.put( APPROVAL_MAY_APPROVE, mayApprove );
+        approvalState.put( APPROVAL_MAY_UNAPPROVE, mayUnapprove );
         
         JacksonUtils.toJson( response.getOutputStream(), approvalState );
     }

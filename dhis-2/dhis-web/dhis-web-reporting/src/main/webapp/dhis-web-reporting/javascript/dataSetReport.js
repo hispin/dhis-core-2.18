@@ -352,7 +352,7 @@ dhis2.dsr.showApproval = function()
 		if ( "READY_FOR_APPROVAL" == state ) {
 			$( "#approvalNotification" ).show().html( i18n_ready_for_approval );
 			
-			if ( json.mayApprove == "true" ) {
+			if ( json.mayApprove ) {
 				$( "#approvalDiv" ).show();
 				$( "#approveButton" ).prop( "disabled", false );
 				$( "#unapproveButton" ).prop( "disabled", true );
@@ -361,7 +361,7 @@ dhis2.dsr.showApproval = function()
 		else if ( "APPROVED" == state ) {
 			$( "#approvalNotification" ).show().html( i18n_approved );
 			
-			if ( json.mayUnapprove == "true") {
+			if ( json.mayUnapprove ) {
 				$( "#approvalDiv" ).show();
 				$( "#approveButton" ).prop( "disabled", true );
 				$( "#unapproveButton" ).prop( "disabled", false );
