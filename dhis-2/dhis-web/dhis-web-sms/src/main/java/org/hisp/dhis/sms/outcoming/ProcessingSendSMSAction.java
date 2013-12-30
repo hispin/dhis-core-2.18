@@ -265,7 +265,6 @@ public class ProcessingSendSMSAction
         
         TaskId taskId = new TaskId( TaskCategory.SENDING_SMS, currentUser );
         notifier.clear( taskId );
-        System.out.println("text: " + text);
 
         sendSmsTask.setTaskId( taskId );
         sendSmsTask.setCurrentUser( currentUser );
@@ -278,9 +277,9 @@ public class ProcessingSendSMSAction
         if ( message != null && !message.equals( "success" ) )
         {
             message = i18n.getString( message );
-
             return ERROR;
         }
+        
         if ( message == null )
         {
             message = "An inter error occurs, please contact your administration";

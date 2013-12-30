@@ -206,7 +206,7 @@ public class Program
                 for ( PatientAttributeValue attributeValue : patient.getAttributeValues() )
                 {
                     if ( attributeValue.getPatientAttribute().getUid().equals( criteria.getProperty() ) )
-                    {System.out.println("\n\n ===== \n attribute : " + attributeValue.getPatientAttribute().getDisplayName());
+                    {
                         value = attributeValue.getValue();
                         break;
                     }

@@ -32,10 +32,6 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -45,31 +41,6 @@ import org.junit.Test;
  */
 public class DefaultAppManagerServiceTest
 {
-
-    public DefaultAppManagerServiceTest()
-    {
-    }
-
-    @BeforeClass
-    public static void setUpClass()
-    {
-    }
-
-    @AfterClass
-    public static void tearDownClass()
-    {
-    }
-
-    @Before
-    public void setUp()
-    {
-    }
-
-    @After
-    public void tearDown()
-    {
-    }
-
     /**
      * Test of getAppFolderPath method, of class DefaultAppManagerService.
      */
@@ -77,7 +48,6 @@ public class DefaultAppManagerServiceTest
     @Ignore
     public void testGetAppFolderPath()
     {
-        System.out.println( "getAppFolderPath" );
         DefaultAppManager instance = new DefaultAppManager();
         String expResult = "";
         String result = instance.getAppFolderPath();
@@ -93,7 +63,6 @@ public class DefaultAppManagerServiceTest
     @Ignore
     public void testGetAppStoreUrl()
     {
-        System.out.println( "getAppStoreUrl" );
         DefaultAppManager instance = new DefaultAppManager();
         String expResult = "";
         String result = instance.getAppStoreUrl();
@@ -109,7 +78,6 @@ public class DefaultAppManagerServiceTest
     @Ignore
     public void testGetInstalledApps()
     {
-        System.out.println( "getInstalledApps" );
         DefaultAppManager instance = new DefaultAppManager();
         List<App> expResult = null;
         List<App> result = instance.getApps();
@@ -125,7 +93,6 @@ public class DefaultAppManagerServiceTest
     @Ignore
     public void testSetAppFolderPath()
     {
-        System.out.println( "setAppFolderPath" );
         String appFolderPath = "";
         DefaultAppManager instance = new DefaultAppManager();
         instance.setAppFolderPath( appFolderPath );
@@ -140,7 +107,6 @@ public class DefaultAppManagerServiceTest
     @Ignore
     public void testSetAppStoreUrl()
     {
-        System.out.println( "setAppStoreUrl" );
         String appStoreUrl = "";
         DefaultAppManager instance = new DefaultAppManager();
         instance.setAppStoreUrl( appStoreUrl );
