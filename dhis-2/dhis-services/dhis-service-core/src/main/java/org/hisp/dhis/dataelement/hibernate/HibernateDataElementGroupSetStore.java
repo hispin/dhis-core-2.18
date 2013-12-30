@@ -28,9 +28,12 @@ package org.hisp.dhis.dataelement.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateDimensionalObjectStore;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementGroupSetStore;
+
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -39,4 +42,13 @@ public class HibernateDataElementGroupSetStore
     extends HibernateDimensionalObjectStore<DataElementGroupSet>
     implements DataElementGroupSetStore
 {
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElementGroupSet> getByDataDimension( boolean dataDimension )
+    {
+        Query query = getQuery( "SELECT d FROM DataElementGroupSet d WHERE d.dataDimension=:dataDimension" );
+        query.setBoolean( "dataDimension", dataDimension );
+
+        return query.list();
+    }
 }
