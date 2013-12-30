@@ -91,6 +91,10 @@ html * {
 	cursor: default !important;
 }
 
+table.padding1 td {
+	padding: 1px;
+}
+
 .el-opacity-1 {
 	opacity: 1 !important;
 }

@@ -577,15 +577,16 @@ Ext.onReady( function() {
                 var ignoreKeys = ['label', 'value', 'nameColumnMap', 'psi', 'ps', 'longitude', 'latitude', 'eventdate', 'ou', 'oucode', 'ouname'],
                     attributes = feature.attributes,
                     map = attributes.nameColumnMap,
-                    html = '<table>',
-                    titleStyle = ' style="font-weight:bold; padding-right:10px"',
+                    html = '<table class="padding1">',
+                    titleStyle = ' style="font-weight:bold; padding-right:10px; vertical-align:top"',
+                    valueStyle = ' style="max-width:170px"',
                     windowPosition;
 
                 // default properties
-                html += '<tr><td' + titleStyle + '>' + map['ou'] + '</td><td>' + attributes['ouname'] + '</td></tr>';
-                html += '<tr><td' + titleStyle + '>' + map['eventdate'] + '</td><td>' + attributes['eventdate'] + '</td></tr>';
-                html += '<tr><td' + titleStyle + '>' + map['longitude'] + '</td><td>' + attributes['longitude'] + '</td></tr>';
-                html += '<tr><td' + titleStyle + '>' + map['latitude'] + '</td><td>' + attributes['latitude'] + '</td></tr>';
+                html += '<tr><td' + titleStyle + '>' + map['ou'] + '</td><td' + valueStyle + '>' + attributes['ouname'] + '</td></tr>';
+                html += '<tr><td' + titleStyle + '>' + map['eventdate'] + '</td><td' + valueStyle + '>' + attributes['eventdate'] + '</td></tr>';
+                html += '<tr><td' + titleStyle + '>' + map['longitude'] + '</td><td' + valueStyle + '>' + attributes['longitude'] + '</td></tr>';
+                html += '<tr><td' + titleStyle + '>' + map['latitude'] + '</td><td' + valueStyle + '>' + attributes['latitude'] + '</td></tr>';
 
                 for (var key in attributes) {
                     if (attributes.hasOwnProperty(key) && !Ext.Array.contains(ignoreKeys, key)) {
@@ -603,6 +604,7 @@ Ext.onReady( function() {
 
                 eventWindow = Ext.create('Ext.window.Window', {
                     title: 'Event',
+                    layout: 'fit',
                     resizable: false,
                     bodyStyle: 'background-color:#fff; padding:5px',
                     html: html,
