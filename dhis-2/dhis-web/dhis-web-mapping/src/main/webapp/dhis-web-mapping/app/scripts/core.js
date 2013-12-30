@@ -998,10 +998,40 @@ Ext.onReady( function() {
 				success: function(r) {
                     var events = [],
                         features = [],
+                        rows = [],
+                        lonIndex,
+                        latIndex,
                         map;
 
-                    if (!r.rows) {
+                    // name-column map, lonIndex, latIndex
+                    map = Ext.clone(r.metaData.names);
+
+                    for (var i = 0; i < r.headers.length; i++) {
+                        map[r.headers[i].name] = r.headers[i].column;
+
+                        if (r.headers[i].name === 'longitude') {
+							lonIndex = i;
+						}
+
+						if (r.headers[i].name === 'latitude') {
+							latIndex = i;
+						}
+                    }
+
+					// get events with coordinates
+                    if (Ext.isArray(r.rows) && r.rows.length) {
+						for (var i = 0, row; i < r.rows.length; i++) {
+							row = r.rows[i];
+
+							if (row[lonIndex] && row[latIndex]) {
+								rows.push(row);
+							}
+						}
+					}
+
+                    if (!rows.length) {
                         alert('No coordinates found');
+                        olmap.mask.hide();
                         return;
                     }
 
@@ -1013,8 +1043,8 @@ Ext.onReady( function() {
                     }
 
                     // events
-                    for (var i = 0, row, obj; i < r.rows.length; i++) {
-                        row = r.rows[i];
+                    for (var i = 0, row, obj; i < rows.length; i++) {
+                        row = rows[i];						
                         obj = {};
 
                         for (var j = 0; j < row.length; j++) {
