@@ -12,6 +12,8 @@ public class Lookup extends BaseNameableObject
     
     public static final String WS_REF_TYPE = "WS_REF_TYPE";
     
+    public static final String CCEI_AGG_TYPE_STORAGE_CAPACITY = "STORAGE CAPACITY";
+    
     private String type;
     
     private String value;
