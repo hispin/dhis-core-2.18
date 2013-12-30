@@ -30,6 +30,8 @@ package org.hisp.dhis.api.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -66,6 +68,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class DataApprovalController
 {
     public static final String RESOURCE_PATH = "/dataApprovals";
+    
+    private static final String APPROVAL_STATE = "state";
+    private static final String APPROVAL_MAY_APPROVE = "mayApprove";
+    private static final String APPROVAL_MAY_UNAPPROVE = "mayUnapprove";
 
     @Autowired
     private DataApprovalService dataApprovalService;
@@ -123,10 +129,25 @@ public class DataApprovalController
         {
             return;
         }
-                
-        DataApprovalState state = dataApprovalService.getDataApprovalState( dataSet, period, organisationUnit, attributeOptionCombo );
         
-        JacksonUtils.toJson( response.getOutputStream(), state );
+        DataApprovalState state = dataApprovalService.getDataApprovalState( dataSet, period, organisationUnit, attributeOptionCombo );
+
+        boolean mayApprove = dataApprovalService.mayApprove( organisationUnit );
+        boolean mayUnapprove = false;
+        
+        if ( DataApprovalState.APPROVED.equals( state ) )
+        {
+            DataApproval approval = dataApprovalService.getDataApproval( dataSet, period, organisationUnit, attributeOptionCombo );
+            
+            mayUnapprove = dataApprovalService.mayUnapprove( approval );
+        }
+        
+        Map<String, String> approvalState = new HashMap<String, String>();
+        approvalState.put( APPROVAL_STATE, state.toString() );
+        approvalState.put( APPROVAL_MAY_APPROVE, String.valueOf( mayApprove ) );
+        approvalState.put( APPROVAL_MAY_UNAPPROVE, String.valueOf( mayUnapprove ) );
+        
+        JacksonUtils.toJson( response.getOutputStream(), approvalState );
     }
     
     @PreAuthorize( "hasRole('ALL') or hasRole('F_APPROVE_DATA') or hasRole('F_APPROVE_DATA_LOWER_LEVELS')" )
