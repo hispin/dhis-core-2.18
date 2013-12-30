@@ -52,6 +52,7 @@ import org.hisp.dhis.coldchain.reports.CCEMReport;
 import org.hisp.dhis.coldchain.reports.CCEMReportDesign;
 import org.hisp.dhis.coldchain.reports.CCEMReportManager;
 import org.hisp.dhis.coldchain.reports.CCEMReportOutput;
+import org.hisp.dhis.coldchain.reports.action.GenerateCCEIReportAction.PieRenderer;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -106,8 +107,7 @@ import com.opensymphony.xwork2.Action;
  * 
  * @version GenerateJRXMLReportAction.java Jun 26, 2012 12:12:17 PM
  */
-public class GenerateJRXMLReportAction
-    implements Action
+public class GenerateCCEIReportAction implements Action
 {
     public Integer NumPag = 0;
 
@@ -262,6 +262,7 @@ public class GenerateJRXMLReportAction
         this.type = type;
     }
     
+    /*
     private String[] ownership;
     
     public void setOwnership( String[] ownership )
@@ -275,23 +276,32 @@ public class GenerateJRXMLReportAction
     {
         this.coldstore = coldstore;
     }
-
+    
+    
     public String facilityTypeRadio = "";
     
     public void setFacilityTypeRadio( String facilityTypeRadio )
     {
         this.facilityTypeRadio = facilityTypeRadio;
     }
+    */
     
+    private Integer organisationUnitGroupSets;
+    
+    public void setOrganisationUnitGroupSets( Integer organisationUnitGroupSets )
+    {
+        this.organisationUnitGroupSets = organisationUnitGroupSets;
+    }
+
     // -------------------------------------------------------------------------
     // Result implementation
     // -------------------------------------------------------------------------
 
-    @Override
-    public String execute()
-        throws Exception, JRException
-    {
 
+    @Override
+    public String execute() throws Exception, JRException
+    {
+        /*
         if ( facilityTypeRadio.equalsIgnoreCase( "facilityType" ) )
         {
             if ( option[0].isEmpty() )
@@ -336,6 +346,22 @@ public class GenerateJRXMLReportAction
             }        
             
         }        
+        */
+        if( organisationUnitGroupSets != null )
+        {
+            if ( option[0].isEmpty() )
+            {
+            }
+            else
+            {
+                for ( int i = 0; i <= option.length - 1; i++ )
+                {
+                    orgunitGroupList.add( Integer.parseInt( option[i].trim() ) );
+                }
+            }
+            
+        }
+            
         
         //System.out.println( " Size of  orgunitGroup List  " + orgunitGroupList.size() );
         
@@ -346,32 +372,38 @@ public class GenerateJRXMLReportAction
         {
             for ( int i = 0; i <= orgUnit.length - 1; i++ )
             {
-                selOrgUnitList.add( Integer.parseInt( orgUnit[i].trim() ) );
+                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit(  orgUnit[i].trim()  );
+                selOrgUnitList.add( organisationUnit.getId() );
+                //selOrgUnitList.add( Integer.parseInt( orgUnit[i].trim() ) );
             }
         }
 
         Connection con = jdbcTemplate.getDataSource().getConnection();
         String fileName = null;
-        String path = System.getenv( "DHIS2_HOME" ) + File.separator + "ireports" + File.separator;
+        String path = System.getenv( "DHIS2_HOME" ) + File.separator + "ccei" + File.separator + "ireports" + File.separator;
 
         HashMap<String, Object> hash = new HashMap<String, Object>();
 
         String orgUnitIdsByComma = ccemReportManager.getOrgunitIdsByComma( selOrgUnitList, orgunitGroupList );
+        
+        //System.out.println( " orgUnitIdsByComma  " + orgUnitIdsByComma );
+        
         ccemReport = ccemReportManager.getCCEMReportByReportId( reportList );
         Map<String, String> ccemSettingsMap = new HashMap<String, String>( ccemReportManager.getCCEMSettings() );
-        List<CCEMReportDesign> reportDesignList = new ArrayList<CCEMReportDesign>( ccemReportManager
-            .getCCEMReportDesign( ccemReport.getXmlTemplateName() ) );
+        List<CCEMReportDesign> reportDesignList = new ArrayList<CCEMReportDesign>( ccemReportManager.getCCEMReportDesign( ccemReport.getXmlTemplateName() ) );
 
         String oName = null;
         String oUnitGrpName = null;
-        oUnitGrpName = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupList.get( 0 ) ).getName()
-            + "";
+        
+        oUnitGrpName = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupList.get( 0 ) ).getName() + "";
+        
         for ( int i = 1; i <= orgunitGroupList.size() - 1; i++ )
         {
-            oUnitGrpName += ","
-                + organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupList.get( i ) ).getName();
+            oUnitGrpName += "," + organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupList.get( i ) ).getName();
         }
+        
         oName = organisationUnitService.getOrganisationUnit( selOrgUnitList.get( 0 ) ).getName() + "";
+        
         for ( int j = 1; j <= selOrgUnitList.size() - 1; j++ )
         {
             oName += "," + organisationUnitService.getOrganisationUnit( selOrgUnitList.get( j ) ).getName();
@@ -771,7 +803,7 @@ public class GenerateJRXMLReportAction
             frb.addColumn( "Facility Type", "Facility Type", String.class.getName(), 70, true );
             frb.addColumn( "Total Facilities", "Total Facilities", String.class.getName(), 50, true );
 
-            if ( dataElemnet.getOptionSet() != null )
+            if ( dataElemnet != null && dataElemnet.getOptionSet() != null )
             {
                 List<String> options = new ArrayList<String>( dataElemnet.getOptionSet().getOptions() );
                 for ( String option : options )
@@ -812,7 +844,7 @@ public class GenerateJRXMLReportAction
                         Map<String, Integer> dataValueCountMap = new HashMap<String, Integer>( ccemReportManager
                             .getDataValueAndCount( dataelementId + "", orgUnitidsByComma, periodIdsByComma ) );
 
-                        if ( dataElemnet.getOptionSet() != null )
+                        if ( dataElemnet != null && dataElemnet.getOptionSet() != null )
                         {
                             List<String> options = new ArrayList<String>( dataElemnet.getOptionSet().getOptions() );
                             for ( String option : options )
@@ -935,11 +967,11 @@ public class GenerateJRXMLReportAction
             hash.put( "reportName", "Refrigerators/freezer by Type" );
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
 
             Map<String, Integer> ccemResultMap = ccemReportManager.getCatalogTypeAttributeValue( orgUnitIdsByComma,
-                inventoryTypeId, catalogTypeAttributeId );
+                equipmentTypeId, modelTypeAttributeId );
 
             DefaultPieDataset dataset = new DefaultPieDataset();
             for ( String dataValue : ccemResultMap.keySet() )
@@ -969,8 +1001,8 @@ public class GenerateJRXMLReportAction
 
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer modelTypeAttributeId  = Integer.parseInt( ccemCellContent.split( ":" )[1] );
 
             List tableData = new ArrayList();
 
@@ -1010,12 +1042,12 @@ public class GenerateJRXMLReportAction
                     
                     OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
 
-                    Map<String, Integer> totalEquipmentMap = ccemReportManager.getModelNameAndCount( catalogTypeAttributeId, inventoryTypeId, null, orgUnitidsByComma );
-                    Map<String, Integer> workingEquipmentMap = ccemReportManager.getModelNameAndCount( catalogTypeAttributeId, inventoryTypeId, EquipmentStatus.STATUS_WORKING_WELL, orgUnitidsByComma );
-                    Map<String, Integer> repairEquipmentMap = ccemReportManager.getModelNameAndCount( catalogTypeAttributeId, inventoryTypeId, EquipmentStatus.STATUS_WORKING_NEEDS_MAINTENANCE, orgUnitidsByComma );
-                    Map<String, Integer> notWorkingEquipmentMap = ccemReportManager.getModelNameAndCount( catalogTypeAttributeId, inventoryTypeId, EquipmentStatus.STATUS_NOT_WORKING, orgUnitidsByComma );
+                    Map<String, Integer> totalEquipmentMap = ccemReportManager.getModelNameAndCount( modelTypeAttributeId, equipmentTypeId, null, orgUnitidsByComma );
+                    Map<String, Integer> workingEquipmentMap = ccemReportManager.getModelNameAndCount( modelTypeAttributeId, equipmentTypeId, EquipmentStatus.STATUS_WORKING_WELL, orgUnitidsByComma );
+                    Map<String, Integer> repairEquipmentMap = ccemReportManager.getModelNameAndCount( modelTypeAttributeId, equipmentTypeId, EquipmentStatus.STATUS_WORKING_NEEDS_MAINTENANCE, orgUnitidsByComma );
+                    Map<String, Integer> notWorkingEquipmentMap = ccemReportManager.getModelNameAndCount( modelTypeAttributeId, equipmentTypeId, EquipmentStatus.STATUS_NOT_WORKING, orgUnitidsByComma );
 
-                    List<String> modelsList = ccemReportManager.getModelName( inventoryTypeId, catalogTypeAttributeId, orgUnitidsByComma );
+                    List<String> modelsList = ccemReportManager.getModelName( equipmentTypeId, modelTypeAttributeId, orgUnitidsByComma );
                     for ( String model : modelsList )
                     {
                         Double total = 0.0;
@@ -1301,12 +1333,12 @@ public class GenerateJRXMLReportAction
         {
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
-            hash.put( "inventoryTypeId", inventoryTypeId );
-            hash.put( "catalogTypeAttributeId", catalogTypeAttributeId );
+            Integer equipmentTypeId  = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer modelTypeAttributeId  = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            hash.put( "equipmentTypeId ", equipmentTypeId  );
+            hash.put( "modelTypeAttributeId ", modelTypeAttributeId  );
             int i = 0;
-            Integer inventoryTypeAttributeId = 3;
+            Integer equipmentTypeAttributeId = 3;
             for ( CCEMReportDesign ccemReportDesign1 : reportDesignList )
             {
                 i++;
@@ -1319,31 +1351,31 @@ public class GenerateJRXMLReportAction
                 }
                 else if ( ccemCellContent1.split( ":" )[4].equalsIgnoreCase( "MORE" ) )
                 {
-                    inventoryTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
-                    catalogTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
-                    inventoryTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
+                    equipmentTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
+                    modelTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
+                    equipmentTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
                 }
                 else
                 {
-                    inventoryTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
-                    catalogTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
-                    inventoryTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
+                    equipmentTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
+                    modelTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
+                    equipmentTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
                 }
             }
             Map<String, Integer> catalogTypeAttributeValueMap1 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 0, 2 ) );
+                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 0, 2 ) );
 
             Map<String, Integer> catalogTypeAttributeValueMap2 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 3, 5 ) );
+                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 3, 5 ) );
 
             Map<String, Integer> catalogTypeAttributeValueMap3 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 6, 10 ) );
+                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 6, 10 ) );
 
             Map<String, Integer> catalogTypeAttributeValueMap4 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId, 3, 11,
+                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId, 3, 11,
                     -1 ) );
 
             hash.put( "Value_0_2", catalogTypeAttributeValueMap1 );
@@ -1385,12 +1417,13 @@ public class GenerateJRXMLReportAction
         {
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
-            hash.put( "inventoryTypeId", inventoryTypeId );
-            hash.put( "catalogTypeAttributeId", catalogTypeAttributeId );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            hash.put( "equipmentTypeId", equipmentTypeId );
+            hash.put( "modelTypeAttributeId", modelTypeAttributeId );
+    
             int i = 0;
-            Integer inventoryTypeAttributeId = 3;
+            Integer equipmentTypeAttributeId = 3;
             for ( CCEMReportDesign ccemReportDesign1 : reportDesignList )
             {
                 i++;
@@ -1403,35 +1436,35 @@ public class GenerateJRXMLReportAction
                 }
                 else if ( ccemCellContent1.split( ":" )[4].equalsIgnoreCase( "MORE" ) )
                 {
-                    inventoryTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
-                    catalogTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
-                    inventoryTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
+                    equipmentTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
+                    modelTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
+                    equipmentTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
                 }
                 else
                 {
-                    inventoryTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
-                    catalogTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
-                    inventoryTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
+                    equipmentTypeId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
+                    modelTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
+                    equipmentTypeAttributeId = Integer.parseInt( ccemCellContent1.split( ":" )[2] );
                 }
             }
 
             List<String> catalogTypeAttributeValueList = new ArrayList<String>( ccemReportManager.getModelName(
-                inventoryTypeId, catalogTypeAttributeId, orgUnitIdsByComma ) );
+                equipmentTypeId, modelTypeAttributeId, orgUnitIdsByComma ) );
 
             Map<String, Integer> catalogTypeAttributeValueMap1 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 0, 2 ) );
+                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 0, 2 ) );
 
             Map<String, Integer> catalogTypeAttributeValueMap2 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 3, 5 ) );
+                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 3, 5 ) );
 
             Map<String, Integer> catalogTypeAttributeValueMap3 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId,
-                    inventoryTypeAttributeId, 6, 10 ) );
+                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId,
+                    equipmentTypeAttributeId, 6, 10 ) );
 
             Map<String, Integer> catalogTypeAttributeValueMap4 = new HashMap<String, Integer>( ccemReportManager
-                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, inventoryTypeId, catalogTypeAttributeId, 3, 11,
+                .getCatalogTypeAttributeValueByAge( orgUnitIdsByComma, equipmentTypeId, modelTypeAttributeId, 3, 11,
                     -1 ) );
 
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -1542,7 +1575,7 @@ public class GenerateJRXMLReportAction
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
             
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
             Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
             Integer equipmentUtilizationId = Integer.parseInt( ccemCellContent.split( ":" )[2] );
             
@@ -1550,7 +1583,7 @@ public class GenerateJRXMLReportAction
             
             DefaultPieDataset dataset = new DefaultPieDataset();
 
-            Map<String, Integer> equipmentValue_CountMap = new HashMap<String, Integer>( ccemReportManager.getEquipmentValue_Count( inventoryTypeId, equipmentUtilizationId, orgUnitIdsByComma ) );
+            Map<String, Integer> equipmentValue_CountMap = new HashMap<String, Integer>( ccemReportManager.getEquipmentValue_Count( equipmentTypeId, equipmentUtilizationId, orgUnitIdsByComma ) );
 
             if( equipmentTypeAttribute.getOptionSet() != null )
             {
@@ -1579,15 +1612,15 @@ public class GenerateJRXMLReportAction
             
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
             
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
             Integer equipmentUtilizationId = Integer.parseInt( ccemCellContent.split( ":" )[2] );
 
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
             EquipmentTypeAttribute equipmentTypeAttribute = equipmentTypeAttributeService.getEquipmentTypeAttribute( equipmentUtilizationId );
 
-            Map<String, Map<String,Integer>> modelName_EquipmentUnilization_CountMap = new HashMap<String, Map<String,Integer>>( ccemReportManager.getModelName_EquipmentUtilization_Count( inventoryTypeId, catalogTypeAttributeId, equipmentUtilizationId, orgUnitIdsByComma ) );
-            Map<String, Integer> modelName_CountMap = new HashMap<String, Integer>( ccemReportManager.getModelName_Count( inventoryTypeId, catalogTypeAttributeId, orgUnitIdsByComma ) );
+            Map<String, Map<String,Integer>> modelName_EquipmentUnilization_CountMap = new HashMap<String, Map<String,Integer>>( ccemReportManager.getModelName_EquipmentUtilization_Count( equipmentTypeId, modelTypeAttributeId, equipmentUtilizationId, orgUnitIdsByComma ) );
+            Map<String, Integer> modelName_CountMap = new HashMap<String, Integer>( ccemReportManager.getModelName_Count( equipmentTypeId, modelTypeAttributeId, orgUnitIdsByComma ) );
             List<String> modelList = new ArrayList<String>( modelName_CountMap.keySet() );
             Collections.sort( modelList );
             
@@ -2196,14 +2229,14 @@ public class GenerateJRXMLReportAction
                     vscrActualInventoryTypeAttributeId, factor ) );
 
             String[] partsOfVSRActualCellContent = partsOfCellContent[1].split( ":" );
-            Integer vsrActualInventoryTypeId = Integer.parseInt( partsOfVSRActualCellContent[0] );
-            Integer vsrActualCatalogTypeAttributeId = Integer.parseInt( partsOfVSRActualCellContent[1] );
-            Integer vsrActualInventoryTypeAttributeId = Integer.parseInt( partsOfVSRActualCellContent[2] );
+            Integer vsrActualEquipmentTypeidId = Integer.parseInt( partsOfVSRActualCellContent[0] );
+            Integer vsrActualModelTypeAttributeidId = Integer.parseInt( partsOfVSRActualCellContent[1] );
+            Integer vsrActualEquipmentTypeAttributeidId = Integer.parseInt( partsOfVSRActualCellContent[2] );
             String vsrActualEquipmentValue = partsOfVSRActualCellContent[3];
 
             Map<Integer, Double> catalogSumByEquipmentDataMap = new HashMap<Integer, Double>( ccemReportManager
-                .getCatalogDataSumByEquipmentData( orgUnitIdsByComma, vsrActualInventoryTypeId,
-                    vsrActualCatalogTypeAttributeId, vsrActualInventoryTypeAttributeId, vsrActualEquipmentValue ) );
+                .getCatalogDataSumByEquipmentData( orgUnitIdsByComma, vsrActualEquipmentTypeidId,
+                    vsrActualModelTypeAttributeidId, vsrActualEquipmentTypeAttributeidId, vsrActualEquipmentValue ) );
 
             // Calculations for Required Column
             ccemReportDesign1 = reportDesignList.get( 2 );
@@ -3971,8 +4004,8 @@ public class GenerateJRXMLReportAction
 
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
             Integer electricityId = Integer.parseInt( ccemCellContent.split( ":" )[2] );
             Integer bottledGasId = Integer.parseInt( ccemCellContent.split( ":" )[3] );
             Integer keroseneId = Integer.parseInt( ccemCellContent.split( ":" )[4] );
@@ -4006,7 +4039,7 @@ public class GenerateJRXMLReportAction
             //    catalogTypeAttributeId, orgUnitIdsByComma );
             //TreeMap<String, String> sortedEquipmentMap = new TreeMap<String, String>( equipmentMap );
             Map<String, Map<String,Integer>> equiplmentType_ElectricityAvailability_CountMap = new HashMap<String, Map<String,Integer>>( 
-            		ccemReportManager.getEquipmentType_ElectricityAvailability_Count( inventoryTypeId, catalogTypeAttributeId, electricityId, periodIdsByComma, orgUnitIdsByComma ) );
+            		ccemReportManager.getEquipmentType_ElectricityAvailability_Count( equipmentTypeId, modelTypeAttributeId, electricityId, periodIdsByComma, orgUnitIdsByComma ) );
             List<String> equiplmentTypeList = new ArrayList<String>( equiplmentType_ElectricityAvailability_CountMap.keySet() );
             Collections.sort( equiplmentTypeList );
             for ( String equipment : equiplmentTypeList )
@@ -4055,8 +4088,8 @@ public class GenerateJRXMLReportAction
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
             String[] ccemCellContentParts = ccemCellContent.split( "--" );
             Integer dataelementId = Integer.parseInt( ccemCellContentParts[0].split( ":" )[0] );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContentParts[0].split( ":" )[1] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContentParts[0].split( ":" )[2] );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContentParts[0].split( ":" )[1] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContentParts[0].split( ":" )[2] );
 
             String electricity8to16hrsOption = ccemCellContentParts[1].split( "," )[0];
             String electricityMorethan16hrsOption = ccemCellContentParts[1].split( "," )[1];
@@ -4110,9 +4143,9 @@ public class GenerateJRXMLReportAction
 	                    if( facilityList != null && facilityList.size() > 0 )
 	                    {
 		                    //Integer totalValue = ccemReportManager.getCatalogDataValueCount( inventoryTypeId, catalogTypeAttributeId, null, facilityByComma );
-	                    	Integer totalValue = ccemReportManager.getEquipmentInstanceCount( inventoryTypeId, facilityByComma );
+	                    	Integer totalValue = ccemReportManager.getEquipmentInstanceCount( equipmentTypeId , facilityByComma );
 	                    	
-		                    Integer absorptionValue = ccemReportManager.getCatalogDataValueCount( inventoryTypeId, catalogTypeAttributeId, "\'"
+		                    Integer absorptionValue = ccemReportManager.getCatalogDataValueCount( equipmentTypeId, modelTypeAttributeId, "\'"
 		                        + electricityGas + "\',\'" + electricityKerosene + "\'", facilityByComma );
 		
 		                    if ( totalValue != 0 )

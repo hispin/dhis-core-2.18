@@ -224,7 +224,11 @@ public class GetEquipmentListAction  extends ActionPagingSupport<Equipment>
         
         equipmentDetailsMap = new HashMap<String, String>();
         
+        // get orgUnit object usiging UID
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        
+        //OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) );
+        
         
         //System.out.println(" orgUnit is : " + orgUnit.getId() + " -- " + orgUnit.getName() );
         

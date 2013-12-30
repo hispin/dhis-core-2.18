@@ -17,14 +17,24 @@
 <div id="overlay">
     <div id="overlayImg"><img  width="50" height="50" src="images/ajax-loader.gif" style="margin:auto;position:fixed;top: 50%;left: 50%;"/></div>
 </div>
+
+
 <input type="hidden" id='selectedOrgunitID' value="$!organisationUnit.id" />
 <input type="hidden" id='selectedOrgunitName' value="$!organisationUnit.name" />
 
+<!--
+<input type="hidden" id='selOrgunitID' value="$!organisationUnit.id" />
+<input type="hidden" id='selOrgunitName' value="$!organisationUnit.name" />
+-->
 <div id='selectOrgUnitDiv'>
 	<h3>$i18n.getString( "organisationunit_select" )</h3>	
 </div>
 
 <div id='orgUnitDetailsDiv'></div>
+
+<div id='filterOrgUnitDetailsDiv'></div>
+<div id='filterOrgUnitListDiv'></div>
+
 <div id='listEquipmentDiv'></div>
 <div id='editEquipmentDiv'></div> <!-- Add / Edit EquipmentAttributeValue Form -->
 <div id='equipmentStatusHistoryDiv'></div> <!-- List EquipmentAttributeValue Status History -->

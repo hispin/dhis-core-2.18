@@ -274,3 +274,41 @@ function getParamsForDiv( selectedDiv )
 	
 	return params;
 }
+
+
+function changeOrgUnitGroupSet()
+{   
+
+	var orgUnitGroupSet = document.getElementById('organisationUnitGroupSets');
+	var orgUnitGroupSetId = orgUnitGroupSet.options[ orgUnitGroupSet.selectedIndex ].value;
+	
+	jQuery('#organisationUnitGroupsDiv').load('getOrganisationUnitGroups.action',
+	{
+		
+		orgUnitGroupSetId:orgUnitGroupSetId
+	},
+	function(){		
+		//showById('facilityTypeDiv');
+		selectAllCheckBoxes();
+			
+	});
+	
+}
+
+function selectAllCheckBoxes()
+{
+	document.getElementById('selectall').checked = true;
+	var checkboxes = document.getElementsByName('option');
+	
+	for (i=0; i < checkboxes.length; i++)
+	{
+		 checkboxes[i].checked = true;
+	}
+
+}
+
+
+
+
+
+

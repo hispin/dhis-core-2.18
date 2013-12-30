@@ -3,6 +3,7 @@ package org.hisp.dhis.coldchain.reports.action;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -10,8 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hisp.dhis.coldchain.reports.CCEMReport;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.constant.Constant;
-import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -24,8 +23,7 @@ import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 
-public class CCEMReportPageAction
-    implements Action
+public class CCEIReportPageAction implements Action
 {
     public static final String OWNERSHIP_GROUP_SET = "Ownership";// 17.0
     public static final String HEALTH_FACILITY_GROUP_SET = "Health Facility type of Service";// 287.0
@@ -41,14 +39,14 @@ public class CCEMReportPageAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+    /*
     private ConstantService constantService;
 
     public void setConstantService( ConstantService constantService )
     {
         this.constantService = constantService;
     }
-    
+    */
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -100,9 +98,16 @@ public class CCEMReportPageAction
         return orgUnitGroupsColdStore;
     }
 
+    private List<OrganisationUnitGroupSet> organisationUnitGroupSetList = new ArrayList<OrganisationUnitGroupSet>();
+    
+    public List<OrganisationUnitGroupSet> getOrganisationUnitGroupSetList()
+    {
+        return organisationUnitGroupSetList;
+    }
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+
 
 
     public String execute() throws Exception
@@ -121,6 +126,8 @@ public class CCEMReportPageAction
         }
         
         // Health Facility type of Service
+        
+        /*
         Constant healthFacilityGroupConstant = constantService.getConstantByName( HEALTH_FACILITY_GROUP_SET );
         
         OrganisationUnitGroupSet organisationUnitGroupSetHealthFacility = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) healthFacilityGroupConstant.getValue() );
@@ -130,10 +137,11 @@ public class CCEMReportPageAction
             orgUnitGroupsHealthFacility = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSetHealthFacility.getOrganisationUnitGroups() );            
             Collections.sort( orgUnitGroupsHealthFacility, new IdentifiableObjectNameComparator() );
         }
-
-               
+        */
         
         // Ownership
+        
+        /*
         Constant ownerShipGroupConstant = constantService.getConstantByName( OWNERSHIP_GROUP_SET );
         
         OrganisationUnitGroupSet organisationUnitGroupSetOwnership = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) ownerShipGroupConstant.getValue() );
@@ -143,9 +151,10 @@ public class CCEMReportPageAction
             orgUnitGroupsOwnership = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupSetOwnership.getOrganisationUnitGroups());            
             Collections.sort( orgUnitGroupsOwnership, new IdentifiableObjectNameComparator() );
         }
-        
+        */
  
         // Cold Store
+        /*
         Constant coldStoreGroupConstant = constantService.getConstantByName( COLD_STORE_GROUP_SET );
         
         OrganisationUnitGroupSet organisationUnitGroupSetColdStore = organisationUnitGroupService.getOrganisationUnitGroupSet( (int) coldStoreGroupConstant.getValue() );
@@ -155,12 +164,35 @@ public class CCEMReportPageAction
             orgUnitGroupsColdStore = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSetColdStore.getOrganisationUnitGroups() );            
             Collections.sort( orgUnitGroupsColdStore, new IdentifiableObjectNameComparator() );
         }        
+        */
         
+        organisationUnitGroupSetList = new ArrayList<OrganisationUnitGroupSet>();
         
-        /*
-        for( OrganisationUnitGroup organisationUnitGroup : orgUnitGroups )
+        organisationUnitGroupSetList = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() );
+        
+        //System.out.println(" Initial organisationUnitGroupSet Size    " + organisationUnitGroupSetList.size() );
+        
+        // remove the orgUnitGroupSet which has no any orgUnitGroup
+        Iterator<OrganisationUnitGroupSet> allorganisationUnitGroupSetIterator = organisationUnitGroupSetList.iterator();
+        while ( allorganisationUnitGroupSetIterator.hasNext() )
         {
-            System.out.println(" organisationUnitGroup   " + organisationUnitGroup.getName() );
+            OrganisationUnitGroupSet organisationUnitGroupSet = allorganisationUnitGroupSetIterator.next();
+            
+            if ( organisationUnitGroupSet.getOrganisationUnitGroups().size() == 0  )
+            {
+                //System.out.println("  organisationUnitGroupSet Name   " + organisationUnitGroupSet.getName() );
+                allorganisationUnitGroupSetIterator.remove();
+            }
+        }
+        
+        Collections.sort( organisationUnitGroupSetList, new IdentifiableObjectNameComparator() );
+        
+        //System.out.println(" Final organisationUnitGroupSet Size    " + organisationUnitGroupSetList.size() );
+        /*
+        
+        for( OrganisationUnitGroupSet organisationUnitGroupSet : organisationUnitGroupSetList )
+        {
+            System.out.println(" organisationUnitGroupSet   " + organisationUnitGroupSet.getName() + "--" + organisationUnitGroupSet.getOrganisationUnitGroups().size() );
         }
         */
         
@@ -170,7 +202,7 @@ public class CCEMReportPageAction
     public void getCCEMReportList()
     {
         String fileName = "ccemReportList.xml";
-        String path = System.getenv( "DHIS2_HOME" ) + File.separator + "ccemreports" + File.separator + fileName;
+        String path = System.getenv( "DHIS2_HOME" ) + File.separator + "ccei" + File.separator + "reports" + File.separator + fileName;
 
         // JAXBContext context = JAXBContext.newInstance( CCEMReport.class );
         // Unmarshaller um = context.createUnmarshaller();

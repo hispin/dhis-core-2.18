@@ -44,11 +44,13 @@
 			<artifactId>dhis-web-commons-resources</artifactId>
 			<type>war</type>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-aggregationengine-default</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-support-external</artifactId>

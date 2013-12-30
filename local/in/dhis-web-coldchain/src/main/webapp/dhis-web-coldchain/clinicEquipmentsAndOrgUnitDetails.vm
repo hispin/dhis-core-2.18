@@ -7,8 +7,9 @@
 </select>
 
 <div id='orgUnitDetailsDiv'>
-	<h3><b>$i18n.getString( "equipment_in" )  $organisationUnit.name</b> &nbsp;&nbsp; &nbsp;&nbsp;<a href="javascript:showFullOrgUnitDetails( '$organisationUnit.id','$organisationUnit.name'); " title='$i18n.getString( "Division Detail" )'>Full division details</a>
+	<h3><b>$i18n.getString( "equipment_in" )  $organisationUnit.name</b> &nbsp;&nbsp; &nbsp;&nbsp;<a href="javascript:showFullOrgUnitDetails( '$organisationUnit.id','$organisationUnit.name'); " title='$i18n.getString( "Division Detail" )'>Full details</a>
 	</h3>
+	
 	<!--
 	<table>
 		<tr bgcolor="#285C91">
@@ -37,6 +38,7 @@
 	-->
 	
 	<br />
+	
 	<table>
 		<tr><td><strong>$i18n.getString( "facilities" )</strong></td>
 			<td id='filterOrgDiv'><a href="javascript:hideOrgFilter()" >Filter</a></td>
@@ -57,7 +59,7 @@
 			</td>
 			
 			<td id='searchingOrgUnitOwnerShipGroupSetMemberTD' style='display:none'>
-                	<select id="searchingOrgUnitGroupSetOwnerShipId" name="searchingOrgUnitGroupSetOwnerShipId" #if( $orgUnitOwnershipGroupSetMember.size() == 0 ) disabled="disabled" #end onchange="loadOrgUnitsByFilter()">
+                	<select id="searchingOrgUnitGroupSetOwnerShipId" name="searchingOrgUnitGroupSetOwnerShipId" #if( $orgUnitOwnershipGroupSetMember.size() == 0 )  #end onchange="loadOrgUnitsByFilter()">
                   		<option value="">[$i18n.getString( "please_select" )]</option>
                   		#foreach( $orgUniGroupOwnerShip in $orgUnitOwnershipGroupSetMember )
                   			<option value="$orgUniGroupOwnerShip.id">$orgUniGroupOwnerShip.name</option>
@@ -67,7 +69,7 @@
 			
 			
 			<td id='searchingOrgUnitGroupSetMemberTD' style='display:none'>
-                	<select id="searchingOrgUnitGroupId" name="searchingOrgUnitGroupId" #if( $orgUnitGroups.size() == 0 ) disabled="disabled" #end onchange="loadOrgUnitsByFilter()">
+                	<select id="searchingOrgUnitGroupId" name="searchingOrgUnitGroupId" #if( $orgUnitGroups.size() == 0 )  #end onchange="loadOrgUnitsByFilter()">
                   		<option value="">[$i18n.getString( "please_select" )]</option>
                   		#foreach( $orgUniGroup in $orgUnitGroups )
                   			<option value="$orgUniGroup.id">$orgUniGroup.name</option>
@@ -82,6 +84,8 @@
 			<td id='clearOrgDiv' style='display:none'><a href="javascript:hideOrgClear()">Clear</a></td>
 		</tr>		
 	</table>
+
+
 	<table id='searchOrgDiv'>
 		<!--<tr><td><strong>Clinics</strong></td>
 			<td id='filterOrgDiv'><a href="javascript:hideOrgFilter()" >Filter</a></td>
@@ -135,7 +139,7 @@
  				#end
 		</tbody>
 	</table>
-	</div>
+	
 	
 	<br />
 	
@@ -170,7 +174,7 @@
 				</table>	
 			</td>
 			<!--</div>-->
-			<td id='addEquipmentTD' align="right" style='display:none'><input type="button" value='$i18n.getString( "Add new item" )' onclick="showAddEquipmentForm('$organisationUnit.name');" style="width:100px"/></td>
-        	<td id='addEquipmentIcePacksTD' align="right" style='display:none'><input type="button" value='$i18n.getString( "Add/update item" )' onclick="showAddEquipmentIcePacksForm('$organisationUnit.name');" style="width:100px"/></td>
+			<td id='addEquipmentTD' align="right" style='display:none'><input type="button" value='$i18n.getString( "Add new item" )' onclick="showAddEquipmentForm('$organisationUnit.id','$organisationUnit.name');" style="width:100px"/></td>
+        	<td id='addEquipmentIcePacksTD' align="right" style='display:none'><input type="button" value='$i18n.getString( "Add/update item" )' onclick="showAddEquipmentIcePacksForm('$organisationUnit.id','$organisationUnit.name');" style="width:100px"/></td>
         </tr>
     </table>
