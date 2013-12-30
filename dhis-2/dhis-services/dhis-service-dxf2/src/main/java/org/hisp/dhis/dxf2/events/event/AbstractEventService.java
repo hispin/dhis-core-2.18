@@ -39,7 +39,6 @@ import java.util.Set;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dxf2.InputValidationService;
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
@@ -62,6 +61,7 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,9 +109,6 @@ public abstract class AbstractEventService
 
     @Autowired
     private IdentifiableObjectManager manager;
-
-    @Autowired
-    private InputValidationService inputValidationService;
 
     @Autowired
     private EventStore eventStore;
@@ -600,11 +597,11 @@ public abstract class AbstractEventService
 
     private boolean validateDataElement( DataElement dataElement, String value, ImportSummary importSummary )
     {
-        InputValidationService.Status status = inputValidationService.validateDataElement( dataElement, value );
+        String status = ValidationUtils.dataValueIsValid( value, dataElement );
 
-        if ( !status.isSuccess() )
+        if ( status != null )
         {
-            importSummary.getConflicts().add( new ImportConflict( dataElement.getUid(), status.getMessage() ) );
+            importSummary.getConflicts().add( new ImportConflict( dataElement.getUid(), status ) );
             importSummary.getDataValueCount().incrementIgnored();
             return false;
         }
