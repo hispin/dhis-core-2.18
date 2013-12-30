@@ -17,6 +17,7 @@
 		showById('dueDateTR');
 		showById('programStageAddPatientTR');
 		showById('scheduleVisitTR');
+		showById('advancedSearchBtn');
 		
 		jQuery("#searchObjectId [value=prg]").remove();
 		registration = false;

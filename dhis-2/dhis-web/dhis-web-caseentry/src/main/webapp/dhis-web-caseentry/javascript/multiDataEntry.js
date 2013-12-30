@@ -53,7 +53,7 @@ function listAllPatient()
         var lastDays = jQuery.datepicker.formatDate(dateFormat, new Date(y, m, d - eval(scheduledVisitDays)));
 
         var searchTexts = "stat_" + getFieldValue('programIdAddPatient') + "_" + lastDays + "_" + today + "_"
-            + getFieldValue('orgunitId') + "_false_4_3";
+            + getFieldValue('orgunitId') + "_false_" + getFieldValue('statusEvent');
 
         getPatientList(searchTexts);
     }
@@ -64,7 +64,6 @@ function getPatientList(searchTexts)
 	hideById('listPatientDiv');
 	hideById('advanced-search');
 	hideById('contentDataRecord');
-	setFieldValue('statusEvent', "4");
     var programId = getFieldValue('programIdAddPatient');
 
     var data = {};
