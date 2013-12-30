@@ -56,11 +56,14 @@ import org.hisp.dhis.dataelement.DataElementCategoryDimension;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementGroupSetStore;
 import org.hisp.dhis.dataelement.DataElementOperandService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -89,7 +92,13 @@ public class DefaultDimensionService
 
     @Autowired
     private PeriodService periodService;
-    
+
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    @Autowired
+    private DataElementService dataElementService;
+
     @Autowired
     private CurrentUserService currentUserService;
     
@@ -164,8 +173,8 @@ public class DefaultDimensionService
     public List<DimensionalObject> getAllDimensions()
     {
         Collection<DataElementCategory> dcs = categoryService.getDataDimensionDataElementCategories();
-        Collection<DataElementGroupSet> degs = identifiableObjectManager.getAll( DataElementGroupSet.class );
-        Collection<OrganisationUnitGroupSet> ougs = identifiableObjectManager.getAll( OrganisationUnitGroupSet.class );
+        Collection<DataElementGroupSet> degs = dataElementService.getDataDimensionDataElementGroupSets();
+        Collection<OrganisationUnitGroupSet> ougs = organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();
 
         final List<DimensionalObject> dimensions = new ArrayList<DimensionalObject>();
 

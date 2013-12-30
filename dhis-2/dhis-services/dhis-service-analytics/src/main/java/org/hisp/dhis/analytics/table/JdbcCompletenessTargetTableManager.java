@@ -136,7 +136,7 @@ public class JdbcCompletenessTargetTableManager
         List<String[]> columns = new ArrayList<String[]>();
 
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
-            organisationUnitGroupService.getAllOrganisationUnitGroupSets();
+            organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();
         
         Collection<OrganisationUnitLevel> levels =
             organisationUnitService.getOrganisationUnitLevels();

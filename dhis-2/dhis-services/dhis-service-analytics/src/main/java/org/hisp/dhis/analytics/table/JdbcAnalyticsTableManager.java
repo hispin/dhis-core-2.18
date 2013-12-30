@@ -189,10 +189,10 @@ public class JdbcAnalyticsTableManager
         List<String[]> columns = new ArrayList<String[]>();
 
         Collection<DataElementGroupSet> dataElementGroupSets =
-            dataElementService.getAllDataElementGroupSets();
+            dataElementService.getDataDimensionDataElementGroupSets();
         
         Collection<OrganisationUnitGroupSet> orgUnitGroupSets = 
-            organisationUnitGroupService.getAllOrganisationUnitGroupSets();
+            organisationUnitGroupService.getDataDimensionOrganisationUnitGroupSets();
 
         Collection<DataElementCategory> disaggregationCategories =
             categoryService.getDisaggregationDataDimensionCategories();
