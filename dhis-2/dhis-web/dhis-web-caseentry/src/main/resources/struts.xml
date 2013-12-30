@@ -1190,7 +1190,7 @@
 		<!-- Program-stage-completeness -->
 
 		<action name="programStageCompletenessSelect"
-			class="org.hisp.dhis.caseentry.action.patient.SelectAction">
+			class="org.hisp.dhis.caseentry.action.report.ReportSelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageCompletenessSelect.vm</param>
