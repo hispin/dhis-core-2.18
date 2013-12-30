@@ -595,7 +595,7 @@ public abstract class AbstractEventService
         return !programsByCurrentUser.contains( program );
     }
 
-    private boolean validateDataElement( DataElement dataElement, String value, ImportSummary importSummary )
+    private boolean validateDataValue( DataElement dataElement, String value, ImportSummary importSummary )
     {
         String status = ValidationUtils.dataValueIsValid( value, dataElement );
 
@@ -759,7 +759,7 @@ public abstract class AbstractEventService
             }
             else
             {
-                if ( validateDataElement( dataElement, dataValue.getValue(), importSummary ) )
+                if ( validateDataValue( dataElement, dataValue.getValue(), importSummary ) )
                 {
                     String dataValueStoredBy = dataValue.getStoredBy() != null ? dataValue.getStoredBy() : storedBy;
 

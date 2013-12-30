@@ -44,6 +44,7 @@
 		class="org.hisp.dhis.program.hibernate.HibernateProgramStageStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStage" />
 		<property name="sessionFactory" ref="sessionFactory" />
+        <property name="cacheable" value="true" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageSectionStore"
@@ -55,6 +56,7 @@
 	<bean id="org.hisp.dhis.program.ProgramStore" class="org.hisp.dhis.program.hibernate.HibernateProgramStore">
 		<property name="clazz" value="org.hisp.dhis.program.Program" />
 		<property name="sessionFactory" ref="sessionFactory" />
+        <property name="cacheable" value="true" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>

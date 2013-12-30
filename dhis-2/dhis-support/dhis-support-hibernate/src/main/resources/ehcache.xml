@@ -117,6 +117,10 @@
   <cache name="org.hisp.dhis.dataset.LockException" maxElementsInMemory="1000" />
 
   <cache name="org.hisp.dhis.filter.MetaDataFilter" maxElementsInMemory="100" />
+  
+  <cache name="org.hisp.dhis.program.Program" maxElementsInMemory="100" />
+  
+  <cache name="org.hisp.dhis.program.ProgramStage" maxElementsInMemory="500" />
 
   <!-- Hibernate Associations -->
 
