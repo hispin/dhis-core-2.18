@@ -35,7 +35,7 @@ jQuery( document ).ready( function() {
 
 <div class="setting">
 	<input type="checkbox" id="selfRegistrationNoRecaptcha" name="selfRegistrationNoRecaptcha"#if( $keySelfRegistrationNoRecaptcha ) checked="checked"#end>
-	<label for="selfRegistrationNoRecaptcha">$i18n.getString( "do_not_use_recaptcha_for_self_registration" )</label>
+	<label for="selfRegistrationNoRecaptcha">$i18n.getString( "do_not_require_recaptcha_for_self_registration" )</label>
 </div>
 
 <div class="settingLabel">$i18n.getString( "self_registration_account_organisation_unit" )</div>
