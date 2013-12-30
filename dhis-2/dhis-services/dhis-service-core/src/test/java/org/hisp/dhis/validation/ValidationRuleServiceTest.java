@@ -628,7 +628,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateMonitoringSequential()
     {
-    	// System.out.println("\ntestValidateMonitoring1Sequential");
     	// Note: for some monitoring tests, we enter more data than needed, to be sure the extra data *isn't* used.
     	
     	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
@@ -673,8 +672,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateMonitoringAnnual()
     {
-    	// System.out.println("\ntestValidateMonitoring1Annual");
-
     	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
@@ -717,8 +714,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateMonitoring1Sequential2Annual()
     {
-    	// System.out.println("\ntestValidateMonitoring1Sequential2Annual");
-
     	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
@@ -763,8 +758,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateMonitoring2Sequential2Annual()
     {
-    	// System.out.println("\ntestValidateMonitoring2Sequential2Annual");
-
     	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
@@ -809,8 +802,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateMonitoring2HighOutliers()
     {
-    	// System.out.println("\ntestValidateMonitoring2HighOutliers");
-
     	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
@@ -855,8 +846,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateMonitoring2LowOutliers()
     {
-    	// System.out.println("\ntestValidateMonitoring2LowOutliers");
-
     	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
@@ -901,8 +890,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateMonitoring2High2LowOutliers()
     {
-    	// System.out.println("\ntestValidateMonitoring2High2LowOutliers");
-
     	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceA, "11", optionCombo, optionCombo ) ); // Mar 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceA, "12", optionCombo, optionCombo ) ); // Apr 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceA, "13", optionCombo, optionCombo ) ); // May 2000
@@ -947,8 +934,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testValidateMonitoringWithBaseline()
     {
-    	// System.out.println("\ntestValidateMonitoringWithBaseline");
-
     	dataValueService.addDataValue( createDataValue( dataElementB, periodA, sourceB, "11", optionCombo, optionCombo ) ); // Mar 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodB, sourceB, "12", optionCombo, optionCombo ) ); // Apr 2000
         dataValueService.addDataValue( createDataValue( dataElementB, periodC, sourceB, "13", optionCombo, optionCombo ) ); // May 2000
@@ -1004,7 +989,6 @@ public class ValidationRuleServiceTest
     @Test
     public void testSaveValidationRule()
     {
-    	// System.out.println("\ntestSaveValidationRule");
         int id = validationRuleService.saveValidationRule( validationRuleA );
 
         validationRuleA = validationRuleService.getValidationRule( id );

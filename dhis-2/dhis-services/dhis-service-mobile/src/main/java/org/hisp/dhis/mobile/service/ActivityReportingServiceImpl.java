@@ -1272,11 +1272,11 @@ public class ActivityReportingServiceImpl
                 }
                 else
                 {
-                    System.out.println( "program name: " + program.getName() );
+                    //TODO handle
                 }
             }
         }
-        System.out.println( "final size: " + programs.size() );
+        
         return programs;
     }
 
