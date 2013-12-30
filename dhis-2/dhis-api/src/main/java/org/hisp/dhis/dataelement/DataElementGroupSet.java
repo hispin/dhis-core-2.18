@@ -73,6 +73,8 @@ public class DataElementGroupSet
     @Scanned
     private List<DataElementGroup> members = new ArrayList<DataElementGroup>();
 
+    private boolean dataDimension = true;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -209,8 +211,8 @@ public class DataElementGroupSet
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
     public String getDescription()
     {
         return description;
@@ -254,6 +256,19 @@ public class DataElementGroupSet
         this.members = members;
     }
 
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public boolean isDataDimension()
+    {
+        return dataDimension;
+    }
+
+    public void setDataDimension( boolean dataDimension )
+    {
+        this.dataDimension = dataDimension;
+    }
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -265,6 +280,7 @@ public class DataElementGroupSet
 
             description = dataElementGroupSet.getDescription() == null ? description : dataElementGroupSet.getDescription();
             compulsory = dataElementGroupSet.isCompulsory() == null ? compulsory : dataElementGroupSet.isCompulsory();
+            dataDimension = dataElementGroupSet.isDataDimension();
 
             removeAllDataElementGroups();
 

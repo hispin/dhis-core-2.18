@@ -18,7 +18,10 @@
     <property name="name" column="name" not-null="true" unique="true" length="230" />
 
     <property name="description" />
+
     <property name="compulsory" not-null="true" />
+
+    <property name="dataDimension" />
 
     <set name="organisationUnitGroups" table="orgunitgroupsetmembers">
       <cache usage="read-write" />

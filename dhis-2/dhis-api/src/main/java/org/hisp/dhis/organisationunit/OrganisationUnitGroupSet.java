@@ -75,6 +75,8 @@ public class OrganisationUnitGroupSet
     @Scanned
     private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
 
+    private boolean dataDimension = true;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -247,6 +249,19 @@ public class OrganisationUnitGroupSet
         this.organisationUnitGroups = organisationUnitGroups;
     }
 
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class })
+    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    public boolean isDataDimension()
+    {
+        return dataDimension;
+    }
+
+    public void setDataDimension( boolean dataDimension )
+    {
+        this.dataDimension = dataDimension;
+    }
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -258,6 +273,7 @@ public class OrganisationUnitGroupSet
 
             compulsory = organisationUnitGroupSet.isCompulsory();
             description = organisationUnitGroupSet.getDescription() == null ? description : organisationUnitGroupSet.getDescription();
+            dataDimension = organisationUnitGroupSet.isDataDimension();
 
             removeAllOrganisationUnitGroups();
 

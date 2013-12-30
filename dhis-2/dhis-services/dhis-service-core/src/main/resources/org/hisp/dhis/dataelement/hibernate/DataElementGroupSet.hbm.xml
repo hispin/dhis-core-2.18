@@ -21,6 +21,8 @@
 
     <property name="compulsory" />
 
+    <property name="dataDimension" />
+
     <list name="members" table="dataelementgroupsetmembers">
       <cache usage="read-write" />
       <key column="dataelementgroupsetid" foreign-key="fk_dataelementgroupsetmembers_dataelementgroupsetid" />
