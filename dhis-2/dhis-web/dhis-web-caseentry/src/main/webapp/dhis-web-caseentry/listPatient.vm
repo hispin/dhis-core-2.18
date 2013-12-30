@@ -30,12 +30,8 @@
 		#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 			#foreach( $identifierType in $identifierTypes) <col/> #end
 		#if( $identifierTypes.size()==0 ) <col/> #end
-		<col width="60"/>
-		<col width="110"/>
-		<col width="60"/>
 		#end
 		#if($mapPatientOrgunit.size()!=0) <col/> #end
-		<col/>
 		<col width="80"/>
 	</colgroup>	  
 	

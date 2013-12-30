@@ -6,13 +6,10 @@
 				item.remove();
 			}
 		});
-		if(jQuery("#programIdAddPatient option").length==0)
-		{
-			jQuery( '#programIdAddPatient').append( '<option value="" type="">' + i18n_none_program + '</option>' );
-		}
-		else if(jQuery("#programIdAddPatient option").length==1)
+		if(jQuery("#programIdAddPatient option").length==1)
 		{
 			jQuery("#programIdAddPatient [value=]").remove();
+			jQuery( '#programIdAddPatient').append( '<option value="" type="">' + i18n_none_program + '</option>' );
 		}
 		
 		disable('advancedSearchBtn');
@@ -22,6 +19,7 @@
 		$("#searchObjectId option[value='prg']").remove();
 		setFieldValue('startDueDate','');
 		setFieldValue('endDueDate','');
+		showById('advancedSearchBtn');
 	});
 </script>
 
