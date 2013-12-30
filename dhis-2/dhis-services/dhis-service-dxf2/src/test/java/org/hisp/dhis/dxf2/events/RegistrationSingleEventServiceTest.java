@@ -31,11 +31,7 @@ package org.hisp.dhis.dxf2.events;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-import java.util.Date;
 import java.util.HashSet;
 
 import org.hamcrest.CoreMatchers;
@@ -52,7 +48,6 @@ import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
@@ -147,11 +142,6 @@ public class RegistrationSingleEventServiceTest
         identifiableObjectManager.update( programA );
 
         createUserAndInjectSecurityContext( true );
-
-        // mocked format
-        I18nFormat mockFormat = mock( I18nFormat.class );
-        when( mockFormat.parseDate( anyString() ) ).thenReturn( new Date() );
-        eventService.setFormat( mockFormat );
     }
 
     @Override
