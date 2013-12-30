@@ -492,9 +492,14 @@ Ext.onReady( function() {
                     config.rows = getValidatedDimensionArray(config.rows);
                     config.filters = getValidatedDimensionArray(config.filters);
 
-					// at least one dimension specified as column or row
-					if (!(config.columns || config.rows)) {
-						alert(NS.i18n.at_least_one_dimension_must_be_specified_as_row_or_column);
+					// at least one dimension specified as column and row
+					if (!config.columns) {
+						alert('No series items selected');
+						return;
+					}
+
+					if (!config.rows) {
+						alert('No category items selected');
 						return;
 					}
 
