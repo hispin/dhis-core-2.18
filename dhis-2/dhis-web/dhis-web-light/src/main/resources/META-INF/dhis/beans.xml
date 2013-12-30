@@ -258,6 +258,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 	</bean>
 
 	<bean

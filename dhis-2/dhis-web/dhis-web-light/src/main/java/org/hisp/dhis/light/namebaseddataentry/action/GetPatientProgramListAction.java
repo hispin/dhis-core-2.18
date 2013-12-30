@@ -41,6 +41,8 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -73,6 +75,13 @@ public class GetPatientProgramListAction
     public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
     {
         this.patientIdentifierService = patientIdentifierService;
+    }
+    
+    private PatientAttributeValueService patientAttributeValueService;
+    
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     private ProgramService programService;
@@ -212,14 +221,31 @@ public class GetPatientProgramListAction
 
     private Collection<PatientIdentifier> patientIdentifiers;
 
+    public void setPatientIdentifiers( Collection<PatientIdentifier> patientIdentifiers )
+    {
+        this.patientIdentifiers = patientIdentifiers;
+    }
+    
+    public PatientAttributeValueService getPatientAttributeValueService()
+    {
+        return patientAttributeValueService;
+    }
+
     public Collection<PatientIdentifier> getPatientIdentifiers()
     {
         return patientIdentifiers;
     }
-
-    public void setPatientIdentifiers( Collection<PatientIdentifier> patientIdentifiers )
+    
+    private Collection<PatientAttributeValue> patientAttributeValues;
+    
+    public void setPatientAttributeValues( Collection<PatientAttributeValue> patientAttributeValues )
     {
-        this.patientIdentifiers = patientIdentifiers;
+        this.patientAttributeValues = patientAttributeValues;
+    }
+    
+    public Collection<PatientAttributeValue> getPatientAttributeValues()
+    {
+        return patientAttributeValues;
     }
 
     private List<ProgramInstance> listOfCompletedProgram;
@@ -279,6 +305,8 @@ public class GetPatientProgramListAction
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
 
         patientIdentifiers = patientIdentifierService.getPatientIdentifiers( patient );
+        
+        patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
 
         Collection<ProgramInstance> listOfProgramInstance = patient.getProgramInstances();
 

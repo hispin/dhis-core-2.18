@@ -97,18 +97,17 @@
 <p>
 	<ul>
 		<li><strong>$i18n.getString("gender"):</strong>  #if ($patient.gender == "F") Female #else Male #end</li>
-		#set($day = $patient.birthDate.date)
-		#set($month = $patient.birthDate.month+1)
-		#set($year = $patient.birthDate.year + 1900)
-		<li><strong>$i18n.getString("date_of_birth"):</strong>  $year - $month - $day </li>
-		#if($patient.getPhoneNumber())
-			<li><strong>$i18n.getString("phone_number"):</strong>  $patient.getPhoneNumber()</li>
-		#end
 		<li><strong>$i18n.getString("orgunit"):</strong>  $patient.getOrganisationUnit().getName() <a href="showPatientLocationForm.action?patientId=$patient.id">[$i18n.getString("change")]</a></li>
         #if($patient.getIsDead() == true) <li><strong>$i18n.getString("status"):</strong> $i18n.getString("dead")</li> #end
 		#foreach($patientIdentifier in $patientIdentifiers)
 			#if($patientIdentifier.getIdentifierType())
 				<li><strong>$patientIdentifier.getIdentifierType().getName():</strong>  $patientIdentifier.getIdentifier()</li>
+			#end
+		#end
+		
+		#foreach($pav in $patientAttributeValues)
+			#if($pav.getValue())
+				<li><strong>$pav.getPatientAttribute().getName():</strong>  $pav.getValue()</li>
 			#end
 		#end
 					
