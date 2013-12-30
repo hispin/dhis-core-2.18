@@ -4912,10 +4912,10 @@ public class GenerateCCEIReportAction implements Action
 
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer qtyPresentInventoryTypeAttributeId =  Integer.parseInt( ccemCellContent.split( ":" )[1] );
-            Integer qtyNotWorkingInventoryTypeAttributeId =  Integer.parseInt( ccemCellContent.split( ":" )[2] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[3] );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer qtyPresentEquipmentTypeAttributeId =  Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            Integer qtyNotWorkingEquipmentTypeAttributeId =  Integer.parseInt( ccemCellContent.split( ":" )[2] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[3] );
 
             List tableData = new ArrayList();
 
@@ -4955,8 +4955,8 @@ public class GenerateCCEIReportAction implements Action
 
                 String orgUnitidsByComma = ccemReportManager.getOrgunitIdsByComma( selOrgUnitList, orgUnitGrpIdList );
                     		
-                Map<String, Integer> qtyPresentMap = ccemReportManager.getSumOfColdBoxByOrgUnitGroup( inventoryTypeId, qtyPresentInventoryTypeAttributeId, catalogTypeAttributeId, orgUnitidsByComma, orgUnitGroup.getId() );
-                Map<String, Integer> qtyNotWorkingMap = ccemReportManager.getSumOfColdBoxByOrgUnitGroup( inventoryTypeId, qtyNotWorkingInventoryTypeAttributeId, catalogTypeAttributeId, orgUnitidsByComma, orgUnitGroup.getId() );
+                Map<String, Integer> qtyPresentMap = ccemReportManager.getSumOfColdBoxByOrgUnitGroup( equipmentTypeId, qtyPresentEquipmentTypeAttributeId, modelTypeAttributeId, orgUnitidsByComma, orgUnitGroup.getId() );
+                Map<String, Integer> qtyNotWorkingMap = ccemReportManager.getSumOfColdBoxByOrgUnitGroup( equipmentTypeId, qtyNotWorkingEquipmentTypeAttributeId, modelTypeAttributeId, orgUnitidsByComma, orgUnitGroup.getId() );
                 
                 if( qtyPresentMap != null )
                 {
@@ -4969,7 +4969,7 @@ public class GenerateCCEIReportAction implements Action
                 }
             }
             
-            List<String> modelsList = ccemReportManager.getModelName( inventoryTypeId, catalogTypeAttributeId, orgUnitIdsByComma );
+            List<String> modelsList = ccemReportManager.getModelName( equipmentTypeId, modelTypeAttributeId, orgUnitIdsByComma );
             for( String model : modelsList )
             {
                 Integer total = 0;
@@ -5018,20 +5018,20 @@ public class GenerateCCEIReportAction implements Action
         {
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer qtyPresentInventoryTypeAttributeId =  Integer.parseInt( ccemCellContent.split( ":" )[1] );
-            Integer qtyNotWorkingInventoryTypeAttributeId =  Integer.parseInt( ccemCellContent.split( ":" )[2] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[3] );
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer qtyPresentEquipmentTypeAttributeId =  Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            Integer qtyNotWorkingEquipmentTypeAttributeId =  Integer.parseInt( ccemCellContent.split( ":" )[2] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[3] );
 
             
-            Map<String, Double> qtyPresentMap = ccemReportManager.getSumOfEquipmentAndCatalogValue( inventoryTypeId, qtyPresentInventoryTypeAttributeId, catalogTypeAttributeId, orgUnitIdsByComma );
-            Map<String, Double> qtyNotWorkingMap = ccemReportManager.getSumOfEquipmentAndCatalogValue( inventoryTypeId, qtyNotWorkingInventoryTypeAttributeId, catalogTypeAttributeId, orgUnitIdsByComma );
+            Map<String, Double> qtyPresentMap = ccemReportManager.getSumOfEquipmentAndCatalogValue( equipmentTypeId, qtyPresentEquipmentTypeAttributeId, modelTypeAttributeId, orgUnitIdsByComma );
+            Map<String, Double> qtyNotWorkingMap = ccemReportManager.getSumOfEquipmentAndCatalogValue( equipmentTypeId, qtyNotWorkingEquipmentTypeAttributeId, modelTypeAttributeId, orgUnitIdsByComma );
 
             //Map<String, Integer> workingEquipmentMap = (ccemReportManager.getModelNameAndCountForColdBox( catalogTypeAttributeId, inventoryTypeId, 1 + "", orgUnitIdsByComma ));
             //Map<String, Integer> notWorkingEquipmentMap = (ccemReportManager.getModelNameAndCountForColdBox( catalogTypeAttributeId, inventoryTypeId, 0 + "", orgUnitIdsByComma ));
 
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-            List<String> modelsList = ccemReportManager.getModelName( inventoryTypeId, catalogTypeAttributeId, orgUnitIdsByComma );
+            List<String> modelsList = ccemReportManager.getModelName( equipmentTypeId, modelTypeAttributeId, orgUnitIdsByComma );
             for ( String model : modelsList )
             {
                 if ( qtyPresentMap.containsKey( model ) )
@@ -5062,11 +5062,12 @@ public class GenerateCCEIReportAction implements Action
             hash.put( "reportName", "Quantity of Cold Boxes/carriers" );
             CCEMReportDesign ccemReportDesign = reportDesignList.get( 0 );
             String ccemCellContent = ccemSettingsMap.get( ccemReportDesign.getContent() );
-            Integer inventoryTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
-            Integer inventoryTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
-            Integer catalogTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[2] );
+            
+            Integer equipmentTypeId = Integer.parseInt( ccemCellContent.split( ":" )[0] );
+            Integer equipmentTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[1] );
+            Integer modelTypeAttributeId = Integer.parseInt( ccemCellContent.split( ":" )[2] );
 
-            Map<String, Double> quantityMap = ccemReportManager.getSumOfEquipmentAndCatalogValue( inventoryTypeId, inventoryTypeAttributeId, catalogTypeAttributeId, orgUnitIdsByComma );
+            Map<String, Double> quantityMap = ccemReportManager.getSumOfEquipmentAndCatalogValue( equipmentTypeId, equipmentTypeAttributeId, modelTypeAttributeId, orgUnitIdsByComma );
             DefaultCategoryDataset dataset = new DefaultCategoryDataset();
             for ( String catalogValue : quantityMap.keySet() )
             {

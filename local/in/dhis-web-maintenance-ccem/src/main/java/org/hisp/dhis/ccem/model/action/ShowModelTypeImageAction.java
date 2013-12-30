@@ -59,7 +59,7 @@ public class ShowModelTypeImageAction implements Action
         
         if ( modelType.getModelTypeImage() != null )
         {
-            modelImage = System.getenv( "DHIS2_HOME" ) + File.separator +  Model.DEFAULT_CCEMFOLDER + File.separator + modelType.getModelTypeImage();
+            modelImage = System.getenv( "DHIS2_HOME" ) + File.separator + "ccei" + File.separator + Model.DEFAULT_CCEMFOLDER + File.separator + modelType.getModelTypeImage();
         }
         
         else

@@ -59,12 +59,12 @@ public class ShowImageAction implements Action
         
         if ( model.getModelImage() != null )
         {
-            modelImage = System.getenv( "DHIS2_HOME" ) + File.separator +  Model.DEFAULT_CCEMFOLDER + File.separator + model.getModelImage();
+            modelImage = System.getenv( "DHIS2_HOME" ) + File.separator + "ccei" + File.separator + Model.DEFAULT_CCEMFOLDER + File.separator + model.getModelImage();
         }
         
         else if ( model.getModelType().getModelTypeImage() != null )
         {
-            modelImage = System.getenv( "DHIS2_HOME" ) + File.separator +  Model.DEFAULT_CCEMFOLDER + File.separator + model.getModelType().getModelTypeImage();
+            modelImage = System.getenv( "DHIS2_HOME" ) + File.separator + "ccei" + File.separator + Model.DEFAULT_CCEMFOLDER + File.separator + model.getModelType().getModelTypeImage();
         }
        
         else

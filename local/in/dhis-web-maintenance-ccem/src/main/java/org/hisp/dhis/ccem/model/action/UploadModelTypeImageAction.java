@@ -90,7 +90,7 @@ public class UploadModelTypeImageAction implements Action
         modelTypeService.updateModelType( modelType );
         
 
-        String outputFilePath = System.getenv( "DHIS2_HOME" ) + File.separator +  Model.DEFAULT_CCEMFOLDER;
+        String outputFilePath = System.getenv( "DHIS2_HOME" ) + File.separator + "ccei" + File.separator + Model.DEFAULT_CCEMFOLDER;
         
         File newdir = new File( outputFilePath );
         if( !newdir.exists() )

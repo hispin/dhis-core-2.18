@@ -9,7 +9,7 @@ public class Model extends BaseNameableObject
      */
     private static final long serialVersionUID = -6551567526188061690L;
     
-    public static final String DEFAULT_CCEMFOLDER = "CCEMIMAGES";
+    public static final String DEFAULT_CCEMFOLDER = "images";
     public static String PREFIX_MODEL_NAME = "modelname";
     
     public static final String NAME_OWNERSHIP_GROUP_SET = "Ownership";
