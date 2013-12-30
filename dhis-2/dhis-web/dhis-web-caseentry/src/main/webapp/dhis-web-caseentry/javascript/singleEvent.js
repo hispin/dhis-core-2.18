@@ -14,13 +14,16 @@ function orgunitSelected( orgUnits, orgUnitNames )
 		{
 			var count = 0;
 			for ( i in json.programs ) {
-				jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+				if( json.programs[i].type==2){
+					jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+					count++;
+				}
 			}
 			
-			if(json.programs.length==0){
+			if(count==0){
 				jQuery( '#programIdAddPatient').prepend( '<option value="" >' + i18n_none_program + '</option>' );
 			}
-			else if(json.programs.length>1){
+			else if(count>1){
 				jQuery( '#programIdAddPatient').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
 			}
 			
