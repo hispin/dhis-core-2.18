@@ -26,6 +26,7 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/es5-sham.min.js?_rev=$!{buildRevision}"></script>
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js?_rev=$!{buildRevision}"></script>
+    <!--[if lte IE 8]><script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/placeholders.jquery.min.js?_rev=$!{buildRevision}"></script><![endif]-->
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.utils.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.ext.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js?_rev=$!{buildRevision}"></script>
