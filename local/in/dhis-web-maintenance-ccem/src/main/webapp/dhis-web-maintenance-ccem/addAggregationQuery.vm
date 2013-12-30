@@ -42,7 +42,7 @@ function getParameters()
 				<select style='width:100%; margin-bottom:-5px;' id="aggType" name="aggType" onchange="getParameters()">
                     <option value="-1" >Please Select</option>
 					#foreach( $lookup in $lookups )
-						<option value="$lookup.id">$lookup.value</option>
+						<option value="$lookup.value">$lookup.value</option>
 					#end
 				</select>
 			</td>

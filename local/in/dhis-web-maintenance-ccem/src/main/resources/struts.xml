@@ -684,5 +684,22 @@
         <result name="success" type="velocity">/content.vm</result>
         <param name="page">/dhis-web-maintenance-ccem/addAggregationParam.vm</param>            
     </action>
+
+    <action name="addAggregationQuery" class="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryAction">
+        <result name="success" type="redirect">aggregationQueryList.action</result>
+    </action>
+
+    <action name="runAggregationQueryForm" class="org.hisp.dhis.ccem.action.NoAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-ccem/runAggregationQueryForm.vm</param>
+        <param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
+    </action>
+
+    <action name="runAggregationQuery" class="org.hisp.dhis.ccem.aggregation.action.RunAggregationQueryAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-ccem/runAggregationQueryResult.vm</param>
+        <param name="menu">/dhis-web-maintenance-ccem/menu.vm</param>
+    </action>
+
 </package>
 </struts>

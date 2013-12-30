@@ -739,12 +739,23 @@
         class="org.hisp.dhis.ccem.aggregation.action.AggregationQueryListAction"
         scope="prototype">
         <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
-    </bean>   
-     <bean id="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryFormAction"
+    </bean>
+    
+    <bean id="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryFormAction"
         class="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryFormAction"
         scope="prototype">
         <property name="lookupService" ref="org.hisp.dhis.lookup.LookupService" />
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean> 
+
+    <bean id="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryAction"
+        class="org.hisp.dhis.ccem.aggregation.action.AddAggregationQueryAction"
+        scope="prototype">
+        <property name="lookupService" ref="org.hisp.dhis.lookup.LookupService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+        <property name="cceiAggregationService" ref="org.hisp.dhis.coldchain.aggregation.CCEIAggregationService" />
     </bean> 
       
 	<bean id="org.hisp.dhis.ccem.aggregation.action.GetAggregationParameterAction"
@@ -754,6 +765,17 @@
         <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
         <property name="modelTypeAttributeService" ref="org.hisp.dhis.coldchain.model.ModelTypeAttributeService" />
         <property name="modelAttributeValueService" ref="org.hisp.dhis.coldchain.model.ModelAttributeValueService" />
+    </bean>
+
+	<bean id="org.hisp.dhis.ccem.aggregation.action.RunAggregationQueryAction"
+        class="org.hisp.dhis.ccem.aggregation.action.RunAggregationQueryAction"
+        scope="prototype">
+        <property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+        <property name="cceiAggregationService" ref="org.hisp.dhis.coldchain.aggregation.CCEIAggregationService" />
+        <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     </bean>
     
 </beans>
