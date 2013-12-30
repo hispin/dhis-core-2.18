@@ -1106,7 +1106,7 @@ Ext.onReady( function() {
 							}
 							if (isUserOrgunitGrandChildren) {
 								var userOuOuc = [].concat(init.user.ou, init.user.ouc),
-									responseOu = response.response.metaData[ou];
+									responseOu = response.metaData[ou];
 
 								userOugc = [];
 
