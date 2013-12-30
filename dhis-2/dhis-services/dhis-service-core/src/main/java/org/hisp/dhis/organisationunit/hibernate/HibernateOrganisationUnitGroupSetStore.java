@@ -28,9 +28,12 @@ package org.hisp.dhis.organisationunit.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore;
+
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -39,4 +42,12 @@ public class HibernateOrganisationUnitGroupSetStore
     extends HibernateIdentifiableObjectStore<OrganisationUnitGroupSet>
     implements OrganisationUnitGroupSetStore
 {
+    @Override
+    public Collection<OrganisationUnitGroupSet> getByDataDimension( boolean dataDimension )
+    {
+        Query query = getQuery( "SELECT d FROM OrganisationUnitGroupSet d WHERE d.dataDimension=:dataDimension" );
+        query.setBoolean( "dataDimension", dataDimension );
+
+        return query.list();
+    }
 }

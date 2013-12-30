@@ -230,6 +230,8 @@ public interface OrganisationUnitGroupService
      */
     Collection<OrganisationUnitGroupSet> getAllOrganisationUnitGroupSets();
 
+    Collection<OrganisationUnitGroupSet> getDataDimensionOrganisationUnitGroupSets();
+
     /**
      * Returns all compulsory OrganisationUnitGroupSets.
      * 
