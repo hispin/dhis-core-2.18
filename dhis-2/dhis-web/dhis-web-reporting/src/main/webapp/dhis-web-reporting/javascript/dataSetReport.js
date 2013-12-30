@@ -335,10 +335,10 @@ dhis2.dsr.showApproval = function()
 	var attributesSelected = dhis2.dsr.attributesSelected( dataSetReport );
 
 	$( "#approvalNotification" ).hide();
-	
+    $( "#approvalDiv" ).hide();
+
 	if ( !approval || !attributesSelected ) {
-		$( "#approvalDiv" ).hide();
-		return false;
+		return;
 	}
 	
 	var url = dhis2.dsr.getDataApprovalUrl( dataSetReport );
@@ -348,11 +348,11 @@ dhis2.dsr.showApproval = function()
 			return;
 		}
 		
-		var state = json.state;		
+		var state = json.state;
 		if ( "READY_FOR_APPROVAL" == state ) {
 			$( "#approvalNotification" ).show().html( i18n_ready_for_approval );
 			
-			if ( json.mayApprove ) {
+			if ( json.mayApprove == "true" ) {
 				$( "#approvalDiv" ).show();
 				$( "#approveButton" ).prop( "disabled", false );
 				$( "#unapproveButton" ).prop( "disabled", true );
@@ -361,7 +361,7 @@ dhis2.dsr.showApproval = function()
 		else if ( "APPROVED" == state ) {
 			$( "#approvalNotification" ).show().html( i18n_approved );
 			
-			if ( json.mayUnapprove ) {
+			if ( json.mayUnapprove == "true") {
 				$( "#approvalDiv" ).show();
 				$( "#approveButton" ).prop( "disabled", true );
 				$( "#unapproveButton" ).prop( "disabled", false );
@@ -369,7 +369,6 @@ dhis2.dsr.showApproval = function()
 		}
 		else if ( "WAITING_FOR_LOWER_LEVEL_APPROVAL" == state ) {
 			$( "#approvalNotification" ).show().html( i18n_waiting_for_lower_level_approval );	
-			$( "#approvalDiv" ).hide();	
 		}
 	} );
 }
