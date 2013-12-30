@@ -3,21 +3,52 @@
 	
 	jQuery(window).load(function() {
    		selectFacilities();
-   		changeFacilitieType();
-   		document.getElementById('selectall').checked = true;
+   		
+		//changeFacilitieType();
+   		
+		/*
+		document.getElementById('selectall').checked = true;
    		var checkboxes = document.getElementsByName('option');
 	  	for (i=0; i < checkboxes.length; i++)
 		 {
 	   		 checkboxes[i].checked = true;
-	   	}	
+	   	}
+		*/
+		
+		changeOrgUnitGroupSet();
 });
  
 function changeFacilitieType()
 {
-	var radioButtonObj = document.getElementsByName('facilityTypeRadio');
+	//var radioButtonObj = document.getElementsByName('facilityTypeRadio');
 	
-	for (i=0; i < radioButtonObj.length; i++ )
+	var groupSetList = byId("facilityTypeRadio");
+	var groupSetId = groupSetList.options[groupSetList.selectedIndex].value;
+	
+	for (i=0; i < groupSetList.length; i++ )
 	{
+		if( groupSetId == "facilityType" )
+		{	
+			showById('facilityTypeDiv');
+			hideById('ownershipTypeDiv');
+			hideById('coldStoreDiv');
+		}
+		
+		else if( groupSetId == "coldStoreType" )
+		{
+			showById('coldStoreDiv');
+			hideById('facilityTypeDiv');
+			hideById('ownershipTypeDiv');
+		}				
+		
+		else if( groupSetId == "ownershipType" )
+		{
+			showById('ownershipTypeDiv');
+			hideById('facilityTypeDiv');
+			hideById('coldStoreDiv');
+		}		
+		
+		/*
 		if ( radioButtonObj[i].checked == true )
 		{
 			if( radioButtonObj[i].value == "facilityType" )
@@ -31,10 +62,12 @@ function changeFacilitieType()
 				showById('ownershipTypeDiv');
 				hideById('facilityTypeDiv');
 			}
-		}		
+		}
+		*/		
 	}
 }
-	
+
+
 function selectFacilities()
 {
 	var radioButtons = document.getElementsByName('facilityType');
@@ -64,9 +97,33 @@ function selectAll(source)
    	}
 }
 
+
+function selectAllColdStore(source)
+{		
+	var checkboxes2 = document.getElementsByName('coldstore');
+  	for (i=0; i < checkboxes2.length; i++)
+	 {
+   		 checkboxes2[i].checked = source.checked;
+   	}
+}
+
+
+function selectAllOwnerShip(source)
+{		
+	var checkboxes3 = document.getElementsByName('ownership');
+  	for (i=0; i < checkboxes3.length; i++)
+	 {
+   		 checkboxes3[i].checked = source.checked;
+   	}
+}
+
+
 function formValidations()
 {	
-	var facilityTypeRadioVal = $( "input[name='facilityTypeRadio']:checked" ).val();               			
+	//var facilityTypeRadioVal = $( "input[name='facilityTypeRadio']:checked" ).val();               			
+	
+	var groupSetList = byId("organisationUnitGroupSets");
+	var organisationUnitGroupSetVal = groupSetList.options[groupSetList.selectedIndex].value;
 	
 	var checkboxes = document.getElementsByName('option');
 	var bValue=false;
@@ -78,6 +135,7 @@ function formValidations()
   		}
    		
    	}
+	
    	var orgUnitCheck = document.getElementsByName('orgUnit');
 	var bValue2=false;
   	for (i=0; i < checkboxes.length; i++)
@@ -89,6 +147,7 @@ function formValidations()
    		
    	}
    	
+	/*
 	var ownerShipcheckboxes = document.getElementsByName('ownership');
 	var bValue3=false;
   	for (i=0; i < ownerShipcheckboxes.length; i++)
@@ -100,13 +159,29 @@ function formValidations()
    		
    	}   	
    	
+	var coldStorecheckboxes = document.getElementsByName('coldstore');
+	var bValue4=false;
+  	for (i=0; i < coldStorecheckboxes.length; i++)
+	 {	
+  		if(coldStorecheckboxes[i].checked == true)
+  		{
+  			bValue4=true;
+  		}
+   		
+   	}   	   	
+   	*/
    	
    	var reportListBox = document.getElementById( "reportList" );
   	if( reportListBox.selectedIndex < 0 ) { alert( "Please select another report type" ); return false; }
    	else if(!(document.getElementById('orgUnit'))){alert("Please select organisation unit");  return false;}
-   	else if( facilityTypeRadioVal == "facilityType" && bValue2 == false ){alert("Please select atleast one Facility type");  return false;}
-   	else if( facilityTypeRadioVal == "ownershipType" && bValue == false){alert("Please select facility type");  return false;}	   	               			
-
+   	else if( bValue == false ){alert("Please select atleast one Facility type");  return false;}
+	
+	/*
+	else if( facilityTypeRadioVal == "facilityType" && bValue == false ){alert("Please select atleast one Facility type");  return false;}
+   	else if( facilityTypeRadioVal == "coldStoreType" && bValue4 == false){alert("Please select atleast one Facility type");  return false;}
+   	else if( facilityTypeRadioVal == "ownershipType" && bValue3 == false){alert("Please select atleast one Facility type");  return false;}	  	               			
+	*/
+	
 	return true;
 }
 </script>
@@ -159,7 +234,7 @@ function formValidations()
 					    		<i>Select category:</i><br/>
 					    		<label><input type="radio" id="facilityType1" name="facilityType" value="Facility" checked onclick="selectFacilities()"/>Facility Infrastructure</label><br/>
 								<label><input type="radio" id="facilityType2" name="facilityType" value="Storage" onclick="selectFacilities()"/>Storage Requirements</label><br/>
-								<label><input type="radio" id="facilityType3" name="facilityType" value="Cold Chain" onclick="selectFacilities()"/>Cold Chain EquipmentAttributeValue</label><br/>
+								<label><input type="radio" id="facilityType3" name="facilityType" value="Cold Chain" onclick="selectFacilities()"/>Cold Chain Equipment</label><br/>
 								<label><input type="radio" id="facilityType4" name="facilityType" value="Energy" onclick="selectFacilities()"/>Energy</label><br/>
 				    		</div>
 	    				</td>
@@ -209,11 +284,32 @@ function formValidations()
 		    		<tr>
 		    			<td>
 		    				<!--<i>Select all that apply:</i><br/>-->
-		    				<label><input type="radio" id="facilityTypeRadio" name="facilityTypeRadio" value="facilityType" checked onclick="changeFacilitieType()"/>By Facility Type</label>&nbsp;
+		    				<!--<label><input type="radio" id="facilityTypeRadio" name="facilityTypeRadio" value="facilityType" checked onclick="changeFacilitieType()"/>By Facility Type</label>&nbsp;
 		    				<label><input type="radio" id="facilityTypeRadio" name="facilityTypeRadio" value="ownershipType" onclick="changeFacilitieType()"/>By Ownership</label>
+		    				-->
 		    				
-		    				<div class="multiselect" id = 'facilityTypeDiv'>
-		    					<label><input type="checkbox" name="selectall" id="selectall" value="0" onclick="selectAll(this)" /><b>SELECT ALL TYPES</b></label>		    					
+		    				<select name="organisationUnitGroupSets" id="organisationUnitGroupSets" style="width:20em;" onclick="changeOrgUnitGroupSet()">
+		    					#foreach( $organisationUnitGroupSet in $organisationUnitGroupSetList )
+									<option value="$organisationUnitGroupSet.id">$organisationUnitGroupSet.name</option>
+								#end
+								<!--
+								<option value="facilityType">$i18n.getString( "health_facility_type" )</option>
+		    					<option value="coldStoreType">$i18n.getString( "cold_store" )</option>
+		    					<option value="ownershipType">$i18n.getString( "ownership" )</option>
+								-->
+				    		</select>
+		    				<br />
+		    				
+		    				<div class="multiselect" id = 'organisationUnitGroupsDiv'>
+		    					<!--<label><input type="checkbox" name="selectall" id="selectall" value="0" onclick="selectAll(this)" /><b>SELECT ALL TYPES</b></label>-->    					
+								
+								<!--
+								#foreach( $orgUnitGrpHealthFacility in $orgUnitGroupsHealthFacility )
+									<label><input type="checkbox" name="option" value="$orgUnitGrpHealthFacility.id" />$orgUnitGrpHealthFacility.name</label>
+								#end
+								-->
+								
+								<!--
 								<lable><b>Vaccine Stores Type</b></lable>
 				    			<label><input type="checkbox" name="option" value="1" />National Vaccine Stores</label>
 				    			<label><input type="checkbox" name="option" value="2" />Regional Vaccine Stores</label>
@@ -235,24 +331,30 @@ function formValidations()
 				    			<label><input type="checkbox" name="option" value="16" />Nursing Home Private</label>
 				    			<label><input type="checkbox" name="option" value="17" />Medical Clinic NGO</label>
 				    			<label><input type="checkbox" name="option" value="18" />Medical Clinic  Private</label>
+				    			-->
 				    			<!-- <label><input type="checkbox" name="option" value="19" />Health Facality</label> -->
          					 </div>
          					 
+							 <!--
 							<div class="multiselect" id = 'ownershipTypeDiv' style='display:none'>
-				    			#foreach( $orgUnitGroup in $orgUnitGroups )
-				    				<label><input type="checkbox" name="ownership" value="$orgUnitGroup.id" />$orgUnitGroup.name</label>
-				    			<!--<label><input type="checkbox" name="ownership" value="21" />Private</label>
-				   					<label><input type="checkbox" name="ownership" value="22" />NGO</label>-->
+								<label><input type="checkbox" name="selectAllOwnerShip1" id="selectAllOwnerShip1" value="0" onclick="selectAllOwnerShip(this)" /><b>SELECT ALL TYPES</b></label>
+				    			#foreach( $orgUnitGroupOwnership in $orgUnitGroupsOwnership )
+				    				<label><input type="checkbox" name="ownership" value="$orgUnitGroupOwnership.id" />$orgUnitGroupOwnership.name</label>
+				   				#end	
+         					</div>          					 
+         					 
+							<div class="multiselect" id = 'coldStoreDiv' style='display:none'>
+								<label><input type="checkbox" name="selectAllColdStore1" id="selectAllColdStore1" value="0" onclick="selectAllColdStore(this)" /><b>SELECT ALL TYPES</b></label>
+				    			#foreach( $orgUnitGroupColdStore in $orgUnitGroupsColdStore )
+				    				<label><input type="checkbox" name="coldstore" value="$orgUnitGroupColdStore.id" />$orgUnitGroupColdStore.name</label>
 				   				#end	
          					</div>         					 
-         					 
+							-->	 
 			    		</td>
-			    		
 		    		</tr>
 		    		<tr><td>&nbsp; </td> </tr>
 		    		<tr bgcolor="#285C91">
     					<td> <font color="#FFFFFF"><strong>Step 4 - Time Period </strong></td>
-		    			
 		    		</tr>
 		    		<tr>
 		    			<td>

@@ -29,7 +29,7 @@
 
 <h2>$i18n.getString( "ccem_reports" )</h2>
 <ul>
-	<li><a href="jrxmlReportsPage.action">$i18n.getString( "ccem_reports_page" )</a></li>
+	<li><a href="cceiReportsPage.action">$i18n.getString( "ccem_reports_page" )</a></li>
 	<!--<li><a href="jrxmlReportsPage.action">$i18n.getString( "jrxml_reports" )</a></li>  -->  
 </ul>
 

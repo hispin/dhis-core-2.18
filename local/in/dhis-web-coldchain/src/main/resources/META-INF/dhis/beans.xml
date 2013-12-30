@@ -694,13 +694,16 @@
 		<property name="modelTypeService" ref="org.hisp.dhis.coldchain.model.ModelTypeService" />
 	</bean>
 
+
+
     <!-- CCEM Reports -->
-    <bean id="org.hisp.dhis.coldchain.reports.action.CCEMReportPageAction"
-        class="org.hisp.dhis.coldchain.reports.action.CCEMReportPageAction"
+    <bean id="org.hisp.dhis.coldchain.reports.action.CCEIReportPageAction"
+        class="org.hisp.dhis.coldchain.reports.action.CCEIReportPageAction"
         scope="prototype">
         <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-		<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+		<!--<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />-->
     </bean> 
+   
     <bean id="org.hisp.dhis.coldchain.reports.action.GenerateCCEMReportAction"
         class="org.hisp.dhis.coldchain.reports.action.GenerateCCEMReportAction"
         scope="prototype">
@@ -710,8 +713,9 @@
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean> 
 	
-	<bean id="org.hisp.dhis.coldchain.reports.action.GenerateJRXMLReportAction"
-        class="org.hisp.dhis.coldchain.reports.action.GenerateJRXMLReportAction"
+	
+	<bean id="org.hisp.dhis.coldchain.reports.action.GenerateCCEIReportAction"
+        class="org.hisp.dhis.coldchain.reports.action.GenerateCCEIReportAction"
         scope="prototype">
        <property name="ccemReportManager" ref="org.hisp.dhis.coldchain.reports.CCEMReportManager" />   
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
@@ -725,7 +729,14 @@
 		<property name="equipmentTypeAttributeService" ref="org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService" />
 	</bean>
 	
-	
+	<bean id="org.hisp.dhis.coldchain.action.GetOrganisationUnitGroupsAction"
+        class="org.hisp.dhis.coldchain.action.GetOrganisationUnitGroupsAction"
+        scope="prototype">
+       	<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" /> 
+	</bean>	
+
+
+
 	
 <!-- Clinic Equipments -->
 	

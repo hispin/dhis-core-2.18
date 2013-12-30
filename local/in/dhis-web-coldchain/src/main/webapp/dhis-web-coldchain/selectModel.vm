@@ -18,8 +18,9 @@
             <td><span id='warnmessage' style='color:red'></span></td>
         </tr>
     </table>
-
 </div>
+
+
 <div id='searchModelDiv' style='display:none'>
     <table id='advancedSearchTB'>   
         <tbody>

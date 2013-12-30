@@ -88,12 +88,22 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
     // Input/output
     // -------------------------------------------------------------------------
     
+    
     private String orgUnitId;
     
     public void setOrgUnitId( String orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }
+    
+    /*
+    private Integer orgUnitId;
+    
+    public void setOrgUnitId( Integer orgUnitId )
+    {
+        this.orgUnitId = orgUnitId;
+    }
+    */
     
     private OrganisationUnit organisationUnit;
 
@@ -307,7 +317,10 @@ public class GetOrganisationUnitDetailsAction  extends ActionPagingSupport<Equip
         orgUnitIdsByComma = "-1";
         attributedsByComma = "-1";
         
+        // get orgUnit object usiging UID
         organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        
+        //organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
         equipmentTypes = new ArrayList<EquipmentType>( equipmentTypeService.getAllEquipmentTypes() );
         

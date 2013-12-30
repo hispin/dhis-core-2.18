@@ -18,6 +18,8 @@ function organisationUnitSelected( orgUnits )
 	
 	document.getElementById('selectedOrgunitID').value = orgUnits;
 	
+	//document.getElementById('selOrgunitID').value = orgUnits;
+	
 	hideById('selectOrgUnitDiv');
 	//hideById('orgUnitDetailsDiv');
 	document.getElementById('overlay').style.visibility = 'visible';
@@ -33,6 +35,7 @@ function organisationUnitSelected( orgUnits )
 	
 }
 selection.setListenerFunction( organisationUnitSelected );
+
 function loadAllEquipments()
 {
 	document.getElementById('overlay').style.visibility = 'visible';
@@ -530,10 +533,14 @@ function loadOrgUnitsByFilter()
 	//hideById('searchOrgDiv');
 	
 	//showById('searchOrgDiv');
+	
 	showById('orgUnitDetailsDiv');
 	
 
 	//jQuery('#loaderDiv').show();
+	
+	//contentDiv = 'orgUnitDetailsDiv';
+	
 	contentDiv = 'orgUnitDetailsDiv';
 	
 	isAjax = true;
@@ -751,9 +758,11 @@ function closewindow3()
 	jQuery('#equipmentDataEntryDiv').dialog('destroy').remove();
 }
 
-function showAddEquipmentForm( orgUnitName )
+function showAddEquipmentForm( orgUnitId, orgUnitName )
 {
-	var orgUnitId = document.getElementById('selectedOrgunitID').value;
+	//var orgUnitId = document.getElementById('selectedOrgunitID').value;
+	
+	var orgUnitId = orgUnitId;
 	
 	var orgUnitName = orgUnitName;
 	var equipmentType = document.getElementById('equipmentType');
@@ -796,10 +805,11 @@ function showAddEquipmentForm( orgUnitName )
 }
 
 
-function showAddEquipmentIcePacksForm( orgUnitName )
+function showAddEquipmentIcePacksForm( orgUnitId, orgUnitName )
 {
-	var orgUnitId = document.getElementById('selectedOrgunitID').value;
+	//var orgUnitId = document.getElementById('selectedOrgunitID').value;
 	
+	var orgUnitId = orgUnitId;
 	var orgUnitName = orgUnitName;
 	var equipmentType = document.getElementById('equipmentType');
 	var equipmentTypeId = equipmentType.options[ equipmentType.selectedIndex ].value;
