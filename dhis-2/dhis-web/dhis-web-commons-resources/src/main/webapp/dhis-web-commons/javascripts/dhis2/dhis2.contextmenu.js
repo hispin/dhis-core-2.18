@@ -75,7 +75,7 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
       context[val] = $menu.data(val);
     });
 
-    var $target = $(e.target);
+    var $target = $(e.target).closest('a');
     var targetFn = $target.data('target-fn');
     var fn = config.functionResolver(targetFn);
 
