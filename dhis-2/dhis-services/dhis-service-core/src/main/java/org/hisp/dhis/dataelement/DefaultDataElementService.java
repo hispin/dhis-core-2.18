@@ -28,7 +28,6 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboSizeComparator;
@@ -76,10 +75,9 @@ public class DefaultDataElementService
         this.dataElementGroupStore = dataElementGroupStore;
     }
 
-    private GenericIdentifiableObjectStore<DataElementGroupSet> dataElementGroupSetStore;
+    private DataElementGroupSetStore dataElementGroupSetStore;
 
-    public void setDataElementGroupSetStore(
-        GenericIdentifiableObjectStore<DataElementGroupSet> dataElementGroupSetStore )
+    public void setDataElementGroupSetStore( DataElementGroupSetStore dataElementGroupSetStore )
     {
         this.dataElementGroupSetStore = dataElementGroupSetStore;
     }
