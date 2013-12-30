@@ -391,7 +391,8 @@ dhis2.dsr.approveData = function()
 		type: "post",
 		success: function() {
 			$( "#approveButton" ).prop( "disabled", true );
-			$( "#unapproveButton" ).prop( "disabled", false );			
+			$( "#unapproveButton" ).prop( "disabled", false );
+			$( "#approvalNotification" ).show().html( i18n_approved );
 		},
 		error: function( xhr, status, error ) {
 			alert( xhr.responseText );
@@ -413,7 +414,8 @@ dhis2.dsr.unapproveData = function()
 		type: "delete",
 		success: function() {
 			$( "#approveButton" ).prop( "disabled", false );
-			$( "#unapproveButton" ).prop( "disabled", true );			
+			$( "#unapproveButton" ).prop( "disabled", true );
+			$( "#approvalNotification" ).show().html( i18n_ready_for_approval );
 		},
 		error: function( xhr, status, error ) {
 			alert( xhr.responseText );
