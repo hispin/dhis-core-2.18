@@ -81,6 +81,13 @@ public class AddGroupSetAction
         this.compulsory = compulsory;
     }
 
+    private boolean dataDimension;
+
+    public void setDataDimension( boolean dataDimension )
+    {
+        this.dataDimension = dataDimension;
+    }
+
     private Collection<String> selectedGroups;
 
     public void setSelectedGroups( Collection<String> selectedGroups )
@@ -95,7 +102,7 @@ public class AddGroupSetAction
     public String execute()
         throws Exception
     {
-        OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet( name, description, compulsory );
+        OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet( name, description, compulsory, dataDimension );
 
         Set<OrganisationUnitGroup> selectedMembers = new HashSet<OrganisationUnitGroup>();
 

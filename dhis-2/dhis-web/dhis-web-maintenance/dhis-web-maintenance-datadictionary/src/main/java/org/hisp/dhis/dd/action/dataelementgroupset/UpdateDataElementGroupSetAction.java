@@ -28,14 +28,13 @@ package org.hisp.dhis.dd.action.dataelementgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tran Thanh Tri
@@ -87,6 +86,13 @@ public class UpdateDataElementGroupSetAction
         this.compulsory = compulsory;
     }
 
+    private boolean dataDimension;
+
+    public void setDataDimension( boolean dataDimension )
+    {
+        this.dataDimension = dataDimension;
+    }
+
     private List<String> groupMembers = new ArrayList<String>();
 
     public void setGroupMembers( List<String> groupMembers )
@@ -106,6 +112,7 @@ public class UpdateDataElementGroupSetAction
         dataElementGroupSet.setName( name );
         dataElementGroupSet.setDescription( description );
         dataElementGroupSet.setCompulsory( compulsory );
+        dataElementGroupSet.setDataDimension( dataDimension );
 
         dataElementGroupSet.getMembers().clear();
 

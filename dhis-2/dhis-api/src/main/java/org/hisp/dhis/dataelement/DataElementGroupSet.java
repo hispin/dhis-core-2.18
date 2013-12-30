@@ -102,6 +102,12 @@ public class DataElementGroupSet
         this.compulsory = compulsory;
     }
 
+    public DataElementGroupSet( String name, String description, boolean compulsory, boolean dataDimension )
+    {
+        this( name, description, compulsory );
+        this.dataDimension = dataDimension;
+    }
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -257,8 +263,8 @@ public class DataElementGroupSet
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isDataDimension()
     {
         return dataDimension;

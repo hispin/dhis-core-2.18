@@ -81,6 +81,13 @@ public class AddDataElementGroupSetAction
         this.compulsory = compulsory;
     }
 
+    private boolean dataDimension;
+
+    public void setDataDimension( boolean dataDimension )
+    {
+        this.dataDimension = dataDimension;
+    }
+
     private List<String> groupMembers = new ArrayList<String>();
 
     public void setGroupMembers( List<String> groupMembers )
@@ -95,7 +102,7 @@ public class AddDataElementGroupSetAction
     public String execute()
         throws Exception
     {
-        DataElementGroupSet dataElementGroupSet = new DataElementGroupSet( name, description, compulsory );
+        DataElementGroupSet dataElementGroupSet = new DataElementGroupSet( name, description, compulsory, dataDimension );
 
         List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
 
