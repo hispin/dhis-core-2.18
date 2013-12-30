@@ -90,6 +90,9 @@ public class DataElementGroupSetBatchHandler
         statementBuilder.setColumn( "uid" );
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
+        statementBuilder.setColumn( "description" );
+        statementBuilder.setColumn( "compulsory" );
+        statementBuilder.setColumn( "datadimension" );
     }
     
     protected void setValues( DataElementGroupSet groupSet )
@@ -97,5 +100,8 @@ public class DataElementGroupSetBatchHandler
         statementBuilder.setValue( groupSet.getUid() );        
         statementBuilder.setValue( groupSet.getCode() );        
         statementBuilder.setValue( groupSet.getName() );        
+        statementBuilder.setValue( groupSet.getDescription() );
+        statementBuilder.setValue( groupSet.isCompulsory() );
+        statementBuilder.setValue( groupSet.isDataDimension() );
     }
 }
