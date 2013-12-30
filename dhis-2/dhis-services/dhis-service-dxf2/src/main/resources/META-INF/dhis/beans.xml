@@ -22,8 +22,6 @@
 
   <bean id="org.hisp.dhis.dxf2.events.enrollment.EnrollmentService" class="org.hisp.dhis.dxf2.events.enrollment.JacksonEnrollmentService" />
 
-  <bean id="org.hisp.dhis.dxf2.InputValidationService" class="org.hisp.dhis.dxf2.DefaultInputValidationService" />
-
   <!-- register idObject handlers -->
 
   <bean id="organisationUnitObjectHandler"
