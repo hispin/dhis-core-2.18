@@ -92,7 +92,7 @@ public class GroupSetBatchHandler
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "description" );
         statementBuilder.setColumn( "compulsory" );
-        statementBuilder.setColumn( "dataDimension" );
+        statementBuilder.setColumn( "datadimension" );
     }
     
     protected void setValues( OrganisationUnitGroupSet groupSet )
