@@ -43,6 +43,7 @@ public class HibernateOrganisationUnitGroupSetStore
     implements OrganisationUnitGroupSetStore
 {
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnitGroupSet> getByDataDimension( boolean dataDimension )
     {
         Query query = getQuery( "SELECT d FROM OrganisationUnitGroupSet d WHERE d.dataDimension=:dataDimension" );
