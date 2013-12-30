@@ -88,6 +88,13 @@ public class UpdateGroupSetAction
         this.compulsory = compulsory;
     }
 
+    private boolean dataDimension;
+
+    public void setDataDimension( boolean dataDimension )
+    {
+        this.dataDimension = dataDimension;
+    }
+
     private Collection<String> selectedGroups;
 
     public void setSelectedGroups( Collection<String> selectedGroups )
@@ -102,11 +109,12 @@ public class UpdateGroupSetAction
     public String execute()
         throws Exception
     {
-        OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( id );
+        OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( id );
 
-        groupSet.setName( name );
-        groupSet.setDescription( description );
-        groupSet.setCompulsory( compulsory );
+        organisationUnitGroupSet.setName( name );
+        organisationUnitGroupSet.setDescription( description );
+        organisationUnitGroupSet.setCompulsory( compulsory );
+        organisationUnitGroupSet.setDataDimension( dataDimension );
 
         Set<OrganisationUnitGroup> selectedMembers = new HashSet<OrganisationUnitGroup>();
 
@@ -118,9 +126,9 @@ public class UpdateGroupSetAction
             }
         }
 
-        groupSet.setOrganisationUnitGroups( selectedMembers );
+        organisationUnitGroupSet.setOrganisationUnitGroups( selectedMembers );
 
-        organisationUnitGroupService.updateOrganisationUnitGroupSet( groupSet );
+        organisationUnitGroupService.updateOrganisationUnitGroupSet( organisationUnitGroupSet );
 
         return SUCCESS;
     }

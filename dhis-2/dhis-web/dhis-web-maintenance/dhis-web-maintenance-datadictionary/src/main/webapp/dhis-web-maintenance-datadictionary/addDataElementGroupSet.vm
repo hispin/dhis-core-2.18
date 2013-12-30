@@ -51,6 +51,16 @@
 	</tr>
 
 	<tr>
+		<td><label for="dataDimension" style="width:100%">$i18n.getString( "data_dimension" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td>
+			<select id="dataDimension" name="dataDimension">
+				<option value="true" selected="selected">$i18n.getString( "yes" )</option>
+				<option value="false">$i18n.getString( "no" )</option>
+			</select>
+		</td>
+	</tr>
+
+	<tr>
 		<td colspan="2" height="15px"></td>
 	</tr>
 </table>
