@@ -38,7 +38,7 @@
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementGroupSetStore" class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementGroupSetStore">
+  <bean id="org.hisp.dhis.dataelement.DataElementGroupSetStore" class="HibernateDataElementGroupSetSt">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementGroupSet" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
@@ -201,7 +201,7 @@
   </bean>
 
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore"
-    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+    class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitGroupSetStore">
     <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />

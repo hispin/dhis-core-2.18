@@ -29,21 +29,14 @@ package org.hisp.dhis.organisationunit.hibernate;
  */
 
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupStore;
-
-import java.util.Collection;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class HibernateOrganisationUnitGroupStore
-    extends HibernateIdentifiableObjectStore<OrganisationUnitGroup>
-    implements OrganisationUnitGroupStore
+public class HibernateOrganisationUnitGroupSetStore
+    extends HibernateIdentifiableObjectStore<OrganisationUnitGroupSet>
+    implements OrganisationUnitGroupSetStore
 {
-    @SuppressWarnings("unchecked")
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithGroupSets()
-    {
-        return getQuery( "from OrganisationUnitGroup o where o.groupSet is not null" ).list();
-    }
 }

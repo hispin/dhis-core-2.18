@@ -1,4 +1,4 @@
-package org.hisp.dhis.organisationunit.hibernate;
+package org.hisp.dhis.organisationunit;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,22 +28,12 @@ package org.hisp.dhis.organisationunit.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupStore;
-
-import java.util.Collection;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class HibernateOrganisationUnitGroupStore
-    extends HibernateIdentifiableObjectStore<OrganisationUnitGroup>
-    implements OrganisationUnitGroupStore
+public interface OrganisationUnitGroupSetStore
+    extends GenericNameableObjectStore<OrganisationUnitGroupSet>
 {
-    @SuppressWarnings("unchecked")
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithGroupSets()
-    {
-        return getQuery( "from OrganisationUnitGroup o where o.groupSet is not null" ).list();
-    }
 }
