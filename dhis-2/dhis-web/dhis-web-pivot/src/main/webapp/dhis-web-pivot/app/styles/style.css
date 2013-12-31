@@ -942,7 +942,7 @@ table.pivot {
 
 	/* accordion title dock text, shared */
 .ns-accordion .x-accordion-hd .x-panel-header-text {
-	font-weight: normal;
+	font-weight: bold;
 	cursor: pointer;
 }
 
