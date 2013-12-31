@@ -53,5 +53,5 @@ public interface EventAnalyticsService
      * Used for event query.
      */
     EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> dimension, Set<String> filter, 
-        String ouMode, Set<String> asc, Set<String> desc, boolean hierarchyMeta, Integer page, Integer pageSize, I18nFormat format );
+        String ouMode, Set<String> asc, Set<String> desc, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format );
 }

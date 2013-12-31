@@ -264,7 +264,7 @@ public class DefaultEventAnalyticsService
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, 
         Set<String> dimension, Set<String> filter, boolean hierarchyMeta, SortOrder sortOrder, Integer limit, I18nFormat format )
     {
-        EventQueryParams params = getFromUrl( program, stage, startDate, endDate, dimension, filter, null, null, null, hierarchyMeta, null, null, format );
+        EventQueryParams params = getFromUrl( program, stage, startDate, endDate, dimension, filter, null, null, null, hierarchyMeta, false, null, null, format );
         params.setSortOrder( sortOrder );
         params.setLimit( limit );
         params.setAggregate( true );
@@ -273,7 +273,7 @@ public class DefaultEventAnalyticsService
     }
     
     public EventQueryParams getFromUrl( String program, String stage, String startDate, String endDate, Set<String> dimension, Set<String> filter, 
-        String ouMode, Set<String> asc, Set<String> desc, boolean hierarchyMeta, Integer page, Integer pageSize, I18nFormat format )
+        String ouMode, Set<String> asc, Set<String> desc, boolean hierarchyMeta, boolean coordinatesOnly, Integer page, Integer pageSize, I18nFormat format )
     {
         EventQueryParams params = new EventQueryParams();
         
@@ -373,6 +373,7 @@ public class DefaultEventAnalyticsService
         params.setEndDate( end );
         params.setOrganisationUnitMode( ouMode );
         params.setHierarchyMeta( hierarchyMeta );
+        params.setCoordinatesOnly( coordinatesOnly );
         params.setPage( page );
         params.setPageSize( pageSize );
         params.setAggregate( false );
