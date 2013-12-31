@@ -392,6 +392,7 @@ function enableBtn(){
 	var programIdAddPatient = getFieldValue('programIdAddPatient');
     if( registration == undefined || !registration ) {
 		if( programIdAddPatient!='' ) {
+            enable('statusEvent');
 			enable('listPatientBtn');
 			enable('addPatientBtn');
 			enable('advancedSearchBtn');
@@ -400,6 +401,7 @@ function enableBtn(){
 				enable(this.id);
 			});
 		} else {
+            disable('statusEvent');
 			disable('listPatientBtn');
 			disable('addPatientBtn');
 			disable('advancedSearchBtn');
