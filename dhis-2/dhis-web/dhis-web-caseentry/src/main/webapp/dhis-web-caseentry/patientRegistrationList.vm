@@ -34,6 +34,7 @@
     <td>    
       <table class="listTable" id="patientList" width='100%'>               
           <col width="30"/>
+		  <col/>
 		  #if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 			#foreach( $attribute in $patientAttributes )
 				#if($attribute)<col/>#end
@@ -43,9 +44,6 @@
 				#if($identifierType.personDisplayName=='true')
 				<col/>
 				#end
-			#end
-			#if( $identifierTypes.size()==0 )
-				<col/>       
 			#end
 		  #end
 		  

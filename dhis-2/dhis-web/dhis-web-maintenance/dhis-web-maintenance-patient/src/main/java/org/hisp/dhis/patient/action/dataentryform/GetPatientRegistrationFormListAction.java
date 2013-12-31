@@ -31,7 +31,10 @@ package org.hisp.dhis.patient.action.dataentryform;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientRegistrationForm;
@@ -71,11 +74,11 @@ public class GetPatientRegistrationFormListAction
     // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private Collection<PatientRegistrationForm> registrationForms;
+    private Map<Integer, PatientRegistrationForm> mapRegistrationForms = new HashMap<Integer, PatientRegistrationForm>();
 
-    public Collection<PatientRegistrationForm> getRegistrationForms()
+    public Map<Integer, PatientRegistrationForm> getMapRegistrationForms()
     {
-        return registrationForms;
+        return mapRegistrationForms;
     }
 
     private List<Program> programs;
@@ -92,19 +95,22 @@ public class GetPatientRegistrationFormListAction
     public String execute()
         throws Exception
     {
-        registrationForms = patientRegistrationFormService.getAllPatientRegistrationForms();
-
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
-
-        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+        Collection<PatientRegistrationForm> registrationForms = patientRegistrationFormService
+            .getAllPatientRegistrationForms();
 
         for ( PatientRegistrationForm registrationForm : registrationForms )
         {
             if ( registrationForm.getProgram() != null )
             {
-                programs.remove( registrationForm.getProgram() );
+                mapRegistrationForms.put( registrationForm.getProgram().getId(), registrationForm );
+            }
+            else
+            {
+                mapRegistrationForms.put( 0, registrationForm );
             }
         }
+
+        programs = new ArrayList<Program>( programService.getAllPrograms() );
 
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 

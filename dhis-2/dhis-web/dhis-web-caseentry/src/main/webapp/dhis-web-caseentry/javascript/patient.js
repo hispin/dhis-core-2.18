@@ -363,6 +363,7 @@ function onClickBackBtn()
 	showById('selectDiv');
 	showById('searchDiv');
 	showById('listPatientDiv');
+	showById('searchByIdTR');
 	
 	hideById('editPatientDiv');
 	hideById('enrollmentDiv');

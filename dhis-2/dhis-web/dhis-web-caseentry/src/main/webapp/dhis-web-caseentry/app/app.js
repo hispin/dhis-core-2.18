@@ -1908,8 +1908,7 @@ Ext.onReady( function() {
 				{
 					url +=  programId + "." + type 
 					if (Ext.getCmp('programStageCombobox').getValue() != '') {
-						url += "?stage=" + programStageId
-						return false;
+						url += "?stage=" + programStageId;
 					}
 					else{
 						url += "?";
@@ -1923,7 +1922,6 @@ Ext.onReady( function() {
 					url += programId + ".json";
 					if (Ext.getCmp('programStageCombobox').getValue() != '') {
 						url += "?stage=" + programStageId;
-						return false;
 					}
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 					Ext.Ajax.request({
@@ -2063,8 +2061,7 @@ Ext.onReady( function() {
 			generate: function( type ) {
 				
 				// Validation
-				if( !TR.state.aggregateReport.validation.objects() )
-				{
+				if( !TR.state.aggregateReport.validation.objects() ){
 					return;
 				}
 				
@@ -2078,8 +2075,7 @@ Ext.onReady( function() {
 				{
 					url += programId + "." + type 
 					if (Ext.getCmp('programStageCombobox').getValue() != '') {
-						url += "?stage=" + programStageId
-						return false;
+						url += "?stage=" + programStageId;
 					}
 					else{
 						url += "?";
@@ -2093,7 +2089,6 @@ Ext.onReady( function() {
 					url += programId + ".json";
 					if (Ext.getCmp('programStageCombobox').getValue() != '') {
 						url += "?stage=" + programStageId;
-						return false;
 					}
 					
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);

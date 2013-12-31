@@ -21,9 +21,7 @@
 							#end
 							
 							#set($reportDateToUse = "")
-							#if($programStageInstance.programStage.reportDateToUse=='registrationDate' )
-								#set($reportDateToUse = "$format.formatDate( $programInstance.patient.registrationDate)")
-							#elseif($programStageInstance.programStage.reportDateToUse=='dateOfIncident' )
+							#if($programStageInstance.programStage.reportDateToUse=='dateOfIncident' )
 								#set($reportDateToUse = "$format.formatDate( $programInstance.dateOfIncident)")
 							#elseif($programStageInstance.programStage.reportDateToUse=='enrollmentDate' )
 								#set($reportDateToUse = "$format.formatDate( $programInstance.enrollmentDate)")

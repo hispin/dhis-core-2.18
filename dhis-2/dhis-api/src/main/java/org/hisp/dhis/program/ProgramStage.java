@@ -58,8 +58,6 @@ public class ProgramStage
 
     public static final String TYPE_CUSTOM = "custom";
 
-    public static final String REPORT_DATE_TO_USE_REGISTRATION_DATE = "registrationDate";
-
     public static final String REPORT_DATE_TO_USE_INCIDENT_DATE = "dateOfIncident";
 
     public static final String REPORT_DATE_TO_USE_ENROLLMENT_DATE = "enrollmentDate";
@@ -233,7 +231,7 @@ public class ProgramStage
         this.description = description;
     }
 
-    @JsonProperty("repeatable")
+    @JsonProperty( "repeatable" )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( localName = "repeatable", namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getIrregular()
