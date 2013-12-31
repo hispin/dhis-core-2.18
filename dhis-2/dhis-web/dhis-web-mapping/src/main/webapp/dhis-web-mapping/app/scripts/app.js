@@ -2740,7 +2740,7 @@ Ext.onReady( function() {
 
 						Ext.defer(fn, 100);
 
-						return '<div id="' + record.data.id + '">' + value + '</div>';
+						return '<div id="' + record.data.id + '" class="el-fontsize-10">' + value + '</div>';
 					}
 				},
 				{

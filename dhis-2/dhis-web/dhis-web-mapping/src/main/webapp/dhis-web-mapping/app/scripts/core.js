@@ -1001,11 +1001,9 @@ Ext.onReady( function() {
                         rows = [],
                         lonIndex,
                         latIndex,
-                        map;
+                        map = Ext.clone(r.metaData.names);
 
                     // name-column map, lonIndex, latIndex
-                    map = Ext.clone(r.metaData.names);
-
                     for (var i = 0; i < r.headers.length; i++) {
                         map[r.headers[i].name] = r.headers[i].column;
 
