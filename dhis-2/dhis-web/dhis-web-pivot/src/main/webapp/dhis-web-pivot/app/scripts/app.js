@@ -2237,10 +2237,6 @@ Ext.onReady( function() {
 				xLayout = service.layout.getExtendedLayout(layout);
 				paramString = web.analytics.getParamString(xLayout, true);
 
-				if (!web.analytics.validateUrl(init.contextPath + '/api/analytics.json' + paramString)) {
-					return;
-				}
-
 				// show mask
 				web.mask.show(ns.app.centerRegion);
 
@@ -2254,7 +2250,13 @@ Ext.onReady( function() {
 					disableCaching: false,
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
-						alert(r.responseText);
+
+						if (r.status === 414) {
+							web.analytics.validateUrl(init.contextPath + '/api/analytics.json' + paramString);
+						}
+						else {
+							alert(r.responseText);
+						}
 					},
 					success: function(r) {
 						var response = api.response.Response(Ext.decode(r.responseText));

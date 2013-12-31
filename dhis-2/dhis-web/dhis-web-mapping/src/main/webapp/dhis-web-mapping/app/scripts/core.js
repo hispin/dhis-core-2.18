@@ -1757,6 +1757,8 @@ Ext.onReady( function() {
 		};
 
 		loadData = function(view, features) {
+			var success;
+			
 			view = view || layer.core.view;
 			features = features || layer.core.featureStore.features;
 
@@ -1793,70 +1795,88 @@ Ext.onReady( function() {
 				paramString += i < peItems.length - 1 ? ';' : '';
 			}
 
-			Ext.data.JsonP.request({
-				url: gis.init.contextPath + '/api/analytics.jsonp' + paramString,
-				disableCaching: false,
-				scope: this,
-				success: function(r) {
-					var response = gis.api.response.Response(r),
-						featureMap = {},
-						valueMap = {},
-						ouIndex,
-						dxIndex,
-						valueIndex,
-						newFeatures = [],
-						dimensions,
-						items = [];
+			success = function(json) {
+				var response = gis.api.response.Response(json),
+					featureMap = {},
+					valueMap = {},
+					ouIndex,
+					dxIndex,
+					valueIndex,
+					newFeatures = [],
+					dimensions,
+					items = [];
 
-					if (!response) {
-						olmap.mask.hide();
-						return;
-					}
-
-					// ou index, value index
-					for (var i = 0; i < response.headers.length; i++) {
-						if (response.headers[i].name === dimConf.organisationUnit.dimensionName) {
-							ouIndex = i;
-						}
-						else if (response.headers[i].name === dimConf.value.dimensionName) {
-							valueIndex = i;
-						}
-					}
-
-					// Feature map
-					for (var i = 0, id; i < features.length; i++) {
-						var id = features[i].attributes.id;
-
-						featureMap[id] = true;
-					}
-
-					// Value map
-					for (var i = 0; i < response.rows.length; i++) {
-						var id = response.rows[i][ouIndex],
-							value = parseFloat(response.rows[i][valueIndex]);
-
-						valueMap[id] = value;
-					}
-
-					for (var i = 0; i < features.length; i++) {
-						var feature = features[i],
-							id = feature.attributes.id;
-
-						if (featureMap.hasOwnProperty(id) && valueMap.hasOwnProperty(id)) {
-							feature.attributes.value = valueMap[id];
-							feature.attributes.label = feature.attributes.name + ' (' + feature.attributes.value + ')';
-							newFeatures.push(feature);
-						}
-					}
-
-					layer.removeFeatures(layer.features);
-					layer.addFeatures(newFeatures);
-
-					gis.response = response;
-
-					loadLegend(view);
+				if (!response) {
+					olmap.mask.hide();
+					return;
 				}
-			});
+
+				// ou index, value index
+				for (var i = 0; i < response.headers.length; i++) {
+					if (response.headers[i].name === dimConf.organisationUnit.dimensionName) {
+						ouIndex = i;
+					}
+					else if (response.headers[i].name === dimConf.value.dimensionName) {
+						valueIndex = i;
+					}
+				}
+
+				// Feature map
+				for (var i = 0, id; i < features.length; i++) {
+					var id = features[i].attributes.id;
+
+					featureMap[id] = true;
+				}
+
+				// Value map
+				for (var i = 0; i < response.rows.length; i++) {
+					var id = response.rows[i][ouIndex],
+						value = parseFloat(response.rows[i][valueIndex]);
+
+					valueMap[id] = value;
+				}
+
+				for (var i = 0; i < features.length; i++) {
+					var feature = features[i],
+						id = feature.attributes.id;
+
+					if (featureMap.hasOwnProperty(id) && valueMap.hasOwnProperty(id)) {
+						feature.attributes.value = valueMap[id];
+						feature.attributes.label = feature.attributes.name + ' (' + feature.attributes.value + ')';
+						newFeatures.push(feature);
+					}
+				}
+
+				layer.removeFeatures(layer.features);
+				layer.addFeatures(newFeatures);
+
+				gis.response = response;
+
+				loadLegend(view);
+			};
+
+			if (Ext.isObject(GIS.app)) {
+				Ext.Ajax.request({
+					url: gis.init.contextPath + '/api/analytics.json' + paramString,
+					disableCaching: false,
+					failure: function(r) {
+						alert(r.responseText);
+					},
+					success: function(r) {
+						success(Ext.decode(r.responseText));
+					}
+				});
+			}
+			else if (Ext.isObject(GIS.plugin)) {
+				Ext.data.JsonP.request({
+					url: gis.init.contextPath + '/api/analytics.jsonp' + paramString,
+					disableCaching: false,
+					scope: this,
+					success: function(r) {
+						success(r);
+					}
+				});
+			}
 		};
 
 		loadLegend = function(view) {
