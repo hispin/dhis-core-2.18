@@ -2088,7 +2088,7 @@ Ext.onReady( function() {
 				{
 					url += programId + ".json?";
 					if (Ext.getCmp('programStageCombobox').getValue() != '') {
-						url += "stage=" + programStageId + "&";
+						url += "stage=" + programStageId;
 					}
 			
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
