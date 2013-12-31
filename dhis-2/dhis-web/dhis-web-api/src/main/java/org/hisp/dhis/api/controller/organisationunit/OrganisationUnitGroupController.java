@@ -29,7 +29,6 @@ package org.hisp.dhis.api.controller.organisationunit;
  */
 
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,6 +43,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +52,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -109,71 +110,35 @@ public class OrganisationUnitGroupController
 
     @RequestMapping( value = "/{uid}/members/{orgUnitUid}", method = RequestMethod.POST )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void addMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" )
     String uid, @PathVariable( "orgUnitUid" )
     String orgUnitUid )
         throws Exception
     {
-        Boolean existsInList = false;
-
-        // Add the relationship and commit the change.
-        OrganisationUnitGroup organisationUnitGroup = getEntity( uid );
-
-        Set<OrganisationUnit> orgUnitList = organisationUnitGroup.getMembers();
-
-        if ( orgUnitList != null && orgUnitList.size() > 0 )
+        OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        
+        if ( group.addOrganisationUnit( unit ) )
         {
-            for ( OrganisationUnit orgUnit_temp : orgUnitList )
-            {
-                if ( orgUnit_temp.getUid().equals( orgUnitUid ) )
-                {
-                    existsInList = true;
-                    break;
-                }
-            }
+            organisationUnitGroupService.updateOrganisationUnitGroup( group );
         }
-
-        if ( !existsInList )
-        {
-            organisationUnitGroup.addOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitUid ) );
-
-            organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
-        }
-
     }
 
     @RequestMapping( value = "/{uid}/members/{orgUnitUid}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
-    public void deleteMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void removeMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" )
     String uid, @PathVariable( "orgUnitUid" )
     String orgUnitUid )
         throws Exception
     {
-        OrganisationUnit orgUnit = null;
-
-        OrganisationUnitGroup organisationUnitGroup = getEntity( uid );
-
-        Set<OrganisationUnit> orgUnitList = organisationUnitGroup.getMembers();
-
-        // Remove the relationship and commit the change.
-        if ( orgUnitList != null && orgUnitList.size() > 0 )
+        OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        
+        if ( group.removeOrganisationUnit( unit ) )
         {
-            for ( OrganisationUnit orgUnit_temp : orgUnitList )
-            {
-                if ( orgUnit_temp.getUid().equals( orgUnitUid ) )
-                {
-                    orgUnit = orgUnit_temp;
-                    break;
-                }
-            }
-        }
-
-        if ( orgUnit != null )
-        {
-            organisationUnitGroup.removeOrganisationUnit( orgUnit );
-
-            organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
+            organisationUnitGroupService.updateOrganisationUnitGroup( group );
         }
     }
-
 }
