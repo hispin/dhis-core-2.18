@@ -1559,13 +1559,19 @@ Ext.onReady( function() {
             };
 
 			web.analytics.validateUrl = function(url) {
-				if (!Ext.isString(url) || url.length > 2000) {
-					var percent = ((url.length - 2000) / url.length) * 100;
-					alert('Too many parameters selected. Please reduce the number of parameters by at least ' + percent.toFixed(0) + '%.');
-					return;
-				}
+				var msg;
 
-				return true;
+                if (Ext.isIE) {
+                    msg = 'Too many items selected (url has ' + url.length + ' characters). Internet Explorer accepts maximum 2048 characters.';
+                }
+                else {
+					var len = url.length > 8000 ? '8000' : (url.length > 4000 ? '4000' : '2000');
+					msg = 'Too many items selected (url has ' + url.length + ' characters). Please reduce to less than ' + len + ' characters.';
+                }
+
+                msg += '\n\n' + 'Hint: A good way to reduce the number of items is to use relative periods and level/group organisation unit selection modes.';
+
+                alert(msg);
 			};
 
 			// chart
