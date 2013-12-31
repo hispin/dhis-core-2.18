@@ -282,7 +282,7 @@ function listAllPatient()
 	hideById('editPatientDiv');
 	hideById('migrationPatientDiv');
 	hideById('advanced-search');
-	
+	showById('searchByIdTR');
 	Patient.listAll();
 }
 
@@ -363,7 +363,6 @@ function onClickBackBtn()
 	showById('selectDiv');
 	showById('searchDiv');
 	showById('listPatientDiv');
-	showById('searchByIdTR');
 	
 	hideById('editPatientDiv');
 	hideById('enrollmentDiv');
