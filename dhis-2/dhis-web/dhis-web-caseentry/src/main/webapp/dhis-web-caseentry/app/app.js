@@ -1646,12 +1646,6 @@ Ext.onReady( function() {
 				p.ouMode = TR.cmp.settings.ouMode.getValue();
 			}
 			
-			// Paging
-			if(TR.state.currentPage==undefined){
-				TR.state.currentPage = 1;
-			}
-			p.page = TR.state.currentPage;
-			
 			// Get searching values
 			
 			p.dimension = [];
@@ -1919,10 +1913,16 @@ Ext.onReady( function() {
 				// Show report on grid
 				else
 				{
-					url += programId + ".json";
+					url += programId + ".json?";
 					if (Ext.getCmp('programStageCombobox').getValue() != '') {
-						url += "?stage=" + programStageId;
+						url += "stage=" + programStageId + "&";
 					}
+					// Paging
+					if(TR.state.currentPage==undefined){
+						TR.state.currentPage = 1;
+					}
+					url += "page=" + TR.state.currentPage;
+					
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 					Ext.Ajax.request({
 						url: url,
@@ -2086,11 +2086,11 @@ Ext.onReady( function() {
 				// Show report on grid
 				else
 				{
-					url += programId + ".json";
+					url += programId + ".json?";
 					if (Ext.getCmp('programStageCombobox').getValue() != '') {
-						url += "?stage=" + programStageId;
+						url += "stage=" + programStageId + "&";
 					}
-					
+			
 					TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 					Ext.Ajax.request({
 						url: url,
