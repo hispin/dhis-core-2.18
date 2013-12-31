@@ -28,12 +28,23 @@ package org.hisp.dhis.api.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.api.webdomain.OrganisationUnitList;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -42,23 +53,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = OrganisationUnitGroupController.RESOURCE_PATH)
+@RequestMapping( value = OrganisationUnitGroupController.RESOURCE_PATH )
 public class OrganisationUnitGroupController
     extends AbstractCrudController<OrganisationUnitGroup>
 {
     public static final String RESOURCE_PATH = "/organisationUnitGroups";
 
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    // --------------------------------------------------------------------------
+    // Methods
+    // --------------------------------------------------------------------------
+
     @RequestMapping( value = "/{uid}/members", method = RequestMethod.GET )
-    public String getMembers( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    public String getMembers( @PathVariable( "uid" )
+    String uid, @RequestParam
+    Map<String, String> parameters, Model model, HttpServletRequest request, HttpServletResponse response )
+        throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         OrganisationUnitGroup organisationUnitGroup = getEntity( uid );
@@ -83,4 +106,74 @@ public class OrganisationUnitGroupController
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
+
+    @RequestMapping( value = "/{uid}/members/{orgUnitUid}", method = RequestMethod.POST )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
+    public void addMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" )
+    String uid, @PathVariable( "orgUnitUid" )
+    String orgUnitUid )
+        throws Exception
+    {
+        Boolean existsInList = false;
+
+        // Add the relationship and commit the change.
+        OrganisationUnitGroup organisationUnitGroup = getEntity( uid );
+
+        Set<OrganisationUnit> orgUnitList = organisationUnitGroup.getMembers();
+
+        if ( orgUnitList != null && orgUnitList.size() > 0 )
+        {
+            for ( OrganisationUnit orgUnit_temp : orgUnitList )
+            {
+                if ( orgUnit_temp.getUid().equals( orgUnitUid ) )
+                {
+                    existsInList = true;
+                    break;
+                }
+            }
+        }
+
+        if ( !existsInList )
+        {
+            organisationUnitGroup.addOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitUid ) );
+
+            organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
+        }
+
+    }
+
+    @RequestMapping( value = "/{uid}/members/{orgUnitUid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
+    public void deleteMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" )
+    String uid, @PathVariable( "orgUnitUid" )
+    String orgUnitUid )
+        throws Exception
+    {
+        OrganisationUnit orgUnit = null;
+
+        OrganisationUnitGroup organisationUnitGroup = getEntity( uid );
+
+        Set<OrganisationUnit> orgUnitList = organisationUnitGroup.getMembers();
+
+        // Remove the relationship and commit the change.
+        if ( orgUnitList != null && orgUnitList.size() > 0 )
+        {
+            for ( OrganisationUnit orgUnit_temp : orgUnitList )
+            {
+                if ( orgUnit_temp.getUid().equals( orgUnitUid ) )
+                {
+                    orgUnit = orgUnit_temp;
+                    break;
+                }
+            }
+        }
+
+        if ( orgUnit != null )
+        {
+            organisationUnitGroup.removeOrganisationUnit( orgUnit );
+
+            organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
+        }
+    }
+
 }
