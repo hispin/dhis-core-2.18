@@ -1,0 +1,53 @@
+## Macro for generating the jQuery validation rules 
+#macro( validate $type $require )
+  #if( $type == "NUMBER" || $type == "number" )
+    {validate:{ number:true #if($require), required:true #end }}
+  
+	#elseif( $type == "int" )
+  	{validate:{ integer:true #if($require), required:true #end }}
+  	
+  	#elseif( $type == "positiveNumber" )
+  	{validate:{ positive_integer:true #if($require), required:true #end }}
+  	
+	#elseif( $type == "negativeNumber" )
+  	{validate:{ negative_integer:true #if($require), required:true #end }}
+  
+  
+	#elseif( $require )
+    {validate:{required:true}}
+  #end
+#end
+
+
+#set( $tabIndex = 1 )
+#if ( $dataElements.size() > 0)
+
+<table class="formSection">
+	<tr bgcolor="#CBDDEB">
+		<th>$i18n.getString( "dataelement" )</th>
+		
+		#foreach($optionCombo in $optionCombos )
+			<th style="text-align: center;">$encoder.htmlEncode( $optionCombo.name )</th>
+		#end	
+		
+	</tr>
+	
+	#set( $mark = false )
+	#foreach($dataElement in $dataElements )
+		<tr #alternate($mark)>
+			<td><label>$dataElement.getFormNameFallback()</label></td>
+		
+			#foreach($optionCombo in $optionCombos )
+				#set( $valueMapId =  $dataElement.id + ':' + $optionCombo.id )
+				#set( $dataValue = "" )
+				#set( $dataValue = $!dataValueMap.get( $valueMapId ) )
+				<td><input type="text" name="dataelement$valueMapId" id="dataelement$valueMapId" value="$!dataValue" tabindex="$tabIndex" style="text-align: center;" #if($dataElement.type =='number') class="{validate:{number:true}}" #elseif($dataElement.type =='int') class="{validate:{integer:true}}" #elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}" #elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}" #end/></td>
+			#end
+		</tr>
+		#set( $tabIndex = $tabIndex + 1 )
+		#set( $mark = !$mark)	
+	#end
+	
+</table
+	
+#end

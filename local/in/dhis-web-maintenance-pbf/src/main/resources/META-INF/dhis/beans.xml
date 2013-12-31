@@ -99,4 +99,44 @@
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />		
     </bean>
+    
+    
+    
+<!--  PBF Data Entry -->
+
+	<bean id="org.hisp.dhis.pbf.dataentry.PageInitAction" class="org.hisp.dhis.pbf.dataentry.PageInitAction" scope="prototype">
+		<property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />	
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    </bean>    
+    
+  	<!-- Get OrganisationUnit Unit name -->
+    <bean id="org.hisp.dhis.pbf.dataentry.GetOrganisationUnitAction" class="org.hisp.dhis.pbf.dataentry.GetOrganisationUnitAction" scope="prototype">
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    </bean> 
+ 
+	<!-- Get Periods -->
+	 <bean id="org.hisp.dhis.pbf.dataentry.LoadPeriodsAction" class="org.hisp.dhis.pbf.dataentry.LoadPeriodsAction" scope="prototype">   
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
+	 </bean>		
+	
+	<!-- Get Next and Previous Periods -->
+	 <bean id="org.hisp.dhis.pbf.dataentry.LoadNextPrePeriodsAction" class="org.hisp.dhis.pbf.dataentry.LoadNextPrePeriodsAction" scope="prototype">   
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
+	 </bean>	 
+    
+    
+	<!-- Load DataEntry Form -->
+	 <bean id="org.hisp.dhis.pbf.dataentry.LoadDataEntryFormAction" class="org.hisp.dhis.pbf.dataentry.LoadDataEntryFormAction" scope="prototype">   
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>  
+	 </bean>    
+    
+    
+    
+    
 </beans>
