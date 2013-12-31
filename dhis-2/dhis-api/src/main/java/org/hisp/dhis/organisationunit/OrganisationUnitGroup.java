@@ -93,16 +93,16 @@ public class OrganisationUnitGroup
     // Logic
     // -------------------------------------------------------------------------
 
-    public void addOrganisationUnit( OrganisationUnit organisationUnit )
+    public boolean addOrganisationUnit( OrganisationUnit organisationUnit )
     {
         members.add( organisationUnit );
-        organisationUnit.getGroups().add( this );
+        return organisationUnit.getGroups().add( this );
     }
 
-    public void removeOrganisationUnit( OrganisationUnit organisationUnit )
+    public boolean removeOrganisationUnit( OrganisationUnit organisationUnit )
     {
         members.remove( organisationUnit );
-        organisationUnit.getGroups().remove( this );
+        return organisationUnit.getGroups().remove( this );
     }
 
     public void removeAllOrganisationUnits()
