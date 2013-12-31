@@ -978,22 +978,6 @@
 			</result>
 		</action>
 
-		<action name="showProgramsForValidationCriteriaForm"
-			class="org.hisp.dhis.patient.action.validation.GetProgramListForValidationCriteriaAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programsForValidationCriteriaAssociations.vm</param>
-			<param name="javascripts">javascript/program.js</param>
-      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
-		</action>
-
-		<action name="defineProgramsForValidationCriteria"
-			class="org.hisp.dhis.patient.action.validation.DefineProgramListForValidationCriteriaAction">
-			<result name="success" type="redirect">
-				validationCriteria.action
-			</result>
-      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
-		</action>
-
 		<!-- Program Validation -->
 
 		<action name="programValidation"

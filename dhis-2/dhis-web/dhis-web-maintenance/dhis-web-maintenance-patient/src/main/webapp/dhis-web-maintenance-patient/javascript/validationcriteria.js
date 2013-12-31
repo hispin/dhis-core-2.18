@@ -5,10 +5,6 @@ $(function() {
   });
 });
 
-function showProgramsForValidationCriteriaForm( context ) {
-  location.href = 'showProgramsForValidationCriteriaForm.action?criteriaId=' + context.id;
-}
-
 function showUpdateValidationCriteriaForm( context ) {
   location.href = 'showUpdateValidationCriteriaForm.action?id=' + context.id + '&programId=' + getFieldValue('programId');
 }
