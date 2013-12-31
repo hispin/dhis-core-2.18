@@ -99,7 +99,6 @@
 						<select id="reportDateToUse" name="reportDateToUse" class="{validate:{required:true}}" 
 							#if($openAfterEnrollment!='' || $programStage.autoGenerateEvent=='false' ) disabled #elseif($programStage.openAfterEnrollment=='false') disabled #end >
 							<option value=''>[$i18n.getString('please_select')]</option>
-							<option value='registrationDate' #if($programStage.reportDateToUse=='registrationDate') selected #end >$i18n.getString("registration_date")</option>
 							<option value='dateOfIncident' #if($programStage.reportDateToUse=='dateOfIncident') selected #end >$i18n.getString("date_of_incident")</option>
 							<option value='enrollmentDate' #if($programStage.reportDateToUse=='enrollmentDate') selected #end >$i18n.getString("date_of_enrollment")</option>
 						</select>

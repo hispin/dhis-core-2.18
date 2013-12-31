@@ -80,7 +80,7 @@ public class DelRegistrationFormAction
         throws Exception
     {
         PatientRegistrationForm registrationForm = null;
-        
+
         if ( id != null )
         {
             Program program = programService.getProgram( id );
@@ -91,9 +91,12 @@ public class DelRegistrationFormAction
         {
             registrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
         }
-        
-        patientRegistrationFormService.deletePatientRegistrationForm( registrationForm );
 
+        if ( registrationForm != null )
+        {
+            patientRegistrationFormService.deletePatientRegistrationForm( registrationForm );
+        }
+        
         return SUCCESS;
     }
 }

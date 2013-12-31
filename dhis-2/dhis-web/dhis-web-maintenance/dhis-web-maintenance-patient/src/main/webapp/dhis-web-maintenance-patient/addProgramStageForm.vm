@@ -97,7 +97,6 @@
 			<td>
 				<select id="reportDateToUse" name="reportDateToUse" class="{validate:{required:true}}" disabled>
 					<option value=''>[$i18n.getString('please_select')]</option>
-					<option value='registrationDate'>$i18n.getString("registration_date")</option>
 					<option value='dateOfIncident'>$i18n.getString("date_of_incident")</option>
 					<option value='enrollmentDate'>$i18n.getString("date_of_enrollment")</option>
 				</select>
