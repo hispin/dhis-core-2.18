@@ -388,6 +388,11 @@ public class JdbcEventAnalyticsManager
                 sql += "and " + getColumn( filter ) + " " + filter.getSqlOperator() + " " + getSqlFilter( filter ) + " ";
             }
         }
+        
+        if ( params.isCoordinatesOnly() )
+        {
+            sql += "and (longitude is not null and latitude is not null) ";
+        }
 
         return sql;
     }

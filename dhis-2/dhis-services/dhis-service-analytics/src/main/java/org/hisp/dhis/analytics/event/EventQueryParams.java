@@ -80,6 +80,8 @@ public class EventQueryParams
     
     private Integer limit;
     
+    private boolean coordinatesOnly;
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -121,6 +123,7 @@ public class EventQueryParams
         params.pageSize = this.pageSize;
         params.sortOrder = this.sortOrder;
         params.limit = this.limit;
+        params.coordinatesOnly = this.coordinatesOnly;
         
         params.periodType = this.periodType;
         params.aggregate = this.aggregate;
@@ -344,6 +347,16 @@ public class EventQueryParams
     public void setLimit( Integer limit )
     {
         this.limit = limit;
+    }
+
+    public boolean isCoordinatesOnly()
+    {
+        return coordinatesOnly;
+    }
+
+    public void setCoordinatesOnly( boolean coordinatesOnly )
+    {
+        this.coordinatesOnly = coordinatesOnly;
     }
 
     public String getPeriodType()
