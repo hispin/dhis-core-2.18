@@ -920,31 +920,7 @@
       <ref bean="org.hisp.dhis.program.ProgramService" />
     </property>
   </bean>
-
-  <bean
-    id="org.hisp.dhis.patient.action.validation.GetProgramListForValidationCriteriaAction"
-    class="org.hisp.dhis.patient.action.validation.GetProgramListForValidationCriteriaAction"
-    scope="prototype">
-    <property name="validationCriteriaService">
-      <ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
-    </property>
-    <property name="programService">
-      <ref bean="org.hisp.dhis.program.ProgramService" />
-    </property>
-  </bean>
-
-  <bean
-    id="org.hisp.dhis.patient.action.validation.DefineProgramListForValidationCriteriaAction"
-    class="org.hisp.dhis.patient.action.validation.DefineProgramListForValidationCriteriaAction"
-    scope="prototype">
-    <property name="validationCriteriaService">
-      <ref bean="org.hisp.dhis.validation.ValidationCriteriaService" />
-    </property>
-    <property name="programService">
-      <ref bean="org.hisp.dhis.program.ProgramService" />
-    </property>
-  </bean>
-
+  
   <bean
     id="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction"
     class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction"
