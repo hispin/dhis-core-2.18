@@ -38,6 +38,3 @@
 		</td>		
 	</tr>
 #end
-
-<input type='hidden' id='useBirthDateAsEnrollmentDate' value='$program.useBirthDateAsEnrollmentDate'>
-<input type='hidden' id='useBirthDateAsIncidentDate' value='$program.useBirthDateAsIncidentDate'>

@@ -1159,17 +1159,6 @@ function programOnchange( programId )
         $('#identifierAndAttributeDiv').load("getPatientIdentifierAndAttribute.action", {
 			id:program.val()
 		}, function(){
-			if(getFieldValue('useBirthDateAsEnrollmentDate')=='true'){ 
-				setFieldValue("enrollmentDateField", birthDate)
-			}
-			
-			if(getFieldValue('useBirthDateAsIncidentDate')=='true'){ 
-				setFieldValue("dateOfIncidentField", birthDate)
-			}
-			else{
-				setFieldValue("dateOfIncidentField", "");
-			}
-			
             $("#dateOfIncidentField").datepicker("destroy");
             $("#enrollmentDateField").datepicker("destroy");
 
