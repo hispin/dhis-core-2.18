@@ -1,31 +1,32 @@
 <script>
-	jQuery(document).ready(	function(){
-		jQuery("#programIdAddPatient option").each(function(){
-			var item = jQuery(this);
-			if( item.attr('type')!=1 && item.val()!='' ){
-				item.remove();
-			}
-		});
-		if(jQuery("#programIdAddPatient option").length==1)
-		{
-			jQuery("#programIdAddPatient [value=]").remove();
-		}
-		
-		hideById('addPatientBtn');
-		var i18n_list_events = '$encoder.jsEscape( $i18n.getString( "list_events" ) , "'")';
-		setFieldValue('listPatientBtn', i18n_list_events);
-		showById('dueDateTR');
-		showById('programStageAddPatientTR');
-		showById('scheduleVisitTR');
-		showById('advancedSearchBtn');
-		
-		jQuery("#searchObjectId [value=prg]").remove();
-		registration = false;
-		
-		jQuery('#searchByIdTR').remove();
-		jQuery('#listPatientBtnTD').attr('rowspan',5);
-		jQuery('#listPatientBtnTD').attr('valign','bottom');
-	});	
+    jQuery(document).ready(function() {
+        jQuery("#programIdAddPatient option").each(function() {
+            var item = jQuery(this);
+            if( item.attr('type') != 1 && item.val() != '' ) {
+                item.remove();
+            }
+        });
+
+        if( jQuery("#programIdAddPatient option").length == 1 ) {
+            jQuery("#programIdAddPatient [value=]").remove();
+        }
+
+        disable('scheduledVisitDays');
+        hideById('addPatientBtn');
+        var i18n_list_events = '$encoder.jsEscape( $i18n.getString( "list_events" ) , "'")';
+        setFieldValue('listPatientBtn', i18n_list_events);
+        showById('dueDateTR');
+        showById('programStageAddPatientTR');
+        showById('scheduleVisitTR');
+        showById('advancedSearchBtn');
+
+        jQuery("#searchObjectId [value=prg]").remove();
+        registration = false;
+
+        jQuery('#searchByIdTR').remove();
+        jQuery('#listPatientBtnTD').attr('rowspan', 5);
+        jQuery('#listPatientBtnTD').attr('valign', 'bottom');
+    });
 </script>
 
 <h3 id='mainLinkLbl'>$i18n.getString( "multiple_individual_records_management" ) #openHelp('multiple_individual_records')</h3>
