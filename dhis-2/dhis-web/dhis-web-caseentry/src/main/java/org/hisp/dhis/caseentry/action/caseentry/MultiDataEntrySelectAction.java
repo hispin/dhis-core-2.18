@@ -119,7 +119,6 @@ public class MultiDataEntrySelectAction
         if ( organisationUnit != null )
         {
             programs = programService.getProgramsByCurrentUser( organisationUnit );
-            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, organisationUnit ) );
             programs.removeAll( programService
                 .getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit ) );
         }
