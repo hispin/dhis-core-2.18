@@ -190,6 +190,7 @@ public class DataQueryParams
         params.skipMeta = this.skipMeta;
         params.hierarchyMeta = this.hierarchyMeta;
         params.ignoreLimit = this.ignoreLimit;
+        params.hideEmptyRows = this.hideEmptyRows;
         
         params.partitions = new Partitions( this.partitions );
         params.periodType = this.periodType;
