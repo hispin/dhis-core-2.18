@@ -214,6 +214,11 @@ public interface Grid
     Grid removeColumn( GridHeader header );
     
     /**
+     * Removes the current row from the grid.
+     */
+    Grid removeCurrentWriteRow();
+    
+    /**
      * Limits the grid from top by the given argument number.
      * 
      * @param limit the top limit, must be greater than zero to have an effect.

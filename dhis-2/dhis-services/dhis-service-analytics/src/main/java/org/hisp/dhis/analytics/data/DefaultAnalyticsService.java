@@ -454,6 +454,7 @@ public class DefaultAnalyticsService
         addIfEmpty( reportTable.getGridRows() );
         
         reportTable.setTitle( IdentifiableObjectUtils.join( params.getFilterItems() ) );
+        reportTable.setHideEmptyRows( params.isHideEmptyRows() );
 
         return reportTable.getGrid( new ListGrid(), valueMap, false );
     }
@@ -586,8 +587,8 @@ public class DefaultAnalyticsService
     }
     
     @Override
-    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, 
-        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, I18nFormat format )
+    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType, 
+        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, boolean hideEmptyRows, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
@@ -630,6 +631,7 @@ public class DefaultAnalyticsService
         params.setSkipMeta( skipMeta );
         params.setSkipRounding( skipRounding );
         params.setHierarchyMeta( hierarchyMeta );
+        params.setHideEmptyRows( hideEmptyRows );
 
         return params;
     }

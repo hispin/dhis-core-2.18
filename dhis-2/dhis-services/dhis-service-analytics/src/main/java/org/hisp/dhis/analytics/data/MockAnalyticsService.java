@@ -80,8 +80,8 @@ public class MockAnalyticsService
     }
 
     @Override
-    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams,
-        AggregationType aggregationType, String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, I18nFormat format )
+    public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType, 
+        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean hideEmptyRows, boolean ignoreLimit, I18nFormat format )
     {
         throw new NotImplementedException();
     }
