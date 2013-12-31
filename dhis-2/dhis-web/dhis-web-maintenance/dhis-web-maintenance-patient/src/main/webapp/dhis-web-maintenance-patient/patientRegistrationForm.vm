@@ -16,8 +16,8 @@
 		<th>$i18n.getString( "program" )</th>
 	  </tr>
 	</thead>
-	<tbody class="list">
-		<tr id="tr" data-id="" data-uid="" 
+	<tbody id="list">
+		<tr id="tr0" data-id="" data-uid="" 
 			data-type="PatientRegistrationForm" 
 			data-name="$i18n.getString( 'no_program' )">
 				#if($mapRegistrationForms.get('0'))
@@ -26,8 +26,6 @@
 					<td>$i18n.getString('no_program')</td> 
 				#end
 		</tr>
-		
-		<tbody id="list">
 		#foreach($program in $programs)
 			<tr id="tr${program.id}" 
 				data-id="$!program.id" data-uid="$!program.uid" 
@@ -39,9 +37,8 @@
 				#else
 					<td>$program.name</td>
 				#end
+			</tr>
 		#end
-		 
-		</tbody>
 	</tbody>
 </table>
 
