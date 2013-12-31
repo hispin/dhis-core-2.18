@@ -25,6 +25,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 			}
 			else if(count>1){
 				jQuery( '#programIdAddPatient').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
+				enable('addPatientBtn');
 			}
 			
 			enableBtn();

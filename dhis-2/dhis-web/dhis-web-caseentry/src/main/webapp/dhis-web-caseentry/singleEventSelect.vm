@@ -1,17 +1,25 @@
 <script>
 	jQuery(document).ready(	function(){
-		jQuery("#programIdAddPatient option").each(function(){
-			var item = jQuery(this);
-			if(item.attr('type')!=2 ){
-				item.remove();
-			}
-		});
-		if(jQuery("#programIdAddPatient option").length==1)
+		jQuery("#programIdAddPatient option").each(function() {
+            var item = jQuery(this);
+            if( item.attr('type') != 2 ) {
+                item.remove();
+            }
+        });
+		jQuery("#programIdAddPatient [value=]").remove();
+	
+		if(jQuery("#programIdAddPatient option").length==0)
 		{
-			jQuery("#programIdAddPatient [value=]").remove();
 			jQuery( '#programIdAddPatient').append( '<option value="" type="">' + i18n_none_program + '</option>' );
+			disable('listPatientBtn');
+			disable('addPatientBtn');
+		}
+		else{
+			enable('listPatientBtn');
+			enable('addPatientBtn');
 		}
 		
+		showById('advancedSearchBtn');
 		disable('advancedSearchBtn');
 		hideById('removeEventLink');
 		setFieldValue('isSearchByProgram', true);
@@ -19,7 +27,6 @@
 		$("#searchObjectId option[value='prg']").remove();
 		setFieldValue('startDueDate','');
 		setFieldValue('endDueDate','');
-		showById('advancedSearchBtn');
 	});
 </script>
 
