@@ -117,7 +117,7 @@ public class GetGeoJsonAction
         
         ouParams.add( paramString.substring( 0, paramString.length() ) );
         
-        DataQueryParams params = analyticsService.getFromUrl( ouParams, null, AggregationType.SUM, null, false, false, false, false, null );
+        DataQueryParams params = analyticsService.getFromUrl( ouParams, null, AggregationType.SUM, null, false, false, false, false, false, null );
         
         DimensionalObject dim = params.getDimension( DimensionalObject.ORGUNIT_DIM_ID );
         

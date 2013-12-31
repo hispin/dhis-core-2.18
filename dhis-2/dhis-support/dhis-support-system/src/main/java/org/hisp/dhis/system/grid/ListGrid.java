@@ -415,6 +415,15 @@ public class ListGrid
         return this;
     }
 
+    public Grid removeCurrentWriteRow()
+    {
+        grid.remove( currentRowWriteIndex );
+        
+        currentRowWriteIndex--;
+        
+        return this;
+    }
+    
     public Grid limitGrid( int limit )
     {
         if ( limit < 0 )

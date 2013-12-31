@@ -661,6 +661,8 @@ public class ReportTable
             // Row data values
             // -----------------------------------------------------------------
 
+            boolean hasValue = false;
+            
             for ( List<NameableObject> column : gridColumns )
             {
                 String key = getIdentifer( column, row );
@@ -668,6 +670,13 @@ public class ReportTable
                 Double value = valueMap.get( key );
                 
                 grid.addValue( value );
+                
+                hasValue = !hasValue ? value != null : true;
+            }
+            
+            if ( hideEmptyRows && !hasValue )
+            {
+                grid.removeCurrentWriteRow();
             }
         }
 

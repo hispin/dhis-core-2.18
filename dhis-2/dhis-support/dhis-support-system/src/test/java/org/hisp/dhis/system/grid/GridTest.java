@@ -255,6 +255,30 @@ public class GridTest
         
         assertEquals( 2, gridA.getWidth() );
     }
+    
+    @Test
+    public void testRemoveCurrentWriteRow()
+    {
+        assertEquals( 4, gridA.getRows().size() );
+        
+        gridA.addRow();
+        gridA.addValue( 51 );
+        gridA.addValue( 52 );
+        gridA.addValue( 53 );
+
+        assertEquals( 5, gridA.getRows().size() );
+        
+        gridA.removeCurrentWriteRow();
+
+        assertEquals( 4, gridA.getRows().size() );
+
+        gridA.addRow();
+        gridA.addValue( 51 );
+        gridA.addValue( 52 );
+        gridA.addValue( 53 );
+
+        assertEquals( 5, gridA.getRows().size() );        
+    }
 
     @Test
     public void testLimit()
