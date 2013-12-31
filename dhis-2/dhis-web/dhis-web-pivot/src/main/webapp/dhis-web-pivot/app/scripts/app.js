@@ -2993,7 +2993,7 @@ Ext.onReady( function() {
 				var store = dataElementAvailableStore,
 					detailLevel = dataElementDetailLevel.getValue(),
 					value = this.getValue();
-                    
+
 				if (value !== null) {
 					if (detailLevel === dimConf.dataElement.objectName) {
 						store.setTotalsProxy(value);
@@ -4653,6 +4653,7 @@ Ext.onReady( function() {
 				url += '&tableLayout=true';
 				url += '&columns=' + columnNames.join(';');
 				url += '&rows=' + rowNames.join(';');
+				url += ns.app.layout.hideEmptyRows ? '&hideEmptyRows=true' : '';
 
 				window.open(url, isNewTab ? '_blank' : '_top');
 			}
