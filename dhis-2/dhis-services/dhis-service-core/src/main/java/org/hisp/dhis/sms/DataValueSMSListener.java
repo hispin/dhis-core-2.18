@@ -97,15 +97,18 @@ public class DataValueSMSListener
     {
         String message = sms.getText();
         String commandString = null;
-        if ( message.indexOf( " " ) > 0 )
+
+        for ( int i = 0; i < message.length(); i++ )
         {
-            commandString = message.substring( 0, message.indexOf( " " ) );
-            message = message.substring( commandString.length() );
+            String c = String.valueOf( message.charAt( i ) );
+            if ( c.matches( "\\W" ) )
+            {
+                commandString = message.substring( 0, i );
+                message = message.substring( commandString.length() + 1 );
+                break;
+            }
         }
-        else
-        {
-            commandString = message;
-        }
+
         return smsCommandService.getSMSCommand( commandString, ParserType.KEY_VALUE_PARSER ) != null;
     }
 
@@ -115,15 +118,18 @@ public class DataValueSMSListener
     {
         String message = sms.getText();
         String commandString = null;
-        if ( message.indexOf( " " ) > 0 )
+
+        for ( int i = 0; i < message.length(); i++ )
         {
-            commandString = message.substring( 0, message.indexOf( " " ) );
-            message = message.substring( commandString.length() );
+            String c = String.valueOf( message.charAt( i ) );
+            if ( c.matches( "\\W" ) )
+            {
+                commandString = message.substring( 0, i );
+                message = message.substring( commandString.length() + 1 );
+                break;
+            }
         }
-        else
-        {
-            commandString = message;
-        }
+
         SMSCommand smsCommand = smsCommandService.getSMSCommand( commandString, ParserType.KEY_VALUE_PARSER );
         Map<String, String> parsedMessage = this.parse( message, smsCommand );
 
@@ -151,7 +157,7 @@ public class DataValueSMSListener
         {
             if ( parsedMessage.containsKey( code.getCode().toUpperCase() ) )
             {
-                //potential bugs [noted by Lai]
+                // potential bugs [noted by Lai]
                 valueStored = storeDataValue( senderPhoneNumber, orgUnit, parsedMessage, code, smsCommand, date,
                     smsCommand.getDataset() );
             }
@@ -336,11 +342,11 @@ public class DataValueSMSListener
         DataValue dv = dataValueService.getDataValue( code.getDataElement(), period, orgunit, optionCombo );
 
         String value = parsedMessage.get( upperCaseCode );
-        
+
         Set<SMSSpecialCharacter> specialCharacters = command.getSpecialCharacters();
-        
-        //Check for special character cases
-        for( SMSSpecialCharacter each: specialCharacters )
+
+        // Check for special character cases
+        for ( SMSSpecialCharacter each : specialCharacters )
         {
             if ( each.getName().equalsIgnoreCase( value ) )
             {
@@ -348,7 +354,7 @@ public class DataValueSMSListener
                 break;
             }
         }
-        
+
         if ( !StringUtils.isEmpty( value ) )
         {
             boolean newDataValue = false;
@@ -377,7 +383,7 @@ public class DataValueSMSListener
             else if ( StringUtils.equals( dv.getDataElement().getType(), DataElement.VALUE_TYPE_INT ) )
             {
                 try
-                {    
+                {
                     Integer.parseInt( value );
                 }
                 catch ( NumberFormatException e )

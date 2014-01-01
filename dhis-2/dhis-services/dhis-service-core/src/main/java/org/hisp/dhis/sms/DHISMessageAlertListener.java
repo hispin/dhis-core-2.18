@@ -74,14 +74,16 @@ public class DHISMessageAlertListener
     {
         String message = sms.getText();
         String commandString = null;
-        if ( message.indexOf( " " ) > 0 )
+
+        for ( int i = 0; i < message.length(); i++ )
         {
-            commandString = message.substring( 0, message.indexOf( " " ) );
-            message = message.substring( commandString.length() );
-        }
-        else
-        {
-            commandString = message;
+            String c = String.valueOf( message.charAt( i ) );
+            if ( c.matches( "\\W" ) )
+            {
+                commandString = message.substring( 0, i );
+                message = message.substring( commandString.length() + 1 );
+                break;
+            }
         }
 
         return smsCommandService.getSMSCommand( commandString, ParserType.ALERT_PARSER ) != null;
@@ -93,14 +95,16 @@ public class DHISMessageAlertListener
     {
         String message = sms.getText();
         String commandString = null;
-        if ( message.indexOf( " " ) > 0 )
+
+        for ( int i = 0; i < message.length(); i++ )
         {
-            commandString = message.substring( 0, message.indexOf( " " ) );
-            message = message.substring( commandString.length() );
-        }
-        else
-        {
-            commandString = message;
+            String c = String.valueOf( message.charAt( i ) );
+            if ( c.matches( "\\W" ) )
+            {
+                commandString = message.substring( 0, i );
+                message = message.substring( commandString.length() + 1 );
+                break;
+            }
         }
 
         SMSCommand smsCommand = smsCommandService.getSMSCommand( commandString, ParserType.ALERT_PARSER );
