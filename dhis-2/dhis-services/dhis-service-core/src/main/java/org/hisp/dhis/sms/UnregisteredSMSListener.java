@@ -61,7 +61,7 @@ public class UnregisteredSMSListener
     private SmsMessageSender smsMessageSender;
 
     private IncomingSmsService incomingSmsService;
-    
+
     public static final String USER_NAME = "anonymous";
 
     @Transactional
@@ -70,14 +70,16 @@ public class UnregisteredSMSListener
     {
         String message = sms.getText();
         String commandString = null;
-        if ( message.indexOf( " " ) > 0 )
+
+        for ( int i = 0; i < message.length(); i++ )
         {
-            commandString = message.substring( 0, message.indexOf( " " ) );
-            message = message.substring( commandString.length() );
-        }
-        else
-        {
-            commandString = message;
+            String c = String.valueOf( message.charAt( i ) );
+            if ( c.matches( "\\W" ) )
+            {
+                commandString = message.substring( 0, i );
+                message = message.substring( commandString.length() + 1 );
+                break;
+            }
         }
 
         return smsCommandService.getSMSCommand( commandString, ParserType.UNREGISTERED_PARSER ) != null;
@@ -89,14 +91,16 @@ public class UnregisteredSMSListener
     {
         String message = sms.getText();
         String commandString = null;
-        if ( message.indexOf( " " ) > 0 )
+
+        for ( int i = 0; i < message.length(); i++ )
         {
-            commandString = message.substring( 0, message.indexOf( " " ) );
-            message = message.substring( commandString.length() );
-        }
-        else
-        {
-            commandString = message;
+            String c = String.valueOf( message.charAt( i ) );
+            if ( c.matches( "\\W" ) )
+            {
+                commandString = message.substring( 0, i );
+                message = message.substring( commandString.length() + 1 );
+                break;
+            }
         }
 
         SMSCommand smsCommand = smsCommandService.getSMSCommand( commandString, ParserType.UNREGISTERED_PARSER );
@@ -139,16 +143,16 @@ public class UnregisteredSMSListener
                     user.setSurname( USER_NAME );
                     user.setFirstName( USER_NAME );
                     user.setUserCredentials( usercredential );
-                    
+
                     userService.addUserCredentials( usercredential );
                     userService.addUser( user );
                     anonymousUser = userService.getUserCredentialsByUsername( "anonymous" );
                 }
-                
+
                 // forward to user group by SMS, E-mail, DHIS conversation
                 messageService.sendMessage( smsCommand.getName(), message, null, receivers, anonymousUser.getUser(),
                     false, false );
-                
+
                 // confirm SMS was received and forwarded completely
                 Set<User> feedbackList = new HashSet<User>();
                 User sender = new User();
@@ -189,5 +193,5 @@ public class UnregisteredSMSListener
     {
         this.incomingSmsService = incomingSmsService;
     }
-    
+
 }
