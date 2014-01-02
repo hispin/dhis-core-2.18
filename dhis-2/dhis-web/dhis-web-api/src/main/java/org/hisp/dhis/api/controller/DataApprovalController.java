@@ -200,7 +200,7 @@ public class DataApprovalController
         
         if ( !DataApprovalState.READY_FOR_APPROVAL.equals( state ) )
         {
-            ContextUtils.conflictResponse( response, "Data is not ready for approval: " + state );
+            ContextUtils.conflictResponse( response, "Data is not ready for approval, current state is: " + state );
             return;
         }
 

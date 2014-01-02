@@ -34,6 +34,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
 /**
@@ -110,6 +111,20 @@ public class ProgramDeletionHandler
         for ( Program program : programs )
         {
             if ( program.getOrganisationUnits().remove( unit ) )
+            {
+                programService.updateProgram( program );
+            }
+        }
+    }
+    
+    @Override
+    public void deleteUserAuthorityGroup( UserAuthorityGroup group )
+    {
+        Collection<Program> programs = programService.getAllPrograms();
+
+        for ( Program program : programs )
+        {
+            if ( program.getUserRoles().remove( group ) )
             {
                 programService.updateProgram( program );
             }
