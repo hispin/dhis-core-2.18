@@ -451,10 +451,10 @@ public class DefaultProgramInstanceService
         //Get patient comments for the program instance
         
         Set<PatientComment> patientComments = programInstance.getPatientComments();
-        
-        for( PatientComment patientComment : patientComments ){
-        	
-        	grid.addRow();
+
+        for ( PatientComment patientComment : patientComments )
+        {
+            grid.addRow();
             grid.addValue( i18n.getString( "comment" ) + " " + i18n.getString( "on" ) + " "
                 + format.formatDateTime( patientComment.getCreatedDate() ) );
             grid.addValue( patientComment.getCommentText() );

@@ -383,14 +383,16 @@ public class ProgramInstance
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Set<PatientComment> getPatientComments() {
-		return patientComments;
-	}
+    public Set<PatientComment> getPatientComments()
+    {
+        return patientComments;
+    }
 
-	public void setPatientComments(Set<PatientComment> patientComments) {
-		this.patientComments = patientComments;
-	}
-    
+    public void setPatientComments( Set<PatientComment> patientComments )
+    {
+        this.patientComments = patientComments;
+    }
+
     public List<MessageConversation> getMessageConversations()
     {
         return messageConversations;

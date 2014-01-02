@@ -48,29 +48,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping( value = PersonAttributeTypeController.RESOURCE_PATH )
-public class PersonAttributeTypeController extends AbstractCrudController<PatientAttribute>
+public class PersonAttributeTypeController
+    extends AbstractCrudController<PatientAttribute>
 {
     public static final String RESOURCE_PATH = "/personAttributeTypes";
-    
+
     @Autowired
     private PatientAttributeService patientAttributeService;
-    
+
     @Autowired
     private ProgramService programService;
-    
-    
+
     @Override
     protected List<PatientAttribute> getEntityList( WebMetaData metaData, WebOptions options )
     {
-        List<PatientAttribute> entityList = new ArrayList<PatientAttribute>();      
+        List<PatientAttribute> entityList = new ArrayList<PatientAttribute>();
 
-        boolean withoutPrograms = options.getOptions().containsKey( "withoutPrograms" ) && Boolean.parseBoolean( options.getOptions().get( "withoutPrograms" ) );        
+        boolean withoutPrograms = options.getOptions().containsKey( "withoutPrograms" )
+            && Boolean.parseBoolean( options.getOptions().get( "withoutPrograms" ) );
 
         if ( withoutPrograms )
         {
-        	entityList = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesWithoutProgram() );
+            entityList = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesWithoutProgram() );
         }
-        
+
         else if ( options.getOptions().containsKey( "program" ) )
         {
             String programId = options.getOptions().get( "program" );
@@ -81,7 +82,7 @@ public class PersonAttributeTypeController extends AbstractCrudController<Patien
                 entityList = new ArrayList<PatientAttribute>( program.getPatientAttributes() );
             }
         }
-        
+
         else if ( options.hasPaging() )
         {
             int count = manager.getCount( getEntityClass() );
@@ -89,16 +90,15 @@ public class PersonAttributeTypeController extends AbstractCrudController<Patien
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
-            entityList = new ArrayList<PatientAttribute>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+            entityList = new ArrayList<PatientAttribute>( manager.getBetween( getEntityClass(), pager.getOffset(),
+                pager.getPageSize() ) );
         }
-        
+
         else
         {
             entityList = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
         }
 
-        return entityList;      
-        
-    }
+        return entityList;
     
 }

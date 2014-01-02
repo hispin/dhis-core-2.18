@@ -579,14 +579,14 @@ public abstract class AbstractEventService
         
         Collection<PatientComment> patientComments = programInstance.getPatientComments();
         
-        for( PatientComment patientComment : patientComments )
+        for ( PatientComment patientComment : patientComments )
         {   
-        	Note note = new Note();
-        	note.setValue( patientComment.getCommentText() );
-        	note.setStoredBy( patientComment.getCreator() );
-        	note.setStoredDate( patientComment.getCreatedDate().toString() );
-        	event.getNotes().add( note );
-        }       
+            Note note = new Note();
+            note.setValue( patientComment.getCommentText() );
+            note.setStoredBy( patientComment.getCreator() );
+            note.setStoredDate( patientComment.getCreatedDate().toString() );
+            event.getNotes().add( note );
+        }    
 
         return event;
     }
@@ -807,18 +807,18 @@ public abstract class AbstractEventService
     
     private void savePatientCommentFromEvent(ProgramInstance programInstance, Event event, String storedBy)
     {
-    	for( Note note : event.getNotes() ) //only one note is expected?
+    	for ( Note note : event.getNotes() )
         {
-        	PatientComment patientComment = new PatientComment();
-        	patientComment.setCreator( storedBy );
-        	patientComment.setCreatedDate( new Date() );
-        	patientComment.setCommentText( note.getValue() );    
-        	
-        	patientCommentService.addPatientComment( patientComment );
-        	
-        	programInstance.getPatientComments().add( patientComment );
-        	
-        	programInstanceService.updateProgramInstance( programInstance );
+    	    PatientComment patientComment = new PatientComment();
+    	    patientComment.setCreator( storedBy );
+    	    patientComment.setCreatedDate( new Date() );
+    	    patientComment.setCommentText( note.getValue() );    
+        
+    	    patientCommentService.addPatientComment( patientComment );
+        
+    	    programInstance.getPatientComments().add( patientComment );
+        
+    	    programInstanceService.updateProgramInstance( programInstance );
         }    	
     }
 }

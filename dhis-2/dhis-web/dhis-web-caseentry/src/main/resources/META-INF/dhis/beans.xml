@@ -1034,8 +1034,6 @@
                 <property name="programInstanceService"
 			ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="patientCommentService"
-			ref="org.hisp.dhis.patientcomment.PatientCommentService" />
 	</bean>
 
 	<bean

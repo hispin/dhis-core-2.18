@@ -140,19 +140,19 @@ public class DefaultPatientAttributeService
         return i18n( i18nService, patientAttributeStore.getByDisplayOnVisitSchedule( displayOnVisitSchedule ) );
     }
 
-	public Collection<PatientAttribute> getPatientAttributesWithoutProgram() {
-		
-		Collection<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-		Collection<Program> programs = new ArrayList<Program>();
-		
-		attributes = patientAttributeStore.getAll();
-		programs = programService.getAllPrograms();
-		
-		for( Program p : programs ){
-			attributes.removeAll( p.getPatientAttributes() );
-		}
-		
-		return i18n(i18nService, attributes);		
-	}
-   
+    public Collection<PatientAttribute> getPatientAttributesWithoutProgram()
+    {
+        Collection<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+        Collection<Program> programs = new ArrayList<Program>();
+
+        attributes = patientAttributeStore.getAll();
+        programs = programService.getAllPrograms();
+
+        for ( Program p : programs )
+        {
+            attributes.removeAll( p.getPatientAttributes() );
+        }
+
+        return i18n( i18nService, attributes );
+    }   
 }

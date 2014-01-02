@@ -64,22 +64,22 @@ public class ProgramInstanceDeletionHandler
     {
         this.patientDataValueService = patientDataValueService;
     }
-    
-    private PatientCommentService patientCommentService;    
 
-    public void setPatientCommentService(PatientCommentService patientCommentService) 
+    private PatientCommentService patientCommentService;
+
+    public void setPatientCommentService( PatientCommentService patientCommentService )
     {
-		this.patientCommentService = patientCommentService;
-	}
-    
-    private PatientAttributeValueService patientAttributeValueService;    
+        this.patientCommentService = patientCommentService;
+    }
 
-	public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-	{
-		this.patientAttributeValueService = patientAttributeValueService;
-	}
+    private PatientAttributeValueService patientAttributeValueService;
 
-	public ProgramStageDataElementService programStageDEService;
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
+
+    public ProgramStageDataElementService programStageDEService;
 
     public void setProgramStageDEService( ProgramStageDataElementService programStageDEService )
     {
@@ -106,42 +106,43 @@ public class ProgramInstanceDeletionHandler
     @Override
     public void deletePatient( Patient patient )
     {
-    	for( ProgramInstance programInstance : patient.getProgramInstances() )
-    	{    		
-    		for( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
-    		{
-    			for( PatientDataValue patientDataValue : patientDataValueService.getPatientDataValues(programStageInstance) )
-    			{        				
-    				patientDataValueService.deletePatientDataValue( patientDataValue );
-    			}
-    			
-     			programStageInstanceService.deleteProgramStageInstance( programStageInstance );        			
-    		}
-    		
-    		for ( PatientComment patientComment : programInstance.getPatientComments() )
+        for ( ProgramInstance programInstance : patient.getProgramInstances() )
+        {
+            for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
             {
-                patientCommentService.deletePatientComment(patientComment);
+                for ( PatientDataValue patientDataValue : patientDataValueService.getPatientDataValues( programStageInstance ) )
+                {
+                    patientDataValueService.deletePatientDataValue( patientDataValue );
+                }
+
+                programStageInstanceService.deleteProgramStageInstance( programStageInstance );
             }
-    		
-    		for( PatientAttribute patientAttribute : programInstance.getProgram().getPatientAttributes() )
-    		{
-    			PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
-        		
-        		if( patientAttributeValue != null )
-        		{
-        			patientAttributeValueService.deletePatientAttributeValue(patientAttributeValue);
-        		}
-    		}
-    		
-    		programInstanceService.deleteProgramInstance( programInstance );        		
-    	}
+
+            for ( PatientComment patientComment : programInstance.getPatientComments() )
+            {
+                patientCommentService.deletePatientComment( patientComment );
+            }
+
+            for ( PatientAttribute patientAttribute : programInstance.getProgram().getPatientAttributes() )
+            {
+                PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue(
+                    patient, patientAttribute );
+
+                if ( patientAttributeValue != null )
+                {
+                    patientAttributeValueService.deletePatientAttributeValue( patientAttributeValue );
+                }
+            }
+
+            programInstanceService.deleteProgramInstance( programInstance );
+        }
     }
 
     @Override
     public void deleteProgram( Program program )
     {
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( program );
-        for( ProgramInstance programInstance : programInstances)
+        for ( ProgramInstance programInstance : programInstances )
         {
             programInstanceService.deleteProgramInstance( programInstance );
         }
