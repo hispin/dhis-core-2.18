@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
-import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.metadata.ExportService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
@@ -43,6 +42,7 @@ import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -133,7 +133,7 @@ public class MetaDataController
     {
         String accept = request.getHeader( "Accept" );
 
-        if ( accept != null && accept.equalsIgnoreCase( "application/json" ) )
+        if ( isJson( accept ) )
         {
             exportZippedJSON( parameters, response );
         }
@@ -183,7 +183,7 @@ public class MetaDataController
     {
         String accept = request.getHeader( "Accept" );
 
-        if ( accept != null && accept.equalsIgnoreCase( "application/json" ) )
+        if ( isJson( accept ) )
         {
             exportGZippedJSON( parameters, response );
         }
@@ -367,5 +367,19 @@ public class MetaDataController
 
         response.setHeader( "Location", ContextUtils.getRootPath( request ) + "/system/tasks/" + TaskCategory.METADATA_IMPORT );
         response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+    }
+
+    //--------------------------------------------------------------------------
+    // Supportive Methods
+    //--------------------------------------------------------------------------
+
+    public boolean isJson( String accept )
+    {
+        return accept != null && MediaType.parseMediaType( accept ).isCompatibleWith( MediaType.APPLICATION_JSON );
+    }
+
+    public boolean isXml( String accept )
+    {
+        return accept != null && MediaType.parseMediaType( accept ).isCompatibleWith( MediaType.APPLICATION_XML );
     }
 }
