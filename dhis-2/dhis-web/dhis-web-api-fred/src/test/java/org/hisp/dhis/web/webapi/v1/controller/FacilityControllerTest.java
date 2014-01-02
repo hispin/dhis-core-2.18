@@ -29,13 +29,14 @@ package org.hisp.dhis.web.webapi.v1.controller;
  */
 
 import org.hamcrest.Matchers;
+import org.hisp.dhis.IntegrationTest;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.FredSpringWebTest;
 import org.hisp.dhis.web.webapi.v1.domain.Facility;
 import org.hisp.dhis.web.webapi.v1.utils.OrganisationUnitToFacilityConverter;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Ignore
+@Category( IntegrationTest.class )
 public class FacilityControllerTest extends FredSpringWebTest
 {
     @Autowired

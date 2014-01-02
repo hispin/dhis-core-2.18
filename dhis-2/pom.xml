@@ -10,6 +10,10 @@
   <name>DHIS 2</name>
   <url>http://dhis2.org</url>
 
+  <prerequisites>
+    <maven>2.2.1</maven>
+  </prerequisites>
+
   <description>
     The District Health Information System deals with registering,
     aggregating and reporting statistical health data. The goal is to allow users to analyze
@@ -137,6 +141,57 @@
     </plugins>
   </reporting>
 
+
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.16</version>
+            <configuration>
+              <systemProperties>
+                <property>
+                  <name>org.hisp.dhis.test</name>
+                  <value>true</value>
+                </property>
+              </systemProperties>
+              <argLine>-Xmx256m</argLine>
+              <excludedGroups>org.hisp.dhis.IntegrationTest</excludedGroups>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>integration</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.16</version>
+            <configuration>
+              <systemProperties>
+                <property>
+                  <name>org.hisp.dhis.test</name>
+                  <value>true</value>
+                </property>
+              </systemProperties>
+              <argLine>-Xmx256m</argLine>
+              <groups>org.hisp.dhis.IntegrationTest</groups>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -149,21 +204,6 @@
             <source>1.6</source>
             <target>1.6</target>
             <encoding>${project.build.sourceEncoding}</encoding>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.12</version>
-          <configuration>
-            <systemProperties>
-              <property>
-                <name>org.hisp.dhis.test</name>
-                <value>true</value>
-              </property>
-            </systemProperties>
-            <argLine>-Xmx256m</argLine>
           </configuration>
         </plugin>
 
@@ -219,7 +259,7 @@
           <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
           <artifactId>maven-java-formatter-plugin</artifactId>
           <version>0.3.1</version>
-            <configuration>
+          <configuration>
             <configFile>${rootDir}DHISFormatter.xml</configFile>
             <lineEnding>LF</lineEnding>
           </configuration>
@@ -286,7 +326,7 @@
         <artifactId>dhis-service-patient</artifactId>
         <version>${project.version}</version>
       </dependency>
-	  <dependency>
+      <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-eventreporting</artifactId>
         <version>${project.version}</version>
@@ -635,7 +675,7 @@
         <artifactId>javacsv</artifactId>
         <version>2.0</version>
       </dependency>
-            
+
       <!--DBMS -->
       <dependency>
         <groupId>com.h2database</groupId>
@@ -929,9 +969,9 @@
       </dependency>
 
       <dependency>
-      	<groupId>com.google.guava</groupId>
-      	<artifactId>guava</artifactId>
-      	<version>14.0.1</version>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>14.0.1</version>
       </dependency>
 
     </dependencies>
