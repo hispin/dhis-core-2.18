@@ -195,14 +195,14 @@ public class DefaultEventAnalyticsService
         // Headers
         // ---------------------------------------------------------------------
 
-        grid.addHeader( new GridHeader( ITEM_EVENT, "Event" ) );
+        grid.addHeader( new GridHeader( ITEM_EVENT, "Event", String.class.getName(), true, false ) );
         grid.addHeader( new GridHeader( ITEM_PROGRAM_STAGE, "Program stage", String.class.getName(), false, true ) );
         grid.addHeader( new GridHeader( ITEM_EXECUTION_DATE, "Event date" ) );
         grid.addHeader( new GridHeader( ITEM_LONGITUDE, "Longitude" ) );
         grid.addHeader( new GridHeader( ITEM_LATITUDE, "Latitude" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_NAME, "Organisation unit name" ) );
         grid.addHeader( new GridHeader( ITEM_ORG_UNIT_CODE, "Organisation unit code" ) );
-        grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit" ) );
+        grid.addHeader( new GridHeader( ITEM_ORG_UNIT, "Organisation unit", String.class.getName(), true, false ) );
 
         for ( QueryItem queryItem : params.getItems() )
         {
