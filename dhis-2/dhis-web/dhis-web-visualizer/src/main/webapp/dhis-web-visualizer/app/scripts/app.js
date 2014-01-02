@@ -330,7 +330,7 @@ Ext.onReady( function() {
 							return;
 						}
 
-						ns.core.web.chart.update(layout, false);
+						ns.core.web.chart.getData(layout, false);
 
 						window.hide();
 					}
@@ -1659,13 +1659,13 @@ Ext.onReady( function() {
 							layout = api.layout.Layout(layoutConfig);
 
 						if (layout) {
-							web.chart.update(layout, true);
+							web.chart.getData(layout, true);
 						}
 					}
 				});
 			};
 
-			web.chart.update = function(layout, isUpdateGui) {
+			web.chart.getData = function(layout, isUpdateGui) {
 				var xLayout,
 					paramString;
 
@@ -1714,42 +1714,55 @@ Ext.onReady( function() {
 							web.mask.hide(ns.app.centerRegion);
 							return;
 						}
-
-						// extend response
-						xResponse = service.response.getExtendedResponse(xLayout, response);
-
-						// references
-						ns.app.layout = layout;
-						ns.app.xLayout = xLayout;
-						ns.app.response = response;
-						ns.app.xResponse = xResponse;
+						
 						ns.app.paramString = paramString;
 
-						// create chart
-						ns.app.chart = ns.core.web.chart.createChart(ns);
-
-						// update viewport
-						ns.app.centerRegion.removeAll();
-						ns.app.centerRegion.add(ns.app.chart);
-
-						// after render
-						if (NS.isSessionStorage) {
-							web.storage.session.set(layout, 'table');
-						}
-
-						ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
-
-						web.mask.hide(ns.app.centerRegion);
-
-						if (NS.isDebug) {
-							console.log("core", ns.core);
-							console.log("app", ns.app);
-						}
+						web.chart.getChart(layout, xLayout, response, isUpdateGui);
 					}
 				});
 			};
-		}());
 
+			web.chart.getChart = function(layout, xLayout, response, isUpdateGui) {
+				var xResponse,
+					xColAxis,
+					xRowAxis,
+					config;
+
+				if (!xLayout) {
+					xLayout = service.layout.getExtendedLayout(layout);
+				}
+				
+				// extend response
+				xResponse = service.response.getExtendedResponse(xLayout, response);
+
+				// references
+				ns.app.layout = layout;
+				ns.app.xLayout = xLayout;
+				ns.app.response = response;
+				ns.app.xResponse = xResponse;
+
+				// create chart
+				ns.app.chart = ns.core.web.chart.createChart(ns);
+
+				// update viewport
+				ns.app.centerRegion.removeAll();
+				ns.app.centerRegion.add(ns.app.chart);
+
+				// after render
+				if (NS.isSessionStorage) {
+					web.storage.session.set(layout, 'table');
+				}
+
+				ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
+
+				web.mask.hide(ns.app.centerRegion);
+
+				if (NS.isDebug) {
+					console.log("core", ns.core);
+					console.log("app", ns.app);
+				}
+			};
+		}());
     };
 
 	// viewport
@@ -4207,7 +4220,7 @@ Ext.onReady( function() {
 				return;
 			}
 
-			ns.core.web.chart.update(layout, false);
+			ns.core.web.chart.getData(layout, false);
 		};
 
 		accordionBody = Ext.create('Ext.panel.Panel', {
@@ -4956,7 +4969,7 @@ Ext.onReady( function() {
 						layout = ns.core.api.layout.Layout(JSON.parse(sessionStorage.getItem('dhis2'))[session]);
 
 						if (layout) {
-							ns.core.web.chart.update(layout, true);
+							ns.core.web.chart.getData(layout, true);
 						}
 					}
 

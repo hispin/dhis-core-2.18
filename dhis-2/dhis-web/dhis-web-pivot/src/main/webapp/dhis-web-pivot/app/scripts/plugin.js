@@ -2697,7 +2697,6 @@ Ext.onReady( function() {
 				service = ns.core.service,
 				web = ns.core.web;
 
-
 			// mouse events
 			web.events = web.events || {};
 
