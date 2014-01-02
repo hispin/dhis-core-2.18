@@ -1195,6 +1195,8 @@ Ext.onReady( function() {
 				var layout = Ext.clone(layout),
 					dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
 
+				layout.url = init.contextPath;
+				
 				if (Ext.isString(layout.id)) {
 					return {id: layout.id};
 				}
