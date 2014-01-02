@@ -89,6 +89,8 @@ Ext.onReady( function() {
 			};
 
 			util.map.map2plugin = function(map) {
+				map.url = init.contextPath;
+				
 				if (map.id) {
 					return {id: map.id};
 				}
@@ -7981,14 +7983,15 @@ Ext.onReady( function() {
 			},
 			handler: function() {
 				var textArea,
-					window;
+					window,
+					text = 'DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig())) + ');';
 
 				textArea = Ext.create('Ext.form.field.TextArea', {
 					width: 400,
 					height: 200,
 					readOnly: true,
 					cls: 'gis-textarea monospaced',
-					value: JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()))
+					value: text
 				});
 
 				window = Ext.create('Ext.window.Window', {
@@ -8003,7 +8006,7 @@ Ext.onReady( function() {
 						{
 							text: 'Format',
 							handler: function() {
-								textArea.setValue(JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()), null, 2));
+								textArea.setValue('DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()), null, 2) + ');');
 
 							}
 						},

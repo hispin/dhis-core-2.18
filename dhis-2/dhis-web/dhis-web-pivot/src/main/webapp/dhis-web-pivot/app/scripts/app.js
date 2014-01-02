@@ -4797,14 +4797,15 @@ Ext.onReady( function() {
 			},
 			handler: function() {
 				var textArea,
-					window;
+					window,
+					text = 'DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout)) + ');';
 
 				textArea = Ext.create('Ext.form.field.TextArea', {
 					width: 400,
 					height: 200,
 					readOnly: true,
 					cls: 'ns-textarea monospaced',
-					value: JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout))
+					value: text
 				});
 
 				window = Ext.create('Ext.window.Window', {
@@ -4819,8 +4820,7 @@ Ext.onReady( function() {
 						{
 							text: 'Format',
 							handler: function() {
-								textArea.setValue(JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout), null, 2));
-
+								textArea.setValue('DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout), null, 2) + ');');
 							}
 						},
 						{
