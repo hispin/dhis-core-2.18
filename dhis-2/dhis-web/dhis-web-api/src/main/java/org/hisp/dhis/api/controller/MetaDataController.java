@@ -68,7 +68,7 @@ import java.util.zip.ZipOutputStream;
 @RequestMapping( method = RequestMethod.GET )
 public class MetaDataController
 {
-    public static final String RESOURCE_PATH = "/metaData";
+    public static final String RESOURCE_PATH = "/meta{xyz:[Dd]}ata";
 
     @Autowired
     private ExportService exportService;
