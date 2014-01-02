@@ -2,35 +2,33 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../dhis-web-commons/javascripts/ext/resources/css/ext-plugin-gray.css" />
-
     <script src="../../dhis-web-commons/javascripts/ext/ext-all.js"></script>
-    <script src="../../dhis-web-commons/javascripts/simpleRegression.js"></script>
-    <script src="../../dhis-web-commons/javascripts/plugin/chart.js"></script>
+    <script src="http://dhis2-cdn.org/v214/plugin/chart.js"></script>
 
     <style type="text/css">
 		body {font-family: sans-serif; margin: 0 0 0 60px;}
 
 		h1 {font-size: 20px; margin: 20px 0;}
 
-		#chart1, #chart2 {width: 1000px; margin-bottom: 50px; height: 300px; border: 2px solid #d1d1d1; border-radius: 1px;}
+		#chart1, #chart2 {width: 90%; margin-bottom: 50px; height: 300px; border: 2px solid #d1d1d1; border-radius: 1px;}
     </style>
 
 	<script>
 		Ext.onReady(function() {
 			var url = 'http://localhost:8080';
 
-			DV.plugin.getChart({
+			DHIS.getChart({
 				url: url,
 				el: 'chart1',
-				uid: 'j1gNXBgwKVm'
+				uid: 'R0DVGvXDUNP'
 			});
 
-			DV.plugin.getChart({
+			DHIS.getChart({
 				url: url,
 				el: 'chart2',
                 type: 'column',
 				columns: [
-					{dimension: 'de', items: [{id: 'Uvn6LCg7dVU'}, {id: 'sB79w2hiLp8'}]}
+					{dimension: 'in', items: [{id: 'Uvn6LCg7dVU'}, {id: 'sB79w2hiLp8'}]}
 				],
 				rows: [
 					{dimension: 'pe', items: [{id: 'LAST_3_MONTHS'}]}
@@ -38,7 +36,6 @@
                 filters: [
                     {dimension: 'ou', items: [{id: 'USER_ORGUNIT'}]}
                 ],
-                showData: true,
                 targetLineValue: 70,
                 //baseLineValue: 20,
                 //showTrendLine: true,
