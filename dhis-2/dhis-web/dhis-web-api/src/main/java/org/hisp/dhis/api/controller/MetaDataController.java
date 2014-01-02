@@ -96,7 +96,7 @@ public class MetaDataController
         MetaData metaData = exportService.getMetaData( options );
 
         model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", "export" );
+        model.addAttribute( "viewClass", options.getViewClass( "export" ) );
 
         return "export";
     }
