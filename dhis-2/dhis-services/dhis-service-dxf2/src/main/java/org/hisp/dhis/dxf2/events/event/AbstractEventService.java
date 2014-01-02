@@ -413,8 +413,9 @@ public abstract class AbstractEventService
     @Override
     public Event getEvent( String uid )
     {
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( uid );
-        return convertProgramStageInstance( programStageInstance );
+        ProgramStageInstance psi = programStageInstanceService.getProgramStageInstance( uid );
+        
+        return psi != null ? convertProgramStageInstance( psi ) : null;
     }
 
     @Override
