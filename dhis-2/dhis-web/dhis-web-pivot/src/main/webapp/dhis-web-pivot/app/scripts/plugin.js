@@ -2596,7 +2596,6 @@ Ext.onReady( function() {
 
 	Ext.util.CSS.createStyleSheet(css);
 
-	// plugin
 	PT.plugin = {};
 
 	var init = {
