@@ -475,7 +475,7 @@
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.RemovePatientAction"
 		class="org.hisp.dhis.caseentry.action.patient.RemovePatientAction"
-		scope="prototype">
+		scope="prototype">		
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
@@ -1031,6 +1031,8 @@
 		scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+                <property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientCommentService"
 			ref="org.hisp.dhis.patientcomment.PatientCommentService" />

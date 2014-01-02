@@ -198,11 +198,10 @@ public class ProgramStage
         return description;
     }
 
-    @JsonProperty( value = "validationCriterias" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonProperty( value = "programStageSections" )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "validationCriterias", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "validationCriteria", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlElementWrapper( localName = "programStageSections", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "programStageSection", namespace = DxfNamespaces.DXF_2_0 )
     public Set<ProgramStageSection> getProgramStageSections()
     {
         return programStageSections;

@@ -30,9 +30,12 @@ package org.hisp.dhis.patient;
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -59,6 +62,13 @@ public class DefaultPatientAttributeService
     public void setI18nService( I18nService service )
     {
         i18nService = service;
+    }
+    
+    private ProgramService programService;
+    
+    public void setProgramService( ProgramService programService)
+    {
+    	this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
@@ -129,5 +139,20 @@ public class DefaultPatientAttributeService
     {
         return i18n( i18nService, patientAttributeStore.getByDisplayOnVisitSchedule( displayOnVisitSchedule ) );
     }
+
+	public Collection<PatientAttribute> getPatientAttributesWithoutProgram() {
+		
+		Collection<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+		Collection<Program> programs = new ArrayList<Program>();
+		
+		attributes = patientAttributeStore.getAll();
+		programs = programService.getAllPrograms();
+		
+		for( Program p : programs ){
+			attributes.removeAll( p.getPatientAttributes() );
+		}
+		
+		return i18n(i18nService, attributes);		
+	}
    
 }

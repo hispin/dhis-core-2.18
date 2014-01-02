@@ -262,6 +262,7 @@
 	<bean id="org.hisp.dhis.patient.PatientAttributeService" class="org.hisp.dhis.patient.DefaultPatientAttributeService">
 		<property name="patientAttributeStore" ref="org.hisp.dhis.patient.PatientAttributeStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
@@ -314,6 +315,10 @@
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="patientCommentService"
+			ref="org.hisp.dhis.patientcomment.PatientCommentService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>

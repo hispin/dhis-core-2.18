@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.events.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +36,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
@@ -50,6 +52,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientcomment.PatientComment;
+import org.hisp.dhis.patientcomment.PatientCommentService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
@@ -106,6 +110,9 @@ public abstract class AbstractEventService
 
     @Autowired
     private PatientService patientService;
+    
+    @Autowired
+    private PatientCommentService patientCommentService;
 
     @Autowired
     private IdentifiableObjectManager manager;
@@ -441,7 +448,7 @@ public abstract class AbstractEventService
         {
             organisationUnit = programStageInstance.getOrganisationUnit();
         }
-
+        
         Date date = new Date();
 
         String storedBy = getStoredBy( event, null );
@@ -449,9 +456,13 @@ public abstract class AbstractEventService
         programStageInstance.setDueDate( date );
         programStageInstance.setExecutionDate( date );
         programStageInstance.setOrganisationUnit( organisationUnit );
-        programStageInstance.setCompletedUser( storedBy );
-
+        programStageInstance.setCompletedUser( storedBy );       
+        
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        
+        ProgramInstance programInstance = programStageInstance.getProgramInstance();
+        
+        savePatientCommentFromEvent( programInstance, event, storedBy );
 
         Set<PatientDataValue> patientDataValues = new HashSet<PatientDataValue>(
             patientDataValueService.getPatientDataValues( programStageInstance ) );
@@ -514,6 +525,7 @@ public abstract class AbstractEventService
         Event event = new Event();
 
         event.setEvent( programStageInstance.getUid() );
+        event.setPerson( programStageInstance.getProgramInstance().getPatient().getUid());
         event.setStatus( EventStatus.fromInt( programStageInstance.getStatus() ) );
         event.setEventDate( programStageInstance.getExecutionDate().toString() );
         event.setStoredBy( programStageInstance.getCompletedUser() );
@@ -561,7 +573,20 @@ public abstract class AbstractEventService
             value.setStoredBy( patientDataValue.getStoredBy() );
 
             event.getDataValues().add( value );
-        }
+        }        
+        
+        ProgramInstance programInstance = programStageInstance.getProgramInstance();
+        
+        Collection<PatientComment> patientComments = programInstance.getPatientComments();
+        
+        for( PatientComment patientComment : patientComments )
+        {   
+        	Note note = new Note();
+        	note.setValue( patientComment.getCommentText() );
+        	note.setStoredBy( patientComment.getCreator() );
+        	note.setStoredDate( patientComment.getCreatedDate().toString() );
+        	event.getNotes().add( note );
+        }       
 
         return event;
     }
@@ -729,13 +754,14 @@ public abstract class AbstractEventService
         }
 
         String storedBy = getStoredBy( event, importSummary );
-
+        
         if ( !dryRun )
         {
             if ( programStageInstance == null )
             {
                 programStageInstance = createProgramStageInstance( programStage, programInstance, organisationUnit,
-                    eventDate, EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy );
+                    eventDate, EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy );             
+                
             }
             else
             {
@@ -743,6 +769,8 @@ public abstract class AbstractEventService
                     EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy,
                     programStageInstance );
             }
+            
+            savePatientCommentFromEvent( programInstance, event, storedBy );
 
             importSummary.setReference( programStageInstance.getUid() );
         }
@@ -775,5 +803,22 @@ public abstract class AbstractEventService
         }
 
         return importSummary;
+    }
+    
+    private void savePatientCommentFromEvent(ProgramInstance programInstance, Event event, String storedBy)
+    {
+    	for( Note note : event.getNotes() ) //only one note is expected?
+        {
+        	PatientComment patientComment = new PatientComment();
+        	patientComment.setCreator( storedBy );
+        	patientComment.setCreatedDate( new Date() );
+        	patientComment.setCommentText( note.getValue() );    
+        	
+        	patientCommentService.addPatientComment( patientComment );
+        	
+        	programInstance.getPatientComments().add( patientComment );
+        	
+        	programInstanceService.updateProgramInstance( programInstance );
+        }    	
     }
 }

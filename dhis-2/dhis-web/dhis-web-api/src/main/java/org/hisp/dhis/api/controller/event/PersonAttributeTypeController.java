@@ -28,8 +28,18 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -41,4 +51,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PersonAttributeTypeController extends AbstractCrudController<PatientAttribute>
 {
     public static final String RESOURCE_PATH = "/personAttributeTypes";
+    
+    @Autowired
+    private PatientAttributeService patientAttributeService;
+    
+    @Autowired
+    private ProgramService programService;
+    
+    
+    @Override
+    protected List<PatientAttribute> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<PatientAttribute> entityList = new ArrayList<PatientAttribute>();      
+
+        boolean withoutPrograms = options.getOptions().containsKey( "withoutPrograms" ) && Boolean.parseBoolean( options.getOptions().get( "withoutPrograms" ) );        
+
+        if ( withoutPrograms )
+        {
+        	entityList = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesWithoutProgram() );
+        }
+        
+        else if ( options.getOptions().containsKey( "program" ) )
+        {
+            String programId = options.getOptions().get( "program" );
+            Program program = programService.getProgram( programId );
+
+            if ( program != null )
+            {
+                entityList = new ArrayList<PatientAttribute>( program.getPatientAttributes() );
+            }
+        }
+        
+        else if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
+
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<PatientAttribute>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
+        }
+        
+        else
+        {
+            entityList = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
+        }
+
+        return entityList;      
+        
+    }
+    
 }

@@ -80,7 +80,7 @@ public class ProgramInstance
     private Patient patient;
 
     private Program program;
-
+    
     private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
 
     private List<OutboundSms> outboundSms;
@@ -89,7 +89,7 @@ public class ProgramInstance
 
     private Boolean followup = false;
 
-    private PatientComment patientComment;
+    private Set<PatientComment> patientComments = new HashSet<PatientComment>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -383,16 +383,14 @@ public class ProgramInstance
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public PatientComment getPatientComment()
-    {
-        return patientComment;
-    }
+    public Set<PatientComment> getPatientComments() {
+		return patientComments;
+	}
 
-    public void setPatientComment( PatientComment patientComment )
-    {
-        this.patientComment = patientComment;
-    }
-
+	public void setPatientComments(Set<PatientComment> patientComments) {
+		this.patientComments = patientComments;
+	}
+    
     public List<MessageConversation> getMessageConversations()
     {
         return messageConversations;
@@ -401,5 +399,5 @@ public class ProgramInstance
     public void setMessageConversations( List<MessageConversation> messageConversations )
     {
         this.messageConversations = messageConversations;
-    }
+    }		
 }
