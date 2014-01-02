@@ -361,14 +361,12 @@ public class UpdateOrganisationUnitAction
             if ( oldGroup != null && oldGroup.getMembers().remove( organisationUnit ) )
             {
                 oldGroup.removeOrganisationUnit( organisationUnit );
-                // organisationUnitGroupService.updateOrganisationUnitGroup( oldGroup );
                 manager.updateNoAcl( oldGroup );
             }
 
             if ( newGroup != null && newGroup.getMembers().add( organisationUnit ) )
             {
                 newGroup.addOrganisationUnit( organisationUnit );
-                // organisationUnitGroupService.updateOrganisationUnitGroup( newGroup );
                 manager.updateNoAcl( newGroup );
             }
         }
