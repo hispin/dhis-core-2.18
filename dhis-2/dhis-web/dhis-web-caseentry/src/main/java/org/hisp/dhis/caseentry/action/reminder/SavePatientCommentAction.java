@@ -29,17 +29,16 @@ package org.hisp.dhis.caseentry.action.reminder;
  */
 
 import java.util.Date;
+import java.util.Set;
 
 import org.hisp.dhis.patientcomment.PatientComment;
-import org.hisp.dhis.patientcomment.PatientCommentService;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
-import java.util.Set;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
 
 /**
  * @author Chau Thu Tran
@@ -74,13 +73,6 @@ public class SavePatientCommentAction
         this.currentUserService = currentUserService;
     }
 
-    private PatientCommentService patientCommentService;
-
-    public void setPatientCommentService( PatientCommentService patientCommentService )
-    {
-        this.patientCommentService = patientCommentService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -109,8 +101,7 @@ public class SavePatientCommentAction
             .getProgramStageInstance( programStageInstanceId );  
         
         ProgramInstance programInstance = programStageInstance.getProgramInstance();
-        
-        
+                
         Set<PatientComment> patientComments = programInstance.getPatientComments();
 
         if ( commentText != null && !commentText.isEmpty() )
@@ -128,5 +119,4 @@ public class SavePatientCommentAction
         
         return SUCCESS;
     }
-
 }
