@@ -28,7 +28,23 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.hisp.dhis.dataapproval.DataApprovalService;
+import org.hisp.dhis.dataapproval.DataApprovalState;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -39,18 +55,7 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import static org.hisp.dhis.i18n.I18nUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -87,7 +92,6 @@ public class DefaultDataSetService
 
     private OrganisationUnitService organisationUnitService;
 
-    @Autowired
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
@@ -95,10 +99,16 @@ public class DefaultDataSetService
 
     private CurrentUserService currentUserService;
 
-    @Autowired
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+    
+    private DataApprovalService dataApprovalService;
+
+    public void setDataApprovalService( DataApprovalService dataApprovalService )
+    {
+        this.dataApprovalService = dataApprovalService;
     }
 
     // -------------------------------------------------------------------------
@@ -447,13 +457,47 @@ public class DefaultDataSetService
     }
 
     @Override
-    public boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now )
+    public boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo, Date now )
     {
         now = now != null ? now : new Date();
 
         boolean expired = dataSet.getExpiryDays() != DataSet.NO_EXPIRY && new DateTime( period.getEndDate() ).plusDays( dataSet.getExpiryDays() ).isBefore( new DateTime( now ) );
 
-        return expired && lockExceptionStore.getCount( dataSet, period, organisationUnit ) == 0l;
+        boolean exception = lockExceptionStore.getCount( dataSet, period, organisationUnit ) > 0l;
+        
+        if ( expired && !exception )
+        {
+            return true;
+        }
+        
+        boolean approved = DataApprovalState.APPROVED == dataApprovalService.getDataApprovalState( dataSet, period, organisationUnit, attributeOptionCombo );
+        
+        return approved;
+    }
+
+    @Override
+    public boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, 
+        DataElementCategoryOptionCombo attributeOptionCombo, Date now, boolean useOrgUnitChildren )
+    {
+        if ( !useOrgUnitChildren )
+        {
+            return isLocked( dataSet, period, organisationUnit, attributeOptionCombo, now );
+        }
+        
+        if ( organisationUnit == null || !organisationUnit.hasChild() )
+        {
+            return false;
+        }
+        
+        for ( OrganisationUnit child : organisationUnit.getChildren() )
+        {
+            if ( isLocked( dataSet, period, child, attributeOptionCombo, now ) )
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     @Override
@@ -466,30 +510,6 @@ public class DefaultDataSetService
         boolean expired = expiryDays != DataSet.NO_EXPIRY && new DateTime( period.getEndDate() ).plusDays( expiryDays ).isBefore( new DateTime( now ) );
 
         return expired && lockExceptionStore.getCount( dataElement, period, organisationUnit ) == 0l;
-    }
-
-    @Override
-    public boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now, boolean useOrgUnitChildren )
-    {
-        if ( !useOrgUnitChildren )
-        {
-            return isLocked( dataSet, period, organisationUnit, now );
-        }
-        
-        if ( organisationUnit == null || !organisationUnit.hasChild() )
-        {
-            return false;
-        }
-        
-        for ( OrganisationUnit child : organisationUnit.getChildren() )
-        {
-            if ( isLocked( dataSet, period, child, now ) )
-            {
-                return true;
-            }
-        }
-        
-        return false;
     }
 
     @Override

@@ -145,7 +145,7 @@ public class DataValueSMSListener
         OrganisationUnit orgUnit = this.selectOrganisationUnit( orgUnits, parsedMessage );
         Period period = getPeriod( smsCommand, date );
 
-        if ( dataSetService.isLocked( smsCommand.getDataset(), period, orgUnit, null ) )
+        if ( dataSetService.isLocked( smsCommand.getDataset(), period, orgUnit, null, null ) )
         {
             throw new SMSParserException( "Dataset is locked for the period " + period.getStartDate() + " - "
                 + period.getEndDate() );

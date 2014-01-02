@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset;
  */
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -348,33 +349,36 @@ public interface DataSetService
     /**
      * Checks whether the system is locked for data entry for the given input.
      *
-     * @param dataSet          the data set
-     * @param period           Period the period.s
+     * @param dataSet the data set
+     * @param period the period.
      * @param organisationUnit the organisation unit.
-     * @param now              the base date for deciding locked date, current date if null.
+     * @param attributeOptionCombo the attribute option combo.
+     * @param now the base date for deciding locked date, current date if null.
      * @return true or false indicating whether the system is locked or not.
      */
-    boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now );
+    boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo, Date now );
 
     /**
      * Checks whether the system is locked for data entry for the given input.
+     * The status u
      *
-     * @param dataSet            the data set
-     * @param period             Period the period.s
-     * @param organisationUnit   the organisation unit.
-     * @param now                the base date for deciding locked date, current date if null.
+     * @param dataSet the data set
+     * @param period the period.
+     * @param organisationUnit the organisation unit.
+     * @param attributeOptionCombo the attribute option combo.
+     * @param now the base date for deciding locked date, current date if null.
      * @param useOrgUnitChildren whether to check children of the given org unit or the org unit only.
      * @return true or false indicating whether the system is locked or not.
      */
-    boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now, boolean useOrgUnitChildren );
+    boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo, Date now, boolean useOrgUnitChildren );
 
     /**
      * Checks whether the system is locked for data entry for the given input.
      *
-     * @param dataElement      the data element.
-     * @param period           the period.
+     * @param dataElement the data element.
+     * @param period the period.
      * @param organisationUnit the organisation unit.
-     * @param now              the base date for deciding locked date, current date if null.
+     * @param now the base date for deciding locked date, current date if null.
      * @return true or false indicating whether the system is locked or not.
      */
     boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit, Date now );

@@ -38,7 +38,6 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-api</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -47,6 +46,10 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-reporting</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
     </dependency>
         
   </dependencies>

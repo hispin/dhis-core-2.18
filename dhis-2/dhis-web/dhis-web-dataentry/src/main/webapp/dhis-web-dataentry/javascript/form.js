@@ -1571,18 +1571,25 @@ function onFormLoad( fn )
 
 function registerCompleteDataSet()
 {
-	var confirmed = confirm( i18n_confirm_complete );
-	
-	if ( !confirmed )
+	if ( !confirm( i18n_confirm_complete ) )
 	{
 		return false;
 	}
 	
 	validate( true, function() {	
 	    var params = dhis2.de.storageManager.getCurrentCompleteDataSetParams();
-        params['organisationUnitId'] = getCurrentOrganisationUnit();
-        params['multiOrganisationUnit'] = dhis2.de.multiOrganisationUnit;
+        params.organisationUnitId = getCurrentOrganisationUnit();
+        params.multiOrganisationUnit = dhis2.de.multiOrganisationUnit;
 
+        var cc = dhis2.de.getCurrentCategoryCombo();
+        var cp = dhis2.de.getCurrentCategoryOptionsQueryValue();
+        
+        if ( cc && cp )
+        {
+        	params.cc = cc;
+        	params.cp = cp;
+        }
+        
         dhis2.de.storageManager.saveCompleteDataSet( params );
 	
 	    $.ajax( {
@@ -1613,37 +1620,47 @@ function registerCompleteDataSet()
 
 function undoCompleteDataSet()
 {
-    var confirmed = confirm( i18n_confirm_undo );
+	if ( !confirm( i18n_confirm_undo ) )
+	{
+		return false;
+	}
+	
     var params = dhis2.de.storageManager.getCurrentCompleteDataSetParams();
-    params[ 'organisationUnitId' ] = getCurrentOrganisationUnit();
-    params[ 'multiOrganisationUnit' ] = dhis2.de.multiOrganisationUnit;
+    params.organisationUnitId = getCurrentOrganisationUnit();
+    params.multiOrganisationUnit = dhis2.de.multiOrganisationUnit;
 
-    if ( confirmed )
+    var cc = dhis2.de.getCurrentCategoryCombo();
+    var cp = dhis2.de.getCurrentCategoryOptionsQueryValue();
+    
+    if ( cc && cp )
     {
-        $.ajax( {
-        	url: 'undoCompleteDataSet.action',
-        	data: params,
-        	dataType: 'json',
-        	success: function(data)
-	        {
-                if ( data.status == 2 )
-                {
-                    log( 'Data set is locked' );
-                    setHeaderMessage( i18n_unregister_complete_failed_dataset_is_locked );
-                }
-                else
-                {
-                    disableUndoButton();
-                    dhis2.de.storageManager.clearCompleteDataSet( params );
-                }
-
-	        },
-	        error: function()
-	        {
-	        	dhis2.de.storageManager.clearCompleteDataSet( params );
-	        }
-        } );
+    	params.cc = cc;
+    	params.cp = cp;
     }
+    
+    $.ajax( {
+    	url: 'undoCompleteDataSet.action',
+    	data: params,
+    	dataType: 'json',
+    	success: function(data)
+        {
+            if ( data.status == 2 )
+            {
+                log( 'Data set is locked' );
+                setHeaderMessage( i18n_unregister_complete_failed_dataset_is_locked );
+            }
+            else
+            {
+                disableUndoButton();
+                dhis2.de.storageManager.clearCompleteDataSet( params );
+            }
+
+        },
+        error: function()
+        {
+        	dhis2.de.storageManager.clearCompleteDataSet( params );
+        }
+    } );
 }
 
 function disableUndoButton()

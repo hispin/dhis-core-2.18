@@ -30,6 +30,7 @@ package org.hisp.dhis.dataapproval;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -61,6 +62,13 @@ public class DefaultDataApprovalService
     {
         this.currentUserService = currentUserService;
     }
+    
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
 
     // -------------------------------------------------------------------------
     // DataApproval
@@ -88,16 +96,26 @@ public class DefaultDataApprovalService
 
     public DataApproval getDataApproval( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
+        if ( attributeOptionCombo == null )
+        {
+            attributeOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        }
+        
         return dataApprovalStore.getDataApproval( dataSet, period, organisationUnit, attributeOptionCombo );
     }
 
     public DataApprovalState getDataApprovalState( DataSet dataSet, Period period, OrganisationUnit organisationUnit, DataElementCategoryOptionCombo attributeOptionCombo )
     {
-        if ( ! dataSet.isApproveData() || ! period.getPeriodType().equals( dataSet.getPeriodType() ) )
+        if ( !dataSet.isApproveData() || !period.getPeriodType().equals( dataSet.getPeriodType() ) )
         {
             return DataApprovalState.APPROVAL_NOT_NEEDED;
         }
 
+        if ( attributeOptionCombo == null )
+        {
+            attributeOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        }
+        
         if ( null != dataApprovalStore.getDataApproval( dataSet, period, organisationUnit, attributeOptionCombo ) )
         {
             return DataApprovalState.APPROVED;

@@ -59,7 +59,8 @@ public interface DataApprovalService
 
     /**
      * Returns the DataApproval object (if any) for a given
-     * dataset, period and organisation unit.
+     * dataset, period and organisation unit. If attributeOptionCombo is null,
+     * the default option combo will be used.
      *
      * @param dataSet DataSet for approval
      * @param period Period for approval
@@ -72,7 +73,8 @@ public interface DataApprovalService
     
     /**
      * Returns the DataApprovalState for a given data set, period and
-     * OrganisationUnit.
+     * OrganisationUnit. If attributeOptionCombo is null, the default option 
+     * combo will be used.
      *
      * @param dataSet DataSet to check for approval.
      * @param period Period to check for approval.
