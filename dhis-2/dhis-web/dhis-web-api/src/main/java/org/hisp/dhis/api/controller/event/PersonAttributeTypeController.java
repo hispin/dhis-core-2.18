@@ -100,5 +100,5 @@ public class PersonAttributeTypeController
         }
 
         return entityList;
-    
+    }    
 }
