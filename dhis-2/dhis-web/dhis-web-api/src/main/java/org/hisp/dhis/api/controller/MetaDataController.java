@@ -110,7 +110,8 @@ public class MetaDataController
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.NO_CACHE, "metaData.xml", true );
 
-        JacksonUtils.toXmlWithView( response.getOutputStream(), metaData, ExportView.class );
+        Class<?> viewClass = JacksonUtils.getViewClass( options.getViewClass( "export" ) );
+        JacksonUtils.toXmlWithView( response.getOutputStream(), metaData, viewClass );
     }
 
     @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".json", produces = "*/*" )
@@ -122,7 +123,8 @@ public class MetaDataController
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE, "metaData.json", true );
 
-        JacksonUtils.toJsonWithView( response.getOutputStream(), metaData, ExportView.class );
+        Class<?> viewClass = JacksonUtils.getViewClass( options.getViewClass( "export" ) );
+        JacksonUtils.toJsonWithView( response.getOutputStream(), metaData, viewClass );
     }
 
     @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".zip" }, produces = "*/*" )
@@ -154,7 +156,8 @@ public class MetaDataController
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
         zip.putNextEntry( new ZipEntry( "metaData.xml" ) );
 
-        JacksonUtils.toXmlWithView( zip, metaData, ExportView.class );
+        Class<?> viewClass = JacksonUtils.getViewClass( options.getViewClass( "export" ) );
+        JacksonUtils.toXmlWithView( zip, metaData, viewClass );
     }
 
     @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".json.zip" }, produces = "*/*" )
@@ -170,7 +173,8 @@ public class MetaDataController
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
         zip.putNextEntry( new ZipEntry( "metaData.json" ) );
 
-        JacksonUtils.toJsonWithView( zip, metaData, ExportView.class );
+        Class<?> viewClass = JacksonUtils.getViewClass( options.getViewClass( "export" ) );
+        JacksonUtils.toJsonWithView( zip, metaData, viewClass );
     }
 
     @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".gz" }, produces = "*/*" )
@@ -200,7 +204,9 @@ public class MetaDataController
         response.addHeader( ContextUtils.HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
 
         GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
-        JacksonUtils.toXmlWithView( gzip, metaData, ExportView.class );
+
+        Class<?> viewClass = JacksonUtils.getViewClass( options.getViewClass( "export" ) );
+        JacksonUtils.toXmlWithView( gzip, metaData, viewClass );
     }
 
     @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".json.gz" }, produces = "*/*" )
@@ -214,7 +220,9 @@ public class MetaDataController
         response.addHeader( ContextUtils.HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
 
         GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
-        JacksonUtils.toJsonWithView( gzip, metaData, ExportView.class );
+
+        Class<?> viewClass = JacksonUtils.getViewClass( options.getViewClass( "export" ) );
+        JacksonUtils.toJsonWithView( gzip, metaData, viewClass );
     }
 
     //--------------------------------------------------------------------------
