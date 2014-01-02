@@ -123,14 +123,17 @@ public class ProgramInstanceDeletionHandler
                 patientCommentService.deletePatientComment( patientComment );
             }
 
-            for ( PatientAttribute patientAttribute : programInstance.getProgram().getPatientAttributes() )
-            {
-                PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue(
-                    patient, patientAttribute );
-
-                if ( patientAttributeValue != null )
+            if ( programInstance.getProgram() != null && programInstance.getProgram().getPatientAttributes() != null )
+            {            
+                for ( PatientAttribute patientAttribute : programInstance.getProgram().getPatientAttributes() )
                 {
-                    patientAttributeValueService.deletePatientAttributeValue( patientAttributeValue );
+                    PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue(
+                        patient, patientAttribute );
+    
+                    if ( patientAttributeValue != null )
+                    {
+                        patientAttributeValueService.deletePatientAttributeValue( patientAttributeValue );
+                    }
                 }
             }
 
