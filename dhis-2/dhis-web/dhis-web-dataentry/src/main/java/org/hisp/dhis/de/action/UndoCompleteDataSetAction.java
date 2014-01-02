@@ -31,6 +31,9 @@ package org.hisp.dhis.de.action;
 import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.api.utils.InputUtils;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -39,6 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
@@ -75,6 +79,9 @@ public class UndoCompleteDataSetAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    @Autowired
+    private InputUtils inputUtils;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -107,6 +114,20 @@ public class UndoCompleteDataSetAction
         this.multiOrganisationUnit = multiOrganisationUnit;
     }
 
+    private String cc;
+
+    public void setCc( String cc )
+    {
+        this.cc = cc;
+    }
+
+    private String cp;
+
+    public void setCp( String cp )
+    {
+        this.cp = cp;
+    }
+
     private int statusCode;
 
     public int getStatusCode()
@@ -124,12 +145,13 @@ public class UndoCompleteDataSetAction
         Period period = PeriodType.getPeriodFromIsoString( periodId );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Set<OrganisationUnit> children = organisationUnit.getChildren();
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( ServletActionContext.getResponse(), cc, cp );
 
         // ---------------------------------------------------------------------
         // Check locked status
         // ---------------------------------------------------------------------
 
-        if ( dataSetService.isLocked( dataSet, period, organisationUnit, null, multiOrganisationUnit ) )
+        if ( dataSetService.isLocked( dataSet, period, organisationUnit, attributeOptionCombo, null, multiOrganisationUnit ) )
         {
             return logError( "Entry locked: " + dataSet + ", " + period + ", " + organisationUnit, 2 );
         }

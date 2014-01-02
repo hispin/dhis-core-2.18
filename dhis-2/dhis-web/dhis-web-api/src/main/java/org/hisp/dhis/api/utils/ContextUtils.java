@@ -28,7 +28,22 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.trimToNull;
+import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_CACHE_STRATEGY;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+
 import javassist.util.proxy.ProxyObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DimensionalObject;
@@ -39,27 +54,12 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.codec.Base64;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-
-import static org.apache.commons.lang.StringUtils.trimToNull;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_CACHE_STRATEGY;
 
 /**
  * @author Lars Helge Overland
  */
-@Component
 public class ContextUtils
 {
     public static final String CONTENT_TYPE_PDF = "application/pdf";

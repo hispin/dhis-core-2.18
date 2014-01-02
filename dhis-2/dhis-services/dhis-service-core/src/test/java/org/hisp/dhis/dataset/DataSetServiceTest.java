@@ -375,12 +375,12 @@ public class DataSetServiceTest
         // Expiry days
         // ---------------------------------------------------------------------
 
-        assertFalse( dataSetService.isLocked( dataSetA, period, unit, getDate( 2000, 4, 1 ) ) );
-        assertFalse( dataSetService.isLocked( dataSetA, period, unit, getDate( 2000, 4, 5 ) ) );
-        assertTrue( dataSetService.isLocked( dataSetA, period, unit, getDate( 2000, 4, 15 ) ) );
-        assertTrue( dataSetService.isLocked( dataSetA, period, unit, getDate( 2000, 4, 25 ) ) );
-        assertFalse( dataSetService.isLocked( dataSetB, period, unit, getDate( 2000, 4, 10 ) ) );
-        assertTrue( dataSetService.isLocked( dataSetB, period, unit, getDate( 2000, 4, 25 ) ) );
+        assertFalse( dataSetService.isLocked( dataSetA, period, unit, null, getDate( 2000, 4, 1 ) ) );
+        assertFalse( dataSetService.isLocked( dataSetA, period, unit, null, getDate( 2000, 4, 5 ) ) );
+        assertTrue( dataSetService.isLocked( dataSetA, period, unit, null, getDate( 2000, 4, 15 ) ) );
+        assertTrue( dataSetService.isLocked( dataSetA, period, unit, null, getDate( 2000, 4, 25 ) ) );
+        assertFalse( dataSetService.isLocked( dataSetB, period, unit, null, getDate( 2000, 4, 10 ) ) );
+        assertTrue( dataSetService.isLocked( dataSetB, period, unit, null, getDate( 2000, 4, 25 ) ) );
 
         // ---------------------------------------------------------------------
         // Lock exception
@@ -389,11 +389,11 @@ public class DataSetServiceTest
         LockException lockException = new LockException( period, unit, dataSetA );
         dataSetService.addLockException( lockException );
 
-        assertFalse( dataSetService.isLocked( dataSetA, period, unit, getDate( 2000, 4, 1 ) ) );
-        assertFalse( dataSetService.isLocked( dataSetA, period, unit, getDate( 2000, 4, 5 ) ) );
-        assertFalse( dataSetService.isLocked( dataSetA, period, unit, getDate( 2000, 4, 15 ) ) );
-        assertFalse( dataSetService.isLocked( dataSetA, period, unit, getDate( 2000, 4, 25 ) ) );
-        assertFalse( dataSetService.isLocked( dataSetB, period, unit, getDate( 2000, 4, 10 ) ) );
-        assertTrue( dataSetService.isLocked( dataSetB, period, unit, getDate( 2000, 4, 25 ) ) );
+        assertFalse( dataSetService.isLocked( dataSetA, period, unit, null, getDate( 2000, 4, 1 ) ) );
+        assertFalse( dataSetService.isLocked( dataSetA, period, unit, null, getDate( 2000, 4, 5 ) ) );
+        assertFalse( dataSetService.isLocked( dataSetA, period, unit, null, getDate( 2000, 4, 15 ) ) );
+        assertFalse( dataSetService.isLocked( dataSetA, period, unit, null, getDate( 2000, 4, 25 ) ) );
+        assertFalse( dataSetService.isLocked( dataSetB, period, unit, null, getDate( 2000, 4, 10 ) ) );
+        assertTrue( dataSetService.isLocked( dataSetB, period, unit, null, getDate( 2000, 4, 25 ) ) );
     }
 }
