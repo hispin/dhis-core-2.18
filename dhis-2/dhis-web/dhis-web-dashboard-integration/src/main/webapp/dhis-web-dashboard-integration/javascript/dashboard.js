@@ -457,11 +457,10 @@ dhis2.db.linkItemHeaderHtml = function( itemId, title )
 dhis2.db.renderMessagesItem = function( $d, itemId )
 {
 	var html = dhis2.db.linkItemHeaderHtml( itemId, "Messages" ) + "</ul></div></li>";
-	
+    var $ul = $( "#ul-" + itemId );
+
 	$d.append( html );
-	
-	$ul = $( "#ul-" + itemId );
-	
+
 	$.get( "../api/messageConversations.json?viewClass=detailed&pageSize=5", function( json )
 	{
 		$.each( json.messageConversations, function( index, message )
