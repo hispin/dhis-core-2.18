@@ -28,18 +28,17 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 /**
  * @author Chau Thu Tran
- * 
  * @version GetDataElementCategoryOptionListAction.java 8:47:42 AM Feb 22, 2013 $
  */
 public class GetDataElementCategoryOptionListAction
@@ -67,6 +66,13 @@ public class GetDataElementCategoryOptionListAction
         return dataElementCategoryOptions;
     }
 
+    private DataElementCategoryOption defaultCategoryOption;
+
+    public DataElementCategoryOption getDefaultCategoryOption()
+    {
+        return defaultCategoryOption;
+    }
+
     private String key;
 
     public String getKey()
@@ -85,6 +91,8 @@ public class GetDataElementCategoryOptionListAction
 
     public String execute()
     {
+        defaultCategoryOption = dataElementCategoryService.getDataElementCategoryOptionByName( DataElementCategoryOption.DEFAULT_NAME );
+
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryOptionCountByName( key ) );
