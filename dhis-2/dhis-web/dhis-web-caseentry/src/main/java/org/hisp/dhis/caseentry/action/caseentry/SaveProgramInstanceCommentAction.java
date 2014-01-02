@@ -93,14 +93,9 @@ public class SaveProgramInstanceCommentAction
         {
             PatientComment patientComment = new PatientComment( comment, currentUserService.getCurrentUsername(),
                 new Date() );
-            programInstance.setPatientComment( patientComment );
+            programInstance.getPatientComments().add(patientComment);
             programInstanceService.updateProgramInstance( programInstance );
-        }
-        else if ( programInstance.getPatientComment() != null )
-        {
-            programInstance.setPatientComment( null );
-            programInstanceService.updateProgramInstance( programInstance );
-        }
+        }      
 
         return SUCCESS;
     }

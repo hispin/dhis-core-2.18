@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 
@@ -63,6 +64,8 @@ public class Event extends BaseLinkableObject
     private Coordinate coordinate;
 
     private List<DataValue> dataValues = new ArrayList<DataValue>();
+    
+    private List<Note> notes = new ArrayList<Note>();
 
     public Event()
     {
@@ -138,7 +141,7 @@ public class Event extends BaseLinkableObject
     public void setPerson( String person )
     {
         this.person = person;
-    }
+    }   	
 
     @JsonProperty( required = true )
     @JacksonXmlProperty( isAttribute = true )
@@ -188,6 +191,18 @@ public class Event extends BaseLinkableObject
     {
         this.dataValues = dataValues;
     }
+    
+    
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "notes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "note", namespace = DxfNamespaces.DXF_2_0 )
+	public List<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
+	}
 
     @Override
     public boolean equals( Object o )

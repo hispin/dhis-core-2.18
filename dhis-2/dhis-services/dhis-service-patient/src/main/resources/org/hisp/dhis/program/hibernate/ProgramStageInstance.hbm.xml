@@ -57,10 +57,6 @@
 		<property name="completedUser" />
 
 		<property name="completedDate" />
-		
-		<many-to-one name="patientComment" cascade="all"
-			class="org.hisp.dhis.patientcomment.PatientComment" column="patientcommentid"
-			foreign-key="fk_programinstance_patientcommentid" />
-			
+					
 	</class>
 </hibernate-mapping>

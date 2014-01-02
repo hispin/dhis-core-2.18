@@ -31,7 +31,6 @@ package org.hisp.dhis.program;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
 import java.util.Calendar;
@@ -40,6 +39,10 @@ import java.util.List;
 
 /**
  * @author Abyot Asalefew
+ */
+/**
+ * @author abyot
+ *
  */
 public class ProgramStageInstance
     extends BaseIdentifiableObject
@@ -76,8 +79,6 @@ public class ProgramStageInstance
     private List<OutboundSms> outboundSms;
 
     private List<MessageConversation> messageConversations;
-
-    private PatientComment patientComment;
 
     private Integer status = ACTIVE_STATUS;
 
@@ -264,16 +265,6 @@ public class ProgramStageInstance
         this.outboundSms = outboundSms;
     }
 
-    public PatientComment getPatientComment()
-    {
-        return patientComment;
-    }
-
-    public void setPatientComment( PatientComment patientComment )
-    {
-        this.patientComment = patientComment;
-    }
-
     public Date getCompletedDate()
     {
         return completedDate;
@@ -322,9 +313,9 @@ public class ProgramStageInstance
     public void setLatitude( Double latitude )
     {
         this.latitude = latitude;
-    }
+    }  
 
-    public Integer getEventStatus()
+	public Integer getEventStatus()
     {
         if ( this.status != 0 )
         {

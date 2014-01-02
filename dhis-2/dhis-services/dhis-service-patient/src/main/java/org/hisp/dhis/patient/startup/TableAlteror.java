@@ -464,9 +464,12 @@ public class TableAlteror
         {
             Statement statement = holder.getStatement();
 
-            ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patient" );
-
-            if ( resultSet.next() )
+            ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patientattribute" );
+            
+            //this should execute only if gender and other attributes
+            //mentioned below are not inserted. If gender is there, then we assume
+            //others are also inserted.
+            if ( !resultSet.next() )
             {
                 int max = jdbcTemplate.queryForObject( "select max(patientattributeid) from patientattribute", Integer.class );
 

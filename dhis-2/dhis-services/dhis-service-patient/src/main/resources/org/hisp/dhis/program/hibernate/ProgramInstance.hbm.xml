@@ -52,10 +52,11 @@
 			<many-to-many class="org.hisp.dhis.message.MessageConversation"
 				column="messageconversationid" />
 		</list>
-
-		<many-to-one name="patientComment" cascade="all"
-			class="org.hisp.dhis.patientcomment.PatientComment" column="patientcommentid"
-			foreign-key="fk_programinstance_patientcommentid" />
+		
+		<set name="patientComments" order-by="createdDate">
+			<key column="programinstanceid" />
+			<one-to-many class="org.hisp.dhis.patientcomment.PatientComment" />
+		</set>		
 
 	</class>
 </hibernate-mapping>
