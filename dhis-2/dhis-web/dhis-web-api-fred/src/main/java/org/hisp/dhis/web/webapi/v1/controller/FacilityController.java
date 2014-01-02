@@ -310,6 +310,7 @@ public class FacilityController
             }
         }
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         objectMapper.writeValue( response.getOutputStream(), facilities );
     }
 
@@ -558,6 +559,7 @@ public class FacilityController
             facility.setHref( facility.getHref() + ".json" );
         }
 
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE );
         objectMapper.writeValue( response.getOutputStream(), facility );
     }
 
