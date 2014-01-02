@@ -4638,6 +4638,10 @@ Ext.onReady( function() {
 			}
 		});
 
+		getParamString = function() {
+			return ns.core.web.analytics.getParamString(ns.core.service.layout.getExtendedLayout(ns.app.layout));
+		};
+
 		openTableLayoutTab = function(type, isNewTab) {
 			if (ns.core.init.contextPath && ns.app.paramString) {
 				var colDimNames = Ext.clone(ns.app.xLayout.columnDimensionNames),
@@ -4650,8 +4654,7 @@ Ext.onReady( function() {
 					rowNames = Ext.Array.clean([].concat(rowDimNames, (Ext.Array.contains(rowObjNames, dc) ? co : []))),
 					url = '';
 
-				url += ns.core.init.contextPath + '/api/analytics.' + type;
-				url += ns.core.web.analytics.getParamString(ns.app.xLayout);
+				url += ns.core.init.contextPath + '/api/analytics.' + type + getParamString();
 				url += '&tableLayout=true';
 				url += '&columns=' + columnNames.join(';');
 				url += '&rows=' + rowNames.join(';');
@@ -4705,7 +4708,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.json' + ns.app.paramString, '_blank');
+								window.open(ns.core.init.contextPath + '/api/analytics.json' + getParamString(), '_blank');
 							}
 						}
 					},
@@ -4714,7 +4717,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.xml' + ns.app.paramString, '_blank');
+								window.open(ns.core.init.contextPath + '/api/analytics.xml' + getParamString(), '_blank');
 							}
 						}
 					},
@@ -4723,7 +4726,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + ns.app.paramString;
+								window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + getParamString();
 							}
 						}
 					},
@@ -4732,7 +4735,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + ns.app.paramString;
+								window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + getParamString();
 							}
 						}
 					},
@@ -4741,7 +4744,7 @@ Ext.onReady( function() {
 						iconCls: 'ns-menu-item-datasource',
 						handler: function() {
 							if (ns.core.init.contextPath && ns.app.paramString) {
-								window.open(ns.core.init.contextPath + '/api/analytics.jrxml' + ns.app.paramString, '_blank');
+								window.open(ns.core.init.contextPath + '/api/analytics.jrxml' + getParamString(), '_blank');
 							}
 						}
 					}
