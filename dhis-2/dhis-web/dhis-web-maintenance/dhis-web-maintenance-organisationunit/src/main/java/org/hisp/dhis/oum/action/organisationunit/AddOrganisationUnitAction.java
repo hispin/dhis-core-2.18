@@ -335,7 +335,6 @@ public class AddOrganisationUnitAction
             if ( group != null )
             {
                 group.addOrganisationUnit( organisationUnit );
-                // organisationUnitGroupService.updateOrganisationUnitGroup( group );
                 manager.updateNoAcl( group );
             }
         }
