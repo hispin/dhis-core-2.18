@@ -31,6 +31,6 @@ package org.hisp.dhis.common.view;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SharingBasicView extends BasicView
+public interface SharingBasicView extends BasicView
 {
 }
