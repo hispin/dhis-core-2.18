@@ -4806,7 +4806,7 @@ Ext.onReady( function() {
 				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n\n';
 				text += '<script>\n';
 				text += 'var base = "' + ns.core.init.host + '";\n\n';
-				text += 'DHIS.getTable({ url: base, el: "table1", id: "' + ns.app.layout.id + '" });\n';
+				text += 'DHIS.getTable( url: base, el: "table1", ' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n';
 				text += '</script>\n</head>\n\n<body>\n';
 				text += '<div id="table1"></div>\n';
 				text += '</body>\n</html>';
