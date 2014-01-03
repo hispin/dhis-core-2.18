@@ -38,6 +38,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -208,8 +209,9 @@ public class PatientAttribute
         this.description = description;
     }
 
+    //TODO remove WithoutOrganisationUnitsView, temporary hack
     @JsonProperty
-    @JsonView( { DetailedView.class } )
+    @JsonView( { DetailedView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getValueType()
     {
