@@ -33,6 +33,7 @@ import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,9 +77,9 @@ public class ProgramStageInstance
 
     private boolean completed;
 
-    private List<OutboundSms> outboundSms;
+    private List<OutboundSms> outboundSms = new ArrayList<OutboundSms>();
 
-    private List<MessageConversation> messageConversations;
+    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
 
     private Integer status = ACTIVE_STATUS;
 
