@@ -4798,11 +4798,31 @@ Ext.onReady( function() {
 			handler: function() {
 				var textArea,
 					window,
-					text = 'DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout)) + ');';
+					text = '';
+
+				text += '<!DOCTYPE html>\n<html>\n<head>\n\n';
+				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v214/ext/resources/css/ext-plugin-gray.css" />\n';
+				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
+				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n\n';
+				text += '<script>\n';
+				text += 'var base = "http://apps.dhis2.org/demo";\n\n';
+				text += 'Ext.onReady( function() {\n';
+				text += '  Ext.Ajax.request({\n';
+				text += '    url: base + "dhis-web-commons-security/login.action",\n';
+				text += '    method: "POST",\n';
+				text += '    params: { j_username: "portal", j_password: "Portal123" },\n';
+				text += '    success: setLinks\n';
+				text += '  })\n';
+				text += '})\n\n';
+				text += 'function setLinks() {\n\n';
+				text += 'DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n\n';
+				text += '}\n</script>\n</head>\n\n<body>\n';
+				text += '  <div id="table1"></div>\n';
+				text += '</body>\n</html>';
 
 				textArea = Ext.create('Ext.form.field.TextArea', {
-					width: 400,
-					height: 200,
+					width: 700,
+					height: 400,
 					readOnly: true,
 					cls: 'ns-textarea monospaced',
 					value: text
@@ -4817,12 +4837,6 @@ Ext.onReady( function() {
 					destroyOnBlur: true,
 					bbar: [
 						'->',
-						{
-							text: 'Format',
-							handler: function() {
-								textArea.setValue('DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout), null, 2) + ');');
-							}
-						},
 						{
 							text: 'Select',
 							handler: function() {
