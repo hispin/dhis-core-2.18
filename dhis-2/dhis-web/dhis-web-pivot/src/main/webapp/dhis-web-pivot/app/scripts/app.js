@@ -4807,7 +4807,7 @@ Ext.onReady( function() {
 				text += '</head>\n\n<body>\n';
 				text += '<div id="table1"></div>\n\n';
 				text += '<script>\n\n';
-				text += 'DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n';
+				text += 'DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n\n';
 				text += '</script>\n\n';
 				text += '</body>\n</html>';
 

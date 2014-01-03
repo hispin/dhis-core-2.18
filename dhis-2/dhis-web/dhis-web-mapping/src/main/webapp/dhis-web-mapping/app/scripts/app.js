@@ -8020,13 +8020,24 @@ Ext.onReady( function() {
 			handler: function() {
 				var textArea,
 					window,
-					text = 'DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig())) + ');';
+					text = '';
+
+				text += '<html>\n<head>\n';
+				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v214/ext/resources/css/ext-plugin-gray.css" />\n';
+				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
+				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n';
+				text += '</head>\n\n<body>\n';
+				text += '<div id="table1"></div>\n\n';
+				text += '<script>\n\n';
+				text += 'DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()), null, 2) + ');\n\n';
+				text += '</script>\n\n';
+				text += '</body>\n</html>';
 
 				textArea = Ext.create('Ext.form.field.TextArea', {
-					width: 400,
-					height: 200,
+					width: 700,
+					height: 400,
 					readOnly: true,
-					cls: 'gis-textarea monospaced',
+					cls: 'ns-textarea monospaced',
 					value: text
 				});
 
@@ -8039,13 +8050,6 @@ Ext.onReady( function() {
 					destroyOnBlur: true,
 					bbar: [
 						'->',
-						{
-							text: 'Format',
-							handler: function() {
-								textArea.setValue('DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()), null, 2) + ');');
-
-							}
-						},
 						{
 							text: 'Select',
 							handler: function() {
@@ -8062,6 +8066,53 @@ Ext.onReady( function() {
 
 				window.show();
 			}
+
+
+			
+				//var textArea,
+					//window,
+					//text = 'DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig())) + ');';
+
+				//textArea = Ext.create('Ext.form.field.TextArea', {
+					//width: 400,
+					//height: 200,
+					//readOnly: true,
+					//cls: 'gis-textarea monospaced',
+					//value: text
+				//});
+
+				//window = Ext.create('Ext.window.Window', {
+					//title: 'Plugin configuration',
+					//layout: 'fit',
+					//modal: true,
+					//resizable: false,
+					//items: textArea,
+					//destroyOnBlur: true,
+					//bbar: [
+						//'->',
+						//{
+							//text: 'Format',
+							//handler: function() {
+								//textArea.setValue('DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()), null, 2) + ');');
+
+							//}
+						//},
+						//{
+							//text: 'Select',
+							//handler: function() {
+								//textArea.selectText();
+							//}
+						//}
+					//],
+					//listeners: {
+						//show: function(w) {
+							//this.setPosition(215, 33);
+						//}
+					//}
+				//});
+
+				//window.show();
+			//}
 		});
 
 		shareButton = Ext.create('Ext.button.Button', {

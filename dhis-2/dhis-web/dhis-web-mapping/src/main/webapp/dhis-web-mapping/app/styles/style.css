@@ -1078,3 +1078,18 @@ label.x-form-cb-label-alt1 {
 .gis-accordion .gis-combo .x-form-item-label {
 	padding: 4px 0 0;
 }
+
+
+/*----------------------------------------------------------------------------
+ * NS Textarea
+ *--------------------------------------------------------------------------*/
+
+.ns-textarea .x-form-field {
+	font-size: 11px;
+}
+
+.ns-textarea.monospaced textarea {
+	font-family: monospace, consolas, courier new !important;
+	padding: 4px;
+	border: 0 none;
+}
