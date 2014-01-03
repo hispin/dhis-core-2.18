@@ -5,12 +5,17 @@ var filters = [];
 // -----------------------------------------------------------------------------
 // Document ready
 // -----------------------------------------------------------------------------
-jQuery( function ()
-    {
-        tableSorter( "filterList" );
-        loadFilters();
-    }
-);
+
+jQuery( function() {
+    tableSorter( "filterList" );
+    loadFilters();
+    
+    dhis2.contextmenu.makeContextMenu({
+        menuId: 'contextMenu',
+        menuItemActiveClass: 'contextMenuItemActive',
+        listId: 'filterTableBody'
+      });
+} );
 
 // Create a new Filter form
 function submitFilterForm( command )
@@ -40,8 +45,10 @@ function loadFilters()
 }
 
 // Show Filter details
-function showFilterDetails( filterUid )
+function showFilterDetails( context )
 {
+	var filterUid = context.uid;
+	
     $( "#detailsArea" ).show( "fast" );
     for ( var i = 0; i < filters.length; i++ )
     {
@@ -58,8 +65,10 @@ function showFilterDetails( filterUid )
 // -----------------------------------------------------------------------------
 
 // Start export
-function exportFilterButton( filterUid )
+function exportFilterButton( context )
 {
+	var filterUid = context.uid;
+	
     for ( var i = 0; i < filters.length; i++ )
     {
         if ( filters[i].id == filterUid )
@@ -112,8 +121,10 @@ function getURL()
 // -----------------------------------------------------------------------------
 
 // Edit a Filter
-function editFilterButton( filterUid )
+function editFilterButton( context )
 {
+	var filterUid = context.uid;
+	
     for ( var i = 0; i < filters.length; i++ )
     {
         if ( filters[i].id == filterUid )
@@ -134,8 +145,10 @@ function editFilterButton( filterUid )
 // -----------------------------------------------------------------------------
 
 // Delete a Filter
-function removeFilterButton( filterUid )
+function removeFilterButton( context )
 {
+	var filterUid = context.uid;
+	
     var filter = {};
     for ( var i = 0; i < filters.length; i++ )
     {

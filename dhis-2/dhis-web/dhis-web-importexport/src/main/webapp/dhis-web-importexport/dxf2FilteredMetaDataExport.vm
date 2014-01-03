@@ -6,6 +6,15 @@
 
 <h3>$i18n.getString( "filtered_metadata_export" ) #openHelp( "filtered_metadata_export" )</h3>
 
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
+    <li data-enabled="canManage"><a data-target-fn="exportFilterButton"><i class="fa fa-play"></i>&nbsp;&nbsp;$i18n.getString( "export" )</a></li>
+    <li data-enabled="canManage"><a data-target-fn="editFilterButton"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
+    <li data-enabled="canManage"><a data-target-fn="removeFilterButton"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showFilterDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
+  </ul>
+</div>
+
 <!-- FILTER EXPORT FORM -->
 <div id="mainDivFilter" style="width: 70%;">
     <table class="mainPageTable">
@@ -31,24 +40,16 @@
 
                 <!-- FILTER TABLE -->
                 <table id="filterList" class="listTable">
-                    <col/>
-                    <col width="115"/>
                     <thead>
                     <tr>
                         <th>$i18n.getString( "name" )</th>
-                        <th class="{sorter: false}">$i18n.getString( "operations" )</th>
                     </tr>
                     </thead>
                     <tbody id="filterTableBody">
                         #foreach( $filter in $filters )
-                        <tr id="tr${filter.uid}">
-                            <td>$filter.name</td>
-                            <td>
-                                <a href="javascript:exportFilterButton( '$filter.uid' );" title="$i18n.getString( 'export' )"><img src="../images/start_process.png" alt="$i18n.getString( 'export' )"/></a>
-                                <a href="javascript:editFilterButton( '$filter.uid' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-                                <a href="javascript:removeFilterButton( '$filter.uid' );" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-                                <a href="javascript:showFilterDetails( '$filter.uid' );" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-                            </td>
+                        <tr id="tr${filter.uid}" data-id="$!filter.id" data-uid="$!filter.uid" data-type="Filter" data-name="$encoder.htmlEncode( $!filter.name )"
+                            data-can-manage="#if( $auth.hasAccess( 'dhis-web-importexport', 'dxf2FilteredMetaDataExport' ) )true#{else}false#end">
+                            <td>$encoder.htmlEncode( $!filter.name )</td>
                         </tr>
                         #end
                     </tbody>
