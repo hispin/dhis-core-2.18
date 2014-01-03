@@ -28,6 +28,6 @@ package org.hisp.dhis.common.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class DimensionalView
+public interface DimensionalView
 {
 }
