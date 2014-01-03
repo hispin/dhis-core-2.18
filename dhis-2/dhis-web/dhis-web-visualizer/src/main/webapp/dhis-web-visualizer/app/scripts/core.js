@@ -1217,6 +1217,7 @@ Ext.onReady( function() {
 						delete item.code;
 						delete item.created;
 						delete item.lastUpdated;
+						delete item.value;
 					}
 				}
 

@@ -4803,12 +4803,12 @@ Ext.onReady( function() {
 				text += '<html>\n<head>\n';
 				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v214/ext/resources/css/ext-plugin-gray.css" />\n';
 				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
-				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n\n';
-				text += '<script>\n';
-				text += 'var base = "' + ns.core.init.contextPath + '";\n\n';
-				text += 'DHIS.getTable({' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n';
-				text += '</script>\n</head>\n\n<body>\n';
-				text += '<div id="table1"></div>\n';
+				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n';
+				text += '</head>\n\n<body>\n';
+				text += '<div id="table1"></div>\n\n';
+				text += '<script>\n\n';
+				text += 'DHIS.getTable(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n';
+				text += '</script>\n\n';
 				text += '</body>\n</html>';
 
 				textArea = Ext.create('Ext.form.field.TextArea', {
