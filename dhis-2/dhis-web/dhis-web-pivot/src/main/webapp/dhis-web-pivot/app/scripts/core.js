@@ -1517,11 +1517,15 @@ Ext.onReady( function() {
 				return layout.showHierarchy && Ext.isObject(response.metaData.ouHierarchy) && response.metaData.ouHierarchy.hasOwnProperty(id);
 			};
 
-			service.layout.layout2plugin = function(layout) {
+			service.layout.layout2plugin = function(layout, el) {
 				var layout = Ext.clone(layout),
 					dimensions = Ext.Array.clean([].concat(layout.columns || [], layout.rows || [], layout.filters || []));
 
 				layout.url = init.contextPath;
+
+				if (el) {
+					layout.el = el;
+				}
 
 				if (Ext.isString(layout.id)) {
 					return {id: layout.id};
@@ -1543,6 +1547,7 @@ Ext.onReady( function() {
 						delete item.code;
 						delete item.created;
 						delete item.lastUpdated;
+						delete item.value;
 					}
 				}
 
