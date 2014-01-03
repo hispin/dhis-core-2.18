@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.api.utils.ContextUtils.DATE_PATTERN;
 import static org.hisp.dhis.common.DimensionalObjectUtils.getUniqueDimensions;
 import static org.hisp.dhis.common.DimensionalObjectUtils.toDimension;
 
@@ -43,15 +44,19 @@ import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.DimensionService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
-import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.user.UserService;
 import org.jfree.chart.ChartUtilities;
@@ -65,8 +70,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import static org.hisp.dhis.api.utils.ContextUtils.DATE_PATTERN;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -85,6 +88,12 @@ public class ChartController
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
+    private DataElementCategoryService categoryService;
+    
     @Autowired
     private IndicatorService indicatorService;
 
@@ -166,7 +175,7 @@ public class ChartController
         @RequestParam( value = "ou", required = false ) String ou,
         @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
         @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
-        HttpServletResponse response ) throws IOException, I18nManagerException
+        HttpServletResponse response ) throws IOException
     {
         Chart chart = chartService.getChartNoAcl( uid );
 
@@ -195,7 +204,7 @@ public class ChartController
         @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
         @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
         @RequestParam( value = "skipTitle", required = false ) boolean skipTitle,
-        HttpServletResponse response ) throws Exception
+        HttpServletResponse response ) throws IOException
     {
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
@@ -213,6 +222,55 @@ public class ChartController
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", false );
 
+        ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
+    }
+
+    @RequestMapping( value = { "/history/data", "/history/data.png" }, method = RequestMethod.GET )
+    public void getHistoryChart(
+        @RequestParam String de,
+        @RequestParam String co,
+        @RequestParam String pe,
+        @RequestParam String ou,
+        @RequestParam( defaultValue = "525", required = false ) int width,
+        @RequestParam( defaultValue = "300", required = false ) int height,
+        HttpServletResponse response ) throws IOException
+    {
+        DataElement dataElement = dataElementService.getDataElement( de );
+        
+        if ( dataElement == null )
+        {
+            ContextUtils.conflictResponse( response, "Data element does not exist: " + de );
+            return;
+        }
+        
+        DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( co );
+        
+        if ( categoryOptionCombo == null )
+        {
+            ContextUtils.conflictResponse( response, "Category option combo does not exist: " + co );
+            return;
+        }
+        
+        Period period = PeriodType.getPeriodFromIsoString( pe );
+        
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Period does not exist: " + pe );
+            return;
+        }
+        
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+        
+        if ( organisationUnit == null )
+        {
+            ContextUtils.conflictResponse( response, "Organisation unit does not exist: " + ou );
+            return;
+        }        
+
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", false );
+
+        JFreeChart chart = chartService.getJFreeChartHistory( dataElement, categoryOptionCombo, period, organisationUnit, 13, i18nManager.getI18nFormat() );
+        
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 
