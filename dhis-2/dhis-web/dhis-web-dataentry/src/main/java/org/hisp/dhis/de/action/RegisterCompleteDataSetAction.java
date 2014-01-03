@@ -165,7 +165,6 @@ public class RegisterCompleteDataSetAction
         DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( ServletActionContext.getResponse(), cc, cp );
 
         String storedBy = currentUserService.getCurrentUsername();
-
         
         // ---------------------------------------------------------------------
         // Check locked status
