@@ -3957,7 +3957,6 @@ Ext.onReady( function() {
 
             accBaseWidth = baseWidth - 6;
 
-
 		// stores
 
 		programStore = Ext.create('Ext.data.Store', {
@@ -4059,6 +4058,9 @@ Ext.onReady( function() {
 		onProgramSelect = function(programId) {
 			stage.clearValue();
 
+			dataElementsByStageStore.removeAll();
+			dataElementSelected.removeAll();			
+
 			stagesByProgramStore.proxy.url = gis.init.contextPath + '/api/programs/' + programId + '.json?viewClass=withoutOrganisationUnits&links=false&paging=false';
 			stagesByProgramStore.load({
 				callback: function(records) {
@@ -4088,11 +4090,9 @@ Ext.onReady( function() {
 			emptyText: 'Select stage',
 			queryMode: 'remote',
 			forceSelection: true,
-			//width: gis.conf.layout.widget.item_width,
 			columnWidth: 0.5,
 			style: 'margin:1px 0 2px 1px',
 			disabled: true,
-			//labelWidth: gis.conf.layout.widget.itemlabel_width,
 			listConfig: {loadMask: false},
 			store: stagesByProgramStore,
             getRecord: function() {
@@ -4141,8 +4141,7 @@ Ext.onReady( function() {
 			tbar: [
 				{
 					xtype: 'label',
-					//text: GIS.i18n.available,
-                    text: 'Available data elements',
+                    text: 'Available data items',
 					cls: 'ns-toolbar-multiselect-left-label'
 				},
 				'->',
@@ -4188,8 +4187,7 @@ Ext.onReady( function() {
                 height: 27,
                 items: {
 					xtype: 'label',
-					//text: GIS.i18n.available,
-                    text: 'Selected data elements',
+                    text: 'Selected data items',
                     style: 'padding-left:6px; color:#222',
 					cls: 'ns-toolbar-multiselect-left-label'
 				}
@@ -4292,7 +4290,7 @@ Ext.onReady( function() {
         };
 
         dataElement = Ext.create('Ext.panel.Panel', {
-            title: '<div class="gis-panel-title-data">Data elements</div>',
+            title: '<div class="gis-panel-title-data">Data</div>',
             bodyStyle: 'padding:2px',
             hideCollapseTool: true,
             items: [
