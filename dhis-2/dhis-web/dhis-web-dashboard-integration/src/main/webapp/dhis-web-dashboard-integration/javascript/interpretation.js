@@ -44,6 +44,7 @@ function loadNextPage() {
     }
 
     pageLock = false;
+    updateEventHandlers();
   });
 }
 
@@ -207,4 +208,50 @@ function deleteIp( e ) {
       setHeaderDelayMessage(i18n_could_not_delete_interpretation_comment);
     });
   }
+}
+
+function updateEventHandlers() {
+    var dropDown = jQuery('.dropDown');
+
+    dropDown.off('click.dropdown').on('click.dropdown', 'li', function( e ) {
+      var jqTarget = jQuery(e.target).closest('li');
+      var targetFn = dhis2.contextmenu.utils.findInScope(window)(jqTarget.data('target-fn'));
+
+      if( typeof targetFn !== 'undefined' ) {
+        targetFn(e);
+      }
+    });
+
+    jQuery('.interpretationContainer').off('click').on('click', '.gearDropDown', function( e ) {
+      var jqTarget = jQuery(e.target).closest('.gearDropDown');
+      jQuery('.gearDropDown').removeClass('active');
+
+      if(dropDown.is(':visible')) {
+        dropDown.hide();
+        return false;
+      }
+
+      jqTarget.addClass('active');
+      dropDown.show();
+      dropDown.css({
+        top: jqTarget.offset().top + jqTarget.innerHeight(),
+        left: jqTarget.offset().left - 34
+      });
+
+      return false;
+    });
+
+    jQuery(document).off('click').on('click', function() {
+      if( dropDown.is(":visible") ) {
+        jQuery('.gearDropDown').removeClass('active');
+        dropDown.hide();
+      }
+    });
+
+    $(document).keyup(function( e ) {
+      if( e.keyCode == 27 ) {
+        jQuery('.gearDropDown').removeClass('active');
+        dropDown.hide();
+      }
+    });
 }
