@@ -4805,8 +4805,8 @@ Ext.onReady( function() {
 				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
 				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n\n';
 				text += '<script>\n';
-				text += 'var base = "' + ns.core.init.host + '";\n\n';
-				text += 'DHIS.getTable( url: base, el: "table1", ' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n';
+				text += 'var base = "' + ns.core.init.contextPath + '";\n\n';
+				text += 'DHIS.getTable({' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n';
 				text += '</script>\n</head>\n\n<body>\n';
 				text += '<div id="table1"></div>\n';
 				text += '</body>\n</html>';
@@ -5422,88 +5422,86 @@ Ext.onReady( function() {
 					success: function(r) {
 						var i18nArray = Ext.decode(r.responseText);
 
-						// i18n
-						requests.push({
-							url: init.contextPath + '/api/i18n?package=org.hisp.dhis.pivot',
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-								'Accepts': 'application/json'
-							},
-							params: Ext.encode(i18nArray),
+						Ext.Ajax.request({
+							url: init.contextPath + '/api/system/context.json',
 							success: function(r) {
-								NS.i18n = Ext.decode(r.responseText);
-								fn();
-							}
-						});
+								init.contextPath = Ext.decode(r.responseText).contextPath || init.contextPath;
 
-						// root nodes
-						requests.push({
-							url: init.contextPath + '/api/organisationUnits.json?level=1&paging=false&links=false&viewClass=detailed',
-							success: function(r) {
-								init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
-								fn();
-							}
-						});
+								// i18n
+								requests.push({
+									url: init.contextPath + '/api/i18n?package=org.hisp.dhis.pivot',
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json',
+										'Accepts': 'application/json'
+									},
+									params: Ext.encode(i18nArray),
+									success: function(r) {
+										NS.i18n = Ext.decode(r.responseText);
+										fn();
+									}
+								});
 
-						// organisation unit levels
-						requests.push({
-							url: init.contextPath + '/api/organisationUnitLevels.json?paging=false&links=false',
-							success: function(r) {
-								init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
-								fn();
-							}
-						});
+								// root nodes
+								requests.push({
+									url: init.contextPath + '/api/organisationUnits.json?level=1&paging=false&links=false&viewClass=detailed',
+									success: function(r) {
+										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
+										fn();
+									}
+								});
 
-						// user orgunits and children
-						requests.push({
-							url: init.contextPath + '/api/organisationUnits.json?userOnly=true&viewClass=detailed&links=false',
-							success: function(r) {
-								var organisationUnits = Ext.decode(r.responseText).organisationUnits || [];
+								// organisation unit levels
+								requests.push({
+									url: init.contextPath + '/api/organisationUnitLevels.json?paging=false&links=false',
+									success: function(r) {
+										init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
+										fn();
+									}
+								});
 
-								if (organisationUnits.length) {
-									var ou = organisationUnits[0];
+								// user orgunits and children
+								requests.push({
+									url: init.contextPath + '/api/organisationUnits.json?userOnly=true&viewClass=detailed&links=false',
+									success: function(r) {
+										var organisationUnits = Ext.decode(r.responseText).organisationUnits || [];
 
-									init.user = {
-										ou: ou.id,
-										ouc: Ext.Array.pluck(ou.children, 'id')
-									};
+										if (organisationUnits.length) {
+											var ou = organisationUnits[0];
 
-									fn();
+											init.user = {
+												ou: ou.id,
+												ouc: Ext.Array.pluck(ou.children, 'id')
+											};
+										}
+
+										fn();
+									}
+								});
+
+								// legend sets
+								requests.push({
+									url: init.contextPath + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
+									success: function(r) {
+										init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
+										fn();
+									}
+								});
+
+								// dimensions
+								requests.push({
+									url: init.contextPath + '/api/dimensions.json?links=false&paging=false',
+									success: function(r) {
+										init.dimensions = Ext.decode(r.responseText).dimensions || [];
+										fn();
+									}
+								});
+
+								for (var i = 0; i < requests.length; i++) {
+									Ext.Ajax.request(requests[i]);
 								}
 							}
 						});
-
-						// legend sets
-						requests.push({
-							url: init.contextPath + '/api/mapLegendSets.json?viewClass=detailed&links=false&paging=false',
-							success: function(r) {
-								init.legendSets = Ext.decode(r.responseText).mapLegendSets || [];
-								fn();
-							}
-						});
-
-						// dimensions
-						requests.push({
-							url: init.contextPath + '/api/dimensions.json?links=false&paging=false',
-							success: function(r) {
-								init.dimensions = Ext.decode(r.responseText).dimensions || [];
-								fn();
-							}
-						});
-						
-						// host url
-						requests.push({
-							url: init.contextPath + '/api/system/context.json',
-							success: function(r) {
-								init.host = Ext.decode(r.responseText).contextPath || '';
-								fn();
-							}
-						});
-
-						for (var i = 0; i < requests.length; i++) {
-							Ext.Ajax.request(requests[i]);
-						}
 					}
 				});
 			}
