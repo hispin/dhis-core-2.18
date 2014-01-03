@@ -4037,10 +4037,9 @@ Ext.onReady( function() {
 			emptyText: 'Select program',
 			forceSelection: true,
 			queryMode: 'remote',
-			//width: gis.conf.layout.widget.item_width,
 			columnWidth: 0.5,
 			style: 'margin:1px 1px 2px 0',
-			//labelWidth: gis.conf.layout.widget.itemlabel_width,
+			storage: {},
 			store: programStore,
             getRecord: function() {
                 return {
@@ -4114,19 +4113,58 @@ Ext.onReady( function() {
 			loadDataElements(stageId);
 		};
 
-		loadDataElements = function(param) {
-			if (Ext.isString(param)) {
-				Ext.Ajax.request({
-					url: gis.init.contextPath + '/api/programStages/' + param + '.json?links=false&paging=false',
-					success: function(r) {
-						var dataElements = Ext.Array.pluck(Ext.decode(r.responseText).programStageDataElements, 'dataElement');
+		loadDataElements = function(item, programId) {
+			var dataElements,
+				load,
+				fn;
 
-						dataElementsByStageStore.loadData(dataElements);
-					}
-				});
-			}
-			else if (Ext.isArray(param)) {
-				dataElementsByStageStore.loadData(param);
+			programId = programId || program.getValue() || null;
+
+			load = function(attributes, dataElements) {
+				var data = Ext.Array.clean([].concat(attributes || [], dataElements || []));
+				dataElementsByStageStore.loadData(data);
+			};
+
+			fn = function(attributes) {
+
+				// data elements			
+				if (Ext.isString(item)) {
+					Ext.Ajax.request({
+						url: gis.init.contextPath + '/api/programStages/' + item + '.json?links=false&paging=false',
+						success: function(r) {
+							var dataElements = Ext.Array.pluck(Ext.decode(r.responseText).programStageDataElements, 'dataElement');
+							load(attributes, dataElements);
+						}
+					});
+				}
+				else if (Ext.isArray(item)) {
+					load(attributes, item);
+				}
+			};
+
+			// attributes
+			if (programId) {
+				if (program.storage[programId]) {
+					fn(program.storage[programId]);
+				}
+				else {
+					Ext.Ajax.request({
+						url: gis.init.contextPath + '/api/programs/' + programId + '.json?viewClass=withoutOrganisationUnits&links=false',
+						success: function(r) {
+							var attributes = Ext.decode(r.responseText).attributes;
+
+							if (attributes) {
+								for (var i = 0; i < attributes.length; i++) {
+									attributes[i].type = attributes[i].valueType;
+								}
+								
+								program.storage[programId] = attributes;
+							}
+
+							fn(attributes);
+						}
+					});
+				}
 			}
 		};
 
