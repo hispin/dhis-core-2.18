@@ -86,7 +86,7 @@ public class PatientAttribute
 
     private PatientAttributeGroup patientAttributeGroup;
 
-    private Set<PatientAttributeOption> attributeOptions;
+    private Set<PatientAttributeOption> attributeOptions = new HashSet<PatientAttributeOption>();
 
     private String expression;
 

@@ -28,6 +28,7 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientMobileSetting
@@ -40,7 +41,7 @@ public class PatientMobileSetting
 
     private Double versionToUpdate;
 
-    private List<PatientAttribute> patientAttributes;
+    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
     public PatientMobileSetting()
     {

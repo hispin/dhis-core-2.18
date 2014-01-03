@@ -28,6 +28,7 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -83,9 +84,9 @@ public class ProgramInstance
     
     private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
 
-    private List<OutboundSms> outboundSms;
+    private List<OutboundSms> outboundSms = new ArrayList<OutboundSms>();
 
-    private List<MessageConversation> messageConversations;
+    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
 
     private Boolean followup = false;
 

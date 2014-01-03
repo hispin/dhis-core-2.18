@@ -28,6 +28,7 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -108,9 +109,9 @@ public class Program
 
     private Boolean ignoreOverdueEvents = false;
 
-    private List<PatientIdentifierType> patientIdentifierTypes;
+    private List<PatientIdentifierType> patientIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
-    private List<PatientAttribute> patientAttributes;
+    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
 
