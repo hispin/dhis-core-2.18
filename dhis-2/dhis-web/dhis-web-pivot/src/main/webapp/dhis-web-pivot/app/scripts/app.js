@@ -4805,7 +4805,7 @@ Ext.onReady( function() {
 				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
 				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n\n';
 				text += '<script>\n';
-				text += 'var base = "http://apps.dhis2.org/demo";\n\n';
+				text += 'var base = "' + ns.core.init.host + '";\n\n';
 				text += 'DHIS.getTable( url: base, el: "table1", ' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'table1'), null, 2) + ');\n';
 				text += '</script>\n</head>\n\n<body>\n';
 				text += '<div id="table1"></div>\n';
@@ -5488,6 +5488,15 @@ Ext.onReady( function() {
 							url: init.contextPath + '/api/dimensions.json?links=false&paging=false',
 							success: function(r) {
 								init.dimensions = Ext.decode(r.responseText).dimensions || [];
+								fn();
+							}
+						});
+						
+						// host url
+						requests.push({
+							url: init.contextPath + '/api/system/context.json',
+							success: function(r) {
+								init.host = Ext.decode(r.responseText).contextPath || '';
 								fn();
 							}
 						});
