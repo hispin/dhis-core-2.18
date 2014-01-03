@@ -76,9 +76,5 @@
       <result name="input" type="velocity">/dhis-web-dataentry/validationResult.vm</result>
     </action>
 
-    <action name="getHistoryChart" class="org.hisp.dhis.de.action.GetHistoryChartAction">
-      <result name="success" type="chart"></result>
-    </action>
-
   </package>
 </struts>

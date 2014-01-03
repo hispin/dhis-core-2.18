@@ -160,9 +160,9 @@ function refreshChart()
 {	
     var periodId = $( '#selectedPeriodId' ).val();
     
-    var source = 'getHistoryChart.action?dataElementId=' + currentDataElementId + '&categoryOptionComboId='
-    	+ currentOptionComboId + '&periodId=' + periodId + 
-    	'&organisationUnitId=' + dhis2.de.currentOrganisationUnitId + '&r=' + Math.random();
+    var source = '../api/charts/history/data.png?de=' + currentDataElementId + '&co='
+    	+ currentOptionComboId + '&pe=' + periodId + 
+    	'&ou=' + dhis2.de.currentOrganisationUnitId + '&r=' + Math.random();
 
     $( '#historyChart' ).attr( 'src', source );
 }
