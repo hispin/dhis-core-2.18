@@ -4485,7 +4485,7 @@ Ext.onReady( function() {
 				text += '</head>\n\n<body>\n';
 				text += '<div id="chart1"></div>\n\n';
 				text += '<script>\n\n';
-				text += 'DHIS.getChart(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'chart1'), null, 2) + ');\n';
+				text += 'DHIS.getChart(' + JSON.stringify(ns.core.service.layout.layout2plugin(ns.app.layout, 'chart1'), null, 2) + ');\n\n';
 				text += '</script>\n\n';
 				text += '</body>\n</html>';
 
