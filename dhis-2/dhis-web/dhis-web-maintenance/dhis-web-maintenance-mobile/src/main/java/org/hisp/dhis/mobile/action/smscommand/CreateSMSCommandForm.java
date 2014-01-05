@@ -30,7 +30,6 @@ package org.hisp.dhis.mobile.action.smscommand;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
@@ -104,13 +103,6 @@ public class CreateSMSCommandForm
     public void setUserGroupID( Integer userGroupID )
     {
         this.userGroupID = userGroupID;
-    }
-
-    private Integer selectedAnonymousProgramID;
-
-    public void setSelectedAnonymousProgramID( Integer selectedAnonymousProgramID )
-    {
-        this.selectedAnonymousProgramID = selectedAnonymousProgramID;
     }
 
     // -------------------------------------------------------------------------
