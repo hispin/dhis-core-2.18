@@ -70,7 +70,7 @@
 #end
 
 #macro( openHelp $id )
-<a href="javascript:getHelpContent('${id}')" title="$i18n.getString( 'help' )"><img src="../images/help.png" alt="$i18n.getString( 'help' )"></a>
+<a href="javascript:getHelpContent('${id}')" title="$i18n.getString( 'help' )"><i class="fa fa-question-circle"></i></a>
 #end
 
 #macro( introListImgItem $action $objectKey $image )
