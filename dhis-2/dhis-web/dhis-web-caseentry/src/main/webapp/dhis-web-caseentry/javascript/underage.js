@@ -6,7 +6,6 @@ function validateAddRepresentative()
 {	
 	$.postUTF8("validatePatient.action?" + getIdentifierTypeIdParams(),
 		{
-			fullName: jQuery( '#addRepresentativeForm [id=fullName]' ).val()
 		}, addValidationRepresentativeCompleted, "xml" );
 }
 
@@ -103,7 +102,6 @@ function showPersons( divContainer, xmlElement )
     {
 		sPatient += "<hr style='margin:5px 0px;'><table>";
 		sPatient += "<tr><td class='bold'>" + i18n_patient_system_id + "</td><td>" + $( patient ).find('systemIdentifier').text() + "</td></tr>" ;
-		sPatient += "<tr><td class='bold'>" + i18n_patient_full_name + "</td><td>" + $( patient ).find('fullName').text() + "</td></tr>" ;
 		
 		var identifiers =  $( patient ).find('identifier');
 		$( identifiers ).each( function( i, identifier )

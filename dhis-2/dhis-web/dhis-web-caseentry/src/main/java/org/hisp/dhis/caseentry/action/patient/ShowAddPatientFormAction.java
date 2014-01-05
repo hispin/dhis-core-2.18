@@ -194,6 +194,13 @@ public class ShowAddPatientFormAction
         return identifierTypes;
     }
 
+    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+
+    public List<PatientAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
     private Map<String, List<PatientAttribute>> attributesMap = new HashMap<String, List<PatientAttribute>>();
 
     public Map<String, List<PatientAttribute>> getAttributesMap()
@@ -303,9 +310,7 @@ public class ShowAddPatientFormAction
                     healthWorkers, null, null, i18n, format );
             }
         }
-
-        List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-
+        
         if ( customRegistrationForm == null )
         {
             attributeGroups = new ArrayList<PatientAttributeGroup>(

@@ -131,7 +131,7 @@ public class PatientServiceTest
         patientA2 = createPatient( 'A', organisationUnitB );
         patientA3 = createPatient( 'A', organisationUnit, patientIdentifierType );
         patientB1 = createPatient( 'B', organisationUnit );
-        patientB2 = createPatient( 'B', organisationUnit );
+        patientB2 = createPatient( 'B', organisationUnit, patientIdentifierType );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
@@ -213,35 +213,6 @@ public class PatientServiceTest
     }
 
     @Test
-    public void testGetPatientsByNames()
-    {
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientA2 );
-
-        Collection<Patient> patients = patientService.getPatientsByNames( "NameA", null, null );
-
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientA1 ) );
-        assertTrue( patients.contains( patientA2 ) );
-    }
-
-    @Test
-    public void testSearchByLikeNames()
-    {
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientA2 );
-        patientService.savePatient( patientA3 );
-        patientService.savePatient( patientB1 );
-        patientService.savePatient( patientB2 );
-
-        Collection<Patient> patients = patientService.getPatients( "B", 0, 10 );
-
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientB1 ) );
-        assertTrue( patients.contains( patientB2 ) );
-    }
-
-    @Test
     public void testGetPatientsByOu()
     {
         patientService.savePatient( patientA1 );
@@ -286,19 +257,6 @@ public class PatientServiceTest
         programInstanceService.enrollPatient( patientA3, programA, date, date, organisationUnit, null );
 
         Collection<Patient> patients = patientService.getPatients( organisationUnit, programA );
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientA1 ) );
-        assertTrue( patients.contains( patientA3 ) );
-    }
-
-    @Test
-    public void testGetPatientsLikeName()
-    {
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientA2 );
-        patientService.savePatient( patientA3 );
-
-        Collection<Patient> patients = patientService.getPatientsLikeName( organisationUnit, "A", null, null );
         assertEquals( 2, patients.size() );
         assertTrue( patients.contains( patientA1 ) );
         assertTrue( patients.contains( patientA3 ) );
@@ -368,28 +326,6 @@ public class PatientServiceTest
         patientService.savePatient( patientA2 );
 
         assertEquals( 2, patientService.getRepresentatives( patientB1 ).size() );
-    }
-
-    @Test
-    public void testCountGetPatientsByNameIdentifier()
-    {
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientA2 );
-        patientService.savePatient( patientA3 );
-        patientService.savePatient( patientB1 );
-        patientService.savePatient( patientB2 );
-
-        assertEquals( 2, patientService.countGetPatients( "b" ) );
-    }
-
-    @Test
-    public void testCountGetPatientsByName()
-    {
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientA2 );
-        patientService.savePatient( patientA3 );
-
-        assertEquals( 3, patientService.countGetPatientsByName( "a" ) );
     }
 
     @Test
@@ -481,8 +417,6 @@ public class PatientServiceTest
         programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
 
         List<String> searchKeys = new ArrayList<String>();
-        searchKeys.add( Patient.PREFIX_IDENTIFIER_TYPE + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE
-            + organisationUnit.getId() );
         searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
             + Patient.SEARCH_SAPERATE + "a" );
         searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
@@ -516,9 +450,7 @@ public class PatientServiceTest
         programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
 
         List<String> searchKeys = new ArrayList<String>();
-        searchKeys.add( Patient.PREFIX_IDENTIFIER_TYPE + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE
-            + organisationUnit.getId() );
-        searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
+       searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
             + Patient.SEARCH_SAPERATE + "a" );
         searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
 
@@ -558,8 +490,6 @@ public class PatientServiceTest
         programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
 
         List<String> searchKeys = new ArrayList<String>();
-        searchKeys.add( Patient.PREFIX_IDENTIFIER_TYPE + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE
-            + organisationUnit.getId() );
         searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
 
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
@@ -594,31 +524,11 @@ public class PatientServiceTest
         patientAttributeValueService.savePatientAttributeValue( attributeValue );
         patientA2.addAttributeValue( attributeValue );
         patientService.updatePatient( patientA2 );
-        
+
         Collection<Patient> patients = patientService.getPatientsByPhone( "123456789", null, null );
         assertEquals( 2, patients.size() );
         assertTrue( patients.contains( patientA1 ) );
         assertTrue( patients.contains( patientA2 ) );
-    }
-
-    @Test
-    public void testGetPatientByFullname()
-    {
-        patientService.savePatient( patientA1 );
-        patientService.savePatient( patientA2 );
-        patientService.savePatient( patientB1 );
-        patientService.savePatient( patientB2 );
-
-        Collection<Patient> patients = patientService.getPatientByFullname( "NameA", organisationUnit );
-
-        assertEquals( 1, patients.size() );
-        assertTrue( patients.contains( patientA1 ) );
-
-        patients = patientService.getPatientByFullname( "NameB", organisationUnit );
-
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientB1 ) );
-        assertTrue( patients.contains( patientB2 ) );
     }
 
 }

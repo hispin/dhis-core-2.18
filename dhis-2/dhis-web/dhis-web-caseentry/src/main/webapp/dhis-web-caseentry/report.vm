@@ -33,9 +33,6 @@
 								#end
 							#end
 						#end
-						#if($value=="")
-							#set( $value=$programInstance.patient.name)
-						#end
 							
 						<input type='button' class='patient-object' value="$value"
 							onclick='javascript:showPatientHistory( $programInstance.patient.id )' title='$i18n.getString( "patient_details_and_history" )'>

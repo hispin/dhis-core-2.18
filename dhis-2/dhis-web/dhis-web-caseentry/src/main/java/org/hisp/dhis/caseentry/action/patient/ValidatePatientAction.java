@@ -74,11 +74,7 @@ public class ValidatePatientAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String fullName;
-
     private Integer id;
-
-    private boolean underAge;
 
     private Integer programId;
 
@@ -117,7 +113,6 @@ public class ValidatePatientAction
             patient = new Patient();
         }
 
-        patient.setName( fullName );
         patient.setOrganisationUnit( orgunit );
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -132,18 +127,15 @@ public class ValidatePatientAction
 
             for ( PatientIdentifierType idType : identifierTypes )
             {
-                if ( !underAge || (underAge && !idType.isRelated()) )
+                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );
+                if ( StringUtils.isNotBlank( value ) )
                 {
-                    value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );
-                    if ( StringUtils.isNotBlank( value ) )
-                    {
-                        PatientIdentifier patientIdentifier = new PatientIdentifier();
-                        patientIdentifier.setPatient( patient );
-                        patientIdentifier.setIdentifierType( idType );
-                        patientIdentifier.setIdentifier( value );
+                    PatientIdentifier patientIdentifier = new PatientIdentifier();
+                    patientIdentifier.setPatient( patient );
+                    patientIdentifier.setIdentifierType( idType );
+                    patientIdentifier.setIdentifier( value );
 
-                        patientIdentifiers.add( patientIdentifier );
-                    }
+                    patientIdentifiers.add( patientIdentifier );
                 }
             }
 
@@ -195,11 +187,6 @@ public class ValidatePatientAction
         this.selectionManager = selectionManager;
     }
 
-    public void setFullName( String fullName )
-    {
-        this.fullName = fullName;
-    }
-
     public String getMessage()
     {
         return message;
@@ -218,11 +205,6 @@ public class ValidatePatientAction
     public void setId( Integer id )
     {
         this.id = id;
-    }
-
-    public void setUnderAge( boolean underAge )
-    {
-        this.underAge = underAge;
     }
 
 }

@@ -1046,8 +1046,6 @@ public abstract class DhisConvenienceTest
     {
         Patient patient = new Patient();
         patient.setAutoFields();
-
-        patient.setName( "Name" + uniqueChar );
         patient.setOrganisationUnit( organisationUnit );
 
         return patient;
@@ -1058,8 +1056,6 @@ public abstract class DhisConvenienceTest
     {
         Patient patient = new Patient();
         patient.setAutoFields();
-
-        patient.setName( "Name" + uniqueChar );
         patient.setOrganisationUnit( organisationUnit );
 
         PatientIdentifier pIdentifier = new PatientIdentifier();

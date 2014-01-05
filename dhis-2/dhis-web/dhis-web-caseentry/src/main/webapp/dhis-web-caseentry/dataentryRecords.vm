@@ -58,33 +58,36 @@
 			</td>
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-			<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
-				#set($value="")
 				#foreach( $identifierType in $identifierTypes)
-					#foreach( $identifier in $patient.identifiers)
-						#if($identifier.identifierType.id==$identifierType.id)
-							#set($value=$identifier.identifier)
-						#end
+					#set($value="")
+					#if($identifierType.personDisplayName=='true')
+						<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
+							#foreach( $identifier in $patient.identifiers)
+								#if($!identifier.identifierType.id==$identifierType.id)
+									#set($value=$identifier.identifier)
+								#end
+							#end 
+						$encoder.htmlEncode($value)
+					</td>
 					#end
 				#end
-				#if($value=="")
-					#set($value=$!patient.name)
-				#end
-				
-				$value
-			</a></td>
-			
-			#else
-				#set($value="")
-				#foreach( $identifier in $patient.identifiers)
-					#if($!identifier.identifierType)
-					#else
-						#set($value=$identifier.identifier)
+
+				#foreach( $attribute in $attributes )
+					#if($attribute.displayedInList=='true')
+						<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
+							#foreach( $attributeValue in $patient.attributeValues)
+								#if($!attributeValue.patientAttribute.id==$attribute.id)
+									#set($value=$attributeValue.value)
+									#if( $attribute.valueType == 'bool')
+										#set($value=$i18n.getString($attributeValue.value))
+									#end
+								#end
+							#end 
+							
+							$encoder.htmlEncode($value)
+						</td>
 					#end
 				#end
-				<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
-					$value
-				</a></td>
 			#end
 			
 			<td><a href="javascript:loadDataEntryDialog( $programStageInstance.id );">$programStageInstance.programStage.displayName</a></td>

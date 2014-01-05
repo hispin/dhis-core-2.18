@@ -3,7 +3,6 @@
 #foreach( $patient  in $patients )
 <patient>
   <id>$patient.id</id>  
-  <fullName>$!encoder.xmlEncode( $patient.name )</fullName>
   #foreach( $identifier in $patient.identifiers )
   	#if( $identifier.identifierType )
 	    <identifier>

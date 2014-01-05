@@ -139,12 +139,10 @@ public class ProgramInstanceServiceTest
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
 
-        PatientReminder patientReminderA = new PatientReminder( "A", 0, "Test program message template "
-            + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
+        PatientReminder patientReminderA = new PatientReminder( "A", 0, "Test program message template", PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
             PatientReminder.SEND_TO_PATIENT, null, PatientReminder.MESSAGE_TYPE_BOTH );
 
-        PatientReminder patientReminderB = new PatientReminder( "B", 0, "Test program message template "
-            + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
+        PatientReminder patientReminderB = new PatientReminder( "B", 0, "Test program message template", PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
             PatientReminder.SEND_TO_PATIENT, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             PatientReminder.MESSAGE_TYPE_BOTH );
 
@@ -579,7 +577,7 @@ public class ProgramInstanceServiceTest
         Collection<OutboundSms> outboundSmsList = programInstanceService.sendMessages( programInstanceA,
             PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
         assertEquals( 1, outboundSmsList.size() );
-        assertEquals( "Test program message template NameA", outboundSmsList.iterator().next().getMessage() );
+        assertEquals( "Test program message template", outboundSmsList.iterator().next().getMessage() );
     }
 
     @Test
@@ -594,7 +592,7 @@ public class ProgramInstanceServiceTest
         Collection<MessageConversation> messages = programInstanceService.sendMessageConversations( programInstanceA,
             PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
         assertEquals( 1, messages.size() );
-        assertEquals( "Test program message template NameA", messages.iterator().next().getMessages().get( 0 )
+        assertEquals( "Test program message template", messages.iterator().next().getMessages().get( 0 )
             .getText() );
     }
 

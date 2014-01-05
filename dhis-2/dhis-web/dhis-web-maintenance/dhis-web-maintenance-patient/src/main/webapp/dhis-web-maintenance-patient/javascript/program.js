@@ -160,9 +160,6 @@ function selectProperties() {
     if( item.selected ) {
       html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectProperties( this )'><td onmousedown='select(event,this)'>" + item.text + "</td>";
       html += "<td align='center'><input type='checkbox' name='displayed' value='" + item.value + "'";
-      if( item.value.match("^attr_") == "attr_" ) {
-        html += " style='display:none' ";
-      }
       html += "></td></tr>";
       selectedList.append(html);
       jQuery(item).remove();

@@ -103,26 +103,6 @@ public interface PatientService
     Collection<Patient> getAllPatients();
 
     /**
-     * Retrieve patients by full name (performs partial search )
-     * 
-     * @param name fullName
-     * @return Patient List
-     */
-    Collection<Patient> getPatientsByNames( String name, Integer min, Integer max );
-
-    /**
-     * Retrieve patients base on full-name or identifier value with result
-     * limited
-     * 
-     * @param searchText value
-     * @param min
-     * @param max
-     * 
-     * @return Patient List
-     */
-    Collection<Patient> getPatients( String searchText, Integer min, Integer max );
-
-    /**
      * Retrieve patients for mobile base on identifier value
      * 
      * @param searchText value
@@ -160,17 +140,6 @@ public interface PatientService
      * @return
      */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program );
-
-    /**
-     * Retrieve patients base on organisationUnit and identifier value name
-     * 
-     * @param organisationUnit
-     * @param searchText identifier value
-     * @param min
-     * @param max
-     * @return
-     */
-    Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min, Integer max );
 
     /**
      * Retrieve patients base on PatientIdentifierType or Attribute or Patient's
@@ -212,25 +181,7 @@ public interface PatientService
      * @return Patient List
      * **/
     Collection<Patient> getRepresentatives( Patient patient );
-
-    /**
-     * Search Patient base on identifier value and get number of result
-     * 
-     * @param searchText
-     * 
-     * @return number of patients
-     */
-    int countGetPatients( String searchText );
-
-    /**
-     * Search Patient base on name and get number of result
-     * 
-     * @param name
-     * 
-     * @return number of patients
-     */
-    int countGetPatientsByName( String name );
-
+    
     /**
      * Register a new patient
      * 
@@ -345,7 +296,7 @@ public interface PatientService
      * @param statusEnrollment The status of program of patients. There are
      *        three status, includes Active enrollments only, Completed
      *        enrollments only and Active and completed enrollments
-     * @parma min
+     * @param min
      * @param max
      * 
      * @return List of patient
@@ -403,18 +354,6 @@ public interface PatientService
      * @return List of patient
      */
     Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max );
-
-    /**
-     * Search patients who registered into a certain organisation unit by
-     * full-name
-     * 
-     * @param fullName The full name of patient
-     * @param organisationUnit Organisation Unit where patients registered
-     *        private information
-     * 
-     * @return List of patient
-     */
-    Collection<Patient> getPatientByFullname( String fullName, OrganisationUnit organisationUnit );
 
     /**
      * Get events of patients who meet the criteria for searching

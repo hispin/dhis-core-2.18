@@ -194,14 +194,13 @@ public class ProgramStageInstanceServiceTest
 
         stageA = new ProgramStage( "A", programA );
 
-        PatientReminder patientReminderA = new PatientReminder( "A", 0, "Test program stage message template "
-            + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.DUE_DATE_TO_COMPARE,
-            PatientReminder.SEND_TO_PATIENT, null, PatientReminder.MESSAGE_TYPE_BOTH );
-
-        PatientReminder patientReminderB = new PatientReminder( "B", 0, "Test program stage message template "
-            + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.DUE_DATE_TO_COMPARE,
-            PatientReminder.SEND_TO_PATIENT, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
+        PatientReminder patientReminderA = new PatientReminder( "A", 0, "Test program stage message template",
+            PatientReminder.DUE_DATE_TO_COMPARE, PatientReminder.SEND_TO_PATIENT, null,
             PatientReminder.MESSAGE_TYPE_BOTH );
+
+        PatientReminder patientReminderB = new PatientReminder( "B", 0, "Test program stage message template",
+            PatientReminder.DUE_DATE_TO_COMPARE, PatientReminder.SEND_TO_PATIENT,
+            PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, PatientReminder.MESSAGE_TYPE_BOTH );
 
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         patientReminders.add( patientReminderA );
@@ -211,10 +210,9 @@ public class ProgramStageInstanceServiceTest
         programStageService.saveProgramStage( stageA );
 
         stageB = new ProgramStage( "B", programA );
-        PatientReminder patientReminderC = new PatientReminder( "C", 0, "Test program stage message template "
-            + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.DUE_DATE_TO_COMPARE,
-            PatientReminder.SEND_TO_PATIENT, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
-            PatientReminder.MESSAGE_TYPE_BOTH );
+        PatientReminder patientReminderC = new PatientReminder( "C", 0, "Test program stage message template",
+            PatientReminder.DUE_DATE_TO_COMPARE, PatientReminder.SEND_TO_PATIENT,
+            PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, PatientReminder.MESSAGE_TYPE_BOTH );
 
         patientReminders = new HashSet<PatientReminder>();
         patientReminders.add( patientReminderC );
@@ -566,7 +564,7 @@ public class ProgramStageInstanceServiceTest
         Collection<OutboundSms> outboundSmsList = programStageInstanceService.sendMessages( programStageInstanceA,
             PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
         assertEquals( 1, outboundSmsList.size() );
-        assertEquals( "Test program stage message template NameA", outboundSmsList.iterator().next().getMessage() );
+        assertEquals( "Test program stage message template", outboundSmsList.iterator().next().getMessage() );
     }
 
     @Test
@@ -577,7 +575,7 @@ public class ProgramStageInstanceServiceTest
         Collection<MessageConversation> messages = programStageInstanceService.sendMessageConversations(
             programStageInstanceA, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
         assertEquals( 1, messages.size() );
-        assertEquals( "Test program stage message template NameA", messages.iterator().next().getMessages().get( 0 )
+        assertEquals( "Test program stage message template", messages.iterator().next().getMessages().get( 0 )
             .getText() );
     }
 

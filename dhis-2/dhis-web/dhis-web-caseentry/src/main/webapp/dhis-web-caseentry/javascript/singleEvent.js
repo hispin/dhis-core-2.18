@@ -194,69 +194,6 @@ function addData( programId, patientId )
     return false;
 }
 
-function showListPatientDuplicate( rootElement, validate )
-{
-	var message = jQuery(rootElement).find('message').text();
-	var patients = jQuery(rootElement).find('patient');
-	
-	var sPatient = "";
-	jQuery( patients ).each( function( i, patient )
-        {
-			sPatient += "<hr style='margin:5px 0px;'><table>";
-			sPatient += "<tr><td class='bold'>" + i18n_patient_system_id + "</td><td>" + jQuery(patient).find('systemIdentifier').text() + "</td></tr>" ;
-			sPatient += "<tr><td class='bold'>" + i18n_patient_full_name + "</td><td>" + jQuery(patient).find('fullName').text() + "</td></tr>" ;
-        	
-			var identifiers = jQuery(patient).find('identifier');
-        	if( identifiers.length > 0 )
-        	{
-        		sPatient += "<tr><td colspan='2' class='bold'>" + i18n_patient_identifiers + "</td></tr>";
-
-        		jQuery( identifiers ).each( function( i, identifier )
-				{
-        			sPatient +="<tr class='identifierRow'>"
-        				+"<td class='bold'>" + jQuery(identifier).find('name').text() + "</td>"
-        				+"<td>" + jQuery(identifier).find('value').text() + "</td>	"	
-        				+"</tr>";
-        		});
-        	}
-			
-        	var attributes = jQuery(patient).find('attribute');
-        	if( attributes.length > 0 )
-        	{
-        		sPatient += "<tr><td colspan='2' class='bold'>" + i18n_patient_attributes + "</td></tr>";
-
-        		jQuery( attributes ).each( function( i, attribute )
-				{
-        			sPatient +="<tr class='attributeRow'>"
-        				+"<td class='bold'>" + jQuery(attribute).find('name').text() + "</td>"
-        				+"<td>" + jQuery(attribute).find('value').text() + "</td>	"	
-        				+"</tr>";
-        		});
-        	}
-        	sPatient += "<tr><td colspan='2'><input type='button' id='"+ jQuery(patient).find('id').first().text() + "' value='" + i18n_show_data_entry + "' onclick='showSelectedDataRecoding(" + jQuery(patient).find('id').first().text() + ");showEntryFormDiv(); '/></td></tr>";
-        	sPatient += "</table>";
-		});
-		
-		var result = i18n_duplicate_warning;
-		if( !validate )
-		{
-			result += "<input type='button' value='" + i18n_create_new_patient + "' onClick='removeDisabledIdentifier( );addPatient();'/>";
-			result += "<br><hr style='margin:5px 0px;'>";
-		}
-		
-		result += "<br>" + sPatient;
-		jQuery('#resultSearchDiv' ).html( result );
-		jQuery('#resultSearchDiv' ).dialog({
-			title: i18n_duplicated_patient_list,
-			maximize: true, 
-			closable: true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 800,
-			height: 400
-		});
-}
-
 function showEntryFormDiv()
 {
 	hideById('singleEventForm');

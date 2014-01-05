@@ -91,8 +91,6 @@ public class UpdatePatientAction
 
     private Integer id;
 
-    private String fullName;
-
     private Integer representativeId;
 
     private Integer relationshipTypeId;
@@ -119,8 +117,6 @@ public class UpdatePatientAction
         // ---------------------------------------------------------------------
         // Set FullName && location
         // ---------------------------------------------------------------------
-
-        patient.setName( fullName );
 
         patient.setOrganisationUnit( organisationUnit );
 
@@ -307,11 +303,6 @@ public class UpdatePatientAction
     public void setId( Integer id )
     {
         this.id = id;
-    }
-
-    public void setFullName( String fullName )
-    {
-        this.fullName = fullName;
     }
 
     public Patient getPatient()

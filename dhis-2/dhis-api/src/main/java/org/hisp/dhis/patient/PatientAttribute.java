@@ -95,6 +95,8 @@ public class PatientAttribute
 
     private Integer sortOrderInVisitSchedule;
 
+    private Boolean displayedInList = false;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -276,6 +278,23 @@ public class PatientAttribute
         this.sortOrderInVisitSchedule = sortOrderInVisitSchedule;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getDisplayedInList()
+    {
+        return displayedInList;
+    }
+
+    public void setDisplayedInList( Boolean displayedInList )
+    {
+        this.displayedInList = displayedInList;
+    }
+
+    // -------------------------------------------------------------------------
+    // Static methods
+    // -------------------------------------------------------------------------
+    
     public static Date getDateFromAge( int age )
     {
         Calendar todayCalendar = Calendar.getInstance();
@@ -288,7 +307,7 @@ public class PatientAttribute
 
         return todayCalendar.getTime();
     }
-    
+
     public static int getAgeFromDate( Date date )
     {
         Calendar birthCalendar = Calendar.getInstance();

@@ -33,6 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -173,6 +174,13 @@ public class SearchPatientAction
         return identifierTypes;
     }
 
+    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+
+    public List<PatientAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
     private OrganisationUnit organisationUnit;
 
     public OrganisationUnit getOrganisationUnit()
@@ -230,7 +238,7 @@ public class SearchPatientAction
             patients = patientService.searchPatients( searchTexts, orgunits, null, null, null, statusEnrollment,
                 paging.getStartPos(), paging.getPageSize() );
 
-            if ( facilityLB != null && !facilityLB.isEmpty())
+            if ( facilityLB != null && !facilityLB.isEmpty() )
             {
                 for ( Patient patient : patients )
                 {
@@ -240,8 +248,9 @@ public class SearchPatientAction
 
             if ( programId != null )
             {
-                Program progam = programService.getProgram( programId );
-                identifierTypes.addAll( progam.getPatientIdentifierTypes() );
+                Program program = programService.getProgram( programId );
+                identifierTypes = program.getPatientIdentifierTypes();
+                attributes = program.getPatientAttributes();
             }
         }
 

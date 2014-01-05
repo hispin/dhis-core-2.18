@@ -63,7 +63,7 @@
 	var i18n_search_result = '$encoder.jsEscape( $i18n.getString( "search_result" ) , "'")';
 	var i18n_duplicated_patient_list = '$encoder.jsEscape( $i18n.getString( "duplicated_patient_list" ) , "'")';
 	var i18n_duplicate_warning = '$encoder.jsEscape( $i18n.getString( "duplicate_warning" ) , "'")';
-	var i18n_search_by_name_identifier = '$encoder.jsEscape( $i18n.getString( "search_by_name_identifier" ) , "'")';
+	var i18n_search_by_identifier = '$encoder.jsEscape( $i18n.getString( "search_by_identifier" ) , "'")';
 	var i18n_search_by_program = '$encoder.jsEscape( $i18n.getString( "search_by_program" ) , "'")';
 	var i18n_create_new_patient = '$encoder.jsEscape( $i18n.getString( "create_new_patient" ) , "'")';
 	var i18n_choose_this_person = '$encoder.jsEscape( $i18n.getString( "choose_this_person" ) , "'")';

@@ -396,6 +396,9 @@ public class UpdateProgramAction
             {
                 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
                     .parseInt( ids[1] ) );
+                patientAttribute.setDisplayedInList( personDisplayNames.get( index ) );
+                patientAttributeService.updatePatientAttribute( patientAttribute );
+
                 patientAttributes.add( patientAttribute );
             }
             index++;

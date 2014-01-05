@@ -13,38 +13,35 @@
 	#set($status = $programStageInstance.getEventStatus())
 	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 		<table>
-			<tr> 
-				#set($patient=$programStageInstance.programInstance.patient)
-				#set($title="")
-				#set($value="")
-				#foreach( $identifier in $patient.identifiers)
-					#if($!identifier.identifierType)
-						#set($value=$identifier.identifier)
-						#set($title=$identifier.identifierType.displayName)
-					#else
-						#set($systemId=$identifier.identifier)
+			#foreach( $identifierType in $programStageInstance.programInstance.program.patientIdentifierTypes)
+				<tr> 
+					#if($identifierType.personDisplayName=='true')
+						<th>$encoder.htmlEncode($identifierType.displayName)</th>
+						#foreach( $identifierType in $identifierTypes)
+						#set($id="")
+							#if($identifierType.personDisplayName=='true')
+								<th style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
+									#foreach( $identifier in $patient.identifiers)
+										#if($!identifier.identifierType.id==$identifierType.id)
+											#set($id=$identifier.identifier)
+										#end
+									#end 
+									$encoder.htmlEncode($id)
+								</th>
+							#end
+						#end
 					#end
-				#end
-				#if($value=="")
-					#set($value=$!patient.name)
-					#set($title= $encoder.htmlEncode($i18n.getString( "full_name" )))
-				#end
-				#if($value=="")
-					#set($value=$systemId)
-					#set($title=$encoder.htmlEncode($i18n.getString( "system_identifier" )))
-				#end
-				<td>$title:</td>
-				<td>$value</td>
-			</tr>
+				</tr>
+			#end
 			<tr>
-				<td>$i18n.getString("health_worker"):</td>
-				<td>
+				<th>$i18n.getString("health_worker"):</th>
+				<th>
 					#if($!programStageInstance.programInstance.patient.associate )
 						$encoder.htmlEncode($!programStageInstance.programInstance.patient.associate.name)
 					#else
 						[$i18n.getString('none')]
 					#end
-				</td>
+				</th>
 			</tr>
 		</table>
 	#end

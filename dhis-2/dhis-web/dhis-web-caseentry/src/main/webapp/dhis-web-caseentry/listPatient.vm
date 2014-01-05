@@ -24,86 +24,100 @@
 <br> 
 <table class="mainPageTable">
 <tr><td>
-<table class="listTable">  
-	<colgroup>
-		<col width="40"/>
-		#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-			#foreach( $identifierType in $identifierTypes) <col/> #end
-		#if( $identifierTypes.size()==0 ) <col/> #end
-		#end
-		#if($mapPatientOrgunit.size()!=0) <col/> #end
-		<col width="80"/>
-	</colgroup>	  
-	
-	<thead>
-	  <tr>
-		<th>#</th>
-		#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
+	<table class="listTable" id="patientList" width='100%'>               
+          <col width="30"/>
 			#foreach( $identifierType in $identifierTypes)
-				<th>$encoder.htmlEncode($identifierType.displayName)</th>
+				#if($identifierType.personDisplayName=='true')<col/>#end
 			#end
 			
-			#if( $identifierTypes.size()==0 )
-				<th>$i18n.getString( "full_name" )</th>          
-			#end       
-		#else
-			<th>$i18n.getString('system_identifier')</th>
-		#end
-		
-		#if($mapPatientOrgunit.size()!=0)
-			<th>$i18n.getString( "hierachy_orgunit" )</th>
-		#end			
-		<th>$i18n.getString( "operations" )</th>
-	  </tr>
-	</thead>
-          
-	<tbody id="list">	
-	  #foreach( $patient in $patients )
-		<tr>
-			<td>
-				#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
-				$nr
-			</td>
+			#foreach( $attribute in $attributes )
+				#if($attribute.displayedInList=='true')<col/>#end
+			#end
 			
-			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-				#set($value="")
+		  #if($mapPatientOrgunit.size()!=0)
+		  <col/>
+		  #end
+		  <col width="200"/>    
+		  
+		  <thead>
+			<tr>
+				<th>#</th>
+				
 				#foreach( $identifierType in $identifierTypes)
-					#foreach( $identifier in $patient.identifiers)
-						#if($identifier.identifierType.id==$identifierType.id)
-							#set($value=$identifier.identifier)
-						#end
+					#if($identifierType.personDisplayName=='true')
+						<th>$encoder.htmlEncode($identifierType.displayName)</th>
 					#end
 				#end
-				#if($value=="")
-					#set($value=$patient.name)
-				#end
-				<td style="cursor:pointer;" onclick="javascript:showUpdatePatientForm('$patient.id');">
-					<a>$encoder.htmlEncode($value)</a>
-				</td>
-			#else
-				#set($value="")
-				#foreach( $identifier in $patient.identifiers)
-					#if($!identifier.identifierType)
-					#else
-						#set($value=$identifier.identifier)
+				
+				#foreach( $attribute in $attributes )
+					#if($attribute.displayedInList=='true')
+						<th id="patientAttributeName">$encoder.htmlEncode($attribute.displayName)</th>
 					#end
 				#end
-				<td style="cursor:pointer;" onclick="javascript:showUpdatePatientForm('$patient.id');">
-					<a>$value</a>
+				
+				#if($mapPatientOrgunit.size()!=0)
+					<th>$i18n.getString( "hierachy_orgunit" )</th>
+				#end
+				
+				<th style="text-align:center">$i18n.getString( "operations" )</th>
+			  </tr>
+          </thead>
+		  
+          <tbody id="list">	
+          #foreach( $patient in $patients )
+          	<tr id="tr${patient.id}">
+				
+				<td>
+					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+					$nr
 				</td>
-			#end
-			
-			#if($mapPatientOrgunit.size()!=0)
-			<td>$!mapPatientOrgunit.get($patient.id)</td>
-			#end
-			<td>
-				<a href="javascript:showUpdatePatientForm('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
-				<a href="javascript:showPatientHistory('$patient.id')" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
-			</td>               				
-		</tr>
-	#end
-    </tbody>
-</table>
+					
+				#foreach( $identifierType in $identifierTypes)
+					#set($value="")
+					#if($identifierType.personDisplayName=='true')
+						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
+							#foreach( $identifier in $patient.identifiers)
+								#if($!identifier.identifierType.id==$identifierType.id)
+									#set($value=$identifier.identifier)
+								#end
+							#end 
+						<a>$encoder.htmlEncode($value)</a>
+					</td>
+					#end
+				#end
+				
+				#foreach( $attribute in $attributes )
+					#if($attribute.displayedInList=='true')
+						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
+							#foreach( $attributeValue in $patient.attributeValues)
+								#if($!attributeValue.patientAttribute.id==$attribute.id)
+									#set($value=$attributeValue.value)
+									#if( $attribute.valueType == 'bool')
+										#set($value=$i18n.getString($attributeValue.value))
+									#end
+								#end
+							#end 
+							<a>$encoder.htmlEncode($value)</a>
+						</td>
+					#end
+				#end
+				
+				<td>
+				  <a href="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )" title='$i18n.getString( "patient_dashboard" )'><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
+				  <a href="javascript:isDashboard=false;showUpdatePatientForm( '$patient.id' )" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
+				  <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList('$patient.id')" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
+                  #if( $auth.hasAccess( "dhis-web-caseentry", "getPatientLocation" ) )
+				  <a href="javascript:isDashboard=false;getPatientLocation( '$patient.id' );" title='$i18n.getString( "change_location" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "change_patient_location" )' style='width:25px; height:25px'></a>
+				  #end
+				  <a href="javascript:removePatient( '$patient.id', '', i18n_confirm_delete_patient )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				  <a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
+				</td>
+				
+			</tr>
+    	#end
+    	</tbody>
+    
+	 </table>
 </td></tr>
 <tr><td colspan="6">
 			<p></p>

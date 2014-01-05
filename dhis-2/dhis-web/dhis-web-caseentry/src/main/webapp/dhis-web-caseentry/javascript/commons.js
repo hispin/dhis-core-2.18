@@ -354,40 +354,6 @@ function setEventColorStatus( programStageInstanceId, status )
 	}
 }
 
-// -----------------------------------------------------------------------------
-// check duplicate patient
-// -----------------------------------------------------------------------------
-
-function checkDuplicate( divname )
-{
-	$.postUTF8( 'validatePatient.action', {
-        id: $( '#' + divname + ' [id=id]' ).val(),
-        fullName: $( '#' + divname + ' [id=fullName]' ).val()
-    }, function( xmlObject, divname ) {
-        checkDuplicateCompleted( xmlObject, divname );
-    });
-}
-
-function checkDuplicateCompleted( messageElement, divname )
-{
-	var checkedDuplicate = true;
-	var type = $(messageElement).find('message').attr('type');
-	var message = $(messageElement).find('message').text();
-
-    if( type == 'success')
-    {
-    	showSuccessMessage(i18n_no_duplicate_found);
-    }
-    if ( type == 'input' )
-    {
-        showWarningMessage(message);
-    }
-    else if( type == 'duplicate' )
-    {
-    	showListPatientDuplicate( messageElement, true );
-    }
-}
-
 function enableBtn(){
 	var programIdAddPatient = getFieldValue('programIdAddPatient');
     if( registration == undefined || !registration ) {
@@ -998,76 +964,6 @@ function removeDisabledIdentifier()
             $(this).val("");
         }
 	});
-}
-
-/**
- * Show list patient duplicate  by jQuery thickbox plugin
- * @param rootElement : root element of the response xml
- * @param validate  :  is TRUE if this method is called from validation method  
- */
-function showListPatientDuplicate( rootElement, validate )
-{
-	var message = $(rootElement).find('message').text();
-	var patients = $(rootElement).find('patient');
-	
-	var sPatient = "";
-    $( patients ).each( function( i, patient ) {
-			sPatient += "<hr style='margin:5px 0px;'><table>";
-			sPatient += "<tr><td class='bold'>" + i18n_patient_system_id + "</td><td>" + $(patient).find('systemIdentifier').text() + "</td></tr>" ;
-			sPatient += "<tr><td class='bold'>" + i18n_patient_full_name + "</td><td>" + $(patient).find('fullName').text() + "</td></tr>" ;
-        	
-			var identifiers = $(patient).find('identifier');
-
-        	if( identifiers.length > 0 )
-        	{
-        		sPatient += "<tr><td colspan='2' class='bold'>" + i18n_patient_identifiers + "</td></tr>";
-
-                $( identifiers ).each( function( i, identifier )
-				{
-        			sPatient +="<tr class='identifierRow'>"
-        				+"<td class='bold'>" + $(identifier).find('name').text() + "</td>"
-        				+"<td>" + $(identifier).find('value').text() + "</td>	"
-        				+"</tr>";
-        		});
-        	}
-			
-        	var attributes = $(patient).find('attribute');
-
-        	if( attributes.length > 0 )
-        	{
-        		sPatient += "<tr><td colspan='2' class='bold'>" + i18n_patient_attributes + "</td></tr>";
-
-                $( attributes ).each( function( i, attribute ) {
-        			sPatient +="<tr class='attributeRow'>"
-        				+"<td class='bold'>" + $(attribute).find('name').text() + "</td>"
-        				+"<td>" + $(attribute).find('value').text() + "</td>	"
-        				+"</tr>";
-        		});
-        	}
-
-        	sPatient += "<tr><td colspan='2'><input type='button' id='"+ $(patient).find('id').first().text() + "' value='" + i18n_edit_this_patient + "' onclick='showUpdatePatientForm(this.id)'/></td></tr>";
-        	sPatient += "</table>";
-		});
-		
-		var result = i18n_duplicate_warning;
-
-		if( !validate )
-		{
-			result += "<input type='button' value='" + i18n_create_new_patient + "' onClick='removeDisabledIdentifier( );addPatient();'/>";
-			result += "<br><hr style='margin:5px 0px;'>";
-		}
-
-		result += "<br>" + sPatient;
-        $('#resultSearchDiv' ).html( result );
-        $('#resultSearchDiv' ).dialog({
-			title: i18n_duplicated_patient_list,
-			maximize: true, 
-			closable: true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 800,
-			height: 400
-		});
 }
 
 // -----------------------------------------------------------------------------

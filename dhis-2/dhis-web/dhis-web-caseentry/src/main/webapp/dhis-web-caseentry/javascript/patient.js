@@ -46,7 +46,6 @@ selection.setListenerFunction( organisationUnitSelected );
 function Patient()
 {
 	var patientId;
-	var	fullName;
 	
 	this.advancedSearch = function(params)
 	{
@@ -234,7 +233,7 @@ function Patient()
 	
 	this.remove = function( confirm_delete_patient )
 	{
-		removeItem( this.patientId, this.fullName, confirm_delete_patient, 'removePatient.action' );
+		removeItem( this.patientId, "", confirm_delete_patient, 'removePatient.action' );
 	};
 	
 }
@@ -296,11 +295,10 @@ function advancedSearch( params )
 // Remove patient
 // -----------------------------------------------------------------------------
 
-function removePatient( patientId, fullName, i18n_confirm_delete_patient )
+function removePatient( patientId, i18n_confirm_delete_patient )
 {
 	var patient = new Patient();
 	patient.patientId = patientId;
-	patient.fullName = fullName;
 	patient.remove( i18n_confirm_delete_patient );
 }
 

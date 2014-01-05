@@ -159,10 +159,6 @@ public class SearchRelationshipPatientAction
                 }
 
             }
-            else
-            {
-                patients = patientService.getPatientsByNames( searchText, null, null );
-            }
         }
         if ( patients != null && !patients.isEmpty() )
         {

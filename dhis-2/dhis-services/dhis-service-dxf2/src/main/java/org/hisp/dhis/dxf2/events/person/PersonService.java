@@ -53,8 +53,6 @@ public interface PersonService
 
     Persons getPersons( OrganisationUnit organisationUnit );
 
-    Persons getPersons( OrganisationUnit organisationUnit, String nameLike );
-
     Persons getPersons( Program program );
 
     Persons getPersons( OrganisationUnit organisationUnit, Program program );
@@ -69,9 +67,11 @@ public interface PersonService
     // CREATE
     // -------------------------------------------------------------------------
 
-    ImportSummaries savePersonXml( InputStream inputStream ) throws IOException;
+    ImportSummaries savePersonXml( InputStream inputStream )
+        throws IOException;
 
-    ImportSummaries savePersonJson( InputStream inputStream ) throws IOException;
+    ImportSummaries savePersonJson( InputStream inputStream )
+        throws IOException;
 
     ImportSummary savePerson( Person person );
 
@@ -79,9 +79,11 @@ public interface PersonService
     // UPDATE
     // -------------------------------------------------------------------------
 
-    ImportSummary updatePersonXml( String id, InputStream inputStream ) throws IOException;
+    ImportSummary updatePersonXml( String id, InputStream inputStream )
+        throws IOException;
 
-    ImportSummary updatePersonJson( String id, InputStream inputStream ) throws IOException;
+    ImportSummary updatePersonJson( String id, InputStream inputStream )
+        throws IOException;
 
     ImportSummary updatePerson( Person person );
 

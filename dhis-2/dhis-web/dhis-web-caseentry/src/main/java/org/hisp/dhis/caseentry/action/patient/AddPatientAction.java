@@ -99,10 +99,6 @@ public class AddPatientAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String fullName;
-
-    private boolean underAge;
-
     private Integer representativeId;
 
     private Integer relationshipTypeId;
@@ -128,8 +124,6 @@ public class AddPatientAction
         // ---------------------------------------------------------------------
         // Set FullName && location
         // ---------------------------------------------------------------------
-
-        patient.setName( fullName );
 
         patient.setOrganisationUnit( organisationUnit );
 
@@ -248,11 +242,6 @@ public class AddPatientAction
             Patient relationship = patientService.getPatient( relationshipId );
             if ( relationship != null )
             {
-                if ( underAge )
-                {
-                    patient.setRepresentative( relationship );
-                }
-
                 Relationship rel = new Relationship();
                 if ( relationshipFromA )
                 {
@@ -350,11 +339,6 @@ public class AddPatientAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    public void setFullName( String fullName )
-    {
-        this.fullName = fullName;
-    }
-
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
@@ -370,8 +354,4 @@ public class AddPatientAction
         this.relationshipTypeId = relationshipTypeId;
     }
 
-    public void setUnderAge( boolean underAge )
-    {
-        this.underAge = underAge;
-    }
 }

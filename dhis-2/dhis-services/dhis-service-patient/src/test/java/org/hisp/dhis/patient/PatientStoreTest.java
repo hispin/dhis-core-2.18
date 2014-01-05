@@ -82,7 +82,7 @@ public class PatientStoreTest
 
     @Autowired
     private ValidationCriteriaService validationCriteriaService;
-    
+
     @Autowired
     private PatientService patientService;
 
@@ -183,26 +183,6 @@ public class PatientStoreTest
     }
 
     @Test
-    public void testGetByFullName()
-    {
-        patientStore.save( patientA1 );
-        patientStore.save( patientA2 );
-        patientStore.save( patientB1 );
-        patientStore.save( patientB2 );
-
-        Collection<Patient> patients = patientStore.getByFullName( "NameA", organisationUnit );
-
-        assertEquals( 1, patients.size() );
-        assertTrue( patients.contains( patientA1 ) );
-
-        patients = patientStore.getByFullName( "NameB", organisationUnit );
-
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientB1 ) );
-        assertTrue( patients.contains( patientB2 ) );
-    }
-
-    @Test
     public void testGetByOrgUnitProgram()
     {
         programService.addProgram( programA );
@@ -257,32 +237,6 @@ public class PatientStoreTest
 
         assertEquals( 1, patients.size() );
         assertTrue( patients.contains( patientB2 ) );
-    }
-
-    @Test
-    public void testGetByNames()
-    {
-        patientStore.save( patientA1 );
-        patientStore.save( patientA2 );
-
-        Collection<Patient> patients = patientStore.getByNames( "NameA", null, null );
-
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientA1 ) );
-        assertTrue( patients.contains( patientA2 ) );
-    }
-
-    @Test
-    public void testGetByOrgUnitAndNameLike()
-    {
-        patientStore.save( patientA1 );
-        patientStore.save( patientA2 );
-        patientStore.save( patientA3 );
-
-        Collection<Patient> patients = patientStore.getByOrgUnitAndNameLike( organisationUnit, "A", null, null );
-        assertEquals( 2, patients.size() );
-        assertTrue( patients.contains( patientA1 ) );
-        assertTrue( patients.contains( patientA3 ) );
     }
 
     @Test
@@ -344,8 +298,6 @@ public class PatientStoreTest
         programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
 
         List<String> searchKeys = new ArrayList<String>();
-        searchKeys.add( Patient.PREFIX_IDENTIFIER_TYPE + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE
-            + organisationUnit.getId() );
         searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
             + Patient.SEARCH_SAPERATE + "a" + Patient.SEARCH_SAPERATE + organisationUnit.getId() );
         searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
