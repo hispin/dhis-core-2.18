@@ -360,7 +360,6 @@ public class AddProgramAction
             {
                 PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
                     .parseInt( ids[1] ) );
-
                 identifierType.setPersonDisplayName( personDisplayNames.get( index ) );
                 patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
 
@@ -370,6 +369,9 @@ public class AddProgramAction
             {
                 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
                     .parseInt( ids[1] ) );
+                patientAttribute.setDisplayedInList( personDisplayNames.get( index ) );
+                patientAttributeService.updatePatientAttribute( patientAttribute );
+                
                 patientAttributes.add( patientAttribute );
             }
 

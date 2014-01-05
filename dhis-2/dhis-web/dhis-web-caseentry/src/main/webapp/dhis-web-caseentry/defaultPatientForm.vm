@@ -2,13 +2,6 @@
 	<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 </tr>
 
-#if($patientRegistrationForm.fixedAttributes.contains( 'fullName' ))
-	<tr>
-		<td class='text-column'><label for="fullName">$i18n.getString( "full_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.name" class="{validate:{required:true, rangelength:[3,50]}}"></td>
-	</tr>
-#end
-
 #if($patientRegistrationForm.fixedAttributes.contains( 'healthWorker' ))
 	<tr>
 		<td class='text-column'><label for="healthWorker">$i18n.getString( "health_worker" )</label></td>

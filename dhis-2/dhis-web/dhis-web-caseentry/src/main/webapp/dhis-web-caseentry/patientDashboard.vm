@@ -19,13 +19,6 @@
 		</p>
 		<div class="contentProviderTable">
 			<table>
-				#if( $!patient.name!='' )
-				<tr>
-					<td>$i18n.getString("full_name")</td>
-					<td>$encoder.htmlEncode($!patient.name)</td>
-				</tr>
-				#end
-				
 				<tr>
 					<td>$i18n.getString("location")</td>
 					<td>$encoder.htmlEncode($!patient.organisationUnit.name)</td>
@@ -49,11 +42,11 @@
 				#end
 				#foreach( $identifier in $identifiers )
 				<tr>
-					#if($!identifier.identifierType)
-						<td>$!identifier.identifierType.displayName</td>
-					#else
-						<td>$i18n.getString("system_identifier")</td>
+					<td>
+					#if($!identifier.identifierType.personDisplayName=='true')
+						$!identifier.identifierType.displayName
 					#end
+					</td>
 					<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
 				</tr>
 				#end
@@ -205,18 +198,12 @@
 							<td><a href='#'>$rel.relationshipType.bIsToA</a></td>
 							<td>
 								#set($patient=$rel.patientB)
-								#set($value=$!patient.name)
+								#set($value="")
 								#foreach( $identifier in $patient.identifiers)
-									#if($!identifier.identifierType)
+									#if($!identifier.identifierType.personDisplayName=='true')
 										#set($value=$identifier.identifier)
-									#else
-										#set($systemId=$identifier.identifier)
 									#end
 								#end
-								#if($value=="")
-									#set($value=$systemId)
-								#end
-								
 								<a href='#'>$value</a>
 							</td>
 						</tr>
@@ -225,18 +212,11 @@
 							<td><a href='#'>$!rel.relationshipType.aIsToB</a></td>
 							<td><a href='#'>
 								#set($patient=$!rel.patientA)
-								#set($value=$!patient.name)
 								#foreach( $identifier in $patient.identifiers)
-									#if($!identifier.identifierType)
+									#if($!identifier.identifierType.personDisplayName=='true')
 										#set($value=$identifier.identifier)
-									#else
-										#set($systemId=$identifier.identifier)
 									#end
 								#end
-								#if($value=="")
-									#set($value=$systemId)
-								#end
-								
 								<a href='#'>$value</a>
 							</td>
 						</tr>

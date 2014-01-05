@@ -286,10 +286,10 @@ public class TableAlteror
         updateCoordinatesProgramStageInstance();
 
         addPatientAttributes();
-        
 
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
+        executeSql( "update patientattribute set displayedInList=false where displayedInList is null" );
     }
 
     // -------------------------------------------------------------------------
@@ -465,11 +465,12 @@ public class TableAlteror
             Statement statement = holder.getStatement();
 
             ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patientattribute" );
-            
+
             // Only execute once
             if ( !resultSet.next() )
             {
-                int max = jdbcTemplate.queryForObject( "select max(patientattributeid) from patientattribute", Integer.class );
+                int max = jdbcTemplate.queryForObject( "select max(patientattributeid) from patientattribute",
+                    Integer.class );
 
                 // ---------------------------------------------------------------------
                 // Gender
@@ -486,8 +487,8 @@ public class TableAlteror
                     + "','Gender', 'Gender','"
                     + PatientAttribute.TYPE_COMBO + "', false, false, false)" );
 
-                int maxOpt = jdbcTemplate
-                    .queryForObject( "select max(patientattributeoptionid) from patientattributeoption", Integer.class );
+                int maxOpt = jdbcTemplate.queryForObject(
+                    "select max(patientattributeoptionid) from patientattributeoption", Integer.class );
                 maxOpt++;
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
                     + maxOpt + "', 'F'," + max + ")" );
@@ -515,7 +516,8 @@ public class TableAlteror
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "gender", uid );
                 executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='gender' ");
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
+                    + " and property='gender' " );
 
                 // ---------------------------------------------------------------------
                 // Death date
@@ -537,8 +539,8 @@ public class TableAlteror
                 // Update custom entry form && Validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "deathDate", uid );
                 executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='deathDate' ");
-
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
+                    + " and property='deathDate' " );
 
                 // ---------------------------------------------------------------------
                 // registrationDate
@@ -561,7 +563,8 @@ public class TableAlteror
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "registrationDate", uid );
                 executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='registrationDate' ");
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
+                    + " and property='registrationDate' " );
 
                 // ---------------------------------------------------------------------
                 // isDead
@@ -583,8 +586,8 @@ public class TableAlteror
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "isDead", uid );
                 executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='isDead' ");
-
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
+                    + " and property='isDead' " );
 
                 // ---------------------------------------------------------------------
                 // underAge
@@ -606,7 +609,8 @@ public class TableAlteror
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "underAge", uid );
                 executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='underAge' ");
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
+                    + " and property='underAge' " );
 
                 // ---------------------------------------------------------------------
                 // DobType
@@ -652,7 +656,8 @@ public class TableAlteror
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "dobType", uid );
                 executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='dobType' ");
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
+                    + " and property='dobType' " );
 
                 // -------------------------------------------------------------
                 // Birthdate
@@ -674,7 +679,8 @@ public class TableAlteror
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "birthDate", uid );
                 executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='birthDate' ");
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
+                    + " and property='birthDate' " );
 
                 // -------------------------------------------------------------
                 // Age
@@ -696,7 +702,8 @@ public class TableAlteror
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "age", uid );
                 executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" ) + " and property='age' ");
+                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
+                    + " and property='age' " );
 
                 // -------------------------------------------------------------
                 // Phone number
@@ -717,7 +724,7 @@ public class TableAlteror
 
                 // Update custom entry form
                 removeFixedAttributeInCustomRegistrationForm( "phoneNumber", uid );
-                
+
                 // -------------------------------------------------------------
                 // Update Case Aggregate Query Builder
                 // -------------------------------------------------------------
@@ -727,6 +734,26 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + ".age]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
+                // Patient full name
+
+                uid = CodeGenerator.generateCode();
+                executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+                    + max
+                    + ",'"
+                    + uid
+                    + "','"
+                    + DateUtils.getMediumDateString()
+                    + "','Full name', 'Full name','"
+                    + PatientAttribute.TYPE_STRING + "', false, false, false)" );
+                executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
+                    + max + ",name from patient where name is not null" );
+
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "fullName", uid );
+
+                // update template messsages
+                updateFixedAttributeInTemplateMessage();
+
                 executeSql( "ALTER TABLE patient DROP COLUMN gender" );
                 executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
                 executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
@@ -735,7 +762,9 @@ public class TableAlteror
                 executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
                 executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
                 executeSql( "ALTER TABLE patient DROP COLUMN phoneNumber" );
+                executeSql( "ALTER TABLE patient DROP COLUMN name" );
             }
+
         }
         catch ( Exception ex )
         {
@@ -761,6 +790,38 @@ public class TableAlteror
                 expression = expression.replaceAll( source, target );
                 executeSql( "UPDATE caseaggregationcondition SET aggregationExpression='" + expression
                     + "'  WHERE caseaggregationconditionid=" + id );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    private void updateFixedAttributeInTemplateMessage()
+    {
+        StatementHolder holder = statementManager.getHolder();
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement.executeQuery( "" );
+
+            while ( resultSet.next() )
+            {
+                String id = resultSet.getString( "patientreminderid" );
+                String expression = resultSet.getString( "templatemessage" );
+
+                expression = expression
+                    .replaceAll(
+                        "SELECT patientreminderid, templatemessage FROM patientreminder where templatemessage like '%{patient-name}%'",
+                        "Sir/Madam" );
+                executeSql( "UPDATE patientreminder SET templatemessage='" + expression + "'  WHERE patientreminderid="
+                    + id );
             }
         }
         catch ( Exception ex )

@@ -1,8 +1,25 @@
 <table>
-	<tr>
-	    <td class="bold">$i18n.getString( "full_name" ):</td>
-	    <td>$encoder.htmlEncode( $patient.name )</td>
-	</tr>   
+	#foreach( $identifier in $patient.identifiers)
+		#if($!identifier.identifierType.personDisplayName=='true')
+			<tr>
+				<td>$!identifier.identifierType.displayName:</td>
+				<td>$!identifier.identifier</td>
+			</tr>
+		#end
+	#end 
+	
+	#foreach( $attributeValue in $patient.attributeValues)
+		#if($!attributeValue.patientAttribute.displayedInList=='true')
+			#set($value=$attributeValue.value)
+			#if( $attribute.valueType == 'bool')
+				#set($value=$i18n.getString($attributeValue.value))
+			#end
+			<tr>
+				<td>$!attributeValue.patientAttribute.displayName:</td>
+				<td>$!attributeValue.value</td>
+			</tr>
+		#end
+	#end  
 </table>
 
 <h4>$i18n.getString( "records_for" ) $encoder.htmlEncode( $programStageInstance.programStage.displayName ) </h4>

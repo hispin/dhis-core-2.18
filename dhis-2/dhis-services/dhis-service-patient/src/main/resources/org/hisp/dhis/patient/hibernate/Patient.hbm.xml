@@ -12,8 +12,6 @@
     </id>
     &identifiableProperties;
 
-    <property name="name" column="name" length="230" />
-    
     <set name="identifiers" inverse="true">
       <key column="patientid" />
       <one-to-many class="org.hisp.dhis.patient.PatientIdentifier" />

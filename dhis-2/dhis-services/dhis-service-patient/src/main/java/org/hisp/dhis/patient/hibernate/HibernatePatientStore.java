@@ -101,17 +101,6 @@ public class HibernatePatientStore
     // -------------------------------------------------------------------------
 
     @Override
-    public Collection<Patient> getByNames( String fullName, Integer min, Integer max )
-    {
-        if ( min == null || max == null )
-        {
-            return getAllLikeNameOrderedName( fullName, 0, Integer.MAX_VALUE );
-        }
-
-        return getAllLikeNameOrderedName( fullName, min, max );
-    }
-
-    @Override
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max )
     {
@@ -119,26 +108,6 @@ public class HibernatePatientStore
 
         Query query = getQuery( hql );
         query.setEntity( "organisationUnit", organisationUnit );
-
-        if ( min != null && max != null )
-        {
-            query.setFirstResult( min ).setMaxResults( max );
-        }
-
-        return query.list();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getByOrgUnitAndNameLike( OrganisationUnit organisationUnit, String nameLike,
-        Integer min, Integer max )
-    {
-        String hql = "select p from Patient p where p.organisationUnit = :organisationUnit "
-            + " and lower(p.name) like :nameLike" + " order by p.name";
-
-        Query query = getQuery( hql );
-        query.setEntity( "organisationUnit", organisationUnit );
-        query.setString( "nameLike", "%" + nameLike.toLowerCase() + "%" );
 
         if ( min != null && max != null )
         {
@@ -329,7 +298,7 @@ public class HibernatePatientStore
         criteria.createAlias( "attributeValue.patientAttribute", "patientAttribute" );
         criteria.add( Restrictions.eq( "patientAttribute.valueType", PatientAttribute.TYPE_PHONE_NUMBER ) );
         criteria.add( Restrictions.like( "attributeValue.value", phoneNumber ) );
-        
+
         if ( min != null && max != null )
         {
             criteria.setFirstResult( min );
@@ -337,20 +306,6 @@ public class HibernatePatientStore
         }
 
         return criteria.list();
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getByFullName( String name, OrganisationUnit organisationUnit )
-    {
-        Criteria criteria = getCriteria( Restrictions.eq( "name", name ).ignoreCase() );
-
-        if ( organisationUnit != null )
-        {
-            criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
-        }
-
-        return criteria.setMaxResults( MAX_RESULTS ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -447,7 +402,7 @@ public class HibernatePatientStore
         Collection<PatientIdentifierType> identifierTypes, Integer statusEnrollment, Integer min, Integer max )
     {
         String selector = count ? "count(*) " : "* ";
-        String sql = "select " + selector + " from ( select distinct p.patientid, p.name,";
+        String sql = "select " + selector + " from ( select distinct p.patientid,";
 
         if ( identifierTypes != null )
         {
@@ -470,7 +425,7 @@ public class HibernatePatientStore
 
         String patientWhere = "";
         String patientOperator = " where ";
-        String patientGroupBy = " GROUP BY  p.patientid, p.name ";
+        String patientGroupBy = " GROUP BY  p.patientid ";
         String otherWhere = "";
         String operator = " where ";
         String orderBy = "";
@@ -509,7 +464,7 @@ public class HibernatePatientStore
                 String opt = "";
                 for ( String v : keyValues )
                 {
-                    patientWhere += opt + " lower( p.name ) like '%" + v + "%' or ( lower(pi.identifier) like '%" + v
+                    patientWhere += opt + " ( lower(pi.identifier) like '%" + v
                         + "%' and pi.patientidentifiertypeid is not null ) ";
                     opt = "or";
                 }
@@ -538,11 +493,11 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( PREFIX_PROGRAM ) )
             {
-                sql += "(select programid from programinstance pi where patientid=p.patientid and programid=" + id;
+                sql += "(select programid from programinstance pgi where patientid=p.patientid and programid=" + id;
 
                 if ( statusEnrollment != null )
                 {
-                    sql += " and pi.status=" + statusEnrollment;
+                    sql += " and pgi.status=" + statusEnrollment;
                 }
 
                 sql += " limit 1 ) as " + PREFIX_PROGRAM + "_" + id + ",";
@@ -752,12 +707,12 @@ public class HibernatePatientStore
             if ( isPriorityEvent )
             {
                 subSQL += ",pgi.followup ";
-                orderBy = " ORDER BY pgi.followup desc, p.patientid, p.name, duedate asc ";
+                orderBy = " ORDER BY pgi.followup desc, p.patientid, duedate asc ";
                 patientGroupBy += ",pgi.followup ";
             }
             else
             {
-                orderBy = " ORDER BY p.patientid, p.name, duedate asc ";
+                orderBy = " ORDER BY p.patientid, duedate asc ";
             }
 
             sql = sql + subSQL + from + " inner join programinstance pgi on " + " (pgi.patientid=p.patientid) "

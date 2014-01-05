@@ -3,7 +3,7 @@
 #foreach( $patient in $patients )
   {
     "id": $!{patient.id},
-    "fullName": "$!encoder.jsonEncode( ${patient.name} )"    
+    "uid": "$!encoder.jsonEncode( ${patient.uid} )"    
   }#if( $velocityCount < $size ),#end
 #end
 ] }

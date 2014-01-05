@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <patient>
   <id>$patient.id</id>  
-  <fullName>$!encoder.xmlEncode( $patient.name )</fullName>
   #foreach( $patientIdentifier in $patient.identifiers )
     <identifier>        
         <identifierText>$!encoder.xmlEncode( $patientIdentifier.identifier )</identifierText>

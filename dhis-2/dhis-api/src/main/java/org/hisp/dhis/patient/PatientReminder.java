@@ -47,8 +47,6 @@ public class PatientReminder
 
     public static final String INCIDENT_DATE_TO_COMPARE = "dateofincident";
 
-    public static final String TEMPLATE_MESSSAGE_PATIENT_NAME = "{patient-name}";
-
     public static final String TEMPLATE_MESSSAGE_PROGRAM_NAME = "{program-name}";
 
     public static final String TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME = "{program-stage-name}";

@@ -10,35 +10,14 @@
 </h3>
 	
 <table>
-	#set($value="")
-	#set($flag=false)
 	#foreach( $identifier in $patient.identifiers)
-		#if($!identifier.identifierType)
-			#set($value=$identifier.identifier)
-		#else
-			#set($systemId=$identifier.identifier)
-		#end
-	#end
-	#if($value=="")
-		#set($value=$!patient.name)
-	#else
-		#set($flag=true)
-	#end
-	#if($value=="")
-		#set($value=$systemId)
-	#end
-					
-	#if($patient.name=='')
-	<tr>
-		<td>
-			#if($flag==true)
-				$i18n.getString('identifier'):
-			#else
-				$i18n.getString('full_name'):
+		<tr>
+			#if($!identifier.identifierType.personDisplayName=='true')
+				<td>$identifier.identifierType.displayName:</td>
+				<td>$identifier.identifier</td>
 			#end
-		</td>
-		<td>$value</td>
-	</tr>
+			
+		</tr>
 	#end
 </table>
 

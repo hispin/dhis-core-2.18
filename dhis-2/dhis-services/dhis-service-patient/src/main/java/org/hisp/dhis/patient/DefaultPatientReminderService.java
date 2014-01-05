@@ -56,18 +56,12 @@ public class DefaultPatientReminderService
         Patient patient = programInstance.getPatient();
         String templateMessage = patientReminder.getTemplateMessage();
 
-        String patientName = patient.getName();
         String organisationunitName = patient.getOrganisationUnit().getName();
         String programName = programInstance.getProgram().getName();
         String daysSinceEnrollementDate = DateUtils.daysBetween( new Date(), programInstance.getEnrollmentDate() ) + "";
         String daysSinceIncidentDate = DateUtils.daysBetween( new Date(), programInstance.getDateOfIncident() ) + "";
         String incidentDate = format.formatDate( programInstance.getDateOfIncident() );
         String erollmentDate = format.formatDate( programInstance.getEnrollmentDate() );
-
-        if ( patientName != null )
-        {
-            templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
-        }
 
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
         templateMessage = templateMessage
@@ -89,17 +83,12 @@ public class DefaultPatientReminderService
         Patient patient = programStageInstance.getProgramInstance().getPatient();
         String templateMessage = patientReminder.getTemplateMessage();
 
-        String patientName = patient.getName();
         String organisationunitName = patient.getOrganisationUnit().getName();
         String programName = programStageInstance.getProgramInstance().getProgram().getName();
         String programStageName = programStageInstance.getProgramStage().getName();
         String daysSinceDueDate = DateUtils.daysBetween( new Date(), programStageInstance.getDueDate() ) + "";
         String dueDate = format.formatDate( programStageInstance.getDueDate() );
 
-        if ( patientName != null )
-        {
-            templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
-        }
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME,
             programStageName );

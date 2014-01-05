@@ -61,7 +61,7 @@ public class GetDataRecordsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
@@ -164,6 +164,13 @@ public class GetDataRecordsAction
         return identifierTypes;
     }
 
+    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+
+    public List<PatientAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
     private Program program;
 
     public Program getProgram()
@@ -228,8 +235,8 @@ public class GetDataRecordsAction
         if ( programId != null )
         {
             program = programService.getProgram( programId );
-
             identifierTypes = program.getPatientIdentifierTypes();
+            attributes = program.getPatientAttributes();
         }
 
         if ( searchTexts.size() > 0 )

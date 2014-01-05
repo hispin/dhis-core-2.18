@@ -82,14 +82,14 @@ public class PersonController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "", method = RequestMethod.GET )
-    @PreAuthorize("hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')")
-    public String getPersons(
-        @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
-        @RequestParam( value = "program", required = false ) String programUid,
-        @RequestParam( required = false ) String identifierType,
-        @RequestParam( required = false ) String identifier,
-        @RequestParam( required = false ) String nameLike,
-        @RequestParam Map<String, String> parameters, Model model ) throws Exception
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')" )
+    public String getPersons( @RequestParam( value = "orgUnit", required = false )
+    String orgUnitUid, @RequestParam( value = "program", required = false )
+    String programUid, @RequestParam( required = false )
+    String identifierType, @RequestParam( required = false )
+    String identifier, @RequestParam
+    Map<String, String> parameters, Model model )
+        throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Persons persons = new Persons();
@@ -101,12 +101,7 @@ public class PersonController
         }
         else if ( orgUnitUid != null )
         {
-            if ( nameLike != null )
-            {
-                OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
-                persons = personService.getPersons( organisationUnit, nameLike );
-            }
-            else if ( programUid != null )
+            if ( programUid != null )
             {
                 OrganisationUnit organisationUnit = getOrganisationUnit( orgUnitUid );
                 Program program = getProgram( programUid );
@@ -131,8 +126,11 @@ public class PersonController
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    @PreAuthorize("hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')")
-    public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model ) throws NotFoundException
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')" )
+    public String getPerson( @PathVariable
+    String id, @RequestParam
+    Map<String, String> parameters, Model model )
+        throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
         Person person = getPerson( id );
@@ -149,7 +147,8 @@ public class PersonController
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
-    public void postPersonXml( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public void postPersonXml( HttpServletRequest request, HttpServletResponse response )
+        throws IOException
     {
         ImportSummaries importSummaries = personService.savePersonXml( request.getInputStream() );
 
@@ -174,7 +173,8 @@ public class PersonController
 
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
-    public void postPersonJson( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public void postPersonJson( HttpServletRequest request, HttpServletResponse response )
+        throws IOException
     {
         ImportSummaries importSummaries = personService.savePersonJson( request.getInputStream() );
 
@@ -204,7 +204,9 @@ public class PersonController
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
-    public void updatePersonXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public void updatePersonXml( @PathVariable
+    String id, HttpServletRequest request, HttpServletResponse response )
+        throws IOException
     {
         ImportSummary importSummary = personService.updatePersonXml( id, request.getInputStream() );
         JacksonUtils.toXml( response.getOutputStream(), importSummary );
@@ -213,7 +215,9 @@ public class PersonController
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
-    public void updatePersonJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public void updatePersonJson( @PathVariable
+    String id, HttpServletRequest request, HttpServletResponse response )
+        throws IOException
     {
         ImportSummary importSummary = personService.updatePersonJson( id, request.getInputStream() );
         JacksonUtils.toJson( response.getOutputStream(), importSummary );
@@ -226,7 +230,9 @@ public class PersonController
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DELETE')" )
-    public void deletePerson( @PathVariable String id ) throws NotFoundException
+    public void deletePerson( @PathVariable
+    String id )
+        throws NotFoundException
     {
         Person person = getPerson( id );
         personService.deletePerson( person );
@@ -236,7 +242,8 @@ public class PersonController
     // HELPERS
     // -------------------------------------------------------------------------
 
-    private Person getPerson( String id ) throws NotFoundException
+    private Person getPerson( String id )
+        throws NotFoundException
     {
         Person person = personService.getPerson( id );
 
@@ -247,7 +254,8 @@ public class PersonController
         return person;
     }
 
-    private Program getProgram( String id ) throws NotFoundException
+    private Program getProgram( String id )
+        throws NotFoundException
     {
         Program program = manager.get( Program.class, id );
 

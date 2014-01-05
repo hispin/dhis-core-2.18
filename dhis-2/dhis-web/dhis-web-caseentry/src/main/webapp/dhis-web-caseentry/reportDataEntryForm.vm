@@ -1,5 +1,12 @@
 <div id='reportTitle' name='reportTitle' style="display:none;">
-	<h3>$i18n.getString('records_of') $!encoder.htmlEncode( $patient.name )  $i18n.getString('at') $programStage.displayName $i18n.getString('in') $organisationUnit.name $i18n.getString('on_value') $format.formatDate($programStageInstance.executionDate)</h3>
+	#set($id = '')
+	#foreach( $identifier in $patient.identifiers)
+		#if($!identifier.identifierType.personDisplayName=='true')
+			#set($id=$!identifier.identifier)
+		#end
+	#end 
+				
+	<h3>$i18n.getString('records_of') $!encoder.htmlEncode( $id )  $i18n.getString('at') $programStage.displayName $i18n.getString('in') $organisationUnit.name $i18n.getString('on_value') $format.formatDate($programStageInstance.executionDate)</h3>
 	<hr/>
 </div>
 
@@ -10,7 +17,7 @@
 				<td class='coordinates1'>
 					<span class='bold' id="patientName">$i18n.getString( "full_name" ): </span>
 				</td>
-				<td class='coordinates2'>$patient.name</td>
+				<td class='coordinates2'>$id</td>
 				<td class='bold coordinates1'>$i18n.getString('program'):</td>
 				<td class='coordinates2'>$program.displayName</td>
 				<td rowspan='2'>
@@ -60,7 +67,7 @@
 			enable('completeBtn');
 			disable('uncompleteBtn');
 		#end
-		setInnerHTML("patientNameLbl", "&raquo; " + "!$encoder.jsEncode( $patient.name)");
+		setInnerHTML("patientNameLbl", "&raquo; " + "!$encoder.jsEncode( $id)");
 	});
 	
 	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';

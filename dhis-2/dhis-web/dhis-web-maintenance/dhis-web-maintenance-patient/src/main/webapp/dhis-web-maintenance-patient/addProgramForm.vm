@@ -12,6 +12,29 @@
 		enable('dateOfIncidentDescription');
 		form.submit();
 	}, function(){
+		
+		var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
+		selectedPropertyIds.empty();
+		var personDisplayNames = jQuery( "#personDisplayNames" );
+		personDisplayNames.empty();
+		var compulsaryIdentifier = jQuery( "#compulsaryIdentifier" );
+		compulsaryIdentifier.empty();
+		
+        if( getFieldValue('type') != 3 ){
+			if(  jQuery("#selectedList").find("tr").length > 0){
+				compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
+			}
+            jQuery("#selectedList").find("tr").each( function( i, item ){
+                selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
+				var displayed = jQuery( item ).find( "input[name='displayed']:first");
+				var checked = displayed.attr('checked') ? true : false;
+				personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+			});
+		}
+		else{
+			compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
+		}
+				
 		var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
 		daysAllowedSendMessages.empty();
 		
@@ -62,20 +85,6 @@
 			userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
 		});
 		
-		var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
-		selectedPropertyIds.empty();
-		var personDisplayNames = jQuery( "#personDisplayNames" );
-		personDisplayNames.empty();
-
-        if( getFieldValue('type') != 3 ) {
-            jQuery("#selectedList").find("tr").each( function( i, item ){
-                selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
-				
-				var displayed = jQuery( item ).find( "input[name='displayed']:first");
-				var checked = displayed.attr('checked') ? true : false;
-				personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-			});
-		}
 	});
 	
 	checkValueIsExist( "name", "validateProgram.action" );	
@@ -264,6 +273,7 @@
 		<th>$i18n.getString( "selected" )
 			<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
 			<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
+			<select id='compulsaryIdentifier' name="compulsaryIdentifier" multiple="multiple" class="hidden {validate:{required:true}}"></select>
 		</th>
 	  </tr>
 	</thead>

@@ -79,7 +79,7 @@ function listAllPatient()
 	showLoader();
 	jQuery('#contentDiv').load( 'listAllPatients.action',{
 			listAll:false,
-			programIds:	getFieldValue("programIdAddPatient"),
+			programId:	getFieldValue("programIdAddPatient"),
 			searchTexts: "prg_" + getFieldValue("programIdAddPatient"),
 			searchByUserOrgunits: false,
 			searchBySelectedOrgunit:true

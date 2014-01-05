@@ -14,70 +14,79 @@
 			enable('dateOfIncidentDescription');
 			form.submit();
 		}, function(){
-				
-				var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
-				daysAllowedSendMessages.empty();
-				
-				var templateMessages = jQuery( "#templateMessages" );
-				templateMessages.empty();
-				
-				var datesToCompare = jQuery( "#datesToCompare" );
-				datesToCompare.empty();
-				
-				var sendTo = jQuery( "#sendTo" );
-				sendTo.empty();
-				
-				var whenToSend = jQuery( "#whenToSend" );
-				whenToSend.empty();
-				
-				var messageType = jQuery( "#messageType" );
-				messageType.empty();
-				
-				var userGroup = jQuery( "#userGroup" );
-				userGroup.empty();
-				
-				jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
-					var days = (jQuery(item).attr('realvalue')==undefined) ? 0 : jQuery(item).attr('realvalue');
-					daysAllowedSendMessages.append( "<option value='" + days + "' selected='true'>" + days + "</option>" );
+			var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
+			selectedPropertyIds.empty();
+			var personDisplayNames = jQuery( "#personDisplayNames" );
+			personDisplayNames.empty();
+			var compulsaryIdentifier = jQuery( "#compulsaryIdentifier" );
+			compulsaryIdentifier.empty();
+			
+			if( getFieldValue('type') != 3 ){
+				if(  jQuery("#selectedList").find("tr").length > 0){
+					compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
+				}
+				jQuery("#selectedList").find("tr").each( function( i, item ){
+					selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
+					var displayed = jQuery( item ).find( "input[name='displayed']:first");
+					var checked = displayed.attr('checked') ? true : false;
+					personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 				});
-				
-				jQuery(".templateMessage").each( function( i, item ){ 
-					templateMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-				});
-				
-				jQuery(".dateToCompare").each( function( i, item ){ 
-					datesToCompare.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-				});
-				
-				jQuery(".sendTo").each( function( i, item ){ 
-					sendTo.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-				});
-				
-				jQuery(".whenToSend").each( function( i, item ){ 
-					whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-				});
-				
-				jQuery(".messageType").each( function( i, item ){ 
-					messageType.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-				});
-				
-				jQuery(".userGroup").each( function( i, item ){ 
-					userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
-				});
-				
-				var selectedPropertyIds = jQuery( "#selectedPropertyIds" );
-				selectedPropertyIds.empty();
-				var personDisplayNames = jQuery( "#personDisplayNames" );
-				personDisplayNames.empty();
-				if(getFieldValue('type')!=3){
-					jQuery("#selectedList").find("tr").each( function( i, item ){ 
-						selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
-						var displayed = jQuery( item ).find( "input[name='displayed']:first");
-						var checked = displayed.attr('checked') ? true : false;
-						personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
-					});
-				};
+			}
+			else{
+				compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
+			}
+			
+			var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
+			daysAllowedSendMessages.empty();
+			
+			var templateMessages = jQuery( "#templateMessages" );
+			templateMessages.empty();
+			
+			var datesToCompare = jQuery( "#datesToCompare" );
+			datesToCompare.empty();
+			
+			var sendTo = jQuery( "#sendTo" );
+			sendTo.empty();
+			
+			var whenToSend = jQuery( "#whenToSend" );
+			whenToSend.empty();
+			
+			var messageType = jQuery( "#messageType" );
+			messageType.empty();
+			
+			var userGroup = jQuery( "#userGroup" );
+			userGroup.empty();
+			
+			jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
+				var days = (jQuery(item).attr('realvalue')==undefined) ? 0 : jQuery(item).attr('realvalue');
+				daysAllowedSendMessages.append( "<option value='" + days + "' selected='true'>" + days + "</option>" );
 			});
+			
+			jQuery(".templateMessage").each( function( i, item ){ 
+				templateMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			
+			jQuery(".dateToCompare").each( function( i, item ){ 
+				datesToCompare.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			
+			jQuery(".sendTo").each( function( i, item ){ 
+				sendTo.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			
+			jQuery(".whenToSend").each( function( i, item ){ 
+				whenToSend.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			
+			jQuery(".messageType").each( function( i, item ){ 
+				messageType.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			
+			jQuery(".userGroup").each( function( i, item ){ 
+				userGroup.append( "<option value='" + item.value + "' selected='true'>" + item.value + "</option>" );
+			});
+			
+		});
 	checkValueIsExist( "name", "validateProgram.action",{id:getFieldValue('id')} );
 });
 
@@ -277,6 +286,7 @@
 			<th>$i18n.getString( "selected" )
 				<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
 				<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
+				<select id='compulsaryIdentifier' name="compulsaryIdentifier" multiple="multiple" class="hidden {validate:{required:true}}"></select>
 			</th>
 		  </tr>
 		</thead>
@@ -321,7 +331,7 @@
 							#foreach( $attribute in $program.patientAttributes )
 								<tr ondblclick="unSelectProperties( this )" id="attr_$attribute.id">
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $attribute.name )</td>
-									<td align="center"><input type="checkbox" name="displayed" style='display:none' /></td>
+									<td align="center"><input type="checkbox" name="displayed" value="attr_$attribute.id" #if($attribute.displayedInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
 								</tr>
 							#end
 						</tbody>

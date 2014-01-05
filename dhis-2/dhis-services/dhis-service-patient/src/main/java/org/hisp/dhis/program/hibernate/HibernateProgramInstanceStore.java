@@ -252,7 +252,6 @@ public class HibernateProgramInstanceStore
             for ( int i = 1; i <= cols; i++ )
             {
                 message = rs.getString( "templatemessage" );
-                String patientName = rs.getString( "name" );
                 String organisationunitName = rs.getString( "orgunitName" );
                 String programName = rs.getString( "programName" );
                 String incidentDate = rs.getString( "dateofincident" ).split( " " )[0];// just
@@ -268,7 +267,6 @@ public class HibernateProgramInstanceStore
                 // timestamp
                 String daysSinceEnrollementDate = rs.getString( "days_since_erollment_date" );
 
-                message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
                 message = message.replace( PatientReminder.TEMPLATE_MESSSAGE_INCIDENT_DATE, incidentDate );
@@ -293,7 +291,7 @@ public class HibernateProgramInstanceStore
     private String sendToPatientSql( String dateToCompare )
     {
         return "SELECT pi.programinstanceid, pav.value as phonenumber, prm.templatemessage, "
-            + "         p.name, org.name as orgunitName, " + "         pg.name as programName, pi.dateofincident , "
+            + "         org.name as orgunitName, " + "         pg.name as programName, pi.dateofincident , "
             + "         pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
             + "         (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
             + "       FROM patient p INNER JOIN programinstance pi "
@@ -313,7 +311,7 @@ public class HibernateProgramInstanceStore
 
     private String sendToHealthWorkerSql( String dateToCompare )
     {
-        return "SELECT pi.programinstanceid, uif.phonenumber, prm.templatemessage, p.name, org.name as orgunitName, "
+        return "SELECT pi.programinstanceid, uif.phonenumber, prm.templatemessage, org.name as orgunitName, "
             + "   pg.name as programName, pi.dateofincident, pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
             + "       (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
             + "    FROM patient p INNER JOIN programinstance pi "
@@ -332,7 +330,7 @@ public class HibernateProgramInstanceStore
 
     private String sendMessageToOrgunitRegisteredSql( String dateToCompare )
     {
-        return "SELECT pi.programinstanceid, org.phonenumber, prm.templatemessage, p.name, org.name as orgunitName, "
+        return "SELECT pi.programinstanceid, org.phonenumber, prm.templatemessage, org.name as orgunitName, "
             + "   pg.name as programName, pi.dateofincident, pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
             + "       (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
             + "    FROM patient p INNER JOIN programinstance pi "
@@ -349,7 +347,7 @@ public class HibernateProgramInstanceStore
 
     private String sendMessageToUsersSql( String dateToCompare )
     {
-        return "SELECT pi.programinstanceid, uif.phonenumber, prm.templatemessage, p.name, org.name as orgunitName, pg.name as programName, pi.dateofincident ,"
+        return "SELECT pi.programinstanceid, uif.phonenumber, prm.templatemessage, org.name as orgunitName, pg.name as programName, pi.dateofincident ,"
             + "pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
             + "(DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
             + "FROM patient p INNER JOIN programinstance pi "
@@ -375,7 +373,7 @@ public class HibernateProgramInstanceStore
 
     private String sendMessageToUserGroupsSql( String dateToCompare )
     {
-        return "select pi.programinstanceid, uif.phonenumber,prm.templatemessage, p.name, org.name as orgunitName ,"
+        return "select pi.programinstanceid, uif.phonenumber,prm.templatemessage, org.name as orgunitName ,"
             + " pg.name as programName, pi.dateofincident, pi.enrollmentdate, (DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
             + "(DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
             + "  from patient p INNER JOIN programinstance pi " + "       ON p.patientid=pi.patientid "

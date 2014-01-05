@@ -198,52 +198,10 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatients( String searchText, Integer min, Integer max )
-    {
-        int countPatientName = patientStore.countGetPatientsByName( searchText );
-
-        Set<Patient> patients = new HashSet<Patient>();
-
-        if ( max < countPatientName )
-        {
-            patients.addAll( getPatientsByNames( searchText, min, max ) );
-
-            min = min - patients.size();
-        }
-        else
-        {
-            if ( min <= countPatientName )
-            {
-                patients.addAll( getPatientsByNames( searchText, min, countPatientName ) );
-
-                min = 0;
-                max = max - countPatientName;
-
-                Collection<Patient> patientsByIdentifier = patientIdentifierService.getPatientsByIdentifier(
-                    searchText, min, max );
-
-                patients.addAll( patientsByIdentifier );
-            }
-            else
-            {
-                min = 0;
-                max = max - countPatientName;
-
-                Collection<Patient> patientsByIdentifier = patientIdentifierService.getPatientsByIdentifier(
-                    searchText, min, max );
-
-                patients.addAll( patientsByIdentifier );
-            }
-        }
-        return patients;
-    }
-
-    @Override
     public Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId )
     {
         Set<Patient> patients = new HashSet<Patient>();
         patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE ) );
-        patients.addAll( getPatientsByNames( searchText, 0, Integer.MAX_VALUE ) );
         patients.addAll( getPatientsByPhone( searchText, 0, Integer.MAX_VALUE ) );
 
         // if an org-unit has been selected, filter out every patient that has a
@@ -285,13 +243,6 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientsLikeName( OrganisationUnit organisationUnit, String name, Integer min,
-        Integer max )
-    {
-        return patientStore.getByOrgUnitAndNameLike( organisationUnit, name, min, max );
-    }
-
-    @Override
     public Collection<Patient> getPatient( Integer identifierTypeId, Integer attributeId, String value )
     {
         if ( attributeId != null )
@@ -319,8 +270,7 @@ public class DefaultPatientService
             }
         }
 
-        return patientStore.getByNames( value, null, null );
-
+        return null;
     }
 
     @Override
@@ -356,25 +306,6 @@ public class DefaultPatientService
         sortedPatients.addAll( patients );
 
         return sortedPatients;
-    }
-
-    @Override
-    public Collection<Patient> getPatientsByNames( String name, Integer min, Integer max )
-    {
-        return patientStore.getByNames( name.toLowerCase(), min, max );
-    }
-
-    @Override
-    public int countGetPatients( String searchText )
-    {
-        return patientStore.countGetPatientsByName( searchText )
-            + patientIdentifierService.countGetPatientsByIdentifier( searchText );
-    }
-
-    @Override
-    public int countGetPatientsByName( String name )
-    {
-        return patientStore.countGetPatientsByName( name );
     }
 
     @Override
@@ -515,7 +446,7 @@ public class DefaultPatientService
         Collection<Patient> patients = patientStore.search( searchKeys, orgunits, followup, null, null,
             statusEnrollment, min, max );
         Set<String> phoneNumbers = new HashSet<String>();
-		
+
         for ( Patient patient : patients )
         {
             Collection<PatientAttributeValue> attributeValues = patient.getAttributeValues();
@@ -636,12 +567,6 @@ public class DefaultPatientService
 
         return patientStore.getPatientEventReport( grid, searchKeys, orgunits, followup, null, patientIdentifierTypes,
             statusEnrollment, null, null );
-    }
-
-    @Override
-    public Collection<Patient> getPatientByFullname( String fullName, OrganisationUnit organisationUnit )
-    {
-        return patientStore.getByFullName( fullName, organisationUnit );
     }
 
     @Override

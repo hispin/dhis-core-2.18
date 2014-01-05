@@ -129,8 +129,7 @@ public class PatientReminderServiceTest
         patientService.savePatient( patient );
 
         Program program = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
-        patientReminderA = new PatientReminder( "A", 0, "Test program message template "
-            + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
+        patientReminderA = new PatientReminder( "A", 0, "Test program message template", PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
             PatientReminder.SEND_TO_PATIENT, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             PatientReminder.MESSAGE_TYPE_DIRECT_SMS );
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
@@ -139,8 +138,7 @@ public class PatientReminderServiceTest
         programService.addProgram( program );
 
         stageA = new ProgramStage( "A", program );
-        patientReminderB = new PatientReminder( "B", 0, "Test event template"
-            + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.DUE_DATE_TO_COMPARE,
+        patientReminderB = new PatientReminder( "B", 0, "Test event template" , PatientReminder.DUE_DATE_TO_COMPARE,
             PatientReminder.SEND_TO_PATIENT, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             PatientReminder.MESSAGE_TYPE_DIRECT_SMS );
         patientReminders = new HashSet<PatientReminder>();
@@ -149,8 +147,7 @@ public class PatientReminderServiceTest
         programStageService.saveProgramStage( stageA );
 
         ProgramStage stageB = new ProgramStage( "B", program );
-        patientReminderC = new PatientReminder( "C", 0, "Test event template"
-            + PatientReminder.TEMPLATE_MESSSAGE_PATIENT_NAME, PatientReminder.DUE_DATE_TO_COMPARE,
+        patientReminderC = new PatientReminder( "C", 0, "Test event template", PatientReminder.DUE_DATE_TO_COMPARE,
             PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
             PatientReminder.MESSAGE_TYPE_DIRECT_SMS );
         patientReminders = new HashSet<PatientReminder>();
@@ -173,7 +170,7 @@ public class PatientReminderServiceTest
     public void testGetMessageFromTemplateByProgram()
     {
         String message = patientReminderService.getMessageFromTemplate( patientReminderA, programInstance, mockFormat );
-        assertEquals( "Test program message template NameA", message );
+        assertEquals( "Test program message template", message );
     }
 
     @Test
@@ -183,7 +180,7 @@ public class PatientReminderServiceTest
             programInstance, stageA );
         String message = patientReminderService.getMessageFromTemplate( patientReminderA, programStageInstance,
             mockFormat );
-        assertEquals( "Test program message template NameA", message );
+        assertEquals( "Test program message template", message );
     }
 
     @Test

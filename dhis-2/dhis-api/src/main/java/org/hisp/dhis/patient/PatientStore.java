@@ -48,17 +48,6 @@ public interface PatientStore
     final int MAX_RESULTS = 50000;
 
     /**
-     * Search patients by full name (performs partial search )
-     * 
-     * @param name Full name of patients
-     * @param min
-     * @param max
-     * 
-     * @return List of patients
-     */
-    Collection<Patient> getByNames( String name, Integer min, Integer max );
-
-    /**
      * Search patients who registered in a certain organisation unit
      * 
      * @param organisationUnit Organisation unit where patients registered
@@ -68,20 +57,6 @@ public interface PatientStore
      * @return List of patients
      */
     Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
-
-    /**
-     * Search patients who registered in a certain organisation unit by full
-     * name (performs partial search)
-     * 
-     * @param organisationUnit Organisation unit where patients registered
-     * @param nameLike A string for searching by full name
-     * @param min
-     * @param max
-     * 
-     * @return List of patient
-     */
-    Collection<Patient> getByOrgUnitAndNameLike( OrganisationUnit organisationUnit, String nameLike, Integer min,
-        Integer max );
 
     /**
      * Search patients registered into a certain organisation unit and enrolled
@@ -167,18 +142,6 @@ public interface PatientStore
      * @return List of patient
      */
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
-
-    /**
-     * Search patients who registered into a certain organisation unit by
-     * full-name
-     * 
-     * @param fullName The full name of patient
-     * @param organisationUnit Organisation Unit where patients registered
-     *        private information
-     * 
-     * @return List of patient
-     */
-    Collection<Patient> getByFullName( String name, OrganisationUnit organisationUnit );
 
     /**
      * Search events of patients who meet the criteria for searching

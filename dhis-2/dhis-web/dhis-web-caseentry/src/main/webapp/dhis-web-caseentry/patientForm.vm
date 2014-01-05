@@ -18,11 +18,6 @@
 	</tr>
 
 	<tr name='propertiesField'>
-		<td class='text-column'><label for="fullName">$i18n.getString( "full_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.name" class="{validate:{required:true, rangelength:[3,50]}}"></td>
-	</tr>
-
-	<tr name='propertiesField'>
 		<td class='text-column'><label for="healthWorker">$i18n.getString( "health_worker" )</label></td>
 		<td class="input-column">
 			<select id="healthWorker" name="healthWorker">
@@ -34,11 +29,6 @@
 		</td>
 	</tr>
 	
-	<tr>
-		<td></td>
-		<td><input type="button" class='button' id='checkDuplicateBtn' name='checkDuplicateBtn' value="$i18n.getString('check_duplicate')" /></td>
-	</tr>
-
 	<tr><td>&nbsp;</td></tr>
 
 #if( $identifierTypes.size() > 0)

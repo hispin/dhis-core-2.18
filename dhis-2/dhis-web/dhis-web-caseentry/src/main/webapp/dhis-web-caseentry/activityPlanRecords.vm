@@ -18,12 +18,17 @@
 			<th>$i18n.getString('orgunit')</th>
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-				<th>$i18n.getString('full_name')</th>
-				#foreach( $patientAttribute in $patientAttributes)
-				<th>$patientAttribute.displayName</th>
+				#foreach( $identifierType in $identifierTypes)
+					#if($identifierType.personDisplayName=='true')
+						<th>$encoder.htmlEncode($identifierType.displayName)</th>
+					#end
 				#end
-			#else
-				<th>$i18n.getString('system_identifier')</th>
+				
+				#foreach( $attribute in $attributes )
+					#if($attribute.displayedInList=='true')
+						<th id="patientAttributeName">$encoder.htmlEncode($attribute.displayName)</th>
+					#end
+				#end
 			#end
 			
 			<th>$i18n.getString('events')</th>
@@ -57,38 +62,36 @@
 			</td>
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-			<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
-				#set($value="")
+			
 				#foreach( $identifierType in $identifierTypes)
-					#foreach( $identifier in $patient.identifiers)
-						#if($identifier.identifierType.id==$identifierType.id)
-							#set($value=$identifier.identifier)
-						#end
+					#set($value="")
+					#if($identifierType.personDisplayName=='true')
+						<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
+							#foreach( $identifier in $programStageInstance.programInstance.patient.identifiers)
+								#if($!identifier.identifierType.id==$identifierType.id)
+									#set($value=$identifier.identifier)
+								#end
+							#end 
+							<a>$encoder.htmlEncode($value)</a>
+						</td>
 					#end
-				#end
-				#if($value=="")
-					#set($value=$!patient.name)
 				#end
 				
-				$value
-			</a></td>
-			
-			#set( $attributeValues = $patientAttributeValueMap.get($programStageInstance.programInstance.patient.id))
-			#foreach( $attributeValue in $attributeValues)
-				<td>$attributeValue</td>
-			#end
-			
-			#else
-				#set($value="")
-				#foreach( $identifier in $patient.identifiers)
-					#if($!identifier.identifierType)
-					#else
-						#set($value=$identifier.identifier)
+				#foreach( $attribute in $attributes )
+					#if($attribute.displayedInList=='true')
+						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
+							#foreach( $attributeValue in $programStageInstance.programInstance.patient.attributeValues)
+								#if($!attributeValue.patientAttribute.id==$attribute.id)
+									#set($value=$attributeValue.value)
+									#if( $attribute.valueType == 'bool')
+										#set($value=$i18n.getString($attributeValue.value))
+									#end
+								#end
+							#end 
+							<a>$encoder.htmlEncode($value)</a>
+						</td>
 					#end
 				#end
-				<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
-					$value
-				</a></td>
 			#end
 			
 			<td><a href="javascript:loadDataEntryDialog( $programStageInstance.id, '$programStageInstance.programStage.uid' );">$programStageInstance.programStage.displayName</a></td>
