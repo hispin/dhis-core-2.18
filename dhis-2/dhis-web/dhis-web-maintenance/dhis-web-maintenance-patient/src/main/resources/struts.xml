@@ -1184,14 +1184,14 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addProgramPatientReminder.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programPatientReminder.js</param>
-			<param name="requiredAuthorities">F_ADD_PATIENT_REMINDER</param>
+			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="addProgramPatientReminder"
 			class="org.hisp.dhis.patient.action.patientreminder.AddProgramPatientReminderAction">
 			<result name="success" type="redirect">programPatientReminder.action?id=${programId}
 			</result>
-			<param name="requiredAuthorities">F_ADD_PATIENT_REMINDER</param>
+			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="showUpdateProgramPatientReminder"
@@ -1199,14 +1199,14 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramPatientReminder.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programPatientReminder.js</param>
-			<param name="requiredAuthorities">F_UPDATE_PATIENT_REMINDER</param>
+			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="updateProgramPatientReminder"
 			class="org.hisp.dhis.patient.action.patientreminder.UpdateProgramPatientReminderAction">
 			<result name="success" type="redirect">programPatientReminder.action?id=${programId}
 			</result>
-			<param name="requiredAuthorities">F_UPDATE_PATIENT_REMINDER</param>
+			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="removeProgramPatientReminder"
@@ -1214,7 +1214,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_DELETE_PATIENT_REMINDER</param>
+			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
 		<action name="getPatientReminder"
