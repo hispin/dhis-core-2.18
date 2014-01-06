@@ -122,7 +122,7 @@
 		<tr>
 			<td><label>$i18n.getString( "user_group" )</label></td>
 			<td>
-				<select type="text" id="userGroup" name="userGroup" class="userGroup">
+				<select type="text" id="userGroup" name="userGroup" class="userGroup" #if($!reminder.sendTo!=5) disabled #end >
 					<option value="">[$i18n.getString("please_select")]</option>
 					#foreach($eachGroup in $userGroups)
 					<option value="$eachGroup.id" #if($!reminder.userGroup.id==$eachGroup.id) selected #end>$i18n.getString($eachGroup.name)</option>

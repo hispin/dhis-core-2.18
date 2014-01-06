@@ -378,12 +378,12 @@ function generateTemplateMessageForm()
 				+	'<td>' + i18n_params + '</td>'
 				+	'<td>'
 				+		'<select multiple size="4" id="params' + rowId +'" name="params" ondblclick="insertParams(this.value, ' + rowId + ');">'
-				+			'<option value="{patient-name}">' + i18n_patient_name + '</option>'
 				+			'<option value="{program-name}">' + i18n_program_name + '</option>'
 				+			'<option value="{program-stage-name}">' + i18n_program_stage_name + '</option>'
 				+			'<option value="{due-date}">' + i18n_due_date + '</option>'
 				+			'<option value="{days-since-due-date}">' + i18n_days_since_due_date + '</option>'
 				+			'<option value="{orgunit-name}">' + i18n_orgunit_name + '</option>'
+				+			idenAttrOptions
 				+		'</select>'
 				+	'</td>'
 				+ '</tr>'

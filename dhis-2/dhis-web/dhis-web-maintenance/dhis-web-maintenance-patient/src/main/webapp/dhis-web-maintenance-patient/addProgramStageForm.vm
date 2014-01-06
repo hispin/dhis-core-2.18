@@ -275,4 +275,12 @@
 	#foreach($programStage in $program.programStages)
 		programStageList.push("$programStage.displayName");
 	#end
+	
+	var idenAttrOptions = "";
+	#foreach($identifierType in $program.patientIdentifierTypes)
+		idenAttrOptions+="<option value={identifierid=$identifierType.uid}>$identifierType.displayName</option>";
+	#end
+	#foreach($patientAttribute in $program.patientAttributes)
+		idenAttrOptions+="<option value={attributeid=$patientAttribute.uid}>$patientAttribute.displayName</option>";
+	#end
 </script>

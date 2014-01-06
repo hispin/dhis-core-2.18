@@ -159,4 +159,11 @@ function onchangeUserGroup() {
   else {
     enable('messageType');
   }
+  
+  if( value == "5" ){
+	enable('userGroup');
+  }
+  else{
+	disable('userGroup');
+  }
 }
