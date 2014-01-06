@@ -37,6 +37,7 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -47,7 +48,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 public class StartupListener
     implements ServletContextListener
 {
-    private static final Log LOG = LogFactory.getLog( StartupListener.class );
+    private static final Log log = LogFactory.getLog( StartupListener.class );
 
     // -------------------------------------------------------------------------
     // ServletContextListener implementation
@@ -64,10 +65,12 @@ public class StartupListener
 
         try
         {
-            startupRoutineExecutor.execute();
+            startupRoutineExecutor.execute();            
         }
         catch ( Exception ex )
         {
+            log.error( DebugUtils.getStackTrace( ex ) );
+            
             throw new RuntimeException( "Failed to run startup routines: " + ex.getMessage(), ex );
         }
     }
@@ -83,11 +86,11 @@ public class StartupListener
             try
             {
                 DriverManager.deregisterDriver( driver );
-                LOG.info( "De-registering jdbc driver: " + driver );
+                log.info( "De-registering jdbc driver: " + driver );
             }
             catch ( SQLException e )
             {
-                LOG.info( "Error de-registering driver " + driver + " :" + e.getMessage() );
+                log.info( "Error de-registering driver " + driver + " :" + e.getMessage() );
             }
         }
     }
