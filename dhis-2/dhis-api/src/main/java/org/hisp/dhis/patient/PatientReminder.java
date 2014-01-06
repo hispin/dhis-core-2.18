@@ -66,7 +66,7 @@ public class PatientReminder
 
     public static final int SEND_TO_PATIENT = 1;
 
-    public static final int SEND_TO_HEALTH_WORKER = 2;
+    public static final int SEND_TO_ATTRIBUTE_TYPE_USERS = 2;
 
     public static final int SEND_TO_ORGUGNIT_REGISTERED = 3;
 

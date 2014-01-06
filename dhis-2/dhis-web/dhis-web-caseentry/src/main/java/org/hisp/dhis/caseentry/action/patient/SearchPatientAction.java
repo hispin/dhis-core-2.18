@@ -39,6 +39,8 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,6 +75,8 @@ public class SearchPatientAction
 
     private OrganisationUnitService organisationUnitService;
 
+    private UserService userService;
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -94,6 +98,11 @@ public class SearchPatientAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -188,6 +197,13 @@ public class SearchPatientAction
         return organisationUnit;
     }
 
+    private Map<String, String> mapUsers = new HashMap<String, String>();
+
+    public Map<String, String> getMapUsers()
+    {
+        return mapUsers;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -232,6 +248,20 @@ public class SearchPatientAction
             {
                 orgunits = null;
             }
+
+            // -----------------------------------------------------------------
+            // Users by orgunits for searching
+            // -----------------------------------------------------------------
+
+            Collection<User> users = userService.getAllUsers();
+            for ( User user : users )
+            {
+                mapUsers.put( user.getId() + "", user.getName() );
+            }
+            
+            // -----------------------------------------------------------------
+            // Searching
+            // -----------------------------------------------------------------
 
             total = patientService.countSearchPatients( searchTexts, orgunits, null, statusEnrollment );
             this.paging = createPaging( total );

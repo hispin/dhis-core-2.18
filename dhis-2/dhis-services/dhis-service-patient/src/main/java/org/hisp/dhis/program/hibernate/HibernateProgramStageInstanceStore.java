@@ -622,7 +622,7 @@ public class HibernateProgramStageInstanceStore
             + "               and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "               and psi.executiondate is null "
             + "               and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
-            + "               and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_HEALTH_WORKER;
+            + "               and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_ATTRIBUTE_TYPE_USERS;
     }
 
     private String sendMessageToOrgunitRegisteredSql()

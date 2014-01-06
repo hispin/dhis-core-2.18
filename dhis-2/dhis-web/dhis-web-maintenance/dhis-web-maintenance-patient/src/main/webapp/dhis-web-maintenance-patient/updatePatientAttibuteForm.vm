@@ -52,6 +52,7 @@
                 <option value="phoneNumber" #if( $patientAttribute.valueType == 'phoneNumber' ) selected="selected" #end>$i18n.getString( "phone_number" )</option>
 				<option value="trackerAssociate" #if( $patientAttribute.valueType == 'trackerAssociate' ) selected="selected" #end>$i18n.getString( "tracker_associate" )</option>
 				<option value="age" #if( $patientAttribute.valueType == 'age' ) selected="selected" #end>$i18n.getString( "age" )</option>
+				<option value="users" #if( $patientAttribute.valueType == 'users' ) selected="selected" #end>$i18n.getString( "users" )</option>
 				<option value="combo" #if( $patientAttribute.valueType == 'combo' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
             </select>
         </td>

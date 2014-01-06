@@ -102,14 +102,7 @@ public class ShowAddPatientFormAction
     {
         this.attributeService = attributeService;
     }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
+    
     private PatientAttributeGroupService attributeGroupService;
 
     public void setAttributeGroupService( PatientAttributeGroupService attributeGroupService )
@@ -310,7 +303,7 @@ public class ShowAddPatientFormAction
                     healthWorkers, null, null, i18n, format );
             }
         }
-        
+
         if ( customRegistrationForm == null )
         {
             attributeGroups = new ArrayList<PatientAttributeGroup>(
@@ -353,8 +346,6 @@ public class ShowAddPatientFormAction
 
         }
 
-        orgunitCountIdentifier = generateOrgunitIdentifier( organisationUnit );
-
         if ( relatedProgramId != null )
         {
             relatedProgram = programService.getProgram( relatedProgramId );
@@ -368,28 +359,4 @@ public class ShowAddPatientFormAction
         return SUCCESS;
     }
 
-    private String generateOrgunitIdentifier( OrganisationUnit organisationUnit )
-    {
-        String value = organisationUnit.getCode();
-        value = (value == null) ? "" : value;
-
-        int totalPatient = patientService.countGetPatientsByOrgUnit( organisationUnit );
-        if ( totalPatient < 10 )
-        {
-            value += "000" + totalPatient;
-        }
-        else if ( totalPatient < 100 )
-        {
-            value += "00" + totalPatient;
-        }
-        else if ( totalPatient < 1000 )
-        {
-            value += "0" + totalPatient;
-        }
-        else
-        {
-            value += totalPatient;
-        }
-        return value;
-    }
 }

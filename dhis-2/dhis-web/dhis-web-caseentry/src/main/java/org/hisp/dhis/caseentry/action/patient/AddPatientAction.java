@@ -120,24 +120,15 @@ public class AddPatientAction
         Patient patient = new Patient();
 
         // ---------------------------------------------------------------------
-        // Set FullName && location
+        // Set location
         // ---------------------------------------------------------------------
 
         patient.setOrganisationUnit( organisationUnit );
 
         // ---------------------------------------------------------------------
-        // Set Other information for patient
-        // ---------------------------------------------------------------------
-
-        if ( healthWorker != null )
-        {
-            patient.setAssociate( userService.getUser( healthWorker ) );
-        }
-
-        // ---------------------------------------------------------------------
         // Prepare Patient Attributes
         // ---------------------------------------------------------------------
-        
+
         HttpServletRequest request = ServletActionContext.getRequest();
 
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
@@ -162,8 +153,7 @@ public class AddPatientAction
                     {
                         value = format.formatDate( PatientAttribute.getDateFromAge( Integer.parseInt( value ) ) );
                     }
-
-                    if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                    else if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                     {
                         PatientAttributeOption option = patientAttributeOptionService.get( Integer.parseInt( value ) );
                         if ( option != null )

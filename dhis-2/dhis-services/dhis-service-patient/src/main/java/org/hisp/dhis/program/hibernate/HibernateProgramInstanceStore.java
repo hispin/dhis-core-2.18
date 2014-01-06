@@ -325,7 +325,7 @@ public class HibernateProgramInstanceStore
             + "      and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "      and pg.type=1 and prm.daysallowedsendmessage is not null " + "      and ( DATE(now()) - DATE( pi."
             + dateToCompare + " ) ) = prm.daysallowedsendmessage " + "      and prm.dateToCompare='" + dateToCompare
-            + "'     and prm.whenToSend is null and prm.sendto =  " + PatientReminder.SEND_TO_HEALTH_WORKER;
+            + "'     and prm.whenToSend is null and prm.sendto =  " + PatientReminder.SEND_TO_ATTRIBUTE_TYPE_USERS;
     }
 
     private String sendMessageToOrgunitRegisteredSql( String dateToCompare )

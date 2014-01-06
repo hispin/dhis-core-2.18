@@ -464,6 +464,7 @@ public class TableAlteror
         {
             Statement statement = holder.getStatement();
 
+            
             ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patientattribute" );
 
             // Only execute once
@@ -754,7 +755,26 @@ public class TableAlteror
                 removeFixedAttributeInCustomRegistrationForm( "fullName", uid );
 
                 // update template messsages
-                updateFixedAttributeInTemplateMessage(uid);
+                updateFixedAttributeInTemplateMessage( uid );
+
+                // -------------------------------------------------------------
+                // User Associate
+                // -------------------------------------------------------------
+
+                uid = CodeGenerator.generateCode();
+                executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
+                    + max
+                    + ",'"
+                    + uid
+                    + "','"
+                    + DateUtils.getMediumDateString()
+                    + "','Staff', 'Staff','"
+                    + PatientAttribute.TYPE_USERS + "', false, false, false)" );
+                executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
+                    + max + ",healthworkerid from patient inner join userinfo on patient.healthworkerid=userinfo.userinfoid where patient.healthworkerid is not null" );
+
+                // Update custom entry form
+                removeFixedAttributeInCustomRegistrationForm( "associate", uid );
 
                 executeSql( "ALTER TABLE patient DROP COLUMN gender" );
                 executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
@@ -765,6 +785,7 @@ public class TableAlteror
                 executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
                 executeSql( "ALTER TABLE patient DROP COLUMN phoneNumber" );
                 executeSql( "ALTER TABLE patient DROP COLUMN name" );
+                executeSql( "ALTER TABLE patient DROP COLUMN healthworkerid" );
             }
 
         }

@@ -32,8 +32,6 @@
 
     <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
       foreign-key="fk_patient_organisationunitid" not-null="true" />
-
-    <many-to-one name="associate" column="healthworkerid" class="org.hisp.dhis.user.User" foreign-key="fk_user_patientid" />
-
+	
   </class>
 </hibernate-mapping>

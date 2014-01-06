@@ -352,7 +352,7 @@ function generateTemplateMessageForm()
 				+ 		'<select id="sendTo' + rowId + '" name="sendTo' + rowId + '" class="sendTo" onchange="onchangeUserGroup('+ rowId +')">'
 				+ 			'<option value="1">' + i18n_patient_sms_only + '</option>'
 				+ 			'<option value="3">' + i18n_orgunit_phone_number_sms_only + '</option>'
-				+ 			'<option value="2">' + i18n_health_worker_assigned_to_person + '</option>'
+				+ 			'<option value="2">' + i18n_attribute_users + '</option>'
 				+ 			'<option value="4">' + i18n_all_users_at_orgunit + '</option>'
 				+ 			'<option value="5">' + i18n_user_group + '</option>'
 				+ 		'</select>'

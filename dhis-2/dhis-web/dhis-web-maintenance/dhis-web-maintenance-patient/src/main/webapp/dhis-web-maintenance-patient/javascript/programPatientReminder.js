@@ -84,7 +84,7 @@ function sendToMap()
 	var typeMap = [];
 	typeMap['1'] = i18n_patient_sms_only;
 	typeMap['2'] = i18n_orgunit_phone_number_sms_only;
-	typeMap['3'] = i18n_health_worker_assigned_to_person;
+	typeMap['3'] = i18n_attribute_users;
 	typeMap['4'] = i18n_all_users_in_orgunit_registered;
 	typeMap['5'] = i18n_user_group;
 	return typeMap;
