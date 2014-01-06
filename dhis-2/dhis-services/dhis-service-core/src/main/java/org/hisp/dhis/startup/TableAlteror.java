@@ -28,6 +28,13 @@ package org.hisp.dhis.startup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.quick.StatementHolder;
@@ -41,15 +48,6 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -676,9 +674,13 @@ public class TableAlteror
 
     private void upgradeDataValuesWithAttributeOptionCombo()
     {
-        if ( columnExists( "datavalue", "attributeoptioncomboid" ) )
+        final String sql = statementBuilder.getNumberOfColumnsInPrimaryKey( "datavalue" );
+        
+        Integer no = statementManager.getHolder().queryForInteger( sql );
+        
+        if ( no >= 5 )
         {
-            return;
+            return; // attributeoptioncomboid already part of datavalue primary key
         }
 
         int optionComboId = getDefaultOptionCombo();
@@ -1050,29 +1052,6 @@ public class TableAlteror
 
             return -1;
         }
-    }
-
-    private boolean columnExists( String table, String column )
-    {
-        try
-        {
-            ResultSetMetaData metaData = statementManager.getHolder().getStatement().executeQuery( "select * from datavalue limit 1" ).getMetaData();
-
-            for ( int i = 1; i <= metaData.getColumnCount(); i++ )
-            {
-                if ( column.equalsIgnoreCase( metaData.getColumnName( i ) ) )
-                {
-                    return true;
-                }
-            }
-        }
-        catch ( SQLException ex )
-        {
-            log.error( "Column detection failed: " + ex.getMessage() );
-            log.error( ex );
-        }
-
-        return false;
     }
 
     private Integer getDefaultOptionCombo()
