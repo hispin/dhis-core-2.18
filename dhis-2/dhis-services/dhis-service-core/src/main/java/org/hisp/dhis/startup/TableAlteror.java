@@ -1075,7 +1075,7 @@ public class TableAlteror
         return false;
     }
 
-    private int getDefaultOptionCombo()
+    private Integer getDefaultOptionCombo()
     {
         String sql =
             "select coc.categoryoptioncomboid from categoryoptioncombo coc " +
@@ -1086,7 +1086,7 @@ public class TableAlteror
         return statementManager.getHolder().queryForInteger( sql );
     }
 
-    private int getDefaultCategoryCombo()
+    private Integer getDefaultCategoryCombo()
     {
         String sql = "select categorycomboid from categorycombo where name = 'default'";
 
