@@ -46,7 +46,7 @@ function openPropertiesSelector()
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
 			width:485,
-			height:460,
+			height:400,
 			position: [$("body").width()- 50, 0],
 			close: function(ev, ui) { 
 				$("#propertiesButton").removeClass("ui-state-active2"); 
@@ -381,7 +381,8 @@ function insertElement( type )
 	htmlCode += " >";
 	
 	if( checkExisted( id ) ){		
-		setMessage( "<span class='bold'>" + i18n_property_is_inserted + "</span>" );
+		// setMessage( "<span class='bold'>" + i18n_property_is_inserted + "</span>" );
+        setHeaderDelayMessage(i18n_property_is_inserted);
 		return;
 	}else{
 		var oEditor = jQuery("#designTextarea").ckeditorGet();
