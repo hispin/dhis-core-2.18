@@ -38,7 +38,6 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -81,8 +80,6 @@ public class Patient
     private OrganisationUnit organisationUnit;
 
     private Patient representative;
-
-    private User associate;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -138,20 +135,6 @@ public class Patient
     public void setProgramInstances( Set<ProgramInstance> programInstances )
     {
         this.programInstances = programInstances;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public User getAssociate()
-    {
-        return associate;
-    }
-
-    public void setAssociate( User associate )
-    {
-        this.associate = associate;
     }
 
     @JsonProperty

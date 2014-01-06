@@ -42,6 +42,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 
 /**
  * @author Chau Thu Tran
@@ -69,6 +70,13 @@ public class DefaultPatientReminderService
         this.patientReminderStore = patientReminderStore;
     }
 
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -92,7 +100,7 @@ public class DefaultPatientReminderService
         Patient patient = programInstance.getPatient();
         String templateMessage = patientReminder.getTemplateMessage();
         String template = templateMessage;
-        
+
         String organisationunitName = patient.getOrganisationUnit().getName();
         String programName = programInstance.getProgram().getName();
         String daysSinceEnrollementDate = DateUtils.daysBetween( new Date(), programInstance.getEnrollmentDate() ) + "";
@@ -223,10 +231,20 @@ public class DefaultPatientReminderService
                 }
             }
             break;
-        case PatientReminder.SEND_TO_HEALTH_WORKER:
-            if ( patient.getAssociate() != null && patient.getAssociate().getPhoneNumber() != null )
+        case PatientReminder.SEND_TO_ATTRIBUTE_TYPE_USERS:
+            if ( patient.getAttributeValues() != null )
             {
-                phoneNumbers.add( patient.getAssociate().getPhoneNumber() );
+                for ( PatientAttributeValue attributeValue : patient.getAttributeValues() )
+                {
+                    if ( attributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_USERS ) )
+                    {
+                        User user = userService.getUser( Integer.parseInt( attributeValue.getValue() ) );
+                        if ( user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() )
+                        {
+                            phoneNumbers.add( user.getPhoneNumber() );
+                        }
+                    }
+                }
             }
             break;
         case PatientReminder.SEND_TO_ORGUGNIT_REGISTERED:
@@ -271,10 +289,16 @@ public class DefaultPatientReminderService
         case PatientReminder.SEND_TO_ALL_USERS_IN_ORGUGNIT_REGISTERED:
             users.addAll( patient.getOrganisationUnit().getUsers() );
             break;
-        case PatientReminder.SEND_TO_HEALTH_WORKER:
-            if ( patient.getAssociate() != null && patient.getAssociate().getPhoneNumber() != null )
+        case PatientReminder.SEND_TO_ATTRIBUTE_TYPE_USERS:
+            if ( patient.getAttributeValues() != null )
             {
-                users.add( patient.getAssociate() );
+                for ( PatientAttributeValue attributeValue : patient.getAttributeValues() )
+                {
+                    if ( attributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_USERS ) )
+                    {
+                        users.add( userService.getUser( Integer.parseInt( attributeValue.getValue() ) ) );
+                    }
+                }
             }
             break;
         case PatientReminder.SEND_TO_USER_GROUP:

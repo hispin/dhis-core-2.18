@@ -49,6 +49,7 @@
                 <option value="phoneNumber">$i18n.getString( "phone_number" )</option>
                 <option value="trackerAssociate">$i18n.getString( "tracker_associate" )</option>
                 <option value="age">$i18n.getString( "age" )</option>
+                <option value="users">$i18n.getString( "users" )</option>
                 <option value="combo">$i18n.getString( "attribute_combo_type" )</option>
             </select>
         </td>

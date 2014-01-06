@@ -95,8 +95,6 @@ public class UpdatePatientAction
 
     private Integer relationshipTypeId;
 
-    private Integer healthWorker;
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -115,24 +113,15 @@ public class UpdatePatientAction
         patient = patientService.getPatient( id );
 
         // ---------------------------------------------------------------------
-        // Set FullName && location
+        // Set location
         // ---------------------------------------------------------------------
 
         patient.setOrganisationUnit( organisationUnit );
 
         // ---------------------------------------------------------------------
-        // Set Other information for patient
-        // ---------------------------------------------------------------------
-
-        if ( healthWorker != null )
-        {
-            patient.setAssociate( userService.getUser( healthWorker ) );
-        }
-
-        // ---------------------------------------------------------------------
         // Save Patient Attributes
         // ---------------------------------------------------------------------
-        
+
         HttpServletRequest request = ServletActionContext.getRequest();
 
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
@@ -270,11 +259,6 @@ public class UpdatePatientAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
-    }
-
-    public void setHealthWorker( Integer healthWorker )
-    {
-        this.healthWorker = healthWorker;
     }
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )

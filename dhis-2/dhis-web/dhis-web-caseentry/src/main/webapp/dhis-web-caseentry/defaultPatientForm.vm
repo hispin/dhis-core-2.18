@@ -31,10 +31,6 @@
 		#else
 			#set( $identifier = '' )
 			#set( $identifier = $identiferMap.get( $identifierType.id ) )
-			#if($identifierType.type=='orgunitCount' && $!orgunitCountIdentifier)
-				#set( $identifier = $!orgunitCountIdentifier )
-			#end
-		
 			<tr> 
 				<td class='text-column'><label>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory) <em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">

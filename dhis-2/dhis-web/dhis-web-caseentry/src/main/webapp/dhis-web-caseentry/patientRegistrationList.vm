@@ -102,10 +102,12 @@
 									#set($value=$attributeValue.value)
 									#if( $attribute.valueType == 'bool')
 										#set($value=$i18n.getString($attributeValue.value))
+									#elseif( $attribute.valueType == 'users')
+										#set($value=$mapUsers.get($attributeValue.value))
 									#end
 								#end
 							#end 
-							<a>$encoder.htmlEncode($value)</a>
+							<a>$!encoder.htmlEncode($value)</a>
 						</td>
 					#end
 				#end

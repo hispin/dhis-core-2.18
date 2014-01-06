@@ -72,6 +72,8 @@ public class PatientAttribute
     public static final String TYPE_PHONE_NUMBER = "phoneNumber";
 
     public static final String TYPE_TRACKER_ASSOCIATE = "trackerAssociate";
+    
+    public static final String TYPE_USERS = "users";
 
     public static final String TYPE_AGE = "age";
 

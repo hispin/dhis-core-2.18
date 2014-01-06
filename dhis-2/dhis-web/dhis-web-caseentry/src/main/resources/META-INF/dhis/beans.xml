@@ -22,6 +22,7 @@
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
@@ -503,7 +504,6 @@
 	<bean id="org.hisp.dhis.caseentry.action.patient.ShowAddPatientFormAction"
 		class="org.hisp.dhis.caseentry.action.patient.ShowAddPatientFormAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="attributeService">
