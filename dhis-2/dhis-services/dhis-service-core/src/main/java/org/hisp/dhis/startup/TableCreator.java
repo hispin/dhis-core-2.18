@@ -61,7 +61,6 @@ public class TableCreator
     {
         aggregatedDataValueService.createDataMart();
         
-        createSilently( "CREATE INDEX crosstab ON datavalue ( periodid, sourceid )", "crosstab" );
         createSilently( "CREATE INDEX messageconversation_lastmessage ON messageconversation (lastmessage)", "messageconversation_lastmessage" );
         createSilently( "CREATE INDEX interpretation_lastupdated ON interpretation (lastupdated)", "interpretation_lastupdated" );
     }
