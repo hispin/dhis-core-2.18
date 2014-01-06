@@ -127,6 +127,10 @@ dhis2.contextmenu.makeContextMenu = function( options ) {
 
     if( (menuHeight + pageY) > winHeight ) {
       pageY -= menuHeight;
+
+      if( pageY < 0 ) {
+          pageY = e.pageY;
+      }
     }
 
     $menu.css({left: pageX, top: pageY});
