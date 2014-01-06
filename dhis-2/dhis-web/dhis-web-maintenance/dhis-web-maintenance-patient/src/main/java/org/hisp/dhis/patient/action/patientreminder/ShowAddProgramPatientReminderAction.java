@@ -30,8 +30,6 @@ package org.hisp.dhis.patient.action.patientreminder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.UserGroup;
@@ -42,27 +40,16 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ GetPatientReminderAction.java Jan 6, 2014 9:32:56 AM $
+ * @version $ ShowAddProgramPatientReminderAction.java Jan 6, 2014 7:51:48 PM $
  */
-public class GetPatientReminderAction
+public class ShowAddProgramPatientReminderAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private PatientReminderService patientReminderService;
-
-    public void setPatientReminderService( PatientReminderService patientReminderService )
-    {
-        this.patientReminderService = patientReminderService;
     }
 
     private UserGroupService userGroupService;
@@ -73,7 +60,7 @@ public class GetPatientReminderAction
     }
 
     // -------------------------------------------------------------------------
-    // Input && Output
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private int id;
@@ -83,25 +70,11 @@ public class GetPatientReminderAction
         this.id = id;
     }
 
-    private int programId;
-
-    public void setProgramId( int programId )
-    {
-        this.programId = programId;
-    }
-
     private Program program;
 
     public Program getProgram()
     {
         return program;
-    }
-
-    private PatientReminder reminder;
-
-    public PatientReminder getReminder()
-    {
-        return reminder;
     }
 
     private List<UserGroup> userGroups;
@@ -115,16 +88,14 @@ public class GetPatientReminderAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
         throws Exception
     {
-        reminder = patientReminderService.getPatientReminder( id );
-
-        program = programService.getProgram( programId );
+        program = programService.getProgram( id );
 
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
         return SUCCESS;
     }
+
 }

@@ -734,7 +734,9 @@ public class TableAlteror
                     + CaseAggregationCondition.SEPARATOR_OBJECT + max + ".age]";
                 updateFixedAttributeInCaseAggregate( source, target );
 
+                // -------------------------------------------------------------
                 // Patient full name
+                // -------------------------------------------------------------
 
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
@@ -752,7 +754,7 @@ public class TableAlteror
                 removeFixedAttributeInCustomRegistrationForm( "fullName", uid );
 
                 // update template messsages
-                updateFixedAttributeInTemplateMessage();
+                updateFixedAttributeInTemplateMessage(uid);
 
                 executeSql( "ALTER TABLE patient DROP COLUMN gender" );
                 executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
@@ -802,24 +804,22 @@ public class TableAlteror
         }
     }
 
-    private void updateFixedAttributeInTemplateMessage()
+    private void updateFixedAttributeInTemplateMessage( String uid )
     {
         StatementHolder holder = statementManager.getHolder();
         try
         {
             Statement statement = holder.getStatement();
 
-            ResultSet resultSet = statement.executeQuery( "" );
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT patientreminderid, templatemessage FROM patientreminder where templatemessage like '%{patient-name}%'" );
 
             while ( resultSet.next() )
             {
                 String id = resultSet.getString( "patientreminderid" );
                 String expression = resultSet.getString( "templatemessage" );
 
-                expression = expression
-                    .replaceAll(
-                        "SELECT patientreminderid, templatemessage FROM patientreminder where templatemessage like '%{patient-name}%'",
-                        "Sir/Madam" );
+                expression = expression.replaceAll( "{patient-name}", "{attributeid=" + uid + "}" );
                 executeSql( "UPDATE patientreminder SET templatemessage='" + expression + "'  WHERE patientreminderid="
                     + id );
             }
