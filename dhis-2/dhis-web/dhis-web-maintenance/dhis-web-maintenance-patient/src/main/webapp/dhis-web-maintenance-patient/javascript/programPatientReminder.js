@@ -52,12 +52,42 @@ function showPatientReminderDetails( context ) {
     setInnerHTML('daysAllowedSendMessageField', json.patientReminder.daysAllowedSendMessage);
     setInnerHTML('templateMessageField', json.patientReminder.templateMessage);
     setInnerHTML('dateToCompareField', json.patientReminder.dateToCompare);
-    setInnerHTML('sendToField', json.patientReminder.sendTo);
-    setInnerHTML('whenToSendField', json.patientReminder.whenToSend);
+	
+	var map = sendToMap();
+	setInnerHTML( 'sendToField', map[json.patientReminder.sendTo] ); 
+	
+	var whenToSend = i18n_days_scheduled;
+	if( json.patientReminder.whenToSend=='3'){
+		whenToSend = i18n_complete_program;
+	}
+	else if( json.patientReminder.whenToSend=='1'){
+		whenToSend = i18n_program_enrollment;
+	}
+	setInnerHTML('whenToSendField', whenToSend);
+    
+	var type = i18n_direct_sms;
+	if( json.patientReminder.messageType=='2'){
+		whenToSend = i18n_message;
+	}
+	else if( json.patientReminder.whenToSend=='3'){
+		whenToSend = i18n_both;
+	}
     setInnerHTML('messageTypeField', json.patientReminder.messageType);
+	
     setInnerHTML('userGroupField', json.patientReminder.userGroup);
     showDetails();
   });
+}
+
+function sendToMap()
+{
+	var typeMap = [];
+	typeMap['1'] = i18n_patient_sms_only;
+	typeMap['2'] = i18n_orgunit_phone_number_sms_only;
+	typeMap['3'] = i18n_health_worker_assigned_to_person;
+	typeMap['4'] = i18n_all_users_in_orgunit_registered;
+	typeMap['5'] = i18n_user_group;
+	return typeMap;
 }
 
 function showHideUserGroup() {

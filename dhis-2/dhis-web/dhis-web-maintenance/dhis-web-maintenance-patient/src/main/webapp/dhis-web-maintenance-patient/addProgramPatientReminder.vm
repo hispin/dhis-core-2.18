@@ -5,6 +5,8 @@
 		
 		validation( 'addPatientReminderForm', function( form ){
 			form.submit();
+		}, function(){
+			enable('messageType');
 		});
 		checkValueIsExist( "name", "validateProgramPatientReminder.action" );
 	});
@@ -12,6 +14,7 @@
 </script>
 
 <h3>$i18n.getString( "create_new_template_reminder_message" )</h3>
+<h5>$program.displayName</h5>
 
 <form id="addPatientReminderForm" name="addPatientReminderForm" action="addProgramPatientReminder.action" method="post" onsubmit="selectAllById('selectedPropertyIds');" class="inputForm">
   
@@ -41,7 +44,7 @@
 		<tr>
 			<td><label>$i18n.getString( "date_to_compare")</label></td>
 			<td>
-				<select id='dateToCompare' name='dateToCompare'/>
+				<select id='datesToCompare' name='datesToCompare'/>
 					<option value="enrollmentdate">$i18n.getString( "enrollment_date" )</option>
 					<option value="dateofincident">$i18n.getString( "incident_date" )</option>
 				</select>
@@ -76,10 +79,11 @@
 		<tr>
 			<td><label>$i18n.getString( "user_group" )</label></td>
 			<td>
-				<select type="text" id="userGroup" name="userGroup" class="userGroup">
-				#foreach($eachGroup in $userGroups)
-					<option value="$eachGroup.id">$i18n.getString($eachGroup.name)</option>
-				#end	
+				<select type="text" id="userGroup" name="userGroup" class="userGroup" disabled>
+					<option value="">[$i18n.getString("please_select")]</option>
+					#foreach($eachGroup in $userGroups)
+						<option value="$eachGroup.id">$i18n.getString($eachGroup.name)</option>
+					#end	
 				</select>
 			</td>
 		</tr>
@@ -127,7 +131,7 @@
 		<td></td>
       	<td>
 			<input type="submit" value="$i18n.getString( 'add' )">
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programPatientReminder.action?id=$program.id'">
 		</td>
       </tr>
   </table>

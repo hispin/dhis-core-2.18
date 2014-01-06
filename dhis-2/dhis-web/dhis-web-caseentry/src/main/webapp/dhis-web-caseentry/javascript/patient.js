@@ -160,7 +160,8 @@ function Patient()
 		  success: function(json) {
 			if(json.response=='success')
 			{
-				var patientId = json.message.split('_')[0];
+				var patientUid = json.message.split('_')[0];
+				var patientId = json.message.split('_')[1];
 				var	dateOfIncident = jQuery('#patientForm [id=dateOfIncident]').val();
 				var enrollmentDate = jQuery('#patientForm [id=enrollmentDate]').val();
 				
@@ -187,7 +188,7 @@ function Patient()
 							});
 						}
 						else{
-							showPatientDashboardForm( patientId );
+							showPatientDashboardForm( patientUid );
 						}
 					});
 				}

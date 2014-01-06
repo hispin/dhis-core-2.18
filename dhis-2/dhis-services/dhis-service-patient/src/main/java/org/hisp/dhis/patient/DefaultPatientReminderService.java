@@ -52,9 +52,9 @@ public class DefaultPatientReminderService
     implements PatientReminderService
 {
 
-    private final String ATTRIBUTE = "identifierid";
+    private final String IDENTIFIER = "identifierid";
 
-    private final String IDENTIFIER = "attributeid";
+    private final String ATTRIBUTE = "attributeid";
 
     private final Pattern ATTRIBUTE_PATTERN = Pattern.compile( "\\{(" + IDENTIFIER + "|" + ATTRIBUTE + ")=(\\w+)\\}" );
 
@@ -91,7 +91,8 @@ public class DefaultPatientReminderService
     {
         Patient patient = programInstance.getPatient();
         String templateMessage = patientReminder.getTemplateMessage();
-
+        String template = templateMessage;
+        
         String organisationunitName = patient.getOrganisationUnit().getName();
         String programName = programInstance.getProgram().getName();
         String daysSinceEnrollementDate = DateUtils.daysBetween( new Date(), programInstance.getEnrollmentDate() ) + "";
@@ -109,11 +110,12 @@ public class DefaultPatientReminderService
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE,
             daysSinceIncidentDate );
 
-        Matcher matcher = ATTRIBUTE_PATTERN.matcher( templateMessage );
+        Matcher matcher = ATTRIBUTE_PATTERN.matcher( template );
 
         while ( matcher.find() )
         {
             String match = matcher.group();
+            String value = "";
 
             if ( matcher.group( 1 ).equals( IDENTIFIER ) )
             {
@@ -122,10 +124,10 @@ public class DefaultPatientReminderService
                 {
                     if ( identifier.getIdentifierType() != null && identifier.getIdentifierType().getUid().equals( uid ) )
                     {
-                        templateMessage = templateMessage.replace( match, identifier.getIdentifier() );
-                        break;
+                        value = identifier.getIdentifier();
                     }
                 }
+
             }
             else if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
             {
@@ -134,11 +136,13 @@ public class DefaultPatientReminderService
                 {
                     if ( attributeValue.getPatientAttribute().getUid().equals( uid ) )
                     {
-                        templateMessage = templateMessage.replace( match, attributeValue.getValue() );
-                        break;
+                        value = attributeValue.getValue();
                     }
                 }
+
             }
+
+            templateMessage = templateMessage.replace( match, value );
         }
 
         return templateMessage;
