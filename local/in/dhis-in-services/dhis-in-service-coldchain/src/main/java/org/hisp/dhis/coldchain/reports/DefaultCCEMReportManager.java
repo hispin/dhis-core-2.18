@@ -148,7 +148,7 @@ public class DefaultCCEMReportManager
                 Integer sourceId = rs.getInt( 3 );
                 String value = rs.getString( 4 );
 
-                System.out.println("********DE : " + deId + ":" + pId + ":" + sourceId + " : " + value );
+                //System.out.println("********DE : " + deId + ":" + pId + ":" + sourceId + " : " + value );
                 dataElementDataForRequirement.put( deId + ":" + pId + ":" + sourceId, value );
             }
         }

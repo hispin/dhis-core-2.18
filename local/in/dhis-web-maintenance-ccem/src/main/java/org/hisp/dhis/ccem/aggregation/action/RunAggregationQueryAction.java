@@ -26,7 +26,8 @@ import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
-public class RunAggregationQueryAction implements Action 
+public class RunAggregationQueryAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -40,7 +41,7 @@ public class RunAggregationQueryAction implements Action
     }
 
     private OrganisationUnitService organisationUnitService;
-    
+
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
@@ -61,77 +62,98 @@ public class RunAggregationQueryAction implements Action
     }
 
     private CCEIAggregationService cceiAggregationService;
-    
-    public void setCceiAggregationService( CCEIAggregationService cceiAggregationService) 
-    {
-		this.cceiAggregationService = cceiAggregationService;
-	}
-    
-    private PeriodService periodService;
-    
-    public void setPeriodService(PeriodService periodService) 
-    {
-		this.periodService = periodService;
-	}
 
-	// -------------------------------------------------------------------------
+    public void setCceiAggregationService( CCEIAggregationService cceiAggregationService )
+    {
+        this.cceiAggregationService = cceiAggregationService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-	private List<DataElement> dataElements = new ArrayList<DataElement>();
-    
-    public List<DataElement> getDataElements() 
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElements()
     {
-		return dataElements;
-	}
+        return dataElements;
+    }
 
     private String importStatus = "";
-    
-	public String getImportStatus() 
-	{
-		return importStatus;
-	}
-    
+
+    public String getImportStatus()
+    {
+        return importStatus;
+    }
+
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
 
-	public String execute()
+    public String execute()
         throws Exception
     {
-		Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
-		
-		Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
+        Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
 
-    	Set<OrganisationUnitGroup> orgUnitGroups = new HashSet<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
-    	
-    	List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) ); 
-        
-    	OrganisationUnitGroup ouGroup = ouGroups.get( 0 );				
-       
+        Set<OrganisationUnit> orgUnitList = new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
+
+        Set<OrganisationUnitGroup> orgUnitGroups = new HashSet<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
+
+        List<OrganisationUnitGroup> ouGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupByName( EquipmentAttributeValue.HEALTHFACILITY ) );
+
+        OrganisationUnitGroup ouGroup = ouGroups.get( 0 );
+
         if ( ouGroup != null )
         {
             orgUnitList.retainAll( ouGroup.getMembers() );
         }
-        
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyyMM");
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyyMM" );
         String curMonth = simpleDateFormat.format( new Date() );
         Period period = PeriodType.getPeriodFromIsoString( curMonth );
         period = periodService.reloadPeriod( period );
-        
+
         Set<CaseAggregationCondition> conditions = new HashSet<CaseAggregationCondition>( aggregationConditionService.getAllCaseAggregationCondition() );
-        for( CaseAggregationCondition condition : conditions )
+        for ( CaseAggregationCondition condition : conditions )
         {
-        	DataElement dataElement = condition.getAggregationDataElement();
-        	if( condition.getOperator().equals( Lookup.CCEI_AGG_TYPE_STORAGE_CAPACITY) )
-        	{
-        		aggregationResultMap.putAll( cceiAggregationService.calculateStorageCapacityData( dataElement, orgUnitList, orgUnitGroups ) );
-        	}
-        	
-        	dataElements.add( dataElement );
+            DataElement dataElement = condition.getAggregationDataElement();
+            
+            if ( condition.getOperator().equals( Lookup.CCEI_AGG_TYPE_REF_WORKING_STATUS_BY_MODEL ) || condition.getOperator().equals( Lookup.CCEI_AGG_TYPE_REF_WORKING_STATUS_BY_TYPE ) )
+            {
+                aggregationResultMap.putAll( cceiAggregationService.calculateRefrigeratorWorkingStatus( period, dataElement, orgUnitList, condition.getAggregationExpression() ) );
+            }
+
+            /*
+            if ( condition.getOperator().equals( Lookup.CCEI_AGG_TYPE_STORAGE_CAPACITY ) )
+            {
+                aggregationResultMap.putAll( cceiAggregationService.calculateStorageCapacityData( period, dataElement, orgUnitList, orgUnitGroups ) );
+            }
+            else if ( condition.getOperator().equals( Lookup.CCEI_AGG_TYPE_REF_WORKING_STATUS_BY_MODEL ) || condition.getOperator().equals( Lookup.CCEI_AGG_TYPE_REF_WORKING_STATUS_BY_TYPE ) )
+            {
+                aggregationResultMap.putAll( cceiAggregationService.calculateRefrigeratorWorkingStatus( period, dataElement, orgUnitList, condition.getAggregationExpression() ) );
+            }
+            else if ( condition.getOperator().equals( Lookup.CCEI_AGG_TYPE_REF_UTILIZATION ) )
+            {
+                aggregationResultMap.putAll( cceiAggregationService.calculateRefrigeratorUtilization( period, dataElement, orgUnitList, condition.getAggregationExpression() ) );
+            }
+            */
+
+            dataElements.add( dataElement );
+        }
+
+        for( String key : aggregationResultMap.keySet() )
+        {
+            System.out.println( key + " -- " + aggregationResultMap.get(  key ) );
         }
         
-        importStatus = cceiAggregationService.importData(aggregationResultMap, period);
-        
+        //importStatus = cceiAggregationService.importData( aggregationResultMap, period );
+
         return SUCCESS;
     }
 

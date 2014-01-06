@@ -725,8 +725,7 @@ public class GenerateCCEMReportAction
             }
 
             orgUnitList.retainAll( orgUnitGroupMembers );
-            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class,
-                orgUnitList ) );
+            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnitList ) );
             orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
 
             // Calculations for Actual Column

@@ -4319,8 +4319,7 @@ public class GenerateCCEIReportAction implements Action
 
             for ( Integer orgUnitId : selOrgUnitList )
             {
-                List<OrganisationUnit> orgUnitChildren = new ArrayList<OrganisationUnit>( organisationUnitService
-                    .getOrganisationUnitWithChildren( orgUnitId ) );
+                List<OrganisationUnit> orgUnitChildren = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( orgUnitId ) );
                 OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
 
                 for ( Integer orgUnitGroupId : orgunitGroupList )
@@ -4338,14 +4337,11 @@ public class GenerateCCEIReportAction implements Action
                     // ccemReportManager.getOrgunitIdsByComma( orgUnitId,
                     // orgUnitGrpId );
 
-                    OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService
-                        .getOrganisationUnitGroup( orgUnitGroupId );
+                    OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
 
-                    List<OrganisationUnit> orgUnitGroupMembers = new ArrayList<OrganisationUnit>( orgUnitGroup
-                        .getMembers() );
+                    List<OrganisationUnit> orgUnitGroupMembers = new ArrayList<OrganisationUnit>( orgUnitGroup.getMembers() );
                     orgUnitGroupMembers.retainAll( orgUnitChildren );
-                    Collection<Integer> orgUnitGroupMemberIds = new ArrayList<Integer>( getIdentifiers(
-                        OrganisationUnit.class, orgUnitGroupMembers ) );
+                    Collection<Integer> orgUnitGroupMemberIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnitGroupMembers ) );
                     String orgUnitidsByComma = getCommaDelimitedString( orgUnitGroupMemberIds );
                     Integer totalFacilities = orgUnitGroupMembers.size();
 
@@ -4475,8 +4471,7 @@ public class GenerateCCEIReportAction implements Action
                          * 10, 2 );
                          */
 
-                        Map<String, Integer> dataValueCountMap = new HashMap<String, Integer>( ccemReportManager
-                            .getDataValueAndCount( dataelementId1 + "", orgUnitidsByComma, periodIdsByComma ) );
+                        Map<String, Integer> dataValueCountMap = new HashMap<String, Integer>( ccemReportManager.getDataValueAndCount( dataelementId1 + "", orgUnitidsByComma, periodIdsByComma ) );
 
                         if ( dataElement1.getOptionSet() != null )
                         {
@@ -4493,11 +4488,8 @@ public class GenerateCCEIReportAction implements Action
                                 double percentageOfOptionValueCount = 0.0;
                                 try
                                 {
-                                    percentageOfOptionValueCount = (double) optionValueCount / (double) totalFacilities
-                                        * 100.0;
-                                    percentageOfOptionValueCount = Math.round( percentageOfOptionValueCount
-                                        * Math.pow( 10, 2 ) )
-                                        / Math.pow( 10, 2 );
+                                    percentageOfOptionValueCount = (double) optionValueCount / (double) totalFacilities * 100.0;
+                                    percentageOfOptionValueCount = Math.round( percentageOfOptionValueCount * Math.pow( 10, 2 ) ) / Math.pow( 10, 2 );
                                 }
                                 catch ( Exception e )
                                 {

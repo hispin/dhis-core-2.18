@@ -1,7 +1,5 @@
 <h3>$i18n.getString( "manual_aggregation" )</h3>
 
-<h4>$encoder.htmlEncode( $dataSet.displayName )</h4>
-
 <form id="runAggregationQueryForm" action="runAggregationQuery.action" method="post">
   
   <table id="selectionTable">

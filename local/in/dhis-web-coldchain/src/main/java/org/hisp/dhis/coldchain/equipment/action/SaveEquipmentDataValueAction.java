@@ -118,12 +118,12 @@ public class SaveEquipmentDataValueAction implements Action
         
         DataSet dataSet = dataSetService.getDataSet( selectedDataSetId );
         
-       
+       /*
         if ( dataSetService.isLocked( dataSet, period, organisationUnit, null ) )
         {
             return logError( "Entry locked for combination: " + dataSet + ", " + period + ", " + organisationUnit, 2 );
         }
-
+*/
         
         
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
