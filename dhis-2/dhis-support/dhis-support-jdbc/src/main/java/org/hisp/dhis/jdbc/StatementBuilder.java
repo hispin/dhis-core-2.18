@@ -157,6 +157,11 @@ public interface StatementBuilder
     String getCreateOrgUnitDataSetCompletenessTable();
     
     /**
+     * Returns the number of columns part of the primary key for the given table.
+     */
+    String getNumberOfColumnsInPrimaryKey( String table );
+    
+    /**
      * Creates a delete datavalue statement.
      * @return a delete datavalue statement.
      */
