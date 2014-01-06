@@ -50,19 +50,19 @@
     
 	<tbody>
 		<tr>
-			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
-			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="description" name="description" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
-			<td><label>$i18n.getString( "type" ) </label></td>
+			<td><label for="type">$i18n.getString( "type" ) </label></td>
 			<td>
 				<select style="width: 336px;" id="type" name="type" onchange='programOnChange();' class="{validate:{required:true}}">
 					<option value='1'>$i18n.getString('multiple_events_with_registration')</option>
@@ -74,7 +74,7 @@
 		</tr>
 
 		<tr>
-			<td><label>$i18n.getString( "data_entry_method" ) </label></td>
+			<td><label for="dataEntryMethod">$i18n.getString( "data_entry_method" ) </label></td>
 			<td>
 				<select id='dataEntryMethod' name='dataEntryMethod' style="width: 335px;">
 					<option value='false' selected>$i18n.getString('drop_down_lists')</option>
@@ -136,12 +136,12 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("shortcut_link_label_eg_add_child")</td>
+			<td><label for="relationshipText">$i18n.getString("shortcut_link_label_eg_add_child")</label></td>
 			<td><input type='text' id='relationshipText' name='relationshipText' ></td>
 		</tr>
 
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("relationship_description")</td>
+			<td><label for="relationshipTypeId">$i18n.getString("relationship_description")</label></td>
 			<td>
 				<select type='text' id='relationshipTypeId' name='relationshipTypeId' onchange='relationshipTypeOnchange()' >
 					<option value=''>[$i18n.getString("please_select")]</option>
@@ -153,14 +153,14 @@
 		</tr>
 
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("who_is_the_new_relative_to_the_existing_person")</td>
+			<td><label for="relationshipFromA">$i18n.getString("who_is_the_new_relative_to_the_existing_person")</a></td>
 			<td>
 				<select type='text' id='relationshipFromA' name='relationshipFromA'></select>
 			</td>
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td>$i18n.getString("program_for_new_relative_to_be_enrolled_in")</td>
+			<td><label for="relatedProgramId">$i18n.getString("program_for_new_relative_to_be_enrolled_in")</label></td>
 			<td>
 				<select type='text' id='relatedProgramId' name='relatedProgramId' >
 					<option value=''>[$i18n.getString("please_select")]</option>
