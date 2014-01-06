@@ -74,7 +74,7 @@
 		</tr>
 
 		<tr>
-			<td><label for="dataEntryMethod">$i18n.getString( "data_entry_method" ) </label></td>
+			<td><label for="dataEntryMethod">$i18n.getString( "data_entry_method_for_option_sets" ) </label></td>
 			<td>
 				<select id='dataEntryMethod' name='dataEntryMethod' style="width: 335px;">
 					<option value='false' selected>$i18n.getString('drop_down_lists')</option>
