@@ -43,6 +43,24 @@ import org.hisp.dhis.user.User;
 public interface PatientReminderService
 {
     /**
+     * Returns a {@link PatientReminder}.
+     * 
+     * @param id the id of the PatientReminder to return.
+     * 
+     * @return the PatientReminder with the given id
+     */
+    PatientReminder getPatientReminder( int id );
+
+    /**
+     * Returns a {@link PatientReminder} with a given name.
+     * 
+     * @param name the name of the PatientReminder to return.
+     * 
+     * @return the PatientReminder with the given name, or null if no match.
+     */
+    PatientReminder getPatientReminderByName( String name );
+
+    /**
      * Get message for sending to a patient from program-instance template
      * defined
      * 
@@ -73,9 +91,9 @@ public interface PatientReminderService
      * @param patientReminder PatientReminder
      * @param patient Patient
      * 
-     * @return The list of the phone numbers ( patient attribute phone numbers, orgunit
-     *         phone numbers, phone numbers of DHIS users at the orgunit OR
-     *         phone numbers of DHIS users in a user group.
+     * @return The list of the phone numbers ( patient attribute phone numbers,
+     *         orgunit phone numbers, phone numbers of DHIS users at the orgunit
+     *         OR phone numbers of DHIS users in a user group.
      */
     Set<String> getPhonenumbers( PatientReminder patientReminder, Patient patient );
 

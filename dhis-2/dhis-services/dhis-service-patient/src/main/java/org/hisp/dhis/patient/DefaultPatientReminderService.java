@@ -32,7 +32,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.ProgramInstance;
@@ -48,6 +51,39 @@ import org.hisp.dhis.user.User;
 public class DefaultPatientReminderService
     implements PatientReminderService
 {
+
+    private final String ATTRIBUTE = "identifierid";
+
+    private final String IDENTIFIER = "attributeid";
+
+    private final Pattern ATTRIBUTE_PATTERN = Pattern.compile( "\\{(" + IDENTIFIER + "|" + ATTRIBUTE + ")=(\\w+)\\}" );
+
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
+
+    private GenericIdentifiableObjectStore<PatientReminder> patientReminderStore;
+
+    public void setPatientReminderStore( GenericIdentifiableObjectStore<PatientReminder> patientReminderStore )
+    {
+        this.patientReminderStore = patientReminderStore;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public PatientReminder getPatientReminder( int id )
+    {
+        return patientReminderStore.get( id );
+    }
+
+    @Override
+    public PatientReminder getPatientReminderByName( String name )
+    {
+        return patientReminderStore.getByName( name );
+    }
 
     @Override
     public String getMessageFromTemplate( PatientReminder patientReminder, ProgramInstance programInstance,
@@ -73,6 +109,38 @@ public class DefaultPatientReminderService
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_INCIDENT_DATE,
             daysSinceIncidentDate );
 
+        Matcher matcher = ATTRIBUTE_PATTERN.matcher( templateMessage );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+
+            if ( matcher.group( 1 ).equals( IDENTIFIER ) )
+            {
+                String uid = matcher.group( 2 );
+                for ( PatientIdentifier identifier : programInstance.getPatient().getIdentifiers() )
+                {
+                    if ( identifier.getIdentifierType() != null && identifier.getIdentifierType().getUid().equals( uid ) )
+                    {
+                        templateMessage = templateMessage.replace( match, identifier.getIdentifier() );
+                        break;
+                    }
+                }
+            }
+            else if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
+            {
+                String uid = matcher.group( 2 );
+                for ( PatientAttributeValue attributeValue : programInstance.getPatient().getAttributeValues() )
+                {
+                    if ( attributeValue.getPatientAttribute().getUid().equals( uid ) )
+                    {
+                        templateMessage = templateMessage.replace( match, attributeValue.getValue() );
+                        break;
+                    }
+                }
+            }
+        }
+
         return templateMessage;
     }
 
@@ -97,6 +165,40 @@ public class DefaultPatientReminderService
             .replace( PatientReminder.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
         templateMessage = templateMessage.replace( PatientReminder.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE,
             daysSinceDueDate );
+
+        Matcher matcher = ATTRIBUTE_PATTERN.matcher( templateMessage );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+
+            if ( matcher.group( 1 ).equals( IDENTIFIER ) )
+            {
+                String uid = matcher.group( 2 );
+                for ( PatientIdentifier identifier : programStageInstance.getProgramInstance().getPatient()
+                    .getIdentifiers() )
+                {
+                    if ( identifier.getIdentifierType() != null && identifier.getIdentifierType().getUid().equals( uid ) )
+                    {
+                        templateMessage = templateMessage.replace( match, identifier.getIdentifier() );
+                        break;
+                    }
+                }
+            }
+            else if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
+            {
+                String uid = matcher.group( 2 );
+                for ( PatientAttributeValue attributeValue : programStageInstance.getProgramInstance().getPatient()
+                    .getAttributeValues() )
+                {
+                    if ( attributeValue.getPatientAttribute().getUid().equals( uid ) )
+                    {
+                        templateMessage = templateMessage.replace( match, attributeValue.getValue() );
+                        break;
+                    }
+                }
+            }
+        }
 
         return templateMessage;
     }

@@ -114,7 +114,7 @@ public class ProgramEnrollmentAction
     {
         return patientAttributeValueMap;
     }
-    
+
     public Map<Integer, String> getIdentiferMap()
     {
         return identiferMap;
@@ -203,12 +203,14 @@ public class ProgramEnrollmentAction
 
         if ( identifierTypes != null && identifierTypes.size() > 0 )
         {
-            Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
-                identifierTypes, programInstance.getPatient() );
+            Collection<PatientIdentifier> patientIdentifiers =  programInstance.getPatient().getIdentifiers();
 
             for ( PatientIdentifier identifier : patientIdentifiers )
             {
-                identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+                if ( identifier.getIdentifierType() != null )
+                {
+                    identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+                }
             }
         }
     }

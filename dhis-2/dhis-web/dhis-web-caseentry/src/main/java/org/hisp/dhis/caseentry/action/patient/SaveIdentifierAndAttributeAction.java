@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -74,6 +75,8 @@ public class SaveIdentifierAndAttributeAction
     private PatientAttributeOptionService patientAttributeOptionService;
 
     private ProgramService programService;
+
+    private I18nFormat format;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -144,6 +147,11 @@ public class SaveIdentifierAndAttributeAction
         return statusCode;
     }
 
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -195,11 +203,13 @@ public class SaveIdentifierAndAttributeAction
                         identifier.setIdentifierType( identifierType );
                         identifier.setPatient( patient );
                         identifier.setIdentifier( value );
+                        patientIdentifierService.savePatientIdentifier( identifier );
                         patient.getIdentifiers().add( identifier );
                     }
                     else
                     {
                         identifier.setIdentifier( value );
+                        patientIdentifierService.updatePatientIdentifier( identifier );
                         patient.getIdentifiers().add( identifier );
                     }
                 }
@@ -210,6 +220,8 @@ public class SaveIdentifierAndAttributeAction
                 }
             }
         }
+
+        patientService.updatePatient( patient );
     }
 
     private void saveAttributeValues( Patient patient, Program program )
@@ -220,7 +232,7 @@ public class SaveIdentifierAndAttributeAction
 
         Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
         patient.getAttributeValues().clear();
-        
+
         PatientAttributeValue attributeValue = null;
 
         if ( attributes != null && attributes.size() > 0 )
@@ -240,24 +252,24 @@ public class SaveIdentifierAndAttributeAction
                         attributeValue = new PatientAttributeValue();
                         attributeValue.setPatient( patient );
                         attributeValue.setPatientAttribute( attribute );
+                        attributeValue.setValue( value.trim() );
+
+                        if ( attribute.getValueType().equals( PatientAttribute.TYPE_AGE ) )
+                        {
+                            value = format.formatDate( PatientAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                        }
+
                         if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
                         {
-                            PatientAttributeOption option = patientAttributeOptionService.get( NumberUtils.toInt(
-                                value, 0 ) );
+                            PatientAttributeOption option = patientAttributeOptionService
+                                .get( Integer.parseInt( value ) );
                             if ( option != null )
                             {
                                 attributeValue.setPatientAttributeOption( option );
                                 attributeValue.setValue( option.getName() );
                             }
-                            else
-                            {
-                                // This option was deleted ???
-                            }
                         }
-                        else
-                        {
-                            attributeValue.setValue( value.trim() );
-                        }
+
                         patientAttributeValueService.savePatientAttributeValue( attributeValue );
                         patient.getAttributeValues().add( attributeValue );
                     }
@@ -271,10 +283,6 @@ public class SaveIdentifierAndAttributeAction
                             {
                                 attributeValue.setPatientAttributeOption( option );
                                 attributeValue.setValue( option.getName() );
-                            }
-                            else
-                            {
-                                // This option was deleted ???
                             }
                         }
                         else

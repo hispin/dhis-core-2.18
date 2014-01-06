@@ -103,13 +103,6 @@ public class AddProgramAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    private UserGroupService userGroupService;
-
-    public void setUserGroupService( UserGroupService userGroupService )
-    {
-        this.userGroupService = userGroupService;
-    }
-
     private RelationshipTypeService relationshipTypeService;
 
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
@@ -191,60 +184,11 @@ public class AddProgramAction
         this.onlyEnrollOnce = onlyEnrollOnce;
     }
 
-    private List<Integer> daysAllowedSendMessages = new ArrayList<Integer>();
-
-    public void setDaysAllowedSendMessages( List<Integer> daysAllowedSendMessages )
-    {
-        this.daysAllowedSendMessages = daysAllowedSendMessages;
-    }
-
-    private List<String> templateMessages = new ArrayList<String>();
-
-    public void setTemplateMessages( List<String> templateMessages )
-    {
-        this.templateMessages = templateMessages;
-    }
-
-    private List<String> datesToCompare = new ArrayList<String>();
-
-    public void setDatesToCompare( List<String> datesToCompare )
-    {
-        this.datesToCompare = datesToCompare;
-    }
-
-    private List<Integer> sendTo = new ArrayList<Integer>();
-
-    public void setSendTo( List<Integer> sendTo )
-    {
-        this.sendTo = sendTo;
-    }
-
     private Boolean displayOnAllOrgunit;
 
     public void setDisplayOnAllOrgunit( Boolean displayOnAllOrgunit )
     {
         this.displayOnAllOrgunit = displayOnAllOrgunit;
-    }
-
-    private List<Integer> userGroup = new ArrayList<Integer>();
-
-    public void setUserGroup( List<Integer> userGroup )
-    {
-        this.userGroup = userGroup;
-    }
-
-    private List<Integer> whenToSend = new ArrayList<Integer>();
-
-    public void setWhenToSend( List<Integer> whenToSend )
-    {
-        this.whenToSend = whenToSend;
-    }
-
-    private List<Integer> messageType = new ArrayList<Integer>();
-
-    public void setMessageType( List<Integer> messageType )
-    {
-        this.messageType = messageType;
     }
 
     private Boolean selectEnrollmentDatesInFuture;
@@ -371,7 +315,7 @@ public class AddProgramAction
                     .parseInt( ids[1] ) );
                 patientAttribute.setDisplayedInList( personDisplayNames.get( index ) );
                 patientAttributeService.updatePatientAttribute( patientAttribute );
-                
+
                 patientAttributes.add( patientAttribute );
             }
 
@@ -380,29 +324,6 @@ public class AddProgramAction
 
         program.setPatientIdentifierTypes( identifierTypes );
         program.setPatientAttributes( patientAttributes );
-
-        // Template messasges
-        Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
-        for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
-        {
-            PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
-                templateMessages.get( i ) );
-            reminder.setDateToCompare( datesToCompare.get( i ) );
-            reminder.setSendTo( sendTo.get( i ) );
-            reminder.setWhenToSend( whenToSend.get( i ) );
-            reminder.setMessageType( messageType.get( i ) );
-            if ( sendTo.get( i ) == PatientReminder.SEND_TO_USER_GROUP )
-            {
-                UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
-                reminder.setUserGroup( selectedUserGroup );
-            }
-            else
-            {
-                reminder.setUserGroup( null );
-            }
-            patientReminders.add( reminder );
-        }
-        program.setPatientReminders( patientReminders );
 
         programService.addProgram( program );
 

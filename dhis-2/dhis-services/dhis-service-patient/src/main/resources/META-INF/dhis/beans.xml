@@ -44,7 +44,7 @@
 		class="org.hisp.dhis.program.hibernate.HibernateProgramStageStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStage" />
 		<property name="sessionFactory" ref="sessionFactory" />
-        <property name="cacheable" value="true" />
+		<property name="cacheable" value="true" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageSectionStore"
@@ -56,7 +56,7 @@
 	<bean id="org.hisp.dhis.program.ProgramStore" class="org.hisp.dhis.program.hibernate.HibernateProgramStore">
 		<property name="clazz" value="org.hisp.dhis.program.Program" />
 		<property name="sessionFactory" ref="sessionFactory" />
-        <property name="cacheable" value="true" />
+		<property name="cacheable" value="true" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
@@ -75,7 +75,8 @@
 	<bean id="org.hisp.dhis.patient.PatientStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientStore">
 		<property name="clazz" value="org.hisp.dhis.patient.Patient" />
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
@@ -463,6 +464,13 @@
 	<!-- Patient Reminder -->
 
 	<bean id="org.hisp.dhis.patient.PatientReminderService" class="org.hisp.dhis.patient.DefaultPatientReminderService">
+		<property name="patientReminderStore" ref="org.hisp.dhis.patient.PatientReminderStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.patient.PatientReminderStore"
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+		<property name="clazz" value="org.hisp.dhis.patient.PatientReminder" />
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
 	<!-- Startup -->

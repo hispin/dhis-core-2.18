@@ -28,8 +28,7 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.user.UserGroup;
 
 /**
@@ -37,7 +36,7 @@ import org.hisp.dhis.user.UserGroup;
  * @version PatientReminder.java 1:07:58 PM Sep 18, 2012 $
  */
 public class PatientReminder
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     private static final long serialVersionUID = 3101502417481903219L;
 
@@ -87,10 +86,6 @@ public class PatientReminder
 
     public static final int MESSAGE_TYPE_BOTH = 3;
 
-    private int id;
-
-    private String name;
-
     private Integer daysAllowedSendMessage;
 
     private String templateMessage;
@@ -137,27 +132,7 @@ public class PatientReminder
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
+    
     public Integer getDaysAllowedSendMessage()
     {
         return daysAllowedSendMessage;

@@ -190,7 +190,7 @@
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
-		
+
 		<action name="patientAttributeVisitSchedule"
 			class="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeVisitScheduleFormAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -201,7 +201,7 @@
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
-		
+
 		<action name="savePatientAttributeVisitSchedule"
 			class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeVisitScheduleAction">
 			<result name="success" type="redirect">index.action</result>
@@ -259,14 +259,14 @@
 			<param name="page">/dhis-web-maintenance-patient/updateProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>
 			<param name="stylesheets">style/basic.css</param>
-      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
+			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="updateProgram"
 			class="org.hisp.dhis.patient.action.program.UpdateProgramAction">
 			<result name="success" type="redirect">program.action
 			</result>
-      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
+			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="validateProgram"
@@ -303,14 +303,14 @@
 			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programAssociations.vm</param>
-      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
+			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="defineProgramAssociations"
 			class="org.hisp.dhis.patient.action.program.DefineProgramAssociationsAction">
 			<result name="success" type="redirect">program.action
 			</result>
-      <param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
+			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<!-- ProgramStage -->
@@ -623,7 +623,7 @@
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
-		
+
 		<!-- Patient Attribute Group -->
 
 		<action name="patientAttributeGroup"
@@ -905,7 +905,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/caseAggregationList.vm</param>
 		</action>
-		
+
 		<action name="getProgramStages"
 			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity-json">
@@ -924,7 +924,8 @@
 			<param name="javascripts">javascript/validationcriteria.js</param>
 		</action>
 
-		<action name="showAddValidationCriteriaForm" class="org.hisp.dhis.patient.action.program.GetProgramAction">
+		<action name="showAddValidationCriteriaForm"
+			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addValidationCriteria.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
@@ -1159,7 +1160,7 @@
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="getProgramIndicatorDescripttion"
 			class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorDescripttionAction">
 			<result name="success" type="velocity-json">
@@ -1167,5 +1168,72 @@
 			</result>
 		</action>
 
+		<!-- Patient reminder -->
+
+		<action name="programPatientReminder"
+			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/programPatientReminder.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/programPatientReminder.js</param>
+			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
+		</action>
+
+		<action name="showAddProgramPatientReminder"
+			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/addProgramPatientReminder.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programPatientReminder.js</param>
+			<param name="requiredAuthorities">F_ADD_PATIENT_REMINDER</param>
+		</action>
+
+		<action name="addProgramPatientReminder"
+			class="org.hisp.dhis.patient.action.patientreminder.AddProgramPatientReminderAction">
+			<result name="success" type="redirect">programPatientReminder.action?id=${programId}
+			</result>
+			<param name="requiredAuthorities">F_ADD_PATIENT_REMINDER</param>
+		</action>
+
+		<action name="showUpdateProgramPatientReminder"
+			class="org.hisp.dhis.patient.action.patientreminder.GetPatientReminderAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/updateProgramPatientReminder.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programPatientReminder.js</param>
+			<param name="requiredAuthorities">F_UPDATE_PATIENT_REMINDER</param>
+		</action>
+
+		<action name="updateProgramPatientReminder"
+			class="org.hisp.dhis.patient.action.patientreminder.UpdateProgramPatientReminderAction">
+			<result name="success" type="redirect">programPatientReminder.action?id=${programId}
+			</result>
+			<param name="requiredAuthorities">F_UPDATE_PATIENT_REMINDER</param>
+		</action>
+
+		<action name="removeProgramPatientReminder"
+			class="org.hisp.dhis.patient.action.patientreminder.RemoveProgramPatientReminderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<param name="requiredAuthorities">F_DELETE_PATIENT_REMINDER</param>
+		</action>
+
+		<action name="getPatientReminder"
+			class="org.hisp.dhis.patient.action.patientreminder.GetPatientReminderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPatientReminder.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="validateProgramPatientReminder"
+			class="org.hisp.dhis.patient.action.patientreminder.ValidateProgramPatientReminderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
+		</action>
+		
 	</package>
 </struts>

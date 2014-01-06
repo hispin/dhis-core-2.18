@@ -29,22 +29,17 @@ package org.hisp.dhis.patient.action.program;
  */
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -78,13 +73,6 @@ public class UpdateProgramAction
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
-    }
-
-    private UserGroupService userGroupService;
-
-    public void setUserGroupService( UserGroupService userGroupService )
-    {
-        this.userGroupService = userGroupService;
     }
 
     private RelationshipTypeService relationshipTypeService;
@@ -215,60 +203,11 @@ public class UpdateProgramAction
         this.remindCompleted = remindCompleted;
     }
 
-    private List<Integer> daysAllowedSendMessages = new ArrayList<Integer>();
-
-    public void setDaysAllowedSendMessages( List<Integer> daysAllowedSendMessages )
-    {
-        this.daysAllowedSendMessages = daysAllowedSendMessages;
-    }
-
-    private List<String> templateMessages = new ArrayList<String>();
-
-    public void setTemplateMessages( List<String> templateMessages )
-    {
-        this.templateMessages = templateMessages;
-    }
-
-    private List<String> datesToCompare = new ArrayList<String>();
-
-    public void setDatesToCompare( List<String> datesToCompare )
-    {
-        this.datesToCompare = datesToCompare;
-    }
-
-    private List<Integer> sendTo = new ArrayList<Integer>();
-
-    public void setSendTo( List<Integer> sendTo )
-    {
-        this.sendTo = sendTo;
-    }
-
     private Boolean displayOnAllOrgunit;
 
     public void setDisplayOnAllOrgunit( Boolean displayOnAllOrgunit )
     {
         this.displayOnAllOrgunit = displayOnAllOrgunit;
-    }
-
-    private List<Integer> whenToSend = new ArrayList<Integer>();
-
-    public void setWhenToSend( List<Integer> whenToSend )
-    {
-        this.whenToSend = whenToSend;
-    }
-
-    private List<Integer> messageType = new ArrayList<Integer>();
-
-    public void setMessageType( List<Integer> messageType )
-    {
-        this.messageType = messageType;
-    }
-
-    private List<Integer> userGroup = new ArrayList<Integer>();
-
-    public void setUserGroup( List<Integer> userGroup )
-    {
-        this.userGroup = userGroup;
     }
 
     private Boolean selectEnrollmentDatesInFuture;
@@ -407,37 +346,11 @@ public class UpdateProgramAction
         program.setPatientIdentifierTypes( identifierTypes );
         program.setPatientAttributes( patientAttributes );
 
-        // Template messasges
-        Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
-        for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
-        {
-            PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
-                templateMessages.get( i ) );
-            reminder.setDateToCompare( datesToCompare.get( i ) );
-            reminder.setSendTo( sendTo.get( i ) );
-            reminder.setWhenToSend( whenToSend.get( i ) );
-            reminder.setMessageType( messageType.get( i ) );
-
-            if ( reminder.getSendTo() == PatientReminder.SEND_TO_USER_GROUP )
-            {
-                UserGroup selectedUserGroup = userGroupService.getUserGroup( userGroup.get( i ) );
-                reminder.setUserGroup( selectedUserGroup );
-            }
-            else
-            {
-                reminder.setUserGroup( null );
-            }
-
-            patientReminders.add( reminder );
-        }
-
         if ( relatedProgramId != null )
         {
             Program relatedProgram = programService.getProgram( relatedProgramId );
             program.setRelatedProgram( relatedProgram );
         }
-
-        program.setPatientReminders( patientReminders );
 
         programService.updateProgram( program );
 
