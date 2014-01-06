@@ -1,6 +1,7 @@
 package org.hisp.dhis.coldchain.equipment;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import org.hisp.dhis.coldchain.model.Model;
@@ -22,6 +23,8 @@ public class Equipment implements Serializable
     private Model model;
     
     private boolean working = false;
+    
+    private Date registrationDate;
     
     private Set<EquipmentStatus> equipmentStatusUpdates;
     
@@ -142,6 +145,16 @@ public class Equipment implements Serializable
     public void setModel( Model model )
     {
         this.model = model;
+    }
+
+    public Date getRegistrationDate()
+    {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate( Date registrationDate )
+    {
+        this.registrationDate = registrationDate;
     }
     
 }

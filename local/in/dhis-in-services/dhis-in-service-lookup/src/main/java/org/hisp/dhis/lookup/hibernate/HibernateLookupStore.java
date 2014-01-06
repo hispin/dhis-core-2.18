@@ -1,4 +1,4 @@
-package org.hisp.dhis.lookup;
+package org.hisp.dhis.lookup.hibernate;
 
 import java.util.Collection;
 
@@ -17,6 +17,7 @@ public class HibernateLookupStore extends HibernateIdentifiableObjectStore<Looku
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Lookup.class );
+        
         criteria.add( Restrictions.eq( "type", type ) );
 
         return criteria.list();

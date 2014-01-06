@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.coldchain.equipment.action.SaveEquipmentDataValueAction;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -33,7 +32,7 @@ import com.opensymphony.xwork2.Action;
 
 public class SaveFacilityDataValueAction implements Action
 {
-    private static final Log log = LogFactory.getLog( SaveEquipmentDataValueAction.class );
+    private static final Log log = LogFactory.getLog( SaveFacilityDataValueAction.class );
     
     public static final String PREFIX_DATAELEMENT = "dataelement";
     // -------------------------------------------------------------------------
@@ -142,12 +141,12 @@ public class SaveFacilityDataValueAction implements Action
         
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
-       
+/*       
         if ( dataSetService.isLocked( dataSet, period, organisationUnit, null ) )
         {
             return logError( "Entry locked for combination: " + dataSet + ", " + period + ", " + organisationUnit, 2 );
         }
-
+*/
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
         
         String storedBy = currentUserService.getCurrentUsername();

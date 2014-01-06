@@ -10,12 +10,19 @@ import org.hisp.dhis.period.Period;
 
 public interface CCEIAggregationService
 {
-    String ID = CCEIAggregationService.class.getName();  
-    
+    String ID = CCEIAggregationService.class.getName();
+
     String getQueryTemplate( String lookupName, Map<String,String> params );
+
+    String getQueryForRefrigeratorWorkingStatus( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String workingStatus );
     
-    Map<String, Integer> calculateStorageCapacityData( DataElement dataElement, Set<OrganisationUnit> orgUnits, Set<OrganisationUnitGroup> orgUnitGroups );
+    String getQueryForRefrigeratorUtilization( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String utilization );
+
+    Map<String, Integer> calculateStorageCapacityData( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, Set<OrganisationUnitGroup> orgUnitGroups );
+    
+    Map<String, Integer> calculateRefrigeratorWorkingStatus( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query );
+
+    Map<String, Integer> calculateRefrigeratorUtilization( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query );
     
     String importData( Map<String, Integer> aggregationResultMap, Period period );
-    
 }

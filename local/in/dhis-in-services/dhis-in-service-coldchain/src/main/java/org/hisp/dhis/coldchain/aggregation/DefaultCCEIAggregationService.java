@@ -3,6 +3,7 @@ package org.hisp.dhis.coldchain.aggregation;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -18,19 +19,23 @@ import org.hisp.dhis.coldchain.reports.CCEMReportManager;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.lookup.Lookup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class DefaultCCEIAggregationService implements CCEIAggregationService
+public class DefaultCCEIAggregationService
+    implements CCEIAggregationService
 {
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
     private CCEMReportManager ccemReportManager;
@@ -54,6 +59,20 @@ public class DefaultCCEIAggregationService implements CCEIAggregationService
         this.currentUserService = currentUserService;
     }
 
+    private PeriodService periodService;
+    
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    private DataElementCategoryService dataElementCategoryService;
+    
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
@@ -61,65 +80,165 @@ public class DefaultCCEIAggregationService implements CCEIAggregationService
         this.jdbcTemplate = jdbcTemplate;
     }
 
-	// -------------------------------------------------------------------------
-    // 
-    // -------------------------------------------------------------------------    
-	@Override
-	public String getQueryTemplate(String lookupName, Map<String,String> params) 
-	{
-		String tempQuery = null;
-		
-		if(lookupName.equalsIgnoreCase(Lookup.WS_REF_TYPE))
-		{
-			String equipmenttypeid = params.get("equipmenttypeid");
-			String modelName = params.get("modelName");
-			String equipmentattributevalue = params.get("equipmentattributevalue");
-			tempQuery = "SELECT COUNT(*) FROM modelattributevalue "+
-						"INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid "+
-						"INNER JOIN equipmentattributevalue ON equipmentattributevalue.equipmentid = equipment.equipmentid"+
-						" WHERE " +
-                        " equipment.equipmenttypeid = "+equipmenttypeid+" AND " +
-                        " modelattributevalue.value = "+modelName+" AND " +
-                        " equipment.organisationunitid IN ( ? ) AND "+
-                        " equipmentattributevalue.value IN ( "+equipmentattributevalue+" )"+
-                        " GROUP BY modelattributevalue.value";					
-		}
-		
-		return tempQuery;
-	}
-
+    // -------------------------------------------------------------------------
+    //
+    // -------------------------------------------------------------------------
     
-	public Map<String, Integer> calculateStorageCapacityData( DataElement dataElement, Set<OrganisationUnit> orgUnits, Set<OrganisationUnitGroup> orgUnitGroups )
-	{
-		Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
+    public String getQueryForRefrigeratorWorkingStatus( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String workingStatus )
+    {
+        String query = "SELECT equipment.organisationunitid,COUNT(*) FROM modelattributevalue " +
+                            " INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid " +
+                            " INNER JOIN equipmentattributevalue ON equipmentattributevalue.equipmentid = equipment.equipmentid " +
+                            " WHERE " + 
+                                " equipment.equipmenttypeid = " + equipmentTypeId + " AND " +
+                                " modelattributevalue.value = " + modelName + " AND " + 
+                                " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId +" AND " +
+                                " equipment.organisationunitid IN ( " + Lookup.ORGUNITID_BY_COMMA + " ) AND " +
+                                " equipmentattributevalue.value IN ( " + workingStatus + " ) AND " +
+                                " equipment.registrationdate <= '" + Lookup.CURRENT_PERIOD_ENDDATE +"'" +
+                            " GROUP BY equipment.organisationunitid";
+        return query;
+    }
 
-		/**
-		 * TODO need to get all parameters from lookup
-		 */
-		CCEMReport ccemReport = ccemReportManager.getCCEMReportByReportId( "22" );
-		Map<String, String> ccemSettingsMap = new HashMap<String, String>( ccemReportManager.getCCEMSettings() );
+    public String getQueryForRefrigeratorUtilization( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String utilization )
+    {
+        String query = "SELECT equipment.organisationunitid,COUNT(*) FROM modelattributevalue " +
+                            " INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid " +
+                            " INNER JOIN equipmentattributevalue ON equipmentattributevalue.equipmentid = equipment.equipmentid " +
+                            " WHERE " + 
+                                " equipment.equipmenttypeid = " + equipmentTypeId + " AND " +
+                                " modelattributevalue.value = " + modelName + " AND " + 
+                                " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId +" AND " +
+                                " equipment.organisationunitid IN ( " + Lookup.ORGUNITID_BY_COMMA + " ) AND " +
+                                " equipmentattributevalue.value IN ( " + utilization + " )" +
+                            " GROUP BY equipment.organisationunitid";
+        return query;
+    }
+
+    @Override
+    public String getQueryTemplate( String lookupName, Map<String, String> params )
+    {
+        String tempQuery = null;
+
+        if ( lookupName.equalsIgnoreCase( Lookup.WS_REF_TYPE ) )
+        {
+            String equipmenttypeid = params.get( "equipmenttypeid" );
+            String modelName = params.get( "modelName" );
+            String equipmentattributevalue = params.get( "equipmentattributevalue" );
+            tempQuery = "SELECT COUNT(*) FROM modelattributevalue "
+                + "INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid "
+                + "INNER JOIN equipmentattributevalue ON equipmentattributevalue.equipmentid = equipment.equipmentid"
+                + " WHERE " + " equipment.equipmenttypeid = " + equipmenttypeid + " AND "
+                + " modelattributevalue.value = " + modelName + " AND " + " equipment.organisationunitid IN ( ? ) AND "
+                + " equipmentattributevalue.value IN ( " + equipmentattributevalue + " )"
+                + " GROUP BY modelattributevalue.value";
+        }
+
+        return tempQuery;
+    }
+
+    public Map<String, Integer> calculateRefrigeratorWorkingStatus( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query )
+    {
+        Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        try
+        {
+            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
+            String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+
+            query = query.replace( Lookup.ORGUNITID_BY_COMMA, orgUnitIdsByComma );
+            
+            query = query.replace( Lookup.CURRENT_PERIOD_ENDDATE, simpleDateFormat.format( period.getEndDate() ) );
+            
+            System.out.println( query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer countValue = rs.getInt( 2 );
+                aggregationResultMap.put( orgUnitId+":"+dataElement.getId(), countValue );
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("Exception :"+ e.getMessage() );
+        }
+        
+        return aggregationResultMap;
+    }
+
+    public Map<String, Integer> calculateRefrigeratorUtilization( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query )
+    {
+        Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
+        
+        try
+        {
+            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
+            String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+
+            query = query.replace( "ORGUNITID_BY_COMMA", orgUnitIdsByComma );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer countValue = rs.getInt( 2 );
+                aggregationResultMap.put( orgUnitId+":"+dataElement.getId(), countValue );
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("Exception :"+ e.getMessage() );
+        }
+        
+        return aggregationResultMap;
+    }
+
+    public Map<String, Integer> calculateStorageCapacityData( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, Set<OrganisationUnitGroup> orgUnitGroups )
+    {
+        Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
+
+        /**
+         * TODO need to get all parameters from lookup
+         */
+        CCEMReport ccemReport = ccemReportManager.getCCEMReportByReportId( "22" );
+        Map<String, String> ccemSettingsMap = new HashMap<String, String>( ccemReportManager.getCCEMSettings() );
         List<CCEMReportDesign> reportDesignList = new ArrayList<CCEMReportDesign>( ccemReportManager.getCCEMReportDesign( ccemReport.getXmlTemplateName() ) );
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime( new Date() );
-        String periodStartDate = "";
+        String periodStartDate = period.getStartDateString();
+
         String periodEndDate = "";
-        Integer periodId = ccemReportManager.getPeriodId( periodStartDate, "Yearly" );
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy" );
+        Period period1 = PeriodType.getPeriodFromIsoString( simpleDateFormat.format( period.getStartDate() ) );
+        period1 = periodService.reloadPeriod( period1 );
+        Integer periodId = period1.getId();
+        // Integer periodId = ccemReportManager.getPeriodId( periodStartDate,
+        // "Yearly" );
 
         CCEMReportDesign ccemReportDesign1 = reportDesignList.get( 0 );
         String ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
+
+        ccemReportDesign1 = reportDesignList.get( 1 );
+        ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
         String[] partsOfCellContent = ccemCellContent1.split( "-" );
         Integer vscrActualInventoryTypeId = Integer.parseInt( partsOfCellContent[0].split( ":" )[0] );
         Integer vscrActualInventoryTypeAttributeId = Integer.parseInt( partsOfCellContent[0].split( ":" )[1] );
         Double factor = Double.parseDouble( partsOfCellContent[0].split( ":" )[2] );
-        
+
         Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
         String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
 
         Collection<Integer> orgUnitGroupIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnitGroup.class, orgUnitGroups ) );
         String orgUnitGroupIdsByComma = getCommaDelimitedString( orgUnitGroupIds );
 
-        Map<Integer, Double> equipmentSumByInventoryTypeMap = new HashMap<Integer, Double>( ccemReportManager.getSumOfEquipmentDatabyInventoryType( orgUnitIdsByComma, vscrActualInventoryTypeId, vscrActualInventoryTypeAttributeId, factor ) );
+        Map<Integer, Double> equipmentSumByInventoryTypeMap = new HashMap<Integer, Double>(
+            ccemReportManager.getSumOfEquipmentDatabyInventoryType( orgUnitIdsByComma, vscrActualInventoryTypeId, vscrActualInventoryTypeAttributeId, factor ) );
 
         String[] partsOfVSRActualCellContent = partsOfCellContent[1].split( ":" );
         Integer vsrActualInventoryTypeId = Integer.parseInt( partsOfVSRActualCellContent[0] );
@@ -189,6 +308,14 @@ public class DefaultCCEIAggregationService implements CCEIAggregationService
                 try
                 {
                     vsReqLiveBirthData = Double.parseDouble( tempStr );
+                    constant = constantService.getConstantByName( "LiveBirthsPerThousand" );                    
+                    Double liveBirthPerThousand = 39.98;
+                    if( constant != null )
+                    {
+                        liveBirthPerThousand = constant.getValue();
+                    }
+                    vsReqLiveBirthData = ( vsReqLiveBirthData * liveBirthPerThousand ) / 1000;
+                    
                 }
                 catch ( Exception e )
                 {
@@ -224,11 +351,13 @@ public class DefaultCCEIAggregationService implements CCEIAggregationService
                 }
             }
 
-            System.out.println( vsReqLiveBirthData + " : " + vsReqVaccineVolumePerChildData + " : " + vsReqSupplyIntervalData + " : " + vsReqReserveStockData );
-            // Formula for calculating Requirement 
+            System.out.println( vsReqLiveBirthData + " : " + vsReqVaccineVolumePerChildData + " : "
+                + vsReqSupplyIntervalData + " : " + vsReqReserveStockData );
+            // Formula for calculating Requirement
             try
             {
-            	vaccineRequirement = vsReqLiveBirthData * vsReqVaccineVolumePerChildData * ( (vsReqSupplyIntervalData + vsReqReserveStockData) / 52);
+                vaccineRequirement = vsReqLiveBirthData * vsReqVaccineVolumePerChildData
+                    * ((vsReqSupplyIntervalData + vsReqReserveStockData) / 52);
             }
             catch ( Exception e )
             {
@@ -244,42 +373,44 @@ public class DefaultCCEIAggregationService implements CCEIAggregationService
             numberOfData.put( "Difference", "" + diffVaccineReq );
 
             Double diffPercentage = 0.0;
-            if( vaccineActualValue == 0 && diffVaccineReq == 0 )
+            if ( vaccineActualValue == 0 && diffVaccineReq == 0 )
             {
-            	diffPercentage = 0.0;
+                diffPercentage = 0.0;
             }
             else
             {
-            	diffPercentage = (diffVaccineReq / vaccineActualValue) * 100;
+                diffPercentage = (diffVaccineReq / vaccineActualValue) * 100;
             }
-            
+
             if ( diffPercentage < -30.0 )
             {
-            	aggregationResultMap.put( orgUnit.getId() + ":" + dataElement.getId(), 1 );
+                aggregationResultMap.put( orgUnit.getId() + ":" + dataElement.getId(), 1 );
             }
             else if ( diffPercentage >= -30.0 && diffPercentage < -10.0 )
             {
-            	aggregationResultMap.put( orgUnit.getId() + ":" + dataElement.getId(), 1 );
+                aggregationResultMap.put( orgUnit.getId() + ":" + dataElement.getId(), 1 );
             }
             else if ( diffPercentage >= -10.0 && diffPercentage < 10.0 )
             {
+                //aggregationResultMap.put( orgUnit.getId() + ":" + dataElement.getId(), 0 );
             }
             else if ( diffPercentage >= 10.0 && diffPercentage < 30.0 )
             {
+                //aggregationResultMap.put( orgUnit.getId() + ":" + dataElement.getId(), 0 );
             }
             else
             {
+                //aggregationResultMap.put( orgUnit.getId() + ":" + dataElement.getId(), 0 );
             }
         }
 
-		return aggregationResultMap;
-	}
- 
-	
+        return aggregationResultMap;
+    }
+
     public String importData( Map<String, Integer> aggregationResultMap, Period period )
     {
-    	String importStatus = "";
-    			
+        String importStatus = "";
+
         Integer updateCount = 0;
         Integer insertCount = 0;
 
@@ -296,78 +427,75 @@ public class DefaultCCEIAggregationService implements CCEIAggregationService
 
         String query = "";
         int insertFlag = 1;
-        String insertQuery = "INSERT IGNORE INTO datavalue ( dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated ) VALUES ";
-        
+        String insertQuery = "INSERT INTO datavalue ( dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated, attributeoptioncomboid ) VALUES ";
+
         try
         {
-	        int count = 1;
-	        for ( String cellKey : aggregationResultMap.keySet() )
-	        {
-	            // Orgunit
-	            String[] oneRow = cellKey.split( ":" );
-	            Integer orgUnitId = Integer.parseInt( oneRow[0] );
-	            Integer deId = Integer.parseInt( oneRow[1] );
-	            Integer deCOCId = 1;
-	            Integer periodId = period.getId();
-	            String value = aggregationResultMap.get( cellKey )+"";
-	        
-	            query = "SELECT value FROM datavalue WHERE dataelementid = " + deId + " AND categoryoptioncomboid = " + deCOCId + " AND periodid = " + periodId + " AND sourceid = " + orgUnitId;
-	    		SqlRowSet sqlResultSet1 = jdbcTemplate.queryForRowSet( query );
-	    		if ( sqlResultSet1 != null && sqlResultSet1.next() )
-	    		{
-	    		    String updateQuery = "UPDATE datavalue SET value = '" + value + "', storedby = '" + storedBy
-	    						+ "',lastupdated='" + lastUpdatedDate + "' WHERE dataelementid = " + deId
-	    						+ " AND periodid = " + periodId + " AND sourceid = " + orgUnitId
-	    						+ " AND categoryoptioncomboid = " + deCOCId;		    
-	    		  
-	    		    jdbcTemplate.update( updateQuery );
-	    		    updateCount++;
-	    		}
-	    		else
-	    		{
-	                if( value != null && !value.trim().equals( "" ) ) 
-	                {
-	        			insertQuery += "( " + deId + ", " + periodId + ", " + orgUnitId + ", " + deCOCId + ", '" + value + "', '" + storedBy + "', '" + lastUpdatedDate + "'), ";
-	        		    insertFlag = 2;
-	        		    insertCount++;
-	                }
-	    		}
-	            
-	            if ( count == 1000 )
-	            {
-	                count = 1;
-	
-	                if ( insertFlag != 1 )
-	                {
-	                    insertQuery = insertQuery.substring( 0, insertQuery.length() - 2 );
-	                    jdbcTemplate.update( insertQuery );
-	                }
-	
-	                insertFlag = 1;
-	
-	                insertQuery = "INSERT IGNORE INTO datavalue ( dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated ) VALUES ";
-	            }
-	
-	            count++;
-	        }
-	
-	        if ( insertFlag != 1 )
-	        {
-	            insertQuery = insertQuery.substring( 0, insertQuery.length() - 2 );
-	            jdbcTemplate.update( insertQuery );
-	        }
+            int count = 1;
+            for ( String cellKey : aggregationResultMap.keySet() )
+            {
+                // Orgunit
+                String[] oneRow = cellKey.split( ":" );
+                Integer orgUnitId = Integer.parseInt( oneRow[0] );
+                Integer deId = Integer.parseInt( oneRow[1] );
+                Integer deCOCId = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId();
+                Integer periodId = period.getId();
+                String value = aggregationResultMap.get( cellKey ) + "";
 
-	        importStatus = "Successfully populated aggregated data for the period : " + period.getStartDateString();
-	        importStatus = "<br/> Total new records : "+ insertCount;
-	        importStatus = "<br/> Total updated records : "+ updateCount;
+                query = "SELECT value FROM datavalue WHERE dataelementid = " + deId + " AND categoryoptioncomboid = " + deCOCId + " AND periodid = " + periodId + " AND sourceid = " + orgUnitId;
+                SqlRowSet sqlResultSet1 = jdbcTemplate.queryForRowSet( query );
+                if ( sqlResultSet1 != null && sqlResultSet1.next() )
+                {
+                    String updateQuery = "UPDATE datavalue SET value = '" + value + "', storedby = '" + storedBy + "',lastupdated='" + lastUpdatedDate + "' WHERE dataelementid = " + deId + " AND periodid = "
+                        + periodId + " AND sourceid = " + orgUnitId + " AND categoryoptioncomboid = " + deCOCId;
+
+                    jdbcTemplate.update( updateQuery );
+                    updateCount++;
+                }
+                else
+                {
+                    if ( value != null && !value.trim().equals( "" ) )
+                    {
+                        insertQuery += "( " + deId + ", " + periodId + ", " + orgUnitId + ", " + deCOCId + ", '" + value + "', '" + storedBy + "', '" + lastUpdatedDate + "'," + deCOCId + "), ";
+                        insertFlag = 2;
+                        insertCount++;
+                    }
+                }
+
+                if ( count == 1000 )
+                {
+                    count = 1;
+
+                    if ( insertFlag != 1 )
+                    {
+                        insertQuery = insertQuery.substring( 0, insertQuery.length() - 2 );
+                        jdbcTemplate.update( insertQuery );
+                    }
+
+                    insertFlag = 1;
+
+                    insertQuery = "INSERT INTO datavalue ( dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated, attributeoptioncomboid ) VALUES ";
+                }
+
+                count++;
+            }
+
+            if ( insertFlag != 1 )
+            {
+                insertQuery = insertQuery.substring( 0, insertQuery.length() - 2 );
+                jdbcTemplate.update( insertQuery );
+            }
+
+            importStatus = "Successfully populated aggregated data for the period : " + period.getStartDateString();
+            importStatus += "<br/> Total new records : " + insertCount;
+            importStatus += "<br/> Total updated records : " + updateCount;
 
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
-        	importStatus = "Exception occured while import, please check log for more details" + e.getMessage();
+            importStatus = "Exception occured while import, please check log for more details" + e.getMessage();
         }
-        
-        
+
         return importStatus;
     }
 
