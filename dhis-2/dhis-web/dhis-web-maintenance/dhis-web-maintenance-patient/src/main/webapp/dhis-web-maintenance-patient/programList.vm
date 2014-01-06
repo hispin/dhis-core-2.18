@@ -7,6 +7,7 @@
     <li data-enabled="canUpdate"><a data-target-fn="defineProgramAssociationsForm"><i class="fa fa-plus"></i>&nbsp;&nbsp;$i18n.getString( "assign_program_to_orgunits" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="showProgramUserRoleForm"><i class="fa fa-plus"></i>&nbsp;&nbsp;$i18n.getString( "assign_program_to_userroles" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="showUpdateProgramForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
+    <li data-enabled="canManageTemplateMessage"><a data-target-fn="programPatientReminder"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "template_reminder_message" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="programStageManagement"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "view_program_stages" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="validationCriteria"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "view_validation_criteria" )</a></li>
     <li data-enabled="canUpdate"><a data-target-fn="programValidationManagement"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "program_validation_rule_management" )</a></li>
@@ -40,6 +41,7 @@
       <tr id="tr${program.id}" data-id="$!program.id" data-uid="$!program.uid" data-type="Program" data-name="$encoder.htmlEncode( $!program.displayName )"
           data-can-manage="$security.canManage( $program )"
           data-can-update="$security.canUpdate( $program )"
+          data-can-manage-template-message="#if($program.type!=3)true#{else}false#end"
           data-can-delete="$security.canDelete( $program )"
           data-can-manage-form="#if( $auth.hasAccess( "dhis-web-maintenance-patient", "programIndicator" ) && $program.type !='3' )true#{else}false#end">
           <td>$encoder.htmlEncode( $!program.displayName )</td>
