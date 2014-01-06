@@ -296,7 +296,7 @@ function advancedSearch( params )
 // Remove patient
 // -----------------------------------------------------------------------------
 
-function removePatient( patientId, i18n_confirm_delete_patient )
+function removePatient( patientId )
 {
 	var patient = new Patient();
 	patient.patientId = patientId;
