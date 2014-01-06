@@ -166,7 +166,7 @@ function Patient()
 				var enrollmentDate = jQuery('#patientForm [id=enrollmentDate]').val();
 				
 				// Enroll patient into the program
-				if( programId !='' && enrollmentDate != '')
+				if( programId && enrollmentDate )
 				{
 					jQuery.postJSON( "saveProgramEnrollment.action",
 					{
@@ -179,13 +179,16 @@ function Patient()
 					{    
 						if(isContinue){
 							jQuery("#patientForm :input").each( function(){
-								if( $(this).attr('type') != 'button'
-									&& $(this).attr('type') != 'submit' 
-									&& $(this).attr('id') !='enrollmentDate' )
+								var type = $(this).attr('type'),
+									id = $(this).attr('id');
+								
+								if( type != 'button' && type != 'submit' && id != 'enrollmentDate' )
 								{
 									$(this).val("");
 								}
 							});
+							$("#patientForm :input").prop("disabled", false);
+							$("#patientForm").find("select").prop("disabled", false);
 						}
 						else{
 							showPatientDashboardForm( patientUid );
@@ -194,14 +197,16 @@ function Patient()
 				}
 				else if(isContinue){
 						jQuery("#patientForm :input").each( function(){
-							if( $(this).attr('type') != 'button'
-								&& $(this).attr('type') != 'submit'  )
+							var type = $(this).attr('type'),
+								id = $(this).attr('id');
+						
+							if( type != 'button' && type != 'submit' && id != 'enrollmentDate' )
 							{
 								$(this).val("");
 							}
 						});
-						$("#patientForm :input").attr("disabled", false);
-						$("#patientForm").find("select").attr("disabled", false);
+						$("#patientForm :input").prop("disabled", false);
+						$("#patientForm").find("select").prop("disabled", false);
 				}
 				else
 				{
