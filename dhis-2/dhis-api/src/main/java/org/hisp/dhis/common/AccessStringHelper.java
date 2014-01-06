@@ -30,7 +30,7 @@ package org.hisp.dhis.common;
 
 /**
  * Currently only the two first positions in the access string are used - rw.
- * 
+ *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class AccessStringHelper
@@ -81,6 +81,11 @@ public class AccessStringHelper
     public static AccessStringHelper newInstance()
     {
         return new AccessStringHelper();
+    }
+
+    public static AccessStringHelper newInstance( char[] access )
+    {
+        return new AccessStringHelper( access );
     }
 
     public AccessStringHelper enable( Permission permission )

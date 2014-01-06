@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.AccessStringHelper;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -144,7 +145,7 @@ public class Interpretation
     {
         return user;
     }
-    
+
     @JsonProperty
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getType()
@@ -223,8 +224,7 @@ public class Interpretation
 
     public void updateSharing()
     {
-        setPublicAccess( getObject().getPublicAccess() );
-        setUserGroupAccesses( new HashSet<UserGroupAccess>( getObject().getUserGroupAccesses() ) );
+        setPublicAccess( AccessStringHelper.newInstance().enable( AccessStringHelper.Permission.READ ).build() );
     }
 
     // -------------------------------------------------------------------------
