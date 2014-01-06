@@ -45,7 +45,7 @@ function openPropertiesSelector()
 			closable:true,
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
-			width:500,
+			width:485,
 			height:460,
 			position: [$("body").width()- 50, 0],
 			close: function(ev, ui) { 
