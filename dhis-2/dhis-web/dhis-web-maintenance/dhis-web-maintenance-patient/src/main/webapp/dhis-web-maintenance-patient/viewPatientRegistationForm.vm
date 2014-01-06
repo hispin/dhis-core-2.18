@@ -14,10 +14,10 @@
 		} );
 			
 		jQuery('#designTextarea').ckeditor();
+
 		#if($!registrationForm)
 			jQuery("#designTextarea").ckeditorGet().setData('$!encoder.jsEscape( $registrationForm.dataEntryForm.htmlCode , "'" )');
 		#end
-		
 	});
 
     var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
@@ -43,7 +43,7 @@
 	padding: 2px;
 }
 
-#fixedAttrSelector, #identifiersSelector, #attributesSelector, #programSelector {
+#identifiersSelector, #attributesSelector, #programSelector {
 	padding: 2px;
 }
 </style>
@@ -110,60 +110,42 @@
 </form>
 
 <div id='selectionDialog' class='hidden'>
-	<table id="fixedAttrTab">
-		<tr>
-			<td>
-				<input type='text' id='fixedAttrFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'fixedAttrSelector' )">
-				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('fixedAttrFilter','');">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<select id="fixedAttrSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'fixedAttr' )">
-					<option value="fullName">$i18n.getString('full_name')</option>
-					<option value="phoneNumber">$i18n.getString('phone_number')</option>
-					<option value="associate">$i18n.getString('health_worker')</option>
-				</select>
-			</td>
-		</tr>
-	</table>
-	
-	<table id="identifierTypeTab" class='hidden'>
-		<tr>
-			<td>
-				<input type='text' id='identifierTypeFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'identifiersSelector' )">
-				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('identifierTypeFilter','');">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<select id="identifiersSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'iden' )">
-					#foreach( $identifierType in $identifierTypes )
-						<option value="$identifierType.uid" mandatory='$identifierType.mandatory'>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory=='true') * #end </option>
-					#end
-				</select>
-			</td>
-		</tr>
-	</table>
-	
-	<table id="attributeTab" class='hidden'>
-		<tr>
-			<td>
-				<input type='text' id='attributeFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'attributesSelector' )">
-				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('attributeFilter','');">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<select id="attributesSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'attr' )">
-				#foreach( $attribute in $attributes )
-					<option value="$attribute.uid" mandatory='$attribute.mandatory'>$encoder.htmlEncode($attribute.displayName) #if($attribute.mandatory=='true') * #end</option>
-				#end
-				</select>
-			</td>
-		</tr>
-	</table>
-	
+    <table id="identifierTypeTab">
+   		<tr>
+   			<td>
+   				<input type='text' id='identifierTypeFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'identifiersSelector' )">
+   				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('identifierTypeFilter','');">
+   			</td>
+   		</tr>
+   		<tr>
+   			<td>
+   				<select id="identifiersSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'iden' )">
+   					#foreach( $identifierType in $identifierTypes )
+   						<option value="$identifierType.uid" mandatory='$identifierType.mandatory'>$encoder.htmlEncode($identifierType.displayName) #if($identifierType.mandatory=='true') * #end </option>
+   					#end
+   				</select>
+   			</td>
+   		</tr>
+   	</table>
+
+    <table id="attributeTab" class="hidden">
+   		<tr>
+   			<td>
+   				<input type='text' id='attributeFilter' placeholder="$i18n.getString('filter')" style="width:365px;" onkeyup="filterList( this.value, 'attributesSelector' )">
+   				<input type='button' value="$i18n.getString('clear')" style="width:80px;" onclick="setFieldValue('attributeFilter','');">
+   			</td>
+   		</tr>
+   		<tr>
+   			<td>
+   				<select id="attributesSelector" multiple="multiple" style="width:450px;height:270px" ondblclick="insertElement( 'attr' )">
+   				#foreach( $attribute in $attributes )
+   					<option value="$attribute.uid" mandatory='$attribute.mandatory'>$encoder.htmlEncode($attribute.displayName) #if($attribute.mandatory=='true') * #end</option>
+   				#end
+   				</select>
+   			</td>
+   		</tr>
+   	</table>
+
 	#if($!program)
 	<table id="programAttrTab" class='hidden'>
 		<tr>
@@ -188,21 +170,17 @@
 	<table>
 		<tr>
 			<td>
-				<button type="button" id="fixAttrButton" onclick="fixAttrOnClick()">$i18n.getString( "fixed_attributes" )</button>
-				<button type="button" id="identifierTypeButton" onclick="identifierTypeOnClick()">$i18n.getString( "identifier_types" )</button>
-				<button type="button" id="attributesButton" onclick="attributesOnClick()">$i18n.getString( "attributes" )</button>
-				
+                <button type="button" class="ui-state-active2" id="identifierTypeButton" onclick="identifierTypeOnClick()">$i18n.getString( "identifier_types" )</button>
+                <button type="button" id="attributesButton" onclick="attributesOnClick()">$i18n.getString( "attributes" )</button>
+
 				#if($!program)
 					<button type="button" id="programAttrButton" onclick="programAttrOnClick()">$i18n.getString( "program" )</button>
 				#end
-				
-				&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-				<button type="button" id="insertButton" onclick="insertElement( 'fixedAttr' )" >$i18n.getString( "insert" )</button>
-			</td>
+            </td>
 		</tr>
 	</table>
 
-	<span id='message'></span>
+	<span id='message' style="width: 436px;"></span>
 
 </div>
 
