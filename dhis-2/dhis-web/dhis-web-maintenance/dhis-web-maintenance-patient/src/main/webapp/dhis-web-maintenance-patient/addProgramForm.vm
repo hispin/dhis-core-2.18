@@ -89,43 +89,43 @@
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "allow_select_enrollment_date_in_future" )</label></td>
+			<td><label for="selectEnrollmentDatesInFuture">$i18n.getString( "allow_select_enrollment_date_in_future" )</label></td>
 			<td><input type="checkbox" id="selectEnrollmentDatesInFuture" name="selectEnrollmentDatesInFuture" value='true'></td>
 			<td></td>
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "allow_select_incident_date_in_future" )</label></td>
+			<td><label for="selectIncidentDatesInFuture">$i18n.getString( "allow_select_incident_date_in_future" )</label></td>
 			<td><input type="checkbox" id="selectIncidentDatesInFuture" name="selectIncidentDatesInFuture" value='true' ></td>
 			<td></td>
 		</tr>
 		
         <tr name='nonAnonymous'>
-            <td><label>$i18n.getString( "only_enroll_once" )</label></td>
+            <td><label for="onlyEnrollOnce">$i18n.getString( "only_enroll_once" )</label></td>
             <td><input type="checkbox" id="onlyEnrollOnce" name="onlyEnrollOnce" value='true'></td>
             <td></td>
         </tr>
 
         <tr name='nonAnonymous'>
-            <td><label>$i18n.getString( "show_incident_date" )</label></td>
+            <td><label for="displayIncidentDate">$i18n.getString( "show_incident_date" )</label></td>
             <td><input type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' checked ></td>
             <td></td>
         </tr>
 
 		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="dateOfIncidentDescription">$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:2}}" value="Incident Date"></td>
 			<td></td>
 		</tr>
 		
 		<tr name='nonAnonymous'>
-			<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label for="dateOfEnrollmentDescription">$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" value="Enrollment Date"></td>
 			<td></td>
 		</tr>
 			
         <tr>
-            <td><label>$i18n.getString( "allow_enrollment_at_all_orgunits" )</label></td>
+            <td><label for="displayOnAllOrgunit">$i18n.getString( "allow_enrollment_at_all_orgunits" )</label></td>
             <td><input type="checkbox" id="displayOnAllOrgunit" name="displayOnAllOrgunit" value='true'></td>
             <td></td>
         </tr>
@@ -184,7 +184,7 @@
 
     <tbody>
         <tr name='nonAnonymous'>
-  			<td><label>$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
+  			<td><label for="ignoreOverdueEvents">$i18n.getString( "skip_to_generate_overdue_events" )</label></td>
   			<td><input type="checkbox" id="ignoreOverdueEvents" name="ignoreOverdueEvents" value='true'></td>
   			<td></td>
   		</tr>
