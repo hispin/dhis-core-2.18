@@ -32,7 +32,7 @@
 	&#8226; $i18n.getString( "add_new_patient" )
 </h3>
 
-<form id="patientForm" name="patientForm" method="post" >
+<form id="patientForm" name="patientForm" method="post" class="inputForm">
 <table>
 	#if($relatedProgram)
 		<input type='hidden' name="relationshipTypeId" id="relationshipTypeId" value="$relatedProgram.relationshipType.id">
