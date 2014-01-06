@@ -176,7 +176,6 @@ public class UpdateProgramPatientReminderAction
             reminder.setUserGroup( null );
         }
 
-        program.getPatientReminders().add( reminder );
         programService.updateProgram( program );
 
         return SUCCESS;
