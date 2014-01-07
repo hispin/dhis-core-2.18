@@ -49,11 +49,9 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroupAccess;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 /**

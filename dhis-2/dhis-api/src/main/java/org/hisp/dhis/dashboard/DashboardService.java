@@ -1,16 +1,5 @@
 package org.hisp.dhis.dashboard;
 
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.document.Document;
-import org.hisp.dhis.interpretation.Interpretation;
-import org.hisp.dhis.mapping.Map;
-import org.hisp.dhis.report.Report;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.user.User;
-
-import java.util.List;
-import java.util.Set;
-
 /*
  * Copyright (c) 2004-2013, University of Oslo
  * All rights reserved.
@@ -39,6 +28,15 @@ import java.util.Set;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.mapping.Map;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.user.User;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
