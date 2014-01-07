@@ -28,19 +28,17 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -52,30 +50,30 @@ public class OrganisationUnitHierarchyTest
     {
         OrganisationUnitGroup group = new OrganisationUnitGroup( "Group" );
         group.setId( 1 );
-        
+
         OrganisationUnit unit2 = new OrganisationUnit( "Unit2" );
         OrganisationUnit unit4 = new OrganisationUnit( "Unit4" );
         OrganisationUnit unit6 = new OrganisationUnit( "Unit6" );
         OrganisationUnit unit8 = new OrganisationUnit( "Unit8" );
         OrganisationUnit unit10 = new OrganisationUnit( "Unit10" );
         OrganisationUnit unit12 = new OrganisationUnit( "Unit12" );
-        
+
         unit2.setId( 2 );
         unit4.setId( 4 );
         unit6.setId( 6 );
         unit8.setId( 8 );
         unit10.setId( 10 );
         unit12.setId( 12 );
-        
+
         group.addOrganisationUnit( unit2 );
         group.addOrganisationUnit( unit4 );
         group.addOrganisationUnit( unit6 );
         group.addOrganisationUnit( unit8 );
         group.addOrganisationUnit( unit10 );
         group.addOrganisationUnit( unit12 );
-                
+
         List<OrganisationUnitRelationship> relationships = new ArrayList<OrganisationUnitRelationship>();
-        
+
         relationships.add( new OrganisationUnitRelationship( 1, 2 ) );
         relationships.add( new OrganisationUnitRelationship( 1, 3 ) );
         relationships.add( new OrganisationUnitRelationship( 2, 4 ) );
@@ -89,7 +87,7 @@ public class OrganisationUnitHierarchyTest
         relationships.add( new OrganisationUnitRelationship( 4, 12 ) );
 
         OrganisationUnitHierarchy hierarchy = new OrganisationUnitHierarchy( relationships );
-        
+
         assertEquals( 6, hierarchy.getChildren( 1, group ).size() );
 
         assertEquals( 5, hierarchy.getChildren( 2, group ).size() );
@@ -105,48 +103,48 @@ public class OrganisationUnitHierarchyTest
         assertEquals( 3, hierarchy.getChildren( 4, group ).size() );
         assertTrue( hierarchy.getChildren( 4, group ).contains( 4 ) );
         assertTrue( hierarchy.getChildren( 4, group ).contains( 10 ) );
-        assertTrue( hierarchy.getChildren( 4, group ).contains( 12 ) );        
+        assertTrue( hierarchy.getChildren( 4, group ).contains( 12 ) );
 
         assertEquals( 0, hierarchy.getChildren( 11, group ).size() );
-        
+
         assertFalse( hierarchy.getChildren( 5, group ).contains( 10 ) );
         assertFalse( hierarchy.getChildren( 3, group ).contains( 11 ) );
     }
-    
+
     @Test
     public void testGetChildren()
     {
         Set<Integer> parentIds = new HashSet<Integer>();
-        
+
         List<OrganisationUnitRelationship> relations = new ArrayList<OrganisationUnitRelationship>();
 
         int parentMax = 1000; // Increase to stress-test
         int childMax = 4;
         int childId = 0;
-        
+
         for ( int parentId = 0; parentId < parentMax; parentId++ )
         {
             parentIds.add( parentId );
-            
+
             for ( int j = 0; j < childMax; j++ )
             {
                 relations.add( new OrganisationUnitRelationship( parentId, ++childId ) );
             }
         }
-        
+
         OrganisationUnitHierarchy hierarchy = new OrganisationUnitHierarchy( relations );
-        
+
         Set<Integer> children = hierarchy.getChildren( parentIds );
-        
+
         assertNotNull( children );
-        assertEquals( ( parentMax * childMax ) + 1, children.size() );
+        assertEquals( (parentMax * childMax) + 1, children.size() );
     }
-    
+
     @Test
     public void testGetChildrenA()
     {
         List<OrganisationUnitRelationship> relationships = new ArrayList<OrganisationUnitRelationship>();
-        
+
         relationships.add( new OrganisationUnitRelationship( 1, 2 ) );
         relationships.add( new OrganisationUnitRelationship( 1, 3 ) );
         relationships.add( new OrganisationUnitRelationship( 2, 4 ) );
@@ -158,31 +156,31 @@ public class OrganisationUnitHierarchyTest
         relationships.add( new OrganisationUnitRelationship( 4, 10 ) );
         relationships.add( new OrganisationUnitRelationship( 4, 11 ) );
         relationships.add( new OrganisationUnitRelationship( 4, 12 ) );
-        
+
         OrganisationUnitHierarchy hierarchy = new OrganisationUnitHierarchy( relationships );
-        
+
         testHierarchy( hierarchy );
     }
-    
+
     @Test
     public void testGetChildrenB()
     {
         Map<Integer, Set<Integer>> relationships = new HashMap<Integer, Set<Integer>>();
-        
+
         relationships.put( 1, getSet( 2, 3 ) );
         relationships.put( 2, getSet( 4, 5, 6 ) );
         relationships.put( 3, getSet( 7, 8, 9 ) );
         relationships.put( 4, getSet( 10, 11, 12 ) );
 
         OrganisationUnitHierarchy hierarchy = new OrganisationUnitHierarchy( relationships );
-        
+
         testHierarchy( hierarchy );
     }
-    
+
     private void testHierarchy( OrganisationUnitHierarchy hierarchy )
     {
         assertEquals( 12, hierarchy.getChildren( 1 ).size() );
-        
+
         assertEquals( 7, hierarchy.getChildren( 2 ).size() );
         assertTrue( hierarchy.getChildren( 2 ).contains( 2 ) );
         assertTrue( hierarchy.getChildren( 2 ).contains( 4 ) );
@@ -191,7 +189,7 @@ public class OrganisationUnitHierarchyTest
         assertTrue( hierarchy.getChildren( 2 ).contains( 10 ) );
         assertTrue( hierarchy.getChildren( 2 ).contains( 11 ) );
         assertTrue( hierarchy.getChildren( 2 ).contains( 12 ) );
-        
+
         assertEquals( 4, hierarchy.getChildren( 3 ).size() );
         assertTrue( hierarchy.getChildren( 3 ).contains( 3 ) );
         assertTrue( hierarchy.getChildren( 3 ).contains( 7 ) );
@@ -206,20 +204,17 @@ public class OrganisationUnitHierarchyTest
 
         assertEquals( 1, hierarchy.getChildren( 11 ).size() );
         assertTrue( hierarchy.getChildren( 11 ).contains( 11 ) );
-        
+
         assertFalse( hierarchy.getChildren( 2 ).contains( 3 ) );
         assertFalse( hierarchy.getChildren( 2 ).contains( 8 ) );
     }
-    
+
     private Set<Integer> getSet( Integer... ints )
     {
         Set<Integer> set = new HashSet<Integer>();
-        
-        for ( Integer i : ints )
-        {
-            set.add( i );
-        }
-        
+
+        Collections.addAll( set, ints );
+
         return set;
     }
 }

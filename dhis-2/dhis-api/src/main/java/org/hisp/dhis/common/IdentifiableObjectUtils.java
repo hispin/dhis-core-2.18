@@ -31,6 +31,7 @@ package org.hisp.dhis.common;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -140,10 +141,7 @@ public class IdentifiableObjectUtils
 
         if ( objects != null )
         {
-            for ( IdentifiableObject object : objects )
-            {
-                list.add( object );
-            }
+            Collections.addAll( list, objects );
         }
 
         return list;
