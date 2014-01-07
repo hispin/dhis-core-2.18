@@ -204,6 +204,8 @@
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programPatientAttributeService"
+			ref="org.hisp.dhis.program.ProgramPatientAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageService" class="org.hisp.dhis.program.DefaultProgramStageService">
@@ -262,8 +264,6 @@
 
 	<bean id="org.hisp.dhis.patient.PatientAttributeService" class="org.hisp.dhis.patient.DefaultPatientAttributeService">
 		<property name="patientAttributeStore" ref="org.hisp.dhis.patient.PatientAttributeStore" />
-		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
@@ -318,8 +318,6 @@
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="patientCommentService"
 			ref="org.hisp.dhis.patientcomment.PatientCommentService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
@@ -470,6 +468,19 @@
 	<bean id="org.hisp.dhis.patient.PatientReminderStore"
 		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
 		<property name="clazz" value="org.hisp.dhis.patient.PatientReminder" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Program Patient Attribute -->
+
+	<bean id="org.hisp.dhis.program.ProgramPatientAttributeService"
+		class="org.hisp.dhis.program.DefaultProgramPatientAttributeService">
+		<property name="programPatientAttributeStore"
+			ref="org.hisp.dhis.program.ProgramPatientAttributeStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramPatientAttributeStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramPatientAttributeStore">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 

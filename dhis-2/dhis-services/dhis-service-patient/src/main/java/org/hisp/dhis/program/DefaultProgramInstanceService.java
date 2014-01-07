@@ -139,12 +139,19 @@ public class DefaultProgramInstanceService
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private ProgramPatientAttributeService programPatientAttributeService;
+
+    public void setProgramPatientAttributeService( ProgramPatientAttributeService programPatientAttributeService )
+    {
+        this.programPatientAttributeService = programPatientAttributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
 
     public int addProgramInstance( ProgramInstance programInstance )
-    {    
+    {
         return programInstanceStore.save( programInstance );
     }
 
@@ -277,7 +284,7 @@ public class DefaultProgramInstanceService
         attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
         attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
         attrGrid.addHeader( new GridHeader( "", true, false ) );
-      
+
         // ---------------------------------------------------------------------
         // Add dynamic attribues
         // ---------------------------------------------------------------------
@@ -292,7 +299,7 @@ public class DefaultProgramInstanceService
 
         for ( Program program : programs )
         {
-            Collection<PatientAttribute> atttributes = program.getPatientAttributes();
+            Collection<PatientAttribute> atttributes = programPatientAttributeService.getListPatientAttribute( program );
             while ( iterAttribute.hasNext() )
             {
                 PatientAttributeValue attributeValue = iterAttribute.next();
@@ -435,8 +442,9 @@ public class DefaultProgramInstanceService
 
         // Get patient-attribute-values which belong to the program
 
-        Collection<PatientAttribute> attrtibutes = programInstance.getProgram().getPatientAttributes();
-        for ( PatientAttribute attrtibute : attrtibutes )
+        Collection<PatientAttribute> atttributes = programPatientAttributeService.getListPatientAttribute( programInstance.getProgram() );
+       
+        for ( PatientAttribute attrtibute : atttributes )
         {
             PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
                 attrtibute );
@@ -448,8 +456,8 @@ public class DefaultProgramInstanceService
             }
         }
 
-        //Get patient comments for the program instance
-        
+        // Get patient comments for the program instance
+
         Set<PatientComment> patientComments = programInstance.getPatientComments();
 
         for ( PatientComment patientComment : patientComments )
@@ -611,10 +619,10 @@ public class DefaultProgramInstanceService
         for ( ProgramStage programStage : program.getProgramStages() )
         {
             if ( programStage.getAutoGenerateEvent() )
-            {  
+            {
                 ProgramStageInstance programStageInstance = generateEvent( programInstance, programStage,
                     programInstance.getEnrollmentDate(), programInstance.getDateOfIncident(), organisationUnit );
-                
+
                 if ( programStageInstance != null )
                 {
                     programStageInstanceService.addProgramStageInstance( programStageInstance );
@@ -819,7 +827,7 @@ public class DefaultProgramInstanceService
                 grid.addRow();
                 grid.addValue( programStageInstance.getProgramStage().getReportDateDescription() );
                 grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
-            }          
+            }
 
             // SMS messages
 

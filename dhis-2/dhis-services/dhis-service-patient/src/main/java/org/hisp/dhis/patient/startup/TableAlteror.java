@@ -289,7 +289,13 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
-        executeSql( "update patientattribute set displayedInList=false where displayedInList is null" );
+        
+        executeSql( "UPDATE patientattribute set displayedInList=false WHERE displayedInList is null" );
+        executeSql( "INSERT INTO program_programpatientAttributes (programid, programpatientattributeid, displayedInList ) "
+            + "SELECT programid,patientattributeid, displayedInList FROM program_patientattributes pp "
+            + "INNER JOIN patientattribute pa ON pp.patientattributeid=pa.patientattributeid" );
+//        executeSql( "DROP TABLE program_patientattributes" );
+//        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
     }
 
     // -------------------------------------------------------------------------
@@ -463,7 +469,6 @@ public class TableAlteror
         try
         {
             Statement statement = holder.getStatement();
-
             
             ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patientattribute" );
 

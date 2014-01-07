@@ -30,26 +30,23 @@ package org.hisp.dhis.patient.action.program;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramPatientAttribute;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -108,6 +105,13 @@ public class AddProgramAction
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
+    }
+
+    private ProgramPatientAttributeService programPatientAttributeService;
+
+    public void setProgramPatientAttributeService( ProgramPatientAttributeService programPatientAttributeService )
+    {
+        this.programPatientAttributeService = programPatientAttributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -293,8 +297,9 @@ public class AddProgramAction
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
+        programService.addProgram( program );
+
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
-        List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
         int index = 0;
         for ( String selectedPropertyId : selectedPropertyIds )
         {
@@ -313,19 +318,19 @@ public class AddProgramAction
             {
                 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
                     .parseInt( ids[1] ) );
-                patientAttribute.setDisplayedInList( personDisplayNames.get( index ) );
-                patientAttributeService.updatePatientAttribute( patientAttribute );
 
-                patientAttributes.add( patientAttribute );
+                ProgramPatientAttribute programPatientAttribute = new ProgramPatientAttribute( program,
+                    patientAttribute, personDisplayNames.get( index ) );
+                programPatientAttributeService.addProgramPatientAttribute( programPatientAttribute );
             }
 
             index++;
         }
 
         program.setPatientIdentifierTypes( identifierTypes );
-        program.setPatientAttributes( patientAttributes );
+        // program.setPatientAttributes( patientAttributes );
 
-        programService.addProgram( program );
+        programService.updateProgram( program );
 
         if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION )
             || program.getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )

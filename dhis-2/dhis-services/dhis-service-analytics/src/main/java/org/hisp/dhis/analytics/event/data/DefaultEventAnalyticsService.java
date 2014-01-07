@@ -38,6 +38,7 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +72,7 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -78,6 +80,8 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.sun.org.apache.bcel.internal.classfile.Attribute;
 
 /**
  * @author Lars Helge Overland
@@ -124,6 +128,9 @@ public class DefaultEventAnalyticsService
     
     @Autowired
     private AnalyticsService analyticsService;
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // EventAnalyticsService implementation
@@ -492,7 +499,8 @@ public class DefaultEventAnalyticsService
         
         PatientAttribute at = attributeService.getPatientAttribute( item );
         
-        if ( at != null && program.getPatientAttributes().contains( at ) )
+        Collection<PatientAttribute> attributes = programPatientAttributeService.getListPatientAttribute( program );
+        if ( at != null && attributes.contains( at ) )
         {
             return new QueryItem( at, operator, filter, at.isNumericType() );
         }

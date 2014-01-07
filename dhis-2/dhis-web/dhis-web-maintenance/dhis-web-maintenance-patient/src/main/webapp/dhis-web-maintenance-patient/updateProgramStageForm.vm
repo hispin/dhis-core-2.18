@@ -324,8 +324,8 @@
 							#foreach($identifierType in $program.patientIdentifierTypes)
 								<option value={identifierid=$identifierType.uid}>$identifierType.displayName</option>
 							#end
-							#foreach($patientAttribute in $program.patientAttributes)
-								<option value={attributeid=$patientAttribute.uid}>$patientAttribute.displayName</option>
+							#foreach($programPatientAttribute in $program.programPatientAttributes)
+								<option value={attributeid=$programPatientAttribute.patientAttribute.uid}>$programPatientAttribute.patientAttribute.displayName</option>
 							#end
 						</select>
 					</td>
@@ -397,8 +397,8 @@
 	#foreach($identifierType in $programStage.program.patientIdentifierTypes)
 		idenAttrOptions+="<option value={identifierid=$identifierType.uid}>$identifierType.displayName</option>";
 	#end
-	#foreach($patientAttribute in $programStage.program.patientAttributes)
-		idenAttrOptions+="<option value={attributeid=$patientAttribute.uid}>$patientAttribute.displayName</option>";
+	#foreach($programPatientAttribute in $programStage.program.programPatientAttributes)
+		idenAttrOptions+="<option value={attributeid=$programPatientAttribute.patientAttribute.uid}>$programPatientAttribute.patientAttribute.displayName</option>";
 	#end
 	
 </script>

@@ -49,7 +49,9 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramStage;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -99,6 +101,9 @@ public class GetTabularReportAction
     {
         this.organisationUnitService = organisationUnitService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -195,7 +200,6 @@ public class GetTabularReportAction
         return userOrgunitChildren;
     }
 
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -213,7 +217,7 @@ public class GetTabularReportAction
         for ( String dimension : tabularReport.getDimension() )
         {
             String dimensionId = DataQueryParams.getDimensionFromParam( dimension );
-            
+
             String[] filters = dimension.split( DataQueryParams.DIMENSION_NAME_SEP );
             if ( filters.length > 1 )
             {
@@ -247,7 +251,7 @@ public class GetTabularReportAction
 
                 PatientAttribute at = patientAttributeService.getPatientAttribute( dimensionId );
 
-                if ( at != null && program.getPatientAttributes().contains( at ) )
+                if ( at != null && programPatientAttributeService.getListPatientAttribute( program ).contains( at ) )
                 {
                     dimensionAttributes.add( at );
                 }
@@ -260,8 +264,8 @@ public class GetTabularReportAction
                 }
             }
         }
-        
-     // ---------------------------------------------------------------------
+
+        // ---------------------------------------------------------------------
         // Get filters
         // ---------------------------------------------------------------------
 
@@ -284,7 +288,7 @@ public class GetTabularReportAction
 
             PatientAttribute at = patientAttributeService.getPatientAttribute( filterId );
 
-            if ( at != null && program.getPatientAttributes().contains( at ) )
+            if ( at != null && programPatientAttributeService.getListPatientAttribute( program ).contains( at ) )
             {
                 filterAttributes.add( at );
             }
@@ -296,7 +300,6 @@ public class GetTabularReportAction
                 filterDataElements.add( de );
             }
         }
-        
 
         return SUCCESS;
     }

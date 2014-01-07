@@ -83,6 +83,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -166,6 +167,9 @@ public class ActivityReportingServiceImpl
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Setters
@@ -1272,11 +1276,11 @@ public class ActivityReportingServiceImpl
                 }
                 else
                 {
-                    //TODO handle
+                    // TODO handle
                 }
             }
         }
-        
+
         return programs;
     }
 
@@ -1616,7 +1620,7 @@ public class ActivityReportingServiceImpl
         if ( programId != null && !programId.trim().equals( "" ) )
         {
             Program program = programService.getProgram( Integer.parseInt( programId ) );
-            patientAttributes = program.getPatientAttributes();
+            patientAttributes = programPatientAttributeService.getListPatientAttribute( program );
         }
         else
         {

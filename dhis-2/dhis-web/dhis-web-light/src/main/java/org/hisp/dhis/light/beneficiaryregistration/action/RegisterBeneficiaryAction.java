@@ -35,8 +35,10 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -84,6 +86,9 @@ public class RegisterBeneficiaryAction
     {
         this.systemSettingManager = systemSettingManager;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -182,7 +187,7 @@ public class RegisterBeneficiaryAction
         for ( Program program : programs )
         {
             patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
-            patientAttributes.removeAll( program.getPatientAttributes() );
+            patientAttributes.removeAll( programPatientAttributeService.getListPatientAttribute( program ) );
         }
         return SUCCESS;
     }

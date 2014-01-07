@@ -51,10 +51,12 @@ import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -116,6 +118,9 @@ public class ShowEventWithRegistrationFormAction
     {
         this.attributeGroupService = attributeGroupService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     private I18n i18n;
 
@@ -188,7 +193,7 @@ public class ShowEventWithRegistrationFormAction
             for ( Program p : programs )
             {
                 identifierTypes.removeAll( p.getPatientIdentifierTypes() );
-                patientAttributesInProgram.addAll( p.getPatientAttributes() );
+                patientAttributesInProgram.addAll( programPatientAttributeService.getListPatientAttribute( p ) );
             }
 
             attributeGroups = new ArrayList<PatientAttributeGroup>(

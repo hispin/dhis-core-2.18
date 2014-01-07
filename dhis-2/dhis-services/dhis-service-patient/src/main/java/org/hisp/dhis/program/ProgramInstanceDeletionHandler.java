@@ -31,9 +31,6 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.patientcomment.PatientCommentService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -71,14 +68,7 @@ public class ProgramInstanceDeletionHandler
     {
         this.patientCommentService = patientCommentService;
     }
-
-    private PatientAttributeValueService patientAttributeValueService;
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
+    
     public ProgramStageDataElementService programStageDEService;
 
     public void setProgramStageDEService( ProgramStageDataElementService programStageDEService )
@@ -110,7 +100,8 @@ public class ProgramInstanceDeletionHandler
         {
             for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
             {
-                for ( PatientDataValue patientDataValue : patientDataValueService.getPatientDataValues( programStageInstance ) )
+                for ( PatientDataValue patientDataValue : patientDataValueService
+                    .getPatientDataValues( programStageInstance ) )
                 {
                     patientDataValueService.deletePatientDataValue( patientDataValue );
                 }
@@ -121,20 +112,6 @@ public class ProgramInstanceDeletionHandler
             for ( PatientComment patientComment : programInstance.getPatientComments() )
             {
                 patientCommentService.deletePatientComment( patientComment );
-            }
-
-            if ( programInstance.getProgram() != null && programInstance.getProgram().getPatientAttributes() != null )
-            {            
-                for ( PatientAttribute patientAttribute : programInstance.getProgram().getPatientAttributes() )
-                {
-                    PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue(
-                        patient, patientAttribute );
-    
-                    if ( patientAttributeValue != null )
-                    {
-                        patientAttributeValueService.deletePatientAttributeValue( patientAttributeValue );
-                    }
-                }
             }
 
             programInstanceService.deleteProgramInstance( programInstance );

@@ -32,12 +32,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -65,6 +67,9 @@ public class GetValidationCriteriaAction
     {
         this.programService = programService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -121,7 +126,8 @@ public class GetValidationCriteriaAction
 
         program = programService.getProgram( programId );
 
-        patientAttributes = new ArrayList<PatientAttribute>( program.getPatientAttributes() );
+        patientAttributes = new ArrayList<PatientAttribute>(
+            programPatientAttributeService.getListPatientAttribute( program ) );
 
         Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 

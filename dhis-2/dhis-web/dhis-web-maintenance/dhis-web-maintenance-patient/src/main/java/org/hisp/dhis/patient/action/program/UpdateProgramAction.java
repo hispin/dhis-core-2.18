@@ -37,6 +37,8 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttribute;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
@@ -80,6 +82,13 @@ public class UpdateProgramAction
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
+    }
+
+    private ProgramPatientAttributeService programPatientAttributeService;
+
+    public void setProgramPatientAttributeService( ProgramPatientAttributeService programPatientAttributeService )
+    {
+        this.programPatientAttributeService = programPatientAttributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -315,7 +324,6 @@ public class UpdateProgramAction
         program.setRelationshipText( relationshipText );
 
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
-        List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
         int index = 0;
         for ( String selectedPropertyId : selectedPropertyIds )
         {
@@ -335,16 +343,26 @@ public class UpdateProgramAction
             {
                 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
                     .parseInt( ids[1] ) );
-                patientAttribute.setDisplayedInList( personDisplayNames.get( index ) );
-                patientAttributeService.updatePatientAttribute( patientAttribute );
 
-                patientAttributes.add( patientAttribute );
+                ProgramPatientAttribute programPatientAttribute = programPatientAttributeService.get( program,
+                    patientAttribute );
+                
+                if ( programPatientAttribute == null )
+                {
+                    programPatientAttribute = new ProgramPatientAttribute( program, patientAttribute,
+                        personDisplayNames.get( index ) );
+                    programPatientAttributeService.addProgramPatientAttribute( programPatientAttribute );
+                }
+                else
+                {
+                    programPatientAttribute.setDisplayedInList( personDisplayNames.get( index ) );
+                    programPatientAttributeService.updateProgramPatientAttribute( programPatientAttribute );
+                }
             }
             index++;
         }
 
         program.setPatientIdentifierTypes( identifierTypes );
-        program.setPatientAttributes( patientAttributes );
 
         if ( relatedProgramId != null )
         {

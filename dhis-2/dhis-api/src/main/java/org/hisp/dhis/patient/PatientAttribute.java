@@ -72,7 +72,7 @@ public class PatientAttribute
     public static final String TYPE_PHONE_NUMBER = "phoneNumber";
 
     public static final String TYPE_TRACKER_ASSOCIATE = "trackerAssociate";
-    
+
     public static final String TYPE_USERS = "users";
 
     public static final String TYPE_AGE = "age";
@@ -96,8 +96,6 @@ public class PatientAttribute
     private Boolean displayOnVisitSchedule = false;
 
     private Integer sortOrderInVisitSchedule;
-
-    private Boolean displayedInList = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -213,7 +211,7 @@ public class PatientAttribute
         this.description = description;
     }
 
-    //TODO remove WithoutOrganisationUnitsView, temporary hack
+    // TODO remove WithoutOrganisationUnitsView, temporary hack
     @JsonProperty
     @JsonView( { DetailedView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -280,23 +278,10 @@ public class PatientAttribute
         this.sortOrderInVisitSchedule = sortOrderInVisitSchedule;
     }
 
-    @JsonProperty
-    @JsonView( { DetailedView.class } )
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Boolean getDisplayedInList()
-    {
-        return displayedInList;
-    }
-
-    public void setDisplayedInList( Boolean displayedInList )
-    {
-        this.displayedInList = displayedInList;
-    }
-
     // -------------------------------------------------------------------------
     // Static methods
     // -------------------------------------------------------------------------
-    
+
     public static Date getDateFromAge( int age )
     {
         Calendar todayCalendar = Calendar.getInstance();

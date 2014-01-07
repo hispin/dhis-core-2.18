@@ -56,6 +56,7 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -65,6 +66,7 @@ import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -104,6 +106,9 @@ public class SaveMobileProgramEnrollmentAction
     {
         this.programStageInstanceService = programStageInstanceService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     private FormUtils formUtils;
 
@@ -303,7 +308,7 @@ public class SaveMobileProgramEnrollmentAction
     {
         patient = patientService.getPatient( patientId );
         program = programService.getProgram( programId );
-        patientAttributes = program.getPatientAttributes();
+        patientAttributes = programPatientAttributeService.getListPatientAttribute( program );
         patientIdentifierTypes = program.getPatientIdentifierTypes();
 
         List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();

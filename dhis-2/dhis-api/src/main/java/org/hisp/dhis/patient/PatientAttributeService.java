@@ -139,11 +139,6 @@ public interface PatientAttributeService
      */
     Collection<PatientAttribute> getPatientAttributesByDisplayOnVisitSchedule( boolean displayOnVisitSchedule );
     
-    /**
-     * Get patient attributes without Program
-     * 
-     * @return List of patient attributes without Program
-     */
     Collection<PatientAttribute> getPatientAttributesWithoutProgram();
 
 }
