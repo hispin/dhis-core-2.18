@@ -28,9 +28,6 @@
         }
     },
     "default_locale": "en",
-    "permissions": {
-        "systemXHR": {}
-    },
     "activities": {
       "dhis": {
         "href": "http://localhost:8080/dhis"
