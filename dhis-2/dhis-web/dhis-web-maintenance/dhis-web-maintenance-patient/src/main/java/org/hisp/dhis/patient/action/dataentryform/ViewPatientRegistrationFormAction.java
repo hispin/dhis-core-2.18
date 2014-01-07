@@ -40,9 +40,11 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserSettingService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -99,6 +101,9 @@ public class ViewPatientRegistrationFormAction
     {
         this.userSettingService = userSettingService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Getters & Setters
@@ -173,17 +178,17 @@ public class ViewPatientRegistrationFormAction
             for ( Program p : programs )
             {
                 identifierTypes.remove( p.getPatientIdentifierTypes() );
-                attributes.remove( p.getPatientAttributes() );
+                attributes.remove(programPatientAttributeService.getListPatientAttribute( p ) );
             }
         }
         else
         {
             program = programService.getProgram( programId );
             identifierTypes = program.getPatientIdentifierTypes();
-            attributes = program.getPatientAttributes();
+            attributes.remove(programPatientAttributeService.getListPatientAttribute( program ) );
             registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
         }
-        
+
         // ---------------------------------------------------------------------
         // Get images
         // ---------------------------------------------------------------------

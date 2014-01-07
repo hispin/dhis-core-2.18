@@ -14,15 +14,19 @@
 			compulsaryIdentifier.empty();
 			
 			if( getFieldValue('type') != 3 ){
-				if(  jQuery("#selectedList").find("tr").length > 0){
-					compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
-				}
+				var isDisplayed = false;
 				jQuery("#selectedList").find("tr").each( function( i, item ){
 					selectedPropertyIds.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
 					var displayed = jQuery( item ).find( "input[name='displayed']:first");
 					var checked = displayed.attr('checked') ? true : false;
+					if( checked ){
+						isDisplayed = true
+					}
 					personDisplayNames.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 				});
+				if( jQuery("#selectedList").find("tr").length > 0 && isDisplayed ){
+					compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
+				}
 			}
 			else{
 				compulsaryIdentifier.append( "<option value='0' selected='true'></option>");
@@ -263,10 +267,10 @@
 									<td align="center"><input type="checkbox" name="displayed" value="iden_$identifier.id" #if($identifier.personDisplayName == true ) checked #end #if($program.type==3) disabled #end /></td>
 								</tr>
 							#end
-							#foreach( $attribute in $program.patientAttributes )
-								<tr ondblclick="unSelectProperties( this )" id="attr_$attribute.id">
+							#foreach( $programPatientAttribute in $program.programPatientAttributes )
+								<tr ondblclick="unSelectProperties( this )" id="attr_$programPatientAttribute.patientAttribute.id">
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $attribute.name )</td>
-									<td align="center"><input type="checkbox" name="displayed" value="attr_$attribute.id" #if($attribute.displayedInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
+									<td align="center"><input type="checkbox" name="displayed" value="attr_$programPatientAttribute.patientAttribute.id" #if($programPatientAttribute.patientAttribute.displayedInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
 								</tr>
 							#end
 						</tbody>

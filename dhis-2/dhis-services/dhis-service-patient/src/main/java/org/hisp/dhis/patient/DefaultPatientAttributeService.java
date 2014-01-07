@@ -28,14 +28,10 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
-import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -57,24 +53,13 @@ public class DefaultPatientAttributeService
         this.patientAttributeStore = patientAttributeStore;
     }
 
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService service )
-    {
-        i18nService = service;
-    }
-    
-    private ProgramService programService;
-    
-    public void setProgramService( ProgramService programService)
-    {
-    	this.programService = programService;
-    }
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-    
+
     public void deletePatientAttribute( PatientAttribute patientAttribute )
     {
         patientAttributeStore.delete( patientAttribute );
@@ -82,12 +67,12 @@ public class DefaultPatientAttributeService
 
     public Collection<PatientAttribute> getAllPatientAttributes()
     {
-        return i18n( i18nService, patientAttributeStore.getAll() );
+        return patientAttributeStore.getAll();
     }
 
     public PatientAttribute getPatientAttribute( int id )
     {
-        return i18n( i18nService, patientAttributeStore.get( id ) );
+        return patientAttributeStore.get( id );
     }
 
     public int savePatientAttribute( PatientAttribute patientAttribute )
@@ -102,57 +87,51 @@ public class DefaultPatientAttributeService
 
     public Collection<PatientAttribute> getPatientAttributesByValueType( String valueType )
     {
-        return i18n( i18nService, patientAttributeStore.getByValueType( valueType ) );
+        return patientAttributeStore.getByValueType( valueType );
     }
 
     public PatientAttribute getPatientAttributeByName( String name )
     {
-        return i18n( i18nService, patientAttributeStore.getByName( name ) );
+        return patientAttributeStore.getByName( name );
     }
 
-    public PatientAttribute getPatientAttributeByGroupBy( )
+    public PatientAttribute getPatientAttributeByGroupBy()
     {
-        return i18n( i18nService, patientAttributeStore.getByGroupBy( ) );
+        return patientAttributeStore.getByGroupBy();
     }
 
     public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
     {
-        return i18n( i18nService, patientAttributeStore.getOptionalPatientAttributesWithoutGroup() );
+        return patientAttributeStore.getOptionalPatientAttributesWithoutGroup();
     }
 
     public Collection<PatientAttribute> getPatientAttributesByMandatory( boolean mandatory )
     {
-        return i18n( i18nService, patientAttributeStore.getByMandatory( mandatory ) );
+        return patientAttributeStore.getByMandatory( mandatory );
     }
 
     public Collection<PatientAttribute> getPatientAttributesWithoutGroup()
     {
-        return i18n( i18nService, patientAttributeStore.getWithoutGroup() );
+        return patientAttributeStore.getWithoutGroup();
     }
 
     public PatientAttribute getPatientAttribute( String uid )
     {
-        return i18n( i18nService, patientAttributeStore.getByUid( uid ) );
+        return patientAttributeStore.getByUid( uid );
     }
-    
+
     public Collection<PatientAttribute> getPatientAttributesByDisplayOnVisitSchedule( boolean displayOnVisitSchedule )
     {
-        return i18n( i18nService, patientAttributeStore.getByDisplayOnVisitSchedule( displayOnVisitSchedule ) );
+        return patientAttributeStore.getByDisplayOnVisitSchedule( displayOnVisitSchedule );
     }
 
     public Collection<PatientAttribute> getPatientAttributesWithoutProgram()
     {
-        Collection<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-        Collection<Program> programs = new ArrayList<Program>();
+        Collection<PatientAttribute> programPatientAttributes = programPatientAttributeService.getPatientAttributes();
+        
+        Collection<PatientAttribute> patientAttributes = patientAttributeStore.getAll();
+        patientAttributes.removeAll( programPatientAttributes );
 
-        attributes = patientAttributeStore.getAll();
-        programs = programService.getAllPrograms();
-
-        for ( Program p : programs )
-        {
-            attributes.removeAll( p.getPatientAttributes() );
-        }
-
-        return i18n( i18nService, attributes );
-    }   
+        return patientAttributes;
+    }
 }

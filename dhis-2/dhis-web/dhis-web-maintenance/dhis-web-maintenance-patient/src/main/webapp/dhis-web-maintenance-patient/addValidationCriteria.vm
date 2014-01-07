@@ -26,12 +26,12 @@
 				<td>
 					<select id='property' name='property' style='width:16em' onChange="showDivValue();">
 						<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-						#foreach($patientAttribute in $program.patientAttributes)
+						#foreach($programPatientAttribute in $program.programPatientAttributes)
 							#set($opt="")
-							#foreach($option in $patientAttribute.attributeOptions)
+							#foreach($option in $programPatientAttribute.patientAttribute.attributeOptions)
 								#set($opt=$opt + ';' + $option.name )
 							#end 
-						<option value="$patientAttribute.uid" opt="$opt">$patientAttribute.displayName</option>
+						<option value="$programPatientAttribute.patientAttribute.uid" opt="$opt">$programPatientAttribute.patientAttribute.displayName</option>
 						#end
 					</select>
 				</td>

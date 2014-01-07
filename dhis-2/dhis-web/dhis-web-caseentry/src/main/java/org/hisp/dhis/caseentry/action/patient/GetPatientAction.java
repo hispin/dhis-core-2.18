@@ -56,12 +56,14 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -95,6 +97,9 @@ public class GetPatientAction
     private PatientAttributeGroupService attributeGroupService;
 
     private PatientAttributeService attributeService;
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     private I18n i18n;
 
@@ -248,13 +253,13 @@ public class GetPatientAction
                 for ( Program p : programs )
                 {
                     identifierTypes.removeAll( p.getPatientIdentifierTypes() );
-                    attributes.removeAll( p.getPatientAttributes() );
+                    attributes.removeAll( programPatientAttributeService.getListPatientAttribute( p ) );
                 }
             }
             else
             {
                 identifierTypes = program.getPatientIdentifierTypes();
-                attributes = program.getPatientAttributes();
+                attributes.removeAll( programPatientAttributeService.getListPatientAttribute( program ) );
             }
 
             for ( PatientAttribute attribute : attributes )

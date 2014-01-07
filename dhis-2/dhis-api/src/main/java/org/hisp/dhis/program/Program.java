@@ -43,7 +43,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -111,7 +110,7 @@ public class Program
 
     private List<PatientIdentifierType> patientIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
-    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
+    private List<ProgramPatientAttribute> programPatientAttributes = new ArrayList<ProgramPatientAttribute>();
 
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
 
@@ -384,20 +383,6 @@ public class Program
         this.patientIdentifierTypes = patientIdentifierTypes;
     }
 
-    @JsonProperty( value = "attributes" )
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlElementWrapper( localName = "attributes", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
-    public List<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
-
-    public void setPatientAttributes( List<PatientAttribute> patientAttributes )
-    {
-        this.patientAttributes = patientAttributes;
-    }
-
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -517,7 +502,7 @@ public class Program
     {
         this.displayOnAllOrgunit = displayOnAllOrgunit;
     }
-    
+
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -607,5 +592,15 @@ public class Program
     public void setDataEntryMethod( Boolean dataEntryMethod )
     {
         this.dataEntryMethod = dataEntryMethod;
+    }
+
+    public List<ProgramPatientAttribute> getProgramPatientAttributes()
+    {
+        return programPatientAttributes;
+    }
+
+    public void setProgramPatientAttributes( List<ProgramPatientAttribute> programPatientAttributes )
+    {
+        this.programPatientAttributes = programPatientAttributes;
     }
 }

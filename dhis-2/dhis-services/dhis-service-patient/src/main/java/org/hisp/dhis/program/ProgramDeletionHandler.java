@@ -31,7 +31,6 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -76,7 +75,7 @@ public class ProgramDeletionHandler
             programService.updateProgram( program );
         }
     }
-    
+
     @Override
     public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
     {
@@ -88,26 +87,14 @@ public class ProgramDeletionHandler
             programService.updateProgram( program );
         }
     }
-    
-    @Override
-    public void deletePatientAttribute( PatientAttribute patientAttribute )
-    {
-        Collection<Program> programs = programService.getAllPrograms();
 
-        for ( Program program : programs )
-        {
-            program.getPatientAttributes().clear();
-            programService.updateProgram( program );
-        }
-    }
-    
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        //TODO improve performance
-        
+        // TODO improve performance
+
         Collection<Program> programs = programService.getAllPrograms();
-        
+
         for ( Program program : programs )
         {
             if ( program.getOrganisationUnits().remove( unit ) )
@@ -116,7 +103,7 @@ public class ProgramDeletionHandler
             }
         }
     }
-    
+
     @Override
     public void deleteUserAuthorityGroup( UserAuthorityGroup group )
     {

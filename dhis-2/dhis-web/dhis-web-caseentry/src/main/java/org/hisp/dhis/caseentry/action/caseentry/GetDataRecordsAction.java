@@ -51,9 +51,11 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class GetDataRecordsAction
     extends ActionPagingSupport<Patient>
@@ -103,6 +105,9 @@ public class GetDataRecordsAction
     {
         this.patientAttributeValueService = patientAttributeValueService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     private I18n i18n;
 
@@ -236,7 +241,8 @@ public class GetDataRecordsAction
         {
             program = programService.getProgram( programId );
             identifierTypes = program.getPatientIdentifierTypes();
-            attributes = program.getPatientAttributes();
+            attributes = new ArrayList<PatientAttribute>(
+                programPatientAttributeService.getListPatientAttribute( program ) );
         }
 
         if ( searchTexts.size() > 0 )

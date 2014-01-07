@@ -47,13 +47,14 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -102,7 +103,7 @@ public class ShowAddPatientFormAction
     {
         this.attributeService = attributeService;
     }
-    
+
     private PatientAttributeGroupService attributeGroupService;
 
     public void setAttributeGroupService( PatientAttributeGroupService attributeGroupService )
@@ -116,6 +117,9 @@ public class ShowAddPatientFormAction
     {
         this.relationshipTypeService = relationshipTypeService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     private I18n i18n;
 
@@ -318,13 +322,13 @@ public class ShowAddPatientFormAction
                 for ( Program p : programs )
                 {
                     identifierTypes.removeAll( p.getPatientIdentifierTypes() );
-                    attributes.removeAll( p.getPatientAttributes() );
+                    attributes.removeAll( programPatientAttributeService.getListPatientAttribute( p ) );
                 }
             }
             else
             {
                 identifierTypes = program.getPatientIdentifierTypes();
-                attributes = program.getPatientAttributes();
+                attributes = new ArrayList<PatientAttribute>( programPatientAttributeService.getListPatientAttribute( program ) );
             }
 
             for ( PatientAttribute attribute : attributes )

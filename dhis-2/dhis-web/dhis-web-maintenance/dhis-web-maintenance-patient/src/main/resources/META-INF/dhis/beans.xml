@@ -181,6 +181,8 @@
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="programPatientAttributeService"
+			ref="org.hisp.dhis.program.ProgramPatientAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramListAction"

@@ -30,12 +30,15 @@ package org.hisp.dhis.patient.action.patientreminder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -71,6 +74,9 @@ public class GetPatientReminderAction
     {
         this.userGroupService = userGroupService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -111,6 +117,13 @@ public class GetPatientReminderAction
         return userGroups;
     }
 
+    public List<PatientAttribute> attributes;
+
+    public List<PatientAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -124,6 +137,8 @@ public class GetPatientReminderAction
         program = programService.getProgram( programId );
 
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        
+        attributes = new ArrayList<PatientAttribute>( programPatientAttributeService.getListPatientAttribute( program ) );
 
         return SUCCESS;
     }

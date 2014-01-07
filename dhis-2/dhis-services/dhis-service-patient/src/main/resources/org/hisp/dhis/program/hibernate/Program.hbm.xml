@@ -8,7 +8,7 @@
 <hibernate-mapping>
 	<class name="org.hisp.dhis.program.Program" table="program">
 
-        <cache usage="read-write" />
+		<cache usage="read-write" />
 
 		<id name="id" column="programid">
 			<generator class="native" />
@@ -55,12 +55,12 @@
 				class="org.hisp.dhis.patient.PatientIdentifierType" foreign-key="fk_program_patientIdentifierTypes_patientidentifiertypeid" />
 		</list>
 
-		<list name="patientAttributes" table="program_patientAttributes">
+		<list name="programPatientAttributes" table="program_programpatientAttributes">
 			<key column="programid" foreign-key="fk_program_patientAttributes_programid" />
 			<list-index column="sort_order" base="0" />
-			<many-to-many column="patientattributeid"
-				class="org.hisp.dhis.patient.PatientAttribute" foreign-key="fk_program_patientAttributes_patientattributeid" />
+			<one-to-many class="org.hisp.dhis.program.ProgramPatientAttribute" />
 		</list>
+
 		<property name="ignoreOverdueEvents" />
 
 		<set name="userRoles" table="program_userroles">
@@ -86,7 +86,7 @@
 		<property name="selectEnrollmentDatesInFuture" />
 
 		<property name="selectIncidentDatesInFuture" />
-		
+
 		<property name="relationshipText" />
 
 		<many-to-one name="relationshipType"
@@ -94,10 +94,10 @@
 			foreign-key="fk_program_relationshipid" />
 
 		<property name="relationshipFromA" />
-		
+
 		<many-to-one name="relatedProgram" class="org.hisp.dhis.program.Program"
 			column="relatedprogramid" foreign-key="fk_program_relatedprogram" />
-			
+
 		<property name="dataEntryMethod" />
 
 		<!-- Access properties -->

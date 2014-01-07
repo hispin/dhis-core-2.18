@@ -37,7 +37,9 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,6 +63,9 @@ public class GetProgramEnrollmentFormAction
     {
         this.programService = programService;
     }
+
+    @Autowired
+    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -164,7 +169,7 @@ public class GetProgramEnrollmentFormAction
             return REDIRECT;
         }
 
-        patientAttributes = program.getPatientAttributes();
+        patientAttributes = programPatientAttributeService.getListPatientAttribute( program );
         patientIdentifierTypes = program.getPatientIdentifierTypes();
         now = new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date() );
 
