@@ -244,7 +244,7 @@ public class PdfDataEntryFormImportUtil
         {
             patientDataValueService.deletePatientDataValue( patientDataValue );
         }
-        else if ( patientDataValue != null && value != null )
+        else if ( patientDataValue != null )
         {
             // LOG.debug( "Updating PatientDataValue, value added/changed" );
 
