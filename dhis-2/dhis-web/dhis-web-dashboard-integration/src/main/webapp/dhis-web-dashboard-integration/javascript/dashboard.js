@@ -87,7 +87,7 @@ dhis2.db.tmpl = {
 		     
 	reportTableItem: "<li id='liDrop-${itemId}' class='liDropItem'><div class='dropItem' id='drop-${itemId}' data-item='${itemId}'></div></li>" +
                "<li id='li-${itemId}' class='liItem'><div class='item' id='${itemId}'><div class='itemHeader'><a href='javascript:dhis2.db.removeItem( \"${itemId}\" )'>${i18n_remove}</a>" +
-               "<a href='javascript:dhis2.db.viewImage( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a>" +
+               "<a href='javascript:dhis2.db.viewReportDialog( \"../api/reportTables/${id}/data.html\", \"${name}\" )'>${i18n_view}</a>" +
                "<a href='javascript:dhis2.db.viewShareForm( \"${id}\", \"reportTable\", \"${name}\" )'>${i18n_share}</a></div>" +
                "<div id='pivot-${itemId}' onclick='dhis2.db.exploreReportTable( \"${id}\" )' title='${i18n_click}'></div>" +
                "<script type='text/javascript'>dhis2.db.renderReportTable( '${id}', '${itemId}' );</script></div></li>",
@@ -598,7 +598,7 @@ dhis2.db.renderReportTable = function( tableId, itemId )
 {
 	$.get( "../api/reportTables/" + tableId + "/data.html", function( data ) {
 		$( "#pivot-" + itemId ).html( data );
-	} );	
+	} );
 }
 
 //------------------------------------------------------------------------------
@@ -820,17 +820,38 @@ dhis2.db.showShareHelp = function()
 }
 
 //------------------------------------------------------------------------------
-// Chart
+// Full size view
 //------------------------------------------------------------------------------
 
 dhis2.db.viewImage = function( url, name )
 {
-  var width = 820;
-  var height = 550;
-  var title = i18n_viewing + " " + name;
+  var width = 820,
+      height = 550,
+      title = i18n_viewing + " " + name;
 
   $( "#chartImage" ).attr( "src", url );
+  
   $( "#chartView" ).dialog( {
+      autoOpen : true,
+      modal : true,
+      height : height + 65,
+      width : width + 25,
+      resizable : false,
+      title : title
+  } );
+}
+
+dhis2.db.viewReportDialog = function( url, name )
+{
+	var width = 820,
+		height = 550,
+		title = i18n_viewing + " " + name;
+
+	$.get( url, function( data ) {
+		$( "#reportDialogView" ).html( data );
+	} );
+	
+  $( "#reportDialogView" ).dialog( {
       autoOpen : true,
       modal : true,
       height : height + 65,
