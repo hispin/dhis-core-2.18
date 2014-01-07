@@ -168,19 +168,30 @@ public class LoadDataEntryFormAction implements Action
         return tariffOptCombo;
     }
     
+    private DataElementCategoryOptionCombo qValOptCombo;
+    
+    public DataElementCategoryOptionCombo getqValOptCombo() {
+		return qValOptCombo;
+	}
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
  
-    public String execute()
-    {
-        
+    
+
+	public String execute()
+    {    	
         dataValueMap = new HashMap<String, String>();
         
         
         Lookup lookup = lookupService.getLookupByName( Lookup.OC_TARIFF );
+        
+        Lookup lookup2 = lookupService.getLookupByName( Lookup.QV_TARIFF );
+        
+        tariffOptCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( lookup.getValue() ) );
 
-        DataElementCategoryOptionCombo tariffOptCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( lookup.getValue() ) );
+        qValOptCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( lookup.getValue() ) );
         
         organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
@@ -192,7 +203,7 @@ public class LoadDataEntryFormAction implements Action
         
         optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
         
-        Map<Integer, Integer> tariffDataValueMap = new HashMap<Integer, Integer>();
+        Map<Integer, Double> tariffDataValueMap = new HashMap<Integer, Double>();
         
         tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( organisationUnit, dataSet, period ) );
 
@@ -221,7 +232,7 @@ public class LoadDataEntryFormAction implements Action
                 {                    
                     if( decombo.getId() == tariffOptCombo.getId() )
                     {
-                        Integer tariffValue = tariffDataValueMap.get( dataElement.getId() );
+                    	Double tariffValue = tariffDataValueMap.get( dataElement.getId() );
                         
                         if( tariffValue != null )
                         {

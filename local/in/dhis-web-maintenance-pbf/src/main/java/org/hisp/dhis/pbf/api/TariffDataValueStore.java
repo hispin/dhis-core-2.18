@@ -25,7 +25,7 @@ public interface TariffDataValueStore
     
     Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet );
     
-    Map<Integer, Integer> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period );
+    Map<Integer, Double> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period );
     
     Collection<TariffDataValue> getTariffDataValues( OrganisationUnit organisationUnit, DataElement dataElement );
 }

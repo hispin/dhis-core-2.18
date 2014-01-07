@@ -118,9 +118,9 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         return criteria.list();
     }
 
-    public Map<Integer, Integer> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    public Map<Integer, Double> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
-        Map<Integer, Integer> tariffDataValueMap = new HashMap<Integer, Integer>();
+        Map<Integer, Double> tariffDataValueMap = new HashMap<Integer, Double>();
         
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String curPeriod = simpleDateFormat.format( period.getEndDate() );
@@ -138,7 +138,7 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
             while ( rs.next() )
             {
                 Integer dataElementId = rs.getInt( 1 );
-                Integer value = rs.getInt( 2 );
+                Double value = rs.getDouble( 2 );
                 tariffDataValueMap.put( dataElementId, value );
             }
         }

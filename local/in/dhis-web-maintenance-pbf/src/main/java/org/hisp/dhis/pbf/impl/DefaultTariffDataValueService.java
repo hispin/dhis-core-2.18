@@ -73,7 +73,7 @@ public class DefaultTariffDataValueService implements TariffDataValueService
         return tariffDataValueStore.getTariffDataValues( organisationUnit, dataElement );
     }
 
-    public Map<Integer, Integer> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    public Map<Integer, Double> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
         return tariffDataValueStore.getTariffDataValues( organisationUnit, dataSet, period );
     }
