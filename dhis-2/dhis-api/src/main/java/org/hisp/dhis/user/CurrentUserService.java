@@ -54,7 +54,7 @@ public interface CurrentUserService
     User getCurrentUser();
     
     /**
-     * @return true if the current logged in user has the ALL priviliges set, false
+     * @return true if the current logged in user has the ALL privileges set, false
      *         otherwise.
      */
     boolean currentUserIsSuper();
