@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.program.ProgramPatientIdentifierType" table="program_identifierTypes">
+
+    <composite-id>
+      <key-many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid"
+        foreign-key="fk_programidentifierTypes_programid" />
+      <key-many-to-one name="patientIdentifierType" class="org.hisp.dhis.patient.PatientIdentifierType" column="patientidentifiertypeid"
+        foreign-key="fk_program_patientidentifiertypeid" />
+    </composite-id>
+	
+	<property name="displayedInList"/>
+
+  </class>
+</hibernate-mapping>
