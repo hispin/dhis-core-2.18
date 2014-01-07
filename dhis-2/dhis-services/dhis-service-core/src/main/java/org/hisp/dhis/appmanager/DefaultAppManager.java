@@ -66,7 +66,7 @@ public class DefaultAppManager
     @PostConstruct
     private void init()
     {
-        reloadAppsInternal();
+        reloadApps();
         
         log.info( "Detecting apps: " + apps );
     }
@@ -142,7 +142,7 @@ public class DefaultAppManager
 
         zip.close();
                 
-        reloadAppsInternal(); // Reload app state
+        reloadApps(); // Reload app state
     }
 
     @Override
@@ -166,7 +166,7 @@ public class DefaultAppManager
                 }
                 finally
                 {
-                    reloadAppsInternal(); // Reload app state
+                    reloadApps(); // Reload app state
                 }
             }
         }
@@ -221,7 +221,8 @@ public class DefaultAppManager
     /**
      * Sets the list of apps with detected apps from the file system.
      */
-    private void reloadAppsInternal()
+    @Override
+    public void reloadApps()
     {
         List<App> appList = new ArrayList<App>();
         ObjectMapper mapper = new ObjectMapper();

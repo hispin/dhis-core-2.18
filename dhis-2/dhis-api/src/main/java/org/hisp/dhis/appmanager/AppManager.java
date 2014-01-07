@@ -113,4 +113,9 @@ public interface AppManager
      * @param appBaseUrl
      */
     void setAppBaseUrl( String appBaseUrl );
+
+    /**
+     * Reload list of apps.
+     */
+    void reloadApps();
 }

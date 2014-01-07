@@ -28,11 +28,7 @@ package org.hisp.dhis.appmanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
@@ -40,7 +36,9 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.List;
 
 /**
  * @author Saptarshi Purkayastha
@@ -78,7 +76,7 @@ public class AppSettingsAction
             {
                 appFolderPath = realPath + File.separatorChar + "apps";
             }
-            
+
             appManager.setAppFolderPath( appFolderPath );
         }
 
@@ -156,6 +154,8 @@ public class AppSettingsAction
     public String execute()
     {
         message = i18n.getString( "appmanager_saved_settings" );
+        appManager.reloadApps();
+
         return isSaved ? SUCCESS : "getSuccess";
     }
 }
