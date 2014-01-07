@@ -100,9 +100,9 @@ public interface PatientDataValueStore
 
     /**
      * Retrieve patient data values of a {@link Patient} on a
-     * {@link DataElement} lisy
+     * {@link DataElement} list.
      * 
-     * @patient patient Patient
+     * @param patient Patient
      * @param dataElements The data element list
      * @param after Optional date the instance should be on or after.
      * @param before Optional date the instance should be on or before.

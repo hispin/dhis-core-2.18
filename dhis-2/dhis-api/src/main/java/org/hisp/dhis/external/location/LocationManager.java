@@ -79,7 +79,7 @@ public interface LocationManager
      * Gets a file relative to the external configuration directory location,
      * which is set through an environment variable. A LocationManagerException 
      * is thrown if the external directory location is not set, if the file 
-     * does not exists, or cannot be read by the appliation.
+     * does not exists, or cannot be read by the application.
      * 
      * @param fileName the name of the file to be read.
      * @param directories the directories in the path relative to the external
@@ -161,7 +161,7 @@ public interface LocationManager
     
     /**
      * Indicates whether the external configuration directory is set, valid,
-     * and writeable.
+     * and writable.
      */
     boolean externalDirectorySet();
     

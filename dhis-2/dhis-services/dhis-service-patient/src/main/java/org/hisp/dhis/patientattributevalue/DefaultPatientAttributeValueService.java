@@ -206,9 +206,9 @@ public class DefaultPatientAttributeValueService
         }
     }
 
-    public int countByPatientAttributeoption( PatientAttributeOption attributeOption )
+    public int countByPatientAttributeOption( PatientAttributeOption attributeOption )
     {
-        return patientAttributeValueStore.countByPatientAttributeoption( attributeOption );
+        return patientAttributeValueStore.countByPatientAttributeOption( attributeOption );
     }
 
     public Collection<Patient> getPatient( PatientAttribute attribute, String value )

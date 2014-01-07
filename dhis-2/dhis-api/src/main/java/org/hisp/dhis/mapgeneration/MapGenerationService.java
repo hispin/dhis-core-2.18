@@ -74,7 +74,7 @@ public interface MapGenerationService
      * @param date the date for relative periods.
      * @param unit the organisation unit.
      * @param width the maximum width of the map image.
-     * @param height the maxium height of the map image.
+     * @param height the maximum height of the map image.
      * @return the rendered map image or null if there is no data for the map view.
      */
     BufferedImage generateMapImage( Map map, Date date, OrganisationUnit unit, Integer width, Integer height );

@@ -103,7 +103,7 @@ public class HibernatePatientAttributeValueStore
             Restrictions.ilike( "value", "%" + searchText + "%" ) ).list();
     }
 
-    public int countByPatientAttributeoption( PatientAttributeOption attributeOption )
+    public int countByPatientAttributeOption( PatientAttributeOption attributeOption )
     {
         Number rs = (Number) getCriteria( Restrictions.eq( "patientAttributeOption", attributeOption ) ).setProjection(
             Projections.rowCount() ).uniqueResult();
