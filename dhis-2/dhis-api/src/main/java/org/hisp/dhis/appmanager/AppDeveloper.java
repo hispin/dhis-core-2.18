@@ -27,6 +27,8 @@ package org.hisp.dhis.appmanager;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -43,15 +45,19 @@ public class AppDeveloper
     /**
      * Required.
      */
+    @JsonProperty
     private String url;
 
     /**
      * Optional.
      */
+    @JsonProperty
     private String name;
 
+    @JsonProperty
     private String company;
 
+    @JsonProperty
     private String email;
 
     // -------------------------------------------------------------------------

@@ -28,7 +28,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
@@ -55,9 +54,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -90,11 +87,7 @@ public class AppController
         File tempFile = File.createTempFile( "IMPORT_", "_ZIP" );
         file.transferTo( tempFile );
 
-        StringBuffer fullUrl = request.getRequestURL();
-        String baseUrl = org.hisp.dhis.util.ContextUtils.getBaseUrl( request );
-        String rootPath = fullUrl.substring( 0, fullUrl.indexOf( "/", baseUrl.length() ) );
-
-        appManager.installApp( tempFile, file.getOriginalFilename(), rootPath );
+        appManager.installApp( tempFile, file.getOriginalFilename(), getBaseUrl( request ) );
     }
 
     @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.PUT )
@@ -121,18 +114,25 @@ public class AppController
             throw new NotFoundException();
         }
 
-        Map<String, Object> manifestMap = JacksonUtils.getJsonMapper().readValue( manifest.getInputStream(), new TypeReference<HashMap<String, Object>>()
-        {
-        } );
-
-        String defaultPage = (String) manifestMap.get( "launch_path" );
+        App application = JacksonUtils.getJsonMapper().readValue( manifest.getInputStream(), App.class );
         String pageName = findPage( request.getPathInfo(), app );
+
+        // if request was for manifest.webapp, check for * and replace with host
+        if ( "manifest.webapp".equals( pageName ) )
+        {
+            if ( "*".equals( application.getActivities().getDhis().getHref() ) )
+            {
+                application.getActivities().getDhis().setHref( getBaseUrl( request ) );
+                JacksonUtils.getJsonMapper().writeValue( response.getOutputStream(), application );
+                return;
+            }
+        }
 
         Resource page = findResource( locations, pageName );
 
         if ( page == null )
         {
-            page = findResource( locations, defaultPage );
+            page = findResource( locations, application.getLaunchPath() );
 
             if ( page == null )
             {
@@ -190,5 +190,11 @@ public class AppController
         }
 
         return path;
+    }
+
+    private String getBaseUrl( HttpServletRequest request )
+    {
+        String baseUrl = org.hisp.dhis.util.ContextUtils.getBaseUrl( request );
+        return baseUrl.substring( 0, baseUrl.length() - 1 );
     }
 }

@@ -95,22 +95,25 @@ public class App
     @JsonProperty
     private String description;
 
+    @JsonProperty
     private AppIcons icons;
 
+    @JsonProperty
     private AppDeveloper developer;
 
     @JsonIgnore
     private String locales;
 
-    @JsonIgnore
+    @JsonProperty
     private String permissions;
 
+    @JsonProperty
     private AppActivities activities;
     
-    @JsonIgnore
+    @JsonProperty
     private String folderName;
 
-    @JsonIgnore
+    @JsonProperty
     private String baseUrl;
 
     // -------------------------------------------------------------------------
