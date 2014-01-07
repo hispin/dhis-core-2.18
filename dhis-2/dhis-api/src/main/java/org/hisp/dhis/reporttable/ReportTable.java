@@ -666,7 +666,7 @@ public class ReportTable
             
             for ( List<NameableObject> column : gridColumns )
             {
-                String key = getIdentifer( column, row );
+                String key = getIdentifier( column, row );
                 
                 Double value = valueMap.get( key );
                 
