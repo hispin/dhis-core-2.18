@@ -31,6 +31,7 @@ package org.hisp.dhis.api.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -114,6 +115,24 @@ public class AppController
 
         StreamUtils.copy( page.getInputStream(), response.getOutputStream() );
     }
+
+    @RequestMapping( value = "/apps/{app}", method = RequestMethod.DELETE )
+    public void deleteApp( @PathVariable( "app" ) String app, HttpServletRequest request, HttpServletResponse response ) throws NotFoundException
+    {
+        if ( !appManager.exists( app ) )
+        {
+            ContextUtils.notFoundResponse( response, "App does not exist: " + app );
+        }
+
+        if ( !appManager.deleteApp( app ) )
+        {
+            ContextUtils.conflictResponse( response, "There was an error deleting app: " + app );
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Helpers
+    //--------------------------------------------------------------------------
 
     private Resource findResource( Iterable<Resource> locations, String resourceName ) throws IOException
     {
