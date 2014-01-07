@@ -162,7 +162,6 @@
 		<property name="smsCommandService" ref="smsCommandService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction"

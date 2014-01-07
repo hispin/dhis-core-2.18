@@ -127,7 +127,7 @@
 			<td>#if($smsCommand.parserType) $smsCommand.parserType #end</td>
 		</tr>
 		
-		#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' || $smsCommand.parserType == 'ANONYMOUS_PROGRAM_PARSER' )
+		#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' )
 		<tr>
 			<td>$i18n.getString( "dataset" )</td>
 			<td>#if($smsCommand.dataset.name) $smsCommand.dataset.name #end</td>
@@ -170,7 +170,7 @@
 	
 	</br>
 	</br>
-	#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' || $smsCommand.parserType == 'ANONYMOUS_PROGRAM_PARSER')
+	#if( $smsCommand.parserType == 'KEY_VALUE_PARSER' || $smsCommand.parserType == 'J2ME_PARSER' )
     <table id="codes">
 	<col style="width:350px"/><col/>
     <thead>
