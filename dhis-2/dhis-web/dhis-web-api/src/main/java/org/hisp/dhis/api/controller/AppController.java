@@ -40,6 +40,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
@@ -83,6 +84,7 @@ public class AppController
 
     @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.POST )
     @ResponseStatus( HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
     public void installApp( @RequestParam( "file" ) MultipartFile file, HttpServletRequest request ) throws IOException
     {
         File tempFile = File.createTempFile( "IMPORT_", "_ZIP" );
@@ -97,12 +99,14 @@ public class AppController
 
     @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.PUT )
     @ResponseStatus( HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
     public void reloadApps()
     {
         appManager.reloadApps();
     }
 
     @RequestMapping( value = "/apps/{app}/**", method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
     public void renderApp( @PathVariable( "app" ) String app, HttpServletRequest request, HttpServletResponse response ) throws IOException, NotFoundException
     {
         Iterable<Resource> locations = Lists.newArrayList(
@@ -143,6 +147,7 @@ public class AppController
     }
 
     @RequestMapping( value = "/apps/{app}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
     public void deleteApp( @PathVariable( "app" ) String app, HttpServletRequest request, HttpServletResponse response ) throws NotFoundException
     {
         if ( !appManager.exists( app ) )
