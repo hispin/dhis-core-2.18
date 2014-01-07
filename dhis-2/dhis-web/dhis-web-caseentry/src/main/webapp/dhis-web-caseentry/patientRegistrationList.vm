@@ -99,6 +99,7 @@
 				#end
 				
 				#foreach( $programAttribute in $program.programPatientAttributes )
+					#set($value="")
 					#if($programAttribute.displayedInList=='true')
 						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
 							#foreach( $attributeValue in $patient.attributeValues)
@@ -106,6 +107,8 @@
 									#set($value=$attributeValue.value)
 									#if( $programAttribute.patientAttribute.valueType == 'bool')
 										#set($value=$i18n.getString($attributeValue.value))
+									#elseif( $programAttribute.patientAttribute.valueType == 'users')
+										#set($value=$mapUsers.get($attributeValue.value))
 									#end
 								#end
 							#end 

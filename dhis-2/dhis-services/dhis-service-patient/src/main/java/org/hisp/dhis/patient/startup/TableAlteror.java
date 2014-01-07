@@ -290,14 +290,14 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
 
-        executeSql( "INSERT INTO program_attributes (programid, patientattributeid, displayedInList ) "
-            + "SELECT programid, pp.patientattributeid, displayedInList FROM program_patientattributes pp "
+        executeSql( "INSERT INTO program_attributes (programid, patientattributeid, displayedInList, sort_order ) "
+            + "SELECT programid, pp.patientattributeid, displayedInList, pp.sort_order FROM program_patientattributes pp "
             + "INNER JOIN patientattribute pa ON pp.patientattributeid=pa.patientattributeid" );
         executeSql( "DROP TABLE program_patientattributes" );
         executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
 
-        executeSql( "INSERT INTO program_identifierTypes (programid, patientidentifiertypeid, displayedInList ) "
-            + "SELECT programid, pp.patientidentifiertypeid, personDisplayName FROM program_patientidentifiertypes pp "
+        executeSql( "INSERT INTO program_identifierTypes (programid, patientidentifiertypeid, displayedInList, sort_order ) "
+            + "SELECT programid, pp.patientidentifiertypeid, personDisplayName, pp.sort_order FROM program_patientidentifiertypes pp "
             + "INNER JOIN patientidentifiertype pi ON pp.patientidentifiertypeid=pi.patientidentifiertypeid" );
         executeSql( "DROP TABLE program_patientidentifiertypes" );
         executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN personDisplayName" );
