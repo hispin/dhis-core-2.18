@@ -54,7 +54,7 @@
 		</tr>
 	  </table><br/>
 	  
-      <a href="{@href}/data"><img src="{@href}/data" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
+      <a href="{@href}/data"><img src="{@href}/data" style="border: 1px solid;padding: 5px;" /></a>
 
       <h3>Details</h3>
 
