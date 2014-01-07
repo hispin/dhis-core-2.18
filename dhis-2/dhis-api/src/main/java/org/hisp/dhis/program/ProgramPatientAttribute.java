@@ -47,6 +47,8 @@ public class ProgramPatientAttribute
 
     private boolean displayedInList;
 
+    private Integer sortOrder;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -55,11 +57,12 @@ public class ProgramPatientAttribute
     {
     }
 
-    public ProgramPatientAttribute( Program program, PatientAttribute patientAttribute, boolean displayedInList )
+    public ProgramPatientAttribute( Program program, PatientAttribute patientAttribute, boolean displayedInList, int sortOrder )
     {
         this.program = program;
         this.patientAttribute = patientAttribute;
         this.displayedInList = displayedInList;
+        this.sortOrder = sortOrder;
     }
 
     // -------------------------------------------------------------------------
@@ -129,6 +132,16 @@ public class ProgramPatientAttribute
     public void setDisplayedInList( Boolean displayedInList )
     {
         this.displayedInList = displayedInList;
+    }
+
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
     }
 
 }

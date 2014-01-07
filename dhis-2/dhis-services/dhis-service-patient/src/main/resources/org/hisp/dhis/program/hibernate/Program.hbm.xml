@@ -48,18 +48,16 @@
 
 		<property name="onlyEnrollOnce" />
 
-		<list name="programPatientIdentifierTypes" table="program_programpatientIdentifierTypes">
-			<key column="programid" foreign-key="fk_program_patientIdentifierTypes_programid" />
-			<list-index column="sort_order" base="0" />
+		<set name="programPatientIdentifierTypes" order-by="sort_order">
+			<key column="programid" />
 			<one-to-many class="org.hisp.dhis.program.ProgramPatientIdentifierType" />
-		</list>
+		</set>
 
-		<list name="programPatientAttributes" table="program_programpatientAttributes">
-			<key column="programid" foreign-key="fk_program_patientAttributes_programid" />
-			<list-index column="sort_order" base="0" />
+		<set name="programPatientAttributes" order-by="sort_order">
+			<key column="programid" />
 			<one-to-many class="org.hisp.dhis.program.ProgramPatientAttribute" />
-		</list>
-
+		</set>
+		
 		<property name="ignoreOverdueEvents" />
 
 		<set name="userRoles" table="program_userroles">
