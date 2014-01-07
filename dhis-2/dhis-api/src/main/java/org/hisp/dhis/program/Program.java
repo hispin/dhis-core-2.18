@@ -367,8 +367,11 @@ public class Program
         this.patientValidationCriteria = patientValidationCriteria;
     }
 
+    @JsonProperty( value = "programPersonIdentifierTypes" )
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlElementWrapper( localName = "programPersonIdentifierTypes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "programPersonIdentifierType", namespace = DxfNamespaces.DXF_2_0 )
     public List<ProgramPatientIdentifierType> getProgramPatientIdentifierTypes()
-
     {
         return programPatientIdentifierTypes;
     }
