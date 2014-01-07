@@ -28,6 +28,8 @@
     <property name="currentPeriodUsedForReporting" type="boolean" />
 
     <many-to-one name="dataset" class="org.hisp.dhis.dataset.DataSet" column="datasetid" foreign-key="fk_dataset_datasetid" />
+    
+    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_program_programid" />
 
     <set name="codes" table="smscommandcodes">
       <key column="id" />

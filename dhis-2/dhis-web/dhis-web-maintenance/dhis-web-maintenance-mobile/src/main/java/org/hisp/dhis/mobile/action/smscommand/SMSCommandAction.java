@@ -166,9 +166,16 @@ public class SMSCommandAction
         if ( smsCommand != null )
         {
             DataSet d = smsCommand.getDataset();
+            Program program = smsCommand.getProgram();
             if ( d != null )
             {
                 dataElements = new ArrayList<DataElement>( d.getDataElements() );
+                Collections.sort( dataElements, new DataElementSortOrderComparator() );
+                return dataElements;
+            }
+            else if ( program != null )
+            {
+                dataElements = new ArrayList<DataElement>( program.getAllDataElements() );
                 Collections.sort( dataElements, new DataElementSortOrderComparator() );
                 return dataElements;
             }
