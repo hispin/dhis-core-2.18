@@ -34,8 +34,6 @@ import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamerge.DataMergeService;
-import org.hisp.dhis.datamerge.DataMergeStore;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -80,13 +78,13 @@ public class DefaultDataMergeService
 
     @Transactional
     public void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
-        DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
+        DataElement sourceDataElement, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
     {
         // ---------------------------------------------------------------------
         // Eliminate duplicates
         // ---------------------------------------------------------------------
 
-        dataMergeStore.eliminateDuplicateDataElement( destDataElement, destCategoryOptionCombo, sourceDataElemenet, sourceCategoryOptionCombo );
+        dataMergeStore.eliminateDuplicateDataElement( destDataElement, destCategoryOptionCombo, sourceDataElement, sourceCategoryOptionCombo );
 
         // ---------------------------------------------------------------------
         // Delete source
@@ -94,7 +92,7 @@ public class DefaultDataMergeService
 
         try
         {
-            dataElementService.deleteDataElement( sourceDataElemenet );
+            dataElementService.deleteDataElement( sourceDataElement );
         }
         catch ( DeleteNotAllowedException ex )
         {

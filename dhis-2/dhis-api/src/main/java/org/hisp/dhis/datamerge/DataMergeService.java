@@ -38,7 +38,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 public interface DataMergeService
 {
     void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
-        DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo );
+        DataElement sourceDataElement, DataElementCategoryOptionCombo sourceCategoryOptionCombo );
     
     void mergeOrganisationUnits( OrganisationUnit dest, OrganisationUnit source );
 }

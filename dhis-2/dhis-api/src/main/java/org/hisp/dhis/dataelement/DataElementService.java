@@ -169,7 +169,7 @@ public interface DataElementService
     Collection<DataElement> getAllActiveDataElements();
 
     /**
-     * Returns all DataElements with a given aggregantion operator.
+     * Returns all DataElements with a given aggregation operator.
      *
      * @param aggregationOperator the aggregation operator of the DataElements
      *                            to return.

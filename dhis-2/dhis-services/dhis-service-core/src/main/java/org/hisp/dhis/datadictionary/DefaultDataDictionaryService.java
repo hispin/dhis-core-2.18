@@ -124,12 +124,12 @@ public class DefaultDataDictionaryService
         return dataDictionaryStore.getCountLikeName( name );
     }
 
-    public List<DataDictionary> getDataDictionarysBetween( int first, int max )
+    public List<DataDictionary> getDataDictionariesBetween( int first, int max )
     {
         return new ArrayList<DataDictionary>( i18n( i18nService, dataDictionaryStore.getAllOrderedName( first, max ) ) );
     }
 
-    public List<DataDictionary> getDataDictionarysBetweenByName( String name, int first, int max )
+    public List<DataDictionary> getDataDictionariesBetweenByName( String name, int first, int max )
     {
         return new ArrayList<DataDictionary>( i18n( i18nService, dataDictionaryStore.getAllLikeNameOrderedName( name, first, max ) ) );
     }

@@ -84,7 +84,7 @@ public interface DataEntryFormStore
      */
     Collection<DataEntryForm> getAllDataEntryForms();
     
-    Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
+    Collection<DataEntryForm> listDistinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     
-    Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds );
+    Collection<DataEntryForm> listDistinctDataEntryFormByDataSetIds( List<Integer> dataSetIds );
 }

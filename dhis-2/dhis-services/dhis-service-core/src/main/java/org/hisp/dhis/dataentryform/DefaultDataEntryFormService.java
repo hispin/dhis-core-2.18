@@ -422,24 +422,24 @@ public class DefaultDataEntryFormService
         return operands;
     }
 
-    public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
+    public Collection<DataEntryForm> listDistinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
         if ( programStageIds == null || programStageIds.isEmpty() )
         {
             return null;
         }
 
-        return dataEntryFormStore.listDisctinctDataEntryFormByProgramStageIds( programStageIds );
+        return dataEntryFormStore.listDistinctDataEntryFormByProgramStageIds( programStageIds );
     }
 
-    public Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds )
+    public Collection<DataEntryForm> listDistinctDataEntryFormByDataSetIds( List<Integer> dataSetIds )
     {
         if ( dataSetIds == null || dataSetIds.size() == 0 )
         {
             return null;
         }
 
-        return dataEntryFormStore.listDisctinctDataEntryFormByDataSetIds( dataSetIds );
+        return dataEntryFormStore.listDistinctDataEntryFormByDataSetIds( dataSetIds );
     }
 
     public Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers )

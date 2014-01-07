@@ -127,7 +127,7 @@ public class HibernateDataEntryFormStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
+    public Collection<DataEntryForm> listDistinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -139,7 +139,7 @@ public class HibernateDataEntryFormStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds )
+    public Collection<DataEntryForm> listDistinctDataEntryFormByDataSetIds( List<Integer> dataSetIds )
     {
         Session session = sessionFactory.getCurrentSession();
 

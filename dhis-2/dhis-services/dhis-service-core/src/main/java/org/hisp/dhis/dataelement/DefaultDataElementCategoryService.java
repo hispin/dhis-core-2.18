@@ -184,7 +184,7 @@ public class DefaultDataElementCategoryService
     }
 
     @Override
-    public Collection<DataElementCategory> getDataElementCategorysByConcept( Concept concept )
+    public Collection<DataElementCategory> getDataElementCategoriesByConcept( Concept concept )
     {
         return i18n( i18nService, categoryStore.getByConcept( concept ) );
     }
@@ -241,12 +241,12 @@ public class DefaultDataElementCategoryService
         return i18n( i18nService, categoryStore.getAllLikeNameOrderedName( name, first, max ) );
     }
 
-    public Collection<DataElementCategory> getDataElementCategorysBetween( int first, int max )
+    public Collection<DataElementCategory> getDataElementCategoriesBetween( int first, int max )
     {
         return i18n( i18nService, categoryStore.getAllOrderedName( first, max ) );
     }
 
-    public Collection<DataElementCategory> getDataElementCategorysBetweenByName( String name, int first, int max )
+    public Collection<DataElementCategory> getDataElementCategoriesBetweenByName( String name, int first, int max )
     {
         return i18n( i18nService, categoryStore.getAllLikeNameOrderedName( name, first, max ) );
     }

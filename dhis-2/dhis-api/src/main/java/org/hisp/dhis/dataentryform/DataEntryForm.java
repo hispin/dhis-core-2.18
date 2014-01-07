@@ -91,7 +91,7 @@ public class DataEntryForm
     private int format;
 
     // -------------------------------------------------------------------------
-    // Contructors
+    // Constructors
     // -------------------------------------------------------------------------
 
     public DataEntryForm()

@@ -147,7 +147,7 @@ public interface DataEntryFormService
     
     Set<DataElementOperand> getOperandsInDataEntryForm( DataSet dataSet );
     
-    Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
+    Collection<DataEntryForm> listDistinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     
-    Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds );
+    Collection<DataEntryForm> listDistinctDataEntryFormByDataSetIds( List<Integer> dataSetIds );
 }

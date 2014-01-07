@@ -62,7 +62,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * as name, with type DataElement.TYPE_INT. DataElements can be structured
  * hierarchically, one DataElement can have a parent and a collection of
  * children. The sum of the children represent the same entity as the parent.
- * Hiearchies of DataElements are used to give more fine- or course-grained
+ * Hierarchies of DataElements are used to give more fine- or course-grained
  * representations of the entities.
  * <p/>
  * DataElement acts as a DimensionSet in the dynamic dimensional model, and as a
@@ -341,7 +341,7 @@ public class DataElement
 
     /**
      * Tests whether the DataElement is associated with a
-     * DataELementCategoryCombo with more than one DataElementCategory, or any
+     * DataElementCategoryCombo with more than one DataElementCategory, or any
      * DataElementCategory with more than one DataElementCategoryOption.
      */
     public boolean isMultiDimensional()

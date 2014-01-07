@@ -42,7 +42,7 @@ public interface DataMergeStore
      * 
      * @param destDataElement the destination data element.
      * @param destCategoryOptionCombo the destination category option combo.
-     * @param sourceDataElemenet the source data element.
+     * @param sourceDataElement the source data element.
      * @param sourceCategoryOptionCombo the source category option combo.
      */
     void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,

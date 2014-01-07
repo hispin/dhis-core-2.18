@@ -414,7 +414,7 @@ public interface DataElementCategoryService
 
     /**
      * Generates and persists a default DataElementCategory,
-     * DataElmentCategoryOption, DataElementCategoryCombo and
+     * DataElementCategoryOption, DataElementCategoryCombo and
      * DataElementCategoryOptionCombo.
      */
     void generateDefaultDimension();
@@ -483,7 +483,7 @@ public interface DataElementCategoryService
     Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements, boolean includeTotals );
 
     /**
-     * Gets the Operands for the DataElements whith names like the given name.
+     * Gets the Operands for the DataElements with names like the given name.
      *
      * @param name the name.
      * @return the Operands for the DataElements with names like the given name.
@@ -498,9 +498,9 @@ public interface DataElementCategoryService
      */
     Collection<DataElementOperand> getFullOperands( Collection<DataElement> dataElements );
 
-    Collection<DataElementCategory> getDataElementCategorysBetween( int first, int max );
+    Collection<DataElementCategory> getDataElementCategoriesBetween( int first, int max );
 
-    Collection<DataElementCategory> getDataElementCategorysBetweenByName( String name, int first, int max );
+    Collection<DataElementCategory> getDataElementCategoriesBetweenByName( String name, int first, int max );
 
     /**
      * Returns all DataElementCategories for a given concept
@@ -508,7 +508,7 @@ public interface DataElementCategoryService
      * @param concept the Concept
      * @return a collection of all DataElementCategories, or an empty collection.
      */
-    Collection<DataElementCategory> getDataElementCategorysByConcept( Concept concept );
+    Collection<DataElementCategory> getDataElementCategoriesByConcept( Concept concept );
 
     Map<String, Integer> getDataElementCategoryOptionComboUidIdMap();
 
