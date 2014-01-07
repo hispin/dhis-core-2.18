@@ -85,7 +85,7 @@
 
 	<!-- ATTRIBUTES -->
 	#set($attributes = $attributesMap.get(""))
-	#if ($!attributes) 
+	#if ($!attributes.size() > 0) 
 		<tr><th colspan="2" class="heading-column">$i18n.getString( "other_details" )</th></tr>
 		#foreach($attribute in $attributes )
 			#set( $attributeValue = "" )
