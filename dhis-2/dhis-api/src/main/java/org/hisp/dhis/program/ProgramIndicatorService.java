@@ -112,7 +112,7 @@ public interface ProgramIndicatorService
     Collection<ProgramIndicator> getProgramIndicators( Program program );
 
     /**
-     * Calculate an prorgam indicator value based on program instance and an
+     * Calculate an program indicator value based on program instance and an
      * indicator defined for a patient
      * 
      * @param programInstance ProgramInstance

@@ -249,7 +249,7 @@ public interface ProgramStageInstanceStore
     /**
      * Search {@link ProgramStageInstance} by criteria with result limited
      * 
-     * @param programStage {@link ProgramStage} needs for seaching events
+     * @param programStage {@link ProgramStage} needs for searching events
      * @param orgUnits List of {@link OrganisationUnit} ids
      * @param columns The criteria for searching
      * @param startDate Report date the instance should be on or after.
@@ -269,7 +269,7 @@ public interface ProgramStageInstanceStore
     /**
      * Search {@link ProgramStageInstance} by criteria
      * 
-     * @param programStage {@link ProgramStage} needs for seaching events
+     * @param programStage {@link ProgramStage} needs for searching events
      * @param orgUnits List of {@link OrganisationUnit} ids
      * @param columns The criteria for searching
      * @param startDate Report date the instance should be on or after.

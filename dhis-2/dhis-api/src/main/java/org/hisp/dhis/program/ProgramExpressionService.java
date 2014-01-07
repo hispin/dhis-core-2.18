@@ -95,7 +95,7 @@ public interface ProgramExpressionService
     Collection<ProgramExpression> getAllProgramExpressions();
 
     /**
-     * Get value of program expession
+     * Get value of program expression
      * 
      * @param programExpression {@link ProgramExpression}
      * @param programStageInstance The {@link ProgramStageInstance} associate
