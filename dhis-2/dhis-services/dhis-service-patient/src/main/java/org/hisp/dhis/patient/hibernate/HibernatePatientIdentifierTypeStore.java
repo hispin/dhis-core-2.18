@@ -45,9 +45,4 @@ public class HibernatePatientIdentifierTypeStore
         return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
     }
     
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientIdentifierType> getByDisplayed( boolean personDisplayName )
-    {
-        return getCriteria( Restrictions.eq( "personDisplayName", personDisplayName ) ).list();
-    }
 }

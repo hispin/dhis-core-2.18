@@ -35,7 +35,9 @@ import java.util.List;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
@@ -71,6 +73,9 @@ public class GetValidationCriteriaAction
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
 
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -80,6 +85,8 @@ public class GetValidationCriteriaAction
     private int programId;
 
     private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
+
+    private List<PatientIdentifierType> patientIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
     private ValidationCriteria validationCriteria;
 
@@ -92,6 +99,11 @@ public class GetValidationCriteriaAction
     public void setId( int id )
     {
         this.id = id;
+    }
+
+    public List<PatientIdentifierType> getPatientIdentifierTypes()
+    {
+        return patientIdentifierTypes;
     }
 
     public void setProgramId( int programId )
@@ -128,6 +140,9 @@ public class GetValidationCriteriaAction
 
         patientAttributes = new ArrayList<PatientAttribute>(
             programPatientAttributeService.getListPatientAttribute( program ) );
+
+        patientIdentifierTypes = new ArrayList<PatientIdentifierType>(
+            programPatientIdentifierTypeService.getListPatientIdentifierType( program ) );
 
         Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 

@@ -79,23 +79,5 @@ public class PatientIdentifierTypeStoreTest
         assertEquals( 1, identifierTypes.size() );
         assertTrue( equals( identifierTypes, identifierTypeC ) );
     }
-
-    @Test
-    public void testGetDisplayedPatientIdentifierTypes()
-    {
-        identifierTypeA.setPersonDisplayName( true );
-        identifierTypeB.setPersonDisplayName( true );
-
-        identifierTypeStore.save( identifierTypeA );
-        identifierTypeStore.save( identifierTypeB );
-        identifierTypeStore.save( identifierTypeC );
-
-        Collection<PatientIdentifierType> identifierTypes = identifierTypeStore.getByDisplayed( true );
-        assertEquals( 2, identifierTypes.size() );
-        assertTrue( equals( identifierTypes, identifierTypeA, identifierTypeB ) );
-
-        identifierTypes = identifierTypeStore.getByDisplayed( false );
-        assertEquals( 1, identifierTypes.size() );
-        assertTrue( equals( identifierTypes, identifierTypeC ) );
-    }
+    
 }

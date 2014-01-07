@@ -167,23 +167,4 @@ public class PatientIdentifierTypeServiceTest
         assertTrue( equals( identifierTypes, identifierTypeC ) );
     }
 
-    @Test
-    public void testGetDisplayedPatientIdentifierTypes()
-    {
-        identifierTypeA.setPersonDisplayName( true );
-        identifierTypeB.setPersonDisplayName( true );
-
-        identifierTypeService.savePatientIdentifierType( identifierTypeA );
-        identifierTypeService.savePatientIdentifierType( identifierTypeB );
-        identifierTypeService.savePatientIdentifierType( identifierTypeC );
-        
-        Collection<PatientIdentifierType> identifierTypes = identifierTypeService
-            .getDisplayedPatientIdentifierTypes( true );
-        assertEquals( 2, identifierTypes.size() );
-        assertTrue( equals( identifierTypes, identifierTypeA, identifierTypeB ) );
-
-        identifierTypes = identifierTypeService.getDisplayedPatientIdentifierTypes( false );
-        assertEquals( 1, identifierTypes.size() );
-        assertTrue( equals( identifierTypes, identifierTypeC ) );
-    }
 }

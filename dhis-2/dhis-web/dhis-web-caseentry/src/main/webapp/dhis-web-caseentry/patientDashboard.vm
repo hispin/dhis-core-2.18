@@ -43,9 +43,7 @@
 				#foreach( $identifier in $identifiers )
 				<tr>
 					<td>
-					#if($!identifier.identifierType.personDisplayName=='true')
 						$!identifier.identifierType.displayName
-					#end
 					</td>
 					<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
 				</tr>
@@ -200,9 +198,7 @@
 								#set($patient=$rel.patientB)
 								#set($value="")
 								#foreach( $identifier in $patient.identifiers)
-									#if($!identifier.identifierType.personDisplayName=='true')
-										#set($value=$identifier.identifier)
-									#end
+									#set($value=$identifier.identifier)
 								#end
 								<a href='#'>$value</a>
 							</td>
@@ -213,9 +209,7 @@
 							<td><a href='#'>
 								#set($patient=$!rel.patientA)
 								#foreach( $identifier in $patient.identifiers)
-									#if($!identifier.identifierType.personDisplayName=='true')
-										#set($value=$identifier.identifier)
-									#end
+									#set($value=$identifier.identifier)
 								#end
 								<a href='#'>$value</a>
 							</td>

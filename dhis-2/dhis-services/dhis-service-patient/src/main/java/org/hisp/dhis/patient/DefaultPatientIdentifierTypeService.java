@@ -128,9 +128,4 @@ public class DefaultPatientIdentifierTypeService
         return i18n( i18nService, patientIdentifierTypeStore.get( mandatory ) );
     }
 
-    public Collection<PatientIdentifierType> getDisplayedPatientIdentifierTypes( boolean personDisplayName )
-    {
-        return i18n( i18nService, patientIdentifierTypeStore.getByDisplayed( personDisplayName ) );
-    }
-
 }

@@ -28,6 +28,14 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -37,20 +45,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -112,6 +114,9 @@ public class DefaultPatientService
     {
         this.relationshipTypeService = relationshipTypeService;
     }
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -555,7 +560,8 @@ public class DefaultPatientService
         grid.addHeader( new GridHeader( i18n.getString( "gender" ), true, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
 
-        Collection<PatientIdentifierType> patientIdentifierTypes = program.getPatientIdentifierTypes();
+        Collection<PatientIdentifierType> patientIdentifierTypes = programPatientIdentifierTypeService
+            .getListPatientIdentifierType( program );
         for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
         {
             grid.addHeader( new GridHeader( patientIdentifierType.getDisplayName(), false, true ) );

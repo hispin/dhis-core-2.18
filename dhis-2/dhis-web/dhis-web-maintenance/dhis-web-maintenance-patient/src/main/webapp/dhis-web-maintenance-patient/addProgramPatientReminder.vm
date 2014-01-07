@@ -107,7 +107,7 @@
 					<option value="{enrollement-date}">$i18n.getString("enrollement_date")</option>
 					<option value="{days-since-enrollement-date}">$i18n.getString("days_since_enrollment_date")</option>
 					<option value="{orgunit-name}">$i18n.getString("orgunit_name")</option>
-					#foreach($identifierType in $program.patientIdentifierTypes)
+					#foreach($identifierType in $identifierTypes)
 						<option value={identifierid=$identifierType.uid}>$identifierType.displayName</option>
 					#end
 					#foreach($attribute in $attributes)

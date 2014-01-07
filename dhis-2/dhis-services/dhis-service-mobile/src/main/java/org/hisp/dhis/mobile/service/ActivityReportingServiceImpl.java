@@ -84,6 +84,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -170,6 +171,9 @@ public class ActivityReportingServiceImpl
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Setters
@@ -1610,7 +1614,8 @@ public class ActivityReportingServiceImpl
         Collection<Program> programs = programService.getAllPrograms();
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientIdentifierTypes.removeAll( programPatientIdentifierTypeService
+                .getListPatientIdentifierType( program ) );
         }
         return patientIdentifierTypes;
     }
@@ -1635,7 +1640,7 @@ public class ActivityReportingServiceImpl
         if ( programId != null && !programId.trim().equals( "" ) )
         {
             Program program = programService.getProgram( Integer.parseInt( programId ) );
-            patientIdentifierTypes = program.getPatientIdentifierTypes();
+            patientIdentifierTypes = programPatientIdentifierTypeService.getListPatientIdentifierType( program );
         }
         else
         {

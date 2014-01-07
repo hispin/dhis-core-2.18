@@ -58,12 +58,12 @@
 			</td>
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-				#foreach( $identifierType in $identifierTypes)
+				#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
 					#set($value="")
-					#if($identifierType.personDisplayName=='true')
+					#if($programIdentifierType.displayedInList=='true')
 						<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
 							#foreach( $identifier in $patient.identifiers)
-								#if($!identifier.identifierType.id==$identifierType.id)
+								#if($!identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
 									#set($value=$identifier.identifier)
 								#end
 							#end 
@@ -72,13 +72,13 @@
 					#end
 				#end
 
-				#foreach( $attribute in $attributes )
-					#if($attribute.displayedInList=='true')
+				#foreach( $programAttribute in $program.programPatientAttributes )
+					#if($programAttribute.displayedInList=='true')
 						<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
 							#foreach( $attributeValue in $patient.attributeValues)
-								#if($!attributeValue.patientAttribute.id==$attribute.id)
+								#if($!attributeValue.patientAttribute.id==$programAttribute.patientAttribute.id)
 									#set($value=$attributeValue.value)
-									#if( $attribute.valueType == 'bool')
+									#if( $programAttribute.patientAttribute.valueType == 'bool')
 										#set($value=$i18n.getString($attributeValue.value))
 									#end
 								#end

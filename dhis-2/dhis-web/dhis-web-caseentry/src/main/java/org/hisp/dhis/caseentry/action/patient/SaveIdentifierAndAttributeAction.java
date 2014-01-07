@@ -48,7 +48,9 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,6 +77,9 @@ public class SaveIdentifierAndAttributeAction
     private PatientAttributeOptionService patientAttributeOptionService;
 
     private ProgramService programService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     private I18nFormat format;
 
@@ -181,7 +186,8 @@ public class SaveIdentifierAndAttributeAction
 
         String value = null;
 
-        Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
+        Collection<PatientIdentifierType> identifierTypes = programPatientIdentifierTypeService
+            .getListPatientIdentifierType( program );
 
         PatientIdentifier identifier = null;
 

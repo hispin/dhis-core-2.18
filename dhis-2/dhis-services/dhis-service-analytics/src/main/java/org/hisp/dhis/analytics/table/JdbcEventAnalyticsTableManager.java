@@ -45,6 +45,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -65,6 +66,9 @@ public class JdbcEventAnalyticsTableManager
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -243,7 +247,8 @@ public class JdbcEventAnalyticsTableManager
             columns.add( col );
         }
 
-        for ( PatientIdentifierType identifierType : table.getProgram().getPatientIdentifierTypes() )
+        for ( PatientIdentifierType identifierType : programPatientIdentifierTypeService
+            .getListPatientIdentifierType( table.getProgram() ) )
         {
             String sql = "(select identifier from patientidentifier where patientid=pi.patientid and "
                 + "patientidentifiertypeid=" + identifierType.getId() + ") as " + quote( identifierType.getUid() );

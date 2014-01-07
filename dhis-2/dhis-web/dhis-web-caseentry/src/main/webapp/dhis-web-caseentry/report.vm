@@ -24,16 +24,13 @@
                 <tr #alternate( $mark )>                
 					<td>
 						#set( $value="")
-						#if($program.patientIdentifierTypes)
-							#foreach( $identifierType in $program.patientIdentifierTypes )
-								#foreach( $pIdentifier in $programInstance.patient.identifiers )
-									#if($identifierType.personDisplayName=="true" && $identifierType.id==$pIdentifier.identifierType.id)
-										#set( $value= $value + $pIdentifier.identifier + '&#13;&#10;' )
-									#end
+						#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
+							#foreach( $identifier in $patient.identifiers)
+								#if($!identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
+									#set( $value= $value + $pIdentifier.identifier + '&#13;&#10;' )
 								#end
-							#end
+							#end 
 						#end
-							
 						<input type='button' class='patient-object' value="$value"
 							onclick='javascript:showPatientHistory( $programInstance.patient.id )' title='$i18n.getString( "patient_details_and_history" )'>
 					</td>	

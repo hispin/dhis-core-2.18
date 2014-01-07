@@ -41,6 +41,7 @@ import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserSettingService;
@@ -104,6 +105,9 @@ public class ViewPatientRegistrationFormAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Getters & Setters
@@ -177,15 +181,15 @@ public class ViewPatientRegistrationFormAction
             attributes = patientAttributeService.getAllPatientAttributes();
             for ( Program p : programs )
             {
-                identifierTypes.remove( p.getPatientIdentifierTypes() );
-                attributes.remove(programPatientAttributeService.getListPatientAttribute( p ) );
+                identifierTypes.remove( programPatientIdentifierTypeService.getListPatientIdentifierType( p ) );
+                attributes.remove( programPatientAttributeService.getListPatientAttribute( p ) );
             }
         }
         else
         {
             program = programService.getProgram( programId );
-            identifierTypes = program.getPatientIdentifierTypes();
-            attributes.remove(programPatientAttributeService.getListPatientAttribute( program ) );
+            identifierTypes = programPatientIdentifierTypeService.getListPatientIdentifierType( program );
+            attributes = programPatientAttributeService.getListPatientAttribute( program );
             registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
         }
 

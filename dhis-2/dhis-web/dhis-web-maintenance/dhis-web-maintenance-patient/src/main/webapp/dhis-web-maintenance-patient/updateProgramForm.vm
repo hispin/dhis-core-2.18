@@ -261,7 +261,8 @@
                             </tr>
 						</thead>
 						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end>
-							#foreach( $identifier in $program.patientIdentifierTypes )
+							#foreach( $programIdentifier in $program.programPatientIdentifierTypes )
+								#set($identifier = $programIdentifier.patientIdentifierType)
 								<tr ondblclick="unSelectProperties( this )" id="iden_$identifier.id">
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $identifier.name )</td>
 									<td align="center"><input type="checkbox" name="displayed" value="iden_$identifier.id" #if($identifier.personDisplayName == true ) checked #end #if($program.type==3) disabled #end /></td>

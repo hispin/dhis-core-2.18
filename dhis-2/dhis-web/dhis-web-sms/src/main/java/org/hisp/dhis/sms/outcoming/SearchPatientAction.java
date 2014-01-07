@@ -36,6 +36,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -61,6 +62,9 @@ public class SearchPatientAction
 
     @Autowired
     private ProgramService programService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -135,7 +139,7 @@ public class SearchPatientAction
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
-        
+
         // List all patients
         if ( listAll )
         {
@@ -150,15 +154,15 @@ public class SearchPatientAction
         else if ( searchTexts.size() > 0 )
         {
             organisationUnit = (searchBySelectedOrgunit) ? organisationUnit : null;
-            if( organisationUnit != null )
+            if ( organisationUnit != null )
             {
                 orgunits.add( organisationUnit );
             }
 
             total = patientService.countSearchPatients( searchTexts, orgunits, null, ProgramInstance.STATUS_ACTIVE );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, orgunits, null, null, null, ProgramInstance.STATUS_ACTIVE, paging.getStartPos(), paging
-                .getPageSize() );
+            patients = patientService.searchPatients( searchTexts, orgunits, null, null, null,
+                ProgramInstance.STATUS_ACTIVE, paging.getStartPos(), paging.getPageSize() );
 
             if ( !searchBySelectedOrgunit )
             {
@@ -173,7 +177,8 @@ public class SearchPatientAction
                 for ( Integer programId : programIds )
                 {
                     Program program = programService.getProgram( programId );
-                    identifierTypes.addAll( program.getPatientIdentifierTypes() );
+                    identifierTypes
+                        .addAll( programPatientIdentifierTypeService.getListPatientIdentifierType( program ) );
                 }
             }
         }

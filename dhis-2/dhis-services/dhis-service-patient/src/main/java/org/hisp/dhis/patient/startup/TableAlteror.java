@@ -289,13 +289,18 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
-        
-        executeSql( "UPDATE patientattribute set displayedInList=false WHERE displayedInList is null" );
-        executeSql( "INSERT INTO program_programpatientAttributes (programid, programpatientattributeid, displayedInList ) "
-            + "SELECT programid,patientattributeid, displayedInList FROM program_patientattributes pp "
+
+        executeSql( "INSERT INTO program_attributes (programid, patientattributeid, displayedInList ) "
+            + "SELECT programid, pp.patientattributeid, displayedInList FROM program_patientattributes pp "
             + "INNER JOIN patientattribute pa ON pp.patientattributeid=pa.patientattributeid" );
-//        executeSql( "DROP TABLE program_patientattributes" );
-//        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
+        executeSql( "DROP TABLE program_patientattributes" );
+        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
+
+        executeSql( "INSERT INTO program_identifierTypes (programid, patientidentifiertypeid, displayedInList ) "
+            + "SELECT programid, pp.patientidentifiertypeid, personDisplayName FROM program_patientidentifiertypes pp "
+            + "INNER JOIN patientidentifiertype pi ON pp.patientidentifiertypeid=pi.patientidentifiertypeid" );
+        executeSql( "DROP TABLE program_patientidentifiertypes" );
+        executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN personDisplayName" );
     }
 
     // -------------------------------------------------------------------------
@@ -469,7 +474,7 @@ public class TableAlteror
         try
         {
             Statement statement = holder.getStatement();
-            
+
             ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patientattribute" );
 
             // Only execute once
@@ -776,7 +781,8 @@ public class TableAlteror
                     + "','Staff', 'Staff','"
                     + PatientAttribute.TYPE_USERS + "', false, false, false)" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
-                    + max + ",healthworkerid from patient inner join userinfo on patient.healthworkerid=userinfo.userinfoid where patient.healthworkerid is not null" );
+                    + max
+                    + ",healthworkerid from patient inner join userinfo on patient.healthworkerid=userinfo.userinfoid where patient.healthworkerid is not null" );
 
                 // Update custom entry form
                 removeFixedAttributeInCustomRegistrationForm( "associate", uid );

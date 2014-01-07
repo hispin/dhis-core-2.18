@@ -1,6 +1,7 @@
 
 	
-#foreach ($identifierType in $program.patientIdentifierTypes) 
+#foreach ($prorgamIdentifierType in $program.programIdentifierTypes) 
+	#set( $identifierType = $prorgamIdentifierType.patientIdentifierType )
 	<tr>
 		<td class='text-column'><label>$identifierType.displayName #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
 		<td class="input-column">

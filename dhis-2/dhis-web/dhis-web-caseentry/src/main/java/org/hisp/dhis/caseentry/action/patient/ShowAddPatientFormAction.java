@@ -50,6 +50,7 @@ import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
@@ -120,6 +121,9 @@ public class ShowAddPatientFormAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     private I18n i18n;
 
@@ -321,14 +325,15 @@ public class ShowAddPatientFormAction
                 Collection<Program> programs = programService.getAllPrograms();
                 for ( Program p : programs )
                 {
-                    identifierTypes.removeAll( p.getPatientIdentifierTypes() );
+                    identifierTypes.removeAll( programPatientIdentifierTypeService.getListPatientIdentifierType( p ));
                     attributes.removeAll( programPatientAttributeService.getListPatientAttribute( p ) );
                 }
             }
             else
             {
-                identifierTypes = program.getPatientIdentifierTypes();
-                attributes = new ArrayList<PatientAttribute>( programPatientAttributeService.getListPatientAttribute( program ) );
+                identifierTypes = programPatientIdentifierTypeService.getListPatientIdentifierType( program );
+                attributes = new ArrayList<PatientAttribute>(
+                    programPatientAttributeService.getListPatientAttribute( program ) );
             }
 
             for ( PatientAttribute attribute : attributes )

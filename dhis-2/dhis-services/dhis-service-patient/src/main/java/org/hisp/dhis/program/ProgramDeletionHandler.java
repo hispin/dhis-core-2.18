@@ -35,6 +35,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Chau Thu Tran
@@ -72,18 +73,6 @@ public class ProgramDeletionHandler
         for ( Program program : programs )
         {
             program.getPatientValidationCriteria().remove( validationCriteria );
-            programService.updateProgram( program );
-        }
-    }
-
-    @Override
-    public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
-    {
-        Collection<Program> programs = programService.getAllPrograms();
-
-        for ( Program program : programs )
-        {
-            program.getPatientIdentifierTypes().clear();
             programService.updateProgram( program );
         }
     }

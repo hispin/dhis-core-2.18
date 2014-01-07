@@ -36,6 +36,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,9 @@ public class RegisterBeneficiaryAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -186,7 +190,8 @@ public class RegisterBeneficiaryAction
 
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientIdentifierTypes.removeAll( programPatientIdentifierTypeService
+                .getListPatientIdentifierType( program ) );
             patientAttributes.removeAll( programPatientAttributeService.getListPatientAttribute( program ) );
         }
         return SUCCESS;

@@ -12,11 +12,8 @@
 <table>
 	#foreach( $identifier in $patient.identifiers)
 		<tr>
-			#if($!identifier.identifierType.personDisplayName=='true')
-				<td>$identifier.identifierType.displayName:</td>
-				<td>$identifier.identifier</td>
-			#end
-			
+			<td>$identifier.identifierType.displayName:</td>
+			<td>$identifier.identifier</td>
 		</tr>
 	#end
 </table>
