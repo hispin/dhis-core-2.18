@@ -2,6 +2,7 @@ package org.hisp.dhis.pbf.impl;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -9,6 +10,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.pbf.api.TariffDataValue;
 import org.hisp.dhis.pbf.api.TariffDataValueService;
 import org.hisp.dhis.pbf.api.TariffDataValueStore;
+import org.hisp.dhis.period.Period;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -71,4 +73,8 @@ public class DefaultTariffDataValueService implements TariffDataValueService
         return tariffDataValueStore.getTariffDataValues( organisationUnit, dataElement );
     }
 
+    public Map<Integer, Integer> getTariffDataValues( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        return tariffDataValueStore.getTariffDataValues( organisationUnit, dataSet, period );
+    }
 }

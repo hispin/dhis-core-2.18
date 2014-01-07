@@ -8,6 +8,7 @@
     
     <bean id="org.hisp.dhis.pbf.api.TariffDataValueStore" class="org.hisp.dhis.pbf.impl.HibernateTariffDataValueStore">
         <property name="sessionFactory" ref="sessionFactory" />
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
     
     <bean id="org.hisp.dhis.pbf.api.TariffDataValueService" class="org.hisp.dhis.pbf.impl.DefaultTariffDataValueService">
@@ -101,7 +102,6 @@
     </bean>
     
     
-    
 <!--  PBF Data Entry -->
 
 	<bean id="org.hisp.dhis.pbf.dataentry.PageInitAction" class="org.hisp.dhis.pbf.dataentry.PageInitAction" scope="prototype">
@@ -133,7 +133,11 @@
 	 <bean id="org.hisp.dhis.pbf.dataentry.LoadDataEntryFormAction" class="org.hisp.dhis.pbf.dataentry.LoadDataEntryFormAction" scope="prototype">   
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>  
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+		<property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />		
+		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		<property name="tariffDataValueService" ref="org.hisp.dhis.pbf.api.TariffDataValueService"/>
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	 </bean>    
     
     <!-- Save Value -->
