@@ -161,11 +161,8 @@ public class PDFFormController
         ImportStrategy strategy = ImportStrategy.NEW_AND_UPDATES;
         IdentifiableProperty dataElementIdScheme = IdentifiableProperty.UID;
         IdentifiableProperty orgUnitIdScheme = IdentifiableProperty.UID;
-        boolean dryRun = false;
-        boolean skipExistingCheck = false;
-        
-        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, true, strategy,
-            skipExistingCheck );
+
+        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, false, true, strategy, false );
                 
         log.info( options );
 
