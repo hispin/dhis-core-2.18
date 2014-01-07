@@ -28,11 +28,10 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericNameableObjectStore;
-import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
+
+import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
@@ -44,9 +43,9 @@ public interface IndicatorStore
     String ID = IndicatorStore.class.getName();
 
     Collection<Indicator> getIndicatorsWithGroupSets();
-    
+
     Collection<Indicator> getIndicatorsWithoutGroups();
-    
+
     Collection<Indicator> getIndicatorsWithDataSets();
 
     int countMapLegendSetIndicators( MapLegendSet mapLegendSet );
