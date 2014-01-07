@@ -3,8 +3,10 @@ package org.hisp.dhis.pbf.dataentry;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -18,6 +20,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.pbf.api.Lookup;
 import org.hisp.dhis.pbf.api.LookupService;
+import org.hisp.dhis.pbf.api.PBFDataValue;
+import org.hisp.dhis.pbf.api.PBFDataValueService;
 import org.hisp.dhis.pbf.api.TariffDataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -34,7 +38,15 @@ public class LoadDataEntryFormAction implements Action
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private OrganisationUnitService organisationUnitService;
+
+	private PBFDataValueService pbfDataValueService;
+	
+	public void setPbfDataValueService(PBFDataValueService pbfDataValueService) 
+	{
+		this.pbfDataValueService = pbfDataValueService;
+	}
+
+	private OrganisationUnitService organisationUnitService;
     
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
@@ -98,7 +110,14 @@ public class LoadDataEntryFormAction implements Action
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String orgUnitId;
+    private Map<DataElement, PBFDataValue> pbfDataValueMap;
+    
+    public Map<DataElement, PBFDataValue> getPbfDataValueMap() 
+    {
+		return pbfDataValueMap;
+	}
+
+	private String orgUnitId;
   
     public void setOrgUnitId( String orgUnitId )
     {
@@ -170,7 +189,8 @@ public class LoadDataEntryFormAction implements Action
     
     private DataElementCategoryOptionCombo qValOptCombo;
     
-    public DataElementCategoryOptionCombo getqValOptCombo() {
+    public DataElementCategoryOptionCombo getqValOptCombo() 
+    {
 		return qValOptCombo;
 	}
 
@@ -178,8 +198,6 @@ public class LoadDataEntryFormAction implements Action
     // Action implementation
     // -------------------------------------------------------------------------
  
-    
-
 	public String execute()
     {    	
         dataValueMap = new HashMap<String, String>();
@@ -206,9 +224,53 @@ public class LoadDataEntryFormAction implements Action
         Map<Integer, Double> tariffDataValueMap = new HashMap<Integer, Double>();
         
         tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( organisationUnit, dataSet, period ) );
+        
+        pbfDataValueMap = new HashMap<DataElement, PBFDataValue>();
 
-       
-        for( DataElement dataElement : dataElements )
+        Set<PBFDataValue> pbfDataValues = new HashSet<PBFDataValue>( pbfDataValueService.getPBFDataValues(organisationUnit, dataSet, period) );
+        for( PBFDataValue pbfDataValue : pbfDataValues )
+        {
+        	DataElement de = pbfDataValue.getDataElement();
+        	if( pbfDataValue.getTariffAmount() == null )
+        	{
+        		Double tariffAmount = tariffDataValueMap.get( de.getId() );
+        		if( tariffAmount != null )
+        		{
+        			pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+        			pbfDataValue.setTariffAmount( tariffAmount );
+        			pbfDataValue.setTimestamp( new Date() );
+        			pbfDataValueService.updatePBFDataValue( pbfDataValue );
+        		}
+        	}
+        	pbfDataValueMap.put( de, pbfDataValue );
+        }
+        
+        Set<DataElement> tempDes = new HashSet<DataElement>();
+        tempDes.addAll( dataElements );
+        
+        tempDes.removeAll( pbfDataValueMap.keySet() );
+        
+        for( DataElement de : tempDes )
+        {
+        	Double tariffAmount = tariffDataValueMap.get( de.getId() );
+        	if( tariffAmount != null )
+        	{
+        		PBFDataValue pbfDataValue = new PBFDataValue();
+                
+                pbfDataValue.setDataElement( de );
+                pbfDataValue.setPeriod( period );
+                pbfDataValue.setOrganisationUnit(organisationUnit);
+                pbfDataValue.setTariffAmount( tariffAmount );
+                pbfDataValue.setStoredBy( currentUserService.getCurrentUsername() );
+                pbfDataValue.setTimestamp( new Date() );
+                
+                pbfDataValueService.addPBFDataValue( pbfDataValue );
+                pbfDataValueMap.put( de, pbfDataValue );
+        	}
+        }
+        
+        /*
+        for( DataElement dataElement : dataElements ) 
         {
             //DataElementCategoryOptionCombo decoc = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
             
@@ -258,6 +320,7 @@ public class LoadDataEntryFormAction implements Action
             }
             
         }
+        */
         
         /*
         for( DataElementCategoryOptionCombo decombo : optionCombos )

@@ -10,9 +10,18 @@
         <property name="sessionFactory" ref="sessionFactory" />
         <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
+
+    <bean id="org.hisp.dhis.pbf.api.PBFDataValueStore" class="org.hisp.dhis.pbf.impl.HibernatePBFDataValueStore">
+        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
+    </bean>
     
     <bean id="org.hisp.dhis.pbf.api.TariffDataValueService" class="org.hisp.dhis.pbf.impl.DefaultTariffDataValueService">
         <property name="tariffDataValueStore" ref="org.hisp.dhis.pbf.api.TariffDataValueStore" />
+    </bean>
+
+    <bean id="org.hisp.dhis.pbf.api.PBFDataValueService" class="org.hisp.dhis.pbf.impl.DefaultPBFDataValueService">
+        <property name="pbfDataValueStore" ref="org.hisp.dhis.pbf.api.PBFDataValueStore" />
     </bean>
 
     <bean id="org.hisp.dhis.pbf.api.LookupStore" class="org.hisp.dhis.pbf.impl.HibernateLookupStore">
@@ -138,6 +147,7 @@
 		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		<property name="tariffDataValueService" ref="org.hisp.dhis.pbf.api.TariffDataValueService"/>
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+		<property name="pbfDataValueService" ref="org.hisp.dhis.pbf.api.PBFDataValueService" />
 	 </bean>    
     
     <!-- Save Value -->
@@ -148,7 +158,8 @@
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />			
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="pbfDataValueService" ref="org.hisp.dhis.pbf.api.PBFDataValueService" />			
 	</bean>
     
 </beans>
