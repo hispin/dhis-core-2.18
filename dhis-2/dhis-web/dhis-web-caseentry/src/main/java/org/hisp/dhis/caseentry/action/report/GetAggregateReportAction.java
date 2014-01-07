@@ -51,6 +51,7 @@ import org.hisp.dhis.patientreport.PatientAggregateReport;
 import org.hisp.dhis.patientreport.PatientAggregateReportService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramStage;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -105,6 +106,9 @@ public class GetAggregateReportAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -265,7 +269,7 @@ public class GetAggregateReportAction
             {
                 PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( dimensionId );
 
-                if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
+                if ( it != null && programPatientIdentifierTypeService.getListPatientIdentifierType( program ).contains( it ) )
                 {
                     dimensionIdentifierTypes.add( it );
                 }
@@ -302,7 +306,7 @@ public class GetAggregateReportAction
 
             PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( filterId );
 
-            if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
+            if ( it != null && programPatientIdentifierTypeService.getListPatientIdentifierType( program ).contains( it ) )
             {
                 filterIdentifierTypes.add( it );
             }

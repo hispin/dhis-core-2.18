@@ -43,6 +43,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
@@ -100,6 +101,9 @@ public class ShowUpdateProgramFormAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -207,7 +211,8 @@ public class ShowUpdateProgramFormAction
         program = programService.getProgram( id );
 
         availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        availableIdentifierTypes.removeAll( new HashSet<PatientIdentifierType>( program.getPatientIdentifierTypes() ) );
+        availableIdentifierTypes.removeAll( new HashSet<PatientIdentifierType>( programPatientIdentifierTypeService
+            .getListPatientIdentifierType( program ) ) );
 
         availableAttributes = patientAttributeService.getAllPatientAttributes();
         availableAttributes.removeAll( new HashSet<PatientAttribute>( programPatientAttributeService

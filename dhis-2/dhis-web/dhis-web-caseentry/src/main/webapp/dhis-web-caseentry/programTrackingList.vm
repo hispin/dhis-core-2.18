@@ -13,23 +13,19 @@
 	#set($status = $programStageInstance.getEventStatus())
 	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
 		<table>
-			#foreach( $identifierType in $programStageInstance.programInstance.program.patientIdentifierTypes)
+			#foreach( $programIdentifierType in $programInstance.program.programPatientIdentifierTypes)
 				<tr> 
-					#if($identifierType.personDisplayName=='true')
-						<th>$encoder.htmlEncode($identifierType.displayName)</th>
-						#foreach( $identifierType in $identifierTypes)
+					<th>$encoder.htmlEncode($identifierType.displayName)</th>
+					#foreach( $identifierType in $identifierTypes)
 						#set($id="")
-							#if($identifierType.personDisplayName=='true')
-								<th style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
-									#foreach( $identifier in $patient.identifiers)
-										#if($!identifier.identifierType.id==$identifierType.id)
-											#set($id=$identifier.identifier)
-										#end
-									#end 
-									$encoder.htmlEncode($id)
-								</th>
-							#end
-						#end
+						<th style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
+							#foreach( $identifier in $patient.identifiers)
+								#if($!identifier.identifierType.id==$identifierType.id)
+									#set($id=$identifier.identifier)
+								#end
+							#end 
+							$encoder.htmlEncode($id)
+						</th>
 					#end
 				</tr>
 			#end

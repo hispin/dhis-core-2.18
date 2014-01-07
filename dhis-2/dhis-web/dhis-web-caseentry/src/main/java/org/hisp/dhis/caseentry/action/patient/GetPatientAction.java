@@ -57,6 +57,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
@@ -100,6 +101,8 @@ public class GetPatientAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     private I18n i18n;
 
@@ -252,13 +255,13 @@ public class GetPatientAction
                 Collection<Program> programs = programService.getAllPrograms();
                 for ( Program p : programs )
                 {
-                    identifierTypes.removeAll( p.getPatientIdentifierTypes() );
+                    identifierTypes.removeAll( programPatientIdentifierTypeService.getListPatientIdentifierType( p ) );
                     attributes.removeAll( programPatientAttributeService.getListPatientAttribute( p ) );
                 }
             }
             else
             {
-                identifierTypes = program.getPatientIdentifierTypes();
+                identifierTypes = programPatientIdentifierTypeService.getListPatientIdentifierType( program );
                 attributes.removeAll( programPatientAttributeService.getListPatientAttribute( program ) );
             }
 

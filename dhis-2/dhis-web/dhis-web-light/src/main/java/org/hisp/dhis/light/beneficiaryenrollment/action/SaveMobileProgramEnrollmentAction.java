@@ -57,6 +57,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -109,6 +110,9 @@ public class SaveMobileProgramEnrollmentAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     private FormUtils formUtils;
 
@@ -309,7 +313,7 @@ public class SaveMobileProgramEnrollmentAction
         patient = patientService.getPatient( patientId );
         program = programService.getProgram( programId );
         patientAttributes = programPatientAttributeService.getListPatientAttribute( program );
-        patientIdentifierTypes = program.getPatientIdentifierTypes();
+        patientIdentifierTypes = programPatientIdentifierTypeService.getListPatientIdentifierType( program );
 
         List<PatientAttributeValue> patientAttributeValues = new ArrayList<PatientAttributeValue>();
 

@@ -48,6 +48,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,9 @@ public class ProgramEnrollmentAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -196,7 +200,8 @@ public class ProgramEnrollmentAction
         // Load identifier types of the selected program
         // ---------------------------------------------------------------------
 
-        identifierTypes = programInstance.getProgram().getPatientIdentifierTypes();
+        identifierTypes = new ArrayList<PatientIdentifierType>(
+            programPatientIdentifierTypeService.getListPatientIdentifierType( programInstance.getProgram() ) );
         identiferMap = new HashMap<Integer, String>();
 
         if ( identifierTypes != null && identifierTypes.size() > 0 )

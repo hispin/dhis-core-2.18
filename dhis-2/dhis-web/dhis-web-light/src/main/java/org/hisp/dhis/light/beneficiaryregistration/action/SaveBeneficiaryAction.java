@@ -53,6 +53,7 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.util.ContextUtils;
@@ -154,6 +155,9 @@ public class SaveBeneficiaryAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -344,7 +348,7 @@ public class SaveBeneficiaryAction
 
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientIdentifierTypes.removeAll(programPatientIdentifierTypeService.getListPatientIdentifierType( program ) );
             patientAttributes.removeAll( programPatientAttributeService.getListPatientAttribute( program ) );
         }
 
@@ -369,7 +373,7 @@ public class SaveBeneficiaryAction
 
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientIdentifierTypes.removeAll(programPatientIdentifierTypeService.getListPatientIdentifierType( program ) );
             patientAttributes.removeAll( programPatientAttributeService.getListPatientAttribute( program ) );
         }
 

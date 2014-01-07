@@ -50,6 +50,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
@@ -86,6 +87,9 @@ public class PatientDashboardAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -251,7 +255,8 @@ public class PatientDashboardAction
 
         for ( Program program : programs )
         {
-            Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
+            Collection<PatientIdentifierType> identifierTypes = programPatientIdentifierTypeService
+                .getListPatientIdentifierType( program );
             for ( PatientIdentifier identifier : _identifiers )
             {
                 if ( !identifierTypes.contains( identifier.getIdentifierType() ) )

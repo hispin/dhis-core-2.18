@@ -54,6 +54,7 @@ import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -145,6 +146,9 @@ public class DefaultProgramInstanceService
     {
         this.programPatientAttributeService = programPatientAttributeService;
     }
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -332,7 +336,8 @@ public class DefaultProgramInstanceService
 
         for ( Program program : programs )
         {
-            Collection<PatientIdentifierType> identifierTypes = program.getPatientIdentifierTypes();
+            Collection<PatientIdentifierType> identifierTypes = programPatientIdentifierTypeService
+                .getListPatientIdentifierType( program );
             while ( iterIdentifier.hasNext() )
             {
                 PatientIdentifier identifier = iterIdentifier.next();
@@ -413,7 +418,8 @@ public class DefaultProgramInstanceService
 
         Patient patient = programInstance.getPatient();
 
-        Collection<PatientIdentifierType> identifierTypes = programInstance.getProgram().getPatientIdentifierTypes();
+        Collection<PatientIdentifierType> identifierTypes = programPatientIdentifierTypeService
+            .getListPatientIdentifierType( programInstance.getProgram() );
 
         Collection<PatientIdentifier> identifiers = patient.getIdentifiers();
 
@@ -442,8 +448,9 @@ public class DefaultProgramInstanceService
 
         // Get patient-attribute-values which belong to the program
 
-        Collection<PatientAttribute> atttributes = programPatientAttributeService.getListPatientAttribute( programInstance.getProgram() );
-       
+        Collection<PatientAttribute> atttributes = programPatientAttributeService
+            .getListPatientAttribute( programInstance.getProgram() );
+
         for ( PatientAttribute attrtibute : atttributes )
         {
             PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,

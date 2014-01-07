@@ -26,14 +26,18 @@
 <tr><td>
 	<table class="listTable" id="patientList" width='100%'>               
           <col width="30"/>
-			#foreach( $identifierType in $identifierTypes)
-				#if($identifierType.personDisplayName=='true')<col/>#end
+			#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
+				#if($programIdentifierType.displayedInList=='true')
+					<col/>
+				#end
 			#end
-			
-			#foreach( $attribute in $attributes )
-				#if($attribute.displayedInList=='true')<col/>#end
+
+			#foreach( $programAttribute in $program.programPatientAttributes )
+				#if($programAttribute.displayedInList=='true')
+					<col/>
+				#end
 			#end
-			
+
 		  #if($mapPatientOrgunit.size()!=0)
 		  <col/>
 		  #end
@@ -43,17 +47,18 @@
 			<tr>
 				<th>#</th>
 				
-				#foreach( $identifierType in $identifierTypes)
-					#if($identifierType.personDisplayName=='true')
-						<th>$encoder.htmlEncode($identifierType.displayName)</th>
+				#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
+					#if($programIdentifierType.displayedInList=='true')
+						<th>$encoder.htmlEncode($programIdentifierType.patientIdentifierType.displayName)</th>
+					#end
+				#end
+
+				#foreach( $programAttribute in $program.programPatientAttributes )
+					#if($programAttribute.displayedInList=='true')
+						<th id="patientAttributeName">$encoder.htmlEncode($programAttribute.patientAttribute.displayName)</th>
 					#end
 				#end
 				
-				#foreach( $attribute in $attributes )
-					#if($attribute.displayedInList=='true')
-						<th id="patientAttributeName">$encoder.htmlEncode($attribute.displayName)</th>
-					#end
-				#end
 				
 				#if($mapPatientOrgunit.size()!=0)
 					<th>$i18n.getString( "hierachy_orgunit" )</th>
@@ -72,12 +77,12 @@
 					$nr
 				</td>
 					
-				#foreach( $identifierType in $identifierTypes)
+				#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
 					#set($value="")
-					#if($identifierType.personDisplayName=='true')
+					#if($programIdentifierType.displayedInList=='true')
 						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
 							#foreach( $identifier in $patient.identifiers)
-								#if($!identifier.identifierType.id==$identifierType.id)
+								#if($!identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
 									#set($value=$identifier.identifier)
 								#end
 							#end 
@@ -86,13 +91,13 @@
 					#end
 				#end
 				
-				#foreach( $attribute in $attributes )
-					#if($attribute.displayedInList=='true')
+				#foreach( $programAttribute in $program.programPatientAttributes )
+					#if($programAttribute.displayedInList=='true')
 						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
 							#foreach( $attributeValue in $patient.attributeValues)
-								#if($!attributeValue.patientAttribute.id==$attribute.id)
+								#if($!attributeValue.patientAttribute.id==$programAttribute.patientAttribute.id)
 									#set($value=$attributeValue.value)
-									#if( $attribute.valueType == 'bool')
+									#if( $programAttribute.patientAttribute.valueType == 'bool')
 										#set($value=$i18n.getString($attributeValue.value))
 									#end
 								#end

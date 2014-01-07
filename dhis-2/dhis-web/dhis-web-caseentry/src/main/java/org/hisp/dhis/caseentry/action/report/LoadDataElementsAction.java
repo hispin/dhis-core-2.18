@@ -35,6 +35,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
@@ -72,6 +73,9 @@ public class LoadDataElementsAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -137,7 +141,8 @@ public class LoadDataElementsAction
 
         if ( program != null && program.isRegistration() )
         {
-            identifierTypes = new ArrayList<PatientIdentifierType>( program.getPatientIdentifierTypes() );
+            identifierTypes = new ArrayList<PatientIdentifierType>(
+                programPatientIdentifierTypeService.getListPatientIdentifierType( program ) );
             patientAttributes = new ArrayList<PatientAttribute>(
                 programPatientAttributeService.getListPatientAttribute( program ) );
         }

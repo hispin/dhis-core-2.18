@@ -48,11 +48,10 @@
 
 		<property name="onlyEnrollOnce" />
 
-		<list name="patientIdentifierTypes" table="program_patientIdentifierTypes">
+		<list name="programPatientIdentifierTypes" table="program_programpatientIdentifierTypes">
 			<key column="programid" foreign-key="fk_program_patientIdentifierTypes_programid" />
 			<list-index column="sort_order" base="0" />
-			<many-to-many column="patientidentifiertypeid"
-				class="org.hisp.dhis.patient.PatientIdentifierType" foreign-key="fk_program_patientIdentifierTypes_patientidentifiertypeid" />
+			<one-to-many class="org.hisp.dhis.program.ProgramPatientIdentifierType" />
 		</list>
 
 		<list name="programPatientAttributes" table="program_programpatientAttributes">

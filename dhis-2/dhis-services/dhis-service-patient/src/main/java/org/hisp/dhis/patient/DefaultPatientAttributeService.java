@@ -128,7 +128,7 @@ public class DefaultPatientAttributeService
     public Collection<PatientAttribute> getPatientAttributesWithoutProgram()
     {
         Collection<PatientAttribute> programPatientAttributes = programPatientAttributeService.getPatientAttributes();
-        
+
         Collection<PatientAttribute> patientAttributes = patientAttributeStore.getAll();
         patientAttributes.removeAll( programPatientAttributes );
 

@@ -73,8 +73,8 @@ public interface PatientIdentifierTypeService
     /**
      * Returns all {@link PatientIdentifierType}
      * 
-     * @return a collection of all PatientIdentifierType, or an empty collection if
-     *         there are no PatientAttributeGroups.
+     * @return a collection of all PatientIdentifierType, or an empty collection
+     *         if there are no PatientAttributeGroups.
      */
     Collection<PatientIdentifierType> getAllPatientIdentifierTypes();
 
@@ -83,7 +83,8 @@ public interface PatientIdentifierTypeService
      * 
      * @param name the name of the PatientIdentifierType to return.
      * 
-     * @return the PatientIdentifierType with the given name, or null if no match.
+     * @return the PatientIdentifierType with the given name, or null if no
+     *         match.
      */
     PatientIdentifierType getPatientIdentifierType( String name );
 
@@ -91,7 +92,8 @@ public interface PatientIdentifierTypeService
      * Returns the {@link PatientIdentifierType} with the given UID.
      * 
      * @param uid the UID.
-     * @return the PatientIdentifierType with the given UID, or null if no match.
+     * @return the PatientIdentifierType with the given UID, or null if no
+     *         match.
      */
     PatientIdentifierType getPatientIdentifierTypeByUid( String uid );
 
@@ -103,14 +105,4 @@ public interface PatientIdentifierTypeService
      * @return PatientIdentifierType list
      */
     Collection<PatientIdentifierType> getPatientIdentifierTypes( boolean mandatory );
-
-    /**
-     * Retrieve patient identifer types which are displayed in person list
-     * instead of full name of person or not
-     * 
-     * @param personDisplayName True/False value
-     * 
-     * @return PatientIdentifierType list
-     */
-    Collection<PatientIdentifierType> getDisplayedPatientIdentifierTypes( boolean personDisplayName );
 }

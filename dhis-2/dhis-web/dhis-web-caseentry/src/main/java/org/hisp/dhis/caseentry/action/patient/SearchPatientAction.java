@@ -28,28 +28,27 @@ package org.hisp.dhis.caseentry.action.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -81,6 +80,9 @@ public class SearchPatientAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -181,20 +183,6 @@ public class SearchPatientAction
         this.programId = programId;
     }
 
-    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
-
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
-
-    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-
-    public List<PatientAttribute> getAttributes()
-    {
-        return attributes;
-    }
-
     private OrganisationUnit organisationUnit;
 
     public OrganisationUnit getOrganisationUnit()
@@ -207,6 +195,13 @@ public class SearchPatientAction
     public Map<String, String> getMapUsers()
     {
         return mapUsers;
+    }
+
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
     }
 
     // -------------------------------------------------------------------------
@@ -283,10 +278,7 @@ public class SearchPatientAction
 
             if ( programId != null )
             {
-                Program program = programService.getProgram( programId );
-                identifierTypes = program.getPatientIdentifierTypes();
-                attributes = new ArrayList<PatientAttribute>(
-                    programPatientAttributeService.getListPatientAttribute( program ) );
+                program = programService.getProgram( programId );
             }
         }
 

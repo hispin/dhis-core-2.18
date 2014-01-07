@@ -50,6 +50,7 @@ import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramStage;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -104,6 +105,9 @@ public class GetTabularReportAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -244,7 +248,7 @@ public class GetTabularReportAction
             {
                 PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( dimensionId );
 
-                if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
+                if ( it != null && programPatientIdentifierTypeService.getListPatientIdentifierType( program ).contains( it ) )
                 {
                     dimensionIdentifierTypes.add( it );
                 }
@@ -281,7 +285,7 @@ public class GetTabularReportAction
 
             PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( filterId );
 
-            if ( it != null && program.getPatientIdentifierTypes().contains( it ) )
+            if ( it != null && programPatientIdentifierTypeService.getListPatientIdentifierType( program ).contains( it ) )
             {
                 filterIdentifierTypes.add( it );
             }

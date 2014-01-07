@@ -22,15 +22,15 @@
 	<thead>
 		<tr>
 			<th>$i18n.getString('risk')</th>
-			#foreach( $identifierType in $identifierTypes)
-				#if($identifierType.personDisplayName=='true')
-					<th>$encoder.htmlEncode($identifierType.displayName)</th>
+			#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
+				#if($programIdentifierType.displayedInList=='true')
+					<th>$encoder.htmlEncode($programIdentifierType.patientIdentifierType.displayName)</th>
 				#end
 			#end
-			
-			#foreach( $attribute in $attributes )
-				#if($attribute.displayedInList=='true')
-					<th id="patientAttributeName">$encoder.htmlEncode($attribute.displayName)</th>
+
+			#foreach( $programAttribute in $program.programPatientAttributes )
+				#if($programAttribute.displayedInList=='true')
+					<th id="patientAttributeName">$encoder.htmlEncode($programAttribute.patientAttribute.displayName)</th>
 				#end
 			#end
 			<th>$i18n.getString( "events" )</th>
@@ -56,12 +56,12 @@
 				#end
 			</td>
 			
-			#foreach( $identifierType in $identifierTypes)
+			#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
 				#set($id="")
-				#if($identifierType.personDisplayName=='true')
+				#if($programIdentifierType.displayedInList=='true')
 					<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">
 						#foreach( $identifier in $patient.identifiers)
-							#if($!identifier.identifierType.id==$identifierType.id)
+							#if($!identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
 								$identifier.identifier
 							#end
 						#end 
@@ -70,13 +70,13 @@
 				#end
 			#end
 			
-			#foreach( $attribute in $attributes )
-				#if($attribute.displayedInList=='true')
+			#foreach( $programAttribute in $program.programPatientAttributes )
+				#if($programAttribute.displayedInList=='true')
 					<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
 						#foreach( $attributeValue in $patient.attributeValues)
-							#if($!attributeValue.patientAttribute.id==$attribute.id)
+							#if($!attributeValue.patientAttribute.id==$programAttribute.patientAttribute.id)
 								#set($value=$attributeValue.value)
-								#if( $attribute.valueType == 'bool')
+								#if( $programAttribute.patientAttribute.valueType == 'bool')
 									#set($value=$i18n.getString($attributeValue.value))
 								#end
 							#end

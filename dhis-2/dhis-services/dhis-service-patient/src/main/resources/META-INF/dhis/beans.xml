@@ -484,6 +484,17 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<bean id="org.hisp.dhis.program.ProgramPatientIdentifierTypeService"
+		class="org.hisp.dhis.program.DefaultProgramPatientIdentiferTypeService">
+		<property name="programPatientIdentifierTypeStore"
+			ref="org.hisp.dhis.program.ProgramPatientIdentifierTypeStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramPatientIdentifierTypeStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramPatientIdentifierTypeStore">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 	<!-- Startup -->
 
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">

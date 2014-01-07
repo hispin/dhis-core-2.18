@@ -52,6 +52,7 @@ import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
+import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -121,6 +122,9 @@ public class ShowEventWithRegistrationFormAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     private I18n i18n;
 
@@ -192,7 +196,7 @@ public class ShowEventWithRegistrationFormAction
             programs.remove( program );
             for ( Program p : programs )
             {
-                identifierTypes.removeAll( p.getPatientIdentifierTypes() );
+                identifierTypes.removeAll( programPatientIdentifierTypeService.getListPatientIdentifierType( p ) );
                 patientAttributesInProgram.addAll( programPatientAttributeService.getListPatientAttribute( p ) );
             }
 
