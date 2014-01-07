@@ -45,8 +45,6 @@ import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -393,7 +391,7 @@ public class PatientAttributeValueServiceTest
         attributeValueService.savePatientAttributeValue( attributeValueD );
         attributeValueService.savePatientAttributeValue( attributeValueE );
 
-        int count = attributeValueService.countByPatientAttributeoption( attributeOpionA );
+        int count = attributeValueService.countByPatientAttributeOption( attributeOpionA );
         assertEquals( 1, count );
     }
 

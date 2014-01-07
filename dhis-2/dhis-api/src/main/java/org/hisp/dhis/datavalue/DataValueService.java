@@ -92,7 +92,7 @@ public interface DataValueService
     int deleteDataValuesBySource( OrganisationUnit source );
 
     /**
-     * Deletes all DataValues registered for the given DataElemt.
+     * Deletes all DataValues registered for the given DataElement.
      * 
      * @param dataElement the DataElement for which the DataValues should be deleted.
      * @return the number of deleted DataValues.

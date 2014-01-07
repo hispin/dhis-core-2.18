@@ -98,7 +98,7 @@ public interface PatientIdentifierTypeService
     PatientIdentifierType getPatientIdentifierTypeByUid( String uid );
 
     /**
-     * Retrieve patient identifer types based on mandatory option
+     * Retrieve patient identifier types based on mandatory option
      * 
      * @param mandatory True/False value
      * 

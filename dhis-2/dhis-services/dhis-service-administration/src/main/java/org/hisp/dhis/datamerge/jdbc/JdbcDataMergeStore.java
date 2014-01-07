@@ -68,11 +68,11 @@ public class JdbcDataMergeStore
     // -------------------------------------------------------------------------
 
     public void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
-        DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
+        DataElement sourceDataElement, DataElementCategoryOptionCombo sourceCategoryOptionCombo )
     {
         final int destDataElementId = destDataElement.getId();
         final int destCategoryOptionComboId = destCategoryOptionCombo.getId();
-        final int sourceDataElementId = sourceDataElemenet.getId();
+        final int sourceDataElementId = sourceDataElement.getId();
         final int sourceCategoryOptionComboId = sourceCategoryOptionCombo.getId();
 
         // Move from source to destination where destination does not exist

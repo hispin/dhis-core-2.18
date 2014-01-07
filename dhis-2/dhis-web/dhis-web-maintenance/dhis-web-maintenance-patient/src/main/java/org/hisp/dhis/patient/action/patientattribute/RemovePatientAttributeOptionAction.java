@@ -99,7 +99,7 @@ public class RemovePatientAttributeOptionAction
 
         if ( attributeOption != null )
         {
-            int count = patientAttributeValueService.countByPatientAttributeoption( attributeOption );
+            int count = patientAttributeValueService.countByPatientAttributeOption( attributeOption );
             if ( count > 0 )
             {
                 message = i18n.getString( "warning_delete_patient_attribute_option" );

@@ -106,7 +106,7 @@ public interface PatientAttributeValueStore
     Collection<PatientAttributeValue> get( Collection<Patient> patients );
 
     /**
-     * Search PatientAttribueValue objects by a PatientAttribute and a attribute
+     * Search PatientAttributeValue objects by a PatientAttribute and a attribute
      * value (performs partial search )
      * 
      * @param patientAttribute PatientAttribute
@@ -124,7 +124,7 @@ public interface PatientAttributeValueStore
      * 
      * @return The number of PatientAttributeOptions
      */
-    int countByPatientAttributeoption( PatientAttributeOption attributeOption );
+    int countByPatientAttributeOption( PatientAttributeOption attributeOption );
 
     /**
      * Retrieve patients who have the same value on an attribute

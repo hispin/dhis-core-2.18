@@ -65,7 +65,7 @@ public class PatientRegistrationForm
         this.dataEntryForm = dataEntryForm;
     }
 
-    // TODO implement hashcode and equals
+    // TODO implement hashCode and equals
 
     // -------------------------------------------------------------------------
     // Getters && Setters

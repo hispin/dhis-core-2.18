@@ -232,8 +232,8 @@ public interface PatientStore
      * registering / updating information
      * 
      * @param patient Patient object
-     * @param program Progam which person needs to enroll. If this paramameter
-     *        is null, the system check idenfifiers of the patient
+     * @param program Program which person needs to enroll. If this parameter
+     *        is null, the system check identifiers of the patient
      * 
      * @return Error code 0 : Validation is OK 1 : The identifier is duplicated
      *         2 : Violate validation criteria of the program

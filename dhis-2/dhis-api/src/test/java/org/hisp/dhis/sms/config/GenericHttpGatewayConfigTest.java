@@ -95,7 +95,7 @@ public class GenericHttpGatewayConfigTest
     }
 
     @Test
-    public void testUntmarshalling()
+    public void testUnmarshalling()
         throws JAXBException
     {
         String xml = "<smsConfiguration xmlns=\"http://dhis2.org/schema/dxf/2.0\"><enabled>true</enabled><longNumber>DHIS2</longNumber>";

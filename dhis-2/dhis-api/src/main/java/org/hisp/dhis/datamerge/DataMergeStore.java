@@ -46,7 +46,7 @@ public interface DataMergeStore
      * @param sourceCategoryOptionCombo the source category option combo.
      */
     void eliminateDuplicateDataElement( DataElement destDataElement, DataElementCategoryOptionCombo destCategoryOptionCombo,
-        DataElement sourceDataElemenet, DataElementCategoryOptionCombo sourceCategoryOptionCombo );
+        DataElement sourceDataElement, DataElementCategoryOptionCombo sourceCategoryOptionCombo );
     
     /**
      * Merge organisation units and their data values.

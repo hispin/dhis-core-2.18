@@ -114,7 +114,7 @@ public interface PatientDataValueService
     Collection<PatientDataValue> getPatientDataValues( DataElement dataElement );
 
     /**
-     * Retrive patient data values of a patient on data elements specified from
+     * Retrieve patient data values of a patient on data elements specified from
      * a certain period
      * 
      * @param patient Patient

@@ -68,7 +68,7 @@ public class PatientAudit
         this.accessedModule = accessedModule;
     }
 
-    //TODO implement hashcode and equals
+    //TODO implement hashCode and equals
     
     // -------------------------------------------------------------------------
     // Getters && Setters

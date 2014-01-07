@@ -252,7 +252,7 @@ public interface OrganisationUnitGroupService
     Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSetsWithMembers();
 
     /**
-     * Returns a Collection of compulsory OrganisationUnitGroupSets whichs groups 
+     * Returns a Collection of compulsory OrganisationUnitGroupSets which groups
      * the given OrganisationUnit is not a member of.
      * 
      * @param organisationUnit the OrganisationUnit.

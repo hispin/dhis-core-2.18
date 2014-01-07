@@ -60,7 +60,7 @@ public class PatientComment
         this.createdDate = createdDate;
     }
     
-    //TODO implement hashcode and equals
+    //TODO implement hashCode and equals
 
     // -------------------------------------------------------------------------
     // Getters/Setters

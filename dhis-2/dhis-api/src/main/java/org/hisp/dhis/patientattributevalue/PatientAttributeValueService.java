@@ -124,7 +124,7 @@ public interface PatientAttributeValueService
      * Returns all {@link PatientAttributeValue}
      * 
      * @return a collection of all PatientAttributeValue, or an empty collection
-     *         if there are no PatientAttributPatientAttributeValues.
+     *         if there are no PatientAttributePatientAttributeValues.
      */
     Collection<PatientAttributeValue> getAllPatientAttributeValues();
 
@@ -153,7 +153,7 @@ public interface PatientAttributeValueService
         PatientAttribute patientAttribute );
 
     /**
-     * Search PatientAttribueValue objects by a PatientAttribute and a attribute
+     * Search PatientAttributeValue objects by a PatientAttribute and a attribute
      * value (performs partial search )
      * 
      * @param patientAttribute PatientAttribute
@@ -194,10 +194,9 @@ public interface PatientAttributeValueService
      * Get the number of {@link PatientAttributeOption} in all
      * {@link PatientAttribute}
      * 
-     * @param attributeOption PatientAttributeOption
+     * @param patientAttributeOption PatientAttributeOption
      * 
      * @return The number of PatientAttributeOptions
      */
-    int countByPatientAttributeoption( PatientAttributeOption patientAttributeOption );
-
+    int countByPatientAttributeOption( PatientAttributeOption patientAttributeOption );
 }
