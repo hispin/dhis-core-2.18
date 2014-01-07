@@ -10,7 +10,7 @@ TR.conf = {
 				};
 				obj.system.rootnodes = [];
 				for (var i = 0; i < r.user.ous.length; i++) {
-					obj.system.rootnodes.push({id: r.user.ous[i].id, localid: r.user.ous[i].localid,text: r.user.ous[i].name, leaf: r.user.ous[i].leaf});
+					obj.system.rootnodes.push({id: r.user.ous[i].id, name: r.user.ous[i].name});
 				}
 				
 				obj.system.user = {id: r.user.id, name: r.user.name};
@@ -5053,7 +5053,6 @@ Ext.onReady( function() {
 														boxLabel: TR.i18n.user_orgunit,
 														labelWidth: TR.conf.layout.form_label_width,
 														handler: function(chb, checked) {
-															TR.cmp.params.organisationunit.toolbar.xable(checked, TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue());
 															TR.cmp.params.organisationunit.treepanel.xable(checked, TR.cmp.aggregateFavorite.userorganisationunitchildren.getValue());
 															TR.state.orgunitIds = [];
 														},
@@ -5070,7 +5069,6 @@ Ext.onReady( function() {
 														boxLabel: TR.i18n.user_orgunit_children,
 														labelWidth: TR.conf.layout.form_label_width,
 														handler: function(chb, checked) {
-															TR.cmp.params.organisationunit.toolbar.xable(checked, TR.cmp.aggregateFavorite.userorganisationunit.getValue());
 															TR.cmp.params.organisationunit.treepanel.xable(checked, TR.cmp.aggregateFavorite.userorganisationunit.getValue());
 														},
 														listeners: {
@@ -5091,6 +5089,7 @@ Ext.onReady( function() {
 												id: 'treeOrg',
 												cls: 'tr-tree',
 												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor + 28,
+												displayField: 'name',
 												rootVisible: false,
 												autoScroll: true,
 												multiSelect: true,
@@ -5170,23 +5169,34 @@ Ext.onReady( function() {
 													}
 												},
 												store: Ext.create('Ext.data.TreeStore', {
-													fields: ['id', 'localid', 'text'],
+													fields: ['id', 'name'],
 													proxy: {
-														type: 'ajax',
-														url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.organisationunitchildren_get
+														type: 'rest',
+														format: 'json',
+														noCache: false,
+														extraParams: {
+															links: 'false'
+														},	
+														url: TR.conf.finals.ajax.path_api + 'organisationUnits',
+														reader: {
+															type: 'json',
+															root: 'children'
+														}
 													},
+													sorters: [{
+														property: 'name',
+														direction: 'ASC'
+													}],
 													root: {
 														id: TR.conf.finals.root.id,
-														localid: '0',
-                                                        text: "/",
 														expanded: true,
 														children: TR.init.system.rootnodes
 													},
 													listeners: {
-														load: function(s, node, r) {
-															for (var i = 0; i < r.length; i++) {
-																r[i].data.text = TR.conf.util.jsonEncodeString(r[i].data.text);
-															}
+														load: function(store, node, records) {
+															Ext.Array.each(records, function(record) {
+																record.set('leaf', !record.raw.hasChildren);
+															});
 														}
 													}
 												}),
