@@ -153,8 +153,8 @@ public interface PeriodService
     
     /**
      * Returns all Intersecting Periods between the startDate and endDate based on PeriodType
-     * For example if the startDate is 2007-05-01 and endDate is 2007-08-01 and periodType is Quartely
-     * then it retuns the periods for Q2,Q3
+     * For example if the startDate is 2007-05-01 and endDate is 2007-08-01 and periodType is Quarterly
+     * then it returns the periods for Q2,Q3
      *  
      * @param periodType is the ultimate period type
      * @param startDate is intercepting startDate
@@ -213,13 +213,13 @@ public interface PeriodService
     Collection<Period> getPeriodsByPeriodType( PeriodType periodType );
 
     /**
-     * Returns all intersecting Periods for the given Period which have assosiated DataValues for
+     * Returns all intersecting Periods for the given Period which have associated DataValues for
      * the given collection of DataElements and Sources.
      * 
      * @param period the Period.
      * @param dataElements the collection of DataElements.
      * @param sources the collection of Sources.
-     * @return all intersecting Periods for the given Period which have assosiated DataValues for
+     * @return all intersecting Periods for the given Period which have associated DataValues for
      *         the given collection of DataElements and Sources.
      */
     Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<OrganisationUnit> sources );

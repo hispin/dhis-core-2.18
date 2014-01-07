@@ -99,7 +99,7 @@ public class ProgramStage
 
     /**
      * Enabled this property to show a pop-up for confirming Complete a program
-     * after to complete a progam-stage
+     * after to complete a program-stage
      */
     private Boolean remindCompleted = false;
 

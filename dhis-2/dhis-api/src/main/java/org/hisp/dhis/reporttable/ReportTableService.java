@@ -102,7 +102,7 @@ public interface ReportTableService
     /**
      * Retrieves ReportTables with the given identifiers.
      *
-     * @param reportTables the identfiers of the ReportTables to retrieve.
+     * @param reportTables the identifiers of the ReportTables to retrieve.
      * @return a Collection of ReportTables.
      */
     Collection<ReportTable> getReportTables( Collection<Integer> reportTables );
