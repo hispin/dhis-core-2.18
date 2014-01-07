@@ -28,12 +28,8 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletInputStream;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.opensymphony.xwork2.Action;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -53,8 +49,10 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.opensymphony.xwork2.Action;
+import javax.servlet.ServletInputStream;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -110,7 +108,7 @@ public class UploadAnonymousEventAction
     // -------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public String execute()
         throws Exception
     {
@@ -181,12 +179,28 @@ public class UploadAnonymousEventAction
             try
             {
                 programId = Integer.parseInt( (String) executionDate.get( "programId" ) );
-                organisationUnitId = Integer.parseInt( (String) executionDate.get( "organisationUnitId" ) );
             }
             catch ( NumberFormatException e )
             {
                 message = e.getMessage();
                 return ERROR;
+            }
+
+            try
+            {
+                organisationUnitId = Integer.parseInt( (String) executionDate.get( "organisationUnitId" ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( (String) executionDate.get( "organisationUnitId" ) );
+
+                if ( organisationUnit == null )
+                {
+                    message = e.getMessage();
+                    return ERROR;
+                }
+
+                organisationUnitId = organisationUnit.getId();
             }
 
             if ( date == null )
