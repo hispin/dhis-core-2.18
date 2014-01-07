@@ -229,7 +229,7 @@ public class AccountController
         if ( credentials != null )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "User name is alread taken";
+            return "User name is already taken";
         }
 
         if ( firstName == null || firstName.trim().length() > MAX_LENGTH )
