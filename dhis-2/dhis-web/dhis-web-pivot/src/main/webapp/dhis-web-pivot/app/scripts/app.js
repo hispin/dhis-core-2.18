@@ -4639,7 +4639,13 @@ Ext.onReady( function() {
 		});
 
 		getParamString = function() {
-			return ns.core.web.analytics.getParamString(ns.core.service.layout.getExtendedLayout(ns.app.layout));
+			var paramString = ns.core.web.analytics.getParamString(ns.core.service.layout.getExtendedLayout(ns.app.layout));
+			
+			if (ns.app.layout.showHierarchy) {
+				paramString += '&showHierarchy=true';
+			}
+
+			return paramString;
 		};
 
 		openTableLayoutTab = function(type, isNewTab) {
