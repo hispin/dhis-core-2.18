@@ -61,9 +61,9 @@
 			<tr>
 				<td>$i18n.getString( "program" )</td>
 				<td>
-					<select name="programId" >
+					<select name="selectedProgramId" >
 					#foreach( $anonymousProgram in $anonymousProgramList )
-						<option value="$userGroup.id">$anonymousProgram.name</option>
+						<option value="$anonymousProgram.id">$anonymousProgram.name</option>
 					#end
 					</select>
 				</td>

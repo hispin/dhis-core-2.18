@@ -29,6 +29,7 @@ package org.hisp.dhis.smscommand;
  */
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.user.UserGroup;
 
@@ -48,6 +49,10 @@ public class SMSCommand
 
     private DataSet dataset;
 
+    // Support only anonymous program for now
+    
+    private Program program;
+
     private Set<SMSCode> codes;
 
     private String codeSeparator;
@@ -63,7 +68,8 @@ public class SMSCommand
     private boolean currentPeriodUsedForReporting = false; // default is prev
 
     public SMSCommand( String name, String parser, ParserType parserType, String separator, DataSet dataset,
-        Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup, String receivedMessage, Set<SMSSpecialCharacter> specialCharacters )
+        Set<SMSCode> codes, String codeSeparator, String defaultMessage, UserGroup userGroup, String receivedMessage,
+        Set<SMSSpecialCharacter> specialCharacters )
     {
         super();
         this.name = name;
@@ -126,6 +132,15 @@ public class SMSCommand
         this.parser = parser;
         this.separator = separator;
         this.dataset = dataset;
+        this.codes = codes;
+    }
+
+    public SMSCommand( String name, String parser, String separator, Program program, Set<SMSCode> codes )
+    {
+        this.name = name;
+        this.parser = parser;
+        this.separator = separator;
+        this.program = program;
         this.codes = codes;
     }
 
@@ -296,4 +311,13 @@ public class SMSCommand
         this.specialCharacters = specialCharacters;
     }
 
+    public Program getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( Program program )
+    {
+        this.program = program;
+    }
 }
