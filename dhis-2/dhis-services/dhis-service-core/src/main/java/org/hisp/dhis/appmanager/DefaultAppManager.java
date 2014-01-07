@@ -65,8 +65,6 @@ public class DefaultAppManager
     private void init()
     {
         reloadApps();
-
-        log.info( "Detecting apps: " + apps );
     }
 
     @Autowired
@@ -270,5 +268,7 @@ public class DefaultAppManager
         }
 
         this.apps = appList;
+
+        log.info( "Detected apps: " + apps );
     }
 }

@@ -39,12 +39,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,6 +76,13 @@ public class AppController
         model.addAttribute( "model", apps );
 
         return "apps";
+    }
+
+    @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.PUT )
+    @ResponseStatus( HttpStatus.NO_CONTENT )
+    public void reloadApps()
+    {
+        appManager.reloadApps();
     }
 
     @RequestMapping( value = "/apps/{app}/**", method = RequestMethod.GET )
