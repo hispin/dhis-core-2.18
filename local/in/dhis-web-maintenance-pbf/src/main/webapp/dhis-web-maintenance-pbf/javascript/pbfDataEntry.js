@@ -146,6 +146,75 @@ function saveValue(dataElementId,optionComboId)
 }
 
 
+function savePBFDataValue( dataElementId, valueType )
+{
+	var period = document.getElementById("selectedPeriodId").value;
+	var dataSetId = $( '#dataSetId' ).val();
+	var valueId = "";
+	if( valueType == 1 )
+	{
+		valueId = "pbfdv_qty_reported_"+dataElementId;
+	}
+	else
+	{
+		valueId = "pbfdv_qty_validated_"+dataElementId;
+	}
+	
+	var fieldId = "#"+valueId;
+	var defaultValue = document.getElementById(valueId).defaultValue;
+	var value = document.getElementById( valueId ).value;
+	
+	if(defaultValue != value)
+	{
+		var dataValue = {
+				'dataElementId' : dataElementId,
+				'valueType' : valueType,
+				'dataSetId' : dataSetId,
+				'organisationUnitId' : $("#selectedOrgunitID").val(),
+				'periodIso' : period,
+				'value' : value
+    };
+    jQuery.ajax( {
+            url: 'saveValue.action',
+            data: dataValue,
+            dataType: 'json',
+            success: handleSuccess,
+            error: handleError
+        } );
+	}
+	
+	function handleSuccess( json )
+	{
+	    var code = json.c;
+
+	    alert(code)
+	    if ( code == '0' || code == 0) // Value successfully saved on server
+	    {
+	    	 markValue( fieldId, COLOR_GREEN );
+	    }
+	    else if ( code == 2 )
+	    {
+	        markValue( fieldId, COLOR_RED );
+	        window.alert( i18n_saving_value_failed_dataset_is_locked );
+	    }
+	    else // Server error during save
+	    {
+	        markValue( fieldId, COLOR_RED );
+	        window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+	    }
+	}
+
+	function handleError( jqXHR, textStatus, errorThrown )
+	{       
+	    markValue( fieldId, COLOR_GREEN );
+	}
+
+	function markValue( fieldId, color )
+	{
+	    document.getElementById(valueId).style.backgroundColor = color;	   
+	}
+}
+
 // load periods
 function loadPeriods()
 {
