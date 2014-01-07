@@ -126,6 +126,28 @@ public class GridTest
         assertEquals( "TwentyOne", gridA.getValue( 1, 0 ) );
         assertEquals( "TwentyTwo", gridA.getValue( 1, 1 ) );
     }
+
+    @Test
+    public void testSubstituteMetaDataForIndex()
+    {
+        Map<Object, Object> metaData = new HashMap<Object, Object>();
+        metaData.put( 11, "Eleven" );
+        metaData.put( 12, "Twelve" );
+        metaData.put( 21, "TwentyOne" );
+        metaData.put( 22, "TwentyTwo" );
+                
+        assertEquals( 11, gridA.getValue( 0, 0 ) );
+        assertEquals( 12, gridA.getValue( 0, 1 ) );
+        assertEquals( 21, gridA.getValue( 1, 0 ) );
+        assertEquals( 22, gridA.getValue( 1, 1 ) );
+        
+        gridA.substituteMetaData( 1, metaData );
+
+        assertEquals( 11, gridA.getValue( 0, 0 ) );
+        assertEquals( "Twelve", gridA.getValue( 0, 1 ) );
+        assertEquals( 21, gridA.getValue( 1, 0 ) );
+        assertEquals( "TwentyTwo", gridA.getValue( 1, 1 ) );
+    }
     
     @Test
     public void testGetHeight()

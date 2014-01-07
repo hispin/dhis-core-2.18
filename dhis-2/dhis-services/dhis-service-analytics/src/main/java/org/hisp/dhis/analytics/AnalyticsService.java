@@ -96,6 +96,7 @@ public interface AnalyticsService
     final String NAMES_META_KEY = "names";
     final String PAGER_META_KEY = "pager";
     final String OU_HIERARCHY_KEY = "ouHierarchy";
+    final String OU_NAME_HIERARCHY_KEY = "ouNameHierarchy";
     
     /**
      * Generates aggregated values for the given query.
@@ -153,11 +154,12 @@ public interface AnalyticsService
      *        in the hierarchy.
      * @param ignoreLimit whether to ignore the max number of cells limit.
      * @param hideEmptyRows whether to hide rows without data values, applis to table layout.
+     * @param showHierarchy whether to show the org unit hierarchy together with the name.
      * @param format the i18n format.
      * @return a data query parameter object created based on the given URL info.
      */
-    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType, 
-        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, boolean hideEmptyRows, I18nFormat format );
+    DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType, String measureCriteria, 
+        boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, boolean hideEmptyRows, boolean showHierarchy, I18nFormat format );
     
     /**
      * Creates a data query parameter object from the given BaseAnalyticalObject.

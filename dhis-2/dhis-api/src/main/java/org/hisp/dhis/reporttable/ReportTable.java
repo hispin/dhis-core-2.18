@@ -573,6 +573,7 @@ public class ReportTable
      * @param paramColumns whether to include report parameter columns.
      * @return a grid.
      */
+    @SuppressWarnings("unchecked")
     public Grid getGrid( Grid grid, Map<String, Double> valueMap, boolean paramColumns )
     {
         valueMap = new HashMap<String, Double>( valueMap );
@@ -702,6 +703,17 @@ public class ReportTable
         if ( topLimit > 0 )
         {
             grid.limitGrid( topLimit );
+        }
+
+        // ---------------------------------------------------------------------
+        // Show hierarchy option
+        // ---------------------------------------------------------------------
+
+        if ( showHierarchy && rowDimensions.indexOf( ORGUNIT_DIM_ID ) != -1 && grid.hasMetaDataKey( "ouNameHierarchy" ) )
+        {
+            int ouNameIndex = ( rowDimensions.indexOf( ORGUNIT_DIM_ID ) * 4 ) + 1; // Ou name position            
+            Map<Object, Object> hierarchyNameMap = (Map<Object, Object>) grid.getMetaData().get( "ouNameHierarchy" );
+            grid.substituteMetaData( ouNameIndex, hierarchyNameMap );
         }
 
         return grid;
