@@ -30,6 +30,7 @@ package org.hisp.dhis.common;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,28 +40,25 @@ public class NameableObjectUtils
 {
     /**
      * Returns a list of NameableObjects.
-     * 
+     *
      * @param objects the NameableObjects to include in the list.
      * @return a list of NameableObjects.
      */
     public static List<NameableObject> getList( NameableObject... objects )
     {
         List<NameableObject> list = new ArrayList<NameableObject>();
-        
+
         if ( objects != null )
         {
-            for ( NameableObject object : objects )
-            {
-                list.add( object );
-            }
+            Collections.addAll( list, objects );
         }
-        
+
         return list;
     }
-    
+
     /**
      * Returns a list with erasure NameableObject based on the given collection.
-     * 
+     *
      * @param collection the collection.
      * @return a list of NameableObjects.
      */
@@ -75,7 +73,7 @@ public class NameableObjectUtils
      * Returns a list typed with the desired erasure based on the given collection.
      * This operation implies an unchecked cast and it is the responsibility of
      * the caller to make sure the cast is valid.
-     * 
+     *
      * @param collection the collection.
      * @return a list.
      */
@@ -83,7 +81,7 @@ public class NameableObjectUtils
     public static <T extends NameableObject> List<T> asTypedList( Collection<NameableObject> collection )
     {
         List<T> list = new ArrayList<T>();
-        
+
         if ( collection != null )
         {
             for ( NameableObject object : collection )
@@ -91,7 +89,7 @@ public class NameableObjectUtils
                 list.add( (T) object );
             }
         }
-        
+
         return list;
     }
 
@@ -99,9 +97,9 @@ public class NameableObjectUtils
      * Returns a list typed with the desired erasure based on the given collection.
      * This operation implies an unchecked cast and it is the responsibility of
      * the caller to make sure the cast is valid.
-     * 
+     *
      * @param collection the collection.
-     * @param the class type.
+     * @param the        class type.
      * @return a list.
      */
     public static <T extends NameableObject> List<T> asTypedList( Collection<NameableObject> collection, Class<T> clazz )
