@@ -78,7 +78,7 @@ public interface DataDictionaryService
     List<DataDictionary> getDataDictionaryByName( String name );
     
     /**
-     * Deteles the DataDictionary.
+     * Deletes the DataDictionary.
      * 
      * @param dataDictionary the DataDictionary to delete.
      */
@@ -93,9 +93,9 @@ public interface DataDictionaryService
     
     List<DataElement> getDataElementsByDictionaryId( int dictionaryId );
     
-    List<DataDictionary> getDataDictionarysBetween( int first, int max );
+    List<DataDictionary> getDataDictionariesBetween( int first, int max );
     
-    List<DataDictionary> getDataDictionarysBetweenByName( String name, int first, int max );
+    List<DataDictionary> getDataDictionariesBetweenByName( String name, int first, int max );
     
     int getDataDictionaryCount();
     

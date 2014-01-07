@@ -91,13 +91,13 @@ public class GetDataDictionaryListAction
         {
             this.paging = createPaging( dataDictionaryService.getDataDictionaryCountByName( key ) );
             
-            dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getDataDictionarysBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getDataDictionariesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( dataDictionaryService.getDataDictionaryCount() );
             
-            dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getDataDictionarysBetween( paging.getStartPos(), paging.getPageSize() ) );
+            dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getDataDictionariesBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         Collections.sort( dataDictionaries, IdentifiableObjectNameComparator.INSTANCE );        

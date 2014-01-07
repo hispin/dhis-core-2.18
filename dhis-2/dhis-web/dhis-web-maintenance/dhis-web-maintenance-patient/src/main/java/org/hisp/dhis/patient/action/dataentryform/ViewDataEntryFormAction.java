@@ -203,7 +203,7 @@ public class ViewDataEntryFormAction
         }
 
         existingDataEntryForms = new ArrayList<DataEntryForm>(
-            dataEntryFormService.listDisctinctDataEntryFormByProgramStageIds( listAssociationIds ) );
+            dataEntryFormService.listDistinctDataEntryFormByProgramStageIds( listAssociationIds ) );
 
         existingDataEntryForms.remove( dataEntryForm );
 

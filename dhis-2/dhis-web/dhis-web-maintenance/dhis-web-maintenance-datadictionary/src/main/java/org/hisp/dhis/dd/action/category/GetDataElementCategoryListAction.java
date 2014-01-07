@@ -99,13 +99,13 @@ public class GetDataElementCategoryListAction
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryCountByName( key ) );
             
-            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService.getDataElementCategorysBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService.getDataElementCategoriesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryCount() );
             
-            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService.getDataElementCategorysBetween( paging.getStartPos(), paging.getPageSize() ) );
+            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService.getDataElementCategoriesBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         Collections.sort( dataElementCategories, IdentifiableObjectNameComparator.INSTANCE );

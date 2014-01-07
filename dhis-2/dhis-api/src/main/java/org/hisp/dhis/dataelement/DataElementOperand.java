@@ -244,7 +244,7 @@ public class DataElementOperand
      * organisation unit level. If no aggregation levels lower than the
      * organisation unit level exist, null is returned.
      *
-     * @param organisationUnitLevel the hiearchy level of the relevant
+     * @param organisationUnitLevel the hierarchy level of the relevant
      *                              OrganisationUnit.
      */
     public Integer getRelevantAggregationLevel( int organisationUnitLevel )
