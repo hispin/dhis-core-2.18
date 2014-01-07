@@ -325,7 +325,8 @@ public class GetPatientAction
             for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
             {
                 String value = patientAttributeValue.getValue();
-                if ( patientAttributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_AGE ) )
+                
+                if ( patientAttributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_AGE ) && value != null )
                 {
                     Date date = format.parseDate( value );
                     value = PatientAttribute.getAgeFromDate( date ) + "";
