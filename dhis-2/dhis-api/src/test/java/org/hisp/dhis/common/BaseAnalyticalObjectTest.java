@@ -108,9 +108,9 @@ public class BaseAnalyticalObjectTest
         List<NameableObject> row = new ArrayList<NameableObject>();
         row.add( oB );
         
-        assertEquals( "a1-b1-c1", BaseAnalyticalObject.getIdentifer( column, row ) );
-        assertEquals( "b1", BaseAnalyticalObject.getIdentifer( new ArrayList<NameableObject>(), row ) );
-        assertEquals( "b1", BaseAnalyticalObject.getIdentifer( null, row ) );
+        assertEquals( "a1-b1-c1", BaseAnalyticalObject.getIdentifier( column, row ) );
+        assertEquals( "b1", BaseAnalyticalObject.getIdentifier( new ArrayList<NameableObject>(), row ) );
+        assertEquals( "b1", BaseAnalyticalObject.getIdentifier( null, row ) );
     }
     
     @Test

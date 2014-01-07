@@ -555,7 +555,7 @@ public abstract class BaseAnalyticalObject
      * Generates an identifier based on the given lists of NameableObjects. Uses
      * the UIDs for each NameableObject, sorts them and writes them out as a key.
      */
-    public static String getIdentifer( List<NameableObject> column, List<NameableObject> row )
+    public static String getIdentifier( List<NameableObject> column, List<NameableObject> row )
     {
         List<String> ids = new ArrayList<String>();
         
