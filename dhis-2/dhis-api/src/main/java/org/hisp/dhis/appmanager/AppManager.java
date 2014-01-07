@@ -39,69 +39,78 @@ public interface AppManager
 {
     final String ID = AppManager.class.getName();
 
-    final String KEY_APP_FOLDER_PATH = "appFolderPath";    
+    final String KEY_APP_FOLDER_PATH = "appFolderPath";
     final String KEY_APP_BASE_URL = "appBaseUrl";
     final String KEY_APP_STORE_URL = "appStoreUrl";
     final String DEFAULT_APP_STORE_URL = "http://appstore.dhis2.org";
-        
+
     /**
      * Gets the Base URL for accessing the apps
+     *
      * @return the apps baseurl
      */
     String getAppBaseUrl();
-    
+
     /**
      * Returns the full path to the folder where apps are extracted
-     * @return app folder path 
+     *
+     * @return app folder path
      */
     String getAppFolderPath();
 
     /**
      * Returns the url of the app repository
-     * @return url of appstore 
+     *
+     * @return url of appstore
      */
     String getAppStoreUrl();
 
     /**
      * Returns a list of all the installed apps at @see getAppFolderPath
+     *
      * @return list of installed apps
      */
     List<App> getApps();
-    
+
     /**
      * Installs the app.
-     * @param file the app file.
+     *
+     * @param file     the app file.
      * @param fileName the name of the app file.
      * @param rootPath the root path of the instance.
      * @throws IOException if the app manifest file could not be read.
      */
     void installApp( File file, String fileName, String rootPath )
         throws IOException;
-    
+
     /**
      * Deletes the app with the given name.
+     *
      * @param name the app name.
      * @return true if the delete was successful, false if there is no app with
-     *         the given name or if the app could not be removed from the file
-     *         system.
+     * the given name or if the app could not be removed from the file
+     * system.
      */
     boolean deleteApp( String name );
 
     /**
-     * Saves the folder in which apps will be expanded 
+     * Saves the folder in which apps will be expanded
+     *
      * @param appFolderPath
      */
     void setAppFolderPath( String appFolderPath );
 
     /**
      * Saves the URL of the apps repository
+     *
      * @param appStoreUrl
      */
     void setAppStoreUrl( String appStoreUrl );
-    
+
     /**
      * Saves the base URL where apps are installed
-     * @param appBaseUrl 
+     *
+     * @param appBaseUrl
      */
     void setAppBaseUrl( String appBaseUrl );
 }

@@ -28,35 +28,117 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = AppController.RESOURCE_PATH )
 public class AppController
 {
     public static final String RESOURCE_PATH = "/apps";
-    
+
     @Autowired
     private AppManager appManager;
-    
-    @RequestMapping( method = RequestMethod.GET )
+
+    private ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+    @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.GET )
     public String getApps( Model model )
     {
         List<App> apps = appManager.getApps();
-        
+
         model.addAttribute( "model", apps );
-        
+
         return "apps";
+    }
+
+    @RequestMapping( value = "/apps/{app}/**", method = RequestMethod.GET )
+    public void renderApp( @PathVariable( "app" ) String app, HttpServletRequest request, HttpServletResponse response ) throws IOException, NotFoundException
+    {
+        Iterable<Resource> locations = Lists.newArrayList(
+            resourceLoader.getResource( "file:" + appManager.getAppFolderPath() + "/" + app + "/" ),
+            resourceLoader.getResource( "classpath*:/apps/" + app + "/" )
+        );
+
+        Resource manifest = findResource( locations, "manifest.webapp" );
+
+        if ( manifest == null )
+        {
+            throw new NotFoundException();
+        }
+
+        Map<String, Object> manifestMap = JacksonUtils.getJsonMapper().readValue( manifest.getInputStream(), new TypeReference<HashMap<String, Object>>()
+        {
+        } );
+
+        String defaultPage = (String) manifestMap.get( "launch_path" );
+        String pageName = findPage( request.getPathInfo(), app );
+
+        Resource page = findResource( locations, pageName );
+
+        if ( page == null )
+        {
+            page = findResource( locations, defaultPage );
+
+            if ( page == null )
+            {
+                throw new NotFoundException();
+            }
+        }
+
+        String mimeType = request.getSession().getServletContext().getMimeType( page.getFilename() );
+        response.setContentType( mimeType );
+
+        StreamUtils.copy( page.getInputStream(), response.getOutputStream() );
+    }
+
+    private Resource findResource( Iterable<Resource> locations, String resourceName ) throws IOException
+    {
+        for ( Resource location : locations )
+        {
+            Resource resource = location.createRelative( resourceName );
+
+            if ( resource.exists() && resource.isReadable() )
+            {
+                return resource;
+            }
+        }
+
+        return null;
+    }
+
+    private String findPage( String path, String app )
+    {
+        String prefix = RESOURCE_PATH + "/" + app + "/";
+
+        if ( path.startsWith( prefix ) )
+        {
+            path = path.substring( prefix.length() );
+        }
+
+        return path;
     }
 }
