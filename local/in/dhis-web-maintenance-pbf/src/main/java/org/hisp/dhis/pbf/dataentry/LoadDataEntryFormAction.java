@@ -1,6 +1,7 @@
 package org.hisp.dhis.pbf.dataentry;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,14 +9,19 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.pbf.api.Lookup;
+import org.hisp.dhis.pbf.api.LookupService;
+import org.hisp.dhis.pbf.api.TariffDataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,6 +55,34 @@ public class LoadDataEntryFormAction implements Action
         this.dataValueService = dataValueService;
     }
 
+    private LookupService lookupService;
+    
+    public void setLookupService( LookupService lookupService )
+    {
+        this.lookupService = lookupService;
+    }
+    
+    private DataElementCategoryService dataElementCategoryService;
+    
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
+    }
+    
+    private TariffDataValueService tariffDataValueService;
+    
+    public void setTariffDataValueService( TariffDataValueService tariffDataValueService )
+    {
+        this.tariffDataValueService = tariffDataValueService;
+    }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
@@ -63,7 +97,7 @@ public class LoadDataEntryFormAction implements Action
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    
+
     private String orgUnitId;
   
     public void setOrgUnitId( String orgUnitId )
@@ -127,15 +161,26 @@ public class LoadDataEntryFormAction implements Action
         return optionCombos;
     }
     
+    private DataElementCategoryOptionCombo tariffOptCombo;
+    
+    public DataElementCategoryOptionCombo getTariffOptCombo()
+    {
+        return tariffOptCombo;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
  
     public String execute()
     {
         
         dataValueMap = new HashMap<String, String>();
+        
+        
+        Lookup lookup = lookupService.getLookupByName( Lookup.OC_TARIFF );
+
+        DataElementCategoryOptionCombo tariffOptCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( lookup.getValue() ) );
         
         organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
@@ -146,6 +191,11 @@ public class LoadDataEntryFormAction implements Action
         dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
         
         optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+        
+        Map<Integer, Integer> tariffDataValueMap = new HashMap<Integer, Integer>();
+        
+        tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( organisationUnit, dataSet, period ) );
+
        
         for( DataElement dataElement : dataElements )
         {
@@ -166,6 +216,29 @@ public class LoadDataEntryFormAction implements Action
                 if ( dataValue != null )
                 {
                     value = dataValue.getValue();
+                }
+                else
+                {                    
+                    if( decombo.getId() == tariffOptCombo.getId() )
+                    {
+                        Integer tariffValue = tariffDataValueMap.get( dataElement.getId() );
+                        
+                        if( tariffValue != null )
+                        {
+                            value = tariffValue+"";
+                            
+                            dataValue = new DataValue( );
+                            dataValue.setDataElement(dataElement);
+                            dataValue.setPeriod(period);
+                            dataValue.setSource(organisationUnit);
+                            dataValue.setValue( value );
+                            dataValue.setStoredBy( currentUserService.getCurrentUsername() );
+                            dataValue.setTimestamp( new Date() );
+                            dataValue.setCategoryOptionCombo( decombo );
+                            
+                            dataValueService.addDataValue( dataValue );                            
+                        }
+                    }
                 }
                 
                 String key = dataElement.getId()+ ":" +  decombo.getId();
