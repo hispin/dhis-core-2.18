@@ -46,10 +46,13 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +79,20 @@ public class AppController
         model.addAttribute( "model", apps );
 
         return "apps";
+    }
+
+    @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.POST )
+    @ResponseStatus( HttpStatus.NO_CONTENT )
+    public void installApp( @RequestParam( "file" ) MultipartFile file, HttpServletRequest request ) throws IOException
+    {
+        File tempFile = File.createTempFile( "IMPORT_", "_ZIP" );
+        file.transferTo( tempFile );
+
+        StringBuffer fullUrl = request.getRequestURL();
+        String baseUrl = org.hisp.dhis.util.ContextUtils.getBaseUrl( request );
+        String rootPath = fullUrl.substring( 0, fullUrl.indexOf( "/", baseUrl.length() ) );
+
+        appManager.installApp( tempFile, file.getOriginalFilename(), rootPath );
     }
 
     @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.PUT )
