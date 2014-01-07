@@ -297,6 +297,11 @@ public class PatientAttribute
 
     public static int getAgeFromDate( Date date )
     {
+        if ( date == null )
+        {
+            return -1;
+        }
+        
         Calendar birthCalendar = Calendar.getInstance();
         birthCalendar.setTime( date );
 
