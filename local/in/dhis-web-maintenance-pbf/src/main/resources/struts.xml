@@ -19,12 +19,12 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-pbf/loadDataElementsforTariff.vm</param>
 			<param name="menu">/dhis-web-maintenance-pbf/tariffMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/javascripts/ext/ext-all.js,javascript/dataElement_combo.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/javascripts/ext/ext-all.js,javascript/TransformGrid.js,javascript/dataElement_combo.js</param>
 			<param name="stylesheets">../dhis-web-commons/javascripts/ext/resources/css/ext-all-gray.css</param>
 		</action>
 		<action name="loadTariffDetails" class="org.hisp.dhis.pbf.action.LoadTariffDetailsAction">
 			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-maintenance-pbf/loadTariffData.vm</param>			
+			<param name="page">/dhis-web-maintenance-pbf/loadTariffData.vm</param>
 		</action>
 		 <action name="addTariffData" class="org.hisp.dhis.pbf.action.AddTariffDataAction">
 			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
@@ -46,7 +46,8 @@
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-maintenance-pbf/loadBankData.vm</param>
             <param name="menu">/dhis-web-maintenance-pbf/tariffMenu.vm</param>
-            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/javascripts/ext/ext-all.js,javascript/TransformGrid.js</param>
+        	<param name="stylesheets">../dhis-web-commons/javascripts/ext/resources/css/ext-all-gray.css</param>
         </action>
         
         <action name="loadbankDetails" class="org.hisp.dhis.pbf.action.LoadBankDetailsAction">
@@ -75,7 +76,7 @@
       <param name="page">/dhis-web-maintenance-pbf/dataEntrySelection.vm</param>
       <param name="menu">/dhis-web-maintenance-pbf/menuDataEntry.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/pbfDataEntry.js</param>
-      <param name="stylesheets">style/dataentry.css</param>
+      <param name="stylesheets">css/dataentry.css</param>
     </action>	
 	
     <!-- Get OrganisationUnit Unit name -->
@@ -99,6 +100,14 @@
 		<result name="success" type="velocity">/content.vm</result>
 		<param name="page">/dhis-web-maintenance-pbf/loadDataEntryForm.vm</param>
 	</action>	
+	
+	<!-- Save Value -->
+	<action name="saveValue"
+		class="org.hisp.dhis.pbf.dataentry.SaveValueAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-maintenance-pbf/status.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>					
+	</action>
 	
 	</package>
 	

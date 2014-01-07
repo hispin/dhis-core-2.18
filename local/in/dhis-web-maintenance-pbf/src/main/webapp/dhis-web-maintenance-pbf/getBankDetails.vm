@@ -5,12 +5,39 @@
 		font-size: 1.5em;
 	}
 </style>
+<script type="text/javascript" >
+	
+	Ext.Loader.setConfig({
+		enabled: true
+	});
+	Ext.Loader.setPath('Ext.ux.grid', 'javascript');
+	Ext.require([
+		'Ext.data.*',
+		'Ext.grid.*',
+		'Ext.toolbar.Paging',
+		'Ext.ux.grid.TransformGrid'
+	]);
+	
+</script>
 <script >
 $(function() {
-$("#bankDetails").tablesorter(); 
+
+Ext.QuickTips.init();
+			
+			var grid = Ext.create('Ext.ux.grid.TransformGrid', "bankDetails", {				
+			sortableColumns: true,
+            enableColumnMove: true,
+            enableColumnResize: true,
+            sortOnLoad: true,
+			minWidth: 300,
+        	minHeight: 360,			
+            sorters: {direction: 'ASC'}
+			});
+			
+			grid.render();
+
 $("#openAddBankDetail").button()
 			.click(function() {	
-			
 			validateAddBank();
 			$( "#addBankDetail" ).dialog('option', 'title', 'Add Bank Detail');
            	$('#dataSetId option[value=-1]').attr('selected','selected');
@@ -150,7 +177,10 @@ function validateAddBank()
         }
 	}
 </script>
-
+<div style="width:100%">
+<input type="button" value="Add New Bank Detail" style="float:right;" id="openAddBankDetail" />
+</div>
+<br/><br/>
 <table style="width:100%" id="bankDetails">
 	<thead >
 		<tr >
@@ -201,7 +231,7 @@ function validateAddBank()
 				<select id="dataSetId" style="width:100%;" onchange="validateAddBank()">
 					<option value="-1">Select PBF Type</option>
 					#foreach( $dataSet in $dataSets )
-						<option value="$dataSet.id">$dataSet.name</option>
+						<option value="$!dataSet.id">$!dataSet.name</option>
 					#end
                 </select>
 			</td>

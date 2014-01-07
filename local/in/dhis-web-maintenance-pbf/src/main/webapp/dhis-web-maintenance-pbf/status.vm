@@ -1,3 +1,5 @@
 {
-"message":"${message}"
+"message":"${message}",
+"dataSets":${dataSets},
+"c":"${statusCode}"
 }

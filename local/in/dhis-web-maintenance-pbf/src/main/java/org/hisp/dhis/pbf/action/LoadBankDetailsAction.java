@@ -68,10 +68,6 @@ public class LoadBankDetailsAction implements Action
         return dataSets;
     }    
 
-    public void setDataSets(List<DataSet> dataSets) {
-		this.dataSets = dataSets;
-	}
-
 	private List<String> banks = new ArrayList<String>();
 
     public List<String> getBanks()
@@ -96,30 +92,19 @@ public class LoadBankDetailsAction implements Action
         bankDetailsList.addAll( bankDetailsService.getBankDetails( organisationUnit ) );
         dataSets.clear();
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
+        List<DataSet> bankDetailDataSets = new ArrayList<DataSet>();
         for( Lookup lookup : lookups )
         {
             Integer dataSetId = Integer.parseInt( lookup.getValue() );
             
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
-            if(bankDetailsList.size() > 0)
-            {
-	            for(BankDetails bd : bankDetailsList)
-	            {
-	            	if(bd.getDataSet().getId() == dataSet.getId() && !dataSets.contains(bd.getDataSet()))
-	            	{}
-	            	else
-	            	{
-	            		dataSets.add(dataSet);
-	            		break;
-	            	}
-	            }
-            }
-            else
-            {
-            	dataSets.add( dataSet );
-            }
-            
+            dataSets.add(dataSet);
         }
+        for(BankDetails bd : bankDetailsList)
+        {
+        	bankDetailDataSets.add( bd.getDataSet() );
+        }
+        //dataSets.removeAll(bankDetailDataSets);
         
         lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.BANK ) );
         for( Lookup lookup : lookups )
@@ -128,7 +113,12 @@ public class LoadBankDetailsAction implements Action
         }
         
         Collections.sort(dataSets);
+        /*for(DataSet ds : dataSets)
+        {
+        	System.out.println(ds.getName());
+        }
         System.out.println(dataSets.size());
+        */
         return SUCCESS;
     }
 }

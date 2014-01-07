@@ -22,7 +22,7 @@
 
 <form id="pbfDataEntryForm" name="pbfDataEntryForm" method="post" >	
 <div>
-	<input type="hidden" id='selectedOrgunitID' name = 'selectedOrgunitID' value="$!organisationUnit.id" />
+	<input type="hidden" id='selectedOrgunitID' name = 'selectedOrgunitID' value="$!organisationUnit.uid" />
 	<input type="hidden" id='selectedOrgunitName' name = 'selectedOrgunitName' value="$!organisationUnit.name" />
 	
 </div>
@@ -56,6 +56,7 @@
 			</select>
 			<input type="button" id="prevButton" disabled="disabled" style="width:75px" value="$i18n.getString( 'prev_year' )" title="$i18n.getString('earlier_periods')" onclick="getAvailablePeriodsTemp( 'selectedPeriodId', 'selectedPeriodId', '-1' )" >
 			<input type="button" id="nextButton" disabled="disabled" style="width:75px" value="$i18n.getString( 'next_year' )" title="$i18n.getString('later_periods')" onclick="getAvailablePeriodsTemp( 'selectedPeriodId', 'selectedPeriodId', '1' )" >
+			
 		</td>
 	</tr>		
 
@@ -65,12 +66,13 @@
 
 #parse( "/dhis-web-commons/loader/loader.vm" )
 <div id='dataEntryFormDiv'></div> <!-- DataEntry Form -->  	
+<!--
 
 <p>
+	<input type="submit"  id="saveButton" name="saveButton" value="$i18n.getString( 'save' )" disabled="disabled" style="width:100px"/>&nbsp;&nbsp;
 	<input type="button"  value="$i18n.getString( 'Cancel' )" style="width:100px" onclick="window.location.href='index.action'"/>&nbsp;&nbsp;
-	&nbsp;&nbsp;<input type="submit"  id="saveButton" name="saveButton" value="$i18n.getString( 'save' )" disabled="disabled" style="width:100px"/>
 </p>
-
+-->
 
 </form>
 

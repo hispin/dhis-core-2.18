@@ -1,9 +1,17 @@
 
+	var COLOR_GREEN = '#b9ffb9';
+	var COLOR_YELLOW = '#fffe8c';
+	var COLOR_RED = '#ff8a8a';
+	var COLOR_ORANGE = '#ff6600';
+	var COLOR_WHITE = '#ffffff';
+	var COLOR_GREY = '#cccccc';
+	var LocaleColor = 'black';
+	
 function orgUnitHasBeenSelected( orgUnitIds )
 {    
 	$( '#dataEntryFormDiv' ).html( '' );
 	
-	document.getElementById('selectedOrgunitID').value = orgUnitIds;
+	//document.getElementById('selectedOrgunitID').value = orgUnitIds;
 	
 	//alert( orgUnitIds );
 	
@@ -18,9 +26,11 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	                
 	            if( type == 'success' )
 	            {
+	            	window.location.href = "pbfDataEntry.action";
 					enable('dataSetId');
+					setFieldValue('selectedOrgunitID',orgUnitIds[0])
 	                setFieldValue('orgUnitName', json.message );
-	                setFieldValue('selectedOrgunitName', json.message );
+	                setFieldValue('selectedOrgunitName', json.message );	                
 	            }
 	            else if( type == 'input' )
 	            {
@@ -42,14 +52,7 @@ selection.setListenerFunction( orgUnitHasBeenSelected );
 function loadDataEntryForm()
 {
 	var orgUnitId = $( '#selectedOrgunitID' ).val();
-	
-	
-	
-	
 	var dataSetId = $( '#dataSetId' ).val();
-	
-	
-	
 	$( '#dataEntryFormDiv' ).html('');
 	
 	$( '#saveButton' ).removeAttr( 'disabled' );
@@ -83,28 +86,64 @@ function loadDataEntryForm()
 
 }
 
+function saveValue(dataElementId,optionComboId)
+{
+	var period = document.getElementById("selectedPeriodId").value;
+	var valueId = "dataelement"+dataElementId+":"+optionComboId;
+	
+	var fieldId = "#"+valueId;
+	var defaultValue = document.getElementById(valueId).defaultValue;
+	var value = document.getElementById(valueId).value;
+	
+	if(defaultValue != value)
+	{
+	var dataValue = {
+        'dataElementId' : dataElementId,
+        'optionComboId' : optionComboId,
+        'organisationUnitId' : $("#selectedOrgunitID").val(),
+        'periodIso' : period,
+        'value' : value
+    };
+    jQuery.ajax( {
+            url: 'saveValue.action',
+            data: dataValue,
+            dataType: 'json',
+            success: handleSuccess,
+            error: handleError
+        } );
+	}
+	
+	function handleSuccess( json )
+	{
+	    var code = json.c;
 
+	    alert(code)
+	    if ( code == '0' || code == 0) // Value successfully saved on server
+	    {
+	    	 markValue( fieldId, COLOR_GREEN );
+	    }
+	    else if ( code == 2 )
+	    {
+	        markValue( fieldId, COLOR_RED );
+	        window.alert( i18n_saving_value_failed_dataset_is_locked );
+	    }
+	    else // Server error during save
+	    {
+	        markValue( fieldId, COLOR_RED );
+	        window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+	    }            
+	}
 
+	function handleError( jqXHR, textStatus, errorThrown )
+	{       
+	    markValue( fieldId, COLOR_GREEN );
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	function markValue( fieldId, color )
+	{
+	    document.getElementById(valueId).style.backgroundColor = color;	   
+	}
+}
 
 
 // load periods
