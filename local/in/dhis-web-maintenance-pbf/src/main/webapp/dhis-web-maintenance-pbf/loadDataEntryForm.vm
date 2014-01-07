@@ -41,7 +41,15 @@
 				#set( $valueMapId =  $dataElement.id + ':' + $optionCombo.id )
 				#set( $dataValue = "" )
 				#set( $dataValue = $!dataValueMap.get( $valueMapId ) )
-				<td><input type="text" name="dataelement$valueMapId" id="dataelement$valueMapId" value="$!dataValue" tabindex="$tabIndex" style="text-align: center;" #if($dataElement.type =='number') class="{validate:{number:true}}" #elseif($dataElement.type =='int') class="{validate:{integer:true}}" #elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}" #elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}" #end/></td>
+				<td>
+					<input  onblur="saveValue('$dataElement.id','$optionCombo.id')" type="text" name="dataelement$valueMapId" id="dataelement$valueMapId" 
+						value="$!dataValue" tabindex="$tabIndex" style="text-align: center;" 
+						#if($dataElement.type =='number') class="{validate:{number:true}}" 
+						#elseif($dataElement.type =='int') class="{validate:{integer:true}}"
+						#elseif($dataElement.type =='positiveNumber') class="{validate:{positive_integer:true}}"
+						#elseif($dataElement.type =='negativeNumber') class="{validate:{negative_integer:true}}"
+						#end />
+				</td>
 			#end
 		</tr>
 		#set( $tabIndex = $tabIndex + 1 )

@@ -1,7 +1,35 @@
-<script >
+<script type="text/javascript" >
+	
+	Ext.Loader.setConfig({
+		enabled: true
+	});
+	Ext.Loader.setPath('Ext.ux.grid', 'javascript');
+	Ext.require([
+		'Ext.data.*',
+		'Ext.grid.*',
+		'Ext.toolbar.Paging',
+		'Ext.ux.grid.TransformGrid'
+	]);
+	
+</script>
 
+<script >
+	
 $(function() {
-$("#tariffDetails").tablesorter(); 
+			Ext.QuickTips.init();
+			
+			var grid = Ext.create('Ext.ux.grid.TransformGrid', "tariffDetails", {				
+			sortableColumns: true,
+            enableColumnMove: true,
+            enableColumnResize: true,
+            sortOnLoad: true,
+			minWidth: 100,
+        	minHeight: 100,			
+            sorters: {direction: 'ASC'}
+			});
+			
+			grid.render();
+			
 datePicker( 'startDate');
 datePicker( 'endDate');
 $("#openAddTariff").button()
@@ -198,8 +226,8 @@ $( "#addTariff" ).dialog({
 </div>
 <br/><br/>
 <input type="hidden" id="dataElementId" name="dataElementId" value="$!selecteddataElement.id"/>
-
-<table style="width:100%" id="tariffDetails">
+<div style="width:100%;margin:auto;">
+<table style="width:100%" id="tariffDetails" name="tariffDetails">
 	<thead >
 		<tr >
 			<th >PBF Type</th>
@@ -211,7 +239,7 @@ $( "#addTariff" ).dialog({
 			##end
         </tr>
 	</thead>
-	<tbody id="list">
+	<tbody>
 		#set( $mark = false )
 		#foreach( $tariff in $tariffList )
 			#if( $mark )
@@ -219,7 +247,7 @@ $( "#addTariff" ).dialog({
 			#else
 				#set( $mark = true )
 			#end
-            <tr #if( $mark ) bgcolor = "#FFFFFF" #else bgcolor="#E0ECF8"  #end>
+            <tr >
 				<td >$!tariff.dataSet.name</td>
 				<td >$!tariff.value</td>
 				<td data-sorter="shortDate" data-date-format="yyyymmdd">$simpleDateFormat.format($!tariff.startDate)</td>
@@ -256,13 +284,6 @@ $( "#addTariff" ).dialog({
 			<td colspan="2">&nbsp;</td>
         </tr>
 		<tr >
-			<td style="width:40%;">Tariff <b class="mandatory">*</b> </td>
-			<td style="width:60%;"><input type="text" id="tariff" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
-        </tr>
-		<tr >
-			<td colspan="2">&nbsp;</td>
-        </tr>
-		<tr >
 			<td style="width:40%;">Start Date <b class="mandatory">*</b> </td>
 			<td style="width:60%;"><input type="text" id="startDate" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
         </tr>
@@ -273,6 +294,15 @@ $( "#addTariff" ).dialog({
 			<td style="width:40%;">End Date <b class="mandatory">*</b> </td>
 			<td style="width:60%;"><input type="text" id="endDate" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
         </tr>
+		<tr >
+			<td colspan="2">&nbsp;</td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Tariff <b class="mandatory">*</b> </td>
+			<td style="width:60%;"><input type="text" id="tariff" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
+        </tr>
+		
+		
 		
     </table>
 </div>

@@ -136,7 +136,15 @@
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>  
 	 </bean>    
     
+    <!-- Save Value -->
     
-    
+    <bean id="org.hisp.dhis.pbf.dataentry.SaveValueAction"  class="org.hisp.dhis.pbf.dataentry.SaveValueAction" scope="prototype">
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />			
+	</bean>
     
 </beans>
