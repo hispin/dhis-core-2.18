@@ -44,12 +44,6 @@ public class Form
 {
     private String label;
 
-    @Deprecated
-    private String periodType;
-
-    @Deprecated
-    private Boolean allowFuturePeriods;
-
     private List<Group> groups = new ArrayList<Group>();
 
     private Map<String, Object> options = new HashMap<String, Object>();
@@ -96,9 +90,7 @@ public class Form
     {
         return "Form{" +
             "label='" + label + '\'' +
-            ", periodType='" + periodType + '\'' +
             ", groups=" + groups +
-            ", allowFuturePeriods=" + allowFuturePeriods +
             '}';
     }
 }
