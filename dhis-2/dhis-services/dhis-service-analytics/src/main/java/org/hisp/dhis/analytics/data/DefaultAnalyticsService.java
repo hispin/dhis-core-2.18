@@ -56,6 +56,7 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_CHILDREN;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.KEY_USER_ORGUNIT_GRANDCHILDREN;
 import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
+import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentNameGraphMap;
 import static org.hisp.dhis.period.PeriodType.getPeriodTypeFromIsoString;
 import static org.hisp.dhis.reporttable.ReportTable.IRT2D;
 import static org.hisp.dhis.reporttable.ReportTable.addIfEmpty;
@@ -401,6 +402,11 @@ public class DefaultAnalyticsService
                 metaData.put( OU_HIERARCHY_KEY, getParentGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ) ) );
             }
             
+            if ( params.isShowHierarchy() )
+            {
+                metaData.put( OU_NAME_HIERARCHY_KEY, getParentNameGraphMap( asTypedList( params.getDimensionOrFilter( ORGUNIT_DIM_ID ), OrganisationUnit.class ), true ) );
+            }
+            
             grid.setMetaData( metaData );
         }
         
@@ -420,8 +426,6 @@ public class DefaultAnalyticsService
         
         queryPlanner.validateTableLayout( params, columns, rows );
         
-        Map<String, Double> valueMap = getAggregatedDataValueMapping( params );
-
         ReportTable reportTable = new ReportTable();
         
         List<NameableObject[]> tableColumns = new ArrayList<NameableObject[]>();
@@ -455,8 +459,13 @@ public class DefaultAnalyticsService
         
         reportTable.setTitle( IdentifiableObjectUtils.join( params.getFilterItems() ) );
         reportTable.setHideEmptyRows( params.isHideEmptyRows() );
+        reportTable.setShowHierarchy( params.isShowHierarchy() );
 
-        return reportTable.getGrid( new ListGrid(), valueMap, false );
+        Grid grid = getAggregatedDataValues( params );
+        
+        Map<String, Double> valueMap = getAggregatedDataValueMapping( grid );
+
+        return reportTable.getGrid( new ListGrid( grid.getMetaData() ), valueMap, false );
     }
     
     @Override
@@ -464,6 +473,19 @@ public class DefaultAnalyticsService
     {
         Grid grid = getAggregatedDataValues( params );
         
+        return getAggregatedDataValueMapping( grid );
+    }
+    
+    /**
+     * Generates a mapping where the key represents the dimensional item identifiers
+     * concatenated by "-" and the value is the corresponding aggregated data value
+     * based on the given grid.
+     * 
+     * @param grid the grid.
+     * @return a mapping between item identifiers and aggregated values.
+     */
+    private Map<String, Double> getAggregatedDataValueMapping( Grid grid )
+    {
         Map<String, Double> map = new HashMap<String, Double>();
         
         int metaCols = grid.getWidth() - 1;
@@ -588,7 +610,7 @@ public class DefaultAnalyticsService
     
     @Override
     public DataQueryParams getFromUrl( Set<String> dimensionParams, Set<String> filterParams, AggregationType aggregationType, 
-        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, boolean hideEmptyRows, I18nFormat format )
+        String measureCriteria, boolean skipMeta, boolean skipRounding, boolean hierarchyMeta, boolean ignoreLimit, boolean hideEmptyRows, boolean showHierarchy, I18nFormat format )
     {
         DataQueryParams params = new DataQueryParams();
 
@@ -632,6 +654,7 @@ public class DefaultAnalyticsService
         params.setSkipRounding( skipRounding );
         params.setHierarchyMeta( hierarchyMeta );
         params.setHideEmptyRows( hideEmptyRows );
+        params.setShowHierarchy( showHierarchy );
 
         return params;
     }

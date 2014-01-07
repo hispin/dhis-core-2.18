@@ -142,6 +142,12 @@ public class DataQueryParams
      */
     private boolean hideEmptyRows;
     
+    /**
+     * Indicates whether the org unit hierarchy path should be displayed with the
+     * org unit names on rows.
+     */
+    private boolean showHierarchy;
+    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -1115,6 +1121,16 @@ public class DataQueryParams
     public void setHideEmptyRows( boolean hideEmptyRows )
     {
         this.hideEmptyRows = hideEmptyRows;
+    }
+
+    public boolean isShowHierarchy()
+    {
+        return showHierarchy;
+    }
+
+    public void setShowHierarchy( boolean showHierarchy )
+    {
+        this.showHierarchy = showHierarchy;
     }
 
     // -------------------------------------------------------------------------

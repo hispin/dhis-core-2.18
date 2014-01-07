@@ -219,6 +219,13 @@ public interface Grid
     Grid removeCurrentWriteRow();
     
     /**
+     * Indicates whether meta data exists and contains the given key.
+     * 
+     * @param key the meta data key.
+     */
+    boolean hasMetaDataKey( String key );
+    
+    /**
      * Limits the grid from top by the given argument number.
      * 
      * @param limit the top limit, must be greater than zero to have an effect.
@@ -281,6 +288,15 @@ public interface Grid
      * @param metaDataMap meta-data map of keys and substitutions.
      */
     Grid substituteMetaData( Map<Object, Object> metaDataMap );
+    
+    /**
+     * Substitutes the values in the meta columns with the mapped value in the
+     * meta-data map for the column with the given index.
+     * 
+     * @param columnIndex the index of the column to substitute.
+     * @param metaDataMap meta-data map of keys and substitutions.
+     */
+    Grid substituteMetaData( int columnIndex, Map<Object, Object> metaDataMap );
     
     /**
      * Adds a set of headers based on the column names of the given SQL result set.

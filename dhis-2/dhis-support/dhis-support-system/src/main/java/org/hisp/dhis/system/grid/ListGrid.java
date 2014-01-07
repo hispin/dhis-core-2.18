@@ -116,9 +116,19 @@ public class ListGrid
      */
     public ListGrid()
     {
-        headers = new ArrayList<GridHeader>();
-        metaData = new HashMap<Object, Object>();
-        grid = new ArrayList<List<Object>>();
+        this.headers = new ArrayList<GridHeader>();
+        this.metaData = new HashMap<Object, Object>();
+        this.grid = new ArrayList<List<Object>>();
+    }
+    
+    /**
+     * @param metaData meta data.
+     */
+    public ListGrid( Map<Object, Object> metaData )
+    {
+        this.headers = new ArrayList<GridHeader>();
+        this.metaData = metaData;
+        this.grid = new ArrayList<List<Object>>();
     }
 
     // ---------------------------------------------------------------------
@@ -424,6 +434,11 @@ public class ListGrid
         return this;
     }
     
+    public boolean hasMetaDataKey( String key )
+    {
+        return metaData != null && metaData.containsKey( key );
+    }
+    
     public Grid limitGrid( int limit )
     {
         if ( limit < 0 )
@@ -611,21 +626,33 @@ public class ListGrid
             {
                 // Column cells
                 
-                List<Object> col = getColumn( colIndex );
-                
-                for ( int rowIndex = 0; rowIndex < col.size(); rowIndex++ )
-                {
-                    Object object = col.get( rowIndex );
-                    
-                    Object meta = metaDataMap.get( object );
-                    
-                    if ( meta != null )
-                    {
-                        grid.get( rowIndex ).set( colIndex, meta );
-                    }
-                }
+                substituteMetaData( colIndex, metaDataMap );
             }
         }        
+        
+        return this;
+    }
+    
+    public Grid substituteMetaData( int columnIndex, Map<Object, Object> metaDataMap )
+    {
+        if ( metaDataMap == null )
+        {
+            return this;
+        }
+        
+        List<Object> col = getColumn( columnIndex );
+        
+        for ( int rowIndex = 0; rowIndex < col.size(); rowIndex++ )
+        {
+            Object object = col.get( rowIndex );
+            
+            Object meta = metaDataMap.get( object );
+            
+            if ( meta != null )
+            {
+                grid.get( rowIndex ).set( columnIndex, meta );
+            }
+        }
         
         return this;
     }
