@@ -84,6 +84,14 @@ public interface AppManager
         throws IOException;
 
     /**
+     * Does the app with name appName exist?
+     *
+     * @param appName
+     * @return
+     */
+    boolean exists( String appName );
+
+    /**
      * Deletes the app with the given name.
      *
      * @param name the app name.

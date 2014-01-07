@@ -28,16 +28,8 @@ package org.hisp.dhis.appmanager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-import javax.annotation.PostConstruct;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ant.compress.taskdefs.Unzip;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -47,8 +39,14 @@ import org.hisp.dhis.datavalue.DefaultDataValueService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * @author Saptarshi Purkayastha
@@ -67,10 +65,10 @@ public class DefaultAppManager
     private void init()
     {
         reloadApps();
-        
+
         log.info( "Detecting apps: " + apps );
     }
-    
+
     @Autowired
     private SystemSettingManager appSettingManager;
 
@@ -94,15 +92,15 @@ public class DefaultAppManager
     public List<App> getApps()
     {
         String baseUrl = getAppBaseUrl();
-        
+
         for ( App app : apps )
         {
             app.setBaseUrl( baseUrl );
         }
-        
+
         return apps;
     }
-    
+
     @Override
     public void installApp( File file, String fileName, String rootPath )
         throws IOException
@@ -116,7 +114,7 @@ public class DefaultAppManager
         App app = mapper.readValue( inputStream, App.class );
 
         // Delete if app is already installed
-        
+
         if ( getApps().contains( app ) )
         {
             String folderPath = getAppFolderPath() + File.separator + app.getFolderName();
@@ -130,7 +128,7 @@ public class DefaultAppManager
         unzip.execute();
 
         // Updating dhis server location
-        
+
         File updateManifest = new File( dest + File.separator + "manifest.webapp" );
         App installedApp = mapper.readValue( updateManifest, App.class );
 
@@ -141,8 +139,22 @@ public class DefaultAppManager
         }
 
         zip.close();
-                
+
         reloadApps(); // Reload app state
+    }
+
+    @Override
+    public boolean exists( String appName )
+    {
+        for ( App app : getApps() )
+        {
+            if ( app.getName().equals( appName ) || app.getFolderName().equals( appName ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -150,11 +162,11 @@ public class DefaultAppManager
     {
         for ( App app : getApps() )
         {
-            if ( app.getName().equals( name ) )
+            if ( app.getName().equals( name ) || app.getFolderName().equals( name ) )
             {
                 try
                 {
-                    String folderPath = getAppFolderPath() + File.separator + app.getFolderName();                
+                    String folderPath = getAppFolderPath() + File.separator + app.getFolderName();
                     FileUtils.forceDelete( new File( folderPath ) );
 
                     return true;
