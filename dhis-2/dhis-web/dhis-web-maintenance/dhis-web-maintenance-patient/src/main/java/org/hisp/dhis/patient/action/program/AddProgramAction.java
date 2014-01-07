@@ -305,7 +305,6 @@ public class AddProgramAction
 
         programService.addProgram( program );
 
-        List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
         int index = 0;
         for ( String selectedPropertyId : selectedPropertyIds )
         {
@@ -316,7 +315,7 @@ public class AddProgramAction
                 PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
                     .parseInt( ids[1] ) );
                 ProgramPatientIdentifierType programPatientIdentifierType = new ProgramPatientIdentifierType( program,
-                    identifierType, personDisplayNames.get( index ) );
+                    identifierType, personDisplayNames.get( index ) , index + 1);
                 programPatientIdentifierTypeService.addProgramPatientIdentifierType( programPatientIdentifierType );
             }
             else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
@@ -325,7 +324,7 @@ public class AddProgramAction
                     .parseInt( ids[1] ) );
 
                 ProgramPatientAttribute programPatientAttribute = new ProgramPatientAttribute( program,
-                    patientAttribute, personDisplayNames.get( index ) );
+                    patientAttribute, personDisplayNames.get( index ), index + 1 );
                 programPatientAttributeService.addProgramPatientAttribute( programPatientAttribute );
             }
 

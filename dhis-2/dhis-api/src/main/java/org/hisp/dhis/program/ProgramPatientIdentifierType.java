@@ -47,6 +47,8 @@ public class ProgramPatientIdentifierType
 
     private boolean displayedInList;
 
+    private Integer sortOrder;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -56,11 +58,12 @@ public class ProgramPatientIdentifierType
     }
 
     public ProgramPatientIdentifierType( Program program, PatientIdentifierType patientIdentifierType,
-        boolean displayedInList )
+        boolean displayedInList, int sortOrder )
     {
         this.program = program;
         this.patientIdentifierType = patientIdentifierType;
         this.displayedInList = displayedInList;
+        this.sortOrder = sortOrder;
     }
 
     // -------------------------------------------------------------------------
@@ -131,5 +134,15 @@ public class ProgramPatientIdentifierType
     {
         this.displayedInList = displayedInList;
     }
-    
+
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
 }

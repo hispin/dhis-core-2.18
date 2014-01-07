@@ -29,7 +29,9 @@ package org.hisp.dhis.patient.action.program;
  */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -329,7 +331,12 @@ public class UpdateProgramAction
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
-        List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
+        Set<ProgramPatientIdentifierType> programPatientIdentifierTypes = new HashSet<ProgramPatientIdentifierType>(
+            program.getProgramPatientIdentifierTypes() );
+
+        Set<ProgramPatientAttribute> programPatientAttributes = new HashSet<ProgramPatientAttribute>(
+            program.getProgramPatientAttributes() );
+
         int index = 0;
         for ( String selectedPropertyId : selectedPropertyIds )
         {
@@ -346,14 +353,17 @@ public class UpdateProgramAction
                 if ( programPatientIdentifierType == null )
                 {
                     programPatientIdentifierType = new ProgramPatientIdentifierType( program, identifierType,
-                        personDisplayNames.get( index ) );
+                        personDisplayNames.get( index ), index + 1 );
                     programPatientIdentifierTypeService.addProgramPatientIdentifierType( programPatientIdentifierType );
                 }
                 else
                 {
                     programPatientIdentifierType.setDisplayedInList( personDisplayNames.get( index ) );
+                    programPatientIdentifierType.setSortOrder( index + 1 );
                     programPatientIdentifierTypeService
                         .updateProgramPatientIdentifierType( programPatientIdentifierType );
+
+                    programPatientIdentifierTypes.remove( programPatientIdentifierType );
                 }
             }
             else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
@@ -367,16 +377,29 @@ public class UpdateProgramAction
                 if ( programPatientAttribute == null )
                 {
                     programPatientAttribute = new ProgramPatientAttribute( program, patientAttribute,
-                        personDisplayNames.get( index ) );
+                        personDisplayNames.get( index ) , index + 1);
                     programPatientAttributeService.addProgramPatientAttribute( programPatientAttribute );
                 }
                 else
                 {
                     programPatientAttribute.setDisplayedInList( personDisplayNames.get( index ) );
+                    programPatientAttribute.setSortOrder( index + 1 );
                     programPatientAttributeService.updateProgramPatientAttribute( programPatientAttribute );
+
+                    programPatientAttributes.remove( programPatientAttribute );
                 }
             }
             index++;
+        }
+
+        for ( ProgramPatientIdentifierType identifier : programPatientIdentifierTypes )
+        {
+            programPatientIdentifierTypeService.deleteProgramPatientIdentifierType( identifier );
+        }
+
+        for ( ProgramPatientAttribute attribute : programPatientAttributes )
+        {
+            programPatientAttributeService.deleteProgramPatientAttribute( attribute );
         }
 
         if ( relatedProgramId != null )

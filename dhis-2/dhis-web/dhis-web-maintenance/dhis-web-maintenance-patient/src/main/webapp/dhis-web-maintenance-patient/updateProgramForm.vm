@@ -233,7 +233,7 @@
 		<tr>
 			<td>
 				<select size="15" style="width:100%;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();" #if( $program.type=='3' ) disabled #end>
-					#foreach( $identifier in $availableIdentifierTypes )
+					#foreach( $identifier in $availableIdentifierTypes ) 
 						<option value="iden_$identifier.id">$identifier.displayName</option>
 					#end
 					#foreach( $attribute in $availableAttributes )
@@ -261,17 +261,18 @@
                             </tr>
 						</thead>
 						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end>
-							#foreach( $programIdentifier in $program.programPatientIdentifierTypes )
+							#foreach( $programIdentifier in $program.programPatientIdentifierTypes ) 
 								#set($identifier = $programIdentifier.patientIdentifierType)
 								<tr ondblclick="unSelectProperties( this )" id="iden_$identifier.id">
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $identifier.name )</td>
-									<td align="center"><input type="checkbox" name="displayed" value="iden_$identifier.id" #if($identifier.personDisplayName == true ) checked #end #if($program.type==3) disabled #end /></td>
+									<td align="center"><input type="checkbox" name="displayed" value="iden_$identifier.id" #if($programIdentifier.displayedInList == true ) checked #end #if($program.type==3) disabled #end /></td>
 								</tr>
 							#end
 							#foreach( $programPatientAttribute in $program.programPatientAttributes )
+								#set($attribute = $programPatientAttribute.patientAttribute)
 								<tr ondblclick="unSelectProperties( this )" id="attr_$programPatientAttribute.patientAttribute.id">
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $attribute.name )</td>
-									<td align="center"><input type="checkbox" name="displayed" value="attr_$programPatientAttribute.patientAttribute.id" #if($programPatientAttribute.patientAttribute.displayedInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
+									<td align="center"><input type="checkbox" name="displayed" value="attr_$programPatientAttribute.patientAttribute.id" #if($programPatientAttribute.displayedInList == true ) checked #end #if($program.type==3) disabled #end  /></td>
 								</tr>
 							#end
 						</tbody>

@@ -28,12 +28,11 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
@@ -49,11 +48,12 @@ import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Abyot Asalefew
@@ -106,9 +106,9 @@ public class Program
 
     private Boolean ignoreOverdueEvents = false;
 
-    private List<ProgramPatientIdentifierType> programPatientIdentifierTypes = new ArrayList<ProgramPatientIdentifierType>();
+    private Set<ProgramPatientIdentifierType> programPatientIdentifierTypes = new HashSet<ProgramPatientIdentifierType>();
 
-    private List<ProgramPatientAttribute> programPatientAttributes = new ArrayList<ProgramPatientAttribute>();
+    private Set<ProgramPatientAttribute> programPatientAttributes = new HashSet<ProgramPatientAttribute>();
 
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
 
@@ -371,12 +371,12 @@ public class Program
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlElementWrapper( localName = "programPersonIdentifierTypes", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "programPersonIdentifierType", namespace = DxfNamespaces.DXF_2_0 )
-    public List<ProgramPatientIdentifierType> getProgramPatientIdentifierTypes()
+    public Set<ProgramPatientIdentifierType> getProgramPatientIdentifierTypes()
     {
         return programPatientIdentifierTypes;
     }
 
-    public void setProgramPatientIdentifierTypes( List<ProgramPatientIdentifierType> programPatientIdentifierTypes )
+    public void setProgramPatientIdentifierTypes( Set<ProgramPatientIdentifierType> programPatientIdentifierTypes )
     {
         this.programPatientIdentifierTypes = programPatientIdentifierTypes;
     }
@@ -596,12 +596,12 @@ public class Program
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlElementWrapper( localName = "programPersonAttributes", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "programPersonAttribute", namespace = DxfNamespaces.DXF_2_0 )
-    public List<ProgramPatientAttribute> getProgramPatientAttributes()
+    public Set<ProgramPatientAttribute> getProgramPatientAttributes()
     {
         return programPatientAttributes;
     }
 
-    public void setProgramPatientAttributes( List<ProgramPatientAttribute> programPatientAttributes )
+    public void setProgramPatientAttributes( Set<ProgramPatientAttribute> programPatientAttributes )
     {
         this.programPatientAttributes = programPatientAttributes;
     }
