@@ -15,5 +15,7 @@
 	
 	<property name="displayedInList"/>
 
+	<property name="sortOrder" column="sort_order" />
+	
   </class>
 </hibernate-mapping>
