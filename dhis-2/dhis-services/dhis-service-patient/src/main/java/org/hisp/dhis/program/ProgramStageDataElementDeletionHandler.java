@@ -74,10 +74,6 @@ public class ProgramStageDataElementDeletionHandler
     @Override
     public void deleteProgram( Program program )
     {
-        // ---------------------------------------------------------------------
-        // Delete Program Stage data elements
-        // ---------------------------------------------------------------------
-
         Set<ProgramStage> programStages = program.getProgramStages();
 
         for ( ProgramStage programStage : programStages )
@@ -90,7 +86,6 @@ public class ProgramStageDataElementDeletionHandler
                 {
                     programStageDEService.deleteProgramStageDataElement( psDataElement );
                 }
-
             }
         }
     }
