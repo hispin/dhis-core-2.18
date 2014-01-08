@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
  */
 
 import static org.hisp.dhis.program.ProgramExpression.OBJECT_PROGRAM_STAGE_DATAELEMENT;
+import static org.hisp.dhis.program.ProgramExpression.OBJECT_PROGRAM_STAGE;
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_ID;
 import static org.hisp.dhis.program.ProgramExpression.SEPARATOR_OBJECT;
 
@@ -54,8 +55,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultProgramValidationService
     implements ProgramValidationService
 {
-    private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
-        + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+    private final String regExp = "\\[(" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PROGRAM_STAGE + ")"
+        + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9\\- ]*]*)" + "\\]";
 
     private ProgramValidationStore validationStore;
 
@@ -150,7 +151,7 @@ public class DefaultProgramValidationService
             patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance.getProgramInstance()
                 .getProgramStageInstances() );
         }
-        
+
         Map<String, String> patientDataValueMap = new HashMap<String, String>( patientDataValues.size() );
         for ( PatientDataValue patientDataValue : patientDataValues )
         {
@@ -170,6 +171,7 @@ public class DefaultProgramValidationService
             String rightSideValue = expressionService.getProgramExpressionValue( validate.getRightSide(),
                 programStageInstance, patientDataValueMap );
             String operator = validate.getOperator().getMathematicalOperator();
+            
             if ( (leftSideValue != null && rightSideValue != null && !((operator.equals( "==" ) && leftSideValue
                 .compareTo( rightSideValue ) == 0)
                 || (operator.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0)
@@ -202,7 +204,7 @@ public class DefaultProgramValidationService
         {
             Collection<DataElement> dataElements = getDataElementInExpression( validation );
             Collection<ProgramStage> programStages = getProgramStageInExpression( validation );
-            
+
             if ( dataElements.contains( psdataElement.getDataElement() )
                 && programStages.contains( psdataElement.getProgramStage() ) )
             {
@@ -216,7 +218,7 @@ public class DefaultProgramValidationService
     public Collection<ProgramValidation> getProgramValidation( ProgramStage programStage )
     {
         Collection<ProgramValidation> programValidation = getProgramValidation( programStage.getProgram() );
-
+        
         Iterator<ProgramValidation> iter = programValidation.iterator();
 
         Pattern pattern = Pattern.compile( regExp );
@@ -228,7 +230,7 @@ public class DefaultProgramValidationService
             String expression = validation.getLeftSide().getExpression() + " "
                 + validation.getRightSide().getExpression();
             Matcher matcher = pattern.matcher( expression );
-
+System.out.println("\n\n===\n expression : " + expression);
             boolean flag = false;
             while ( matcher.find() )
             {
@@ -239,7 +241,7 @@ public class DefaultProgramValidationService
                 String[] ids = info[1].split( SEPARATOR_ID );
 
                 int programStageId = Integer.parseInt( ids[0] );
-
+System.out.println("\n\n === programStageId "  + programStageId );
                 if ( programStageId == programStage.getId() )
                 {
                     flag = true;
@@ -265,7 +267,8 @@ public class DefaultProgramValidationService
         Collection<DataElement> dataElements = new HashSet<DataElement>();
 
         Pattern pattern = Pattern.compile( regExp );
-        String expression = programValidation.getLeftSide().getExpression() + " " + programValidation.getRightSide().getExpression();
+        String expression = programValidation.getLeftSide().getExpression() + " "
+            + programValidation.getRightSide().getExpression();
         Matcher matcher = pattern.matcher( expression );
         while ( matcher.find() )
         {
@@ -289,7 +292,8 @@ public class DefaultProgramValidationService
         Collection<ProgramStage> programStages = new HashSet<ProgramStage>();
 
         Pattern pattern = Pattern.compile( regExp );
-        String expression = programValidation.getLeftSide().getExpression() + " " + programValidation.getRightSide().getExpression();
+        String expression = programValidation.getLeftSide().getExpression() + " "
+            + programValidation.getRightSide().getExpression();
         Matcher matcher = pattern.matcher( expression );
 
         while ( matcher.find() )

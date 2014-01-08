@@ -1025,8 +1025,6 @@
 		scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-                <property name="programInstanceService"
-			ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 

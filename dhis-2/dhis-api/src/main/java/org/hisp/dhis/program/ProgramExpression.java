@@ -42,6 +42,7 @@ public class ProgramExpression
 
     public static final String SEPARATOR_ID = "\\.";
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
+    public static String OBJECT_PROGRAM_STAGE = "PS";
 
     public static final String SEPARATOR_OBJECT = ":";
     public static final String DUE_DATE = "DUE_DATE";    
