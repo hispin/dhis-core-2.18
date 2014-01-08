@@ -148,7 +148,7 @@ public class AppController
 
     @RequestMapping( value = "/apps/{app}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
-    public void deleteApp( @PathVariable( "app" ) String app, HttpServletRequest request, HttpServletResponse response ) throws NotFoundException
+    public void deleteApp( @PathVariable( "app" ) String app, HttpServletRequest request, HttpServletResponse response )
     {
         if ( !appManager.exists( app ) )
         {

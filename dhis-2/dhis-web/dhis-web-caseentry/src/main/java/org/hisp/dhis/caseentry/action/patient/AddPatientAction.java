@@ -54,7 +54,6 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -83,8 +82,6 @@ public class AddPatientAction
 
     private PatientAttributeOptionService patientAttributeOptionService;
 
-    private UserService userService;
-
     private RelationshipTypeService relationshipTypeService;
 
     private RelationshipService relationshipService;
@@ -100,8 +97,6 @@ public class AddPatientAction
     private Integer representativeId;
 
     private Integer relationshipTypeId;
-
-    private Integer healthWorker;
 
     private Integer relationshipId;
 
@@ -246,11 +241,6 @@ public class AddPatientAction
     // Getter/Setter
     // -----------------------------------------------------------------------------
 
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
@@ -279,11 +269,6 @@ public class AddPatientAction
     public String getMessage()
     {
         return message;
-    }
-
-    public void setHealthWorker( Integer healthWorker )
-    {
-        this.healthWorker = healthWorker;
     }
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )

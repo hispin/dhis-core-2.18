@@ -444,7 +444,6 @@
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="patientRegistrationFormService"
 			ref="org.hisp.dhis.patient.PatientRegistrationFormService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="attributeGroupService">
 			<ref bean="org.hisp.dhis.patient.PatientAttributeGroupService" />
 		</property>
@@ -461,7 +460,6 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeOptionService"
 			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
-		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 		<property name="relationshipTypeService"
@@ -492,7 +490,6 @@
 			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="patientAttributeOptionService"
 			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
-		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
