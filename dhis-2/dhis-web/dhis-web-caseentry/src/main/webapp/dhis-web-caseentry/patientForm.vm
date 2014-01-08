@@ -1,5 +1,4 @@
-$attributeGroups.size()
-$identifierTypes.size()
+
 #if($!customRegistrationForm)
 	$customRegistrationForm
 #elseif($!patientRegistrationForm)
