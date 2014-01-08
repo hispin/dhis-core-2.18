@@ -30,10 +30,12 @@ package org.hisp.dhis.api.controller.organisationunit;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
-import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -52,6 +54,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -93,8 +96,17 @@ public class OrganisationUnitGroupController
             return null;
         }
 
-        MetaData metaData = new MetaData();
-        metaData.setOrganisationUnits( Lists.newArrayList( organisationUnitGroup.getMembers() ) );
+        WebMetaData metaData = new WebMetaData();
+        List<OrganisationUnit> organisationUnits = Lists.newArrayList( organisationUnitGroup.getMembers() );
+
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), organisationUnits.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            organisationUnits = PagerUtils.pageCollection( organisationUnits, pager );
+        }
+
+        metaData.setOrganisationUnits( organisationUnits );
 
         if ( options.hasLinks() )
         {
