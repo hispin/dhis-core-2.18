@@ -71,7 +71,7 @@ public class AppController
 
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
-    @RequestMapping(value = RESOURCE_PATH, method = RequestMethod.GET)
+    @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.GET )
     public String getApps( Model model )
     {
         List<App> apps = appManager.getApps();
@@ -81,10 +81,10 @@ public class AppController
         return "apps";
     }
 
-    @RequestMapping(value = RESOURCE_PATH, method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')")
-    public void installApp( @RequestParam("file") MultipartFile file, HttpServletRequest request ) throws IOException
+    @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.POST )
+    @ResponseStatus( HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
+    public void installApp( @RequestParam( "file" ) MultipartFile file, HttpServletRequest request ) throws IOException
     {
         File tempFile = File.createTempFile( "IMPORT_", "_ZIP" );
         file.transferTo( tempFile );
@@ -92,17 +92,17 @@ public class AppController
         appManager.installApp( tempFile, file.getOriginalFilename(), getBaseUrl( request ) );
     }
 
-    @RequestMapping(value = RESOURCE_PATH, method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')")
+    @RequestMapping( value = RESOURCE_PATH, method = RequestMethod.PUT )
+    @ResponseStatus( HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
     public void reloadApps()
     {
         appManager.reloadApps();
     }
 
-    @RequestMapping(value = "/apps/{app}/**", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')")
-    public void renderApp( @PathVariable("app") String app, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    @RequestMapping( value = "/apps/{app}/**", method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-appmanager')" )
+    public void renderApp( @PathVariable( "app" ) String app, HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         Iterable<Resource> locations = Lists.newArrayList(
             resourceLoader.getResource( "file:" + appManager.getAppFolderPath() + "/" + app + "/" ),
@@ -146,7 +146,7 @@ public class AppController
 
         if ( new ServletWebRequest( request ).checkNotModified( resource.lastModified() ) )
         {
-            response.setStatus( HttpStatus.NOT_MODIFIED.value() );
+            response.setStatus( HttpServletResponse.SC_NOT_MODIFIED );
             return;
         }
 
