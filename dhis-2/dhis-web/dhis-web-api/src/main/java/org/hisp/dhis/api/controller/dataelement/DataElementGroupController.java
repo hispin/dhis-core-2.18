@@ -28,12 +28,13 @@ package org.hisp.dhis.api.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
-import org.hisp.dhis.api.webdomain.DataElementList;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -56,8 +57,8 @@ public class DataElementGroupController
 {
     public static final String RESOURCE_PATH = "/dataElementGroups";
 
-    @RequestMapping( value = "/{uid}/members", method = RequestMethod.GET )
-    public String getMembers( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+    @RequestMapping(value = "/{uid}/members", method = RequestMethod.GET)
+    public String getMembers( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -69,16 +70,15 @@ public class DataElementGroupController
             return null;
         }
 
-        DataElementList dataElementList = new DataElementList();
-        dataElementList.setMembers( dataElementGroup.getMembers() );
+        MetaData metaData = new MetaData();
+        metaData.setDataElements( Lists.newArrayList( dataElementGroup.getMembers() ) );
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( dataElementGroup );
-            WebUtils.generateLinks( dataElementList );
+            WebUtils.generateLinks( metaData );
         }
 
-        model.addAttribute( "model", dataElementList );
+        model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
         return StringUtils.uncapitalize( getEntitySimpleName() );

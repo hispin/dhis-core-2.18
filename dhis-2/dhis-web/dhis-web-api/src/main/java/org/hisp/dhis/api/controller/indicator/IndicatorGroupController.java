@@ -28,11 +28,12 @@ package org.hisp.dhis.api.controller.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
-import org.hisp.dhis.api.webdomain.IndicatorList;
+import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +51,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = IndicatorGroupController.RESOURCE_PATH)
+@RequestMapping( value = IndicatorGroupController.RESOURCE_PATH )
 public class IndicatorGroupController
     extends AbstractCrudController<IndicatorGroup>
 {
@@ -69,16 +70,15 @@ public class IndicatorGroupController
             return null;
         }
 
-        IndicatorList indicatorList = new IndicatorList();
-        indicatorList.setMembers( indicatorGroup.getMembers() );
+        MetaData metaData = new MetaData();
+        metaData.setIndicators( Lists.newArrayList( indicatorGroup.getMembers() ) );
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( indicatorGroup );
-            WebUtils.generateLinks( indicatorList );
+            WebUtils.generateLinks( metaData );
         }
 
-        model.addAttribute( "model", indicatorList );
+        model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
