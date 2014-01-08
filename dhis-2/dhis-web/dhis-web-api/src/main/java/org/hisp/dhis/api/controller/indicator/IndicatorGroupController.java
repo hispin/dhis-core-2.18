@@ -30,10 +30,13 @@ package org.hisp.dhis.api.controller.indicator;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
-import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.PagerUtils;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +48,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,8 +74,17 @@ public class IndicatorGroupController
             return null;
         }
 
-        MetaData metaData = new MetaData();
-        metaData.setIndicators( Lists.newArrayList( indicatorGroup.getMembers() ) );
+        WebMetaData metaData = new WebMetaData();
+        List<Indicator> indicators = Lists.newArrayList( indicatorGroup.getMembers() );
+
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), indicators.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            indicators = PagerUtils.pageCollection( indicators, pager );
+        }
+
+        metaData.setIndicators( indicators );
 
         if ( options.hasLinks() )
         {

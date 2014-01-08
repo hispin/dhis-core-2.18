@@ -30,9 +30,13 @@ package org.hisp.dhis.api.controller.dataelement;
 
 import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.PagerUtils;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.springframework.stereotype.Controller;
@@ -45,6 +49,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,8 +76,17 @@ public class DataElementGroupController
             return null;
         }
 
-        MetaData metaData = new MetaData();
-        metaData.setDataElements( Lists.newArrayList( dataElementGroup.getMembers() ) );
+        WebMetaData metaData = new WebMetaData();
+        List<DataElement> dataElements = Lists.newArrayList( dataElementGroup.getMembers() );
+
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), dataElements.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            dataElements = PagerUtils.pageCollection( dataElements, pager );
+        }
+
+        metaData.setDataElements( dataElements );
 
         if ( options.hasLinks() )
         {
