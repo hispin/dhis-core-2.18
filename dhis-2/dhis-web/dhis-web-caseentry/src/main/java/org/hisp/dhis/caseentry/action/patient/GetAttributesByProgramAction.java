@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
@@ -55,6 +56,9 @@ public class GetAttributesByProgramAction
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
+
+    @Autowired
+    private PatientAttributeService patientAttributeService;
 
     // -------------------------------------------------------------------------
     // Getter && Setter
@@ -90,9 +94,9 @@ public class GetAttributesByProgramAction
         }
         else
         {
-            
+            attributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesDisplayed( true ) );
         }
-        
+
         return SUCCESS;
     }
 }

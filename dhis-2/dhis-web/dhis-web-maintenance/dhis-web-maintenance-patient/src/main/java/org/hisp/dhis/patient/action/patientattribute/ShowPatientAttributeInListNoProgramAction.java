@@ -34,6 +34,9 @@ import java.util.List;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,6 +60,9 @@ public class ShowPatientAttributeInListNoProgramAction
         this.patientAttributeService = patientAttributeService;
     }
 
+    @Autowired
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -75,6 +81,20 @@ public class ShowPatientAttributeInListNoProgramAction
         return selectedPatientAttributes;
     }
 
+    private List<PatientIdentifierType> availablePatientIdentifierTypes = new ArrayList<PatientIdentifierType>();
+
+    public List<PatientIdentifierType> getAvailablePatientIdentifierTypes()
+    {
+        return availablePatientIdentifierTypes;
+    }
+
+    private List<PatientIdentifierType> selectedPatientIdentifierTypes = new ArrayList<PatientIdentifierType>();
+
+    public List<PatientIdentifierType> getSelectedPatientIdentifierTypes()
+    {
+        return selectedPatientIdentifierTypes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -90,6 +110,14 @@ public class ShowPatientAttributeInListNoProgramAction
             patientAttributeService.getPatientAttributesDisplayed( true ) );
         Collections.sort( availablePatientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
+        
+        availablePatientIdentifierTypes = new ArrayList<PatientIdentifierType>(
+            patientIdentifierTypeService.getPatientIdentifierTypeDisplayed( false ) );
+        Collections.sort( availablePatientAttributes, IdentifiableObjectNameComparator.INSTANCE );
+
+        selectedPatientIdentifierTypes = new ArrayList<PatientIdentifierType>(
+            patientIdentifierTypeService.getPatientIdentifierTypeDisplayed( true ) );
+        Collections.sort( availablePatientAttributes, IdentifiableObjectNameComparator.INSTANCE );
         return SUCCESS;
     }
 }

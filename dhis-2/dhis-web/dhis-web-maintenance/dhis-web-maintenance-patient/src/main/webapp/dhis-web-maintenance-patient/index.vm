@@ -2,6 +2,7 @@
 
 <ul class="introList">
     #introListImgItem( "patientAttribute.action" "patient_attribute" "patient" )
+    #introListImgItem( "patientAttributeInListNoProgram.action" "patient_attribute_displayed_with_no_program" "patient" )
     #introListImgItem( "patientAttributeVisitSchedule.action" "patient_attribute_visit_schedule" "patient" )
     #introListImgItem( "patientAttributeGroup.action" "patient_attribute_group" "patient" )
     #introListImgItem( "patientIdentifierType.action" "patient_identifier_type" "patient" )

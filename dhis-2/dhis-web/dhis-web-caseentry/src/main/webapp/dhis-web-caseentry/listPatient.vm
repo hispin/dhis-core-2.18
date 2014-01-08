@@ -39,6 +39,9 @@
 					#end
 				#end
 			#else
+				#foreach( $identifierType in $identifierTypes)
+					<col/>
+				#end
 				#foreach( $attribute in $attributes)
 					<col/>
 				#end
@@ -65,6 +68,9 @@
 						#end
 					#end
 				#else
+					#foreach( $identifierType in $identifierTypes)
+						<th>$encoder.htmlEncode($identifierType.displayName)</th>
+					#end
 					#foreach( $attribute in $attributes)
 						<th id="patientAttributeName">$encoder.htmlEncode($attribute.displayName)</th>
 					#end
@@ -117,13 +123,25 @@
 						#end
 					#end
 				#else
+					#foreach( $identifierType in $identifierTypes)
+						#set($value="")
+						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
+							#foreach( $identifier in $patient.identifiers)
+								#if($!identifier.identifierType.id==$identifierType.id)
+									#set($value=$identifier.identifier)
+								#end
+							#end 
+							<a>$encoder.htmlEncode($value)</a>
+						</td>
+					#end
+					
 					#foreach( $attribute in $attributes)
 						#set($value="")
 						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
 							#foreach( $attributeValue in $patient.attributeValues)
-								#if($!attributeValue.patientAttribute.id==$programAttribute.patientAttribute.id)
+								#if($!attributeValue.patientAttribute.id==$attribute.id)
 									#set($value=$attributeValue.value)
-									#if( $programAttribute.patientAttribute.valueType == 'bool')
+									#if( $attribute.valueType == 'bool')
 										#set($value=$i18n.getString($attributeValue.value))
 									#end
 								#end

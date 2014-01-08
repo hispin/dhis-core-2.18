@@ -97,7 +97,7 @@ public class DefaultPatientIdentifierTypeService
 
             patientIdentifierType.setPeriodType( periodType );
         }
-        
+
         return patientIdentifierTypeStore.save( patientIdentifierType );
     }
 
@@ -128,4 +128,8 @@ public class DefaultPatientIdentifierTypeService
         return i18n( i18nService, patientIdentifierTypeStore.get( mandatory ) );
     }
 
+    public Collection<PatientIdentifierType> getPatientIdentifierTypeDisplayed( boolean displayInListNoProgram )
+    {
+        return i18n( i18nService, patientIdentifierTypeStore.getPatientIdentifierTypeDisplayed( displayInListNoProgram ) );
+    }
 }

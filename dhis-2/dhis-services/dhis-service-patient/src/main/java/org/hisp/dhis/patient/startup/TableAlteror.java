@@ -303,6 +303,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN personDisplayName" );
         
         executeSql( "UPDATE patientattribute SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
+        executeSql( "UPDATE PatientIdentifierType SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
     }
 
     // -------------------------------------------------------------------------

@@ -31,6 +31,9 @@ import java.util.Collection;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,6 +46,9 @@ import com.opensymphony.xwork2.Action;
 public class SavePatientAttributeInListNoProgramAction
     implements Action
 {
+    private final String PREFIX_IDENTYFITER_TYPE = "iden";
+
+    private final String PREFIX_ATTRIBUTE = "attr";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -55,13 +61,16 @@ public class SavePatientAttributeInListNoProgramAction
         this.patientAttributeService = patientAttributeService;
     }
 
+    @Autowired
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer[] selectedAttributeIds;
+    private String[] selectedAttributeIds;
 
-    public void setSelectedAttributeIds( Integer[] selectedAttributeIds )
+    public void setSelectedAttributeIds( String[] selectedAttributeIds )
     {
         this.selectedAttributeIds = selectedAttributeIds;
     }
@@ -73,20 +82,51 @@ public class SavePatientAttributeInListNoProgramAction
     public String execute()
         throws Exception
     {
+        Collection<PatientIdentifierType> patientIdentifierTypes = patientIdentifierTypeService
+            .getAllPatientIdentifierTypes();
         Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        int index = 1;
-        for ( Integer attributeId : selectedAttributeIds )
+        int indexIden = 1;
+        int indexAttr = 1;
+        for ( String objectId : selectedAttributeIds )
         {
-            PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( attributeId );
-            patientAttribute.setDisplayInListNoProgram( true );
-            patientAttribute.setSortOrderInListNoProgram( index );
-            patientAttributeService.updatePatientAttribute( patientAttribute );
-            index++;
-            patientAttributes.remove( patientAttribute );
+            // Identifier type
+
+            String[] id = objectId.split( "_" );
+            if ( id[0].equals( PREFIX_IDENTYFITER_TYPE ) )
+            {
+
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
+                    .parseInt( id[1] ) );
+                identifierType.setDisplayInListNoProgram( true );
+                identifierType.setSortOrderInListNoProgram( indexIden );
+                patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
+                indexIden++;
+                patientIdentifierTypes.remove( identifierType );
+            }
+
+            // Attribute
+            else
+            {
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
+                    .parseInt( id[1] ) );
+                patientAttribute.setDisplayInListNoProgram( true );
+                patientAttribute.setSortOrderInListNoProgram( indexAttr );
+                patientAttributeService.updatePatientAttribute( patientAttribute );
+                indexAttr++;
+                patientAttributes.remove( patientAttribute );
+            }
         }
 
-        // Set visitSchedule=false for other patientAttributes
+        // Set DisplayInListNoProgram=false for other ID type
+        for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
+        {
+            patientIdentifierType.setDisplayInListNoProgram( false );
+            patientIdentifierType.setSortOrderInListNoProgram( 0 );
+            patientIdentifierTypeService.updatePatientIdentifierType( patientIdentifierType );
+        }
+
+        // Set DisplayInListNoProgram=false for other attribute type
         for ( PatientAttribute patientAttribute : patientAttributes )
         {
             patientAttribute.setDisplayInListNoProgram( false );

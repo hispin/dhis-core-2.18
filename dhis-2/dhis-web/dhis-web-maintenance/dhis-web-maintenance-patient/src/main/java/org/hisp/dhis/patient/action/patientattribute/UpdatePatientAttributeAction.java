@@ -137,13 +137,6 @@ public class UpdatePatientAttributeAction
         this.expression = expression;
     }
 
-    private Boolean displayInListNoProgram;
-
-    public void setDisplayInListNoProgram( Boolean displayInListNoProgram )
-    {
-        this.displayInListNoProgram = displayInListNoProgram;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -158,9 +151,6 @@ public class UpdatePatientAttributeAction
         patientAttribute.setValueType( valueType );
         patientAttribute.setExpression( expression );
         patientAttribute.setDisplayOnVisitSchedule( false );
-
-        displayInListNoProgram = (displayInListNoProgram == null) ? false : true;
-        patientAttribute.setDisplayInListNoProgram( displayInListNoProgram );
 
         mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
