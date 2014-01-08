@@ -289,6 +289,11 @@
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+    <action name="getModules" class="org.hisp.dhis.webportal.menu.action.GetModulesAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonModules.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
 
   </package>
 

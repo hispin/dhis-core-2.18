@@ -45,9 +45,11 @@ import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -112,6 +114,8 @@ public class User
      */
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
+    private List<String> apps = new ArrayList<String>(); //TODO not yet in use
+    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -447,6 +451,16 @@ public class User
     public void setAttributeValues( Set<AttributeValue> attributeValues )
     {
         this.attributeValues = attributeValues;
+    }
+
+    public List<String> getApps()
+    {
+        return apps;
+    }
+
+    public void setApps( List<String> apps )
+    {
+        this.apps = apps;
     }
 
     @Override
