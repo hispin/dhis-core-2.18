@@ -302,88 +302,6 @@
 		<property name="patientAuditStore" ref="org.hisp.dhis.patient.PatientAuditStore" />
 	</bean>
 
-
-	<!-- DeletionHandlers -->
-
-	<bean id="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"
-		class="org.hisp.dhis.patient.PatientIdentifierDeletionHandler">
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramInstanceDeletionHandler"
-		class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="patientCommentService"
-			ref="org.hisp.dhis.patientcomment.PatientCommentService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.relationship.RelationshipDeletionHandler"
-		class="org.hisp.dhis.relationship.RelationshipDeletionHandler">
-		<property name="relationshipSevice"
-			ref="org.hisp.dhis.relationship.RelationshipService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler"
-		class="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler">
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" class="org.hisp.dhis.program.ProgramDeletionHandler">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.PatientDeletionHandler" class="org.hisp.dhis.patient.PatientDeletionHandler">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"
-		class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
-		<property name="programStageDEService"
-			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-		<property name="programStageSectionService"
-			ref="org.hisp.dhis.program.ProgramStageSectionService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler"
-		class="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler">
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramValidationDeletionHandler"
-		class="org.hisp.dhis.program.ProgramValidationDeletionHandler">
-		<property name="programValidationService"
-			ref="org.hisp.dhis.program.ProgramValidationService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler"
-		class="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler">
-		<property name="dataEntryFormService"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler"
-		class="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler">
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramStageSectionDeletionHandler"
-		class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.PatientAuditDeletionHandler"
-		class="org.hisp.dhis.patient.PatientAuditDeletionHandler">
-		<property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
-	</bean>
-
 	<!-- PatientComment -->
 
 	<bean id="org.hisp.dhis.patientcomment.PatientCommentService"
@@ -522,6 +440,92 @@
 		</property>
 	</bean>
 
+    <!-- DeletionHandlers -->
+
+    <bean id="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"
+        class="org.hisp.dhis.patient.PatientIdentifierDeletionHandler">
+        <property name="patientIdentifierService"
+            ref="org.hisp.dhis.patient.PatientIdentifierService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.program.ProgramInstanceDeletionHandler"
+        class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
+        <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+        <property name="patientDataValueService"
+            ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+        <property name="patientCommentService"
+            ref="org.hisp.dhis.patientcomment.PatientCommentService" />
+        <property name="programStageInstanceService"
+            ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.relationship.RelationshipDeletionHandler"
+        class="org.hisp.dhis.relationship.RelationshipDeletionHandler">
+        <property name="relationshipSevice"
+            ref="org.hisp.dhis.relationship.RelationshipService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler"
+        class="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler">
+        <property name="patientAttributeValueService"
+            ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.program.ProgramDeletionHandler" class="org.hisp.dhis.program.ProgramDeletionHandler">
+        <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.patient.PatientDeletionHandler" class="org.hisp.dhis.patient.PatientDeletionHandler">
+        <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"
+        class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
+        <property name="programStageDEService"
+            ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+        <property name="programStageSectionService"
+            ref="org.hisp.dhis.program.ProgramStageSectionService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler"
+        class="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler">
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+    </bean>
+
+    <bean id="org.hisp.dhis.program.ProgramValidationDeletionHandler"
+        class="org.hisp.dhis.program.ProgramValidationDeletionHandler">
+        <property name="programValidationService"
+            ref="org.hisp.dhis.program.ProgramValidationService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler"
+        class="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler">
+        <property name="dataEntryFormService"
+            ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
+        <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler"
+        class="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler">
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+    </bean>
+
+    <bean id="org.hisp.dhis.program.ProgramStageSectionDeletionHandler"
+        class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
+        <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.patient.PatientAuditDeletionHandler"
+        class="org.hisp.dhis.patient.PatientAuditDeletionHandler">
+        <property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
+    </bean>
+    
+    <bean id="org.hisp.dhis.program.ProgramAttributeDeletionHandler"
+       class="org.hisp.dhis.program.ProgramAttributeDeletionHandler">
+        <property name="programAttributeService"
+            ref="org.hisp.dhis.program.ProgramPatientAttributeService" />
+    </bean>
+
 	<!-- DeletionManager -->
 
 	<bean
@@ -532,13 +536,11 @@
 			<list>
 				<list>
 					<ref local="org.hisp.dhis.patient.PatientDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
+					<ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientAuditDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
+					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
@@ -546,6 +548,7 @@
 					<ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
+					<ref local="org.hisp.dhis.program.ProgramAttributeDeletionHandler" />
 				</list>
 			</list>
 		</property>
