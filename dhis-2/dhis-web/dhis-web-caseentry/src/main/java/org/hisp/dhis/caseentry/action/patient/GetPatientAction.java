@@ -54,7 +54,6 @@ import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
@@ -91,8 +90,6 @@ public class GetPatientAction
     private RelationshipTypeService relationshipTypeService;
 
     private PatientRegistrationFormService patientRegistrationFormService;
-
-    private ProgramInstanceService programInstanceService;
 
     private PatientAttributeGroupService attributeGroupService;
 
@@ -395,11 +392,6 @@ public class GetPatientAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
     }
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )

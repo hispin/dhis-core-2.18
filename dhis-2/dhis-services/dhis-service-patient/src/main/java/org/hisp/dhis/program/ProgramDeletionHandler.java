@@ -31,11 +31,9 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Chau Thu Tran

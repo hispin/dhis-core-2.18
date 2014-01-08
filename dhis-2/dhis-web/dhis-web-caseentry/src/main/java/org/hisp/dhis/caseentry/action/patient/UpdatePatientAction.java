@@ -52,7 +52,6 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -78,8 +77,6 @@ public class UpdatePatientAction
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private PatientAttributeOptionService patientAttributeOptionService;
-
-    private UserService userService;
 
     private OrganisationUnitSelectionManager selectionManager;
 
@@ -250,11 +247,6 @@ public class UpdatePatientAction
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
 
     public void setFormat( I18nFormat format )
     {
