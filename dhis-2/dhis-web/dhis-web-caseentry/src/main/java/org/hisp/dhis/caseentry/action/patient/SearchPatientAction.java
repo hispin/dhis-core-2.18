@@ -47,6 +47,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.comparator.PatientAttributeSortOrderInListNoProgramComparator;
+import org.hisp.dhis.patient.comparator.PatientIdentifierTypeSortOrderInListNoProgramComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
@@ -223,9 +224,9 @@ public class SearchPatientAction
         return attributes;
     }
 
-    private Collection<PatientIdentifierType> identifierTypes;
+    private List<PatientIdentifierType> identifierTypes;
 
-    public Collection<PatientIdentifierType> getIdentifierTypes()
+    public List<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
     }
@@ -310,10 +311,13 @@ public class SearchPatientAction
         else
         {
             attributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesDisplayed( true ) );
-
             Collections.sort( attributes, new PatientAttributeSortOrderInListNoProgramComparator() );
+
+            identifierTypes = new ArrayList<PatientIdentifierType>(
+                patientIdentifierTypeService.getPatientIdentifierTypeDisplayed(  true ) );
+            Collections.sort( identifierTypes, new PatientIdentifierTypeSortOrderInListNoProgramComparator() );
         }
-        
+
         return SUCCESS;
     }
 

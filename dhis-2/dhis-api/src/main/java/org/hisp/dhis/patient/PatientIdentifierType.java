@@ -28,13 +28,13 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.period.PeriodType;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.period.PeriodType;
 
 @XmlRootElement( name = "patientIdentifierType", namespace = DxfNamespaces.DXF_2_0 )
 @XmlAccessorType( value = XmlAccessType.NONE )
@@ -73,6 +73,10 @@ public class PatientIdentifierType
     private Boolean programScope = false;
 
     private PeriodType periodType;
+
+    private Boolean displayInListNoProgram = false;
+
+    private Integer sortOrderInListNoProgram;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -190,6 +194,26 @@ public class PatientIdentifierType
     public void setPeriodType( PeriodType periodType )
     {
         this.periodType = periodType;
+    }
+
+    public Boolean getDisplayInListNoProgram()
+    {
+        return displayInListNoProgram;
+    }
+
+    public void setDisplayInListNoProgram( Boolean displayInListNoProgram )
+    {
+        this.displayInListNoProgram = displayInListNoProgram;
+    }
+
+    public Integer getSortOrderInListNoProgram()
+    {
+        return sortOrderInListNoProgram;
+    }
+
+    public void setSortOrderInListNoProgram( Integer sortOrderInListNoProgram )
+    {
+        this.sortOrderInListNoProgram = sortOrderInListNoProgram;
     }
 
 }

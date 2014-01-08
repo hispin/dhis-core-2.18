@@ -115,8 +115,8 @@ function saveAggregateDataValues( isSaveAll )
 	else
 	{
 		jQuery("input[name=aggregateValues]:checked").each(function( ){
-				params += "aggregateValues=" + $(this).val() + "&";
-			}); 
+			params += "aggregateValues=" + $(this).val() + "&";
+		}); 
 	}
 		
 	$.ajax({

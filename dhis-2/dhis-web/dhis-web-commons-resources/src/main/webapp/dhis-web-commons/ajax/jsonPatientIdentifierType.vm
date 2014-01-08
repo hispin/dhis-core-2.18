@@ -6,6 +6,7 @@
 	"mandatory": "$!{patientIdentifierType.mandatory}",
 	"related": "$!{patientIdentifierType.related}",
 	"noChars": "$!{patientIdentifierType.noChars}",
+	"displayInListNoProgram": "$!patientIdentifierType.displayInListNoProgram",
 	"type": "$!{patientIdentifierType.type}"
   }
 }

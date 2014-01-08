@@ -43,5 +43,13 @@ public interface PatientIdentifierTypeStore
      * @return PatientIdentifierType list
      */
     Collection<PatientIdentifierType> get( boolean mandatory );
-    
+
+    /**
+     * Get patient identifier type which are displayed in list
+     * 
+     * @param displayInListNoProgram True/False value
+     * 
+     * @return List of patient attributes
+     */
+    Collection<PatientIdentifierType> getPatientIdentifierTypeDisplayed( boolean displayInListNoProgram );
 }
