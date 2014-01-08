@@ -28,16 +28,12 @@ package org.hisp.dhis.api.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.collect.Lists;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
-import org.hisp.dhis.api.webdomain.OrganisationUnitList;
+import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -53,6 +49,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -93,16 +93,15 @@ public class OrganisationUnitGroupController
             return null;
         }
 
-        OrganisationUnitList organisationUnitList = new OrganisationUnitList();
-        organisationUnitList.setMembers( organisationUnitGroup.getMembers() );
+        MetaData metaData = new MetaData();
+        metaData.setOrganisationUnits( Lists.newArrayList( organisationUnitGroup.getMembers() ) );
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( organisationUnitGroup );
-            WebUtils.generateLinks( organisationUnitList );
+            WebUtils.generateLinks( metaData );
         }
 
-        model.addAttribute( "model", organisationUnitList );
+        model.addAttribute( "model", metaData );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
@@ -118,7 +117,7 @@ public class OrganisationUnitGroupController
     {
         OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUid );
-        
+
         if ( group.addOrganisationUnit( unit ) )
         {
             organisationUnitGroupService.updateOrganisationUnitGroup( group );
@@ -135,7 +134,7 @@ public class OrganisationUnitGroupController
     {
         OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUid );
-        
+
         if ( group.removeOrganisationUnit( unit ) )
         {
             organisationUnitGroupService.updateOrganisationUnitGroup( group );
