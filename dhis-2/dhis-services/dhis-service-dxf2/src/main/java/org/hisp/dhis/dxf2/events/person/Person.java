@@ -47,8 +47,6 @@ public class Person
 
     private String orgUnit;
 
-    private String name;
-
     private List<Relationship> relationships = new ArrayList<Relationship>();
 
     private List<Identifier> identifiers = new ArrayList<Identifier>();
@@ -81,18 +79,6 @@ public class Person
     public void setOrgUnit( String orgUnit )
     {
         this.orgUnit = orgUnit;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
     }
 
     @JsonProperty
@@ -144,8 +130,6 @@ public class Person
             return false;
         if ( identifiers != null ? !identifiers.equals( person1.identifiers ) : person1.identifiers != null )
             return false;
-        if ( name != null ? !name.equals( person1.name ) : person1.name != null )
-            return false;
         if ( orgUnit != null ? !orgUnit.equals( person1.orgUnit ) : person1.orgUnit != null )
             return false;
         if ( person != null ? !person.equals( person1.person ) : person1.person != null )
@@ -161,7 +145,6 @@ public class Person
     {
         int result = person != null ? person.hashCode() : 0;
         result = 31 * result + (orgUnit != null ? orgUnit.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (relationships != null ? relationships.hashCode() : 0);
         result = 31 * result + (identifiers != null ? identifiers.hashCode() : 0);
         result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
@@ -174,7 +157,6 @@ public class Person
         return "Person{" +
             "person='" + person + '\'' +
             ", orgUnit='" + orgUnit + '\'' +
-            ", name='" + name + '\'' +
             ", relationships=" + relationships +
             ", identifiers=" + identifiers +
             ", attributes=" + attributes +

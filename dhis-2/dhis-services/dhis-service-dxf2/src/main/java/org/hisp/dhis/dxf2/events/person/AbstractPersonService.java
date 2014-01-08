@@ -160,8 +160,6 @@ public abstract class AbstractPersonService
         person.setPerson( patient.getUid() );
         person.setOrgUnit( patient.getOrganisationUnit().getUid() );
 
-        person.setName( patient.getName() );
-
         Collection<Relationship> relationshipsForPatient = relationshipService.getRelationshipsForPatient( patient );
 
         for ( Relationship relationshipPatient : relationshipsForPatient )
@@ -211,7 +209,6 @@ public abstract class AbstractPersonService
         Assert.hasText( person.getOrgUnit() );
 
         Patient patient = new Patient();
-        patient.setName( person.getName() );
 
         OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
         Assert.notNull( organisationUnit );
@@ -300,8 +297,6 @@ public abstract class AbstractPersonService
             importSummary.getImportCount().incrementIgnored();
             return importSummary;
         }
-
-        patient.setName( person.getName() );
 
         updateSystemIdentifier( person );
         removeRelationships( patient );
