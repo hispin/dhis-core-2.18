@@ -30,13 +30,12 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 
 import org.hisp.dhis.patient.PatientAttribute;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ DefaultProgramPatientAttributeService.java Jan 7, 2014 10:07:21 AM
- *          $
  */
+@Transactional
 public class DefaultProgramPatientAttributeService
     implements ProgramPatientAttributeService
 {
