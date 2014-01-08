@@ -1352,6 +1352,7 @@ Ext.onReady( function() {
 			isLoadFromFavorite: false,
 			listeners:{
 				load: function(s) {
+					this.insert(0,{id:"", name: TR.i18n.all});
 					Ext.override(Ext.LoadMask, {
 						 onHide: function() {
 							  this.callParent();
