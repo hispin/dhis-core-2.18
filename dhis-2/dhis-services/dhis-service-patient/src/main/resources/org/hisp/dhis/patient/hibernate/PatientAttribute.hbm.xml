@@ -38,6 +38,8 @@
     <property name="displayOnVisitSchedule" />
 
     <property name="sortOrderInVisitSchedule" />
+    
+    <property name="displayInListNoProgram" />
 
   </class>
 </hibernate-mapping>

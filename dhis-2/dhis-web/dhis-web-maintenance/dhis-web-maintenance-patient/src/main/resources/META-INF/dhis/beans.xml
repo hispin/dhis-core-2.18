@@ -167,6 +167,22 @@
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeInListNoProgramAction"
+		class="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeInListNoProgramAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeInListNoProgramAction"
+		class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeInListNoProgramAction"
+		scope="prototype">
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
 
 	<!-- Program -->
 

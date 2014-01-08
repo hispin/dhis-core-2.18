@@ -30,6 +30,7 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +41,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.comparator.PatientAttributeSortOrderInListNoProgramComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
@@ -77,6 +83,12 @@ public class SearchPatientAction
     private OrganisationUnitService organisationUnitService;
 
     private UserService userService;
+
+    @Autowired
+    private PatientAttributeService patientAttributeService;
+
+    @Autowired
+    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     @Autowired
     private ProgramPatientAttributeService programPatientAttributeService;
@@ -204,6 +216,20 @@ public class SearchPatientAction
         return program;
     }
 
+    private List<PatientAttribute> attributes;
+
+    public List<PatientAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    private Collection<PatientIdentifierType> identifierTypes;
+
+    public Collection<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -276,12 +302,18 @@ public class SearchPatientAction
                 }
             }
 
-            if ( programId != null )
-            {
-                program = programService.getProgram( programId );
-            }
         }
+        if ( programId != null )
+        {
+            program = programService.getProgram( programId );
+        }
+        else
+        {
+            attributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesDisplayed( true ) );
 
+            Collections.sort( attributes, new PatientAttributeSortOrderInListNoProgramComparator() );
+        }
+        
         return SUCCESS;
     }
 

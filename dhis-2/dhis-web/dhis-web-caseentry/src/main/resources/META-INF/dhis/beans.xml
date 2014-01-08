@@ -679,6 +679,10 @@
 		class="org.hisp.dhis.caseentry.action.patient.GetProgramAction" scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.patient.GetAttributesByProgramAction"
+		class="org.hisp.dhis.caseentry.action.patient.GetAttributesByProgramAction" scope="prototype">
+	</bean>
 
 	<!-- Relationship -->
 
