@@ -46,39 +46,46 @@ public class HibernatePatientAttributeStore
     // Implementation methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getByValueType( String valueType )
     {
         return getCriteria( Restrictions.eq( "valueType", valueType ) ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getByMandatory( boolean mandatory )
     {
         return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
     {
         return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) )
             .add( Restrictions.eq( "mandatory", false ) ).list();
     }
 
-    public PatientAttribute getByGroupBy( )
+    public PatientAttribute getByGroupBy()
     {
         return (PatientAttribute) getCriteria( Restrictions.eq( "groupBy", true ) ).uniqueResult();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getWithoutGroup()
     {
         return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<PatientAttribute> getByDisplayOnVisitSchedule( boolean displayOnVisitSchedule )
     {
         return getCriteria( Restrictions.eq( "displayOnVisitSchedule", displayOnVisitSchedule ) ).list();
     }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientAttribute> getPatientAttributesDisplayed( boolean displayInListNoProgram )
+    {
+        return getCriteria( Restrictions.eq( "displayInListNoProgram", displayInListNoProgram ) ).list();
+    }
+
 }

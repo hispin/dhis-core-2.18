@@ -134,4 +134,10 @@ public class DefaultPatientAttributeService
 
         return patientAttributes;
     }
+    
+    public Collection<PatientAttribute> getPatientAttributesDisplayed(boolean displayInListNoProgram )
+    {
+        return patientAttributeStore.getPatientAttributesDisplayed( displayInListNoProgram );
+    }
+
 }

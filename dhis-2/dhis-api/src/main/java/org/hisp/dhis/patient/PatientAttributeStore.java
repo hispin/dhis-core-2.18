@@ -81,9 +81,17 @@ public interface PatientAttributeStore
 
     /**
      * Get patient attributes which are displayed in visit schedule
+     * @param displayOnVisitSchedule True/False value
      * 
      * @return List of patient attributes
      */
     Collection<PatientAttribute> getByDisplayOnVisitSchedule( boolean displayOnVisitSchedule );
 
+    /**
+     * Get patient attributes which are displayed in visit schedule
+     * @param displayInListNoProgram True/False value
+     * 
+     * @return List of patient attributes
+     */
+    Collection<PatientAttribute> getPatientAttributesDisplayed( boolean displayInListNoProgram );
 }

@@ -714,6 +714,13 @@
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
+		<action name="getAttributesByProgram"
+			class="org.hisp.dhis.caseentry.action.patient.GetAttributesByProgramAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonProgramAttributes.vm
+			</result>
+		</action>
+		
 		<action name="getVisitSchedule"
 			class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceAction">
 			<result name="success" type="velocity">/content.vm</result>

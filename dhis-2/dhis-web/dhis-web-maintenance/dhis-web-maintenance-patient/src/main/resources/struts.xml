@@ -207,7 +207,24 @@
 			<result name="success" type="redirect">index.action</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
+		
+		<action name="patientAttributeInListNoProgram"
+			class="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeInListNoProgramAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/patientAttributeInListNoProgram.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/patientAttribute.js</param>
+			<param name="stylesheets">style/basic.css</param>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+		</action>
 
+		<action name="savePatientAttributeInListNoProgram"
+			class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeInListNoProgramAction">
+			<result name="success" type="redirect">index.action</result>
+			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
+		</action>
+		
 		<!-- Program -->
 
 		<action name="program"

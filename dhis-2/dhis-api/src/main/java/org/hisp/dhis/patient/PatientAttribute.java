@@ -28,22 +28,22 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Abyot Asalefew
@@ -96,6 +96,10 @@ public class PatientAttribute
     private Boolean displayOnVisitSchedule = false;
 
     private Integer sortOrderInVisitSchedule;
+
+    private Boolean displayInListNoProgram = false;
+
+    private Integer sortOrderInListNoProgram;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -278,6 +282,32 @@ public class PatientAttribute
         this.sortOrderInVisitSchedule = sortOrderInVisitSchedule;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getDisplayInListNoProgram()
+    {
+        return displayInListNoProgram;
+    }
+
+    public void setDisplayInListNoProgram( Boolean displayInListNoProgram )
+    {
+        this.displayInListNoProgram = displayInListNoProgram;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Integer getSortOrderInListNoProgram()
+    {
+        return sortOrderInListNoProgram;
+    }
+
+    public void setSortOrderInListNoProgram( Integer sortOrderInListNoProgram )
+    {
+        this.sortOrderInListNoProgram = sortOrderInListNoProgram;
+    }
+
     // -------------------------------------------------------------------------
     // Static methods
     // -------------------------------------------------------------------------
@@ -301,7 +331,7 @@ public class PatientAttribute
         {
             return -1;
         }
-        
+
         Calendar birthCalendar = Calendar.getInstance();
         birthCalendar.setTime( date );
 
