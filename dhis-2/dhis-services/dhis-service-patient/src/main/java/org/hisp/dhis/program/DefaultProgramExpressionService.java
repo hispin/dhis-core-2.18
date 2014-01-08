@@ -53,7 +53,7 @@ public class DefaultProgramExpressionService
     implements ProgramExpressionService
 {
     private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
-        + SEPARATOR_ID + "[0-9]+]*)" + "\\]";
+        + SEPARATOR_ID + "[a-zA-Z0-9\\- ]+]*)" + "\\]";
 
     private final String INVALID_CONDITION = "Invalid condition";
 
@@ -121,11 +121,11 @@ public class DefaultProgramExpressionService
         ProgramStageInstance programStageInstance, Map<String, String> patientDataValueMap )
     {
         String value = "";
-        if ( ProgramExpression.DUE_DATE.equals( programExpression.getExpression() ) )
+        if ( programExpression.getExpression().contains( ProgramExpression.DUE_DATE ) )
         {
             value = DateUtils.getMediumDateString( programStageInstance.getDueDate() );
         }
-        else if ( ProgramExpression.REPORT_DATE.equals( programExpression.getExpression() ) )
+        else if ( programExpression.getExpression().contains( ProgramExpression.REPORT_DATE ) )
         {
             value = DateUtils.getMediumDateString( programStageInstance.getExecutionDate() );
         }
@@ -148,10 +148,10 @@ public class DefaultProgramExpressionService
             }
 
             matcher.appendTail( description );
-           
+
             value = description.toString();
         }
-        
+
         return value;
     }
 

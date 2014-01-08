@@ -31,6 +31,7 @@ package org.hisp.dhis.program;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ import java.util.List;
  */
 /**
  * @author abyot
- *
+ * 
  */
 public class ProgramStageInstance
     extends BaseIdentifiableObject
@@ -81,6 +82,8 @@ public class ProgramStageInstance
 
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
 
+    private PatientComment patientComment;
+
     private Integer status = ACTIVE_STATUS;
 
     private Double longitude;
@@ -102,7 +105,6 @@ public class ProgramStageInstance
 
     public ProgramStageInstance( ProgramInstance programInstance, ProgramStage programStage )
     {
-        this();
         this.programInstance = programInstance;
         this.programStage = programStage;
     }
@@ -314,9 +316,19 @@ public class ProgramStageInstance
     public void setLatitude( Double latitude )
     {
         this.latitude = latitude;
-    }  
+    }
 
-	public Integer getEventStatus()
+    public PatientComment getPatientComment()
+    {
+        return patientComment;
+    }
+
+    public void setPatientComment( PatientComment patientComment )
+    {
+        this.patientComment = patientComment;
+    }
+
+    public Integer getEventStatus()
     {
         if ( this.status != 0 )
         {
