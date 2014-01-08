@@ -1,7 +1,6 @@
 <h2>$i18n.getString( "patients" )</h2>
 <ul>
 	<li><a href="patientAttribute.action">$i18n.getString( "patient_attribute" )</a></li>
-	<li><a href="patientAttributeInListNoProgram.action">$i18n.getString( "patient_attribute_displayed_with_no_program" )</a></li>
 	<li><a href="patientAttributeVisitSchedule.action">$i18n.getString( "patient_attribute_visit_schedule" )</a></li>
 	<li><a href="patientAttributeGroup.action">$i18n.getString( "patient_attribute_group" )</a></li>
 	<li><a href="patientIdentifierType.action">$i18n.getString( "patient_identifier_type" )</a></li>
@@ -15,8 +14,7 @@
 	<li><a href="caseAggregation.action">$i18n.getString( "patient_aggregation_query_builder" )</a></li>
 </ul>
 
-#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) 
-	|| $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
+#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) || $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
 <h2>$i18n.getString( "scheduling" )</h2>
 <ul>
 	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
