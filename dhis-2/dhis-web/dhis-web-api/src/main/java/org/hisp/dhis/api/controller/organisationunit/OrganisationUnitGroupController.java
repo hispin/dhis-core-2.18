@@ -122,10 +122,8 @@ public class OrganisationUnitGroupController
     @RequestMapping( value = "/{uid}/members/{orgUnitUid}", method = RequestMethod.POST )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void addMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" )
-    String uid, @PathVariable( "orgUnitUid" )
-    String orgUnitUid )
-        throws Exception
+    public void addMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid,
+        @PathVariable( "orgUnitUid" ) String orgUnitUid ) throws Exception
     {
         OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUid );
@@ -139,10 +137,8 @@ public class OrganisationUnitGroupController
     @RequestMapping( value = "/{uid}/members/{orgUnitUid}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void removeMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" )
-    String uid, @PathVariable( "orgUnitUid" )
-    String orgUnitUid )
-        throws Exception
+    public void removeMember( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid,
+        @PathVariable( "orgUnitUid" ) String orgUnitUid ) throws Exception
     {
         OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( uid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( orgUnitUid );
