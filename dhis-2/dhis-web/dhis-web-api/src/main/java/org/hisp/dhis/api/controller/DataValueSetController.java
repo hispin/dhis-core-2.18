@@ -115,7 +115,7 @@ public class DataValueSetController
     {
         response.setContentType( CONTENT_TYPE_XML );
 
-        boolean isSingleDataValueSet = dataSet.size() == 1 && orgUnit.size() == 1;
+        boolean isSingleDataValueSet = dataSet.size() == 1 && period != null && orgUnit.size() == 1;
         
         if ( isSingleDataValueSet )
         {
