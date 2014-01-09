@@ -49,8 +49,6 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.comparator.PatientAttributeSortOrderInListNoProgramComparator;
 import org.hisp.dhis.patient.comparator.PatientIdentifierTypeSortOrderInListNoProgramComparator;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -90,12 +88,6 @@ public class SearchPatientAction
 
     @Autowired
     private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/output

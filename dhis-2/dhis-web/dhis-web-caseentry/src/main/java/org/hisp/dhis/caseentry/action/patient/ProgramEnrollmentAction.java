@@ -46,11 +46,8 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.comparator.ProgramStageInstanceVisitDateComparator;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -67,12 +64,6 @@ public class ProgramEnrollmentAction
     private ProgramInstanceService programInstanceService;
 
     private OrganisationUnitSelectionManager selectionManager;
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -199,8 +190,7 @@ public class ProgramEnrollmentAction
         // Load identifier types of the selected program
         // ---------------------------------------------------------------------
 
-        identifierTypes = new ArrayList<PatientIdentifierType>(
-            programPatientIdentifierTypeService.getListPatientIdentifierType( programInstance.getProgram() ) );
+        identifierTypes = new ArrayList<PatientIdentifierType>( programInstance.getProgram().getIdentifierTypes() );
         identiferMap = new HashMap<Integer, String>();
 
         if ( identifierTypes != null && identifierTypes.size() > 0 )
@@ -223,8 +213,7 @@ public class ProgramEnrollmentAction
         // Load patient-attributes of the selected program
         // ---------------------------------------------------------------------
 
-        patientAttributes = new ArrayList<PatientAttribute>(
-            programPatientAttributeService.getListPatientAttribute( programInstance.getProgram() ) );
+        patientAttributes = new ArrayList<PatientAttribute>( programInstance.getProgram().getAttributes() );
 
         if ( patientAttributes != null )
         {

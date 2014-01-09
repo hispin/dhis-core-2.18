@@ -33,7 +33,6 @@ import java.util.List;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,9 +52,6 @@ public class GetAttributesByProgramAction
 
     @Autowired
     private ProgramService programService;
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
 
     @Autowired
     private PatientAttributeService patientAttributeService;
@@ -89,8 +85,7 @@ public class GetAttributesByProgramAction
         if ( id != null )
         {
             Program program = programService.getProgram( id );
-            attributes = new ArrayList<PatientAttribute>(
-                programPatientAttributeService.getListPatientAttribute( program ) );
+            attributes = program.getAttributes();
         }
         else
         {

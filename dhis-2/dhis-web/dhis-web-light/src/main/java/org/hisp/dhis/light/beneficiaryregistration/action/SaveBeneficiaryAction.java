@@ -52,12 +52,9 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.util.ContextUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -152,12 +149,6 @@ public class SaveBeneficiaryAction
     {
         this.programService = programService;
     }
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -348,8 +339,8 @@ public class SaveBeneficiaryAction
 
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll(programPatientIdentifierTypeService.getListPatientIdentifierType( program ) );
-            patientAttributes.removeAll( programPatientAttributeService.getListPatientAttribute( program ) );
+            patientIdentifierTypes.removeAll( program.getIdentifierTypes() );
+            patientAttributes.removeAll( program.getAttributes() );
         }
 
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
@@ -373,8 +364,8 @@ public class SaveBeneficiaryAction
 
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll(programPatientIdentifierTypeService.getListPatientIdentifierType( program ) );
-            patientAttributes.removeAll( programPatientAttributeService.getListPatientAttribute( program ) );
+            patientIdentifierTypes.removeAll( program.getIdentifierTypes() );
+            patientAttributes.removeAll( program.getAttributes() );
         }
 
         for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
