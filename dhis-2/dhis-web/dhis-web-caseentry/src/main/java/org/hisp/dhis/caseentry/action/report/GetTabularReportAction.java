@@ -49,10 +49,7 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramStage;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -102,12 +99,6 @@ public class GetTabularReportAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -248,14 +239,14 @@ public class GetTabularReportAction
             {
                 PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( dimensionId );
 
-                if ( it != null && programPatientIdentifierTypeService.getListPatientIdentifierType( program ).contains( it ) )
+                if ( it != null && program.getIdentifierTypes().contains( it ) )
                 {
                     dimensionIdentifierTypes.add( it );
                 }
 
                 PatientAttribute at = patientAttributeService.getPatientAttribute( dimensionId );
 
-                if ( at != null && programPatientAttributeService.getListPatientAttribute( program ).contains( at ) )
+                if ( at != null && program.getAttributes().contains( at ) )
                 {
                     dimensionAttributes.add( at );
                 }
@@ -285,14 +276,14 @@ public class GetTabularReportAction
 
             PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( filterId );
 
-            if ( it != null && programPatientIdentifierTypeService.getListPatientIdentifierType( program ).contains( it ) )
+            if ( it != null && program.getIdentifierTypes().contains( it ) )
             {
                 filterIdentifierTypes.add( it );
             }
 
             PatientAttribute at = patientAttributeService.getPatientAttribute( filterId );
 
-            if ( at != null && programPatientAttributeService.getListPatientAttribute( program ).contains( at ) )
+            if ( at != null && program.getAttributes().contains( at ) )
             {
                 filterAttributes.add( at );
             }

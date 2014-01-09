@@ -49,13 +49,10 @@ import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -118,12 +115,6 @@ public class ShowAddPatientFormAction
     {
         this.relationshipTypeService = relationshipTypeService;
     }
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     private I18n i18n;
 
@@ -323,17 +314,17 @@ public class ShowAddPatientFormAction
                 identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
                 attributes = new ArrayList<PatientAttribute>( attributeService.getAllPatientAttributes() );
                 Collection<Program> programs = programService.getAllPrograms();
+                
                 for ( Program p : programs )
                 {
-                    identifierTypes.removeAll( programPatientIdentifierTypeService.getListPatientIdentifierType( p ));
-                    attributes.removeAll( programPatientAttributeService.getListPatientAttribute( p ) );
+                    identifierTypes.removeAll( p.getIdentifierTypes() );
+                    attributes.removeAll( p.getAttributes() );
                 }
             }
             else
             {
-                identifierTypes = programPatientIdentifierTypeService.getListPatientIdentifierType( program );
-                attributes = new ArrayList<PatientAttribute>(
-                    programPatientAttributeService.getListPatientAttribute( program ) );
+                identifierTypes = program.getIdentifierTypes();
+                attributes = program.getAttributes();
             }
 
             for ( PatientAttribute attribute : attributes )

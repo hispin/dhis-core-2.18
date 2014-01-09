@@ -49,13 +49,10 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramIndicatorService;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -84,12 +81,6 @@ public class PatientDashboardAction
     private ProgramIndicatorService programIndicatorService;
 
     private PatientAttributeValueService patientAttributeValueService;
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -236,7 +227,7 @@ public class PatientDashboardAction
 
         for ( Program program : programs )
         {
-            Collection<PatientAttribute> atttributes = programPatientAttributeService.getListPatientAttribute( program );
+            Collection<PatientAttribute> atttributes = program.getAttributes();
             for ( PatientAttributeValue attributeValue : _attributeValues )
             {
                 if ( atttributes.contains( attributeValue.getPatientAttribute() ) )
@@ -255,8 +246,7 @@ public class PatientDashboardAction
 
         for ( Program program : programs )
         {
-            Collection<PatientIdentifierType> identifierTypes = programPatientIdentifierTypeService
-                .getListPatientIdentifierType( program );
+            Collection<PatientIdentifierType> identifierTypes = program.getIdentifierTypes();
             for ( PatientIdentifier identifier : _identifiers )
             {
                 if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
