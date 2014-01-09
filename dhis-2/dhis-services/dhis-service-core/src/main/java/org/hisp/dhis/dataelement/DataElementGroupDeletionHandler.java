@@ -68,7 +68,7 @@ public class DataElementGroupDeletionHandler
         while ( iterator.hasNext() )
         {
             DataElementGroup group = iterator.next();
-            group.getMembers().remove( dataElement );
+            group.removeDataElement( dataElement );
             dataElementService.updateDataElementGroup( group );
         }
     }

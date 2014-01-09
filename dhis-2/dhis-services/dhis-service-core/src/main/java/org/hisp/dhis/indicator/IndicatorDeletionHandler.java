@@ -96,7 +96,7 @@ public class IndicatorDeletionHandler
         while ( iterator.hasNext() )
         {
             Indicator indicator = iterator.next();
-            indicator.getGroups().remove( group );
+            indicator.removeIndicatorGroup( group );
             indicatorService.updateIndicator( indicator );
         }
     }
@@ -109,7 +109,7 @@ public class IndicatorDeletionHandler
         while ( iterator.hasNext() )
         {
             Indicator indicator = iterator.next();
-            indicator.getDataSets().remove( dataSet );
+            indicator.removeDataSet( dataSet );
             indicatorService.updateIndicator( indicator );
         }
     }

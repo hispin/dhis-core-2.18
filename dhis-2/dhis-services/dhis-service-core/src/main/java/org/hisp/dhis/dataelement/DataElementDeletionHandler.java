@@ -103,7 +103,7 @@ public class DataElementDeletionHandler
         while ( iterator.hasNext() )
         {
             DataElement element = iterator.next();
-            element.getDataSets().remove( dataSet );
+            element.removeDataSet( dataSet );
             dataElementService.updateDataElement( element );            
         }
     }
@@ -116,7 +116,7 @@ public class DataElementDeletionHandler
         while ( iterator.hasNext() )
         {
             DataElement element = iterator.next();
-            element.getGroups().remove( group );
+            element.removeDataElementGroup( group );
             dataElementService.updateDataElement( element );
         }
     }
