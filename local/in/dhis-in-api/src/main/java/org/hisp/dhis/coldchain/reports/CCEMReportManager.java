@@ -43,6 +43,8 @@ public interface CCEMReportManager
     
     String getMinMaxAvgValues(String orgunitid, String periodid , Integer dataElementid, Integer optionCombo);
     
+    String getMinMaxAvgValuesForLiveBirths( String orgunitid, String periodid, Integer dataElementid, Integer optionCombo, Double liveBirthsPerThousand );
+    
     Integer getGrandTotalValue(String orgunitid, String periodid , Integer dataElementid);
     
     Map<String,Integer> getCatalogDatavalueId( String orgUnitIdsByComma, Integer inventoryTypeId, Integer catalogTypeAttributeId );

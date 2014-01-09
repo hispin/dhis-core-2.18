@@ -16,6 +16,7 @@ public class Lookup extends BaseNameableObject
     public static final String CCEI_AGG_TYPE_REF_WORKING_STATUS_BY_MODEL = "REF WORKING STATUS BY MODEL";
     public static final String CCEI_AGG_TYPE_REF_UTILIZATION = "REF UTILIZATION";
     public static final String CCEI_AGG_TYPE_REF_WORKING_STATUS_BY_TYPE = "REF WORKING STATUS BY TYPE";
+    public static final String CCEI_AGG_TYPE_REF_TEMP_ALARMS = "REF TEMP ALARMS";
     
     public static final String CCEI_WORKING_STATUS_OPTIONSET = "WORKING_STATUS_OPTIONSET";
     
@@ -99,6 +100,4 @@ public class Lookup extends BaseNameableObject
         this.value = value;
     }
 
-
-    
 }

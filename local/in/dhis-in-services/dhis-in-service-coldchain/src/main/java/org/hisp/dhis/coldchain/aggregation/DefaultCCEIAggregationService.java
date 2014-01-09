@@ -110,31 +110,10 @@ public class DefaultCCEIAggregationService
                                 " modelattributevalue.value = " + modelName + " AND " + 
                                 " modelattributevalue.modeltypeattributeid = " + modelTypeAttributeId +" AND " +
                                 " equipment.organisationunitid IN ( " + Lookup.ORGUNITID_BY_COMMA + " ) AND " +
-                                " equipmentattributevalue.value IN ( " + utilization + " )" +
+                                " equipmentattributevalue.value IN ( " + utilization + " ) AND " + 
+                                " equipment.registrationdate <= '" + Lookup.CURRENT_PERIOD_ENDDATE +"'" +
                             " GROUP BY equipment.organisationunitid";
         return query;
-    }
-
-    @Override
-    public String getQueryTemplate( String lookupName, Map<String, String> params )
-    {
-        String tempQuery = null;
-
-        if ( lookupName.equalsIgnoreCase( Lookup.WS_REF_TYPE ) )
-        {
-            String equipmenttypeid = params.get( "equipmenttypeid" );
-            String modelName = params.get( "modelName" );
-            String equipmentattributevalue = params.get( "equipmentattributevalue" );
-            tempQuery = "SELECT COUNT(*) FROM modelattributevalue "
-                + "INNER JOIN equipment ON modelattributevalue.modelid = equipment.modelid "
-                + "INNER JOIN equipmentattributevalue ON equipmentattributevalue.equipmentid = equipment.equipmentid"
-                + " WHERE " + " equipment.equipmenttypeid = " + equipmenttypeid + " AND "
-                + " modelattributevalue.value = " + modelName + " AND " + " equipment.organisationunitid IN ( ? ) AND "
-                + " equipmentattributevalue.value IN ( " + equipmentattributevalue + " )"
-                + " GROUP BY modelattributevalue.value";
-        }
-
-        return tempQuery;
     }
 
     public Map<String, Integer> calculateRefrigeratorWorkingStatus( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query )
@@ -174,12 +153,16 @@ public class DefaultCCEIAggregationService
     {
         Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
         
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
         try
         {
             Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
             String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
 
             query = query.replace( "ORGUNITID_BY_COMMA", orgUnitIdsByComma );
+            
+            query = query.replace( Lookup.CURRENT_PERIOD_ENDDATE, simpleDateFormat.format( period.getEndDate() ) );
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -309,13 +292,12 @@ public class DefaultCCEIAggregationService
                 {
                     vsReqLiveBirthData = Double.parseDouble( tempStr );
                     constant = constantService.getConstantByName( "LiveBirthsPerThousand" );                    
-                    Double liveBirthPerThousand = 39.98;
+                    Double liveBirthPerThousand = 40.0;
                     if( constant != null )
                     {
                         liveBirthPerThousand = constant.getValue();
                     }
-                    vsReqLiveBirthData = ( vsReqLiveBirthData * liveBirthPerThousand ) / 1000;
-                    
+                    vsReqLiveBirthData = ( vsReqLiveBirthData * liveBirthPerThousand ) / 1000;                    
                 }
                 catch ( Exception e )
                 {
