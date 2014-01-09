@@ -39,9 +39,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ SavePatientAttributeInListNoProgramAction.java Jan 8, 2014 8:52:31
- *          PM $
  */
 public class SavePatientAttributeInListNoProgramAction
     implements Action
@@ -91,7 +88,6 @@ public class SavePatientAttributeInListNoProgramAction
         for ( String objectId : selectedAttributeIds )
         {
             // Identifier type
-
             String[] id = objectId.split( "_" );
             if ( id[0].equals( PREFIX_IDENTYFITER_TYPE ) )
             {
@@ -106,7 +102,7 @@ public class SavePatientAttributeInListNoProgramAction
             }
 
             // Attribute
-            else
+            else if ( id[0].equals( PREFIX_ATTRIBUTE ) )
             {
                 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
                     .parseInt( id[1] ) );
