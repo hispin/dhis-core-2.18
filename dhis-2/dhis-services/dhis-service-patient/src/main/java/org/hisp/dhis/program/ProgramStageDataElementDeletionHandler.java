@@ -28,9 +28,7 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -54,13 +52,6 @@ public class ProgramStageDataElementDeletionHandler
         this.programStageDEService = programStageDEService;
     }
 
-    private ProgramStageSectionService programStageSectionService;
-
-    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
-    {
-        this.programStageSectionService = programStageSectionService;
-    }
-
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -72,50 +63,24 @@ public class ProgramStageDataElementDeletionHandler
     }
 
     @Override
-    public void deleteProgram( Program program )
-    {
-        Set<ProgramStage> programStages = program.getProgramStages();
-
-        for ( ProgramStage programStage : programStages )
-        {
-            Collection<ProgramStageDataElement> psDataElements = programStageDEService.get( programStage );
-
-            if ( psDataElements != null && psDataElements.size() > 0 )
-            {
-                for ( ProgramStageDataElement psDataElement : psDataElements )
-                {
-                    programStageDEService.deleteProgramStageDataElement( psDataElement );
-                }
-            }
-        }
-    }
-
-    @Override
     public void deleteProgramStage( ProgramStage programStage )
     {
-        Collection<ProgramStageDataElement> psDataElements = programStage.getProgramStageDataElements();
-        for ( ProgramStageDataElement psDataElement : psDataElements )
+        Iterator<ProgramStageDataElement> iterator = programStage.getProgramStageDataElements().iterator();
+
+        while ( iterator.hasNext() )
         {
-            programStageDEService.deleteProgramStageDataElement( psDataElement );
+            ProgramStageDataElement de = iterator.next();
+            iterator.remove();
+            programStageDEService.deleteProgramStageDataElement( de );
         }
     }
 
     @Override
-    public void deleteProgramStageSection( ProgramStageSection programStageSection )
+    public void deleteDataElement( DataElement dataElement )
     {
-        programStageSection.getProgramStageDataElements().clear();
-        programStageSectionService.updateProgramStageSection( programStageSection );
-    }
-
-    @Override
-    public String allowDeleteDataElement( DataElement dataElement )
-    {
-        if ( dataElement != null && DataElement.DOMAIN_TYPE_PATIENT.equals( dataElement.getDomainType() ) )
+        if ( DataElement.DOMAIN_TYPE_PATIENT.equals( dataElement.getDomainType() ) )
         {
-            // TODO use a query which will be more efficient
-
-            Iterator<ProgramStageDataElement> iterator = programStageDEService.getAllProgramStageDataElements()
-                .iterator();
+            Iterator<ProgramStageDataElement> iterator = programStageDEService.getAllProgramStageDataElements().iterator();
 
             while ( iterator.hasNext() )
             {
@@ -127,7 +92,5 @@ public class ProgramStageDataElementDeletionHandler
                 }
             }
         }
-
-        return null;
     }
 }

@@ -78,8 +78,11 @@ public class ProgramDataEntryFormDeletionHandler
         if ( dataEntryForm != null )
         {
             boolean flag = false;
+            
             Set<ProgramStage> programStages = programStage.getProgram().getProgramStages();
+            
             programStages.remove( programStage );
+            
             for ( ProgramStage stage : programStages )
             {
                 if ( stage.getDataEntryForm() != null )

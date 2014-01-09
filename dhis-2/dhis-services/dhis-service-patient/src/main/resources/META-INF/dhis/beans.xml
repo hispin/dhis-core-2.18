@@ -483,8 +483,12 @@
         class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
         <property name="programStageDEService"
             ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-        <property name="programStageSectionService"
-            ref="org.hisp.dhis.program.ProgramStageSectionService" />
+    </bean>
+    
+    <bean id="org.hisp.dhis.program.ProgramStageDeletionHandler"
+        class="org.hisp.dhis.program.ProgramStageDeletionHandler">
+        <property name="programStageService"
+            ref="org.hisp.dhis.program.ProgramStageService" />
     </bean>
 
     <bean id="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler"
@@ -542,6 +546,7 @@
 					<ref local="org.hisp.dhis.patient.PatientAuditDeletionHandler" />
 					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
+                    <ref local="org.hisp.dhis.program.ProgramStageDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler" />
