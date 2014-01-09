@@ -100,7 +100,7 @@ public class DataElementGroupController
         }
 
         model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
@@ -139,7 +139,7 @@ public class DataElementGroupController
         }
 
         model.addAttribute( "model", metaData );
-        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
