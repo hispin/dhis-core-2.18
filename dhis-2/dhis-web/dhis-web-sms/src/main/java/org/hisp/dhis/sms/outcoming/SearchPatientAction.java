@@ -28,6 +28,13 @@ package org.hisp.dhis.sms.outcoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
@@ -36,16 +43,8 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 public class SearchPatientAction
     extends ActionPagingSupport<Patient>
@@ -62,9 +61,6 @@ public class SearchPatientAction
 
     @Autowired
     private ProgramService programService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -177,8 +173,7 @@ public class SearchPatientAction
                 for ( Integer programId : programIds )
                 {
                     Program program = programService.getProgram( programId );
-                    identifierTypes
-                        .addAll( programPatientIdentifierTypeService.getListPatientIdentifierType( program ) );
+                    identifierTypes.addAll( program.getIdentifierTypes() );
                 }
             }
         }
