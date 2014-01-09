@@ -2251,7 +2251,7 @@ Ext.onReady( function() {
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
 
-						if (r.status === 414) {
+						if (r.status === 413 || r.status === 414) {
 							web.analytics.validateUrl(init.contextPath + '/api/analytics.json' + paramString);
 						}
 						else {
@@ -4640,7 +4640,7 @@ Ext.onReady( function() {
 
 		getParamString = function() {
 			var paramString = ns.core.web.analytics.getParamString(ns.core.service.layout.getExtendedLayout(ns.app.layout));
-			
+
 			if (ns.app.layout.showHierarchy) {
 				paramString += '&showHierarchy=true';
 			}
