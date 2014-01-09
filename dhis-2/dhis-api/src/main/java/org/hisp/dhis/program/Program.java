@@ -180,6 +180,9 @@ public class Program
         return elements;
     }
     
+    /**
+     * Returns PatientIdentifierTypes from ProgramPatientIdentifierTypes.
+     */
     public List<PatientIdentifierType> getIdentifierTypes()
     {
         List<PatientIdentifierType> types = new ArrayList<PatientIdentifierType>();
@@ -192,6 +195,9 @@ public class Program
         return types;
     }
     
+    /**
+     * Returns PatientAttributes from ProgramPatientAttributes.
+     */
     public List<PatientAttribute> getAttributes()
     {
         List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
