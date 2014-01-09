@@ -69,6 +69,12 @@ public abstract class AbstractStatementBuilder
     }
 
     @Override
+    public String getAutoIncrementValue()
+    {
+        return "null";
+    }
+
+    @Override
     public String getPeriodIdentifierStatement( Period period )
     {
         return

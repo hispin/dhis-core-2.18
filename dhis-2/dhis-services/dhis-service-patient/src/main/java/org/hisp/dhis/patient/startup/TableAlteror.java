@@ -44,6 +44,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -103,6 +104,9 @@ public class TableAlteror
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private StatementBuilder statementBuilder;
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -292,10 +296,8 @@ public class TableAlteror
 
         executeSql( "UPDATE patientattribute SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
         executeSql( "UPDATE patientidentifiertype SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
-
-        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
-        executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN personDisplayName" );
         
+        updateProgramAttributes();
     }
 
     // -------------------------------------------------------------------------
@@ -304,15 +306,23 @@ public class TableAlteror
 
     private void updateProgramAttributes()
     {
-        executeSql( "INSERT INTO program_attributes (programattributeid, sort_order, displayinlist ) "
-            + "SELECT pp.patientattributeid, displayedInList, pp.sort_order FROM program_patientattributes pp "
-            + "INNER JOIN patientattribute pa ON pp.patientattributeid=pa.patientattributeid" );
-        executeSql( "DROP TABLE program_patientattributes" );
+        String autoIncrVal = statementBuilder.getAutoIncrementValue();
+        
+        String attributeSql = "INSERT INTO program_attributes (programattributeid, attributeid, sort_order, displayinlist, programid) "
+            + "SELECT " + autoIncrVal + ", pp.patientattributeid, pp.sort_order, false, pp.programid "
+            + "FROM program_patientattributes pp";        
+        executeSql( attributeSql );
 
-        executeSql( "INSERT INTO program_identifierTypes (programid, patientidentifiertypeid, displayedInList, sort_order ) "
-            + "SELECT programid, pp.patientidentifiertypeid, personDisplayName, pp.sort_order FROM program_patientidentifiertypes pp "
-            + "INNER JOIN patientidentifiertype pi ON pp.patientidentifiertypeid=pi.patientidentifiertypeid" );
-        executeSql( "DROP TABLE program_patientidentifiertypes" );        
+        String identifierSql = "INSERT INTO program_identifiertypes (programidentifiertypeid, identifiertypeid, sort_order, displayinlist, programid) "
+            + "SELECT " + autoIncrVal + ", pp.patientidentifiertypeid, pp.sort_order, false, pp.programid "
+            + "FROM program_patientidentifiertypes pp";        
+        executeSql( identifierSql );
+        
+        executeSql( "DROP TABLE program_patientattributes" );
+        executeSql( "DROP TABLE program_patientidentifiertypes" );
+
+        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
+        executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN personDisplayName" );
     }
     
     private void updateUid()

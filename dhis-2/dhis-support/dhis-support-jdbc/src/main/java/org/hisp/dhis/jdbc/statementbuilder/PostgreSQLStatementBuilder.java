@@ -53,6 +53,12 @@ public class PostgreSQLStatementBuilder
     {
         return "vacuum analyze " + table + ";";
     }
+    
+    @Override
+    public String getAutoIncrementValue()
+    {
+        return "nextval('hibernate_sequence')";
+    }
 
     @Override
     public String getTableOptions( boolean autoVacuum )
