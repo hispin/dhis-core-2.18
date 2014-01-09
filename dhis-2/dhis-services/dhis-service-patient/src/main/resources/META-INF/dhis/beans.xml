@@ -204,8 +204,6 @@
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="programPatientAttributeService"
-			ref="org.hisp.dhis.program.ProgramPatientAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageService" class="org.hisp.dhis.program.DefaultProgramStageService">
@@ -264,6 +262,7 @@
 
 	<bean id="org.hisp.dhis.patient.PatientAttributeService" class="org.hisp.dhis.patient.DefaultPatientAttributeService">
 		<property name="patientAttributeStore" ref="org.hisp.dhis.patient.PatientAttributeStore" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
@@ -389,30 +388,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<!-- Program Patient Attribute -->
-
-	<bean id="org.hisp.dhis.program.ProgramPatientAttributeService"
-		class="org.hisp.dhis.program.DefaultProgramPatientAttributeService">
-		<property name="programPatientAttributeStore"
-			ref="org.hisp.dhis.program.ProgramPatientAttributeStore" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramPatientAttributeStore"
-		class="org.hisp.dhis.program.hibernate.HibernateProgramPatientAttributeStore">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramPatientIdentifierTypeService"
-		class="org.hisp.dhis.program.DefaultProgramPatientIdentiferTypeService">
-		<property name="programPatientIdentifierTypeStore"
-			ref="org.hisp.dhis.program.ProgramPatientIdentifierTypeStore" />
-	</bean>
-
-	<bean id="org.hisp.dhis.program.ProgramPatientIdentifierTypeStore"
-		class="org.hisp.dhis.program.hibernate.HibernateProgramPatientIdentifierTypeStore">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
 	<!-- Startup -->
 
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">
@@ -524,18 +499,6 @@
         <property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
     </bean>
     
-    <bean id="org.hisp.dhis.program.ProgramAttributeDeletionHandler"
-       class="org.hisp.dhis.program.ProgramAttributeDeletionHandler">
-        <property name="programAttributeService"
-            ref="org.hisp.dhis.program.ProgramPatientAttributeService" />
-    </bean>
-
-    <bean id="org.hisp.dhis.program.ProgramIdentifierTypeDeletionHandler"
-       class="org.hisp.dhis.program.ProgramIdentifierTypeDeletionHandler">
-        <property name="programIdentifierTypeService"
-            ref="org.hisp.dhis.program.ProgramPatientIdentifierTypeService" />
-    </bean>
-
 	<!-- DeletionManager -->
 
 	<bean
@@ -559,8 +522,6 @@
 					<ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
-					<ref local="org.hisp.dhis.program.ProgramAttributeDeletionHandler" />
-                    <ref local="org.hisp.dhis.program.ProgramIdentifierTypeDeletionHandler" />
 				</list>
 			</list>
 		</property>

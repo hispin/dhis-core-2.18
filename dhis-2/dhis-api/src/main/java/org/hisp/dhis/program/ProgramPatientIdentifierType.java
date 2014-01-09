@@ -41,13 +41,13 @@ public class ProgramPatientIdentifierType
 {
     private static final long serialVersionUID = -2420475559273198337L;
 
-    private Program program;
-
+    private int id;
+    
     private PatientIdentifierType patientIdentifierType;
 
-    private boolean displayedInList;
-
     private Integer sortOrder;
+
+    private boolean displayedInList;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -57,13 +57,11 @@ public class ProgramPatientIdentifierType
     {
     }
 
-    public ProgramPatientIdentifierType( Program program, PatientIdentifierType patientIdentifierType,
-        boolean displayedInList, int sortOrder )
+    public ProgramPatientIdentifierType( PatientIdentifierType patientIdentifierType, int sortOrder, boolean displayedInList )
     {
-        this.program = program;
         this.patientIdentifierType = patientIdentifierType;
-        this.displayedInList = displayedInList;
         this.sortOrder = sortOrder;
+        this.displayedInList = displayedInList;
     }
 
     // -------------------------------------------------------------------------
@@ -76,8 +74,8 @@ public class ProgramPatientIdentifierType
         final int prime = 31;
         int result = 1;
 
-        result = result * prime + program.hashCode();
         result = result * prime + patientIdentifierType.hashCode();
+        result = result * prime + sortOrder;
 
         return result;
     }
@@ -97,22 +95,21 @@ public class ProgramPatientIdentifierType
 
         final ProgramPatientIdentifierType other = (ProgramPatientIdentifierType) object;
 
-        return program.getId() == other.getProgram().getId()
-            && patientIdentifierType.getId() == other.getPatientIdentifierType().getId();
+        return patientIdentifierType.equals( other.getPatientIdentifierType() ) && sortOrder == other.getSortOrder();
     }
 
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public Program getProgram()
+    public int getId()
     {
-        return program;
+        return id;
     }
 
-    public void setProgram( Program program )
+    public void setId( int id )
     {
-        this.program = program;
+        this.id = id;
     }
 
     public PatientIdentifierType getPatientIdentifierType()
@@ -125,16 +122,6 @@ public class ProgramPatientIdentifierType
         this.patientIdentifierType = patientIdentifierType;
     }
 
-    public Boolean getDisplayedInList()
-    {
-        return displayedInList;
-    }
-
-    public void setDisplayedInList( Boolean displayedInList )
-    {
-        this.displayedInList = displayedInList;
-    }
-
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -145,4 +132,13 @@ public class ProgramPatientIdentifierType
         this.sortOrder = sortOrder;
     }
 
+    public Boolean getDisplayedInList()
+    {
+        return displayedInList;
+    }
+
+    public void setDisplayedInList( Boolean displayedInList )
+    {
+        this.displayedInList = displayedInList;
+    }
 }

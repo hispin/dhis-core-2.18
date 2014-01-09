@@ -30,8 +30,6 @@ package org.hisp.dhis.patient.action.patientreminder;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientReminderService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 

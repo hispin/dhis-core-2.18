@@ -6,17 +6,16 @@
 <hibernate-mapping>
 	<class name="org.hisp.dhis.program.ProgramPatientIdentifierType" table="program_identifiertypes">
 
-		<composite-id>
-			<key-many-to-one name="program" class="org.hisp.dhis.program.Program"
-				column="programid" foreign-key="fk_programidentifierTypes_programid" />
-			<key-many-to-one name="patientIdentifierType"
-				class="org.hisp.dhis.patient.PatientIdentifierType" column="patientidentifiertypeid"
-				foreign-key="fk_program_patientidentifiertypeid" />
-		</composite-id>
+    <id name="id" column="programidentifiertypeid">
+        <generator class="native" />
+    </id>
+    
+	<many-to-one name="patientIdentifierType" class="org.hisp.dhis.patient.PatientIdentifierType" 
+	   column="identifiertypeid" foreign-key="fk_program_identifiertypeid" />
 
-		<property name="displayedInList" />
+    <property name="sortOrder" column="sort_order" />
 
-		<property name="sortOrder" column="sort_order" />
+	<property name="displayedInList" column="displayinlist" />
 
 	</class>
 </hibernate-mapping>

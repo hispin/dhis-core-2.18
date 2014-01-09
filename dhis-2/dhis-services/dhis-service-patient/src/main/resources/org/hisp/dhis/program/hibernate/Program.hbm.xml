@@ -48,12 +48,12 @@
 
 		<property name="onlyEnrollOnce" />
 
-		<set name="programPatientIdentifierTypes" order-by="sort_order">
+		<set name="programPatientIdentifierTypes" cascade="all,delete-orphan" order-by="sort_order">
 			<key column="programid" />
 			<one-to-many class="org.hisp.dhis.program.ProgramPatientIdentifierType" />
 		</set>
 
-		<set name="programPatientAttributes" order-by="sort_order">
+		<set name="programPatientAttributes" cascade="all,delete-orphan" order-by="sort_order">
 			<key column="programid" />
 			<one-to-many class="org.hisp.dhis.program.ProgramPatientAttribute" />
 		</set>

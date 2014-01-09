@@ -109,7 +109,6 @@ public class ShowPatientAttributeInListNoProgramAction
         selectedPatientAttributes = new ArrayList<PatientAttribute>(
             patientAttributeService.getPatientAttributesDisplayed( true ) );
         Collections.sort( availablePatientAttributes, IdentifiableObjectNameComparator.INSTANCE );
-
         
         availablePatientIdentifierTypes = new ArrayList<PatientIdentifierType>(
             patientIdentifierTypeService.getPatientIdentifierTypeDisplayed( false ) );

@@ -290,26 +290,31 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
 
-        executeSql( "INSERT INTO program_attributes (programid, patientattributeid, displayedInList, sort_order ) "
-            + "SELECT programid, pp.patientattributeid, displayedInList, pp.sort_order FROM program_patientattributes pp "
-            + "INNER JOIN patientattribute pa ON pp.patientattributeid=pa.patientattributeid" );
-        executeSql( "DROP TABLE program_patientattributes" );
-        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
+        executeSql( "UPDATE patientattribute SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
+        executeSql( "UPDATE patientidentifiertype SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
 
-        executeSql( "INSERT INTO program_identifierTypes (programid, patientidentifiertypeid, displayedInList, sort_order ) "
-            + "SELECT programid, pp.patientidentifiertypeid, personDisplayName, pp.sort_order FROM program_patientidentifiertypes pp "
-            + "INNER JOIN patientidentifiertype pi ON pp.patientidentifiertypeid=pi.patientidentifiertypeid" );
-        executeSql( "DROP TABLE program_patientidentifiertypes" );
+        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
         executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN personDisplayName" );
         
-        executeSql( "UPDATE patientattribute SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
-        executeSql( "UPDATE PatientIdentifierType SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
     }
 
     // -------------------------------------------------------------------------
     // Supporting methods
     // -------------------------------------------------------------------------
 
+    private void updateProgramAttributes()
+    {
+        executeSql( "INSERT INTO program_attributes (programattributeid, sort_order, displayinlist ) "
+            + "SELECT pp.patientattributeid, displayedInList, pp.sort_order FROM program_patientattributes pp "
+            + "INNER JOIN patientattribute pa ON pp.patientattributeid=pa.patientattributeid" );
+        executeSql( "DROP TABLE program_patientattributes" );
+
+        executeSql( "INSERT INTO program_identifierTypes (programid, patientidentifiertypeid, displayedInList, sort_order ) "
+            + "SELECT programid, pp.patientidentifiertypeid, personDisplayName, pp.sort_order FROM program_patientidentifiertypes pp "
+            + "INNER JOIN patientidentifiertype pi ON pp.patientidentifiertypeid=pi.patientidentifiertypeid" );
+        executeSql( "DROP TABLE program_patientidentifiertypes" );        
+    }
+    
     private void updateUid()
     {
         updateUidColumn( "patientattribute" );

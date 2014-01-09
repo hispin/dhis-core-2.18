@@ -45,13 +45,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.system.grid.ListGrid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -114,9 +112,6 @@ public class DefaultPatientService
     {
         this.relationshipTypeService = relationshipTypeService;
     }
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -560,8 +555,8 @@ public class DefaultPatientService
         grid.addHeader( new GridHeader( i18n.getString( "gender" ), true, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
 
-        Collection<PatientIdentifierType> patientIdentifierTypes = programPatientIdentifierTypeService
-            .getListPatientIdentifierType( program );
+        Collection<PatientIdentifierType> patientIdentifierTypes = program.getIdentifierTypes();
+        
         for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
         {
             grid.addHeader( new GridHeader( patientIdentifierType.getDisplayName(), false, true ) );

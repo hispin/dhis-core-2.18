@@ -36,10 +36,8 @@ import java.util.List;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -69,9 +67,6 @@ public class GetParamsByProgramAction
     {
         this.attributeService = attributeService;
     }
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -115,7 +110,7 @@ public class GetParamsByProgramAction
 
             for ( Program _program : programs )
             {
-                patientAttributes.remove( programPatientAttributeService.getListPatientAttribute( _program ) );
+                patientAttributes.removeAll( _program.getAttributes() );
             }
         }
 

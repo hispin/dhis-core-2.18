@@ -31,7 +31,6 @@ package org.hisp.dhis.patient.action.program;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -42,14 +41,11 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -98,13 +94,7 @@ public class ShowUpdateProgramFormAction
     {
         this.relationshipTypeService = relationshipTypeService;
     }
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
-
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -211,12 +201,10 @@ public class ShowUpdateProgramFormAction
         program = programService.getProgram( id );
 
         availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        availableIdentifierTypes.removeAll( new HashSet<PatientIdentifierType>( programPatientIdentifierTypeService
-            .getListPatientIdentifierType( program ) ) );
-
+        availableIdentifierTypes.removeAll( program.getIdentifierTypes() );
+        
         availableAttributes = patientAttributeService.getAllPatientAttributes();
-        availableAttributes.removeAll( new HashSet<PatientAttribute>( programPatientAttributeService
-            .getListPatientAttribute( program ) ) );
+        availableAttributes.removeAll( program.getAttributes() );
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
