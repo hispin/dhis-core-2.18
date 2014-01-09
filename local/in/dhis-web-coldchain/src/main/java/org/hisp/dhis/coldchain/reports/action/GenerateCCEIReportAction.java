@@ -587,10 +587,19 @@ public class GenerateCCEIReportAction implements Action
 
             try
             {
+                Constant constant = constantService.getConstantByName( "LiveBirthsPerThousand" );                    
+                Double liveBirthPerThousand = 40.0;
+                if( constant != null )
+                {
+                    liveBirthPerThousand = constant.getValue();
+                }
+                
+                liveBirthPerThousand /= 1000;
+                
                 for ( Integer orgUnitId : selOrgUnitList )
                 {
-                	OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-                	List<OrganisationUnit> orgUnitChildren = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( orgUnitId ) );
+                    OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+                    List<OrganisationUnit> orgUnitChildren = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( orgUnitId ) );
 
                     for ( Integer orgUnitGroupId : orgunitGroupList )
                     {
@@ -598,28 +607,31 @@ public class GenerateCCEIReportAction implements Action
                         OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
                         List<OrganisationUnit> orgUnitGroupMembers = new ArrayList<OrganisationUnit>( orgUnitGroup.getMembers() );
                         orgUnitGroupMembers.retainAll( orgUnitChildren );
+                        
+                        
 
                         if( orgUnitGroupMembers != null && orgUnitGroupMembers.size() > 0 )
                         {
                             Collection<Integer> orgUnitGroupMemberIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnitGroupMembers ) );
                             String orgUnitidsByComma = getCommaDelimitedString( orgUnitGroupMemberIds );
 
-                        	String minMaxandAvgValue = ccemReportManager.getMinMaxAvgValues( orgUnitidsByComma, periodIdsByComma, dataElementId, optionComboId );
+                            //String minMaxandAvgValue = ccemReportManager.getMinMaxAvgValues( orgUnitidsByComma, periodIdsByComma, dataElementId, optionComboId );
+                            String minMaxandAvgValue = ccemReportManager.getMinMaxAvgValuesForLiveBirths( orgUnitidsByComma, periodIdsByComma, dataElementId, optionComboId, liveBirthPerThousand );
 
-	                        numberOfData.put( "Admin Area", orgUnit.getName() );
-	                        numberOfData.put( "Facility Type", orgUnitGroup.getName() );
-	                        numberOfData.put( "No. Facilities", orgUnitGroupMembers.size() + "" );
-	                        numberOfData.put( "Minimum", minMaxandAvgValue.split( "," )[0] );
-	                        numberOfData.put( "Maximum", minMaxandAvgValue.split( "," )[1] );
-	                        numberOfData.put( "Mean", minMaxandAvgValue.split( "," )[2] );
-	                        tableData.add( numberOfData );
+                            numberOfData.put( "Admin Area", orgUnit.getName() );
+                            numberOfData.put( "Facility Type", orgUnitGroup.getName() );
+                            numberOfData.put( "No. Facilities", orgUnitGroupMembers.size() + "" );
+                            numberOfData.put( "Minimum", minMaxandAvgValue.split( "," )[0] );
+                            numberOfData.put( "Maximum", minMaxandAvgValue.split( "," )[1] );
+                            numberOfData.put( "Mean", minMaxandAvgValue.split( "," )[2] );
+                            tableData.add( numberOfData );
                         }
                     }
                 }
             }
             catch ( Exception e )
             {
-                System.out.print( "Exception : " + e );
+                e.printStackTrace();
             }
             
             frb.setHeaderHeight( 35 );
@@ -2234,9 +2246,7 @@ public class GenerateCCEIReportAction implements Action
             Integer vsrActualEquipmentTypeAttributeidId = Integer.parseInt( partsOfVSRActualCellContent[2] );
             String vsrActualEquipmentValue = partsOfVSRActualCellContent[3];
 
-            Map<Integer, Double> catalogSumByEquipmentDataMap = new HashMap<Integer, Double>( ccemReportManager
-                .getCatalogDataSumByEquipmentData( orgUnitIdsByComma, vsrActualEquipmentTypeidId,
-                    vsrActualModelTypeAttributeidId, vsrActualEquipmentTypeAttributeidId, vsrActualEquipmentValue ) );
+            Map<Integer, Double> catalogSumByEquipmentDataMap = new HashMap<Integer, Double>( ccemReportManager.getCatalogDataSumByEquipmentData( orgUnitIdsByComma, vsrActualEquipmentTypeidId, vsrActualModelTypeAttributeidId, vsrActualEquipmentTypeAttributeidId, vsrActualEquipmentValue ) );
 
             // Calculations for Required Column
             ccemReportDesign1 = reportDesignList.get( 2 );
@@ -2323,6 +2333,13 @@ public class GenerateCCEIReportAction implements Action
                     try
                     {
                         vsReqLiveBirthData = Double.parseDouble( tempStr );
+                        constant = constantService.getConstantByName( "LiveBirthsPerThousand" );                    
+                        Double liveBirthPerThousand = 40.0;
+                        if( constant != null )
+                        {
+                            liveBirthPerThousand = constant.getValue();
+                        }
+                        vsReqLiveBirthData = ( vsReqLiveBirthData * liveBirthPerThousand ) / 1000;
                     }
                     catch ( Exception e )
                     {
@@ -2362,7 +2379,7 @@ public class GenerateCCEIReportAction implements Action
                 // Formula for calculating Requirement 
                 try
                 {
-                	vaccineRequirement = vsReqLiveBirthData * vsReqVaccineVolumePerChildData * ( (vsReqSupplyIntervalData + vsReqReserveStockData) / 52);
+                    vaccineRequirement = vsReqLiveBirthData * vsReqVaccineVolumePerChildData * ( (vsReqSupplyIntervalData + vsReqReserveStockData) / 52);
                 }
                 catch ( Exception e )
                 {

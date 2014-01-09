@@ -12,8 +12,6 @@ public interface CCEIAggregationService
 {
     String ID = CCEIAggregationService.class.getName();
 
-    String getQueryTemplate( String lookupName, Map<String,String> params );
-
     String getQueryForRefrigeratorWorkingStatus( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String workingStatus );
     
     String getQueryForRefrigeratorUtilization( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String utilization );

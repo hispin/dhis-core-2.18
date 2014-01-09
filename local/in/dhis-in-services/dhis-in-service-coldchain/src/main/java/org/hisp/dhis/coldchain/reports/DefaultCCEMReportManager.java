@@ -335,7 +335,7 @@ public class DefaultCCEMReportManager
                     + " GROUP BY equipment.organisationunitid";
             }
             
-            //System.out.println("CatalogDataSumByEquipmentData : " + query );
+            System.out.println("CatalogDataSumByEquipmentData : " + query );
             
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             while ( rs.next() )
@@ -911,6 +911,49 @@ public class DefaultCCEMReportManager
             else if ( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
             {
                 query = "SELECT Min(CAST(value AS UNSIGNED)), Max(CAST(value AS UNSIGNED)), ROUND(AVG(CAST(value AS UNSIGNED))) FROM datavalue " +
+                            " WHERE " +
+                                " sourceid IN (" + orgunitid + ") AND " +
+                                " dataelementid = " + dataElementid + " AND " +
+                                " periodid IN ( " + periodid + ") AND " +
+                                " categoryoptioncomboid = " + optionCombo;
+            }
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                dataValue = rs.getInt( 1 ) + "," + rs.getInt( 2 ) + "," + rs.getInt( 3 );
+                // System.out.println("Minimum and Maximum and Average Value is: "+dataValue);
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+        return dataValue;
+    }
+
+    public String getMinMaxAvgValuesForLiveBirths( String orgunitid, String periodid, Integer dataElementid, Integer optionCombo, Double liveBirthsPerThousand )
+    {
+        String dataValue = null;
+        
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        
+        try
+        {
+            String query = "";
+            
+            if ( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT ROUND(Min( (CAST(value AS NUMERIC) * "+liveBirthsPerThousand+" ))), ROUND(Max( (CAST(value AS NUMERIC) * "+liveBirthsPerThousand+" ))), ROUND(AVG( ( CAST(value AS NUMERIC) * "+liveBirthsPerThousand+" ) )) FROM datavalue " +
+                            " WHERE " +
+                                " sourceid IN (" + orgunitid + ") AND " +
+                                " dataelementid = " + dataElementid + " AND " +
+                                " periodid IN ( " + periodid + ") AND " +
+                                " categoryoptioncomboid = " + optionCombo;
+            }
+            else if ( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT ROUND(Min( (CAST(value AS UNSIGNED) * "+liveBirthsPerThousand+" ) )), ROUND(Max( (CAST(value AS UNSIGNED) * "+liveBirthsPerThousand+" ) )), ROUND(AVG( (CAST(value AS UNSIGNED) * "+liveBirthsPerThousand+" ) )) FROM datavalue " +
                             " WHERE " +
                                 " sourceid IN (" + orgunitid + ") AND " +
                                 " dataelementid = " + dataElementid + " AND " +
