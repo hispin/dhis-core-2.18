@@ -530,6 +530,12 @@
             ref="org.hisp.dhis.program.ProgramPatientAttributeService" />
     </bean>
 
+    <bean id="org.hisp.dhis.program.ProgramIdentifierTypeDeletionHandler"
+       class="org.hisp.dhis.program.ProgramIdentifierTypeDeletionHandler">
+        <property name="programIdentifierTypeService"
+            ref="org.hisp.dhis.program.ProgramPatientIdentifierTypeService" />
+    </bean>
+
 	<!-- DeletionManager -->
 
 	<bean
@@ -554,6 +560,7 @@
 					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramAttributeDeletionHandler" />
+                    <ref local="org.hisp.dhis.program.ProgramIdentifierTypeDeletionHandler" />
 				</list>
 			</list>
 		</property>
