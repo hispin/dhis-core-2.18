@@ -61,7 +61,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = OrganisationUnitGroupController.RESOURCE_PATH )
+@RequestMapping(value = OrganisationUnitGroupController.RESOURCE_PATH)
 public class OrganisationUnitGroupController
     extends AbstractCrudController<OrganisationUnitGroup>
 {
@@ -82,10 +82,8 @@ public class OrganisationUnitGroupController
     // --------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}/members", method = RequestMethod.GET )
-    public String getMembers( @PathVariable( "uid" )
-    String uid, @RequestParam
-    Map<String, String> parameters, Model model, HttpServletRequest request, HttpServletResponse response )
-        throws Exception
+    public String getMembers( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         OrganisationUnitGroup organisationUnitGroup = getEntity( uid );
@@ -98,6 +96,51 @@ public class OrganisationUnitGroupController
 
         WebMetaData metaData = new WebMetaData();
         List<OrganisationUnit> organisationUnits = Lists.newArrayList( organisationUnitGroup.getMembers() );
+
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), organisationUnits.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            organisationUnits = PagerUtils.pageCollection( organisationUnits, pager );
+        }
+
+        metaData.setOrganisationUnits( organisationUnits );
+
+        if ( options.hasLinks() )
+        {
+            WebUtils.generateLinks( metaData );
+        }
+
+        model.addAttribute( "model", metaData );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+
+        return StringUtils.uncapitalize( getEntitySimpleName() );
+    }
+
+    @RequestMapping(value = "/{uid}/members/query/{q}", method = RequestMethod.GET)
+    public String getMembersByQuery( @PathVariable("uid") String uid, @PathVariable( "q" ) String q,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
+        HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        OrganisationUnitGroup organisationUnitGroup = getEntity( uid );
+
+        if ( organisationUnitGroup == null )
+        {
+            ContextUtils.notFoundResponse( response, "OrganisationUnitGroup not found for uid: " + uid );
+            return null;
+        }
+
+        WebMetaData metaData = new WebMetaData();
+        List<OrganisationUnit> organisationUnits = Lists.newArrayList();
+
+        for ( OrganisationUnit organisationUnit : organisationUnitGroup.getMembers() )
+        {
+            if ( organisationUnit.getDisplayName().toLowerCase().contains( q.toLowerCase() ) )
+            {
+                organisationUnits.add( organisationUnit );
+            }
+        }
 
         if ( options.hasPaging() )
         {
