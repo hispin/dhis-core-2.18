@@ -28,50 +28,36 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
-/**
- * @author Chau Thu Tran
- * @version $ ProgramValidationDeletionHandler.java Aug 25, 2011 12:55:08 PM $
- * 
- */
-public class ProgramValidationDeletionHandler
+public class ProgramStageDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    private ProgramStageService programStageService;
 
-    private ProgramValidationService programValidationService;
-
-    public void setProgramValidationService( ProgramValidationService programValidationService )
+    public void setProgramStageService( ProgramStageService programStageService )
     {
-        this.programValidationService = programValidationService;
+        this.programStageService = programStageService;
     }
-
-    // -------------------------------------------------------------------------
-    // DeletionHandler implementation
-    // -------------------------------------------------------------------------
 
     @Override
-    public String getClassName()
+    protected String getClassName()
     {
-        return ProgramValidation.class.getSimpleName();
+        return ProgramStage.class.getSimpleName();
     }
-
+    
     @Override
     public void deleteProgram( Program program )
     {
-        Collection<ProgramValidation> programValidation = programValidationService.getAllProgramValidation();
-
-        for ( ProgramValidation validation : programValidation )
+        Iterator<ProgramStage> iterator = program.getProgramStages().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( program.equals( validation.getProgram() ) )
-            {
-                programValidationService.deleteProgramValidation( validation );
-            }
+            ProgramStage programStage = iterator.next();
+            iterator.remove();
+            programStageService.deleteProgramStage( programStage );
         }
     }
 }

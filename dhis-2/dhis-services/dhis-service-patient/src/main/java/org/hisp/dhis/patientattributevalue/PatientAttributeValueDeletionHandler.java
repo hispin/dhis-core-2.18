@@ -80,7 +80,7 @@ public class PatientAttributeValueDeletionHandler
         Collection<PatientAttributeValue> attributeValues = patientAttributeValueService
             .getPatientAttributeValues( patientAttribute );
 
-        if ( attributeValues != null && attributeValues.size() > 0 )
+        if ( attributeValues != null && !attributeValues.isEmpty() )
         {
             for ( PatientAttributeValue attributeValue : attributeValues )
             {

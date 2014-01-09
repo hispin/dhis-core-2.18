@@ -35,6 +35,7 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
  * 
  * @version ProgramStageSectionDeletionHandler.java 3:14:59 PM Oct 1, 2012 $
  */
+@SuppressWarnings("unused")
 public class ProgramStageSectionDeletionHandler
     extends DeletionHandler
 {
@@ -57,12 +58,5 @@ public class ProgramStageSectionDeletionHandler
     public String getClassName()
     {
         return ProgramStageSection.class.getSimpleName();
-    }
-
-    @Override
-    public void deleteProgramStage( ProgramStage programStage )
-    {
-        programStage.getProgramStageSections().clear();
-        programStageService.updateProgramStage( programStage );
     }
 }
