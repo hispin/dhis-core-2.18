@@ -55,7 +55,7 @@ import java.util.Map;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = IndicatorGroupController.RESOURCE_PATH )
+@RequestMapping(value = IndicatorGroupController.RESOURCE_PATH)
 public class IndicatorGroupController
     extends AbstractCrudController<IndicatorGroup>
 {
@@ -76,6 +76,51 @@ public class IndicatorGroupController
 
         WebMetaData metaData = new WebMetaData();
         List<Indicator> indicators = Lists.newArrayList( indicatorGroup.getMembers() );
+
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), indicators.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            indicators = PagerUtils.pageCollection( indicators, pager );
+        }
+
+        metaData.setIndicators( indicators );
+
+        if ( options.hasLinks() )
+        {
+            WebUtils.generateLinks( metaData );
+        }
+
+        model.addAttribute( "model", metaData );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+
+        return StringUtils.uncapitalize( getEntitySimpleName() );
+    }
+
+    @RequestMapping(value = "/{uid}/members/query/{q}", method = RequestMethod.GET)
+    public String getMembersByQuery( @PathVariable("uid") String uid, @PathVariable("q") String q,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
+        HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        IndicatorGroup indicatorGroup = getEntity( uid );
+
+        if ( indicatorGroup == null )
+        {
+            ContextUtils.notFoundResponse( response, "IndicatorGroup not found for uid: " + uid );
+            return null;
+        }
+
+        WebMetaData metaData = new WebMetaData();
+        List<Indicator> indicators = Lists.newArrayList();
+
+        for ( Indicator indicator : indicatorGroup.getMembers() )
+        {
+            if ( indicator.getDisplayName().toLowerCase().contains( q.toLowerCase() ) )
+            {
+                indicators.add( indicator );
+            }
+        }
 
         if ( options.hasPaging() )
         {
