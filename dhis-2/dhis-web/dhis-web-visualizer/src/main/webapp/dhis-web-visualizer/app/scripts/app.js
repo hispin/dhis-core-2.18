@@ -1690,7 +1690,7 @@ Ext.onReady( function() {
 					failure: function(r) {
 						web.mask.hide(ns.app.centerRegion);
 
-						if (r.status === 414) {
+						if (r.status === 413 || r.status === 414) {
 							web.analytics.validateUrl(init.contextPath + '/api/analytics.json' + paramString);
 						}
 						else {
@@ -1714,7 +1714,7 @@ Ext.onReady( function() {
 							web.mask.hide(ns.app.centerRegion);
 							return;
 						}
-						
+
 						ns.app.paramString = paramString;
 
 						web.chart.getChart(layout, xLayout, response, isUpdateGui);
@@ -1731,7 +1731,7 @@ Ext.onReady( function() {
 				if (!xLayout) {
 					xLayout = service.layout.getExtendedLayout(layout);
 				}
-				
+
 				// extend response
 				xResponse = service.response.getExtendedResponse(xLayout, response);
 
