@@ -43,6 +43,9 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementOperandService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -62,6 +65,9 @@ public class DataElementGroupController
     extends AbstractCrudController<DataElementGroup>
 {
     public static final String RESOURCE_PATH = "/dataElementGroups";
+
+    @Autowired
+    private DataElementOperandService dataElementOperandService;
 
     @RequestMapping(value = "/{uid}/members", method = RequestMethod.GET)
     public String getMembers( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
@@ -87,6 +93,45 @@ public class DataElementGroupController
         }
 
         metaData.setDataElements( dataElements );
+
+        if ( options.hasLinks() )
+        {
+            WebUtils.generateLinks( metaData );
+        }
+
+        model.addAttribute( "model", metaData );
+        model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
+
+        return StringUtils.uncapitalize( getEntitySimpleName() );
+    }
+
+    @RequestMapping(value = "/{uid}/operands", method = RequestMethod.GET)
+    public String getOperands( @PathVariable("uid") String uid, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        DataElementGroup dataElementGroup = getEntity( uid );
+
+        if ( dataElementGroup == null )
+        {
+            ContextUtils.notFoundResponse( response, "DataElementGroup not found for uid: " + uid );
+            return null;
+        }
+
+        WebMetaData metaData = new WebMetaData();
+        List<DataElementOperand> dataElementOperands = Lists.newArrayList(
+            dataElementOperandService.getDataElementOperandByDataElementGroup( dataElementGroup ) );
+
+        metaData.setDataElementOperands( dataElementOperands );
+
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), dataElementOperands.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            dataElementOperands = PagerUtils.pageCollection( dataElementOperands, pager );
+        }
+
+        metaData.setDataElementOperands( dataElementOperands );
 
         if ( options.hasLinks() )
         {
