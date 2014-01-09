@@ -149,9 +149,8 @@ public class DataElementGroupController
     }
 
     @RequestMapping( value = "/{uid}/operands", method = RequestMethod.GET )
-    public String getOperands( @PathVariable( "uid" ) String uid, @PathVariable( "q" ) String q,
-        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
-        HttpServletResponse response ) throws Exception
+    public String getOperands( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         DataElementGroup dataElementGroup = getEntity( uid );
