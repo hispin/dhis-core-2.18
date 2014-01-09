@@ -59,6 +59,7 @@ public class ProgramAttributeDeletionHandler
         while ( iterator.hasNext() )
         {
             ProgramPatientAttribute attribute = iterator.next();
+            iterator.remove();
             programAttributeService.deleteProgramPatientAttribute( attribute );
         }
     }
