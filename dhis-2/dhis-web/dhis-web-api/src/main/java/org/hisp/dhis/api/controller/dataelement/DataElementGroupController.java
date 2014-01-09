@@ -148,8 +148,47 @@ public class DataElementGroupController
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    @RequestMapping( value = "/{uid}/operands/query/{q}", method = RequestMethod.GET )
+    @RequestMapping( value = "/{uid}/operands", method = RequestMethod.GET )
     public String getOperands( @PathVariable( "uid" ) String uid, @PathVariable( "q" ) String q,
+        @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
+        HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        DataElementGroup dataElementGroup = getEntity( uid );
+
+        if ( dataElementGroup == null )
+        {
+            ContextUtils.notFoundResponse( response, "DataElementGroup not found for uid: " + uid );
+            return null;
+        }
+
+        WebMetaData metaData = new WebMetaData();
+        List<DataElementOperand> dataElementOperands = Lists.newArrayList( dataElementOperandService.getDataElementOperandByDataElementGroup( dataElementGroup ) );
+
+        metaData.setDataElementOperands( dataElementOperands );
+
+        if ( options.hasPaging() )
+        {
+            Pager pager = new Pager( options.getPage(), dataElementOperands.size(), options.getPageSize() );
+            metaData.setPager( pager );
+            dataElementOperands = PagerUtils.pageCollection( dataElementOperands, pager );
+        }
+
+        metaData.setDataElementOperands( dataElementOperands );
+
+        if ( options.hasLinks() )
+        {
+            WebUtils.generateLinks( metaData );
+        }
+
+        model.addAttribute( "model", metaData );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+
+        return StringUtils.uncapitalize( getEntitySimpleName() );
+    }
+
+    @RequestMapping( value = "/{uid}/operands/query/{q}", method = RequestMethod.GET )
+    public String getOperandsByQuery( @PathVariable( "uid" ) String uid, @PathVariable( "q" ) String q,
         @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request,
         HttpServletResponse response ) throws Exception
     {
