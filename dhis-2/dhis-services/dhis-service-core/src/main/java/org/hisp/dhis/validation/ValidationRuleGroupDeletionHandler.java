@@ -34,7 +34,6 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class ValidationRuleGroupDeletionHandler
     extends DeletionHandler
@@ -67,7 +66,7 @@ public class ValidationRuleGroupDeletionHandler
         while ( iterator.hasNext() )
         {
             ValidationRuleGroup group = iterator.next();
-            group.getMembers().remove( validationRule );
+            group.removeValidationRule( validationRule );
             validationRuleService.updateValidationRuleGroup( group );
         }
     }
