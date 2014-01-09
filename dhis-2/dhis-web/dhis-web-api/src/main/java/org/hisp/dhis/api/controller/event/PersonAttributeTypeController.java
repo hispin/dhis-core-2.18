@@ -38,7 +38,6 @@ import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,9 +59,6 @@ public class PersonAttributeTypeController
     @Autowired
     private ProgramService programService;
 
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
     @Override
     protected List<PatientAttribute> getEntityList( WebMetaData metaData, WebOptions options )
     {
@@ -83,8 +79,7 @@ public class PersonAttributeTypeController
 
             if ( program != null )
             {
-                entityList = new ArrayList<PatientAttribute>(
-                    programPatientAttributeService.getListPatientAttribute( program ) );
+                entityList = new ArrayList<PatientAttribute>( program.getAttributes() );
             }
         }
 

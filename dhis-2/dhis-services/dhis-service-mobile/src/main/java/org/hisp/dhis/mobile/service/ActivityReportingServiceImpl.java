@@ -83,8 +83,6 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -160,20 +158,10 @@ public class ActivityReportingServiceImpl
 
     private PatientAttributeService patientAttributeService;
 
-    private Collection<PatientIdentifierType> patientIdentifierTypes;
-
-    private Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes;
-
     private Integer patientId;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Setters
@@ -501,7 +489,6 @@ public class ActivityReportingServiceImpl
     {
         if ( isNumber( keyword ) == false )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
             List<Patient> patients = new ArrayList<Patient>();
 
             if ( patients.size() > 1 )
@@ -1313,9 +1300,6 @@ public class ActivityReportingServiceImpl
         }
         else
         {
-
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-            String fullName = enrollmentRelationship.getPersonBName();
             List<Patient> patients = new ArrayList<Patient>();
 
             // remove the own searcher
@@ -1610,22 +1594,18 @@ public class ActivityReportingServiceImpl
 
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
-        patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        Collection<Program> programs = programService.getAllPrograms();
-        for ( Program program : programs )
-        {
-            patientIdentifierTypes.removeAll( programPatientIdentifierTypeService
-                .getListPatientIdentifierType( program ) );
-        }
+        Collection<PatientIdentifierType> patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         return patientIdentifierTypes;
     }
 
     public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts( String programId )
     {
+        Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes = new HashSet<org.hisp.dhis.patient.PatientAttribute>();
+        
         if ( programId != null && !programId.trim().equals( "" ) )
         {
             Program program = programService.getProgram( Integer.parseInt( programId ) );
-            patientAttributes = programPatientAttributeService.getListPatientAttribute( program );
+            patientAttributes = program.getAttributes();
         }
         else
         {
@@ -1637,10 +1617,12 @@ public class ActivityReportingServiceImpl
 
     public Collection<PatientIdentifierType> getIdentifiers( String programId )
     {
+        Collection<PatientIdentifierType> patientIdentifierTypes = new HashSet<PatientIdentifierType>();
+        
         if ( programId != null && !programId.trim().equals( "" ) )
         {
             Program program = programService.getProgram( Integer.parseInt( programId ) );
-            patientIdentifierTypes = programPatientIdentifierTypeService.getListPatientIdentifierType( program );
+            patientIdentifierTypes = program.getIdentifierTypes();
         }
         else
         {

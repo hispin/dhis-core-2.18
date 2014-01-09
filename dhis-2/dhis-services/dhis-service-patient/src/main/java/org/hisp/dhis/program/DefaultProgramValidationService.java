@@ -230,7 +230,7 @@ public class DefaultProgramValidationService
             String expression = validation.getLeftSide().getExpression() + " "
                 + validation.getRightSide().getExpression();
             Matcher matcher = pattern.matcher( expression );
-System.out.println("\n\n===\n expression : " + expression);
+            
             boolean flag = false;
             while ( matcher.find() )
             {
@@ -241,7 +241,7 @@ System.out.println("\n\n===\n expression : " + expression);
                 String[] ids = info[1].split( SEPARATOR_ID );
 
                 int programStageId = Integer.parseInt( ids[0] );
-System.out.println("\n\n === programStageId "  + programStageId );
+                
                 if ( programStageId == programStage.getId() )
                 {
                     flag = true;

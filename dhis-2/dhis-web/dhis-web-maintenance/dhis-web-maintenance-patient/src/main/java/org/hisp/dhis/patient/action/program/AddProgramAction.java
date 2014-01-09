@@ -41,15 +41,12 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramPatientAttribute;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.program.ProgramPatientIdentifierType;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -109,16 +106,6 @@ public class AddProgramAction
     {
         this.relationshipTypeService = relationshipTypeService;
     }
-
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    public void setProgramPatientAttributeService( ProgramPatientAttributeService programPatientAttributeService )
-    {
-        this.programPatientAttributeService = programPatientAttributeService;
-    }
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -312,20 +299,21 @@ public class AddProgramAction
 
             if ( ids[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
-                    .parseInt( ids[1] ) );
-                ProgramPatientIdentifierType programPatientIdentifierType = new ProgramPatientIdentifierType( program,
-                    identifierType, personDisplayNames.get( index ) , index + 1);
-                programPatientIdentifierTypeService.addProgramPatientIdentifierType( programPatientIdentifierType );
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer.parseInt( ids[1] ) );
+                
+                ProgramPatientIdentifierType programPatientIdentifierType = new ProgramPatientIdentifierType( 
+                    identifierType, index + 1, personDisplayNames.get( index ) );
+                
+                program.getProgramPatientIdentifierTypes().add( programPatientIdentifierType );
             }
             else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
             {
-                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
-                    .parseInt( ids[1] ) );
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer.parseInt( ids[1] ) );
 
-                ProgramPatientAttribute programPatientAttribute = new ProgramPatientAttribute( program,
-                    patientAttribute, personDisplayNames.get( index ), index + 1 );
-                programPatientAttributeService.addProgramPatientAttribute( programPatientAttribute );
+                ProgramPatientAttribute programPatientAttribute = new ProgramPatientAttribute( 
+                    patientAttribute, index + 1, personDisplayNames.get( index ) );
+                
+                program.getProgramPatientAttributes().add( programPatientAttribute );
             }
 
             index++;

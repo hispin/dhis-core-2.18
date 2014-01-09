@@ -28,6 +28,8 @@ package org.hisp.dhis.analytics.table;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.removeLast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,16 +46,12 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.system.util.TextUtils.removeLast;
 
 /**
  * @author Lars Helge Overland
@@ -63,12 +61,6 @@ public class JdbcEventAnalyticsTableManager
 {
     @Autowired
     private ProgramService programService;
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Implementation
@@ -231,10 +223,7 @@ public class JdbcEventAnalyticsTableManager
             columns.add( col );
         }
 
-        Collection<PatientAttribute> attributes = programPatientAttributeService.getListPatientAttribute( table
-            .getProgram() );
-
-        for ( PatientAttribute attribute : attributes )
+        for ( PatientAttribute attribute : table.getProgram().getAttributes() )
         {
             String dataType = attribute.isNumericType() ? dbl : text;
             String dataClause = attribute.isNumericType() ? numericClause : "";
@@ -247,8 +236,7 @@ public class JdbcEventAnalyticsTableManager
             columns.add( col );
         }
 
-        for ( PatientIdentifierType identifierType : programPatientIdentifierTypeService
-            .getListPatientIdentifierType( table.getProgram() ) )
+        for ( PatientIdentifierType identifierType : table.getProgram().getIdentifierTypes() )
         {
             String sql = "(select identifier from patientidentifier where patientid=pi.patientid and "
                 + "patientidentifiertypeid=" + identifierType.getId() + ") as " + quote( identifierType.getUid() );

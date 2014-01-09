@@ -29,9 +29,10 @@ package org.hisp.dhis.patient;
  */
 
 import java.util.Collection;
+import java.util.Iterator;
 
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,9 +53,13 @@ public class DefaultPatientAttributeService
     {
         this.patientAttributeStore = patientAttributeStore;
     }
+    
+    private ProgramService programService;
 
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -127,11 +132,24 @@ public class DefaultPatientAttributeService
 
     public Collection<PatientAttribute> getPatientAttributesWithoutProgram()
     {
-        Collection<PatientAttribute> programPatientAttributes = programPatientAttributeService.getPatientAttributes();
-
         Collection<PatientAttribute> patientAttributes = patientAttributeStore.getAll();
-        patientAttributes.removeAll( programPatientAttributes );
+        Iterator<PatientAttribute> iterator = patientAttributes.iterator();
+        
+        Collection<Program> programs = programService.getAllPrograms();
 
+        for ( Program program : programs )
+        {
+            while ( iterator.hasNext() )
+            {
+                PatientAttribute attribute = iterator.next();
+                
+                if ( program.getAttributes().contains( attribute ) )
+                {
+                    iterator.remove();
+                }
+            }
+        }
+        
         return patientAttributes;
     }
     

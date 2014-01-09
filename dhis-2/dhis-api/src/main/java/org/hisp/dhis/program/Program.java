@@ -28,6 +28,7 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +43,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -175,6 +178,30 @@ public class Program
         }
 
         return elements;
+    }
+    
+    public List<PatientIdentifierType> getIdentifierTypes()
+    {
+        List<PatientIdentifierType> types = new ArrayList<PatientIdentifierType>();
+        
+        for ( ProgramPatientIdentifierType type : programPatientIdentifierTypes )
+        {
+            types.add( type.getPatientIdentifierType() );
+        }
+        
+        return types;
+    }
+    
+    public List<PatientAttribute> getAttributes()
+    {
+        List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+        
+        for ( ProgramPatientAttribute attribute : programPatientAttributes )
+        {
+            attributes.add( attribute.getPatientAttribute() );
+        }
+        
+        return attributes;
     }
 
     public ProgramStage getProgramStageByStage( int stage )

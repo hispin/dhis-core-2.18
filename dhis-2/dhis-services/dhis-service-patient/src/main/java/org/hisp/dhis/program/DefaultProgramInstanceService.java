@@ -28,6 +28,15 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
@@ -54,17 +63,7 @@ import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Abyot Asalefew
@@ -139,16 +138,6 @@ public class DefaultProgramInstanceService
     {
         this.programStageInstanceService = programStageInstanceService;
     }
-
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    public void setProgramPatientAttributeService( ProgramPatientAttributeService programPatientAttributeService )
-    {
-        this.programPatientAttributeService = programPatientAttributeService;
-    }
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -303,7 +292,7 @@ public class DefaultProgramInstanceService
 
         for ( Program program : programs )
         {
-            Collection<PatientAttribute> atttributes = programPatientAttributeService.getListPatientAttribute( program );
+            List<PatientAttribute> atttributes = program.getAttributes();
             while ( iterAttribute.hasNext() )
             {
                 PatientAttributeValue attributeValue = iterAttribute.next();
@@ -336,8 +325,8 @@ public class DefaultProgramInstanceService
 
         for ( Program program : programs )
         {
-            Collection<PatientIdentifierType> identifierTypes = programPatientIdentifierTypeService
-                .getListPatientIdentifierType( program );
+            List<PatientIdentifierType> identifierTypes = program.getIdentifierTypes();
+            
             while ( iterIdentifier.hasNext() )
             {
                 PatientIdentifier identifier = iterIdentifier.next();
@@ -418,8 +407,7 @@ public class DefaultProgramInstanceService
 
         Patient patient = programInstance.getPatient();
 
-        Collection<PatientIdentifierType> identifierTypes = programPatientIdentifierTypeService
-            .getListPatientIdentifierType( programInstance.getProgram() );
+        List<PatientIdentifierType> identifierTypes = programInstance.getProgram().getIdentifierTypes();
 
         Collection<PatientIdentifier> identifiers = patient.getIdentifiers();
 
@@ -448,13 +436,11 @@ public class DefaultProgramInstanceService
 
         // Get patient-attribute-values which belong to the program
 
-        Collection<PatientAttribute> atttributes = programPatientAttributeService
-            .getListPatientAttribute( programInstance.getProgram() );
+        Collection<PatientAttribute> atttributes = programInstance.getProgram().getAttributes();
 
         for ( PatientAttribute attrtibute : atttributes )
         {
-            PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
-                attrtibute );
+            PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, attrtibute );
             if ( attributeValue != null )
             {
                 grid.addRow();

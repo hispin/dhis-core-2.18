@@ -38,7 +38,6 @@ import static org.hisp.dhis.organisationunit.OrganisationUnit.getParentGraphMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -72,8 +71,6 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
-import org.hisp.dhis.program.ProgramPatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -135,12 +132,6 @@ public class DefaultEventAnalyticsService
 
     @Autowired
     private AnalyticsService analyticsService;
-
-    @Autowired
-    private ProgramPatientAttributeService programPatientAttributeService;
-
-    @Autowired
-    private ProgramPatientIdentifierTypeService programPatientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // EventAnalyticsService implementation
@@ -522,15 +513,14 @@ public class DefaultEventAnalyticsService
 
         PatientAttribute at = attributeService.getPatientAttribute( item );
 
-        Collection<PatientAttribute> attributes = programPatientAttributeService.getListPatientAttribute( program );
-        if ( at != null && attributes.contains( at ) )
+        if ( at != null && program.getAttributes().contains( at ) )
         {
             return new QueryItem( at, operator, filter, at.isNumericType() );
         }
 
         PatientIdentifierType it = identifierTypeService.getPatientIdentifierType( item );
 
-        if ( it != null && programPatientIdentifierTypeService.getListPatientIdentifierType( program ).contains( it ) )
+        if ( it != null && program.getIdentifierTypes().contains( it ) )
         {
             return new QueryItem( it, operator, filter, false );
         }
