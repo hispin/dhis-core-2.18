@@ -52,7 +52,7 @@ public class ProgramDeletionHandler
     {
         this.programService = programService;
     }
-
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------

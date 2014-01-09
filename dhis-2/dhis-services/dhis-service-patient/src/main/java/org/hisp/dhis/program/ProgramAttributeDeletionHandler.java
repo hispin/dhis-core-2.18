@@ -30,9 +30,6 @@ package org.hisp.dhis.program;
 
 import java.util.Iterator;
 
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramPatientAttribute;
-import org.hisp.dhis.program.ProgramPatientAttributeService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 public class ProgramAttributeDeletionHandler
@@ -43,14 +40,14 @@ public class ProgramAttributeDeletionHandler
     {
         return ProgramPatientAttribute.class.getSimpleName();
     }
-    
+
     private ProgramPatientAttributeService programAttributeService;
     
     public void setProgramAttributeService( ProgramPatientAttributeService programAttributeService )
     {
         this.programAttributeService = programAttributeService;
     }
-
+    
     @Override
     public void deleteProgram( Program program )
     {

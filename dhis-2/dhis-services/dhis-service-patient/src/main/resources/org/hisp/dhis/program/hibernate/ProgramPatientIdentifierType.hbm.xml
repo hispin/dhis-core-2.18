@@ -4,8 +4,7 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="org.hisp.dhis.program.ProgramPatientIdentifierType"
-		table="program_identifierTypes">
+	<class name="org.hisp.dhis.program.ProgramPatientIdentifierType" table="program_identifiertypes">
 
 		<composite-id>
 			<key-many-to-one name="program" class="org.hisp.dhis.program.Program"
