@@ -238,8 +238,21 @@ public class GetPatientAction
                 Collection<Program> programs = programService.getAllPrograms();
                 for ( Program p : programs )
                 {
-                    identifierTypes.removeAll( p.getIdentifierTypes() );
-                    attributes.removeAll( p.getAttributes() );
+                    for ( PatientIdentifierType identifierType : p.getIdentifierTypes() )
+                    {
+                        if ( !identifierType.getDisplayInListNoProgram() )
+                        {
+                            identifierTypes.remove( identifierType ); //TODO bad
+                        }
+                    }
+                    
+                    for ( PatientAttribute attribute : p.getAttributes() )
+                    {
+                        if ( !attribute.getDisplayInListNoProgram() )
+                        {
+                            attributes.remove( attribute );
+                        }
+                    }
                 }
             }
             else
