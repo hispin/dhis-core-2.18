@@ -69,7 +69,7 @@ public class OrganisationUnitGroupDeletionHandler
         while ( iterator.hasNext() )
         {
             OrganisationUnitGroup group = iterator.next();
-            group.getMembers().remove( unit );
+            group.removeOrganisationUnit( unit );
             organisationUnitGroupService.updateOrganisationUnitGroup( group );
         }
     }
@@ -82,7 +82,7 @@ public class OrganisationUnitGroupDeletionHandler
         while ( iterator.hasNext() )
         {
             OrganisationUnitGroup group = iterator.next();
-            group.getDataSets().remove( dataSet );
+            group.removeDataSet( dataSet );
             organisationUnitGroupService.updateOrganisationUnitGroup( group );
         }
     }

@@ -67,7 +67,7 @@ public class IndicatorGroupDeletionHandler
         while ( iterator.hasNext() )
         {
             IndicatorGroup group = iterator.next();
-            group.getMembers().remove( indicator );
+            group.removeIndicator( indicator );
             indicatorService.updateIndicatorGroup( group );
         }
     }

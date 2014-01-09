@@ -68,20 +68,26 @@ public class DataSetDeletionHandler
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
+        Iterator<DataSet> iterator = dataElement.getDataSets().iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            DataSet dataSet = iterator.next();
+            dataSet.removeDataElement( dataElement );
+            dataSetService.updateDataSet( dataSet );
+        }
+        
         for ( DataSet dataSet : dataSetService.getAllDataSets() )
         {
             boolean update = false;
-            
-            if ( dataSet.getDataElements().remove( dataElement ) )
-            {
-                update = true;
-            }
             
             Iterator<DataElementOperand> operands = dataSet.getCompulsoryDataElementOperands().iterator();
             
             while ( operands.hasNext() )
             {
-                if ( operands.next().getDataElement().equals( dataElement ) )
+                DataElementOperand operand = operands.next();
+                
+                if ( operand.getDataElement().equals( dataElement ) )
                 {
                     operands.remove();
                     update = true;
@@ -103,7 +109,7 @@ public class DataSetDeletionHandler
         while ( iterator.hasNext() )
         {
             DataSet dataSet = iterator.next();
-            dataSet.getIndicators().remove( indicator );
+            dataSet.removeIndicator( indicator );
             dataSetService.updateDataSet( dataSet );
         }
     }
@@ -128,7 +134,7 @@ public class DataSetDeletionHandler
         while ( iterator.hasNext() )
         {
             DataSet dataSet = iterator.next();
-            dataSet.getSources().remove( unit );
+            dataSet.removeOrganisationUnit( unit );
             dataSetService.updateDataSet( dataSet );
         }
     }
@@ -141,7 +147,7 @@ public class DataSetDeletionHandler
         while ( iterator.hasNext() )
         {
             DataSet dataSet = iterator.next();
-            dataSet.getOrganisationUnitGroups().remove( group );
+            dataSet.removeOrganisationUnitGroup( group );
             dataSetService.updateDataSet( dataSet );
         }
     }

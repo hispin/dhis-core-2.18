@@ -270,10 +270,10 @@ public class DataSet
         organisationUnit.getDataSets().add( this );
     }
 
-    public void removeOrganisationUnit( OrganisationUnit organisationUnit )
+    public boolean removeOrganisationUnit( OrganisationUnit organisationUnit )
     {
         sources.remove( organisationUnit );
-        organisationUnit.getDataSets().remove( this );
+        return organisationUnit.getDataSets().remove( this );
     }
 
     public void removeAllOrganisationUnits()
@@ -308,10 +308,10 @@ public class DataSet
         group.getDataSets().add( this );
     }
 
-    public void removeOrganisationUnitGroup( OrganisationUnitGroup group )
+    public boolean removeOrganisationUnitGroup( OrganisationUnitGroup group )
     {
         organisationUnitGroups.remove( group );
-        group.getDataSets().remove( this );
+        return group.getDataSets().remove( this );
     }
 
     public void removeAllOrganisationUnitGroups()
@@ -346,10 +346,10 @@ public class DataSet
         dataElement.getDataSets().add( this );
     }
 
-    public void removeDataElement( DataElement dataElement )
+    public boolean removeDataElement( DataElement dataElement )
     {
         dataElements.remove( dataElement );
-        dataElement.getDataSets().remove( dataElement );
+        return dataElement.getDataSets().remove( dataElement );
     }
 
     public void updateDataElements( Set<DataElement> updates )
@@ -374,10 +374,10 @@ public class DataSet
         indicator.getDataSets().add( this );
     }
 
-    public void removeIndicator( Indicator indicator )
+    public boolean removeIndicator( Indicator indicator )
     {
         indicators.remove( indicator );
-        indicator.getDataSets().remove( this );
+        return indicator.getDataSets().remove( this );
     }
 
     public void addCompulsoryDataElementOperand( DataElementOperand dataElementOperand )
