@@ -41,9 +41,6 @@ import org.hisp.dhis.program.ProgramPatientAttributeStore;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ HibernateProgramPatientAttributeStore.java Jan 7, 2014 9:49:20 AM
- *          $
  */
 public class HibernateProgramPatientAttributeStore
     implements ProgramPatientAttributeStore
