@@ -28,7 +28,7 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientcomment.PatientComment;
@@ -121,9 +121,12 @@ public class ProgramInstanceDeletionHandler
     @Override
     public void deleteProgram( Program program )
     {
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( program );
-        for ( ProgramInstance programInstance : programInstances )
+        Iterator<ProgramInstance> iterator = program.getProgramInstances().iterator();
+        
+        while ( iterator.hasNext() )
         {
+            ProgramInstance programInstance = iterator.next();
+            iterator.remove();
             programInstanceService.deleteProgramInstance( programInstance );
         }
     }
