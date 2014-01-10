@@ -145,7 +145,7 @@ public class RunAggregationQueryAction
             System.out.println( key + " -- " + aggregationResultMap.get(  key ) );
         }
         
-        //importStatus = cceiAggregationService.importData( aggregationResultMap, period );
+        importStatus = cceiAggregationService.importData( aggregationResultMap, period );
 
         return SUCCESS;
     }
