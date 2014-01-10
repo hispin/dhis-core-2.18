@@ -8,7 +8,7 @@ $(function() {
 });
 </script>
 
-<h3>$i18n.getString( 'patient_aggregation_query_builder_management' ) #openHelp( "patient_aggregation_query_builder" )</h3>
+<h3>$i18n.getString( 'ccei_aggregation_query_builder_management' ) #openHelp( "patient_aggregation_query_builder" )</h3>
 
 <div id="contextMenu" class="contextMenu">
   <ul id="contextMenuItems" class="contextMenuItems">

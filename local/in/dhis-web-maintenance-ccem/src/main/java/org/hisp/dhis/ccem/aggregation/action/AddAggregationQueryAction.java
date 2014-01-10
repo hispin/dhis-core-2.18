@@ -88,14 +88,24 @@ public class AddAggregationQueryAction
         throws Exception
     {
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
+        
+        /*
+        if( name == null &&  name.equalsIgnoreCase( "" ))
+        {
+            name = dataElement.getName();
+        }
+        
+        */
+        
         /**
          * TODO support for category option combo
          */
         if ( aggType.equals( Lookup.CCEI_AGG_TYPE_STORAGE_CAPACITY ) )
         {
-            CaseAggregationCondition condition = new CaseAggregationCondition( name, aggType, "NONE", dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
-
+            //CaseAggregationCondition condition = new CaseAggregationCondition( name, aggType, "NONE", dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+            
+            CaseAggregationCondition condition = new CaseAggregationCondition( dataElement.getName(), aggType, "NONE", dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+            
             aggregationConditionService.addCaseAggregationCondition( condition );    
         }
         else if ( aggType.equals( Lookup.CCEI_AGG_TYPE_REF_WORKING_STATUS_BY_MODEL ) )
@@ -125,7 +135,9 @@ public class AddAggregationQueryAction
             
             String query = cceiAggregationService.getQueryForRefrigeratorWorkingStatus( equipmentTypeId, modelTypeAttributeId, modelName, workingStatus );
             
-            CaseAggregationCondition condition = new CaseAggregationCondition( name, aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+            //CaseAggregationCondition condition = new CaseAggregationCondition( name, aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+            
+            CaseAggregationCondition condition = new CaseAggregationCondition( dataElement.getName(), aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
             
             aggregationConditionService.addCaseAggregationCondition( condition );
         }
@@ -147,7 +159,9 @@ public class AddAggregationQueryAction
 
             String query = cceiAggregationService.getQueryForRefrigeratorUtilization( equipmentTypeId, modelTypeAttributeId, modelName,  utilization );
             
-            CaseAggregationCondition condition = new CaseAggregationCondition( name, aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+            //CaseAggregationCondition condition = new CaseAggregationCondition( name, aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+            
+            CaseAggregationCondition condition = new CaseAggregationCondition( dataElement.getName(), aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
             
             aggregationConditionService.addCaseAggregationCondition( condition );
         }
@@ -178,7 +192,9 @@ public class AddAggregationQueryAction
             
             String query = cceiAggregationService.getQueryForRefrigeratorWorkingStatus( equipmentTypeId, modelTypeAttributeId, modelName, workingStatus );
             
-            CaseAggregationCondition condition = new CaseAggregationCondition( name, aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+            //CaseAggregationCondition condition = new CaseAggregationCondition( name, aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+            
+            CaseAggregationCondition condition = new CaseAggregationCondition( dataElement.getName(), aggType, query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
             
             aggregationConditionService.addCaseAggregationCondition( condition );
         }

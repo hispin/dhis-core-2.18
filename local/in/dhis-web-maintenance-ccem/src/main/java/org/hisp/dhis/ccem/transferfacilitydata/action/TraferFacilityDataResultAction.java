@@ -138,8 +138,6 @@ public class TraferFacilityDataResultAction implements Action
     // Action implementation
     // -------------------------------------------------------------------------
     
- 
-
     public String execute() throws Exception
     {
         
@@ -169,7 +167,7 @@ public class TraferFacilityDataResultAction implements Action
         //orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( organisationUnit1.getId() ) );
         
         // Data set and sections Information
-		List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetByShortName( "FMD" ) );
+	List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetByShortName( "FMD" ) );
         dataSet = dataSets.get( 0 );
         
         orgUnitList.retainAll( dataSet.getSources() );
