@@ -4,11 +4,11 @@ function getParameters()
 	if($("#aggType").val() != '-1')
 	{
 		$("#loadParameters").load("loadAggregationParam.action", 
-            				{
-            					aggTypeId : $('#aggType').val()
-            				}
-            				, function( ){            										
-        				});
+		{
+			aggTypeId : $('#aggType').val()
+		}
+		, function( ){            										
+	});
 	}
 }
 </script>
@@ -22,14 +22,14 @@ function getParameters()
     </thead>
 	
     <tbody>
-    	<tr>
+    	<tr style="display:none">
         	<td style="width:40%"><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         	<td style="width:60%"><input type="text" id="name" name="name" class="{validate:{required:true,minlength:2}}" style='width:100%; margin-bottom:-5px;'></td>
     	</tr>    
     	<tr>
 			<td style="width:40%"><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td style="width:60%">			
-				<select style='width:100%; margin-bottom:-5px;' id="dataElementId" name="dataElementId" >
+				<select style='width:130%; margin-bottom:-5px;' id="dataElementId" name="dataElementId" >
 					#foreach( $dataElement in $dataElementList )
 						<option value="$dataElement.id">$dataElement.name</option>
 					#end
@@ -39,7 +39,7 @@ function getParameters()
 		<tr>
 			<td style="width:40%"><label for="operator">$i18n.getString( "type" )</label></td>
 			<td style="width:60%">			
-				<select style='width:100%; margin-bottom:-5px;' id="aggType" name="aggType" onchange="getParameters()">
+				<select style='width:130%; margin-bottom:-5px;' id="aggType" name="aggType" onchange="getParameters()">
                     <option value="-1" >Please Select</option>
 					#foreach( $lookup in $lookups )
 						<option value="$lookup.name">$lookup.value</option>
@@ -58,7 +58,7 @@ function getParameters()
 
 <p>	
 	<input type="submit" value="$i18n.getString( 'add' )" />	
-	<input type="button" value="$i18n.getString( 'cancel' )" onClick="cancelOnClick();" />
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='aggregationQueryList.action'" />
 </p>
 
 </form>
