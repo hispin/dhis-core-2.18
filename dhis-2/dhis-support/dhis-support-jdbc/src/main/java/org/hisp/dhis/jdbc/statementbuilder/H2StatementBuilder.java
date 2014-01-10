@@ -206,4 +206,10 @@ public class H2StatementBuilder
         
         return sqlsb.toString();
     }
+
+    @Override
+    public String getNumberOfColumnsInPrimaryKey( String table )
+    {
+        return "select 0 as c"; //TODO fix
+    }
 }
