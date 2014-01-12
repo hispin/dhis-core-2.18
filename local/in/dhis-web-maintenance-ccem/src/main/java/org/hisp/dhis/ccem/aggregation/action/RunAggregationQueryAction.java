@@ -136,7 +136,15 @@ public class RunAggregationQueryAction
             {
                 aggregationResultMap.putAll( cceiAggregationService.calculateRefrigeratorUtilization( period, dataElement, orgUnitList, condition.getAggregationExpression() ) );
             }
-
+            else if( condition.getOperator().equals( Lookup.CCEI_NO_OF_REF_WITH_HIGHTEMP_ALARM) || condition.getOperator().equals( Lookup.CCEI_NO_OF_REF_WITH_LOWTEMP_ALARM) )
+            {
+            	aggregationResultMap.putAll( cceiAggregationService.calculateRefrigeratorCountByTemperatureAlarm(period, dataElement, orgUnitList, condition.getAggregationExpression() ) );
+            }
+            else if( condition.getOperator().equals( Lookup.CCEI_FACILITY_WITH_HIGHTEMP_ALARM) || condition.getOperator().equals( Lookup.CCEI_FACILITY_WITH_LOWTEMP_ALARM ) || condition.getOperator().equals( Lookup.CCEI_FACILITY_WITH_TEMP_ALARM ) )
+            {
+            	aggregationResultMap.putAll( cceiAggregationService.calculateRefrigeratorTemperatureAlarmByFacilty(period, dataElement, orgUnitList, condition.getAggregationExpression() ) );
+            }
+            
             dataElements.add( dataElement );
         }
 

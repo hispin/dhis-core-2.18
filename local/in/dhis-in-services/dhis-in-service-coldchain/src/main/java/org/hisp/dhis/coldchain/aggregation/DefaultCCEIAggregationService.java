@@ -83,7 +83,99 @@ public class DefaultCCEIAggregationService
     // -------------------------------------------------------------------------
     //
     // -------------------------------------------------------------------------
-    
+
+    public String getQueryForRefrigeratorCountByTemperatureAlarm( Integer equipmentTypeId, Integer dataElementId )
+    {
+        String query = "SELECT e.organisationunitid, COUNT(*) FROM equipmentdatavalue edv " +
+        					" INNER JOIN equipment e ON edv.equipmentid = e.equipmentid " +  
+        					" WHERE " +  
+        						" e.organisationunitid IN ( "+ Lookup.ORGUNITID_BY_COMMA +") AND " + 
+        						" e.equipmenttypeid = "+ equipmentTypeId +" AND " + 
+        						" edv.periodid = " + Lookup.PERIODID + " AND " + 
+        						" edv.dataelementid = " + dataElementId + " AND " +  
+        						" CAST( edv.value AS NUMERIC) >= 1 " +
+        					"GROUP BY e.organisationunitid";  
+        return query;
+    }
+
+    public Map<String, Integer> calculateRefrigeratorCountByTemperatureAlarm( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query )
+    {
+        Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
+        
+        try
+        {
+            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
+            String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+
+            query = query.replace( Lookup.ORGUNITID_BY_COMMA, orgUnitIdsByComma );
+            
+            query = query.replace( Lookup.PERIODID, period.getId()+"" );
+            
+            System.out.println( query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer countValue = rs.getInt( 2 );
+                aggregationResultMap.put( orgUnitId+":"+dataElement.getId(), countValue );
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("Exception :"+ e.getMessage() );
+        }
+        
+        return aggregationResultMap;
+    }
+
+    public String getQueryForRefrigeratorTemperatureAlarmByFacilty( Integer equipmentTypeId, String dataElementIds )
+    {
+        String query = "SELECT e.organisationunitid, SUM( CAST( edv.value as numeric) ) FROM equipmentdatavalue edv " +
+        					" INNER JOIN equipment e ON edv.equipmentid = e.equipmentid " + 
+        					" WHERE " + 
+        						" e.organisationunitid IN ( "+ Lookup.ORGUNITID_BY_COMMA +") AND " + 
+        						" e.equipmenttypeid = "+ equipmentTypeId +" AND " + 
+        						" edv.periodid = " + Lookup.PERIODID + " AND " + 
+        						" edv.dataelementid in (" + dataElementIds +" ) " +
+        					" GROUP BY e.organisationunitid";
+        return query;
+    }
+
+    public Map<String, Integer> calculateRefrigeratorTemperatureAlarmByFacilty( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query )
+    {
+        Map<String, Integer> aggregationResultMap = new HashMap<String, Integer>();
+        
+        try
+        {
+            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnits ) );
+            String orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+
+            query = query.replace( Lookup.ORGUNITID_BY_COMMA, orgUnitIdsByComma );
+            
+            query = query.replace( Lookup.PERIODID, period.getId()+"" );
+            
+            System.out.println( query );
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer sumValue = rs.getInt( 2 );
+                if( sumValue >= 1 )
+                {
+                	aggregationResultMap.put( orgUnitId+":"+dataElement.getId(), 1 );
+                }
+            }
+        }
+        catch( Exception e )
+        {
+            System.out.println("Exception :"+ e.getMessage() );
+        }
+        
+        return aggregationResultMap;
+    }
+
     public String getQueryForRefrigeratorWorkingStatus( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String workingStatus )
     {
         String query = "SELECT equipment.organisationunitid,COUNT(*) FROM modelattributevalue " +

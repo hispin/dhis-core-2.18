@@ -12,6 +12,10 @@ public interface CCEIAggregationService
 {
     String ID = CCEIAggregationService.class.getName();
 
+    String getQueryForRefrigeratorCountByTemperatureAlarm( Integer equipmentTypeId, Integer dataElementId );
+    
+    String getQueryForRefrigeratorTemperatureAlarmByFacilty( Integer equipmentTypeId, String dataElementIds );
+    
     String getQueryForRefrigeratorWorkingStatus( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String workingStatus );
     
     String getQueryForRefrigeratorUtilization( Integer equipmentTypeId, Integer modelTypeAttributeId, String modelName, String utilization );
@@ -21,6 +25,10 @@ public interface CCEIAggregationService
     Map<String, Integer> calculateRefrigeratorWorkingStatus( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query );
 
     Map<String, Integer> calculateRefrigeratorUtilization( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query );
+    
+    Map<String, Integer> calculateRefrigeratorTemperatureAlarmByFacilty( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query );
+    
+    Map<String, Integer> calculateRefrigeratorCountByTemperatureAlarm( Period period, DataElement dataElement, Set<OrganisationUnit> orgUnits, String query );
     
     String importData( Map<String, Integer> aggregationResultMap, Period period );
 }
