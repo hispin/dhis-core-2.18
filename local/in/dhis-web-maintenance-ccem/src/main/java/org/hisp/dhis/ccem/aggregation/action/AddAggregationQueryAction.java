@@ -198,7 +198,35 @@ public class AddAggregationQueryAction
             
             aggregationConditionService.addCaseAggregationCondition( condition );
         }
+        else if( aggType.equals( Lookup.CCEI_AGG_TYPE_REF_TEMP_ALARMS ) )
+        {
+        	HttpServletRequest request = ServletActionContext.getRequest();
+        	
+        	String refTempAlarm = request.getParameter( Lookup.CCEI_AGG_TYPE_REF_TEMP_ALARMS );
 
+        	Lookup lookup = lookupService.getLookupByName( Lookup.CCEI_REF_EQUIPMENTTYPE_ID );
+            
+            Integer equipmentTypeId = Integer.parseInt( lookup.getValue() );
+
+        	lookup = lookupService.getLookupByName( refTempAlarm );
+        	
+        	if( lookup.getName().equals( Lookup.CCEI_NO_OF_REF_WITH_HIGHTEMP_ALARM) || lookup.getName().equals( Lookup.CCEI_NO_OF_REF_WITH_LOWTEMP_ALARM) )
+        	{
+        		String query = cceiAggregationService.getQueryForRefrigeratorCountByTemperatureAlarm( equipmentTypeId, Integer.parseInt(lookup.getValue() ) );
+        		
+        		CaseAggregationCondition condition = new CaseAggregationCondition( dataElement.getName(), lookup.getName(), query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+        		
+        		aggregationConditionService.addCaseAggregationCondition( condition );
+        	}
+        	else if( lookup.getName().equals( Lookup.CCEI_FACILITY_WITH_HIGHTEMP_ALARM) || lookup.getName().equals( Lookup.CCEI_FACILITY_WITH_LOWTEMP_ALARM ) || lookup.getName().equals( Lookup.CCEI_FACILITY_WITH_TEMP_ALARM ) )
+        	{
+        		String query = cceiAggregationService.getQueryForRefrigeratorTemperatureAlarmByFacilty( equipmentTypeId, lookup.getValue() );
+        		
+        		CaseAggregationCondition condition = new CaseAggregationCondition( dataElement.getName(), lookup.getName(), query, dataElement, dataElementCategoryService.getDefaultDataElementCategoryOptionCombo() );
+        		
+        		aggregationConditionService.addCaseAggregationCondition( condition );
+        	}
+        }
 
         return SUCCESS;
     }

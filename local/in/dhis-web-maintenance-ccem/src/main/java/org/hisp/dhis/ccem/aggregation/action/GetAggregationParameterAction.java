@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttribute;
 import org.hisp.dhis.coldchain.equipment.EquipmentTypeAttributeService;
 import org.hisp.dhis.coldchain.model.ModelAttributeValue;
 import org.hisp.dhis.coldchain.model.ModelAttributeValueService;
 import org.hisp.dhis.coldchain.model.ModelTypeAttribute;
 import org.hisp.dhis.coldchain.model.ModelTypeAttributeService;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.lookup.Lookup;
 import org.hisp.dhis.lookup.LookupService;
 import org.hisp.dhis.option.OptionService;
@@ -59,7 +60,7 @@ public class GetAggregationParameterAction
         this.equipmentTypeAttributeService = equipmentTypeAttributeService;
     }
 
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
     // Input/ Output
     // -------------------------------------------------------------------------
     private String aggTypeId;
@@ -166,7 +167,18 @@ public class GetAggregationParameterAction
             }
             */
         }
+        else if( aggTypeId.equals( Lookup.CCEI_AGG_TYPE_REF_TEMP_ALARMS ) )
+        {
+            List<String> lookUpParamOptions = new ArrayList<String>();
 
+            lookUpParamOptions.add( Lookup.CCEI_NO_OF_REF_WITH_HIGHTEMP_ALARM );
+            lookUpParamOptions.add( Lookup.CCEI_NO_OF_REF_WITH_LOWTEMP_ALARM );
+            lookUpParamOptions.add( Lookup.CCEI_FACILITY_WITH_HIGHTEMP_ALARM );
+            lookUpParamOptions.add( Lookup.CCEI_FACILITY_WITH_LOWTEMP_ALARM );
+            lookUpParamOptions.add( Lookup.CCEI_FACILITY_WITH_TEMP_ALARM );
+            
+            lookUpParamMap.put( Lookup.CCEI_AGG_TYPE_REF_TEMP_ALARMS, lookUpParamOptions );
+        }
         
         return SUCCESS;
     }

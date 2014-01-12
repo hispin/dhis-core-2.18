@@ -18,17 +18,24 @@ public class Lookup extends BaseNameableObject
     public static final String CCEI_AGG_TYPE_REF_WORKING_STATUS_BY_TYPE = "REF WORKING STATUS BY TYPE";
     public static final String CCEI_AGG_TYPE_REF_TEMP_ALARMS = "REF TEMP ALARMS";
     
+    public static final String CCEI_NO_OF_REF_WITH_HIGHTEMP_ALARM = "NO_OF_REF_WITH_HIGHTEMP_ALARM";
+    public static final String CCEI_NO_OF_REF_WITH_LOWTEMP_ALARM = "NO_OF_REF_WITH_LOWTEMP_ALARM";
+    public static final String CCEI_FACILITY_WITH_HIGHTEMP_ALARM = "FACILITY_WITH_HIGHTEMP_ALARM";
+    public static final String CCEI_FACILITY_WITH_LOWTEMP_ALARM = "FACILITY_WITH_LOWTEMP_ALARM";
+    public static final String CCEI_FACILITY_WITH_TEMP_ALARM = "FACILITY_WITH_TEMP_ALARM";
+    
     public static final String CCEI_WORKING_STATUS_OPTIONSET = "WORKING_STATUS_OPTIONSET";
+    public static final String CCEI_UTILIZATION_OPTIONSET = "UTILIZATION_OPTIONSET";
     
     public static final String CCEI_EQUIPMENTTYPE_MODELTYPEATTRIBUTE = "EQUIPMENTTYPE_MODELTYPEATTRIBUTE";    
     public static final String CCEI_MODEL_MODELTYPEATTRIBUTE = "MODEL_MODELTYPEATTRIBUTE";
     
-    public static final String CCEI_UTILIZATION_OPTIONSET = "UTILIZATION_OPTIONSET";
     
     public static final String CCEI_REF_EQUIPMENTTYPE_ID = "REF_EQUIPMENTTYPE_ID";
     
     public static final String ORGUNITID_BY_COMMA = "ORGUNITID_BY_COMMA";
     public static final String CURRENT_PERIOD_ENDDATE = "CURRENT_PERIOD_ENDDATE";
+    public static final String PERIODID = "PERIODID";
     
     private String type;
     
