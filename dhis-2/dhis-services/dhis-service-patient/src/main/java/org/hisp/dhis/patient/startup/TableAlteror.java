@@ -493,7 +493,7 @@ public class TableAlteror
         {
             Statement statement = holder.getStatement();
 
-            ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patientattribute" );
+            ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patient" );
 
             // Only execute once
             if ( !resultSet.next() )
