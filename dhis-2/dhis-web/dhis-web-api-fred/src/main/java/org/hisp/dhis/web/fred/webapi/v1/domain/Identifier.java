@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils;
+package org.hisp.dhis.web.fred.webapi.v1.domain;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,40 +28,67 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.web.fred.webapi.v1.utils.GeoUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GeoUtilsTest
+@JsonPropertyOrder( value = { "agency", "context", "id" } )
+public class Identifier
 {
-    @Test
-    public void fromLatLng()
+    public static final String DHIS2_AGENCY = "DHIS2";
+
+    public static final String DHIS2_CODE_CONTEXT = "DHIS2_CODE";
+
+    public static final String DHIS2_UID_CONTEXT = "DHIS2_UID";
+
+    private String id;
+
+    private String context;
+
+    private String agency;
+
+    public Identifier()
     {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
-
-        String coordinatesString = String.format( "[%f, %f]", lat, lng );
-
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
-
-        Assert.assertEquals( lat, coordinates.lat );
-        Assert.assertEquals( lng, coordinates.lng );
     }
 
-    @Test
-    public void fromLngLat()
+    public String getId()
     {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
+        return id;
+    }
 
-        String coordinatesString = String.format( "[%f, %f]", lng, lat );
+    public void setId( String id )
+    {
+        this.id = id;
+    }
 
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
+    public String getContext()
+    {
+        return context;
+    }
 
-        Assert.assertEquals( lat, coordinates.lat );
-        Assert.assertEquals( lng, coordinates.lng );
+    public void setContext( String context )
+    {
+        this.context = context;
+    }
+
+    public String getAgency()
+    {
+        return agency;
+    }
+
+    public void setAgency( String agency )
+    {
+        this.agency = agency;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Identifier{" +
+            "id='" + id + '\'' +
+            ", context='" + context + '\'' +
+            ", agency='" + agency + '\'' +
+            '}';
     }
 }

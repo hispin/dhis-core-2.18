@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils;
+package org.hisp.dhis.web.fred.webapi.v1.validation.constraint.annotation;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,40 +28,26 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.web.fred.webapi.v1.utils.GeoUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.hisp.dhis.web.fred.webapi.v1.validation.constraint.PropertiesValidator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GeoUtilsTest
+@Target( { ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE } )
+@Retention( RetentionPolicy.RUNTIME )
+@Constraint( validatedBy = PropertiesValidator.class )
+public @interface ValidProperties
 {
-    @Test
-    public void fromLatLng()
-    {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
+    String message() default "Properties did not validate.";
 
-        String coordinatesString = String.format( "[%f, %f]", lat, lng );
+    Class<?>[] groups() default { };
 
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
-
-        Assert.assertEquals( lat, coordinates.lat );
-        Assert.assertEquals( lng, coordinates.lng );
-    }
-
-    @Test
-    public void fromLngLat()
-    {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
-
-        String coordinatesString = String.format( "[%f, %f]", lng, lat );
-
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
-
-        Assert.assertEquals( lat, coordinates.lat );
-        Assert.assertEquals( lng, coordinates.lng );
-    }
+    Class<? extends Payload>[] payload() default { };
 }

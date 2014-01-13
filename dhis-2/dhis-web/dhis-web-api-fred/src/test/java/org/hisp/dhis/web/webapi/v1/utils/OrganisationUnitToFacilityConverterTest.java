@@ -29,9 +29,10 @@ package org.hisp.dhis.web.webapi.v1.utils;
  */
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.web.fred.webapi.v1.utils.OrganisationUnitToFacilityConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.web.webapi.v1.domain.Facility;
-import org.hisp.dhis.web.webapi.v1.domain.Identifier;
+import org.hisp.dhis.web.fred.webapi.v1.domain.Facility;
+import org.hisp.dhis.web.fred.webapi.v1.domain.Identifier;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
