@@ -338,13 +338,13 @@
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MapLegendStore"
-    class="org.hisp.dhis.mapping.hibernate.HibernateMapLegendStore">
+    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.mapping.MapLegend" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MapLegendSetStore"
-    class="org.hisp.dhis.mapping.hibernate.HibernateMapLegendSetStore">
+    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.mapping.MapLegendSet" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>

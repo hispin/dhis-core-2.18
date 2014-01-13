@@ -28,6 +28,12 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
@@ -37,13 +43,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Jan Henrik Overland
@@ -65,7 +65,6 @@ public class DefaultMappingService
 
     private MapViewStore mapViewStore;
 
-    @Autowired
     public void setMapViewStore( MapViewStore mapViewStore )
     {
         this.mapViewStore = mapViewStore;
@@ -78,16 +77,16 @@ public class DefaultMappingService
         this.mapLayerStore = mapLayerStore;
     }
 
-    private MapLegendStore mapLegendStore;
+    private GenericIdentifiableObjectStore<MapLegend> mapLegendStore;
 
-    public void setMapLegendStore( MapLegendStore mapLegendStore )
+    public void setMapLegendStore( GenericIdentifiableObjectStore<MapLegend> mapLegendStore )
     {
         this.mapLegendStore = mapLegendStore;
     }
 
-    private MapLegendSetStore mapLegendSetStore;
+    private GenericIdentifiableObjectStore<MapLegendSet> mapLegendSetStore;
 
-    public void setMapLegendSetStore( MapLegendSetStore mapLegendSetStore )
+    public void setMapLegendSetStore( GenericIdentifiableObjectStore<MapLegendSet> mapLegendSetStore )
     {
         this.mapLegendSetStore = mapLegendSetStore;
     }

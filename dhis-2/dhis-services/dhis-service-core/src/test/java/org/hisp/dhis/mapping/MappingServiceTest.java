@@ -220,7 +220,7 @@ public class MappingServiceTest
     @Test
     public void testGetUpdateMapLegendSetByName()
     {
-        MapLegendSet legendSet = createMapLegendSet( 'C' );
+        MapLegendSet legendSet = createMapLegendSet( 'F' );
 
         int id = mappingService.addMapLegendSet( legendSet );
 
@@ -228,11 +228,11 @@ public class MappingServiceTest
 
         assertNotNull( legendSet );
 
-        legendSet.setName( "MapLegendSetB" );
+        legendSet.setName( "MapLegendSetG" );
 
         mappingService.updateMapLegendSet( legendSet );
 
-        assertEquals( "MapLegendSetB", mappingService.getMapLegendSetByName( "MapLegendSetB" ).getName() );
+        assertEquals( legendSet, mappingService.getMapLegendSetByName( "MapLegendSetG" ) );
     }
 
     @Test
