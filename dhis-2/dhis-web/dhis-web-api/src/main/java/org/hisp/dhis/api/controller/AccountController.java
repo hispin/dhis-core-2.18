@@ -106,7 +106,7 @@ public class AccountController
 
     @Autowired
     private SystemSettingManager systemSettingManager;
-
+    
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping( value = "/recovery", method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
@@ -123,7 +123,15 @@ public class AccountController
             return "Account recovery is not enabled";
         }
 
-        boolean recover = securityService.sendRestoreMessage( username, rootPath );
+        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
+
+        if ( credentials == null )
+        {
+            response.setStatus( HttpServletResponse.SC_CONFLICT );
+            return "User does not exist: " + username;
+        }
+        
+        boolean recover = securityService.sendRestoreMessage( credentials, rootPath );
 
         if ( !recover )
         {
@@ -164,7 +172,15 @@ public class AccountController
             return "Password cannot be equal to username";
         }
 
-        boolean restore = securityService.restore( username, token, code, password );
+        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
+
+        if ( credentials == null )
+        {
+            response.setStatus( HttpServletResponse.SC_CONFLICT );
+            return "User does not exist: " + username;
+        }
+        
+        boolean restore = securityService.restore( credentials, token, code, password );
 
         if ( !restore )
         {

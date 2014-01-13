@@ -105,18 +105,16 @@ public class DefaultSecurityService
     // SecurityService implementation
     // -------------------------------------------------------------------------
 
-    public boolean sendRestoreMessage( String username, String rootPath )
+    public boolean sendRestoreMessage( UserCredentials credentials, String rootPath )
     {
-        if ( username == null || rootPath == null )
+        if ( credentials == null || rootPath == null )
         {
             return false;
         }
 
-        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-
-        if ( credentials == null || credentials.getUser() == null || credentials.getUser().getEmail() == null )
+        if ( credentials.getUser() == null || credentials.getUser().getEmail() == null )
         {
-            log.info( "Could not send message as user does not exist or has no email: " + username );
+            log.info( "Could not send message as user does not exist or has no email: " + credentials );
             return false;
         }
 
@@ -148,7 +146,7 @@ public class DefaultSecurityService
         vars.put( "restorePath", rootPath + RESTORE_PATH );
         vars.put( "token", result[0] );
         vars.put( "code", result[1] );
-        vars.put( "username", username );
+        vars.put( "username", credentials.getUsername() );
 
         String text1 = new VelocityManager().render( vars, "restore_message1" );
         String text2 = new VelocityManager().render( vars, "restore_message2" );
@@ -179,21 +177,15 @@ public class DefaultSecurityService
         return result;
     }
 
-    public boolean restore( String username, String token, String code, String newPassword )
+    public boolean restore( UserCredentials credentials, String token, String code, String newPassword )
     {
-        if ( username == null || token == null || code == null || newPassword == null )
+        if ( credentials == null || token == null || code == null || newPassword == null )
         {
             return false;
         }
 
-        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-
-        if ( credentials == null )
-        {
-            log.info( "Could not restore as user does not exist: " + username );
-            return false;
-        }
-
+        String username = credentials.getUsername();
+        
         token = passwordManager.encodePassword( username, token );
         code = passwordManager.encodePassword( username, code );
 
@@ -217,22 +209,20 @@ public class DefaultSecurityService
         return true;
     }
 
-    public boolean verifyToken( String username, String token )
+    public boolean verifyToken( UserCredentials credentials, String token )
     {
-        if ( username == null || token == null )
+        if ( credentials == null || token == null )
         {
             return false;
         }
 
-        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-
-        if ( credentials == null || credentials.getRestoreToken() == null )
+        if ( credentials.getRestoreToken() == null )
         {
-            log.info( "Could not verify token as user does not exist or has no token: " + username );
+            log.info( "Could not verify token as user has no token: " + credentials );
             return false;
         }
 
-        token = passwordManager.encodePassword( username, token );
+        token = passwordManager.encodePassword( credentials.getUsername(), token );
 
         return credentials.getRestoreToken().equals( token );
     }

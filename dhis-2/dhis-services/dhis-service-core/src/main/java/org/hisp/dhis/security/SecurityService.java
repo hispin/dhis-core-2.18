@@ -40,12 +40,12 @@ public interface SecurityService
      * Will invoke the initiateRestore method and dispatch email messages with
      * restore information to the user.
      *
-     * @param username the user name of the user to send restore messages.
+     * @param credentials the credentials for the user to send restore message.
      * @param rootPath the root path of the request.
      * @return false if any of the arguments are null or if the user credentials
      *         identified by the user name does not exist, true otherwise.
      */
-    boolean sendRestoreMessage( String username, String rootPath );
+    boolean sendRestoreMessage( UserCredentials credentials, String rootPath );
 
     /**
      * Will populate the restoreToken and restoreCode property of the given
@@ -66,26 +66,26 @@ public interface SecurityService
      * must match the ones on the credentials, and the current date must be before
      * the expiry date time of the credentials.
      *
-     * @param username    the user name.
-     * @param token       the token.
-     * @param code        the code.
+     * @param credentials the user credentials.
+     * @param token the token.
+     * @param code the code.
      * @param newPassword the proposed new password.
      * @return true or false.
      */
-    boolean restore( String username, String token, String code, String newPassword );
+    boolean restore( UserCredentials credentials, String token, String code, String newPassword );
 
     /**
      * Tests whether the given token in combination with the given user name is
      * valid, i.e. whether the hashed version of the token matches the one on the
      * user credentials identified by the given user name.
      *
-     * @param username the user name.
-     * @param token    the token.
+     * @param credentials the user credentials.
+     * @param token the token.
      * @return false if any of the arguments are null or if the user credentials
      *         identified by the user name does not exist, true if the arguments
      *         are valid.
      */
-    boolean verifyToken( String username, String token );
+    boolean verifyToken( UserCredentials credentials, String token );
 
     /**
      * Checks whether current user has read access to object.

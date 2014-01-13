@@ -79,13 +79,13 @@ public class SecurityServiceTest
         assertNotNull( credentials.getRestoreCode() );
         assertNotNull( credentials.getRestoreExpiry() );
         
-        boolean verified = securityService.verifyToken( credentials.getUsername(), result[0] );
+        boolean verified = securityService.verifyToken( credentials, result[0] );
         
         assertTrue( verified );
         
         String password = "NewPassword1";
         
-        boolean restored = securityService.restore( credentials.getUsername(), result[0], result[1], password );
+        boolean restored = securityService.restore( credentials, result[0], result[1], password );
         
         assertTrue( restored );
         
