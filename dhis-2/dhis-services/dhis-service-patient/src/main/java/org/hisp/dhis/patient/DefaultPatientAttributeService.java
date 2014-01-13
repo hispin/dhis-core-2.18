@@ -53,7 +53,7 @@ public class DefaultPatientAttributeService
     {
         this.patientAttributeStore = patientAttributeStore;
     }
-    
+
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -132,28 +132,38 @@ public class DefaultPatientAttributeService
 
     public Collection<PatientAttribute> getPatientAttributesWithoutProgram()
     {
+        System.out.println( "\n\n === \n 1" );
         Collection<PatientAttribute> patientAttributes = patientAttributeStore.getAll();
+        System.out.println( "\n 2" );
         Iterator<PatientAttribute> iterator = patientAttributes.iterator();
-        
-        Collection<Program> programs = programService.getAllPrograms();
+        System.out.println( "\n 3" );
 
-        for ( Program program : programs )
+        Collection<Program> programs = programService.getAllPrograms();
+        System.out.println( "\n 4" );
+        while ( iterator.hasNext() )
         {
-            while ( iterator.hasNext() )
+            for ( Program program : programs )
             {
+                System.out.println( "\n ****** 5" );
+
                 PatientAttribute attribute = iterator.next();
-                
+                System.out.println( "\n 6" );
+
+
                 if ( program.getAttributes().contains( attribute ) )
                 {
                     iterator.remove();
+                    break;
                 }
+                System.out.println( "\n 7" );
+
             }
         }
-        
+
         return patientAttributes;
     }
-    
-    public Collection<PatientAttribute> getPatientAttributesDisplayed(boolean displayInListNoProgram )
+
+    public Collection<PatientAttribute> getPatientAttributesDisplayed( boolean displayInListNoProgram )
     {
         return patientAttributeStore.getPatientAttributesDisplayed( displayInListNoProgram );
     }
