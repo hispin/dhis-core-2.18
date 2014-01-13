@@ -522,7 +522,7 @@ div.inputCriteria
 
 .settingHeader
 {
-  padding: 6px 0;
+  padding: 9px 0 6px 0;
   font-size: 12pt;
   color: #373737;
 }
@@ -568,6 +568,11 @@ div.inputCriteria
 .inputForm textarea
 {
   height: 8em;
+}
+
+.settingIndent
+{
+  margin-left: 12px;
 }
 
 /*----------------------------------------------------------------------------*/
