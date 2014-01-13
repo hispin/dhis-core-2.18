@@ -5,7 +5,7 @@
 	        jQuery( "#selectedList" ).children().attr( "selected", true );
 
             if( $('#selectionTree').find('.selected').size() == 0 ) {
-                setHeaderDelayMessage('$i18n.getString( "organisation_unit_required_for_user" )');
+                setHeaderDelayMessage('$encoder.jsEncode( $i18n.getString( "organisation_unit_required_for_user" ) )');
             } else {
                 form.submit();
             }
