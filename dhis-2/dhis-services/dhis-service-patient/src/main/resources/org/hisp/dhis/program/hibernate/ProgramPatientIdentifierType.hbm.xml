@@ -11,7 +11,7 @@
     </id>
     
 	<many-to-one name="patientIdentifierType" class="org.hisp.dhis.patient.PatientIdentifierType" 
-	   column="patientidentifiertypeid" foreign-key="fk_program_identifiertypeid" />
+	   column="identifiertypeid" foreign-key="fk_program_identifiertypeid" />
 
     <property name="sortOrder" column="sort_order" />
 
