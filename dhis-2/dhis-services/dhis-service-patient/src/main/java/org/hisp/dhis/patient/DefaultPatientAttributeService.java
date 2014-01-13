@@ -132,31 +132,20 @@ public class DefaultPatientAttributeService
 
     public Collection<PatientAttribute> getPatientAttributesWithoutProgram()
     {
-        System.out.println( "\n\n === \n 1" );
         Collection<PatientAttribute> patientAttributes = patientAttributeStore.getAll();
-        System.out.println( "\n 2" );
         Iterator<PatientAttribute> iterator = patientAttributes.iterator();
-        System.out.println( "\n 3" );
 
         Collection<Program> programs = programService.getAllPrograms();
-        System.out.println( "\n 4" );
         while ( iterator.hasNext() )
         {
             for ( Program program : programs )
             {
-                System.out.println( "\n ****** 5" );
-
                 PatientAttribute attribute = iterator.next();
-                System.out.println( "\n 6" );
-
-
                 if ( program.getAttributes().contains( attribute ) )
                 {
                     iterator.remove();
                     break;
                 }
-                System.out.println( "\n 7" );
-
             }
         }
 
