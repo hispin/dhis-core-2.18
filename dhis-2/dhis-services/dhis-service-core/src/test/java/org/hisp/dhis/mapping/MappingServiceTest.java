@@ -32,11 +32,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -136,7 +135,7 @@ public class MappingServiceTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testGetAddOrUpdateMapLegendByName()
+    public void testGetAddOrUpdateMapLegend()
     {
         MapLegend legend = createMapLegend( 'A', 0.1, 0.2 );
 
@@ -163,14 +162,11 @@ public class MappingServiceTest
     {
         MapLegend legend = createMapLegend( 'A', 0.1, 0.2 );
 
-        mappingService.addOrUpdateMapLegend( legend.getName(), legend.getStartValue(), legend.getEndValue(),
-            legend.getColor(), legend.getImage() );
+        int id = mappingService.addMapLegend( legend );
 
-        legend = mappingService.getMapLegendByName( legend.getName() );
-
+        legend = mappingService.getMapLegend( id );
+        
         assertNotNull( legend );
-
-        int id = legend.getId();
 
         mappingService.deleteMapLegend( legend );
 
@@ -184,23 +180,29 @@ public class MappingServiceTest
         MapLegend legend2 = createMapLegend( 'B', 0.3, 0.4 );
         MapLegend legend3 = createMapLegend( 'C', 0.5, 0.6 );
 
-        mappingService.addOrUpdateMapLegend( legend1.getName(), legend1.getStartValue(), legend1.getEndValue(),
-            legend1.getColor(), legend1.getImage() );
-        mappingService.addOrUpdateMapLegend( legend3.getName(), legend3.getStartValue(), legend3.getEndValue(),
-            legend3.getColor(), legend3.getImage() );
+        mappingService.addMapLegend( legend1 );
+        mappingService.addMapLegend( legend3 );
 
-        legend1 = mappingService.getMapLegendByName( legend1.getName() );
-        legend3 = mappingService.getMapLegendByName( legend3.getName() );
+        Collection<MapLegend> legends = mappingService.getAllMapLegends();
+        
+        assertEquals( 2, legends.size() );
+        assertTrue( legends.contains( legend1 ) );
+        assertTrue( legends.contains( legend3 ) );
+        assertFalse( legends.contains( legend2 ) );
+    }
 
-        assertNotNull( legend1 );
-        assertNotNull( legend3 );
-
-        int idA = legend1.getId();
-        int idC = legend3.getId();
-
-        assertEquals( legend1, mappingService.getMapLegend( idA ) );
-        assertEquals( legend3, mappingService.getMapLegend( idC ) );
-        assertTrue( !mappingService.getAllMapLegends().contains( legend2 ) );
+    @Test
+    public void testGetMapLegendsByName()
+    {
+        MapLegend legend1 = createMapLegend( 'A', 0.1, 0.2 );
+        MapLegend legend2 = createMapLegend( 'B', 0.3, 0.4 );
+        
+        mappingService.addMapLegend( legend1 );
+        mappingService.addMapLegend( legend2 );
+        
+        assertNotNull( mappingService.getMapLegendByName( "MapLegendA" ) );
+        assertNotNull( mappingService.getMapLegendByName( "MapLegendB" ) );
+        assertNull( mappingService.getMapLegendByName( "MapLegendC" ) );
     }
 
     // -------------------------------------------------------------------------
@@ -218,21 +220,26 @@ public class MappingServiceTest
     }
 
     @Test
-    public void testGetUpdateMapLegendSetByName()
+    public void testGetUpdateMapLegendSet()
     {
         MapLegendSet legendSet = createMapLegendSet( 'F' );
+        legendSet.setSymbolizer( "SymbolF" );
 
         int id = mappingService.addMapLegendSet( legendSet );
 
         legendSet = mappingService.getMapLegendSet( id );
 
         assertNotNull( legendSet );
+        assertEquals( "SymbolF", legendSet.getSymbolizer() );
 
-        legendSet.setName( "MapLegendSetG" );
+        legendSet.setSymbolizer( "SymbolG" );
 
         mappingService.updateMapLegendSet( legendSet );
 
-        assertEquals( legendSet, mappingService.getMapLegendSetByName( "MapLegendSetG" ) );
+        legendSet = mappingService.getMapLegendSet( id );
+
+        assertNotNull( legendSet );
+        assertEquals( "SymbolG", legendSet.getSymbolizer() );
     }
 
     @Test
@@ -256,97 +263,17 @@ public class MappingServiceTest
         assertTrue( mappingService.getAllMapLegendSets().containsAll( mapLegendSets ) );
     }
 
-    // -------------------------------------------------------------------------
-    // MapLayer
-    // -------------------------------------------------------------------------
-
     @Test
-    public void testAddGetMapLayer()
+    public void testGetMapLegendSetByName()
     {
-        MapLayer mapLayer = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
-            "B", 1 );
+        MapLegendSet legendSet1 = createMapLegendSet( 'B' );
+        MapLegendSet legendSet2 = createMapLegendSet( 'C' );
 
-        int id = mappingService.addMapLayer( mapLayer );
+        mappingService.addMapLegendSet( legendSet1 );
+        mappingService.addMapLegendSet( legendSet2 );
 
-        assertEquals( "MapLayerA", mappingService.getMapLayer( id ).getName() );
-        assertEquals( MappingService.MAP_LAYER_TYPE_BASELAYER, mappingService.getMapLayer( id ).getType() );
-        assertEquals( "A", mappingService.getMapLayer( id ).getFillColor() );
-        assertEquals( "B", mappingService.getMapLayer( id ).getStrokeColor() );
-        assertEquals( 0.1, mappingService.getMapLayer( id ).getFillOpacity(), DELTA );
-        assertEquals( 1, mappingService.getMapLayer( id ).getStrokeWidth() );
-    }
-
-    @Test
-    public void testGetUpdateDeleteMapLayerByName()
-    {
-        MapLayer mapLayer = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
-            "B", 1 );
-
-        int id = mappingService.addMapLayer( mapLayer );
-
-        mapLayer = mappingService.getMapLayer( id );
-
-        mapLayer.setName( "MapLayerB" );
-        mapLayer.setFillOpacity( 0.05 );
-        mapLayer.setStrokeWidth( 0 );
-
-        mappingService.updateMapLayer( mapLayer );
-
-        assertEquals( "MapLayerB", mappingService.getMapLayerByName( "MapLayerB" ).getName() );
-        assertEquals( 0.05, mappingService.getMapLayerByName( "MapLayerB" ).getFillOpacity(), DELTA );
-        assertEquals( 0, mappingService.getMapLayerByName( "MapLayerB" ).getStrokeWidth() );
-    }
-
-    @Test
-    public void testGetAllMapLayers()
-    {
-        MapLayer mapLayer1 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
-            "B", 1 );
-        MapLayer mapLayer2 = new MapLayer( "MapLayerB", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "C", 0.2,
-            "D", 2 );
-        MapLayer mapLayer3 = new MapLayer( "MapLayerC", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "E", 0.3,
-            "F", 3 );
-        MapLayer mapLayer4 = new MapLayer( "MapLayerD", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "G", 0.4,
-            "H", 4 );
-
-        int idA = mappingService.addMapLayer( mapLayer1 );
-        int idB = mappingService.addMapLayer( mapLayer2 );
-        int idC = mappingService.addMapLayer( mapLayer3 );
-
-        assertEquals( mapLayer1, mappingService.getMapLayer( idA ) );
-        assertEquals( mapLayer2, mappingService.getMapLayer( idB ) );
-        assertEquals( mapLayer3, mappingService.getMapLayer( idC ) );
-        assertTrue( !mappingService.getAllMapLayers().contains( mapLayer4 ) );
-
-    }
-
-    @Test
-    public void testGetMapLayersByTypeOrMapSource()
-    {
-        List<MapLayer> baseLayers = new ArrayList<MapLayer>();
-        List<MapLayer> overlayLayers = new ArrayList<MapLayer>();
-
-        MapLayer mapLayer1 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
-            "B", 1 );
-        MapLayer mapLayer2 = new MapLayer( "MapLayerB", MappingService.MAP_LAYER_TYPE_OVERLAY, "", "", "", "C", 0.2,
-            "D", 2 );
-        MapLayer mapLayer3 = new MapLayer( "MapLayerC", MappingService.MAP_LAYER_TYPE_OVERLAY, "", "", "", "E", 0.3,
-            "F", 3 );
-        MapLayer mapLayer4 = new MapLayer( "MapLayerD", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "G", 0.4,
-            "H", 4 );
-
-        baseLayers.add( mapLayer1 );
-        baseLayers.add( mapLayer4 );
-
-        overlayLayers.add( mapLayer2 );
-        overlayLayers.add( mapLayer3 );
-
-        mappingService.addMapLayer( mapLayer1 );
-        mappingService.addMapLayer( mapLayer2 );
-        mappingService.addMapLayer( mapLayer3 );
-        mappingService.addMapLayer( mapLayer4 );
-
-        assertEquals( baseLayers, mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_BASELAYER ) );
-        assertEquals( overlayLayers, mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
+        assertNotNull( mappingService.getMapLegendSetByName( "MapLegendSetB" ) );
+        assertNotNull( mappingService.getMapLegendSetByName( "MapLegendSetC" ) );
+        assertNull( mappingService.getMapLegendSetByName( "MapLegendSetD" ) );
     }
 }
