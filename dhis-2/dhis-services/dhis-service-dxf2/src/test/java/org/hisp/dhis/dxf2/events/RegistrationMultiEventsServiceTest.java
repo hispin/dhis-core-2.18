@@ -84,12 +84,6 @@ public class RegistrationMultiEventsServiceTest
 
     private Person personMaleA;
 
-    private Person personMaleB;
-
-    private Person personFemaleA;
-
-    private Person personFemaleB;
-
     private OrganisationUnit organisationUnitA;
 
     private OrganisationUnit organisationUnitB;
@@ -127,9 +121,6 @@ public class RegistrationMultiEventsServiceTest
         identifiableObjectManager.save( femaleB );
 
         personMaleA = personService.getPerson( maleA );
-        personMaleB = personService.getPerson( maleB );
-        personFemaleA = personService.getPerson( femaleA );
-        personFemaleB = personService.getPerson( femaleB );
 
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );

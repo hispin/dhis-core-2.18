@@ -69,7 +69,7 @@ public class DefaultMetaDataDependencyService
 {
     private static final Log log = LogFactory.getLog( DefaultMetaDataDependencyService.class );
 
-    private final Class[] specialCases = new Class[]{ DataElement.class, Indicator.class, OrganisationUnit.class, ValidationRule.class };
+    private final Class<?>[] specialCases = new Class<?>[]{ DataElement.class, Indicator.class, OrganisationUnit.class, ValidationRule.class };
 
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
@@ -91,6 +91,7 @@ public class DefaultMetaDataDependencyService
     // Get MetaData dependency Map
     //--------------------------------------------------------------------------
 
+    @SuppressWarnings("unchecked")
     public Map<String, List<IdentifiableObject>> getIdentifiableObjectMap( Map<String, Object> identifiableObjectUidMap )
     {
         Map<String, List<IdentifiableObject>> identifiableObjectMap = new HashMap<String, List<IdentifiableObject>>();
@@ -101,7 +102,7 @@ public class DefaultMetaDataDependencyService
 
             for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
             {
-                if ( className.equals( (entry.getValue() + "_all") ) )
+                if ( className.equals( ( entry.getValue() + "_all" ) ) )
                 {
                     Boolean o = (Boolean) identifiableObjectUidMap.get( className );
 
@@ -289,7 +290,7 @@ public class DefaultMetaDataDependencyService
 
     private boolean isSpecialCase( IdentifiableObject identifiableObject )
     {
-        for ( Class specialCase : specialCases )
+        for ( Class<?> specialCase : specialCases )
         {
             if ( identifiableObject.getClass().equals( specialCase ) )
             {
@@ -395,9 +396,9 @@ public class DefaultMetaDataDependencyService
     {
         if ( method.isAnnotationPresent( JsonView.class ) )
         {
-            Class[] viewClasses = method.getAnnotation( JsonView.class ).value();
+            Class<?>[] viewClasses = method.getAnnotation( JsonView.class ).value();
 
-            for ( Class viewClass : viewClasses )
+            for ( Class<?> viewClass : viewClasses )
             {
                 if ( viewClass.equals( ExportView.class ) )
                 {
