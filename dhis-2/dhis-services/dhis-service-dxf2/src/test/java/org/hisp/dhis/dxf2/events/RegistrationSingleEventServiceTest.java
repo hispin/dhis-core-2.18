@@ -82,9 +82,6 @@ public class RegistrationSingleEventServiceTest
     private Patient femaleB;
 
     private Person personMaleA;
-    private Person personMaleB;
-    private Person personFemaleA;
-    private Person personFemaleB;
 
     private OrganisationUnit organisationUnitA;
     private OrganisationUnit organisationUnitB;
@@ -114,9 +111,6 @@ public class RegistrationSingleEventServiceTest
         identifiableObjectManager.save( femaleB );
 
         personMaleA = personService.getPerson( maleA );
-        personMaleB = personService.getPerson( maleB );
-        personFemaleA = personService.getPerson( femaleA );
-        personFemaleB = personService.getPerson( femaleB );
 
         dataElementA = createDataElement( 'A' );
         dataElementA.setType( DataElement.VALUE_TYPE_INT );
