@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils;
+package org.hisp.dhis.web.fred.webapi;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,40 +28,21 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.web.fred.webapi.v1.utils.GeoUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GeoUtilsTest
+@Controller
+public class RedirectController
 {
-    @Test
-    public void fromLatLng()
+    @RequestMapping(value = { "/api-fred", "/" })
+    public void redirectToCurrentVersion( HttpServletResponse response ) throws IOException
     {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
-
-        String coordinatesString = String.format( "[%f, %f]", lat, lng );
-
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
-
-        Assert.assertEquals( lat, coordinates.lat );
-        Assert.assertEquals( lng, coordinates.lng );
-    }
-
-    @Test
-    public void fromLngLat()
-    {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
-
-        String coordinatesString = String.format( "[%f, %f]", lng, lat );
-
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
-
-        Assert.assertEquals( lat, coordinates.lat );
-        Assert.assertEquals( lng, coordinates.lng );
+        response.sendRedirect( "/api-fred/v1" );
     }
 }

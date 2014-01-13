@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.webapi.v1.utils;
+package org.hisp.dhis.web.fred.webapi.v1.utils;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,40 +28,40 @@ package org.hisp.dhis.web.webapi.v1.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.web.fred.webapi.v1.utils.GeoUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GeoUtilsTest
+@Component
+public class ObjectMapperFactoryBean implements FactoryBean<ObjectMapper>
 {
-    @Test
-    public void fromLatLng()
+    @Override
+    public ObjectMapper getObject() throws Exception
     {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure( JsonGenerator.Feature.ESCAPE_NON_ASCII, true );
+        objectMapper.disable( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS );
+        objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
+        objectMapper.enable( SerializationFeature.INDENT_OUTPUT );
 
-        String coordinatesString = String.format( "[%f, %f]", lat, lng );
-
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LATLNG );
-
-        Assert.assertEquals( lat, coordinates.lat );
-        Assert.assertEquals( lng, coordinates.lng );
+        return objectMapper;
     }
 
-    @Test
-    public void fromLngLat()
+    @Override
+    public Class<?> getObjectType()
     {
-        Double lat = 1.0d;
-        Double lng = 2.0d;
+        return ObjectMapper.class;
+    }
 
-        String coordinatesString = String.format( "[%f, %f]", lng, lat );
-
-        GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( coordinatesString, GeoUtils.CoordinateOrder.COORDINATE_LNGLAT );
-
-        Assert.assertEquals( lat, coordinates.lat );
-        Assert.assertEquals( lng, coordinates.lng );
+    @Override
+    public boolean isSingleton()
+    {
+        return true;
     }
 }
