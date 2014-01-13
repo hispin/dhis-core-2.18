@@ -79,9 +79,9 @@ public class SelectAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientAttribute> patientAttributes;
+    private List<PatientAttribute> patientAttributes;
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public List<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
@@ -115,13 +115,18 @@ public class SelectAction
         throws Exception
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        patientAttributes = new ArrayList<PatientAttribute>(
+            patientAttributeService.getPatientAttributesWithoutProgram() );
+        patientAttributes.addAll( patientAttributeService.getPatientAttributesDisplayed( true ) );
+        Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
-        patientAttributes = patientAttributeService.getAllPatientAttributes();
+        if ( organisationUnit != null )
+        {
+            programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( organisationUnit ) );
+            programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
 
-        programs = new ArrayList<Program>( programService.getProgramsByCurrentUser( organisationUnit ) );
-        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
-
-        Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
+            Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
+        }
 
         return SUCCESS;
     }
