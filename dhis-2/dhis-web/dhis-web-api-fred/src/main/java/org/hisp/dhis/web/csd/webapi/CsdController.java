@@ -29,6 +29,7 @@ package org.hisp.dhis.web.csd.webapi;
  */
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.csd.domain.Envelope;
 import org.hisp.dhis.web.csd.domain.csd.CodedType;
@@ -92,7 +93,7 @@ public class CsdController
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             Facility facility = new Facility();
-            facility.setOid( "1.3.6.1.4.1.21367.200.99.11" ); // TODO use code for OID?
+            facility.setOid( organisationUnit.getCode() ); // TODO use code for OID?
 
             facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
 
@@ -101,12 +102,24 @@ public class CsdController
                 facility.getOtherID().add( new OtherID( organisationUnit.getCode(), "dhis2-code" ) );
             }
 
-            CodedType fakeCodedType = new CodedType( "103-110", "1.3.6.1.4.1.21367.100.1", "Radiology - Imaging Services" );
-            facility.getCodedTypes().add( fakeCodedType );
-
             facility.setPrimaryName( organisationUnit.getDisplayName() );
 
-            Organization organization = new Organization("1.3.6.1.4.1.21367.200.99.1");
+            for ( OrganisationUnitGroup organisationUnitGroup : organisationUnit.getGroups() )
+            {
+                if ( organisationUnitGroup.getCode() == null )
+                {
+                    continue;
+                }
+
+                CodedType codedType = new CodedType();
+                codedType.setCode( organisationUnitGroup.getUid() );
+                codedType.setCodingSchema( "dhis2-uid" );
+                codedType.setValue( organisationUnitGroup.getDisplayName() );
+
+                facility.getCodedTypes().add( codedType );
+            }
+
+            Organization organization = new Organization( "1.3.6.1.4.1.21367.200.99.1" );
             facility.getOrganizations().add( organization );
 
             Record record = new Record();
