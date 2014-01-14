@@ -90,7 +90,9 @@ public class HibernateTranslationStore
 
         criteria.setCacheable( true );
 
-        List<Translation> translations = LocaleUtils.getTranslationsHighestSpecifity( criteria.list() );
+        List<Translation> list = criteria.list();
+        
+        List<Translation> translations = LocaleUtils.getTranslationsHighestSpecifity( list );
         
         return !translations.isEmpty() ? translations.get( 0 ) : null;
     }
