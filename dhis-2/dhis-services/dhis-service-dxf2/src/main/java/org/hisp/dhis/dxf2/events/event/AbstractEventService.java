@@ -536,7 +536,7 @@ public abstract class AbstractEventService
         }
 
         event.setStatus( EventStatus.fromInt( programStageInstance.getStatus() ) );
-        event.setEventDate( programStageInstance.getExecutionDate().toString() );
+        event.setEventDate( DateUtils.getLongDateString( programStageInstance.getExecutionDate() ) );
         event.setStoredBy( programStageInstance.getCompletedUser() );
         event.setOrgUnit( programStageInstance.getOrganisationUnit().getUid() );
         event.setProgram( programStageInstance.getProgramInstance().getProgram().getUid() );
@@ -775,7 +775,6 @@ public abstract class AbstractEventService
             {
                 programStageInstance = createProgramStageInstance( programStage, programInstance, organisationUnit,
                     eventDate, EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy );
-
             }
             else
             {
