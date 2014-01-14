@@ -28,6 +28,7 @@ package org.hisp.dhis.web.csd.webapi;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -43,6 +44,7 @@ import org.hisp.dhis.web.csd.domain.csd.Organization;
 import org.hisp.dhis.web.csd.domain.csd.OtherID;
 import org.hisp.dhis.web.csd.domain.csd.Person;
 import org.hisp.dhis.web.csd.domain.csd.Record;
+import org.hisp.dhis.web.csd.domain.csd.Service;
 import org.hisp.dhis.web.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -136,6 +138,19 @@ public class CsdController
 
             Organization organization = new Organization( "1.3.6.1.4.1.21367.200.99.1" );
             facility.getOrganizations().add( organization );
+
+            for ( DataSet dataSet : organisationUnit.getDataSets() )
+            {
+                if ( dataSet.getCode() == null )
+                {
+                    continue;
+                }
+
+                Service service = new Service();
+                service.setOid( dataSet.getCode() );
+
+                organization.getServices().add( service );
+            }
 
             if ( OrganisationUnit.FEATURETYPE_POINT.equals( organisationUnit.getFeatureType() ) )
             {
