@@ -1757,36 +1757,48 @@ Ext.onReady( function() {
 			web.multiSelect.unselect = function(a, s) {
 				var selected = s.getValue();
 				if (selected.length) {
-					Ext.Array.each(selected, function(item) {
-						s.store.remove(s.store.getAt(s.store.findExact('id', item)));
+					Ext.Array.each(selected, function(id) {
+						a.store.add(s.store.getAt(s.store.findExact('id', id)));
+						s.store.remove(s.store.getAt(s.store.findExact('id', id)));
 					});
 					this.filterAvailable(a, s);
+                    a.store.sortStore();
 				}
 			};
 
 			web.multiSelect.unselectAll = function(a, s) {
+				a.store.add(s.store.getRange());
 				s.store.removeAll();
-				a.store.clearFilter();
 				this.filterAvailable(a, s);
+                a.store.sortStore();
 			};
 
 			web.multiSelect.filterAvailable = function(a, s) {
-				a.store.filterBy( function(r) {
-					var keep = true;
-					s.store.each( function(r2) {
-						if (r.data.id == r2.data.id) {
-							keep = false;
-						}
+				if (a.store.getRange().length && s.store.getRange().length) {
+					var recordsToRemove = [];
 
+					a.store.each( function(ar) {
+						var removeRecord = false;
+
+						s.store.each( function(sr) {
+							if (sr.data.id === ar.data.id) {
+								removeRecord = true;
+							}
+						});
+
+						if (removeRecord) {
+							recordsToRemove.push(ar);
+						}
 					});
-					return keep;
-				});
-				a.store.sortStore();
+
+					a.store.remove(recordsToRemove);
+				}
 			};
 
 			web.multiSelect.setHeight = function(ms, panel, fill) {
-				for (var i = 0; i < ms.length; i++) {
-					ms[i].setHeight(panel.getHeight() - fill);
+				for (var i = 0, height; i < ms.length; i++) {
+					height = panel.getHeight() - fill - (ms[i].hasToolbar ? 25 : 0);
+					ms[i].setHeight(height);
 				}
 			};
 
@@ -2380,7 +2392,7 @@ Ext.onReady( function() {
 			organisationUnitGroupStore,
 			legendSetStore,
 
-			indicatorAvailable,
+            indicatorAvailable,
 			indicatorSelected,
 			indicator,
 			dataElementAvailable,
@@ -2431,23 +2443,82 @@ Ext.onReady( function() {
 
 		indicatorAvailableStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
-			proxy: {
-				type: 'ajax',
-				reader: {
-					type: 'json',
-					root: 'indicators'
+            lastPage: null,
+            nextPage: 1,
+            isPending: false,
+            reset: function() {
+                this.removeAll();
+                this.lastPage = null;
+                this.nextPage = 1;
+                this.isPending = false;
+                indicatorSearch.hideFilter();
+            },
+            loadPage: function(uid, filter, append) {
+                var store = this,
+                    filterPath = filter ? '/query/' + filter : '',
+                    path;
+
+                uid = (Ext.isString(uid) || Ext.isNumber(uid)) ? uid : indicatorGroup.getValue();
+                filter = filter || indicatorFilter.getValue() || null;
+
+                if (!append) {
+                    this.lastPage = null;
+                    this.nextPage = 1;
+                }
+
+                if (store.nextPage === store.lastPage) {
+                    return;
+                }
+
+				if (Ext.isString(uid)) {
+					path = '/indicatorGroups/' + uid + '/members' + filterPath + '.json';
 				}
-			},
+				else if (uid === 0) {
+					path = '/indicators' + filterPath + '.json';
+				}
+
+				if (!path) {
+					console.log('Available indicators: invalid id');
+					return;
+				}
+
+                store.isPending = true;
+
+                Ext.Ajax.request({
+                    url: ns.core.init.contextPath + '/api' + path,
+                    params: {
+                        viewClass: 'basic',
+                        links: 'false',
+                        page: store.nextPage,
+                        pageSize: 50
+                    },
+                    failure: function() {
+                        store.isPending = false;
+                    },
+                    success: function(r) {
+                        var response = Ext.decode(r.responseText),
+                            data = response.indicators || [],
+                            pager = response.pager;
+
+                        store.loadStore(data, pager, append);
+                    }
+                });
+            },
+            loadStore: function(data, pager, append) {
+                this.loadData(data, append);
+                this.lastPage = this.nextPage;
+
+                if (pager.pageCount > this.nextPage) {
+                    this.nextPage++;
+                }
+
+                this.isPending = false;
+                ns.core.web.multiSelect.filterAvailable({store: indicatorAvailableStore}, {store: indicatorSelectedStore});
+            },
 			storage: {},
 			parent: null,
 			sortStore: function() {
 				this.sort('name', 'ASC');
-			},
-			listeners: {
-				load: function(s) {
-					ns.core.web.storage.internal.add(s);
-					ns.core.web.multiSelect.filterAvailable({store: s}, {store: indicatorSelectedStore});
-				}
 			}
 		});
 		ns.app.stores.indicatorAvailable = indicatorAvailableStore;
@@ -2492,25 +2563,46 @@ Ext.onReady( function() {
 
 		dataElementAvailableStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
-			proxy: {
-				type: 'ajax',
-				reader: {
-					type: 'json',
-					root: 'dataElements'
-				}
-			},
-			storage: {},
-			sortStore: function() {
-				this.sort('name', 'ASC');
-			},
-			setTotalsProxy: function(uid) {
-				var path;
+            lastPage: null,
+            nextPage: 1,
+            isPending: false,
+            reset: function() {
+                this.removeAll();
+                this.lastPage = null;
+                this.nextPage = 1;
+                this.isPending = false;
+                dataElementSearch.hideFilter();
+            },
+            loadPage: function(uid, filter, append) {
+                uid = (Ext.isString(uid) || Ext.isNumber(uid)) ? uid : dataElementGroup.getValue();
+                filter = filter || dataElementFilter.getValue() || null;
+
+                if (!append) {
+                    this.lastPage = null;
+                    this.nextPage = 1;
+                }
+
+                if (dataElementDetailLevel.getValue() === dimConf.dataElement.objectName) {
+                    this.loadTotalsPage(uid, filter, append);
+                }
+                else if (dataElementDetailLevel.getValue() === dimConf.operand.objectName) {
+                    this.loadDetailsPage(uid, filter, append);
+                }
+            },
+            loadTotalsPage: function(uid, filter, append) {
+                var store = this,
+                    filterPath = filter ? '/query/' + filter : '',
+                    path;
+
+                if (store.nextPage === store.lastPage) {
+                    return;
+                }
 
 				if (Ext.isString(uid)) {
-					path = '/dataElementGroups/' + uid + '.json?domainType=aggregate&links=false&paging=false';
+					path = '/dataElementGroups/' + uid + '/members' + filterPath + '.json';
 				}
 				else if (uid === 0) {
-					path = '/dataElements.json?domainType=aggregate&paging=false&links=false';
+					path = '/dataElements' + filterPath + '.json?domainType=aggregate';
 				}
 
 				if (!path) {
@@ -2518,54 +2610,88 @@ Ext.onReady( function() {
 					return;
 				}
 
-				this.setProxy({
-					type: 'ajax',
-					url: ns.core.init.contextPath + '/api' + path,
-					reader: {
-						type: 'json',
-						root: 'dataElements'
-					}
-				});
+                store.isPending = true;
 
-				this.load({
-					scope: this,
-					callback: function() {
-						ns.core.web.multiSelect.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});
-					}
-				});
-			},
-			setDetailsProxy: function(uid) {
+                Ext.Ajax.request({
+                    url: ns.core.init.contextPath + '/api' + path,
+                    params: {
+                        viewClass: 'basic',
+                        links: 'false',
+                        page: store.nextPage,
+                        pageSize: 50
+                    },
+                    failure: function() {
+                        store.isPending = false;
+                    },
+                    success: function(r) {
+                        var response = Ext.decode(r.responseText),
+                            data = response.dataElements || [],
+                            pager = response.pager;
+
+                        store.loadStore(data, pager, append);
+                    }
+                });
+            },
+			loadDetailsPage: function(uid, filter, append) {
+                var store = this,
+                    filterPath = filter ? '/query/' + filter : '',
+                    path;
+
+                if (store.nextPage === store.lastPage) {
+                    return;
+                }
+
 				if (Ext.isString(uid)) {
-					this.setProxy({
-						type: 'ajax',
-						url: ns.core.init.contextPath + '/api/dataElementOperands.json?links=false&dataElementGroup=' + uid,
-						reader: {
-							type: 'json',
-							root: 'dataElementOperands'
-						}
-					});
-
-					this.load({
-						scope: this,
-						callback: function() {
-							this.each(function(r) {
-								r.set('id', r.data.id.split('.').join('-'));
-							});
-
-							ns.core.web.multiSelect.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});
-						}
-					});
+					path = '/dataElementGroups/' + uid + '/operands' + filterPath + '.json';
 				}
-				else {
-					this.removeAll();
-                    dataElementGroupComboBox.clearValue();
+				else if (uid === 0) {
+					path = '/dataElementOperands' + filterPath + '.json';
 				}
+
+				if (!path) {
+					alert('Available data elements: invalid id');
+					return;
+				}
+
+                store.isPending = true;
+
+                Ext.Ajax.request({
+                    url: ns.core.init.contextPath + '/api' + path,
+                    params: {
+                        viewClass: 'basic',
+                        links: 'false',
+                        page: store.nextPage,
+                        pageSize: 50
+                    },
+                    failure: function() {
+                        store.isPending = false;
+                    },
+                    success: function(r) {
+                        var response = Ext.decode(r.responseText),
+							data = response.dataElementOperands || [],
+                            pager = response.pager;
+
+						for (var i = 0; i < data.length; i++) {
+							data[i].id = data[i].id.split('.').join('-');
+						}
+
+                        store.loadStore(data, pager, append);
+                    }
+                });
 			},
-			listeners: {
-				load: function(s) {
-					ns.core.web.storage.internal.add(s);
-					ns.core.web.multiSelect.filterAvailable({store: s}, {store: dataElementSelectedStore});
-				}
+            loadStore: function(data, pager, append) {
+                this.loadData(data, append);
+                this.lastPage = this.nextPage;
+
+                if (pager.pageCount > this.nextPage) {
+                    this.nextPage++;
+                }
+
+                this.isPending = false;
+                ns.core.web.multiSelect.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});
+            },
+            sortStore: function() {
+				this.sort('name', 'ASC');
 			}
 		});
 		ns.app.stores.dataElementAvailable = dataElementAvailableStore;
@@ -2588,13 +2714,11 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				load: function(s) {
-					if (dataElementDetailLevel.getValue() === ns.core.conf.finals.dimension.dataElement.objectName) {
-						s.add({
-							id: 0,
-							name: '[ ' + NS.i18n.all_data_element_groups + ' ]',
-							index: -1
-						});
-					}
+                    s.add({
+                        id: 0,
+                        name: '[ ' + NS.i18n.all_data_elements + ' ]',
+                        index: -1
+                    });
 
 					s.sort([
 						{property: 'index', direction: 'ASC'},
@@ -2740,6 +2864,126 @@ Ext.onReady( function() {
 		ns.app.stores.legendSet = legendSetStore;
 
 		// data
+
+		isScrolled = function(e) {
+			var el = e.srcElement,
+				scrollBottom = el.scrollTop + ((el.clientHeight / el.scrollHeight) * el.scrollHeight);
+
+			return scrollBottom / el.scrollHeight > 0.9;
+		};
+
+        indicatorLabel = Ext.create('Ext.form.Label', {
+            text: NS.i18n.available,
+            cls: 'ns-toolbar-multiselect-left-label',
+            style: 'margin-right:5px'
+        });
+
+        indicatorSearch = Ext.create('Ext.button.Button', {
+            width: 22,
+            height: 22,
+            style: 'background: url(images/search_14.png) 3px 3px no-repeat',
+            showFilter: function() {
+                indicatorLabel.hide();
+                this.hide();
+                indicatorFilter.show();
+                indicatorFilter.reset();
+            },
+            hideFilter: function() {
+                indicatorLabel.show();
+                this.show();
+                indicatorFilter.hide();
+                indicatorFilter.reset();
+            },
+            handler: function() {
+                this.showFilter();
+            }
+        });
+
+        indicatorFilter = Ext.create('Ext.form.field.Text', {
+            emptyText: 'Filter available..',
+            height: 22,
+            hidden: true,
+            enableKeyEvents: true,
+            listeners: {
+                keyup: {
+                    fn: function(cmp) {
+                        var value = indicatorGroup.getValue(),
+                            store = indicatorAvailableStore;
+
+                        if (Ext.isString(value) || Ext.isNumber(value)) {
+                            store.loadPage(null, cmp.getValue(), false);
+                        }
+                    },
+                    buffer: 100
+                },
+                show: function(cmp) {
+                    cmp.focus(false, 50);
+                }
+            }
+        });
+
+        indicatorGroup = Ext.create('Ext.form.field.ComboBox', {
+            cls: 'ns-combo',
+            style: 'margin-bottom:2px; margin-top:0px',
+            width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding,
+            valueField: 'id',
+            displayField: 'name',
+            emptyText: NS.i18n.select_indicator_group,
+            editable: false,
+            store: indicatorGroupStore,
+			loadAvailable: function(reset) {
+				var store = indicatorAvailableStore,
+					id = this.getValue();
+
+				if (id !== null) {
+                    if (reset) {
+                        store.reset();
+                    }
+
+                    store.loadPage(id, null, false);
+				}
+			},
+			listeners: {
+				select: function(cb) {
+					cb.loadAvailable(true);
+				}
+			}
+
+
+            //listeners: {
+                //select: function(cb) {
+                    //var store = indicatorAvailableStore,
+                        //id = cb.getValue();
+
+                    //store.parent = id;
+
+                    //if (ns.core.support.prototype.object.hasObject(store.storage, 'parent', id)) {
+                        //ns.core.web.storage.internal.load(store);
+                        //ns.core.web.multiSelect.filterAvailable(indicatorAvailable, indicatorSelected);
+                    //}
+                    //else {
+                        //var options = {
+                            //params: {
+                                //page: 1
+                            //},
+                            //callback: function(rec, operation, isSuccess) {
+                                //indicatorAvailableToolbar.setPageCount(operation.resultSet.total);
+                            //}
+                        //};
+
+                        //if (id === 0) {
+                            //store.proxy.url = ns.core.init.contextPath + '/api/indicators.json?links=false';
+                            //store.load(options);
+                        //}
+                        //else {
+                            //store.proxy.url = ns.core.init.contextPath + '/api/indicatorGroups/' + id + '/members.json?links=false';
+                            //store.load(options);
+                        //}
+                    //}
+                //}
+            //}
+        });
+
 		indicatorAvailable = Ext.create('Ext.ux.form.MultiSelect', {
 			cls: 'ns-toolbar-multiselect-left',
 			width: (ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding) / 2,
@@ -2747,11 +2991,9 @@ Ext.onReady( function() {
 			displayField: 'name',
 			store: indicatorAvailableStore,
 			tbar: [
-				{
-					xtype: 'label',
-					text: NS.i18n.available,
-					cls: 'ns-toolbar-multiselect-left-label'
-				},
+				indicatorLabel,
+                indicatorSearch,
+                indicatorFilter,
 				'->',
 				{
 					xtype: 'button',
@@ -2771,10 +3013,18 @@ Ext.onReady( function() {
 				}
 			],
 			listeners: {
-				afterrender: function() {
-					this.boundList.on('itemdblclick', function() {
-						ns.core.web.multiSelect.select(this, indicatorSelected);
-					}, this);
+				render: function(ms) {
+                    var el = Ext.get(ms.boundList.getEl().id + '-listEl').dom;
+
+                    el.addEventListener('scroll', function(e) {
+                        if (isScrolled(e) && !indicatorAvailableStore.isPending) {
+                            indicatorAvailableStore.loadPage(null, null, true);
+                        }
+                    });
+
+					ms.boundList.on('itemdblclick', function() {
+						ns.core.web.multiSelect.select(ms, indicatorSelected);
+					}, ms);
 				}
 			}
 		});
@@ -2849,46 +3099,13 @@ Ext.onReady( function() {
 				);
 			},
 			items: [
-				{
-					xtype: 'combobox',
-					cls: 'ns-combo',
-					style: 'margin-bottom:2px; margin-top:0px',
-					width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding,
-					valueField: 'id',
-					displayField: 'name',
-					emptyText: NS.i18n.select_indicator_group,
-					editable: false,
-					store: indicatorGroupStore,
-					listeners: {
-						select: function(cb) {
-							var store = indicatorAvailableStore,
-								id = cb.getValue();
-
-							store.parent = id;
-
-							if (ns.core.support.prototype.object.hasObject(store.storage, 'parent', id)) {
-								ns.core.web.storage.internal.load(store);
-								ns.core.web.multiSelect.filterAvailable(indicatorAvailable, indicatorSelected);
-							}
-							else {
-								if (id === 0) {
-									store.proxy.url = ns.core.init.contextPath + '/api/indicators.json?paging=false&links=false';
-									store.load();
-								}
-								else {
-									store.proxy.url = ns.core.init.contextPath + '/api/indicatorGroups/' + id + '.json';
-									store.load();
-								}
-							}
-						}
-					}
-				},
+				indicatorGroup,
 				{
 					xtype: 'panel',
 					layout: 'column',
 					bodyStyle: 'border-style:none',
 					items: [
-						indicatorAvailable,
+                        indicatorAvailable,
 						indicatorSelected
 					]
 				}
@@ -2903,18 +3120,68 @@ Ext.onReady( function() {
 			}
 		};
 
+        dataElementLabel = Ext.create('Ext.form.Label', {
+            text: NS.i18n.available,
+            cls: 'ns-toolbar-multiselect-left-label',
+            style: 'margin-right:5px'
+        });
+
+        dataElementSearch = Ext.create('Ext.button.Button', {
+            width: 22,
+            height: 22,
+            style: 'background: url(images/search_14.png) 3px 3px no-repeat',
+            showFilter: function() {
+                dataElementLabel.hide();
+                this.hide();
+                dataElementFilter.show();
+                dataElementFilter.reset();
+            },
+            hideFilter: function() {
+                dataElementLabel.show();
+                this.show();
+                dataElementFilter.hide();
+                dataElementFilter.reset();
+            },
+            handler: function() {
+                this.showFilter();
+            }
+        });
+
+        dataElementFilter = Ext.create('Ext.form.field.Text', {
+            emptyText: 'Filter available..',
+            height: 22,
+            hidden: true,
+            enableKeyEvents: true,
+            listeners: {
+                keyup: {
+                    fn: function(cmp) {
+                        var value = dataElementGroup.getValue(),
+                            store = dataElementAvailableStore;
+
+                        if (Ext.isString(value) || Ext.isNumber(value)) {
+                            store.loadPage(null, cmp.getValue(), false);
+                        }
+                    },
+                    buffer: 100
+                },
+                show: function(cmp) {
+                    cmp.focus(false, 50);
+                }
+            }
+        });
+
 		dataElementAvailable = Ext.create('Ext.ux.form.MultiSelect', {
 			cls: 'ns-toolbar-multiselect-left',
 			width: (ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding) / 2,
 			valueField: 'id',
 			displayField: 'name',
+            isPending: false,
+            page: 1,
 			store: dataElementAvailableStore,
 			tbar: [
-				{
-					xtype: 'label',
-					text: NS.i18n.available,
-					cls: 'ns-toolbar-multiselect-left-label'
-				},
+				dataElementLabel,
+                dataElementSearch,
+                dataElementFilter,
 				'->',
 				{
 					xtype: 'button',
@@ -2934,10 +3201,18 @@ Ext.onReady( function() {
 				}
 			],
 			listeners: {
-				afterrender: function() {
-					this.boundList.on('itemdblclick', function() {
-						ns.core.web.multiSelect.select(this, dataElementSelected);
-					}, this);
+				render: function(ms) {
+                    var el = Ext.get(ms.boundList.getEl().id + '-listEl').dom;
+
+                    el.addEventListener('scroll', function(e) {
+                        if (isScrolled(e) && !dataElementAvailableStore.isPending) {
+                            dataElementAvailableStore.loadPage(null, null, true);
+                        }
+                    });
+
+					ms.boundList.on('itemdblclick', function() {
+						ns.core.web.multiSelect.select(ms, dataElementSelected);
+					}, ms);
 				}
 			}
 		});
@@ -2982,7 +3257,7 @@ Ext.onReady( function() {
 			}
 		});
 
-		dataElementGroupComboBox = Ext.create('Ext.form.field.ComboBox', {
+		dataElementGroup = Ext.create('Ext.form.field.ComboBox', {
 			cls: 'ns-combo',
 			style: 'margin:0 2px 2px 0',
 			width: ns.core.conf.layout.west_fieldset_width - ns.core.conf.layout.west_width_padding - 90,
@@ -2991,23 +3266,21 @@ Ext.onReady( function() {
 			emptyText: NS.i18n.select_data_element_group,
 			editable: false,
 			store: dataElementGroupStore,
-			loadAvailable: function() {
+			loadAvailable: function(reset) {
 				var store = dataElementAvailableStore,
-					detailLevel = dataElementDetailLevel.getValue(),
-					value = this.getValue();
+					id = this.getValue();
 
-				if (value !== null) {
-					if (detailLevel === dimConf.dataElement.objectName) {
-						store.setTotalsProxy(value);
-					}
-					else {
-						store.setDetailsProxy(value);
-					}
+				if (id !== null) {
+                    if (reset) {
+                        store.reset();
+                    }
+
+                    store.loadPage(id, null, false);
 				}
 			},
 			listeners: {
 				select: function(cb) {
-					cb.loadAvailable();
+					cb.loadAvailable(true);
 				}
 			}
 		});
@@ -3031,21 +3304,7 @@ Ext.onReady( function() {
 			},
 			listeners: {
 				select: function(cb) {
-					var record = dataElementGroupStore.getById(0);
-
-					if (cb.getValue() === ns.core.conf.finals.dimension.operand.objectName && record) {
-						dataElementGroupStore.remove(record);
-					}
-
-					if (cb.getValue() === ns.core.conf.finals.dimension.dataElement.objectName && !record) {
-						dataElementGroupStore.insert(0, {
-							id: 0,
-							name: '[ ' + NS.i18n.all_data_element_groups + ' ]',
-							index: -1
-						});
-					}
-
-					dataElementGroupComboBox.loadAvailable();
+					dataElementGroup.loadAvailable(true);
 					dataElementSelectedStore.removeAll();
 				}
 			}
@@ -3085,7 +3344,7 @@ Ext.onReady( function() {
 					xtype: 'container',
 					layout: 'column',
 					items: [
-						dataElementGroupComboBox,
+						dataElementGroup,
 						dataElementDetailLevel
 					]
 				},
@@ -3094,7 +3353,7 @@ Ext.onReady( function() {
 					layout: 'column',
 					bodyStyle: 'border-style:none',
 					items: [
-						dataElementAvailable,
+                        dataElementAvailable,
 						dataElementSelected
 					]
 				}
