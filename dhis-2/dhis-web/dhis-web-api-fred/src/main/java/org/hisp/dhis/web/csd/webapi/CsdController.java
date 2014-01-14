@@ -35,9 +35,11 @@ import org.hisp.dhis.web.csd.domain.Envelope;
 import org.hisp.dhis.web.csd.domain.csd.CodedType;
 import org.hisp.dhis.web.csd.domain.csd.Csd;
 import org.hisp.dhis.web.csd.domain.csd.Facility;
+import org.hisp.dhis.web.csd.domain.csd.Geocode;
 import org.hisp.dhis.web.csd.domain.csd.Organization;
 import org.hisp.dhis.web.csd.domain.csd.OtherID;
 import org.hisp.dhis.web.csd.domain.csd.Record;
+import org.hisp.dhis.web.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -116,6 +118,24 @@ public class CsdController
 
             Organization organization = new Organization( "1.3.6.1.4.1.21367.200.99.1" );
             facility.getOrganizations().add( organization );
+
+            if ( OrganisationUnit.FEATURETYPE_POINT.equals( organisationUnit.getFeatureType() ) )
+            {
+                Geocode geocode = new Geocode();
+
+                try
+                {
+                    GeoUtils.Coordinates coordinates = GeoUtils.parseCoordinates( organisationUnit.getCoordinates() );
+
+                    geocode.setLongitude( coordinates.lng );
+                    geocode.setLatitude( coordinates.lat );
+                }
+                catch ( NumberFormatException ignored )
+                {
+                }
+
+                facility.setGeocode( geocode );
+            }
 
             Record record = new Record();
             record.setCreated( organisationUnit.getCreated() );
