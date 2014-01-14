@@ -30,70 +30,30 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "contact", namespace = "urn:ihe:iti:csd:2013" )
+public class Contact
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlElement( name = "person", namespace = "urn:ihe:iti:csd:2013" )
+    private Person person;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
-
-    @XmlAttribute( name = "status", required = true )
-    private String status;
-
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
-
-    public Record()
+    public Contact()
     {
     }
 
-    public Date getCreated()
+    public Person getPerson()
     {
-        return created;
+        return person;
     }
 
-    public void setCreated( Date created )
+    public void setPerson( Person person )
     {
-        this.created = created;
-    }
-
-    public Date getUpdated()
-    {
-        return updated;
-    }
-
-    public void setUpdated( Date updated )
-    {
-        this.updated = updated;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus( String status )
-    {
-        this.status = status;
-    }
-
-    public String getSourceDirectory()
-    {
-        return sourceDirectory;
-    }
-
-    public void setSourceDirectory( String sourceDirectory )
-    {
-        this.sourceDirectory = sourceDirectory;
+        this.person = person;
     }
 }

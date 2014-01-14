@@ -30,70 +30,97 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "name", namespace = "urn:ihe:iti:csd:2013" )
+public class Name
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlElement( name = "commonName", namespace = "urn:ihe:iti:csd:2013", required = true )
+    private List<CommonName> commonNames;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlElement( name = "honorific", namespace = "urn:ihe:iti:csd:2013" )
+    private String honorific;
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
+    @XmlElement( name = "forename", namespace = "urn:ihe:iti:csd:2013" )
+    private String forename;
 
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
+    @XmlElement( name = "otherNames", namespace = "urn:ihe:iti:csd:2013" )
+    private List<String> otherNames = new ArrayList<String>();
 
-    public Record()
+    @XmlElement( name = "surname", namespace = "urn:ihe:iti:csd:2013" )
+    private String surname;
+
+    @XmlElement( name = "suffix", namespace = "urn:ihe:iti:csd:2013" )
+    private String suffix;
+
+    public Name()
     {
     }
 
-    public Date getCreated()
+    public List<CommonName> getCommonNames()
     {
-        return created;
+        return commonNames;
     }
 
-    public void setCreated( Date created )
+    public void setCommonNames( List<CommonName> commonNames )
     {
-        this.created = created;
+        this.commonNames = commonNames;
     }
 
-    public Date getUpdated()
+    public String getHonorific()
     {
-        return updated;
+        return honorific;
     }
 
-    public void setUpdated( Date updated )
+    public void setHonorific( String honorific )
     {
-        this.updated = updated;
+        this.honorific = honorific;
     }
 
-    public String getStatus()
+    public String getForename()
     {
-        return status;
+        return forename;
     }
 
-    public void setStatus( String status )
+    public void setForename( String forename )
     {
-        this.status = status;
+        this.forename = forename;
     }
 
-    public String getSourceDirectory()
+    public List<String> getOtherNames()
     {
-        return sourceDirectory;
+        return otherNames;
     }
 
-    public void setSourceDirectory( String sourceDirectory )
+    public void setOtherNames( List<String> otherNames )
     {
-        this.sourceDirectory = sourceDirectory;
+        this.otherNames = otherNames;
+    }
+
+    public String getSurname()
+    {
+        return surname;
+    }
+
+    public void setSurname( String surname )
+    {
+        this.surname = surname;
+    }
+
+    public String getSuffix()
+    {
+        return suffix;
+    }
+
+    public void setSuffix( String suffix )
+    {
+        this.suffix = suffix;
     }
 }

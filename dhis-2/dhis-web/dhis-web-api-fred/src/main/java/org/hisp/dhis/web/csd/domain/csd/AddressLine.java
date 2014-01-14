@@ -30,70 +30,34 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
+public class AddressLine
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlElement( name = "component", namespace = "urn:ihe:iti:csd:2013" )
+    private String component;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlValue
+    private String body;
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
-
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
-
-    public Record()
+    public AddressLine()
     {
     }
 
-    public Date getCreated()
+    public String getComponent()
     {
-        return created;
+        return component;
     }
 
-    public void setCreated( Date created )
+    public void setComponent( String component )
     {
-        this.created = created;
-    }
-
-    public Date getUpdated()
-    {
-        return updated;
-    }
-
-    public void setUpdated( Date updated )
-    {
-        this.updated = updated;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus( String status )
-    {
-        this.status = status;
-    }
-
-    public String getSourceDirectory()
-    {
-        return sourceDirectory;
-    }
-
-    public void setSourceDirectory( String sourceDirectory )
-    {
-        this.sourceDirectory = sourceDirectory;
+        this.component = component;
     }
 }

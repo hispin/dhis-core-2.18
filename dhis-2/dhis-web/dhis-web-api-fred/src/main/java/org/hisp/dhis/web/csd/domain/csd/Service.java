@@ -31,69 +31,58 @@ package org.hisp.dhis.web.csd.domain.csd;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "service", namespace = "urn:ihe:iti:csd:2013" )
+public class Service
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlAttribute( name = "oid" )
+    private String oid;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlElement( name = "language", namespace = "urn:ihe:iti:csd:2013" )
+    private Language language;
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
+    @XmlElement( name = "operatingHours", namespace = "urn:ihe:iti:csd:2013" )
+    private List<OperatingHours> operatingHours = new ArrayList<OperatingHours>();
 
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
-
-    public Record()
+    public Service()
     {
     }
 
-    public Date getCreated()
+    public String getOid()
     {
-        return created;
+        return oid;
     }
 
-    public void setCreated( Date created )
+    public void setOid( String oid )
     {
-        this.created = created;
+        this.oid = oid;
     }
 
-    public Date getUpdated()
+    public Language getLanguage()
     {
-        return updated;
+        return language;
     }
 
-    public void setUpdated( Date updated )
+    public void setLanguage( Language language )
     {
-        this.updated = updated;
+        this.language = language;
     }
 
-    public String getStatus()
+    public List<OperatingHours> getOperatingHours()
     {
-        return status;
+        return operatingHours;
     }
 
-    public void setStatus( String status )
+    public void setOperatingHours( List<OperatingHours> operatingHours )
     {
-        this.status = status;
-    }
-
-    public String getSourceDirectory()
-    {
-        return sourceDirectory;
-    }
-
-    public void setSourceDirectory( String sourceDirectory )
-    {
-        this.sourceDirectory = sourceDirectory;
+        this.operatingHours = operatingHours;
     }
 }
