@@ -49,16 +49,6 @@ public class TranslationServiceTest
     private TranslationService translationService;
 
     // -------------------------------------------------------------------------
-    // Set up/tear down
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void setUpTest()
-    {
-        translationService = (TranslationService) getBean( TranslationService.ID );
-    }
-    
-    // -------------------------------------------------------------------------
     // Testdata
     // -------------------------------------------------------------------------
 
@@ -78,6 +68,16 @@ public class TranslationServiceTest
     private Translation translation2b = new Translation( className2, id1, locale2, "name", "hey" );
     private Translation translation2c = new Translation( className2, id2, locale3, "name", "bonjour" );
 
+    // -------------------------------------------------------------------------
+    // Set up/tear down
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void setUpTest()
+    {
+        translationService = (TranslationService) getBean( TranslationService.ID );
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
