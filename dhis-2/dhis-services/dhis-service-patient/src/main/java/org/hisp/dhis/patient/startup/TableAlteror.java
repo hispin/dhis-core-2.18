@@ -496,7 +496,7 @@ public class TableAlteror
             ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patient" );
 
             // Only execute once
-            if ( !resultSet.next() )
+            if ( resultSet.next() )
             {
                 Integer max = jdbcTemplate.queryForObject( "select max(patientattributeid) from patientattribute",
                     Integer.class );
@@ -544,9 +544,7 @@ public class TableAlteror
 
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "gender", uid );
-                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
-                    + " and property='gender' " );
+                executeSql( "UPDATE validationcriteria SET property='gender' WHERE property='gender' " );
 
                 // ---------------------------------------------------------------------
                 // Death date
@@ -567,9 +565,7 @@ public class TableAlteror
 
                 // Update custom entry form && Validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "deathDate", uid );
-                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
-                    + " and property='deathDate' " );
+                executeSql( "UPDATE validationcriteria SET property='deathDate' WHERE property='deathDate' " );
 
                 // ---------------------------------------------------------------------
                 // registrationDate
@@ -591,9 +587,7 @@ public class TableAlteror
 
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "registrationDate", uid );
-                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
-                    + " and property='registrationDate' " );
+                executeSql( "UPDATE validationcriteria SET property='registrationDate' WHERE property='registrationDate' " );
 
                 // ---------------------------------------------------------------------
                 // isDead
@@ -614,9 +608,7 @@ public class TableAlteror
 
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "isDead", uid );
-                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
-                    + " and property='isDead' " );
+                executeSql( "UPDATE validationcriteria SET property='isDead' WHERE property='isDead' " );
 
                 // ---------------------------------------------------------------------
                 // underAge
@@ -637,9 +629,7 @@ public class TableAlteror
 
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "underAge", uid );
-                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
-                    + " and property='underAge' " );
+                executeSql( "UPDATE validationcriteria SET property='underAge' WHERE property='underAge' " );
 
                 // ---------------------------------------------------------------------
                 // DobType
@@ -684,9 +674,7 @@ public class TableAlteror
 
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "dobType", uid );
-                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
-                    + " and property='dobType' " );
+                executeSql( "UPDATE validationcriteria SET property='dobType' WHERE property='dobType' " );
 
                 // -------------------------------------------------------------
                 // Birthdate
@@ -707,9 +695,7 @@ public class TableAlteror
 
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "birthDate", uid );
-                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
-                    + " and property='birthDate' " );
+                executeSql( "UPDATE validationcriteria SET property='birthDate' WHERE property='birthDate' " );
 
                 // -------------------------------------------------------------
                 // Age
@@ -730,9 +716,7 @@ public class TableAlteror
 
                 // Update custom entry form && validation criteria
                 removeFixedAttributeInCustomRegistrationForm( "age", uid );
-                executeSql( "UPDATE validationcriteria SET property='" + resultSet.getInt( "property" )
-                    + "' WHERE validationcriteriaid=" + resultSet.getInt( "validationcriteriaid" )
-                    + " and property='age' " );
+                executeSql( "UPDATE validationcriteria SET property='age' WHERE property='age' " );
 
                 // -------------------------------------------------------------
                 // Phone number
