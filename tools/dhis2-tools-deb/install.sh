@@ -6,10 +6,13 @@ echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main"
 wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
 
 # need to use a ppa for nginx
-sudo apt-get -y install python-software-properties -y
-sudo add-apt-repository ppa:nginx/stable -y 
-sudo apt-get -y update
+apt-get -y install python-software-properties -y
+add-apt-repository ppa:nginx/stable -y 
+apt-get -y update
 
 # install the dhis2-tools deb
 dpkg -i dhis2-tools* 
 apt-get -y install -f
+
+# Uncomment below to install postgres and nginx servers on this machine
+# apt-get -y install nginx postgresql-9.2 
