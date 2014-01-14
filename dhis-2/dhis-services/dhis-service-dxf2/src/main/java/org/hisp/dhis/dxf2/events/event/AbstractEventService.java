@@ -529,6 +529,12 @@ public abstract class AbstractEventService
         Event event = new Event();
 
         event.setEvent( programStageInstance.getUid() );
+
+        if ( programStageInstance.getProgramInstance().getPatient() != null )
+        {
+            event.setPerson( programStageInstance.getProgramInstance().getPatient().getUid() );
+        }
+
         event.setStatus( EventStatus.fromInt( programStageInstance.getStatus() ) );
         event.setEventDate( programStageInstance.getExecutionDate().toString() );
         event.setStoredBy( programStageInstance.getCompletedUser() );
