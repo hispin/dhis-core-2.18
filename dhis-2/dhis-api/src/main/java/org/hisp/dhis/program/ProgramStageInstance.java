@@ -131,13 +131,9 @@ public class ProgramStageInstance
             return false;
         }
 
-        // TODO include due date and execution date to make consistent with
-        // hashcode
-
         final ProgramStageInstance other = (ProgramStageInstance) object;
 
         return programInstance.equals( other.getProgramInstance() ) && programStage.equals( other.getProgramStage() );
-
     }
 
     @Override
@@ -148,8 +144,6 @@ public class ProgramStageInstance
 
         result = result * prime + programInstance.hashCode();
         result = result * prime + programStage.hashCode();
-        result = result * prime + dueDate.hashCode();
-        result = result * prime + ((executionDate == null) ? 0 : executionDate.hashCode());
 
         return result;
     }
