@@ -2899,25 +2899,41 @@ Ext.onReady( function() {
             }
         });
 
-        indicatorFilter = Ext.create('Ext.form.field.Text', {
+        indicatorFilter = Ext.create('Ext.form.field.Trigger', {
+            cls: 'ns-trigger-filter',
             emptyText: 'Filter available..',
             height: 22,
             hidden: true,
             enableKeyEvents: true,
+            fieldStyle: 'height:22px; border-right:0 none',
+            style: 'height:22px',
+            onTriggerClick: function() {
+                this.reset();
+                this.onKeyUp();
+            },
+            onKeyUp: function() {
+                var value = indicatorGroup.getValue(),
+                    store = indicatorAvailableStore;
+
+                if (Ext.isString(value) || Ext.isNumber(value)) {
+                    store.loadPage(null, this.getValue(), false);
+                }
+            },
             listeners: {
                 keyup: {
                     fn: function(cmp) {
-                        var value = indicatorGroup.getValue(),
-                            store = indicatorAvailableStore;
-
-                        if (Ext.isString(value) || Ext.isNumber(value)) {
-                            store.loadPage(null, cmp.getValue(), false);
-                        }
+                        cmp.onKeyUp();
                     },
                     buffer: 100
                 },
                 show: function(cmp) {
                     cmp.focus(false, 50);
+                },
+                focus: function(cmp) {
+                    cmp.addCls('ns-trigger-filter-focused');
+                },
+                blur: function(cmp) {
+                    cmp.removeCls('ns-trigger-filter-focused');
                 }
             }
         });
@@ -3147,25 +3163,41 @@ Ext.onReady( function() {
             }
         });
 
-        dataElementFilter = Ext.create('Ext.form.field.Text', {
+        dataElementFilter = Ext.create('Ext.form.field.Trigger', {
+            cls: 'ns-trigger-filter',
             emptyText: 'Filter available..',
             height: 22,
             hidden: true,
             enableKeyEvents: true,
+            fieldStyle: 'height:22px; border-right:0 none',
+            style: 'height:22px',
+            onTriggerClick: function() {
+                this.reset();
+                this.onKeyUp();
+            },
+            onKeyUp: function() {
+                var value = dataElementGroup.getValue(),
+                    store = dataElementAvailableStore;
+
+                if (Ext.isString(value) || Ext.isNumber(value)) {
+                    store.loadPage(null, this.getValue(), false);
+                }
+            },
             listeners: {
                 keyup: {
                     fn: function(cmp) {
-                        var value = dataElementGroup.getValue(),
-                            store = dataElementAvailableStore;
-
-                        if (Ext.isString(value) || Ext.isNumber(value)) {
-                            store.loadPage(null, cmp.getValue(), false);
-                        }
+                        cmp.onKeyUp();
                     },
                     buffer: 100
                 },
                 show: function(cmp) {
                     cmp.focus(false, 50);
+                },
+                focus: function(cmp) {
+                    cmp.addCls('ns-trigger-filter-focused');
+                },
+                blur: function(cmp) {
+                    cmp.removeCls('ns-trigger-filter-focused');
                 }
             }
         });
@@ -3281,6 +3313,8 @@ Ext.onReady( function() {
 			listeners: {
 				select: function(cb) {
 					cb.loadAvailable(true);
+
+                    dataElementSearch.enable();
 				}
 			}
 		});
