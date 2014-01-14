@@ -43,7 +43,7 @@ import java.util.List;
 public class Name
 {
     @XmlElement( name = "commonName", namespace = "urn:ihe:iti:csd:2013", required = true )
-    private List<CommonName> commonNames;
+    private List<CommonName> commonNames = new ArrayList<CommonName>();
 
     @XmlElement( name = "honorific", namespace = "urn:ihe:iti:csd:2013" )
     private String honorific;

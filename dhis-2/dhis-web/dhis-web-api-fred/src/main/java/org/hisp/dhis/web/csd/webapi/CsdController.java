@@ -33,11 +33,15 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.csd.domain.Envelope;
 import org.hisp.dhis.web.csd.domain.csd.CodedType;
+import org.hisp.dhis.web.csd.domain.csd.CommonName;
+import org.hisp.dhis.web.csd.domain.csd.Contact;
 import org.hisp.dhis.web.csd.domain.csd.Csd;
 import org.hisp.dhis.web.csd.domain.csd.Facility;
 import org.hisp.dhis.web.csd.domain.csd.Geocode;
+import org.hisp.dhis.web.csd.domain.csd.Name;
 import org.hisp.dhis.web.csd.domain.csd.Organization;
 import org.hisp.dhis.web.csd.domain.csd.OtherID;
+import org.hisp.dhis.web.csd.domain.csd.Person;
 import org.hisp.dhis.web.csd.domain.csd.Record;
 import org.hisp.dhis.web.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +104,20 @@ public class CsdController
             facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
 
             facility.setPrimaryName( organisationUnit.getDisplayName() );
+
+            if ( organisationUnit.getContactPerson() != null )
+            {
+                Contact contact = new Contact();
+                Person person = new Person();
+                Name name = new Name();
+
+                contact.setPerson( person );
+                person.setName( name );
+
+                name.getCommonNames().add( new CommonName( organisationUnit.getContactPerson() ) );
+
+                facility.getContacts().add( contact );
+            }
 
             for ( OrganisationUnitGroup organisationUnitGroup : organisationUnit.getGroups() )
             {
