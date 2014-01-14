@@ -110,14 +110,14 @@ public class SystemSettingStoreTest
     @Test
     public void testDeleteSystemSetting()
     {
-        systemSettingStore.save( settingA );
-        systemSettingStore.save( settingB );
+        int idA = systemSettingStore.save( settingA );
+        int idB = systemSettingStore.save( settingB );
         systemSettingStore.save( settingC );
 
-        systemSettingStore.delete( systemSettingStore.getByName( settingA.getName() ) );
+        systemSettingStore.delete( settingA );
 
-        assertNull( systemSettingStore.getByName( settingA.getName() ) );
-        assertEquals( 2, systemSettingStore.getAll().size() );
+        assertNull( systemSettingStore.get( idA ) );
+        assertNotNull( systemSettingStore.get( idB ) );
     }
 
     @Test

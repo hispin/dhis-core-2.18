@@ -236,59 +236,6 @@ public class ValidationRuleStoreTest
         assertEquals( rule.getName(), "ValidationRuleA" );
     }
 
-//    @Test
-//    public void testGetValidationRulesByDataElements()
-//    {
-//        Set<DataElement> dataElementsA = new HashSet<DataElement>();
-//        dataElementsA.add( dataElementA );
-//        dataElementsA.add( dataElementB );
-//
-//        Set<DataElement> dataElementsB = new HashSet<DataElement>();
-//        dataElementsB.add( dataElementC );
-//        dataElementsB.add( dataElementD );
-//
-//        Set<DataElement> dataElementsC = new HashSet<DataElement>();
-//
-//        Set<DataElement> dataElementsD = new HashSet<DataElement>();
-//        dataElementsD.addAll( dataElementsA );
-//        dataElementsD.addAll( dataElementsB );
-//
-//        Expression expression1 = new Expression( "Expression1", "Expression1", dataElementsA, optionCombos );
-//        Expression expression2 = new Expression( "Expression2", "Expression2", dataElementsB, optionCombos );
-//        Expression expression3 = new Expression( "Expression3", "Expression3", dataElementsC, optionCombos );
-//
-//        expressionService.addExpression( expression1 );
-//        expressionService.addExpression( expression2 );
-//        expressionService.addExpression( expression3 );
-//
-//        ValidationRule ruleA = createValidationRule( 'A', equal_to, expression1, expression3, periodType );
-//        ValidationRule ruleB = createValidationRule( 'B', equal_to, expression2, expression3, periodType );
-//        ValidationRule ruleC = createValidationRule( 'C', equal_to, expression3, expression3, periodType );
-//
-//        validationRuleStore.save( ruleA );
-//        validationRuleStore.save( ruleB );
-//        validationRuleStore.save( ruleC );
-//        
-//        Collection<ValidationRule> rules = validationRuleStore.getValidationRulesByDataElements( dataElementsA );
-//
-//        assertNotNull( rules );
-//        assertEquals( 1, rules.size() );
-//        assertTrue( rules.contains( ruleA ) );
-//
-//        rules = validationRuleStore.getValidationRulesByDataElements( dataElementsB );
-//
-//        assertNotNull( rules );
-//        assertEquals( 1, rules.size() );
-//        assertTrue( rules.contains( ruleB ) );
-//
-//        rules = validationRuleStore.getValidationRulesByDataElements( dataElementsD );
-//
-//        assertNotNull( rules );
-//        assertEquals( 2, rules.size() );
-//        assertTrue( rules.contains( ruleA ) );
-//        assertTrue( rules.contains( ruleB ) );
-//    }
-
     @Test
     public void testGetValidationRuleCount()
     {
