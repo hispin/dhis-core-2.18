@@ -93,14 +93,9 @@ public class CsdController
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             Facility facility = new Facility();
-            facility.setOid( organisationUnit.getCode() ); // TODO use code for OID?
+            facility.setOid( organisationUnit.getCode() ); // TODO skip if code is null??
 
             facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
-
-            if ( organisationUnit.getCode() != null )
-            {
-                facility.getOtherID().add( new OtherID( organisationUnit.getCode(), "dhis2-code" ) );
-            }
 
             facility.setPrimaryName( organisationUnit.getDisplayName() );
 
