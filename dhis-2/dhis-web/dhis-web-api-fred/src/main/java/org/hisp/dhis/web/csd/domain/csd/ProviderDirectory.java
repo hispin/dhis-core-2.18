@@ -30,69 +30,13 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-public class Csd
+@XmlRootElement( name = "providerDirectory", namespace = "urn:ihe:iti:csd:2013" )
+public class ProviderDirectory
 {
-    @XmlElement( name = "organizationDirectory", namespace = "urn:ihe:iti:csd:2013" )
-    private OrganizationDirectory organizationDirectory = new OrganizationDirectory();
-
-    @XmlElement( name = "serviceDirectory", namespace = "urn:ihe:iti:csd:2013" )
-    private ServiceDirectory serviceDirectory = new ServiceDirectory();
-
-    @XmlElement( name = "facilityDirectory", namespace = "urn:ihe:iti:csd:2013" )
-    private FacilityDirectory facilityDirectory = new FacilityDirectory();
-
-    @XmlElement( name = "providerDirectory", namespace = "urn:ihe:iti:csd:2013" )
-    private ProviderDirectory providerDirectory = new ProviderDirectory();
-
-    public Csd()
-    {
-    }
-
-    public OrganizationDirectory getOrganizationDirectory()
-    {
-        return organizationDirectory;
-    }
-
-    public void setOrganizationDirectory( OrganizationDirectory organizationDirectory )
-    {
-        this.organizationDirectory = organizationDirectory;
-    }
-
-    public ServiceDirectory getServiceDirectory()
-    {
-        return serviceDirectory;
-    }
-
-    public void setServiceDirectory( ServiceDirectory serviceDirectory )
-    {
-        this.serviceDirectory = serviceDirectory;
-    }
-
-    public FacilityDirectory getFacilityDirectory()
-    {
-        return facilityDirectory;
-    }
-
-    public void setFacilityDirectory( FacilityDirectory facilityDirectory )
-    {
-        this.facilityDirectory = facilityDirectory;
-    }
-
-    public ProviderDirectory getProviderDirectory()
-    {
-        return providerDirectory;
-    }
-
-    public void setProviderDirectory( ProviderDirectory providerDirectory )
-    {
-        this.providerDirectory = providerDirectory;
-    }
 }

@@ -71,6 +71,11 @@ public class Organization
     {
     }
 
+    public Organization( String oid )
+    {
+        this.oid = oid;
+    }
+
     public String getOid()
     {
         return oid;

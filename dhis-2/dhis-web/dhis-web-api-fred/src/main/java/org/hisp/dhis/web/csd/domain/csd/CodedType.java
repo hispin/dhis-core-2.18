@@ -54,6 +54,13 @@ public class CodedType
     {
     }
 
+    public CodedType( String code, String codingSchema, String value )
+    {
+        this.code = code;
+        this.codingSchema = codingSchema;
+        this.value = value;
+    }
+
     public String getCode()
     {
         return code;
