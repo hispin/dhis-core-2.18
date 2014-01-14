@@ -33,6 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.csd.domain.Envelope;
 import org.hisp.dhis.web.csd.domain.csd.Csd;
 import org.hisp.dhis.web.csd.domain.csd.Facility;
+import org.hisp.dhis.web.csd.domain.csd.OtherID;
 import org.hisp.dhis.web.csd.domain.csd.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -89,7 +90,15 @@ public class CsdController
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             Facility facility = new Facility();
-            facility.setOid( organisationUnit.getUid() );
+            facility.setOid( organisationUnit.getUid() ); // TODO use code for OID?
+
+            facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
+
+            if ( organisationUnit.getCode() != null )
+            {
+                facility.getOtherID().add( new OtherID( organisationUnit.getCode(), "dhis2-code" ) );
+            }
+
             facility.setPrimaryName( organisationUnit.getDisplayName() );
 
             Record record = new Record();

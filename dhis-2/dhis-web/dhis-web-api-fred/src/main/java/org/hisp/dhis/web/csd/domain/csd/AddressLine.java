@@ -30,7 +30,7 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -41,11 +41,11 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlRootElement( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
 public class AddressLine
 {
-    @XmlElement( name = "component", namespace = "urn:ihe:iti:csd:2013" )
+    @XmlAttribute( name = "component" )
     private String component;
 
     @XmlValue
-    private String body;
+    private String value;
 
     public AddressLine()
     {
@@ -59,5 +59,15 @@ public class AddressLine
     public void setComponent( String component )
     {
         this.component = component;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
 }
