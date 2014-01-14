@@ -294,8 +294,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
 
-        executeSql( "UPDATE patientattribute SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
-        executeSql( "UPDATE patientidentifiertype SET displayInListNoProgram=false WHERE displayInListNoProgram is null" );
+        executeSql( "UPDATE patientattribute SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
+        executeSql( "UPDATE patientidentifiertype SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
         
         updateProgramAttributes();
     }
@@ -321,8 +321,8 @@ public class TableAlteror
         executeSql( "DROP TABLE program_patientattributes" );
         executeSql( "DROP TABLE program_patientidentifiertypes" );
 
-        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedInList" );
-        executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN personDisplayName" );
+        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedinlist" );
+        executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN persondisplayname" );
     }
     
     private void updateUid()
