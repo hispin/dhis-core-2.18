@@ -54,4 +54,34 @@ public class Person
     public Person()
     {
     }
+
+    public Name getName()
+    {
+        return name;
+    }
+
+    public void setName( Name name )
+    {
+        this.name = name;
+    }
+
+    public List<Address> getAddresses()
+    {
+        return addresses;
+    }
+
+    public void setAddresses( List<Address> addresses )
+    {
+        this.addresses = addresses;
+    }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender( String gender )
+    {
+        this.gender = gender;
+    }
 }

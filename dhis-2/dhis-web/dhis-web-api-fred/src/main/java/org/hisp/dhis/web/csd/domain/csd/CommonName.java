@@ -45,10 +45,15 @@ public class CommonName
     private String language;
 
     @XmlValue
-    private String body;
+    private String value;
 
     public CommonName()
     {
+    }
+
+    public CommonName( String value )
+    {
+        this.value = value;
     }
 
     public String getLanguage()
@@ -61,13 +66,13 @@ public class CommonName
         this.language = language;
     }
 
-    public String getBody()
+    public String getValue()
     {
-        return body;
+        return value;
     }
 
-    public void setBody( String body )
+    public void setValue( String value )
     {
-        this.body = body;
+        this.value = value;
     }
 }
