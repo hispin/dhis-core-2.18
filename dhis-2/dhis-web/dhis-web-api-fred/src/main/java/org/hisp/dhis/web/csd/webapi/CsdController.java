@@ -58,12 +58,6 @@ public class CsdController
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    @RequestMapping( value = "", method = RequestMethod.GET )
-    public void index( HttpServletRequest request, HttpServletResponse response ) throws IOException
-    {
-        response.getWriter().println( "Hello." );
-    }
-
     @RequestMapping( value = "", method = RequestMethod.POST )
     public void csdRequest( @RequestBody Envelope envelope, HttpServletResponse response ) throws IOException
     {
