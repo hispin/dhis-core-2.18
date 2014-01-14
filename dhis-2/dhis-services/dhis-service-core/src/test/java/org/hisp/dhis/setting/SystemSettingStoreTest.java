@@ -71,22 +71,22 @@ public class SystemSettingStoreTest
     @Test
     public void testAddSystemSetting()
     {
-        systemSettingStore.save( settingA );
+        int idA = systemSettingStore.save( settingA );
         systemSettingStore.save( settingB );
         systemSettingStore.save( settingC );
 
-        SystemSetting s = systemSettingStore.getByName( settingA.getName() );
-        assertNotNull( s );
-        assertEquals( "Setting1", s.getName() );
-        assertEquals( "Value1", s.getValue() );
+        settingA = systemSettingStore.get( idA );
+        assertNotNull( settingA );
+        assertEquals( "Setting1", settingA.getName() );
+        assertEquals( "Value1", settingA.getValue() );
 
         settingA.setValue( new String( "Value1.1" ) );
-        systemSettingStore.save( settingA );
+        systemSettingStore.update( settingA );
 
-        s = systemSettingStore.getByName( settingA.getName() );
-        assertNotNull( s );
-        assertEquals( "Setting1", s.getName() );
-        assertEquals( "Value1.1", s.getValue() );        
+        settingA = systemSettingStore.get( idA );
+        assertNotNull( settingA );
+        assertEquals( "Setting1", settingA.getName() );
+        assertEquals( "Value1.1", settingA.getValue() );        
     }
 
     @Test
