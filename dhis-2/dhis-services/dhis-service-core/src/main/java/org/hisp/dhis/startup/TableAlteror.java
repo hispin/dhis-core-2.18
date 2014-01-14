@@ -367,6 +367,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataelement ADD CONSTRAINT dataelement_code_key UNIQUE(code)" );
         executeSql( "ALTER TABLE indicator ADD CONSTRAINT indicator_code_key UNIQUE(code)" );
         executeSql( "ALTER TABLE organisationunit ADD CONSTRAINT organisationunit_code_key UNIQUE(code)" );
+        executeSql( "ALTER TABLE organisationunit ALTER COLUMN code TYPE varchar(50)" );
 
         // remove uuid
 

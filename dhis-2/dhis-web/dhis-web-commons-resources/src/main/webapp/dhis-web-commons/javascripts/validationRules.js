@@ -73,7 +73,7 @@ var validationRules = {
             "rangelength" : [ 2, 50 ]
         },
         "code" : {
-            "rangelength" : [ 0, 25 ],
+            "rangelength" : [ 0, 49 ],
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : false
         },
