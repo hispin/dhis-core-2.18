@@ -92,9 +92,9 @@ public class SystemSettingStoreTest
     @Test
     public void testUpdateSystemSetting()
     {
-        systemSettingStore.save( settingA );
+        int id = systemSettingStore.save( settingA );
         
-        settingA = systemSettingStore.getByName( "Setting1" );
+        settingA = systemSettingStore.get( id );
         
         assertEquals( "Value1", settingA.getValue() );
         
@@ -102,7 +102,7 @@ public class SystemSettingStoreTest
         
         systemSettingStore.update( settingA );
 
-        settingA = systemSettingStore.getByName( "Setting1" );
+        settingA = systemSettingStore.get( id );
         
         assertEquals( "Value2", settingA.getValue() );
     }
