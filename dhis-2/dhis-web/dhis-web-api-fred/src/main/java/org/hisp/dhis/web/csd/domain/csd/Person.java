@@ -30,70 +30,28 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "person", namespace = "urn:ihe:iti:csd:2013" )
+public class Person
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlElement( name = "name", namespace = "urn:ihe:iti:csd:2013" )
+    private Name name;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
+    private List<Address> addresses = new ArrayList<Address>();
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
+    @XmlElement( name = "gender", namespace = "urn:ihe:iti:csd:2013" )
+    private String gender;
 
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
-
-    public Record()
+    public Person()
     {
-    }
-
-    public Date getCreated()
-    {
-        return created;
-    }
-
-    public void setCreated( Date created )
-    {
-        this.created = created;
-    }
-
-    public Date getUpdated()
-    {
-        return updated;
-    }
-
-    public void setUpdated( Date updated )
-    {
-        this.updated = updated;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus( String status )
-    {
-        this.status = status;
-    }
-
-    public String getSourceDirectory()
-    {
-        return sourceDirectory;
-    }
-
-    public void setSourceDirectory( String sourceDirectory )
-    {
-        this.sourceDirectory = sourceDirectory;
     }
 }

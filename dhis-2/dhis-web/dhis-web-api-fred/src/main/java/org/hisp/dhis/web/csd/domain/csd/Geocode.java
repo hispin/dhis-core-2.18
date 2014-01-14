@@ -30,70 +30,69 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "geocode", namespace = "urn:ihe:iti:csd:2013" )
+public class Geocode
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlElement( name = "latitude", namespace = "urn:ihe:iti:csd:2013", required = true )
+    private Double latitude;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlElement( name = "longitude", namespace = "urn:ihe:iti:csd:2013", required = true )
+    private Double longitude;
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
+    @XmlElement( name = "altitude", namespace = "urn:ihe:iti:csd:2013" )
+    private Double altitude;
 
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
+    @XmlElement( name = "coordinateSystem", namespace = "urn:ihe:iti:csd:2013" )
+    private String coordinateSystem;
 
-    public Record()
+    public Geocode()
     {
     }
 
-    public Date getCreated()
+    public Double getLatitude()
     {
-        return created;
+        return latitude;
     }
 
-    public void setCreated( Date created )
+    public void setLatitude( Double latitude )
     {
-        this.created = created;
+        this.latitude = latitude;
     }
 
-    public Date getUpdated()
+    public Double getLongitude()
     {
-        return updated;
+        return longitude;
     }
 
-    public void setUpdated( Date updated )
+    public void setLongitude( Double longitude )
     {
-        this.updated = updated;
+        this.longitude = longitude;
     }
 
-    public String getStatus()
+    public Double getAltitude()
     {
-        return status;
+        return altitude;
     }
 
-    public void setStatus( String status )
+    public void setAltitude( Double altitude )
     {
-        this.status = status;
+        this.altitude = altitude;
     }
 
-    public String getSourceDirectory()
+    public String getCoordinateSystem()
     {
-        return sourceDirectory;
+        return coordinateSystem;
     }
 
-    public void setSourceDirectory( String sourceDirectory )
+    public void setCoordinateSystem( String coordinateSystem )
     {
-        this.sourceDirectory = sourceDirectory;
+        this.coordinateSystem = coordinateSystem;
     }
 }

@@ -32,68 +32,47 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "otherID", namespace = "urn:ihe:iti:csd:2013" )
+public class OtherID
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlAttribute( name = "code", required = true )
+    private String code;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlAttribute( name = "assigningAuthorityName", required = true )
+    private String assigningAuthorityName;
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
-
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
-
-    public Record()
+    public OtherID()
     {
     }
 
-    public Date getCreated()
+    public OtherID( String code, String assigningAuthorityName )
     {
-        return created;
+        this.code = code;
+        this.assigningAuthorityName = assigningAuthorityName;
     }
 
-    public void setCreated( Date created )
+    public String getCode()
     {
-        this.created = created;
+        return code;
     }
 
-    public Date getUpdated()
+    public void setCode( String code )
     {
-        return updated;
+        this.code = code;
     }
 
-    public void setUpdated( Date updated )
+    public String getAssigningAuthorityName()
     {
-        this.updated = updated;
+        return assigningAuthorityName;
     }
 
-    public String getStatus()
+    public void setAssigningAuthorityName( String assigningAuthorityName )
     {
-        return status;
-    }
-
-    public void setStatus( String status )
-    {
-        this.status = status;
-    }
-
-    public String getSourceDirectory()
-    {
-        return sourceDirectory;
-    }
-
-    public void setSourceDirectory( String sourceDirectory )
-    {
-        this.sourceDirectory = sourceDirectory;
+        this.assigningAuthorityName = assigningAuthorityName;
     }
 }

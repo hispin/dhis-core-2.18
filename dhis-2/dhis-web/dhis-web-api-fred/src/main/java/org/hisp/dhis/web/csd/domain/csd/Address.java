@@ -30,70 +30,45 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
+public class Address
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlElement( name = "type", namespace = "urn:ihe:iti:csd:2013" )
+    private String type;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlElement( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
+    private List<AddressLine> addressLines = new ArrayList<AddressLine>();
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
-
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
-
-    public Record()
+    public Address()
     {
     }
 
-    public Date getCreated()
+    public String getType()
     {
-        return created;
+        return type;
     }
 
-    public void setCreated( Date created )
+    public void setType( String type )
     {
-        this.created = created;
+        this.type = type;
     }
 
-    public Date getUpdated()
+    public List<AddressLine> getAddressLines()
     {
-        return updated;
+        return addressLines;
     }
 
-    public void setUpdated( Date updated )
+    public void setAddressLines( List<AddressLine> addressLines )
     {
-        this.updated = updated;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus( String status )
-    {
-        this.status = status;
-    }
-
-    public String getSourceDirectory()
-    {
-        return sourceDirectory;
-    }
-
-    public void setSourceDirectory( String sourceDirectory )
-    {
-        this.sourceDirectory = sourceDirectory;
+        this.addressLines = addressLines;
     }
 }

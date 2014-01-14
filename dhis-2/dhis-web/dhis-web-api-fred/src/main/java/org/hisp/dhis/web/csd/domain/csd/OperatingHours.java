@@ -30,7 +30,7 @@ package org.hisp.dhis.web.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
@@ -38,62 +38,75 @@ import java.util.Date;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "operatingHours", namespace = "urn:ihe:iti:csd:2013" )
+public class OperatingHours
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlElement( name = "openFlag", namespace = "urn:ihe:iti:csd:2013" )
+    private String openFlag;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlElement( name = "dayOfTheWeek", namespace = "urn:ihe:iti:csd:2013" )
+    private String dayOfTheWeek;
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
+    @XmlElement( name = "beginningHour", namespace = "urn:ihe:iti:csd:2013" )
+    private Date beginningHour;
 
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
+    @XmlElement( name = "endingHour", namespace = "urn:ihe:iti:csd:2013" )
+    private Date endingHour;
 
-    public Record()
+    @XmlElement( name = "beginEffectiveDate", namespace = "urn:ihe:iti:csd:2013" )
+    private Date beginEffectiveDate;
+
+    public OperatingHours()
     {
     }
 
-    public Date getCreated()
+    public String getOpenFlag()
     {
-        return created;
+        return openFlag;
     }
 
-    public void setCreated( Date created )
+    public void setOpenFlag( String openFlag )
     {
-        this.created = created;
+        this.openFlag = openFlag;
     }
 
-    public Date getUpdated()
+    public String getDayOfTheWeek()
     {
-        return updated;
+        return dayOfTheWeek;
     }
 
-    public void setUpdated( Date updated )
+    public void setDayOfTheWeek( String dayOfTheWeek )
     {
-        this.updated = updated;
+        this.dayOfTheWeek = dayOfTheWeek;
     }
 
-    public String getStatus()
+    public Date getBeginningHour()
     {
-        return status;
+        return beginningHour;
     }
 
-    public void setStatus( String status )
+    public void setBeginningHour( Date beginningHour )
     {
-        this.status = status;
+        this.beginningHour = beginningHour;
     }
 
-    public String getSourceDirectory()
+    public Date getEndingHour()
     {
-        return sourceDirectory;
+        return endingHour;
     }
 
-    public void setSourceDirectory( String sourceDirectory )
+    public void setEndingHour( Date endingHour )
     {
-        this.sourceDirectory = sourceDirectory;
+        this.endingHour = endingHour;
+    }
+
+    public Date getBeginEffectiveDate()
+    {
+        return beginEffectiveDate;
+    }
+
+    public void setBeginEffectiveDate( Date beginEffectiveDate )
+    {
+        this.beginEffectiveDate = beginEffectiveDate;
     }
 }

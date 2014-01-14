@@ -32,68 +32,55 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "record", namespace = "urn:ihe:iti:csd:2013" )
-public class Record
+@XmlRootElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
+public class Language
 {
-    @XmlAttribute( name = "created", required = true )
-    private Date created;
+    @XmlAttribute( name = "code" )
+    private String code;
 
-    @XmlAttribute( name = "updated", required = true )
-    private Date updated;
+    @XmlAttribute( name = "codingSchema" )
+    private String codingSchema;
 
-    @XmlAttribute( name = "status", required = true )
-    private String status;
+    @XmlValue
+    private String value;
 
-    @XmlAttribute( name = "sourceDirectory" )
-    private String sourceDirectory = "http://dhis2.org";
-
-    public Record()
+    public Language()
     {
     }
 
-    public Date getCreated()
+    public String getCode()
     {
-        return created;
+        return code;
     }
 
-    public void setCreated( Date created )
+    public void setCode( String code )
     {
-        this.created = created;
+        this.code = code;
     }
 
-    public Date getUpdated()
+    public String getCodingSchema()
     {
-        return updated;
+        return codingSchema;
     }
 
-    public void setUpdated( Date updated )
+    public void setCodingSchema( String codingSchema )
     {
-        this.updated = updated;
+        this.codingSchema = codingSchema;
     }
 
-    public String getStatus()
+    public String getValue()
     {
-        return status;
+        return value;
     }
 
-    public void setStatus( String status )
+    public void setValue( String value )
     {
-        this.status = status;
-    }
-
-    public String getSourceDirectory()
-    {
-        return sourceDirectory;
-    }
-
-    public void setSourceDirectory( String sourceDirectory )
-    {
-        this.sourceDirectory = sourceDirectory;
+        this.value = value;
     }
 }
