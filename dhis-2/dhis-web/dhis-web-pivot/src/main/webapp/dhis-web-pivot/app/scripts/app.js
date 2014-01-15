@@ -2881,6 +2881,8 @@ Ext.onReady( function() {
         indicatorSearch = Ext.create('Ext.button.Button', {
             width: 22,
             height: 22,
+            cls: 'ns-button-icon',
+            disabled: true,
             style: 'background: url(images/search_14.png) 3px 3px no-repeat',
             showFilter: function() {
                 indicatorLabel.hide();
@@ -2962,42 +2964,10 @@ Ext.onReady( function() {
 			listeners: {
 				select: function(cb) {
 					cb.loadAvailable(true);
+
+                    indicatorSearch.enable();
 				}
 			}
-
-
-            //listeners: {
-                //select: function(cb) {
-                    //var store = indicatorAvailableStore,
-                        //id = cb.getValue();
-
-                    //store.parent = id;
-
-                    //if (ns.core.support.prototype.object.hasObject(store.storage, 'parent', id)) {
-                        //ns.core.web.storage.internal.load(store);
-                        //ns.core.web.multiSelect.filterAvailable(indicatorAvailable, indicatorSelected);
-                    //}
-                    //else {
-                        //var options = {
-                            //params: {
-                                //page: 1
-                            //},
-                            //callback: function(rec, operation, isSuccess) {
-                                //indicatorAvailableToolbar.setPageCount(operation.resultSet.total);
-                            //}
-                        //};
-
-                        //if (id === 0) {
-                            //store.proxy.url = ns.core.init.contextPath + '/api/indicators.json?links=false';
-                            //store.load(options);
-                        //}
-                        //else {
-                            //store.proxy.url = ns.core.init.contextPath + '/api/indicatorGroups/' + id + '/members.json?links=false';
-                            //store.load(options);
-                        //}
-                    //}
-                //}
-            //}
         });
 
 		indicatorAvailable = Ext.create('Ext.ux.form.MultiSelect', {
@@ -3145,6 +3115,8 @@ Ext.onReady( function() {
         dataElementSearch = Ext.create('Ext.button.Button', {
             width: 22,
             height: 22,
+            cls: 'ns-button-icon',
+            disabled: true,
             style: 'background: url(images/search_14.png) 3px 3px no-repeat',
             showFilter: function() {
                 dataElementLabel.hide();
