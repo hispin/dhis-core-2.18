@@ -75,9 +75,17 @@ public class DataEntryFormUpgrader
         {
             try
             {
-                String customForm = upgradeDataEntryForm( form.getHtmlCode() );
+                String htmlCode = form.getHtmlCode();
+                
+                if ( htmlCode == null || htmlCode.isEmpty() )
+                {
+                    log.warn( "No html content for form: " + form );
+                    continue;
+                }
+                
+                String customForm = upgradeDataEntryForm( htmlCode );
     
-                if ( customForm != null && !customForm.equals( form.getHtmlCode() ) )
+                if ( customForm != null && !customForm.equals( htmlCode ) )
                 {
                     form.setHtmlCode( customForm );
                     dataEntryFormService.updateDataEntryForm( form );
