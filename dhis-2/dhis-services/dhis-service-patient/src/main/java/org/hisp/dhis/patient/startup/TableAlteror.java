@@ -296,6 +296,9 @@ public class TableAlteror
 
         executeSql( "UPDATE patientattribute SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
         executeSql( "UPDATE patientidentifiertype SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
+
+        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedinlist" );
+        executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN persondisplayname" );
         
         updateProgramAttributes();
     }
@@ -320,9 +323,6 @@ public class TableAlteror
         
         executeSql( "DROP TABLE program_patientattributes" );
         executeSql( "DROP TABLE program_patientidentifiertypes" );
-
-        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedinlist" );
-        executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN persondisplayname" );
     }
     
     private void updateUid()

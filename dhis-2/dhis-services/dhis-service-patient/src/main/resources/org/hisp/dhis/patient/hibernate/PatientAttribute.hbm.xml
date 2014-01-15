@@ -19,7 +19,7 @@
 
     <property name="valueType" column="valuetype" not-null="true" />
 
-    <property name="mandatory" column="mandatory" not-null="true" />
+    <property name="mandatory" column="mandatory" />
 
     <property name="groupBy" column="groupby" />
 
