@@ -4398,7 +4398,7 @@ Ext.onReady( function() {
                         iconCls: 'ns-menu-item-datasource',
                         handler: function() {
                             if (ns.core.init.contextPath && ns.app.paramString) {
-                                window.open(ns.core.init.contextPath + '/api/analytics.json' + ns.core.web.getParamString(ns.app.xLayout, true));
+                                window.open(ns.core.init.contextPath + '/api/analytics.json' + ns.core.web.analytics.getParamString(ns.app.xLayout, true));
                             }
                         }
                     },
@@ -4407,7 +4407,7 @@ Ext.onReady( function() {
                         iconCls: 'ns-menu-item-datasource',
                         handler: function() {
                             if (ns.core.init.contextPath && ns.app.paramString) {
-                                window.open(ns.core.init.contextPath + '/api/analytics.xml' + ns.core.web.getParamString(ns.app.xLayout, true));
+                                window.open(ns.core.init.contextPath + '/api/analytics.xml' + ns.core.web.analytics.getParamString(ns.app.xLayout, true));
                             }
                         }
                     },
@@ -4416,7 +4416,7 @@ Ext.onReady( function() {
                         iconCls: 'ns-menu-item-datasource',
                         handler: function() {
                             if (ns.core.init.contextPath && ns.app.paramString) {
-                                window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + ns.core.web.getParamString(ns.app.xLayout, true);
+                                window.location.href = ns.core.init.contextPath + '/api/analytics.xls' + ns.core.web.analytics.getParamString(ns.app.xLayout, true);
                             }
                         }
                     },
@@ -4425,7 +4425,7 @@ Ext.onReady( function() {
                         iconCls: 'ns-menu-item-datasource',
                         handler: function() {
                             if (ns.core.init.contextPath && ns.app.paramString) {
-                                window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + ns.core.web.getParamString(ns.app.xLayout, true);
+                                window.location.href = ns.core.init.contextPath + '/api/analytics.csv' + ns.core.web.analytics.getParamString(ns.app.xLayout, true);
                             }
                         }
                     }
