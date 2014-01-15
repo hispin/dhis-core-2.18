@@ -63,7 +63,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
     "classpath*:/META-INF/dhis/beans.xml",
-    "classpath*:/META-INF/dhis/webapi-fred.xml" }
+    "classpath*:/META-INF/dhis/webapi-ohie.xml" }
 )
 @WebAppConfiguration
 @Transactional

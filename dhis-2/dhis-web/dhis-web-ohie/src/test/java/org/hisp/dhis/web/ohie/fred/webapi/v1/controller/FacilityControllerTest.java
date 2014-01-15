@@ -59,8 +59,8 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( get( "/api-fred" ).session( session ) ).andExpect( redirectedUrl( "/api-fred/v1" ) );
-        mvc.perform( get( "/api-fred/" ).session( session ) ).andExpect( redirectedUrl( "/api-fred/v1" ) );
+        mvc.perform( get( "/ohie" ).session( session ) ).andExpect( redirectedUrl( "/ohie/fred/v1" ) );
+        mvc.perform( get( "/ohie/" ).session( session ) ).andExpect( redirectedUrl( "/ohie/fred/v1" ) );
     }
 
     //---------------------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+        mvc.perform( get( "/fred/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( status().isOk() );
@@ -83,7 +83,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "M_dhis-web-api-fred" );
 
-        mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+        mvc.perform( get( "/fred/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( status().isOk() );
@@ -94,7 +94,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "DUMMY" );
 
-        mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+        mvc.perform( get( "/fred/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isForbidden() );
     }
 
@@ -106,7 +106,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( get( "/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+        mvc.perform( get( "/fred/v1/facilities" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.facilities" ).isArray() )
             .andExpect( jsonPath( "$.facilities[0].name" ).value( "OrgUnitA" ) )
@@ -118,7 +118,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( get( "/v1/facilities/abc123" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+        mvc.perform( get( "/fred/v1/facilities/abc123" ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
@@ -132,7 +132,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( get( "/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+        mvc.perform( get( "/fred/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( header().string( "ETag", Matchers.notNullValue() ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isOk() );
@@ -146,7 +146,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( get( "/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+        mvc.perform( get( "/fred/v1/facilities/" + organisationUnit.getUid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
@@ -165,7 +165,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( get( "/v1/facilities/" + organisationUnit.getUuid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
+        mvc.perform( get( "/fred/v1/facilities/" + organisationUnit.getUuid() ).session( session ).accept( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
             .andExpect( jsonPath( "$.name" ).value( "OrgUnitA" ) )
@@ -185,7 +185,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/INVALID_IDENTIFIER" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
+        mvc.perform( put( "/fred/v1/facilities/INVALID_IDENTIFIER" ).content( "{}" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
@@ -199,7 +199,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUid() ).content( "INVALID JSON" )
+        mvc.perform( put( "/fred/v1/facilities/" + organisationUnit.getUid() ).content( "INVALID JSON" )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isBadRequest() );
     }
@@ -212,7 +212,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( "INVALID JSON" )
+        mvc.perform( put( "/fred/v1/facilities/" + organisationUnit.getUuid() ).content( "INVALID JSON" )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isBadRequest() );
     }
@@ -225,7 +225,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUid() ).content( "{}" )
+        mvc.perform( put( "/fred/v1/facilities/" + organisationUnit.getUid() ).content( "{}" )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isUnprocessableEntity() );
     }
@@ -238,7 +238,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( "{}" )
+        mvc.perform( put( "/fred/v1/facilities/" + organisationUnit.getUuid() ).content( "{}" )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isUnprocessableEntity() );
     }
@@ -255,7 +255,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUid() ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( put( "/fred/v1/facilities/" + organisationUnit.getUid() ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
@@ -279,7 +279,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( put( "/fred/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
@@ -302,7 +302,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( put( "/fred/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isPreconditionFailed() );
@@ -321,7 +321,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( put( "/fred/v1/facilities/" + organisationUnit.getUuid() ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isOk() );
     }
@@ -335,7 +335,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( post( "/v1/facilities" ).content( "{}" )
+        mvc.perform( post( "/fred/v1/facilities" ).content( "{}" )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isUnprocessableEntity() );
@@ -349,7 +349,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         Facility facility = new Facility( "FacilityA" );
         facility.setUuid( "DUMMY_UUID" );
 
-        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( post( "/fred/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isPreconditionFailed() );
@@ -362,7 +362,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         Facility facility = new Facility( "FacilityA" );
 
-        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( post( "/fred/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
@@ -382,7 +382,7 @@ public class FacilityControllerTest extends FredSpringWebTest
         Facility facility = new Facility( "FacilityA" );
         facility.setUuid( "aabbccdd-aabb-aabb-aabb-aabbccddeeff" );
 
-        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( post( "/fred/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid" ).value( "aabbccdd-aabb-aabb-aabb-aabbccddeeff" ) )
@@ -401,7 +401,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         Facility facility = new Facility( "FacilityA", false );
 
-        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( post( "/fred/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
@@ -420,7 +420,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         Facility facility = new Facility( "FacilityA" );
 
-        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( post( "/fred/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
@@ -431,7 +431,7 @@ public class FacilityControllerTest extends FredSpringWebTest
             .andExpect( header().string( "ETag", Matchers.notNullValue() ) )
             .andExpect( status().isCreated() );
 
-        mvc.perform( post( "/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
+        mvc.perform( post( "/fred/v1/facilities" ).content( objectMapper.writeValueAsString( facility ) )
             .session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.uuid", Matchers.notNullValue() ) )
@@ -448,7 +448,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( post( "/v1/facilities" ).content( "INVALID JSON" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
+        mvc.perform( post( "/fred/v1/facilities" ).content( "INVALID JSON" ).session( session ).contentType( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isBadRequest() );
     }
 
@@ -461,7 +461,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( delete( "/v1/facilities/INVALID_IDENTIFIER" ).session( session ) )
+        mvc.perform( delete( "/fred/v1/facilities/INVALID_IDENTIFIER" ).session( session ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( jsonPath( "$.code" ).value( HttpStatus.NOT_FOUND.toString() ) )
             .andExpect( status().isNotFound() );
@@ -475,7 +475,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( delete( "/v1/facilities/" + organisationUnit.getUid() ).session( session ) )
+        mvc.perform( delete( "/fred/v1/facilities/" + organisationUnit.getUid() ).session( session ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isOk() );
     }
@@ -488,7 +488,7 @@ public class FacilityControllerTest extends FredSpringWebTest
 
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( delete( "/v1/facilities/" + organisationUnit.getUuid() ).session( session ) )
+        mvc.perform( delete( "/fred/v1/facilities/" + organisationUnit.getUuid() ).session( session ) )
             .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isOk() );
     }
@@ -502,7 +502,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( delete( "/v1/facilities" ).session( session ) )
+        mvc.perform( delete( "/fred/v1/facilities" ).session( session ) )
             .andExpect( status().isMethodNotAllowed() );
     }
 
@@ -511,7 +511,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( put( "/v1/facilities" ).session( session ) )
+        mvc.perform( put( "/fred/v1/facilities" ).session( session ) )
             .andExpect( status().isMethodNotAllowed() );
     }
 
@@ -520,7 +520,7 @@ public class FacilityControllerTest extends FredSpringWebTest
     {
         MockHttpSession session = getSession( "ALL" );
 
-        mvc.perform( post( "/v1/facilities/1" ).session( session ) )
+        mvc.perform( post( "/fred/v1/facilities/1" ).session( session ) )
             .andExpect( status().isMethodNotAllowed() );
     }
 }
