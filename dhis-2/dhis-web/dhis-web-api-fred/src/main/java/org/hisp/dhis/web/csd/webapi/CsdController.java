@@ -148,6 +148,7 @@ public class CsdController
 
                 Service service = new Service();
                 service.setOid( dataSet.getCode() );
+                service.getNames().add( new Name( new CommonName( dataSet.getDisplayName() ) ) );
 
                 organization.getServices().add( service );
             }

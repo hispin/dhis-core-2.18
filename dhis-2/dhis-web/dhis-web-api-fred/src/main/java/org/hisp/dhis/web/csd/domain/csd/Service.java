@@ -46,6 +46,9 @@ public class Service
     @XmlAttribute( name = "oid" )
     private String oid;
 
+    @XmlElement( name = "name", namespace = "urn:ihe:iti:csd:2013" )
+    private List<Name> names = new ArrayList<Name>();
+
     @XmlElement( name = "language", namespace = "urn:ihe:iti:csd:2013" )
     private Language language;
 
@@ -64,6 +67,16 @@ public class Service
     public void setOid( String oid )
     {
         this.oid = oid;
+    }
+
+    public List<Name> getNames()
+    {
+        return names;
+    }
+
+    public void setNames( List<Name> names )
+    {
+        this.names = names;
     }
 
     public Language getLanguage()
