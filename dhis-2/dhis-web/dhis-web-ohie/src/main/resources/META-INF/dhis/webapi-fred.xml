@@ -12,9 +12,9 @@
 
   <sec:global-method-security pre-post-annotations="enabled" />
 
-  <context:component-scan base-package="org.hisp.dhis.web.fred" />
+  <context:component-scan base-package="org.hisp.dhis.web.ohie.fred" />
 
-  <context:component-scan base-package="org.hisp.dhis.web.csd" />
+  <context:component-scan base-package="org.hisp.dhis.web.ohie.csd" />
 
   <context:annotation-config />
 
@@ -69,7 +69,7 @@
   </bean>
 
   <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-    <property name="packagesToScan" value="org.hisp.dhis.web.csd.domain" />
+    <property name="packagesToScan" value="org.hisp.dhis.web.ohie.csd.domain" />
   </bean>
 
   <mvc:annotation-driven>
