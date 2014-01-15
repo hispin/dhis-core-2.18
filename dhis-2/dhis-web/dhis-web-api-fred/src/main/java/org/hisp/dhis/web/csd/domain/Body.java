@@ -28,6 +28,8 @@ package org.hisp.dhis.web.csd.domain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.web.csd.domain.csd.Csd;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,6 +45,9 @@ public class Body
     @XmlElement( name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013" )
     private GetModificationsRequest getModificationsRequest;
 
+    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
+    private Csd csd;
+
     public Body()
     {
     }
@@ -55,5 +60,15 @@ public class Body
     public void setGetModificationsRequest( GetModificationsRequest getModificationsRequest )
     {
         this.getModificationsRequest = getModificationsRequest;
+    }
+
+    public Csd getCsd()
+    {
+        return csd;
+    }
+
+    public void setCsd( Csd csd )
+    {
+        this.csd = csd;
     }
 }
