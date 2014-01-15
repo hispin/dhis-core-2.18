@@ -73,15 +73,15 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>shallowEtagHeaderFilter</filter-name>
-    <url-pattern>/api-fred/*</url-pattern>
+    <url-pattern>/ohie/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>hiddenHttpMethodFilter</filter-name>
-    <url-pattern>/api-fred/*</url-pattern>
+    <url-pattern>/ohie/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
-    <url-pattern>/api-fred/*</url-pattern>
+    <url-pattern>/ohie/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
@@ -157,16 +157,16 @@
     <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
 
-  <!-- FRED Web-API -->
+  <!-- OHIE Web-API -->
 
   <servlet-mapping>
     <servlet-name>ohie</servlet-name>
-    <url-pattern>/api-fred</url-pattern>
+    <url-pattern>/ohie</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>ohie</servlet-name>
-    <url-pattern>/api-fred/*</url-pattern>
+    <url-pattern>/ohie/*</url-pattern>
   </servlet-mapping>
   
 </web-app>

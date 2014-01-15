@@ -14,7 +14,7 @@
     <filter-class>org.hisp.dhis.servlet.filter.HttpRedirectFilter</filter-class>
     <init-param>
       <param-name>redirectPath</param-name>
-      <param-value>api-fred</param-value>
+      <param-value>ohie</param-value>
     </init-param>
   </filter>
   <filter>
@@ -68,15 +68,15 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>shallowEtagHeaderFilter</filter-name>
-    <url-pattern>/api-fred/*</url-pattern>
+    <url-pattern>/ohie/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>hiddenHttpMethodFilter</filter-name>
-    <url-pattern>/api-fred/*</url-pattern>
+    <url-pattern>/ohie/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
-    <url-pattern>/api-fred/*</url-pattern>
+    <url-pattern>/ohie/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
@@ -118,12 +118,12 @@
 
   <servlet-mapping>
     <servlet-name>ohie</servlet-name>
-    <url-pattern>/api-fred</url-pattern>
+    <url-pattern>/ohie</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>ohie</servlet-name>
-    <url-pattern>/api-fred/*</url-pattern>
+    <url-pattern>/ohie/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

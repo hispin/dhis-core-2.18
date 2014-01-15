@@ -38,12 +38,12 @@ import java.io.IOException;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller(value = "fred-controller-" + FredController.PREFIX)
-@RequestMapping(value = FredController.PREFIX)
-@PreAuthorize("hasRole('M_dhis-web-api-fred') or hasRole('ALL')")
+@Controller( value = "fred-controller-" + FredController.PREFIX )
+@RequestMapping( value = FredController.PREFIX )
+@PreAuthorize( "hasRole('M_dhis-web-api-fred') or hasRole('ALL')" )
 public class FredController
 {
-    public static final String PREFIX = "v1";
+    public static final String PREFIX = "fred/v1";
 
     @RequestMapping( value = "" )
     public void redirectToV1( HttpServletResponse response ) throws IOException

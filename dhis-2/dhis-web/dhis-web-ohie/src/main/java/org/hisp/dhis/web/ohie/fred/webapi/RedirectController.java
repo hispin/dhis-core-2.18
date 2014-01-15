@@ -40,9 +40,9 @@ import java.io.IOException;
 @Controller
 public class RedirectController
 {
-    @RequestMapping(value = { "/api-fred", "/" })
+    @RequestMapping(value = { "/ohie", "/" })
     public void redirectToCurrentVersion( HttpServletResponse response ) throws IOException
     {
-        response.sendRedirect( "/api-fred/v1" );
+        response.sendRedirect( "/ohie/fred/v1" );
     }
 }
