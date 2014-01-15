@@ -110,6 +110,8 @@ public class JdbcResourceTableStore
         {
             // Do nothing, table does not exist
         }
+
+        String quote = statementBuilder.getColumnQuote();
         
         StringBuilder sql = new StringBuilder();
         
@@ -118,8 +120,8 @@ public class JdbcResourceTableStore
         
         for ( int k = 1 ; k <= maxLevel; k++ )
         {
-            sql.append( ", " ).append( "idlevel" + k ).append (" INTEGER, " ).
-                append( "uidlevel" + k ).append( " CHARACTER(11)" );
+            sql.append( ", " ).append( quote ).append( "idlevel" + k ).append( quote ).append (" INTEGER, " ).
+                append( quote ).append( "uidlevel" + k ).append( quote ).append( " CHARACTER(11)" );
         }
         
         sql.append( ");" );
@@ -270,11 +272,13 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
+        String quote = statementBuilder.getColumnQuote();
+        
         String sql = "CREATE TABLE " + TABLE_NAME_DATE_PERIOD_STRUCTURE + " (dateperiod DATE NOT NULL PRIMARY KEY";
         
         for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
         {
-            sql += ", " + periodType.getName().toLowerCase() + " VARCHAR(10)";
+            sql += ", " + quote + periodType.getName().toLowerCase() + quote + " VARCHAR(10)";
         }
         
         sql += ")";
@@ -294,12 +298,14 @@ public class JdbcResourceTableStore
         {
             // Do nothing, table does not exist
         }
+
+        String quote = statementBuilder.getColumnQuote();
         
         String sql = "CREATE TABLE " + TABLE_NAME_PERIOD_STRUCTURE + " (periodid INTEGER NOT NULL PRIMARY KEY, iso VARCHAR(10) NOT NULL, daysno INTEGER NOT NULL";
         
         for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
         {
-            sql += ", " + periodType.getName().toLowerCase() + " VARCHAR(10)";
+            sql += ", " + quote + periodType.getName().toLowerCase() + quote + " VARCHAR(10)";
         }
         
         sql += ")";
