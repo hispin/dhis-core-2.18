@@ -582,7 +582,7 @@ public class FacilityController
 
             // temporary fix since ControllerLinkBuilder can't handle cross-servlet controllers
             level.put( "href", linkTo( OrganisationUnitLevelController.class ).slash( organisationUnitLevel.getUid() ).toString()
-                .replace( "/api-fred", "/api" ) );
+                .replace( "/ohie", "/api" ) );
 
             level.put( "name", organisationUnitLevel.getName() );
             level.put( "level", organisationUnitLevel.getLevel() );
