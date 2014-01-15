@@ -682,6 +682,11 @@ table.pivot {
 	width: 18px !important;
 }
 
+.ns-button-icon.x-btn-default-toolbar-small-disabled {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+    opacity: 0.25;
+}
+
 
 /*----------------------------------------------------------------------------
  * Tooltip
