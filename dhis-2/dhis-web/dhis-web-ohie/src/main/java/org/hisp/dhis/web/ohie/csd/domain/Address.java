@@ -31,34 +31,44 @@ package org.hisp.dhis.web.ohie.csd.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlRootElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
+public class Address
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlElement( name = "type", namespace = "urn:ihe:iti:csd:2013" )
+    private String type;
 
-    public GetModificationsResponse()
+    @XmlElement( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
+    private List<AddressLine> addressLines = new ArrayList<AddressLine>();
+
+    public Address()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public String getType()
     {
-        this.csd = csd;
+        return type;
     }
 
-    public Csd getCsd()
+    public void setType( String type )
     {
-        return csd;
+        this.type = type;
     }
 
-    public void setCsd( Csd csd )
+    public List<AddressLine> getAddressLines()
     {
-        this.csd = csd;
+        return addressLines;
+    }
+
+    public void setAddressLines( List<AddressLine> addressLines )
+    {
+        this.addressLines = addressLines;
     }
 }

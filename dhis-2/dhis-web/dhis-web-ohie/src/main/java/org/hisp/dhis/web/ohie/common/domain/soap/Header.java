@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.ohie.csd.domain;
+package org.hisp.dhis.web.ohie.common.domain.soap;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,6 +28,12 @@ package org.hisp.dhis.web.ohie.csd.domain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.web.ohie.common.domain.wsa.Action;
+import org.hisp.dhis.web.ohie.common.domain.wsa.MessageID;
+import org.hisp.dhis.web.ohie.common.domain.wsa.RelatesTo;
+import org.hisp.dhis.web.ohie.common.domain.wsa.ReplyTo;
+import org.hisp.dhis.web.ohie.common.domain.wsa.To;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -37,28 +43,75 @@ import javax.xml.bind.annotation.XmlType;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "Header", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+public class Header
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlElement( name = "Action", namespace = "http://www.w3.org/2005/08/addressing" )
+    private Action action = new Action();
 
-    public GetModificationsResponse()
+    @XmlElement( name = "MessageID", namespace = "http://www.w3.org/2005/08/addressing" )
+    private MessageID messageID = new MessageID();
+
+    @XmlElement( name = "ReplyTo", namespace = "http://www.w3.org/2005/08/addressing" )
+    private ReplyTo replyTo;
+
+    @XmlElement( name = "To", namespace = "http://www.w3.org/2005/08/addressing" )
+    private To to = new To();
+
+    @XmlElement( name = "RelatesTo", namespace = "http://www.w3.org/2005/08/addressing" )
+    private RelatesTo relatesTo;
+
+    public Header()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public Action getAction()
     {
-        this.csd = csd;
+        return action;
     }
 
-    public Csd getCsd()
+    public void setAction( Action action )
     {
-        return csd;
+        this.action = action;
     }
 
-    public void setCsd( Csd csd )
+    public MessageID getMessageID()
     {
-        this.csd = csd;
+        return messageID;
+    }
+
+    public void setMessageID( MessageID messageID )
+    {
+        this.messageID = messageID;
+    }
+
+    public ReplyTo getReplyTo()
+    {
+        return replyTo;
+    }
+
+    public void setReplyTo( ReplyTo replyTo )
+    {
+        this.replyTo = replyTo;
+    }
+
+    public To getTo()
+    {
+        return to;
+    }
+
+    public void setTo( To to )
+    {
+        this.to = to;
+    }
+
+    public RelatesTo getRelatesTo()
+    {
+        return relatesTo;
+    }
+
+    public void setRelatesTo( RelatesTo relatesTo )
+    {
+        this.relatesTo = relatesTo;
     }
 }

@@ -30,35 +30,44 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
+public class AddressLine
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlAttribute( name = "component" )
+    private String component;
 
-    public GetModificationsResponse()
+    @XmlValue
+    private String value;
+
+    public AddressLine()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public String getComponent()
     {
-        this.csd = csd;
+        return component;
     }
 
-    public Csd getCsd()
+    public void setComponent( String component )
     {
-        return csd;
+        this.component = component;
     }
 
-    public void setCsd( Csd csd )
+    public String getValue()
     {
-        this.csd = csd;
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
 }

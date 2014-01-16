@@ -30,35 +30,49 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlRootElement( name = "commonName", namespace = "urn:ihe:iti:csd:2013" )
+public class CommonName
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlAttribute( name = "language" )
+    private String language;
 
-    public GetModificationsResponse()
+    @XmlValue
+    private String value;
+
+    public CommonName()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public CommonName( String value )
     {
-        this.csd = csd;
+        this.value = value;
     }
 
-    public Csd getCsd()
+    public String getLanguage()
     {
-        return csd;
+        return language;
     }
 
-    public void setCsd( Csd csd )
+    public void setLanguage( String language )
     {
-        this.csd = csd;
+        this.language = language;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
 }

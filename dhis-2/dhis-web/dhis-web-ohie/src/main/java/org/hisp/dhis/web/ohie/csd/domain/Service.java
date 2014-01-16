@@ -30,35 +30,72 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "service", namespace = "urn:ihe:iti:csd:2013" )
+public class Service
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlAttribute( name = "oid" )
+    private String oid;
 
-    public GetModificationsResponse()
+    @XmlElement( name = "name", namespace = "urn:ihe:iti:csd:2013" )
+    private List<Name> names = new ArrayList<Name>();
+
+    @XmlElement( name = "language", namespace = "urn:ihe:iti:csd:2013" )
+    private Language language;
+
+    @XmlElement( name = "operatingHours", namespace = "urn:ihe:iti:csd:2013" )
+    private List<OperatingHours> operatingHours = new ArrayList<OperatingHours>();
+
+    public Service()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public String getOid()
     {
-        this.csd = csd;
+        return oid;
     }
 
-    public Csd getCsd()
+    public void setOid( String oid )
     {
-        return csd;
+        this.oid = oid;
     }
 
-    public void setCsd( Csd csd )
+    public List<Name> getNames()
     {
-        this.csd = csd;
+        return names;
+    }
+
+    public void setNames( List<Name> names )
+    {
+        this.names = names;
+    }
+
+    public Language getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage( Language language )
+    {
+        this.language = language;
+    }
+
+    public List<OperatingHours> getOperatingHours()
+    {
+        return operatingHours;
+    }
+
+    public void setOperatingHours( List<OperatingHours> operatingHours )
+    {
+        this.operatingHours = operatingHours;
     }
 }

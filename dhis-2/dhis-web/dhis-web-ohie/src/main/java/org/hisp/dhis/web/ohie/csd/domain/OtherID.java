@@ -30,35 +30,49 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "otherID", namespace = "urn:ihe:iti:csd:2013" )
+public class OtherID
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlAttribute( name = "code", required = true )
+    private String code;
 
-    public GetModificationsResponse()
+    @XmlAttribute( name = "assigningAuthorityName", required = true )
+    private String assigningAuthorityName;
+
+    public OtherID()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public OtherID( String code, String assigningAuthorityName )
     {
-        this.csd = csd;
+        this.code = code;
+        this.assigningAuthorityName = assigningAuthorityName;
     }
 
-    public Csd getCsd()
+    public String getCode()
     {
-        return csd;
+        return code;
     }
 
-    public void setCsd( Csd csd )
+    public void setCode( String code )
     {
-        this.csd = csd;
+        this.code = code;
+    }
+
+    public String getAssigningAuthorityName()
+    {
+        return assigningAuthorityName;
+    }
+
+    public void setAssigningAuthorityName( String assigningAuthorityName )
+    {
+        this.assigningAuthorityName = assigningAuthorityName;
     }
 }

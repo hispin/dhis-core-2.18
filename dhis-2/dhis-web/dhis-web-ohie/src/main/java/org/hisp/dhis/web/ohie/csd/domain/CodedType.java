@@ -30,35 +30,64 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "codedType", namespace = "urn:ihe:iti:csd:2013" )
+public class CodedType
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlAttribute( name = "code", required = true )
+    private String code;
 
-    public GetModificationsResponse()
+    @XmlAttribute( name = "codingSchema", required = true )
+    private String codingSchema;
+
+    @XmlValue
+    private String value;
+
+    public CodedType()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public CodedType( String code, String codingSchema, String value )
     {
-        this.csd = csd;
+        this.code = code;
+        this.codingSchema = codingSchema;
+        this.value = value;
     }
 
-    public Csd getCsd()
+    public String getCode()
     {
-        return csd;
+        return code;
     }
 
-    public void setCsd( Csd csd )
+    public void setCode( String code )
     {
-        this.csd = csd;
+        this.code = code;
+    }
+
+    public String getCodingSchema()
+    {
+        return codingSchema;
+    }
+
+    public void setCodingSchema( String codingSchema )
+    {
+        this.codingSchema = codingSchema;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
 }
