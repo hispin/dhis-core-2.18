@@ -32,6 +32,7 @@ import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,11 +76,14 @@ public class ProgramController
             entityList = new ArrayList<Program>( manager.getAllSorted( getEntityClass() ) );
         }
 
-        if ( options.getOptions().get( "type" ) != null )
+        String type = options.getOptions().get( "type" );
+        String orgUnit = options.getOptions().get( "orgUnit" );
+
+        if ( type != null )
         {
             try
             {
-                int type = Integer.parseInt( options.getOptions().get( "type" ) );
+                int programType = Integer.parseInt( type );
 
                 Iterator<Program> iterator = entityList.iterator();
 
@@ -87,7 +91,7 @@ public class ProgramController
                 {
                     Program program = iterator.next();
 
-                    if ( program.getType() != type )
+                    if ( program.getType() != programType )
                     {
                         iterator.remove();
                     }
@@ -95,6 +99,26 @@ public class ProgramController
             }
             catch ( NumberFormatException ignored )
             {
+            }
+        }
+
+        if ( orgUnit != null )
+        {
+            OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, orgUnit );
+
+            if ( organisationUnit != null )
+            {
+                Iterator<Program> iterator = entityList.iterator();
+
+                while ( iterator.hasNext() )
+                {
+                    Program program = iterator.next();
+
+                    if ( !program.getOrganisationUnits().contains( organisationUnit ) )
+                    {
+                        iterator.remove();
+                    }
+                }
             }
         }
 
