@@ -36,15 +36,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "Envelope", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Envelope", namespace = "http://www.w3.org/2003/05/soap-envelope")
 public class Envelope
 {
-    @XmlElement( name = "Header", required = true, namespace = "http://www.w3.org/2003/05/soap-envelope" )
-    private Header header;
+    @XmlElement(name = "Header", required = true, namespace = "http://www.w3.org/2003/05/soap-envelope")
+    private Header header = new Header();
 
-    @XmlElement( name = "Body", required = true, namespace = "http://www.w3.org/2003/05/soap-envelope" )
-    private Body body;
+    @XmlElement(name = "Body", required = true, namespace = "http://www.w3.org/2003/05/soap-envelope")
+    private Body body = new Body();
 
     public Envelope()
     {
