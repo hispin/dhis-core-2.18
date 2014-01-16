@@ -102,7 +102,8 @@ public class CsdController
         Csd csd = createCsd( organisationUnits );
         Envelope envelope = createResponse( csd ); // unused for now
 
-        jaxbContext.createMarshaller().marshal( csd, response.getOutputStream() );
+        response.setContentType( "application/soap+xml" );
+        jaxbContext.createMarshaller().marshal( envelope, response.getOutputStream() );
     }
 
     private List<OrganisationUnit> getOrganisationUnits( Envelope envelope )
