@@ -33,6 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.ohie.csd.domain.Envelope;
+import org.hisp.dhis.web.ohie.csd.domain.GetModificationsResponse;
 import org.hisp.dhis.web.ohie.csd.domain.csd.CodedType;
 import org.hisp.dhis.web.ohie.csd.domain.csd.CommonName;
 import org.hisp.dhis.web.ohie.csd.domain.csd.Contact;
@@ -51,7 +52,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -92,12 +92,21 @@ public class CsdController
     }
 
     @RequestMapping( value = "", method = RequestMethod.POST )
-    public @ResponseBody Csd csdRequest( HttpServletRequest request, HttpServletResponse response ) throws IOException, JAXBException
+    public void careServicesRequest( HttpServletRequest request, HttpServletResponse response ) throws IOException, JAXBException
     {
         Object o = jaxbContext.createUnmarshaller().unmarshal( request.getInputStream() );
-        Envelope envelope = (Envelope) o;
 
-        Date lastModified = null;
+        List<OrganisationUnit> organisationUnits = getOrganisationUnits( (Envelope) o );
+
+        Csd csd = createCsd( organisationUnits );
+        Envelope envelope = createResponse( csd ); // unused for now
+
+        jaxbContext.createMarshaller().marshal( csd, response.getOutputStream() );
+    }
+
+    private List<OrganisationUnit> getOrganisationUnits( Envelope envelope )
+    {
+        Date lastModified;
 
         try
         {
@@ -108,15 +117,21 @@ public class CsdController
             throw new HttpClientErrorException( HttpStatus.BAD_REQUEST );
         }
 
-        List<OrganisationUnit> byLastUpdated = new ArrayList<OrganisationUnit>(
+        return new ArrayList<OrganisationUnit>(
             organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastModified ) );
-
-        Csd csd = convertToCsd( byLastUpdated );
-
-        return csd;
     }
 
-    private Csd convertToCsd( Iterable<OrganisationUnit> organisationUnits )
+    public Envelope createResponse( Csd csd )
+    {
+        Envelope envelope = new Envelope();
+
+        GetModificationsResponse response = new GetModificationsResponse( csd );
+        envelope.getBody().setGetModificationsResponse( response );
+
+        return envelope;
+    }
+
+    private Csd createCsd( Iterable<OrganisationUnit> organisationUnits )
     {
         Csd csd = new Csd();
         csd.getFacilityDirectory().setFacilities( new ArrayList<Facility>() );

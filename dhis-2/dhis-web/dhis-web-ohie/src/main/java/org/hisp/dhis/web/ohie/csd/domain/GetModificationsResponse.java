@@ -49,6 +49,11 @@ public class GetModificationsResponse
     {
     }
 
+    public GetModificationsResponse( Csd csd )
+    {
+        this.csd = csd;
+    }
+
     public Csd getCsd()
     {
         return csd;
