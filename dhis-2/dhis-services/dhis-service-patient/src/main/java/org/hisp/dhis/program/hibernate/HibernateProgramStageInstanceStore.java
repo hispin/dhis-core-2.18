@@ -589,7 +589,7 @@ public class HibernateProgramStageInstanceStore
             + ProgramInstance.STATUS_ACTIVE
             + "     and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "     and pg.type=1 and prm.daysallowedsendmessage is not null  "
-            + "     and psi.executiondate is null "
+            + "     and psi.executiondate is null and pa.valuetype='phoneNumber' "
             + "     and (  DATE(now()) - DATE(psi.duedate) ) = prm.daysallowedsendmessage "
             + "     and prm.whentosend is null and prm.sendto = " + PatientReminder.SEND_TO_PATIENT;
     }
@@ -611,13 +611,15 @@ public class HibernateProgramStageInstanceStore
             + "               ON org.organisationunitid = p.organisationunitid "
             + "           INNER JOIN patientreminder prm  "
             + "               ON prm.programstageid = ps.programstageid "
-            + "           INNER JOIN users us"
-            + "               ON us.userid=p.healthworkerid "
+            + "           INNER JOIN patientattributevalue pav "
+            + "               ON pav.patientid=p.patientid "
+            + "           INNER JOIN patientattribute pa "
+            + "               ON pa.patientattributeid=pav.patientattributeid "
             + "           INNER JOIN userinfo uif "
-            + "               ON us.userid=uif.userinfoid "
+            + "               ON pav.value=concat(uif.userinfoid ,'') "
             + " WHERE pi.status="
             + ProgramInstance.STATUS_ACTIVE
-            + " and uif.phonenumber is not NULL and uif.phonenumber != '' "
+            + " and pa.valueType='phoneNumber' and uif.phonenumber is not NULL and uif.phonenumber != '' "
             + "               and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "               and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "               and psi.executiondate is null "

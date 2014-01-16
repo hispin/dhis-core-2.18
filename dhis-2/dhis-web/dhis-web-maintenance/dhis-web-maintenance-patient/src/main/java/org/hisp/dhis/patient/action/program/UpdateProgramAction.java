@@ -313,32 +313,43 @@ public class UpdateProgramAction
             RelationshipType relationshipType = relationshipTypeService.getRelationshipType( relationshipTypeId );
             program.setRelationshipType( relationshipType );
         }
-        
+
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
-        
-        program.getProgramPatientIdentifierTypes().clear();
-        program.getProgramPatientAttributes().clear();
-        
+
+        if ( program.getProgramPatientIdentifierTypes() != null )
+        {
+            program.getProgramPatientIdentifierTypes().clear();
+        }
+
+        if ( program.getProgramPatientAttributes() != null )
+        {
+            program.getProgramPatientAttributes().clear();
+        }
+
         int index = 0;
-        
+
         for ( String selectedPropertyId : selectedPropertyIds )
         {
             String[] ids = selectedPropertyId.split( "_" );
 
             if ( ids[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer.parseInt( ids[1] ) );
-                ProgramPatientIdentifierType programPatientIdentifierType = new ProgramPatientIdentifierType( identifierType, index + 1, personDisplayNames.get( index ) );
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
+                    .parseInt( ids[1] ) );
+                ProgramPatientIdentifierType programPatientIdentifierType = new ProgramPatientIdentifierType(
+                    identifierType, index + 1, personDisplayNames.get( index ) );
                 program.getProgramPatientIdentifierTypes().add( programPatientIdentifierType );
             }
             else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
             {
-                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer.parseInt( ids[1] ) );
-                ProgramPatientAttribute programPatientAttribute = new ProgramPatientAttribute( patientAttribute, index + 1, personDisplayNames.get( index ) );
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
+                    .parseInt( ids[1] ) );
+                ProgramPatientAttribute programPatientAttribute = new ProgramPatientAttribute( patientAttribute,
+                    index + 1, personDisplayNames.get( index ) );
                 program.getProgramPatientAttributes().add( programPatientAttribute );
             }
-            
+
             index++;
         }
 
