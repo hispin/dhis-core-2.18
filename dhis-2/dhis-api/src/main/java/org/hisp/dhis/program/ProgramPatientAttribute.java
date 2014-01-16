@@ -27,24 +27,34 @@
 
 package org.hisp.dhis.program;
 
-import java.io.Serializable;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.DxfNamespaces;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 import org.hisp.dhis.patient.PatientAttribute;
+
+import java.io.Serializable;
 
 /**
  * @author Chau Thu Tran
- * 
  * @version $ ProgramPatientAttribute.java Jan 7, 2014 9:16:05 AM $
  */
+@JacksonXmlRootElement( localName = "programPersonAttribute", namespace = DxfNamespaces.DXF_2_0 )
 public class ProgramPatientAttribute
     implements Serializable
 {
     private static final long serialVersionUID = -2420475559273198337L;
 
     private int id;
-    
+
     private PatientAttribute patientAttribute;
-    
+
     private Integer sortOrder;
 
     private boolean displayedInList;
@@ -113,6 +123,10 @@ public class ProgramPatientAttribute
         this.id = id;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( localName = "personAttribute", namespace = DxfNamespaces.DXF_2_0 )
     public PatientAttribute getPatientAttribute()
     {
         return patientAttribute;
@@ -132,7 +146,10 @@ public class ProgramPatientAttribute
     {
         this.sortOrder = sortOrder;
     }
-    
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
+    @JacksonXmlProperty( localName = "displayedInList", namespace = DxfNamespaces.DXF_2_0 )
     public Boolean getDisplayedInList()
     {
         return displayedInList;
