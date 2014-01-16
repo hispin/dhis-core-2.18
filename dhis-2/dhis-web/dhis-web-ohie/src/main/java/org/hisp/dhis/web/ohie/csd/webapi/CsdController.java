@@ -48,7 +48,6 @@ import org.hisp.dhis.web.ohie.csd.domain.csd.Service;
 import org.hisp.dhis.web.ohie.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,7 +67,7 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping(value = "/csd")
+@RequestMapping( value = "/csd" )
 public class CsdController
 {
     @Autowired
@@ -202,6 +201,10 @@ public class CsdController
             if ( organisationUnit.isActive() )
             {
                 record.setStatus( "Active" );
+            }
+            else
+            {
+                record.setStatus( "Inactive" );
             }
 
             facility.setRecord( record );
