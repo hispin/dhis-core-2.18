@@ -68,6 +68,9 @@ public class Facility
     @XmlElement( name = "geocode", namespace = "urn:ihe:iti:csd:2013" )
     private Geocode geocode;
 
+    @XmlElement( name = "contactPoint", namespace = "urn:ihe:iti:csd:2013" )
+    private List<ContactPoint> contactPoints = new ArrayList<ContactPoint>();
+
     @XmlElement( name = "organization", namespace = "urn:ihe:iti:csd:2013" )
     @XmlElementWrapper( name = "organizations", namespace = "urn:ihe:iti:csd:2013" )
     private List<Organization> organizations = new ArrayList<Organization>();
@@ -160,6 +163,16 @@ public class Facility
     public void setGeocode( Geocode geocode )
     {
         this.geocode = geocode;
+    }
+
+    public List<ContactPoint> getContactPoints()
+    {
+        return contactPoints;
+    }
+
+    public void setContactPoints( List<ContactPoint> contactPoints )
+    {
+        this.contactPoints = contactPoints;
     }
 
     public List<Organization> getOrganizations()
