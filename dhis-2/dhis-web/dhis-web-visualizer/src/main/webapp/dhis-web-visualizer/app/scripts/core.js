@@ -1627,9 +1627,8 @@ Ext.onReady( function() {
                         obj[conf.finals.data.domain] = xResponse.metaData.names[category];
                         for (var j = 0, id; j < columnIds.length; j++) {
                             id = support.prototype.str.replaceAll(columnIds[j], '-', '') + support.prototype.str.replaceAll(rowIds[i], '-', '');
-                            //id = columnIds[j].replace('-', '') + rowIds[i].replace('-', '');
 
-                            obj[columnIds[j]] = parseFloat(xResponse.idValueMap[id]);
+                            obj[columnIds[j]] = parseFloat(xResponse.idValueMap[id]) || 0;
                         }
 
                         data.push(obj);
