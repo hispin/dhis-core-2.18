@@ -32,33 +32,56 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "person", namespace = "urn:ihe:iti:csd:2013" )
+public class Person
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlElement( name = "name", namespace = "urn:ihe:iti:csd:2013" )
+    private Name name;
 
-    public GetModificationsResponse()
+    @XmlElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
+    private List<Address> addresses = new ArrayList<Address>();
+
+    @XmlElement( name = "gender", namespace = "urn:ihe:iti:csd:2013" )
+    private String gender;
+
+    public Person()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public Name getName()
     {
-        this.csd = csd;
+        return name;
     }
 
-    public Csd getCsd()
+    public void setName( Name name )
     {
-        return csd;
+        this.name = name;
     }
 
-    public void setCsd( Csd csd )
+    public List<Address> getAddresses()
     {
-        this.csd = csd;
+        return addresses;
+    }
+
+    public void setAddresses( List<Address> addresses )
+    {
+        this.addresses = addresses;
+    }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender( String gender )
+    {
+        this.gender = gender;
     }
 }

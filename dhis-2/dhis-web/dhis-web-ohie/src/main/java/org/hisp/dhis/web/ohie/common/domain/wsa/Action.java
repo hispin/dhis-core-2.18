@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.ohie.csd.domain;
+package org.hisp.dhis.web.ohie.common.domain.wsa;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -30,35 +30,44 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "Action", namespace = "http://www.w3.org/2005/08/addressing" )
+public class Action
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlAttribute( name = "mustUnderstand", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+    private boolean mustUnderstand = true;
 
-    public GetModificationsResponse()
+    @XmlValue
+    private String value;
+
+    public Action()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public boolean isMustUnderstand()
     {
-        this.csd = csd;
+        return mustUnderstand;
     }
 
-    public Csd getCsd()
+    public void setMustUnderstand( boolean mustUnderstand )
     {
-        return csd;
+        this.mustUnderstand = mustUnderstand;
     }
 
-    public void setCsd( Csd csd )
+    public String getValue()
     {
-        this.csd = csd;
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
 }

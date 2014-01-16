@@ -31,34 +31,68 @@ package org.hisp.dhis.web.ohie.csd.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlRootElement( name = "contactPoint", namespace = "urn:ihe:iti:csd:2013" )
+public class ContactPoint
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlElement( name = "codedType", namespace = "urn:ihe:iti:csd:2013" )
+    private CodedType codedType;
 
-    public GetModificationsResponse()
+    @XmlElement( name = "equipment", namespace = "urn:ihe:iti:csd:2013" )
+    private String equipment;
+
+    @XmlElement( name = "purpose", namespace = "urn:ihe:iti:csd:2013" )
+    private String purpose;
+
+    @XmlElement( name = "certificate", namespace = "urn:ihe:iti:csd:2013" )
+    private String certificate;
+
+    public ContactPoint()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public CodedType getCodedType()
     {
-        this.csd = csd;
+        return codedType;
     }
 
-    public Csd getCsd()
+    public void setCodedType( CodedType codedType )
     {
-        return csd;
+        this.codedType = codedType;
     }
 
-    public void setCsd( Csd csd )
+    public String getEquipment()
     {
-        this.csd = csd;
+        return equipment;
+    }
+
+    public void setEquipment( String equipment )
+    {
+        this.equipment = equipment;
+    }
+
+    public String getPurpose()
+    {
+        return purpose;
+    }
+
+    public void setPurpose( String purpose )
+    {
+        this.purpose = purpose;
+    }
+
+    public String getCertificate()
+    {
+        return certificate;
+    }
+
+    public void setCertificate( String certificate )
+    {
+        this.certificate = certificate;
     }
 }

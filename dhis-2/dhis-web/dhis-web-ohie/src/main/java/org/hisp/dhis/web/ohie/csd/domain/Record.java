@@ -30,35 +30,70 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "record", namespace = "urn:ihe:iti:csd:2013" )
+public class Record
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlAttribute( name = "created", required = true )
+    private Date created;
 
-    public GetModificationsResponse()
+    @XmlAttribute( name = "updated", required = true )
+    private Date updated;
+
+    @XmlAttribute( name = "status", required = true )
+    private String status;
+
+    @XmlAttribute( name = "sourceDirectory" )
+    private String sourceDirectory = "http://dhis2.org";
+
+    public Record()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public Date getCreated()
     {
-        this.csd = csd;
+        return created;
     }
 
-    public Csd getCsd()
+    public void setCreated( Date created )
     {
-        return csd;
+        this.created = created;
     }
 
-    public void setCsd( Csd csd )
+    public Date getUpdated()
     {
-        this.csd = csd;
+        return updated;
+    }
+
+    public void setUpdated( Date updated )
+    {
+        this.updated = updated;
+    }
+
+    public String getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus( String status )
+    {
+        this.status = status;
+    }
+
+    public String getSourceDirectory()
+    {
+        return sourceDirectory;
+    }
+
+    public void setSourceDirectory( String sourceDirectory )
+    {
+        this.sourceDirectory = sourceDirectory;
     }
 }

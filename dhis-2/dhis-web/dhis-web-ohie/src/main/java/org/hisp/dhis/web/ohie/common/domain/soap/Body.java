@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.ohie.csd.domain;
+package org.hisp.dhis.web.ohie.common.domain.soap;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,6 +28,9 @@ package org.hisp.dhis.web.ohie.csd.domain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.web.ohie.csd.domain.GetModificationsRequest;
+import org.hisp.dhis.web.ohie.csd.domain.GetModificationsResponse;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -37,28 +40,36 @@ import javax.xml.bind.annotation.XmlType;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "Body", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+public class Body
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlElement( name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013" )
+    private GetModificationsRequest getModificationsRequest;
 
-    public GetModificationsResponse()
+    @XmlElement( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
+    private GetModificationsResponse getModificationsResponse;
+
+    public Body()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public GetModificationsRequest getGetModificationsRequest()
     {
-        this.csd = csd;
+        return getModificationsRequest;
     }
 
-    public Csd getCsd()
+    public void setGetModificationsRequest( GetModificationsRequest getModificationsRequest )
     {
-        return csd;
+        this.getModificationsRequest = getModificationsRequest;
     }
 
-    public void setCsd( Csd csd )
+    public GetModificationsResponse getGetModificationsResponse()
     {
-        this.csd = csd;
+        return getModificationsResponse;
+    }
+
+    public void setGetModificationsResponse( GetModificationsResponse getModificationsResponse )
+    {
+        this.getModificationsResponse = getModificationsResponse;
     }
 }

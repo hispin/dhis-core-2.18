@@ -30,35 +30,13 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "organizationDirectory", namespace = "urn:ihe:iti:csd:2013" )
+public class OrganizationDirectory
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
-
-    public GetModificationsResponse()
-    {
-    }
-
-    public GetModificationsResponse( Csd csd )
-    {
-        this.csd = csd;
-    }
-
-    public Csd getCsd()
-    {
-        return csd;
-    }
-
-    public void setCsd( Csd csd )
-    {
-        this.csd = csd;
-    }
 }

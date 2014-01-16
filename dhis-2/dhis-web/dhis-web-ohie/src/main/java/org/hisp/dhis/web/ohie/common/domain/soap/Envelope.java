@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.ohie.csd.domain;
+package org.hisp.dhis.web.ohie.common.domain.soap;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -31,34 +31,50 @@ package org.hisp.dhis.web.ohie.csd.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlRootElement( name = "Envelope", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+public class Envelope
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlElement( name = "Header", required = true, namespace = "http://www.w3.org/2003/05/soap-envelope" )
+    private Header header = new Header();
 
-    public GetModificationsResponse()
+    @XmlElement( name = "Body", required = true, namespace = "http://www.w3.org/2003/05/soap-envelope" )
+    private Body body = new Body();
+
+    public Envelope()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public Header getHeader()
     {
-        this.csd = csd;
+        return header;
     }
 
-    public Csd getCsd()
+    public void setHeader( Header header )
     {
-        return csd;
+        this.header = header;
     }
 
-    public void setCsd( Csd csd )
+    public Body getBody()
     {
-        this.csd = csd;
+        return body;
+    }
+
+    public void setBody( Body body )
+    {
+        this.body = body;
+    }
+
+    @Override public String toString()
+    {
+        return "Envelope{" +
+            "header=" + header +
+            ", body=" + body +
+            '}';
     }
 }

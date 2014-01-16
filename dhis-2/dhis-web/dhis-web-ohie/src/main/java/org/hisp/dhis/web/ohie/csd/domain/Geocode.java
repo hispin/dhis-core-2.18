@@ -37,28 +37,62 @@ import javax.xml.bind.annotation.XmlType;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-public class GetModificationsResponse
+@XmlType( name = "geocode", namespace = "urn:ihe:iti:csd:2013" )
+public class Geocode
 {
-    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
-    private Csd csd;
+    @XmlElement( name = "latitude", namespace = "urn:ihe:iti:csd:2013", required = true )
+    private Double latitude;
 
-    public GetModificationsResponse()
+    @XmlElement( name = "longitude", namespace = "urn:ihe:iti:csd:2013", required = true )
+    private Double longitude;
+
+    @XmlElement( name = "altitude", namespace = "urn:ihe:iti:csd:2013" )
+    private Double altitude;
+
+    @XmlElement( name = "coordinateSystem", namespace = "urn:ihe:iti:csd:2013" )
+    private String coordinateSystem;
+
+    public Geocode()
     {
     }
 
-    public GetModificationsResponse( Csd csd )
+    public Double getLatitude()
     {
-        this.csd = csd;
+        return latitude;
     }
 
-    public Csd getCsd()
+    public void setLatitude( Double latitude )
     {
-        return csd;
+        this.latitude = latitude;
     }
 
-    public void setCsd( Csd csd )
+    public Double getLongitude()
     {
-        this.csd = csd;
+        return longitude;
+    }
+
+    public void setLongitude( Double longitude )
+    {
+        this.longitude = longitude;
+    }
+
+    public Double getAltitude()
+    {
+        return altitude;
+    }
+
+    public void setAltitude( Double altitude )
+    {
+        this.altitude = altitude;
+    }
+
+    public String getCoordinateSystem()
+    {
+        return coordinateSystem;
+    }
+
+    public void setCoordinateSystem( String coordinateSystem )
+    {
+        this.coordinateSystem = coordinateSystem;
     }
 }
