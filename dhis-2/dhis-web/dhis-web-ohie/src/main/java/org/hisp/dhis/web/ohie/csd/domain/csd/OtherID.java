@@ -31,13 +31,13 @@ package org.hisp.dhis.web.ohie.csd.domain.csd;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "otherID", namespace = "urn:ihe:iti:csd:2013" )
+@XmlType( name = "otherID", namespace = "urn:ihe:iti:csd:2013" )
 public class OtherID
 {
     @XmlAttribute( name = "code", required = true )

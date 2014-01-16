@@ -46,6 +46,7 @@ import org.hisp.dhis.web.ohie.csd.domain.csd.OtherID;
 import org.hisp.dhis.web.ohie.csd.domain.csd.Person;
 import org.hisp.dhis.web.ohie.csd.domain.csd.Record;
 import org.hisp.dhis.web.ohie.csd.domain.csd.Service;
+import org.hisp.dhis.web.ohie.csd.domain.wsa.RelatesTo;
 import org.hisp.dhis.web.ohie.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,8 +88,9 @@ public class CsdController
             // TODO: switch Eclipse MOXy?
             jaxbContext = JAXBContext.newInstance( classes );
         }
-        catch ( JAXBException ignored )
+        catch ( JAXBException ex )
         {
+            ex.printStackTrace();
         }
     }
 
@@ -96,11 +98,12 @@ public class CsdController
     public void careServicesRequest( HttpServletRequest request, HttpServletResponse response ) throws IOException, JAXBException
     {
         Object o = jaxbContext.createUnmarshaller().unmarshal( request.getInputStream() );
+        Envelope env = (Envelope) o;
 
-        List<OrganisationUnit> organisationUnits = getOrganisationUnits( (Envelope) o );
+        List<OrganisationUnit> organisationUnits = getOrganisationUnits( env );
 
         Csd csd = createCsd( organisationUnits );
-        Envelope envelope = createResponse( csd ); // unused for now
+        Envelope envelope = createResponse( csd, env.getHeader().getMessageID().getValue() );
 
         response.setContentType( "application/soap+xml" );
         jaxbContext.createMarshaller().marshal( envelope, response.getOutputStream() );
@@ -123,9 +126,12 @@ public class CsdController
             organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastModified ) );
     }
 
-    public Envelope createResponse( Csd csd )
+    public Envelope createResponse( Csd csd, String messageID )
     {
         Envelope envelope = new Envelope();
+
+        envelope.getHeader().getAction().setValue( "urn:ihe:iti:csd:2013:GetDirectoryModificationsResponse" );
+        envelope.getHeader().setRelatesTo( new RelatesTo( messageID ) );
 
         GetModificationsResponse response = new GetModificationsResponse( csd );
         envelope.getBody().setGetModificationsResponse( response );

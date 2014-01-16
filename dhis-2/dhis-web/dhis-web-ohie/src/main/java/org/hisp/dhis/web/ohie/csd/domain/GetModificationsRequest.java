@@ -31,17 +31,17 @@ package org.hisp.dhis.web.ohie.csd.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013" )
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013")
 public class GetModificationsRequest
 {
-    @XmlElement( name = "lastModified", required = true, namespace = "urn:ihe:iti:csd:2013" )
+    @XmlElement(name = "lastModified", required = true, namespace = "urn:ihe:iti:csd:2013")
     private Date lastModified;
 
     public GetModificationsRequest()

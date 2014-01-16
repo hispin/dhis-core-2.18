@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.ohie.csd.domain.csd;
+package org.hisp.dhis.web.ohie.csd.domain.wsa;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -30,30 +30,38 @@ package org.hisp.dhis.web.ohie.csd.domain.csd;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "contact", namespace = "urn:ihe:iti:csd:2013" )
-public class Contact
+@XmlType( name = "MessageID", namespace = "http://www.w3.org/2005/08/addressing" )
+public class MessageID
 {
-    @XmlElement( name = "person", namespace = "urn:ihe:iti:csd:2013" )
-    private Person person;
+    @XmlValue
+    private String value;
 
-    public Contact()
+    public MessageID()
     {
+        this.value = "urn:uuid:" + UUID.randomUUID().toString();
     }
 
-    public Person getPerson()
+    public MessageID( String value )
     {
-        return person;
+        this();
+        this.value = value;
     }
 
-    public void setPerson( Person person )
+    public String getValue()
     {
-        this.person = person;
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
 }

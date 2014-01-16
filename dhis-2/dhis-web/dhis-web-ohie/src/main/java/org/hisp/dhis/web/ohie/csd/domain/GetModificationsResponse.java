@@ -33,13 +33,13 @@ import org.hisp.dhis.web.ohie.csd.domain.csd.Csd;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
+@XmlType( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
 public class GetModificationsResponse
 {
     @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )

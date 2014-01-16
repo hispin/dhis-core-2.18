@@ -31,13 +31,13 @@ package org.hisp.dhis.web.ohie.csd.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "Body", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+@XmlType( name = "Body", namespace = "http://www.w3.org/2003/05/soap-envelope" )
 public class Body
 {
     @XmlElement( name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013" )

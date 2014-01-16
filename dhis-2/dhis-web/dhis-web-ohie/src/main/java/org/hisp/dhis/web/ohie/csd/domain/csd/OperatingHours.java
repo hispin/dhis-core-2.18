@@ -31,14 +31,14 @@ package org.hisp.dhis.web.ohie.csd.domain.csd;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Date;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "operatingHours", namespace = "urn:ihe:iti:csd:2013" )
+@XmlType( name = "operatingHours", namespace = "urn:ihe:iti:csd:2013" )
 public class OperatingHours
 {
     @XmlElement( name = "openFlag", namespace = "urn:ihe:iti:csd:2013" )
