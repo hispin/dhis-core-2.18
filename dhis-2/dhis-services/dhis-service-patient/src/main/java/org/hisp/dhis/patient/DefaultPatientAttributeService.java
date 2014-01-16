@@ -134,7 +134,6 @@ public class DefaultPatientAttributeService
     public Collection<PatientAttribute> getPatientAttributesWithoutProgram()
     {
         Collection<PatientAttribute> patientAttributes = patientAttributeStore.getAll();
-        Iterator<PatientAttribute> iterator = patientAttributes.iterator();
 
         Collection<PatientAttribute> programAttributes = new HashSet<PatientAttribute>();
         Collection<Program> programs = programService.getAllPrograms();

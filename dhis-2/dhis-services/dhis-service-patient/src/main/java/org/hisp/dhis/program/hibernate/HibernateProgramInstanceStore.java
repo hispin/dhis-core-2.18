@@ -303,7 +303,7 @@ public class HibernateProgramInstanceStore
             + "              ON pa.patientattributeid=pav.patientattributeid " + "       WHERE pi.status= "
             + ProgramInstance.STATUS_ACTIVE
             + "         and prm.templatemessage is not NULL and prm.templatemessage != ''   "
-            + "         and pg.type=1 and prm.daysallowedsendmessage is not null    "
+            + "         and pg.type=1 and prm.daysallowedsendmessage is not null and pa.valuetype='phoneNumber' "
             + "         and ( DATE(now()) - DATE(pi." + dateToCompare + ") ) = prm.daysallowedsendmessage "
             + "         and prm.whenToSend is null and prm.dateToCompare='" + dateToCompare + "' and prm.sendto = "
             + PatientReminder.SEND_TO_PATIENT;
@@ -315,17 +315,29 @@ public class HibernateProgramInstanceStore
             + "   pg.name as programName, pi.dateofincident, pi.enrollmentdate,(DATE(now()) - DATE(pi.enrollmentdate) ) as days_since_erollment_date, "
             + "       (DATE(now()) - DATE(pi.dateofincident) ) as days_since_incident_date "
             + "    FROM patient p INNER JOIN programinstance pi "
-            + "           ON p.patientid=pi.patientid INNER JOIN program pg "
-            + "           ON pg.programid=pi.programid INNER JOIN organisationunit org "
-            + "           ON org.organisationunitid = p.organisationunitid INNER JOIN patientreminder prm "
-            + "           ON prm.programid = pi.programid INNER JOIN users us "
-            + "           ON us.userid=p.healthworkerid INNER JOIN userinfo uif "
-            + "           ON us.userid=uif.userinfoid " + "    WHERE pi.status = " + ProgramInstance.STATUS_ACTIVE
+            + "           ON p.patientid=pi.patientid "
+            + "INNER JOIN program pg "
+            + "           ON pg.programid=pi.programid "
+            + "INNER JOIN organisationunit org "
+            + "           ON org.organisationunitid = p.organisationunitid "
+            + "INNER JOIN patientreminder prm "
+            + "           ON prm.programid = pi.programid "
+            + "INNER JOIN patientattributevalue pav "
+            + "ON pav.patientid=p.patientid "
+            + " INNER JOIN patientattribute pa "
+            + " ON pa.patientattributeid=pav.patientattributeid "
+            + " INNER JOIN userinfo uif " 
+            + " ON pav.value=concat(uif.userinfoid ,'') "
+            + "    WHERE pi.status = " + ProgramInstance.STATUS_ACTIVE
+            + "      and pa.valueType='phoneNumber' "
             + "      and uif.phonenumber is not NULL and uif.phonenumber != '' "
             + "      and prm.templatemessage is not NULL and prm.templatemessage != '' "
-            + "      and pg.type=1 and prm.daysallowedsendmessage is not null " + "      and ( DATE(now()) - DATE( pi."
-            + dateToCompare + " ) ) = prm.daysallowedsendmessage " + "      and prm.dateToCompare='" + dateToCompare
-            + "'     and prm.whenToSend is null and prm.sendto =  " + PatientReminder.SEND_TO_ATTRIBUTE_TYPE_USERS;
+            + "      and pg.type=1 and prm.daysallowedsendmessage is not null " 
+            + "      and ( DATE(now()) - DATE( pi."
+            + dateToCompare + " ) ) = prm.daysallowedsendmessage " 
+            + "      and prm.dateToCompare='" + dateToCompare
+            + "'     and prm.whenToSend is null and prm.sendto =  " 
+            + PatientReminder.SEND_TO_ATTRIBUTE_TYPE_USERS;
     }
 
     private String sendMessageToOrgunitRegisteredSql( String dateToCompare )
