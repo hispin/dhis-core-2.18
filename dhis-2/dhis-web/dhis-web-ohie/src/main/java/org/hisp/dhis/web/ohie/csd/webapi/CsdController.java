@@ -48,14 +48,17 @@ import org.hisp.dhis.web.ohie.csd.domain.csd.Service;
 import org.hisp.dhis.web.ohie.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,15 +68,36 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/csd" )
+@RequestMapping(value = "/csd")
 public class CsdController
 {
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    @RequestMapping( value = "", method = RequestMethod.POST )
-    public @ResponseBody Csd csdRequest( @RequestBody Envelope envelope, HttpServletResponse response ) throws IOException
+    private static JAXBContext jaxbContext;
+
+    static
     {
+        try
+        {
+            Class[] classes = new Class[]{
+                Envelope.class
+            };
+
+            // TODO: switch Eclipse MOXy?
+            jaxbContext = JAXBContext.newInstance( classes );
+        }
+        catch ( JAXBException ignored )
+        {
+        }
+    }
+
+    @RequestMapping( value = "", method = RequestMethod.POST )
+    public @ResponseBody Csd csdRequest( HttpServletRequest request, HttpServletResponse response ) throws IOException, JAXBException
+    {
+        Object o = jaxbContext.createUnmarshaller().unmarshal( request.getInputStream() );
+        Envelope envelope = (Envelope) o;
+
         Date lastModified = null;
 
         try

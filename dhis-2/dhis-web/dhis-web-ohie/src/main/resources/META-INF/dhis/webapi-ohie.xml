@@ -68,9 +68,11 @@
     <property name="extractValueFromSingleKeyModel" value="true" />
   </bean>
 
+  <!--
   <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
     <property name="packagesToScan" value="org.hisp.dhis.web.ohie.csd.domain" />
   </bean>
+  -->
 
   <mvc:annotation-driven>
     <mvc:message-converters register-defaults="false">
