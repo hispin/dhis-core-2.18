@@ -28,6 +28,8 @@ package org.hisp.dhis.web.ohie.csd.domain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.web.ohie.csd.domain.csd.Csd;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -37,36 +39,23 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "Body", namespace = "http://www.w3.org/2003/05/soap-envelope" )
-public class Body
+@XmlRootElement( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
+public class GetModificationsResponse
 {
-    @XmlElement( name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013" )
-    private GetModificationsRequest getModificationsRequest;
+    @XmlElement( name = "CSD", namespace = "urn:ihe:iti:csd:2013" )
+    private Csd csd;
 
-    @XmlElement( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-    private GetModificationsResponse getModificationsResponse;
-
-    public Body()
+    public GetModificationsResponse()
     {
     }
 
-    public GetModificationsRequest getGetModificationsRequest()
+    public Csd getCsd()
     {
-        return getModificationsRequest;
+        return csd;
     }
 
-    public void setGetModificationsRequest( GetModificationsRequest getModificationsRequest )
+    public void setCsd( Csd csd )
     {
-        this.getModificationsRequest = getModificationsRequest;
-    }
-
-    public GetModificationsResponse getGetModificationsResponse()
-    {
-        return getModificationsResponse;
-    }
-
-    public void setGetModificationsResponse( GetModificationsResponse getModificationsResponse )
-    {
-        this.getModificationsResponse = getModificationsResponse;
+        this.csd = csd;
     }
 }
