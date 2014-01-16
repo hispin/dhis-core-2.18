@@ -49,6 +49,7 @@ import org.hisp.dhis.web.ohie.csd.domain.csd.Service;
 import org.hisp.dhis.web.ohie.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -91,7 +92,7 @@ public class CsdController
         }
     }
 
-    @RequestMapping( value = "", method = RequestMethod.POST )
+    @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.ALL_VALUE )
     public void careServicesRequest( HttpServletRequest request, HttpServletResponse response ) throws IOException, JAXBException
     {
         Object o = jaxbContext.createUnmarshaller().unmarshal( request.getInputStream() );
