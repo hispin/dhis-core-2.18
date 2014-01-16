@@ -31,14 +31,14 @@ package org.hisp.dhis.web.ohie.csd.domain.csd;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
+@XmlType( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
 public class AddressLine
 {
     @XmlAttribute( name = "component" )

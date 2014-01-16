@@ -28,18 +28,90 @@ package org.hisp.dhis.web.ohie.csd.domain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.web.ohie.csd.domain.wsa.Action;
+import org.hisp.dhis.web.ohie.csd.domain.wsa.MessageID;
+import org.hisp.dhis.web.ohie.csd.domain.wsa.RelatesTo;
+import org.hisp.dhis.web.ohie.csd.domain.wsa.ReplyTo;
+import org.hisp.dhis.web.ohie.csd.domain.wsa.To;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlRootElement( name = "Header", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+@XmlType( name = "Header", namespace = "http://www.w3.org/2003/05/soap-envelope" )
 public class Header
 {
+    @XmlElement( name = "Action", namespace = "http://www.w3.org/2005/08/addressing" )
+    private Action action = new Action();
+
+    @XmlElement( name = "MessageID", namespace = "http://www.w3.org/2005/08/addressing" )
+    private MessageID messageID = new MessageID();
+
+    @XmlElement( name = "ReplyTo", namespace = "http://www.w3.org/2005/08/addressing" )
+    private ReplyTo replyTo;
+
+    @XmlElement( name = "To", namespace = "http://www.w3.org/2005/08/addressing" )
+    private To to = new To();
+
+    @XmlElement( name = "RelatesTo", namespace = "http://www.w3.org/2005/08/addressing" )
+    private RelatesTo relatesTo;
+
     public Header()
     {
+    }
+
+    public Action getAction()
+    {
+        return action;
+    }
+
+    public void setAction( Action action )
+    {
+        this.action = action;
+    }
+
+    public MessageID getMessageID()
+    {
+        return messageID;
+    }
+
+    public void setMessageID( MessageID messageID )
+    {
+        this.messageID = messageID;
+    }
+
+    public ReplyTo getReplyTo()
+    {
+        return replyTo;
+    }
+
+    public void setReplyTo( ReplyTo replyTo )
+    {
+        this.replyTo = replyTo;
+    }
+
+    public To getTo()
+    {
+        return to;
+    }
+
+    public void setTo( To to )
+    {
+        this.to = to;
+    }
+
+    public RelatesTo getRelatesTo()
+    {
+        return relatesTo;
+    }
+
+    public void setRelatesTo( RelatesTo relatesTo )
+    {
+        this.relatesTo = relatesTo;
     }
 }

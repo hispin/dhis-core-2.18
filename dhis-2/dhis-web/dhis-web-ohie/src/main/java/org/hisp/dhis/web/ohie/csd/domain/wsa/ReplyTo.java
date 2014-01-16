@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.ohie.csd.domain.csd;
+package org.hisp.dhis.web.ohie.csd.domain.wsa;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -37,23 +37,23 @@ import javax.xml.bind.annotation.XmlType;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "contact", namespace = "urn:ihe:iti:csd:2013" )
-public class Contact
+@XmlType( name = "ReplyTo", namespace = "http://www.w3.org/2005/08/addressing" )
+public class ReplyTo
 {
-    @XmlElement( name = "person", namespace = "urn:ihe:iti:csd:2013" )
-    private Person person;
+    @XmlElement( name = "Address", namespace = "http://www.w3.org/2005/08/addressing" )
+    private Address address = new Address();
 
-    public Contact()
+    public ReplyTo()
     {
     }
 
-    public Person getPerson()
+    public Address getAddress()
     {
-        return person;
+        return address;
     }
 
-    public void setPerson( Person person )
+    public void setAddress( Address address )
     {
-        this.person = person;
+        this.address = address;
     }
 }
