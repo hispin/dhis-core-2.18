@@ -95,6 +95,11 @@ public class Module
         return module;
     }
     
+    public String getIconFallback()
+    {
+        return icon != null ? icon : name + ".png";
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
