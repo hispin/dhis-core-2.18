@@ -509,7 +509,7 @@ public class TableAlteror
                 // Gender
                 // ---------------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called Gender..." );
+                log.info( "Inserting dynamic atribute called Gender" );
 
                 max++;
                 String uid = CodeGenerator.generateCode();
@@ -525,7 +525,7 @@ public class TableAlteror
 
                 log.info( "Inserted Gender attribute successfully." );
 
-                log.info( "Inserting data into Gender attribute..." );
+                log.info( "Inserting data into Gender attribute" );
 
                 Integer maxOpt = jdbcTemplate.queryForObject(
                     "select max(patientattributeoptionid) from patientattributeoption", Integer.class );
@@ -565,7 +565,7 @@ public class TableAlteror
                 // Death date
                 // ---------------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called Death date..." );
+                log.info( "Inserting dynamic atribute called Death date" );
 
                 max++;
                 uid = CodeGenerator.generateCode();
@@ -578,7 +578,7 @@ public class TableAlteror
                     + "','Death date', 'Death date','"
                     + PatientAttribute.TYPE_DATE + "', false, false, false)" );
 
-                log.info( "Inserting data into Death date attribute..." );
+                log.info( "Inserting data into Death date attribute" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",deathDate from patient where deathDate is not null" );
@@ -591,7 +591,7 @@ public class TableAlteror
                 // registrationDate
                 // ---------------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called registration date..." );
+                log.info( "Inserting dynamic atribute called registration date" );
 
                 max++;
                 uid = CodeGenerator.generateCode();
@@ -605,7 +605,7 @@ public class TableAlteror
                     + PatientAttribute.TYPE_DATE
                     + "', false, false, false)" );
 
-                log.info( "Inserting data into registration date registration date..." );
+                log.info( "Inserting data into registration date registration date" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",registrationDate from patient where registrationDate is not null" );
@@ -618,7 +618,7 @@ public class TableAlteror
                 // isDead
                 // ---------------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called isDead..." );
+                log.info( "Inserting dynamic atribute called isDead" );
 
                 max++;
                 uid = CodeGenerator.generateCode();
@@ -631,7 +631,7 @@ public class TableAlteror
                     + "','Is Dead', 'Is Dead','"
                     + PatientAttribute.TYPE_TRACKER_ASSOCIATE + "', false, false, false)" );
 
-                log.info( "Inserting data into isDead..." );
+                log.info( "Inserting data into isDead" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",isDead from patient where isDead is not null" );
@@ -644,7 +644,7 @@ public class TableAlteror
                 // underAge
                 // ---------------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called underAge..." );
+                log.info( "Inserting dynamic atribute called underAge" );
 
                 max++;
                 uid = CodeGenerator.generateCode();
@@ -657,7 +657,7 @@ public class TableAlteror
                     + "','Is under age', 'Is under age','"
                     + PatientAttribute.TYPE_TRACKER_ASSOCIATE + "', false, false, false)" );
 
-                log.info( "Inserting data into underAge..." );
+                log.info( "Inserting data into underAge" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",isDead from patient where underAge=true" );
@@ -685,7 +685,7 @@ public class TableAlteror
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",dobType from patient where dobType is not null" );
 
-                log.info( "Inserting data into DobType ..." );
+                log.info( "Inserting data into DobType" );
 
                 maxOpt++;
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
@@ -719,7 +719,7 @@ public class TableAlteror
                 // Birthdate
                 // -------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called Birthdate..." );
+                log.info( "Inserting dynamic atribute called Birthdate" );
 
                 max++;
                 uid = CodeGenerator.generateCode();
@@ -732,7 +732,7 @@ public class TableAlteror
                     + "','Birth date', 'Birth date','"
                     + PatientAttribute.TYPE_DATE + "', false, false, false)" );
 
-                log.info( "Inserting data into Birthdate ..." );
+                log.info( "Inserting data into Birthdate" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",birthdate from patient where birthdate is not null and dobType in ('D','V') " );
@@ -745,7 +745,7 @@ public class TableAlteror
                 // Age
                 // -------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called age..." );
+                log.info( "Inserting dynamic atribute called age" );
 
                 max++;
                 uid = CodeGenerator.generateCode();
@@ -758,7 +758,7 @@ public class TableAlteror
                     + "','Age', 'Age','"
                     + PatientAttribute.TYPE_AGE + "', false, false, false)" );
 
-                log.info( "Inserting data into age ..." );
+                log.info( "Inserting data into age" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",birthdate from patient where birthdate is not null and dobType='A' " );
@@ -771,7 +771,7 @@ public class TableAlteror
                 // Phone number
                 // -------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called Phone number ..." );
+                log.info( "Inserting dynamic atribute called Phone number" );
 
                 max++;
                 uid = CodeGenerator.generateCode();
@@ -784,7 +784,7 @@ public class TableAlteror
                     + "','Phone number', 'Phone number','"
                     + PatientAttribute.TYPE_PHONE_NUMBER + "', false, false, false)" );
 
-                log.info( "Inserting data into Phone number ..." );
+                log.info( "Inserting data into Phone number" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",phoneNumber from patient where phoneNumber is not null" );
@@ -805,7 +805,7 @@ public class TableAlteror
                 // Patient full name
                 // -------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called Full name ..." );
+                log.info( "Inserting dynamic atribute called Full name" );
 
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
@@ -817,7 +817,7 @@ public class TableAlteror
                     + "','Full name', 'Full name','"
                     + PatientAttribute.TYPE_STRING + "', false, false, false)" );
 
-                log.info( "Inserting data into Full name ..." );
+                log.info( "Inserting data into Full name" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max + ",name from patient where name is not null" );
@@ -832,7 +832,7 @@ public class TableAlteror
                 // User Associate
                 // -------------------------------------------------------------
 
-                log.info( "Inserting dynamic atribute called Staff ..." );
+                log.info( "Inserting dynamic atribute called Staff" );
 
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
@@ -844,7 +844,7 @@ public class TableAlteror
                     + "','Staff', 'Staff','"
                     + PatientAttribute.TYPE_USERS + "', false, false, false)" );
 
-                log.info( "Inserting data into Staff ..." );
+                log.info( "Inserting data into Staff" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
                     + max
@@ -853,18 +853,38 @@ public class TableAlteror
                 // Update custom entry form
                 removeFixedAttributeInCustomRegistrationForm( "associate", uid );
                 
-                log.info( "Dropping fixed properties of person ..." );
+                log.info( "Dropping fixed properties of person" );
 
                 executeSql( "ALTER TABLE patient DROP COLUMN gender" );
+                log.info( "Dropped gender column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
+                log.info( "Dropped deathDate column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
+                log.info( "Dropped registrationdate column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
+                log.info( "Dropped isdead column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
+                log.info( "Dropped underage column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
+                log.info( "Dropped dobType column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
+                log.info( "Dropped birthdate column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN phoneNumber" );
+                log.info( "Dropped phoneNumber column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN name" );
+                log.info( "Dropped name column" );
+                
                 executeSql( "ALTER TABLE patient DROP COLUMN healthworkerid" );
+                log.info( "Dropped healthworkerid column" );
+                
             }
 
         }
