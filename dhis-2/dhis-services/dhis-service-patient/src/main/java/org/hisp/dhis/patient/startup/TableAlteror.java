@@ -290,13 +290,13 @@ public class TableAlteror
         updateCoordinatesProgramStageInstance();
 
         addPatientAttributes();
-        
+
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
 
         executeSql( "UPDATE patientattribute SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
         executeSql( "UPDATE patientidentifiertype SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
-        
+
         executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN persondisplayname" );
 
         updateProgramAttributes();
@@ -333,7 +333,7 @@ public class TableAlteror
 
         executeSql( "DROP TABLE program_patientidentifiertypes." );
         log.info( "Dropped program_patientidentifiertypes table." );
-        
+
     }
 
     private void updateUid()
@@ -775,6 +775,15 @@ public class TableAlteror
                 executeSql( "UPDATE validationcriteria SET property='age' WHERE property='age' " );
 
                 // -------------------------------------------------------------
+                // Update Case Aggregate Query Builder
+                // -------------------------------------------------------------
+
+                source = "[CP" + CaseAggregationCondition.SEPARATOR_OBJECT + "age]";
+                target = "[" + CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE
+                    + CaseAggregationCondition.SEPARATOR_OBJECT + max + ".age]";
+                updateFixedAttributeInCaseAggregate( source, target );
+
+                // -------------------------------------------------------------
                 // Phone number
                 // -------------------------------------------------------------
 
@@ -800,20 +809,12 @@ public class TableAlteror
                 removeFixedAttributeInCustomRegistrationForm( "phoneNumber", uid );
 
                 // -------------------------------------------------------------
-                // Update Case Aggregate Query Builder
-                // -------------------------------------------------------------
-
-                source = "[CP" + CaseAggregationCondition.SEPARATOR_OBJECT + "age]";
-                target = "[" + CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE
-                    + CaseAggregationCondition.SEPARATOR_OBJECT + max + ".age]";
-                updateFixedAttributeInCaseAggregate( source, target );
-
-                // -------------------------------------------------------------
                 // Patient full name
                 // -------------------------------------------------------------
 
                 log.info( "Inserting dynamic atribute called Full name" );
-
+               
+                max ++;
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -827,7 +828,7 @@ public class TableAlteror
                 log.info( "Inserting data into Full name" );
 
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) SELECT patientid,"
-                    + max + ",name from patient where name is not null" );
+                    + max + ",\"name\" from patient where name is not null" );
 
                 // Update custom entry form
                 removeFixedAttributeInCustomRegistrationForm( "fullName", uid );
@@ -897,7 +898,6 @@ public class TableAlteror
         }
         catch ( Exception ex )
         {
-            ex.printStackTrace();
         }
     }
 
