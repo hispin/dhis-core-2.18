@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.ohie.common.exception;
+package org.hisp.dhis.web.ohie.csd.exception;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,31 +28,15 @@ package org.hisp.dhis.web.ohie.common.exception;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.web.ohie.common.exception.SoapException;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SoapException extends RuntimeException
+public class MissingLastModifiedException extends SoapException
 {
-    private String faultCode = "env:Sender";
-
-    public SoapException()
+    public MissingLastModifiedException()
     {
-        super( "Request not valid SOAP 1.2" );
-    }
-
-    public SoapException( String message )
-    {
-        super( message );
-    }
-
-    public SoapException( String faultCode, String message )
-    {
-        super( message );
-        this.faultCode = faultCode;
-    }
-
-    public String getFaultCode()
-    {
-        return faultCode;
+        super("Missing urn:ihe:iti:csd:2013:lastModified element.");
     }
 }

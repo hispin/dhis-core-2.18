@@ -49,7 +49,9 @@ import org.hisp.dhis.web.ohie.csd.domain.OtherID;
 import org.hisp.dhis.web.ohie.csd.domain.Person;
 import org.hisp.dhis.web.ohie.csd.domain.Record;
 import org.hisp.dhis.web.ohie.csd.domain.Service;
-import org.hisp.dhis.web.ohie.csd.exception.MissingGetModificationsRequestElement;
+import org.hisp.dhis.web.ohie.csd.exception.MissingGetDirectoryModificationsRequestException;
+import org.hisp.dhis.web.ohie.csd.exception.MissingGetModificationsRequestException;
+import org.hisp.dhis.web.ohie.csd.exception.MissingLastModifiedException;
 import org.hisp.dhis.web.ohie.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -76,6 +78,8 @@ import java.util.List;
 @RequestMapping( value = "/csd" )
 public class CsdController
 {
+    private static String SOAP_CONTENT_TYPE = "application/soap+xml";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -117,12 +121,14 @@ public class CsdController
         Object o = unmarshaller.unmarshal( request.getInputStream() );
         Envelope env = (Envelope) o;
 
+        validateRequest( env );
+
         List<OrganisationUnit> organisationUnits = getOrganisationUnits( env );
 
         Csd csd = createCsd( organisationUnits );
         Envelope envelope = createResponse( csd, env.getHeader().getMessageID().getValue() );
 
-        response.setContentType( "application/soap+xml" );
+        response.setContentType( SOAP_CONTENT_TYPE );
         marshaller.marshal( envelope, response.getOutputStream() );
     }
 
@@ -135,7 +141,7 @@ public class CsdController
         envelope.getBody().getFault().getCode().getValue().setValue( ex.getFaultCode() );
         envelope.getBody().getFault().getReason().getText().setValue( ex.getMessage() );
 
-        response.setContentType( "application/soap+xml" );
+        response.setContentType( SOAP_CONTENT_TYPE );
         marshaller.marshal( envelope, response.getOutputStream() );
     }
 
@@ -144,18 +150,42 @@ public class CsdController
     // Helpers
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnit> getOrganisationUnits( Envelope envelope ) throws MissingGetModificationsRequestElement
+    private void validateRequest( Envelope env )
     {
-        Date lastModified;
+        if ( !"urn:ihe:iti:csd:2013:GetDirectoryModificationsRequest".equals(
+            env.getHeader().getAction().getValue() ) )
+        {
+            throw new MissingGetDirectoryModificationsRequestException();
+        }
 
         try
         {
-            lastModified = envelope.getBody().getGetModificationsRequest().getLastModified();
+            if ( env.getBody().getGetModificationsRequest() == null )
+            {
+                throw new MissingGetModificationsRequestException();
+            }
         }
         catch ( NullPointerException ex )
         {
-            throw new MissingGetModificationsRequestElement();
+            throw new SoapException();
         }
+
+        try
+        {
+            if ( env.getBody().getGetModificationsRequest().getLastModified() == null )
+            {
+                throw new MissingLastModifiedException();
+            }
+        }
+        catch ( NullPointerException ex )
+        {
+            throw new SoapException();
+        }
+    }
+
+    private List<OrganisationUnit> getOrganisationUnits( Envelope envelope ) throws MissingGetModificationsRequestException
+    {
+        Date lastModified = envelope.getBody().getGetModificationsRequest().getLastModified();
 
         return new ArrayList<OrganisationUnit>(
             organisationUnitService.getAllOrganisationUnitsByLastUpdated( lastModified ) );

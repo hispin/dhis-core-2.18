@@ -33,10 +33,10 @@ import org.hisp.dhis.web.ohie.common.exception.SoapException;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class MissingGetModificationsRequestElement extends SoapException
+public class MissingGetDirectoryModificationsRequestException extends SoapException
 {
-    public MissingGetModificationsRequestElement()
+    public MissingGetDirectoryModificationsRequestException()
     {
-        super( "Missing urn:ihe:iti:csd:2013:GetModificationsRequest element." );
+        super("Missing or invalid urn:ihe:iti:csd:2013:GetDirectoryModificationsRequest action.");
     }
 }
