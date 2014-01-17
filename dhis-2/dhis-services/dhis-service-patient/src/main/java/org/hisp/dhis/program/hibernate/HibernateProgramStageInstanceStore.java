@@ -619,7 +619,7 @@ public class HibernateProgramStageInstanceStore
             + "               ON pav.value=concat(uif.userinfoid ,'') "
             + " WHERE pi.status="
             + ProgramInstance.STATUS_ACTIVE
-            + " and pa.valueType='phoneNumber' and uif.phonenumber is not NULL and uif.phonenumber != '' "
+            + " and pa.valueType='users' and uif.phonenumber is not NULL and uif.phonenumber != '' "
             + "               and prm.templatemessage is not NULL and prm.templatemessage != '' "
             + "               and pg.type=1 and prm.daysallowedsendmessage is not null "
             + "               and psi.executiondate is null "
