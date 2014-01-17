@@ -290,14 +290,13 @@ public class TableAlteror
         updateCoordinatesProgramStageInstance();
 
         addPatientAttributes();
-
+        
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
 
         executeSql( "UPDATE patientattribute SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
         executeSql( "UPDATE patientidentifiertype SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
-
-        executeSql( "ALTER TABLE patientattribute DROP COLUMN displayedinlist" );
+        
         executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN persondisplayname" );
 
         updateProgramAttributes();
@@ -318,6 +317,8 @@ public class TableAlteror
             + "FROM program_patientattributes pp";
         executeSql( attributeSql );
 
+        log.info( "Inserted data into program_attributes table." );
+
         String identifierSql = "INSERT INTO program_identifiertypes (programidentifiertypeid, identifiertypeid, sort_order, displayinlist, programid) "
             + "SELECT "
             + autoIncrVal
@@ -325,8 +326,14 @@ public class TableAlteror
             + "FROM program_patientidentifiertypes pp";
         executeSql( identifierSql );
 
-        executeSql( "DROP TABLE program_patientattributes" );
-        executeSql( "DROP TABLE program_patientidentifiertypes" );
+        log.info( "Inserted data into program_identifiertypes table." );
+
+        executeSql( "DROP TABLE program_patientattributes." );
+        log.info( "Dropped program_patientattributes table." );
+
+        executeSql( "DROP TABLE program_patientidentifiertypes." );
+        log.info( "Dropped program_patientidentifiertypes table." );
+        
     }
 
     private void updateUid()
@@ -852,44 +859,45 @@ public class TableAlteror
 
                 // Update custom entry form
                 removeFixedAttributeInCustomRegistrationForm( "associate", uid );
-                
+
                 log.info( "Dropping fixed properties of person" );
 
                 executeSql( "ALTER TABLE patient DROP COLUMN gender" );
                 log.info( "Dropped gender column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN deathDate" );
                 log.info( "Dropped deathDate column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN registrationDate" );
                 log.info( "Dropped registrationdate column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN isDead" );
                 log.info( "Dropped isdead column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN underAge" );
                 log.info( "Dropped underage column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN dobType" );
                 log.info( "Dropped dobType column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN birthdate" );
                 log.info( "Dropped birthdate column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN phoneNumber" );
                 log.info( "Dropped phoneNumber column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN name" );
                 log.info( "Dropped name column" );
-                
+
                 executeSql( "ALTER TABLE patient DROP COLUMN healthworkerid" );
                 log.info( "Dropped healthworkerid column" );
-                
+
             }
 
         }
         catch ( Exception ex )
         {
+            ex.printStackTrace();
         }
     }
 
