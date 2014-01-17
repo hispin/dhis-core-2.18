@@ -150,17 +150,24 @@ public class CsdController
     // Helpers
     // -------------------------------------------------------------------------
 
-    private void validateRequest( Envelope env )
+    private void validateRequest( Envelope envelope )
     {
-        if ( !"urn:ihe:iti:csd:2013:GetDirectoryModificationsRequest".equals(
-            env.getHeader().getAction().getValue() ) )
+        try
         {
-            throw new MissingGetDirectoryModificationsRequestException();
+            if ( !"urn:ihe:iti:csd:2013:GetDirectoryModificationsRequest".equals(
+                envelope.getHeader().getAction().getValue() ) )
+            {
+                throw new MissingGetDirectoryModificationsRequestException();
+            }
+        }
+        catch ( NullPointerException ex )
+        {
+            throw new SoapException();
         }
 
         try
         {
-            if ( env.getBody().getGetModificationsRequest() == null )
+            if ( envelope.getBody().getGetModificationsRequest() == null )
             {
                 throw new MissingGetModificationsRequestException();
             }
@@ -172,7 +179,7 @@ public class CsdController
 
         try
         {
-            if ( env.getBody().getGetModificationsRequest().getLastModified() == null )
+            if ( envelope.getBody().getGetModificationsRequest().getLastModified() == null )
             {
                 throw new MissingLastModifiedException();
             }
