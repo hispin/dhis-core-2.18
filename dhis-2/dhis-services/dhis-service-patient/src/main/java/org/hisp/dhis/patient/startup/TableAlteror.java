@@ -289,7 +289,7 @@ public class TableAlteror
 
         updateCoordinatesProgramStageInstance();
 
-        addPatientAttributes();
+        //addPatientAttributes();
 
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
@@ -502,8 +502,10 @@ public class TableAlteror
 
         try
         {
-            Statement statement = holder.getStatement();
+            String autoIncrVal = statementBuilder.getAutoIncrementValue();
 
+            Statement statement = holder.getStatement();
+                        
             ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patient" );
 
             // Only execute once
