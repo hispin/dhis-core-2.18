@@ -75,8 +75,8 @@ public class LogicalOrAccessDecisionManager
 
         for ( AccessDecisionManager accessDecisionManager : accessDecisionManagers )
         {
-            // we can't assume that all decision managers can support the same type, so we need to check for
-            // every request.
+            // Cannot assume that all decision managers can support the same type
+            
             if ( accessDecisionManager.supports( object.getClass() ) )
             {
                 try
@@ -86,10 +86,12 @@ public class LogicalOrAccessDecisionManager
                     LOG.debug( "ACCESS GRANTED [" + object.toString() + "]" );
 
                     return;
-                } catch ( AccessDeniedException e )
+                } 
+                catch ( AccessDeniedException e )
                 {
                     ade = e;
-                } catch ( InsufficientAuthenticationException e )
+                } 
+                catch ( InsufficientAuthenticationException e )
                 {
                     iae = e;
                 }
