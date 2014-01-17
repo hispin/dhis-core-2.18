@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.ohie.common.domain.soap;
+package org.hisp.dhis.web.ohie.common.exception;
 
 /*
  * Copyright (c) 2004-2013, University of Oslo
@@ -28,61 +28,31 @@ package org.hisp.dhis.web.ohie.common.domain.soap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.web.ohie.csd.domain.GetModificationsRequest;
-import org.hisp.dhis.web.ohie.csd.domain.GetModificationsResponse;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "Body", namespace = "http://www.w3.org/2003/05/soap-envelope" )
-public class Body
+public abstract class SoapException extends RuntimeException
 {
-    @XmlElement( name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013" )
-    private GetModificationsRequest getModificationsRequest;
+    private String faultCode = "env:Sender";
 
-    @XmlElement( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-    private GetModificationsResponse getModificationsResponse;
-
-    @XmlElement( name = "Fault", namespace = "http://www.w3.org/2003/05/soap-envelope" )
-    private Fault fault;
-
-    public Body()
+    public SoapException()
     {
+        super( "Request not valid SOAP 1.2" );
     }
 
-    public GetModificationsRequest getGetModificationsRequest()
+    public SoapException( String message )
     {
-        return getModificationsRequest;
+        super( message );
     }
 
-    public void setGetModificationsRequest( GetModificationsRequest getModificationsRequest )
+    public SoapException( String faultCode, String message )
     {
-        this.getModificationsRequest = getModificationsRequest;
+        super( message );
+        this.faultCode = faultCode;
     }
 
-    public GetModificationsResponse getGetModificationsResponse()
+    public String getFaultCode()
     {
-        return getModificationsResponse;
-    }
-
-    public void setGetModificationsResponse( GetModificationsResponse getModificationsResponse )
-    {
-        this.getModificationsResponse = getModificationsResponse;
-    }
-
-    public Fault getFault()
-    {
-        return fault;
-    }
-
-    public void setFault( Fault fault )
-    {
-        this.fault = fault;
+        return faultCode;
     }
 }

@@ -28,9 +28,6 @@ package org.hisp.dhis.web.ohie.common.domain.soap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.web.ohie.csd.domain.GetModificationsRequest;
-import org.hisp.dhis.web.ohie.csd.domain.GetModificationsResponse;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -40,49 +37,36 @@ import javax.xml.bind.annotation.XmlType;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "Body", namespace = "http://www.w3.org/2003/05/soap-envelope" )
-public class Body
+@XmlType( name = "Fault", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+public class Fault
 {
-    @XmlElement( name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013" )
-    private GetModificationsRequest getModificationsRequest;
+    @XmlElement( name = "Code", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+    private Code code = new Code();
 
-    @XmlElement( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-    private GetModificationsResponse getModificationsResponse;
+    @XmlElement( name = "Reason", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+    private Reason reason = new Reason();
 
-    @XmlElement( name = "Fault", namespace = "http://www.w3.org/2003/05/soap-envelope" )
-    private Fault fault;
-
-    public Body()
+    public Fault()
     {
     }
 
-    public GetModificationsRequest getGetModificationsRequest()
+    public Code getCode()
     {
-        return getModificationsRequest;
+        return code;
     }
 
-    public void setGetModificationsRequest( GetModificationsRequest getModificationsRequest )
+    public void setCode( Code code )
     {
-        this.getModificationsRequest = getModificationsRequest;
+        this.code = code;
     }
 
-    public GetModificationsResponse getGetModificationsResponse()
+    public Reason getReason()
     {
-        return getModificationsResponse;
+        return reason;
     }
 
-    public void setGetModificationsResponse( GetModificationsResponse getModificationsResponse )
+    public void setReason( Reason reason )
     {
-        this.getModificationsResponse = getModificationsResponse;
-    }
-
-    public Fault getFault()
-    {
-        return fault;
-    }
-
-    public void setFault( Fault fault )
-    {
-        this.fault = fault;
+        this.reason = reason;
     }
 }

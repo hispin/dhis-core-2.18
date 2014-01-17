@@ -28,9 +28,6 @@ package org.hisp.dhis.web.ohie.common.domain.soap;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.web.ohie.csd.domain.GetModificationsRequest;
-import org.hisp.dhis.web.ohie.csd.domain.GetModificationsResponse;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -40,49 +37,28 @@ import javax.xml.bind.annotation.XmlType;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "Body", namespace = "http://www.w3.org/2003/05/soap-envelope" )
-public class Body
+@XmlType( name = "Subcode", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+public class Subcode
 {
-    @XmlElement( name = "getModificationsRequest", namespace = "urn:ihe:iti:csd:2013" )
-    private GetModificationsRequest getModificationsRequest;
+    @XmlElement( name = "Value", namespace = "http://www.w3.org/2003/05/soap-envelope" )
+    private Value value = new Value();
 
-    @XmlElement( name = "getModificationsResponse", namespace = "urn:ihe:iti:csd:2013" )
-    private GetModificationsResponse getModificationsResponse;
-
-    @XmlElement( name = "Fault", namespace = "http://www.w3.org/2003/05/soap-envelope" )
-    private Fault fault;
-
-    public Body()
+    public Subcode()
     {
     }
 
-    public GetModificationsRequest getGetModificationsRequest()
+    public Subcode( String value )
     {
-        return getModificationsRequest;
+        this.value = new Value( value );
     }
 
-    public void setGetModificationsRequest( GetModificationsRequest getModificationsRequest )
+    public Value getValue()
     {
-        this.getModificationsRequest = getModificationsRequest;
+        return value;
     }
 
-    public GetModificationsResponse getGetModificationsResponse()
+    public void setValue( Value value )
     {
-        return getModificationsResponse;
-    }
-
-    public void setGetModificationsResponse( GetModificationsResponse getModificationsResponse )
-    {
-        this.getModificationsResponse = getModificationsResponse;
-    }
-
-    public Fault getFault()
-    {
-        return fault;
-    }
-
-    public void setFault( Fault fault )
-    {
-        this.fault = fault;
+        this.value = value;
     }
 }

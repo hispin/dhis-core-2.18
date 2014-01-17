@@ -33,7 +33,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.ohie.common.domain.soap.Envelope;
+import org.hisp.dhis.web.ohie.common.domain.soap.Fault;
 import org.hisp.dhis.web.ohie.common.domain.wsa.RelatesTo;
+import org.hisp.dhis.web.ohie.common.exception.SoapException;
 import org.hisp.dhis.web.ohie.csd.domain.CodedType;
 import org.hisp.dhis.web.ohie.csd.domain.CommonName;
 import org.hisp.dhis.web.ohie.csd.domain.Contact;
@@ -47,19 +49,21 @@ import org.hisp.dhis.web.ohie.csd.domain.OtherID;
 import org.hisp.dhis.web.ohie.csd.domain.Person;
 import org.hisp.dhis.web.ohie.csd.domain.Record;
 import org.hisp.dhis.web.ohie.csd.domain.Service;
+import org.hisp.dhis.web.ohie.csd.exception.MissingGetModificationsRequestElement;
 import org.hisp.dhis.web.ohie.fred.webapi.v1.utils.GeoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,10 +76,16 @@ import java.util.List;
 @RequestMapping( value = "/csd" )
 public class CsdController
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    private static JAXBContext jaxbContext;
+    private static Marshaller marshaller;
+
+    private static Unmarshaller unmarshaller;
 
     static
     {
@@ -86,7 +96,10 @@ public class CsdController
             };
 
             // TODO: switch Eclipse MOXy?
-            jaxbContext = JAXBContext.newInstance( classes );
+            JAXBContext jaxbContext = JAXBContext.newInstance( classes );
+
+            marshaller = jaxbContext.createMarshaller();
+            unmarshaller = jaxbContext.createUnmarshaller();
         }
         catch ( JAXBException ex )
         {
@@ -94,10 +107,14 @@ public class CsdController
         }
     }
 
+    // -------------------------------------------------------------------------
+    // POST
+    // -------------------------------------------------------------------------
+
     @RequestMapping( value = "", method = RequestMethod.POST, consumes = MediaType.ALL_VALUE, produces = MediaType.ALL_VALUE )
     public void careServicesRequest( HttpServletRequest request, HttpServletResponse response ) throws IOException, JAXBException
     {
-        Object o = jaxbContext.createUnmarshaller().unmarshal( request.getInputStream() );
+        Object o = unmarshaller.unmarshal( request.getInputStream() );
         Envelope env = (Envelope) o;
 
         List<OrganisationUnit> organisationUnits = getOrganisationUnits( env );
@@ -106,10 +123,28 @@ public class CsdController
         Envelope envelope = createResponse( csd, env.getHeader().getMessageID().getValue() );
 
         response.setContentType( "application/soap+xml" );
-        jaxbContext.createMarshaller().marshal( envelope, response.getOutputStream() );
+        marshaller.marshal( envelope, response.getOutputStream() );
     }
 
-    private List<OrganisationUnit> getOrganisationUnits( Envelope envelope )
+    @ExceptionHandler
+    public void soapError( SoapException ex, HttpServletResponse response ) throws JAXBException, IOException
+    {
+        Envelope envelope = new Envelope();
+        envelope.setHeader( null );
+        envelope.getBody().setFault( new Fault() );
+        envelope.getBody().getFault().getCode().getValue().setValue( ex.getFaultCode() );
+        envelope.getBody().getFault().getReason().getText().setValue( ex.getMessage() );
+
+        response.setContentType( "application/soap+xml" );
+        marshaller.marshal( envelope, response.getOutputStream() );
+    }
+
+
+    // -------------------------------------------------------------------------
+    // Helpers
+    // -------------------------------------------------------------------------
+
+    private List<OrganisationUnit> getOrganisationUnits( Envelope envelope ) throws MissingGetModificationsRequestElement
     {
         Date lastModified;
 
@@ -119,7 +154,7 @@ public class CsdController
         }
         catch ( NullPointerException ex )
         {
-            throw new HttpClientErrorException( HttpStatus.BAD_REQUEST );
+            throw new MissingGetModificationsRequestElement();
         }
 
         return new ArrayList<OrganisationUnit>(
