@@ -288,7 +288,7 @@ public class JdbcAnalyticsTableManager
             {
                 int level = i + 1;
                 
-                String column = DataQueryParams.LEVEL_PREFIX + level;
+                String column = quote( DataQueryParams.LEVEL_PREFIX + level );
                 
                 sql.append( column + " = null," );
             }
