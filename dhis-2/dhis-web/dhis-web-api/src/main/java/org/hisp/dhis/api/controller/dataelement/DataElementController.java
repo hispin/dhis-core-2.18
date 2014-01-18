@@ -32,6 +32,7 @@ import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -80,6 +82,7 @@ public class DataElementController
             else
             {
                 entityList = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( domainType ) );
+                Collections.sort( entityList, IdentifiableObjectNameComparator.INSTANCE );
             }
         }
         else if ( lastUpdated != null )

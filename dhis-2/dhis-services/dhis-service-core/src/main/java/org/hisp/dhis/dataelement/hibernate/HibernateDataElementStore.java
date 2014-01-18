@@ -33,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -146,6 +147,7 @@ public class HibernateDataElementStore
 
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
+        criteria.addOrder( Order.asc( "name" ) );
 
         return criteria.list();
     }
