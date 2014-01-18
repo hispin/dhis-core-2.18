@@ -603,9 +603,14 @@ public class DefaultDataElementCategoryService
         return operands;
     }
 
+    public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements )
+    {
+        return getOperands( dataElements, false );
+    }
+
     public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements, boolean includeTotals )
     {
-        Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
+        List<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
         for ( DataElement dataElement : dataElements )
         {
@@ -628,11 +633,6 @@ public class DefaultDataElementCategoryService
         }
 
         return operands;
-    }
-
-    public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements )
-    {
-        return getOperands( dataElements, false );
     }
 
     public Collection<DataElementOperand> getOperandsLikeName( String name )
