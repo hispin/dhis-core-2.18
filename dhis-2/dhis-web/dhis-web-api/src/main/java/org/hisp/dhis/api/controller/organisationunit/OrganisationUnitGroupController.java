@@ -28,7 +28,14 @@ package org.hisp.dhis.api.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.api.controller.WebOptions;
@@ -36,6 +43,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -51,11 +59,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -95,7 +98,8 @@ public class OrganisationUnitGroupController
         }
 
         WebMetaData metaData = new WebMetaData();
-        List<OrganisationUnit> organisationUnits = Lists.newArrayList( organisationUnitGroup.getMembers() );
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitGroup.getMembers() );
+        Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( options.hasPaging() )
         {
@@ -132,9 +136,11 @@ public class OrganisationUnitGroupController
         }
 
         WebMetaData metaData = new WebMetaData();
-        List<OrganisationUnit> organisationUnits = Lists.newArrayList();
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> members = new ArrayList<OrganisationUnit>();
+        Collections.sort( members, IdentifiableObjectNameComparator.INSTANCE );
 
-        for ( OrganisationUnit organisationUnit : organisationUnitGroup.getMembers() )
+        for ( OrganisationUnit organisationUnit : members )
         {
             if ( organisationUnit.getDisplayName().toLowerCase().contains( q.toLowerCase() ) )
             {

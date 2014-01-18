@@ -36,6 +36,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.PagerUtils;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -51,6 +52,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +85,8 @@ public class DataElementGroupController
         }
 
         WebMetaData metaData = new WebMetaData();
-        List<DataElement> dataElements = Lists.newArrayList( dataElementGroup.getMembers() );
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
+        Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( options.hasPaging() )
         {
@@ -118,9 +123,11 @@ public class DataElementGroupController
         }
 
         WebMetaData metaData = new WebMetaData();
-        List<DataElement> dataElements = Lists.newArrayList();
+        List<DataElement> dataElements = new ArrayList<DataElement>();
+        List<DataElement> members = new ArrayList<DataElement>( dataElementGroup.getMembers() );
+        Collections.sort( members, IdentifiableObjectNameComparator.INSTANCE );
 
-        for ( DataElement dataElement : dataElementGroup.getMembers() )
+        for ( DataElement dataElement : members )
         {
             if ( dataElement.getDisplayName().toLowerCase().contains( q.toLowerCase() ) )
             {
