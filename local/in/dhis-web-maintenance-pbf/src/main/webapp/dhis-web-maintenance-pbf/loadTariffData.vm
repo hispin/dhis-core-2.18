@@ -23,8 +23,8 @@ $(function() {
             enableColumnMove: true,
             enableColumnResize: true,
             sortOnLoad: true,
-			minWidth: 100,
-        	minHeight: 100,			
+			width: 840,
+        	height: 360,			
             sorters: {direction: 'ASC'}
 			});
 			
@@ -41,7 +41,9 @@ $("#openAddTariff").button()
 			$( "#addTariff" ).dialog( "open" );
 			$('#pbfType option[value=-1]').attr('selected','selected');
 			$("#pbfType ").removeAttr('disabled');
-			$("#tariff").val('');			
+			$("#tariff").val('');
+			$("#target").val('');
+			$("#targetPercentage").val('');
 			$("#startDate").val('');
 			$("#startDate ").removeAttr('disabled');
 			$("#endDate").val('');
@@ -102,13 +104,15 @@ $( "#addTariff" ).dialog({
 	    }
 	}
 
-	function editTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate, value )
+	function editTariffDataValue( organisationUnitId, dataElementId, dataSetId, startDate, endDate, value, target, targetPercentage )
 	{	
 		validateAddTariff();
 		$( "#addTariff" ).dialog('option', 'title', 'Edit Tariff');
 		$('#pbfType option[value='+dataSetId+']').attr('selected','selected');
 		$('#pbfType').attr('disabled','disabled');
 		$('#tariff').val(value);
+		$('#target').val(target);
+		$('#targetPercentage').val(targetPercentage);
 		$('#startDate').val(startDate);
 		$('#startDate').attr('disabled','disabled');
 		$('#endDate').val(endDate);
@@ -147,7 +151,7 @@ $( "#addTariff" ).dialog({
 		}
 		return bValue;
 	}	
-	function handleSuccess( json )
+		function handleSuccess( json )
 	    {		
 			if(json.message == "true")	
 			{
@@ -162,7 +166,9 @@ $( "#addTariff" ).dialog({
         		        			'startDate' : $("#startDate").val(),
         							'endDate' : $("#endDate").val(),
 									'orgUnitUid': $("#orgUnitUid").val(),
-									'dataElementId' : $("#dataElementId").val()
+									'dataElementId' : $("#dataElementId").val(),									
+									'target' : $("#target").val(),
+									'targetPercentage' : $("#targetPercentage").val(),
         		    			};
 								jQuery.ajax( {
                                 url: 'addTariffData.action', 
@@ -174,7 +180,8 @@ $( "#addTariff" ).dialog({
 			}
 	    }
 	    function handleError( json )
-	    {						
+	    {	
+			
 	    }
 		
 		 function addTariffSuccess( json )
@@ -227,11 +234,13 @@ $( "#addTariff" ).dialog({
 <br/><br/>
 <input type="hidden" id="dataElementId" name="dataElementId" value="$!selecteddataElement.id"/>
 <div style="width:100%;margin:auto;">
-<table style="width:100%" id="tariffDetails" name="tariffDetails">
+<table style="width:100%" id="tariffDetails" name="tariffDetails" cellspacing="0">
 	<thead >
 		<tr >
 			<th >PBF Type</th>
 			<th >Tariff</th>
+			<th >Target</th>
+			<th >Target %</th>
 			<th >Start Date</th>
 			<th >End Date</th>
 			##if( $updateAuthority == 'Yes' )
@@ -250,6 +259,8 @@ $( "#addTariff" ).dialog({
             <tr >
 				<td >$!tariff.dataSet.name</td>
 				<td >$!tariff.value</td>
+				<td >$!tariff.target</td>
+				<td >$!tariff.targetPercentage</td>
 				<td data-sorter="shortDate" data-date-format="yyyymmdd">$simpleDateFormat.format($!tariff.startDate)</td>
 				<td data-sorter="shortDate" data-date-format="yyyymmdd">$simpleDateFormat.format($!tariff.endDate)</td>
 			##if($updateAuthority == 'Yes')
@@ -257,8 +268,8 @@ $( "#addTariff" ).dialog({
 					<a href="javascript:deleteTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate')">
 						<img src="images/delete.png" width="17px"/>
 					</a>
-					<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value')">
-						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/>
+					<a href="javascript:editTariffDataValue('$tariff.organisationUnit.id','$tariff.dataElement.id','$tariff.dataSet.id','$tariff.startDate','$tariff.endDate','$tariff.value','$!tariff.target','$!tariff.targetPercentage')">
+						<img src="../images/edit.png" alt="$i18n.getString( 'edit' )" width="17px"/>
 					</a>				
 				</td>
 			##end
@@ -301,7 +312,20 @@ $( "#addTariff" ).dialog({
 			<td style="width:40%;">Tariff <b class="mandatory">*</b> </td>
 			<td style="width:60%;"><input type="text" id="tariff" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
         </tr>
-		
+		<tr >
+			<td colspan="2">&nbsp;</td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Target <b class="mandatory">*</b> </td>
+			<td style="width:60%;"><input type="text" id="target" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
+        </tr>
+		<tr >
+			<td colspan="2">&nbsp;</td>
+        </tr>
+		<tr >
+			<td style="width:40%;">Target % <b class="mandatory">*</b> </td>
+			<td style="width:60%;"><input type="text" id="targetPercentage" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
+        </tr>
 		
 		
     </table>

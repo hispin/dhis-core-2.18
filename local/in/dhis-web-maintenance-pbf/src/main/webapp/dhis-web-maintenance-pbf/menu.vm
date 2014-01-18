@@ -6,4 +6,8 @@
 	<li><a href="dataElementTariffManagement.action">$i18n.getString( "dataelement_tariff_management" )</a></li>
 	
 	<li><a href="bankDetailsManagement.action">$i18n.getString( "bank_details_management" )</a></li>
+	
+	<li><a href="qualityMaxDataEntry.action">$i18n.getString( "quality_max_entry" )</a></li>
+	
+	<li><a href="qualityScoreDataEntry.action">$i18n.getString( "quality_store_entry" )</a></li>
 </ul>

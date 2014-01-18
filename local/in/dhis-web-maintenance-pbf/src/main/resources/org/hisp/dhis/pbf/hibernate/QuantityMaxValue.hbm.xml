@@ -4,7 +4,7 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.pbf.api.TariffDataValue" table="tariffdatavalue">
+  <class name="org.hisp.dhis.pbf.api.QualityMaxValue" table="qualitymaxvalue">
 
     <composite-id>
       <key-many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid" foreign-key="fk_tariffdatavalue_organisationunitid" />      
@@ -14,12 +14,8 @@
       <key-property name="endDate" column="enddate" />
     </composite-id>
 
-    <property name="value" />
-    
-    <property name="target" />
-    
-    <property name="targetPercentage" />
-
+    <property name="value" />    
+      
     <property name="storedBy" column="storedby" length="100" />
 
     <property name="timestamp" column="lastupdated" type="timestamp" />

@@ -3,15 +3,15 @@ package org.hisp.dhis.pbf.api;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
-public class TariffDataValue implements Serializable
+public class QualityMaxValue implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 
-    private OrganisationUnit organisationUnit;
+	private OrganisationUnit organisationUnit;
     
     private DataElement dataElement;
     
@@ -27,30 +27,23 @@ public class TariffDataValue implements Serializable
 
     private Date timestamp;
 
-    private String comment;
-    
-    private Integer target;
-    
-    private Double targetPercentage;
+    private String comment;    
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
-    public TariffDataValue()
-    {
-        
+    public QualityMaxValue()
+    {   
     }
     
-    public TariffDataValue( OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate, Double value ,Integer target,Double targetPercentage)
+    public QualityMaxValue( OrganisationUnit organisationUnit, DataElement dataElement, DataSet dataSet, Date startDate, Date endDate, Double value)
     {
         this.organisationUnit = organisationUnit;
         this.dataElement = dataElement;
         this.dataSet = dataSet;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.value = value;
-        this.target = target;
-        this.targetPercentage = targetPercentage;
+        this.value = value;       
     }
     
     // -------------------------------------------------------------------------
@@ -70,12 +63,12 @@ public class TariffDataValue implements Serializable
             return false;
         }
 
-        if ( !(o instanceof TariffDataValue) )
+        if ( !(o instanceof QualityMaxValue) )
         {
             return false;
         }
 
-        final TariffDataValue other = (TariffDataValue) o;
+        final QualityMaxValue other = (QualityMaxValue) o;
 
         return dataElement.equals( other.getDataElement() ) && dataSet.equals( other.getDataSet() ) && organisationUnit.equals( other.getOrganisationUnit() );
     }
@@ -186,22 +179,5 @@ public class TariffDataValue implements Serializable
     {
         this.dataSet = dataSet;
     }
-
-	public Integer getTarget() {
-		return target;
-	}
-
-	public void setTarget(Integer target) {
-		this.target = target;
-	}
-
-	public Double getTargetPercentage() {
-		return targetPercentage;
-	}
-
-	public void setTargetPercentage(Double targetPercentage) {
-		this.targetPercentage = targetPercentage;
-	}
-    
 
 }

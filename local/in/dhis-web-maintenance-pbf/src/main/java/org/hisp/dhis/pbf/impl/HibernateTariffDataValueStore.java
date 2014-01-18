@@ -14,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.pbf.api.QualityMaxValue;
 import org.hisp.dhis.pbf.api.TariffDataValue;
 import org.hisp.dhis.pbf.api.TariffDataValueStore;
 import org.hisp.dhis.period.Period;
@@ -149,4 +150,5 @@ public class HibernateTariffDataValueStore implements TariffDataValueStore
         
         return tariffDataValueMap;
     }
+
 }

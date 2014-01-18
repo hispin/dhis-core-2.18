@@ -27,17 +27,17 @@
 			<param name="page">/dhis-web-maintenance-pbf/loadTariffData.vm</param>
 		</action>
 		 <action name="addTariffData" class="org.hisp.dhis.pbf.action.AddTariffDataAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
+			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/tariffStatus.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>					
 		</action>
 		<action name="deleteTariffData" class="org.hisp.dhis.pbf.action.DeleteTariffDataAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
+			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/tariffStatus.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_TARIFFDATAVALUE_UPDATE</param>					
 		</action>
 		
 		<action name="validateTariffData" class="org.hisp.dhis.pbf.action.ValidateTariffDataAction">
-			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/status.vm</result>
+			<result name="success" type="velocity-json">/dhis-web-maintenance-pbf/tariffStatus.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>								
 		</action>
 		
@@ -81,8 +81,8 @@
 	
     <!-- Get OrganisationUnit Unit name -->
     <action name="getOrganisationUnit" class="org.hisp.dhis.pbf.dataentry.GetOrganisationUnitAction">
-        <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-        <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+        <result name="success" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseSuccess.vm</result>
+        <result name="input" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseInput.vm</result>
     </action>	
 	
 	<!-- Get Periods -->
@@ -109,7 +109,57 @@
 		<param name="onExceptionReturn">plainTextError</param>					
 	</action>
 	
+	<!-- Quality Max Data Entry -->
+	<action name="getOrganisationUnitForQuality" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitAction">
+        <result name="success" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseSuccess.vm</result>
+        <result name="input" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseInput.vm</result>
+    </action>
+    
+	 <action name="qualityMaxDataEntry" class="org.hisp.dhis.pbf.quality.dataentry.QualityMaxInitAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-pbf/qualityMaxEntrySelection.vm</param>
+      <param name="menu">/dhis-web-maintenance-pbf/menuDataEntry.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/qualityMaxDataEntry.js</param>
+      <param name="stylesheets">css/dataentry.css</param>
+    </action>
+	
+	<!-- Load DataEntry Form -->
+	<action name="loadQualityMaxForm" class="org.hisp.dhis.pbf.quality.dataentry.LoadQualityMaxDetailsAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-maintenance-pbf/loadQualityMaxEntryForm.vm</param>
+	</action>
+	
+	<!-- Save Quality Value -->
+	<action name="saveQualityValue"
+		class="org.hisp.dhis.pbf.quality.dataentry.SaveQualityValueAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-maintenance-pbf/status.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>					
+	</action>
+	
+	<!-- Quality Score Data Entry -->
+	<action name="qualityScoreDataEntry" class="org.hisp.dhis.pbf.quality.dataentry.QualityMaxInitAction">
+      <interceptor-ref name="organisationUnitTreeStack" />
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-pbf/qualityStoreEntrySelection.vm</param>
+      <param name="menu">/dhis-web-maintenance-pbf/menuDataEntry.vm</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/qualityScoreDataEntry.js</param>
+      <param name="stylesheets">css/dataentry.css</param>
+    </action>
+    
+	<!-- Load DataEntry Form -->
+	<action name="loadQualityScoreForm" class="org.hisp.dhis.pbf.quality.dataentry.LoadQualityScoreDetailsAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-maintenance-pbf/loadQualityStoreEntryForm.vm</param>
+	</action>
+	
+	<!-- Save Quality Score Value -->
+	<action name="saveDataValue" class="org.hisp.dhis.pbf.quality.dataentry.SaveDataValueAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-maintenance-pbf/status.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>					
+	</action>
+	
 	</package>
-	
-	
 </struts>

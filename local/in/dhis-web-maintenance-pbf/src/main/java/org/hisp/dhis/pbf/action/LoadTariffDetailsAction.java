@@ -149,7 +149,9 @@ public class LoadTariffDetailsAction
         selecteddataElement = dataElementService.getDataElementByName( dataElementName );
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
-
+        
+        //organisationUnit.getParent()
+        
         tariffList = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues( organisationUnit, selecteddataElement ) );
 
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
