@@ -1,4 +1,4 @@
-package org.hisp.dhis.pbf.dataentry;
+package org.hisp.dhis.pbf.quality.dataentry;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,7 +80,7 @@ public class GetOrganisationUnitAction implements Action
         
         dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         
-        List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
+        List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
         
         List<DataSet> pbfDataSets = new ArrayList<DataSet>();
         
@@ -99,12 +99,7 @@ public class GetOrganisationUnitAction implements Action
         dataSets.retainAll( pbfDataSets );
         Collections.sort(dataSets);
         
-        /*
-        for( DataSet dataSet : dataSets )
-        {
-            System.out.println(" dataSet ---" + dataSet.getId() +" -- " + dataSet.getName() );
-        }
-        */
+       
         System.out.println( dataSets.size() );
         if ( dataSets.size() > 0 )
         {

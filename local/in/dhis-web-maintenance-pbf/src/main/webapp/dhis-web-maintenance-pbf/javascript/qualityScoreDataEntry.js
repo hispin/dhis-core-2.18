@@ -19,7 +19,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	{
 		var dataSetId = $( '#dataSetId' ).val();
 		var periodId = $( '#selectedPeriodId' ).val();
-		 $.getJSON( 'getOrganisationUnit.action', {orgUnitId:orgUnitIds[0]}
+		 $.getJSON( 'getOrganisationUnitForQuality.action', {orgUnitId:orgUnitIds[0]}
 	        , function( json ) 
 	        {
 	            var type = json.response;
@@ -81,7 +81,7 @@ function loadDataEntryForm()
 	{
 	    jQuery('#loaderDiv').show();
 	    
-		jQuery('#dataEntryFormDiv').load('loadDataEntryForm.action',
+		jQuery('#dataEntryFormDiv').load('loadQualityScoreForm.action',
 			{
 				orgUnitId:orgUnitId,
 				dataSetId:dataSetId,
@@ -96,10 +96,10 @@ function loadDataEntryForm()
 
 }
 
-function saveValue(dataElementId,optionComboId)
+function saveValue(dataElementId)
 {
 	var period = document.getElementById("selectedPeriodId").value;
-	var valueId = "dataelement"+dataElementId+":"+optionComboId;
+	var valueId = "score_"+dataElementId;
 	
 	var fieldId = "#"+valueId;
 	var defaultValue = document.getElementById(valueId).defaultValue;
@@ -108,19 +108,18 @@ function saveValue(dataElementId,optionComboId)
 	if(defaultValue != value)
 	{
 	var dataValue = {
-        'dataElementId' : dataElementId,
-        'optionComboId' : optionComboId,
+        'dataElementId' : dataElementId,        
         'organisationUnitId' : $("#selectedOrgunitID").val(),
         'periodIso' : period,
         'value' : value
     };
-    jQuery.ajax( {
-            url: 'saveValue.action',
-            data: dataValue,
-            dataType: 'json',
-            success: handleSuccess,
-            error: handleError
-        } );
+	    jQuery.ajax( {
+	            url: 'saveDataValue.action',
+	            data: dataValue,
+	            dataType: 'json',
+	            success: handleSuccess,
+	            error: handleError
+	        } );
 	}
 	
 	function handleSuccess( json )

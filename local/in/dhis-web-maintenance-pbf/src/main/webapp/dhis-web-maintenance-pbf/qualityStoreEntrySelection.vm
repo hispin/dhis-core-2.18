@@ -18,7 +18,7 @@
     
 </script>
 
-<h3>$i18n.getString( "pbf_dataentry" )</h3>
+<h3>Quality Score Data Entry</h3>
 
 <form id="pbfDataEntryForm" name="pbfDataEntryForm" method="post" >	
 <div>
@@ -65,14 +65,7 @@
 
 
 #parse( "/dhis-web-commons/loader/loader.vm" )
-<div id='dataEntryFormDiv' style="width:70%"></div> <!-- DataEntry Form -->  	
-<!--
-
-<p>
-	<input type="submit"  id="saveButton" name="saveButton" value="$i18n.getString( 'save' )" disabled="disabled" style="width:100px"/>&nbsp;&nbsp;
-	<input type="button"  value="$i18n.getString( 'Cancel' )" style="width:100px" onclick="window.location.href='index.action'"/>&nbsp;&nbsp;
-</p>
--->
+<div id='dataEntryFormDiv'></div> <!-- DataEntry Form -->  	
 
 </form>
 

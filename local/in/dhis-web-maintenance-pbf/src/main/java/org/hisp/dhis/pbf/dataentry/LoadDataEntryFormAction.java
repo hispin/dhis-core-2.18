@@ -1,6 +1,7 @@
 package org.hisp.dhis.pbf.dataentry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -34,6 +37,8 @@ import com.opensymphony.xwork2.Action;
  */
 public class LoadDataEntryFormAction implements Action
 {
+	 private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
+	 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -93,6 +98,13 @@ public class LoadDataEntryFormAction implements Action
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
     }
 
     // -------------------------------------------------------------------------
@@ -219,11 +231,33 @@ public class LoadDataEntryFormAction implements Action
         
         dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
         
+        Collections.sort(dataElements);
+        
         optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
         
         Map<Integer, Double> tariffDataValueMap = new HashMap<Integer, Double>();
         
-        tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( organisationUnit, dataSet, period ) );
+        // find parent
+        Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+        int tariff_setting_authority = 0;
+        if ( tariff_authority == null )
+        {
+            tariff_setting_authority = 3;
+           
+        }
+        else
+        {
+            tariff_setting_authority = (int) tariff_authority.getValue();
+            
+        }
+        
+        OrganisationUnit parentOrgunit = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
+        
+        if( parentOrgunit != null )
+        {
+        	tariffDataValueMap.putAll( tariffDataValueService.getTariffDataValues( parentOrgunit, dataSet, period ) );
+        }
+        	
         
         pbfDataValueMap = new HashMap<DataElement, PBFDataValue>();
 
@@ -257,6 +291,7 @@ public class LoadDataEntryFormAction implements Action
         	{
         		PBFDataValue pbfDataValue = new PBFDataValue();
                 
+        		pbfDataValue.setDataSet( dataSet );
                 pbfDataValue.setDataElement( de );
                 pbfDataValue.setPeriod( period );
                 pbfDataValue.setOrganisationUnit(organisationUnit);
@@ -332,6 +367,19 @@ public class LoadDataEntryFormAction implements Action
         
         return SUCCESS;
     }
+	
+	public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
+	{
+		Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
+		if( tariffOULevel == ouLevel )
+		{
+			return organisationUnit;
+		}
+		else
+		{
+			return findParentOrgunitforTariff( organisationUnit.getParent(), tariffOULevel );			
+		}
+	}
 
 }
 

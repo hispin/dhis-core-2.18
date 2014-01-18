@@ -1,4 +1,4 @@
-package org.hisp.dhis.pbf.dataentry;
+package org.hisp.dhis.pbf.quality.dataentry;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,6 +27,8 @@ package org.hisp.dhis.pbf.dataentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -42,6 +44,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.pbf.api.PBFDataValue;
 import org.hisp.dhis.pbf.api.PBFDataValueService;
+import org.hisp.dhis.pbf.api.QualityMaxValue;
+import org.hisp.dhis.pbf.api.QualityMaxValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ValidationUtils;
@@ -52,10 +56,10 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Abyot Asalefew
  */
-public class SaveValueAction
+public class SaveQualityValueAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( SaveValueAction.class );
+    private static final Log log = LogFactory.getLog( SaveQualityValueAction.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -75,20 +79,6 @@ public class SaveValueAction
         this.dataElementService = dataElementService;
     }
 
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -103,11 +93,11 @@ public class SaveValueAction
         this.dataSetService = dataSetService;
     }
 
-    private PBFDataValueService pbfDataValueService;
+    private QualityMaxValueService qualityMaxValueService;
     
-    public void setPbfDataValueService(PBFDataValueService pbfDataValueService) 
-    {
-		this.pbfDataValueService = pbfDataValueService;
+    public void setQualityMaxValueService(
+			QualityMaxValueService qualityMaxValueService) {
+		this.qualityMaxValueService = qualityMaxValueService;
 	}
     
     // -------------------------------------------------------------------------
@@ -120,13 +110,6 @@ public class SaveValueAction
     {
         this.value = value;
     }
-
-    private String valueType;
-    
-    public void setValueType(String valueType) 
-    {
-		this.valueType = valueType;
-	}
 
 	private String dataElementId;
 
@@ -141,30 +124,7 @@ public class SaveValueAction
     {
         this.organisationUnitId = organisationUnitId;
     }
-
-    /*
-    private String optionComboId;
-
-    public void setOptionComboId( String optionComboId )
-    {
-        this.optionComboId = optionComboId;
-    }
-    */
-
-    private String periodId;
-
-    public void setPeriodId( String periodId )
-    {
-        this.periodId = periodId;
-    }
-    
-    private String periodIso;
-    
-    public void setPeriodIso(String periodIso) 
-    {
-		this.periodIso = periodIso;
-	}
-    
+   
     private String dataSetId;
     
 	public void setDataSetId(String dataSetId) 
@@ -172,11 +132,21 @@ public class SaveValueAction
 		this.dataSetId = dataSetId;
 	}
     
+	private String startDate ;
+    
+    public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+    
+    private String endDate ;
+    
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
     
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
 
 	private int statusCode = 0;
 
@@ -189,16 +159,9 @@ public class SaveValueAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
+    public String execute() throws Exception
     {
-    	Period period = PeriodType.getPeriodFromIsoString(periodIso);
-       // Period period = PeriodType.createPeriodExternalId( periodId );
-
-        if ( period == null )
-        {
-            return logError( "Illegal period identifier: " + periodIso );
-        }
-        
+    	
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         if ( organisationUnit == null )
@@ -212,16 +175,7 @@ public class SaveValueAction
         {
             return logError( "Invalid data element identifier: " + dataElementId );
         }
-    
-        /*
-        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer.parseInt(optionComboId) );
-
-        if ( optionCombo == null )
-        {
-            return logError( "Invalid category option combo identifier: " + optionComboId );
-        }
-        */
-        
+       
         DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
         if ( dataSet == null )
         {
@@ -257,97 +211,41 @@ public class SaveValueAction
         {
             return logError( valid, 3 );
         }
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        Date sDate = dateFormat.parse( startDate );
+        Date eDate = dateFormat.parse( endDate );
+        
+        QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue(organisationUnit, dataElement, dataSet, sDate, eDate );
 
-        // ---------------------------------------------------------------------
-        // Check locked status
-        // ---------------------------------------------------------------------
-
-        /*
-        if ( dataSetService.isLocked( dataElement, period, organisationUnit, null ) )
-        {
-            return logError( "Entry locked for combination: " + dataElement + ", " + period + ", " + organisationUnit, 2 );
-        }
-*/
-        // ---------------------------------------------------------------------
-        // Update data
-        // ---------------------------------------------------------------------
-
-        /*
-        DataValue dataValue = dataValueService.getDataValue(  dataElement, period,organisationUnit,optionCombo );
-
-        if ( dataValue == null )
+        if ( qualityMaxValue == null )
         {
             if ( value != null )
             {
-                dataValue = new DataValue( );
-                dataValue.setDataElement(dataElement);
-                dataValue.setPeriod(period);
-                dataValue.setSource(organisationUnit);
-                dataValue.setValue(value);
-                dataValue.setStoredBy(storedBy);
-                dataValue.setTimestamp(now);
-                dataValue.setCategoryOptionCombo(optionCombo);
-                dataValueService.addDataValue( dataValue );
+            	qualityMaxValue = new QualityMaxValue( );
+            	qualityMaxValue.setDataSet(dataSet);
+            	qualityMaxValue.setDataElement(dataElement);
+            	qualityMaxValue.setOrganisationUnit(organisationUnit);
+            	
+            	qualityMaxValue.setValue(Double.parseDouble(value));
+            	qualityMaxValue.setStartDate(sDate);
+            	qualityMaxValue.setEndDate(eDate);
+            	
+            	qualityMaxValue.setStoredBy(storedBy);
+            	qualityMaxValue.setTimestamp(now);
+            	qualityMaxValueService.addQuantityMaxValue(qualityMaxValue);
                 
                 System.out.println("Value Added");
             }
         }
         else
         {
-            dataValue.setValue( value );
-            dataValue.setTimestamp( now );
-            dataValue.setStoredBy( storedBy );
-
-            dataValueService.updateDataValue( dataValue );
-            System.out.println("Value Updated");
-        }
-
-*/
-
-        PBFDataValue pbfDataValue = pbfDataValueService.getPBFDataValue(organisationUnit, dataSet, period, dataElement);
-
-        if ( pbfDataValue == null )
-        {
-            if ( value != null )
-            {
-            	pbfDataValue = new PBFDataValue( );
-            	pbfDataValue.setDataSet(dataSet);
-            	pbfDataValue.setDataElement(dataElement);
-            	pbfDataValue.setPeriod(period);
-            	pbfDataValue.setOrganisationUnit(organisationUnit);
-                
-            	if( valueType.equals("1") )
-            	{
-            		pbfDataValue.setQuantityReported( Integer.parseInt( value ) );
-            	}
-            	else if( valueType.equals("2") )
-            	{
-            		pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
-            	}
-            	pbfDataValue.setStoredBy(storedBy);
-            	pbfDataValue.setTimestamp(now);
-                pbfDataValueService.addPBFDataValue(pbfDataValue);
-                
-                System.out.println("Value Added");
-            }
-        }
-        else
-        {
-        	if( valueType.equals("1") )
-        	{
-        		pbfDataValue.setQuantityReported( Integer.parseInt( value ) );
-        	}
-        	else if( valueType.equals("2") )
-        	{
-        		pbfDataValue.setQuantityValidated( Integer.parseInt( value ) );
-        	}
+        	qualityMaxValue.setStoredBy(storedBy);        	
+        	qualityMaxValue.setTimestamp(now);
         	
-        	pbfDataValue.setStoredBy(storedBy);
+        	qualityMaxValue.setValue(Double.parseDouble(value));
         	
-        	pbfDataValue.setTimestamp(now);
-
-        	pbfDataValueService.updatePBFDataValue( pbfDataValue );
-        	
+        	qualityMaxValueService.updateQuantityMaxValue(qualityMaxValue);
             System.out.println("Value Updated");
         }
 

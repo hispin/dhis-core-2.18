@@ -29,8 +29,8 @@ Ext.QuickTips.init();
             enableColumnMove: true,
             enableColumnResize: true,
             sortOnLoad: true,
-			minWidth: 300,
-        	minHeight: 360,			
+			width: 900,
+        	height: 360,			
             sorters: {direction: 'ASC'}
 			});
 			
@@ -181,7 +181,7 @@ function validateAddBank()
 <input type="button" value="Add New Bank Detail" style="float:right;" id="openAddBankDetail" />
 </div>
 <br/><br/>
-<table style="width:100%" id="bankDetails">
+<table style="width:100%" id="bankDetails" cellspacing="0">
 	<thead >
 		<tr >
 			<th >PBF Type</th>
@@ -194,7 +194,7 @@ function validateAddBank()
 			#end
         </tr>
 	</thead>
-	<tbody id="list">
+	<tbody >
 		#set( $mark = false )
 		#foreach( $bankDetails in $bankDetailsList )
 			#if( $mark )
