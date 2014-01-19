@@ -85,35 +85,38 @@ public class SavePatientAttributeInListNoProgramAction
 
         int indexIden = 1;
         int indexAttr = 1;
-        for ( String objectId : selectedAttributeIds )
+        if ( selectedAttributeIds != null )
         {
-            // Identifier type
-            String[] id = objectId.split( "_" );
-            if ( id[0].equals( PREFIX_IDENTYFITER_TYPE ) )
+            for ( String objectId : selectedAttributeIds )
             {
+                // Identifier type
+                String[] id = objectId.split( "_" );
+                if ( id[0].equals( PREFIX_IDENTYFITER_TYPE ) )
+                {
 
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
-                    .parseInt( id[1] ) );
-                identifierType.setDisplayInListNoProgram( true );
-                identifierType.setSortOrderInListNoProgram( indexIden );
-                patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
-                indexIden++;
-                patientIdentifierTypes.remove( identifierType );
-            }
+                    PatientIdentifierType identifierType = patientIdentifierTypeService
+                        .getPatientIdentifierType( Integer.parseInt( id[1] ) );
+                    identifierType.setDisplayInListNoProgram( true );
+                    identifierType.setSortOrderInListNoProgram( indexIden );
+                    patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
+                    indexIden++;
+                    patientIdentifierTypes.remove( identifierType );
+                }
 
-            // Attribute
-            else if ( id[0].equals( PREFIX_ATTRIBUTE ) )
-            {
-                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
-                    .parseInt( id[1] ) );
-                patientAttribute.setDisplayInListNoProgram( true );
-                patientAttribute.setSortOrderInListNoProgram( indexAttr );
-                patientAttributeService.updatePatientAttribute( patientAttribute );
-                indexAttr++;
-                patientAttributes.remove( patientAttribute );
+                // Attribute
+                else if ( id[0].equals( PREFIX_ATTRIBUTE ) )
+                {
+                    PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
+                        .parseInt( id[1] ) );
+                    patientAttribute.setDisplayInListNoProgram( true );
+                    patientAttribute.setSortOrderInListNoProgram( indexAttr );
+                    patientAttributeService.updatePatientAttribute( patientAttribute );
+                    indexAttr++;
+                    patientAttributes.remove( patientAttribute );
+                }
             }
         }
-
+        
         // Set DisplayInListNoProgram=false for other ID type
         for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
         {

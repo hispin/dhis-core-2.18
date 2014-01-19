@@ -1,3 +1,16 @@
+<script>
+	jQuery(document).ready(	function(){
+		validation( 'savePatientAttributeInListNoProgramForm', function(form){
+			form.submit();
+		}, function(){
+			selectAllById('selectedAttributeIds');
+			if(jQuery("#selectedAttributeIds option").length > 0 ){
+				setFieldValue('hasAttributes', 'true');
+			}
+		});
+	});	
+</script>
+
 <h3>$i18n.getString( "patient_identifer_type_attribute_displayed_in_list" )</h3>
 																			
 <form id="savePatientAttributeInListNoProgramForm" name="savePatientAttributeInListNoProgramForm" action="savePatientAttributeInListNoProgram.action" method="post" action='savePatientAttributeVisitSchedule.action' onsubmit="selectAllById('selectedAttributeIds');">
@@ -11,7 +24,10 @@
 	<tr>
 		<th>$i18n.getString( "availableAttribute" )</th>
 		<th>$i18n.getString( "filter" )</th>
-		<th>$i18n.getString( "selectedAttribute" )</th>
+		<th>
+			$i18n.getString( "selectedAttribute" )
+			<input type='hidden' id='hasAttributes' name='hasAttributes' class="{validate:{required:true}}">
+		</th>
 	</tr>
 	
 	<tr>
