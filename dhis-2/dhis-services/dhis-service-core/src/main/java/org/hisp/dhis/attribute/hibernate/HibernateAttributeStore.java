@@ -73,6 +73,13 @@ public class HibernateAttributeStore
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public Set<Attribute> getDataSetAttributes()
+    {
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "dataSetAttribute", true ) ).list() );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public Set<Attribute> getOrganisationUnitAttributes()
     {
         return new HashSet<Attribute>( getCriteria( Restrictions.eq( "organisationUnitAttribute", true ) ).list() );
@@ -83,6 +90,13 @@ public class HibernateAttributeStore
     public Set<Attribute> getOrganisationUnitGroupAttributes()
     {
         return new HashSet<Attribute>( getCriteria( Restrictions.eq( "organisationUnitGroupAttribute", true ) ).list() );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Set<Attribute> getOrganisationUnitGroupSetAttributes()
+    {
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "organisationUnitGroupSetAttribute", true ) ).list() );
     }
 
     @Override

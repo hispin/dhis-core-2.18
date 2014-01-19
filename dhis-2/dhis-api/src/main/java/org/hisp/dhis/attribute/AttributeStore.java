@@ -69,6 +69,13 @@ public interface AttributeStore
     Set<Attribute> getIndicatorGroupAttributes();
 
     /**
+     * Get all attributes that are enabled for data sets.
+     *
+     * @return All attributes with attribute.dataSet = true
+     */
+    Set<Attribute> getDataSetAttributes();
+
+    /**
      * Get all attributes that are enabled for organisation units.
      * 
      * @return All attributes with attribute.organisationUnit = true
@@ -81,6 +88,13 @@ public interface AttributeStore
      * @return All attributes with attribute.organisationUnitGroup = true
      */
     Set<Attribute> getOrganisationUnitGroupAttributes();
+
+    /**
+     * Get all attributes that are enabled for organisation unit group sets.
+     *
+     * @return All attributes with attribute.organisationUnitGroupSet = true
+     */
+    Set<Attribute> getOrganisationUnitGroupSetAttributes();
 
     /**
      * Get all attributes that are enabled for users.

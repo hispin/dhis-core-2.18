@@ -113,6 +113,7 @@
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.AddDataSetAction" class="org.hisp.dhis.dataset.action.AddDataSetAction"
@@ -124,6 +125,7 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.UpdateDataSetAction" class="org.hisp.dhis.dataset.action.UpdateDataSetAction"
@@ -136,6 +138,7 @@
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.GetDataSetAction" class="org.hisp.dhis.dataset.action.GetDataSetAction"
