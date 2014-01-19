@@ -212,7 +212,7 @@ function Patient()
 				{
 					$("#patientForm :input").attr("disabled", false);
 					$("#patientForm").find("select").attr("disabled", false);
-					showPatientDashboardForm( patientId );
+					showPatientDashboardForm( patientUid );
 				}
 			}
 		  }
