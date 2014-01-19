@@ -289,7 +289,7 @@ public class TableAlteror
 
         updateCoordinatesProgramStageInstance();
 
-        //addPatientAttributes();
+        // addPatientAttributes();
 
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
@@ -346,6 +346,7 @@ public class TableAlteror
         updateUidColumn( "programstage" );
         updateUidColumn( "programstagesection" );
         updateUidColumn( "programvalidation" );
+        updateUidColumn( "caseaggregatecondition" );
     }
 
     private void updateUidColumn( String tableName )
@@ -505,7 +506,7 @@ public class TableAlteror
             String autoIncrVal = statementBuilder.getAutoIncrementValue();
 
             Statement statement = holder.getStatement();
-                        
+
             ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patient" );
 
             // Only execute once
@@ -815,8 +816,8 @@ public class TableAlteror
                 // -------------------------------------------------------------
 
                 log.info( "Inserting dynamic atribute called Full name" );
-               
-                max ++;
+
+                max++;
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
