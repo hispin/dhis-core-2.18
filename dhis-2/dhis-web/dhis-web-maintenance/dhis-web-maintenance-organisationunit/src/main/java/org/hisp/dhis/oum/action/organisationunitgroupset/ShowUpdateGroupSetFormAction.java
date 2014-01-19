@@ -30,14 +30,20 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.system.util.AttributeUtils;
 
 /**
  * @author Lars Helge Overland
@@ -54,6 +60,13 @@ public class ShowUpdateGroupSetFormAction
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -81,6 +94,20 @@ public class ShowUpdateGroupSetFormAction
         return selectedGroups;
     }
 
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -93,6 +120,12 @@ public class ShowUpdateGroupSetFormAction
         selectedGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSet.getOrganisationUnitGroups() );
 
         Collections.sort( selectedGroups, IdentifiableObjectNameComparator.INSTANCE );
+
+        attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitGroupSetAttributes() );
+
+        attributeValues = AttributeUtils.getAttributeValueMap( organisationUnitGroupSet.getAttributeValues() );
+
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }

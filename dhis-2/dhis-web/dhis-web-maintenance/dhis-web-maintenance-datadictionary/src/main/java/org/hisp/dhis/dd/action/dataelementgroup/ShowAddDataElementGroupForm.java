@@ -69,7 +69,7 @@ public class ShowAddDataElementGroupForm
     public String execute()
     {
         attributes = new ArrayList<Attribute>( attributeService.getDataElementGroupAttributes() );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }

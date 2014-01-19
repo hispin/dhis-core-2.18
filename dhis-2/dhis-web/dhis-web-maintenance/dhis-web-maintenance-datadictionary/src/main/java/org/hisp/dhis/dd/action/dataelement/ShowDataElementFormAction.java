@@ -249,7 +249,7 @@ public class ShowDataElementFormAction
 
         Collections.sort( dataElementCategoryCombos, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
         Collections.sort( optionSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( legendSets, IdentifiableObjectNameComparator.INSTANCE );
 

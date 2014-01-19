@@ -8,7 +8,6 @@ jQuery( document ).ready( function()
         'beforeValidateHandler' : function()
         {
 			jQuery( "#selectedDataSetsList" ).find( "option" ).attr( "selected", "selected" );
-
             #tblDynamicAttributesJavascript()
         },
         'rules' : getValidationRules( "organisationUnitGroup" )

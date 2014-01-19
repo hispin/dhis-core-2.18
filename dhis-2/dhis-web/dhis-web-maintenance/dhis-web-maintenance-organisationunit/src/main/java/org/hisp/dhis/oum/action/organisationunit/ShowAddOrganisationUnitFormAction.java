@@ -31,6 +31,7 @@ package org.hisp.dhis.oum.action.organisationunit;
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -123,7 +124,7 @@ public class ShowAddOrganisationUnitFormAction
 
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }

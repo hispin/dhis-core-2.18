@@ -36,6 +36,7 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -206,6 +207,7 @@ public class EditDataSetFormAction
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( legendSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }

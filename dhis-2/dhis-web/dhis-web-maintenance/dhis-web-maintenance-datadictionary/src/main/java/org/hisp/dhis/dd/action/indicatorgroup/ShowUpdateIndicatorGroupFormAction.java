@@ -118,8 +118,8 @@ public class ShowUpdateIndicatorGroupFormAction
 
         attributeValues = AttributeUtils.getAttributeValueMap( indicatorGroup.getAttributeValues() );
 
-        Collections.sort( groupMembers, new IdentifiableObjectNameComparator() );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( groupMembers, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }

@@ -38,6 +38,7 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -195,7 +196,7 @@ public class GetOrganisationUnitAction
         Collections.sort( availableDataSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         // ---------------------------------------------------------------------
         // Allow update only if org unit does not have polygon coordinates

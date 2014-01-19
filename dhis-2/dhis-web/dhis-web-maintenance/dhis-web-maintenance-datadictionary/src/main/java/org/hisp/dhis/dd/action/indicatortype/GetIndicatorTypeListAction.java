@@ -130,7 +130,7 @@ public class GetIndicatorTypeListAction
         attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
 
         Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }
