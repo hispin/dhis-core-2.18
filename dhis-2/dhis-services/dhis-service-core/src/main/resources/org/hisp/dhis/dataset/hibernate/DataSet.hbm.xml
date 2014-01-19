@@ -117,5 +117,13 @@
     <many-to-one name="legendSet" class="org.hisp.dhis.mapping.MapLegendSet" column="legendsetid"
       foreign-key="fk_indicator_legendset" />
 
+    <!-- Dynamic attribute values -->
+
+    <set name="attributeValues" table="datasetattributevalues">
+      <cache usage="read-write" />
+      <key column="datasetid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" unique="true" />
+    </set>
+
   </class>
 </hibernate-mapping>
