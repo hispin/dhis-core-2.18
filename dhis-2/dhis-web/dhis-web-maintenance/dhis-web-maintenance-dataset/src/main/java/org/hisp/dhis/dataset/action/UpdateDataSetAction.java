@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset.action;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -42,10 +43,12 @@ import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.UserGroupService;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.hisp.dhis.system.util.TextUtils.equalsNullSafe;
@@ -116,6 +119,13 @@ public class UpdateDataSetAction
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
+    }
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -283,6 +293,13 @@ public class UpdateDataSetAction
         this.selectedLegendSetId = selectedLegendSetId;
     }
 
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -355,6 +372,12 @@ public class UpdateDataSetAction
             dataSet.setCategoryCombo( categoryService.getDataElementCategoryCombo( categoryComboId ) );
         }
         
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( dataSet.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
+
         dataSetService.updateDataSet( dataSet );
 
         // ---------------------------------------------------------------------

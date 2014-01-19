@@ -140,6 +140,12 @@ public class DefaultAttributeService
     }
 
     @Override
+    public Set<Attribute> getDataSetAttributes()
+    {
+        return new HashSet<Attribute>( i18n( i18nService,attributeStore.getDataSetAttributes()));
+    }
+
+    @Override
     public Set<Attribute> getOrganisationUnitAttributes()
     {
         return new HashSet<Attribute>( i18n( i18nService,attributeStore.getOrganisationUnitAttributes()));
@@ -149,6 +155,11 @@ public class DefaultAttributeService
     public Set<Attribute> getOrganisationUnitGroupAttributes()
     {
         return new HashSet<Attribute>( i18n( i18nService,attributeStore.getOrganisationUnitGroupAttributes()));
+    }
+
+    @Override public Set<Attribute> getOrganisationUnitGroupSetAttributes()
+    {
+        return new HashSet<Attribute>( i18n( i18nService,attributeStore.getOrganisationUnitGroupSetAttributes()));
     }
 
     @Override

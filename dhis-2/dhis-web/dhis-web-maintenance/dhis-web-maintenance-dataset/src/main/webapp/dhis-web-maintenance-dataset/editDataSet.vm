@@ -1,6 +1,22 @@
-<script type="text/javascript" src="javascript/editDataSet.js"></script>
 <script type="text/javascript">
 	jQuery(function() {
+        validation2('editDataSetForm', function(form) {
+     		form.submit();
+     	}, {
+     		'beforeValidateHandler' : function() {
+                 $("#dataElementsSelectedList").find("option").attr("selected", "selected");
+                 $("#indicatorsSelectedList").find("option").attr("selected", "selected");
+                #tblDynamicAttributesJavascript()
+     		},
+     		'rules' : getValidationRules("dataSet")
+     	});
+
+     	checkValueIsExist("code", "validateDataSet.action", {
+     		dataSetId : function() {
+     			return jQuery("#dataSetId").val();
+     		}
+     	});
+
 		jQuery("#availableDataElementsList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getDataElements.action?domain=aggregate",
 			iterator: "dataElements",
@@ -144,6 +160,13 @@
         </td>
       </tr>      
     </tbody>
+  </table>
+
+  #tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+
+  <table style="width: 600px">
+    <col style="width: 400px">
+    <col>
     <thead>
       <tr>
         <th colspan="2">$i18n.getString( "form_details" )</th>

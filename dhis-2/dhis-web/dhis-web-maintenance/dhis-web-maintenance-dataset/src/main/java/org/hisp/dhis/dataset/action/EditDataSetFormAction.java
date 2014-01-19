@@ -30,8 +30,12 @@ package org.hisp.dhis.dataset.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -43,6 +47,7 @@ import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
@@ -91,6 +96,13 @@ public class EditDataSetFormAction
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
+    }
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -153,6 +165,20 @@ public class EditDataSetFormAction
         return legendSets;
     }
 
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -170,7 +196,11 @@ public class EditDataSetFormAction
             dataSet = dataSetService.getDataSet( dataSetId, true, true, false );
             dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
             indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
+
+            attributeValues = AttributeUtils.getAttributeValueMap( dataSet.getAttributeValues() );
         }
+
+        attributes = new ArrayList<Attribute>( attributeService.getDataSetAttributes() );
 
         Collections.sort( userGroups, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );

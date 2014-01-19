@@ -28,6 +28,7 @@ package org.hisp.dhis.attribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -122,6 +123,13 @@ public interface AttributeService
     Set<Attribute> getIndicatorGroupAttributes();
 
     /**
+     * Gets attributes which are associated with data sets.
+     *
+     * @return a set of attributes associated with data sets.
+     */
+    Set<Attribute> getDataSetAttributes();
+
+    /**
      * Gets attributes which are associated with organisation units.
      * 
      * @return a set of attributes associated with organisation units.
@@ -134,6 +142,13 @@ public interface AttributeService
      * @return a set of attributes associated with organisation unit groups.
      */
     Set<Attribute> getOrganisationUnitGroupAttributes();
+
+    /**
+     * Gets attributes which are associated with organisation unit group sets.
+     *
+     * @return a set of attributes associated with organisation unit group sets.
+     */
+    Set<Attribute> getOrganisationUnitGroupSetAttributes();
 
     /**
      * Gets attributes which are associated with users.
