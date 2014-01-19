@@ -1,6 +1,19 @@
-<script type="text/javascript" src="javascript/addOrganisationUnitGroupSetForm.js"></script>
 <script type="text/javascript">
 	jQuery(function() {
+        validation2('addOrganisationUnitGroupSetForm', function(form) {
+     	    form.submit();
+     	}, {
+     		'beforeValidateHandler' : function() {
+     			selectAllById('selectedGroups');
+                #tblDynamicAttributesJavascript()
+     		},
+     		'rules' : getValidationRules("organisationUnitGroupSet")
+     	});
+
+     	checkValueIsExist("name", "validateOrganisationUnitGroupSet.action");
+
+     	changeCompulsory(getFieldValue('compulsory'));
+
 		jQuery("#availableGroups").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getOrganisationUnitGroups.action",
 			iterator: "organisationUnitGroups",
@@ -62,6 +75,8 @@
 		<td colspan="2" style="height:15px"></td>
 	</tr>
 </table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
 <table>
     <colgroup>

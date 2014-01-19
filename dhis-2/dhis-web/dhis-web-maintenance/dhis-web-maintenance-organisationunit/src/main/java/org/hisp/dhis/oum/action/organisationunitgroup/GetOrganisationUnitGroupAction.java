@@ -31,6 +31,7 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -128,7 +129,7 @@ public class GetOrganisationUnitGroupAction
 
         attributeValues = AttributeUtils.getAttributeValueMap( organisationUnitGroup.getAttributeValues() );
 
-        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }

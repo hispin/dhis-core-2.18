@@ -175,7 +175,7 @@ public class ShowUpdateIndicatorFormAction
         
         Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
         Collections.sort( legendSets, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

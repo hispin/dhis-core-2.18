@@ -111,7 +111,7 @@ public class ShowAddIndicatorForm
         legendSets = new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() );
         
         Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
         Collections.sort( legendSets, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;

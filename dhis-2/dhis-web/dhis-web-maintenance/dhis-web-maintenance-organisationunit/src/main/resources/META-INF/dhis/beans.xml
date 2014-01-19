@@ -118,6 +118,10 @@
 
   <!-- OrganisationUnitGroupSet -->
 
+  <bean id="org.hisp.dhis.oum.action.organisationunitgroupset.ShowAddOrganisationUnitGroupSetFormAction" class="org.hisp.dhis.oum.action.organisationunitgroupset.ShowAddOrganisationUnitGroupSetFormAction">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
   <bean id="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetListAction" class="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetListAction"
     scope="prototype">
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
@@ -131,6 +135,7 @@
   <bean id="org.hisp.dhis.oum.action.organisationunitgroupset.AddGroupSetAction" class="org.hisp.dhis.oum.action.organisationunitgroupset.AddGroupSetAction"
     scope="prototype">
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetAction" class="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetAction"
@@ -146,11 +151,13 @@
   <bean id="org.hisp.dhis.oum.action.organisationunitgroupset.UpdateGroupSetAction" class="org.hisp.dhis.oum.action.organisationunitgroupset.UpdateGroupSetAction"
     scope="prototype">
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunitgroupset.ShowUpdateGroupSetFormAction" class="org.hisp.dhis.oum.action.organisationunitgroupset.ShowUpdateGroupSetFormAction"
     scope="prototype">
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <!-- Hierarchy operations -->

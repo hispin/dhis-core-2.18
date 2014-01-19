@@ -31,6 +31,7 @@ package org.hisp.dhis.dashboard.usergroup.action;
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class AddUserGroupFormAction
         throws Exception
     {
         attributes = new ArrayList<Attribute>( attributeService.getUserGroupAttributes() );
-        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }

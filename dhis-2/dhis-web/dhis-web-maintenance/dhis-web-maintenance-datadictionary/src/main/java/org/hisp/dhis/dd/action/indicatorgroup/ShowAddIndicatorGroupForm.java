@@ -72,7 +72,7 @@ public class ShowAddIndicatorGroupForm
     public String execute()
     {
         attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }

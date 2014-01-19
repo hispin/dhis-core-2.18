@@ -152,7 +152,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="showAddOrganisationUnitGroupSetForm" class="org.hisp.dhis.oum.action.NoAction">
+    <action name="showAddOrganisationUnitGroupSetForm" class="org.hisp.dhis.oum.action.organisationunitgroupset.ShowAddOrganisationUnitGroupSetFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupSetForm.vm</param>
       <param name="javascripts">javascript/organisationUnitGroupSet.js</param>

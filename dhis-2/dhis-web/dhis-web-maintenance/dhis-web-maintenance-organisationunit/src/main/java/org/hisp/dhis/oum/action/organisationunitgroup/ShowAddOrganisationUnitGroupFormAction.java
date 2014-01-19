@@ -69,7 +69,7 @@ public class ShowAddOrganisationUnitGroupFormAction
     public String execute()
     {
         attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitGroupAttributes() );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( attributes, AttributeSortOrderComparator.INSTANCE );
 
         return SUCCESS;
     }
