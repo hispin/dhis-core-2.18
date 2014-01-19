@@ -289,7 +289,7 @@ public class TableAlteror
 
         updateCoordinatesProgramStageInstance();
 
-        // addPatientAttributes();
+        addPatientAttributes();
 
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsIncidentDate" );
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
@@ -503,17 +503,14 @@ public class TableAlteror
 
         try
         {
-            String autoIncrVal = statementBuilder.getAutoIncrementValue();
-
-            Statement statement = holder.getStatement();
+           Statement statement = holder.getStatement();
 
             ResultSet resultSet = statement.executeQuery( "SELECT gender FROM patient" );
 
             // Only execute once
             if ( resultSet.next() )
             {
-                Integer max = jdbcTemplate.queryForObject( "select max(patientattributeid) from patientattribute",
-                    Integer.class );
+                String max = statementBuilder.getAutoIncrementValue();
 
                 // ---------------------------------------------------------------------
                 // Gender
@@ -521,7 +518,6 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called Gender" );
 
-                max++;
                 String uid = CodeGenerator.generateCode();
 
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
@@ -537,21 +533,20 @@ public class TableAlteror
 
                 log.info( "Inserting data into Gender attribute" );
 
-                Integer maxOpt = jdbcTemplate.queryForObject(
-                    "select max(patientattributeoptionid) from patientattributeoption", Integer.class );
-                maxOpt++;
+                String maxOpt = statementBuilder.getAutoIncrementValue();
+                
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
                     + maxOpt + "', 'F'," + max + ")" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
                     + max + ",'F'," + maxOpt + " from patient where gender='F'" );
 
-                maxOpt++;
+                maxOpt = statementBuilder.getAutoIncrementValue();
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
                     + maxOpt + "', 'M'," + max + ")" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
                     + max + ",'M'," + maxOpt + " from patient where gender='M'" );
 
-                maxOpt++;
+                maxOpt = statementBuilder.getAutoIncrementValue();
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
                     + maxOpt + "', 'T'," + max + ")" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
@@ -577,7 +572,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called Death date" );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -603,7 +598,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called registration date" );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -630,7 +625,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called isDead" );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -656,7 +651,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called underAge" );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, description, name, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -682,7 +677,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called DobType..." );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, description, name, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -697,19 +692,19 @@ public class TableAlteror
 
                 log.info( "Inserting data into DobType" );
 
-                maxOpt++;
+                maxOpt = statementBuilder.getAutoIncrementValue();
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
                     + maxOpt + "', 'A'," + max + ")" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
                     + max + ",'A'," + maxOpt + " from patient where dobType='A'" );
 
-                maxOpt++;
+                maxOpt = statementBuilder.getAutoIncrementValue();
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
                     + maxOpt + "', 'D'," + max + ")" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
                     + max + ",'D'," + maxOpt + " from patient where dobType='D'" );
 
-                maxOpt++;
+                maxOpt = statementBuilder.getAutoIncrementValue();
                 executeSql( "INSERT INTO patientattributeoption (patientattributeoptionid, name, patientattributeid ) VALUES ('"
                     + maxOpt + "', 'V'," + max + ")" );
                 executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value, patientattributeoptionid ) SELECT patientid,"
@@ -731,7 +726,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called Birthdate" );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -757,7 +752,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called age" );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -792,7 +787,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called Phone number" );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
@@ -817,7 +812,7 @@ public class TableAlteror
 
                 log.info( "Inserting dynamic atribute called Full name" );
 
-                max++;
+                max = statementBuilder.getAutoIncrementValue();
                 uid = CodeGenerator.generateCode();
                 executeSql( "INSERT INTO patientattribute (patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule ) VALUES ("
                     + max
