@@ -33,7 +33,7 @@ import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class AddAttributeAction
     implements Action
@@ -102,6 +102,13 @@ public class AddAttributeAction
         this.indicatorGroupAttribute = indicatorGroupAttribute;
     }
 
+    private Boolean dataSetAttribute = false;
+
+    public void setDataSetAttribute( Boolean dataSetAttribute )
+    {
+        this.dataSetAttribute = dataSetAttribute;
+    }
+
     private Boolean organisationUnitAttribute = false;
 
     public void setOrganisationUnitAttribute( Boolean organisationUnitAttribute )
@@ -114,6 +121,13 @@ public class AddAttributeAction
     public void setOrganisationUnitGroupAttribute( Boolean organisationUnitGroupAttribute )
     {
         this.organisationUnitGroupAttribute = organisationUnitGroupAttribute;
+    }
+
+    private Boolean organisationUnitGroupSetAttribute = false;
+
+    public void setOrganisationUnitGroupSetAttribute( Boolean organisationUnitGroupSetAttribute )
+    {
+        this.organisationUnitGroupSetAttribute = organisationUnitGroupSetAttribute;
     }
 
     private Boolean userAttribute = false;
@@ -143,8 +157,10 @@ public class AddAttributeAction
         attribute.setDataElementGroupAttribute( dataElementGroupAttribute );
         attribute.setIndicatorAttribute( indicatorAttribute );
         attribute.setIndicatorGroupAttribute( indicatorGroupAttribute );
+        attribute.setDataSetAttribute( dataSetAttribute );
         attribute.setOrganisationUnitAttribute( organisationUnitAttribute );
         attribute.setOrganisationUnitGroupAttribute( organisationUnitGroupAttribute );
+        attribute.setOrganisationUnitGroupSetAttribute( organisationUnitGroupSetAttribute );
         attribute.setUserAttribute( userAttribute );
         attribute.setUserGroupAttribute( userGroupAttribute );
 

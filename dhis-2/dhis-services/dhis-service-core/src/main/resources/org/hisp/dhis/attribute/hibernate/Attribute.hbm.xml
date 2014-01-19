@@ -29,9 +29,13 @@
 
     <property name="indicatorGroupAttribute" not-null="false" />
 
+    <property name="dataSetAttribute" not-null="false" />
+
     <property name="organisationUnitAttribute" not-null="true" />
 
     <property name="organisationUnitGroupAttribute" not-null="false" />
+
+    <property name="organisationUnitGroupSetAttribute" not-null="false" />
 
     <property name="userAttribute" not-null="true" />
 

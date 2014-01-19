@@ -42,7 +42,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @JacksonXmlRootElement( localName = "attributeType", namespace = DxfNamespaces.DXF_2_0 )
 public class Attribute
@@ -63,9 +63,13 @@ public class Attribute
 
     private Boolean indicatorGroupAttribute = false;
 
+    private Boolean dataSetAttribute = false;
+
     private boolean organisationUnitAttribute;
 
     private Boolean organisationUnitGroupAttribute = false;
+
+    private Boolean organisationUnitGroupSetAttribute = false;
 
     private boolean userAttribute;
 
@@ -169,6 +173,19 @@ public class Attribute
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isDataSetAttribute()
+    {
+        return dataSetAttribute == null ? false : dataSetAttribute;
+    }
+
+    public void setDataSetAttribute( Boolean dataSetAttribute )
+    {
+        this.dataSetAttribute = dataSetAttribute;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isOrganisationUnitAttribute()
     {
         return organisationUnitAttribute;
@@ -190,6 +207,19 @@ public class Attribute
     public void setOrganisationUnitGroupAttribute( Boolean organisationUnitGroupAttribute )
     {
         this.organisationUnitGroupAttribute = organisationUnitGroupAttribute;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isOrganisationUnitGroupSetAttribute()
+    {
+        return organisationUnitGroupSetAttribute == null ? false : organisationUnitGroupSetAttribute;
+    }
+
+    public void setOrganisationUnitGroupSetAttribute( Boolean organisationUnitGroupSetAttribute )
+    {
+        this.organisationUnitGroupSetAttribute = organisationUnitGroupSetAttribute;
     }
 
     @JsonProperty

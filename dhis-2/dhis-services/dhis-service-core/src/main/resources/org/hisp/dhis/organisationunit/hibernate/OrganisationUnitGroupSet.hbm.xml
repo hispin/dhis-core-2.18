@@ -30,5 +30,13 @@
         foreign-key="fk_orgunitgroupset_orgunitgroupid" />
     </set>
 
+    <!-- Dynamic attribute values -->
+
+    <set name="attributeValues" table="orgunitgroupsetattributevalues">
+      <cache usage="read-write" />
+      <key column="orgunitgroupsetid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" unique="true" />
+    </set>
+
   </class>
 </hibernate-mapping>
