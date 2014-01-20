@@ -36,8 +36,8 @@
 				    data-can-manage="$security.canManage( $userAuthorityGroup )"
 				    data-can-update="$security.canUpdate( $userAuthorityGroup )"
 				    data-can-delete="$security.canDelete( $userAuthorityGroup )">
-				    <td>$encoder.htmlEncode( $!userAuthorityGroup.displayName )</td>
-				    <td>$encoder.htmlEncode( $!userAuthorityGroup.description )</td>
+				    <td>$!encoder.htmlEncode( $userAuthorityGroup.displayName )</td>
+				    <td>$!encoder.htmlEncode( $userAuthorityGroup.description )</td>
 				</tr>
 				#end
 				</tbody>

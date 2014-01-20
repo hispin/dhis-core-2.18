@@ -60,13 +60,13 @@
 				<tbody id="list">
 				#foreach( $userCredentials in $userCredentialsList )
 				<tr id="tr${userCredentials.id}" data-id="$!userCredentials.id" data-uid="$!userCredentials.uid" data-type="UserCredentials"
-            data-name="$encoder.htmlEncode( $!userCredentials.displayName )"
-            data-username="$encoder.htmlEncode( $!userCredentials.username )"
+                    data-name="$encoder.htmlEncode( $!userCredentials.displayName )"
+                    data-username="$encoder.htmlEncode( $!userCredentials.username )"
 				    data-can-manage="$security.canManage( $userCredentials )"
 				    data-can-update="$security.canUpdate( $userCredentials )"
 				    data-can-delete="$security.canDelete( $userCredentials )"
-            data-user-enabled="#if( !$userCredentials.disabled )true#{else}false#end"
-            data-user-disabled="$userCredentials.disabled">
+                    data-user-enabled="#if( !$userCredentials.disabled )true#{else}false#end"
+                    data-user-disabled="$userCredentials.disabled">
 				    <td>$encoder.htmlEncode( $!userCredentials.username )</td>
 				    <td>$encoder.htmlEncode( $!userCredentials.displayName )</td>
         </tr>
