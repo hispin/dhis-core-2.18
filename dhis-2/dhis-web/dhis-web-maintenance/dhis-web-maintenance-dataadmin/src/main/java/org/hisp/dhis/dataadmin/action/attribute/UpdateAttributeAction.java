@@ -68,6 +68,13 @@ public class UpdateAttributeAction
         this.name = name;
     }
 
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     private String valueType;
 
     public void setValueType( String valueType )
@@ -164,6 +171,7 @@ public class UpdateAttributeAction
         if ( attribute != null )
         {
             attribute.setName( name );
+            attribute.setCode( code );
             attribute.setValueType( valueType );
             attribute.setMandatory( mandatory );
             attribute.setDataElementAttribute( dataElementAttribute );

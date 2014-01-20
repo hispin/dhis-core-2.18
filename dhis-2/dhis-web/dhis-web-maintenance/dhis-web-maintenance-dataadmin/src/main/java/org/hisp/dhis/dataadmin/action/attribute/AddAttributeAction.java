@@ -60,6 +60,13 @@ public class AddAttributeAction
         this.name = name;
     }
 
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     private String valueType;
 
     public void setValueType( String valueType )
@@ -152,6 +159,7 @@ public class AddAttributeAction
     public String execute()
     {
         Attribute attribute = new Attribute( name, valueType );
+        attribute.setCode( code );
         attribute.setMandatory( mandatory );
         attribute.setDataElementAttribute( dataElementAttribute );
         attribute.setDataElementGroupAttribute( dataElementGroupAttribute );

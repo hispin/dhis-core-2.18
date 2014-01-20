@@ -110,6 +110,12 @@ public class DefaultAttributeService
     }
 
     @Override
+    public Attribute getAttributeByCode( String code )
+    {
+        return i18n( i18nService, attributeStore.getByCode( code ) );
+    }
+
+    @Override
     public Set<Attribute> getAllAttributes()
     {
         return new HashSet<Attribute>( i18n( i18nService, attributeStore.getAll() ) );

@@ -76,6 +76,13 @@ public class ValidateAttributeAction
         this.name = name;
     }
 
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     private String message;
 
     public String getMessage()
@@ -96,7 +103,19 @@ public class ValidateAttributeAction
 
             if ( match != null && (id == null || match.getId() != id) )
             {
-                message = i18n.getString( "name_in_use" );
+                message = i18n.getString( "name_in_used" );
+
+                return ERROR;
+            }
+        }
+
+        if ( code != null )
+        {
+            Attribute match = attributeService.getAttributeByCode( code );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "code_in_use" );
 
                 return ERROR;
             }
