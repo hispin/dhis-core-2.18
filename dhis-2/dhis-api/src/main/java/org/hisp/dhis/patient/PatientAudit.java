@@ -52,7 +52,7 @@ public class PatientAudit
     private String accessedModule;
 
     // -------------------------------------------------------------------------
-    // Constructor
+    // Constructors
     // -------------------------------------------------------------------------
 
     public PatientAudit()
@@ -68,8 +68,8 @@ public class PatientAudit
         this.accessedModule = accessedModule;
     }
 
-    //TODO implement hashCode and equals
-    
+    // TODO implement hashCode and equals
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------

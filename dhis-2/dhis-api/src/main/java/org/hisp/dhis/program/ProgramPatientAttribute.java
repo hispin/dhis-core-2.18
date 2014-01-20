@@ -59,7 +59,6 @@ public class ProgramPatientAttribute
 
     private boolean displayedInList;
 
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------

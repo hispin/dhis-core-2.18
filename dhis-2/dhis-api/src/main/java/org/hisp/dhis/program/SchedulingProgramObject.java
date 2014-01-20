@@ -43,6 +43,10 @@ public class SchedulingProgramObject
 
     private String message;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public SchedulingProgramObject()
     {
 
@@ -54,6 +58,10 @@ public class SchedulingProgramObject
         this.programStageInstanceId = programStageInstanceId;
         this.message = message;
     }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
     public String getPhoneNumber()
     {

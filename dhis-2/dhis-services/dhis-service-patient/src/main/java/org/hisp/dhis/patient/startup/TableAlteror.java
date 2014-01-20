@@ -230,8 +230,6 @@ public class TableAlteror
         executeSql( "UPDATE program SET useFormNameDataElement=true where useFormNameDataElement is null" );
         executeSql( "ALTER TABLE caseaggregationcondition ALTER COLUMN aggregationexpression TYPE varchar(1000)" );
         executeSql( "update patientattribute set displayonvisitschedule = false where displayonvisitschedule is null" );
-        executeSql( "update program set useBirthDateAsIncidentDate = false where useBirthDateAsIncidentDate is null" );
-        executeSql( "update program set useBirthDateAsEnrollmentDate = false where useBirthDateAsEnrollmentDate is null" );
         executeSql( "update program set selectEnrollmentDatesInFuture = false where selectEnrollmentDatesInFuture is null" );
         executeSql( "update program set selectIncidentDatesInFuture = false where selectIncidentDatesInFuture is null" );
         executeSql( "update validationcriteria set description = name where description is null or description='' " );
@@ -255,7 +253,6 @@ public class TableAlteror
         executeSql( "DROP TABLE patient_attributes" );
 
         executeSql( "update programstage set openAfterEnrollment=false where openAfterEnrollment is null" );
-        executeSql( "update programstage set reportDateToUse=false where reportDateToUse is null" );
 
         executeSql( "update patientidentifiertype set orgunitScope=false where orgunitScope is null" );
         executeSql( "update patientidentifiertype set programScope=false where programScope is null" );
@@ -298,6 +295,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN persondisplayname" );
 
         updateProgramAttributes();
+        
+        executeSql( "UPDATE program SET displayIncidentDate=false WHERE displayIncidentDate is null" );
+        executeSql( "UPDATE program SET relationshipFromA=false WHERE relationshipFromA is null" );
     }
 
     // -------------------------------------------------------------------------

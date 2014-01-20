@@ -58,6 +58,10 @@ public class PatientIdentifier
 
     private String identifier;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public PatientIdentifier()
     {
         setAutoFields();
@@ -80,9 +84,9 @@ public class PatientIdentifier
     {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ( ( identifierType == null) ? 0 : identifierType.hashCode() );
-        result = prime * result + ( ( patient == null) ? 0 : patient.hashCode() );
-        result = prime * result + ( ( identifier == null) ? 0 : identifier.hashCode() );
+        result = prime * result + ((identifierType == null) ? 0 : identifierType.hashCode());
+        result = prime * result + ((patient == null) ? 0 : patient.hashCode());
+        result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
         return result;
     }
 
@@ -93,19 +97,19 @@ public class PatientIdentifier
         {
             return true;
         }
-        
+
         if ( !super.equals( object ) )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final PatientIdentifier other = (PatientIdentifier) object;
-        
+
         if ( identifierType == null )
         {
             if ( other.identifierType != null )
@@ -117,7 +121,7 @@ public class PatientIdentifier
         {
             return false;
         }
-        
+
         if ( patient == null )
         {
             if ( other.patient != null )
@@ -141,7 +145,7 @@ public class PatientIdentifier
         {
             return false;
         }
-        
+
         return true;
     }
 
