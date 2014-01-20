@@ -174,7 +174,7 @@ public class ExportTableAction
         // Assemble report
         // ---------------------------------------------------------------------
 
-        if ( TYPE_JRXML.equals( format ) )
+        if ( TYPE_JRXML.equals( type ) )
         {
             params.putAll( constantService.getConstantParameterMap() );
         }
