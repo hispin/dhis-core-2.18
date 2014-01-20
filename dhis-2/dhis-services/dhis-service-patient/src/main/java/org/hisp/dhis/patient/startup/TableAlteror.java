@@ -498,6 +498,7 @@ public class TableAlteror
     private void addPatientAttributes()
     {
         StatementHolder holder = statementManager.getHolder();
+        
         try
         {
             Statement statement = holder.getStatement();
