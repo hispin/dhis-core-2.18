@@ -418,7 +418,7 @@ public class DefaultPatientRegistrationFormService
 
             for ( PatientAttributeOption option : attribute.getAttributeOptions() )
             {
-                inputHtml += "<option value=\"" + option.getName() + "\" ";
+                inputHtml += "<option value=\"" + option.getId() + "\" ";
                 if ( option.getName().equals( value ) )
                 {
                     inputHtml += " selected ";
