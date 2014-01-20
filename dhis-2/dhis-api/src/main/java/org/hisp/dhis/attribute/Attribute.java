@@ -258,6 +258,9 @@ public class Attribute
         this.attributeValues = attributeValues;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Integer getSortOrder()
     {
         return sortOrder;
