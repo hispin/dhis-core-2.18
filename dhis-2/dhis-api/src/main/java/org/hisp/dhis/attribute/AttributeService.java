@@ -88,6 +88,14 @@ public interface AttributeService
     Attribute getAttributeByName( String name );
 
     /**
+     * Gets the attribute with the given code.
+     *
+     * @param code the code.
+     * @return the attribute with the given code.
+     */
+    Attribute getAttributeByCode( String code );
+
+    /**
      * Gets all attributes.
      * 
      * @return a set of all attributes.
