@@ -1110,13 +1110,13 @@ Ext.onReady( function() {
 									userOuc,
 									userOugc;
 
-								if (isUserOrgunit) {
+								if (init.user && isUserOrgunit) {
 									userOu = [{
 										id: init.user.ou,
 										name: service.layout.getItemName(xLayout, response, init.user.ou, false)
 									}];
 								}
-								if (isUserOrgunitChildren) {
+								if (init.user && init.user.ouc && isUserOrgunitChildren) {
 									userOuc = [];
 
 									for (var j = 0; j < init.user.ouc.length; j++) {
@@ -1128,7 +1128,7 @@ Ext.onReady( function() {
 
 									support.prototype.array.sort(userOuc);
 								}
-								if (isUserOrgunitGrandChildren) {
+								if (init.user && init.user.ouc && isUserOrgunitGrandChildren) {
 									var userOuOuc = [].concat(init.user.ou, init.user.ouc),
 										responseOu = response.metaData[ou];
 
@@ -2542,7 +2542,9 @@ Ext.onReady( function() {
 			}
 
 			// sort ouc
-			support.prototype.array.sort(init.user.ouc);
+			if (init.user && init.user.ouc) {
+				support.prototype.array.sort(init.user.ouc);
+			}
 
 			// legend set map
 			init.idLegendSetMap = {};
