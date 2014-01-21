@@ -225,7 +225,16 @@ public class CsdController
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             Facility facility = new Facility();
-            facility.setOid( organisationUnit.getCode() ); // TODO skip if code is null??
+            facility.setOid( "No oid, please provide facility_oid attribute value" );
+
+            for ( AttributeValue attributeValue : organisationUnit.getAttributeValues() )
+            {
+                if ( attributeValue.getAttribute().getName().equals( "facility_oid" ) )
+                {
+                    facility.setOid( attributeValue.getValue() );
+                    break;
+                }
+            }
 
             facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
 
