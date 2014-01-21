@@ -36,8 +36,8 @@ import javax.xml.bind.annotation.XmlValue;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlAccessorType( XmlAccessType.FIELD )
-@XmlType( name = "Address", namespace = "http://www.w3.org/2005/08/addressing" )
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Address", namespace = "http://www.w3.org/2005/08/addressing")
 public class Address
 {
     @XmlValue
@@ -45,6 +45,11 @@ public class Address
 
     public Address()
     {
+    }
+
+    public Address( String value )
+    {
+        this.value = value;
     }
 
     public String getValue()
