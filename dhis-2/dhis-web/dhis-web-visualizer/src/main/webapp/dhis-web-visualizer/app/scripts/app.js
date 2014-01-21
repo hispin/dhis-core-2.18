@@ -2278,7 +2278,7 @@ Ext.onReady( function() {
 				if (Ext.isString(uid)) {
 					this.setProxy({
 						type: 'ajax',
-						url: ns.core.init.contextPath + '/api/dataElementOperands.json?links=false&dataElementGroup=' + uid,
+						url: ns.core.init.contextPath + '/api/generatedDataElementOperands.json?links=false&dataElementGroup=' + uid,
 						reader: {
 							type: 'json',
 							root: 'dataElementOperands'

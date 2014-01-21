@@ -170,6 +170,8 @@ public class DataElementGroupController
         WebMetaData metaData = new WebMetaData();
         List<DataElementOperand> dataElementOperands = Lists.newArrayList( dataElementCategoryService.getOperands( dataElementGroup.getMembers() ) );
 
+		Collections.sort( dataElementOperands, IdentifiableObjectNameComparator.INSTANCE );
+
         metaData.setDataElementOperands( dataElementOperands );
 
         if ( options.hasPaging() )
