@@ -680,6 +680,9 @@ public class TableAlteror
         executeSql( "UPDATE attribute SET usergroupattribute=false WHERE usergroupattribute IS NULL" );
         executeSql( "UPDATE attribute SET datasetattribute=false WHERE datasetattribute IS NULL" );
 
+        // update attribute.code, set to null if code=''
+        executeSql( "UPDATE attribute SET code=NULL WHERE code=''" );
+
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
 
