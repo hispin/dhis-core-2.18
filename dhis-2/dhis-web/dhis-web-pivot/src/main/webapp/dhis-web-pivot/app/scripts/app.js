@@ -2645,7 +2645,7 @@ Ext.onReady( function() {
 					path = '/dataElementGroups/' + uid + '/operands' + filterPath + '.json';
 				}
 				else if (uid === 0) {
-					path = '/dataElementOperands' + filterPath + '.json';
+					path = '/generatedDataElementOperands' + filterPath + '.json';
 				}
 
 				if (!path) {
