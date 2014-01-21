@@ -260,7 +260,7 @@ public class CsdController
                 facility.getCodedTypes().add( codedType );
             }
 
-            Organization organization = new Organization( "No oid, please provide organization_oid attribute value." );
+            Organization organization = new Organization( "No oid, please provide organisation_oid attribute value." );
             facility.getOrganizations().add( organization );
 
             for ( DataSet dataSet : organisationUnit.getDataSets() )
