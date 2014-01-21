@@ -30,6 +30,7 @@ package org.hisp.dhis.web.ohie.csd.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import java.util.List;
 @XmlRootElement( name = "address", namespace = "urn:ihe:iti:csd:2013" )
 public class Address
 {
-    @XmlElement( name = "type", namespace = "urn:ihe:iti:csd:2013" )
+    @XmlAttribute( name = "type" )
     private String type;
 
     @XmlElement( name = "addressLine", namespace = "urn:ihe:iti:csd:2013" )
@@ -50,6 +51,11 @@ public class Address
 
     public Address()
     {
+    }
+
+    public Address( String type )
+    {
+        this.type = type;
     }
 
     public String getType()

@@ -28,6 +28,9 @@ package org.hisp.dhis.web.ohie.csd.webapi;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -36,6 +39,8 @@ import org.hisp.dhis.web.ohie.common.domain.soap.Envelope;
 import org.hisp.dhis.web.ohie.common.domain.soap.Fault;
 import org.hisp.dhis.web.ohie.common.domain.wsa.RelatesTo;
 import org.hisp.dhis.web.ohie.common.exception.SoapException;
+import org.hisp.dhis.web.ohie.csd.domain.Address;
+import org.hisp.dhis.web.ohie.csd.domain.AddressLine;
 import org.hisp.dhis.web.ohie.csd.domain.CodedType;
 import org.hisp.dhis.web.ohie.csd.domain.CommonName;
 import org.hisp.dhis.web.ohie.csd.domain.Contact;
@@ -70,6 +75,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -303,6 +309,40 @@ public class CsdController
             }
 
             facility.setRecord( record );
+
+            Map<String, List<AddressLine>> addressLines = Maps.newHashMap();
+
+            for ( AttributeValue attributeValue : organisationUnit.getAttributeValues() )
+            {
+                if ( attributeValue.getAttribute().getName().startsWith( "Address_" ) )
+                {
+                    String[] attributeSplit = attributeValue.getAttribute().getName().split( "_" );
+
+                    if ( attributeSplit.length > 3 )
+                    {
+                        continue;
+                    }
+
+                    if ( addressLines.get( attributeSplit[1] ) == null )
+                    {
+                        addressLines.put( attributeSplit[1], Lists.<AddressLine>newArrayList() );
+                    }
+
+                    AddressLine addressLine = new AddressLine();
+                    addressLine.setComponent( attributeSplit[2] );
+                    addressLine.setValue( attributeValue.getValue() );
+
+                    addressLines.get( attributeSplit[1] ).add( addressLine );
+                }
+            }
+
+            for ( String key : addressLines.keySet() )
+            {
+                Address address = new Address( key );
+                address.setAddressLines( addressLines.get( key ) );
+
+                facility.getAddresses().add( address );
+            }
 
             csd.getFacilityDirectory().getFacilities().add( facility );
         }
