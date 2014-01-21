@@ -668,6 +668,18 @@ public class TableAlteror
         executeSql( "UPDATE orgunitgroupset SET datadimension=true WHERE datadimension IS NULL" );
         executeSql( "ALTER TABLE orgunitgroupset ALTER COLUMN datadimension SET NOT NULL" );
 
+        // set attribute defaults
+        executeSql( "UPDATE attribute SET dataelementattribute=false WHERE dataelementattribute IS NULL" );
+        executeSql( "UPDATE attribute SET dataelementgroupattribute=false WHERE dataelementgroupattribute IS NULL" );
+        executeSql( "UPDATE attribute SET indicatorattribute=false WHERE indicatorattribute IS NULL" );
+        executeSql( "UPDATE attribute SET indicatorgroupattribute=false WHERE indicatorgroupattribute IS NULL" );
+        executeSql( "UPDATE attribute SET organisationunitattribute=false WHERE organisationunitattribute IS NULL" );
+        executeSql( "UPDATE attribute SET organisationunitgroupattribute=false WHERE organisationunitgroupattribute IS NULL" );
+        executeSql( "UPDATE attribute SET organisationunitgroupsetattribute=false WHERE organisationunitgroupsetattribute IS NULL" );
+        executeSql( "UPDATE attribute SET userattribute=false WHERE userattribute IS NULL" );
+        executeSql( "UPDATE attribute SET usergroupattribute=false WHERE usergroupattribute IS NULL" );
+        executeSql( "UPDATE attribute SET datasetattribute=false WHERE datasetattribute IS NULL" );
+
         upgradeDataValuesWithAttributeOptionCombo();
         upgradeMapViewsToAnalyticalObject();
 
