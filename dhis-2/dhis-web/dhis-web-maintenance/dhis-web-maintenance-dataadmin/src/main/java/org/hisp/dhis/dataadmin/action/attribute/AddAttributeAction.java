@@ -31,6 +31,7 @@ package org.hisp.dhis.dataadmin.action.attribute;
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -159,7 +160,7 @@ public class AddAttributeAction
     public String execute()
     {
         Attribute attribute = new Attribute( name, valueType );
-        attribute.setCode( code );
+        attribute.setCode( StringUtils.isEmpty( code.trim() ) ? null : code );
         attribute.setMandatory( mandatory );
         attribute.setDataElementAttribute( dataElementAttribute );
         attribute.setDataElementGroupAttribute( dataElementGroupAttribute );

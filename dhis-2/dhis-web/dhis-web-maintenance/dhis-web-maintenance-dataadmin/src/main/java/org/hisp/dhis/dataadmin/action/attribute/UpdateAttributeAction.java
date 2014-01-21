@@ -32,6 +32,7 @@ import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 
 import com.opensymphony.xwork2.Action;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -171,7 +172,7 @@ public class UpdateAttributeAction
         if ( attribute != null )
         {
             attribute.setName( name );
-            attribute.setCode( code );
+            attribute.setCode( StringUtils.isEmpty( code.trim() ) ? null : code );
             attribute.setValueType( valueType );
             attribute.setMandatory( mandatory );
             attribute.setDataElementAttribute( dataElementAttribute );
