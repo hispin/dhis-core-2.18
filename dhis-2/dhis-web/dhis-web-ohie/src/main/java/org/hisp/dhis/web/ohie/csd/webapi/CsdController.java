@@ -271,7 +271,17 @@ public class CsdController
                 }
 
                 Service service = new Service();
-                service.setOid( dataSet.getCode() );
+                service.setOid( "No oid, please provide service_oid attribute value." );
+
+                for ( AttributeValue attributeValue : dataSet.getAttributeValues() )
+                {
+                    if ( attributeValue.getAttribute().getName().equals( "service_oid" ) )
+                    {
+                        service.setOid( attributeValue.getValue() );
+                        break;
+                    }
+                }
+
                 service.getNames().add( new Name( new CommonName( dataSet.getDisplayName() ) ) );
 
                 organization.getServices().add( service );
