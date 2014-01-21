@@ -260,7 +260,7 @@ public class CsdController
                 facility.getCodedTypes().add( codedType );
             }
 
-            Organization organization = new Organization( "1.3.6.1.4.1.21367.200.99.1" );
+            Organization organization = new Organization( "No oid, please provide organization_oid attribute value." );
             facility.getOrganizations().add( organization );
 
             for ( DataSet dataSet : organisationUnit.getDataSets() )
@@ -333,6 +333,10 @@ public class CsdController
                     addressLine.setValue( attributeValue.getValue() );
 
                     addressLines.get( attributeSplit[1] ).add( addressLine );
+                }
+                else if ( attributeValue.getAttribute().getName().equals( "organisation_oid" ) )
+                {
+                    organization.setOid( attributeValue.getValue() );
                 }
             }
 
