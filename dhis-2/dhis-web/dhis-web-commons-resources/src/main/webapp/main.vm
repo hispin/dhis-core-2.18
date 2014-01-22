@@ -140,7 +140,7 @@
           <img src="../images/home_small.png" width="16" height="16" /></a>
         <a href="javascript:dhis2.leftBar.hideAnimated()" title="$i18n.getString( 'hide_menu' )" id="hideMainMenuLink">
           <img src="../images/hide_menu.png" width="16" height="16" /></a>
-        <a href="javascript:dhis2.leftBar.extend()" title="$i18n.getString( 'extend_menu' )" id="extendMainMenuLink">
+        <a href="javascript:dhis2.leftBar.extendAnimated()" title="$i18n.getString( 'extend_menu' )" id="extendMainMenuLink">
           <img src="../images/extend_menu.png" width="16" height="16" /></a>
       </div>
 

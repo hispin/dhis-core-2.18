@@ -147,12 +147,21 @@ dhis2.leftBar.showAnimated = function()
 	$( '#mainPage' ).css( 'margin-left', '' );
 };
 
-dhis2.leftBar.extend = function()
+dhis2.leftBar.extendAnimated = function()
 {
 	dhis2.leftBar.setMenuExtended();
 	dhis2.leftBar.setLinks( false, false );
     $( '#leftBar, #orgUnitTree' ).show().animate( { direction: 'left', width: '+=150px', duration: 20 } );
     $( '#mainPage' ).animate( { direction: 'left', marginLeft: '+=150px', duration: 20 } );
+    $( '#hideMainMenuLink' ).attr( 'href', 'javascript:dhis2.leftBar.retract()' );
+};
+
+dhis2.leftBar.extend = function()
+{
+	dhis2.leftBar.setMenuExtended();
+	dhis2.leftBar.setLinks( false, false );
+    $( '#leftBar, #orgUnitTree' ).show().css( "width", "+=150px" );
+    $( '#mainPage' ).css( "margin-left", "+=150px" );
     $( '#hideMainMenuLink' ).attr( 'href', 'javascript:dhis2.leftBar.retract()' );
 };
 
