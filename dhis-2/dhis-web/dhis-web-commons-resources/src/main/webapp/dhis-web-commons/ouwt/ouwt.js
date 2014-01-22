@@ -116,7 +116,7 @@ function Selection()
         selected = selected ? JSON.parse( selected ) : [];
         selected = $.isArray( selected ) ? selected : [ selected ];
 
-        return  selected;
+        return selected;
     };
 
     this.clearSelected = function() {
@@ -278,6 +278,7 @@ function Selection()
                     subtree.reloadTree();
 
                     $( "#ouwt_loader" ).hide();
+                    selection.scrollToSelected();
                     $( "#orgUnitTree" ).trigger( "ouwtLoaded" );
                 } );
             } );
@@ -529,6 +530,19 @@ function Selection()
         return 'orgUnit' + unitId;
     }
 
+    this.scrollToSelected = function() {
+    	var ou = selection.getSelected();
+    	
+    	if ( ou && ou.length ) {
+    		$( "#orgUnitTree" ).scrollTop( 0 );
+    		var tagId = "#" + getTagId( ou[0] );
+    		var tagOffset = $( tagId ).offset().top;
+    		var treeOffset = $( "#orgUnitTree" ).offset().top;
+    		var offset = tagOffset - treeOffset;
+    		$( "#orgUnitTree" ).animate( { scrollTop: offset }, 300 );
+    	}
+    };
+    
     this.findByName = function() {
         var name = $( '#searchField' ).val();
         var match;
@@ -543,12 +557,13 @@ function Selection()
         }
 
         if( match !== undefined ) {
-            $( '#searchField' ).css( 'background-color', '#ffffff' );
+            $( '#searchField' ).css( 'background-color', '#fff' );
 
             multipleSelectionAllowed ? selection.setSelected( [ match.id ] ) : selection.setSelected( match.id );
 
             subtree.reloadTree();
             selection.sync( false, selection.responseReceived );
+            selection.scrollToSelected();
         }
         else {
             $.ajax( {
@@ -571,7 +586,7 @@ function Selection()
             } );
         }
     };
-
+    
     this.enable = function() {
         $( "#orgUnitTree" ).show();
     };
