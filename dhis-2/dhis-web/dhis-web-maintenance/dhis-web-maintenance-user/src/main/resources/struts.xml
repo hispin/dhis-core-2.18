@@ -62,13 +62,13 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/updateUserForm.vm</param>
       <param name="javascripts">javascript/user.js</param>
-      <param name="requiredAuthorities">F_USER_ADD</param>
+      <param name="anyAuthorities">F_USER_ADD,F_USER_UPDATE</param>
     </action>
 
     <action name="updateUser" class="org.hisp.dhis.user.action.UpdateUserAction">
       <result name="success" type="redirect">user.action?currentPage=${keyCurrentPage}&amp;key=${keyCurrentKey}</result>
       <result name="error" type="redirect">showUpdateUserForm.action</result>
-      <param name="requiredAuthorities">F_USER_ADD</param>
+      <param name="anyAuthorities">F_USER_ADD,F_USER_UPDATE</param>
     </action>
 
     <action name="validateUser" class="org.hisp.dhis.user.action.ValidateUserAction">
