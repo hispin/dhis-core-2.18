@@ -73,10 +73,11 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -85,7 +86,12 @@ import java.util.Map;
 @RequestMapping( value = "/csd" )
 public class CsdController
 {
-    private static String SOAP_CONTENT_TYPE = "application/soap+xml";
+    private static final Log log = LogFactory.getLog( CsdController.class );
+
+    private static final String SOAP_CONTENT_TYPE = "application/soap+xml";
+    
+    // Name of group
+    private static final String FACILITY_TYPE_DISCRIMINATOR = "Health Facility";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -225,6 +231,21 @@ public class CsdController
 
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
+            boolean isFacility = false;
+            for (OrganisationUnitGroup group : organisationUnit.getGroups())
+            {
+                if( group.getName().equals( FACILITY_TYPE_DISCRIMINATOR))
+                {
+                    isFacility = true;
+                    break;
+                }
+            }
+            // skip if orgunit is not a health facility
+            if (!isFacility)
+            {
+                continue;
+            }
+            
             Facility facility = new Facility();
             facility.setOid( "No oid, please provide facility_oid attribute value" );
 
@@ -271,7 +292,7 @@ public class CsdController
                 codedType.setCode( organisationUnitGroup.getCode() );
                 
                 codedType.setCodingSchema("Unknown" );                
-                for ( AttributeValue attributeValue : organisationUnit.getAttributeValues() )
+                for ( AttributeValue attributeValue : organisationUnitGroup.getAttributeValues() )
                 {
                     if ( attributeValue.getAttribute().getName().equals( "code_system" ) )
                     {
