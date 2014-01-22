@@ -30,7 +30,6 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
