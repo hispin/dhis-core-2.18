@@ -140,7 +140,7 @@ public class LoadQualityMaxDetailsAction
         List<DataElement> dataElementList = new ArrayList<DataElement>(dataSet.getDataElements());
         for( DataElement de : dataElementList )
         {
-        	Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
+            Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
             for ( AttributeValue attValue : attrValueSet )
             {
             	if(attValue.getAttribute().getId() == qualityMaxDataElement.getValue())

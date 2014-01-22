@@ -62,10 +62,29 @@ function loadDataEntryForm()
 	
 	var startDate = $("#startDate").val();
 	var endDate = $("#endDate").val();
+	var date1 = Date.parse( startDate );
+	var date2 = Date.parse( endDate );
+	if (date1 > date2) {
+	    alert ("Please enter correct date");
+	    return false;
+	}	
 	if(startDate != "" && endDate != "")
 	{
-	jQuery('#loaderDiv').show();
-	    
+		/* var dataValue = {
+     			'orgUnitId' : orgUnitId,        		        			
+     			'startDate' : startDate,
+				'endDate' : endDate,
+				'dataSetId': dataSetId
+ 			};
+				jQuery.ajax( {
+             url: 'validateMaxData.action', 
+			 data: dataValue,
+             dataType: 'json',
+             success: handleSuccess,
+             error: handleError
+         } );
+         */
+		jQuery('#loaderDiv').show();	    
 		jQuery('#dataEntryFormDiv').load('loadQualityMaxForm.action',
 			{
 				orgUnitId:orgUnitId,
@@ -79,7 +98,37 @@ function loadDataEntryForm()
 			});
 		hideLoader();
 	}
+	
+/*	function handleSuccess( json )
+	{		
+		if(json.message == "true")	
+		{
+			alert("Max quality score exist between this range");						
+		}
+		else
+		{
+			jQuery('#loaderDiv').show();	    
+			jQuery('#dataEntryFormDiv').load('loadQualityMaxForm.action',
+				{
+					orgUnitId:orgUnitId,
+					dataSetId:dataSetId,
+					startDate:startDate,
+					endDate:endDate
+				}, function()
+				{
+					showById('dataEntryFormDiv');
+					jQuery('#loaderDiv').hide();				
+				});
+			hideLoader();
+		}
+	}
+	function handleError( json )
+	{	
+		alert("Error!");
+	}
+	*/
 }
+
 
 function saveQualityDataValue( dataElementId )
 {

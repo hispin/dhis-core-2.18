@@ -425,8 +425,7 @@ public class DefaultCCEIAggregationService
                 }
             }
 
-            System.out.println( vsReqLiveBirthData + " : " + vsReqVaccineVolumePerChildData + " : "
-                + vsReqSupplyIntervalData + " : " + vsReqReserveStockData );
+            //System.out.println( vsReqLiveBirthData + " : " + vsReqVaccineVolumePerChildData + " : " + vsReqSupplyIntervalData + " : " + vsReqReserveStockData );
             // Formula for calculating Requirement
             try
             {
@@ -442,6 +441,7 @@ public class DefaultCCEIAggregationService
             vaccineRequirement = Math.round( vaccineRequirement * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
             numberOfData.put( "Required", vaccineRequirement + "" );
 
+            //System.out.println( vaccineRequirement + " : " + vaccineActualValue );
             Double diffVaccineReq = vaccineActualValue - vaccineRequirement;
             diffVaccineReq = Math.round( diffVaccineReq * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
             numberOfData.put( "Difference", "" + diffVaccineReq );

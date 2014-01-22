@@ -110,6 +110,12 @@
 	</action>
 	
 	<!-- Quality Max Data Entry -->
+	
+	<action name="validateMaxData" class="org.hisp.dhis.pbf.quality.dataentry.ValidateQualityMaxDataAction">
+            <result name="success" type="velocity-json">/dhis-web-maintenance-pbf/tariffStatus.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>                              
+    </action>
+        
 	<action name="getOrganisationUnitForQuality" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitAction">
         <result name="success" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseSuccess.vm</result>
         <result name="input" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseInput.vm</result>
@@ -119,7 +125,7 @@
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-pbf/qualityMaxEntrySelection.vm</param>
-      <param name="menu">/dhis-web-maintenance-pbf/menuDataEntry.vm</param>
+      <param name="menu">/dhis-web-maintenance-pbf/menuMaxEntry.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/qualityMaxDataEntry.js</param>
       <param name="stylesheets">css/dataentry.css</param>
     </action>
@@ -142,8 +148,8 @@
 	<action name="qualityScoreDataEntry" class="org.hisp.dhis.pbf.quality.dataentry.QualityMaxInitAction">
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-pbf/qualityStoreEntrySelection.vm</param>
-      <param name="menu">/dhis-web-maintenance-pbf/menuDataEntry.vm</param>
+      <param name="page">/dhis-web-maintenance-pbf/qualityScoreEntrySelection.vm</param>
+      <param name="menu">/dhis-web-maintenance-pbf/menuScoreEntry.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/qualityScoreDataEntry.js</param>
       <param name="stylesheets">css/dataentry.css</param>
     </action>
@@ -151,7 +157,7 @@
 	<!-- Load DataEntry Form -->
 	<action name="loadQualityScoreForm" class="org.hisp.dhis.pbf.quality.dataentry.LoadQualityScoreDetailsAction">
 		<result name="success" type="velocity">/content.vm</result>
-		<param name="page">/dhis-web-maintenance-pbf/loadQualityStoreEntryForm.vm</param>
+		<param name="page">/dhis-web-maintenance-pbf/loadQualityScoreEntryForm.vm</param>
 	</action>
 	
 	<!-- Save Quality Score Value -->
