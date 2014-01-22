@@ -73,6 +73,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -237,7 +238,12 @@ public class CsdController
             }
 
             facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
-
+            
+            if (organisationUnit.getCode() != null)
+            {
+                facility.getOtherID().add( new OtherID( organisationUnit.getCode(), "dhis2-code" ) );                
+            }
+            
             facility.setPrimaryName( organisationUnit.getDisplayName() );
 
             if ( organisationUnit.getContactPerson() != null )
@@ -260,10 +266,20 @@ public class CsdController
                 {
                     continue;
                 }
-
+                
                 CodedType codedType = new CodedType();
-                codedType.setCode( organisationUnitGroup.getUid() );
-                codedType.setCodingSchema( "dhis2-uid" );
+                codedType.setCode( organisationUnitGroup.getCode() );
+                
+                codedType.setCodingSchema("Unknown" );                
+                for ( AttributeValue attributeValue : organisationUnit.getAttributeValues() )
+                {
+                    if ( attributeValue.getAttribute().getName().equals( "code_system" ) )
+                    {
+                        codedType.setCodingSchema( attributeValue.getValue() );
+                        break;
+                    }
+                }
+
                 codedType.setValue( organisationUnitGroup.getDisplayName() );
 
                 facility.getCodedTypes().add( codedType );
@@ -372,4 +388,5 @@ public class CsdController
 
         return csd;
     }
+
 }
