@@ -83,6 +83,13 @@ public class ImportEventAction implements Action
         this.dryRun = dryRun;
     }
 
+    public boolean jsonInput;
+
+    public void setJsonInput( boolean jsonInput )
+    {
+        this.jsonInput = jsonInput;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -100,7 +107,7 @@ public class ImportEventAction implements Action
         ImportOptions importOptions = new ImportOptions();
         importOptions.setDryRun( dryRun );
 
-        scheduler.executeTask( new ImportEventTask( in, eventService, importOptions, taskId, true ) );
+        scheduler.executeTask( new ImportEventTask( in, eventService, importOptions, taskId, jsonInput ) );
 
         return SUCCESS;
     }
