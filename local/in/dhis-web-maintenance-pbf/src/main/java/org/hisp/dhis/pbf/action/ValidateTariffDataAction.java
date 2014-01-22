@@ -115,7 +115,7 @@ public class ValidateTariffDataAction
 
 	private String message;
     
-    public String getMessage() {
+        public String getMessage() {
 		return message;
 	}
 
@@ -140,11 +140,7 @@ public class ValidateTariffDataAction
         List<TariffDataValue> tariffDataValues = new ArrayList<TariffDataValue>( tariffDataValueService.getTariffDataValues(organisationUnit, dataElement));
         //boolean status = false;
         for(TariffDataValue tdv : tariffDataValues)
-        {
-        	System.out.println(tdv.getDataSet().getId());
-        	System.out.println(dataSet.getId());
-        	System.out.println(tdv.getStartDate().before(sDate));
-        	System.out.println(tdv.getEndDate().after(eDate));
+        {        	
         	if(tdv.getDataSet().getId() == dataSet.getId() && tdv.getStartDate().before(sDate) && tdv.getEndDate().after(eDate) )
         	{
         		message = "true";

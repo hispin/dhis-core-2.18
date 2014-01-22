@@ -173,6 +173,13 @@
 	</bean>
     
     <!-- Quality Max Data Entry -->
+    
+    <bean id="org.hisp.dhis.pbf.quality.dataentry.ValidateQualityMaxDataAction" class="org.hisp.dhis.pbf.quality.dataentry.ValidateQualityMaxDataAction" scope="prototype">
+        <property name="qualityMaxValueService" ref="org.hisp.dhis.pbf.api.QualityMaxValueService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
+    
     <bean id="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitAction" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitAction" scope="prototype">
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
