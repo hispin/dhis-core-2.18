@@ -2,8 +2,10 @@
 
 <p>
 <ul>
-#foreach( $patient in $patients )
-	<li><a href="showPatientProgramList.action?patientId=$patient.getId()">$!encoder.htmlEncode( ${patient.name} )</a></li>
+#foreach( $pav in $pavSet )
+	#if($pav.getPatientAttribute().getDisplayInListNoProgram()== true)
+<li><a href="showPatientProgramList.action?patientId=$pav.getPatient().getId()">$!encoder.htmlEncode( ${pav.value} )</a></li>
+#end	
 #end
 </ul>
 </p>

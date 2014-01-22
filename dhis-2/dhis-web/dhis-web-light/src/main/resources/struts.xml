@@ -188,6 +188,7 @@
       <param name="page">/dhis-web-light/namebased/findBeneficiaryForm.vm</param>
 	   <param name="requiredAuthorities">F_PATIENT_SEARCH</param>
     </action>
+    
 
     <action name="showFindRelatedPatientForm"
         class="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction">

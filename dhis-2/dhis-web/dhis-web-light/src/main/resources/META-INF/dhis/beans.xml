@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <!-- Utils / services -->
+	<!-- Utils / services -->
 
-    <bean id="org.hisp.dhis.light.utils.NamebasedUtils" class="org.hisp.dhis.light.utils.NamebasedUtilsImpl"
-        scope="prototype">
-        <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-        <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-    </bean>
+	<bean id="org.hisp.dhis.light.utils.NamebasedUtils" class="org.hisp.dhis.light.utils.NamebasedUtilsImpl"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
 
-    <bean id="org.hisp.dhis.light.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtilsImpl"
-        scope="prototype">
-        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-        <property name="stdDevOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
-        <property name="minMaxOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
-        <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-        <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
-        <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
-    </bean>
+	<bean id="org.hisp.dhis.light.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtilsImpl"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="stdDevOutlierAnalysisService"
+			ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
+		<property name="minMaxOutlierAnalysisService"
+			ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+		<property name="validationRuleService"
+			ref="org.hisp.dhis.validation.ValidationRuleService" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+	</bean>
 
-    <!-- Menu -->
+	<!-- Menu -->
 
 	<bean id="org.hisp.dhis.light.action.NoAction" class="org.hisp.dhis.light.action.NoAction"
 		scope="prototype" />
@@ -38,30 +43,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
-	
+
 	<!-- Data entry -->
 
 	<bean id="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction"
 		class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction"
 		scope="prototype">
-		<property name="formUtils"
-			ref="org.hisp.dhis.light.utils.FormUtils" />
+		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.GetDataSetsAction"
-		class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction" 
-		scope="prototype">
-		<property name="formUtils"
-			ref="org.hisp.dhis.light.utils.FormUtils" />
+		class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction" scope="prototype">
+		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.GetPeriodsAction"
-		class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction" 
-		scope="prototype">
-		<property name="formUtils"
-			ref="org.hisp.dhis.light.utils.FormUtils" />
+		class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction" scope="prototype">
+		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -76,15 +76,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="formUtils"
-			ref="org.hisp.dhis.light.utils.FormUtils" />
+		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="registrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.MarkComplete"
-		class="org.hisp.dhis.light.dataentry.action.MarkComplete" 
-		scope="prototype">
+		class="org.hisp.dhis.light.dataentry.action.MarkComplete" scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -93,10 +91,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.light.dataentry.action.UndoCompleteAction"
-		class="org.hisp.dhis.light.dataentry.action.UndoCompleteAction" 
-		scope="prototype">
+		class="org.hisp.dhis.light.dataentry.action.UndoCompleteAction" scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -112,8 +109,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="formUtils"
-			ref="org.hisp.dhis.light.utils.FormUtils" />
+		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.dataentry.action.SaveSectionFormAction"
@@ -130,8 +126,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="registrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="formUtils"
-			ref="org.hisp.dhis.light.utils.FormUtils" />
+		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 	</bean>
 
 	<!-- Namebased Data entry -->
@@ -146,7 +141,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryListAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryListAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="activityReportingService"
@@ -161,7 +156,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="activityReportingService"
@@ -171,26 +166,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageSectionAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageSectionAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />	
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.MarkCompleteProgramStageAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.MarkCompleteProgramStageAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
@@ -198,51 +193,61 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programStageSectionService"
-			ref="org.hisp.dhis.program.ProgramStageSectionService"/>
-		<property name="userService"
-			ref="org.hisp.dhis.user.UserService"/>
+			ref="org.hisp.dhis.program.ProgramStageSectionService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="dataElementCategoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
-		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService"/>
-		<property name="programExpressionService" ref="org.hisp.dhis.program.ProgramExpressionService" />
-		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="userService" ref="org.hisp.dhis.user.UserService"/>
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programValidationService"
+			ref="org.hisp.dhis.program.ProgramValidationService" />
+		<property name="programStageSectionService"
+			ref="org.hisp.dhis.program.ProgramStageSectionService" />
+		<property name="programExpressionService"
+			ref="org.hisp.dhis.program.ProgramExpressionService" />
+		<property name="patientDataValueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+		
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
+
+
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction"
@@ -256,15 +261,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
-		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
@@ -272,7 +279,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
@@ -280,7 +287,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programStageInstanceService"
@@ -290,7 +297,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetAddNewRelationshipFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetAddNewRelationshipFormAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
@@ -310,7 +317,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -319,7 +326,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
@@ -411,8 +418,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="formUtils"
-			ref="org.hisp.dhis.light.utils.FormUtils" />
+		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="patientAttributeOptionService"
@@ -454,7 +460,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="userService" ref="org.hisp.dhis.user.UserService"/>	
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.singleevent.action.SaveSingleEventAction"
@@ -473,16 +479,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-		<property name="userService" ref="org.hisp.dhis.user.UserService"/>
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction"
 		class="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
-	
+
 	<!-- Dashboard -->
 
 	<bean id="org.hisp.dhis.light.dashboard.action.ProvideContentAction"
@@ -513,8 +519,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Settings -->
 
 	<bean id="org.hisp.dhis.light.settings.action.GetSettingsAction"
-		class="org.hisp.dhis.light.settings.action.GetSettingsAction" 
-		scope="prototype">
+		class="org.hisp.dhis.light.settings.action.GetSettingsAction" scope="prototype">
 		<property name="resourceBundleManager"
 			ref="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
 		<property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
@@ -532,60 +537,57 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Messages -->
 
 	<bean id="org.hisp.dhis.light.message.action.GetMessagesAction"
-		class="org.hisp.dhis.light.message.action.GetMessagesAction" 
-		scope="prototype">
+		class="org.hisp.dhis.light.message.action.GetMessagesAction" scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.message.action.GetMessageAction"
-		class="org.hisp.dhis.light.message.action.GetMessageAction" 
-		scope="prototype">
+		class="org.hisp.dhis.light.message.action.GetMessageAction" scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.message.action.SendReplyAction"
-		class="org.hisp.dhis.light.message.action.SendReplyAction" 
-		scope="prototype">
+		class="org.hisp.dhis.light.message.action.SendReplyAction" scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.message.action.SendFeedbackAction"
-		class="org.hisp.dhis.light.message.action.SendFeedbackAction" 
-		scope="prototype">
+		class="org.hisp.dhis.light.message.action.SendFeedbackAction" scope="prototype">
 		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
 	</bean>
-	
+
 	<!-- Anonymous -->
-	
-	<bean
-		id="org.hisp.dhis.light.anonymous.action.SearchOrgUnitAction"
+
+	<bean id="org.hisp.dhis.light.anonymous.action.SearchOrgUnitAction"
 		class="org.hisp.dhis.light.anonymous.action.SearchOrgUnitAction"
 		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.light.anonymous.action.GetAllAnonymousProgramAction"
 		class="org.hisp.dhis.light.anonymous.action.GetAllAnonymousProgramAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="orgUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="orgUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.anonymous.action.ShowAnonymousFormAction"
 		class="org.hisp.dhis.light.anonymous.action.ShowAnonymousFormAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="userService" ref="org.hisp.dhis.user.UserService"/>
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.anonymous.action.SaveAnonymousProgramAction"
 		class="org.hisp.dhis.light.anonymous.action.SaveAnonymousProgramAction"
 		scope="prototype">
 		<property name="orgUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />	
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
@@ -596,22 +598,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
-		<property name="userService" ref="org.hisp.dhis.user.UserService"/>	
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
-        scope="prototype">
+		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.light.messaging.action.FindUserAction"
-		class="org.hisp.dhis.light.messaging.action.FindUserAction"
-        scope="prototype">
+
+	<bean id="org.hisp.dhis.light.messaging.action.FindUserAction"
+		class="org.hisp.dhis.light.messaging.action.FindUserAction" scope="prototype">
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 </beans>

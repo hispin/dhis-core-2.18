@@ -28,119 +28,144 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 
-import java.util.Collection;
+import com.opensymphony.xwork2.Action;
 
-public class FindBeneficiarytAction
-    implements Action
-{
-    private static final String REDIRECT = "redirect";
+public class FindBeneficiarytAction implements Action {
+	private static final String REDIRECT = "redirect";
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private PatientService patientService;
+	private PatientService patientService;
 
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
+	public void setPatientService(PatientService patientService) {
+		this.patientService = patientService;
+	}
 
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Input & Output
+	// -------------------------------------------------------------------------
 
-    private Collection<Patient> patients;
+	private Collection<Patient> patients;
 
-    public Collection<Patient> getPatients()
-    {
-        return patients;
-    }
+	public Collection<Patient> getPatients() {
+		return patients;
+	}
 
-    public void setPatients( Collection<Patient> patients )
-    {
-        this.patients = patients;
-    }
+	public void setPatients(Collection<Patient> patients) {
+		this.patients = patients;
+	}
 
-    private String keyword;
+	private Set<PatientAttributeValue> pavSet;
 
-    public String getKeyword()
-    {
-        return keyword;
-    }
+	public Set<PatientAttributeValue> getPavSet() {
+		return pavSet;
+	}
 
-    public void setKeyword( String keyword )
-    {
-        this.keyword = keyword;
-    }
+	public void setPavSet(Set<PatientAttributeValue> pavSet) {
+		this.pavSet = pavSet;
+	}
 
-    private Integer organisationUnitId;
+	private Set<PatientAttributeValue> patientAttributes;
 
-    public Integer getOrganisationUnitId()
-    {
-        return organisationUnitId;
-    }
+	public Set<PatientAttributeValue> getPatientAttributes() {
+		return patientAttributes;
+	}
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
+	public void setPatientAttributes(
+			Set<PatientAttributeValue> patientAttributes) {
+		this.patientAttributes = patientAttributes;
+	}
 
-    private Integer patientId;
+	private String keyword;
 
-    public Integer getPatientId()
-    {
-        return patientId;
-    }
+	public String getKeyword() {
+		return keyword;
+	}
 
-    public void setPatientId( Integer patientId )
-    {
-        this.patientId = patientId;
-    }
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 
-    // Use in search related patient
+	private Integer organisationUnitId;
 
-    private Integer originalPatientId;
+	public Integer getOrganisationUnitId() {
+		return organisationUnitId;
+	}
 
-    public void setOriginalPatientId( Integer originalPatientId )
-    {
-        this.originalPatientId = originalPatientId;
-    }
+	public void setOrganisationUnitId(Integer organisationUnitId) {
+		this.organisationUnitId = organisationUnitId;
+	}
 
-    public Integer getOriginalPatientId()
-    {
-        return originalPatientId;
-    }
+	private Integer patientAttributeId;
 
-    private Integer relationshipTypeId;
+	public Integer getPatientAttributeId() {
+		return patientAttributeId;
+	}
 
-    public Integer getRelationshipTypeId()
-    {
-        return relationshipTypeId;
-    }
+	public void setPatientAttributeId(Integer patientAttributeId) {
+		this.patientAttributeId = patientAttributeId;
+	}
 
-    public void setRelationshipTypeId( Integer relationshipTypeId )
-    {
-        this.relationshipTypeId = relationshipTypeId;
-    }
+	private Integer patientId;
 
-    @Override
-    public String execute()
-        throws Exception
-    {   
-        patients = patientService.getPatientsForMobile( keyword, organisationUnitId );
+	public Integer getPatientId() {
+		return patientId;
+	}
 
-        if ( patients.size() == 1 )
-        {
-            Patient patient = patients.iterator().next();
-            patientId = patient.getId();
-            return REDIRECT;
-        }
-        return SUCCESS;
-    }
+	public void setPatientId(Integer patientId) {
+		this.patientId = patientId;
+	}
+
+	// Use in search related patient
+
+	private Integer originalPatientId;
+
+	public void setOriginalPatientId(Integer originalPatientId) {
+		this.originalPatientId = originalPatientId;
+	}
+
+	public Integer getOriginalPatientId() {
+		return originalPatientId;
+	}
+
+	private Integer relationshipTypeId;
+
+	public Integer getRelationshipTypeId() {
+		return relationshipTypeId;
+	}
+
+	public void setRelationshipTypeId(Integer relationshipTypeId) {
+		this.relationshipTypeId = relationshipTypeId;
+	}
+
+	@Override
+	public String execute() throws Exception {
+
+		patients = patientService.searchPatientsForMobile(keyword,
+				organisationUnitId, patientAttributeId);
+		pavSet = new HashSet<PatientAttributeValue>();
+
+		for (Patient p : patients) {
+			pavSet.addAll(p.getAttributeValues());
+		}
+
+		if (patients.size() == 1) {
+			Patient patient = patients.iterator().next();
+			patientId = patient.getId();
+
+			return REDIRECT;
+		}
+		return SUCCESS;
+	}
 
 }
