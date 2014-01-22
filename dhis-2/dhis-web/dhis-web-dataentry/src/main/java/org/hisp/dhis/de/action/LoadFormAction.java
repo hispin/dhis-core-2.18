@@ -345,7 +345,7 @@ public class LoadFormAction
         // For multi-org unit we only support section forms
         // ---------------------------------------------------------------------
 
-        if ( multiOrganisationUnit != null )
+        if ( CodeGenerator.isValidCode( multiOrganisationUnit ) )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( multiOrganisationUnit );
             List<OrganisationUnit> organisationUnitChildren = new ArrayList<OrganisationUnit>();
