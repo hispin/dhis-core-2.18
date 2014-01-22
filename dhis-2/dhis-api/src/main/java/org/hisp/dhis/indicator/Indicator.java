@@ -138,10 +138,6 @@ public class Indicator
         dataSet.getIndicators().remove( this );
     }
 
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
     public void removeAllAttributeValues()
     {
         attributeValues.clear();
