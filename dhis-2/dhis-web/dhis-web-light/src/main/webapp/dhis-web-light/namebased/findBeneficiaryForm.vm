@@ -11,7 +11,13 @@
 <div class="header-box" align="center">
 <input type="hidden" name="orgUnitId" value="$orgUnitId"/>	
 	<p style="text-align: left;">
-		<label>$i18n.getString( "search_by_name_or_id" )</label>
+		
+		<select name="patientAttributeId">
+			<option value="0">$i18n.getString( "select_attribute" )</option>
+			#foreach($patientAttribute in $patientAttributes)
+				<option value="$patientAttribute.getId()">$patientAttribute.getName()</option>
+			#end
+		</select>
 		#if( $validationMap.get( "keyword" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "fullName" ))</span>
      	#end

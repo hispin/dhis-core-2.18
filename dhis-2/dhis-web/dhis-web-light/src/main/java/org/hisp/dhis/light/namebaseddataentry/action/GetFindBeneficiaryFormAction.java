@@ -34,119 +34,135 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetFindBeneficiaryFormAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+public class GetFindBeneficiaryFormAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+	private CurrentUserService currentUserService;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
+	public void setCurrentUserService(CurrentUserService currentUserService) {
+		this.currentUserService = currentUserService;
+	}
 
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
+	private PatientAttributeService patientAttributeService;
 
-    private Integer orgUnitId;
-    
-    public Integer getOrgUnitId()
-    {
-        return orgUnitId;
-    }
+	public void setPatientAttributeService(
+			PatientAttributeService patientAttributeService) {
+		this.patientAttributeService = patientAttributeService;
+	}
 
-    public void setOrgUnitId( Integer orgUnitId )
-    {
-        this.orgUnitId = orgUnitId;
-    }
+	// -------------------------------------------------------------------------
+	// Input & Output
+	// -------------------------------------------------------------------------
 
-    private Set<OrganisationUnit> organisationUnits;
+	private Integer patientAttributeId;
 
-    public Set<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
+	public Integer getPatientAttributeId() {
+		return patientAttributeId;
+	}
 
-    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
-    {
-        this.organisationUnits = organisationUnits;
-    }
+	public void setPatientAttributeId(Integer patientAttributeId) {
+		this.patientAttributeId = patientAttributeId;
+	}
 
-    private User user;
+	private Integer orgUnitId;
 
-    public User getUser()
-    {
-        return user;
-    }
+	public Integer getOrgUnitId() {
+		return orgUnitId;
+	}
 
-    public void setUser( User user )
-    {
-        this.user = user;
-    }
+	public void setOrgUnitId(Integer orgUnitId) {
+		this.orgUnitId = orgUnitId;
+	}
 
-    // use in find relation person
+	private Collection<PatientAttribute> patientAttributes;
 
-    private Integer originalPatientId;
+	public Collection<PatientAttribute> getPatientAttributes() {
+		return patientAttributes;
+	}
 
-    public Integer getOriginalPatientId()
-    {
-        return originalPatientId;
-    }
+	public void setPatientAttributes(
+			Collection<PatientAttribute> patientAttributes) {
+		this.patientAttributes = patientAttributes;
+	}
 
-    public void setOriginalPatientId( Integer originalPatientId )
-    {
-        this.originalPatientId = originalPatientId;
-    }
+	private Set<OrganisationUnit> organisationUnits;
 
-    private Integer relationshipTypeId;
+	public Set<OrganisationUnit> getOrganisationUnits() {
+		return organisationUnits;
+	}
 
-    public Integer getRelationshipTypeId()
-    {
-        return relationshipTypeId;
-    }
+	public void setOrganisationUnits(Set<OrganisationUnit> organisationUnits) {
+		this.organisationUnits = organisationUnits;
+	}
 
-    public void setRelationshipTypeId( Integer relationshipTypeId )
-    {
-        this.relationshipTypeId = relationshipTypeId;
-    }
+	private User user;
 
-    @Override
-    public String execute()
-        throws Exception
-    {
-        user = currentUserService.getCurrentUser();
-        Collection<OrganisationUnit> basicOrganisationUnits = currentUserService.getCurrentUser()
-            .getOrganisationUnits();
-        organisationUnits = new HashSet<OrganisationUnit>();
+	public User getUser() {
+		return user;
+	}
 
-        for ( OrganisationUnit organisationUnit : basicOrganisationUnits )
-        {
-            organisationUnits.addAll( this.getAllParentOrganisationUnits( organisationUnit ) );
-        }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-        return SUCCESS;
-    }
+	// use in find relation person
 
-    private Collection<? extends OrganisationUnit> getAllParentOrganisationUnits( OrganisationUnit organisationUnit )
-    {
-        List<OrganisationUnit> parents = new ArrayList<OrganisationUnit>();
-        parents.add( organisationUnit );
+	private Integer originalPatientId;
 
-        while ( organisationUnit.getParent() != null )
-        {
-            parents.add( organisationUnit.getParent() );
-            organisationUnit = organisationUnit.getParent();
-        }
-        return parents;
-    }
+	public Integer getOriginalPatientId() {
+		return originalPatientId;
+	}
+
+	public void setOriginalPatientId(Integer originalPatientId) {
+		this.originalPatientId = originalPatientId;
+	}
+
+	private Integer relationshipTypeId;
+
+	public Integer getRelationshipTypeId() {
+		return relationshipTypeId;
+	}
+
+	public void setRelationshipTypeId(Integer relationshipTypeId) {
+		this.relationshipTypeId = relationshipTypeId;
+	}
+
+	@Override
+	public String execute() throws Exception {
+		user = currentUserService.getCurrentUser();
+		Collection<OrganisationUnit> basicOrganisationUnits = currentUserService
+				.getCurrentUser().getOrganisationUnits();
+		organisationUnits = new HashSet<OrganisationUnit>();
+
+		for (OrganisationUnit organisationUnit : basicOrganisationUnits) {
+			organisationUnits.addAll(this
+					.getAllParentOrganisationUnits(organisationUnit));
+		}
+
+		patientAttributes = patientAttributeService.getAllPatientAttributes();
+
+		return SUCCESS;
+	}
+
+	private Collection<? extends OrganisationUnit> getAllParentOrganisationUnits(
+			OrganisationUnit organisationUnit) {
+		List<OrganisationUnit> parents = new ArrayList<OrganisationUnit>();
+		parents.add(organisationUnit);
+
+		while (organisationUnit.getParent() != null) {
+			parents.add(organisationUnit.getParent());
+			organisationUnit = organisationUnit.getParent();
+		}
+		return parents;
+	}
 
 }
