@@ -30,7 +30,10 @@ package org.hisp.dhis.web.ohie.csd.webapi;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.attribute.comparator.AttributeValueSortOrderComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -73,11 +76,10 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -89,7 +91,7 @@ public class CsdController
     private static final Log log = LogFactory.getLog( CsdController.class );
 
     private static final String SOAP_CONTENT_TYPE = "application/soap+xml";
-    
+
     // Name of group
     private static final String FACILITY_TYPE_DISCRIMINATOR = "Health Facility";
 
@@ -232,20 +234,22 @@ public class CsdController
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             boolean isFacility = false;
-            for (OrganisationUnitGroup group : organisationUnit.getGroups())
+
+            for ( OrganisationUnitGroup group : organisationUnit.getGroups() )
             {
-                if( group.getName().equals( FACILITY_TYPE_DISCRIMINATOR))
+                if ( group.getName().equals( FACILITY_TYPE_DISCRIMINATOR ) )
                 {
                     isFacility = true;
                     break;
                 }
             }
+
             // skip if orgunit is not a health facility
-            if (!isFacility)
+            if ( !isFacility )
             {
                 continue;
             }
-            
+
             Facility facility = new Facility();
             facility.setOid( "No oid, please provide facility_oid attribute value" );
 
@@ -259,12 +263,12 @@ public class CsdController
             }
 
             facility.getOtherID().add( new OtherID( organisationUnit.getUid(), "dhis2-uid" ) );
-            
-            if (organisationUnit.getCode() != null)
+
+            if ( organisationUnit.getCode() != null )
             {
-                facility.getOtherID().add( new OtherID( organisationUnit.getCode(), "dhis2-code" ) );                
+                facility.getOtherID().add( new OtherID( organisationUnit.getCode(), "dhis2-code" ) );
             }
-            
+
             facility.setPrimaryName( organisationUnit.getDisplayName() );
 
             if ( organisationUnit.getContactPerson() != null )
@@ -287,11 +291,11 @@ public class CsdController
                 {
                     continue;
                 }
-                
+
                 CodedType codedType = new CodedType();
                 codedType.setCode( organisationUnitGroup.getCode() );
-                
-                codedType.setCodingSchema("Unknown" );                
+
+                codedType.setCodingSchema( "Unknown" );
                 for ( AttributeValue attributeValue : organisationUnitGroup.getAttributeValues() )
                 {
                     if ( attributeValue.getAttribute().getName().equals( "code_system" ) )
@@ -368,7 +372,10 @@ public class CsdController
 
             Map<String, List<AddressLine>> addressLines = Maps.newHashMap();
 
-            for ( AttributeValue attributeValue : organisationUnit.getAttributeValues() )
+            List<AttributeValue> attributeValues = new ArrayList<AttributeValue>( organisationUnit.getAttributeValues() );
+            Collections.sort( attributeValues, AttributeValueSortOrderComparator.INSTANCE );
+
+            for ( AttributeValue attributeValue : attributeValues )
             {
                 if ( attributeValue.getAttribute().getName().startsWith( "Address_" ) )
                 {

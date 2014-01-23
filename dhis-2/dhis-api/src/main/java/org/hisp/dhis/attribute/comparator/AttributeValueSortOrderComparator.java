@@ -28,30 +28,30 @@ package org.hisp.dhis.attribute.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeValue;
 
 import java.util.Comparator;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class AttributeSortOrderComparator
-    implements Comparator<Attribute>
+public class AttributeValueSortOrderComparator
+    implements Comparator<AttributeValue>
 {
-    public static final Comparator<Attribute> INSTANCE = new AttributeSortOrderComparator();
+    public static final Comparator<AttributeValue> INSTANCE = new AttributeValueSortOrderComparator();
 
     @Override
-    public int compare( Attribute attribute0, Attribute attribute1 )
+    public int compare( AttributeValue o1, AttributeValue o2 )
     {
-        if ( attribute0.getSortOrder() == null || attribute0.getSortOrder() == 0 )
+        if ( o1.getAttribute().getSortOrder() == null || o2.getAttribute().getSortOrder() == 0 )
         {
-            return attribute0.getName().compareTo( attribute1.getName() );
+            return o1.getAttribute().getName().compareTo( o2.getAttribute().getName() );
         }
-        if ( attribute1.getSortOrder() == null || attribute1.getSortOrder() == 0 )
+        if ( o2.getAttribute().getSortOrder() == null || o2.getAttribute().getSortOrder() == 0 )
         {
-            return attribute0.getName().compareTo( attribute1.getName() );
+            return o1.getAttribute().getName().compareTo( o2.getAttribute().getName() );
         }
 
-        return attribute0.getSortOrder() - attribute1.getSortOrder();
+        return o1.getAttribute().getSortOrder() - o2.getAttribute().getSortOrder();
     }
 }
