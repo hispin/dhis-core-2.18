@@ -28,10 +28,20 @@ package org.hisp.dhis.web.ohie.csd.webapi;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.attribute.comparator.AttributeValueSortOrderComparator;
 import org.hisp.dhis.dataset.DataSet;
@@ -68,18 +78,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -88,8 +88,6 @@ import java.util.Map;
 @RequestMapping( value = "/csd" )
 public class CsdController
 {
-    private static final Log log = LogFactory.getLog( CsdController.class );
-
     private static final String SOAP_CONTENT_TYPE = "application/soap+xml";
 
     // Name of group
@@ -110,7 +108,7 @@ public class CsdController
     {
         try
         {
-            Class[] classes = new Class[]{
+            Class<?>[] classes = new Class<?>[]{
                 Envelope.class
             };
 
