@@ -28,8 +28,11 @@
 package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
@@ -89,8 +92,12 @@ public class GetAttributesByProgramAction
         }
         else
         {
-            attributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesDisplayed( true ) );
+            Collection<PatientAttribute> _attributes = patientAttributeService.getPatientAttributesWithoutProgram();
+            _attributes.addAll( patientAttributeService.getPatientAttributesDisplayed( true ) );
+            attributes = new ArrayList<PatientAttribute>( _attributes );
         }
+
+        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

@@ -221,6 +221,16 @@ public class SearchPatientAction
 
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
 
+        if ( programId != null )
+        {
+            program = programService.getProgram( programId );
+        }
+        else
+        {
+            attributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesDisplayed( true ) );
+            Collections.sort( attributes, new PatientAttributeSortOrderInListNoProgramComparator() );
+        }
+        
         // List all patients
         if ( listAll )
         {
@@ -282,15 +292,6 @@ public class SearchPatientAction
                 }
             }
 
-        }
-        if ( programId != null )
-        {
-            program = programService.getProgram( programId );
-        }
-        else
-        {
-            attributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesDisplayed( true ) );
-            Collections.sort( attributes, new PatientAttributeSortOrderInListNoProgramComparator() );
         }
 
         return SUCCESS;

@@ -37,7 +37,7 @@
 		</td>
 		<td id='listPatientBtnTD'>
 			<input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="listAllPatient();">
-			<input type="button" id='advancedSearchBtn' class='hidden' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
+			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
 		</td>
 	</tr>
 	<tr id='scheduleVisitTR' class='hidden'>
@@ -67,15 +67,6 @@
 		<td>$i18n.getString('show_only_risk_cases')</td>
 		<td>
 			<input type='checkbox' id='followup' name='followup' />
-		</td>
-	</tr>
-	<tr id='searchByIdTR' class='hidden'>
-		<td colspan='2'>
-			<input type='text' id='searchPatientByIds' name='searchPatientByIds' onchange='searchByIdsOnclick();' style='width:350px;' placeholder='$i18n.getString("search_by_identifier")' />
-		</td>
-		<td>
-			<input type='button' value='$i18n.getString("search")' onclick='searchByIdsOnclick();'>
-			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
 		</td>
 	</tr>
 	
@@ -125,9 +116,8 @@
 		<tr>
 			<td id='searchingAttributeIdTD' class="hidden">
 			  <select class='search-field' id="searchObjectId" name="searchObjectId" #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchObjectOnChange(this)">
+				<option value="pi_enrollmentDate">$i18n.getString( "enrollment_date" )</option>
 				#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-					<option value="iden">$i18n.getString( "search_by_identifier" )</option>
-					<option value="pi_enrollmentDate">$i18n.getString( "enrollment_date" )</option>
 					#foreach( $attribute in $patientAttributes )
 						<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
 					#end
@@ -140,9 +130,8 @@
 			<tr id='advSearchBox0'>	       
 				<td>
 				  <select class='search-field' id="searchObjectId" name="searchObjectId" #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchObjectOnChange(this)">
+					<option value="pi_enrollmentDate">$i18n.getString( "enrollment_date" )</option>
 					#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-						<option value="iden">$i18n.getString( "search_by_identifier" )</option>
-						<option value="pi_enrollmentDate">$i18n.getString( "enrollment_date" )</option>
 						#foreach( $attribute in $patientAttributes )
 							<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
 						#end

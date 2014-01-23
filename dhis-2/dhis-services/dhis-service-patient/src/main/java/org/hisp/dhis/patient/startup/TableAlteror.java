@@ -139,7 +139,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientattribute DROP COLUMN noChars" );
         executeSql( "ALTER TABLE programstageinstance ALTER executiondate TYPE date" );
 
-        executeSql( "ALTER TABLE patientidentifier ALTER COLUMN patientid DROP NOT NULL" );
         executeSql( "ALTER TABLE patient DROP COLUMN bloodgroup" );
         executeSql( "ALTER TABLE patientmobilesetting DROP COLUMN bloodGroup" );
 
@@ -182,9 +181,6 @@ public class TableAlteror
         executeSql( "UPDATE program SET ignoreOverdueEvents=false WHERE ignoreOverdueEvents is null" );
 
         executeSql( "UPDATE programstage SET displayGenerateEventBox=true WHERE displayGenerateEventBox is null" );
-        executeSql( "ALTER TABLE patientidentifier DROP COLUMN preferred" );
-
-        executeSql( "UPDATE patientidentifiertype SET personDisplayName=false WHERE personDisplayName is null" );
 
         executeSql( "ALTER TABLE programvalidation RENAME description TO name" );
 
@@ -200,7 +196,6 @@ public class TableAlteror
         executeSql( "UPDATE patientattribute SET valueType='number' WHERE valueType='NUMBER'" );
         executeSql( "UPDATE patientattribute SET valueType='bool' WHERE valueType='YES/NO'" );
         executeSql( "UPDATE patientattribute SET valueType='combo' WHERE valueType='COMBO'" );
-        executeSql( "UPDATE patientidentifiertype SET type='string' WHERE type='text'" );
 
         executeSql( "UPDATE program SET onlyEnrollOnce='false' WHERE onlyEnrollOnce is null" );
         executeSql( "UPDATE programStage SET captureCoordinates=false WHERE captureCoordinates is null" );
@@ -254,9 +249,6 @@ public class TableAlteror
 
         executeSql( "update programstage set openAfterEnrollment=false where openAfterEnrollment is null" );
 
-        executeSql( "update patientidentifiertype set orgunitScope=false where orgunitScope is null" );
-        executeSql( "update patientidentifiertype set programScope=false where programScope is null" );
-
         executeSql( "update programstageinstance set status=0 where status is null" );
         executeSql( "ALTER TABLE patienttabularreport RENAME level TO ouMode" );
         executeSql( "ALTER TABLE program DROP COLUMN facilityLB" );
@@ -290,7 +282,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN useBirthDateAsEnrollmentDate" );
 
         executeSql( "UPDATE patientattribute SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
-        executeSql( "UPDATE patientidentifiertype SET displayinlistnoprogram=false WHERE displayinlistnoprogram is null" );
 
         executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN persondisplayname" );
 
@@ -353,7 +344,6 @@ public class TableAlteror
     {
         updateUidColumn( "patientattribute" );
         updateUidColumn( "patientattributegroup" );
-        updateUidColumn( "patientidentifiertype" );
         updateUidColumn( "program" );
         updateUidColumn( "patientattribute" );
         updateUidColumn( "programstage" );

@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.patient;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -114,9 +115,12 @@ public class SelectAction
         throws Exception
     {
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
-        patientAttributes = new ArrayList<PatientAttribute>(
-            patientAttributeService.getPatientAttributesWithoutProgram() );
-        patientAttributes.addAll( patientAttributeService.getPatientAttributesDisplayed( true ) );
+
+        Collection<PatientAttribute> _attributes = patientAttributeService.getPatientAttributesWithoutProgram();
+        _attributes.addAll( patientAttributeService.getPatientAttributesDisplayed( true ) );
+        
+        patientAttributes = new ArrayList<PatientAttribute>( _attributes );
+
         Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( organisationUnit != null )
