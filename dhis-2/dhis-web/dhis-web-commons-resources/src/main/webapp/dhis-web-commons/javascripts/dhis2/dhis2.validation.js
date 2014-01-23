@@ -98,3 +98,20 @@ dhis2.validation.isNegativeNumber = function( value )
 {
 	return dhis2.validation.isNumber( value ) && parseFloat( value ) < 0;
 };
+
+/**
+ * Returns true if the provided string argument is to be considered a unit
+ * interval, which implies that the value is numeric and inclusive between 0 
+ * and 1.
+ */
+dhis2.validation.isUnitInterval = function( value )
+{
+	if ( !dhis2.validation.isNumber( value ) )
+	{
+		return false;
+	}
+	
+	var f = parseFloat( value );
+	
+	return f >= 0 && f <= 1;
+};

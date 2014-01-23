@@ -117,6 +117,7 @@
 		<td>
             <select id="numberType" name="numberType">
 				<option value="number" #if( $!dataElement.numberType == 'number' ) selected="selected" #end style="min-width:246px;">$i18n.getString( "number" )</option>
+				<option value="unitInterval" #if( $!dataElement.numberType == 'unitInterval' ) selected="selected" #end>$i18n.getString( "unit_interval" )</option>
 				<option value="int" #if( $!dataElement.numberType == 'int' ) selected="selected" #end>$i18n.getString( "int" )</option>
 				<option value="posInt" #if( $!dataElement.numberType == 'posInt' ) selected="selected" #end>$i18n.getString( "positive_integer" )</option>
 				<option value="negInt" #if( $!dataElement.numberType == 'negInt' ) selected="selected" #end>$i18n.getString( "negative_integer" )</option>

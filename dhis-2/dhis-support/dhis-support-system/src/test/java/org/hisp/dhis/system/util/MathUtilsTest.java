@@ -173,6 +173,20 @@ public class MathUtilsTest
     }
     
     @Test
+    public void testIsUnitInterval()
+    {
+        assertTrue( MathUtils.isUnitInterval( "0" ) );
+        assertTrue( MathUtils.isUnitInterval( "0.2" ) );
+        assertTrue( MathUtils.isUnitInterval( "0.876" ) );
+        assertTrue( MathUtils.isUnitInterval( "1" ) );
+        
+        assertFalse( MathUtils.isUnitInterval( "2" ) );
+        assertFalse( MathUtils.isUnitInterval( "-1" ) );
+        assertFalse( MathUtils.isUnitInterval( "abc" ) );
+        assertFalse( MathUtils.isUnitInterval( "1.01" ) );
+    }
+    
+    @Test
     public void testIsInteger()
     {
         assertTrue( MathUtils.isInteger( "1" ) );
