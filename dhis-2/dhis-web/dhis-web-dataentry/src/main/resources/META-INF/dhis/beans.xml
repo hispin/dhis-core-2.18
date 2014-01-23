@@ -59,22 +59,6 @@
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.de.action.RegisterCompleteDataSetAction"
-      class="org.hisp.dhis.de.action.RegisterCompleteDataSetAction"
-      scope="prototype">
-    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.de.action.UndoCompleteDataSetAction" class="org.hisp.dhis.de.action.UndoCompleteDataSetAction"
-      scope="prototype">
-    <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
-
   <bean id="org.hisp.dhis.de.action.ValidationAction" class="org.hisp.dhis.de.action.ValidationAction"
       scope="prototype">
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />

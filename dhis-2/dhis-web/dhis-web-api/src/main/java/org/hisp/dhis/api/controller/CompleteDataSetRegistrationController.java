@@ -28,18 +28,25 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.InputUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.view.BasicView;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrations;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -67,8 +74,11 @@ public class CompleteDataSetRegistrationController
     public static final String RESOURCE_PATH = "/completeDataSetRegistrations";
 
     @Autowired
-    private CompleteDataSetRegistrationService completeDataSetRegistrationService;
+    private CompleteDataSetRegistrationService registrationService;
 
+    @Autowired
+    private DataSetService dataSetService;
+    
     @Autowired
     private PeriodService periodService;
 
@@ -77,7 +87,16 @@ public class CompleteDataSetRegistrationController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private CurrentUserService currentUserService;
 
+    @Autowired
+    private InputUtils inputUtils;
+    
+    @Autowired
+    private I18nManager i18nManager;
+    
     @RequestMapping( method = RequestMethod.GET, produces = CONTENT_TYPE_XML )
     public void getCompleteDataSetRegistrationsXml(
         @RequestParam Set<String> dataSet,
@@ -140,8 +159,188 @@ public class CompleteDataSetRegistrationController
 
         CompleteDataSetRegistrations completeDataSetRegistrations = new CompleteDataSetRegistrations();
         completeDataSetRegistrations.setCompleteDataSetRegistrationList( new ArrayList<CompleteDataSetRegistration>(
-            completeDataSetRegistrationService.getCompleteDataSetRegistrations( dataSets, organisationUnits, periods ) ) );
+            registrationService.getCompleteDataSetRegistrations( dataSets, organisationUnits, periods ) ) );
 
         return completeDataSetRegistrations;
+    }
+
+    @RequestMapping( method = RequestMethod.POST, produces = "text/plain" )
+    public void saveCompleteDataSetRegistration( 
+        @RequestParam String ds,
+        @RequestParam String pe,
+        @RequestParam String ou,
+        @RequestParam( required = false ) String cc, 
+        @RequestParam( required = false ) String cp, 
+        @RequestParam( required = false, defaultValue="false" ) boolean multiOu, HttpServletResponse response )
+    {
+        DataSet dataSet = dataSetService.getDataSet( ds );
+        
+        if ( dataSet == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal data set identifier: " + ds );
+            return;
+        }
+
+        Period period = PeriodType.getPeriodFromIsoString( pe );
+
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
+            return;
+        }
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+
+        if ( organisationUnit == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
+            return;
+        }
+
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+        
+        if ( attributeOptionCombo == null )
+        {
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // Check locked status
+        // ---------------------------------------------------------------------
+
+        if ( dataSetService.isLocked( dataSet, period, organisationUnit, attributeOptionCombo, null, multiOu ) )
+        {
+            ContextUtils.conflictResponse( response, "Data set is locked: " + ds );
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // Register as completed data set
+        // ---------------------------------------------------------------------
+        
+        Set<OrganisationUnit> children = organisationUnit.getChildren();
+
+        String storedBy = currentUserService.getCurrentUsername();
+
+        if ( !multiOu )
+        {
+            registerCompleteDataSet( dataSet, period, organisationUnit, storedBy );
+        }
+        else
+        {
+            for ( OrganisationUnit unit : children )
+            {
+                if ( unit.getDataSets().contains( dataSet ) )
+                {
+                    registerCompleteDataSet( dataSet, period, unit, storedBy );
+                }
+            }
+        }
+    }
+    
+    @RequestMapping( method = RequestMethod.DELETE, produces = "text/plain" )
+    public void deleteCompleteDataSetRegistration( 
+        @RequestParam String ds,
+        @RequestParam String pe,
+        @RequestParam String ou,
+        @RequestParam( required = false ) String cc, 
+        @RequestParam( required = false ) String cp, 
+        @RequestParam( required = false, defaultValue="false" ) boolean multiOu, HttpServletResponse response )
+    {
+        DataSet dataSet = dataSetService.getDataSet( ds );
+        
+        if ( dataSet == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal data set identifier: " + ds );
+            return;
+        }
+
+        Period period = PeriodType.getPeriodFromIsoString( pe );
+
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal period identifier: " + pe );
+            return;
+        }
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( ou );
+
+        if ( organisationUnit == null )
+        {
+            ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
+            return;
+        }
+
+        DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo( response, cc, cp );
+        
+        if ( attributeOptionCombo == null )
+        {
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // Check locked status
+        // ---------------------------------------------------------------------
+
+        if ( dataSetService.isLocked( dataSet, period, organisationUnit, attributeOptionCombo, null, multiOu ) )
+        {
+            ContextUtils.conflictResponse( response, "Data set is locked: " + ds );
+            return;
+        }
+
+        // ---------------------------------------------------------------------
+        // Un-register as completed data set
+        // ---------------------------------------------------------------------
+        
+        Set<OrganisationUnit> children = organisationUnit.getChildren();
+
+        if ( !multiOu )
+        {
+            unRegisterCompleteDataSet( dataSet, period, organisationUnit );
+        }
+        else
+        {
+            for ( OrganisationUnit unit : children )
+            {
+                if ( unit.getDataSets().contains( dataSet ) )
+                {
+                    unRegisterCompleteDataSet( dataSet, period, unit );
+                }
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void registerCompleteDataSet( DataSet dataSet, Period period, OrganisationUnit organisationUnit, String storedBy )
+    {
+        I18nFormat format = i18nManager.getI18nFormat();
+        
+        CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
+
+        if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit ) == null )
+        {
+            registration.setDataSet( dataSet );
+            registration.setPeriod( period );
+            registration.setSource( organisationUnit );
+            registration.setDate( new Date() );
+            registration.setStoredBy( storedBy );
+
+            registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
+
+            registrationService.saveCompleteDataSetRegistration( registration, true );
+        }
+    }
+
+    private void unRegisterCompleteDataSet( DataSet dataSet, Period period, OrganisationUnit organisationUnit )
+    {
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit );
+
+        if ( registration != null )
+        {
+            registrationService.deleteCompleteDataSetRegistration( registration );
+        }
     }
 }
