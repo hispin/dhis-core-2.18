@@ -86,24 +86,12 @@ public class DefaultSmsSender
     public String sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
-        String resultMessage = null;
-        if ( !transportService.isEnabled() )
+        if ( transportService == null || !transportService.isEnabled() )
         {
             throw new SmsServiceNotEnabledException();
         }
 
-        if ( transportService != null )
-        {
-            // Disable wasted messsage check due to incorrect detection
-            // resultMessage = isWastedSMS( sms );
-            // if ( resultMessage == null )
-
-            resultMessage = transportService.sendMessage( sms, gatewayId );
-
-            return resultMessage;
-        }
-
-        return "outboundsms_saved";
+        return transportService.sendMessage( sms, gatewayId );
     }
 
     @Transactional
@@ -111,20 +99,12 @@ public class DefaultSmsSender
     public String sendMessage( OutboundSms sms )
         throws SmsServiceException
     {
-        // String message = null;
-        if ( !transportService.isEnabled() )
+        if ( transportService == null || !transportService.isEnabled() )
         {
             throw new SmsServiceNotEnabledException();
         }
 
-        if ( transportService != null )
-        {
-            return transportService.sendMessage( sms, transportService.getDefaultGateway() );
-        }
-        else
-        {
-            return "outboundsms_saved";
-        }
+        return transportService.sendMessage( sms, transportService.getDefaultGateway() );
     }
 
     @Transactional
@@ -132,19 +112,14 @@ public class DefaultSmsSender
     public String sendMessage( String message, String phoneNumber )
         throws SmsServiceException
     {
-        if ( !transportService.isEnabled() )
+        if ( transportService == null || !transportService.isEnabled() )
         {
             throw new SmsServiceNotEnabledException();
         }
 
-        if ( transportService != null )
-        {
-            message = createMessage( null, message, currentUserService.getCurrentUser() );
-            OutboundSms sms = new OutboundSms( message, phoneNumber );
-            return sendMessage( sms );
-        }
-
-        return "outboundsms_saved";
+        message = createMessage( null, message, currentUserService.getCurrentUser() );
+        OutboundSms sms = new OutboundSms( message, phoneNumber );
+        return sendMessage( sms );
     }
 
     @Transactional
@@ -189,7 +164,7 @@ public class DefaultSmsSender
 
             Set<String> phoneNumbers = null;
 
-            if ( transportService != null || transportService.isEnabled() )
+            if ( transportService != null && transportService.isEnabled() )
             {
                 phoneNumbers = getRecipientsPhoneNumber( toSendList );
 
