@@ -28,13 +28,11 @@
 		<tr>
 			<th>#</th>
 			<th>$i18n.getString('date_scheduled')</th>
-			
-			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-			<th>$i18n.getString('full_name')</th>
-			#else
-			<th>$i18n.getString('system_identifier')</th>
+			#foreach( $programAttribute in $program.programPatientAttributes )
+				#if($programAttribute.displayedInList=='true')
+					 $programAttribute.patientAttribute.displayName
+				#end
 			#end
-			
 			<th>$i18n.getString( "events" )</th>
 			<th>$i18n.getString( "operations" )</th>
 		</tr>
@@ -58,20 +56,6 @@
 			</td>
 			
 			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-				#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
-					#set($value="")
-					#if($programIdentifierType.displayedInList=='true')
-						<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
-							#foreach( $identifier in $patient.identifiers)
-								#if($!identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
-									#set($value=$identifier.identifier)
-								#end
-							#end 
-						$encoder.htmlEncode($value)
-					</td>
-					#end
-				#end
-
 				#foreach( $programAttribute in $program.programPatientAttributes )
 					#if($programAttribute.displayedInList=='true')
 						<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">

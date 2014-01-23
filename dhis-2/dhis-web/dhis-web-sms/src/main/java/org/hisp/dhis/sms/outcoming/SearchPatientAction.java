@@ -39,9 +39,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,13 +91,6 @@ public class SearchPatientAction
         this.listAll = listAll;
     }
 
-    private List<Integer> programIds;
-
-    public void setProgramIds( List<Integer> programIds )
-    {
-        this.programIds = programIds;
-    }
-
     public Collection<Patient> getPatients()
     {
         return patients;
@@ -117,13 +108,6 @@ public class SearchPatientAction
     public Map<Integer, String> getMapPatientOrgunit()
     {
         return mapPatientOrgunit;
-    }
-
-    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
-
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
     }
 
     // -------------------------------------------------------------------------
@@ -157,23 +141,14 @@ public class SearchPatientAction
 
             total = patientService.countSearchPatients( searchTexts, orgunits, null, ProgramInstance.STATUS_ACTIVE );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, orgunits, null, null, null,
-                ProgramInstance.STATUS_ACTIVE, paging.getStartPos(), paging.getPageSize() );
+            patients = patientService.searchPatients( searchTexts, orgunits, null, null, ProgramInstance.STATUS_ACTIVE,
+                paging.getStartPos(), paging.getPageSize() );
 
             if ( !searchBySelectedOrgunit )
             {
                 for ( Patient patient : patients )
                 {
                     mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
-                }
-            }
-
-            if ( programIds != null )
-            {
-                for ( Integer programId : programIds )
-                {
-                    Program program = programService.getProgram( programId );
-                    identifierTypes.addAll( program.getIdentifierTypes() );
                 }
             }
         }

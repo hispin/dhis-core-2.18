@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.program.Program;
@@ -120,13 +119,6 @@ public class GetPatientReminderAction
         return attributes;
     }
 
-    public List<PatientIdentifierType> identifierTypes;
-
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -142,9 +134,7 @@ public class GetPatientReminderAction
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
         attributes = new ArrayList<PatientAttribute>( program.getAttributes() );
-
-        identifierTypes = new ArrayList<PatientIdentifierType>( program.getIdentifierTypes() );
-
+        
         return SUCCESS;
     }
 }

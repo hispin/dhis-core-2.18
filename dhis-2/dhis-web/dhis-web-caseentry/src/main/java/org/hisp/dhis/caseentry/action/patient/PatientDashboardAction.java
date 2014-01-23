@@ -34,14 +34,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAudit;
 import org.hisp.dhis.patient.PatientAuditService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -89,8 +86,6 @@ public class PatientDashboardAction
     private String patientId;
 
     private Patient patient;
-
-    private Set<PatientIdentifier> identifiers;
 
     private Collection<PatientAttributeValue> attributeValues;
 
@@ -175,11 +170,6 @@ public class PatientDashboardAction
         return patient;
     }
 
-    public Set<PatientIdentifier> getIdentifiers()
-    {
-        return identifiers;
-    }
-
     public Collection<PatientAttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -237,24 +227,6 @@ public class PatientDashboardAction
             }
         }
 
-        // ---------------------------------------------------------------------
-        // Get patient-identifiers
-        // ---------------------------------------------------------------------
-
-        Collection<PatientIdentifier> _identifiers = patient.getIdentifiers();
-        identifiers = new HashSet<PatientIdentifier>();
-
-        for ( Program program : programs )
-        {
-            Collection<PatientIdentifierType> identifierTypes = program.getIdentifierTypes();
-            for ( PatientIdentifier identifier : _identifiers )
-            {
-                if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
-                {
-                    identifiers.add( identifier );
-                }
-            }
-        }
         // ---------------------------------------------------------------------
         // Get program enrollment
         // ---------------------------------------------------------------------

@@ -36,8 +36,6 @@ import java.util.List;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -65,13 +63,6 @@ public class ShowAddProgramFormAction
         this.programService = programService;
     }
 
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-
     private PatientAttributeService patientAttributeService;
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
@@ -96,13 +87,6 @@ public class ShowAddProgramFormAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
-    private Collection<PatientIdentifierType> availableIdentifierTypes;
-
-    public Collection<PatientIdentifierType> getAvailableIdentifierTypes()
-    {
-        return availableIdentifierTypes;
-    }
 
     private Collection<PatientAttribute> availableAttributes;
 
@@ -143,7 +127,6 @@ public class ShowAddProgramFormAction
         Collections.sort( programs, IdentifiableObjectNameComparator.INSTANCE );
 
         availableAttributes = patientAttributeService.getAllPatientAttributes();
-        availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
 
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 

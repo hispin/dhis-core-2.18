@@ -40,6 +40,15 @@
     <property name="sortOrderInVisitSchedule" />
     
     <property name="displayInListNoProgram" />
+    
+    <property name="unique" column="uniquefield"/>
+    
+    <property name="orgunitScope" />
 
+    <property name="programScope" />
+    
+    <many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
+      	foreign-key="fk_patientidentifiertype_periodtypeid" />
+	
   </class>
 </hibernate-mapping>

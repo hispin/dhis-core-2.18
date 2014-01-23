@@ -35,8 +35,6 @@ import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.program.Program;
@@ -70,13 +68,6 @@ public class ViewPatientRegistrationFormAction
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
-    }
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
     private PatientRegistrationFormService patientRegistrationFormService;
@@ -116,13 +107,6 @@ public class ViewPatientRegistrationFormAction
     public Collection<PatientAttribute> getAttributes()
     {
         return attributes;
-    }
-
-    private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
-
-    public Collection<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
     }
 
     private PatientRegistrationForm registrationForm;
@@ -168,19 +152,16 @@ public class ViewPatientRegistrationFormAction
         {
             registrationForm = patientRegistrationFormService.getCommonPatientRegistrationForm();
 
-            identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
             attributes = patientAttributeService.getAllPatientAttributes();
-            
+
             for ( Program program : programs )
             {
-                identifierTypes.removeAll( program.getIdentifierTypes()  );
                 attributes.removeAll( program.getAttributes() );
             }
         }
         else
         {
             program = programService.getProgram( programId );
-            identifierTypes = program.getIdentifierTypes();
             attributes = program.getAttributes();
             registrationForm = patientRegistrationFormService.getPatientRegistrationForm( program );
         }

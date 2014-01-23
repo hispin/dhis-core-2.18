@@ -49,8 +49,6 @@ public interface PersonService
 
     Persons getPersons();
 
-    Person getPerson( Identifier identifier );
-
     Persons getPersons( OrganisationUnit organisationUnit );
 
     Persons getPersons( Program program );

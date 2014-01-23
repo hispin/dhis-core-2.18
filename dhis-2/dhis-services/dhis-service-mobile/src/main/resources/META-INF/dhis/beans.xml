@@ -22,7 +22,6 @@
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
     <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="patientMobileSettingService" ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
-    <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
     <property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
     <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
     <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
@@ -30,7 +29,6 @@
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-    <property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
     <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
     <property name="relationshipTypeService" ref="org.hisp.dhis.relationship.RelationshipTypeService" />
     <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />

@@ -41,7 +41,6 @@ import org.hisp.dhis.api.mobile.model.LWUITmodel.Program;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramStage;
 import org.hisp.dhis.api.mobile.model.LWUITmodel.Relationship;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.PatientIdentifierType;
 
 /**
  * Provides services for activity reporting
@@ -51,9 +50,6 @@ public interface ActivityReportingService
     public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString );
 
     public ActivityPlan getAllActivityPlan( OrganisationUnit unit, String localeString );
-
-    public ActivityPlan getActivitiesByIdentifier( String keyword )
-        throws NotAllowedException;
 
     public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue, Integer programStageSectionId )
         throws NotAllowedException;
@@ -73,15 +69,9 @@ public interface ActivityReportingService
     public Patient enrollProgram( String enrollInfo, Date incidentDate )
         throws NotAllowedException;
 
-    public Collection<PatientIdentifierType> getIdentifierTypes();
-
     public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts( String programId );
 
-    public Collection<PatientIdentifierType> getIdentifiers( String programId );
-
     public Collection<PatientAttribute> getAttsForMobile();
-
-    public Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> getIdentifiersForMobile( String programId );
 
     public Collection<PatientAttribute> getPatientAttributesForMobile( String programId );
 
@@ -105,7 +95,7 @@ public interface ActivityReportingService
 
     public Notification handleLostToFollowUp( LostEvent lostEvent )
         throws NotAllowedException;
-    
+
     public Patient generateRepeatableEvent( int orgUnitId, String eventInfo )
         throws NotAllowedException;
 

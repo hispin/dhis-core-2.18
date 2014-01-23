@@ -31,9 +31,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,8 +40,6 @@ import com.opensymphony.xwork2.Action;
 public class SavePatientAttributeInListNoProgramAction
     implements Action
 {
-    private final String PREFIX_IDENTYFITER_TYPE = "iden";
-
     private final String PREFIX_ATTRIBUTE = "attr";
 
     // -------------------------------------------------------------------------
@@ -57,9 +52,6 @@ public class SavePatientAttributeInListNoProgramAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-
-    @Autowired
-    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -79,11 +71,8 @@ public class SavePatientAttributeInListNoProgramAction
     public String execute()
         throws Exception
     {
-        Collection<PatientIdentifierType> patientIdentifierTypes = patientIdentifierTypeService
-            .getAllPatientIdentifierTypes();
         Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        int indexIden = 1;
         int indexAttr = 1;
         if ( selectedAttributeIds != null )
         {
@@ -91,20 +80,7 @@ public class SavePatientAttributeInListNoProgramAction
             {
                 // Identifier type
                 String[] id = objectId.split( "_" );
-                if ( id[0].equals( PREFIX_IDENTYFITER_TYPE ) )
-                {
-
-                    PatientIdentifierType identifierType = patientIdentifierTypeService
-                        .getPatientIdentifierType( Integer.parseInt( id[1] ) );
-                    identifierType.setDisplayInListNoProgram( true );
-                    identifierType.setSortOrderInListNoProgram( indexIden );
-                    patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
-                    indexIden++;
-                    patientIdentifierTypes.remove( identifierType );
-                }
-
-                // Attribute
-                else if ( id[0].equals( PREFIX_ATTRIBUTE ) )
+                if ( id[0].equals( PREFIX_ATTRIBUTE ) )
                 {
                     PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
                         .parseInt( id[1] ) );
@@ -115,14 +91,6 @@ public class SavePatientAttributeInListNoProgramAction
                     patientAttributes.remove( patientAttribute );
                 }
             }
-        }
-        
-        // Set DisplayInListNoProgram=false for other ID type
-        for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
-        {
-            patientIdentifierType.setDisplayInListNoProgram( false );
-            patientIdentifierType.setSortOrderInListNoProgram( 0 );
-            patientIdentifierTypeService.updatePatientIdentifierType( patientIdentifierType );
         }
 
         // Set DisplayInListNoProgram=false for other attribute type

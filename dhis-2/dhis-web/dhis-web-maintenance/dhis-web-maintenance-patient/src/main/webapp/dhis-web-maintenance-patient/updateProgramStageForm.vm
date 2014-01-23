@@ -321,10 +321,6 @@
 							<option value="{due-date}">$i18n.getString("due_date")</option>
 							<option value="{days-since-due-date}">$i18n.getString("days_since_due_date")</option>
 							<option value="{orgunit-name}">$i18n.getString("orgunit_name")</option>
-							#foreach($programPatientIdentifierType in $program.programPatientIdentifierTypes)
-								#set($identifierType = $programPatientIdentifierType.patientIdentifierType)
-								<option value={identifierid=$identifierType.uid}>$identifierType.displayName</option>
-							#end
 							#foreach($programPatientAttribute in $program.programPatientAttributes)
 								<option value={attributeid=$programPatientAttribute.patientAttribute.uid}>$programPatientAttribute.patientAttribute.displayName</option>
 							#end
@@ -395,10 +391,6 @@
 	var i18n_both = '$encoder.jsEscape( $i18n.getString( "both" ) , "'")';
 	
 	var idenAttrOptions = "";
-	#foreach($programPatientIdentifierType in $programStage.program.programPatientIdentifierTypes)
-		#set($identifierType = $programPatientIdentifierType.patientIdentifierType)
-		idenAttrOptions+="<option value={identifierid=$identifierType.uid}>$identifierType.displayName</option>";
-	#end
 	#foreach($programPatientAttribute in $programStage.program.programPatientAttributes)
 		idenAttrOptions+="<option value={attributeid=$programPatientAttribute.patientAttribute.uid}>$programPatientAttribute.patientAttribute.displayName</option>";
 	#end

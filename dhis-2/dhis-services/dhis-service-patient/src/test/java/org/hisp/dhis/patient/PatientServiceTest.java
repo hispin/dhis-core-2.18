@@ -79,9 +79,6 @@ public class PatientServiceTest
     private PatientAttributeService patientAttributeService;
 
     @Autowired
-    private PatientIdentifierTypeService identifierTypeService;
-
-    @Autowired
     private PatientAttributeValueService patientAttributeValueService;
 
     @Autowired
@@ -121,17 +118,14 @@ public class PatientServiceTest
         OrganisationUnit organisationUnitB = createOrganisationUnit( 'B' );
         organisationUnitService.addOrganisationUnit( organisationUnitB );
 
-        PatientIdentifierType patientIdentifierType = createPatientIdentifierType( 'A' );
-        identifierTypeService.savePatientIdentifierType( patientIdentifierType );
-
         patientAttribute = createPatientAttribute( 'A' );
         attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
 
         patientA1 = createPatient( 'A', organisationUnit );
         patientA2 = createPatient( 'A', organisationUnitB );
-        patientA3 = createPatient( 'A', organisationUnit, patientIdentifierType );
+        patientA3 = createPatient( 'A', organisationUnit, patientAttribute );
         patientB1 = createPatient( 'B', organisationUnit );
-        patientB2 = createPatient( 'B', organisationUnit, patientIdentifierType );
+        patientB2 = createPatient( 'B', organisationUnit, patientAttribute );
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnit );
         programB = createProgram( 'B', new HashSet<ProgramStage>(), organisationUnit );
@@ -276,7 +270,7 @@ public class PatientServiceTest
 
         patientService.createPatient( patientA3, null, null, patientAttributeValues );
 
-        Collection<Patient> patients = patientService.getPatient( null, attributeId, "AttributeA" );
+        Collection<Patient> patients = patientService.getPatient( attributeId, "AttributeA" );
 
         assertEquals( 1, patients.size() );
         assertTrue( patients.contains( patientA3 ) );
@@ -424,7 +418,7 @@ public class PatientServiceTest
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
         orgunits.add( organisationUnit );
 
-        Collection<Patient> patients = patientService.searchPatients( searchKeys, orgunits, null, null, null,
+        Collection<Patient> patients = patientService.searchPatients( searchKeys, orgunits, null, null,
             ProgramStageInstance.ACTIVE_STATUS, null, null );
 
         assertEquals( 1, patients.size() );
@@ -450,7 +444,7 @@ public class PatientServiceTest
         programInstanceService.enrollPatient( patientB1, programA, date, date, organisationUnit, null );
 
         List<String> searchKeys = new ArrayList<String>();
-       searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
+        searchKeys.add( Patient.PREFIX_PATIENT_ATTRIBUTE + Patient.SEARCH_SAPERATE + attributeId
             + Patient.SEARCH_SAPERATE + "a" );
         searchKeys.add( Patient.PREFIX_PROGRAM + Patient.SEARCH_SAPERATE + idA );
 

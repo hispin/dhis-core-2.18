@@ -29,17 +29,6 @@
 
 		<input type="text" name="patientFullName" value="$!previousValues.get("fullName")" />
 		
-		#foreach($patientIdentifierType in $patientIdentifierTypes)
-			#if(! $patientIdentifierType.program)
-				#set($key = "IDT${patientIdentifierType.id}")
-				<label>$patientIdentifierType.getName()#if( $patientIdentifierType.isMandatory() )*#end </label>
-				#if( $validationMap.get( $key ) )
-		           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( $key ))</span>
-		     	#end
-				<input type="text" name="$key" value="$!previousValues.get($key)" />
-			#end
-		#end
-
 		#foreach($patientAttribute in $patientAttributes)
 			#if(! $patientAttribute.program)
 				#set($key = "AT${patientAttribute.id}")

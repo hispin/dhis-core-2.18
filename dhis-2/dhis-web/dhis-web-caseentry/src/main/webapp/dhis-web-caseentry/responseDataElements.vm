@@ -5,18 +5,6 @@
 
 { "items": [
 	#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) && $program!='' )
-		#foreach( $iden in $identifierTypes )
-		{
-			"id": "$iden.uid",
-			"name": "$encoder.xmlEncode(${iden.displayName} )",
-			"valueType": #if( $iden.optionSet )
-							"list"
-						 #else
-							"${iden.type}"
-						 #end
-		},
-		#end
-		
 		#foreach( $attr in $patientAttributes )
 		{
 			"id": "$attr.uid",

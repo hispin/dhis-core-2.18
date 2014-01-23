@@ -144,14 +144,22 @@
 	</bean>
 
 	<bean
+		id="org.hisp.dhis.patient.action.patientattribute.ShowAddPatientAttributeFormAction"
+		class="org.hisp.dhis.patient.action.patientattribute.ShowAddPatientAttributeFormAction"
+		scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+	
+	<bean
 		id="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeAction"
 		class="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeAction"
 		scope="prototype">
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
-
+	
 	<bean
 		id="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeVisitScheduleFormAction"
 		class="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeVisitScheduleFormAction"
@@ -191,8 +199,6 @@
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="relationshipTypeService"
@@ -233,8 +239,6 @@
 		class="org.hisp.dhis.patient.action.program.ShowAddProgramFormAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
@@ -247,8 +251,6 @@
 		class="org.hisp.dhis.patient.action.program.ShowUpdateProgramFormAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
@@ -260,8 +262,6 @@
 		class="org.hisp.dhis.patient.action.program.UpdateProgramAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="relationshipTypeService"
@@ -601,9 +601,6 @@
 		<property name="patientAttributeService">
 			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
 		</property>
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
 		<property name="patientRegistrationFormService">
 			<ref bean="org.hisp.dhis.patient.PatientRegistrationFormService" />
 		</property>
@@ -685,77 +682,7 @@
 		<property name="patientAttributeGroupService"
 			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
 	</bean>
-
-	<!-- Patient Identifier Type -->
-
-	<bean
-		id="org.hisp.dhis.patient.action.patientidentifiertype.ShowAddPatientIdentifierTypeFormAction"
-		class="org.hisp.dhis.patient.action.patientidentifiertype.ShowAddPatientIdentifierTypeFormAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction"
-		class="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction"
-		scope="prototype">
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction"
-		class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction"
-		scope="prototype">
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction"
-		class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction"
-		scope="prototype">
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patientidentifiertype.RemovePatientIdentifierTypeAction"
-		class="org.hisp.dhis.patient.action.patientidentifiertype.RemovePatientIdentifierTypeAction"
-		scope="prototype">
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-	<bean
-		id="org.hisp.dhis.patient.action.patientidentifiertype.UpdatePatientIdentifierTypeAction"
-		class="org.hisp.dhis.patient.action.patientidentifiertype.UpdatePatientIdentifierTypeAction"
-		scope="prototype">
-	</bean>
-	<bean
-		id="org.hisp.dhis.patient.action.patientidentifiertype.ValidatePatientIdentifierTypeAction"
-		class="org.hisp.dhis.patient.action.patientidentifiertype.ValidatePatientIdentifierTypeAction"
-		scope="prototype">
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.patientidentifiertype.ShowUpdatePatientIdentifierTypeForm"
-		class="org.hisp.dhis.patient.action.patientidentifiertype.ShowUpdatePatientIdentifierTypeForm"
-		scope="prototype">
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
-		<property name="programService">
-			<ref bean="org.hisp.dhis.program.ProgramService" />
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService" />
-		</property>
-	</bean>
-
+	
 	<!-- Case Aggregation Mapping -->
 
 	<bean

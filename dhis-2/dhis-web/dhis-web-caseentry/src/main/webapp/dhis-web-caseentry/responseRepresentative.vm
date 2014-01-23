@@ -2,13 +2,12 @@
 <patient>
   <id>$patient.id</id>  
   <relationshipTypeId>$relationshipTypeId</relationshipTypeId>
-  #foreach( $patientIdentifier in $patient.identifiers )
-  	#if( $patientIdentifier.identifierType && $patientIdentifier.identifierType.related )
+  #foreach( $attributeValue in $patient.attributeValues )
+  	#if( $attributeValue.patientAttribute )
 	     <identifier>    
-	     	<identifierTypeId>$patientIdentifier.identifierType.id</identifierTypeId>    
-	        <identifierText>$encoder.xmlEncode( $patientIdentifier.identifier )</identifierText>
+	     	<identifierTypeId>$attributeValue.patientAttribute.id</identifierTypeId>    
+	        <identifierText>$encoder.xmlEncode( $attributeValue.value )</identifierText>
 	     </identifier>
      #end
   #end
 </patient>
-

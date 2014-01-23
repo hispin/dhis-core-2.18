@@ -34,11 +34,8 @@ import java.util.List;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramPatientAttribute;
-import org.hisp.dhis.program.ProgramPatientIdentifierType;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
@@ -61,13 +58,6 @@ public class UpdateProgramAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
     private PatientAttributeService patientAttributeService;
@@ -317,11 +307,6 @@ public class UpdateProgramAction
         program.setRelationshipFromA( relationshipFromA );
         program.setRelationshipText( relationshipText );
 
-        if ( program.getProgramPatientIdentifierTypes() != null )
-        {
-            program.getProgramPatientIdentifierTypes().clear();
-        }
-
         if ( program.getProgramPatientAttributes() != null )
         {
             program.getProgramPatientAttributes().clear();
@@ -333,15 +318,7 @@ public class UpdateProgramAction
         {
             String[] ids = selectedPropertyId.split( "_" );
 
-            if ( ids[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
-            {
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
-                    .parseInt( ids[1] ) );
-                ProgramPatientIdentifierType programPatientIdentifierType = new ProgramPatientIdentifierType(
-                    identifierType, index + 1, personDisplayNames.get( index ) );
-                program.getProgramPatientIdentifierTypes().add( programPatientIdentifierType );
-            }
-            else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
+            if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
             {
                 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
                     .parseInt( ids[1] ) );

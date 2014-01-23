@@ -728,18 +728,6 @@
 			<param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
 		</action>
 
-		<action name="validatePatientIdentifier"
-			class="org.hisp.dhis.caseentry.action.patient.ValidatePatientIdentifierAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-
 		<!-- Relationship -->
 
 		<action name="getPartner"

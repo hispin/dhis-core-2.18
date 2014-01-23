@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -86,12 +85,6 @@ public class LoadDataElementsAction
         this.sectionId = sectionId;
     }
 
-    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
-
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
 
     private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
@@ -132,7 +125,6 @@ public class LoadDataElementsAction
 
         if ( program != null && program.isRegistration() )
         {
-            identifierTypes = program.getIdentifierTypes();
             patientAttributes = program.getAttributes();
         }
 

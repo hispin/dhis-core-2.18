@@ -35,21 +35,12 @@
       <table class="listTable" id="patientList" width='100%'>               
           <col width="30"/>
 			#if($program)
-				#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
-					#if($programIdentifierType.displayedInList=='true')
-						<col/>
-					#end
-				#end
-
 				#foreach( $programAttribute in $program.programPatientAttributes )
 					#if($programAttribute.displayedInList=='true')
 						<col/>
 					#end
 				#end
 			#else
-				#foreach( $identifierType in $identifierTypes)
-					<col/>
-				#end
 				#foreach( $attribute in $attributes)
 					<col/>
 				#end
@@ -63,21 +54,12 @@
 			<tr>
 				<th>#</th>
 				#if($program)
-					#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
-						#if($programIdentifierType.displayedInList=='true')
-							<th>$encoder.htmlEncode($programIdentifierType.patientIdentifierType.displayName)</th>
-						#end
-					#end
-
 					#foreach( $programAttribute in $program.programPatientAttributes )
 						#if($programAttribute.displayedInList=='true')
 							<th id="patientAttributeName">$encoder.htmlEncode($programAttribute.patientAttribute.displayName)</th>
 						#end
 					#end
 				#else
-					#foreach( $identifierType in $identifierTypes)
-						<th>$encoder.htmlEncode($identifierType.displayName)</th>
-					#end
 					#foreach( $attribute in $attributes)
 						<th id="patientAttributeName">$encoder.htmlEncode($attribute.displayName)</th>
 					#end
@@ -100,20 +82,6 @@
 					$nr
 				</td>
 				#if($program)
-					#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
-						#set($value="")
-						#if($programIdentifierType.displayedInList=='true')
-							<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
-								#foreach( $identifier in $patient.identifiers)
-									#if($!identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
-										#set($value=$identifier.identifier)
-									#end
-								#end 
-							<a>$!encoder.htmlEncode($value)</a>
-						</td>
-						#end
-					#end
-					
 					#foreach( $programAttribute in $program.programPatientAttributes )
 						#set($value="")
 						#if($programAttribute.displayedInList=='true')
@@ -133,18 +101,6 @@
 						#end
 					#end
 				#else
-					#foreach( $identifierType in $identifierTypes)
-						#set($value="")
-						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">
-							#foreach( $identifier in $patient.identifiers)
-								#if($!identifier.identifierType.id==$identifierType.id)
-									#set($value=$identifier.identifier)
-								#end
-							#end 
-							<a>$encoder.htmlEncode($value)</a>
-						</td>
-					#end
-					
 					#foreach( $patientAttribute in $attributes)
 						#set($value="")
 						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.uid' )">

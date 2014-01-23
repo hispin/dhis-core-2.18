@@ -3,18 +3,6 @@
 #foreach( $patient  in $patients )
 <patient>
   <id>$patient.id</id>  
-  #foreach( $identifier in $patient.identifiers )
-  	#if( $identifier.identifierType )
-	    <identifier>
-	    	<id>$identifier.identifierType.id</id>
-	        <name>$!encoder.xmlEncode( $identifier.identifierType.displayName )</name>
-	        <value>$!encoder.xmlEncode( $identifier.identifier )</value>
-	    </identifier>
-    #else
-    	<systemIdentifier>$!encoder.xmlEncode( $identifier.identifier )</systemIdentifier>
-    #end
-  #end  
-  
   #foreach( $attribute in $patient.attributes )
     #set( $attributeValue = "" )
     #set( $key = $patient.id + "_" + $attribute.id )

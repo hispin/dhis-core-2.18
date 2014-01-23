@@ -10,32 +10,16 @@
 	</tr>
 	#end
 	
-	<tr><td>&nbsp;</td></tr>
-	<tr>
-		<td><label class="bold">$i18n.getString( "identifiers" )</td>
-	</td> 
-	#foreach( $patientIdentifier in $partner.identifiers )
-	<tr>
-		<td>
-			#if($!patientIdentifier.identifierType)  $!patientIdentifier.identifierType.displayName
-			#else $i18n.getString( "patient_system_id") #end 
-		</td>
-		<td>: $patientIdentifier.identifier</td>
-	</tr>
-	#end
-	
-	#if($partner.attributes.size() > 0 )
+	#if( $partner.attributeValues > 0)
 		<tr><td>&nbsp;</td></tr>
 		<tr>
 			<td><label class="bold">$i18n.getString( "attributes" )</label></td>
 		</tr>
-		#foreach( $attribute in $partner.attributes )
-			#if( $patientAttributeValueMap.get( $attribute.id ) != " " )
-			<tr>
-				<td>$attribute.displayName</td>
-				<td>: $!encoder.htmlEncode($patientAttributeValueMap.get( $attribute.id ))</td>
-			</tr>
-			#end
+		#foreach( $attributeValue in $partner.attributeValues )
+		<tr>
+			<td>$attributeValue.patientAttribute.displayName</td>
+			<td>: $attributeValue.value</td>
+		</tr>
 		#end
 	#end
 	

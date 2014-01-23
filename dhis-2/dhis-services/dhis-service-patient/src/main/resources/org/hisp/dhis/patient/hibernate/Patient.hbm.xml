@@ -11,11 +11,6 @@
       <generator class="native" />
     </id>
     &identifiableProperties;
-
-    <set name="identifiers" inverse="true">
-      <key column="patientid" />
-      <one-to-many class="org.hisp.dhis.patient.PatientIdentifier" />
-    </set>
     
     <set name="attributeValues" inverse="true">
       <key column="patientid" />

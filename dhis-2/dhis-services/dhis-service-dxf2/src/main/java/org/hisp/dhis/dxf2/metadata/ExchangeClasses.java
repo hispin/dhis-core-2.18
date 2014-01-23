@@ -28,6 +28,12 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseDimensionalObject;
@@ -65,7 +71,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -77,12 +82,6 @@ import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -165,7 +164,6 @@ final public class ExchangeClasses
         allExportClasses.put( Program.class, "programs" );
         allExportClasses.put( ProgramStage.class, "programStages" );
         allExportClasses.put( RelationshipType.class, "relationshipTypes" );
-        allExportClasses.put( PatientIdentifierType.class, "personIdentifierTypes" );
         allExportClasses.put( PatientAttribute.class, "personAttributeTypes" );
         allExportClasses.put( PatientAttributeGroup.class, "personAttributeGroups" );
 
@@ -188,13 +186,11 @@ final public class ExchangeClasses
         exportClasses.remove( Program.class );
         exportClasses.remove( ProgramStage.class );
         exportClasses.remove( RelationshipType.class );
-        exportClasses.remove( PatientIdentifierType.class );
         exportClasses.remove( PatientAttribute.class );
         exportClasses.remove( PatientAttributeGroup.class );
         importClasses.remove( Program.class );
         importClasses.remove( ProgramStage.class );
         importClasses.remove( RelationshipType.class );
-        importClasses.remove( PatientIdentifierType.class );
         importClasses.remove( PatientAttribute.class );
         importClasses.remove( PatientAttributeGroup.class );
 

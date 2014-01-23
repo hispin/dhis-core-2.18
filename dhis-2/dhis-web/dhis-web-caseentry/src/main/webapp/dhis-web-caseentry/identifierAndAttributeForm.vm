@@ -1,15 +1,4 @@
 
-	
-#foreach ($prorgamIdentifierType in $program.programIdentifierTypes) 
-	#set( $identifierType = $prorgamIdentifierType.patientIdentifierType )
-	<tr>
-		<td class='text-column'><label>$identifierType.displayName #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
-		<td class="input-column">
-			<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" />
-		</td>
-	</tr>
-#end
-
 #foreach($programAttribute in $program.programPatientAttributes )
 	#set( $attribute = $programAttribute.patientAttribute )
 	#set( $attributeValue = '')

@@ -24,10 +24,10 @@
                 <tr #alternate( $mark )>                
 					<td>
 						#set( $value="")
-						#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
-							#foreach( $identifier in $patient.identifiers)
-								#if($!identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
-									#set( $value= $value + $pIdentifier.identifier + '&#13;&#10;' )
+						#foreach( $programPatientAttribute in $program.programPatientAttributes)
+							#foreach( $attributeValue in $patient.attributeValues)
+								#if($!attributeValue.patientAttribute.id==$programPatientAttribute.patientAttribute.id)
+									#set( $value= $value + $attributeValue.value + '&#13;&#10;' )
 								#end
 							#end 
 						#end

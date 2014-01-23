@@ -53,20 +53,8 @@
 					<td>
 						<select id="searchType" name="searchType" onclick="toggleSearchType(this)" style='width:18em'>
 							<option value="">[$i18n.getString( "please_select" )]</option>        
-							<option value="identifier">$i18n.getString("identifier")</option>
 							<option value="attribute">$i18n.getString("attribute")</option>
 							<option value="name">$i18n.getString("name")</option>		
-						</select>
-					</td>
-				</tr>
-				<tr id="rowIdentifier" style="display: none" >
-					<td>$i18n.getString("identifier_type")</td>
-					<td>
-						<select name="identifierTypeId" id="identifierTypeId" style='width:18em' >
-							<option value="">[$i18n.getString( "please_select" )]</option>       
-							#foreach($identifierType in $identifierTypes)
-								<option value="$identifierType.id">$identifierType.displayName</option>
-							#end
 						</select>
 					</td>
 				</tr>

@@ -47,9 +47,7 @@ public interface PatientRegistrationFormService
     final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?/>)", Pattern.DOTALL );
 
     final Pattern FIXED_ATTRIBUTE_PATTERN = Pattern.compile( "fixedattributeid=\"(\\w+)\"" );
-
-    final Pattern IDENTIFIER_PATTERN = Pattern.compile( "identifierid=\"(\\w+)\"" );
-
+    
     final Pattern DYNAMIC_ATTRIBUTE_PATTERN = Pattern.compile( "attributeid=\"(\\w+)\"" );
 
     final Pattern PROGRAM_PATTERN = Pattern.compile( "programid=\"(\\w+)\"" );

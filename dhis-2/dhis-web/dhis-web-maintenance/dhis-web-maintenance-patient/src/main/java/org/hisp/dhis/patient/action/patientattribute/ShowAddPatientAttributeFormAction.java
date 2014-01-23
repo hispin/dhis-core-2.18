@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.patientidentifiertype;
+package org.hisp.dhis.patient.action.patientattribute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +38,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ ShowAddPatientIdentifierTypeFormAction.java Sep 16, 2013 9:26:58
- *          PM $
+ * @version $ ShowAddPatientAttributeFormAction.java Jan 23, 2014 3:01:44 PM $
  */
-public class ShowAddPatientIdentifierTypeFormAction
+public class ShowAddPatientAttributeFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -75,7 +74,7 @@ public class ShowAddPatientIdentifierTypeFormAction
         throws Exception
     {
         periodTypes = periodService.getAllPeriodTypes();
-        
+
         return SUCCESS;
     }
 

@@ -28,12 +28,6 @@ package org.hisp.dhis.api.mobile.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -41,8 +35,15 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType( XmlAccessType.FIELD )
 public class Beneficiary
     implements DataStreamSerializable
 {
@@ -57,15 +58,11 @@ public class Beneficiary
     @XmlAttribute
     private int age;
 
-    @XmlElementWrapper(name = "attributes")
-    @XmlElement(name = "attribute")
+    @XmlElementWrapper( name = "attributes" )
+    @XmlElement( name = "attribute" )
     private List<PatientAttribute> patientAttValues;
 
     private PatientAttribute groupAttribute;
-
-    @XmlElementWrapper(name = "identifiers")
-    @XmlElement(name = "identifier")
-    private List<PatientIdentifier> identifiers;
 
     private String gender;
 
@@ -74,16 +71,6 @@ public class Beneficiary
     private Date registrationDate;
 
     private Character dobType;
-
-    public List<PatientIdentifier> getIdentifiers()
-    {
-        return identifiers;
-    }
-
-    public void setIdentifiers( List<PatientIdentifier> identifiers )
-    {
-        this.identifiers = identifiers;
-    }
 
     public int getAge()
     {
@@ -259,13 +246,6 @@ public class Beneficiary
             dout.writeUTF( att.getName() + ":" + att.getValue() );
         }
 
-        // Write PatientIdentifier
-        dout.writeInt( identifiers.size() );
-        for ( PatientIdentifier each : identifiers )
-        {
-            each.serialize( dout );
-        }
-
         bout.flush();
         bout.writeTo( out );
     }
@@ -421,13 +401,6 @@ public class Beneficiary
             dout.writeUTF( att.getName() + ":" + att.getValue() );
         }
 
-        // Write PatientIdentifier
-        dout.writeInt( identifiers.size() );
-        for ( PatientIdentifier each : identifiers )
-        {
-            each.serializeVersion2_8( dout );
-        }
-
         bout.flush();
         bout.writeTo( out );
     }
@@ -503,12 +476,6 @@ public class Beneficiary
             dout.writeUTF( att.getName() + ":" + att.getValue() );
         }
 
-        // Write PatientIdentifier
-        dout.writeInt( identifiers.size() );
-        for ( PatientIdentifier each : identifiers )
-        {
-            each.serializeVersion2_9( dout );
-        }
     }
 
     @Override

@@ -71,8 +71,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAudit;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -544,24 +542,6 @@ public abstract class DeletionHandler
     }
 
     public void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
-    {
-    }
-
-    public String allowDeletePatientIdentifier( PatientIdentifier patientIdentifier )
-    {
-        return null;
-    }
-
-    public void deletePatientIdentifier( PatientIdentifier patientIdentifier )
-    {
-    }
-
-    public String allowDeletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
-    {
-        return null;
-    }
-
-    public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
     {
     }
 

@@ -43,11 +43,8 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.comparator.PatientAttributeSortOrderInListNoProgramComparator;
-import org.hisp.dhis.patient.comparator.PatientIdentifierTypeSortOrderInListNoProgramComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -85,9 +82,6 @@ public class SearchPatientAction
 
     @Autowired
     private PatientAttributeService patientAttributeService;
-
-    @Autowired
-    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     // -------------------------------------------------------------------------
     // Input/output
@@ -216,13 +210,6 @@ public class SearchPatientAction
         return attributes;
     }
 
-    private List<PatientIdentifierType> identifierTypes;
-
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -284,7 +271,7 @@ public class SearchPatientAction
 
             total = patientService.countSearchPatients( searchTexts, orgunits, null, statusEnrollment );
             this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, orgunits, null, null, null, statusEnrollment,
+            patients = patientService.searchPatients( searchTexts, orgunits, null, null, statusEnrollment,
                 paging.getStartPos(), paging.getPageSize() );
 
             if ( facilityLB != null && !facilityLB.isEmpty() )
@@ -304,10 +291,6 @@ public class SearchPatientAction
         {
             attributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributesDisplayed( true ) );
             Collections.sort( attributes, new PatientAttributeSortOrderInListNoProgramComparator() );
-
-            identifierTypes = new ArrayList<PatientIdentifierType>(
-                patientIdentifierTypeService.getPatientIdentifierTypeDisplayed(  true ) );
-            Collections.sort( identifierTypes, new PatientIdentifierTypeSortOrderInListNoProgramComparator() );
         }
 
         return SUCCESS;

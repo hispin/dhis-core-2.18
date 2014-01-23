@@ -80,19 +80,6 @@
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientIdentifierStore"
-		class="org.hisp.dhis.patient.hibernate.HibernatePatientIdentifierStore">
-		<property name="clazz" value="org.hisp.dhis.patient.PatientIdentifier" />
-		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.PatientIdentifierTypeStore"
-		class="org.hisp.dhis.patient.hibernate.HibernatePatientIdentifierTypeStore">
-		<property name="clazz" value="org.hisp.dhis.patient.PatientIdentifierType" />
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
 	<bean id="org.hisp.dhis.patient.PatientAttributeStore"
 		class="org.hisp.dhis.patient.hibernate.HibernatePatientAttributeStore">
 		<property name="clazz" value="org.hisp.dhis.patient.PatientAttribute" />
@@ -234,30 +221,14 @@
 
 	<bean id="org.hisp.dhis.patient.PatientService" class="org.hisp.dhis.patient.DefaultPatientService">
 		<property name="patientStore" ref="org.hisp.dhis.patient.PatientStore" />
-		<property name="patientIdentifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientIdentifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.PatientIdentifierService" class="org.hisp.dhis.patient.DefaultPatientIdentifierService">
-		<property name="patientIdentifierStore" ref="org.hisp.dhis.patient.PatientIdentifierStore" />
-	</bean>
-
-	<bean id="org.hisp.dhis.patient.PatientIdentifierTypeService"
-		class="org.hisp.dhis.patient.DefaultPatientIdentifierTypeService">
-		<property name="patientIdentifierTypeStore"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeStore" />
-		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientAttributeService" class="org.hisp.dhis.patient.DefaultPatientAttributeService">
@@ -359,10 +330,6 @@
 		class="org.hisp.dhis.patient.DefaultPatientRegistrationFormService">
 		<property name="formStore"
 			ref="org.hisp.dhis.patient.PatientRegistrationFormStore" />
-		<property name="identifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="identifierService"
-			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="attributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="attributeValueService"
@@ -416,12 +383,6 @@
 	</bean>
 
     <!-- DeletionHandlers -->
-
-    <bean id="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"
-        class="org.hisp.dhis.patient.PatientIdentifierDeletionHandler">
-        <property name="patientIdentifierService"
-            ref="org.hisp.dhis.patient.PatientIdentifierService" />
-    </bean>
 
     <bean id="org.hisp.dhis.program.ProgramInstanceDeletionHandler"
         class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
@@ -510,7 +471,6 @@
 				<list>
 					<ref local="org.hisp.dhis.patient.PatientDeletionHandler" />
 					<ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
-					<ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientAuditDeletionHandler" />
 					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
@@ -541,12 +501,6 @@
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.patient.PatientAttributeService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.patient.PatientIdentifierService.delete*(..) )"
-				method="intercept" />
-			<aop:before
-				pointcut="execution( * org.hisp.dhis.patient.PatientIdentifierTypeService.delete*(..) )"
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.relationship.RelationshipService.delete*(..) )"

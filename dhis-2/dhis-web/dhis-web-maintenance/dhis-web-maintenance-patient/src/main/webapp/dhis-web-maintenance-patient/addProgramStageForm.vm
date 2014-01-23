@@ -277,10 +277,6 @@
 	#end
 	
 	var idenAttrOptions = "";
-	#foreach($programPatientIdentifierType in $program.programPatientIdentifierTypes)
-		#set($identifierType = $programPatientIdentifierType.patientIdentifierType)
-		idenAttrOptions+="<option value={identifierid=$identifierType.uid}>$identifierType.displayName</option>";
-	#end
 	#foreach($programPatientAttribute in $program.programPatientAttributes)
 		idenAttrOptions+="<option value={attributeid=$programPatientAttribute.patientAttribute.uid}>$programPatientAttribute.patientAttribute.displayName</option>";
 	#end

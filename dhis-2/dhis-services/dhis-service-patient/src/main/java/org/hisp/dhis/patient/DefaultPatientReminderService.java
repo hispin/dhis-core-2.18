@@ -52,12 +52,9 @@ import org.hisp.dhis.user.UserService;
 public class DefaultPatientReminderService
     implements PatientReminderService
 {
-
-    private final String IDENTIFIER = "identifierid";
-
     private final String ATTRIBUTE = "attributeid";
 
-    private final Pattern ATTRIBUTE_PATTERN = Pattern.compile( "\\{(" + IDENTIFIER + "|" + ATTRIBUTE + ")=(\\w+)\\}" );
+    private final Pattern ATTRIBUTE_PATTERN = Pattern.compile( "\\{(" + ATTRIBUTE + ")=(\\w+)\\}" );
 
     // -------------------------------------------------------------------------
     // Dependency
@@ -125,19 +122,7 @@ public class DefaultPatientReminderService
             String match = matcher.group();
             String value = "";
 
-            if ( matcher.group( 1 ).equals( IDENTIFIER ) )
-            {
-                String uid = matcher.group( 2 );
-                for ( PatientIdentifier identifier : programInstance.getPatient().getIdentifiers() )
-                {
-                    if ( identifier.getIdentifierType() != null && identifier.getIdentifierType().getUid().equals( uid ) )
-                    {
-                        value = identifier.getIdentifier();
-                    }
-                }
-
-            }
-            else if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
+            if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
             {
                 String uid = matcher.group( 2 );
                 for ( PatientAttributeValue attributeValue : programInstance.getPatient().getAttributeValues() )
@@ -184,20 +169,7 @@ public class DefaultPatientReminderService
         {
             String match = matcher.group();
 
-            if ( matcher.group( 1 ).equals( IDENTIFIER ) )
-            {
-                String uid = matcher.group( 2 );
-                for ( PatientIdentifier identifier : programStageInstance.getProgramInstance().getPatient()
-                    .getIdentifiers() )
-                {
-                    if ( identifier.getIdentifierType() != null && identifier.getIdentifierType().getUid().equals( uid ) )
-                    {
-                        templateMessage = templateMessage.replace( match, identifier.getIdentifier() );
-                        break;
-                    }
-                }
-            }
-            else if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
+            if ( matcher.group( 1 ).equals( ATTRIBUTE ) )
             {
                 String uid = matcher.group( 2 );
                 for ( PatientAttributeValue attributeValue : programStageInstance.getProgramInstance().getPatient()

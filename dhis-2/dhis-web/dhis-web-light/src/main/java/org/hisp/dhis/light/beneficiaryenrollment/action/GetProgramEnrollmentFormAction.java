@@ -34,7 +34,6 @@ import java.util.Date;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -126,18 +125,6 @@ public class GetProgramEnrollmentFormAction
         this.now = now;
     }
 
-    private Collection<PatientIdentifierType> patientIdentifierTypes;
-
-    public Collection<PatientIdentifierType> getPatientIdentifierTypes()
-    {
-        return patientIdentifierTypes;
-    }
-
-    public void setPatientIdentifierTypes( Collection<PatientIdentifierType> patientIdentifierTypes )
-    {
-        this.patientIdentifierTypes = patientIdentifierTypes;
-    }
-
     private Collection<PatientAttribute> patientAttributes;
 
     public Collection<PatientAttribute> getPatientAttributes()
@@ -165,7 +152,6 @@ public class GetProgramEnrollmentFormAction
         }
 
         patientAttributes = program.getAttributes();
-        patientIdentifierTypes = program.getIdentifierTypes();
         now = new SimpleDateFormat( "yyyy-MM-dd" ).format( new Date() );
 
         return SUCCESS;

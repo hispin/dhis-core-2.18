@@ -34,7 +34,6 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.validation.ValidationCriteria;
@@ -77,8 +76,6 @@ public class GetValidationCriteriaAction
 
     private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
 
-    private List<PatientIdentifierType> patientIdentifierTypes = new ArrayList<PatientIdentifierType>();
-
     private ValidationCriteria validationCriteria;
 
     private Program program;
@@ -90,11 +87,6 @@ public class GetValidationCriteriaAction
     public void setId( int id )
     {
         this.id = id;
-    }
-
-    public List<PatientIdentifierType> getPatientIdentifierTypes()
-    {
-        return patientIdentifierTypes;
     }
 
     public void setProgramId( int programId )
@@ -130,8 +122,6 @@ public class GetValidationCriteriaAction
         program = programService.getProgram( programId );
 
         patientAttributes = program.getAttributes();
-
-        patientIdentifierTypes = program.getIdentifierTypes();
 
         Collections.sort( patientAttributes, IdentifiableObjectNameComparator.INSTANCE );
 

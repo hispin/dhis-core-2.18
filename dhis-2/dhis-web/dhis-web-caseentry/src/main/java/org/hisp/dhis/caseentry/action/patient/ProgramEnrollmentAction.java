@@ -40,8 +40,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -74,8 +72,6 @@ public class ProgramEnrollmentAction
     private Map<Integer, String> identiferMap;
 
     private List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
-
-    private List<PatientIdentifierType> identifierTypes;
 
     private Collection<PatientAttribute> noGroupAttributes = new HashSet<PatientAttribute>();
 
@@ -127,11 +123,6 @@ public class ProgramEnrollmentAction
         this.programInstanceId = programInstanceId;
     }
 
-    public Collection<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
-
     public List<ProgramStageInstance> getProgramStageInstances()
     {
         return programStageInstances;
@@ -171,8 +162,6 @@ public class ProgramEnrollmentAction
 
         Collections.sort( programStageInstances, new ProgramStageInstanceVisitDateComparator() );
 
-        loadIdentifierTypes( programInstance );
-
         loadPatientAttributes( programInstance );
 
         hasDataEntry = showDataEntry( orgunit, programInstance.getProgram(), programInstance );
@@ -183,29 +172,6 @@ public class ProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    private void loadIdentifierTypes( ProgramInstance programInstance )
-    {
-        // ---------------------------------------------------------------------
-        // Load identifier types of the selected program
-        // ---------------------------------------------------------------------
-
-        identifierTypes = new ArrayList<PatientIdentifierType>( programInstance.getProgram().getIdentifierTypes() );
-        identiferMap = new HashMap<Integer, String>();
-
-        if ( identifierTypes != null && identifierTypes.size() > 0 )
-        {
-            Collection<PatientIdentifier> patientIdentifiers = programInstance.getPatient().getIdentifiers();
-
-            for ( PatientIdentifier identifier : patientIdentifiers )
-            {
-                if ( identifier.getIdentifierType() != null )
-                {
-                    identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
-                }
-            }
-        }
-    }
 
     private void loadPatientAttributes( ProgramInstance programInstance )
     {

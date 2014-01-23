@@ -11,7 +11,7 @@
 	});	
 </script>
 
-<h3>$i18n.getString( "patient_identifer_type_attribute_displayed_in_list" )</h3>
+<h3>$i18n.getString( "patient_attributes_displayed_in_list" )</h3>
 																			
 <form id="savePatientAttributeInListNoProgramForm" name="savePatientAttributeInListNoProgramForm" action="savePatientAttributeInListNoProgram.action" method="post" action='savePatientAttributeVisitSchedule.action' onsubmit="selectAllById('selectedAttributeIds');">
 
@@ -33,9 +33,6 @@
 	<tr>
 		<td>
 			<select style='width:322px' multiple="multiple" id="availableAttributes" name="availableAttributes" size="15" ondblclick="moveSelectedById( 'availableAttributes', 'selectedAttributeIds' )" >
-				#foreach($identifierType in $availablePatientIdentifierTypes)
-					<option value='iden_$identifierType.id'>$identifierType.displayName</option>
-				#end
 				#foreach($attribute in $availablePatientAttributes)
 					<option value='attr_$attribute.id'>$attribute.displayName</option>
 				#end
@@ -49,9 +46,6 @@
 		</td>
 		<td>
 			<select style='width:322px' multiple="multiple" id="selectedAttributeIds" name="selectedAttributeIds" size="15" ondblclick="moveSelectedById( 'selectedAttributeIds', 'availableAttributes' )" >
-				#foreach($identifierType in $selectedPatientIdentifierTypes)
-					<option value='iden_$identifierType.id'>$identifierType.displayName</option>
-				#end
 				#foreach($attribute in $selectedPatientAttributes)
 					<option value='attr_$attribute.id'>$attribute.displayName</option>
 				#end

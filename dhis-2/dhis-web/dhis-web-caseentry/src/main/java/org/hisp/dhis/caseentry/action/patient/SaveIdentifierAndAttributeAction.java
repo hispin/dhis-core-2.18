@@ -41,9 +41,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -65,8 +62,6 @@ public class SaveIdentifierAndAttributeAction
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
-
-    private PatientIdentifierService patientIdentifierService;
 
     private PatientAttributeValueService patientAttributeValueService;
 
@@ -122,11 +117,6 @@ public class SaveIdentifierAndAttributeAction
         this.programId = programId;
     }
 
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
-    }
-
     public Integer getProgramId()
     {
         return programId;
@@ -163,7 +153,6 @@ public class SaveIdentifierAndAttributeAction
         Patient patient = patientService.getPatient( patientId );
         Program program = programService.getProgram( programId );
 
-        saveIdentifiers( patient, program );
         saveAttributeValues( patient, program );
 
         statusCode = 0;
@@ -174,55 +163,6 @@ public class SaveIdentifierAndAttributeAction
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    public void saveIdentifiers( Patient patient, Program program )
-    {
-        HttpServletRequest request = ServletActionContext.getRequest();
-
-        String value = null;
-
-        Collection<PatientIdentifierType> identifierTypes = program.getIdentifierTypes();
-
-        PatientIdentifier identifier = null;
-
-        if ( identifierTypes != null )
-        {
-            for ( PatientIdentifierType identifierType : identifierTypes )
-            {
-                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
-
-                identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
-
-                if ( StringUtils.isNotBlank( value ) )
-                {
-                    value = value.trim();
-
-                    if ( identifier == null )
-                    {
-                        identifier = new PatientIdentifier();
-                        identifier.setIdentifierType( identifierType );
-                        identifier.setPatient( patient );
-                        identifier.setIdentifier( value );
-                        patientIdentifierService.savePatientIdentifier( identifier );
-                        patient.getIdentifiers().add( identifier );
-                    }
-                    else
-                    {
-                        identifier.setIdentifier( value );
-                        patientIdentifierService.updatePatientIdentifier( identifier );
-                        patient.getIdentifiers().add( identifier );
-                    }
-                }
-                else if ( identifier != null )
-                {
-                    patient.getIdentifiers().remove( identifier );
-                    patientIdentifierService.deletePatientIdentifier( identifier );
-                }
-            }
-        }
-
-        patientService.updatePatient( patient );
-    }
 
     private void saveAttributeValues( Patient patient, Program program )
     {

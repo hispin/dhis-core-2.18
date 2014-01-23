@@ -98,8 +98,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -1052,17 +1050,17 @@ public abstract class DhisConvenienceTest
     }
 
     public static Patient createPatient( char uniqueChar, OrganisationUnit organisationUnit,
-        PatientIdentifierType patientIdentifierType )
+        PatientAttribute patientAttribute )
     {
         Patient patient = new Patient();
         patient.setAutoFields();
         patient.setOrganisationUnit( organisationUnit );
 
-        PatientIdentifier pIdentifier = new PatientIdentifier();
-        pIdentifier.setIdentifierType( patientIdentifierType );
-        pIdentifier.setPatient( patient );
-        pIdentifier.setIdentifier( "Identifier" + uniqueChar );
-        patient.getIdentifiers().add( pIdentifier );
+        PatientAttributeValue attributeValue = new PatientAttributeValue();
+        attributeValue.setPatientAttribute( patientAttribute );
+        attributeValue.setPatient( patient );
+        attributeValue.setValue(  "Attribute" + uniqueChar );
+        patient.getAttributeValues().add( attributeValue );
 
         return patient;
     }
@@ -1136,21 +1134,6 @@ public abstract class DhisConvenienceTest
         patientAttributeGroup.setAttributes( attributes );
 
         return patientAttributeGroup;
-    }
-
-    /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @return PatientIdentifierType
-     */
-    public static PatientIdentifierType createPatientIdentifierType( char uniqueChar )
-    {
-        PatientIdentifierType identifierType = new PatientIdentifierType();
-
-        identifierType.setName( "IdentifierType" + uniqueChar );
-        identifierType.setDescription( "IdentifierType" + uniqueChar );
-        identifierType.setType( PatientIdentifierType.VALUE_TYPE_TEXT );
-
-        return identifierType;
     }
 
     /**
