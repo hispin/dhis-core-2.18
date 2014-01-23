@@ -169,6 +169,8 @@ public class DataElementGroupController
 
         WebMetaData metaData = new WebMetaData();
         List<DataElementOperand> dataElementOperands = Lists.newArrayList( dataElementCategoryService.getOperands( dataElementGroup.getMembers() ) );
+        
+        Collections.sort( dataElementOperands, IdentifiableObjectNameComparator.INSTANCE );
 
 		Collections.sort( dataElementOperands, IdentifiableObjectNameComparator.INSTANCE );
 

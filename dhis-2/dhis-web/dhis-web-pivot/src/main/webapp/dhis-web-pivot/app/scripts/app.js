@@ -1430,6 +1430,11 @@ Ext.onReady( function() {
 		};
 
 		getBody = function() {
+			if (!ns.core.init.user) {
+				alert('User is not assigned to any organisation units');
+				return;
+			}
+
 			var body = {
 				object: {
 					id: sharing.object.id,
@@ -2111,38 +2116,43 @@ Ext.onReady( function() {
 				}
 			};
 
-			web.events.setColumnHeaderMouseHandlers = function(xLayout, response) {
+			//web.events.setColumnHeaderMouseHandlers = function(xLayout, response) {
+			web.events.setColumnHeaderMouseHandlers = function(layout, xLayout, xResponse) {
 				if (Ext.isArray(xLayout.sortableIdObjects)) {
 					for (var i = 0, obj, el; i < xLayout.sortableIdObjects.length; i++) {
 						obj = xLayout.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
-						el.dom.xLayout = xLayout;
-						el.dom.response = response;
+						el.dom.layout = layout;
+						el.dom.xResponse = xResponse;
 						el.dom.metaDataId = obj.id;
 						el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
 						el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
 						el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
 
-						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.xLayout, this.response, this.metaDataId)');
+						//el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.xLayout, this.response, this.metaDataId)');
+						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.xResponse, this.metaDataId)');
 						el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
 						el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
 					}
 				}
 			};
 
-			web.events.onColumnHeaderMouseClick = function(xLayout, response, id) {
-				if (xLayout.sorting && xLayout.sorting.id === id) {
-					xLayout.sorting.direction = support.prototype.str.toggleDirection(xLayout.sorting.direction);
+			//web.events.onColumnHeaderMouseClick = function(xLayout, response, id) {
+			web.events.onColumnHeaderMouseClick = function(layout, xResponse, id) {
+				if (layout.sorting && layout.sorting.id === id) {
+					layout.sorting.direction = support.prototype.str.toggleDirection(layout.sorting.direction);
 				}
 				else {
-					xLayout.sorting = {
+					layout.sorting = {
 						id: id,
 						direction: 'DESC'
 					};
 				}
 
-				ns.core.web.pivot.sort(xLayout, response, id);
+				web.pivot.createTable(layout, null, xResponse, false);
+
+				//ns.core.web.pivot.sort(xLayout, response, id);
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
@@ -2278,54 +2288,62 @@ Ext.onReady( function() {
 							return;
 						}
 
-						// sync xLayout with response
-						xLayout = service.layout.getSyncronizedXLayout(xLayout, response);
-
-						if (!xLayout) {
-							web.mask.hide(ns.app.centerRegion);
-							return;
-						}
-
 						ns.app.paramString = paramString;
 
-						web.pivot.createTable(layout, xLayout, response, isUpdateGui);
+						web.pivot.createTable(layout, response, null, isUpdateGui);
 					}
 				});
 			};
 
-			web.pivot.createTable = function(layout, xLayout, response, isUpdateGui) {
-				var xResponse,
+			web.pivot.createTable = function(layout, response, xResponse, isUpdateGui) {
+				var xLayout,
 					xColAxis,
 					xRowAxis,
-					config;
+					table,
+					getHtml,
+					getXLayout = service.layout.getExtendedLayout,
+					getSXLayout = service.layout.getSyncronizedXLayout,
+					getXResponse = service.response.getExtendedResponse,
+					getXAxis = service.layout.getExtendedAxis;
 
-				if (!xLayout) {
-					xLayout = service.layout.getExtendedLayout(layout);
+				getHtml = function(xLayout, xResponse) {
+					xColAxis = getXAxis(xLayout, 'col');
+					xRowAxis = getXAxis(xLayout, 'row');
+
+					return web.pivot.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
+				};
+
+				xLayout = getSXLayout(getXLayout(layout), xResponse || response);
+
+				if (layout.sorting) {
+					if (!xResponse) {
+						xResponse = getXResponse(xLayout, response);
+						getHtml(xLayout, xResponse);
+					}
+
+					web.pivot.sort(xLayout, xResponse);
+					xLayout = getXLayout(api.layout.Layout(xLayout));
+				}
+				else {
+					xResponse = service.response.getExtendedResponse(xLayout, response);
 				}
 
-				// extend response
-				xResponse = service.response.getExtendedResponse(xLayout, response);
+				table = getHtml(xLayout, xResponse);
 
-				// extended axes
-				xColAxis = service.layout.getExtendedAxis(xLayout, xResponse, 'col');
-				xRowAxis = service.layout.getExtendedAxis(xLayout, xResponse, 'row');
-
-				// update viewport
-				config = web.pivot.getHtml(xLayout, xResponse, xColAxis, xRowAxis);
 				ns.app.centerRegion.removeAll(true);
-				ns.app.centerRegion.update(config.html);
+				ns.app.centerRegion.update(table.html);
 
 				// after render
 				ns.app.layout = layout;
 				ns.app.xLayout = xLayout;
 				ns.app.response = response;
 				ns.app.xResponse = xResponse;
-				ns.app.uuidDimUuidsMap = config.uuidDimUuidsMap;
+				ns.app.uuidDimUuidsMap = table.uuidDimUuidsMap;
 				ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
 
 				if (NS.isSessionStorage) {
 					web.events.setValueMouseHandlers(layout, response, ns.app.uuidDimUuidsMap, ns.app.uuidObjectMap);
-					web.events.setColumnHeaderMouseHandlers(xLayout, response);
+					web.events.setColumnHeaderMouseHandlers(layout, xLayout, xResponse);
 					web.storage.session.set(layout, 'table');
 				}
 
@@ -2339,11 +2357,11 @@ Ext.onReady( function() {
 				}
 			};
 
-			web.pivot.sort = function(xLayout, response, id) {
-				var xLayout = Ext.clone(xLayout),
-					response = Ext.clone(response),
+			web.pivot.sort = function(xLayout, xResponse) {
+				var xResponse = Ext.clone(xResponse),
+					id = xLayout.sorting.id,
 					dim = xLayout.rows[0],
-					valueMap = response.idValueMap,
+					valueMap = xResponse.idValueMap,
 					direction = xLayout.sorting ? xLayout.sorting.direction : 'DESC',
 					layout;
 
@@ -2366,11 +2384,7 @@ Ext.onReady( function() {
 					dim.ids.push(dim.items[i].id);
 				}
 
-				// re-layout
-				layout = api.layout.Layout(xLayout);
-
-				// re-create table
-				web.pivot.createTable(layout, null, response, false);
+				return xLayout;
 			};
 		}());
 	};
