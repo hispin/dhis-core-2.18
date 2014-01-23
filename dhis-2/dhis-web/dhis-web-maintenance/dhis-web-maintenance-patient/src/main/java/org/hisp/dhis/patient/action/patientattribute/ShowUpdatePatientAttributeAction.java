@@ -38,14 +38,11 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ShowUpdatePatientAttributeAction.java Mar 26, 2012 1:58:26 PM$
  */
 public class ShowUpdatePatientAttributeAction
     implements Action
