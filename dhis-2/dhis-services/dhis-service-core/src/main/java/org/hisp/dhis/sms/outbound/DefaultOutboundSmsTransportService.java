@@ -70,7 +70,7 @@ public class DefaultOutboundSmsTransportService
 
     private final String SMPP_GATEWAY = "smpp_gw";
 
-    public Map<String, String> gatewayMap = new HashMap<String, String>();
+    public static Map<String, String> gatewayMap = new HashMap<String, String>(); //TODO fix, poor solution
 
     private GateWayFactory gatewayFactory = new GateWayFactory();
 

@@ -31,14 +31,8 @@ package org.hisp.dhis.validation.scheduling;
 import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
-import org.hisp.dhis.constant.ConstantService;
-import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.scheduling.TaskId;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,24 +49,6 @@ public class MonitoringTask
 
     @Autowired
     private Notifier notifier;
-
-    @Autowired
-    private ExpressionService expressionService;
-
-    @Autowired
-    private PeriodService periodService;
-
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
-
-    @Autowired
-    private DataValueService dataValueService;
-
-    @Autowired
-    private ConstantService constantService;
-
-    @Autowired
-    private SystemSettingManager systemSettingManager;
 
     @Autowired
     private MessageService messageService;
