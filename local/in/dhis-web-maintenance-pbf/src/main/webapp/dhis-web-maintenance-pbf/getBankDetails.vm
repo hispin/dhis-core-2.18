@@ -29,9 +29,47 @@ Ext.QuickTips.init();
             enableColumnMove: true,
             enableColumnResize: true,
             sortOnLoad: true,
-			width: 900,
+			width: tableWidth,
         	height: 360,			
-            sorters: {direction: 'ASC'}
+            sorters: {direction: 'ASC'},
+			autoCreateViewPort:false,
+			renderTo: Ext.Element.get('#bankDetailTable'),
+        	layout: {
+            	type: 'hbox',
+            	align: 'stretch'
+        	},
+			columns: [
+    		{
+                text     : 'PBF Type',
+    			width    : columnWidth,            
+                sortable : true
+            },
+			{
+                text     : 'Bank',
+    			width    : columnWidth,            
+                sortable : true
+            },
+			{
+                text     : 'Branch Name',
+    			width    : columnWidth,						
+                sortable : true
+            },
+			{
+                text     : 'Account Name',
+    			width    : columnWidth,						
+                sortable : true
+            },
+			{
+                text     : 'Account Number',
+    			width    : columnWidth,						
+                sortable : true
+            },			
+			{
+                text     : 'Operations',
+    			width    : columnWidth,						
+                sortable : false
+            }
+			]
 			});
 			
 			grid.render();
@@ -181,7 +219,8 @@ function validateAddBank()
 <input type="button" value="Add New Bank Detail" style="float:right;" id="openAddBankDetail" />
 </div>
 <br/><br/>
-<table style="width:100%" id="bankDetails" cellspacing="0">
+<div style="width:100%;" id="bankDetailTable">
+<table id="bankDetails" cellspacing="0">
 	<thead >
 		<tr >
 			<th >PBF Type</th>
@@ -222,7 +261,7 @@ function validateAddBank()
 		#end
     </tbody>
 </table>
-
+</div>
 <div id="addBankDetail" title="Add New Bank Detail">
 	<table style="width:100%;table-layout:fixed;">
 		<tr >

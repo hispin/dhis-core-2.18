@@ -1,7 +1,7 @@
 <script>
     
 	jQuery(document).ready( function(){
-	
+	countryTags = $levelOrgUnitIds;
 	datePicker( 'startDate');
 	datePicker( 'endDate');
 			
@@ -10,7 +10,28 @@
     }); 
     
 </script>
-
+<style >
+	#tariffSetting {
+   width: 280px;
+   height: 50px;
+   margin: 10px 10px 10px 10px;
+   float:right;
+   padding: 10px 10px 10px 10px ;
+   font: 1.6em bold;
+   background: #ccc;
+   box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
+   inset 8px 10px 10px rgba(255,255,255,0.75);   
+   -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
+   inset 8px 10px 10px rgba(255,255,255,0.75);
+   -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.5),
+   inset 8px 10px 10px rgba(255,255,255,0.75);
+   }
+</style>
+<div width="100%">
+	<div id="tariffSetting">
+		Quality Max Score Level : $!tariff_setting_authority
+    </div>
+</div>
 <h3>$i18n.getString( "quality_max_entry" )</h3>
 
 <form id="qualityMaxDataEntryForm" name="qualityMaxDataEntryForm" method="post" >	

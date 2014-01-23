@@ -1,4 +1,8 @@
 <script >
+	var windowWidth = $(window).width();
+	var windowHeight = $(window).height();
+	var tableWidth = (parseInt( windowWidth ) * 70.2) / 100 ;	
+	var columnWidth = (parseInt( windowWidth ) * 10) / 100 ;
 $(function() {
 	$("#addDataElement").button();
 });

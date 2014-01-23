@@ -180,7 +180,7 @@
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
     
-    <bean id="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitAction" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitAction" scope="prototype">
+    <bean id="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitForMaxAction" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitForMaxAction" scope="prototype">
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -190,7 +190,8 @@
 		<property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />	
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
-        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />			
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />	
+        <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />		
 	</bean>
 	
 	<bean id="org.hisp.dhis.pbf.quality.dataentry.LoadQualityMaxDetailsAction"  class="org.hisp.dhis.pbf.quality.dataentry.LoadQualityMaxDetailsAction" scope="prototype">
@@ -212,6 +213,20 @@
 	</bean>
 	
 	<!-- Quality Score Data Entry -->
+	
+	<bean id="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitForScoreAction" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitForScoreAction" scope="prototype">
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    </bean>
+    
+     <bean id="org.hisp.dhis.pbf.quality.dataentry.QualityScoreInitAction"  class="org.hisp.dhis.pbf.quality.dataentry.QualityScoreInitAction" scope="prototype">
+		<property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />	
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="lookupService" ref="org.hisp.dhis.pbf.api.LookupService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />	
+        <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />		
+	</bean>
 	
 	<bean id="org.hisp.dhis.pbf.quality.dataentry.LoadQualityScoreDetailsAction"  class="org.hisp.dhis.pbf.quality.dataentry.LoadQualityScoreDetailsAction" scope="prototype">
 		<property name="qualityMaxValueService" ref="org.hisp.dhis.pbf.api.QualityMaxValueService" />	

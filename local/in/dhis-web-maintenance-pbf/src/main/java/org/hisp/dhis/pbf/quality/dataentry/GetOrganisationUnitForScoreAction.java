@@ -13,7 +13,7 @@ import org.hisp.dhis.pbf.api.LookupService;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetOrganisationUnitAction implements Action
+public class GetOrganisationUnitForScoreAction implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -78,8 +78,16 @@ public class GetOrganisationUnitAction implements Action
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
+        /* List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren(organisationUnit.getId()) ) ;
+        for (OrganisationUnit org : organisationUnitList) 
+        {
+        	if(!dataSets.containsAll(org.getDataSets()))
+        	{
+        		dataSets.addAll(org.getDataSets());
+        	}
+		}
+        */
         dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
-        
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
         
         List<DataSet> pbfDataSets = new ArrayList<DataSet>();

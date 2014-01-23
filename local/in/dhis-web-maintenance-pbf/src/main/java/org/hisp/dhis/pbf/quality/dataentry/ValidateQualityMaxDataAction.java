@@ -98,9 +98,9 @@ public class ValidateQualityMaxDataAction
         return qualityMaxValueMap;
     }
 
-    private String message;
+    private boolean message = false;
 
-    public String getMessage()
+    public boolean getMessage()
     {
         return message;
     }
@@ -123,16 +123,31 @@ public class ValidateQualityMaxDataAction
             qualityMaxValueService.getQuanlityMaxValues( organisationUnit, dataSet ) );
         for ( QualityMaxValue qualityMaxValue : qualityMaxValues )
         {
-            if ( qualityMaxValue.getStartDate().getTime() <=  sDate.getTime() && qualityMaxValue.getEndDate().getTime() >=  eDate.getTime() )
+            if ( qualityMaxValue.getStartDate().getTime() ==  sDate.getTime() && qualityMaxValue.getEndDate().getTime() ==  eDate.getTime() )
             {
-                message = "true";
-                break;
+                message = message && false;
             }
+            else if (qualityMaxValue.getStartDate().before(sDate) && qualityMaxValue.getEndDate().after(eDate) )
+            {            	
+            	message = message || true;
+            	//System.out.println("Start date is less and end date is greater or equal "+message);
+            }
+            else if (qualityMaxValue.getStartDate().getTime() >  sDate.getTime() && qualityMaxValue.getEndDate().getTime() <=  eDate.getTime() )
+            {            	
+            	message = message || true;
+            	//System.out.println("Start date is less and end date is greater or equal "+message);
+            }
+            else if (qualityMaxValue.getStartDate().getTime() <=  sDate.getTime() && qualityMaxValue.getEndDate().getTime() >  eDate.getTime() )
+            {            	
+            	message = message || true;
+            	//System.out.println("Start date is greater than and end date in less "+message);
+            }           
             else
             {
-                message = "false";
+            	message = message && false;
             }
         }
+        //System.out.println("Message: "+message);
         return SUCCESS;
     }
 }

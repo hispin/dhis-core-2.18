@@ -1,5 +1,8 @@
 <script >
-
+	var windowWidth = $(window).width();
+	var windowHeight = $(window).height();
+	var tableWidth = (parseInt( windowWidth ) * 72) / 100 ;	
+	var columnWidth = (parseInt( windowWidth ) * 12) / 100 ;
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 		setFieldValue("orgUnit", orgUnitNames[0]);

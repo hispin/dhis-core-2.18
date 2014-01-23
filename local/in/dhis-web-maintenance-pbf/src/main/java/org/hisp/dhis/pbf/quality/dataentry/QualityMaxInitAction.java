@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -19,6 +21,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class QualityMaxInitAction implements Action
 {
+	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -51,7 +54,12 @@ public class QualityMaxInitAction implements Action
         this.dataSetService = dataSetService;
     }
     
-    
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -76,7 +84,19 @@ public class QualityMaxInitAction implements Action
     {
         return dataSets;
     }
-    
+    private String tariff_setting_authority;
+
+    public String getTariff_setting_authority()
+    {
+        return tariff_setting_authority;
+    }
+
+    private List<String> levelOrgUnitIds = new ArrayList<String>();
+
+    public List<String> getLevelOrgUnitIds()
+    {
+        return levelOrgUnitIds;
+    }
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -84,7 +104,26 @@ public class QualityMaxInitAction implements Action
     public String execute() throws Exception
     {
         //selectionManager.clearSelectedOrganisationUnits();
-        
+    	 Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+    		
+         if ( tariff_authority == null )
+         {
+             tariff_setting_authority = "Level 1";
+             List<OrganisationUnit> allLevelOrg = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
+             for ( OrganisationUnit org : allLevelOrg )
+             {
+                 levelOrgUnitIds.add( "\"" + org.getUid() + "\"" );
+             }
+         }
+         else
+         {
+             tariff_setting_authority = "Level " + (int) tariff_authority.getValue();
+             List<OrganisationUnit> allLevelOrg = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( (int) tariff_authority.getValue() ) );
+             for ( OrganisationUnit org : allLevelOrg )
+             {
+                 levelOrgUnitIds.add( "\"" + org.getUid() + "\"" );
+             }
+         }
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
         
         if( organisationUnit == null )
@@ -101,8 +140,15 @@ public class QualityMaxInitAction implements Action
             organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
            
         }
-        
-        dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+        List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getLeafOrganisationUnits(organisationUnit.getId()) ) ;
+        for (OrganisationUnit org : organisationUnitList) 
+        {
+        	if(!dataSets.containsAll(org.getDataSets()))
+        	{
+        		dataSets.addAll(org.getDataSets());
+        	}
+		}
+       // dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
         
