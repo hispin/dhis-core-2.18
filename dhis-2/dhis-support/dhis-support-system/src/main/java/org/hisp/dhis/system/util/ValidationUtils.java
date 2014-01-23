@@ -246,6 +246,7 @@ public class ValidationUtils
      * <li>data_element_or_type_null_or_empty</li>
      * <li>value_length_greater_than_max_length</li>
      * <li>value_not_numeric</li>
+     * <li>value_not_unit_interval</li>
      * <li>value_not_integer</li>
      * <li>value_not_positive_integer</li>
      * <li>value_not_negative_integer</li>
@@ -284,6 +285,11 @@ public class ValidationUtils
         if ( VALUE_TYPE_NUMBER.equals( type ) && !MathUtils.isNumeric( value ) )
         {
             return "value_not_numeric";
+        }
+        
+        if ( VALUE_TYPE_UNIT_INTERVAL.equals( type ) && !MathUtils.isUnitInterval( value ) )
+        {
+            return "value_not_unit_interval";
         }
 
         if ( VALUE_TYPE_INT.equals( type ) && !MathUtils.isInteger( value ) )

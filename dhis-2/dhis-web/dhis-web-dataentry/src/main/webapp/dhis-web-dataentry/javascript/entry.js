@@ -140,7 +140,7 @@ function saveVal( dataElementId, optionComboId, fieldId )
 	
     if ( value != '' )
     {
-        if ( type == 'string' || type == 'int' || type == 'number' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' )
+        if ( type == 'string' || type == 'int' || type == 'number' || type == 'unitInterval' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' )
         {
             if ( value.length > 255 )
             {
@@ -153,6 +153,10 @@ function saveVal( dataElementId, optionComboId, fieldId )
             if ( type == 'number' && !dhis2.validation.isNumber( value ) )
             {
                 return alertField( fieldId, i18n_value_must_number + '\n\n' + dataElementName );
+            }
+            if ( type == 'unitInterval' && !dhis2.validation.isUnitInterval( value ) )
+            {
+            	return alertField( fieldId, i18n_value_must_unit_interval + '\n\n' + dataElementName );
             }
             if ( type == 'posInt' && !dhis2.validation.isPositiveInt( value ) )
             {

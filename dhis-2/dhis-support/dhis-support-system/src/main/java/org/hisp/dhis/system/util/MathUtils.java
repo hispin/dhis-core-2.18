@@ -306,6 +306,26 @@ public class MathUtils
     {
         return value != null && NUMERIC_LENIENT_PATTERN.matcher( value ).matches();
     }
+    
+    /**
+     * Returns true if the provided string argument is to be considered a unit
+     * interval, which implies that the value is numeric and inclusive between 0 
+     * and 1.
+     * 
+     * @param value the value.
+     * @return true if the provided string argument is to be considered a unit interval.
+     */
+    public static boolean isUnitInterval( String value )
+    {
+        if ( !isNumeric( value ) )
+        {
+            return false;
+        }
+        
+        Double dbl = Double.parseDouble( value );
+        
+        return dbl >= 0d && dbl <= 1d;
+    }
 
     /**
      * Returns true if the provided string argument is to be considered an integer. 

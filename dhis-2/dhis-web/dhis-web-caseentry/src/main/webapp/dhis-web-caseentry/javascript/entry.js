@@ -28,7 +28,7 @@ function saveVal( dataElementUid )
     field.style.backgroundColor = SAVING_COLOR;
 
     if ( fieldValue != '' ) {
-        if ( type == 'int' || type == 'number' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' ) {
+        if ( type == 'int' || type == 'number' || type == 'unitInterval' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' ) {
             if ( type == 'int' && !dhis2.validation.isInt( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
 
@@ -41,6 +41,13 @@ function saveVal( dataElementUid )
             else if ( type == 'number' && !dhis2.validation.isNumber( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
+                field.focus();
+
+                return;
+            }
+            else if ( type == 'unitInterval' && !dhis2.validation.isUnitInterval( fieldValue ) ) {
+                field.style.backgroundColor = '#ffcc00';
+                window.alert( i18n_value_must_unit_interval + '\n\n' + dataElementName );
                 field.focus();
 
                 return;
