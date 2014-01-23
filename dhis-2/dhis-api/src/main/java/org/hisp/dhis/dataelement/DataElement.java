@@ -188,9 +188,14 @@ public class DataElement
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
     /**
-     * The option set for this data element.
+     * The option set for data values linked to this data element.
      */
     private OptionSet optionSet;
+    
+    /**
+     * The option set for comments linked to this data element.
+     */
+    private OptionSet commentOptionSet;
     
     /**
      * The legend set for this data element.
@@ -639,6 +644,19 @@ public class DataElement
     public void setOptionSet( OptionSet optionSet )
     {
         this.optionSet = optionSet;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public OptionSet getCommentOptionSet()
+    {
+        return commentOptionSet;
+    }
+
+    public void setCommentOptionSet( OptionSet commentOptionSet )
+    {
+        this.commentOptionSet = commentOptionSet;
     }
 
     @JsonProperty

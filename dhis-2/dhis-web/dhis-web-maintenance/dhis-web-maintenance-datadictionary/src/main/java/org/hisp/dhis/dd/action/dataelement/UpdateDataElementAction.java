@@ -248,6 +248,13 @@ public class UpdateDataElementAction
         this.selectedOptionSetId = selectedOptionSetId;
     }
 
+    private Integer selectedCommentOptionSetId;
+    
+    public void setSelectedCommentOptionSetId( Integer selectedCommentOptionSetId )
+    {
+        this.selectedCommentOptionSetId = selectedCommentOptionSetId;
+    }
+
     private Integer selectedLegendSetId;
 
     public void setSelectedLegendSetId( Integer selectedLegendSetId )
@@ -295,6 +302,7 @@ public class UpdateDataElementAction
             .getDataElementCategoryCombo( selectedCategoryComboId );
 
         OptionSet optionSet = optionService.getOptionSet( selectedOptionSetId );
+        OptionSet commentOptionSet = optionService.getOptionSet( selectedCommentOptionSetId );
         MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
 
         dataElement.setName( name );
@@ -324,6 +332,7 @@ public class UpdateDataElementAction
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
         dataElement.setOptionSet( optionSet );
+        dataElement.setCommentOptionSet( commentOptionSet );
         dataElement.setLegendSet( legendSet );
 
         Set<DataSet> dataSets = dataElement.getDataSets();
