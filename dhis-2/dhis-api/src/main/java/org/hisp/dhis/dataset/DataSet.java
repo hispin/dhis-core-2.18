@@ -205,6 +205,12 @@ public class DataSet
      * can be completed.
      */
     private boolean validCompleteOnly;
+    
+    /**
+     * Property indicating whether a comment is required for all fields in a form
+     * which are not entered, including false for boolean values.
+     */
+    private boolean noValueRequiresComment;
 
     /**
      * Property indicating whether offline storage is enabled for this dataSet
@@ -763,6 +769,19 @@ public class DataSet
     public void setValidCompleteOnly( boolean validCompleteOnly )
     {
         this.validCompleteOnly = validCompleteOnly;
+    }
+
+    @JsonProperty
+    @JsonView({ DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class })
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public boolean isNoValueRequiresComment()
+    {
+        return noValueRequiresComment;
+    }
+
+    public void setNoValueRequiresComment( boolean noValueRequiresComment )
+    {
+        this.noValueRequiresComment = noValueRequiresComment;
     }
 
     @JsonProperty

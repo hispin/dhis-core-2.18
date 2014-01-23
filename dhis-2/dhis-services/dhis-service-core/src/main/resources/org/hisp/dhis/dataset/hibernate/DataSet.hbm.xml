@@ -94,6 +94,8 @@
     <property name="fieldCombinationRequired" />
 
     <property name="validCompleteOnly" />
+    
+    <property name="noValueRequiresComment" />
 
     <property name="skipOffline" />
 

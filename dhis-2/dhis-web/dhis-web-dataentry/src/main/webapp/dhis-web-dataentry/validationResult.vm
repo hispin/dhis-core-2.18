@@ -1,13 +1,13 @@
 <h3>$i18n.getString( "validation_result" ) &nbsp;<img src="../images/warning_small.png"></h3>
 
-<p class="bold">$i18n.getString( "data_entry_screen_has_following_errors" )</p>
-
 #if( !$validationResults.isEmpty() )
     #foreach( $key in $validationResults.keySet() )
     #set( $results = $validationResults.get($key))
 
-    <h3>$key.displayName</h3>
+    #if( $multiOu )<h3>$key.displayName</h3>#end
 
+    <p class="bold">$i18n.getString( "data_entry_screen_has_following_errors" )</p>
+    
     <table class="listTable" width="100%">
         <tr>
             <th>$i18n.getString( "validation_rule" )</th>                
@@ -42,9 +42,10 @@
     #foreach( $key in $dataValues.keySet() )
     #set( $results = $dataValues.get( $key ))
 
-    <h3>$key.displayName</h3>
+    #if( $multiOu )<h3>$key.displayName</h3>#end
 
     <p class="bold">$encoder.htmlEncode( $i18n.getString( "the_following_values_are_outliers" ) )</p>
+    
     <table class="listTable" style="width:100%">
 	    <tr>
 	        <th>$i18n.getString( "data_element" )</th>
@@ -55,7 +56,7 @@
 	    #set( $mark = false )	    
 	    #foreach( $value in $results )
 	    <tr>	    
-	        <td style="height:32px"#alternate( $mark )>$value.dataElementName $value.categoryOptionComboNameParsed</td>	        
+	        <td style="height:32px"#alternate( $mark )>$encoder.htmlEncode( $value.dataElementName ) $encoder.htmlEncode( $value.categoryOptionComboNameParsed )</td>	        
 	        <td style="text-align:center"#alternate( $mark )>$value.min</td>	        
 	        <td style="text-align:center;width:100px"#alternate( $mark )>$value.value</td>	        
 	        <td style="text-align:center"#alternate( $mark )>$value.max</td>
@@ -68,4 +69,31 @@
 	    #end
 	</table>
     #end
+#end
+
+#if ( !$commentViolations.isEmpty() )
+	#foreach( $key in $commentViolations.keySet() )
+	#set( $operands = $commentViolations.get( $key ))
+			
+    #if( $multiOu )<h3>$key.displayName</h3>#end
+    
+    <p class="bold">$encoder.htmlEncode( $i18n.getString( "the_following_fields_require_comment" ) )</p>
+			
+    <table class="listTable" style="width:100%">
+        <tr>
+            <th>$i18n.getString( "form_field" )</th>        	
+        </tr>
+        #set( $mark = false )
+        #foreach( $operand in $operands )
+        <tr>
+        	<td style="height:32px"#alternate( $mark )>$encoder.htmlEncode( $operand.prettyName )</td>
+        </tr>
+        #if( $mark )
+            #set( $mark = false )
+        #else
+            #set( $mark = true )
+        #end
+        #end
+    </table>
+	#end
 #end
