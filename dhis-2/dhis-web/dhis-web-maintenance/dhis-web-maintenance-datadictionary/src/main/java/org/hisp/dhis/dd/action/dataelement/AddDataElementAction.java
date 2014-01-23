@@ -223,6 +223,13 @@ public class AddDataElementAction
         this.selectedOptionSetId = selectedOptionSetId;
     }
     
+    private Integer selectedCommentOptionSetId;
+    
+    public void setSelectedCommentOptionSetId( Integer selectedCommentOptionSetId )
+    {
+        this.selectedCommentOptionSetId = selectedCommentOptionSetId;
+    }
+
     private Integer selectedLegendSetId;
 
     public void setSelectedLegendSetId( Integer selectedLegendSetId )
@@ -265,6 +272,7 @@ public class AddDataElementAction
             .getDataElementCategoryCombo( selectedCategoryComboId );
 
         OptionSet optionSet = optionService.getOptionSet( selectedOptionSetId );
+        OptionSet commentOptionSet = optionService.getOptionSet( selectedCommentOptionSetId );
         MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
 
         dataElement.setName( name );
@@ -291,6 +299,7 @@ public class AddDataElementAction
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils.getIntegerCollection( aggregationLevels ) ) );
         dataElement.setOptionSet( optionSet );
+        dataElement.setCommentOptionSet( commentOptionSet );
         dataElement.setLegendSet( legendSet );
 
         if ( jsonAttributeValues != null )

@@ -592,7 +592,7 @@ function loadForm()
         enableSectionFilter();
 
         loadDataValues();
-        insertOptionSets();
+        dhis2.de.insertOptionSets();
     }
     else
     {
@@ -618,7 +618,7 @@ function loadForm()
                 $( '#currentOrganisationUnit' ).html( i18n_no_organisationunit_selected );
             }
 
-            insertOptionSets();
+            dhis2.de.insertOptionSets();
             loadDataValues();
         } );
     }
@@ -1878,7 +1878,7 @@ function updateForms()
     downloadRemoteForms();
 
     DAO.store.open().done( function() {
-        loadOptionSets();
+        dhis2.de.loadOptionSets();
     });
 }
 
@@ -2513,7 +2513,7 @@ function StorageManager()
 // Option set
 // -----------------------------------------------------------------------------
 
-function searchOptionSet( uid, query, success ) 
+dhis2.de.searchOptionSet = function( uid, query, success ) 
 {
     if ( window.DAO !== undefined && window.DAO.store !== undefined ) {
         DAO.store.get( 'optionSets', uid ).done( function ( obj ) {
@@ -2522,7 +2522,8 @@ function searchOptionSet( uid, query, success )
 
                 if ( query == null || query == '' ) {
                     options = obj.optionSet.options.slice( 0, MAX_DROPDOWN_DISPLAYED - 1 );
-                } else {
+                } 
+                else {
                     query = query.toLowerCase();
 
                     for ( var idx=0, len = obj.optionSet.options.length; idx < len; idx++ ) {
@@ -2544,16 +2545,19 @@ function searchOptionSet( uid, query, success )
                         id: item
                     };
                 } ) );
-            } else {
-                getOptions( uid, query, success );
+            } 
+            else {
+                dhis2.de.getOptions( uid, query, success );
             }
         } );
-    } else {
-        getOptions( uid, query, success );
+    } 
+    else {
+        dhis2.de.getOptions( uid, query, success );
     }
-}
+};
 
-function getOptions( uid, query, success ) {
+dhis2.de.getOptions = function( uid, query, success ) 
+{
     $.ajax( {
         url: '../api/optionSets/' + uid + '.json?links=false&q=' + query,
         dataType: "json",
@@ -2568,9 +2572,10 @@ function getOptions( uid, query, success ) {
             } ) );
         }
     } );
-}
+};
 
-function loadOptionSets() {
+dhis2.de.loadOptionSets = function() 
+{
     var options = _.values( dhis2.de.optionSets );
     var uids = [];
 
@@ -2606,9 +2611,10 @@ function loadOptionSets() {
     } );
 
     deferred.resolve();
-}
+};
 
-function insertOptionSets() {
+dhis2.de.insertOptionSets = function() 
+{
     $( '.entryoptionset').each( function( idx, item ) {
     	var optionSetKey = splitFieldId(item.id);
 
@@ -2621,11 +2627,12 @@ function insertOptionSets() {
 
         item = item + '-val';
         optionSetKey = optionSetKey.dataElementId + '-' + optionSetKey.optionComboId;
-        autocompleteOptionSetField( item, dhis2.de.optionSets[optionSetKey].uid );
+        dhis2.de.autocompleteOptionSetField( item, dhis2.de.optionSets[optionSetKey].uid );
     } );
-}
+};
 
-function autocompleteOptionSetField( idField, optionSetUid ) {
+dhis2.de.autocompleteOptionSetField = function( idField, optionSetUid ) 
+{
     var input = jQuery( '#' + idField );
 
     if ( !input ) {
@@ -2637,7 +2644,7 @@ function autocompleteOptionSetField( idField, optionSetUid ) {
         delay: 0,
         minLength: 0,
         source: function ( request, response ) {
-            searchOptionSet( optionSetUid, input.val(), response );
+            dhis2.de.searchOptionSet( optionSetUid, input.val(), response );
         },
         select: function ( event, ui ) {
             input.val( ui.item.value );
@@ -2677,7 +2684,7 @@ function autocompleteOptionSetField( idField, optionSetUid ) {
             input.autocomplete( 'search', '' );
             input.focus();
         } );
-}
+};
 
 // -----------------------------------------------------------------------------
 // Various

@@ -95,7 +95,7 @@
 			</select>
 		</td>
 	</tr>
-	<tr #if( $calculatedDataElement ) style="display:none" #end>
+	<tr>
 		<td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
             <select id="valueType" name="valueType" onchange="changeValueType( this.value )">
@@ -165,7 +165,7 @@
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $!dataElement.url )"></td>
     </tr>
-	<tr #if( $calculatedDataElement ) style="display:none" #end >	
+	<tr>	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="selectedCategoryComboId" #if( $!dataElement.getDomainTypeNullSafe()=='patient') disabled #end>>
@@ -182,12 +182,8 @@
 			<input type="hidden" id="submitCategoryComboId" name="selectedCategoryComboId"/>
 		</td>
 	</tr>
-    <tr>
-        <td style="width:200px">$i18n.getString( "aggregation_levels" )</td>
-        <td><input type="checkbox" #if ( $!dataElement.hasAggregationLevels() )checked="checked"#end onclick="toggleById( 'aggregationLevelsContainer' )"/></td>
-    </tr>
 	<tr>
-		<td>$i18n.getString( 'option_set' )</td>			
+		<td>$i18n.getString( 'option_set_for_data_values' )</td>			
 		<td>
 			<select id="selectedOptionSetId" name="selectedOptionSetId">
 				<option value="0">[$i18n.getString('please_select')]</option>
@@ -196,6 +192,17 @@
 				#end
 			</select>
 		</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( 'option_set_for_comments' )</td>            
+        <td>
+            <select id="selectedCommentOptionSetId" name="selectedCommentOptionSetId">
+                <option value="0">[$i18n.getString('please_select')]</option>
+                #foreach ( $optionSet in $optionSets )
+                <option value="$optionSet.id" #if( $!dataElement.commentOptionSet && $!dataElement.commentOptionSet.id == "$optionSet.id" ) selected #end>$!encoder.htmlEncode( $optionSet.displayName )</option>
+                #end
+            </select>
+        </td>
     </tr>
     <tr>
         <td>$i18n.getString( 'legend_set' )</td>            
@@ -207,6 +214,10 @@
                 #end
             </select>
         </td>
+    </tr>
+    <tr>
+        <td style="width:200px">$i18n.getString( "aggregation_levels" )</td>
+        <td><input type="checkbox" #if ( $!dataElement.hasAggregationLevels() )checked="checked"#end onclick="toggleById( 'aggregationLevelsContainer' )"/></td>
     </tr>
 </table>
 
