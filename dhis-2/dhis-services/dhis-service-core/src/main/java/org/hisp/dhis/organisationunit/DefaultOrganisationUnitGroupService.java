@@ -28,6 +28,9 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -93,22 +96,36 @@ public class DefaultOrganisationUnitGroupService
         this.organisationUnitService = organisationUnitService;
     }
 
+    private IdentifiableObjectManager objectManager;
+
+    @Autowired
+    public void setObjectManager( IdentifiableObjectManager objectManager )
+    {
+        this.objectManager = objectManager;
+    }
+
     // -------------------------------------------------------------------------
     // OrganisationUnitGroup
     // -------------------------------------------------------------------------
 
     public int addOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
+        objectManager.update( new ArrayList<IdentifiableObject>( organisationUnitGroup.getMembers() ) );
+
         return organisationUnitGroupStore.save( organisationUnitGroup );
     }
 
     public void updateOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
+        objectManager.update( new ArrayList<IdentifiableObject>( organisationUnitGroup.getMembers() ) );
+
         organisationUnitGroupStore.update( organisationUnitGroup );
     }
 
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
+        objectManager.update( new ArrayList<IdentifiableObject>( organisationUnitGroup.getMembers() ) );
+
         organisationUnitGroupStore.delete( organisationUnitGroup );
     }
 
@@ -267,7 +284,7 @@ public class DefaultOrganisationUnitGroupService
     @Override
     public Collection<OrganisationUnitGroupSet> getDataDimensionOrganisationUnitGroupSets()
     {
-        return i18n( i18nService, organisationUnitGroupSetStore.getByDataDimension(true) );
+        return i18n( i18nService, organisationUnitGroupSetStore.getByDataDimension( true ) );
     }
 
     public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSets()
@@ -360,6 +377,9 @@ public class DefaultOrganisationUnitGroupService
 
         organisationUnits.removeAll( userOrganisationUnits );
         organisationUnits.addAll( mergeOrganisationUnits );
+
+        Collection<OrganisationUnit> removedOrgUnits = CollectionUtils.subtract( organisationUnitGroup.getMembers(), organisationUnits );
+        objectManager.update( new ArrayList<IdentifiableObject>( removedOrgUnits ) );
 
         organisationUnitGroup.updateOrganisationUnits( organisationUnits );
 
