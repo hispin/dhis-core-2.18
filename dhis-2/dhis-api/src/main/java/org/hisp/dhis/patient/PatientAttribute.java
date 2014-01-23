@@ -63,7 +63,7 @@ public class PatientAttribute
     public static final String TYPE_STRING = "string";
 
     public static final String TYPE_INT = "number";
-    
+
     public static final String VALUE_TYPE_LETTER = "letter";
 
     public static final String TYPE_BOOL = "bool";
@@ -141,7 +141,7 @@ public class PatientAttribute
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-
+    
     /**
      * Indicates whether the value type of this attribute is numeric.
      */

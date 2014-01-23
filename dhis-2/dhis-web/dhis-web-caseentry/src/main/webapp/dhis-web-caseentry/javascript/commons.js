@@ -387,16 +387,15 @@ function enableBtn(){
 	 $.postJSON( "getAttributesByProgram.action", {
 			id:programIdAddPatient
 		}, function( json )  {
-			jQuery('#searchObjectId').find('option').remove()
 			
 			removeAttributeOption('advSearchBox0');			
 			var attributeList = jQuery( '#searchObjectId');	
 				
 			jQuery('input[name=clearSearchBtn]').each(function(){
 				jQuery(this).click();
-			})
+			});
 			
-			jQuery('#searchObjectId').append('<option value="iden">' + i18n_search_by_identifier + '</option>');
+			clearListById('searchObjectId');
 			jQuery('#searchObjectId').append('<option value="pi_enrollmentDate">' + i18n_enrollment_date + '</option>');
 			for ( var i in json.attributes ) {
 				jQuery('#searchObjectId').append('<option value="'+json.attributes[i].id+'">'+json.attributes[i].name+'</option>');
@@ -1887,12 +1886,12 @@ function saveCoordinatesEvent()
 		alert(i18n_enter_values_for_longitude_and_latitude_fields);
 		isValid = false;
 	}	
-	else if(!dhis2.validation.isNumber(longitude)){
+	else if(!isNumber(longitude)){
 		byId('longitude').style.backgroundColor = '#ffcc00';
 		alert(i18n_enter_a_valid_number);
 		isValid = false;
 	}
-	else if(!dhis2.validation.isNumber(latitude)){
+	else if(!isNumber(latitude)){
 		byId('latitude').style.backgroundColor = '#ffcc00';
 		alert(i18n_enter_a_valid_number);
 		isValid = false;
@@ -2007,7 +2006,7 @@ function searchByIdsOnclick()
 	params += "&facilityLB=";
 
     if( getFieldValue('programIdAddPatient') != "" ) {
-        params += "&programIds=" + getFieldValue('programIdAddPatient');
+        params += "&programId=" + getFieldValue('programIdAddPatient');
         params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
     }
 
