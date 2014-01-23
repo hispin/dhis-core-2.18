@@ -1887,12 +1887,12 @@ function saveCoordinatesEvent()
 		alert(i18n_enter_values_for_longitude_and_latitude_fields);
 		isValid = false;
 	}	
-	else if(!isNumber(longitude)){
+	else if(!dhis2.validation.isNumber(longitude)){
 		byId('longitude').style.backgroundColor = '#ffcc00';
 		alert(i18n_enter_a_valid_number);
 		isValid = false;
 	}
-	else if(!isNumber(latitude)){
+	else if(!dhis2.validation.isNumber(latitude)){
 		byId('latitude').style.backgroundColor = '#ffcc00';
 		alert(i18n_enter_a_valid_number);
 		isValid = false;

@@ -28,8 +28,8 @@ function saveVal( dataElementUid )
     field.style.backgroundColor = SAVING_COLOR;
 
     if ( fieldValue != '' ) {
-        if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' || type == 'zeroPositiveInt' ) {
-            if ( type == 'int' && !isInt( fieldValue ) ) {
+        if ( type == 'int' || type == 'number' || type == 'posInt' || type == 'negInt' || type == 'zeroPositiveInt' ) {
+            if ( type == 'int' && !dhis2.validation.isInt( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
 
                 window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
@@ -38,28 +38,28 @@ function saveVal( dataElementUid )
 
                 return;
             }
-            else if ( type == 'number' && !isNumber( fieldValue ) ) {
+            else if ( type == 'number' && !dhis2.validation.isNumber( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
                 field.focus();
 
                 return;
             }
-            else if ( type == 'positiveNumber' && !isPositiveInt( fieldValue ) ) {
+            else if ( type == 'posInt' && !dhis2.validation.isPositiveInt( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
                 field.focus();
 
                 return;
             }
-            else if ( type == 'negativeNumber' && !isNegativeInt( fieldValue ) ) {
+            else if ( type == 'negInt' && !dhis2.validation.isNegativeInt( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
                 field.focus();
 
                 return;
             }
-            else if ( type == 'zeroPositiveInt' && !isZeroOrPositiveInt( fieldValue ) ) {
+            else if ( type == 'zeroPositiveInt' && !dhis2.validation.isZeroOrPositiveInt( fieldValue ) ) {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_zero_or_positive_integer + '\n\n' + dataElementName );
                 field.focus();

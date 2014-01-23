@@ -89,11 +89,11 @@
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
 				#elseif( $dataElement.type == "int" && $dataElement.numberType == "int" )
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
-				#elseif( $dataElement.type == "int" && $dataElement.numberType == "positiveNumber" )
+				#elseif( $dataElement.type == "int" && $dataElement.numberType == "posInt" )
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
 				#elseif( $dataElement.type == "int" && $dataElement.numberType == "zeroPositiveInt" )
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
-				#elseif( $dataElement.type == "int" && $dataElement.numberType == "negativeNumber" )
+				#elseif( $dataElement.type == "int" && $dataElement.numberType == "negInt" )
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
 				#end
 				#end

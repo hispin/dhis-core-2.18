@@ -118,9 +118,9 @@
             <select id="numberType" name="numberType">
 				<option value="number" #if( $!dataElement.numberType == 'number' ) selected="selected" #end style="min-width:246px;">$i18n.getString( "number" )</option>
 				<option value="int" #if( $!dataElement.numberType == 'int' ) selected="selected" #end>$i18n.getString( "int" )</option>
-				<option value="positiveNumber" #if( $!dataElement.numberType == 'positiveNumber' ) selected="selected" #end>$i18n.getString( "positiveNumber" )</option>
-				<option value="negativeNumber" #if( $!dataElement.numberType == 'negativeNumber' ) selected="selected" #end>$i18n.getString( "negativeNumber" )</option>
-				<option value="zeroPositiveInt" #if( $!dataElement.numberType == 'zeroPositiveInt' ) selected="selected" #end>$i18n.getString( "zeroPositiveInt" )</option>
+				<option value="posInt" #if( $!dataElement.numberType == 'posInt' ) selected="selected" #end>$i18n.getString( "positive_integer" )</option>
+				<option value="negInt" #if( $!dataElement.numberType == 'negInt' ) selected="selected" #end>$i18n.getString( "negative_integer" )</option>
+				<option value="zeroPositiveInt" #if( $!dataElement.numberType == 'zeroPositiveInt' ) selected="selected" #end>$i18n.getString( "zero_positive_int" )</option>
 			</select>
 			<script>
 			</script>

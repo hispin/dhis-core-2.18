@@ -417,23 +417,23 @@ jQuery.validator.addMethod("custome_regex", function(value, element, params) {
 });
 
 jQuery.validator.addMethod("number", function(value, element, param) {
-    return this.optional(element) || isNumber(value);
+    return this.optional(element) || dhis2.validation.isNumber(value);
 });
 
 jQuery.validator.addMethod("integer", function(value, element, param) {
-    return this.optional(element) || isInt(value);
+    return this.optional(element) || dhis2.validation.isInt(value);
 });
 
 jQuery.validator.addMethod("positive_integer", function(value, element, param) {
-    return this.optional(element) || isPositiveInt(value);
+    return this.optional(element) || dhis2.validation.isPositiveInt(value);
 });
 
 jQuery.validator.addMethod("negative_integer", function(value, element, param) {
-    return this.optional(element) || isNegativeInt(value);
+    return this.optional(element) || dhis2.validation.isNegativeInt(value);
 });
 
 jQuery.validator.addMethod("zero_positive_int", function(value, element, param) {
-    return this.optional(element) || isZeroOrPositiveInt(value);
+    return this.optional(element) || dhis2.validation.isZeroOrPositiveInt(value);
 });
 
 // Support method for date
