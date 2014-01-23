@@ -114,37 +114,32 @@ public class ValidationAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String periodId;
+    private String ds;
 
-    public void setPeriodId( String periodId )
+    public void setDs( String ds )
     {
-        this.periodId = periodId;
+        this.ds = ds;
     }
 
-    private String dataSetId;
+    private String pe;
 
-    public void setDataSetId( String dataSetId )
+    public void setPe( String pe )
     {
-        this.dataSetId = dataSetId;
+        this.pe = pe;
     }
 
-    private String organisationUnitId;
+    private String ou;
 
-    public void setOrganisationUnitId( String organisationUnitId )
+    public void setOu( String ou )
     {
-        this.organisationUnitId = organisationUnitId;
+        this.ou = ou;
     }
 
-    private boolean multiOrganisationUnit;
+    private boolean multiOu;
 
-    public void setMultiOrganisationUnit( boolean multiOrganisationUnit )
+    public void setMultiOu( boolean multiOu )
     {
-        this.multiOrganisationUnit = multiOrganisationUnit;
-    }
-
-    public boolean isMultiOrganisationUnit()
-    {
-        return multiOrganisationUnit;
+        this.multiOu = multiOu;
     }
 
     // -------------------------------------------------------------------------
@@ -186,13 +181,13 @@ public class ValidationAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ou );
 
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        DataSet dataSet = dataSetService.getDataSet( ds );
 
-        Period selectedPeriod = PeriodType.getPeriodFromIsoString( periodId );
+        Period selectedPeriod = PeriodType.getPeriodFromIsoString( pe );
 
-        if ( selectedPeriod == null || orgUnit == null || ( multiOrganisationUnit && !orgUnit.hasChild() ) )
+        if ( selectedPeriod == null || orgUnit == null || ( multiOu && !orgUnit.hasChild() ) )
         {
             return SUCCESS;
         }
@@ -202,7 +197,7 @@ public class ValidationAction
 
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
-        if ( !multiOrganisationUnit )
+        if ( !multiOu )
         {
             organisationUnits.add( orgUnit );
         }

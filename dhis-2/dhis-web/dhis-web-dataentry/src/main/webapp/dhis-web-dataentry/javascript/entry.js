@@ -324,10 +324,10 @@ function ValueSaver( de, pe, co, value, fieldId, resultColor )
     		markValue( fieldId, COLOR_RED );
     		setHeaderMessage( xhr.responseText );
     	}
-    	else // No connection
+    	else // Offline, keep local value
     	{
-    		setHeaderMessage( i18n_offline_notification );
     		markValue( fieldId, resultColor );
+    		setHeaderMessage( i18n_offline_notification );
     	}
     }
 
