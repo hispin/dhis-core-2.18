@@ -92,7 +92,7 @@ function saveMinMaxLimit()
     {
         return;
     }
-    else if ( !isInt( minValue ) )
+    else if ( !dhis2.validation.isInt( minValue ) )
     {
         $( '#minSpan' ).html( i18n_enter_digits );
         return;
@@ -106,7 +106,7 @@ function saveMinMaxLimit()
     {
         return;
     }
-    else if ( !isInt( maxValue ) )
+    else if ( !dhis2.validation.isInt( maxValue ) )
     {
         $( '#maxSpan' ).html( i18n_enter_digits );
         return;

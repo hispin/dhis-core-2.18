@@ -264,6 +264,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE section DROP CONSTRAINT section_name_key" );
         executeSql( "UPDATE patientattribute set inheritable=false where inheritable is null" );
         executeSql( "UPDATE dataelement SET numbertype='number' where numbertype is null and valuetype='int'" );
+        executeSql( "UPDATE dataelement SET valuetype='posInt' where valuetype='positiveNumber'" );
+        executeSql( "UPDATE dataelement SET valuetype='negInt' where valuetype='negativeNumber'" );
 
         // revert prepare aggregate*Value tables for offline diffs
 

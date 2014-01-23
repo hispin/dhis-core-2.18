@@ -26,7 +26,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 dhis2.util.namespace( 'dhis2.commons' );
 
 dhis2.commons.getCurrentPage = function() {
@@ -1659,83 +1658,9 @@ function relativePeriodsChecked()
     return false;
 }
 
-// -----------------------------------------------------------------------------
-// Math methods
-// -----------------------------------------------------------------------------
-
-/**
- * Allow Zero likes 0 and 0.0x In which, x is Multiple leading zero.
- */
-function isValidZeroNumber( value )
-{
-	var regex = /^0(\.0*)?$/;
-	return regex.test( value );
-}
-
-/**
- * Allow only integers or a single Zero. No thousands seperators
- */
-function isInt(value)
-{
-	var regex = /^(0|-?[1-9]\d*)$/;
-	return regex.test( value );
-}
-
-/**
- * Allow only positive integers, not Zero and no thousands seperators
- */
-function isPositiveInt( value )
-{
-	var regex = /^[1-9]\d*$/;
-	return regex.test( value );
-}
-
-/**
- * Allow only zero or positive integers, no thousands seperators
- */
-function isZeroOrPositiveInt( value )
-{
-	var regex = /(^0$)|(^[1-9]\d*$)/;
-	return regex.test( value );
-}
-
-/**
- * Allow only negative integers, not Zero and no thousands seperators
- */
-function isNegativeInt( value )
-{
-	var regex = /^-[1-9]\d*$/;
-	return regex.test( value );
-}
-
-/**
- * Allow any real number,optionally with a sign, no thousands seperators and a
- * single decimal point.
- */
-function isNumber( value )
-{
-	var regex = /^(-?0|-?[1-9]\d*)(\.\d+)?(E\d+)?$/;
-	return regex.test( value );
-}
-
 function startsWith( string, substring )
 {
 	return ( string && string.lastIndexOf( substring, 0 ) === 0 ) ? true : false;
-}
-
-function isPositiveNumber( value )
-{
-	return isNumber( value ) && parseFloat( value ) > 0;
-}
-
-function isNegativeNumber( value )
-{
-	return isNumber( value ) && parseFloat( value ) < 0;
-}
-
-function isZeroNumber( value )
-{
-	return isNumber( value ) && parseFloat( value ) == 0;
 }
 
 function getRandomNumber()

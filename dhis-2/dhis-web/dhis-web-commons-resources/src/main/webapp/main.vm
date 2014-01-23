@@ -57,6 +57,7 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.availability.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.trigger.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.sharing.js?_rev=$!{buildRevision}"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.validation.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.ls.js?_rev=$!{buildRevision}"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js?_rev=$!{buildRevision}"></script>

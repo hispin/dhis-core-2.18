@@ -10,7 +10,7 @@ function editValue( valueId )
 	
 	if ( field.value != '' )
 	{
-		if ( !isInt( field.value ) )
+		if ( !dhis2.validation.isInt( field.value ) )
 		{
 			alert( i18n_value_must_be_a_number );
 			
@@ -53,18 +53,6 @@ function editValue( valueId )
 	
     var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ccffcc' );
     valueSaver.save();
-}
-
-function isInt( value )
-{
-    var number = new Number( value );
-    
-    if ( isNaN( number ))
-    {
-        return false;
-    }
-    
-    return true;
 }
 
 function markFollowUp( valueId )
