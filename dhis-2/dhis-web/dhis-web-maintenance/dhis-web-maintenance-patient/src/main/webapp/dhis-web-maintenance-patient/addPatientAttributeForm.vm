@@ -21,10 +21,18 @@
         <td></td>
     </tr>
     
-    <tr>
+	<tr>
 		<td><label for="mandatory">$i18n.getString( "mandatory" )</label></td>
 		<td>
 			<input type='checkbox' id="mandatory" name="mandatory" value='true'>
+		</td>		
+		<td></td>				
+	</tr>
+	
+    <tr>
+		<td><label for="unique">$i18n.getString( "unique" )</label></td>
+		<td>
+			<input type='checkbox' id="unique" name="unique" value='true'>
 		</td>		
 		<td></td>				
 	</tr>
@@ -43,6 +51,7 @@
             <select id="valueType" name="valueType" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
                 <option value="number" selected="selected">$i18n.getString( "number" )</option>
                 <option value="string">$i18n.getString( "text" )</option>
+                <option value="letter">$i18n.getString( "letter_only" )</option>
                 <option value="bool">$i18n.getString( "yes_no" )</option>
 				<option value="trueOnly">$i18n.getString( "yes_only" )</option>
                 <option value="date">$i18n.getString( "date" )</option>
@@ -51,6 +60,7 @@
                 <option value="age">$i18n.getString( "age" )</option>
                 <option value="users">$i18n.getString( "users" )</option>
                 <option value="combo">$i18n.getString( "attribute_combo_type" )</option>
+				<option value="localId">$i18n.getString( "local_identifier" )</option>
             </select>
         </td>
         <td></td>
@@ -61,6 +71,39 @@
 		</td>
 		<td><span id="attrMessage" name="attrMessage" style="color:red;"></span></td>
 	</tr>
+	
+	<tr name='localIdField' style='display:none;'>
+			<th colspan='2'><label for="type">$i18n.getString( "scope" )</label></th>
+		</tr>
+			
+		<tr name='localIdField' style='display:none;'>
+			<td><label for="type">$i18n.getString( "orgunit" )</label></td>
+			<td>
+				<input type='checkbox' id="orgunitScope" name="orgunitScope" value='true' >
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr name='localIdField' style='display:none;'>
+			<td><label for="type">$i18n.getString( "program" )</label></td>
+			<td>
+				<input type='checkbox' id="programScope" name="programScope" value='true' >
+			</td>
+			<td></td>
+		</tr>
+		
+		<tr name='localIdField' style='display:none;'>
+			<td><label for="type">$i18n.getString( "period_type" )</label></td>
+			<td>
+				<select type='checkbox' id="periodTypeName" name="periodTypeName" >
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					#foreach ( $periodType in $periodTypes )
+					<option value="$periodType.name">$i18n.getString( $periodType.name )</option>
+					#end
+				</select>
+			</td>
+			<td></td>
+		</tr>
 
     </tbody>
 

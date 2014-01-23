@@ -59,8 +59,6 @@ public class SearchPersonAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer identifierTypeId;
-
     private Integer attributeId;
 
     private String searchValue;
@@ -80,7 +78,7 @@ public class SearchPersonAction
     public String execute()
         throws Exception
     {
-        patients = patientService.getPatient( identifierTypeId, attributeId, searchValue );
+        patients = patientService.getPatient(  attributeId, searchValue );
 
         if ( patients != null && patients.size() > 0 )
         {
@@ -104,11 +102,6 @@ public class SearchPersonAction
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
-
-    public void setIdentifierTypeId( Integer identifierTypeId )
-    {
-        this.identifierTypeId = identifierTypeId;
-    }
 
     public void setAttributeId( Integer attributeId )
     {

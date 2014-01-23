@@ -151,8 +151,8 @@ public class FindBeneficiarytAction implements Action {
 	@Override
 	public String execute() throws Exception {
 
-		patients = patientService.searchPatientsForMobile(keyword,
-				organisationUnitId, patientAttributeId);
+//		patients = patientService.searchPatientsForMobile(keyword,
+//				organisationUnitId, patientAttributeId);
 		pavSet = new HashSet<PatientAttributeValue>();
 
 		for (Patient p : patients) {

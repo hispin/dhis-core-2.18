@@ -28,10 +28,10 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.DimensionalObject;
@@ -70,7 +70,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -83,9 +82,10 @@ import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -186,8 +186,6 @@ public class MetaData
     private List<RelationshipType> relationshipTypes = new ArrayList<RelationshipType>();
 
     private List<MetaDataFilter> metaDataFilters = new ArrayList<MetaDataFilter>();
-
-    private List<PatientIdentifierType> personIdentifierTypes = new ArrayList<PatientIdentifierType>();
 
     private List<PatientAttribute> personAttributeTypes = new ArrayList<PatientAttribute>();
 
@@ -782,19 +780,6 @@ public class MetaData
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper(localName = "personIdentifierTypes", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "personIdentifierType", namespace = DxfNamespaces.DXF_2_0)
-    public List<PatientIdentifierType> getPersonIdentifierTypes()
-    {
-        return personIdentifierTypes;
-    }
-
-    public void setPersonIdentifierTypes( List<PatientIdentifierType> personIdentifierTypes )
-    {
-        this.personIdentifierTypes = personIdentifierTypes;
-    }
-
-    @JsonProperty
     @JacksonXmlElementWrapper(localName = "personAttributeTypes", namespace = DxfNamespaces.DXF_2_0)
     @JacksonXmlProperty(localName = "personAttributeType", namespace = DxfNamespaces.DXF_2_0)
     public List<PatientAttribute> getPersonAttributeTypes()
@@ -895,7 +880,6 @@ public class MetaData
             ", programs=" + programs +
             ", programStages=" + programStages +
             ", relationshipTypes=" + relationshipTypes +
-            ", personIdentifierTypes=" + personIdentifierTypes +
             ", personAttributeTypes=" + personAttributeTypes +
             ", personAttributeGroups=" + personAttributeGroups +
             '}';

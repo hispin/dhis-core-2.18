@@ -38,8 +38,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -65,13 +63,6 @@ public class ShowUpdateProgramFormAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
     private PatientAttributeService patientAttributeService;
@@ -156,13 +147,6 @@ public class ShowUpdateProgramFormAction
         this.organisationUnitGroupId = organisationUnitGroupId;
     }
 
-    private Collection<PatientIdentifierType> availableIdentifierTypes;
-
-    public Collection<PatientIdentifierType> getAvailableIdentifierTypes()
-    {
-        return availableIdentifierTypes;
-    }
-
     private Collection<PatientAttribute> availableAttributes;
 
     public Collection<PatientAttribute> getAvailableAttributes()
@@ -199,9 +183,6 @@ public class ShowUpdateProgramFormAction
         throws Exception
     {
         program = programService.getProgram( id );
-
-        availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        availableIdentifierTypes.removeAll( program.getIdentifierTypes() );
         
         availableAttributes = patientAttributeService.getAllPatientAttributes();
         availableAttributes.removeAll( program.getAttributes() );

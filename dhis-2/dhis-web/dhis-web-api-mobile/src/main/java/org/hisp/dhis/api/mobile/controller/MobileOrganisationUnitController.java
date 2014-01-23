@@ -38,7 +38,6 @@ import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.FacilityReportingService;
 import org.hisp.dhis.api.mobile.IProgramService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
-import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.Contact;
 import org.hisp.dhis.api.mobile.model.DataSetList;
@@ -188,18 +187,6 @@ public class MobileOrganisationUnitController
         return model;
     }
 
-    @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/search" )
-    @ResponseBody
-    public ActivityPlan search2_8( @PathVariable
-    int id, @RequestHeader( "identifier" )
-    String identifier )
-        throws NotAllowedException
-    {
-        ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );
-        activityPlan.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
-        return activityPlan;
-    }
-
     @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/changeLanguageDataSet" )
     @ResponseBody
     public DataSetList changeLanguageDataSet2_8( @PathVariable
@@ -277,19 +264,6 @@ public class MobileOrganisationUnitController
         model.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit( id ), locale ) );
         model.setServerCurrentDate( new Date() );
         return model;
-    }
-
-    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/search" )
-    @ResponseBody
-    public ActivityPlan search( @PathVariable
-    String clientVersion, @PathVariable
-    int id, @RequestHeader( "identifier" )
-    String identifier )
-        throws NotAllowedException
-    {
-        ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );
-        activityPlan.setClientVersion( clientVersion );
-        return activityPlan;
     }
 
     /**
@@ -547,13 +521,10 @@ public class MobileOrganisationUnitController
     {
         PatientIdentifierAndAttribute patientIdentifierAndAttribute = new PatientIdentifierAndAttribute();
         patientIdentifierAndAttribute.setClientVersion( clientVersion );
-        patientIdentifierAndAttribute.setPatientIdentifiers( activityReportingService
-            .getIdentifiersForMobile( programId ) );
         patientIdentifierAndAttribute.setPatientAttributes( activityReportingService
             .getPatientAttributesForMobile( programId ) );
 
         return patientIdentifierAndAttribute;
-
     }
 
 }

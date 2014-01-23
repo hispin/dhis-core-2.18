@@ -28,21 +28,19 @@ package org.hisp.dhis.analytics.event.data;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.analytics.event.EventAnalyticsService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashSet;
 
 /**
  * @author Lars Helge Overland
@@ -62,16 +60,11 @@ public class EventAnalyticsServiceTest
     @Autowired
     private PatientAttributeService attributeService;
 
-    @Autowired
-    private PatientIdentifierTypeService identifierTypeService;
-
     private Program prA;
     private DataElement deA;
     private DataElement deB;
     private PatientAttribute atA;
     private PatientAttribute atB;
-    private PatientIdentifierType itA;
-    private PatientIdentifierType itB;
 
     @Override
     public void setUpTest()

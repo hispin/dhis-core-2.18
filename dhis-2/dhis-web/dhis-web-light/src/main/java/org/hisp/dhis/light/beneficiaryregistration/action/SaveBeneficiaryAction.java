@@ -45,10 +45,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
@@ -88,30 +84,6 @@ public class SaveBeneficiaryAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    public PatientIdentifierTypeService getPatientIdentifierTypeService()
-    {
-        return patientIdentifierTypeService;
-    }
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-
-    private PatientIdentifierService patientIdentifierService;
-
-    public PatientIdentifierService getPatientIdentifierService()
-    {
-        return patientIdentifierService;
-    }
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
     }
 
     private PatientAttributeService patientAttributeService;
@@ -262,18 +234,6 @@ public class SaveBeneficiaryAction
         this.patientId = patientId;
     }
 
-    private Collection<PatientIdentifierType> patientIdentifierTypes;
-
-    public Collection<PatientIdentifierType> getPatientIdentifierTypes()
-    {
-        return patientIdentifierTypes;
-    }
-
-    public void setPatientIdentifierTypes( Collection<PatientIdentifierType> patientIdentifierTypes )
-    {
-        this.patientIdentifierTypes = patientIdentifierTypes;
-    }
-
     private Collection<PatientAttribute> patientAttributes;
 
     public Collection<PatientAttribute> getPatientAttributes()
@@ -329,17 +289,14 @@ public class SaveBeneficiaryAction
         throws Exception
     {
         Patient patient = new Patient();
-        Set<PatientIdentifier> patientIdentifierSet = new HashSet<PatientIdentifier>();
         Set<PatientAttribute> patientAttributeSet = new HashSet<PatientAttribute>();
         Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
 
-        patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         patientAttributes = patientAttributeService.getAllPatientAttributes();
         Collection<Program> programs = programService.getAllPrograms();
 
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll( program.getIdentifierTypes() );
             patientAttributes.removeAll( program.getAttributes() );
         }
 
@@ -357,55 +314,14 @@ public class SaveBeneficiaryAction
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get( StrutsStatics.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
 
-        // Add Identifier and Attributes
-        Collection<PatientIdentifierType> patientIdentifierTypes = patientIdentifierTypeService
-            .getAllPatientIdentifierTypes();
-        Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
+        // Add Attributes
+       Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
 
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll( program.getIdentifierTypes() );
             patientAttributes.removeAll( program.getAttributes() );
         }
 
-        for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
-        {
-            String key = "IDT" + patientIdentifierType.getId();
-            String value = parameterMap.get( key );
-
-            PatientIdentifier duplicateId = null;
-
-            if ( value != null && !value.isEmpty() )
-            {
-                duplicateId = patientIdentifierService.get( patientIdentifierType, value );
-            }
-
-            if ( value != null )
-            {
-                if ( patientIdentifierType.isMandatory() && value.trim().equals( "" ) )
-                {
-                    this.validationMap.put( key, "is_mandatory" );
-                }
-                else if ( patientIdentifierType.getType().equals( "number" ) && !MathUtils.isNumeric( value ) )
-                {
-                    this.validationMap.put( key, "is_invalid_number" );
-                }
-                else if ( duplicateId != null )
-                {
-                    this.validationMap.put( key, "is_duplicate" );
-                }
-                else
-                {
-                    PatientIdentifier patientIdentifier = new PatientIdentifier();
-                    patientIdentifier.setIdentifierType( patientIdentifierType );
-                    patientIdentifier.setPatient( patient );
-                    patientIdentifier.setIdentifier( value.trim() );
-                    patientIdentifierSet.add( patientIdentifier );
-                }
-
-                this.previousValues.put( key, value );
-            }
-        }
 
         for ( PatientAttribute patientAttribute : patientAttributes )
         {
@@ -468,7 +384,6 @@ public class SaveBeneficiaryAction
             return ERROR;
         }
 
-        patient.setIdentifiers( patientIdentifierSet );
         patientId = patientService.createPatient( patient, null, null, patientAttributeValues );
         validated = true;
 

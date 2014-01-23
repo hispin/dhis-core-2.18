@@ -71,8 +71,6 @@ public class Patient
 
     public static String PREFIX_PROGRAM_STAGE = "prgst";
 
-    private Set<PatientIdentifier> identifiers = new HashSet<PatientIdentifier>();
-
     private Set<PatientAttributeValue> attributeValues = new HashSet<PatientAttributeValue>();
 
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
@@ -105,16 +103,6 @@ public class Patient
     public void setOrganisationUnit( OrganisationUnit organisationUnit )
     {
         this.organisationUnit = organisationUnit;
-    }
-
-    public Set<PatientIdentifier> getIdentifiers()
-    {
-        return identifiers;
-    }
-
-    public void setIdentifiers( Set<PatientIdentifier> identifiers )
-    {
-        this.identifiers = identifiers;
     }
 
     public Set<PatientAttributeValue> getAttributeValues()
@@ -154,18 +142,6 @@ public class Patient
     // -------------------------------------------------------------------------
     // Convenience method
     // -------------------------------------------------------------------------
-
-    public void addIdentifier( PatientIdentifier identifier )
-    {
-        identifiers.add( identifier );
-        identifier.setPatient( this );
-    }
-
-    public void removeIdentifier( PatientIdentifier identifier )
-    {
-        identifiers.remove( identifier );
-        identifier.setPatient( null );
-    }
 
     public void addAttributeValue( PatientAttributeValue attributeValue )
     {

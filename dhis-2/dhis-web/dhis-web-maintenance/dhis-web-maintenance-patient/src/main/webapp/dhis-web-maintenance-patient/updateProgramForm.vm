@@ -214,15 +214,10 @@
 			<col style="width:400px;"/>
 		</colgroup>
         <thead>
-          <tr>
-            <th colspan="3" style="width: 590px;">$i18n.getString( "identifiers_and_attributes" )</th>
-          </tr>
-        </thead>
-		<thead>
 		  <tr>        
-			<th>$i18n.getString( "available" )</th>
+			<th>$i18n.getString( "available_attributes" )</th>
 			<th></th>
-			<th>$i18n.getString( "selected" )
+			<th>$i18n.getString( "select_attributes" )
 				<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
 				<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
 				<select id='compulsaryIdentifier' name="compulsaryIdentifier" multiple="multiple" class="hidden {validate:{required:true}}"></select>
@@ -233,9 +228,6 @@
 		<tr>
 			<td>
 				<select size="15" style="width:100%;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();" #if( $program.type=='3' ) disabled #end>
-					#foreach( $identifier in $availableIdentifierTypes ) 
-						<option value="iden_$identifier.id">$identifier.displayName</option>
-					#end
 					#foreach( $attribute in $availableAttributes )
 						<option value="attr_$attribute.id">$attribute.displayName</option>
 					#end
@@ -256,18 +248,11 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th style="width:180px;">$i18n.getString( "identifiers_and_attributes" )</th>
-								<th style="width:20px;">$i18n.getString( "displayed_in_patient_list" )</th>
+								<th style="width:180px;">$i18n.getString( "name" )</th>
+								<th style="width:20px;">$i18n.getString( "displayed_in_list" )</th>
                             </tr>
 						</thead>
 						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end>
-							#foreach( $programIdentifier in $program.programPatientIdentifierTypes ) 
-								#set($identifier = $programIdentifier.patientIdentifierType)
-								<tr ondblclick="unSelectProperties( this )" id="iden_$identifier.id">
-									<td onmousedown="select(event, this)">$encoder.htmlEncode( $identifier.name )</td>
-									<td align="center"><input type="checkbox" name="displayed" value="iden_$identifier.id" #if($programIdentifier.displayedInList == true ) checked #end #if($program.type==3) disabled #end /></td>
-								</tr>
-							#end
 							#foreach( $programPatientAttribute in $program.programPatientAttributes )
 								#set($attribute = $programPatientAttribute.patientAttribute)
 								<tr ondblclick="unSelectProperties( this )" id="attr_$programPatientAttribute.patientAttribute.id">

@@ -44,8 +44,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.Program;
@@ -77,13 +75,6 @@ public class GetTabularReportAction
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
-    }
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
     private DataElementService dataElementService;
@@ -123,20 +114,6 @@ public class GetTabularReportAction
     public ProgramStage getProgramStage()
     {
         return programStage;
-    }
-
-    private List<PatientIdentifierType> dimensionIdentifierTypes = new ArrayList<PatientIdentifierType>();
-
-    public List<PatientIdentifierType> getDimensionIdentifierTypes()
-    {
-        return dimensionIdentifierTypes;
-    }
-
-    private List<PatientIdentifierType> filterIdentifierTypes = new ArrayList<PatientIdentifierType>();
-
-    public List<PatientIdentifierType> getFilterIdentifierTypes()
-    {
-        return filterIdentifierTypes;
     }
 
     private List<PatientAttribute> dimensionAttributes = new ArrayList<PatientAttribute>();
@@ -237,13 +214,6 @@ public class GetTabularReportAction
             }
             else
             {
-                PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( dimensionId );
-
-                if ( it != null && program.getIdentifierTypes().contains( it ) )
-                {
-                    dimensionIdentifierTypes.add( it );
-                }
-
                 PatientAttribute at = patientAttributeService.getPatientAttribute( dimensionId );
 
                 if ( at != null && program.getAttributes().contains( at ) )
@@ -272,13 +242,6 @@ public class GetTabularReportAction
             if ( filters.length > 1 )
             {
                 mapFilters.put( filterId, filter.substring( filterId.length() + 1, filter.length() ) );
-            }
-
-            PatientIdentifierType it = patientIdentifierTypeService.getPatientIdentifierType( filterId );
-
-            if ( it != null && program.getIdentifierTypes().contains( it ) )
-            {
-                filterIdentifierTypes.add( it );
             }
 
             PatientAttribute at = patientAttributeService.getPatientAttribute( filterId );

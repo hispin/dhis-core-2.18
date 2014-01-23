@@ -9,13 +9,6 @@
 	&#8226; $i18n.getString( "change_location" )
 </h3>
 	
-<table>
-	#foreach( $identifier in $patient.identifiers)
-		<tr>
-			<td>$identifier.identifierType.displayName:</td>
-			<td>$identifier.identifier</td>
-		</tr>
-	#end
 </table>
 
 <form method='post'>

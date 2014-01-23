@@ -44,8 +44,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientRegistrationForm;
 import org.hisp.dhis.patient.PatientRegistrationFormService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
@@ -73,13 +71,6 @@ public class ShowEventWithRegistrationFormAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
-    }
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
     private ProgramService programService;
@@ -139,8 +130,6 @@ public class ShowEventWithRegistrationFormAction
 
     private Collection<PatientAttribute> noGroupAttributes = new HashSet<PatientAttribute>();
 
-    private Collection<PatientIdentifierType> identifierTypes;
-
     private OrganisationUnit organisationUnit;
 
     private String customDataEntryFormCode;
@@ -180,14 +169,11 @@ public class ShowEventWithRegistrationFormAction
 
         if ( customRegistrationForm == null )
         {
-            identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-
             Collection<PatientAttribute> patientAttributesInProgram = new HashSet<PatientAttribute>();
             Collection<Program> programs = programService.getAllPrograms();
             programs.remove( program );
             for ( Program p : programs )
             {
-                identifierTypes.removeAll( p.getIdentifierTypes() );
                 patientAttributesInProgram.addAll( p.getAttributes() );
             }
 
@@ -237,11 +223,6 @@ public class ShowEventWithRegistrationFormAction
     public String getCustomRegistrationForm()
     {
         return customRegistrationForm;
-    }
-
-    public Collection<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
     }
 
     public void setProgramId( Integer programId )

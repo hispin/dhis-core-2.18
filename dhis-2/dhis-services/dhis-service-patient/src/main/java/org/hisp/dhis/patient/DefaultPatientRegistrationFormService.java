@@ -72,20 +72,6 @@ public class DefaultPatientRegistrationFormService
         this.formStore = formStore;
     }
 
-    private PatientIdentifierTypeService identifierTypeService;
-
-    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
-    {
-        this.identifierTypeService = identifierTypeService;
-    }
-
-    private PatientIdentifierService identifierService;
-
-    public void setIdentifierService( PatientIdentifierService identifierService )
-    {
-        this.identifierService = identifierService;
-    }
-
     private PatientAttributeService attributeService;
 
     public void setAttributeService( PatientAttributeService attributeService )
@@ -167,7 +153,6 @@ public class DefaultPatientRegistrationFormService
 
             String inputHtml = inputMatcher.group();
             Matcher fixedAttrMatcher = FIXED_ATTRIBUTE_PATTERN.matcher( inputHtml );
-            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
             Matcher dynamicAttrMatcher = DYNAMIC_ATTRIBUTE_PATTERN.matcher( inputHtml );
             Matcher programMatcher = PROGRAM_PATTERN.matcher( inputHtml );
             Matcher suggestedMarcher = SUGGESTED_VALUE_PATTERN.matcher( inputHtml );
@@ -220,51 +205,6 @@ public class DefaultPatientRegistrationFormService
 
                 inputHtml = getFixedAttributeField( inputHtml, fixedAttr, value.toString(), healthWorkers, i18n, index,
                     hidden, style );
-            }
-            else if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
-            {
-                String uid = identifierMatcher.group( 1 );
-                PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierTypeByUid( uid );
-                if ( identifierType == null )
-                {
-                    inputHtml = "<input value='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + uid
-                        + "]' title='[" + i18n.getString( "missing_patient_identifier_type" ) + " " + uid + "]'>/";
-                }
-                else
-                {
-                    int id = identifierType.getId();
-                    // Get value
-                    String value = "";
-                    if ( patient != null )
-                    {
-                        PatientIdentifier patientIdentifier = identifierService.getPatientIdentifier( identifierType,
-                            patient );
-
-                        if ( patientIdentifier != null )
-                        {
-                            value = patientIdentifier.getIdentifier();
-                        }
-                    }
-
-                    inputHtml = "<input id=\"iden" + id + "\" name=\"iden" + id + "\" tabindex=\"" + index
-                        + "\" value=\"" + value + "\" style=\"" + style + "\"";
-
-                    inputHtml += "class=\"" + hidden + " {validate:{required:" + identifierType.isMandatory() + ",";
-                    if ( identifierType.getNoChars() != null )
-                    {
-                        inputHtml += "maxlength:" + identifierType.getNoChars() + ",";
-                    }
-
-                    if ( PatientIdentifierType.VALUE_TYPE_NUMBER.equals( identifierType.getType() ) )
-                    {
-                        inputHtml += "number:true";
-                    }
-                    else if ( PatientIdentifierType.VALUE_TYPE_LETTER.equals( identifierType.getType() ) )
-                    {
-                        inputHtml += "lettersonly:true";
-                    }
-                    inputHtml += "}}\" " + TAG_CLOSE;
-                }
             }
             else if ( dynamicAttrMatcher.find() && dynamicAttrMatcher.groupCount() > 0 )
             {

@@ -42,7 +42,6 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -138,12 +137,6 @@ public class GetDataRecordsAction
         return programStageInstances;
     }
 
-    private List<PatientIdentifierType> identifierTypes;
-
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
 
     private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 

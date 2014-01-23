@@ -30,10 +30,14 @@ package org.hisp.dhis.patient.action.patientattribute;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,6 +65,9 @@ public class AddPatientAttributeAction
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
     }
+
+    @Autowired
+    private PeriodService periodService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -115,6 +122,36 @@ public class AddPatientAttributeAction
         this.expression = expression;
     }
 
+    private Boolean unique;
+
+    public void setUnique( Boolean unique )
+    {
+        this.unique = unique;
+    }
+
+    // For Local ID type
+
+    private Boolean orgunitScope;
+
+    public void setOrgunitScope( Boolean orgunitScope )
+    {
+        this.orgunitScope = orgunitScope;
+    }
+
+    private Boolean programScope;
+
+    public void setProgramScope( Boolean programScope )
+    {
+        this.programScope = programScope;
+    }
+
+    private String periodTypeName;
+
+    public void setPeriodTypeName( String periodTypeName )
+    {
+        this.periodTypeName = periodTypeName;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -133,9 +170,32 @@ public class AddPatientAttributeAction
         mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
 
+        unique = (unique == null) ? false : true;
+        patientAttribute.setUnique( unique );
+
         inherit = (inherit == null) ? false : true;
         patientAttribute.setInherit( inherit );
+        
+        if ( valueType.equals( PatientAttribute.VALUE_TYPE_LOCAL_ID ) )
+        {
+            orgunitScope = (orgunitScope == null) ? false : orgunitScope;
+            programScope = (programScope == null) ? false : programScope;
 
+            if ( !StringUtils.isEmpty( periodTypeName ) )
+            {
+                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
+                periodType = periodService.reloadPeriodType( periodType );
+                patientAttribute.setPeriodType( periodType );
+            }
+            else
+            {
+                patientAttribute.setPeriodType( null );
+            }
+
+            patientAttribute.setOrgunitScope( orgunitScope );
+            patientAttribute.setProgramScope( programScope );
+        }
+        
         patientAttributeService.savePatientAttribute( patientAttribute );
 
         if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )

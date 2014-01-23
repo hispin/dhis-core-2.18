@@ -47,7 +47,6 @@
             <tr>           
                 <td colspan='2'>
                     <select id="searchingAttributeId" name="searchingAttributeId" #if( $patientAttributes.size() == 0 ) disabled="disabled" #end style='width:200px;'>
-                        <option value="">$i18n.getString( "search_by_identifier" )</option>
                         #foreach( $attribute in $patientAttributes )
                             <option value="$attribute.id" #if( $searchingAttributeId && $attribute.id == $searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.displayName )</option>
                         #end

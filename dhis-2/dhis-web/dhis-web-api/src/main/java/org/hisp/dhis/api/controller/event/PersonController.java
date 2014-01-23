@@ -38,7 +38,6 @@ import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectManager;
-import org.hisp.dhis.dxf2.events.person.Identifier;
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.dxf2.events.person.PersonService;
 import org.hisp.dhis.dxf2.events.person.Persons;
@@ -86,20 +85,13 @@ public class PersonController
     public String getPersons( @RequestParam( value = "orgUnit", required = false )
     String orgUnitUid, @RequestParam( value = "program", required = false )
     String programUid, @RequestParam( required = false )
-    String identifierType, @RequestParam( required = false )
-    String identifier, @RequestParam
     Map<String, String> parameters, Model model )
         throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Persons persons = new Persons();
-
-        if ( identifier != null )
-        {
-            Identifier id = new Identifier( identifierType, identifier );
-            persons.getPersons().add( personService.getPerson( id ) );
-        }
-        else if ( orgUnitUid != null )
+        
+        if ( orgUnitUid != null )
         {
             if ( programUid != null )
             {

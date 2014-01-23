@@ -45,10 +45,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -71,10 +67,6 @@ public class UpdatePatientAction
     private PatientAttributeService patientAttributeService;
 
     private PatientAttributeValueService patientAttributeValueService;
-
-    private PatientIdentifierService patientIdentifierService;
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private PatientAttributeOptionService patientAttributeOptionService;
 
@@ -191,56 +183,6 @@ public class UpdatePatientAction
         patientService.updatePatient( patient, representativeId, relationshipTypeId, valuesForSave, valuesForUpdate,
             valuesForDelete );
 
-        // ---------------------------------------------------------------------
-        // Save PatientIdentifier
-        // ---------------------------------------------------------------------
-
-        String value = null;
-
-        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-
-        PatientIdentifier identifier = null;
-
-        if ( identifierTypes != null && identifierTypes.size() > 0 )
-        {
-            for ( PatientIdentifierType identifierType : identifierTypes )
-            {
-                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
-
-                identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
-
-                if ( StringUtils.isNotBlank( value ) )
-                {
-                    value = value.trim();
-
-                    if ( identifier == null )
-                    {
-                        identifier = new PatientIdentifier();
-                        identifier.setIdentifierType( identifierType );
-                        identifier.setPatient( patient );
-                        identifier.setIdentifier( value );
-                        patientIdentifierService.savePatientIdentifier( identifier );
-
-                        patient.getIdentifiers().add( identifier );
-                    }
-                    else
-                    {
-                        identifier.setIdentifier( value );
-                        patientIdentifierService.updatePatientIdentifier( identifier );
-
-                        patient.getIdentifiers().add( identifier );
-                    }
-                }
-                else if ( identifier != null )
-                {
-                    patient.getIdentifiers().remove( identifier );
-                    patientIdentifierService.deletePatientIdentifier( identifier );
-                }
-            }
-        }
-
-        patientService.updatePatient( patient );
-
         return SUCCESS;
     }
 
@@ -252,12 +194,6 @@ public class UpdatePatientAction
     {
         this.format = format;
     }
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
@@ -273,10 +209,6 @@ public class UpdatePatientAction
         this.patientAttributeValueService = patientAttributeValueService;
     }
 
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
-    }
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {

@@ -28,10 +28,6 @@ package org.hisp.dhis.api.mobile.model.LWUITmodel;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
-import org.hisp.dhis.api.mobile.model.PatientAttribute;
-import org.hisp.dhis.api.mobile.model.PatientIdentifier;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -40,6 +36,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
+import org.hisp.dhis.api.mobile.model.PatientAttribute;
 
 /**
  * @author Nguyen Kim Lai
@@ -56,8 +55,6 @@ public class Patient
     private int age;
 
     private List<PatientAttribute> attributes;
-
-    private List<PatientIdentifier> identifiers;
 
     private String gender;
 
@@ -80,22 +77,12 @@ public class Patient
     private String organisationUnitName;
 
     private List<Program> completedPrograms;
-    
+
     private String incidentDate;
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public List<PatientIdentifier> getIdentifiers()
-    {
-        return identifiers;
-    }
-
-    public void setIdentifiers( List<PatientIdentifier> identifiers )
-    {
-        this.identifiers = identifiers;
-    }
 
     public List<Program> getPrograms()
     {
@@ -256,7 +243,7 @@ public class Patient
     {
         this.completedPrograms = completedPrograms;
     }
-    
+
     public String getIncidentDate()
     {
         return incidentDate;
@@ -266,7 +253,7 @@ public class Patient
     {
         this.incidentDate = incidentDate;
     }
-    
+
     // -------------------------------------------------------------------------
     // Override Methods
     // -------------------------------------------------------------------------
@@ -338,7 +325,7 @@ public class Patient
         {
             dout.writeBoolean( false );
         }
-        
+
         if ( incidentDate != null )
         {
             dout.writeBoolean( true );
@@ -366,20 +353,6 @@ public class Patient
             for ( PatientAttribute patientAtt : attributes )
             {
                 patientAtt.serialize( dout );
-            }
-        }
-        else
-        {
-            dout.writeInt( 0 );
-        }
-
-        // Write PatientIdentifier
-        if ( identifiers != null )
-        {
-            dout.writeInt( identifiers.size() );
-            for ( PatientIdentifier each : identifiers )
-            {
-                each.serialize( dout );
             }
         }
         else
@@ -503,7 +476,7 @@ public class Patient
         {
             this.setIncidentDate( null );
         }
-        
+
         // Phone Number
         if ( din.readBoolean() )
         {
@@ -529,19 +502,6 @@ public class Patient
         else
         {
             attributes = null;
-        }
-
-        int numbIdentifiers = din.readInt();
-        this.identifiers = new ArrayList<PatientIdentifier>();
-        if ( numbIdentifiers > 0 )
-        {
-            for ( int i = 0; i < numbIdentifiers; i++ )
-            {
-                PatientIdentifier identifier = new PatientIdentifier();
-                identifier.deSerialize( din );
-                this.identifiers.add( identifier );
-
-            }
         }
 
         // Program & Relationship

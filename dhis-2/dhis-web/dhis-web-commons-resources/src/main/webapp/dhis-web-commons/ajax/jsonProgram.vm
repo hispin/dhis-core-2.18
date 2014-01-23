@@ -11,7 +11,6 @@
 	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",
 	"noAttributes": "$!program.patientAttributes.size()",
-	"noIdentifierTypes": "$!program.patientIdentifierTypes.size()",
 	"onlyEnrollOnce": "$!program.onlyEnrollOnce",
 	"displayOnAllOrgunit": "$!program.displayOnAllOrgunit",
 	"selectEnrollmentDatesInFuture": "$!program.selectEnrollmentDatesInFuture",

@@ -28,15 +28,10 @@ package org.hisp.dhis.dxf2.events.person;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -46,10 +41,6 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -74,12 +65,6 @@ public abstract class AbstractPersonService
     private PatientService patientService;
 
     @Autowired
-    private PatientIdentifierService patientIdentifierService;
-
-    @Autowired
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    @Autowired
     private PatientAttributeValueService patientAttributeValueService;
 
     @Autowired
@@ -97,15 +82,6 @@ public abstract class AbstractPersonService
     {
         List<Patient> patients = new ArrayList<Patient>( patientService.getAllPatients() );
         return getPersons( patients );
-    }
-
-    @Override
-    public Person getPerson( Identifier identifier )
-    {
-        PatientIdentifierType patientIdentifierType = patientIdentifierTypeService
-            .getPatientIdentifierTypeByUid( identifier.getIdentifier() );
-        Patient patient = patientIdentifierService.getPatient( patientIdentifierType, identifier.getValue() );
-        return getPerson( patient );
     }
 
     @Override
@@ -172,21 +148,6 @@ public abstract class AbstractPersonService
             person.getRelationships().add( relationship );
         }
 
-        for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
-        {
-            String identifierId = patientIdentifier.getIdentifierType() == null ? null : patientIdentifier
-                .getIdentifierType().getUid();
-
-            String identifierType = patientIdentifier.getIdentifierType() == null ? "system" : patientIdentifier.getIdentifierType().getType();
-
-            String displayName = patientIdentifier.getIdentifierType() != null ? patientIdentifier.getIdentifierType()
-                .getDisplayName() : null;
-
-            Identifier identifier = new Identifier( identifierId, identifierType, patientIdentifier.getIdentifier() );
-            identifier.setDisplayName( displayName );
-            person.getIdentifiers().add( identifier );
-        }
-
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
             .getPatientAttributeValues( patient );
 
@@ -215,8 +176,6 @@ public abstract class AbstractPersonService
 
         patient.setOrganisationUnit( organisationUnit );
 
-        updateIdentifiers( person, patient );
-
         return patient;
     }
 
@@ -231,7 +190,6 @@ public abstract class AbstractPersonService
         importSummary.setDataValueCount( null );
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        importConflicts.addAll( checkIdentifiers( person ) );
         importConflicts.addAll( checkAttributes( person ) );
 
         importSummary.setConflicts( importConflicts );
@@ -242,8 +200,6 @@ public abstract class AbstractPersonService
             importSummary.getImportCount().incrementIgnored();
             return importSummary;
         }
-
-        updateSystemIdentifier( person );
 
         Patient patient = getPatient( person );
         patientService.savePatient( patient );
@@ -270,7 +226,6 @@ public abstract class AbstractPersonService
 
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
         importConflicts.addAll( checkRelationships( person ) );
-        importConflicts.addAll( checkIdentifiers( person ) );
         importConflicts.addAll( checkAttributes( person ) );
 
         Patient patient = manager.get( Patient.class, person.getPerson() );
@@ -298,14 +253,11 @@ public abstract class AbstractPersonService
             return importSummary;
         }
 
-        updateSystemIdentifier( person );
         removeRelationships( patient );
-        removeIdentifiers( patient );
         removeAttributeValues( patient );
         patientService.updatePatient( patient );
 
         updateRelationships( person, patient );
-        updateIdentifiers( person, patient );
         updateAttributeValues( person, patient );
         patientService.updatePatient( patient );
 
@@ -339,65 +291,6 @@ public abstract class AbstractPersonService
     // HELPERS
     // -------------------------------------------------------------------------
 
-    private List<ImportConflict> checkIdentifiers( Person person )
-    {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        Collection<PatientIdentifierType> patientIdentifierTypes = manager.getAll( PatientIdentifierType.class );
-        Map<String, String> cacheMap = new HashMap<String, String>();
-        Patient patient = manager.get( Patient.class, person.getPerson() );
-
-        for ( Identifier identifier : person.getIdentifiers() )
-        {
-            if ( identifier.getValue() != null )
-            {
-                cacheMap.put( identifier.getIdentifier(), identifier.getValue() );
-            }
-        }
-
-        for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
-        {
-            if ( patientIdentifierType.isMandatory() )
-            {
-                if ( !cacheMap.keySet().contains( patientIdentifierType.getUid() ) )
-                {
-                    importConflicts.add( new ImportConflict( "Identifier.type", "Missing required identifier type "
-                        + patientIdentifierType.getUid() ) );
-                }
-            }
-
-            List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>(
-                patientIdentifierService.getAll( patientIdentifierType, cacheMap.get( patientIdentifierType.getUid() ) ) );
-
-            if ( !patientIdentifiers.isEmpty() )
-            {
-                // if .size() > 1, there is something wrong with the db.. but we
-                // for-loop for now
-                for ( PatientIdentifier patientIdentifier : patientIdentifiers )
-                {
-                    if ( !patientIdentifier.getPatient().equals( patient ) )
-                    {
-                        importConflicts.add( new ImportConflict( "Identifier.value",
-                            "Value already exists for patient " + patientIdentifier.getPatient().getUid()
-                                + " with identifier type " + patientIdentifierType.getUid() ) );
-                    }
-                }
-            }
-        }
-
-        for ( Identifier identifier : person.getIdentifiers() )
-        {
-            PatientIdentifierType patientIdentifierType = manager.get( PatientIdentifierType.class,
-                identifier.getIdentifier() );
-
-            if ( patientIdentifierType == null )
-            {
-                importConflicts.add( new ImportConflict( "Identifier.type", "Invalid type " + identifier.getIdentifier() ) );
-            }
-        }
-
-        return importConflicts;
-    }
-
     private List<ImportConflict> checkAttributes( Person person )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
@@ -430,7 +323,8 @@ public abstract class AbstractPersonService
 
             if ( patientAttribute == null )
             {
-                importConflicts.add( new ImportConflict( "Attribute.type", "Invalid type " + attribute.getAttribute() ) );
+                importConflicts
+                    .add( new ImportConflict( "Attribute.type", "Invalid type " + attribute.getAttribute() ) );
             }
         }
 
@@ -481,72 +375,6 @@ public abstract class AbstractPersonService
         }
     }
 
-    private void updateSystemIdentifier( Person person )
-    {
-        Iterator<Identifier> iterator = person.getIdentifiers().iterator();
-
-        // remove any old system identifiers
-        while ( iterator.hasNext() )
-        {
-            Identifier identifier = iterator.next();
-
-            if ( identifier.getIdentifier() == null )
-            {
-                iterator.remove();
-            }
-        }
-        Identifier identifier = null;
-        if ( person.getPerson() != null )
-        {
-            Patient patient = manager.get( Patient.class, person.getPerson() );
-
-            for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
-            {
-                if ( patientIdentifier.getIdentifierType() == null && patientIdentifier.getIdentifier() != null )
-                {
-                    identifier = new Identifier( patientIdentifier.getIdentifier() );
-                    break;
-                }
-            }
-        }
-
-        if ( identifier != null )
-        {
-            person.getIdentifiers().add( identifier );
-        }
-    }
-
-    // add identifiers from person => patient
-    private void updateIdentifiers( Person person, Patient patient )
-    {
-        for ( Identifier identifier : person.getIdentifiers() )
-        {
-            if ( identifier.getIdentifier() == null )
-            {
-                PatientIdentifier patientIdentifier = new PatientIdentifier();
-                patientIdentifier.setIdentifier( identifier.getValue().trim() );
-                patientIdentifier.setIdentifierType( null );
-                patientIdentifier.setPatient( patient );
-
-                patient.getIdentifiers().add( patientIdentifier );
-
-                continue;
-            }
-
-            PatientIdentifierType type = manager.get( PatientIdentifierType.class, identifier.getIdentifier() );
-
-            if ( type != null && nullIfEmpty( identifier.getValue() ) != null )
-            {
-                PatientIdentifier patientIdentifier = new PatientIdentifier();
-                patientIdentifier.setIdentifier( identifier.getValue().trim() );
-                patientIdentifier.setIdentifierType( type );
-                patientIdentifier.setPatient( patient );
-
-                patient.getIdentifiers().add( patientIdentifier );
-            }
-        }
-    }
-
     private void updateRelationships( Person person, Patient patient )
     {
         for ( org.hisp.dhis.dxf2.events.person.Relationship relationship : person.getRelationships() )
@@ -571,17 +399,6 @@ public abstract class AbstractPersonService
         {
             relationshipService.deleteRelationship( relationship );
         }
-    }
-
-    private void removeIdentifiers( Patient patient )
-    {
-        for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
-        {
-            patientIdentifierService.deletePatientIdentifier( patientIdentifier );
-        }
-
-        patient.setIdentifiers( new HashSet<PatientIdentifier>() );
-        patientService.updatePatient( patient );
     }
 
     private void removeAttributeValues( Patient patient )

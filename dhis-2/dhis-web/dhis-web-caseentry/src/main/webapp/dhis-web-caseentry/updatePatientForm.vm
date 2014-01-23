@@ -46,19 +46,6 @@
 <input type="hidden" id="uid" name="uid" value="$patient.uid">
 
 <table>	
-	#if($!customRegistrationForm)
-		<div id='barcodePatient'></div>
-	#elseif($!systemIdentifier)
-		<tr>
-			<th colspan="2" class="heading-column">$i18n.getString( "system_identifier" )</th>
-		</tr>	
-		<tr>
-			<td colspan='2'><br><div id='barcodePatient'></div></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-		</tr>	
-	#end
 	
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
 	
@@ -83,10 +70,10 @@
 			<td class="bold text-column">$i18n.getString("relationship"): </td>
 			<td>$encoder.htmlEncode($!relationship.relationshipType.aIsToB)</td>
 		</tr>
-		#foreach( $patientIdentifier in $representative.identifiers )
+		#foreach( $attributeValue in $representative.attributeValues )
 		  <tr>  
-			<td class="bold text-column">#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.displayName: #else $i18n.getString("system_identifier"): #end</td>      
-			  <td> $!patientIdentifier.identifier </td>
+			<td class="bold text-column">$attributeValue.patientAttribute.displayName: </td>      
+			  <td> $!attributeValue.value </td>
 		   </tr>
 		#end
 		<tr>
@@ -102,15 +89,3 @@
 		</tr>
 	</table>
 </div>
-
-<script>
-	var systemIdentifier = "";
-	#foreach ( $idValue in $patient.identifiers )
-		#if( $!idValue.identifierType)
-		#else
-			systemIdentifier = "$idValue.identifier";
-		#end
-	#end
-	$("#barcodePatient").barcode(systemIdentifier, "ean13",{barWidth:2, barHeight:30});
-</script>
-

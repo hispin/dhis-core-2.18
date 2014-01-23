@@ -28,21 +28,20 @@ package org.hisp.dhis.mobile.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.api.mobile.ActivityReportingService;
-import org.hisp.dhis.api.mobile.NotAllowedException;
-import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
-import org.hisp.dhis.api.mobile.model.PatientAttribute;
-import org.hisp.dhis.api.mobile.model.PatientIdentifier;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.api.mobile.ActivityReportingService;
+import org.hisp.dhis.api.mobile.NotAllowedException;
+import org.hisp.dhis.api.mobile.model.PatientAttribute;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.Patient;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ActivityReportingServiceTest
     extends DhisSpringTest
@@ -86,7 +85,6 @@ public class ActivityReportingServiceTest
         patient.setPhoneNumber( "095678943" );
         patient.setRegistrationDate( new Date() );
         patient.setIncidentDate( "Incident Date" );
-        patient.setIdentifiers( new ArrayList<PatientIdentifier>() );
         patient.setAttributes( new ArrayList<PatientAttribute>() );
         return patient;
     }

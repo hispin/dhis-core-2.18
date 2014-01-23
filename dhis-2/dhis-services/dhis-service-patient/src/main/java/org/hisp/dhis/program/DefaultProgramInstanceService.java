@@ -47,8 +47,6 @@ import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patient.PatientReminderService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -316,43 +314,6 @@ public class DefaultProgramInstanceService
             attrGrid.addValue( value );
         }
 
-        // ---------------------------------------------------------------------
-        // Add identifier
-        // ---------------------------------------------------------------------
-
-        Collection<PatientIdentifier> identifiers = patient.getIdentifiers();
-        Iterator<PatientIdentifier> iterIdentifier = identifiers.iterator();
-
-        for ( Program program : programs )
-        {
-            List<PatientIdentifierType> identifierTypes = program.getIdentifierTypes();
-            
-            while ( iterIdentifier.hasNext() )
-            {
-                PatientIdentifier identifier = iterIdentifier.next();
-                if ( !identifierTypes.contains( identifier.getIdentifierType() ) )
-                {
-                    iterIdentifier.remove();
-                }
-            }
-        }
-
-        for ( PatientIdentifier identifier : identifiers )
-        {
-            attrGrid.addRow();
-            PatientIdentifierType idType = identifier.getIdentifierType();
-            if ( idType != null )
-            {
-                attrGrid.addValue( idType.getName() );
-            }
-            else
-            {
-                attrGrid.addValue( i18n.getString( "system_identifier" ) );
-
-            }
-            attrGrid.addValue( identifier.getIdentifier() );
-        }
-
         grids.add( attrGrid );
 
         // ---------------------------------------------------------------------
@@ -403,44 +364,16 @@ public class DefaultProgramInstanceService
         grid.addValue( programInstance.getProgram().getDateOfEnrollmentDescription() );
         grid.addValue( format.formatDate( programInstance.getEnrollmentDate() ) );
 
-        // Get patient-identifiers which belong to the program
-
-        Patient patient = programInstance.getPatient();
-
-        List<PatientIdentifierType> identifierTypes = programInstance.getProgram().getIdentifierTypes();
-
-        Collection<PatientIdentifier> identifiers = patient.getIdentifiers();
-
-        if ( identifierTypes != null && identifiers.size() > 0 )
-        {
-            for ( PatientIdentifierType identifierType : identifierTypes )
-            {
-                for ( PatientIdentifier identifier : identifiers )
-                {
-                    if ( identifier.getIdentifierType() != null
-                        && identifier.getIdentifierType().equals( identifierType ) )
-                    {
-                        grid.addRow();
-                        grid.addValue( identifierType.getDisplayName() );
-                        grid.addValue( identifier.getIdentifier() );
-                    }
-                    else if ( identifier.getIdentifierType() == null )
-                    {
-                        grid.addRow();
-                        grid.addValue( i18n.getString( "system_identifier" ) );
-                        grid.addValue( identifier.getIdentifier() );
-                    }
-                }
-            }
-        }
-
         // Get patient-attribute-values which belong to the program
+        
+        Patient patient = programInstance.getPatient();
 
         Collection<PatientAttribute> atttributes = programInstance.getProgram().getAttributes();
 
         for ( PatientAttribute attrtibute : atttributes )
         {
-            PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, attrtibute );
+            PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
+                attrtibute );
             if ( attributeValue != null )
             {
                 grid.addRow();

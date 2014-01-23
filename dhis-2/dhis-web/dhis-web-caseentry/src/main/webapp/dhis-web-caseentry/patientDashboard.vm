@@ -40,14 +40,7 @@
 					<td>$!programIndicatorsMap.get($key)</td>
 				</tr>
 				#end
-				#foreach( $identifier in $identifiers )
-				<tr>
-					<td>
-						$!identifier.identifierType.displayName
-					</td>
-					<td id='dashboard_iden$identifier.identifierType.id'>$identifier.identifier</td>
-				</tr>
-				#end
+				
 				#foreach( $attributeValue in $attributeValues )
 				<tr>
 					<td>$attributeValue.patientAttribute.displayName</td>
@@ -197,8 +190,8 @@
 							<td>
 								#set($patient=$rel.patientB)
 								#set($value="")
-								#foreach( $identifier in $patient.identifiers)
-									#set($value=$identifier.identifier)
+								#foreach( $attributeValue in $patient.attributeValues)
+									#set( $value= $value + $attributeValue.value + '&#13;&#10;' )
 								#end
 								<a href='#'>$value</a>
 							</td>

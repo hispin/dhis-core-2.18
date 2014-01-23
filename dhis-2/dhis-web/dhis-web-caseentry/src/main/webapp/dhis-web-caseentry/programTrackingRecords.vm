@@ -22,12 +22,7 @@
 	<thead>
 		<tr>
 			<th>$i18n.getString('risk')</th>
-			#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
-				#if($programIdentifierType.displayedInList=='true')
-					<th>$encoder.htmlEncode($programIdentifierType.patientIdentifierType.displayName)</th>
-				#end
-			#end
-
+			
 			#foreach( $programAttribute in $program.programPatientAttributes )
 				#if($programAttribute.displayedInList=='true')
 					<th id="patientAttributeName">$encoder.htmlEncode($programAttribute.patientAttribute.displayName)</th>
@@ -55,20 +50,6 @@
 				<img src='images/unrisk_large.png'>			
 				#end
 			</td>
-			
-			#foreach( $programIdentifierType in $program.programPatientIdentifierTypes)
-				#set($id="")
-				#if($programIdentifierType.displayedInList=='true')
-					<td name='infor_$patient.id' class='$class'><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.id' )">
-						#foreach( $identifier in $patient.identifiers)
-							#if($!identifier.identifierType.id==$programIdentifierType.patientIdentifierType.id)
-								$identifier.identifier
-							#end
-						#end 
-						</a>
-					</td>
-				#end
-			#end
 			
 			#foreach( $programAttribute in $program.programPatientAttributes )
 				#if($programAttribute.displayedInList=='true')

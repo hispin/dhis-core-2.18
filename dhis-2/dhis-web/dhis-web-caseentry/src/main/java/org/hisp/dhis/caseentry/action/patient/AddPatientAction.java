@@ -44,10 +44,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.relationship.Relationship;
@@ -66,17 +62,11 @@ public class AddPatientAction
 {
     public static final String PREFIX_ATTRIBUTE = "attr";
 
-    public static final String PREFIX_IDENTIFIER = "iden";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
-
-    private PatientIdentifierService patientIdentifierService;
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private PatientAttributeService patientAttributeService;
 
@@ -121,7 +111,7 @@ public class AddPatientAction
         patient.setOrganisationUnit( organisationUnit );
 
         // ---------------------------------------------------------------------
-        // Prepare Patient Attributes
+        // Patient Attributes
         // ---------------------------------------------------------------------
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -162,43 +152,8 @@ public class AddPatientAction
             }
         }
 
-        // -------------------------------------------------------------------------
-        // Save patient
-        // -------------------------------------------------------------------------
-
         int patientId = patientService.createPatient( patient, representativeId, relationshipTypeId,
             patientAttributeValues );
-
-        // -----------------------------------------------------------------------------
-        // Prepare Patient Identifiers
-        // -----------------------------------------------------------------------------
-
-        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-
-        String value = null;
-
-        PatientIdentifier pIdentifier = null;
-
-        if ( identifierTypes != null && identifierTypes.size() > 0 )
-        {
-            for ( PatientIdentifierType identifierType : identifierTypes )
-            {
-                value = request.getParameter( PREFIX_IDENTIFIER + identifierType.getId() );
-
-                if ( StringUtils.isNotBlank( value ) )
-                {
-                    pIdentifier = new PatientIdentifier();
-                    pIdentifier.setIdentifierType( identifierType );
-                    pIdentifier.setPatient( patient );
-                    pIdentifier.setIdentifier( value.trim() );
-                    patientIdentifierService.savePatientIdentifier( pIdentifier );
-
-                    patient.getIdentifiers().add( pIdentifier );
-                }
-            }
-        }
-
-        patientService.updatePatient( patient );
 
         // -------------------------------------------------------------------------
         // Create relationship
@@ -271,11 +226,6 @@ public class AddPatientAction
         return message;
     }
 
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
@@ -284,11 +234,6 @@ public class AddPatientAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
-    }
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
     }
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )

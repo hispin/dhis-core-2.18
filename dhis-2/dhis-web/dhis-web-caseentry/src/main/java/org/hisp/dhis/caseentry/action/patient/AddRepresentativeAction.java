@@ -29,27 +29,30 @@ package org.hisp.dhis.caseentry.action.patient;
  */
 
 import java.util.Collection;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
+import org.hisp.dhis.patient.PatientAttributeOptionService;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 
 import com.opensymphony.xwork2.Action;
 
 public class AddRepresentativeAction
     implements Action
 {
+    public static final String PREFIX_ATTRIBUTE = "attr";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -57,17 +60,17 @@ public class AddRepresentativeAction
 
     private PatientService patientService;
 
-    private PatientIdentifierService patientIdentifierService;
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
     private OrganisationUnitSelectionManager selectionManager;
+
+    private PatientAttributeService patientAttributeService;
+
+    private PatientAttributeOptionService patientAttributeOptionService;
+
+    private I18nFormat format;
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
-    private String fullName;
 
     private Integer relationshipTypeId;
 
@@ -92,69 +95,51 @@ public class AddRepresentativeAction
 
         patient = new Patient();
 
-        // ---------------------------------------------------------------------
-        // Set FullName
-        // ---------------------------------------------------------------------
-
-        fullName = fullName.trim();
-        patient.setName( fullName );
         patient.setOrganisationUnit( organisationUnit );
 
-        patientService.savePatient( patient );
-
-        // --------------------------------------------------------------------------------
-        // Generate system id with this format :
-        // (BirthDate)(Gender)(XXXXXX)(checkdigit)
-        // PatientIdentifierType will be null
-        // --------------------------------------------------------------------------------
-
-        String identifier = PatientIdentifierGenerator.getNewIdentifier( new Date(), "F" );
-
-        PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, identifier );
-        while ( systemGenerateIdentifier != null )
-        {
-            identifier = PatientIdentifierGenerator.getNewIdentifier( new Date(), "F" );
-            systemGenerateIdentifier = patientIdentifierService.get( null, identifier );
-        }
-
-        systemGenerateIdentifier = new PatientIdentifier();
-        systemGenerateIdentifier.setIdentifier( identifier );
-        systemGenerateIdentifier.setPatient( patient );
-
-        patientIdentifierService.savePatientIdentifier( systemGenerateIdentifier );
-
-        patientService.updatePatient( patient );
-
-        // -----------------------------------------------------------------------------
-        // Save Patient Identifiers
-        // -----------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // Patient Attributes
+        // ---------------------------------------------------------------------
 
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        String value = null;
+        Collection<PatientAttribute> attributes = patientAttributeService.getAllPatientAttributes();
 
-        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
 
-        PatientIdentifier pIdentifier = null;
+        PatientAttributeValue attributeValue = null;
 
-        if ( identifierTypes != null && identifierTypes.size() > 0 )
+        if ( attributes != null && attributes.size() > 0 )
         {
-            for ( PatientIdentifierType identifierType : identifierTypes )
+            for ( PatientAttribute attribute : attributes )
             {
-                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
-
+                String value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
                 if ( StringUtils.isNotBlank( value ) )
                 {
-                    pIdentifier = new PatientIdentifier();
-                    pIdentifier.setIdentifierType( identifierType );
-                    pIdentifier.setPatient( patient );
-                    pIdentifier.setIdentifier( value.trim() );
-                    patientIdentifierService.savePatientIdentifier( pIdentifier );
-                    patient.getIdentifiers().add( pIdentifier );
+                    attributeValue = new PatientAttributeValue();
+                    attributeValue.setPatient( patient );
+                    attributeValue.setPatientAttribute( attribute );
+                    attributeValue.setValue( value.trim() );
+
+                    if ( attribute.getValueType().equals( PatientAttribute.TYPE_AGE ) )
+                    {
+                        value = format.formatDate( PatientAttribute.getDateFromAge( Integer.parseInt( value ) ) );
+                    }
+                    else if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                    {
+                        PatientAttributeOption option = patientAttributeOptionService.get( Integer.parseInt( value ) );
+                        if ( option != null )
+                        {
+                            attributeValue.setPatientAttributeOption( option );
+                            attributeValue.setValue( option.getName() );
+                        }
+                    }
+                    patientAttributeValues.add( attributeValue );
                 }
             }
-            patientService.updatePatient( patient );
         }
+
+        patientService.createPatient( patient, null, relationshipTypeId, patientAttributeValues );
 
         return SUCCESS;
 
@@ -164,19 +149,19 @@ public class AddRepresentativeAction
     // Getter/Setter
     // -----------------------------------------------------------------------------
 
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
     }
 
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
-        this.patientIdentifierService = patientIdentifierService;
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
@@ -184,9 +169,9 @@ public class AddRepresentativeAction
         this.selectionManager = selectionManager;
     }
 
-    public void setFullName( String fullName )
+    public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
-        this.fullName = fullName;
+        this.patientAttributeOptionService = patientAttributeOptionService;
     }
 
     public Integer getRelationshipTypeId()

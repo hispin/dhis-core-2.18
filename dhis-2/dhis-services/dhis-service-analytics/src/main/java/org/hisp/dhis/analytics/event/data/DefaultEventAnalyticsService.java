@@ -68,8 +68,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -117,9 +115,6 @@ public class DefaultEventAnalyticsService
 
     @Autowired
     private PatientAttributeService attributeService;
-
-    @Autowired
-    private PatientIdentifierTypeService identifierTypeService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -516,13 +511,6 @@ public class DefaultEventAnalyticsService
         if ( at != null && program.getAttributes().contains( at ) )
         {
             return new QueryItem( at, operator, filter, at.isNumericType() );
-        }
-
-        PatientIdentifierType it = identifierTypeService.getPatientIdentifierType( item );
-
-        if ( it != null && program.getIdentifierTypes().contains( it ) )
-        {
-            return new QueryItem( it, operator, filter, false );
         }
 
         throw new IllegalQueryException( "Item identifier does not reference any item part of the program: " + item );

@@ -75,9 +75,6 @@ public class PatientStoreTest
     private PatientAttributeService patientAttributeService;
 
     @Autowired
-    private PatientIdentifierTypeService identifierTypeService;
-
-    @Autowired
     private PatientAttributeValueService patientAttributeValueService;
 
     @Autowired
@@ -117,15 +114,16 @@ public class PatientStoreTest
         OrganisationUnit organisationUnitB = createOrganisationUnit( 'B' );
         organisationUnitService.addOrganisationUnit( organisationUnitB );
 
-        PatientIdentifierType patientIdentifierType = createPatientIdentifierType( 'A' );
-        identifierTypeService.savePatientIdentifierType( patientIdentifierType );
+        PatientAttribute patientAttributeB = createPatientAttribute( 'B' );
+        patientAttributeB.setUnique( true );
+        patientAttributeService.savePatientAttribute( patientAttributeB );
 
         patientAttribute = createPatientAttribute( 'A' );
         attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
 
         patientA1 = createPatient( 'A', organisationUnit );
         patientA2 = createPatient( 'A', organisationUnitB );
-        patientA3 = createPatient( 'A', organisationUnit, patientIdentifierType );
+        patientA3 = createPatient( 'A', organisationUnit, patientAttributeB );
         patientB1 = createPatient( 'B', organisationUnit );
         patientB2 = createPatient( 'B', organisationUnit );
 
@@ -258,7 +256,7 @@ public class PatientStoreTest
         patientStore.save( patientA1 );
         patientStore.save( patientB1 );
 
-        PatientAttribute attribute = createPatientAttribute( 'B' );
+        PatientAttribute attribute = createPatientAttribute( 'C' );
         attribute.setValueType( PatientAttribute.TYPE_PHONE_NUMBER );
         patientAttributeService.savePatientAttribute( attribute );
 
@@ -305,7 +303,7 @@ public class PatientStoreTest
         Collection<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>();
         orgunits.add( organisationUnit );
 
-        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, null, null, null,
+        Collection<Patient> patients = patientStore.search( searchKeys, orgunits, null, null, 
             ProgramStageInstance.ACTIVE_STATUS, null, null );
 
         assertEquals( 1, patients.size() );

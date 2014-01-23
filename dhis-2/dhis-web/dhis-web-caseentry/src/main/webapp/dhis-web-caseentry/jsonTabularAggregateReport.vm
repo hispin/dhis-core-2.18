@@ -46,21 +46,6 @@
 		#end
 	],
 	"items": [
-		#foreach( $item in $dimensionIdentifierTypes )
-			{
-				"id": "$item",
-				"name": "",
-				"compulsory": "",
-				"valueType": #if( $iden.optionSet )
-								"list"
-							 #else
-								"${iden.type}"
-							 #end,
-				"dimension": "true"
-			},
-		#end
-		
-		
 		#foreach( $attr in $dimensionAttributes )
 		{
 			"id": "$attr.uid",
@@ -85,20 +70,6 @@
 						 #end,
 			"dimension": "true"
 		},
-		#end
-		
-		#foreach( $item in $filterIdentifierTypes )
-			{
-				"id": "$item",
-				"name": "",
-				"compulsory": "",
-				"valueType": #if( $iden.optionSet )
-								"list"
-							 #else
-								"${iden.type}"
-							 #end,
-			"dimension": "false"
-			},
 		#end
 		
 		#foreach( $attr in $filterAttributes )

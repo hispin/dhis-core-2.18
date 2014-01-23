@@ -68,18 +68,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientMobileSetting;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.util.PatientIdentifierGenerator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -130,8 +124,6 @@ public class ActivityReportingServiceImpl
 
     private PatientMobileSettingService patientMobileSettingService;
 
-    private PatientIdentifierService patientIdentifierService;
-
     private ProgramStageSectionService programStageSectionService;
 
     private ProgramInstanceService programInstanceService;
@@ -147,8 +139,6 @@ public class ActivityReportingServiceImpl
     private ProgramService programService;
 
     private ProgramStageService programStageService;
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private CurrentUserService currentUserService;
 
@@ -166,11 +156,6 @@ public class ActivityReportingServiceImpl
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
 
     @Required
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -231,12 +216,6 @@ public class ActivityReportingServiceImpl
     public void setGroupByAttribute( org.hisp.dhis.patient.PatientAttribute groupByAttribute )
     {
         this.groupByAttribute = groupByAttribute;
-    }
-
-    @Required
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
     }
 
     @Required
@@ -353,62 +332,6 @@ public class ActivityReportingServiceImpl
 
         Collections.sort( items, activityComparator );
         return new ActivityPlan( items );
-    }
-
-    @Override
-    public ActivityPlan getActivitiesByIdentifier( String keyword )
-        throws NotAllowedException
-    {
-
-        long time = PeriodType.createCalendarInstance().getTime().getTime();
-
-        Calendar expiredDate = Calendar.getInstance();
-
-        List<Activity> items = new ArrayList<Activity>();
-
-        Collection<Patient> patients = patientIdentifierService.getPatientsByIdentifier( keyword, 0,
-            patientIdentifierService.countGetPatientsByIdentifier( keyword ) );
-
-        // Make sure user input full beneficiary identifier number
-
-        if ( patients.size() > 1 )
-        {
-            throw NotAllowedException.NEED_MORE_SPECIFIC;
-        }
-        else if ( patients.size() == 0 )
-        {
-            throw NotAllowedException.NO_BENEFICIARY_FOUND;
-        }
-        else
-        {
-            Iterator<Patient> iterator = patients.iterator();
-
-            while ( iterator.hasNext() )
-            {
-                Patient patient = iterator.next();
-
-                List<ProgramStageInstance> programStageInstances = programStageInstanceService
-                    .getProgramStageInstances( patient, false );
-
-                for ( int i = 0; i < programStageInstances.size(); i++ )
-                {
-                    ProgramStageInstance programStageInstance = programStageInstances.get( i );
-
-                    // expiredDate.setTime( DateUtils.getDateAfterAddition(
-                    // programStageInstance.getDueDate(), 0 ) );
-                    expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), 30 ) );
-
-                    if ( programStageInstance.getDueDate().getTime() <= time && expiredDate.getTimeInMillis() > time )
-                    {
-                        items.add( getActivity( programStageInstance,
-                            programStageInstance.getDueDate().getTime() < time ) );
-                    }
-                }
-            }
-
-            return new ActivityPlan( items );
-        }
-
     }
 
     // -------------------------------------------------------------------------
@@ -848,32 +771,6 @@ public class ActivityReportingServiceImpl
             beneficiary.setGroupAttribute( beneficiaryAttribute );
         }
 
-        // Set all identifier
-        Set<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
-        List<org.hisp.dhis.api.mobile.model.PatientIdentifier> identifiers = new ArrayList<org.hisp.dhis.api.mobile.model.PatientIdentifier>();
-        if ( patientIdentifiers.size() > 0 )
-        {
-
-            for ( PatientIdentifier id : patientIdentifiers )
-            {
-
-                String idTypeName = "DHIS2 ID";
-
-                // MIGHT BE NULL because of strange design..
-                PatientIdentifierType identifierType = id.getIdentifierType();
-
-                if ( identifierType != null )
-                {
-                    idTypeName = identifierType.getName();
-                }
-
-                identifiers
-                    .add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idTypeName, id.getIdentifier() ) );
-            }
-
-            beneficiary.setIdentifiers( identifiers );
-        }
-
         beneficiary.setPatientAttValues( patientAtts );
         return beneficiary;
     }
@@ -922,31 +819,6 @@ public class ActivityReportingServiceImpl
                 }
             }
         }
-
-        // Set all identifier
-        Set<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
-        List<org.hisp.dhis.api.mobile.model.PatientIdentifier> identifiers = new ArrayList<org.hisp.dhis.api.mobile.model.PatientIdentifier>();
-        if ( patientIdentifiers.size() > 0 )
-        {
-
-            for ( PatientIdentifier id : patientIdentifiers )
-            {
-
-                String idTypeName = "DHIS2 ID";
-
-                // MIGHT BE NULL because of strange design..
-                PatientIdentifierType identifierType = id.getIdentifierType();
-
-                if ( identifierType != null )
-                {
-                    idTypeName = identifierType.getName();
-                }
-
-                identifiers
-                    .add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idTypeName, id.getIdentifier() ) );
-            }
-        }
-        patientModel.setIdentifiers( identifiers );
 
         patientModel.setAttributes( patientAtts );
 
@@ -1592,16 +1464,10 @@ public class ActivityReportingServiceImpl
         }
     }
 
-    public Collection<PatientIdentifierType> getIdentifierTypes()
-    {
-        Collection<PatientIdentifierType> patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        return patientIdentifierTypes;
-    }
-
     public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts( String programId )
     {
         Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes = new HashSet<org.hisp.dhis.patient.PatientAttribute>();
-        
+
         if ( programId != null && !programId.trim().equals( "" ) )
         {
             Program program = programService.getProgram( Integer.parseInt( programId ) );
@@ -1613,24 +1479,6 @@ public class ActivityReportingServiceImpl
         }
 
         return patientAttributes;
-    }
-
-    public Collection<PatientIdentifierType> getIdentifiers( String programId )
-    {
-        Collection<PatientIdentifierType> patientIdentifierTypes = new HashSet<PatientIdentifierType>();
-        
-        if ( programId != null && !programId.trim().equals( "" ) )
-        {
-            Program program = programService.getProgram( Integer.parseInt( programId ) );
-            patientIdentifierTypes = program.getIdentifierTypes();
-        }
-        else
-        {
-            patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-        }
-
-        return patientIdentifierTypes;
-
     }
 
     public Collection<PatientAttribute> getAttsForMobile()
@@ -1645,23 +1493,6 @@ public class ActivityReportingServiceImpl
 
         return list;
 
-    }
-
-    @Override
-    public Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> getIdentifiersForMobile( String programId )
-    {
-        Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> list = new HashSet<org.hisp.dhis.api.mobile.model.PatientIdentifier>();
-        for ( PatientIdentifierType identifierType : getIdentifiers( programId ) )
-        {
-            String id = "";
-            String idt = identifierType.getName();
-            if ( identifierType.isMandatory() == true )
-            {
-                idt += " (*)";
-            }
-            list.add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idt, id, identifierType.isMandatory() ) );
-        }
-        return list;
     }
 
     @Override
@@ -1724,47 +1555,10 @@ public class ActivityReportingServiceImpl
         patientWeb.setName( patient.getName() );
         patientWeb.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
-        Set<org.hisp.dhis.patient.PatientIdentifier> patientIdentifierSet = new HashSet<org.hisp.dhis.patient.PatientIdentifier>();
         Set<org.hisp.dhis.patient.PatientAttribute> patientAttributeSet = new HashSet<org.hisp.dhis.patient.PatientAttribute>();
         Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
 
-        Collection<org.hisp.dhis.api.mobile.model.PatientIdentifier> identifiersMobile = patient.getIdentifiers();
-
-        Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
-
         Collection<org.hisp.dhis.api.mobile.model.PatientAttribute> attributesMobile = patient.getAttributes();
-
-        if ( identifierTypes.size() > 0 )
-        {
-            for ( org.hisp.dhis.api.mobile.model.PatientIdentifier identifier : identifiersMobile )
-            {
-                PatientIdentifierType patientIdentifierType = patientIdentifierTypeService
-                    .getPatientIdentifierType( identifier.getIdentifierType() );
-
-                org.hisp.dhis.patient.PatientIdentifier patientIdentifier = new org.hisp.dhis.patient.PatientIdentifier();
-
-                patientIdentifier.setIdentifierType( patientIdentifierType );
-                patientIdentifier.setPatient( patientWeb );
-                patientIdentifier.setIdentifier( identifier.getIdentifier() );
-                patientIdentifierSet.add( patientIdentifier );
-            }
-        }
-        // --------------------------------------------------------------------------------
-        // Generate system id with this format :
-        // (BirthDate)(Gender)(XXXXXX)(checkdigit)
-        // PatientIdentifierType will be null
-        // --------------------------------------------------------------------------------
-        if ( identifierTypes.size() == 0 )
-        {
-            String identifier = PatientIdentifierGenerator.getNewIdentifier(
-                PeriodUtil.stringToDate( patient.getBirthDate() ), patient.getGender() );
-
-            org.hisp.dhis.patient.PatientIdentifier systemGenerateIdentifier = new org.hisp.dhis.patient.PatientIdentifier();
-            systemGenerateIdentifier.setIdentifier( identifier );
-            systemGenerateIdentifier.setIdentifierType( null );
-            systemGenerateIdentifier.setPatient( patientWeb );
-            patientIdentifierSet.add( systemGenerateIdentifier );
-        }
 
         if ( attributesMobile != null )
         {
@@ -1785,8 +1579,6 @@ public class ActivityReportingServiceImpl
 
             }
         }
-
-        patientWeb.setIdentifiers( patientIdentifierSet );
 
         patientId = patientService.createPatient( patientWeb, null, null, patientAttributeValues );
 

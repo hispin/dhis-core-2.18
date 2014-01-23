@@ -295,9 +295,24 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN persondisplayname" );
 
         updateProgramAttributes();
-        
+
         executeSql( "UPDATE program SET displayIncidentDate=false WHERE displayIncidentDate is null" );
         executeSql( "UPDATE program SET relationshipFromA=false WHERE relationshipFromA is null" );
+        executeSql( "UPDATE patientattribute SET unique=false WHERE unique is null" );
+
+        executeSql( "INSERT INTO patientattribute "
+            + "( patientattributeid, uid, lastUpdated, name, description, valueType, mandatory, inherit, displayOnVisitSchedule, uniquefield, orgunitScope, programScope )"
+            + " select " + statementBuilder.getAutoIncrementValue()
+            + ", uid, lastUpdated, name,  description, type, mandatory, false, false, true, orgunitScope, programScope from patientidentifiertype" );
+
+        executeSql( "INSERT INTO patientattributevalue (patientid, patientattributeid, value ) "
+            + "select patientid, pa.patientattributeid, identifier "
+            + "from patientidentifier pi inner join patientidentifiertype pit "
+            + "on pi.patientidentifiertypeid=pit.patientidentifiertypeid inner join patientattribute pa "
+            + "on pa.uid=pit.uid where pi.patientid is not null" );
+        executeSql( "DROP TABLE program_identifiertypes" );
+        executeSql( "DROP TABLE patientidentifier" );
+        executeSql( "DROP TABLE patientidentifiertype" );
     }
 
     // -------------------------------------------------------------------------
@@ -498,7 +513,7 @@ public class TableAlteror
     private void addPatientAttributes()
     {
         StatementHolder holder = statementManager.getHolder();
-        
+
         try
         {
             Statement statement = holder.getStatement();

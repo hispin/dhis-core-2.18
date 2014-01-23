@@ -35,14 +35,11 @@ import java.util.Collection;
 
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
-import org.hisp.dhis.api.mobile.model.PatientIdentifier;
 
 public class PatientIdentifierAndAttribute
     implements DataStreamSerializable
 {
     private String clientVersion;
-
-    private Collection<PatientIdentifier> patientIdentifiers;
 
     private Collection<PatientAttribute> patientAttributes;
 
@@ -54,16 +51,6 @@ public class PatientIdentifierAndAttribute
     public void setClientVersion( String clientVersion )
     {
         this.clientVersion = clientVersion;
-    }
-
-    public Collection<PatientIdentifier> getPatientIdentifiers()
-    {
-        return patientIdentifiers;
-    }
-
-    public void setPatientIdentifiers( Collection<PatientIdentifier> patientIdentifiers )
-    {
-        this.patientIdentifiers = patientIdentifiers;
     }
 
     public Collection<PatientAttribute> getPatientAttributes()
@@ -122,24 +109,6 @@ public class PatientIdentifierAndAttribute
     public void serializeVersion2_10( DataOutputStream dout )
         throws IOException
     {
-
-        if ( patientIdentifiers == null )
-        {
-            dout.writeInt( 0 );
-        }
-        else
-        {
-
-            dout.writeInt( patientIdentifiers.size() );
-
-            for ( PatientIdentifier ptype : patientIdentifiers )
-            {
-                ptype.setClientVersion( DataStreamSerializable.TWO_POINT_TEN );
-                ptype.serialize( dout );
-            }
-
-        }
-
         if ( patientAttributes == null )
         {
             dout.writeInt( 0 );

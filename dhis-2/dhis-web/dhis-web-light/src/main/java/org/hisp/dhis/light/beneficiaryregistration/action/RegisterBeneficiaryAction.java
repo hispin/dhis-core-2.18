@@ -32,8 +32,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -46,13 +44,6 @@ public class RegisterBeneficiaryAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
 
     private PatientAttributeService patientAttributeService;
 
@@ -99,18 +90,6 @@ public class RegisterBeneficiaryAction
     public void setOrgUnitId( Integer orgUnitId )
     {
         this.orgUnitId = orgUnitId;
-    }
-
-    private Collection<PatientIdentifierType> patientIdentifierTypes;
-
-    public Collection<PatientIdentifierType> getPatientIdentifierTypes()
-    {
-        return patientIdentifierTypes;
-    }
-
-    public void setPatientIdentifierTypes( Collection<PatientIdentifierType> patientIdentifierTypes )
-    {
-        this.patientIdentifierTypes = patientIdentifierTypes;
     }
 
     private Collection<PatientAttribute> patientAttributes;
@@ -171,7 +150,6 @@ public class RegisterBeneficiaryAction
     public String execute()
         throws Exception
     {
-        patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         patientAttributes = patientAttributeService.getAllPatientAttributes();
         phoneNumberAreaCode = (String) systemSettingManager
             .getSystemSetting( SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE );
@@ -181,7 +159,6 @@ public class RegisterBeneficiaryAction
 
         for ( Program program : programs )
         {
-            patientIdentifierTypes.removeAll( program.getIdentifierTypes() );
             patientAttributes.removeAll( program.getAttributes() );
         }
         return SUCCESS;

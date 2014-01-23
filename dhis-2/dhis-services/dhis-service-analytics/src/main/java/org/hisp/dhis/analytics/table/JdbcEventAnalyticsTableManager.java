@@ -42,7 +42,6 @@ import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
@@ -233,15 +232,6 @@ public class JdbcEventAnalyticsTableManager
                 + "patientattributeid=" + attribute.getId() + dataClause + ") as " + quote( attribute.getUid() );
 
             String[] col = { quote( attribute.getUid() ), dataType, sql };
-            columns.add( col );
-        }
-
-        for ( PatientIdentifierType identifierType : table.getProgram().getIdentifierTypes() )
-        {
-            String sql = "(select identifier from patientidentifier where patientid=pi.patientid and "
-                + "patientidentifiertypeid=" + identifierType.getId() + ") as " + quote( identifierType.getUid() );
-
-            String[] col = { quote( identifierType.getUid() ), "character varying(31)", sql };
             columns.add( col );
         }
 

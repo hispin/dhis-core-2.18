@@ -19,8 +19,13 @@ function showPatientAttributeDetails( context ) {
 		function ( json ) {
 			setInnerHTML( 'nameField', json.patientAttribute.name );	
 			setInnerHTML( 'descriptionField', json.patientAttribute.description );
+			
 			var mandatory = ( json.patientAttribute.mandatory == 'true') ? i18n_yes : i18n_no;
 			setInnerHTML( 'mandatoryField', mandatory );
+			
+			var unique = ( json.patientAttribute.unique == 'true') ? i18n_yes : i18n_no;
+			setInnerHTML( 'uniqueField', unique );
+			
 			var inherit = ( json.patientAttribute.inherit == 'true') ? i18n_yes : i18n_no;
 			setInnerHTML( 'inheritField', inherit );
 			
@@ -95,7 +100,7 @@ ATTRIBUTE_OPTION =
 		{
 			hideById("attributeComboRow");
 		}
-		
+		typeOnChange();
 	},
 	checkOnSubmit : function ()
 	{
@@ -147,4 +152,14 @@ ATTRIBUTE_OPTION =
 	{
 		return "<tr><td><input type='text' name='attrOptions' /><a href='#' style='text-decoration: none; margin-left:0.5em;' title='"+i18n_remove_option+"'  onClick='ATTRIBUTE_OPTION.remove(this,null)'>[ - ]</a></td></tr>";
 	}
+}
+
+function typeOnChange() {
+  var type = getFieldValue('valueType');
+  if( type == 'localId' ) {
+    jQuery('[name=localIdField]').show();
+  }
+  else {
+    jQuery('[name=localIdField]').hide();
+  }
 }

@@ -44,7 +44,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -108,8 +107,6 @@ public class Program
     private Boolean displayIncidentDate = true;
 
     private Boolean ignoreOverdueEvents = false;
-
-    private Set<ProgramPatientIdentifierType> programPatientIdentifierTypes = new HashSet<ProgramPatientIdentifierType>();
 
     private Set<ProgramPatientAttribute> programPatientAttributes = new HashSet<ProgramPatientAttribute>();
 
@@ -179,34 +176,19 @@ public class Program
 
         return elements;
     }
-    
-    /**
-     * Returns PatientIdentifierTypes from ProgramPatientIdentifierTypes.
-     */
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        List<PatientIdentifierType> types = new ArrayList<PatientIdentifierType>();
-        
-        for ( ProgramPatientIdentifierType type : programPatientIdentifierTypes )
-        {
-            types.add( type.getPatientIdentifierType() );
-        }
-        
-        return types;
-    }
-    
+
     /**
      * Returns PatientAttributes from ProgramPatientAttributes.
      */
     public List<PatientAttribute> getAttributes()
     {
         List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
-        
+
         for ( ProgramPatientAttribute attribute : programPatientAttributes )
         {
             attributes.add( attribute.getPatientAttribute() );
         }
-        
+
         return attributes;
     }
 
@@ -398,20 +380,6 @@ public class Program
     public void setPatientValidationCriteria( Set<ValidationCriteria> patientValidationCriteria )
     {
         this.patientValidationCriteria = patientValidationCriteria;
-    }
-
-    @JsonProperty( value = "programPersonIdentifierTypes" )
-    @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
-    @JacksonXmlElementWrapper( localName = "programPersonIdentifierTypes", namespace = DxfNamespaces.DXF_2_0 )
-    @JacksonXmlProperty( localName = "programPersonIdentifierType", namespace = DxfNamespaces.DXF_2_0 )
-    public Set<ProgramPatientIdentifierType> getProgramPatientIdentifierTypes()
-    {
-        return programPatientIdentifierTypes;
-    }
-
-    public void setProgramPatientIdentifierTypes( Set<ProgramPatientIdentifierType> programPatientIdentifierTypes )
-    {
-        this.programPatientIdentifierTypes = programPatientIdentifierTypes;
     }
 
     @JsonProperty

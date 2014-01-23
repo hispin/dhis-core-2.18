@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.UserGroup;
@@ -93,13 +92,6 @@ public class ShowAddProgramPatientReminderAction
         return attributes;
     }
 
-    public List<PatientIdentifierType> identifierTypes;
-
-    public List<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -113,8 +105,6 @@ public class ShowAddProgramPatientReminderAction
 
         attributes = program.getAttributes();
 
-        identifierTypes = program.getIdentifierTypes();
-        
         return SUCCESS;
     }
 }

@@ -41,10 +41,10 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -58,15 +58,17 @@ public class ValidatePatientAction
 {
     public static final String PATIENT_DUPLICATE = "duplicate";
 
+    public static final String PREFIX_ATTRIBUTE = "attr";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
 
-    private PatientIdentifierTypeService identifierTypeService;
-
     private ProgramService programService;
+
+    private PatientAttributeService attributeService;
 
     private OrganisationUnitSelectionManager selectionManager;
 
@@ -85,8 +87,6 @@ public class ValidatePatientAction
     private String message;
 
     private Map<String, String> patientAttributeValueMap = new HashMap<String, String>();
-
-    private PatientIdentifier patientIdentifier;
 
     private Collection<Patient> patients;
 
@@ -117,29 +117,29 @@ public class ValidatePatientAction
 
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        Collection<PatientIdentifierType> identifierTypes = identifierTypeService.getAllPatientIdentifierTypes();
+        Collection<PatientAttribute> attributes = attributeService.getAllPatientAttributes();
 
-        if ( identifierTypes != null && identifierTypes.size() > 0 )
+        if ( attributes != null && attributes.size() > 0 )
         {
             String value = null;
 
-            Set<PatientIdentifier> patientIdentifiers = new HashSet<PatientIdentifier>();
+            Set<PatientAttributeValue> attributeValues = new HashSet<PatientAttributeValue>();
 
-            for ( PatientIdentifierType idType : identifierTypes )
+            for ( PatientAttribute attribute : attributes )
             {
-                value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );
+                value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
                 if ( StringUtils.isNotBlank( value ) )
                 {
-                    PatientIdentifier patientIdentifier = new PatientIdentifier();
-                    patientIdentifier.setPatient( patient );
-                    patientIdentifier.setIdentifierType( idType );
-                    patientIdentifier.setIdentifier( value );
+                    PatientAttributeValue attributeValue = new PatientAttributeValue();
+                    attributeValue.setPatient( patient );
+                    attributeValue.setPatientAttribute( attribute );
+                    attributeValue.setValue( value );
 
-                    patientIdentifiers.add( patientIdentifier );
+                    attributeValues.add( attributeValue );
                 }
             }
 
-            patient.setIdentifiers( patientIdentifiers );
+            patient.setAttributeValues( attributeValues );
         }
 
         // ---------------------------------------------------------------------
@@ -172,9 +172,9 @@ public class ValidatePatientAction
         return patients;
     }
 
-    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
+    public void setAttributeService( PatientAttributeService attributeService )
     {
-        this.identifierTypeService = identifierTypeService;
+        this.attributeService = attributeService;
     }
 
     public void setPatientService( PatientService patientService )
@@ -195,11 +195,6 @@ public class ValidatePatientAction
     public Map<String, String> getPatientAttributeValueMap()
     {
         return patientAttributeValueMap;
-    }
-
-    public PatientIdentifier getPatientIdentifier()
-    {
-        return patientIdentifier;
     }
 
     public void setId( Integer id )

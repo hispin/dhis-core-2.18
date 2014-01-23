@@ -37,6 +37,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
+import org.hisp.dhis.period.PeriodType;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -62,6 +63,8 @@ public class PatientAttribute
     public static final String TYPE_STRING = "string";
 
     public static final String TYPE_INT = "number";
+    
+    public static final String VALUE_TYPE_LETTER = "letter";
 
     public static final String TYPE_BOOL = "bool";
 
@@ -76,6 +79,8 @@ public class PatientAttribute
     public static final String TYPE_USERS = "users";
 
     public static final String TYPE_AGE = "age";
+
+    public static final String VALUE_TYPE_LOCAL_ID = "localId";
 
     private String description;
 
@@ -100,6 +105,16 @@ public class PatientAttribute
     private Boolean displayInListNoProgram = false;
 
     private Integer sortOrderInListNoProgram;
+
+    private Boolean unique = false;
+
+    // For Local ID type
+
+    private Boolean orgunitScope = false;
+
+    private Boolean programScope = false;
+
+    private PeriodType periodType;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -306,6 +321,55 @@ public class PatientAttribute
     public void setSortOrderInListNoProgram( Integer sortOrderInListNoProgram )
     {
         this.sortOrderInListNoProgram = sortOrderInListNoProgram;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getUnique()
+    {
+        return unique;
+    }
+
+    public void setUnique( Boolean unique )
+    {
+        this.unique = unique;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getOrgunitScope()
+    {
+        return orgunitScope;
+    }
+
+    public void setOrgunitScope( Boolean orgunitScope )
+    {
+        this.orgunitScope = orgunitScope;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public Boolean getProgramScope()
+    {
+        return programScope;
+    }
+
+    public void setProgramScope( Boolean programScope )
+    {
+        this.programScope = programScope;
+    }
+
+    public PeriodType getPeriodType()
+    {
+        return periodType;
+    }
+
+    public void setPeriodType( PeriodType periodType )
+    {
+        this.periodType = periodType;
     }
 
     // -------------------------------------------------------------------------
