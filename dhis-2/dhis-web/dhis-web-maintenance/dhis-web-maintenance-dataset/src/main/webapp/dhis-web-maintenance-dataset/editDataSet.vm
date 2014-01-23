@@ -201,6 +201,15 @@
         </td>
       </tr>
       <tr>
+        <td><label for="validCompleteOnly">$i18n.getString( "no_value_requires_comment" )</label></td>
+        <td>
+          <select id="noValueRequiresComment" name="noValueRequiresComment">
+            <option value="false">$i18n.getString( "no" )</option>
+            <option value="true"#if( $dataSet.noValueRequiresComment == true ) selected="selected"#end>$i18n.getString( "yes" )</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
         <td>$i18n.getString( 'legend_set' )</td>
         <td>
           <select id="selectedLegendSetId" name="selectedLegendSetId">

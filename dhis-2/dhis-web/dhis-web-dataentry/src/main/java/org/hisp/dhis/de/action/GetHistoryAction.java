@@ -29,7 +29,6 @@ package org.hisp.dhis.de.action;
  */
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -188,13 +187,6 @@ public class GetHistoryAction
     public DataValue getDataValue()
     {
         return dataValue;
-    }
-
-    private List<String> standardComments;
-
-    public List<String> getStandardComments()
-    {
-        return standardComments;
     }
 
     private Collection<DataValueAudit> dataValueAudits;

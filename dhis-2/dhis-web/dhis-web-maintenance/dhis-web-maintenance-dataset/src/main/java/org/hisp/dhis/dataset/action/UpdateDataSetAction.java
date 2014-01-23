@@ -237,6 +237,13 @@ public class UpdateDataSetAction
         this.validCompleteOnly = validCompleteOnly;
     }
 
+    private boolean noValueRequiresComment;
+    
+    public void setNoValueRequiresComment( boolean noValueRequiresComment )
+    {
+        this.noValueRequiresComment = noValueRequiresComment;
+    }
+
     private boolean skipOffline;
 
     public void setSkipOffline( boolean skipOffline )
@@ -358,6 +365,7 @@ public class UpdateDataSetAction
         dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
         dataSet.setValidCompleteOnly( validCompleteOnly );
+        dataSet.setNoValueRequiresComment( noValueRequiresComment );
         dataSet.setNotifyCompletingUser( notifyCompletingUser );
         dataSet.setApproveData( approveData );
         dataSet.setSkipOffline( skipOffline );
