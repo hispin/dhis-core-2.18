@@ -315,23 +315,26 @@ public class CsdController
 
             for ( DataSet dataSet : organisationUnit.getDataSets() )
             {
-                if ( dataSet.getCode() == null )
-                {
-                    continue;
-                }
-
-                Service service = new Service();
-                service.setOid( "No oid, please provide service_oid attribute value." );
-
+                String oid = null;
+                
                 for ( AttributeValue attributeValue : dataSet.getAttributeValues() )
                 {
                     if ( attributeValue.getAttribute().getName().equals( "service_oid" ) )
                     {
-                        service.setOid( attributeValue.getValue() );
+                        oid = attributeValue.getValue() ;
                         break;
                     }
                 }
 
+                // skip if dataset doesn't have a service oid
+                if (oid == null)
+                {
+                    continue;
+                }
+                
+                Service service = new Service();
+                service.setOid( oid );
+    
                 service.getNames().add( new Name( new CommonName( dataSet.getDisplayName() ) ) );
 
                 organization.getServices().add( service );
