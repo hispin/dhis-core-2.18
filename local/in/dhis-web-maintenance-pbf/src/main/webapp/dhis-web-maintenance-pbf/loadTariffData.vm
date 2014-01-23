@@ -1,5 +1,6 @@
+
 <script type="text/javascript" >
-	
+
 	Ext.Loader.setConfig({
 		enabled: true
 	});
@@ -15,6 +16,7 @@
 
 <script >
 	
+
 $(function() {
 			Ext.QuickTips.init();
 			
@@ -23,9 +25,52 @@ $(function() {
             enableColumnMove: true,
             enableColumnResize: true,
             sortOnLoad: true,
-			width: 840,
+			width: tableWidth,
         	height: 360,			
-            sorters: {direction: 'ASC'}
+            sorters: {direction: 'ASC'},
+			autoCreateViewPort:false,
+			renderTo: Ext.Element.get('#tariffTable'),
+        	layout: {
+            	type: 'hbox',
+            	align: 'stretch'
+        	},
+			columns: [
+    		{
+                text     : 'PBF Type',
+    			width    : columnWidth,            
+                sortable : true
+            },
+			{
+                text     : 'Tariff',
+    			width    : columnWidth,            
+                sortable : true
+            },
+			{
+                text     : 'Target',
+    			width    : columnWidth,						
+                sortable : true
+            },
+			{
+                text     : 'Target %',
+    			width    : columnWidth,						
+                sortable : true
+            },
+			{
+                text     : 'Start Date',
+    			width    : columnWidth,						
+                sortable : true
+            },
+			{
+                text     : 'End Date',
+    			width    : columnWidth,						
+                sortable : true
+            },
+			{
+                text     : 'Operations',
+    			width    : columnWidth,						
+                sortable : false
+            }
+			]
 			});
 			
 			grid.render();
@@ -233,8 +278,8 @@ $( "#addTariff" ).dialog({
 </div>
 <br/><br/>
 <input type="hidden" id="dataElementId" name="dataElementId" value="$!selecteddataElement.id"/>
-<div style="width:100%;margin:auto;">
-<table style="width:100%" id="tariffDetails" name="tariffDetails" cellspacing="0">
+<div style="width:100%;" id="tariffTable">
+<table id="tariffDetails" name="tariffDetails" cellspacing="0">
 	<thead >
 		<tr >
 			<th >PBF Type</th>
@@ -277,7 +322,7 @@ $( "#addTariff" ).dialog({
 		#end
     </tbody>
 </table>
-
+</div>
 <div id="addTariff" title="Add New Tariff">
 	<table style="width:100%;table-layout:fixed;">
 		<tr >
@@ -316,14 +361,14 @@ $( "#addTariff" ).dialog({
 			<td colspan="2">&nbsp;</td>
         </tr>
 		<tr >
-			<td style="width:40%;">Target <b class="mandatory">*</b> </td>
+			<td style="width:40%;">Target  </td>
 			<td style="width:60%;"><input type="text" id="target" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
         </tr>
 		<tr >
 			<td colspan="2">&nbsp;</td>
         </tr>
 		<tr >
-			<td style="width:40%;">Target % <b class="mandatory">*</b> </td>
+			<td style="width:40%;">Target % </td>
 			<td style="width:60%;"><input type="text" id="targetPercentage" style="width:100%;" value="" onblur="validateAddTariff()" /></td>
         </tr>
 		

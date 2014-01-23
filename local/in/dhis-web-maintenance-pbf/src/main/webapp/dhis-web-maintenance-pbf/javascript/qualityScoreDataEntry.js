@@ -19,7 +19,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	{
 		var dataSetId = $( '#dataSetId' ).val();
 		var periodId = $( '#selectedPeriodId' ).val();
-		 $.getJSON( 'getOrganisationUnitForQuality.action', {orgUnitId:orgUnitIds[0]}
+		 $.getJSON( 'getOrganisationUnitForScore.action', {orgUnitId:orgUnitIds[0]}
 	        , function( json ) 
 	        {
 	            var type = json.response;

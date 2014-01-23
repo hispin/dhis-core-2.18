@@ -6,15 +6,33 @@
 	var COLOR_WHITE = '#ffffff';
 	var COLOR_GREY = '#cccccc';
 	var LocaleColor = 'black';
+	var countryTags;
 	
 function orgUnitHasBeenSelected( orgUnitIds )
-{    
+{
 	$( '#dataEntryFormDiv' ).html( '' );
-	
+	var bValue = false;
+	for(var i=0;i<=countryTags.length-1;i++)
+	{
+    	if(countryTags[i] == orgUnitIds[0] )
+    	{
+    		bValue = true;
+    	}
+	}
+	if(bValue == false)
+	{
+		disable('dataSetId');
+        disable('selectedPeriodId');
+        disable('startDate');
+        disable('endDate');
+		alert('Please Select Correct level OrgUnit');
+	}
+	else
+	{		
 	if( orgUnitIds != null && orgUnitIds != "" )
 	{
 		var dataSetId = $( '#dataSetId' ).val();		
-		 $.getJSON( 'getOrganisationUnitForQuality.action', {orgUnitId:orgUnitIds[0]}
+		 $.getJSON( 'getOrganisationUnitForMax.action', {orgUnitId:orgUnitIds[0]}
 	        , function( json ) 
 	        {
 	            var type = json.response;
@@ -23,7 +41,8 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	            if( type == "success" )
 	            {
 					enable('dataSetId');
-					
+					enable('startDate');
+					enable('endDate');
 					var options = '';
 		            $.each(json.dataSets, function(i, obj){
 		                options += '<option value="' + obj.id + '"'+ '>' + obj.name + '</option>';
@@ -41,14 +60,15 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	            {
 	                disable('dataSetId');
 	                disable('selectedPeriodId');
-	                disable('prevButton');
-	                disable('nextButton');
+	                disable('startDate');
+	                disable('endDate');
 	                
 	                setFieldValue('orgUnitName', json.message );
 	                setFieldValue('selectedOrgunitName', json.message );
 	            }
 	        } );		
 	}
+	}	
 }
 
 selection.setListenerFunction( orgUnitHasBeenSelected );
@@ -70,7 +90,7 @@ function loadDataEntryForm()
 	}	
 	if(startDate != "" && endDate != "")
 	{
-		/* var dataValue = {
+		 var dataValue = {
      			'orgUnitId' : orgUnitId,        		        			
      			'startDate' : startDate,
 				'endDate' : endDate,
@@ -83,23 +103,11 @@ function loadDataEntryForm()
              success: handleSuccess,
              error: handleError
          } );
-         */
-		jQuery('#loaderDiv').show();	    
-		jQuery('#dataEntryFormDiv').load('loadQualityMaxForm.action',
-			{
-				orgUnitId:orgUnitId,
-				dataSetId:dataSetId,
-				startDate:startDate,
-				endDate:endDate
-			}, function()
-			{
-				showById('dataEntryFormDiv');
-				jQuery('#loaderDiv').hide();				
-			});
-		hideLoader();
+         
+		
 	}
 	
-/*	function handleSuccess( json )
+	function handleSuccess( json )
 	{		
 		if(json.message == "true")	
 		{
@@ -126,7 +134,7 @@ function loadDataEntryForm()
 	{	
 		alert("Error!");
 	}
-	*/
+	
 }
 
 

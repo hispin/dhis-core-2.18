@@ -116,7 +116,7 @@
             <param name="onExceptionReturn">plainTextError</param>                              
     </action>
         
-	<action name="getOrganisationUnitForQuality" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitAction">
+	<action name="getOrganisationUnitForMax" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitForMaxAction">
         <result name="success" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseSuccess.vm</result>
         <result name="input" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseInput.vm</result>
     </action>
@@ -145,7 +145,12 @@
 	</action>
 	
 	<!-- Quality Score Data Entry -->
-	<action name="qualityScoreDataEntry" class="org.hisp.dhis.pbf.quality.dataentry.QualityMaxInitAction">
+	<action name="getOrganisationUnitForScore" class="org.hisp.dhis.pbf.quality.dataentry.GetOrganisationUnitForScoreAction">
+        <result name="success" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseSuccess.vm</result>
+        <result name="input" type="velocity-json">/dhis-web-maintenance-pbf/jsonResponseInput.vm</result>
+    </action>
+    
+	<action name="qualityScoreDataEntry" class="org.hisp.dhis.pbf.quality.dataentry.QualityScoreInitAction">
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-pbf/qualityScoreEntrySelection.vm</param>

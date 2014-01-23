@@ -43,7 +43,7 @@ import com.opensymphony.xwork2.Action;
 public class LoadQualityScoreDetailsAction
     implements Action
 {
-
+	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
 	private final static String QUALITY_MAX_DATAELEMENT = "QUALITY_MAX_DATAELEMENT";
     // -------------------------------------------------------------------------
     // Dependencies
@@ -154,7 +154,18 @@ public class LoadQualityScoreDetailsAction
 		SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
         
 		Period period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
-		
+		 Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+	        int tariff_setting_authority = 0;
+	        if ( tariff_authority == null )
+	        {
+	            tariff_setting_authority = 1;
+	           
+	        }
+	        else
+	        {
+	            tariff_setting_authority = (int) tariff_authority.getValue();
+	            
+	        }
 		Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         DataSet dataSet = dataSetService.getDataSet(Integer.parseInt(dataSetId));
@@ -176,8 +187,11 @@ public class LoadQualityScoreDetailsAction
         for(DataElement dataElement : dataElements)
         {
         	List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>();
-        	
-        	qualityMaxValues = new ArrayList<QualityMaxValue>(qualityMaxValueService.getQuanlityMaxValues(organisationUnit, dataElement)) ;
+        	OrganisationUnit parentOrgunit = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
+        	if( parentOrgunit != null )
+            {
+        		qualityMaxValues = new ArrayList<QualityMaxValue>(qualityMaxValueService.getQuanlityMaxValues(parentOrgunit, dataElement)) ;
+            }
         	DataValue dataValue = dataValueService.getDataValue(dataElement, period, organisationUnit, optionCombo);
         	for (QualityMaxValue qualityMaxValue : qualityMaxValues) 
         	{
@@ -198,4 +212,16 @@ public class LoadQualityScoreDetailsAction
         Collections.sort(dataElements);
         return SUCCESS;
     }
+	public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
+	{
+		Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
+		if( tariffOULevel == ouLevel )
+		{
+			return organisationUnit;
+		}
+		else
+		{
+			return findParentOrgunitforTariff( organisationUnit.getParent(), tariffOULevel );			
+		}
+	}
 }

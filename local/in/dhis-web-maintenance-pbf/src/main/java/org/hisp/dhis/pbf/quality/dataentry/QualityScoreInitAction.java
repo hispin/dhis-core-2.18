@@ -1,26 +1,40 @@
-package org.hisp.dhis.pbf.dataentry;
+package org.hisp.dhis.pbf.quality.dataentry;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.pbf.api.Lookup;
 import org.hisp.dhis.pbf.api.LookupService;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetOrganisationUnitAction implements Action
+/**
+ * @author Mithilesh Kumar Thakur
+ */
+public class QualityScoreInitAction implements Action
 {
+	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private OrganisationUnitSelectionManager selectionManager;
 
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+    
+    private OrganisationUnitService organisationUnitService;
+    
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
@@ -40,48 +54,78 @@ public class GetOrganisationUnitAction implements Action
         this.dataSetService = dataSetService;
     }
     
-    
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-    private String message;
-    
-    public String getMessage()
+
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
     {
-        return message;
-    }
+        return organisationUnit;
+    }    
     
     private String orgUnitId;
     
-    public String getOrgUnitId()
-    {
-        return orgUnitId;
-    }
-
     public void setOrgUnitId( String orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }
-
+    
     private List<DataSet> dataSets = new ArrayList<DataSet>();
     
     public List<DataSet> getDataSets()
     {
         return dataSets;
     }
+    private String tariff_setting_authority;
 
+    public String getTariff_setting_authority()
+    {
+        return tariff_setting_authority;
+    }
+
+    private List<String> levelOrgUnitIds = new ArrayList<String>();
+
+    public List<String> getLevelOrgUnitIds()
+    {
+        return levelOrgUnitIds;
+    }
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute() throws Exception
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-        //organisationUnit.get
+        //selectionManager.clearSelectedOrganisationUnits();
+    	 
+        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        
+        if( organisationUnit == null )
+        {
+            System.out.println("Organisationunit is null");
+        }
+        else
+        {
+            System.out.println("Organisationunit is not null ---" + organisationUnit.getId() );
+        }
+        
+        if( organisationUnit == null && orgUnitId != null )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+           
+        }
+       // List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getLeafOrganisationUnits(organisationUnit.getId()) ) ;
         
         dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         
-        List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_PBF_TYPE ) );
+        List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
         
         List<DataSet> pbfDataSets = new ArrayList<DataSet>();
         
@@ -99,27 +143,8 @@ public class GetOrganisationUnitAction implements Action
         
         dataSets.retainAll( pbfDataSets );
         Collections.sort(dataSets);
-        
-        /*
-        for( DataSet dataSet : dataSets )
-        {
-            System.out.println(" dataSet ---" + dataSet.getId() +" -- " + dataSet.getName() );
-        }
-        */
-        System.out.println( dataSets.size() );
-        if ( dataSets.size() > 0 )
-        {
-            message = organisationUnit.getName();
-            return SUCCESS;
-            
-        }
-        else
-        {
-            message = organisationUnit.getName();
-            
-            return INPUT;
-        }
-
+        return SUCCESS;
     }
-
 }
+
+
