@@ -43,13 +43,15 @@ import java.util.Set;
 public interface IdentifiableObjectManager
 {
     final String ID = IdentifiableObjectManager.class.getName();
-    
+
     void save( IdentifiableObject object );
 
     void update( IdentifiableObject object );
 
+    void update( List<IdentifiableObject> object );
+
     <T extends IdentifiableObject> T get( String uid );
-    
+
     <T extends IdentifiableObject> T get( Class<T> clazz, int id );
 
     <T extends IdentifiableObject> T get( Class<T> clazz, String uid );
@@ -67,7 +69,7 @@ public interface IdentifiableObjectManager
     <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz );
 
     <T extends IdentifiableObject> Collection<T> getAllSorted( Class<T> clazz );
-    
+
     <T extends IdentifiableObject> List<T> getByUid( Class<T> clazz, Collection<String> uids );
 
     <T extends IdentifiableObject> Collection<T> getLikeName( Class<T> clazz, String name );
