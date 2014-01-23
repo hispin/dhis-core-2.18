@@ -53,7 +53,7 @@ public class IdentityPopulator
         "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "map", "mapview",
         "reporttable", "report", "messageconversation", "message", "userinfo", "usergroup", "userrole", "maplegend",
         "maplegendset", "maplayer", "section", "optionset", "program", "programinstance", "programstage", "programstageinstance",
-        "patient", "patientidentifier", "relationshiptype"
+        "patient", "relationshiptype"
     };
 
     private static final Map<String, String> TABLE_ID_MAP = DimensionalObjectUtils.asMap(
