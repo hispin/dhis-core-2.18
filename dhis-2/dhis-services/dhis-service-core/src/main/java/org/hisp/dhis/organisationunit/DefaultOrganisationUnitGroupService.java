@@ -364,6 +364,7 @@ public class DefaultOrganisationUnitGroupService
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void mergeWithCurrentUserOrganisationUnits( OrganisationUnitGroup organisationUnitGroup, Collection<OrganisationUnit> mergeOrganisationUnits )
     {
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( organisationUnitGroup.getMembers() );
