@@ -130,43 +130,33 @@ public class SmsMessageSender
 
             Set<String> phoneNumbers = null;
 
-            if ( outboundSmsTransportService != null || outboundSmsTransportService.isEnabled() )
+            phoneNumbers = getRecipientsPhoneNumber( toSendList );
+
+            text = createMessage( subject, text, sender );
+
+            // Bulk is limited in sending long SMS, need to cut into small
+            // pieces
+            if ( outboundSmsTransportService.getGatewayMap().get( "bulk_gw" ) != null
+                && outboundSmsTransportService.getGatewayMap().get( "bulk_gw" ).equals( gatewayId ) )
             {
-                phoneNumbers = getRecipientsPhoneNumber( toSendList );
-
-                text = createMessage( subject, text, sender );
-
-                // Bulk is limited in sending long SMS, need to cut into small
-                // pieces
-                if ( outboundSmsTransportService.getGatewayMap().get( "bulk_gw" ) != null
-                    && outboundSmsTransportService.getGatewayMap().get( "bulk_gw" ).equals( gatewayId ) )
+                // Check if text contain any specific unicode character
+                for ( char each : text.toCharArray() )
                 {
-                    // Check if text contain any specific unicode character
-                    for ( char each : text.toCharArray() )
+                    if ( !Character.UnicodeBlock.of( each ).equals( UnicodeBlock.BASIC_LATIN ) )
                     {
-                        if ( !Character.UnicodeBlock.of( each ).equals( UnicodeBlock.BASIC_LATIN ) )
-                        {
-                            MAX_CHAR = 40;
-                            break;
-                        }
+                        MAX_CHAR = 40;
+                        break;
                     }
-                    if ( text.length() > MAX_CHAR )
-                    {
-                        List<String> splitTextList = new ArrayList<String>();
-                        splitTextList = splitLongUnicodeString( text, splitTextList );
-                        for ( String each : splitTextList )
-                        {
-                            if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
-                            {
-                                message = sendMessage( each, phoneNumbers, gatewayId );
-                            }
-                        }
-                    }
-                    else
+                }
+                if ( text.length() > MAX_CHAR )
+                {
+                    List<String> splitTextList = new ArrayList<String>();
+                    splitTextList = splitLongUnicodeString( text, splitTextList );
+                    for ( String each : splitTextList )
                     {
                         if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
                         {
-                            message = sendMessage( text, phoneNumbers, gatewayId );
+                            message = sendMessage( each, phoneNumbers, gatewayId );
                         }
                     }
                 }
@@ -176,6 +166,13 @@ public class SmsMessageSender
                     {
                         message = sendMessage( text, phoneNumbers, gatewayId );
                     }
+                }
+            }
+            else
+            {
+                if ( !phoneNumbers.isEmpty() && phoneNumbers.size() > 0 )
+                {
+                    message = sendMessage( text, phoneNumbers, gatewayId );
                 }
             }
         }
