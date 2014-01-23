@@ -107,6 +107,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "skipaggregation" );
         statementBuilder.setColumn( "fieldcombinationrequired" );
         statementBuilder.setColumn( "validcompleteonly" );
+        statementBuilder.setColumn( "novaluerequirescomment" );
         statementBuilder.setColumn( "skipoffline" );
         statementBuilder.setColumn( "dataelementdecoration" );
         statementBuilder.setColumn( "renderastabs" );
@@ -131,6 +132,7 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.isSkipAggregation() );
         statementBuilder.setValue( dataSet.isFieldCombinationRequired() );
         statementBuilder.setValue( dataSet.isValidCompleteOnly() );
+        statementBuilder.setValue( dataSet.isNoValueRequiresComment() );
         statementBuilder.setValue( dataSet.isSkipOffline() );
         statementBuilder.setValue( dataSet.isDataElementDecoration() );
         statementBuilder.setValue( dataSet.isRenderAsTabs() );
