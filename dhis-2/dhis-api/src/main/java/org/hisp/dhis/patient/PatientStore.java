@@ -40,199 +40,240 @@ import org.hisp.dhis.program.Program;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public interface PatientStore
-    extends GenericIdentifiableObjectStore<Patient>
-{
-    final String ID = PatientStore.class.getName();
+public interface PatientStore extends GenericIdentifiableObjectStore<Patient> {
+	final String ID = PatientStore.class.getName();
 
-    final int MAX_RESULTS = 50000;
+	final int MAX_RESULTS = 50000;
 
-    /**
-     * Search patients who registered in a certain organisation unit
-     * 
-     * @param organisationUnit Organisation unit where patients registered
-     * @param min
-     * @param max
-     * 
-     * @return List of patients
-     */
-    Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
+	/**
+	 * Search patients who registered in a certain organisation unit
+	 * 
+	 * @param organisationUnit
+	 *            Organisation unit where patients registered
+	 * @param min
+	 * @param max
+	 * 
+	 * @return List of patients
+	 */
+	Collection<Patient> getByOrgUnit(OrganisationUnit organisationUnit,
+			Integer min, Integer max);
 
-    /**
-     * Search patients registered into a certain organisation unit and enrolled
-     * into a program with active status
-     * 
-     * @param organisationUnit Organisation unit where patients registered
-     * @param program Program. It's is used for getting attributes of this
-     *        program and put attribute values of patients into the result
-     * @param min
-     * @param max
-     * 
-     * @return List of patients
-     */
-    Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
-        Integer max );
+	/**
+	 * Search patients registered into a certain organisation unit and enrolled
+	 * into a program with active status
+	 * 
+	 * @param organisationUnit
+	 *            Organisation unit where patients registered
+	 * @param program
+	 *            Program. It's is used for getting attributes of this program
+	 *            and put attribute values of patients into the result
+	 * @param min
+	 * @param max
+	 * 
+	 * @return List of patients
+	 */
+	Collection<Patient> getByOrgUnitProgram(OrganisationUnit organisationUnit,
+			Program program, Integer min, Integer max);
 
-    List<Patient> query( TrackedEntityQueryParams params );
+	List<Patient> query(TrackedEntityQueryParams params);
 
-    /**
-     * Search patient who has the same representative
-     * 
-     * @param patient Representative
-     * 
-     * @return List of patients
-     */
-    Collection<Patient> getRepresentatives( Patient patient );
+	/**
+	 * Search patient who has the same representative
+	 * 
+	 * @param patient
+	 *            Representative
+	 * 
+	 * @return List of patients
+	 */
+	Collection<Patient> getRepresentatives(Patient patient);
 
-    /**
-     * Search the number of patients who registered into an organisation unit
-     * 
-     * @param organisationUnit Organisation unit
-     * 
-     * @return The number of patients
-     */
-    int countListPatientByOrgunit( OrganisationUnit organisationUnit );
+	/**
+	 * Search the number of patients who registered into an organisation unit
+	 * 
+	 * @param organisationUnit
+	 *            Organisation unit
+	 * 
+	 * @return The number of patients
+	 */
+	int countListPatientByOrgunit(OrganisationUnit organisationUnit);
 
-    /**
-     * Get the number of patients by full name (performs partial search )
-     * 
-     * @param name A string for searching by full name
-     * 
-     * @return The number of patients
-     */
-    int countGetPatientsByName( String name );
+	/**
+	 * Get the number of patients by full name (performs partial search )
+	 * 
+	 * @param name
+	 *            A string for searching by full name
+	 * 
+	 * @return The number of patients
+	 */
+	int countGetPatientsByName(String name);
 
-    /**
-     * Get the number of patients who registered into a certain organisation
-     * unit and enrolled into a program with active status
-     * 
-     * @param organisationUnit Organisation unit where patients registered
-     * @param program Program. It's is used for getting attributes of this
-     *        program and put attribute values of patients into the result
-     * 
-     * @return The number of patients
-     */
-    int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
+	/**
+	 * Get the number of patients who registered into a certain organisation
+	 * unit and enrolled into a program with active status
+	 * 
+	 * @param organisationUnit
+	 *            Organisation unit where patients registered
+	 * @param program
+	 *            Program. It's is used for getting attributes of this program
+	 *            and put attribute values of patients into the result
+	 * 
+	 * @return The number of patients
+	 */
+	int countGetPatientsByOrgUnitProgram(OrganisationUnit organisationUnit,
+			Program program);
 
-    /**
-     * Get number of patients who meet the criteria for searching
-     * 
-     * @param searchKeys The key for searching patients by attribute values
-     *        and/or a program
-     * @param orgunit Organisation unit where patients registered
-     * @param followup Only getting patients with program risked if this
-     *        property is true. And getting patients without program risked if
-     *        its value is false
-     * @param statusEnrollment The status of program of patients. There are
-     *        three status, includes Active enrollments only, Completed
-     *        enrollments only and Active and completed enrollments
-     * 
-     * @return The number of patients
-     */
-    int countSearch( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
-        Integer statusEnrollment );
+	/**
+	 * Get number of patients who meet the criteria for searching
+	 * 
+	 * @param searchKeys
+	 *            The key for searching patients by attribute values and/or a
+	 *            program
+	 * @param orgunit
+	 *            Organisation unit where patients registered
+	 * @param followup
+	 *            Only getting patients with program risked if this property is
+	 *            true. And getting patients without program risked if its value
+	 *            is false
+	 * @param statusEnrollment
+	 *            The status of program of patients. There are three status,
+	 *            includes Active enrollments only, Completed enrollments only
+	 *            and Active and completed enrollments
+	 * 
+	 * @return The number of patients
+	 */
+	int countSearch(List<String> searchKeys,
+			Collection<OrganisationUnit> orgunit, Boolean followup,
+			Integer statusEnrollment);
 
-    /**
-     * Search patients by phone number (performs partial search)
-     * 
-     * @param phoneNumber The string for searching by phone number
-     * @param min
-     * @param max
-     * 
-     * @return List of patient
-     */
-    Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max );
+	/**
+	 * Search patients by phone number (performs partial search)
+	 * 
+	 * @param phoneNumber
+	 *            The string for searching by phone number
+	 * @param min
+	 * @param max
+	 * 
+	 * @return List of patient
+	 */
+	Collection<Patient> getByPhoneNumber(String phoneNumber, Integer min,
+			Integer max);
 
-    /**
-     * Search events of patients who meet the criteria for searching
-     * 
-     * @param searchKeys The key for searching patients by attribute values
-     *        and/or a program
-     * @param orgunit Organisation unit where patients registered
-     * @param followup Only getting patients with program risked if this
-     *        property is true. And getting patients without program risked if
-     *        its value is false
-     * @param patientAttributes The attribute values of these attribute are
-     *        displayed into result
-     * @param statusEnrollment The status of program of patients. There are
-     *        three status, includes Active enrollments only, Completed
-     *        enrollments only and Active and completed enrollments
-     * @param min
-     * @param max
-     * 
-     * @return List of patients
-     */
-    Collection<Patient> search( List<String> searchKeys, Collection<OrganisationUnit> orgunit, Boolean followup,
-        Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min, Integer max );
+	/**
+	 * Search events of patients who meet the criteria for searching
+	 * 
+	 * @param searchKeys
+	 *            The key for searching patients by attribute values and/or a
+	 *            program
+	 * @param orgunit
+	 *            Organisation unit where patients registered
+	 * @param followup
+	 *            Only getting patients with program risked if this property is
+	 *            true. And getting patients without program risked if its value
+	 *            is false
+	 * @param patientAttributes
+	 *            The attribute values of these attribute are displayed into
+	 *            result
+	 * @param statusEnrollment
+	 *            The status of program of patients. There are three status,
+	 *            includes Active enrollments only, Completed enrollments only
+	 *            and Active and completed enrollments
+	 * @param min
+	 * @param max
+	 * 
+	 * @return List of patients
+	 */
+	Collection<Patient> search(List<String> searchKeys,
+			Collection<OrganisationUnit> orgunit, Boolean followup,
+			Collection<PatientAttribute> patientAttributes,
+			Integer statusEnrollment, Integer min, Integer max);
 
-    /**
-     * Search events which meet the criteria for searching
-     * 
-     * @param searchKeys The key for searching patients by attribute values
-     *        and/or a program
-     * @param orgunit Organisation unit where patients registered
-     * @param followup Only getting patients with program risked if this
-     *        property is true. And getting patients without program risked if
-     *        its value is false
-     * @param patientAttributes The attribute values of these attribute are
-     *        displayed into result
-     * @param statusEnrollment The status of program of patients. There are
-     *        three status, includes Active enrollments only, Completed
-     *        enrollments only and Active and completed enrollments
-     * @param min
-     * @param max
-     * 
-     * @return List of patients
-     */
-    List<Integer> getProgramStageInstances( List<String> searchKeys, Collection<OrganisationUnit> orgunits,
-        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min,
-        Integer max );
+	/**
+	 * Search events which meet the criteria for searching
+	 * 
+	 * @param searchKeys
+	 *            The key for searching patients by attribute values and/or a
+	 *            program
+	 * @param orgunit
+	 *            Organisation unit where patients registered
+	 * @param followup
+	 *            Only getting patients with program risked if this property is
+	 *            true. And getting patients without program risked if its value
+	 *            is false
+	 * @param patientAttributes
+	 *            The attribute values of these attribute are displayed into
+	 *            result
+	 * @param statusEnrollment
+	 *            The status of program of patients. There are three status,
+	 *            includes Active enrollments only, Completed enrollments only
+	 *            and Active and completed enrollments
+	 * @param min
+	 * @param max
+	 * 
+	 * @return List of patients
+	 */
+	List<Integer> getProgramStageInstances(List<String> searchKeys,
+			Collection<OrganisationUnit> orgunits, Boolean followup,
+			Collection<PatientAttribute> patientAttributes,
+			Integer statusEnrollment, Integer min, Integer max);
 
-    /**
-     * Search patients who enrolled into a program with active status
-     * 
-     * @param program Program
-     * @param min
-     * @param max
-     * 
-     *        return List of patients
-     */
-    Collection<Patient> getByProgram( Program program, Integer min, Integer max );
+	/**
+	 * Search patients who enrolled into a program with active status
+	 * 
+	 * @param program
+	 *            Program
+	 * @param min
+	 * @param max
+	 * 
+	 *            return List of patients
+	 */
+	Collection<Patient> getByProgram(Program program, Integer min, Integer max);
 
-    /**
-     * Search events of patients who meet the criteria for searching
-     * 
-     * @param grid Grid with headers
-     * @param searchKeys The key for searching patients by attribute values
-     *        and/or a program
-     * @param orgunit Organisation unit where patients registered
-     * @param followup Only getting patients with program risked if this
-     *        property is true. And getting patients without program risked if
-     *        its value is false
-     * @param patientAttributes The attribute values of these attribute are
-     *        displayed into result
-     * @param statusEnrollment The status of program of patients. There are
-     *        three status, includes Active enrollments only, Completed
-     *        enrollments only and Active and completed enrollments
-     * @param min
-     * @param max
-     * 
-     * @return Grid
-     */
-    Grid getPatientEventReport( Grid grid, List<String> searchKeys, Collection<OrganisationUnit> orgunit,
-        Boolean followup, Collection<PatientAttribute> patientAttributes, Integer statusEnrollment, Integer min,
-        Integer max );
+	/**
+	 * Search events of patients who meet the criteria for searching
+	 * 
+	 * @param grid
+	 *            Grid with headers
+	 * @param searchKeys
+	 *            The key for searching patients by attribute values and/or a
+	 *            program
+	 * @param orgunit
+	 *            Organisation unit where patients registered
+	 * @param followup
+	 *            Only getting patients with program risked if this property is
+	 *            true. And getting patients without program risked if its value
+	 *            is false
+	 * @param patientAttributes
+	 *            The attribute values of these attribute are displayed into
+	 *            result
+	 * @param statusEnrollment
+	 *            The status of program of patients. There are three status,
+	 *            includes Active enrollments only, Completed enrollments only
+	 *            and Active and completed enrollments
+	 * @param min
+	 * @param max
+	 * 
+	 * @return Grid
+	 */
+	Grid getPatientEventReport(Grid grid, List<String> searchKeys,
+			Collection<OrganisationUnit> orgunit, Boolean followup,
+			Collection<PatientAttribute> patientAttributes,
+			Integer statusEnrollment, Integer min, Integer max);
 
-    /**
-     * Validate patient attribute values and validation criteria by program before
-     * registering / updating information
-     * 
-     * @param patient Patient object
-     * @param program Program which person needs to enroll. If this parameter is
-     *        null, the system check attribute values of the patient
-     * 
-     * @return Error code 0 : Validation is OK 1 : The attribute value is duplicated
-     *         2 : Violate validation criteria of the program
-     */
-    int validate( Patient patient, Program program );
+	/**
+	 * Validate patient attribute values and validation criteria by program
+	 * before registering / updating information
+	 * 
+	 * @param patient
+	 *            Patient object
+	 * @param program
+	 *            Program which person needs to enroll. If this parameter is
+	 *            null, the system check attribute values of the patient
+	 * 
+	 * @return Error code 0 : Validation is OK 1 : The attribute value is
+	 *         duplicated 2 : Violate validation criteria of the program
+	 */
+	int validate(Patient patient, Program program);
+
+	Collection<Patient> getByPatientAttributeValue(String searchText,
+			int patientAttributeId, Integer min, Integer max);
 }
