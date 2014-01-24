@@ -2513,6 +2513,12 @@ function StorageManager()
 // Option set
 // -----------------------------------------------------------------------------
 
+/**
+ * Performs a search for options for the option set with the given identifier based
+ * on the given query. If query is null, the first MAX options for the option set
+ * is used. Checks and uses option set from local store, if not fetches option
+ * set from server.
+ */
 dhis2.de.searchOptionSet = function( uid, query, success ) 
 {
     if ( window.DAO !== undefined && window.DAO.store !== undefined ) {
@@ -2556,6 +2562,10 @@ dhis2.de.searchOptionSet = function( uid, query, success )
     }
 };
 
+/**
+ * Retrieves options from server. Provides result as jquery ui structure to the
+ * given jquery ui success callback.
+ */
 dhis2.de.getOptions = function( uid, query, success ) 
 {
     $.ajax( {
@@ -2574,9 +2584,12 @@ dhis2.de.getOptions = function( uid, query, success )
     } );
 };
 
+/**
+ * Loads option sets from server into local store.
+ */
 dhis2.de.loadOptionSets = function() 
 {
-    var options = _.values( dhis2.de.optionSets );
+    var options = _.values( dhis2.de.optionSets ); // Array of objects with uid and v
     var uids = [];
 
     var deferred = $.Deferred();
@@ -2613,6 +2626,9 @@ dhis2.de.loadOptionSets = function()
     deferred.resolve();
 };
 
+/**
+ * Insersts option sets in the appropriate input fields.
+ */
 dhis2.de.insertOptionSets = function() 
 {
     $( '.entryoptionset').each( function( idx, item ) {
@@ -2631,6 +2647,10 @@ dhis2.de.insertOptionSets = function()
     } );
 };
 
+/**
+ * Applies the autocomplete widget on the given input field using the option set
+ * with the given identifier.
+ */
 dhis2.de.autocompleteOptionSetField = function( idField, optionSetUid ) 
 {
     var input = jQuery( '#' + idField );
