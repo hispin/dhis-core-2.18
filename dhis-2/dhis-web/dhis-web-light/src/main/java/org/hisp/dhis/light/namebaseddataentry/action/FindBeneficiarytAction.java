@@ -33,151 +33,140 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 
 import com.opensymphony.xwork2.Action;
 
-public class FindBeneficiarytAction
-    implements Action
-{
-    private static final String REDIRECT = "redirect";
+public class FindBeneficiarytAction implements Action {
+	private static final String REDIRECT = "redirect";
 
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Dependencies
+	// -------------------------------------------------------------------------
 
-    private Collection<Patient> patients;
+	private PatientService patientService;
 
-    public Collection<Patient> getPatients()
-    {
-        return patients;
-    }
+	public void setPatientService(PatientService patientService) {
+		this.patientService = patientService;
+	}
 
-    public void setPatients( Collection<Patient> patients )
-    {
-        this.patients = patients;
-    }
+	// -------------------------------------------------------------------------
+	// Input & Output
+	// -------------------------------------------------------------------------
 
-    private Set<PatientAttributeValue> pavSet;
+	private Collection<Patient> patients;
 
-    public Set<PatientAttributeValue> getPavSet()
-    {
-        return pavSet;
-    }
+	public Collection<Patient> getPatients() {
+		return patients;
+	}
 
-    public void setPavSet( Set<PatientAttributeValue> pavSet )
-    {
-        this.pavSet = pavSet;
-    }
+	public void setPatients(Collection<Patient> patients) {
+		this.patients = patients;
+	}
 
-    private Set<PatientAttributeValue> patientAttributes;
+	private Set<PatientAttributeValue> pavSet;
 
-    public Set<PatientAttributeValue> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
+	public Set<PatientAttributeValue> getPavSet() {
+		return pavSet;
+	}
 
-    public void setPatientAttributes( Set<PatientAttributeValue> patientAttributes )
-    {
-        this.patientAttributes = patientAttributes;
-    }
+	public void setPavSet(Set<PatientAttributeValue> pavSet) {
+		this.pavSet = pavSet;
+	}
 
-    private String keyword;
+	private Set<PatientAttributeValue> patientAttributes;
 
-    public String getKeyword()
-    {
-        return keyword;
-    }
+	public Set<PatientAttributeValue> getPatientAttributes() {
+		return patientAttributes;
+	}
 
-    public void setKeyword( String keyword )
-    {
-        this.keyword = keyword;
-    }
+	public void setPatientAttributes(
+			Set<PatientAttributeValue> patientAttributes) {
+		this.patientAttributes = patientAttributes;
+	}
 
-    private Integer organisationUnitId;
+	private String keyword;
 
-    public Integer getOrganisationUnitId()
-    {
-        return organisationUnitId;
-    }
+	public String getKeyword() {
+		return keyword;
+	}
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 
-    private Integer patientAttributeId;
+	private Integer organisationUnitId;
 
-    public Integer getPatientAttributeId()
-    {
-        return patientAttributeId;
-    }
+	public Integer getOrganisationUnitId() {
+		return organisationUnitId;
+	}
 
-    public void setPatientAttributeId( Integer patientAttributeId )
-    {
-        this.patientAttributeId = patientAttributeId;
-    }
+	public void setOrganisationUnitId(Integer organisationUnitId) {
+		this.organisationUnitId = organisationUnitId;
+	}
 
-    private Integer patientId;
+	private Integer patientAttributeId;
 
-    public Integer getPatientId()
-    {
-        return patientId;
-    }
+	public Integer getPatientAttributeId() {
+		return patientAttributeId;
+	}
 
-    public void setPatientId( Integer patientId )
-    {
-        this.patientId = patientId;
-    }
+	public void setPatientAttributeId(Integer patientAttributeId) {
+		this.patientAttributeId = patientAttributeId;
+	}
 
-    // Use in search related patient
+	private Integer patientId;
 
-    private Integer originalPatientId;
+	public Integer getPatientId() {
+		return patientId;
+	}
 
-    public void setOriginalPatientId( Integer originalPatientId )
-    {
-        this.originalPatientId = originalPatientId;
-    }
+	public void setPatientId(Integer patientId) {
+		this.patientId = patientId;
+	}
 
-    public Integer getOriginalPatientId()
-    {
-        return originalPatientId;
-    }
+	// Use in search related patient
 
-    private Integer relationshipTypeId;
+	private Integer originalPatientId;
 
-    public Integer getRelationshipTypeId()
-    {
-        return relationshipTypeId;
-    }
+	public void setOriginalPatientId(Integer originalPatientId) {
+		this.originalPatientId = originalPatientId;
+	}
 
-    public void setRelationshipTypeId( Integer relationshipTypeId )
-    {
-        this.relationshipTypeId = relationshipTypeId;
-    }
+	public Integer getOriginalPatientId() {
+		return originalPatientId;
+	}
 
-    @Override
-    public String execute()
-        throws Exception
-    {
+	private Integer relationshipTypeId;
 
-        // patients = patientService.searchPatientsForMobile(keyword,
-        // organisationUnitId, patientAttributeId);
-        pavSet = new HashSet<PatientAttributeValue>();
+	public Integer getRelationshipTypeId() {
+		return relationshipTypeId;
+	}
 
-        for ( Patient p : patients )
-        {
-            pavSet.addAll( p.getAttributeValues() );
-        }
+	public void setRelationshipTypeId(Integer relationshipTypeId) {
+		this.relationshipTypeId = relationshipTypeId;
+	}
 
-        if ( patients.size() == 1 )
-        {
-            Patient patient = patients.iterator().next();
-            patientId = patient.getId();
+	@Override
+	public String execute() throws Exception {
 
-            return REDIRECT;
-        }
-        return SUCCESS;
-    }
+		patients = patientService.searchPatientsForMobile(keyword,
+				organisationUnitId, patientAttributeId);
+
+		pavSet = new HashSet<PatientAttributeValue>();
+
+		for (Patient p : patients) {
+			pavSet.addAll(p.getAttributeValues());
+		}
+
+		if (patients.size() == 1) {
+			Patient patient = patients.iterator().next();
+			patientId = patient.getId();
+
+			return REDIRECT;
+		}
+		return SUCCESS;
+	}
 
 }
