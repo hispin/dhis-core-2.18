@@ -416,7 +416,7 @@ public class ActivityReportingServiceImpl
 
             if ( patients.size() > 1 )
             {
-                String patientsInfo = new String();
+                String patientsInfo = "";
 
                 for ( Patient each : patients )
                 {
@@ -895,8 +895,7 @@ public class ActivityReportingServiceImpl
         patientModel.setRelationships( relationshipList );
 
         // Set available enrollment programs
-        List<Program> enrollmentProgramList = new ArrayList<Program>();
-        enrollmentProgramList = generateEnrollmentProgramList( patient );
+         List<Program> enrollmentProgramList = generateEnrollmentProgramList( patient );
         List<org.hisp.dhis.api.mobile.model.LWUITmodel.Program> enrollmentProgramListMobileList = new ArrayList<org.hisp.dhis.api.mobile.model.LWUITmodel.Program>();
 
         for ( Program enrollmentProgram : enrollmentProgramList )
@@ -1179,7 +1178,7 @@ public class ActivityReportingServiceImpl
 
             if ( patients.size() > 1 )
             {
-                String patientsInfo = new String();
+                String patientsInfo = "";
 
                 for ( Patient each : patients )
                 {
@@ -1466,7 +1465,7 @@ public class ActivityReportingServiceImpl
 
     public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts( String programId )
     {
-        Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes = new HashSet<org.hisp.dhis.patient.PatientAttribute>();
+        Collection<org.hisp.dhis.patient.PatientAttribute> patientAttributes = null;
 
         if ( programId != null && !programId.trim().equals( "" ) )
         {
@@ -1643,7 +1642,7 @@ public class ActivityReportingServiceImpl
 
         if ( patients.size() > 1 )
         {
-            String patientsInfo = new String();
+            String patientsInfo = "";
 
             int i = 1;
             String name = "";

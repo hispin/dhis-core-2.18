@@ -88,16 +88,12 @@ public class HibernateCaseAggregationConditionStore
     extends HibernateIdentifiableObjectStore<CaseAggregationCondition>
     implements CaseAggregationConditionStore
 {
-    private final String IS_NULL = "is null";
-
-    private final String IN_CONDITION_GET_ALL = "*";
-
-    private final String IN_CONDITION_START_SIGN = "@";
-
-    private final String IN_CONDITION_END_SIGN = "#";
-
-    private final String IN_CONDITION_COUNT_X_TIMES = "COUNT";
-
+    private static final String IS_NULL = "is null";
+    private static final String IN_CONDITION_GET_ALL = "*";
+    private static final String IN_CONDITION_START_SIGN = "@";
+    private static final String IN_CONDITION_END_SIGN = "#";
+    private static final String IN_CONDITION_COUNT_X_TIMES = "COUNT";
+    
     public static final String STORED_BY_DHIS_SYSTEM = "DHIS-System";
 
     // -------------------------------------------------------------------------
@@ -646,7 +642,7 @@ public class HibernateCaseAggregationConditionStore
 
         if ( attributeId.split( SEPARATOR_ID ).length == 2 )
         {
-            sql += " AND _pav.patientattributeid=" + attributeId.split( "." )[0]
+            sql += " AND _pav.patientattributeid=" + attributeId.split( "\\." )[0]
                 + " AND DATE(now) - DATE( _pav.value ) ";
         }
         if ( isExist )
@@ -856,8 +852,7 @@ public class HibernateCaseAggregationConditionStore
         sql += " UNION ";
         sql += "(select distinct organisationunitid from programstageinstance where organisationunitid is not null)";
 
-        Collection<Integer> orgunitIds = new HashSet<Integer>();
-        orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
+        Collection<Integer> orgunitIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
         {
             public Integer mapRow( ResultSet rs, int rowNum )
                 throws SQLException

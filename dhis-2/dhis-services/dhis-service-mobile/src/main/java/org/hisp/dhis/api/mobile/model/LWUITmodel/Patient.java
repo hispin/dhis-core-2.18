@@ -440,7 +440,7 @@ public class Patient
         if ( din.readBoolean() )
         {
             char dobTypeDeserialized = din.readChar();
-            this.setDobType( new Character( dobTypeDeserialized ) );
+            this.setDobType( Character.valueOf( dobTypeDeserialized ) );
         }
         else
         {

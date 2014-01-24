@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class MobileOrgUnitLinks
     implements DataStreamSerializable
 {
+    public static final double currentVersion = 2.11;
+
     private String clientVersion;
 
     private int id;
@@ -58,8 +60,6 @@ public class MobileOrgUnitLinks
     private String changeUpdateDataSetLangUrl;
 
     private String searchUrl;
-
-    public static double currentVersion = 2.11;
 
     private String updateNewVersionUrl;
 

@@ -874,9 +874,7 @@ public class DefaultProgramDataEntryService
 
         i18nMatcher.appendTail( sb );
 
-        String result = sb.toString();
-
-        result.replaceAll( "</i18n>", "" );
+        String result = sb.toString().replaceAll( "</i18n>", "" );
 
         return result;
     }
