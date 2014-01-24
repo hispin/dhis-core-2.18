@@ -2116,31 +2116,29 @@ Ext.onReady( function() {
 				}
 			};
 
-			//web.events.setColumnHeaderMouseHandlers = function(xLayout, response) {
 			web.events.setColumnHeaderMouseHandlers = function(layout, xLayout, xResponse) {
-				if (Ext.isArray(xLayout.sortableIdObjects)) {
-					for (var i = 0, obj, el; i < xLayout.sortableIdObjects.length; i++) {
-						obj = xLayout.sortableIdObjects[i];
+				if (Ext.isArray(xResponse.sortableIdObjects)) {
+					for (var i = 0, obj, el; i < xResponse.sortableIdObjects.length; i++) {
+						obj = xResponse.sortableIdObjects[i];
 						el = Ext.get(obj.uuid);
 
 						el.dom.layout = layout;
+						el.dom.xLayout = xLayout;
 						el.dom.xResponse = xResponse;
 						el.dom.metaDataId = obj.id;
 						el.dom.onColumnHeaderMouseClick = web.events.onColumnHeaderMouseClick;
 						el.dom.onColumnHeaderMouseOver = web.events.onColumnHeaderMouseOver;
 						el.dom.onColumnHeaderMouseOut = web.events.onColumnHeaderMouseOut;
 
-						//el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.xLayout, this.response, this.metaDataId)');
-						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.xResponse, this.metaDataId)');
+						el.dom.setAttribute('onclick', 'this.onColumnHeaderMouseClick(this.layout, this.xLayout, this.xResponse, this.metaDataId)');
 						el.dom.setAttribute('onmouseover', 'this.onColumnHeaderMouseOver(this)');
 						el.dom.setAttribute('onmouseout', 'this.onColumnHeaderMouseOut(this)');
 					}
 				}
 			};
 
-			//web.events.onColumnHeaderMouseClick = function(xLayout, response, id) {
-			web.events.onColumnHeaderMouseClick = function(layout, xResponse, id) {
-				if (layout.sorting && layout.sorting.id === id) {
+			web.events.onColumnHeaderMouseClick = function(layout, xLayout, xResponse, id) {
+				if (xLayout.sorting && xLayout.sorting.id === id) {
 					layout.sorting.direction = support.prototype.str.toggleDirection(layout.sorting.direction);
 				}
 				else {
@@ -2151,8 +2149,6 @@ Ext.onReady( function() {
 				}
 
 				web.pivot.createTable(layout, null, xResponse, false);
-
-				//ns.core.web.pivot.sort(xLayout, response, id);
 			};
 
 			web.events.onColumnHeaderMouseOver = function(el) {
@@ -2321,7 +2317,7 @@ Ext.onReady( function() {
 						getHtml(xLayout, xResponse);
 					}
 
-					web.pivot.sort(xLayout, xResponse);
+					web.pivot.sort(xLayout, xResponse, xColAxis || ns.app.xColAxis);
 					xLayout = getXLayout(api.layout.Layout(xLayout));
 				}
 				else {
@@ -2338,6 +2334,8 @@ Ext.onReady( function() {
 				ns.app.xLayout = xLayout;
 				ns.app.response = response;
 				ns.app.xResponse = xResponse;
+				ns.app.xColAxis = xColAxis;
+				ns.app.xRowAxis = xRowAxis;
 				ns.app.uuidDimUuidsMap = table.uuidDimUuidsMap;
 				ns.app.uuidObjectMap = Ext.applyIf((xColAxis ? xColAxis.uuidObjectMap : {}), (xRowAxis ? xRowAxis.uuidObjectMap : {}));
 
@@ -2355,36 +2353,6 @@ Ext.onReady( function() {
 					console.log("core", ns.core);
 					console.log("app", ns.app);
 				}
-			};
-
-			web.pivot.sort = function(xLayout, xResponse) {
-				var xResponse = Ext.clone(xResponse),
-					id = xLayout.sorting.id,
-					dim = xLayout.rows[0],
-					valueMap = xResponse.idValueMap,
-					direction = xLayout.sorting ? xLayout.sorting.direction : 'DESC',
-					layout;
-
-				dim.ids = [];
-
-				// collect values
-				for (var i = 0, item, key, value; i < dim.items.length; i++) {
-					item = dim.items[i];
-					key = id + item.id;
-					value = parseFloat(valueMap[key]);
-
-					item.value = Ext.isNumber(value) ? value : (Number.MAX_VALUE * -1);
-				}
-
-				// sort
-				support.prototype.array.sort(dim.items, direction, 'value');
-
-				// new id order
-				for (var i = 0; i < dim.items.length; i++) {
-					dim.ids.push(dim.items[i].id);
-				}
-
-				return xLayout;
 			};
 		}());
 	};
