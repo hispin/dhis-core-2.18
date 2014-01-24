@@ -1,9 +1,8 @@
-// -----------------------------------------------------------------------------
-// Comments
-// -----------------------------------------------------------------------------
 
 function saveComment()
 {
+	$( '#commentOptionSet' ).val( '' );
+	
     var commentValue = $( '#commentTextArea' ).val();
     var periodId = $( '#selectedPeriodId' ).val();
 
@@ -197,3 +196,18 @@ function markValueForFollowup()
 	    }
 	} );
 }
+
+dhis2.de.insertCommentOptionSet = function( optionSetId )
+{
+	$optSet = $( '#commentOptionSet' );
+	
+	$optSet.change( function() {
+		$( '#commentTextArea' ).val( $optSet.val() );
+		$optSet.val( '' );
+	} );
+	
+	if ( optionSetId ) {
+		$( '#commentOptionDiv' ).show();
+		dhis2.de.autocompleteOptionSetField( 'commentOptionSet', optionSetId );
+	}
+};

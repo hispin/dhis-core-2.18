@@ -40,6 +40,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueAudit;
 import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -202,6 +203,13 @@ public class GetHistoryAction
     {
         return storedBy;
     }
+    
+    private OptionSet commentOptionSet;
+
+    public OptionSet getCommentOptionSet()
+    {
+        return commentOptionSet;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -242,12 +250,10 @@ public class GetHistoryAction
 
         minMaxInvalid = !DataElement.VALUE_TYPE_INT.equals( dataElement.getType() );
 
-        // ---------------------------------------------------------------------
-        // Data Value Audit
-        // ---------------------------------------------------------------------
-
         dataValueAudits = dataValueAuditService.getDataValueAuditByDataValue( dataValue );
 
+        commentOptionSet = dataElement.getCommentOptionSet();
+        
         return SUCCESS;
     }
 }

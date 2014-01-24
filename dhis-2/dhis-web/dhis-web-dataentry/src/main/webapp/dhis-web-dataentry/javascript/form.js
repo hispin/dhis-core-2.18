@@ -506,7 +506,7 @@ function addEventListeners()
 
         $( this ).focus( valueFocus );
         $( this ).blur( valueBlur );
-
+        
         $( this ).change( function()
         {
             saveVal( dataElementId, optionComboId, id );
@@ -514,7 +514,7 @@ function addEventListeners()
 
         if ( formType != FORMTYPE_CUSTOM ) 
         {
-            $( this ).css( 'width', '80%' );
+            $( this ).css( 'width', '85%' );
             $( this ).css( 'text-align', 'center' );
         }
     } );
@@ -2659,7 +2659,6 @@ dhis2.de.autocompleteOptionSetField = function( idField, optionSetUid )
         return;
     }
 
-    input.css( 'width', '85%' );
     input.autocomplete( {
         delay: 0,
         minLength: 0,

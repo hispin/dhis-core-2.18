@@ -1,6 +1,10 @@
 <script type="text/javascript">
 var currentDataElementId = '$!{dataElementId}';
 var currentOptionComboId = '$!{optionComboId}';
+
+$( document ).ready( function() {
+    dhis2.de.insertCommentOptionSet( '$!{commentOptionSet.uid}' );
+} );
 </script>
 
 #set( $width = 40 * $dataElementHistory.historyLength )
@@ -27,7 +31,8 @@ var currentOptionComboId = '$!{optionComboId}';
     </tr>
     <tr>
 		<td valign="top">
-			<textarea id="commentTextArea" maxlength="360" style="height:130px;width:240px">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
+			<div id="commentOptionDiv" style="display:none;"><input type="text" id="commentOptionSet" style="width:240px"></div>
+			<textarea id="commentTextArea" maxlength="360" style="height:130px; width:240px;">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
 			<input type="button" value="$i18n.getString( 'save_comment' )" style="width:130px" onclick="saveComment()">
 		</td>		
         <td valign="top">
