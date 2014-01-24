@@ -28,7 +28,6 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -91,12 +90,9 @@ public class IndicatorDeletionHandler
     @Override
     public void deleteIndicatorGroup( IndicatorGroup group )
     {
-        Iterator<Indicator> iterator = group.getMembers().iterator();
-
-        while ( iterator.hasNext() )
+        for ( Indicator indicator : group.getMembers() )
         {
-            Indicator indicator = iterator.next();
-            indicator.removeIndicatorGroup( group );
+            indicator.getGroups().remove( group );
             indicatorService.updateIndicator( indicator );
         }
     }
@@ -104,12 +100,9 @@ public class IndicatorDeletionHandler
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-        Iterator<Indicator> iterator = dataSet.getIndicators().iterator();
-
-        while ( iterator.hasNext() )
+        for ( Indicator indicator : dataSet.getIndicators() )
         {
-            Indicator indicator = iterator.next();
-            indicator.removeDataSet( dataSet );
+            indicator.getDataSets().remove( dataSet );
             indicatorService.updateIndicator( indicator );
         }
     }

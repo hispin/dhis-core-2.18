@@ -43,19 +43,19 @@ import java.util.Collection;
  */
 public class PredicateUtils
 {
-    public static Predicate<Field> alwaysTrue = new StaticReply( true );
+    public static final Predicate<Field> alwaysTrue = new StaticReply( true );
 
-    public static Predicate<Field> alwaysFalse = new StaticReply( false );
+    public static final Predicate<Field> alwaysFalse = new StaticReply( false );
 
-    public static Predicate<Field> idObjects = new ObjectWithTypePredicate( IdentifiableObject.class );
+    public static final Predicate<Field> idObjects = new ObjectWithTypePredicate( IdentifiableObject.class );
 
-    public static Predicate<Field> collections = new CollectionPredicate();
+    public static final Predicate<Field> collections = new CollectionPredicate();
 
-    public static Predicate<Field> idObjectCollections = new CollectionWithTypePredicate( IdentifiableObject.class );
+    public static final Predicate<Field> idObjectCollections = new CollectionWithTypePredicate( IdentifiableObject.class );
 
-    public static Predicate<Field> objectCollectionsWithScanned = new CollectionWithAnnotationPredicate( Scanned.class );
+    public static final Predicate<Field> objectCollectionsWithScanned = new CollectionWithAnnotationPredicate( Scanned.class );
 
-    public static Predicate<Field> idObjectCollectionsWithScanned = new CollectionWithTypeAndAnnotationPredicate( IdentifiableObject.class, Scanned.class );
+    public static final Predicate<Field> idObjectCollectionsWithScanned = new CollectionWithTypeAndAnnotationPredicate( IdentifiableObject.class, Scanned.class );
 
     public static class StaticReply
         implements Predicate<Field>

@@ -109,7 +109,7 @@ public class DataSetDeletionHandler
         while ( iterator.hasNext() )
         {
             DataSet dataSet = iterator.next();
-            dataSet.removeIndicator( indicator );
+            dataSet.getIndicators().remove( indicator );
             dataSetService.updateDataSet( dataSet );
         }
     }
@@ -134,7 +134,7 @@ public class DataSetDeletionHandler
         while ( iterator.hasNext() )
         {
             DataSet dataSet = iterator.next();
-            dataSet.removeOrganisationUnit( unit );
+            dataSet.getSources().remove( unit );
             dataSetService.updateDataSet( dataSet );
         }
     }
@@ -147,7 +147,7 @@ public class DataSetDeletionHandler
         while ( iterator.hasNext() )
         {
             DataSet dataSet = iterator.next();
-            dataSet.removeOrganisationUnitGroup( group );
+            dataSet.getOrganisationUnitGroups().remove( group );
             dataSetService.updateDataSet( dataSet );
         }
     }

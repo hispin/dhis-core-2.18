@@ -28,8 +28,6 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -61,12 +59,9 @@ public class ValidationRuleGroupDeletionHandler
     
     public void deleteValidationRule( ValidationRule validationRule )
     {
-        Iterator<ValidationRuleGroup> iterator = validationRule.getGroups().iterator();
-        
-        while ( iterator.hasNext() )
+        for ( ValidationRuleGroup group : validationRule.getGroups() )
         {
-            ValidationRuleGroup group = iterator.next();
-            group.removeValidationRule( validationRule );
+            group.getMembers().remove( validationRule );
             validationRuleService.updateValidationRuleGroup( group );
         }
     }

@@ -338,15 +338,6 @@ public abstract class DeletionHandler
         return null;
     }
     
-    public void deleteValidationRuleGroup( ValidationRule validationRule )
-    {
-    }
-    
-    public String allowDeleteValidationRuleGroup( ValidationRule validationRule )
-    {
-        return null;
-    }
-
     public void deleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
     }

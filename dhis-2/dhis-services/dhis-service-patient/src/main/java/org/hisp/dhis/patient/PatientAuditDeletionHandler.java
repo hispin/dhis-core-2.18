@@ -29,13 +29,12 @@ package org.hisp.dhis.patient;
  */
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
  * @author Chau Thu Tran
- *
- * @version PatientAuditDeletionHandler.java 8:44:33 AM Jan 5, 2013 $
  */
 public class PatientAuditDeletionHandler extends DeletionHandler
 {
@@ -65,9 +64,13 @@ public class PatientAuditDeletionHandler extends DeletionHandler
     {
         Collection<PatientAudit> patientAudits = patientAuditService.getPatientAudits( patient );
         
-        for ( PatientAudit patientAudit : patientAudits )
+        Iterator<PatientAudit> iterator = patientAudits.iterator();
+        
+        while ( iterator.hasNext() )
         {
-            patientAuditService.deletePatientAudit( patientAudit );
+            PatientAudit audit = iterator.next();
+            iterator.remove();
+            patientAuditService.deletePatientAudit( audit );
         }
     }
 }

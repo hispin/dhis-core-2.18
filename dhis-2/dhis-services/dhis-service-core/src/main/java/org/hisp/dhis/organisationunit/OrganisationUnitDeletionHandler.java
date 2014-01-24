@@ -32,8 +32,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
 
-import java.util.Iterator;
-
 /**
  * @author Lars Helge Overland
  */
@@ -64,14 +62,9 @@ public class OrganisationUnitDeletionHandler
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-        Iterator<OrganisationUnit> iterator = dataSet.getSources().iterator();
-
-        while ( iterator.hasNext() )
+        for ( OrganisationUnit unit : dataSet.getSources() )
         {
-            OrganisationUnit unit = iterator.next();
-
-            unit.getDataSets().remove( unit );
-
+            unit.getDataSets().remove( dataSet );
             organisationUnitService.updateOrganisationUnit( unit );
         }
     }
@@ -79,14 +72,9 @@ public class OrganisationUnitDeletionHandler
     @Override
     public void deleteUser( User user )
     {
-        Iterator<OrganisationUnit> iterator = user.getOrganisationUnits().iterator();
-
-        while ( iterator.hasNext() )
+        for ( OrganisationUnit unit : user.getOrganisationUnits() )
         {
-            OrganisationUnit unit = iterator.next();
-
             unit.getUsers().remove( user );
-
             organisationUnitService.updateOrganisationUnit( unit );
         }
     }
@@ -94,14 +82,9 @@ public class OrganisationUnitDeletionHandler
     @Override
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
-        Iterator<OrganisationUnit> iterator = group.getMembers().iterator();
-
-        while ( iterator.hasNext() )
+        for ( OrganisationUnit unit : group.getMembers() )
         {
-            OrganisationUnit unit = iterator.next();
-
-            unit.getGroups().remove( unit );
-
+            unit.getGroups().remove( group );
             organisationUnitService.updateOrganisationUnit( unit );
         }
     }

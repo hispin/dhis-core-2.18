@@ -28,13 +28,10 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class DataElementGroupDeletionHandler
     extends DeletionHandler
@@ -63,12 +60,9 @@ public class DataElementGroupDeletionHandler
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
-        Iterator<DataElementGroup> iterator = dataElement.getGroups().iterator();
-        
-        while ( iterator.hasNext() )
+        for ( DataElementGroup group : dataElement.getGroups() )
         {
-            DataElementGroup group = iterator.next();
-            group.removeDataElement( dataElement );
+            group.getMembers().remove( dataElement );
             dataElementService.updateDataElementGroup( group );
         }
     }
