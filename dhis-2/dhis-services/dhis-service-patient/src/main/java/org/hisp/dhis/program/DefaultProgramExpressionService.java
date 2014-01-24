@@ -52,10 +52,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultProgramExpressionService
     implements ProgramExpressionService
 {
-    private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
+    private static final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
         + SEPARATOR_ID + "[a-zA-Z0-9\\- ]+]*)" + "\\]";
 
-    private final String INVALID_CONDITION = "Invalid condition";
+    private static final String INVALID_CONDITION = "Invalid condition";
 
     // -------------------------------------------------------------------------
     // Dependencies

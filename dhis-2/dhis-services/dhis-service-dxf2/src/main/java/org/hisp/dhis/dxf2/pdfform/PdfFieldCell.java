@@ -28,6 +28,9 @@ package org.hisp.dhis.dxf2.pdfform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
@@ -49,7 +52,6 @@ import com.lowagie.text.pdf.RadioCheckField;
 /**
  * @author James Chang
  */
-
 public class PdfFieldCell
     implements PdfPCellEvent
 {
@@ -148,7 +150,6 @@ public class PdfFieldCell
     {
         try
         {
-
             PdfContentByte canvasText = canvases[PdfPTable.TEXTCANVAS];
             
             if ( type == TYPE_RADIOBUTTON )
@@ -158,43 +159,38 @@ public class PdfFieldCell
                     float leftLoc = rect.getLeft();
                     float rightLoc = rect.getLeft() + RADIOBUTTON_WIDTH;
 
-                    try
+                    String text;
+                    String value;
+                    
+                    for ( int i = 0; i < texts.length; i++ )
                     {
-                        String text;
-                        String value;
-                        
-                        for ( int i = 0; i < texts.length; i++ )
+
+                        text = texts[i];
+                        value = values[i];
+
+                        Rectangle radioRec = new Rectangle( leftLoc, rect.getTop() - height, rightLoc, rect.getTop() );
+
+                        RadioCheckField rf = new RadioCheckField( writer, radioRec, "RDBtn_" + text, value );
+
+                        if ( value != null && value.equals( checkValue ) )
                         {
-
-                            text = texts[i];
-                            value = values[i];
-
-                            Rectangle radioRec = new Rectangle( leftLoc, rect.getTop() - height, rightLoc, rect.getTop() );
-
-                            RadioCheckField rf = new RadioCheckField( writer, radioRec, "RDBtn_" + text, value );
-
-                            if ( value == checkValue )
-                                rf.setChecked( true );
-
-                            rf.setBorderColor( GrayColor.GRAYBLACK );
-                            rf.setBackgroundColor( GrayColor.GRAYWHITE );
-                            rf.setCheckType( RadioCheckField.TYPE_CIRCLE );
-
-                            parent.addKid( rf.getRadioField() );
-
-                            leftLoc = rightLoc;
-                            rightLoc += width;
-
-                            ColumnText.showTextAligned( canvasText, Element.ALIGN_LEFT, new Phrase( text ), leftLoc
-                                + RADIOBUTTON_TEXTOFFSET, height, 0 );
-
-                            leftLoc = rightLoc;
-                            rightLoc += RADIOBUTTON_WIDTH;
+                            rf.setChecked( true );
                         }
-                    }
-                    catch ( Exception ex )
-                    {
-                        throw new RuntimeException( ex.getMessage() );
+
+                        rf.setBorderColor( GrayColor.GRAYBLACK );
+                        rf.setBackgroundColor( GrayColor.GRAYWHITE );
+                        rf.setCheckType( RadioCheckField.TYPE_CIRCLE );
+
+                        parent.addKid( rf.getRadioField() );
+
+                        leftLoc = rightLoc;
+                        rightLoc += width;
+
+                        ColumnText.showTextAligned( canvasText, Element.ALIGN_LEFT, new Phrase( text ), leftLoc
+                            + RADIOBUTTON_TEXTOFFSET, height, 0 );
+
+                        leftLoc = rightLoc;
+                        rightLoc += RADIOBUTTON_WIDTH;
                     }
 
                     writer.addAnnotation( parent );
@@ -237,11 +233,11 @@ public class PdfFieldCell
                 if ( type == TYPE_TEXT_ORGUNIT )
                 {
                     formField.setAdditionalActions( PdfName.BL, PdfAction.javaScript(
-                        "if(event.value == '') app.alert('Warning! Please Enter The Org ID.');", writer ) );
+                        "if(event.value == '') app.alert('Please enter org unit identifier');", writer ) );
                 }
 
-                // TYPE_TEXT_NUMBER and TYPE_CHECKBOX cases included as well here.
-
+                // TYPE_TEXT_NUMBER and TYPE_CHECKBOX cases included as well here
+                
                 formField.setWidget(
                     new Rectangle( rect.getLeft() + offSetLeft, rect.getTop() - height - offSetTop, rect.getLeft() + width + offSetLeft, rect.getTop() - offSetTop ),
                     PdfAnnotation.HIGHLIGHT_NONE );
@@ -251,7 +247,11 @@ public class PdfFieldCell
             writer.addAnnotation( formField );
 
         }
-        catch ( Exception ex )
+        catch ( DocumentException ex )
+        {
+            throw new RuntimeException( ex.getMessage() );
+        }
+        catch ( IOException ex )
         {
             throw new RuntimeException( ex.getMessage() );
         }

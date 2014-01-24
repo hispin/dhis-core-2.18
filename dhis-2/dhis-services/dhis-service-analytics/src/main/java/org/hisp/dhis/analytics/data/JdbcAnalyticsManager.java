@@ -155,7 +155,7 @@ public class JdbcAnalyticsManager
             {
                 String[] keyArray = key.split( DIMENSION_SEP );
                 
-                Assert.notNull( keyArray[periodIndex], keyArray.toString() );
+                Assert.notNull( keyArray[periodIndex] );
                 
                 List<NameableObject> periods = dataPeriodAggregationPeriodMap.get( PeriodType.getPeriodFromIsoString( keyArray[periodIndex] ) );
                 

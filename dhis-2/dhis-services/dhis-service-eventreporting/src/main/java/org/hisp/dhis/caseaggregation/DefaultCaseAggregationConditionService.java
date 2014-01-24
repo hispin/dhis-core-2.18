@@ -73,9 +73,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
-    private final String INVALID_CONDITION = "Invalid condition";
+    private static final String INVALID_CONDITION = "Invalid condition";
 
-    private final String IN_CONDITION_GET_ALL = "*";
+    private static final String IN_CONDITION_GET_ALL = "*";
 
     // -------------------------------------------------------------------------
     // Dependencies

@@ -734,9 +734,8 @@ public class TableAlteror
                 String id = resultSet.getString( "patientreminderid" );
                 String expression = resultSet.getString( "templatemessage" );
 
-                expression = expression.replaceAll( "{patient-name}", "{attributeid=" + uid + "}" );
-                executeSql( "UPDATE patientreminder SET templatemessage='" + expression + "'  WHERE patientreminderid="
-                    + id );
+                expression = expression.replaceAll( "\\{patient-name\\}", "\\{attributeid=" + uid + "\\}" );
+                executeSql( "UPDATE patientreminder SET templatemessage='" + expression + "'  WHERE patientreminderid=" + id );
             }
         }
         catch ( Exception ex )

@@ -102,8 +102,7 @@ public class HibernateProgramStore
 
             for ( Program program : getAll() )
             {
-                if ( userRoles.contains( UserAuthorityGroup.AUTHORITY_ALL )
-                    || CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
+                if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
                 {
                     programs.add( program );
                 }
@@ -129,8 +128,7 @@ public class HibernateProgramStore
 
             for ( Program program : getByType( type ) )
             {
-                if ( userRoles.contains( UserAuthorityGroup.AUTHORITY_ALL )
-                    || CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
+                if ( CollectionUtils.intersection( program.getUserRoles(), userRoles ).size() > 0 )
                 {
                     programs.add( program );
                 }

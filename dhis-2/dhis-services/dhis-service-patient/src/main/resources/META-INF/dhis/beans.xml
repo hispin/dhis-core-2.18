@@ -452,7 +452,6 @@
 
     <bean id="org.hisp.dhis.program.ProgramStageSectionDeletionHandler"
         class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
-        <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
     </bean>
 
     <bean id="org.hisp.dhis.patient.PatientAuditDeletionHandler"

@@ -317,13 +317,10 @@ public class DefaultDataBrowserGridService
         String formatString = Period.DEFAULT_DATE_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat( formatString );
 
-        Date date1 = new Date();
-        Date date2 = new Date();
-
         try
         {
-            date1 = sdf.parse( fromDate );
-            date2 = sdf.parse( toDate );
+            Date date1 = sdf.parse( fromDate );
+            Date date2 = sdf.parse( toDate );
 
             List<Period> periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( periodType, date1,
                 date2 ) );

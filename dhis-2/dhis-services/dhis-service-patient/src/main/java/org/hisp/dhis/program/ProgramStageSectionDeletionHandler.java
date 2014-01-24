@@ -35,21 +35,9 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
  * 
  * @version ProgramStageSectionDeletionHandler.java 3:14:59 PM Oct 1, 2012 $
  */
-@SuppressWarnings("unused")
 public class ProgramStageSectionDeletionHandler
     extends DeletionHandler
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private ProgramStageService programStageService;
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------

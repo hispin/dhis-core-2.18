@@ -70,7 +70,7 @@ public class ExportPivotViewService
         DATAVALUE, INDICATORVALUE
     }
 
-    public static int PRECISION = 5;
+    public static final int PRECISION = 5;
 
     // -------------------------------------------------------------------------
     // Dependencies

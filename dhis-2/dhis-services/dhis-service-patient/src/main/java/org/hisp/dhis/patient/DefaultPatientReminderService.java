@@ -52,9 +52,9 @@ import org.hisp.dhis.user.UserService;
 public class DefaultPatientReminderService
     implements PatientReminderService
 {
-    private final String ATTRIBUTE = "attributeid";
+    private static final String ATTRIBUTE = "attributeid";
 
-    private final Pattern ATTRIBUTE_PATTERN = Pattern.compile( "\\{(" + ATTRIBUTE + ")=(\\w+)\\}" );
+    private static final Pattern ATTRIBUTE_PATTERN = Pattern.compile( "\\{(" + ATTRIBUTE + ")=(\\w+)\\}" );
 
     // -------------------------------------------------------------------------
     // Dependency

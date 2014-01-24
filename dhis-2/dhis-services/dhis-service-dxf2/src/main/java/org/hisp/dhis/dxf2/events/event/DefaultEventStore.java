@@ -205,13 +205,13 @@ public class DefaultEventStore
 
                 if ( rowSet.getBoolean( "ps_capturecoordinates" ) )
                 {
-                    Coordinate coordinate = new Coordinate();
                     Double psi_longitude = rowSet.getDouble( "psi_longitude" );
                     Double psi_latitude = rowSet.getDouble( "psi_latitude" );
 
                     if ( !StringUtils.isEmpty( psi_longitude ) && !StringUtils.isEmpty( psi_latitude ) )
                     {
-                        coordinate = new Coordinate( psi_longitude, psi_latitude );
+                        Coordinate coordinate = new Coordinate( psi_longitude, psi_latitude );
+                        
                         try
                         {
                             List<Double> list = objectMapper.readValue( coordinate.getCoordinateString(),

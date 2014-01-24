@@ -28,6 +28,14 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -41,14 +49,6 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -344,17 +344,16 @@ public class DefaultObjectBridge
             }
             catch ( NullPointerException ignored )
             {
+                objectName = "UNKNOWN_NAME (" + object.getClass().getName() + ")";
             }
 
             if ( objects.size() > 1 )
             {
-                log.debug( "Multiple objects found for " +
-                    (objectName == null ? objectName : "UNKNOWN_NAME (" + object.getClass().getName() + ")") + ", object discarded, returning null." );
+                log.debug( "Multiple objects found for " + objectName + ", object discarded, returning null." );
             }
             else
             {
-                log.debug( "No object found for " +
-                    (objectName == null ? objectName : "UNKNOWN_NAME (" + object.getClass().getName() + ")") + ", returning null." );
+                log.debug( "No object found for " + objectName + ", returning null." );
             }
         }
 
