@@ -30,8 +30,6 @@ package org.hisp.dhis.dataelement;
 
 import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
-import java.util.Iterator;
-
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -98,25 +96,19 @@ public class DataElementDeletionHandler
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-        Iterator<DataElement> iterator = dataSet.getDataElements().iterator();
-        
-        while ( iterator.hasNext() )
+        for ( DataElement element : dataSet.getDataElements() )
         {
-            DataElement element = iterator.next();
-            element.removeDataSet( dataSet );
-            dataElementService.updateDataElement( element );            
+            element.getDataSets().remove( dataSet );
+            dataElementService.updateDataElement( element );
         }
     }
 
     @Override
     public void deleteDataElementGroup( DataElementGroup group )
     {
-        Iterator<DataElement> iterator = group.getMembers().iterator();
-        
-        while ( iterator.hasNext() )
+        for ( DataElement element : group.getMembers() )
         {
-            DataElement element = iterator.next();
-            element.removeDataElementGroup( group );
+            element.getGroups().remove( group );
             dataElementService.updateDataElement( element );
         }
     }

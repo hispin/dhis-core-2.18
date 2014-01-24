@@ -29,6 +29,7 @@ package org.hisp.dhis.patientattributevalue;
  */
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -69,9 +70,13 @@ public class PatientAttributeValueDeletionHandler
         Collection<PatientAttributeValue> attributeValues = patientAttributeValueService
             .getPatientAttributeValues( patient );
 
-        for ( PatientAttributeValue attributeValue : attributeValues )
+        Iterator<PatientAttributeValue> iterator = attributeValues.iterator();
+        
+        while ( iterator.hasNext() )
         {
-            patientAttributeValueService.deletePatientAttributeValue( attributeValue );
+            PatientAttributeValue value = iterator.next();
+            
+            patientAttributeValueService.deletePatientAttributeValue( value );
         }
     }
 
@@ -80,12 +85,13 @@ public class PatientAttributeValueDeletionHandler
         Collection<PatientAttributeValue> attributeValues = patientAttributeValueService
             .getPatientAttributeValues( patientAttribute );
 
-        if ( attributeValues != null && !attributeValues.isEmpty() )
+        Iterator<PatientAttributeValue> iterator = attributeValues.iterator();
+
+        while ( iterator.hasNext() )
         {
-            for ( PatientAttributeValue attributeValue : attributeValues )
-            {
-                patientAttributeValueService.deletePatientAttributeValue( attributeValue );
-            }
+            PatientAttributeValue value = iterator.next();
+            
+            patientAttributeValueService.deletePatientAttributeValue( value );
         }
     }
 }

@@ -81,15 +81,12 @@ public class ValidationRuleDeletionHandler
     }
     
     @Override
-    public void deleteValidationRuleGroup( ValidationRule validationRule )
+    public void deleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
-        Iterator<ValidationRuleGroup> iterator = validationRule.getGroups().iterator();
-        
-        while ( iterator.hasNext() )
+        for ( ValidationRule rule : validationRuleGroup.getMembers() )
         {
-            ValidationRuleGroup group = iterator.next();
-            iterator.remove();
-            validationRuleService.updateValidationRuleGroup( group );
+            rule.getGroups().remove( validationRuleGroup );
+            validationRuleService.updateValidationRule( rule );
         }
     }
 }

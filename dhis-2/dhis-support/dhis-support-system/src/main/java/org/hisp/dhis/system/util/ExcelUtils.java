@@ -65,10 +65,10 @@ public class ExcelUtils
 {
     public static final String EXTENSION_XLS = ".xls";
 
-    public static WritableCellFormat FORMAT_LABEL = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 13,
+    public static final WritableCellFormat FORMAT_LABEL = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 13,
         WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLACK ) );
     
-    public static WritableCellFormat FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11,
+    public static final WritableCellFormat FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11,
         WritableFont.NO_BOLD, false ) );
     
     public static void printDataElementHeaders( WritableSheet sheet, I18n i18n, int row,

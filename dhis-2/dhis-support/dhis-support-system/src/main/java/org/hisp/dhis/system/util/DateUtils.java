@@ -444,8 +444,8 @@ public class DateUtils
         String formatString = DEFAULT_DATE_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat( formatString );
 
-        Date date1 = new Date();
-        Date date2 = new Date();
+        Date date1 = null;
+        Date date2 = null;
 
         try
         {
