@@ -297,6 +297,7 @@ public class HibernateCaseAggregationConditionStore
                 sql += "FROM ";
                 boolean hasDataelement = hasDataelementCriteria( caseExpression );
                 boolean hasPatient = hasPatientCriteria( caseExpression );
+                
                 if ( hasPatient && hasDataelement )
                 {
                     sql += " programinstance as pi ";
@@ -311,7 +312,9 @@ public class HibernateCaseAggregationConditionStore
                 }
                 else
                 {
-                    sql += " programstageinstance psi INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
+                    sql += " programinstance as pi ";
+                    sql += " INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
+                    sql += " INNER JOIN organisationunit ou ON ou.organisationunitid=psi.organisationunitid ";
                 }
 
                 sql += " WHERE "
