@@ -233,7 +233,6 @@ public class DefaultIdentifiableObjectManager
         }
 
         uniqueObjects.addAll( getLikeName( clazz, query ) );
-        uniqueObjects.addAll( getLikeShortName( clazz, query ) );
 
         List<T> objects = new ArrayList<T>( uniqueObjects );
 
