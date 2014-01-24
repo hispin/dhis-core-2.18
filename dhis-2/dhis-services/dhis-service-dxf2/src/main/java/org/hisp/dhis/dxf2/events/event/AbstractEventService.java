@@ -259,7 +259,16 @@ public abstract class AbstractEventService
             }
 
             programInstance = programInstances.get( 0 );
-            programStageInstance = programInstance.getProgramStageInstanceByStage( 1 );
+
+            if ( event.getEvent() != null )
+            {
+                programStageInstance = programStageInstanceService.getProgramStageInstance( event.getEvent() );
+
+                if ( programStageInstance == null )
+                {
+                    return new ImportSummary( ImportStatus.ERROR, "Event.event did not point to a valid event" );
+                }
+            }
         }
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( event.getOrgUnit() );
