@@ -1,0 +1,11 @@
+This is an invitation to create a user account on the DHIS 2 system at ${object.rootPath}.
+You have been sent two emails, where this is the first one. Please follow the
+link below. In the next step you will be asked to enter a code which has been
+sent to you in the other email.
+
+
+${object.restorePath}?username=${object.username}&token=${object.token}
+
+
+You must respond to this invitation within 3 months. If you take no action,
+the invitation will expire at that time.

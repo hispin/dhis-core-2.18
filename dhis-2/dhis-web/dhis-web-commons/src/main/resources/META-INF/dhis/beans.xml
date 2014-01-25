@@ -577,6 +577,9 @@
   <bean id="org.hisp.dhis.useraccount.action.IsRestoreTokenValidAction" class="org.hisp.dhis.useraccount.action.IsRestoreTokenValidAction"
     scope="prototype" />
 
+  <bean id="org.hisp.dhis.useraccount.action.IsInviteTokenValidAction" class="org.hisp.dhis.useraccount.action.IsInviteTokenValidAction"
+    scope="prototype" />
+
   <bean id="org.hisp.dhis.useraccount.action.IsAccountRecoveryAllowedAction"
     class="org.hisp.dhis.useraccount.action.IsAccountRecoveryAllowedAction"
     scope="prototype" />

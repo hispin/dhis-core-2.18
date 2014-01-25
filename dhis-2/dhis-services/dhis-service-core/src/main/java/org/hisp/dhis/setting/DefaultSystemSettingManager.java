@@ -163,6 +163,11 @@ public class DefaultSystemSettingManager
         return (Boolean) getSystemSetting( KEY_ACCOUNT_RECOVERY, false );
     }
 
+    public boolean accountInviteEnabled()
+    {
+        return (Boolean) getSystemSetting( KEY_ACCOUNT_INVITE, false );
+    }
+
     @Override
     public boolean selfRegistrationNoRecaptcha()
     {

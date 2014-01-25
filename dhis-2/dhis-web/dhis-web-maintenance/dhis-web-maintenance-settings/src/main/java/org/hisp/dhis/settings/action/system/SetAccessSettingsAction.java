@@ -91,6 +91,13 @@ public class SetAccessSettingsAction
         this.accountRecovery = accountRecovery;
     }
 
+    private Boolean accountInvite;
+
+    public void setAccountInvite( Boolean accountInvite )
+    {
+        this.accountInvite = accountInvite;
+    }
+
     private Integer credentialsExpires;
 
     public void setCredentialsExpires( Integer credentialsExpires )
@@ -141,6 +148,7 @@ public class SetAccessSettingsAction
         configurationService.setConfiguration( config );
 
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_RECOVERY, accountRecovery );
+        systemSettingManager.saveSystemSetting( KEY_ACCOUNT_INVITE, accountInvite );
         systemSettingManager.saveSystemSetting( KEY_SELF_REGISTRATION_NO_RECAPTCHA, selfRegistrationNoRecaptcha );
 
         if ( credentialsExpires != null )

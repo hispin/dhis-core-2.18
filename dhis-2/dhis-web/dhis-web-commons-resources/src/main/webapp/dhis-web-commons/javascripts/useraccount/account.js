@@ -28,6 +28,11 @@ var validationRules = {
             email: true,
             rangelength: [ 4, 80 ]
         },
+        inviteEmail : {
+            required : true,
+            email : true,
+            rangelength : [ 4, 80 ]
+        },
         phoneNumber: {
             required: true,
             rangelength: [ 6, 30 ]

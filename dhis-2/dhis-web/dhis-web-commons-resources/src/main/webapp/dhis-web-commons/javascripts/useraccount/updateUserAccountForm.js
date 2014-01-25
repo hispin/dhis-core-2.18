@@ -5,6 +5,7 @@ jQuery( document ).ready( function()
 	/* some customization is needed for the updateUserAccount validation rules */
     rules["rawPassword"].required = false;
     rules["retypePassword"].required = false;
+    rules["inviteEmail"].required = false;
 
     rules["oldPassword"] = {
 			required: true

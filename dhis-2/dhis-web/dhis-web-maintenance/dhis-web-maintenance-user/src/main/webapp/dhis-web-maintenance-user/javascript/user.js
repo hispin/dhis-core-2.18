@@ -76,6 +76,65 @@ function showUserDetails( context ) {
 }
 
 // -----------------------------------------------------------------------------
+// Add user
+// -----------------------------------------------------------------------------
+
+var saved = {};
+
+function changeAccountAction()
+{
+    if( $('#accountAction').val() == 'create' )
+    {
+        $('#username').val( saved["username"] );
+        $('#rawPassword').val( saved["rawPassword"] );
+        $('#retypePassword').val( saved["retypePassword"] );
+        $('#surname').val( saved["surname"] );
+        $('#firstName').val( saved["firstName"] );
+        $('#phoneNumber').val( saved["phoneNumber"] );
+        $('#email').val( $('#inviteEmail').val() );
+        $('#inviteEmail').val( 'validEmail@domain.com' );
+
+        showById('usernameTR');
+        showById('rawPasswordTR');
+        showById('retypePasswordTR');
+        showById('surnameTR');
+        showById('firstNameTR');
+        showById('phoneNumberTR');
+        showById('emailTR');
+
+        hideById('inviteEmailTR');
+    }
+    else
+    {
+        hideById('usernameTR');
+        hideById('rawPasswordTR');
+        hideById('retypePasswordTR');
+        hideById('surnameTR');
+        hideById('firstNameTR');
+        hideById('phoneNumberTR');
+        hideById('emailTR');
+
+        showById('inviteEmailTR');
+
+        saved["username"] = $('#username').val();
+        saved["rawPassword"] = $('#rawPassword').val();
+        saved["retypePassword"] = $('#retypePassword').val();
+        saved["surname"] = $('#surname').val();
+        saved["firstName"] = $('#firstName').val();
+        saved["phoneNumber"] = $('#phoneNumber').val();
+
+        $('#username').val( 'nonExistingUserName_RpuECtIlVoRKTpYmEkYrAHmPtX4m1U' );
+        $('#rawPassword').val( 'validPassword_123' );
+        $('#retypePassword').val( 'validPassword_123' );
+        $('#surname').val( 'validSurname' );
+        $('#firstName').val( 'validFirstName' );
+        $('#phoneNumber').val( '5555555555' );
+        $('#inviteEmail').val( $('#email').val() );
+        $('#email').val( '' );
+    }
+}
+
+// -----------------------------------------------------------------------------
 // Remove user
 // -----------------------------------------------------------------------------
 

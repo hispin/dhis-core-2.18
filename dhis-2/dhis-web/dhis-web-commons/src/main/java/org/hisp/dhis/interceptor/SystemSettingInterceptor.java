@@ -94,6 +94,7 @@ public class SystemSettingInterceptor
         map.put( KEY_PHONE_NUMBER_AREA_CODE, systemSettingManager.getSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, "" ) );
         map.put( KEY_MULTI_ORGANISATION_UNIT_FORMS, systemSettingManager.getSystemSetting( KEY_MULTI_ORGANISATION_UNIT_FORMS, false ) );
         map.put( KEY_ACCOUNT_RECOVERY, systemSettingManager.getSystemSetting( KEY_ACCOUNT_RECOVERY, false ) );
+        map.put( KEY_ACCOUNT_INVITE, systemSettingManager.getSystemSetting( KEY_ACCOUNT_INVITE, false ) );
         map.put( KEY_CONFIGURATION, configurationService.getConfiguration() );
         map.put( KEY_APP_BASE_URL, systemSettingManager.getSystemSetting( KEY_APP_BASE_URL ) );
         map.put( KEY_GOOGLE_ANALYTICS_UA, systemSettingManager.getSystemSetting( KEY_GOOGLE_ANALYTICS_UA, "" ) );

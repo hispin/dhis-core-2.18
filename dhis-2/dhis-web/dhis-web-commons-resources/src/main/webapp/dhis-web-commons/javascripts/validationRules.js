@@ -31,6 +31,11 @@ var validationRules = {
             "email" : true,
             "rangelength" : [ 0, 160 ]
         },
+        "inviteEmail" : {
+            "required" : true,
+            "email" : true,
+            "rangelength" : [ 4, 160 ]
+        },
         "phoneNumber" : {
             "rangelength" : [ 0, 80 ]
         },
