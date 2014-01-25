@@ -1,5 +1,6 @@
 <script type="text/javascript">
-	jQuery(function() {
+	jQuery(function()
+    {
 	    validation2( 'addUserForm', function( form )
 	    {
 	        jQuery( "#selectedList" ).children().attr( "selected", true );
@@ -46,41 +47,58 @@
 <table>
     <col style="width: 120px"/>
 
+    #if ( $keyAccountInvite )
+    <tr>
+        <td><label>$i18n.getString( "action" )</label></td>
+        <td>
+            <select id="accountAction" name="accountAction" onchange="changeAccountAction()">
+                <option value="create" selected="selected">$i18n.getString( "create_account_with_user_details" )</option>
+                <option value="invite">$i18n.getString( "email_invitation_to_create_account" )</option>
+            </select>
+        </td>
+    </tr>
+    #end
+
 	<tr>
 		<th colspan="4">$i18n.getString( "details" )</th>
 	</tr>
 
-	<tr>
+	<tr id="usernameTR">
 		<td><label for="username">$i18n.getString( "username" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="text" id="username" name="username" autocomplete="off"></td>
 	</tr>
 
-	<tr>
+	<tr id="rawPasswordTR">
 		<td><label for="rawPassword">$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" autocomplete="off"></td>			
 	</tr>
 
-	<tr>
+    <tr id="retypePasswordTR">
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" autocomplete="off"></td>		
 	</tr>
 
-	<tr>
+    <tr id="surnameTR">
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="text" id="surname" name="surname"></td>
 	</tr>
 
-	<tr>
+    <tr id="firstNameTR">
 		<td><label for="firstName">$i18n.getString( "firstName" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="text" id="firstName" name="firstName"></td>		
 	</tr>
 
-	<tr>
+	<tr id="emailTR">
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td colspan="3"><input type="text" id="email" name="email" ></td>			
+		<td colspan="3"><input type="text" id="email" name="email" ></td>
 	</tr>
 
-    <tr>
+	<tr id="inviteEmailTR" style="display:none">
+		<td><label for="inviteEmail">$i18n.getString( "email" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td colspan="3"><input type="text" id="inviteEmail" name="inviteEmail" value="validEmail@domain.com" ></td>
+	</tr>
+
+    <tr id="phoneNumberTR">
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
         <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber"></td>
     </tr>

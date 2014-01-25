@@ -8,6 +8,7 @@
 
   <bean id="org.hisp.dhis.user.action.AddUserAction" class="org.hisp.dhis.user.action.AddUserAction" scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="securityService" ref="org.hisp.dhis.security.SecurityService" />
     <property name="passwordManager" ref="org.hisp.dhis.security.PasswordManager" />
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />

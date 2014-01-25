@@ -30,6 +30,7 @@ package org.hisp.dhis.useraccount.action;
 
 import org.hisp.dhis.security.RestoreType;
 import org.hisp.dhis.security.SecurityService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Jim Grace
  */
-public class IsRestoreTokenValidAction
-    implements Action
+public class IsInviteTokenValidAction
+        implements Action
 {
     @Autowired
+    private SystemSettingManager systemSettingManager;
+
+    @Autowired
     private SecurityService securityService;
-    
+
     @Autowired
     private UserService userService;
 
@@ -77,20 +81,52 @@ public class IsRestoreTokenValidAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private UserCredentials userCredentials;
+
+    public UserCredentials getUserCredentials()
+    {
+        return userCredentials;
+    }
+
+    private final String accountAction = "invited";
+
+    public String getAccountAction()
+    {
+        return accountAction;
+    }
+
+    private String email;
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-        
-        if ( credentials == null )
+        if ( !systemSettingManager.accountInviteEnabled() )
         {
             return ERROR;
         }
-        
-        boolean verified = securityService.verifyToken( credentials, token, RestoreType.RECOVER_PASSWORD );
-        
+
+        userCredentials = userService.getUserCredentialsByUsername( username );
+
+        if ( userCredentials == null )
+        {
+            return ERROR;
+        }
+
+        email = userCredentials.getUser().getEmail();
+
+        boolean verified = securityService.verifyToken( userCredentials, token, RestoreType.INVITE );
+
         return verified ? SUCCESS : ERROR;
     }
 }

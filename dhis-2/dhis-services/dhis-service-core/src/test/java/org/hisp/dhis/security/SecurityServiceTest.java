@@ -44,7 +44,9 @@ public class SecurityServiceTest
     extends DhisSpringTest
 {
     private UserCredentials credentials;
-    
+
+    private UserCredentials otherCredentials;
+
     @Autowired
     private UserService userService; 
     
@@ -60,37 +62,142 @@ public class SecurityServiceTest
         credentials = new UserCredentials();
         credentials.setUsername( "johndoe" );
         credentials.setPassword( "" );
-        
-        User user = createUser( 'A' );
-        user.setEmail( "valid@email.com" );
-        user.setUserCredentials( credentials );
-        credentials.setUser( user );
+
+        User userA = createUser( 'A' );
+        userA.setEmail( "validA@email.com" );
+        userA.setUserCredentials( credentials );
+        credentials.setUser( userA );
         userService.addUserCredentials( credentials );
+
+        otherCredentials = new UserCredentials();
+        otherCredentials.setUsername( "janesmith" );
+        otherCredentials.setPassword( "" );
+
+        User userB = createUser( 'B' );
+        userB.setEmail( "validB@email.com" );
+        userB.setUserCredentials( otherCredentials );
+        otherCredentials.setUser( userB );
+        userService.addUserCredentials( otherCredentials );
     }
-    
+
     @Test
-    public void testRestore()
+    public void testRestoreRecoverPassword()
     {
-        String[] result = securityService.initRestore( credentials );
+        String[] result = securityService.initRestore( credentials, RestoreType.RECOVER_PASSWORD );
         
-        assertNotNull( result[0] );
-        assertNotNull( result[1] );
+        String token = result[0];
+        String code = result[1];
+
+        assertNotNull( token );
+        assertNotNull( code );
         assertNotNull( credentials.getRestoreToken() );
         assertNotNull( credentials.getRestoreCode() );
         assertNotNull( credentials.getRestoreExpiry() );
-        
-        boolean verified = securityService.verifyToken( credentials, result[0] );
-        
-        assertTrue( verified );
-        
+
+        //
+        // verifyToken()
+        //
+        assertFalse( securityService.verifyToken( otherCredentials, token, RestoreType.RECOVER_PASSWORD ) );
+
+        assertFalse( securityService.verifyToken( credentials, "wrongToken", RestoreType.RECOVER_PASSWORD ) );
+
+        assertFalse( securityService.verifyToken( credentials, token, RestoreType.INVITE ) );
+
+        assertTrue( securityService.verifyToken( credentials, token, RestoreType.RECOVER_PASSWORD ) );
+
+        //
+        // canRestoreNow()
+        //
+        assertFalse( securityService.canRestoreNow( otherCredentials, token, code, RestoreType.RECOVER_PASSWORD ) );
+
+        assertFalse( securityService.canRestoreNow( credentials, "wrongToken", code, RestoreType.RECOVER_PASSWORD ) );
+
+        assertFalse( securityService.canRestoreNow( credentials, token, "wrongCode", RestoreType.RECOVER_PASSWORD ) );
+
+        assertFalse( securityService.canRestoreNow( credentials, token, code, RestoreType.INVITE ) );
+
+        assertTrue( securityService.canRestoreNow( credentials, token, code, RestoreType.RECOVER_PASSWORD ) );
+
+        //
+        // restore()
+        //
         String password = "NewPassword1";
-        
-        boolean restored = securityService.restore( credentials, result[0], result[1], password );
-        
-        assertTrue( restored );
-        
+
+        assertFalse( securityService.restore( otherCredentials, token, code, password, RestoreType.RECOVER_PASSWORD ) );
+
+        assertFalse( securityService.restore( credentials, "wrongToken", code, password, RestoreType.RECOVER_PASSWORD ) );
+
+        assertFalse( securityService.restore( credentials, token, "wrongCode", password, RestoreType.RECOVER_PASSWORD ) );
+
+        assertFalse( securityService.restore( credentials, token, code, password, RestoreType.INVITE ) );
+
+        assertTrue( securityService.restore( credentials, token, code, password, RestoreType.RECOVER_PASSWORD ) );
+
+        //
+        // check password
+        //
         String hashedPassword = passwordManager.encodePassword( credentials.getUsername(), password );
-        
+
+        assertEquals( hashedPassword, credentials.getPassword() );
+    }
+
+    @Test
+    public void testRestoreInvite()
+    {
+        String[] result = securityService.initRestore( credentials, RestoreType.INVITE );
+        String token = result[0];
+        String code = result[1];
+
+        assertNotNull( token );
+        assertNotNull( code );
+        assertNotNull( credentials.getRestoreToken() );
+        assertNotNull( credentials.getRestoreCode() );
+        assertNotNull( credentials.getRestoreExpiry() );
+
+        //
+        // verifyToken()
+        //
+        assertFalse( securityService.verifyToken( otherCredentials, token, RestoreType.INVITE ) );
+
+        assertFalse( securityService.verifyToken( credentials, "wrongToken", RestoreType.INVITE ) );
+
+        assertFalse( securityService.verifyToken( credentials, token, RestoreType.RECOVER_PASSWORD ) );
+
+        assertTrue( securityService.verifyToken( credentials, token, RestoreType.INVITE ) );
+
+        //
+        // canRestoreNow()
+        //
+        assertFalse( securityService.canRestoreNow( otherCredentials, token, code, RestoreType.INVITE ) );
+
+        assertFalse( securityService.canRestoreNow( credentials, "wrongToken", code, RestoreType.INVITE ) );
+
+        assertFalse( securityService.canRestoreNow( credentials, token, "wrongCode", RestoreType.INVITE ) );
+
+        assertFalse( securityService.canRestoreNow( credentials, token, code, RestoreType.RECOVER_PASSWORD ) );
+
+        assertTrue( securityService.canRestoreNow( credentials, token, code, RestoreType.INVITE ) );
+
+        //
+        // restore()
+        //
+        String password = "NewPassword1";
+
+        assertFalse( securityService.restore( otherCredentials, token, code, password, RestoreType.INVITE ) );
+
+        assertFalse( securityService.restore( credentials, "wrongToken", code, password, RestoreType.INVITE ) );
+
+        assertFalse( securityService.restore( credentials, token, "wrongCode", password, RestoreType.INVITE ) );
+
+        assertFalse( securityService.restore( credentials, token, code, password, RestoreType.RECOVER_PASSWORD ) );
+
+        assertTrue( securityService.restore( credentials, token, code, password, RestoreType.INVITE ) );
+
+        //
+        // check password
+        //
+        String hashedPassword = passwordManager.encodePassword( credentials.getUsername(), password );
+
         assertEquals( hashedPassword, credentials.getPassword() );
     }
 }

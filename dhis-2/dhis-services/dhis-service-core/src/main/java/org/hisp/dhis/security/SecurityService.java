@@ -37,27 +37,42 @@ import org.hisp.dhis.user.UserCredentials;
 public interface SecurityService
 {
     /**
-     * Will invoke the initiateRestore method and dispatch email messages with
+     * Sets information for a user who will be invited by email to finish
+     * setting up their user account.
+     *
+     * @param credentials the credentials of the user to invite.
+     * @return true if the invitation was sent, otherwise false.
+     */
+    boolean prepareUserForInvite( UserCredentials credentials );
+
+    /**
+     * Invokes the initRestore method and dispatches email messages with
      * restore information to the user.
+     * <p>
+     * In the case of inviting a user to finish setting up an account,
+     * the user account must already be configured with the profile desired
+     * for the user (e.g., locale, organisation unit(s), role(s), etc.)
      *
      * @param credentials the credentials for the user to send restore message.
      * @param rootPath the root path of the request.
+     * @param restoreType type of restore operation (e.g. pw recovery, invite).
      * @return false if any of the arguments are null or if the user credentials
      *         identified by the user name does not exist, true otherwise.
      */
-    boolean sendRestoreMessage( UserCredentials credentials, String rootPath );
+    boolean sendRestoreMessage( UserCredentials credentials, String rootPath, RestoreType restoreType );
 
     /**
-     * Will populate the restoreToken and restoreCode property of the given
-     * credentials with a hashed version of auto-generated values. Will set the
-     * restoreExpiry property with a date time one hour from now. Changes will be
-     * persisted.
+     * Populates the restoreToken and restoreCode property of the given
+     * credentials with a hashed version of auto-generated values. Sets the
+     * restoreExpiry property with a date time some interval from now depending
+     * on the restore type. Changes are persisted.
      *
      * @param credentials the user credentials.
+     * @param restoreType type of restore operation (e.g. pw recovery, invite).
      * @return an array where index 0 is the clear-text token and index 1 the
      *         clear-text code.
      */
-    String[] initRestore( UserCredentials credentials );
+    String[] initRestore( UserCredentials credentials, RestoreType restoreType );
 
     /**
      * Tests whether the given token and code are valid for the given user name.
@@ -70,9 +85,24 @@ public interface SecurityService
      * @param token the token.
      * @param code the code.
      * @param newPassword the proposed new password.
+     * @param restoreType type of restore operation (e.g. pw recovery, invite).
      * @return true or false.
      */
-    boolean restore( UserCredentials credentials, String token, String code, String newPassword );
+    boolean restore( UserCredentials credentials, String token, String code, String newPassword, RestoreType restoreType );
+
+    /**
+     * Tests whether the given token and code are valid for the given user name.
+     * In order to succeed, the given token and code must match the ones on the
+     * credentials, and the current date must be before the expiry date time of
+     * the credentials.
+     *
+     * @param credentials the user credentials.
+     * @param token the token.
+     * @param code the code.
+     * @param restoreType type of restore operation (e.g. pw recovery, invite).
+     * @return true or false.
+     */
+    boolean canRestoreNow( UserCredentials credentials, String token, String code, RestoreType restoreType );
 
     /**
      * Tests whether the given token in combination with the given user name is
@@ -85,7 +115,7 @@ public interface SecurityService
      *         identified by the user name does not exist, true if the arguments
      *         are valid.
      */
-    boolean verifyToken( UserCredentials credentials, String token );
+    boolean verifyToken( UserCredentials credentials, String token, RestoreType restoreType );
 
     /**
      * Checks whether current user has read access to object.
