@@ -42,6 +42,8 @@
     <property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider" />
   </bean>
 
+  <bean id="hibernateEntityInterceptorWiring" class="org.hisp.dhis.hibernate.HibernateEntityInterceptorWiring" />
+
   <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource" />
     <property name="hibernateProperties" ref="hibernateProperties" />
