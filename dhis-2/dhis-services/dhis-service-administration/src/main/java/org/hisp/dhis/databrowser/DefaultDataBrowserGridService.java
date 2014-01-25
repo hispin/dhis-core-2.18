@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
@@ -55,12 +54,9 @@ import org.hisp.dhis.system.util.DateUtils;
 public class DefaultDataBrowserGridService
     implements DataBrowserGridService
 {
-    private static final String STARTDATE = "1900-01-01";
-
-    private static final String ENDDATE = "3000-01-01";
-
+    private static final String DEFAULT_STARTDATE = "1900-01-01";
+    private static final String DEFAULT_ENDDATE = "3000-01-01";
     private static final String SPACE = " ";
-
     private static final String DASH = " - ";
 
     // -------------------------------------------------------------------------
@@ -83,15 +79,11 @@ public class DefaultDataBrowserGridService
 
     // -------------------------------------------------------------------------
     // DataBrowserGridService implementation
-    //
-    // Basic
     // -------------------------------------------------------------------------
 
-    public Grid getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType, I18nFormat format,
-        boolean isZeroAdded )
+    public Grid getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType, I18nFormat format, boolean isZeroAdded )
     {
-        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
-            format );
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType, format );
 
         return dataBrowserGridStore.getDataSetsBetweenPeriods( betweenPeriodIds, periodType, isZeroAdded );
     }
@@ -99,8 +91,7 @@ public class DefaultDataBrowserGridService
     public Grid getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType,
         I18nFormat format, boolean isZeroAdded )
     {
-        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
-            format );
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType, format );
 
         return dataBrowserGridStore.getDataElementGroupsBetweenPeriods( betweenPeriodIds, isZeroAdded );
     }
@@ -108,8 +99,7 @@ public class DefaultDataBrowserGridService
     public Grid getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType, I18nFormat format,
         boolean isZeroAdded )
     {
-        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
-            format );
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType, format );
 
         return dataBrowserGridStore.getOrgUnitGroupsBetweenPeriods( betweenPeriodIds, isZeroAdded );
     }
@@ -262,41 +252,34 @@ public class DefaultDataBrowserGridService
     // Supportive methods
     // -------------------------------------------------------------------------
     /**
-     * Helper-method that finds all PeriodIds between a given period. Uses
-     * functionality already in the DHIS. Returns a list with all id's that was
-     * found.
-     * 
-     * @param startDate
-     * @param endDate
-     * @param periodType
-     * @return List<Integer>
+     * Returns identifiers of periods between the given dates for the given period
+     * type.
      */
     private List<Integer> getAllPeriodIdsBetweenDatesOnPeriodType( String startDate, String endDate,
         PeriodType periodType, I18nFormat i18nFormat )
     {
-        if ( startDate == null || startDate.length() == 0 )
+        if ( startDate == null || startDate.isEmpty() )
         {
-            startDate = STARTDATE;
+            startDate = DEFAULT_STARTDATE;
         }
-        if ( endDate == null || endDate.length() == 0 )
+        if ( endDate == null || endDate.isEmpty() )
         {
-            endDate = ENDDATE;
+            endDate = DEFAULT_ENDDATE;
         }
 
         Date date1 = i18nFormat.parseDate( startDate );
         Date date2 = i18nFormat.parseDate( endDate );
 
-        Collection<Period> pp = periodService.getPeriodsBetweenDates( periodType, date1, date2 );
+        Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, date1, date2 );
 
-        Iterator<Period> it = pp.iterator();
         List<Integer> betweenPeriodIds = new ArrayList<Integer>();
 
-        while ( it.hasNext() )
+        for ( Period period : periods )
         {
-            betweenPeriodIds.add( it.next().getId() );
+            betweenPeriodIds.add( period.getId() );
         }
 
-        if ( betweenPeriodIds.size() <= 0 )
+        if ( betweenPeriodIds.isEmpty() )
         {
             betweenPeriodIds.add( -1 );
         }
@@ -322,8 +305,8 @@ public class DefaultDataBrowserGridService
             Date date1 = sdf.parse( fromDate );
             Date date2 = sdf.parse( toDate );
 
-            List<Period> periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( periodType, date1,
-                date2 ) );
+            List<Period> periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( 
+                periodType, date1, date2 ) );
 
             if ( periods.isEmpty() )
             {

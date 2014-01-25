@@ -1,35 +1,33 @@
 <style type="text/css">
-	div#drillDownMenu
-	{
-	  position: absolute;
-	  display: none;
-	}
-	
-	th.formatLabel
-	{
-	  text-align: center;
-	}
-	
-	.menuDropDownBox li
-	{
-		cursor:pointer
-	}
+div#drillDownMenu
+{
+  position: absolute;
+  display: none;
+}
 
-	.menuDropDownBox li:hover
-	{
-		text-decoration: none;
-		background-color: #4A89BA;
-	}
+th.formatLabel
+{
+  text-align: center;
+}
+
+.menuDropDownBox li
+{
+	cursor:pointer
+}
+
+.menuDropDownBox li:hover
+{
+	text-decoration: none;
+	background-color: #4A89BA;
+}
 </style>
 
 <script type="text/javascript">
-
-	jQuery( document ).ready( function()
-	{
-		setTableStyles();
-		loadListeners();
-	} );
-
+jQuery( document ).ready( function()
+{
+	setTableStyles();
+	loadListeners();
+} );
 </script>
 
 #if ( $grid.getHeight() == 0 || $grid.getWidth() == 0 )
