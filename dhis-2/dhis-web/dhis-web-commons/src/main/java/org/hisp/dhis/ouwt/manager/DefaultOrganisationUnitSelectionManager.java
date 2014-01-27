@@ -133,8 +133,7 @@ public class DefaultOrganisationUnitSelectionManager
         }
 
         // ---------------------------------------------------------------------
-        // Reload the units to ensure it is loaded within the current
-        // transaction
+        // Reload the units to ensure it is loaded within the current session
         // ---------------------------------------------------------------------
 
         Collection<OrganisationUnit> reloadedSelectedUnits = reloadOrganisationUnits( selectedUnits );
@@ -259,6 +258,7 @@ public class DefaultOrganisationUnitSelectionManager
             if ( rootUnits.contains( selectedUnit ) )
             {
                 unitsInTree.add( selectedUnit );
+                continue;
             }
 
             OrganisationUnit parent = selectedUnit.getParent();
