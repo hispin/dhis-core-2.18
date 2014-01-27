@@ -91,8 +91,6 @@ public class CsdController
     // Name of group
     private static final String FACILITY_DISCRIMINATOR = "Health Facility";
 
-    private static final String FACILITY_TYPE_DISCRIMINATOR = "Type";
-
     private static final String FACILITY_STATUS_DISCRIMINATOR = "Status";
 
     // -------------------------------------------------------------------------
