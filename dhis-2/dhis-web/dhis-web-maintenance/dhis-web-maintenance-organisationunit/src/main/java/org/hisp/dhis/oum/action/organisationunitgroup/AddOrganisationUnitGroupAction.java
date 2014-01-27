@@ -141,6 +141,8 @@ public class AddOrganisationUnitGroupAction
         organisationUnitGroup.setCode( code );
         organisationUnitGroup.setSymbol( symbol );
 
+        organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
+
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
             .getReloadedSelectedOrganisationUnits();
 
@@ -163,7 +165,7 @@ public class AddOrganisationUnitGroupAction
             }
         }
 
-        organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
+        organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
 
         return SUCCESS;
     }

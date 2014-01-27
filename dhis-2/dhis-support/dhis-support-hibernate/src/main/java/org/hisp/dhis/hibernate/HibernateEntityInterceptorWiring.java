@@ -65,7 +65,7 @@ public class HibernateEntityInterceptorWiring
     private Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>();
 
     @PostConstruct
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public void registerListeners()
     {
         EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry()
@@ -80,6 +80,7 @@ public class HibernateEntityInterceptorWiring
                 {
                     if ( event.getAffectedOwnerOrNull() instanceof IdentifiableObject )
                     {
+                        System.err.println( "is true: " + event.getAffectedOwnerEntityName() );
                         identifiableObjects.add( (IdentifiableObject) event.getAffectedOwnerOrNull() );
                     }
                 }
@@ -93,6 +94,16 @@ public class HibernateEntityInterceptorWiring
                 if ( Collection.class.isInstance( newValue ) )
                 {
                     newCol = new ArrayList( (Collection) newValue );
+
+                    if ( !newCol.isEmpty() )
+                    {
+                        Object next = newCol.iterator().next();
+
+                        if ( !(next instanceof IdentifiableObject) )
+                        {
+                            newCol = new ArrayList();
+                        }
+                    }
                 }
 
                 if ( Map.class.isInstance( oldValue ) )
@@ -138,7 +149,7 @@ public class HibernateEntityInterceptorWiring
                     return;
                 }
 
-                //objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
+                // objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
                 identifiableObjects.clear();
             }
         } );
