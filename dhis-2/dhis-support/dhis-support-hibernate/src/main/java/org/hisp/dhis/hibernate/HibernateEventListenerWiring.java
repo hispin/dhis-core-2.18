@@ -95,12 +95,12 @@ public class HibernateEventListenerWiring
             Object newValue = event.getCollection().getValue();
             Serializable oldValue = event.getCollection().getStoredSnapshot();
 
-            Collection newCol = new ArrayList();
-            Collection oldCol = new ArrayList();
+            Collection<Object> newCol = new ArrayList<Object>();
+            Collection<Object> oldCol = new ArrayList<Object>();
 
             if ( Collection.class.isInstance( newValue ) )
             {
-                newCol = new ArrayList( (Collection) newValue );
+                newCol = new ArrayList<Object>( (Collection<Object>) newValue );
 
                 if ( !newCol.isEmpty() )
                 {
@@ -108,12 +108,12 @@ public class HibernateEventListenerWiring
 
                     if ( !(next instanceof IdentifiableObject) )
                     {
-                        newCol = new ArrayList();
+                        newCol = new ArrayList<Object>();
                     }
                 }
             }
 
-            Map map = (Map) oldValue;
+            Map<?,?> map = (Map<?,?>) oldValue;
 
             for ( Object o : map.keySet() )
             {
@@ -123,8 +123,8 @@ public class HibernateEventListenerWiring
                 }
             }
 
-            Collection removed = CollectionUtils.subtract( oldCol, newCol );
-            Collection added = CollectionUtils.subtract( newCol, oldCol );
+            Collection<? extends IdentifiableObject> removed = CollectionUtils.subtract( oldCol, newCol );
+            Collection<? extends IdentifiableObject> added = CollectionUtils.subtract( newCol, oldCol );
 
             identifiableObjects.addAll( removed );
             identifiableObjects.addAll( added );
