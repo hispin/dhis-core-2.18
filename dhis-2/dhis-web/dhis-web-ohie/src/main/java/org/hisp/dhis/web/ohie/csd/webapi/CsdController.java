@@ -363,12 +363,12 @@ public class CsdController
 
                     geocode.setLongitude( coordinates.lng );
                     geocode.setLatitude( coordinates.lat );
+
+                    facility.setGeocode( geocode );
                 }
                 catch ( NumberFormatException ignored )
                 {
                 }
-
-                facility.setGeocode( geocode );
             }
 
             Record record = new Record();
