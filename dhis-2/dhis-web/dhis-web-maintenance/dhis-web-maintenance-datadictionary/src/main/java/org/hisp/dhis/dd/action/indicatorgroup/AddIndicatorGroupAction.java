@@ -28,16 +28,15 @@ package org.hisp.dhis.dd.action.indicatorgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.system.util.AttributeUtils;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -81,9 +80,9 @@ public class AddIndicatorGroupAction
     {
         this.groupMembers = groupMembers;
     }
-    
+
     private IndicatorGroup indicatorGroup;
-    
+
     public IndicatorGroup getIndicatorGroup()
     {
         return indicatorGroup;
@@ -99,11 +98,13 @@ public class AddIndicatorGroupAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-   
+
     public String execute()
     {
         indicatorGroup = new IndicatorGroup( name );
-        
+
+        indicatorService.addIndicatorGroup( indicatorGroup );
+
         for ( String id : groupMembers )
         {
             indicatorGroup.addIndicator( indicatorService.getIndicator( Integer.parseInt( id ) ) );
@@ -115,7 +116,7 @@ public class AddIndicatorGroupAction
                 attributeService );
         }
 
-        indicatorService.addIndicatorGroup( indicatorGroup );        
+        indicatorService.updateIndicatorGroup( indicatorGroup );
 
         return SUCCESS;
     }

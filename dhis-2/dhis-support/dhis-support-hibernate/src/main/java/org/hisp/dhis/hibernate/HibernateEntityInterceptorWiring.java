@@ -80,7 +80,6 @@ public class HibernateEntityInterceptorWiring
                 {
                     if ( event.getAffectedOwnerOrNull() instanceof IdentifiableObject )
                     {
-                        System.err.println( "is true: " + event.getAffectedOwnerEntityName() );
                         identifiableObjects.add( (IdentifiableObject) event.getAffectedOwnerOrNull() );
                     }
                 }
@@ -134,7 +133,7 @@ public class HibernateEntityInterceptorWiring
                     return;
                 }
 
-                //objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
+                // objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
                 identifiableObjects.clear();
             }
         } );
