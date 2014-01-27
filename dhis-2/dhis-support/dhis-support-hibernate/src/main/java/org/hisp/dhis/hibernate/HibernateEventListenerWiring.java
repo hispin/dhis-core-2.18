@@ -32,6 +32,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.SessionFactory;
 import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.EventType;
+import org.hibernate.event.spi.PostDeleteEvent;
+import org.hibernate.event.spi.PostDeleteEventListener;
 import org.hibernate.event.spi.PostInsertEvent;
 import org.hibernate.event.spi.PostInsertEventListener;
 import org.hibernate.event.spi.PostUpdateEvent;
@@ -65,92 +67,105 @@ public class HibernateEventListenerWiring
     private Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>();
 
     @PostConstruct
-    @SuppressWarnings( "unchecked" )
     public void registerListeners()
     {
         EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry()
             .getService( EventListenerRegistry.class );
 
-        registry.getEventListenerGroup( EventType.PRE_COLLECTION_UPDATE ).appendListener( new PreCollectionUpdateEventListener()
+        registry.getEventListenerGroup( EventType.PRE_COLLECTION_UPDATE ).appendListener( preCollectionUpdateEventListener );
+        registry.getEventListenerGroup( EventType.POST_COMMIT_UPDATE ).appendListener( postUpdateEventListener );
+        registry.getEventListenerGroup( EventType.POST_COMMIT_INSERT ).appendListener( postInsertEventListener );
+        registry.getEventListenerGroup( EventType.POST_COMMIT_DELETE ).appendListener( postDeleteEventListener );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private PreCollectionUpdateEventListener preCollectionUpdateEventListener = new PreCollectionUpdateEventListener()
+    {
+        @Override
+        public void onPreUpdateCollection( PreCollectionUpdateEvent event )
         {
-            @Override
-            public void onPreUpdateCollection( PreCollectionUpdateEvent event )
+            if ( event.getAffectedOwnerOrNull() != null )
             {
-                if ( event.getAffectedOwnerOrNull() != null )
+                if ( event.getAffectedOwnerOrNull() instanceof IdentifiableObject )
                 {
-                    if ( event.getAffectedOwnerOrNull() instanceof IdentifiableObject )
+                    identifiableObjects.add( (IdentifiableObject) event.getAffectedOwnerOrNull() );
+                }
+            }
+
+            Object newValue = event.getCollection().getValue();
+            Serializable oldValue = event.getCollection().getStoredSnapshot();
+
+            Collection newCol = new ArrayList();
+            Collection oldCol = new ArrayList();
+
+            if ( Collection.class.isInstance( newValue ) )
+            {
+                newCol = new ArrayList( (Collection) newValue );
+
+                if ( !newCol.isEmpty() )
+                {
+                    Object next = newCol.iterator().next();
+
+                    if ( !(next instanceof IdentifiableObject) )
                     {
-                        identifiableObjects.add( (IdentifiableObject) event.getAffectedOwnerOrNull() );
+                        newCol = new ArrayList();
                     }
                 }
-
-                Object newValue = event.getCollection().getValue();
-                Serializable oldValue = event.getCollection().getStoredSnapshot();
-
-                Collection newCol = new ArrayList();
-                Collection oldCol = new ArrayList();
-
-                if ( Collection.class.isInstance( newValue ) )
-                {
-                    newCol = new ArrayList( (Collection) newValue );
-
-                    if ( !newCol.isEmpty() )
-                    {
-                        Object next = newCol.iterator().next();
-
-                        if ( !(next instanceof IdentifiableObject) )
-                        {
-                            newCol = new ArrayList();
-                        }
-                    }
-                }
-
-                Map map = (Map) oldValue;
-
-                for ( Object o : map.keySet() )
-                {
-                    if ( o instanceof IdentifiableObject )
-                    {
-                        oldCol.add( o );
-                    }
-                }
-
-                Collection removed = CollectionUtils.subtract( oldCol, newCol );
-                Collection added = CollectionUtils.subtract( newCol, oldCol );
-
-                identifiableObjects.addAll( removed );
-                identifiableObjects.addAll( added );
             }
-        } );
 
-        registry.getEventListenerGroup( EventType.POST_COMMIT_UPDATE ).appendListener( new PostUpdateEventListener()
-        {
-            @Override
-            public void onPostUpdate( PostUpdateEvent event )
+            Map map = (Map) oldValue;
+
+            for ( Object o : map.keySet() )
             {
-                if ( identifiableObjects.isEmpty() )
+                if ( o instanceof IdentifiableObject )
                 {
-                    return;
+                    oldCol.add( o );
                 }
-
-                // objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
-                identifiableObjects.clear();
             }
-        } );
 
-        registry.getEventListenerGroup( EventType.POST_COMMIT_INSERT ).appendListener( new PostInsertEventListener()
+            Collection removed = CollectionUtils.subtract( oldCol, newCol );
+            Collection added = CollectionUtils.subtract( newCol, oldCol );
+
+            identifiableObjects.addAll( removed );
+            identifiableObjects.addAll( added );
+        }
+    };
+
+    private PostUpdateEventListener postUpdateEventListener = new PostUpdateEventListener()
+    {
+        @Override
+        public void onPostUpdate( PostUpdateEvent event )
         {
-            @Override
-            public void onPostInsert( PostInsertEvent event )
-            {
-                if ( identifiableObjects.isEmpty() )
-                {
-                    return;
-                }
+            updateIdentifiableObjects();
+        }
+    };
 
-                // objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
-                identifiableObjects.clear();
-            }
-        } );
+    private PostInsertEventListener postInsertEventListener = new PostInsertEventListener()
+    {
+        @Override
+        public void onPostInsert( PostInsertEvent event )
+        {
+            updateIdentifiableObjects();
+        }
+    };
+
+    private PostDeleteEventListener postDeleteEventListener = new PostDeleteEventListener()
+    {
+        @Override
+        public void onPostDelete( PostDeleteEvent event )
+        {
+            updateIdentifiableObjects();
+        }
+    };
+
+    private void updateIdentifiableObjects()
+    {
+        if ( identifiableObjects.isEmpty() )
+        {
+            return;
+        }
+
+        // objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
+        identifiableObjects.clear();
     }
 }
