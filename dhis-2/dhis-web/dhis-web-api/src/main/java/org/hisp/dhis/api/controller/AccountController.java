@@ -35,7 +35,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.RestoreType;
 import org.hisp.dhis.security.SecurityService;
