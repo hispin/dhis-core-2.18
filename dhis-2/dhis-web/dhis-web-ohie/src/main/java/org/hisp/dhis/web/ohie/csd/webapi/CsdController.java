@@ -304,28 +304,33 @@ public class CsdController
                     continue;
                 }
 
-                if ( organisationUnitGroup.getCode() == null )
+                
+                if ( organisationUnitGroup.getGroupSet() != null &&
+                    FACILITY_TYPE_GROUPSET.equals( organisationUnitGroup.getGroupSet().getName() ) )
                 {
-                    continue;
-                }
-
-                CodedType codedType = new CodedType();
-                codedType.setCode( organisationUnitGroup.getCode() );
-
-                codedType.setCodingSchema( "Unknown" );
-
-                for ( AttributeValue attributeValue : organisationUnitGroup.getAttributeValues() )
-                {
-                    if ( attributeValue.getAttribute().getName().equals( "code_system" ) )
+                    if ( organisationUnitGroup.getCode() == null )
                     {
-                        codedType.setCodingSchema( attributeValue.getValue() );
-                        break;
+                        continue;
                     }
+
+                    CodedType codedType = new CodedType();
+                    codedType.setCode( organisationUnitGroup.getCode() );
+
+                    codedType.setCodingSchema( "Unknown" );
+
+                    for ( AttributeValue attributeValue : organisationUnitGroup.getAttributeValues() )
+                    {
+                        if ( attributeValue.getAttribute().getName().equals( "code_system" ) )
+                        {
+                            codedType.setCodingSchema( attributeValue.getValue() );
+                            break;
+                        }
+                    }
+
+                    codedType.setValue( organisationUnitGroup.getDisplayName() );
+
+                    facility.getCodedTypes().add( codedType );
                 }
-
-                codedType.setValue( organisationUnitGroup.getDisplayName() );
-
-                facility.getCodedTypes().add( codedType );
             }
 
             Organization organization = new Organization( "No oid, please provide organisation_oid attribute value." );
