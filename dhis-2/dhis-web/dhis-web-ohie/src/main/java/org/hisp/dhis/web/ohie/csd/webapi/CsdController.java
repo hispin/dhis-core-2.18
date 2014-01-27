@@ -287,9 +287,20 @@ public class CsdController
 
             for ( OrganisationUnitGroup organisationUnitGroup : organisationUnit.getGroups() )
             {
-                if ( organisationUnitGroup.getGroupSet().getName().equals( FACILITY_STATUS_DISCRIMINATOR ) )
+                if ( organisationUnitGroup == null )
+                {
+                    continue;
+                }
+
+                if ( organisationUnitGroup.getGroupSet() != null &&
+                    organisationUnitGroup.getGroupSet().getName().equals( FACILITY_STATUS_DISCRIMINATOR ) )
                 {
                     facilityStatus = organisationUnitGroup.getCode();
+                    continue;
+                }
+
+                if ( organisationUnitGroup.getCode() == null )
+                {
                     continue;
                 }
 
