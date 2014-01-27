@@ -65,7 +65,7 @@ public class HibernateEventListenerWiring
     private Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>();
 
     @PostConstruct
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public void registerListeners()
     {
         EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry()
@@ -105,11 +105,11 @@ public class HibernateEventListenerWiring
                     }
                 }
 
-                if ( Map.class.isInstance( oldValue ) )
-                {
-                    Map map = (Map) oldValue;
+                Map map = (Map) oldValue;
 
-                    for ( Object o : map.keySet() )
+                for ( Object o : map.keySet() )
+                {
+                    if ( o instanceof IdentifiableObject )
                     {
                         oldCol.add( o );
                     }
