@@ -783,12 +783,12 @@ public abstract class AbstractEventService
             if ( programStageInstance == null )
             {
                 programStageInstance = createProgramStageInstance( programStage, programInstance, organisationUnit,
-                    eventDate, EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy );
+                    eventDate, EventStatus.COMPLETED == event.getStatus(), event.getCoordinate(), storedBy );
             }
             else
             {
                 updateProgramStageInstance( programStage, programInstance, organisationUnit, eventDate,
-                    EventStatus.COMPLETED.equals( event.getStatus() ), event.getCoordinate(), storedBy,
+                    EventStatus.COMPLETED == event.getStatus(), event.getCoordinate(), storedBy,
                     programStageInstance );
             }
 
