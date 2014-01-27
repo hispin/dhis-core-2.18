@@ -54,7 +54,7 @@ import java.util.Set;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class HibernateEntityInterceptorWiring
+public class HibernateEventListenerWiring
 {
     @Autowired
     private SessionFactory sessionFactory;
