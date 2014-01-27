@@ -295,11 +295,6 @@ public class CsdController
                     continue;
                 }
 
-                if ( organisationUnitGroup.getCode() == null )
-                {
-                    continue;
-                }
-
                 CodedType codedType = new CodedType();
                 codedType.setCode( organisationUnitGroup.getCode() );
 
