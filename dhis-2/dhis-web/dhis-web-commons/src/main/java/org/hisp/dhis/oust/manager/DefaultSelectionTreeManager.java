@@ -300,6 +300,7 @@ public class DefaultSelectionTreeManager
             if ( rootUnits.contains( selectedUnit ) )
             {
                 unitsInTree.add( selectedUnit );
+                continue;
             }
 
             OrganisationUnit parent = selectedUnit.getParent();
