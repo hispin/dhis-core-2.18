@@ -78,6 +78,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -88,10 +89,14 @@ public class CsdController
 {
     private static final String SOAP_CONTENT_TYPE = "application/soap+xml";
 
-    // Name of group
-    private static final String FACILITY_DISCRIMINATOR = "Health Facility";
-
-    private static final String FACILITY_STATUS_DISCRIMINATOR = "Status";
+    // Name of group all facilities belong to
+    private static final String FACILITY_DISCRIMINATOR_GROUP = "Health Facility";
+    
+    // groupset for status codelist - open, closed, etc
+    private static final String FACILITY_STATUS_GROUPSET = "Status";
+    
+    // groupset for facility type codelist
+    private static final String FACILITY_TYPE_GROUPSET = "Type";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -235,7 +240,7 @@ public class CsdController
 
             for ( OrganisationUnitGroup group : organisationUnit.getGroups() )
             {
-                if ( group.getName().equals( FACILITY_DISCRIMINATOR ) )
+                if ( group.getName().equals( FACILITY_DISCRIMINATOR_GROUP ) )
                 {
                     isFacility = true;
                     break;
@@ -293,7 +298,7 @@ public class CsdController
                 }
 
                 if ( organisationUnitGroup.getGroupSet() != null &&
-                    FACILITY_STATUS_DISCRIMINATOR.equals( organisationUnitGroup.getGroupSet().getName() ) )
+                    FACILITY_STATUS_GROUPSET.equals( organisationUnitGroup.getGroupSet().getName() ) )
                 {
                     facilityStatus = organisationUnitGroup.getCode();
                     continue;
