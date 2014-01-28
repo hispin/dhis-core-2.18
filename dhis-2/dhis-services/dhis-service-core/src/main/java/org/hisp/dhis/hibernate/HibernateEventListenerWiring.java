@@ -115,11 +115,14 @@ public class HibernateEventListenerWiring
 
             Map<?, ?> map = (Map<?, ?>) oldValue;
 
-            for ( Object o : map.keySet() )
+            if ( oldValue != null )
             {
-                if ( o instanceof IdentifiableObject )
+                for ( Object o : map.keySet() )
                 {
-                    oldCol.add( o );
+                    if ( o instanceof IdentifiableObject )
+                    {
+                        oldCol.add( o );
+                    }
                 }
             }
 
