@@ -38,7 +38,7 @@ import java.util.Date;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "enrollment", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "enrollment", namespace = DxfNamespaces.DXF_2_0 )
 public class Enrollment
 {
     private String enrollment;
@@ -57,8 +57,8 @@ public class Enrollment
     {
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(isAttribute = true)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getPerson()
     {
         return person;
@@ -69,8 +69,8 @@ public class Enrollment
         this.person = person;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(isAttribute = true)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getEnrollment()
     {
         return enrollment;
@@ -81,8 +81,8 @@ public class Enrollment
         this.enrollment = enrollment;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(isAttribute = true)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getProgram()
     {
         return program;
@@ -93,8 +93,8 @@ public class Enrollment
         this.program = program;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public EnrollmentStatus getStatus()
     {
         return status;
@@ -105,8 +105,8 @@ public class Enrollment
         this.status = status;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getDateOfEnrollment()
     {
         return dateOfEnrollment;
@@ -117,8 +117,8 @@ public class Enrollment
         this.dateOfEnrollment = dateOfEnrollment;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( required = true )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public Date getDateOfIncident()
     {
         return dateOfIncident;
@@ -132,17 +132,26 @@ public class Enrollment
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
+        if ( this == o )
+            return true;
+        if ( o == null || getClass() != o.getClass() )
+            return false;
 
         Enrollment that = (Enrollment) o;
 
-        if ( dateOfEnrollment != null ? !dateOfEnrollment.equals( that.dateOfEnrollment ) : that.dateOfEnrollment != null ) return false;
-        if ( dateOfIncident != null ? !dateOfIncident.equals( that.dateOfIncident ) : that.dateOfIncident != null ) return false;
-        if ( enrollment != null ? !enrollment.equals( that.enrollment ) : that.enrollment != null ) return false;
-        if ( person != null ? !person.equals( that.person ) : that.person != null ) return false;
-        if ( program != null ? !program.equals( that.program ) : that.program != null ) return false;
-        if ( status != that.status ) return false;
+        if ( dateOfEnrollment != null ? !dateOfEnrollment.equals( that.dateOfEnrollment )
+            : that.dateOfEnrollment != null )
+            return false;
+        if ( dateOfIncident != null ? !dateOfIncident.equals( that.dateOfIncident ) : that.dateOfIncident != null )
+            return false;
+        if ( enrollment != null ? !enrollment.equals( that.enrollment ) : that.enrollment != null )
+            return false;
+        if ( person != null ? !person.equals( that.person ) : that.person != null )
+            return false;
+        if ( program != null ? !program.equals( that.program ) : that.program != null )
+            return false;
+        if ( status != that.status )
+            return false;
 
         return true;
     }
@@ -162,13 +171,8 @@ public class Enrollment
     @Override
     public String toString()
     {
-        return "Enrollment{" +
-            "enrollment='" + enrollment + '\'' +
-            ", person='" + person + '\'' +
-            ", program='" + program + '\'' +
-            ", status=" + status +
-            ", dateOfEnrollment=" + dateOfEnrollment +
-            ", dateOfIncident=" + dateOfIncident +
-            '}';
+        return "Enrollment{" + "enrollment='" + enrollment + '\'' + ", person='" + person + '\'' + ", program='"
+            + program + '\'' + ", status=" + status + ", dateOfEnrollment=" + dateOfEnrollment + ", dateOfIncident="
+            + dateOfIncident + '}';
     }
 }
