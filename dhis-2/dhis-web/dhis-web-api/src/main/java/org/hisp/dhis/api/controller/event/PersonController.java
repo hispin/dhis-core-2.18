@@ -135,7 +135,6 @@ public class PersonController
     private Persons personsByFilter( List<String> filters, String orgUnitUid )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( Patient.class );
-        criteria.createAlias( "organisationUnit", "organisationUnit" );
         criteria.createAlias( "attributeValues", "attributeValue" );
         criteria.createAlias( "attributeValue.patientAttribute", "attribute" );
 
@@ -151,6 +150,7 @@ public class PersonController
                 throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "OrganisationUnit with UID " + orgUnitUid + " does not exist." );
             }
 
+            criteria.createAlias( "organisationUnit", "organisationUnit" );
             criteria.add( Restrictions.eq( "organisationUnit.uid", orgUnitUid ) );
         }
 
