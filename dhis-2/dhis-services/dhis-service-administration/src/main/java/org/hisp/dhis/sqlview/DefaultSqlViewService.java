@@ -73,6 +73,8 @@ public class DefaultSqlViewService
     @Override
     public void deleteSqlView( SqlView sqlViewObject )
     {
+        dropViewTable( sqlViewObject.getViewName() );
+        
         sqlViewStore.delete( sqlViewObject );
     }
 

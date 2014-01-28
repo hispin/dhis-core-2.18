@@ -164,11 +164,15 @@ public class JdbcSqlViewExpandStore
     {
         try
         {
-            jdbcTemplate.update( "DROP VIEW IF EXISTS " + statementBuilder.columnQuote( viewName ) );
+            final String sql = "DROP VIEW IF EXISTS " + statementBuilder.columnQuote( viewName );
+            
+            log.info( "Drop view SQL: " + sql );
+            
+            jdbcTemplate.update( sql );
         }
         catch ( BadSqlGrammarException ex )
         {
-            throw new RuntimeException( "Failed to drop view: " + viewName, ex );
+            log.warn( "Could not drop view: " + viewName, ex );
         }
     }
 }
