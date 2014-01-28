@@ -42,6 +42,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.analytics.AnalyticsService;
 import org.hisp.dhis.analytics.DataQueryParams;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.mapgeneration.IntervalSet.DistributionStrategy;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
@@ -89,6 +90,13 @@ public class GeoToolsMapGenerationService
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+    
+    private I18nManager i18nManager;
+
+    public void setI18nManager( I18nManager i18nManager )
+    {
+        this.i18nManager = i18nManager;
     }
 
     // -------------------------------------------------------------------------
@@ -156,7 +164,7 @@ public class GeoToolsMapGenerationService
             
             LegendSet legendSet = new LegendSet( mapLayer ); //TODO
             
-            BufferedImage legendImage = legendSet.render();
+            BufferedImage legendImage = legendSet.render( i18nManager.getI18nFormat() );
     
             // Combine the legend image and the map image into one image
             return combineLegendAndMapImages( legendImage, mapImage );

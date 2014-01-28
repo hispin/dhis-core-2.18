@@ -35,6 +35,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.i18n.I18nFormat;
+
 /**
  * This class can be used to render a set of legends onto one image.
  * 
@@ -80,7 +82,7 @@ public class LegendSet
      * @param imageMaxHeight
      * @return
      */
-    public BufferedImage render()
+    public BufferedImage render( I18nFormat format )
     {
         int imageWidth = LEGEND_TOTAL_WIDTH;
         int imageHeight = calculateImageHeight();
@@ -95,7 +97,7 @@ public class LegendSet
         // Draw legends
         for ( Legend legend : legends )
         {
-            legend.draw( g );
+            legend.draw( g, format );
             g.translate( 0, LEGEND_MARGIN_BOTTOM );
         }
 
