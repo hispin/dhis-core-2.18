@@ -207,7 +207,7 @@ public class PersonController
             {
                 and.add( Restrictions.and(
                     Restrictions.eq( "attribute.uid", split[0] ),
-                    Restrictions.gt( "attributeValue.value", split[2] )
+                    Restrictions.lt( "attributeValue.value", split[2] )
                 ) );
             }
             else if ( "ge".equals( split[1].toLowerCase() ) )
