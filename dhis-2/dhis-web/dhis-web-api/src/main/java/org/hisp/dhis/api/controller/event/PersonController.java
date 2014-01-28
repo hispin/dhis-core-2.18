@@ -82,10 +82,9 @@ public class PersonController
 
     @RequestMapping( value = "", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')" )
-    public String getPersons( @RequestParam( value = "orgUnit", required = false )
-    String orgUnitUid, @RequestParam( value = "program", required = false )
-    String programUid, @RequestParam( required = false )
-    Map<String, String> parameters, Model model )
+    public String getPersons( @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
+        @RequestParam( value = "program", required = false ) String programUid,
+        @RequestParam( required = false ) Map<String, String> parameters, Model model )
         throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -119,9 +118,7 @@ public class PersonController
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')" )
-    public String getPerson( @PathVariable
-    String id, @RequestParam
-    Map<String, String> parameters, Model model )
+    public String getPerson( @PathVariable String id, @RequestParam Map<String, String> parameters, Model model )
         throws NotFoundException
     {
         WebOptions options = new WebOptions( parameters );
@@ -196,8 +193,7 @@ public class PersonController
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_XML_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
-    public void updatePersonXml( @PathVariable
-    String id, HttpServletRequest request, HttpServletResponse response )
+    public void updatePersonXml( @PathVariable String id, HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
         ImportSummary importSummary = personService.updatePersonXml( id, request.getInputStream() );
@@ -207,8 +203,7 @@ public class PersonController
     @RequestMapping( value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_ADD')" )
-    public void updatePersonJson( @PathVariable
-    String id, HttpServletRequest request, HttpServletResponse response )
+    public void updatePersonJson( @PathVariable String id, HttpServletRequest request, HttpServletResponse response )
         throws IOException
     {
         ImportSummary importSummary = personService.updatePersonJson( id, request.getInputStream() );
@@ -222,8 +217,7 @@ public class PersonController
     @RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_PATIENT_DELETE')" )
-    public void deletePerson( @PathVariable
-    String id )
+    public void deletePerson( @PathVariable String id )
         throws NotFoundException
     {
         Person person = getPerson( id );
