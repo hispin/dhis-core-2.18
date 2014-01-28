@@ -440,7 +440,7 @@ public class DefaultDataIntegrityService
         {
             parent = unit;
 
-            while ( (parent = parent.getParent()) != null )
+            while ( ( parent = parent.getParent() ) != null )
             {
                 if ( parent.equals( unit ) ) // Cyclic reference
                 {
