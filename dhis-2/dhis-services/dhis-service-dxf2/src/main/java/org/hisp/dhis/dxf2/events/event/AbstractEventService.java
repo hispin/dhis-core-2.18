@@ -462,10 +462,28 @@ public abstract class AbstractEventService
 
         String storedBy = getStoredBy( event, null );
 
+        if ( event.getStatus() == EventStatus.ACTIVE )
+        {
+            programStageInstance.setCompleted( false );
+            programStageInstance.setStatus( ProgramStageInstance.ACTIVE_STATUS );
+            programStageInstance.setCompletedDate( null );
+            programStageInstance.setCompletedUser( null );
+        }
+        else if ( event.getStatus() == EventStatus.COMPLETED )
+        {
+            programStageInstance.setStatus( ProgramStageInstance.COMPLETED_STATUS );
+            programStageInstance.setCompletedDate( date );
+            programStageInstance.setCompletedUser( storedBy );
+
+            if ( !programStageInstance.isCompleted() )
+            {
+                programStageInstanceService.completeProgramStageInstance( programStageInstance, i18nManager.getI18nFormat() );
+            }
+        }
+
         programStageInstance.setDueDate( date );
         programStageInstance.setExecutionDate( date );
         programStageInstance.setOrganisationUnit( organisationUnit );
-        programStageInstance.setCompletedUser( storedBy );
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
