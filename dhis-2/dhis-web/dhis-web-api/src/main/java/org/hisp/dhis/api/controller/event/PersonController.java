@@ -189,6 +189,34 @@ public class PersonController
                     Restrictions.eq( "attributeValue.value", split[2] )
                 ) );
             }
+            else if ( "ne".equals( split[1].toLowerCase() ) )
+            {
+                and.add( Restrictions.and(
+                    Restrictions.eq( "attribute.uid", split[0] ),
+                    Restrictions.ne( "attributeValue.value", split[2] )
+                ) );
+            }
+            else if ( "gt".equals( split[1].toLowerCase() ) )
+            {
+                and.add( Restrictions.and(
+                    Restrictions.eq( "attribute.uid", split[0] ),
+                    Restrictions.gt( "attributeValue.value", split[2] )
+                ) );
+            }
+            else if ( "lt".equals( split[1].toLowerCase() ) )
+            {
+                and.add( Restrictions.and(
+                    Restrictions.eq( "attribute.uid", split[0] ),
+                    Restrictions.gt( "attributeValue.value", split[2] )
+                ) );
+            }
+            else if ( "ge".equals( split[1].toLowerCase() ) )
+            {
+                and.add( Restrictions.and(
+                    Restrictions.eq( "attribute.uid", split[0] ),
+                    Restrictions.ge( "attributeValue.value", split[2] )
+                ) );
+            }
         }
 
         return personService.getPersons( criteria.list() );
