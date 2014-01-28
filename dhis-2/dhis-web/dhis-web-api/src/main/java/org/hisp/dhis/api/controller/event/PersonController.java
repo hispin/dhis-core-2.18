@@ -32,6 +32,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
@@ -94,16 +95,16 @@ public class PersonController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')" )
     public String getPersons( @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( value = "program", required = false ) String programUid,
-        @RequestParam( value = "attribute", required = false ) List<String> filters,
+        @RequestParam( value = "attribute", required = false ) List<String> attributeFilters,
         @RequestParam( required = false ) Map<String, String> parameters, Model model )
         throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Persons persons = new Persons();
 
-        if ( filters != null )
+        if ( attributeFilters != null )
         {
-            persons = personsByFilter( filters, orgUnitUid );
+            persons = personsByFilter( attributeFilters, orgUnitUid );
         }
         else if ( orgUnitUid != null )
         {
@@ -132,7 +133,7 @@ public class PersonController
     }
 
     @SuppressWarnings( "unchecked" )
-    private Persons personsByFilter( List<String> filters, String orgUnitUid )
+    private Persons personsByFilter( List<String> attributeFilters, String orgUnitUid )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( Patient.class );
         criteria.createAlias( "attributeValues", "attributeValue" );
@@ -155,7 +156,7 @@ public class PersonController
         }
 
         // validate attributes, and build criteria
-        for ( String filter : filters )
+        for ( String filter : attributeFilters )
         {
             String[] split = filter.split( ":" );
 
@@ -218,6 +219,8 @@ public class PersonController
                 ) );
             }
         }
+
+        criteria.addOrder( Order.desc( "lastUpdated" ) );
 
         return personService.getPersons( criteria.list() );
     }
