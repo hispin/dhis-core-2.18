@@ -113,7 +113,7 @@ public class HibernateEventListenerWiring
                 }
             }
 
-            Map<?,?> map = (Map<?,?>) oldValue;
+            Map<?, ?> map = (Map<?, ?>) oldValue;
 
             for ( Object o : map.keySet() )
             {
