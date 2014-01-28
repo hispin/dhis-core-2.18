@@ -34,6 +34,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.i18n.I18nFormat;
+
 /**
  * A legend is a graphical presentation of data contained in a map layer. This
  * class works as helper for LegendSet when it comes to drawing the actual
@@ -46,7 +48,7 @@ import java.util.List;
 public class Legend
 {
     public static final Font TITLE_FONT = new Font( "title", Font.BOLD, 12 );
-    public static final Font PLAIN_FONT = new Font( "plain", Font.PLAIN, 10 );
+    public static final Font PLAIN_FONT = new Font( "plain", Font.PLAIN, 11 );
 
     private InternalMapLayer mapLayer;
 
@@ -65,13 +67,13 @@ public class Legend
         }
     }
 
-    public void draw( Graphics2D g )
+    public void draw( Graphics2D g, I18nFormat format )
     {
         g.setColor( Color.BLACK );
         g.setFont( TITLE_FONT );
         g.drawString( mapLayer.getName(), 0, 15 );
         g.setFont( PLAIN_FONT );
-        g.drawString( mapLayer.getPeriod().getStartDateString() + "", 0, 35 );
+        g.drawString( format.formatPeriod( mapLayer.getPeriod() ) + "", 0, 35 );
 
         g.translate( 0, HEADER_HEIGHT );
 
