@@ -165,7 +165,7 @@ public class PersonController
 
             if ( split.length != 3 )
             {
-                throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Filter " + filter + " is not in valid format." +
+                throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Filter " + filter + " is not in valid format. " +
                     "Valid syntax is attribute=ATTRIBUTE_UID:OPERATOR:VALUE." );
             }
 
@@ -216,6 +216,15 @@ public class PersonController
                 and.add( Restrictions.and(
                     Restrictions.eq( "attribute.uid", split[0] ),
                     Restrictions.ge( "attributeValue.value", split[2] )
+                ) );
+            }
+            else if ( "in".equals( split[1].toLowerCase() ) )
+            {
+                String[] in = split[2].split( ";" );
+
+                and.add( Restrictions.and(
+                    Restrictions.eq( "attribute.uid", split[0] ),
+                    Restrictions.in( "attributeValue.value", in )
                 ) );
             }
         }
