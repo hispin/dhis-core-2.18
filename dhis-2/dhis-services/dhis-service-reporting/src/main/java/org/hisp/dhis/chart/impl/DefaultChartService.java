@@ -105,9 +105,9 @@ import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 public class DefaultChartService
     implements ChartService
 {
-    private static final Font titleFont = new Font( Font.SANS_SERIF, Font.BOLD, 15 );
+    private static final Font titleFont = new Font( Font.SANS_SERIF, Font.BOLD, 12 );
 
-    private static final Font subTitleFont = new Font( Font.SANS_SERIF, Font.PLAIN, 12 );
+    private static final Font subTitleFont = new Font( Font.SANS_SERIF, Font.PLAIN, 11 );
 
     private static final Font labelFont = new Font( Font.SANS_SERIF, Font.PLAIN, 10 );
 

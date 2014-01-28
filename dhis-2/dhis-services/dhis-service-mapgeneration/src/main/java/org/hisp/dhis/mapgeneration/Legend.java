@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class Legend
 {
-    public static final Font TITLE_FONT = new Font( "title", Font.BOLD, 14 );
+    public static final Font TITLE_FONT = new Font( "title", Font.BOLD, 12 );
     public static final Font PLAIN_FONT = new Font( "plain", Font.PLAIN, 10 );
 
     private InternalMapLayer mapLayer;
