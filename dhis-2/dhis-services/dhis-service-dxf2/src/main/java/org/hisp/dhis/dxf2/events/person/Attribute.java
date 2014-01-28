@@ -45,6 +45,8 @@ public class Attribute
 
     private String type;
 
+    private String code;
+
     private String value;
 
     public Attribute()
@@ -101,6 +103,18 @@ public class Attribute
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
+    public String getCode()
+    {
+        return code;
+    }
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
     public String getValue()
     {
         return value;
@@ -114,15 +128,23 @@ public class Attribute
     @Override
     public boolean equals( Object o )
     {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
+        if ( this == o )
+            return true;
+        if ( o == null || getClass() != o.getClass() )
+            return false;
 
         Attribute attribute1 = (Attribute) o;
 
-        if ( attribute != null ? !attribute.equals( attribute1.attribute ) : attribute1.attribute != null ) return false;
-        if ( displayName != null ? !displayName.equals( attribute1.displayName ) : attribute1.displayName != null ) return false;
-        if ( type != null ? !type.equals( attribute1.type ) : attribute1.type != null ) return false;
-        if ( value != null ? !value.equals( attribute1.value ) : attribute1.value != null ) return false;
+        if ( attribute != null ? !attribute.equals( attribute1.attribute ) : attribute1.attribute != null )
+            return false;
+        if ( displayName != null ? !displayName.equals( attribute1.displayName ) : attribute1.displayName != null )
+            return false;
+        if ( type != null ? !type.equals( attribute1.type ) : attribute1.type != null )
+            return false;
+        if ( code != null ? !code.equals( attribute1.code ) : attribute1.code != null )
+            return false;
+        if ( value != null ? !value.equals( attribute1.value ) : attribute1.value != null )
+            return false;
 
         return true;
     }
@@ -133,6 +155,7 @@ public class Attribute
         int result = displayName != null ? displayName.hashCode() : 0;
         result = 31 * result + (attribute != null ? attribute.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
@@ -140,11 +163,7 @@ public class Attribute
     @Override
     public String toString()
     {
-        return "Attribute{" +
-            "displayName='" + displayName + '\'' +
-            ", attribute='" + attribute + '\'' +
-            ", type='" + type + '\'' +
-            ", value='" + value + '\'' +
-            '}';
+        return "Attribute{" + "displayName='" + displayName + '\'' + ", attribute='" + attribute + '\'' + ", type='"
+            + type + '\'' + ", code='" + code + '\'' + ", value='" + value + '\'' + '}';
     }
 }

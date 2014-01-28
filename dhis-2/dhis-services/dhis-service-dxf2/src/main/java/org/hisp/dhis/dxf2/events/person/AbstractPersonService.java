@@ -157,6 +157,7 @@ public abstract class AbstractPersonService
             attribute.setDisplayName( patientAttributeValue.getPatientAttribute().getDisplayName() );
             attribute.setAttribute( patientAttributeValue.getPatientAttribute().getUid() );
             attribute.setType( patientAttributeValue.getPatientAttribute().getValueType() );
+            attribute.setCode( patientAttributeValue.getPatientAttribute().getCode() );
             attribute.setValue( patientAttributeValue.getValue() );
 
             person.getAttributes().add( attribute );
