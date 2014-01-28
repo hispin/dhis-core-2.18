@@ -28,12 +28,11 @@ package org.hisp.dhis.api.controller.event;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.api.controller.WebOptions;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.utils.ContextUtils;
@@ -46,6 +45,8 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummaries;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -76,6 +83,9 @@ public class PersonController
     @Autowired
     private IdentifiableObjectManager manager;
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     // -------------------------------------------------------------------------
     // READ
     // -------------------------------------------------------------------------
@@ -84,13 +94,18 @@ public class PersonController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ACCESS_PATIENT_ATTRIBUTES')" )
     public String getPersons( @RequestParam( value = "orgUnit", required = false ) String orgUnitUid,
         @RequestParam( value = "program", required = false ) String programUid,
+        @RequestParam( value = "attribute", required = false ) List<String> filters,
         @RequestParam( required = false ) Map<String, String> parameters, Model model )
         throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         Persons persons = new Persons();
-        
-        if ( orgUnitUid != null )
+
+        if ( filters != null )
+        {
+            persons = personsByFilter( filters, orgUnitUid );
+        }
+        else if ( orgUnitUid != null )
         {
             if ( programUid != null )
             {
@@ -114,6 +129,69 @@ public class PersonController
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
         return "persons";
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private Persons personsByFilter( List<String> filters, String orgUnitUid )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( Patient.class );
+        criteria.createAlias( "organisationUnit", "organisationUnit" );
+        criteria.createAlias( "attributeValues", "attributeValue" );
+        criteria.createAlias( "attributeValue.patientAttribute", "attribute" );
+
+        Disjunction or = Restrictions.or();
+        criteria.add( or );
+
+        if ( orgUnitUid != null )
+        {
+            OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
+
+            if ( organisationUnit == null )
+            {
+                throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "OrganisationUnit with UID " + orgUnitUid + " does not exist." );
+            }
+
+            criteria.add( Restrictions.eq( "organisationUnit.uid", orgUnitUid ) );
+        }
+
+        // validate attributes, and build criteria
+        for ( String filter : filters )
+        {
+            String[] split = filter.split( ":" );
+
+            Conjunction and = Restrictions.and();
+            or.add( and );
+
+            if ( split.length != 3 )
+            {
+                throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "Filter " + filter + " is not in valid format." +
+                    "Valid syntax is attribute=ATTRIBUTE_UID:OPERATOR:VALUE." );
+            }
+
+            PatientAttribute patientAttribute = manager.get( PatientAttribute.class, split[0] );
+
+            if ( patientAttribute == null )
+            {
+                throw new HttpClientErrorException( HttpStatus.BAD_REQUEST, "PersonAttribute with UID " + split[0] + " does not exist." );
+            }
+
+            if ( "like".equals( split[1].toLowerCase() ) )
+            {
+                and.add( Restrictions.and(
+                    Restrictions.eq( "attribute.uid", split[0] ),
+                    Restrictions.ilike( "attributeValue.value", "%" + split[2] + "%" )
+                ) );
+            }
+            else if ( "eq".equals( split[1].toLowerCase() ) )
+            {
+                and.add( Restrictions.and(
+                    Restrictions.eq( "attribute.uid", split[0] ),
+                    Restrictions.eq( "attributeValue.value", split[2] )
+                ) );
+            }
+        }
+
+        return personService.getPersons( criteria.list() );
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
@@ -260,6 +338,11 @@ public class PersonController
 
     private OrganisationUnit getOrganisationUnit( String orgUnitUid )
     {
+        if ( orgUnitUid == null )
+        {
+            return null;
+        }
+
         OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, orgUnitUid );
 
         if ( organisationUnit == null )
