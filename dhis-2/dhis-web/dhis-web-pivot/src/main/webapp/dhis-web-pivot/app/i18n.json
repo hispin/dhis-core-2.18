@@ -145,5 +145,10 @@
 "financial_oct",
 "financial_july",
 "financial_april",
-"plugin_config"
+"plugin_config",
+"default_",
+"aggregation_type",
+"count",
+"sum",
+"by_data_element"
 ]

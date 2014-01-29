@@ -271,6 +271,8 @@ Ext.onReady( function() {
 
 				// hideEmptyRows: boolean (false)
 
+                // aggregationType: string ('default') - 'default', 'count', 'sum'
+
 				// showHierarchy: boolean (false)
 
 				// displayDensity: string ('normal') - 'compact', 'normal', 'comfortable'
@@ -433,6 +435,7 @@ Ext.onReady( function() {
 					layout.showTotals = Ext.isBoolean(config.totals) ? config.totals : (Ext.isBoolean(config.showTotals) ? config.showTotals : true);
 					layout.showSubTotals = Ext.isBoolean(config.subtotals) ? config.subtotals : (Ext.isBoolean(config.showSubTotals) ? config.showSubTotals : true);
 					layout.hideEmptyRows = Ext.isBoolean(config.hideEmptyRows) ? config.hideEmptyRows : false;
+                    layout.aggregationType = Ext.isString(config.aggregationType) ? config.aggregationType : 'default';
 
 					layout.showHierarchy = Ext.isBoolean(config.showHierarchy) ? config.showHierarchy : false;
 
@@ -1749,7 +1752,11 @@ Ext.onReady( function() {
 					addCategoryDimension = false,
 					map = xLayout.dimensionNameItemsMap,
 					dx = dimConf.indicator.dimensionName,
-					co = dimConf.category.dimensionName;
+					co = dimConf.category.dimensionName,
+                    aggTypes = {
+                        'count': 'COUNT',
+                        'sum': 'SUM'
+                    };
 
 				for (var i = 0, dimName, items; i < axisDimensionNames.length; i++) {
 					dimName = axisDimensionNames[i];
@@ -1795,6 +1802,10 @@ Ext.onReady( function() {
 				if (xLayout.showHierarchy) {
 					paramString += '&hierarchyMeta=true';
 				}
+
+                if (aggTypes.hasOwnProperty(xLayout.aggregationType)) {
+                    paramString += '&aggregationType=' + aggTypes[xLayout.aggregationType];
+                }
 
 				return paramString;
 			};
