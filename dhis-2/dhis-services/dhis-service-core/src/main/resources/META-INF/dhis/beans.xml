@@ -465,7 +465,7 @@
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
   
-  <bean id="hibernateEntityInterceptorWiring" class="org.hisp.dhis.hibernate.HibernateEventListenerWiring" />
+  <!-- <bean id="hibernateEntityInterceptorWiring" class="org.hisp.dhis.hibernate.HibernateEventListenerWiring" /> -->
 
   <!-- Scheduled task for data monitoring -->
   

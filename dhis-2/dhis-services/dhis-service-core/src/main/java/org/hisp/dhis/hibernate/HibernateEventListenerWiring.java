@@ -168,7 +168,7 @@ public class HibernateEventListenerWiring
             return;
         }
 
-        // objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
+        objectManager.update( new ArrayList<IdentifiableObject>( identifiableObjects ) );
         identifiableObjects.clear();
     }
 }
