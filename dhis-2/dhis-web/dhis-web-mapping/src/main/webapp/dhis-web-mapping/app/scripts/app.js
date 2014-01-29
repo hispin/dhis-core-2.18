@@ -90,7 +90,7 @@ Ext.onReady( function() {
 
 			util.map.map2plugin = function(map) {
 				map.url = init.contextPath;
-				
+
 				if (map.id) {
 					return {id: map.id};
 				}
@@ -4058,7 +4058,7 @@ Ext.onReady( function() {
 			stage.clearValue();
 
 			dataElementsByStageStore.removeAll();
-			dataElementSelected.removeAll();			
+			dataElementSelected.removeAll();
 
 			stagesByProgramStore.proxy.url = gis.init.contextPath + '/api/programs/' + programId + '.json?viewClass=withoutOrganisationUnits&links=false&paging=false';
 			stagesByProgramStore.load({
@@ -4127,7 +4127,7 @@ Ext.onReady( function() {
 
 			fn = function(attributes) {
 
-				// data elements			
+				// data elements
 				if (Ext.isString(item)) {
 					Ext.Ajax.request({
 						url: gis.init.contextPath + '/api/programStages/' + item + '.json?links=false&paging=false',
@@ -4157,7 +4157,7 @@ Ext.onReady( function() {
 								for (var i = 0; i < attributes.length; i++) {
 									attributes[i].type = attributes[i].valueType;
 								}
-								
+
 								program.storage[programId] = attributes;
 							}
 
@@ -8068,7 +8068,7 @@ Ext.onReady( function() {
 			}
 
 
-			
+
 				//var textArea,
 					//window,
 					//text = 'DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig())) + ');';
