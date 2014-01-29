@@ -149,6 +149,8 @@
 
     <property name="hideEmptyRows" />
 
+    <property name="aggregationType" />
+
     <property name="digitGroupSeparator" />
 
     <property name="displayDensity" />

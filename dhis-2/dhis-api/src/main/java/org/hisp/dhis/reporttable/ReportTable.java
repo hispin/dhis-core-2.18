@@ -89,6 +89,10 @@ public class ReportTable
 
     public static final String TOTAL_COLUMN_NAME = "total";
     public static final String TOTAL_COLUMN_PRETTY_NAME = "Total";
+    
+    public static final String AGGREGATION_TYPE_DEFAULT = "default";
+    public static final String AGGREGATION_TYPE_COUNT = "count";
+    public static final String AGGREGATION_TYPE_SUM = "sum";
 
     public static final String DISPLAY_DENSITY_COMFORTABLE = "comfortable";
     public static final String DISPLAY_DENSITY_NORMAL = "normal";
@@ -203,6 +207,11 @@ public class ReportTable
      * Indicates showing organisation unit hierarchy names.
      */
     private boolean showHierarchy;
+    
+    /**
+     * Indicates the aggregation type.
+     */
+    private String aggregationType;
     
     // -------------------------------------------------------------------------
     // Transient properties
@@ -924,6 +933,19 @@ public class ReportTable
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
+    public String getAggregationType()
+    {
+        return aggregationType;
+    }
+
+    public void setAggregationType( String aggregationType )
+    {
+        this.aggregationType = aggregationType;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class, DimensionalView.class} )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0)
     public String getDigitGroupSeparator()
     {
         return digitGroupSeparator;
@@ -1052,6 +1074,7 @@ public class ReportTable
             totals = reportTable.isTotals();
             subtotals = reportTable.isSubtotals();
             hideEmptyRows = reportTable.isHideEmptyRows();
+            aggregationType = reportTable.getAggregationType();
             digitGroupSeparator = reportTable.getDigitGroupSeparator();
             displayDensity = reportTable.getDisplayDensity();
             fontSize = reportTable.getFontSize();
