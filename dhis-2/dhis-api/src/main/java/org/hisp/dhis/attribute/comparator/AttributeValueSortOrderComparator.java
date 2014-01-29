@@ -43,6 +43,11 @@ public class AttributeValueSortOrderComparator
     @Override
     public int compare( AttributeValue o1, AttributeValue o2 )
     {
+        if ( o1 == null || o2 == null || o1.getAttribute() == null || o2.getAttribute() == null )
+        {
+            return 0;
+        }
+
         if ( o1.getAttribute().getSortOrder() == null || o2.getAttribute().getSortOrder() == 0 )
         {
             return o1.getAttribute().getName().compareTo( o2.getAttribute().getName() );
