@@ -35,13 +35,6 @@
             ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
 			
-	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitInfoFacilityAction"
-        class="org.hisp.dhis.mapping.action.GetOrganisationUnitInfoFacilityAction"
-        scope="prototype">
-        <property name="organisationUnitService"
-            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    </bean>
-			
 	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitGroupsByGroupSetAction"
         class="org.hisp.dhis.mapping.action.GetOrganisationUnitGroupsByGroupSetAction"
         scope="prototype">
