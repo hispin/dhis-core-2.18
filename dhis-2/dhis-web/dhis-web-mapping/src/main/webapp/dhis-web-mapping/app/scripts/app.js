@@ -3,6 +3,24 @@ Ext.onReady( function() {
 		initialize;
 		//gis;
 
+	// set app config
+	(function() {
+
+		// ext configuration
+		Ext.QuickTips.init();
+
+		Ext.override(Ext.LoadMask, {
+			onHide: function() {
+				this.callParent();
+			}
+		});
+
+		// right click handler
+		document.body.oncontextmenu = function() {
+			return false;
+		};
+	}());
+
 	GIS.app = {};
 
 	GIS.app.extendInstance = function(gis) {
@@ -8599,27 +8617,13 @@ Ext.onReady( function() {
 	};
 
 	initialize = function() {
+		var requests = [],
+			callbacks = 0,
+			init = {},
+			fn;
 
-		// ext configuration
-		Ext.QuickTips.init();
-
-		Ext.override(Ext.LoadMask, {
-			onHide: function() {
-				this.callParent();
-			}
-		});
-
-		// right click handler
-		document.body.oncontextmenu = function() {
-			return false;
-		};
-
-		Ext.Ajax.request({
-			url: '../initialize.action',
-			success: function(r) {
-				var init = Ext.decode(r.responseText);
-
-				GIS.i18n = init.i18n;
+		fn = function() {
+			if (++callbacks === requests.length) {
 
 				gis = GIS.core.getInstance(init);
 
@@ -8629,6 +8633,136 @@ Ext.onReady( function() {
 
 				gis.viewport = createViewport();
 			}
-		});
+		};
+
+        Ext.Ajax.request({
+            url: 'manifest.webapp',
+			success: function(r) {
+				init.contextPath = Ext.decode(r.responseText).activities.dhis.href;
+
+				Ext.Ajax.request({
+					url: 'i18n.json',
+					success: function(r) {
+						var i18nArray = Ext.decode(r.responseText);
+
+						Ext.Ajax.request({
+							url: init.contextPath + '/api/system/context.json',
+							success: function(r) {
+								init.contextPath = Ext.decode(r.responseText).contextPath || init.contextPath;
+
+								// i18n
+								requests.push({
+									url: init.contextPath + '/api/i18n?package=org.hisp.dhis.mapping',
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json',
+										'Accepts': 'application/json'
+									},
+									params: Ext.encode(i18nArray),
+									success: function(r) {
+										GIS.i18n = Ext.decode(r.responseText);
+										fn();
+									}
+								});
+
+								// root nodes
+								requests.push({
+									url: init.contextPath + '/api/organisationUnits.json?level=1&paging=false&links=false&viewClass=detailed',
+									success: function(r) {
+										init.rootNodes = Ext.decode(r.responseText).organisationUnits || [];
+										fn();
+									}
+								});
+
+								// user orgunits and children
+								requests.push({
+									url: init.contextPath + '/api/organisationUnits.json?userOnly=true&viewClass=detailed&links=false',
+									success: function(r) {
+										var organisationUnits = Ext.decode(r.responseText).organisationUnits || [];
+
+										if (organisationUnits.length) {
+											var ou = organisationUnits[0];
+
+											if (ou.id) {
+												init.user = {
+													ou: ou.id
+												};
+
+												init.user.ouc = ou.children ? Ext.Array.pluck(ou.children, 'id') : null;
+											};
+										}
+										else {
+											alert('User is not assigned to any organisation units');
+										}
+
+										fn();
+									}
+								});
+
+								// organisation unit levels
+								requests.push({
+									url: init.contextPath + '/api/organisationUnitLevels.json?paging=false&links=false',
+									success: function(r) {
+										init.organisationUnitLevels = Ext.decode(r.responseText).organisationUnitLevels || [];
+										fn();
+									}
+								});
+
+								// indicator groups
+								requests.push({
+									url: init.contextPath + '/api/indicatorGroups.json?links=false&paging=false',
+									success: function(r) {
+										init.indicatorGroups = Ext.decode(r.responseText).indicatorGroups || [];
+										fn();
+									}
+								});
+
+								// data element groups
+								requests.push({
+									url: init.contextPath + '/api/dataElementGroups.json?links=false&paging=false',
+									success: function(r) {
+										init.dataElementGroups = Ext.decode(r.responseText).dataElementGroups || [];
+										fn();
+									}
+								});
+
+                                // infrastructural
+								requests.push({
+									url: init.contextPath + '/dhis-web-mapping/initialize.action',
+									success: function(r) {
+										init.systemSettings = Ext.decode(r.responseText).systemSettings || {};
+										fn();
+									}
+								});
+
+								for (var i = 0; i < requests.length; i++) {
+									Ext.Ajax.request(requests[i]);
+								}
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+
+
+
+		//Ext.Ajax.request({
+			//url: '../initialize.action',
+			//success: function(r) {
+				//var init = Ext.decode(r.responseText);
+
+				//GIS.i18n = init.i18n;
+
+				//gis = GIS.core.getInstance(init);
+
+				//GIS.app.createExtensions();
+
+				//GIS.app.extendInstance(gis);
+
+				//gis.viewport = createViewport();
+			//}
+		//});
 	}();
 });

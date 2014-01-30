@@ -1434,7 +1434,7 @@ Ext.onReady( function() {
 
                     // events
                     for (var i = 0, row, obj; i < rows.length; i++) {
-                        row = rows[i];						
+                        row = rows[i];
                         obj = {};
 
                         for (var j = 0; j < row.length; j++) {
@@ -2165,7 +2165,7 @@ Ext.onReady( function() {
 
 		loadData = function(view, features) {
 			var success;
-			
+
 			view = view || layer.core.view;
 			features = features || layer.core.featureStore.features;
 
