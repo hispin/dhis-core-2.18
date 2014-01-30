@@ -3801,7 +3801,7 @@ Ext.onReady( function() {
 			cls: 'gis-textarea',
 			height: 130,
 			fieldStyle: 'padding-left: 4px; padding-top: 3px',
-			emptyText: GIS.i18n.write_your_interpretation
+			emptyText: GIS.i18n.write_your_interpretation + '..'
 		});
 
 		panel = Ext.create('Ext.panel.Panel', {
@@ -8033,16 +8033,32 @@ Ext.onReady( function() {
 			handler: function() {
 				var textArea,
 					window,
-					text = '';
+					text = '',
+                    el = 'table1',
+                    layout = gis.util.map.map2plugin(gis.util.layout.getPluginConfig());
+
+                layout.el = el;
+
+                if (layout.mapViews) {
+                    for (var i = 0, view; i < layout.mapViews.length; i++) {
+                        view = layout.mapViews[i];
+
+                        if (view.legendSet) {
+                            delete view.legendSet.bounds;
+                            delete view.legendSet.colors;
+                            delete view.legendSet.names;
+                        }
+                    }
+                }
 
 				text += '<html>\n<head>\n';
 				text += '<link rel="stylesheet" href="http://dhis2-cdn.org/v214/ext/resources/css/ext-plugin-gray.css" />\n';
 				text += '<script src="http://dhis2-cdn.org/v214/ext/ext-all.js"></script>\n';
 				text += '<script src="http://dhis2-cdn.org/v214/plugin/table.js"></script>\n';
 				text += '</head>\n\n<body>\n';
-				text += '<div id="table1"></div>\n\n';
+				text += '<div id="' + el + '"></div>\n\n';
 				text += '<script>\n\n';
-				text += 'DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()), null, 2) + ');\n\n';
+				text += 'DHIS.getMap(' + JSON.stringify(layout, null, 2) + ');\n\n';
 				text += '</script>\n\n';
 				text += '</body>\n</html>';
 
@@ -8079,57 +8095,11 @@ Ext.onReady( function() {
 
 				window.show();
 			}
-
-
-
-				//var textArea,
-					//window,
-					//text = 'DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig())) + ');';
-
-				//textArea = Ext.create('Ext.form.field.TextArea', {
-					//width: 400,
-					//height: 200,
-					//readOnly: true,
-					//cls: 'gis-textarea monospaced',
-					//value: text
-				//});
-
-				//window = Ext.create('Ext.window.Window', {
-					//title: 'Plugin configuration',
-					//layout: 'fit',
-					//modal: true,
-					//resizable: false,
-					//items: textArea,
-					//destroyOnBlur: true,
-					//bbar: [
-						//'->',
-						//{
-							//text: 'Format',
-							//handler: function() {
-								//textArea.setValue('DHIS.getMap(' + JSON.stringify(gis.util.map.map2plugin(gis.util.layout.getPluginConfig()), null, 2) + ');');
-
-							//}
-						//},
-						//{
-							//text: 'Select',
-							//handler: function() {
-								//textArea.selectText();
-							//}
-						//}
-					//],
-					//listeners: {
-						//show: function(w) {
-							//this.setPosition(215, 33);
-						//}
-					//}
-				//});
-
-				//window.show();
-			//}
 		});
 
 		shareButton = Ext.create('Ext.button.Button', {
 			text: GIS.i18n.share,
+            disabled: true,
 			xableItems: function() {
 				interpretationItem.xable();
 				pluginItem.xable();
