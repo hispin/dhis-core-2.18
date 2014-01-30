@@ -2371,12 +2371,12 @@ Ext.onReady( function() {
 
 				return function() {
 					if (!Ext.isObject(config)) {
-						console.log('Record config is not an object: ' + config);
+						console.log('Record config is not an object', config);
 						return;
 					}
 
 					if (!Ext.isString(config.id)) {
-						alert('Record id is not text: ' + config);
+						console.log('Record id is not text', config);
 						return;
 					}
 
@@ -2404,7 +2404,7 @@ Ext.onReady( function() {
 					}
 
 					if (!Ext.isString(config.dimension)) {
-						console.log('Dimension name is not text: ' + config);
+						console.log('Dimension name is not text', config);
 						return;
 					}
 
@@ -2412,7 +2412,7 @@ Ext.onReady( function() {
 						var records = [];
 
 						if (!Ext.isArray(config.items)) {
-							console.log('Dimension items is not an array: ' + config);
+							console.log('Dimension items is not an array', config);
 							return;
 						}
 
@@ -2427,7 +2427,7 @@ Ext.onReady( function() {
 						config.items = records;
 
 						if (!config.items.length) {
-							console.log('Dimension has no valid items: ' + config);
+							console.log('Dimension has no valid items', config);
 							return;
 						}
 					}
@@ -2538,6 +2538,7 @@ Ext.onReady( function() {
 					var a = [],
 						objectNames = [],
 						dimConf = conf.finals.dimension,
+                        layerConf =
 						isOu = false,
 						isOuc = false,
 						isOugc = false;
@@ -2553,9 +2554,16 @@ Ext.onReady( function() {
 					config.filters = getValidatedDimensionArray(config.filters);
 
 					if (!config.rows) {
-						console.log('Organisation unit dimension is invalid');
+						console.log('Organisation unit dimension is invalid', config.rows);
 						return;
 					}
+
+                    if (Ext.Array.contains([gis.layer.thematic1.id, gis.layer.thematic2.id, gis.layer.thematic3.id, gis.layer.thematic4.id], config.layer)) {
+                        if (!config.columns) {
+                            console.log('Data dimension is invalid', config.columns);
+                            return;
+                        }
+                    }
 
 					// Collect object names and user orgunits
 					for (var i = 0, dim, dims = Ext.Array.clean([].concat(config.columns, config.rows, config.filters)); i < dims.length; i++) {
@@ -2624,17 +2632,17 @@ Ext.onReady( function() {
 
 				return function() {
 					if (!Ext.isObject(config)) {
-						console.log('Header is not an object: ' + config);
+						console.log('Header is not an object', config);
 						return;
 					}
 
 					if (!Ext.isString(config.name)) {
-						console.log('Header name is not text: ' + config);
+						console.log('Header name is not text', config);
 						return;
 					}
 
 					if (!Ext.isBoolean(config.meta)) {
-						console.log('Header meta is not boolean: ' + config);
+						console.log('Header meta is not boolean', config);
 						return;
 					}
 
@@ -2654,12 +2662,12 @@ Ext.onReady( function() {
 					var headers = [];
 
 					if (!(config && Ext.isObject(config))) {
-						alert('Data response invalid');
+						alert('Data response invalid', config);
 						return false;
 					}
 
 					if (!(config.headers && Ext.isArray(config.headers))) {
-						alert('Data response invalid');
+						alert('Data response invalid', config);
 						return false;
 					}
 
@@ -2674,17 +2682,17 @@ Ext.onReady( function() {
 					config.headers = headers;
 
 					if (!config.headers.length) {
-						alert('No valid response headers');
+						alert('No valid response headers', config);
 						return;
 					}
 
 					if (!(Ext.isArray(config.rows) && config.rows.length > 0)) {
-						alert('No values found');
+						alert('No values found', config);
 						return false;
 					}
 
 					if (config.headers.length !== config.rows[0].length) {
-						alert('Data invalid');
+						alert('Data invalid', config);
 						return false;
 					}
 

@@ -7836,26 +7836,34 @@ Ext.onReady( function() {
 				objectNameCmpMap = {},
 				view = {};
 
+            view.layer = layer.id;
+
 			objectNameCmpMap[dimConf.indicator.objectName] = indicator;
 			objectNameCmpMap[dimConf.dataElement.objectName] = dataElement;
 			objectNameCmpMap[dimConf.operand.objectName] = dataElement;
 			objectNameCmpMap[dimConf.dataSet.objectName] = dataSet;
 
-			view.columns = [{
-				dimension: vType,
-				items: [{
-					id: objectNameCmpMap[vType].getValue()
-				}]
-			}];
+            if (objectNameCmpMap[vType].getValue()) {
+                view.columns = [{
+                    dimension: vType,
+                    items: [{
+                        id: objectNameCmpMap[vType].getValue()
+                    }]
+                }];
+            }
 
-			view.rows = [treePanel.getDimension()];
+            if (treePanel.getDimension()) {
+                view.rows = [treePanel.getDimension()];
+            }
 
-			view.filters = [{
-				dimension: dimConf.period.objectName,
-				items: [{
-					id: period.getValue()
-				}]
-			}];
+            if (period.getValue()) {
+                view.filters = [{
+                    dimension: dimConf.period.objectName,
+                    items: [{
+                        id: period.getValue()
+                    }]
+                }];
+            }
 
 			view.classes = parseInt(classes.getValue());
 			view.method = parseInt(method.getValue());
