@@ -576,7 +576,7 @@ Ext.onReady( function() {
 				fields: ['id', 'name'],
 				proxy: {
 					type: 'ajax',
-					url: init.contextPath + conf.finals.url.path_api + conf.finals.url.organisationunitgroup_getall,
+					url: init.contextPath + '/api/organisationUnitGroups.json?paging=false&links=false',
 					reader: {
 						type: 'json',
 						root: 'organisationUnitGroups'
@@ -6633,7 +6633,7 @@ Ext.onReady( function() {
             fields: ['id', 'name'],
             proxy: {
                 type: 'ajax',
-                url: gis.init.contextPath + gis.conf.finals.url.path_api + gis.conf.finals.url.dataset_get,
+                url: gis.init.contextPath + '/api/dataSets.json?paging=false&links=false',
                 reader: {
                     type: 'json',
                     root: 'dataSets'
