@@ -2,6 +2,7 @@
   {
     "id": "${patientAttribute.id}",
 	"name": "$!encoder.jsonEncode( ${patientAttribute.name} )",
+	"code": "$!encoder.jsonEncode( ${patientAttribute.code} )",
 	"description": "$!encoder.jsonEncode( ${patientAttribute.description} )",
 	"mandatory":  "$!{patientAttribute.mandatory}",
 	"unique":  "$!{patientAttribute.unique}",

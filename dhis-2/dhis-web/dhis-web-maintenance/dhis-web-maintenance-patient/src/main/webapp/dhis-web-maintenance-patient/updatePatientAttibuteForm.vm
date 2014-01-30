@@ -18,7 +18,11 @@
       <tr>
         <td>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $patientAttribute.name )" class="{validate:{required:true,rangelength:[2,160]}}"></td>
-      </tr>   
+      </tr>     
+      <tr>
+        <td>$i18n.getString( "code" )</td>
+        <td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $patientAttribute.code )"></td>
+      </tr>      
       <tr>
         <td>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $patientAttribute.description )" class="{validate:{required:true,minlength:2}}"></td>
