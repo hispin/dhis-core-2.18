@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Lars Helge Overland
  */
-public class JdbcCompletenessTargetTableManager
+public class JdbcOrgUnitTargetTableManager
     extends AbstractJdbcTableManager
 {
     @Override
@@ -55,7 +55,7 @@ public class JdbcCompletenessTargetTableManager
         tables.add( new AnalyticsTable( getTableName(), getDimensionColumns( null ) ) );
         return tables;
     }
-    
+
     public boolean validState()
     {
         return true;
@@ -63,7 +63,7 @@ public class JdbcCompletenessTargetTableManager
     
     public String getTableName()
     {
-        return COMPLETENESS_TARGET_TABLE_NAME;
+        return ORGUNIT_TARGET_TABLE_NAME;
     }
 
     public void createTable( AnalyticsTable table )
@@ -115,14 +115,14 @@ public class JdbcCompletenessTargetTableManager
             {
                 sql += col[2] + ",";
             }
-                        
+            
             sql +=
                 "1 as value " +
-                "from datasetsource dss " +
-                "left join dataset ds on dss.datasetid=ds.datasetid " +
-                "left join _orgunitstructure ous on dss.sourceid=ous.organisationunitid " +
-                "left join _organisationunitgroupsetstructure ougs on dss.sourceid=ougs.organisationunitid";            
-    
+                "from orgunitgroupmembers ougm " +
+                "left join orgunitgroup oug on ougm.orgunitgroupid=oug.orgunitgroupid " +
+                "left join _orgunitstructure ous on ougm.organisationunitid=ous.organisationunitid " +
+                "left join _organisationunitgroupsetstructure ougs on ougm.organisationunitid=ougs.organisationunitid";            
+
             log.info( "Populate SQL: "+ sql );
             
             jdbcTemplate.execute( sql );
@@ -154,7 +154,7 @@ public class JdbcCompletenessTargetTableManager
             columns.add( col );
         }
 
-        String[] ds = { "ds", "character(11) not null", "ds.uid" };
+        String[] ds = { "oug", "character(11) not null", "oug.uid" };
         
         columns.add( ds );
         

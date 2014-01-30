@@ -55,7 +55,7 @@ public class JdbcCompletenessTableManager
     
     public String getTableName()
     {
-        return "completeness";
+        return COMPLETENESS_TABLE_NAME;
     }
     
     public void createTable( AnalyticsTable table )

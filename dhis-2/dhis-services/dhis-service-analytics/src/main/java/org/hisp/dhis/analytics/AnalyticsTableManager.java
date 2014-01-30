@@ -41,8 +41,9 @@ public interface AnalyticsTableManager
 {
     public static final String TABLE_TEMP_SUFFIX = "_temp";
     public static final String ANALYTICS_TABLE_NAME = "analytics";
-    public static final String COMPLETENESS_TABLE_NAME = "completeness";
-    public static final String COMPLETENESS_TARGET_TABLE_NAME = "completenesstarget";
+    public static final String COMPLETENESS_TABLE_NAME = "analytics_completeness";
+    public static final String COMPLETENESS_TARGET_TABLE_NAME = "analytics_completenesstarget";
+    public static final String ORGUNIT_TARGET_TABLE_NAME = "analytics_orgunittarget";
     
     /**
      * Returns analytics tables which yearly partitions. Yearly partitions will

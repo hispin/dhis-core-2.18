@@ -54,6 +54,9 @@ public class AnalyticsTableTask
     @Resource(name="org.hisp.dhis.analytics.CompletenessTargetTableService")
     private AnalyticsTableService completenessTargetTableService;
     
+    @Resource(name="org.hisp.dhis.analytics.OrgUnitTargetTableService")
+    private AnalyticsTableService orgUnitTargetTableService;
+    
     @Resource(name="org.hisp.dhis.analytics.EventAnalyticsTableService")
     private AnalyticsTableService eventAnalyticsTableService;
     
@@ -105,33 +108,38 @@ public class AnalyticsTableTask
     @Override
     public void run()
     {
-        notifier.clear( taskId ).notify( taskId, "Updating resource tables" );
+        notifier.clear( taskId ).notify( taskId, "Analytics table update process started" );
 
         try
         {
             if ( !skipResourceTables )
             {
+                notifier.notify( taskId, "Updating resource tables" );
                 analyticsTableService.generateResourceTables();    
-                notifier.notify( taskId, "Updating analytics tables" );
             }
             
             if ( !skipAggregate )
             {
+                notifier.notify( taskId, "Updating analytics tables" );
                 analyticsTableService.update( last3Years, taskId );
-                notifier.notify( taskId, "Updating completeness tables" );
-            
+
+                notifier.notify( taskId, "Updating completeness table" );
                 completenessTableService.update( last3Years, taskId );    
-                notifier.notify( taskId, "Updating compeleteness target table" );
-            
-                completenessTargetTableService.update( last3Years, taskId );            
-                notifier.notify( taskId, "Updating event analytics tables" );
+
+                notifier.notify( taskId, "Updating completeness target table" );
+                completenessTargetTableService.update( last3Years, taskId );      
+
+                notifier.notify( taskId, "Updating organisation unit target table" );                
+                orgUnitTargetTableService.update( last3Years, taskId );        
             }
             
             if ( !skipEvents )
             {
+                notifier.notify( taskId, "Updating event analytics table" );  
                 eventAnalyticsTableService.update( last3Years, taskId );
-                notifier.notify( taskId, INFO, "Analytics tables updated", true );
             }
+            
+            notifier.notify( taskId, INFO, "Analytics tables updated", true );
         }
         catch ( RuntimeException ex )
         {
