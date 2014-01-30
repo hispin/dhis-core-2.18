@@ -447,8 +447,10 @@ Ext.onReady( function() {
 			};
 
 			// Menu
-			var menuItems = [
-				Ext.create('Ext.menu.Item', {
+			var menuItems = [];
+
+            if (layer.id !== 'facility') {
+				menuItems.push(Ext.create('Ext.menu.Item', {
 					text: 'Float up',
 					iconCls: 'gis-menu-item-icon-float',
 					cls: 'gis-plugin',
@@ -456,8 +458,9 @@ Ext.onReady( function() {
 					handler: function() {
 						drill(att.grandParentId, att.grandParentParentGraph, parseInt(att.level) - 1);
 					}
-				}),
-				Ext.create('Ext.menu.Item', {
+				}));
+
+                menuItems.push(Ext.create('Ext.menu.Item', {
 					text: 'Drill down',
 					iconCls: 'gis-menu-item-icon-drill',
 					cls: 'gis-menu-item-first gis-plugin',
@@ -465,13 +468,16 @@ Ext.onReady( function() {
 					handler: function() {
 						drill(att.id, att.parentGraph, parseInt(att.level) + 1);
 					}
-				})
-			];
+				}));
+			}
 
 			if (isRelocate && isPoint) {
-				menuItems.push({
-					xtype: 'menuseparator'
-				});
+
+                if (layer.id !== 'facility') {
+                    menuItems.push({
+                        xtype: 'menuseparator'
+                    });
+                }
 
 				menuItems.push( Ext.create('Ext.menu.Item', {
 					text: GIS.i18n.relocate,
