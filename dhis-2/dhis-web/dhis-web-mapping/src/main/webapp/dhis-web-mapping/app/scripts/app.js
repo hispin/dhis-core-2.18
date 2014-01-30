@@ -661,7 +661,7 @@ Ext.onReady( function() {
 			layer = gis.layer.event;
 			layer.menu = GIS.app.LayerMenu(layer, 'gis-toolbar-btn-menu-first');
 			layer.widget = GIS.app.LayerWidgetEvent(layer);
-			layer.window = GIS.app.WidgetWindow(layer, gis.conf.layout.widget.window_width + 150, 3);
+			layer.window = GIS.app.WidgetWindow(layer, gis.conf.layout.widget.window_width + 150, 1);
 			layer.window.widget = layer.widget;
 			GIS.core.createSelectHandlers(gis, layer);
 
@@ -943,6 +943,11 @@ Ext.onReady( function() {
 			}
 		});
 
+        var operatorCmpWidth = 70,
+            valueCmpWidth = 304,
+            buttonCmpWidth = 20,
+            nameCmpWidth = 400;
+
         Ext.define('Ext.ux.panel.DataElementIntegerContainer', {
 			extend: 'Ext.container.Container',
 			alias: 'widget.dataelementintegerpanel',
@@ -964,7 +969,7 @@ Ext.onReady( function() {
                     displayField: 'name',
                     queryMode: 'local',
                     editable: false,
-                    width: 70,
+                    width: operatorCmpWidth,
                     value: 'EQ',
                     store: {
                         fields: ['id', 'name'],
@@ -980,13 +985,13 @@ Ext.onReady( function() {
                 });
 
                 this.valueCmp = Ext.create('Ext.form.field.Number', {
-                    width: 300,
+                    width: valueCmpWidth,
                     value: 0
                 });
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
-                    width: 20,
+                    width: buttonCmpWidth,
                     handler: function() {
 						container.duplicateDataElement();
 					}
@@ -994,7 +999,7 @@ Ext.onReady( function() {
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
                     text: 'x',
-                    width: 20,
+                    width: buttonCmpWidth,
                     handler: function() {
                         container.removeDataElement();
                     }
@@ -1002,7 +1007,7 @@ Ext.onReady( function() {
 
                 this.nameCmp = Ext.create('Ext.form.Label', {
                     text: this.dataElement.name,
-                    width: 360,
+                    width: nameCmpWidth,
                     style: 'padding:2px'
                 });
 
@@ -1039,7 +1044,7 @@ Ext.onReady( function() {
                     displayField: 'name',
                     queryMode: 'local',
                     editable: false,
-                    width: 70,
+                    width: operatorCmpWidth,
                     value: 'LIKE',
                     store: {
                         fields: ['id', 'name'],
@@ -1051,17 +1056,17 @@ Ext.onReady( function() {
                 });
 
                 this.valueCmp = Ext.create('Ext.form.field.Text', {
-                    width: 300
+                    width: valueCmpWidth
                 });
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
-                    width: 20
+                    width: buttonCmpWidth
                 });
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
                     text: 'x',
-                    width: 20,
+                    width: buttonCmpWidth,
                     handler: function() {
                         container.removeDataElement();
                     }
@@ -1069,7 +1074,7 @@ Ext.onReady( function() {
 
                 this.nameCmp = Ext.create('Ext.form.Label', {
                     text: this.dataElement.name,
-                    width: 360,
+                    width: nameCmpWidth,
                     style: 'padding:2px'
                 });
 
@@ -1106,7 +1111,7 @@ Ext.onReady( function() {
                     displayField: 'name',
                     queryMode: 'local',
                     editable: false,
-                    width: 70,
+                    width: operatorCmpWidth,
                     value: 'EQ',
                     store: {
                         fields: ['id', 'name'],
@@ -1122,18 +1127,18 @@ Ext.onReady( function() {
                 });
 
                 this.valueCmp = Ext.create('Ext.form.field.Date', {
-					width: 300,
+					width: valueCmpWidth,
 					format: 'Y-m-d'
 				});
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
-                    width: 20
+                    width: buttonCmpWidth
                 });
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
                     text: 'x',
-                    width: 20,
+                    width: buttonCmpWidth,
                     handler: function() {
                         container.removeDataElement();
                     }
@@ -1141,7 +1146,7 @@ Ext.onReady( function() {
 
                 this.nameCmp = Ext.create('Ext.form.Label', {
                     text: this.dataElement.name,
-                    width: 360,
+                    width: nameCmpWidth,
                     style: 'padding:2px'
                 });
 
@@ -1177,7 +1182,7 @@ Ext.onReady( function() {
                     displayField: 'name',
                     queryMode: 'local',
                     editable: false,
-                    width: 70,
+                    width: operatorCmpWidth + valueCmpWidth,
                     value: 'false',
                     store: {
                         fields: ['id', 'name'],
@@ -1190,12 +1195,12 @@ Ext.onReady( function() {
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
-                    width: 20
+                    width: buttonCmpWidth
                 });
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
                     text: 'x',
-                    width: 20,
+                    width: buttonCmpWidth,
                     handler: function() {
                         container.removeDataElement();
                     }
@@ -1203,7 +1208,7 @@ Ext.onReady( function() {
 
                 this.nameCmp = Ext.create('Ext.form.Label', {
                     text: this.dataElement.name,
-                    width: 360,
+                    width: nameCmpWidth,
                     style: 'padding:2px'
                 });
 
@@ -1242,7 +1247,7 @@ Ext.onReady( function() {
 
                 this.nameCmp = Ext.create('Ext.form.Label', {
                     text: this.dataElement.name,
-                    width: 360,
+                    width: nameCmpWidth,
                     style: 'padding:2px 2px 2px 1px'
                 });
 
@@ -1251,7 +1256,7 @@ Ext.onReady( function() {
                     displayField: 'name',
                     queryMode: 'local',
                     editable: false,
-                    width: 70,
+                    width: operatorCmpWidth,
                     value: 'IN',
                     store: {
                         fields: ['id', 'name'],
@@ -1383,7 +1388,7 @@ Ext.onReady( function() {
                 });
 
                 this.valueCmp = Ext.create('Ext.form.field.Text', {
-					width: 220,
+					width: 224,
 					addOptionValue: function(option) {
 						var value = this.getValue();
 
@@ -1406,13 +1411,13 @@ Ext.onReady( function() {
 
                 this.addCmp = Ext.create('Ext.button.Button', {
                     text: '+',
-                    width: 20,
+                    width: buttonCmpWidth,
                     style: 'font-weight:bold'
                 });
 
                 this.removeCmp = Ext.create('Ext.button.Button', {
                     text: 'x',
-                    width: 20,
+                    width: buttonCmpWidth,
                     handler: function() {
                         container.removeDataElement();
                     }
@@ -3955,7 +3960,7 @@ Ext.onReady( function() {
             baseWidth = 442,
             toolWidth = 36,
 
-            accBaseWidth = baseWidth - 6;
+            accBaseWidth = baseWidth - 2;
 
 		// stores
 
@@ -4220,7 +4225,7 @@ Ext.onReady( function() {
         dataElementSelected = Ext.create('Ext.panel.Panel', {
 			width: accBaseWidth,
             height: 204,
-            bodyStyle: 'padding:2px 5px 5px; overflow-y: scroll',
+            bodyStyle: 'padding:2px 0 5px 3px; overflow-y: scroll',
             tbar: {
                 height: 27,
                 items: {

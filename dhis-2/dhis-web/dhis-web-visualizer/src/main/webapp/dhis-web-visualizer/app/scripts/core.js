@@ -1778,6 +1778,13 @@ Ext.onReady( function() {
                         axis.maximum = maximum;
                     }
 
+                    //if (store.getMaximum() < 10) {
+                        //alert(store.rangeFields.length);
+                        //axis.majorTickSteps = 12;
+                    //}
+
+                    //axis.majorTickSteps = 6;
+
                     if (xLayout.rangeAxisTitle) {
                         axis.title = xLayout.rangeAxisTitle;
                     }
