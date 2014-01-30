@@ -443,7 +443,8 @@
 "financial_april": "$encoder.jsEscape($i18n.getString( 'financial_april' ) , "'")",
 "relative": "$encoder.jsEscape($i18n.getString( 'relative' ) , "'")",
 "reporting_rates": "$encoder.jsEscape($i18n.getString( 'reporting_rates' ) , "'")",
-"event_layer": "$encoder.jsEscape($i18n.getString( 'event_layer' ) , "'")"
+"event_layer": "$encoder.jsEscape($i18n.getString( 'event_layer' ) , "'")",
+"coordinate": "$encoder.jsEscape($i18n.getString( 'coordinate' ) , "'")"
 }
 }
 #if($callback)

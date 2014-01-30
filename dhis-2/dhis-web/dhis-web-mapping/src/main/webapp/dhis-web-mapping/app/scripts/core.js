@@ -272,10 +272,7 @@ Ext.onReady( function() {
 			// Infrastructural data
 			showInfo = function() {
 				Ext.Ajax.request({
-					url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getFacilityInfo.action',
-					params: {
-						id: att.id
-					},
+					url: gis.init.contextPath + '/api/organisationUnits/' + att.id + '.json?links=false',
 					success: function(r) {
 						var ou = Ext.decode(r.responseText);
 
@@ -303,29 +300,41 @@ Ext.onReady( function() {
 											a.push({html: GIS.i18n.name, cls: 'gis-panel-html-title'}, {html: att.name, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
 										}
 
-										if (ou.pa) {
-											a.push({html: GIS.i18n.parent_unit, cls: 'gis-panel-html-title'}, {html: ou.pa, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+										if (ou.parent) {
+											a.push({html: GIS.i18n.parent_unit, cls: 'gis-panel-html-title'}, {html: ou.parent.name, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
 										}
 
-										if (ou.ty) {
-											a.push({html: GIS.i18n.type, cls: 'gis-panel-html-title'}, {html: ou.ty, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+										if (ou.code) {
+											a.push({html: GIS.i18n.code, cls: 'gis-panel-html-title'}, {html: ou.code, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
 										}
 
-										if (ou.co) {
-											a.push({html: GIS.i18n.code, cls: 'gis-panel-html-title'}, {html: ou.co, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+										if (ou.address) {
+											a.push({html: GIS.i18n.address, cls: 'gis-panel-html-title'}, {html: ou.address, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
 										}
 
-										if (ou.ad) {
-											a.push({html: GIS.i18n.address, cls: 'gis-panel-html-title'}, {html: ou.ad, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+										if (ou.email) {
+											a.push({html: GIS.i18n.email, cls: 'gis-panel-html-title'}, {html: ou.email, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
 										}
 
-										if (ou.em) {
-											a.push({html: GIS.i18n.email, cls: 'gis-panel-html-title'}, {html: ou.em, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+										if (ou.phoneNumber) {
+											a.push({html: GIS.i18n.phone_number, cls: 'gis-panel-html-title'}, {html: ou.phoneNumber, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
 										}
 
-										if (ou.pn) {
-											a.push({html: GIS.i18n.phone_number, cls: 'gis-panel-html-title'}, {html: ou.pn, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
-										}
+                                        if (Ext.isString(ou.coordinates)) {
+                                            var co = ou.coordinates.replace("[","").replace("]","").replace(",",", ");
+											a.push({html: GIS.i18n.coordinate, cls: 'gis-panel-html-title'}, {html: co, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+                                        }
+
+                                        if (Ext.isArray(ou.organisationUnitGroups) && ou.organisationUnitGroups.length) {
+                                            var html = '';
+
+                                            for (var i = 0; i < ou.organisationUnitGroups.length; i++) {
+                                                html += ou.organisationUnitGroups[i].name;
+                                                html += i < ou.organisationUnitGroups.length - 1 ? '<br/>' : '';
+                                            }
+
+											a.push({html: GIS.i18n.groups, cls: 'gis-panel-html-title'}, {html: html, cls: 'gis-panel-html'}, {cls: 'gis-panel-html-separator'});
+                                        }
 
 										return a;
 									}()
@@ -350,7 +359,7 @@ Ext.onReady( function() {
 											valueField: 'id',
 											displayField: 'name',
 											forceSelection: true,
-											width: 255, //todo
+											width: 258, //todo
 											labelWidth: 70,
 											store: gis.store.infrastructuralPeriodsByType,
 											lockPosition: false,
@@ -374,7 +383,7 @@ Ext.onReady( function() {
 											xtype: 'grid',
 											cls: 'gis-grid',
 											height: 300, //todo
-											width: 255,
+											width: 258,
 											scroll: 'vertical',
 											columns: [
 												{
