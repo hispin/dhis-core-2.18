@@ -221,34 +221,6 @@ public class SqlViewServiceTest
     }
 
     @Test
-    public void testGetAllSqlViewNames()
-    {
-        SqlView sqlViewA = createSqlView( 'A', SQL4 );
-        SqlView sqlViewB = createSqlView( 'B', SQL4 );
-        SqlView sqlViewC = createSqlView( 'C', SQL4 );
-        SqlView sqlViewD = createSqlView( 'D', SQL4 );
-
-        sqlViewService.saveSqlView( sqlViewA );
-        sqlViewService.saveSqlView( sqlViewB );
-        sqlViewService.saveSqlView( sqlViewC );
-        sqlViewService.saveSqlView( sqlViewD );
-
-        boolean flag = sqlViewService.createAllViewTables();
-
-        assertTrue( flag );
-
-        sqlViewService.dropViewTable( sqlViewA.getViewName() );
-        sqlViewService.dropViewTable( sqlViewB.getViewName() );
-        sqlViewService.dropViewTable( sqlViewC.getViewName() );
-        sqlViewService.dropViewTable( sqlViewD.getViewName() );
-
-        sqlViewService.deleteSqlView( sqlViewA );
-        sqlViewService.deleteSqlView( sqlViewB );
-        sqlViewService.deleteSqlView( sqlViewC );
-        sqlViewService.deleteSqlView( sqlViewD );
-    }
-
-    @Test
     public void testTestSqlGrammar()
     {
         String sql = "select de.name, de.name from dataelement de";
