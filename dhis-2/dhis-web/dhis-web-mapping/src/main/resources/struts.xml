@@ -38,10 +38,6 @@
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
 
-	<action name="getFacilityInfo" class="org.hisp.dhis.mapping.action.GetOrganisationUnitInfoFacilityAction">
-    	<result name="success" type="velocity-json">/dhis-web-mapping/jsonminFacilityInfo.vm</result>
-   	</action>
-
     <action name="getOrganisationUnitGroupsByGroupSet" class="org.hisp.dhis.mapping.action.GetOrganisationUnitGroupsByGroupSetAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/jsonminOrganisationUnitGroups.vm</result>
     </action>
