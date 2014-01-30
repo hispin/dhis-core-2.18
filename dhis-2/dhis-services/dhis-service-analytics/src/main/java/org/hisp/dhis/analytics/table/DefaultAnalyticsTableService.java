@@ -154,7 +154,7 @@ public class DefaultAnalyticsTableService
 
     public void generateResourceTables()
     {
-        sqlViewService.dropAllSqlViewTables();
+        resourceTableService.dropAllSqlViews();
         resourceTableService.generateOrganisationUnitStructures();        
         resourceTableService.generateCategoryOptionComboNames();
         resourceTableService.generateDataElementGroupSetTable();
@@ -165,7 +165,7 @@ public class DefaultAnalyticsTableService
         resourceTableService.generatePeriodTable();
         resourceTableService.generateDatePeriodTable();
         resourceTableService.generateDataElementCategoryOptionComboTable();
-        sqlViewService.createAllViewTables();
+        resourceTableService.createAllSqlViews();
     }
     
     // -------------------------------------------------------------------------

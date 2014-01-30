@@ -73,13 +73,9 @@ public interface SqlViewService
 
     boolean viewTableExists( String viewTableName );
 
-    boolean createAllViewTables();
-
     String createViewTable( SqlView sqlViewInstance );
 
     void dropViewTable( String viewName );
-
-    void dropAllSqlViewTables();
 
     Grid getSqlViewGrid( SqlView sqlView, Map<String, String> criteria );
     

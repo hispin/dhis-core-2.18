@@ -72,6 +72,8 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
+import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -134,6 +136,13 @@ public class DefaultResourceTableService
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+    
+    private SqlViewService sqlViewService;
+
+    public void setSqlViewService( SqlViewService sqlViewService )
+    {
+        this.sqlViewService = sqlViewService;
     }
 
     // -------------------------------------------------------------------------
@@ -567,5 +576,35 @@ public class DefaultResourceTableService
         resourceTableStore.createAndGenerateDataElementCategoryOptionCombo();
         
         log.info( "Data element category option combo table generated" );
+    }
+
+    // -------------------------------------------------------------------------
+    // SQL views
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void createAllSqlViews()
+    {
+        List<SqlView> sqlViews = new ArrayList<SqlView>( sqlViewService.getAllSqlViews() );
+        Collections.sort( sqlViews, IdentifiableObjectNameComparator.INSTANCE );
+
+        for ( SqlView sqlView : sqlViews )
+        {
+            sqlViewService.createViewTable( sqlView );
+        }
+    }
+
+
+    @Override
+    public void dropAllSqlViews()
+    {
+        List<SqlView> views = new ArrayList<SqlView>( sqlViewService.getAllSqlViews() );
+        Collections.sort( views, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.reverse( views );
+
+        for ( SqlView view : views )
+        {
+            sqlViewService.dropViewTable( view.getViewName() );
+        }
     }
 }
