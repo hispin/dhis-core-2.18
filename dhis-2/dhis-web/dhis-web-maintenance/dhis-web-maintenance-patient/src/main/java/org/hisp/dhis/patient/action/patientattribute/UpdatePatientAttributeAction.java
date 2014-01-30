@@ -101,6 +101,13 @@ public class UpdatePatientAttributeAction
         this.name = name;
     }
 
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     private String description;
 
     public void setDescription( String description )
@@ -183,6 +190,7 @@ public class UpdatePatientAttributeAction
         PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
 
         patientAttribute.setName( name );
+        patientAttribute.setCode( code );
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
         patientAttribute.setExpression( expression );

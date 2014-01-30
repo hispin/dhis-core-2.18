@@ -80,6 +80,13 @@ public class AddPatientAttributeAction
         this.name = name;
     }
 
+    private String code;
+
+    public void setCode( String code )
+    {
+        this.code = code;
+    }
+
     private String description;
 
     public void setDescription( String description )
@@ -162,6 +169,7 @@ public class AddPatientAttributeAction
         PatientAttribute patientAttribute = new PatientAttribute();
 
         patientAttribute.setName( name );
+        patientAttribute.setCode( code );
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
         patientAttribute.setExpression( expression );
@@ -175,7 +183,7 @@ public class AddPatientAttributeAction
 
         inherit = (inherit == null) ? false : true;
         patientAttribute.setInherit( inherit );
-        
+
         if ( valueType.equals( PatientAttribute.VALUE_TYPE_LOCAL_ID ) )
         {
             orgunitScope = (orgunitScope == null) ? false : orgunitScope;
@@ -195,7 +203,7 @@ public class AddPatientAttributeAction
             patientAttribute.setOrgunitScope( orgunitScope );
             patientAttribute.setProgramScope( programScope );
         }
-        
+
         patientAttributeService.savePatientAttribute( patientAttribute );
 
         if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
