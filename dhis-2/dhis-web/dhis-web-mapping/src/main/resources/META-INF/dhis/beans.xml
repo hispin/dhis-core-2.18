@@ -14,19 +14,9 @@
         class="org.hisp.dhis.mapping.action.InitializeAction"
         scope="prototype">
         <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
-        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     </bean>
 
 	<!-- OrganisationUnit -->
-
-	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitChildrenAction"
-		class="org.hisp.dhis.mapping.action.GetOrganisationUnitChildrenAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
 			
 	<bean id="org.hisp.dhis.mapping.action.UpdateOrganisationUnitCoordinatesAction"
         class="org.hisp.dhis.mapping.action.UpdateOrganisationUnitCoordinatesAction"
@@ -54,11 +44,6 @@
     </bean>
 
     <!-- Period -->
-
-	<bean id="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction"
-		class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction" scope="prototype">
-		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
-	</bean>
 
 	<bean id="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"
 		class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction"

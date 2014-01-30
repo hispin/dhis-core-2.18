@@ -30,10 +30,6 @@
 
     <!-- OrganisationUnit -->
 
-    <action name="getOrganisationUnitChildren" class="org.hisp.dhis.mapping.action.GetOrganisationUnitChildrenAction">
-      <result name="success" type="velocity-json">/dhis-web-mapping/jsonOrganisationUnitChildren.vm</result>
-    </action>
-
     <action name="updateOrganisationUnitCoordinates" class="org.hisp.dhis.mapping.action.UpdateOrganisationUnitCoordinatesAction">
       <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
     </action>
@@ -58,13 +54,6 @@
     </action>
 
     <!-- Period -->
-
-    <action name="getAllPeriodTypes"
-      class="org.hisp.dhis.mapping.action.GetAllPeriodTypesAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-mapping/jsonPeriodTypes.vm
-      </result>
-    </action>
 
     <action name="getPeriodsByPeriodType"
       class="org.hisp.dhis.mapping.action.GetPeriodsByPeriodTypeAction">
