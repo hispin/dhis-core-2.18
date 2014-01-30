@@ -1358,6 +1358,10 @@ Ext.onReady( function() {
 			}
 			else {
 				gis.map = null;
+
+				if (gis.viewport.shareButton) {
+                    gis.viewport.shareButton.enable();
+				}
 			}
 		};
 
@@ -1545,6 +1549,10 @@ Ext.onReady( function() {
 			}
 			else {
 				gis.map = null;
+
+				if (gis.viewport.shareButton) {
+                    gis.viewport.shareButton.enable();
+				}
 			}
 		};
 
@@ -2017,6 +2025,7 @@ Ext.onReady( function() {
 			else {
 				gis.map = null;
 				if (gis.viewport.shareButton) {
+                    gis.viewport.shareButton.enable();
 				}
 			}
 
