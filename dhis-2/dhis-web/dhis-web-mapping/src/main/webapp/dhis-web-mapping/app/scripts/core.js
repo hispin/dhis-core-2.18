@@ -358,26 +358,76 @@ Ext.onReady( function() {
 											editable: false,
 											valueField: 'id',
 											displayField: 'name',
+											emptyText: 'Select period',
 											forceSelection: true,
 											width: 258, //todo
 											labelWidth: 70,
-											store: gis.store.infrastructuralPeriodsByType,
+											store: {
+												fields: ['id', 'name'],
+												data: function() {													
+													var pt = new PeriodType(),
+														periodType = gis.init.systemSettings.infrastructuralPeriodType.id,
+														data;
+														
+													data = pt.get(periodType).generatePeriods({
+														offset: 0,
+														filterFuturePeriods: true,
+														reversePeriods: true
+													});
+
+													if (Ext.isArray(data) && data.length) {
+														data = data.slice(0,5);
+													}
+
+													return data;
+												}()
+											},												
 											lockPosition: false,
 											listeners: {
-												select: function() {
-													infrastructuralPeriod = this.getValue();
+												select: function(cmp) {
+													var period = cmp.getValue(),
+														url = gis.init.contextPath + '/api/analytics.json?',
+														group = gis.init.systemSettings.infrastructuralDataElementGroup;
 
-													layer.widget.infrastructuralDataElementValuesStore.load({
-														params: {
-															periodId: infrastructuralPeriod,
-															organisationUnitId: att.internalId
+													if (group && group.dataElements) {
+														url += 'dimension=dx:';
+
+														for (var i = 0; i < group.dataElements.length; i++) {
+															url += group.dataElements[i].id;
+															url += i < group.dataElements.length - 1 ? ';' : '';
+														}
+													}
+
+													url += '&filter=pe:' + period;
+													url += '&filter=ou:' + att.id;
+
+													Ext.Ajax.request({
+														url: url,
+														success: function(r) {
+															var response = Ext.decode(r.responseText),
+																data = [];
+
+															if (Ext.isArray(response.rows)) {
+																for (var i = 0; i < response.rows.length; i++) {
+																	data.push({
+																		name: response.metaData.names[response.rows[i][0]],
+																		value: response.rows[i][1]
+																	});
+																}
+															}
+
+															layer.widget.infrastructuralDataElementValuesStore.loadData(data);
 														}
 													});
+
+													//layer.widget.infrastructuralDataElementValuesStore.load({
+														//params: {
+															//periodId: infrastructuralPeriod,
+															//organisationUnitId: att.internalId
+														//}
+													//});
 												}
 											}
-										},
-										{
-											cls: 'gis-panel-html-separator'
 										},
 										{
 											xtype: 'grid',
@@ -387,9 +437,9 @@ Ext.onReady( function() {
 											scroll: 'vertical',
 											columns: [
 												{
-													id: 'dataElementName',
+													id: 'name',
 													text: 'Data element',
-													dataIndex: 'dataElementName',
+													dataIndex: 'name',
 													sortable: true,
 													width: 195
 												},
@@ -398,7 +448,7 @@ Ext.onReady( function() {
 													header: 'Value',
 													dataIndex: 'value',
 													sortable: true,
-													width: 60
+													width: 63
 												}
 											],
 											disableSelection: true,
@@ -479,7 +529,7 @@ Ext.onReady( function() {
 					}
 				}));
 			}
-
+			
 			if (isRelocate && isPoint) {
 
                 if (layer.id !== 'facility') {
