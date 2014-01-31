@@ -57,6 +57,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -91,8 +92,10 @@ public class DefaultCaseAggregationConditionService
 
     private PatientAttributeService patientAttributeService;
 
-    private I18nService i18nService;
+    private PeriodService periodService;
 
+    private I18nService i18nService;
+    
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -120,6 +123,11 @@ public class DefaultCaseAggregationConditionService
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     public void setI18nService( I18nService service )
@@ -395,6 +403,8 @@ public class DefaultCaseAggregationConditionService
     public Grid getAggregateValue( CaseAggregationCondition caseAggregationCondition, Collection<Integer> orgunitIds,
         Period period, I18nFormat format, I18n i18n )
     {
+        periodService.reloadPeriod( period );
+        
         return aggregationConditionStore.getAggregateValue( caseAggregationCondition, orgunitIds, period, format, i18n );
     }
 
@@ -402,12 +412,16 @@ public class DefaultCaseAggregationConditionService
     public Grid getAggregateValueDetails( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period, I18nFormat format, I18n i18n )
     {
+        periodService.reloadPeriod( period );
+        
         return aggregationConditionStore.getAggregateValueDetails( aggregationCondition, orgunit, period, format, i18n );
     }
 
     public void insertAggregateValue( CaseAggregationCondition caseAggregationCondition,
         Collection<Integer> orgunitIds, Period period )
     {
+        periodService.reloadPeriod( period );
+        
         Integer deSumId = (caseAggregationCondition.getDeSum() == null) ? null : caseAggregationCondition.getDeSum()
             .getId();
 
@@ -419,6 +433,8 @@ public class DefaultCaseAggregationConditionService
     @Override
     public String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period )
     {
+        periodService.reloadPeriod( period );
+        
         return aggregationConditionStore.parseExpressionDetailsToSql( caseExpression, operator, orgunitId, period );
     }
 
@@ -427,6 +443,8 @@ public class DefaultCaseAggregationConditionService
         Integer aggregateDeId, String aggregateDeName, Integer optionComboId, String optionComboName, Integer deSumId,
         Collection<Integer> orgunitIds, Period period )
     {
+        periodService.reloadPeriod( period );
+        
         return aggregationConditionStore.parseExpressionToSql( isInsert, caseExpression, operator, aggregateDeId,
             aggregateDeName, optionComboId, optionComboName, deSumId, orgunitIds, period );
     }
