@@ -360,10 +360,11 @@ public class DefaultDataIntegrityService
         Set<String> dataElements = new HashSet<String>( getUids( dataElementService.getAllDataElements() ) );
         Set<String> categoryOptionCombos = new HashSet<String>( getUids( categoryService.getAllDataElementCategoryOptionCombos() ) );
         Set<String> constants = new HashSet<String>( getUids( constantService.getAllConstants() ) );
+        Set<String> orgUnitGroups = new HashSet<String>( getUids( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
         
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
-            String result = expressionService.expressionIsValid( indicator.getNumerator(), dataElements, categoryOptionCombos, constants );
+            String result = expressionService.expressionIsValid( indicator.getNumerator(), dataElements, categoryOptionCombos, constants, orgUnitGroups );
 
             if ( !result.equals( ExpressionService.VALID ) )
             {
@@ -381,10 +382,11 @@ public class DefaultDataIntegrityService
         Set<String> dataElements = new HashSet<String>( getUids( dataElementService.getAllDataElements() ) );
         Set<String> categoryOptionCombos = new HashSet<String>( getUids( categoryService.getAllDataElementCategoryOptionCombos() ) );
         Set<String> constants = new HashSet<String>( getUids( constantService.getAllConstants() ) );
+        Set<String> orgUnitGroups = new HashSet<String>( getUids( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
         
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
-            String result = expressionService.expressionIsValid( indicator.getDenominator(), dataElements, categoryOptionCombos, constants );
+            String result = expressionService.expressionIsValid( indicator.getDenominator(), dataElements, categoryOptionCombos, constants, orgUnitGroups );
 
             if ( !result.equals( ExpressionService.VALID ) )
             {
@@ -541,10 +543,11 @@ public class DefaultDataIntegrityService
         Set<String> dataElements = new HashSet<String>( getUids( dataElementService.getAllDataElements() ) );
         Set<String> categoryOptionCombos = new HashSet<String>( getUids( categoryService.getAllDataElementCategoryOptionCombos() ) );
         Set<String> constants = new HashSet<String>( getUids( constantService.getAllConstants() ) );
+        Set<String> orgUnitGroups = new HashSet<String>( getUids( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
         
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
-            String result = expressionService.expressionIsValid( rule.getLeftSide().getExpression(), dataElements, categoryOptionCombos, constants );
+            String result = expressionService.expressionIsValid( rule.getLeftSide().getExpression(), dataElements, categoryOptionCombos, constants, orgUnitGroups );
 
             if ( !result.equals( ExpressionService.VALID ) )
             {
@@ -563,10 +566,11 @@ public class DefaultDataIntegrityService
         Set<String> dataElements = new HashSet<String>( getUids( dataElementService.getAllDataElements() ) );
         Set<String> categoryOptionCombos = new HashSet<String>( getUids( categoryService.getAllDataElementCategoryOptionCombos() ) );
         Set<String> constants = new HashSet<String>( getUids( constantService.getAllConstants() ) );
+        Set<String> orgUnitGroups = new HashSet<String>( getUids( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
         
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
-            String result = expressionService.expressionIsValid( rule.getRightSide().getExpression(), dataElements, categoryOptionCombos, constants );
+            String result = expressionService.expressionIsValid( rule.getRightSide().getExpression(), dataElements, categoryOptionCombos, constants, orgUnitGroups );
 
             if ( !result.equals( ExpressionService.VALID ) )
             {

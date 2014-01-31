@@ -58,6 +58,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -107,6 +109,13 @@ public class DefaultExpressionService
     {
         this.categoryService = categoryService;
     }
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
 
     // -------------------------------------------------------------------------
     // Expression CRUD operations
@@ -147,14 +156,14 @@ public class DefaultExpressionService
     // -------------------------------------------------------------------------
     
     public Double getIndicatorValue( Indicator indicator, Period period, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Integer days )
+        Map<String, Double> constantMap, Integer orgUnitCount, Integer days )
     {
         if ( indicator == null || indicator.getExplodedNumeratorFallback() == null || indicator.getExplodedDenominatorFallback() == null )
         {
             return null;
         }
         
-        final String denominatorExpression = generateExpression( indicator.getExplodedDenominatorFallback(), valueMap, constantMap, days, false );
+        final String denominatorExpression = generateExpression( indicator.getExplodedDenominatorFallback(), valueMap, constantMap, orgUnitCount, days, false );
         
         if ( denominatorExpression == null )
         {
@@ -165,7 +174,7 @@ public class DefaultExpressionService
         
         if ( !isEqual( denominatorValue, 0d ) )
         {
-            final String numeratorExpression = generateExpression( indicator.getExplodedNumeratorFallback(), valueMap, constantMap, days, false );
+            final String numeratorExpression = generateExpression( indicator.getExplodedNumeratorFallback(), valueMap, constantMap, orgUnitCount, days, false );
             
             if ( numeratorExpression == null )
             {
@@ -185,18 +194,18 @@ public class DefaultExpressionService
     }
 
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap,
-        Map<String, Double> constantMap, Integer days )
+        Map<String, Double> constantMap, Integer orgUnitCount, Integer days )
     {
-        final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, days,
-            expression.isNullIfBlank() );
+        final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, 
+            orgUnitCount, days, expression.isNullIfBlank() );
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
     }
 
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap,
-        Map<String, Double> constantMap, Integer days, Set<DataElementOperand> incompleteValues )
+        Map<String, Double> constantMap, Integer orgUnitCount, Integer days, Set<DataElementOperand> incompleteValues )
     {
-        final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, days,
+        final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, orgUnitCount, days,
             expression.isNullIfBlank(), incompleteValues );
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
@@ -225,6 +234,30 @@ public class DefaultExpressionService
         }
 
         return dataElementsInExpression;
+    }
+    
+    public Set<OrganisationUnitGroup> getOrganisationUnitGroupsInExpresion( String expression )
+    {
+        Set<OrganisationUnitGroup> groupsInExpression = null;
+        
+        if ( expression != null )
+        {
+            groupsInExpression = new HashSet<OrganisationUnitGroup>();
+            
+            final Matcher matcher = OU_GROUP_PATTERN.matcher( expression );
+            
+            while ( matcher.find() )
+            {
+                final OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( matcher.group( 1 ) );
+                
+                if ( group != null )
+                {
+                    groupsInExpression.add( group );
+                }
+            }
+        }
+        
+        return groupsInExpression;
     }
     
     public Set<String> getDataElementTotalUids( String expression )
@@ -338,11 +371,11 @@ public class DefaultExpressionService
     @Transactional
     public String expressionIsValid( String formula )
     {
-        return expressionIsValid( formula, null, null, null );
+        return expressionIsValid( formula, null, null, null, null );
     }
 
     @Transactional
-    public String expressionIsValid( String expression, Set<String> dataElements, Set<String> categoryOptionCombos, Set<String> constants )
+    public String expressionIsValid( String expression, Set<String> dataElements, Set<String> categoryOptionCombos, Set<String> orgUnitGroups, Set<String> constants )
     {
         if ( expression == null || expression.isEmpty() )
         {
@@ -398,6 +431,31 @@ public class DefaultExpressionService
 
         expression = appendTail( matcher, sb );
 
+        // ---------------------------------------------------------------------
+        // Org unit groups
+        // ---------------------------------------------------------------------
+        
+        matcher = OU_GROUP_PATTERN.matcher( expression );
+        sb = new StringBuffer();
+        
+        while ( matcher.find() )
+        {
+            String group = matcher.group( 1 );
+            
+            if ( orgUnitGroups != null ? !orgUnitGroups.contains( group ) : organisationUnitGroupService.getOrganisationUnitGroup( group ) == null )
+            {
+                return OU_GROUP_DOES_NOT_EXIST;
+            }
+
+            matcher.appendReplacement( sb, "1.1" );
+        }
+
+        expression = appendTail( matcher, sb );
+        
+        // ---------------------------------------------------------------------
+        // Days
+        // ---------------------------------------------------------------------
+        
         expression = expression.replaceAll( DAYS_EXPRESSION, "1.1" );
         
         // ---------------------------------------------------------------------
@@ -469,6 +527,29 @@ public class DefaultExpressionService
             }
             
             matcher.appendReplacement( sb, constant.getDisplayName() );
+        }
+
+        expression = appendTail( matcher, sb );
+
+        // ---------------------------------------------------------------------
+        // Org unit groups
+        // ---------------------------------------------------------------------
+
+        sb = new StringBuffer();
+        matcher = OU_GROUP_PATTERN.matcher( expression );
+        
+        while ( matcher.find() )
+        {
+            String oug = matcher.group( 1 );
+            
+            OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( oug );
+            
+            if ( group == null )
+            {
+                throw new IllegalArgumentException( "Identifier does not reference an organisation unit group: " + oug );
+            }
+            
+            matcher.appendReplacement( sb, group.getDisplayName() );
         }
 
         expression = appendTail( matcher, sb );
@@ -630,6 +711,28 @@ public class DefaultExpressionService
         }
 
         expression = appendTail( matcher, sb );
+
+        // ---------------------------------------------------------------------
+        // Org unit groups
+        // ---------------------------------------------------------------------
+
+        sb = new StringBuffer();
+        matcher = OU_GROUP_PATTERN.matcher( expression );
+        
+        while ( matcher.find() )
+        {
+            String oug = matcher.group( 1 );
+            
+            OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( oug );
+            
+            String replacement = group != null ? String.valueOf( group.getMembers().size() ) : NULL_REPLACEMENT;
+
+            matcher.appendReplacement( sb, replacement );            
+            
+            //TODO sub tree
+        }
+
+        expression = appendTail( matcher, sb );
         
         // ---------------------------------------------------------------------
         // Days
@@ -650,13 +753,13 @@ public class DefaultExpressionService
 
     @Transactional
     public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Integer days, boolean nullIfNoValues )
+        Map<String, Double> constantMap, Integer orgUnitCount, Integer days, boolean nullIfNoValues )
     {
-    	return generateExpression( expression, valueMap, constantMap, days, nullIfNoValues, null );
+    	return generateExpression( expression, valueMap, constantMap, orgUnitCount, days, nullIfNoValues, null );
     }
 
     private String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Integer days, boolean nullIfNoValues, Set<DataElementOperand> incompleteValues )
+        Map<String, Double> constantMap, Integer orgUnitCount, Integer days, boolean nullIfNoValues, Set<DataElementOperand> incompleteValues )
     {
         if ( expression == null || expression.isEmpty() )
         {
@@ -705,6 +808,22 @@ public class DefaultExpressionService
         }
         
         expression = appendTail( matcher, sb );
+
+        // ---------------------------------------------------------------------
+        // Org unit groups
+        // ---------------------------------------------------------------------
+
+        sb = new StringBuffer();
+        matcher = OU_GROUP_PATTERN.matcher( expression );
+        
+        while ( matcher.find() )
+        {
+            String replacement = orgUnitCount != null ? String.valueOf( orgUnitCount ) : NULL_REPLACEMENT;
+            
+            matcher.appendReplacement( sb, replacement );
+        }
+
+        expression = appendTail( matcher, sb );        
         
         // ---------------------------------------------------------------------
         // Days
