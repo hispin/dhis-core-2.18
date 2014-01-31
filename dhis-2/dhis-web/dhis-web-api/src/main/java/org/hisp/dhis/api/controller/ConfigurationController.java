@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,7 +75,10 @@ public class ConfigurationController
     @RequestMapping( value = "/infrastructuralPeriodType", method = RequestMethod.GET )
     private String getInfrastructuralPeriodType( Model model, HttpServletRequest request )
     {
-        return setModel( model, configurationService.getConfiguration().getInfrastructuralPeriodTypeDefaultIfNull().getName() );
+        String name = configurationService.getConfiguration().getInfrastructuralPeriodTypeDefaultIfNull().getName();
+        BaseIdentifiableObject entity = new BaseIdentifiableObject( name, name, name );
+        
+        return setModel( model, entity );
     }
 
     @RequestMapping( value = "/selfRegistrationRole", method = RequestMethod.GET )
