@@ -235,12 +235,18 @@ public class GetMetaDataAction
         
         for ( DataSet dataSet : dataSets )
         {
-            categoryComboSet.add( dataSet.getCategoryCombo() );
+            if ( dataSet.getCategoryCombo() != null )
+            {
+                categoryComboSet.add( dataSet.getCategoryCombo() );
+            }
         }
         
         for ( DataElementCategoryCombo categoryCombo : categoryComboSet )
         {
-            categorySet.addAll( categoryCombo.getCategories() );
+            if ( categoryCombo.getCategories() != null )
+            {
+                categorySet.addAll( categoryCombo.getCategories() );
+            }
         }
         
         categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryComboSet );
