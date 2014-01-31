@@ -5084,25 +5084,7 @@ Ext.onReady( function() {
 		// Stores
 
 		infrastructuralDataElementValuesStore = Ext.create('Ext.data.Store', {
-			fields: ['dataElementName', 'value'],
-			proxy: {
-				type: 'ajax',
-				url: '../getInfrastructuralDataElementMapValues.action',
-				reader: {
-					type: 'json',
-					root: 'mapValues'
-				}
-			},
-			sortInfo: {field: 'dataElementName', direction: 'ASC'},
-			autoLoad: false,
-			isLoaded: false,
-			listeners: {
-				load: function() {
-					if (!this.isLoaded) {
-						this.isLoaded = true;
-					}
-				}
-			}
+			fields: ['name', 'value']
 		});
 
 		// Components
@@ -5816,25 +5798,7 @@ Ext.onReady( function() {
 		// Stores
 
 		infrastructuralDataElementValuesStore = Ext.create('Ext.data.Store', {
-			fields: ['dataElementName', 'value'],
-			proxy: {
-				type: 'ajax',
-				url: '../getInfrastructuralDataElementMapValues.action',
-				reader: {
-					type: 'json',
-					root: 'mapValues'
-				}
-			},
-			sortInfo: {field: 'dataElementName', direction: 'ASC'},
-			autoLoad: false,
-			isLoaded: false,
-			listeners: {
-				load: function() {
-					if (!this.isLoaded) {
-						this.isLoaded = true;
-					}
-				}
-			}
+			fields: ['name', 'value']
 		});
 
 		// Components
@@ -6682,25 +6646,7 @@ Ext.onReady( function() {
 		});
 
 		infrastructuralDataElementValuesStore = Ext.create('Ext.data.Store', {
-			fields: ['dataElementName', 'value'],
-			proxy: {
-				type: 'ajax',
-				url: '../getInfrastructuralDataElementMapValues.action',
-				reader: {
-					type: 'json',
-					root: 'mapValues'
-				}
-			},
-			sortInfo: {field: 'dataElementName', direction: 'ASC'},
-			autoLoad: false,
-			isLoaded: false,
-			listeners: {
-				load: function() {
-					if (!this.isLoaded) {
-						this.isLoaded = true;
-					}
-				}
-			}
+			fields: ['name', 'value']
 		});
 
 		legendsByLegendSetStore = Ext.create('Ext.data.Store', {
@@ -8619,7 +8565,10 @@ Ext.onReady( function() {
 	initialize = function() {
 		var requests = [],
 			callbacks = 0,
-			init = {},
+			init = {
+				user: {},
+				systemSettings: {}
+			},
 			fn;
 
 		fn = function() {
@@ -8684,10 +8633,7 @@ Ext.onReady( function() {
 											var ou = organisationUnits[0];
 
 											if (ou.id) {
-												init.user = {
-													ou: ou.id
-												};
-
+												init.user.ou = ou.id;
 												init.user.ouc = ou.children ? Ext.Array.pluck(ou.children, 'id') : null;
 											};
 										}
@@ -8695,6 +8641,15 @@ Ext.onReady( function() {
 											alert('User is not assigned to any organisation units');
 										}
 
+										fn();
+									}
+								});
+
+								// admin
+								requests.push({
+									url: init.contextPath + '/api/me/authorization/F_GIS_ADMIN',
+									success: function(r) {
+										init.user.isAdmin = Ext.decode(r.responseText);
 										fn();
 									}
 								});
@@ -8726,11 +8681,24 @@ Ext.onReady( function() {
 									}
 								});
 
-                                // infrastructural
+                                // infrastructural data element group
 								requests.push({
-									url: init.contextPath + '/dhis-web-mapping/initialize.action',
+									url: init.contextPath + '/api/configuration/infrastructuralDataElements.json',
 									success: function(r) {
-										init.systemSettings = Ext.decode(r.responseText).systemSettings || {};
+										var obj = Ext.decode(r.responseText);
+
+										init.systemSettings.infrastructuralDataElementGroup = Ext.isObject(obj) ? obj : null;
+										fn();
+									}
+								});
+
+                                // infrastructural period type
+								requests.push({
+									url: init.contextPath + '/api/configuration/infrastructuralPeriodType.json',
+									success: function(r) {
+										var obj = Ext.decode(r.responseText);
+
+										init.systemSettings.infrastructuralPeriodType = Ext.isObject(obj) ? obj : null;
 										fn();
 									}
 								});
@@ -8744,25 +8712,5 @@ Ext.onReady( function() {
                 });
             }
         });
-
-
-
-
-		//Ext.Ajax.request({
-			//url: '../initialize.action',
-			//success: function(r) {
-				//var init = Ext.decode(r.responseText);
-
-				//GIS.i18n = init.i18n;
-
-				//gis = GIS.core.getInstance(init);
-
-				//GIS.app.createExtensions();
-
-				//GIS.app.extendInstance(gis);
-
-				//gis.viewport = createViewport();
-			//}
-		//});
 	}();
 });
