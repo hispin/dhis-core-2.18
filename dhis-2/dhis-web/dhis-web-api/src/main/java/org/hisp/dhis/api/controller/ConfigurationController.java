@@ -54,6 +54,20 @@ public class ConfigurationController
         return "config";
     }
 
+    @RequestMapping( value = "/feedbackRecipients", method = RequestMethod.GET )
+    private String getFeedbackRecipients(  Model model, HttpServletRequest request )
+    {
+        setModel( model, configurationService.getConfiguration().getFeedbackRecipients() );
+        return "config";
+    }
+    
+    @RequestMapping( value = "/offlineOrganisationUnitLevel", method = RequestMethod.GET )
+    private String getOfflineOrganisationUnitLevel(  Model model, HttpServletRequest request )
+    {
+        setModel( model, configurationService.getConfiguration().getOfflineOrganisationUnitLevel() );
+        return "config";
+    }
+
     @RequestMapping( value = "/infrastructuralDataElements", method = RequestMethod.GET )
     private String getInfrastructuralDataElements( Model model, HttpServletRequest request )
     {
@@ -62,12 +76,26 @@ public class ConfigurationController
     }
 
     @RequestMapping( value = "/infrastructuralPeriodType", method = RequestMethod.GET )
-    private String getInfrastructuralPeriodType(  Model model, HttpServletRequest request )
+    private String getInfrastructuralPeriodType( Model model, HttpServletRequest request )
     {
         setModel( model, configurationService.getConfiguration().getInfrastructuralPeriodType() );
         return "config";
     }
-    
+
+    @RequestMapping( value = "/selfRegistrationRole", method = RequestMethod.GET )
+    private String getSelfRegistrationRole( Model model, HttpServletRequest request )
+    {
+        setModel( model, configurationService.getConfiguration().getSelfRegistrationRole() );
+        return "config";
+    }
+
+    @RequestMapping( value = "/selfRegistrationOrgUnit", method = RequestMethod.GET )
+    private String getSelfRegistrationOrgUnit( Model model, HttpServletRequest request )
+    {
+        setModel( model, configurationService.getConfiguration().getSelfRegistrationOrgUnit() );
+        return "config";
+    }
+
     private void setModel( Model model, Object entity )
     {
         model.addAttribute( "model", entity );
