@@ -121,7 +121,7 @@ public class ValidatorThread
                             if ( evaluateCheck( lastUpdatedMap, rule, context ) )
                             {
                                 Double leftSide = context.getExpressionService().getExpressionValue( rule.getLeftSide(),
-                                    currentValueMap, context.getConstantMap(), null, incompleteValues );
+                                    currentValueMap, context.getConstantMap(), null, null, incompleteValues );
 
                                 if ( leftSide != null || Operator.compulsory_pair.equals( rule.getOperator() ) )
                                 {
@@ -319,7 +319,7 @@ public class ValidatorThread
             || rule.getRightSide().getDataElementsInExpression().isEmpty() )
         {
             rightSideValue = context.getExpressionService().getExpressionValue( rule.getRightSide(),
-            		currentValueMap, context.getConstantMap(), null );
+            		currentValueMap, context.getConstantMap(), null, null );
         }
         else
         // ruleType equals SURVEILLANCE, and there are some data elements in the
@@ -416,7 +416,7 @@ public class ValidatorThread
             Map<DataElementOperand, Double> dataValueMap = getDataValueMapRecursive( periodTypeX, dataElements,
                 sourceDataElements, dataElements, allowedPeriodTypes, period, source, null, incompleteValues );
             Double value = context.getExpressionService().getExpressionValue( rule.getRightSide(), dataValueMap,
-                context.getConstantMap(), null, incompleteValues );
+                context.getConstantMap(), null, null, incompleteValues );
             
             if ( value != null )
             {

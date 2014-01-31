@@ -31,6 +31,7 @@ package org.hisp.dhis.analytics.data;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.ANALYTICS_TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TABLE_NAME;
 import static org.hisp.dhis.analytics.AnalyticsTableManager.COMPLETENESS_TARGET_TABLE_NAME;
+import static org.hisp.dhis.analytics.AnalyticsTableManager.ORGUNIT_TARGET_TABLE_NAME;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_CATEGORYOPTIONCOMBO;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_DATA_X;
 import static org.hisp.dhis.analytics.DataQueryParams.DISPLAY_NAME_ORGUNIT;
@@ -259,7 +260,7 @@ public class DefaultAnalyticsService
 
                     int days = daysBetween( period.getStartDate(), period.getEndDate() );
                     
-                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, days );
+                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null, days ); //TODO oug
 
                     if ( value != null )
                     {
@@ -545,13 +546,30 @@ public class DefaultAnalyticsService
     }
 
     /**
+     * Generates a mapping between the the data set dimension key and the count
+     * of expected data sets to report.
      * 
-     * @param params
-     * @return
+     * @param params the data query parameters.
+     * @return a mapping between the the data set dimension key and the count of
+     *         expected data sets to report.
      */
     private Map<String, Double> getAggregatedCompletenessTargetMap( DataQueryParams params )
     {
         return getAggregatedValueMap( params, COMPLETENESS_TARGET_TABLE_NAME );
+    }
+
+    /**
+     * Generates a mapping between the the org unit dimension key and the count
+     * of org units inside the subtree of the given organisation units and
+     * members of the given organisation unit groups.
+     * 
+     * @param params the data query parameters.
+     * @return a mapping between the the data set dimension key and the count of
+     *         expected data sets to report.
+     */
+    private Map<String, Double> getAggregatedOrganisationUnitTargetMap( DataQueryParams params )
+    {
+        return getAggregatedValueMap( params, ORGUNIT_TARGET_TABLE_NAME );
     }
     
     /**

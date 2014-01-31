@@ -164,11 +164,11 @@ public class DefaultIndicatorDataMart
                     {                
                         for ( final Indicator indicator : indicators )
                         {
-                            final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, constantMap, days, false ) );
+                            final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, constantMap, null, days, false ) );
     
                             if ( !isEqual( denominatorValue, 0d ) )
                             {
-                                final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, constantMap, days, false ) );
+                                final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, constantMap, null, days, false ) );
                              
                                 if ( !( omitZeroNumerator && isEqual( numeratorValue, 0d ) ) )
                                 {

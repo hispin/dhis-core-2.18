@@ -56,6 +56,8 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.junit.Test;
@@ -84,11 +86,15 @@ public class ExpressionServiceTest
 
     private Period period;
 
-    private OrganisationUnit source;
+    private OrganisationUnit unitA;
+    private OrganisationUnit unitB;
+    private OrganisationUnit unitC;
 
     private DataElementCategoryOptionCombo categoryOptionCombo;
     
     private Constant constantA;
+    
+    private OrganisationUnitGroup groupA;
     
     private String expressionA;
     private String expressionB;
@@ -97,6 +103,7 @@ public class ExpressionServiceTest
     private String expressionE;
     private String expressionF;
     private String expressionG;
+    private String expressionH;
 
     private String descriptionA;
     private String descriptionB;
@@ -124,6 +131,8 @@ public class ExpressionServiceTest
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+        
+        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
 
         categoryOptionA = new DataElementCategoryOption( "Under 5" );
         categoryOptionB = new DataElementCategoryOption( "Over 5" );
@@ -171,13 +180,24 @@ public class ExpressionServiceTest
 
         period = createPeriod( getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
 
-        source = createOrganisationUnit( 'A' );
+        unitA = createOrganisationUnit( 'A' );
+        unitB = createOrganisationUnit( 'B' );
+        unitC = createOrganisationUnit( 'C' );
 
-        organisationUnitService.addOrganisationUnit( source );
+        organisationUnitService.addOrganisationUnit( unitA );
+        organisationUnitService.addOrganisationUnit( unitB );
+        organisationUnitService.addOrganisationUnit( unitC );
 
         constantA = new Constant( "ConstantA", 2.0 );
-        
+                
         constantService.saveConstant( constantA );
+
+        groupA = createOrganisationUnitGroup( 'A' );
+        groupA.addOrganisationUnit( unitA );
+        groupA.addOrganisationUnit( unitB );
+        groupA.addOrganisationUnit( unitC );
+        
+        organisationUnitGroupService.addOrganisationUnitGroup( groupA );
         
         expressionA = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}+#{" + dataElementB.getUid() + SEPARATOR
             + categoryOptionCombo.getUid() + "}";
@@ -188,6 +208,7 @@ public class ExpressionServiceTest
         expressionE = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}*C{" + constantA.getUid() + "}";
         expressionF = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}";
         expressionG = expressionF + "+#{" + dataElementB.getUid() + "}-#{" + dataElementC.getUid() + "}";
+        expressionH = "#{" + dataElementA.getUid() + SEPARATOR + categoryOptionCombo.getUid() + "}*OUG{" + groupA.getUid() + "}";
 
         descriptionA = "Expression A";
         descriptionB = "Expression B";
@@ -198,8 +219,8 @@ public class ExpressionServiceTest
         dataElements.add( dataElementD );
         dataElements.add( dataElementE );
 
-        dataValueService.addDataValue( createDataValue( dataElementA, period, source, "10", categoryOptionCombo, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, period, source, "5", categoryOptionCombo, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, period, unitA, "10", categoryOptionCombo, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, period, unitA, "5", categoryOptionCombo, categoryOptionCombo ) );
     }
 
     // -------------------------------------------------------------------------
@@ -276,6 +297,7 @@ public class ExpressionServiceTest
         assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionC ) );
         assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionD ) );
         assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionE ) );
+        assertEquals( ExpressionService.VALID, expressionService.expressionIsValid( expressionH ) );
 
         expressionA = "#{NonExistingUid" + SEPARATOR + categoryOptionCombo.getUid() + "} + 12";
 
@@ -297,6 +319,10 @@ public class ExpressionServiceTest
         expressionA = "12 + C{999999}";
 
         assertEquals( ExpressionService.CONSTANT_DOES_NOT_EXIST, expressionService.expressionIsValid( expressionA ) );
+        
+        expressionA = "12 + OUG{999999}";
+        
+        assertEquals( ExpressionService.OU_GROUP_DOES_NOT_EXIST, expressionService.expressionIsValid( expressionA ) );
     }
 
     @Test
@@ -313,6 +339,10 @@ public class ExpressionServiceTest
         description = expressionService.getExpressionDescription( expressionE );
         
         assertEquals( "DataElementA*ConstantA", description );
+        
+        description = expressionService.getExpressionDescription( expressionH );
+        
+        assertEquals( "DataElementA*OrganisationUnitGroupA", description );
     }
 
     @Test
@@ -325,9 +355,10 @@ public class ExpressionServiceTest
         Map<String, Double> constantMap = new HashMap<String, Double>();
         constantMap.put( constantA.getUid(), 2.0 );
 
-        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, constantMap, null, false ) );
-        assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, 5, false ) );
-        assertEquals( "12.0*2.0", expressionService.generateExpression( expressionE, valueMap, constantMap, null, false ) );
+        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, constantMap, null, null, false ) );
+        assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, null, 5, false ) );
+        assertEquals( "12.0*2.0", expressionService.generateExpression( expressionE, valueMap, constantMap, null, null, false ) );
+        assertEquals( "12.0*3", expressionService.generateExpression( expressionH, valueMap, constantMap, 3, null, false ) );
     }
 
     @Test
@@ -337,9 +368,9 @@ public class ExpressionServiceTest
         
         Map<String, Double> constantMap = new HashMap<String, Double>();
 
-        assertNull( expressionService.generateExpression( expressionA, valueMap, constantMap, null, true ) );
-        assertNull( expressionService.generateExpression( expressionD, valueMap, constantMap, 5, true ) );
-        assertNotNull( expressionService.generateExpression( expressionE, valueMap, constantMap, null, false ) );
+        assertNull( expressionService.generateExpression( expressionA, valueMap, constantMap, null, null, true ) );
+        assertNull( expressionService.generateExpression( expressionD, valueMap, constantMap, null, 5, true ) );
+        assertNotNull( expressionService.generateExpression( expressionE, valueMap, constantMap, null, null, false ) );
     }
     
     @Test
@@ -348,6 +379,7 @@ public class ExpressionServiceTest
         Expression expA = createExpression( 'A', expressionA, null, null );
         Expression expD = createExpression( 'D', expressionD, null, null );
         Expression expE = createExpression( 'E', expressionE, null, null );
+        Expression expH = createExpression( 'H', expressionH, null, null );
         
         Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
         valueMap.put( new DataElementOperand( dataElementA.getUid(), categoryOptionCombo.getUid() ), new Double( 12 ) );
@@ -356,9 +388,10 @@ public class ExpressionServiceTest
         Map<String, Double> constantMap = new HashMap<String, Double>();
         constantMap.put( constantA.getUid(), 2.0 );
         
-        assertEquals( 46d, expressionService.getExpressionValue( expA, valueMap, constantMap, null ), DELTA );
-        assertEquals( 17d, expressionService.getExpressionValue( expD, valueMap, constantMap, 5 ), DELTA );
-        assertEquals( 24d, expressionService.getExpressionValue( expE, valueMap, constantMap, null ), DELTA );
+        assertEquals( 46d, expressionService.getExpressionValue( expA, valueMap, constantMap, null, null ), DELTA );
+        assertEquals( 17d, expressionService.getExpressionValue( expD, valueMap, constantMap, null, 5 ), DELTA );
+        assertEquals( 24d, expressionService.getExpressionValue( expE, valueMap, constantMap, null, null ), DELTA );
+        assertEquals( 36d, expressionService.getExpressionValue( expH, valueMap, constantMap, 3, null ), DELTA );
     }
     
     @Test
@@ -376,7 +409,7 @@ public class ExpressionServiceTest
         Map<String, Double> constantMap = new HashMap<String, Double>();
         constantMap.put( constantA.getUid(), 2.0 );
         
-        assertEquals( 200d, expressionService.getIndicatorValue( indicatorA, period, valueMap, constantMap, null ), DELTA );        
+        assertEquals( 200d, expressionService.getIndicatorValue( indicatorA, period, valueMap, constantMap, null, null ), DELTA );        
     }
     
     // -------------------------------------------------------------------------
