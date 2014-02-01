@@ -76,16 +76,7 @@ public class GetOrganisationUnitForMaxAction implements Action
 
     public String execute() throws Exception
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-        
-        List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren(organisationUnit.getId()) ) ;
-        for (OrganisationUnit org : organisationUnitList) 
-        {
-        	if(!dataSets.containsAll(org.getDataSets()))
-        	{
-        		dataSets.addAll(org.getDataSets());
-        	}
-		}
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );        
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
         
@@ -103,7 +94,7 @@ public class GetOrganisationUnitForMaxAction implements Action
             }
         }
         
-        dataSets.retainAll( pbfDataSets );
+        dataSets.addAll( pbfDataSets );
         Collections.sort(dataSets);
         
        

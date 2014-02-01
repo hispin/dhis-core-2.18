@@ -140,8 +140,14 @@ public class AddTariffDataAction
             tariffDataValue = new TariffDataValue();
             
             tariffDataValue.setValue( Double.parseDouble( tariff ) );
-            tariffDataValue.setTarget(Integer.parseInt(target));
-            tariffDataValue.setTargetPercentage(Double.parseDouble(targetPercentage));
+            if(!target.equals(""))
+            {
+            	tariffDataValue.setTarget(Integer.parseInt(target));
+            }
+            if(!targetPercentage.equals(""))
+            {
+            	tariffDataValue.setTargetPercentage(Double.parseDouble(targetPercentage));
+            }            
             tariffDataValue.setStartDate( sDate );
             tariffDataValue.setEndDate( eDate );
             tariffDataValue.setTimestamp( new Date() );
@@ -156,8 +162,14 @@ public class AddTariffDataAction
         else
         {
             tariffDataValue.setValue( Double.parseDouble( tariff ) );
-            tariffDataValue.setTarget(Integer.parseInt(target));
-            tariffDataValue.setTargetPercentage(Double.parseDouble(targetPercentage));
+            if(!target.equals(""))
+            {
+            	tariffDataValue.setTarget(Integer.parseInt(target));
+            }
+            if(!targetPercentage.equals(""))
+            {
+            	tariffDataValue.setTargetPercentage(Double.parseDouble(targetPercentage));
+            }   
             tariffDataValue.setTimestamp( new Date() );
             tariffDataValue.setStoredBy( currentUserService.getCurrentUsername() );
             

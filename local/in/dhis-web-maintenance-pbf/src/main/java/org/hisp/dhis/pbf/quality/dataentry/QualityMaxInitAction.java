@@ -140,14 +140,7 @@ public class QualityMaxInitAction implements Action
             organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
            
         }
-        List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getLeafOrganisationUnits(organisationUnit.getId()) ) ;
-        for (OrganisationUnit org : organisationUnitList) 
-        {
-        	if(!dataSets.containsAll(org.getDataSets()))
-        	{
-        		dataSets.addAll(org.getDataSets());
-        	}
-		}
+        
        // dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
         
         List<Lookup> lookups = new ArrayList<Lookup>( lookupService.getAllLookupsByType( Lookup.DS_QUALITY_TYPE ) );
@@ -166,7 +159,7 @@ public class QualityMaxInitAction implements Action
             }
         }
         
-        dataSets.retainAll( pbfDataSets );
+        dataSets.addAll( pbfDataSets );
         Collections.sort(dataSets);
         return SUCCESS;
     }

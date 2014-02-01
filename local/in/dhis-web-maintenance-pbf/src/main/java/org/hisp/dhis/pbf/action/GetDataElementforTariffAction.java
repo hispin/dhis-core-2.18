@@ -88,8 +88,8 @@ public class GetDataElementforTariffAction
         Constant tariffDataElement = constantService.getConstantByName( TARIFF_DATAELEMENT );
         if ( tariff_authority == null )
         {
-            tariff_setting_authority = "Level 3";
-            List<OrganisationUnit> allLevelOrg = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 3 ) );
+            tariff_setting_authority = "Level 1";
+            List<OrganisationUnit> allLevelOrg = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
             for ( OrganisationUnit org : allLevelOrg )
             {
                 levelOrgUnitIds.add( "\"" + org.getUid() + "\"" );

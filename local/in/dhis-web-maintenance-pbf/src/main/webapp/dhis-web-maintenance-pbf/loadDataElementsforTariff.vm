@@ -86,12 +86,19 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	}
 	if(bValue == false)
 	{
+		document.getElementById('simpleCombo').style.display = 'none';
+		setFieldValue("orgUnit", orgUnitNames[0]);
+        disable('orgUnit');
+		document.getElementById('loadTariffDetails').style.display = 'none';
 		alert('Please Select Correct level OrgUnit');
 	}
 	else
 	{
+		document.getElementById('simpleCombo').style.display = 'block';
+        enable('orgUnit'); 
 		setFieldValue("orgUnit", orgUnitNames[0]);
 		setFieldValue("orgUnitUid", orgUnits[0]);
+		document.getElementById('loadTariffDetails').style.display = 'block';
 		if($('#dataElementName').val() != '')
 		{
 			getTariffData();	
@@ -144,8 +151,8 @@ function loadExtTariff()
 		<td >&nbsp;</td>
     </tr>
 	<tr>
-		<td ><div id="simpleCombo"></div></td>
-		<td ><input type="button" id="addDataElement" value="Add DataElement" disabled/></td>
+		<td ><div id="simpleCombo" style="display:none;"></div></td>
+		<td ><input type="button" id="addDataElement" value="Add DataElement" disabled style="display:none;"/></td>
 	</tr>
 </table>
 <br/><br/><br/>

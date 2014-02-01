@@ -8,7 +8,7 @@
 	var LocaleColor = 'black';
 	var countryTags;
 	
-function orgUnitHasBeenSelected( orgUnitIds )
+function orgUnitHasBeenSelected( orgUnitIds , orgUnitNames )
 {
 	$( '#dataEntryFormDiv' ).html( '' );
 	var bValue = false;
@@ -21,10 +21,16 @@ function orgUnitHasBeenSelected( orgUnitIds )
 	}
 	if(bValue == false)
 	{
+		$("#startDate").val('');
+		$("#endDate").val('');
 		disable('dataSetId');
         disable('selectedPeriodId');
         disable('startDate');
         disable('endDate');
+       
+        setFieldValue('orgUnitName', orgUnitNames[0] );
+        setFieldValue('selectedOrgunitName', orgUnitNames[0] );
+        $("select#dataSetId option[value=-1]").attr('selected', 'selected');
 		alert('Please Select Correct level OrgUnit');
 	}
 	else
@@ -44,7 +50,8 @@ function orgUnitHasBeenSelected( orgUnitIds )
 					enable('startDate');
 					enable('endDate');
 					var options = '';
-		            $.each(json.dataSets, function(i, obj){
+					options += '<option value="-1">Please Select</option>';
+		            $.each(json.dataSets, function(i, obj){		            	
 		                options += '<option value="' + obj.id + '"'+ '>' + obj.name + '</option>';
 		            });
 		            $("select#dataSetId").html(options);
