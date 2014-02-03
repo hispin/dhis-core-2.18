@@ -651,6 +651,36 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getBetweenByStatusLastUpdated( status, lastUpdated, first, max );
     }
 
+    @Override
+    public boolean isInUserHierarchy( OrganisationUnit organisationUnit )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        if ( user == null )
+        {
+            return false;
+        }
+        
+        Set<OrganisationUnit> userRootUnits = user.getOrganisationUnits();
+        
+        if ( userRootUnits == null )
+        {
+            return false;
+        }
+        
+        while ( organisationUnit != null )
+        {
+            if ( userRootUnits.contains( organisationUnit ) )
+            {
+                return true;
+            }
+            
+            organisationUnit = organisationUnit.getParent();
+        }
+        
+        return false;
+    }
+
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
@@ -806,7 +836,8 @@ public class DefaultOrganisationUnitService
     {
         Collection<OrganisationUnit> objects = organisationUnitStore.getWithinCoordinateArea( GeoUtils.getBoxShape( longitude, latitude, distance ) );
 
-        // Go through the list and remove the ones located farther than the distance.
+        // Go through the list and remove the ones located outside radius
+        
         if ( objects != null && objects.size() > 0 )
         {
             Iterator<OrganisationUnit> iter = objects.iterator();
@@ -822,8 +853,6 @@ public class DefaultOrganisationUnitService
 
                 if ( distancebetween > distance )
                 {
-                    // Remove the orgUnits that is outside of the distance range 
-                    // - due to the 'getWithinCoordinateArea' looking at square area instead of circle.
                     iter.remove();
                 }
             }
