@@ -508,16 +508,16 @@ public class ReflectionUtils
 
         if ( xmlProperty != null )
         {
-            return xmlProperty.localName();
+            return StringUtils.isEmpty( xmlProperty.localName() ) ? fieldName : xmlProperty.localName();
         }
 
         JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
 
         if ( jsonProperty != null )
         {
-            return jsonProperty.value();
+            return StringUtils.isEmpty( jsonProperty.value() ) ? fieldName : jsonProperty.value();
         }
 
-        return null;
+        return fieldName;
     }
 }
