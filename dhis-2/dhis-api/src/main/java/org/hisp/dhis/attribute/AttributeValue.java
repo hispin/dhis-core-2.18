@@ -42,9 +42,9 @@ import org.hisp.dhis.common.view.ExportView;
 import java.io.Serializable;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "attribute", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "attributeValue", namespace = DxfNamespaces.DXF_2_0)
 public class AttributeValue
     implements Serializable
 {
