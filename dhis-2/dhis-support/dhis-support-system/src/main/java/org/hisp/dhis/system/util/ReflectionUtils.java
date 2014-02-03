@@ -28,6 +28,8 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.system.util.functional.Predicate;
 import org.springframework.util.StringUtils;
@@ -226,20 +228,25 @@ public class ReflectionUtils
 
     public static Method findGetterMethod( String fieldName, Object target )
     {
+        return findGetterMethod( fieldName, target.getClass() );
+    }
+
+    public static Method findGetterMethod( String fieldName, Class<?> clazz )
+    {
         String[] getterNames = new String[]{
             "get",
             "is",
             "has"
         };
 
-        Field field = _findField( target.getClass(), StringUtils.uncapitalize( fieldName ) );
+        Field field = _findField( clazz, StringUtils.uncapitalize( fieldName ) );
         Method method;
 
         if ( field != null )
         {
             for ( String getterName : getterNames )
             {
-                method = _findMethod( target.getClass(), getterName + StringUtils.capitalize( field.getName() ) );
+                method = _findMethod( clazz, getterName + StringUtils.capitalize( field.getName() ) );
 
                 if ( method != null )
                 {
@@ -392,7 +399,7 @@ public class ReflectionUtils
         return methods;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T invokeMethod( Object target, Method method, Object... args )
     {
         try
@@ -409,7 +416,7 @@ public class ReflectionUtils
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T getFieldObject( Field field, T target )
     {
         return (T) invokeGetterMethod( field.getName(), target );
@@ -486,5 +493,31 @@ public class ReflectionUtils
         {
             throw new RuntimeException( "Unknown Collection type." );
         }
+    }
+
+    public static String getJacksonAlias( String fieldName, Class<?> clazz )
+    {
+        Method method = findGetterMethod( fieldName, clazz );
+
+        if ( method == null )
+        {
+            return fieldName;
+        }
+
+        JacksonXmlProperty xmlProperty = method.getAnnotation( JacksonXmlProperty.class );
+
+        if ( xmlProperty != null )
+        {
+            return xmlProperty.localName();
+        }
+
+        JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
+
+        if ( jsonProperty != null )
+        {
+            return jsonProperty.value();
+        }
+
+        return null;
     }
 }
