@@ -44,7 +44,7 @@ import java.util.Set;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement(localName = "attributeType", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement(localName = "attribute", namespace = DxfNamespaces.DXF_2_0)
 public class Attribute
     extends BaseIdentifiableObject
 {
