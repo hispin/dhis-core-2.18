@@ -2,6 +2,15 @@
 
 <h4>$programStage.displayName</h4>
 
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
+    <li data-enabled="canUpdate"><a data-target-fn="showUpdateProgramStageSectionForm"><i class="fa fa-edit"></i>&nbsp;&nbsp;$i18n.getString( "edit" )</a></li>
+    <li data-enabled="canUpdate"><a data-target-fn="translateWithContext"><i class="fa fa-globe"></i>&nbsp;&nbsp;$i18n.getString( "translation_translate" )</a></li>
+    <li data-enabled="canDelete"><a data-target-fn="removeSection"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
+    <li><a data-target-fn="showSectionDetails"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;$i18n.getString( "show_details" )</a></li>
+  </ul>
+</div>
+
 <input type='hidden' id='id' name='id' value='$programStage.id'>
 
 <table class="mainPageTable">
@@ -15,28 +24,21 @@
 	<tr>
 		<td style="vertical-align:top">  
 			<table class="listTable" id="listTable">
-				<col>
-				<col width="150">	 
 				<thead>
 					<tr>            
 						<th>$i18n.getString( "name" )</th>
-						<th>$i18n.getString( "operations" )</th>
 					</tr>
 				</thead>
 		  
 				<tbody id="list">
 					#set( $mark = false )
 					#foreach( $section in $sections )
-						<tr id="tr${section.id}" #alternate( $mark )>			  
-							<td onclick="showSectionDetails( $section.id )">$encoder.htmlEncode( $section.displayName )</td>
-							<td style="text-align:center"#alternate( $mark )>
-							  <a href="showUpdateProgramStageSectionForm.action?programStageId=$programStage.id&id=$section.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-							  <a href="javascript:translate( 'ProgramStageSection', '$section.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-							  <a href="javascript:removeSection( '$section.id', '$section.displayName' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
-							  <a href="javascript:showSectionDetails( $section.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
-							</td>
-						</tr>
-						#set( $mark = !$mark )
+                    <tr id="tr${section.id}" data-id="$!section.id" data-uid="$!section.uid" data-psid="$!programStage.id" data-type="ProgramStageSection" data-name="$encoder.htmlEncode( $!section.displayName )"
+                        data-can-manage="$security.canManage( $section )"
+                        data-can-update="$security.canUpdate( $section )"
+                        data-can-delete="$security.canDelete( $section )">
+                        <td>$encoder.htmlEncode( $!section.displayName )</td>
+                    </tr>
 					#end
 				</tbody>
 			</table>
