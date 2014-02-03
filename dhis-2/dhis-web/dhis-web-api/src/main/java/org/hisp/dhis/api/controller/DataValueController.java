@@ -149,6 +149,14 @@ public class DataValueController
             ContextUtils.conflictResponse( response, "Illegal organisation unit identifier: " + ou );
             return;
         }
+        
+        boolean isInHierarchy = organisationUnitService.isInUserHierarchy( organisationUnit );
+        
+        if ( !isInHierarchy )
+        {
+            ContextUtils.conflictResponse( response, "Organisation unit is not in the hierarchy of the current user: " + ou );
+            return;
+        }
 
         String valid = ValidationUtils.dataValueIsValid( value, dataElement );
 

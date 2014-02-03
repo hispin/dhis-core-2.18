@@ -392,6 +392,8 @@ public interface OrganisationUnitService
      */
     Collection<OrganisationUnit> getWithinCoordinateArea( double longitude, double latitude, double distance );
     
+    boolean isInUserHierarchy( OrganisationUnit organisationUnit );
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

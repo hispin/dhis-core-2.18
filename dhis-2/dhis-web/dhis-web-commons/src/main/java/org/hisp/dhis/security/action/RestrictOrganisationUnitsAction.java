@@ -28,7 +28,7 @@ package org.hisp.dhis.security.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
@@ -85,7 +85,7 @@ public class RestrictOrganisationUnitsAction
             // Initialize ouwt and selection tree
             // -----------------------------------------------------------------
 
-            Collection<OrganisationUnit> orgUnits = user.getOrganisationUnits();
+            Set<OrganisationUnit> orgUnits = user.getOrganisationUnits();
 
             if ( orgUnits.size() > 0 )
             {
