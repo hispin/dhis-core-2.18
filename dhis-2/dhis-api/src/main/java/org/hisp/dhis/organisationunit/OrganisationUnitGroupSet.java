@@ -40,6 +40,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.adapter.JacksonOrganisationUnitGroupSymbolSerializer;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
@@ -57,7 +58,7 @@ import java.util.Set;
 /**
  * @author Kristian Nordal
  */
-@JacksonXmlRootElement(localName = "organisationUnitGroupSet", namespace = DxfNamespaces.DXF_2_0)
+@JacksonXmlRootElement( localName = "organisationUnitGroupSet", namespace = DxfNamespaces.DXF_2_0 )
 public class OrganisationUnitGroupSet
     extends BaseDimensionalObject
 {
@@ -187,10 +188,10 @@ public class OrganisationUnitGroupSet
 
     @Override
     @JsonProperty
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, DimensionalView.class })
-    @JacksonXmlElementWrapper(localName = "items", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "item", namespace = DxfNamespaces.DXF_2_0)
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, DimensionalView.class } )
+    @JacksonXmlElementWrapper( localName = "items", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "item", namespace = DxfNamespaces.DXF_2_0 )
     public List<NameableObject> getItems()
     {
         return new ArrayList<NameableObject>( organisationUnitGroups );
@@ -220,8 +221,8 @@ public class OrganisationUnitGroupSet
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public String getDescription()
     {
         return description;
@@ -233,8 +234,8 @@ public class OrganisationUnitGroupSet
     }
 
     @JsonProperty
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlProperty(namespace = DxfNamespaces.DXF_2_0)
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
     public boolean isCompulsory()
     {
         return compulsory;
@@ -245,11 +246,12 @@ public class OrganisationUnitGroupSet
         this.compulsory = compulsory;
     }
 
-    @JsonProperty(value = "organisationUnitGroups")
-    @JsonSerialize(contentAs = BaseIdentifiableObject.class)
-    @JsonView({ DetailedView.class, ExportView.class })
-    @JacksonXmlElementWrapper(localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty(localName = "organisationUnitGroup", namespace = DxfNamespaces.DXF_2_0)
+    @JsonProperty( value = "organisationUnitGroups" )
+    // @JsonSerialize(contentAs = BaseIdentifiableObject.class)
+    @JsonSerialize( contentUsing = JacksonOrganisationUnitGroupSymbolSerializer.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = DxfNamespaces.DXF_2_0 )
     public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;
@@ -275,8 +277,8 @@ public class OrganisationUnitGroupSet
 
     @JsonProperty( value = "attributes" )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlElementWrapper( localName = "attributes", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "attribute", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "attribute", namespace = DxfNamespaces.DXF_2_0 )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
