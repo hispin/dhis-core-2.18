@@ -507,30 +507,6 @@ Ext.onReady( function() {
 				data: gis.conf.period.periodTypes
 			});
 
-			store.infrastructuralPeriodsByType = Ext.create('Ext.data.Store', {
-				fields: ['id', 'name'],
-				proxy: {
-					type: 'ajax',
-					url: gis.init.contextPath + gis.conf.finals.url.path_module + 'getPeriodsByPeriodType.action',
-					reader: {
-						type: 'json',
-						root: 'periods'
-					},
-					extraParams: {
-						name: gis.init.systemSettings.infrastructuralPeriodType
-					}
-				},
-				autoLoad: false,
-				isLoaded: false,
-				listeners: {
-					load: function() {
-						if (!this.isLoaded) {
-							this.isLoaded = true;
-						}
-					}
-				}
-			});
-
 			store.groupSets = Ext.create('Ext.data.Store', {
 				fields: ['id', 'name'],
 				proxy: {

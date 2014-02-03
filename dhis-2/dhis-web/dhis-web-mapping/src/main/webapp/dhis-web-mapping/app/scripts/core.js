@@ -364,11 +364,11 @@ Ext.onReady( function() {
 											labelWidth: 70,
 											store: {
 												fields: ['id', 'name'],
-												data: function() {													
+												data: function() {
 													var pt = new PeriodType(),
 														periodType = gis.init.systemSettings.infrastructuralPeriodType.id,
 														data;
-														
+
 													data = pt.get(periodType).generatePeriods({
 														offset: 0,
 														filterFuturePeriods: true,
@@ -381,7 +381,7 @@ Ext.onReady( function() {
 
 													return data;
 												}()
-											},												
+											},
 											lockPosition: false,
 											listeners: {
 												select: function(cmp) {
@@ -529,7 +529,7 @@ Ext.onReady( function() {
 					}
 				}));
 			}
-			
+
 			if (isRelocate && isPoint) {
 
                 if (layer.id !== 'facility') {
@@ -594,21 +594,9 @@ Ext.onReady( function() {
 					text: GIS.i18n.show_information_sheet,
 					iconCls: 'gis-menu-item-icon-information',
 					handler: function(item) {
-						if (gis.store.infrastructuralPeriodsByType.isLoaded) {
-							showInfo();
-						}
-						else {
-							gis.store.infrastructuralPeriodsByType.load({
-								params: {
-									name: gis.init.systemSettings.infrastructuralPeriodType
-								},
-								callback: function() {
-									showInfo();
-								}
-							});
-						}
-					}
-				}));
+                        showInfo();
+                    }
+                }));
 			}
 
 			menuItems[menuItems.length - 1].addCls('gis-menu-item-last');
