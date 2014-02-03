@@ -1,3 +1,10 @@
+$(function() {
+  dhis2.contextmenu.makeContextMenu({
+    menuId: 'contextMenu',
+    menuItemActiveClass: 'contextMenuItemActive',
+    listItemProps: ['id', 'uid', 'name', 'type', 'psid']
+  });
+});
 
 function programStageSectionList( programStageId )
 {
@@ -8,16 +15,20 @@ function programStageSectionList( programStageId )
 // View details
 // -----------------------------------------------------------------------------
 
-function showSectionDetails( sectionId )
+function showSectionDetails( context )
 {
-	jQuery.getJSON( 'getProgramStageSection.action', { id: sectionId }, function ( json ) {
+	jQuery.getJSON( 'getProgramStageSection.action', { id: context.id }, function ( json ) {
 		setInnerHTML( 'nameField', json.programStageSection.name );	
 		setInnerHTML( 'dataElementCountField', json.programStageSection.dataElementCount ); 
 		showDetails();
 	});
 }
 
-function removeSection( id, name )
+function removeSection( context )
 {
-	removeItem( id, name, i18n_confirm_delete, 'removeProgramStageSection.action' );
+	removeItem( context.id, context.name, i18n_confirm_delete, 'removeProgramStageSection.action' );
+}
+
+function showUpdateProgramStageSectionForm( context ) {
+  location.href = 'showUpdateProgramStageSectionForm.action?id=' + context.id + '&programStageId=' + context.psid;
 }
