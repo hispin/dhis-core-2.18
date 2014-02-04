@@ -354,11 +354,14 @@ public class ExpressionServiceTest
         
         Map<String, Double> constantMap = new HashMap<String, Double>();
         constantMap.put( constantA.getUid(), 2.0 );
+        
+        Map<String, Integer> orgUnitCountMap = new HashMap<String, Integer>();
+        orgUnitCountMap.put( groupA.getUid(), groupA.getMembers().size() );
 
         assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, constantMap, null, null, false ) );
         assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, null, 5, false ) );
         assertEquals( "12.0*2.0", expressionService.generateExpression( expressionE, valueMap, constantMap, null, null, false ) );
-        assertEquals( "12.0*3", expressionService.generateExpression( expressionH, valueMap, constantMap, 3, null, false ) );
+        assertEquals( "12.0*3", expressionService.generateExpression( expressionH, valueMap, constantMap, orgUnitCountMap, null, false ) );
     }
 
     @Test
@@ -388,10 +391,13 @@ public class ExpressionServiceTest
         Map<String, Double> constantMap = new HashMap<String, Double>();
         constantMap.put( constantA.getUid(), 2.0 );
         
+        Map<String, Integer> orgUnitCountMap = new HashMap<String, Integer>();
+        orgUnitCountMap.put( groupA.getUid(), groupA.getMembers().size() );
+        
         assertEquals( 46d, expressionService.getExpressionValue( expA, valueMap, constantMap, null, null ), DELTA );
         assertEquals( 17d, expressionService.getExpressionValue( expD, valueMap, constantMap, null, 5 ), DELTA );
         assertEquals( 24d, expressionService.getExpressionValue( expE, valueMap, constantMap, null, null ), DELTA );
-        assertEquals( 36d, expressionService.getExpressionValue( expH, valueMap, constantMap, 3, null ), DELTA );
+        assertEquals( 36d, expressionService.getExpressionValue( expH, valueMap, constantMap, orgUnitCountMap, null ), DELTA );
     }
     
     @Test
