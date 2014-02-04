@@ -51,7 +51,7 @@ public class TestCaseAggregationConditionAction
 
     private CaseAggregationConditionService caseAggregationConditionService;
 
-    public void setCaseAggregationConditionManager( CaseAggregationConditionService caseAggregationConditionService )
+    public void setCaseAggregationConditionService( CaseAggregationConditionService caseAggregationConditionService )
     {
         this.caseAggregationConditionService = caseAggregationConditionService;
     }
