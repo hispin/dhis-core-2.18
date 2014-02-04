@@ -40,16 +40,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.DhisConvenienceTest;
 import org.hisp.dhis.common.BaseDimensionalObject;
 import org.hisp.dhis.common.DimensionType;
+import org.hisp.dhis.common.DimensionalObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.util.ListUtils;
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
  */
 public class DataQueryParamsTest
+    extends DhisConvenienceTest
 {
     @Test
     public void testGetDimensionFromParam()
@@ -104,5 +108,26 @@ public class DataQueryParamsTest
         params.getDimensions().add( new BaseDimensionalObject( PERIOD_DIM_ID, DimensionType.PERIOD, periods ) );
         
         assertTrue( params.hasPeriods() );
+    }
+
+    @Test
+    public void testPruneToDimensionType()
+    {
+        DataQueryParams params = new DataQueryParams();
+        params.getDimensions().add( new BaseDimensionalObject( DimensionalObject.INDICATOR_DIM_ID, DimensionType.INDICATOR, null, null, 
+            ListUtils.getList( createIndicator( 'A', null ), createIndicator( 'B', null ) ) ) );
+        params.getDimensions().add( new BaseDimensionalObject( DimensionalObject.ORGUNIT_DIM_ID, DimensionType.ORGANISATIONUNIT, null, null,
+            ListUtils.getList( createOrganisationUnit( 'A' ), createOrganisationUnit( 'B' ) ) ) );
+        params.getFilters().add( new BaseDimensionalObject( DimensionalObject.PERIOD_DIM_ID, DimensionType.PERIOD, null, null,
+            ListUtils.getList( createPeriod( "201201" ), createPeriod( "201202" ) ) ) );
+
+        assertEquals( 2, params.getDimensions().size() );
+        assertEquals( 1, params.getFilters().size() );
+        
+        params.pruneToDimensionType( DimensionType.ORGANISATIONUNIT );
+        
+        assertEquals( 1, params.getDimensions().size() );
+        assertEquals( DimensionType.ORGANISATIONUNIT, params.getDimensions().get( 0 ).getType() );
+        assertEquals( 0, params.getFilters().size() );
     }
 }

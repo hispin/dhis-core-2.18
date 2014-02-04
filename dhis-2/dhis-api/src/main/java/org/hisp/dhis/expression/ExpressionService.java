@@ -177,12 +177,21 @@ public interface ExpressionService
     Set<DataElement> getDataElementsInExpression( String expression );
     
     /**
+     * Returns all OrganisationUnitGroups in the numerator and denominator
+     * expressions in the given Indicators.
+     * 
+     * @param indicators the set of indicators.
+     * @return a Set of OrganisationUnitGroups.
+     */
+    Set<OrganisationUnitGroup> getOrganisationUnitGroupsInIndicators( Collection<Indicator> indicators );
+    
+    /**
      * Returns all OrganisationUnitGroups in the given expression string.
      * 
      * @param expression the expression string.
      * @return a Set of OrganisationUnitGroups included in the expression string.
      */
-    Set<OrganisationUnitGroup> getOrganisationUnitGroupsInExpresion( String expression );
+    Set<OrganisationUnitGroup> getOrganisationUnitGroupsInExpression( String expression );
     
     /**
      * Returns all CategoryOptionCombos in the given expression string.

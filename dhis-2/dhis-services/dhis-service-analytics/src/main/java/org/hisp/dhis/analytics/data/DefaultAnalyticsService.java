@@ -226,7 +226,11 @@ public class DefaultAnalyticsService
             List<Indicator> indicators = asTypedList( params.getIndicators() );
             
             expressionService.explodeExpressions( indicators );
-            
+
+            // -----------------------------------------------------------------
+            // Get indicator values
+            // -----------------------------------------------------------------
+
             DataQueryParams dataSourceParams = params.instance();
             dataSourceParams.removeDimension( DATAELEMENT_DIM_ID );
             dataSourceParams.removeDimension( DATASET_DIM_ID );
@@ -257,7 +261,7 @@ public class DefaultAnalyticsService
                     }
                     
                     Period period = filterPeriod != null ? filterPeriod : (Period) DimensionItem.getPeriodItem( options );
-
+                    
                     int days = daysBetween( period.getStartDate(), period.getEndDate() );
                     
                     Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null, days ); //TODO oug
@@ -475,6 +479,26 @@ public class DefaultAnalyticsService
         Grid grid = getAggregatedDataValues( params );
         
         return getAggregatedDataValueMapping( grid );
+    }
+    
+    /**
+     * Get a mapping between xx and count of organisation units for the given
+     * indicators.
+     */
+    private Map<String, Double> getOrgUnitTargetMap( DataQueryParams params, Collection<Indicator> indicators )
+    {
+        Set<OrganisationUnitGroup> orgUnitGroups = expressionService.getOrganisationUnitGroupsInIndicators( indicators );
+        
+        if ( orgUnitGroups == null || orgUnitGroups.isEmpty() )
+        {
+            return null;
+        }
+        
+        DataQueryParams orgUnitTargetParams = params.instance().pruneToDimensionType( DimensionType.ORGANISATIONUNIT );
+        orgUnitTargetParams.getDimensions().add( new BaseDimensionalObject( DimensionalObject.ORGUNIT_GROUP_DIM_ID, null, new ArrayList<NameableObject>( orgUnitGroups ) ) );
+        orgUnitTargetParams.setSkipPartitioning( true );
+        
+        return getAggregatedOrganisationUnitTargetMap( orgUnitTargetParams );
     }
     
     /**
