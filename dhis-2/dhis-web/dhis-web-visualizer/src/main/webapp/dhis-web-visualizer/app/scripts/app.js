@@ -1762,7 +1762,7 @@ Ext.onReady( function() {
 
 				// after render
 				if (NS.isSessionStorage) {
-					web.storage.session.set(layout, 'table');
+					web.storage.session.set(layout, 'chart');
 				}
 
 				ns.app.viewport.setGui(layout, xLayout, isUpdateGui);
@@ -4927,7 +4927,7 @@ Ext.onReady( function() {
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && JSON.parse(sessionStorage.getItem('dhis2')) && JSON.parse(sessionStorage.getItem('dhis2'))['table']),
 										handler: function() {
-											window.location.href = ns.core.init.contextPath + '/dhis-web-pivot/app/index.html?s=chart';
+											window.location.href = ns.core.init.contextPath + '/dhis-web-pivot/app/index.html?s=table';
 										}
 									}
 								],
@@ -4969,7 +4969,7 @@ Ext.onReady( function() {
 									},
 									'-',
 									{
-										text: 'Open this table as map' + '&nbsp;&nbsp;', //i18n
+										text: 'Open this chart as map' + '&nbsp;&nbsp;', //i18n
 										cls: 'ns-menu-item-noicon',
 										disabled: !(NS.isSessionStorage && ns.app.layout),
 										handler: function() {
