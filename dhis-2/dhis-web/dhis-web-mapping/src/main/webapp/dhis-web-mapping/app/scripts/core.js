@@ -1342,15 +1342,15 @@ Ext.onReady( function() {
 		loadLegend = function(view) {
 			view = view || layer.core.view;
 
-			var store = gis.store.groupsByGroupSet;
+            Ext.data.JsonP.request({
+                url: gis.init.contextPath + '/api/organisationUnitGroupSets/' + view.organisationUnitGroupSet.id + '.jsonp?links=false',
+                success: function(r) {
+                    var data = r.organisationUnitGroups,
+                        options = {
+                            indicator: view.organisationUnitGroupSet.id
+                        };
 
-			store.proxy.url = gis.init.contextPath + gis.conf.finals.url.path_module + 'getOrganisationUnitGroupsByGroupSet.action?id=' + view.organisationUnitGroupSet.id;
-			store.load({
-				scope: this,
-				callback: function() {
-					var options = {
-						indicator: view.organisationUnitGroupSet.id
-					};
+                    gis.store.groupsByGroupSet.loadData(data);
 
 					layer.core.view = view;
 
