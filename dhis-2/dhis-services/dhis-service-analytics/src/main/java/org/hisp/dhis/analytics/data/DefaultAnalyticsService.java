@@ -246,7 +246,7 @@ public class DefaultAnalyticsService
             Map<String, Double> constantMap = constantService.getConstantMap();
 
             Period filterPeriod = dataSourceParams.getFilterPeriod();
-            
+
             for ( Indicator indicator : indicators )
             {
                 for ( List<DimensionItem> options : dimensionItemPermutations )
@@ -481,11 +481,7 @@ public class DefaultAnalyticsService
         return getAggregatedDataValueMapping( grid );
     }
     
-    /**
-     * Get a mapping between xx and count of organisation units for the given
-     * indicators.
-     */
-    private Map<String, Double> getOrgUnitTargetMap( DataQueryParams params, Collection<Indicator> indicators )
+    private Map<String, Map<String, Integer>> getOrgUnitTargetMap( DataQueryParams params, Collection<Indicator> indicators )
     {
         Set<OrganisationUnitGroup> orgUnitGroups = expressionService.getOrganisationUnitGroupsInIndicators( indicators );
         
@@ -498,7 +494,9 @@ public class DefaultAnalyticsService
         orgUnitTargetParams.getDimensions().add( new BaseDimensionalObject( DimensionalObject.ORGUNIT_GROUP_DIM_ID, null, new ArrayList<NameableObject>( orgUnitGroups ) ) );
         orgUnitTargetParams.setSkipPartitioning( true );
         
-        return getAggregatedOrganisationUnitTargetMap( orgUnitTargetParams );
+        Map<String, Double> orgUnitCountMap = getAggregatedOrganisationUnitTargetMap( orgUnitTargetParams );
+        
+        return orgUnitTargetParams.getPermutationOrgUnitGroupCountMap( orgUnitCountMap );
     }
     
     /**

@@ -709,6 +709,37 @@ public class DataQueryParams
     }
 
     /**
+     * Returns a mapping of permutations keys (org unit id or null) and mappings
+     * of org unit group and counts, based on the given mapping of dimension option
+     * keys and counts.
+     */
+    public Map<String, Map<String, Integer>> getPermutationOrgUnitGroupCountMap( Map<String, Double> orgUnitCountMap )
+    {
+        MapMap<String, String, Integer> countMap = new MapMap<String, String, Integer>();
+        
+        for ( String key : orgUnitCountMap.keySet() )
+        {
+            List<String> keys = new ArrayList<String>( Arrays.asList( key.split( DIMENSION_SEP ) ) );
+            
+            // Org unit group always at last index, org unit potentially at first
+            
+            int ougInx = keys.size() - 1;
+            
+            String oug = keys.get( ougInx );
+            
+            ListUtils.removeAll( keys, ougInx );
+
+            String permKey = StringUtils.join( keys, DIMENSION_SEP );
+            
+            Integer count = orgUnitCountMap.get( key ).intValue();
+            
+            countMap.putEntry( permKey, oug, count );
+        }
+        
+        return countMap;
+    }
+    
+    /**
      * Retrieves the options for the given dimension identifier. Returns null if
      * the dimension is not present.
      */
