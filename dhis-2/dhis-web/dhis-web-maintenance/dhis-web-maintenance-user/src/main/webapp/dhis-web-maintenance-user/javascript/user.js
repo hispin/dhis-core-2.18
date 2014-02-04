@@ -94,27 +94,13 @@ function changeAccountAction()
         $('#email').val( $('#inviteEmail').val() );
         $('#inviteEmail').val( 'validEmail@domain.com' );
 
-        showById('usernameTR');
-        showById('rawPasswordTR');
-        showById('retypePasswordTR');
-        showById('surnameTR');
-        showById('firstNameTR');
-        showById('phoneNumberTR');
-        showById('emailTR');
-
-        hideById('inviteEmailTR');
+        $('.account').show();
+        $('.invite').hide();
     }
     else
     {
-        hideById('usernameTR');
-        hideById('rawPasswordTR');
-        hideById('retypePasswordTR');
-        hideById('surnameTR');
-        hideById('firstNameTR');
-        hideById('phoneNumberTR');
-        hideById('emailTR');
-
-        showById('inviteEmailTR');
+        $('.account').hide();
+        $('.invite').show();
 
         saved["username"] = $('#username').val();
         saved["rawPassword"] = $('#rawPassword').val();
