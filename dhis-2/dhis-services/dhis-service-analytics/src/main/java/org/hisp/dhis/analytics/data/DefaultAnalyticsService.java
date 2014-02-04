@@ -247,6 +247,8 @@ public class DefaultAnalyticsService
 
             Period filterPeriod = dataSourceParams.getFilterPeriod();
 
+            Map<String, Map<String, Integer>> permutationOrgUnitTargetMap = getOrgUnitTargetMap( dataSourceParams, indicators );
+            
             for ( Indicator indicator : indicators )
             {
                 for ( List<DimensionItem> options : dimensionItemPermutations )
@@ -264,7 +266,13 @@ public class DefaultAnalyticsService
                     
                     int days = daysBetween( period.getStartDate(), period.getEndDate() );
                     
-                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, null, days ); //TODO oug
+                    OrganisationUnit unit = (OrganisationUnit) DimensionItem.getOrganisationUnitItem( options );
+                    
+                    String ou = unit != null ? unit.getUid() : null;
+                    
+                    Map<String, Integer> orgUnitCountMap = permutationOrgUnitTargetMap != null ? permutationOrgUnitTargetMap.get( ou ) : null;
+                    
+                    Double value = expressionService.getIndicatorValue( indicator, period, valueMap, constantMap, orgUnitCountMap, days );
 
                     if ( value != null )
                     {

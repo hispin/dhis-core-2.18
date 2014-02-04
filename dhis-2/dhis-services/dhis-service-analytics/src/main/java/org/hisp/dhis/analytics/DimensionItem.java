@@ -145,6 +145,27 @@ public class DimensionItem
         
         return null;
     }
+
+    /**
+     * Returns the organisation unit dimension item object from the given list of
+     * dimension items. If no items are given, items are null or there are no 
+     * period dimension, null is returned.
+     */
+    public static NameableObject getOrganisationUnitItem( List<DimensionItem> items )
+    {
+        if ( items != null && !items.isEmpty() )
+        {
+            for ( DimensionItem item : items )
+            {
+                if ( DimensionalObject.ORGUNIT_DIM_ID.equals( item.getDimension() ) )
+                {
+                    return item.getItem();
+                }
+            }
+        }
+        
+        return null;
+    }
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

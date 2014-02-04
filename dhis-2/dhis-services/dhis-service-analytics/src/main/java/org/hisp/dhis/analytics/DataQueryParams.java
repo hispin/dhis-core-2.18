@@ -729,7 +729,7 @@ public class DataQueryParams
             
             ListUtils.removeAll( keys, ougInx );
 
-            String permKey = StringUtils.join( keys, DIMENSION_SEP );
+            String permKey = StringUtils.trimToNull( StringUtils.join( keys, DIMENSION_SEP ) );
             
             Integer count = orgUnitCountMap.get( key ).intValue();
             
