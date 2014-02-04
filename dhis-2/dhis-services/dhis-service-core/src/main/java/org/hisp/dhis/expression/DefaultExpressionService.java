@@ -236,7 +236,25 @@ public class DefaultExpressionService
         return dataElementsInExpression;
     }
     
-    public Set<OrganisationUnitGroup> getOrganisationUnitGroupsInExpresion( String expression )
+    public Set<OrganisationUnitGroup> getOrganisationUnitGroupsInIndicators( Collection<Indicator> indicators )
+    {
+        Set<OrganisationUnitGroup> groups = null;
+        
+        if ( indicators != null )
+        {
+            groups = new HashSet<OrganisationUnitGroup>();
+            
+            for ( Indicator indicator : indicators )
+            {
+                groups.addAll( getOrganisationUnitGroupsInExpression( indicator.getNumerator() ) );
+                groups.addAll( getOrganisationUnitGroupsInExpression( indicator.getDenominator() ) );
+            }
+        }
+        
+        return groups;
+    }
+    
+    public Set<OrganisationUnitGroup> getOrganisationUnitGroupsInExpression( String expression )
     {
         Set<OrganisationUnitGroup> groupsInExpression = null;
         

@@ -127,8 +127,8 @@ public class DimensionItem
 
     /**
      * Returns the period dimension item object from the given list of
-     * dimension items. If no items are given, items are null or there are 
-     * no period dimension, null is returned.
+     * dimension items. If no items are given, items are null or there are no 
+     * period dimension, null is returned.
      */
     public static NameableObject getPeriodItem( List<DimensionItem> items )
     {

@@ -343,6 +343,35 @@ public class DataQueryParams
         
         return indexes;
     }
+    
+    /**
+     * Removes all dimensions which are not of the given type from dimensions
+     * and filters.
+     */
+    public DataQueryParams pruneToDimensionType( DimensionType type )
+    {
+        Iterator<DimensionalObject> dimensionIter = dimensions.iterator();
+        
+        while ( dimensionIter.hasNext() )
+        {
+            if ( !dimensionIter.next().getType().equals( type ) )
+            {
+                dimensionIter.remove();
+            }
+        }
+        
+        Iterator<DimensionalObject> filterIter = filters.iterator();
+        
+        while ( filterIter.hasNext() )
+        {
+            if ( !filterIter.next().getType().equals( type ) )
+            {
+                filterIter.remove();
+            }
+        }
+        
+        return this;
+    }
 
     /**
      * Removes the dimension with the given identifier.
