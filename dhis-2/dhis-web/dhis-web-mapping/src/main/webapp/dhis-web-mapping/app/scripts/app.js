@@ -538,32 +538,6 @@ Ext.onReady( function() {
 
 			store.groupsByGroupSet = Ext.create('Ext.data.Store', {
 				fields: ['id', 'name', 'symbol'],
-				proxy: {
-					type: 'ajax',
-					url: '',
-					noCache: false,
-					reader: {
-						type: 'json',
-						root: 'organisationUnitGroups'
-					}
-				},
-				isLoaded: false,
-				loadFn: function(fn) {
-					if (this.isLoaded) {
-						fn.call();
-					}
-					else {
-						this.load(fn);
-					}
-				},
-				listeners: {
-					load: function() {
-						if (!this.isLoaded) {
-							this.isLoaded = true;
-						}
-						this.sort('name', 'ASC');
-					}
-				}
 			});
 
 			store.organisationUnitGroup = Ext.create('Ext.data.Store', {
