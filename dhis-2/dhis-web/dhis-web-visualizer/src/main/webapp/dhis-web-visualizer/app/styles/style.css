@@ -112,6 +112,14 @@ body.x-windows {
 	opacity: 0.4;
 	cursor: default !important;
 }
+
+.disabled-toolbar {
+	opacity: 1;
+/*
+	cursor: default !important;
+*/
+}
+
 	/* Collapse splitter column */
 .x-splitter {
     display: none;
@@ -200,7 +208,29 @@ body.x-windows {
 
 	/* Combobox border-radius */
 .ns-combo input {
-    border-radius: 2px 0px 0px 0px;
+    border-radius: 1px 0px 0px 0px;
+}
+
+
+/*----------------------------------------------------------------------------
+ * PT Trigger
+ *--------------------------------------------------------------------------*/
+
+    /* field default > trigger */
+.ns-trigger-filter .x-form-trigger {
+    height: 22px !important;
+    background: url(../images/clear_20.png) 0 0 no-repeat;
+    border-top: 1px solid #b5b8c8;
+    border-right: 1px solid #b5b8c8;
+}
+    /* field focused > trigger */
+.ns-trigger-filter-focused .x-form-trigger {
+    border: 1px solid #a1a1a1;
+    border-left: 0 none;
+}
+    /* field over > trigger */
+.ns-trigger-filter .x-form-trigger-over {
+    background: url(../images/clear-over_20.png) 0 0 no-repeat;
 }
 
 
@@ -239,14 +269,15 @@ body.x-windows {
 }
 
 .ns-toolbar-multiselect-left .x-docked-top {
-	border-top-left-radius: 2px;
+	border-top-left-radius: 1px;
+	border-right: 0 none;
 }
 .ns-toolbar-multiselect-right .x-docked-top {
-	border-top-right-radius: 2px;
+	border-top-right-radius: 1px;
 }
 .ns-toolbar-multiselect-leftright .x-docked-top {
-	border-top-left-radius: 2px;
-	border-top-right-radius: 2px;
+	border-top-left-radius: 1px;
+	border-top-right-radius: 1px;
 }
 
 	/* Multiselect docked bar font size */
@@ -254,6 +285,7 @@ body.x-windows {
 .ns-toolbar-multiselect-right .ns-toolbar-multiselect-right-label,
 .ns-toolbar-multiselect-leftright .ns-toolbar-multiselect-leftright-label {
     font-size: 11px;
+    color: #222;
 }
 .ns-toolbar-multiselect-left .ns-toolbar-multiselect-left-label {
 	padding-left: 6px;
@@ -275,6 +307,10 @@ body.x-windows {
 .ns-toolbar-multiselect-right .x-boundlist-selected {
     background-color: #e5e5e5;
     border-color: #e5e5e5;
+}
+
+.ns-toolbar-multiselect-left .x-panel-body {
+	border-right: 0 none;
 }
 
 
@@ -487,6 +523,11 @@ body.x-windows {
 
 .ns-button-organisationunitselection .x-btn-center {
 	width: 18px !important;
+}
+
+.ns-button-icon.x-btn-default-toolbar-small-disabled {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+    opacity: 0.25;
 }
 
 
