@@ -63,42 +63,42 @@
 		<th colspan="4">$i18n.getString( "details" )</th>
 	</tr>
 
-	<tr id="usernameTR">
+	<tr class="account">
 		<td><label for="username">$i18n.getString( "username" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="text" id="username" name="username" autocomplete="off"></td>
 	</tr>
 
-	<tr id="rawPasswordTR">
+	<tr class="account">
 		<td><label for="rawPassword">$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" autocomplete="off"></td>			
 	</tr>
 
-    <tr id="retypePasswordTR">
+    <tr class="account">
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" autocomplete="off"></td>		
 	</tr>
 
-    <tr id="surnameTR">
+    <tr class="account">
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="text" id="surname" name="surname"></td>
 	</tr>
 
-    <tr id="firstNameTR">
+    <tr class="account">
 		<td><label for="firstName">$i18n.getString( "firstName" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="text" id="firstName" name="firstName"></td>		
 	</tr>
 
-	<tr id="emailTR">
+	<tr class="account">
 		<td><label for="email">$i18n.getString( "email" )</label></td>
 		<td colspan="3"><input type="text" id="email" name="email" ></td>
 	</tr>
 
-	<tr id="inviteEmailTR" style="display:none">
+	<tr class="invite" style="display:none">
 		<td><label for="inviteEmail">$i18n.getString( "email" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td colspan="3"><input type="text" id="inviteEmail" name="inviteEmail" value="validEmail@domain.com" ></td>
 	</tr>
 
-    <tr id="phoneNumberTR">
+    <tr class="account">
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
         <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber"></td>
     </tr>
