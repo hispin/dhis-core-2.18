@@ -30,6 +30,7 @@ package org.hisp.dhis.system.util;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.google.common.collect.Maps;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.hisp.dhis.system.util.functional.Predicate;
 import org.springframework.util.StringUtils;
@@ -46,6 +47,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
@@ -519,5 +521,54 @@ public class ReflectionUtils
         }
 
         return fieldName;
+    }
+
+    private static Map<Class<?>, Map<String, Method>> classMapCache = Maps.newHashMap();
+
+    public static Map<String, Method> getJacksonClassMap( Class<?> clazz )
+    {
+        if ( classMapCache.containsKey( clazz ) )
+        {
+            return classMapCache.get( clazz );
+        }
+
+        Map<String, Method> output = Maps.newLinkedHashMap();
+
+        List<Method> allMethods = getAllMethods( clazz );
+
+        for ( Method method : allMethods )
+        {
+            if ( method.isAnnotationPresent( JsonProperty.class ) )
+            {
+                JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
+
+                if ( StringUtils.isEmpty( jsonProperty.value() ) )
+                {
+                    String[] getters = new String[]{
+                        "is", "has", "get"
+                    };
+
+                    String name = method.getName();
+
+                    for ( String getter : getters )
+                    {
+                        if ( name.startsWith( getter ) )
+                        {
+                            name = name.substring( getter.length() );
+                        }
+                    }
+
+                    output.put( StringUtils.uncapitalize( name ), method );
+                }
+                else
+                {
+                    output.put( jsonProperty.value(), method );
+                }
+            }
+        }
+
+        classMapCache.put( clazz, output );
+
+        return output;
     }
 }
