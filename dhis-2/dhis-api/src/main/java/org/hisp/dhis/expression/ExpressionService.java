@@ -123,7 +123,7 @@ public interface ExpressionService
     Collection<Expression> getAllExpressions();
     
     Double getIndicatorValue( Indicator indicator, Period period, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Integer orgUnitCount, Integer days );
+        Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days );
     
     /**
      * Generates the calculated value for the given expression base on the values
@@ -134,12 +134,13 @@ public interface ExpressionService
      *        use in the calculation.
      * @param constantMap the mapping between the constant uid and value to use
      *        in the calculation.
-     * @param orgUnitCount the number of org units to use in the calculation.
+     * @param orgUnitCountMap the mapping between organisation unit group uid and
+     *        count of org units to use in the calculation.
      * @param days the number of days to use in the calculation.
      * @return the calculated value as a double.
      */
     Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Integer orgUnitCount, Integer days );
+        Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days );
     
     /**
      * Generates the calculated value for the given expression base on the values
@@ -150,7 +151,8 @@ public interface ExpressionService
      *        use in the calculation.
      * @param constantMap the mapping between the constant uid and value to use
      *        in the calculation.
-     * @param orgUnitCount the number of org units to use in the calculation.
+     * @param orgUnitCountMap the mapping between organisation unit group uid and
+     *        count of org units to use in the calculation.
      * @param days the number of days to use in the calculation.
      * @param set of data element operands that have values but they are incomplete
      *        (for example due to aggregation from organisationUnit children where
@@ -158,7 +160,7 @@ public interface ExpressionService
      * @return the calculated value as a double.
      */
     Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
-        Map<String, Double> constantMap, Integer orgUnitCount, Integer days, Set<DataElementOperand> incompleteValues );
+        Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, Set<DataElementOperand> incompleteValues );
     
     /**
      * Returns the uids of the data element totals in the given expression.
@@ -319,11 +321,15 @@ public interface ExpressionService
      * period, and source.
      * 
      * @param formula formula to parse.
-     * @param valueMap map containing data element identifiers and aggregated value.
-     * @param constantMap map between constants and values.  
-     * @param days The number to be substituted with the days expression in the formula.
+     * @param valueMap the mapping between data element operands and values to
+     *        use in the calculation.
+     * @param constantMap the mapping between the constant uid and value to use
+     *        in the calculation.
+     * @param orgUnitCountMap the mapping between organisation unit group uid and
+     *        count of org units to use in the calculation.
+     * @param days the number of days to use in the calculation.
      */
-    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<String, Double> constantMap, Integer orgUnitCount, Integer days, boolean nullIfNoValues );
+    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<String, Double> constantMap, Map<String, Integer> orgUnitCountMap, Integer days, boolean nullIfNoValues );
     
     /**
      * Returns all Operands included in the formulas for the given collection of
