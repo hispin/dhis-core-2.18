@@ -208,6 +208,10 @@ executiondate = (executiondate + interval '1 year'),
 created = (created + interval '1 year'),
 lastupdated = (lastupdated + interval '1 year');
 
+-- Replace first digit in invalid uid with letter a
+
+update organisationunit set uid = regexp_replace(uid,'\d','a') where uid SIMILAR TO '[0-9]%';
+
 -- (Write) Insert random org unit codes
 
 create function setrandomcode() returns integer AS $$
