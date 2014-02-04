@@ -200,7 +200,7 @@ public class DefaultSecurityService
     public boolean restore( UserCredentials credentials, String token, String code, String newPassword, RestoreType restoreType )
     {
         if ( credentials == null || token == null || code == null || newPassword == null
-                || !canRestoreNow( credentials, token, code, restoreType ) )
+            || !canRestoreNow( credentials, token, code, restoreType ) )
         {
             return false;
         }
@@ -222,7 +222,7 @@ public class DefaultSecurityService
 
     public boolean canRestoreNow( UserCredentials credentials, String token, String code, RestoreType restoreType )
     {
-        if ( !verifyToken ( credentials, token, restoreType ) )
+        if ( !verifyToken( credentials, token, restoreType ) )
         {
             return false;
         }
@@ -264,54 +264,54 @@ public class DefaultSecurityService
     @Override
     public boolean canCreatePublic( IdentifiableObject identifiableObject )
     {
-        return SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject );
+        return !SharingUtils.isSupported( identifiableObject.getClass() ) || SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canCreatePublic( String type )
     {
-        return SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), type );
+        return !SharingUtils.isSupported( type ) || SharingUtils.canCreatePublic( currentUserService.getCurrentUser(), type );
     }
 
     @Override
     public boolean canCreatePrivate( IdentifiableObject identifiableObject )
     {
-        return SharingUtils.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject );
+        return !SharingUtils.isSupported( identifiableObject.getClass() ) || SharingUtils.canCreatePrivate( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canCreatePrivate( String type )
     {
-        return SharingUtils.canCreatePrivate( currentUserService.getCurrentUser(), type );
+        return !SharingUtils.isSupported( type ) || SharingUtils.canCreatePrivate( currentUserService.getCurrentUser(), type );
     }
 
     @Override
     public boolean canRead( IdentifiableObject identifiableObject )
     {
-        return SharingUtils.canRead( currentUserService.getCurrentUser(), identifiableObject );
+        return !SharingUtils.isSupported( identifiableObject.getClass() ) || SharingUtils.canRead( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canWrite( IdentifiableObject identifiableObject )
     {
-        return SharingUtils.canWrite( currentUserService.getCurrentUser(), identifiableObject );
+        return !SharingUtils.isSupported( identifiableObject.getClass() ) || SharingUtils.canWrite( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canUpdate( IdentifiableObject identifiableObject )
     {
-        return SharingUtils.canUpdate( currentUserService.getCurrentUser(), identifiableObject );
+        return !SharingUtils.isSupported( identifiableObject.getClass() ) || SharingUtils.canUpdate( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canDelete( IdentifiableObject identifiableObject )
     {
-        return SharingUtils.canDelete( currentUserService.getCurrentUser(), identifiableObject );
+        return !SharingUtils.isSupported( identifiableObject.getClass() ) || SharingUtils.canDelete( currentUserService.getCurrentUser(), identifiableObject );
     }
 
     @Override
     public boolean canManage( IdentifiableObject identifiableObject )
     {
-        return SharingUtils.canManage( currentUserService.getCurrentUser(), identifiableObject );
+        return !SharingUtils.isSupported( identifiableObject.getClass() ) || SharingUtils.canManage( currentUserService.getCurrentUser(), identifiableObject );
     }
 }
