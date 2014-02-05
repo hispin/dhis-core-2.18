@@ -6369,18 +6369,16 @@ Ext.onReady( function() {
 
 	GIS.app.LayerWidgetThematic = function(layer) {
 
-		// Stores
 		var indicatorsByGroupStore,
 			dataElementsByGroupStore,
 			periodsByTypeStore,
 			infrastructuralDataElementValuesStore,
 			legendsByLegendSetStore,
 
-		// Togglers
 			valueTypeToggler,
 			legendTypeToggler,
 
-		// Components
+			isScrolled,
 			valueType,
 			indicatorGroup,
 			indicator,
@@ -6417,18 +6415,14 @@ Ext.onReady( function() {
 			lowPanel,
 			highPanel,
 
-		// Functions
-			//createSelectHandlers,
 			reset,
 			setGui,
 			getView,
 
-		// Convenience
 			dimConf = gis.conf.finals.dimension,
-
 			panel;
-
-		// Stores
+			
+		// stores
 
 		indicatorsByGroupStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'legendSet'],
@@ -6465,95 +6459,206 @@ Ext.onReady( function() {
 
 		dataElementsByGroupStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
-			proxy: {
-				type: 'ajax',
-				url: '',
-				reader: {
-					type: 'json',
-					root: 'dataElements'
-				}
-			},
-			isLoaded: false,
-			loadFn: function(fn) {
-				if (this.isLoaded) {
-					fn.call();
-				}
-				else {
-					this.load(fn);
-				}
-			},
-			sortStore: function() {
-				this.sort('name', 'ASC');
-			},
-			setTotalsProxy: function(uid, preventLoad, callbackFn) {
-				var path;
+            lastPage: null,
+            nextPage: 1,
+			isPending: false,
+            reset: function() {
+                this.removeAll();
+                this.lastPage = null;
+                this.nextPage = 1;
+                this.isPending = false;
+                //dataElementSearch.hideFilter();
+            },
+            loadPage: function(uid, filter, append) {
+                uid = (Ext.isString(uid) || Ext.isNumber(uid)) ? uid : dataElementGroup.getValue();
+                //filter = filter || dataElementFilter.getValue() || null;
+                filter = filter || null;
+                
+                if (!append) {
+                    this.lastPage = null;
+                    this.nextPage = 1;
+                }
+
+                if (dataElementDetailLevel.getValue() === dimConf.dataElement.objectName) {
+                    this.loadTotalsPage(uid, filter, append);
+                }
+                else if (dataElementDetailLevel.getValue() === dimConf.operand.objectName) {
+                    this.loadDetailsPage(uid, filter, append);
+                }
+            },
+            loadTotalsPage: function(uid, filter, append) {
+                var store = this,
+                    filterPath = filter ? '/query/' + filter : '',
+                    path;
+
+                if (store.nextPage === store.lastPage) {
+                    return;
+                }
 
 				if (Ext.isString(uid)) {
-					path = '/dataElementGroups/' + uid + '.json?domainType=aggregate&links=false&paging=false';
+					path = '/dataElementGroups/' + uid + '/members' + filterPath + '.json';
 				}
 				else if (uid === 0) {
-					path = '/dataElements.json?domainType=aggregate&paging=false&links=false';
+					path = '/dataElements' + filterPath + '.json?domainType=aggregate';
 				}
 
 				if (!path) {
-					alert('Invalid parameter');
+					alert('Available data elements: invalid id');
 					return;
 				}
 
-				this.setProxy({
-					type: 'ajax',
-					url: gis.init.contextPath + '/api' + path,
-					reader: {
-						type: 'json',
-						root: 'dataElements'
-					}
-				});
+                store.isPending = true;
 
-				if (!preventLoad) {
-					this.load({
-						scope: this,
-						callback: function() {
-							this.sortStore();
+                Ext.Ajax.request({
+                    url: gis.init.contextPath + '/api' + path,
+                    params: {
+                        viewClass: 'basic',
+                        links: 'false',
+                        page: store.nextPage,
+                        pageSize: 50
+                    },
+                    failure: function() {
+                        store.isPending = false;
+                    },
+                    success: function(r) {
+                        var response = Ext.decode(r.responseText),
+                            data = response.dataElements || [],
+                            pager = response.pager;
 
-							if (Ext.isFunction(callbackFn)) {
-								callbackFn();
-							}
-						}
-					});
-				}
-			},
-			setDetailsProxy: function(uid, preventLoad, callbackFn) {
+                        store.loadStore(data, pager, append);
+                    }
+                });
+            },
+			loadDetailsPage: function(uid, filter, append) {
+                var store = this,
+                    filterPath = filter ? '/query/' + filter : '',
+                    path;
+
+                if (store.nextPage === store.lastPage) {
+                    return;
+                }
+
 				if (Ext.isString(uid)) {
-					this.setProxy({
-						type: 'ajax',
-						url: gis.init.contextPath + '/api/generatedDataElementOperands.json?links=false&dataElementGroup=' + uid,
-						reader: {
-							type: 'json',
-							root: 'dataElementOperands'
+					path = '/dataElementGroups/' + uid + '/operands' + filterPath + '.json';
+				}
+				else if (uid === 0) {
+					path = '/generatedDataElementOperands' + filterPath + '.json';
+				}
+
+				if (!path) {
+					alert('Available data elements: invalid id');
+					return;
+				}
+
+                store.isPending = true;
+
+                Ext.Ajax.request({
+                    url: gis.init.contextPath + '/api' + path,
+                    params: {
+                        viewClass: 'basic',
+                        links: 'false',
+                        page: store.nextPage,
+                        pageSize: 50
+                    },
+                    failure: function() {
+                        store.isPending = false;
+                    },
+                    success: function(r) {
+                        var response = Ext.decode(r.responseText),
+							data = response.dataElementOperands || [],
+                            pager = response.pager;
+
+						for (var i = 0; i < data.length; i++) {
+							data[i].id = data[i].id.split('.').join('-');
 						}
-					});
 
-					if (!preventLoad) {
-						this.load({
-							scope: this,
-							callback: function() {
-								this.each(function(r) {
-                                    r.set('id', r.data.id.split('.').join('-'));
-								});
-
-								this.sortStore();
-
-								if (Ext.isFunction(callbackFn)) {
-									callbackFn();
-								}
-							}
-						});
-					}
-				}
-				else {
-					alert('Invalid parameter');
-				}
+                        store.loadStore(data, pager, append);
+                    }
+                });
 			},
+            loadStore: function(data, pager, append) {
+                this.loadData(data, append);
+                this.lastPage = this.nextPage;
+
+                if (pager.pageCount > this.nextPage) {
+                    this.nextPage++;
+                }
+
+                this.isPending = false;
+                //ns.core.web.multiSelects.filterAvailable({store: dataElementAvailableStore}, {store: dataElementSelectedStore});
+            },
+			sortStore: function() {
+				this.sort('name', 'ASC');
+			},
+			//setTotalsProxy: function(uid, preventLoad, callbackFn) {
+				//var path;
+
+				//if (Ext.isString(uid)) {
+					//path = '/dataElementGroups/' + uid + '.json?domainType=aggregate&links=false&paging=false';
+				//}
+				//else if (uid === 0) {
+					//path = '/dataElements.json?domainType=aggregate&paging=false&links=false';
+				//}
+
+				//if (!path) {
+					//alert('Invalid parameter');
+					//return;
+				//}
+
+				//this.setProxy({
+					//type: 'ajax',
+					//url: gis.init.contextPath + '/api' + path,
+					//reader: {
+						//type: 'json',
+						//root: 'dataElements'
+					//}
+				//});
+
+				//if (!preventLoad) {
+					//this.load({
+						//scope: this,
+						//callback: function() {
+							//this.sortStore();
+
+							//if (Ext.isFunction(callbackFn)) {
+								//callbackFn();
+							//}
+						//}
+					//});
+				//}
+			//},
+			//setDetailsProxy: function(uid, preventLoad, callbackFn) {
+				//if (Ext.isString(uid)) {
+					//this.setProxy({
+						//type: 'ajax',
+						//url: gis.init.contextPath + '/api/generatedDataElementOperands.json?links=false&dataElementGroup=' + uid,
+						//reader: {
+							//type: 'json',
+							//root: 'dataElementOperands'
+						//}
+					//});
+
+					//if (!preventLoad) {
+						//this.load({
+							//scope: this,
+							//callback: function() {
+								//this.each(function(r) {
+                                    //r.set('id', r.data.id.split('.').join('-'));
+								//});
+
+								//this.sortStore();
+
+								//if (Ext.isFunction(callbackFn)) {
+									//callbackFn();
+								//}
+							//}
+						//});
+					//}
+				//}
+				//else {
+					//alert('Invalid parameter');
+				//}
+			//},
 			listeners: {
 				load: function() {
 					if (!this.isLoaded) {
@@ -6631,7 +6736,7 @@ Ext.onReady( function() {
 			}
 		});
 
-		// Togglers
+		// togglers
 
 		valueTypeToggler = function(valueType) {
 			if (valueType === dimConf.indicator.objectName) {
@@ -6672,7 +6777,14 @@ Ext.onReady( function() {
 			}
 		};
 
-		// Components
+		// form
+
+		isScrolled = function(e) {
+			var el = e.srcElement,
+				scrollBottom = el.scrollTop + ((el.clientHeight / el.scrollHeight) * el.scrollHeight);
+
+			return scrollBottom / el.scrollHeight > 0.9;
+		};
 
 		valueType = Ext.create('Ext.form.field.ComboBox', {
 			fieldLabel: GIS.i18n.value_type,
@@ -6776,18 +6888,7 @@ Ext.onReady( function() {
 				data: gis.init.dataElementGroups
 			},
 			loadAvailable: function(preventLoad) {
-				var store = dataElementsByGroupStore,
-					detailLevel = dataElementDetailLevel.getValue(),
-					value = this.getValue();
-
-				if (value) {
-					if (detailLevel === gis.conf.finals.dimension.dataElement.objectName) {
-						store.setTotalsProxy(value, preventLoad);
-					}
-					else {
-						store.setDetailsProxy(value, preventLoad);
-					}
-				}
+				dataElementsByGroupStore.loadPage(this.getValue());
 			},
 			listeners: {
 				select: function(cb) {
@@ -6844,6 +6945,20 @@ Ext.onReady( function() {
 							}
 						}
 					});
+				},
+				expand: function(cmp) {
+					Ext.defer( function() {
+						var el = Ext.get(cmp.listKeyNav.boundList.getEl().id + '-listEl').dom;
+
+						el.addEventListener('scroll', function(e) {
+							if (isScrolled(e) && !dataElementsByGroupStore.isPending) {
+								dataElementsByGroupStore.loadPage(null, null, true);
+							}
+						});						
+					}, 100);
+				},
+				collapse: function(cmp) {
+					console.log("collapsed");
 				}
 			}
 		});
@@ -7324,7 +7439,7 @@ Ext.onReady( function() {
 					if (!r.data.leaf) {
 						v.menu.add({
 							id: 'treepanel-contextmenu-item',
-							text: gis.i18n.select_all_children,
+							text: GIS.i18n.select_all_children,
 							icon: 'images/node-select-child.png',
 							handler: function() {
 								r.expand(false, function() {
