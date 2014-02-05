@@ -4,16 +4,20 @@ import org.hisp.dhis.common.BaseNameableObject;
 
 public class Lookup extends BaseNameableObject
 {
-    public static final String DS_PBF_TYPE = "DS_PBF_TYPE";
-    
+    public static final String DS_PBF_TYPE = "DS_PBF_TYPE";    
     public static final String DS_QUALITY_TYPE = "DS_QUALITY_TYPE";
     
-    public static final String OC_TARIFF = "OC_TARIFF";
-    
-    public static final String QV_TARIFF = "QV_TARIFF"; 
-    
-    
+    public static final String OC_TARIFF = "OC_TARIFF";    
+    public static final String QV_TARIFF = "QV_TARIFF";     
+    public static final String PBF_AGG_TYPE = "PBF_AGG_TYPE";    
     public static final String BANK = "BANK";
+    
+    public static final String PBF_AGG_TYPE_OVERALL_QUALITY_SCORE = "OVERALL QUALITY SCORE";
+    public static final String PBF_AGG_TYPE_OVERALL_UNADJUSTED_PBF_AMOUNT = "OVERALL UNADJUSTED PBF AMOUNT";
+    
+    public static final String ORGUNITID_BY_COMMA = "ORGUNITID_BY_COMMA";
+    public static final String PERIODID_BY_COMMA = "PERIODID_BY_COMMA";
+    
     
     private String type;
     

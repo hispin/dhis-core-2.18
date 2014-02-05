@@ -171,6 +171,43 @@
 			/dhis-web-maintenance-pbf/status.vm</result>
 		<param name="onExceptionReturn">plainTextError</param>					
 	</action>
+
+    <!--  Aggregation Engine -->
+    <action name="aggregationQueryList" class="org.hisp.dhis.pbf.aggregation.action.AggregationQueryListAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-pbf/aggregationQueryList.vm</param>
+        <param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
+        <param name="javascripts">javascript/aggregationEngine.js</param>
+    </action>
+
+    <action name="addAggregationQueryForm" class="org.hisp.dhis.pbf.aggregation.action.AddAggregationQueryFormAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-pbf/addAggregationQuery.vm</param>
+        <param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
+        <param name="javascripts">javascript/aggregationEngine.js</param>
+    </action>
+    
+    <action name="loadAggregationParam" class="org.hisp.dhis.pbf.aggregation.action.GetAggregationParameterAction">
+        <result name="success" type="velocity">/content.vm</result>
+        <param name="page">/dhis-web-maintenance-pbf/addAggregationParam.vm</param>            
+    </action>
+
+    <action name="addAggregationQuery" class="org.hisp.dhis.pbf.aggregation.action.AddAggregationQueryAction">
+        <result name="success" type="redirect">aggregationQueryList.action</result>
+    </action>
+
+    <action name="runAggregationQueryForm" class="org.hisp.dhis.pbf.action.NoAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-pbf/runAggregationQueryForm.vm</param>
+        <param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
+    </action>
+
+    <action name="runAggregationQuery" class="org.hisp.dhis.pbf.aggregation.action.RunAggregationQueryAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-pbf/runAggregationQueryResult.vm</param>
+        <param name="menu">/dhis-web-maintenance-pbf/menu.vm</param>
+    </action>
+
 	
 	</package>
 </struts>

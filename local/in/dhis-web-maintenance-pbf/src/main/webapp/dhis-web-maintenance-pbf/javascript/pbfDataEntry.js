@@ -195,7 +195,7 @@ function savePBFDataValue( dataElementId, valueType )
 	{
 	    var code = json.c;
 
-	    alert(code)
+	    //alert(code)
 	    if ( code == '0' || code == 0) // Value successfully saved on server
 	    {
 	    	 markValue( fieldId, COLOR_GREEN );

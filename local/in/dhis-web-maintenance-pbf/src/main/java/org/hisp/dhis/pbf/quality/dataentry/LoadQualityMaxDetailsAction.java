@@ -37,20 +37,21 @@ public class LoadQualityMaxDetailsAction
     implements Action
 {
 
-	private final static String QUALITY_MAX_DATAELEMENT = "QUALITY_MAX_DATAELEMENT";
+    private final static String QUALITY_MAX_DATAELEMENT = "QUALITY_MAX_DATAELEMENT";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private QualityMaxValueService qualityMaxValueService;
-    
-    public void setQualityMaxValueService(
-			QualityMaxValueService qualityMaxValueService) {
-		this.qualityMaxValueService = qualityMaxValueService;
-	}
+
+    public void setQualityMaxValueService( QualityMaxValueService qualityMaxValueService )
+    {
+        this.qualityMaxValueService = qualityMaxValueService;
+    }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -62,103 +63,112 @@ public class LoadQualityMaxDetailsAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private LookupService lookupService;
-    
+
     public void setLookupService( LookupService lookupService )
     {
         this.lookupService = lookupService;
     }
-    
+
     private ConstantService constantService;
 
     public void setConstantService( ConstantService constantService )
     {
         this.constantService = constantService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
-   
+
     private String orgUnitId;
-    
-    public void setOrgUnitId(String orgUnitId) {
-		this.orgUnitId = orgUnitId;
-	}
 
-	private String dataSetId;
-    
-    public void setDataSetId(String dataSetId) {
-		this.dataSetId = dataSetId;
-	}
-    
+    public void setOrgUnitId( String orgUnitId )
+    {
+        this.orgUnitId = orgUnitId;
+    }
+
+    private String dataSetId;
+
+    public void setDataSetId( String dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
     private String startDate;
-    
-    public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-    
+
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
     private String endDate;
-    
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
 
-	List<DataElement> dataElements = new ArrayList<DataElement>();
-    
-	public List<DataElement> getDataElements() {
-		return dataElements;
-	}	
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
+    }
 
-	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );;
-    
-    public SimpleDateFormat getSimpleDateFormat() {
-		return simpleDateFormat;
-	}
-    
-    private Map<Integer,QualityMaxValue> qualityMaxValueMap = new  HashMap<Integer,QualityMaxValue>();
-    
-    public Map<Integer, QualityMaxValue> getQualityMaxValueMap() {
-		return qualityMaxValueMap;
-	}
-    
+    List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );;
+
+    public SimpleDateFormat getSimpleDateFormat()
+    {
+        return simpleDateFormat;
+    }
+
+    private Map<Integer, QualityMaxValue> qualityMaxValueMap = new HashMap<Integer, QualityMaxValue>();
+
+    public Map<Integer, QualityMaxValue> getQualityMaxValueMap()
+    {
+        return qualityMaxValueMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-	public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
-		SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-        
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+
         Date sDate = dateFormat.parse( startDate );
         Date eDate = dateFormat.parse( endDate );
-		Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
+        Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-        DataSet dataSet = dataSetService.getDataSet(Integer.parseInt(dataSetId));
-        
-        List<DataElement> dataElementList = new ArrayList<DataElement>(dataSet.getDataElements());
-        for( DataElement de : dataElementList )
+        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
+
+        List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+        for ( DataElement de : dataElementList )
         {
             Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
             for ( AttributeValue attValue : attrValueSet )
             {
-            	if(attValue.getAttribute().getId() == qualityMaxDataElement.getValue())
-            	{
-            		dataElements.add(de);
-            	}
+                if ( attValue.getAttribute().getId() == qualityMaxDataElement.getValue() )
+                {
+                    dataElements.add( de );
+                }
             }
         }
-        for(DataElement dataElement : dataElements)
+        for ( DataElement dataElement : dataElements )
         {
-        	QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue(organisationUnit, dataElement, dataSet, sDate, eDate );
-        	if(qualityMaxValue != null)
-        	{
-        		qualityMaxValueMap.put(dataElement.getId(), qualityMaxValue);
-        		System.out.println("In Quality Data Value");
-        	}
+            QualityMaxValue qualityMaxValue = qualityMaxValueService.getQualityMaxValue( organisationUnit, dataElement,
+                dataSet, sDate, eDate );
+            if ( qualityMaxValue != null )
+            {
+                qualityMaxValueMap.put( dataElement.getId(), qualityMaxValue );
+                System.out.println( "In Quality Data Value" );
+            }
         }
-        Collections.sort(dataElements);
+        Collections.sort( dataElements );
         return SUCCESS;
     }
 }
