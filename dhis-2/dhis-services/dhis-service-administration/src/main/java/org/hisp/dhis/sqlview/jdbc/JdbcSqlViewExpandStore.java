@@ -124,7 +124,7 @@ public class JdbcSqlViewExpandStore
 
             for ( String filter : criteria.keySet() )
             {
-                sql += " " + helper.whereAnd() + " " + filter + "='" + criteria.get( filter ) + "'";
+                sql += " " + helper.whereAnd() + " " + statementBuilder.columnQuote( filter ) + "='" + criteria.get( filter ) + "'";
             }
         }
 
