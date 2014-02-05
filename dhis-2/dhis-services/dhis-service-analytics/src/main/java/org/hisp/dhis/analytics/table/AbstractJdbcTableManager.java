@@ -41,7 +41,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.analytics.AnalyticsIndex;
 import org.hisp.dhis.analytics.AnalyticsTable;
 import org.hisp.dhis.analytics.AnalyticsTableManager;
-import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.jdbc.StatementBuilder;
@@ -155,7 +154,7 @@ public abstract class AbstractJdbcTableManager
                 break taskLoop;
             }
             
-            final String indexName = quote( PREFIX_INDEX + removeQuote( inx.getColumn() ) + "_" + inx.getTable() + "_" + CodeGenerator.generateCode() );
+            final String indexName = quote( PREFIX_INDEX + removeQuote( inx.getColumn() ) + "_" + inx.getTable() );
             
             final String sql = "create index " + indexName + " on " + inx.getTable() + " (" + inx.getColumn() + ")";
             
