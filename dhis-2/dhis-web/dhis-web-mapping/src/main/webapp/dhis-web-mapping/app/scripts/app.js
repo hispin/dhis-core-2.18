@@ -493,11 +493,14 @@ Ext.onReady( function() {
 				init.rootNodes[i].path = '/root/' + init.rootNodes[i].id;
 			}
 
+			// sort organisation unit levels
+			gis.util.array.sort(init.organisationUnitLevels, 'ASC', 'level');
+
 			// sort indicator groups
-			gis.util.object.sortObjectsByString(init.indicatorGroups);
+			gis.util.array.sort(init.indicatorGroups);
 
 			// sort data element groups
-			gis.util.object.sortObjectsByString(init.dataElementGroups);
+			gis.util.array.sort(init.dataElementGroups);
 		}());
 
 		// store

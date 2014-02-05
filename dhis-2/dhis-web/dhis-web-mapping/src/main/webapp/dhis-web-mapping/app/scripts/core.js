@@ -2379,26 +2379,9 @@ Ext.onReady( function() {
 					cmpArray[i].queryMode = mode;
 				}
 			};
-
+			
 			util.object = {};
-
-			util.object.sortObjectsByString = function(array, key) {
-				key = key || 'name';
-				array.sort( function(a, b) {
-					var nameA = a[key].toLowerCase(),
-						nameB = b[key].toLowerCase();
-
-					if (nameA < nameB) {
-						return -1;
-					}
-					if (nameA > nameB) {
-						return 1;
-					}
-					return 0;
-				});
-				return array;
-			};
-
+			
 			util.object.getLength = function(object) {
 				var size = 0;
 
@@ -2409,6 +2392,49 @@ Ext.onReady( function() {
 				}
 
 				return size;
+			};
+
+			util.array = {};
+
+			util.array.sort = function(array, direction, key) {
+				// accepts [number], [string], [{prop: number}], [{prop: string}]
+
+				if (!util.object.getLength(array)) {
+					return;
+				}
+
+				key = key || 'name';
+
+				array.sort( function(a, b) {
+
+					// if object, get the property values
+					if (Ext.isObject(a) && Ext.isObject(b) && key) {
+						a = a[key];
+						b = b[key];
+					}
+
+					// string
+					if (Ext.isString(a) && Ext.isString(b)) {
+						a = a.toLowerCase();
+						b = b.toLowerCase();
+
+						if (direction === 'DESC') {
+							return a < b ? 1 : (a > b ? -1 : 0);
+						}
+						else {
+							return a < b ? -1 : (a > b ? 1 : 0);
+						}
+					}
+
+					// number
+					else if (Ext.isNumber(a) && Ext.isNumber(b)) {
+						return direction === 'DESC' ? b - a : a - b;
+					}
+
+					return 0;
+				});
+
+				return array;
 			};
 		}());
 
