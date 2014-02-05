@@ -1810,7 +1810,7 @@ Ext.onReady( function() {
 			periodTypeStore,
 			fixedPeriodAvailableStore,
 			fixedPeriodSelectedStore,
-			reportTableStore,
+			chartStore,
 			organisationUnitLevelStore,
 			organisationUnitGroupStore,
 
@@ -2540,19 +2540,19 @@ Ext.onReady( function() {
 		});
 		ns.app.stores.fixedPeriodSelected = fixedPeriodSelectedStore;
 
-		reportTableStore = Ext.create('Ext.data.Store', {
+		chartStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'lastUpdated', 'access'],
 			proxy: {
 				type: 'ajax',
 				reader: {
 					type: 'json',
-					root: 'reportTables'
+					root: 'charts'
 				}
 			},
 			isLoaded: false,
 			pageSize: 10,
 			page: 1,
-			defaultUrl: ns.core.init.contextPath + '/api/reportTables.json?viewClass=sharing&links=false',
+			defaultUrl: ns.core.init.contextPath + '/api/charts.json?viewClass=sharing&links=false',
 			loadStore: function(url) {
 				this.proxy.url = url || this.defaultUrl;
 
@@ -2581,7 +2581,7 @@ Ext.onReady( function() {
 				}
 			}
 		});
-		ns.app.stores.reportTable = reportTableStore;
+		ns.app.stores.chart = chartStore;
 
 		organisationUnitLevelStore = Ext.create('Ext.data.Store', {
 			fields: ['id', 'name', 'level'],
