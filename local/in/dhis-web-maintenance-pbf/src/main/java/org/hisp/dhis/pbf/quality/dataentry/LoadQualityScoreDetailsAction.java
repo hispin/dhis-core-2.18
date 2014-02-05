@@ -43,21 +43,23 @@ import com.opensymphony.xwork2.Action;
 public class LoadQualityScoreDetailsAction
     implements Action
 {
-	private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
-	private final static String QUALITY_MAX_DATAELEMENT = "QUALITY_MAX_DATAELEMENT";
+    private final static String TARIFF_SETTING_AUTHORITY = "TARIFF_SETTING_AUTHORITY";
+
+    private final static String QUALITY_MAX_DATAELEMENT = "QUALITY_MAX_DATAELEMENT";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private QualityMaxValueService qualityMaxValueService;
-    
-    public void setQualityMaxValueService(
-			QualityMaxValueService qualityMaxValueService) {
-		this.qualityMaxValueService = qualityMaxValueService;
-	}
+
+    public void setQualityMaxValueService( QualityMaxValueService qualityMaxValueService )
+    {
+        this.qualityMaxValueService = qualityMaxValueService;
+    }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -69,159 +71,169 @@ public class LoadQualityScoreDetailsAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private LookupService lookupService;
-    
+
     public void setLookupService( LookupService lookupService )
     {
         this.lookupService = lookupService;
     }
-    
+
     private ConstantService constantService;
 
     public void setConstantService( ConstantService constantService )
     {
         this.constantService = constantService;
     }
-    
+
     private DataValueService dataValueService;
-    
-    public void setDataValueService(DataValueService dataValueService)
+
+    public void setDataValueService( DataValueService dataValueService )
     {
-		this.dataValueService = dataValueService;
-	}
-    
+        this.dataValueService = dataValueService;
+    }
+
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
-   
-	private String orgUnitId;
-    
-    public void setOrgUnitId(String orgUnitId) {
-		this.orgUnitId = orgUnitId;
-	}
 
-	private String dataSetId;
-    
-    public void setDataSetId(String dataSetId) {
-		this.dataSetId = dataSetId;
-	}
-    
-	private String selectedPeriodId;
-    
+    private String orgUnitId;
+
+    public void setOrgUnitId( String orgUnitId )
+    {
+        this.orgUnitId = orgUnitId;
+    }
+
+    private String dataSetId;
+
+    public void setDataSetId( String dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    private String selectedPeriodId;
+
     public void setSelectedPeriodId( String selectedPeriodId )
     {
         this.selectedPeriodId = selectedPeriodId;
     }
-    
-	List<DataElement> dataElements = new ArrayList<DataElement>();
-    
-	public List<DataElement> getDataElements() {
-		return dataElements;
-	}	
 
-	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );;
-    
-    public SimpleDateFormat getSimpleDateFormat() {
-		return simpleDateFormat;
-	}
-    
-    private Map<Integer,QualityMaxValue> qualityMaxValueMap = new  HashMap<Integer,QualityMaxValue>();
-    
-    public Map<Integer, QualityMaxValue> getQualityMaxValueMap() {
-		return qualityMaxValueMap;
-	}
-    
-    private Map<Integer,DataValue> dataValueMap = new HashMap<Integer, DataValue>();
-    
-    public Map<Integer, DataValue> getDataValueMap() {
-		return dataValueMap;
-	}
-    
+    List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );;
+
+    public SimpleDateFormat getSimpleDateFormat()
+    {
+        return simpleDateFormat;
+    }
+
+    private Map<Integer, QualityMaxValue> qualityMaxValueMap = new HashMap<Integer, QualityMaxValue>();
+
+    public Map<Integer, QualityMaxValue> getQualityMaxValueMap()
+    {
+        return qualityMaxValueMap;
+    }
+
+    private Map<Integer, DataValue> dataValueMap = new HashMap<Integer, DataValue>();
+
+    public Map<Integer, DataValue> getDataValueMap()
+    {
+        return dataValueMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-	public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
-		SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-        
-		Period period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
-		 Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
-	        int tariff_setting_authority = 0;
-	        if ( tariff_authority == null )
-	        {
-	            tariff_setting_authority = 1;
-	           
-	        }
-	        else
-	        {
-	            tariff_setting_authority = (int) tariff_authority.getValue();
-	            
-	        }
-		Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-        DataSet dataSet = dataSetService.getDataSet(Integer.parseInt(dataSetId));
-        
-        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
-        List<DataElement> dataElementList = new ArrayList<DataElement>(dataSet.getDataElements());
-        for( DataElement de : dataElementList )
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+
+        Period period = PeriodType.getPeriodFromIsoString( selectedPeriodId );
+        Constant tariff_authority = constantService.getConstantByName( TARIFF_SETTING_AUTHORITY );
+        int tariff_setting_authority = 0;
+        if ( tariff_authority == null )
         {
-        	Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
+            tariff_setting_authority = 1;
+
+        }
+        else
+        {
+            tariff_setting_authority = (int) tariff_authority.getValue();
+
+        }
+        Constant qualityMaxDataElement = constantService.getConstantByName( QUALITY_MAX_DATAELEMENT );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
+
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+
+        List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+        for ( DataElement de : dataElementList )
+        {
+            Set<AttributeValue> attrValueSet = new HashSet<AttributeValue>( de.getAttributeValues() );
             for ( AttributeValue attValue : attrValueSet )
             {
-            	if(attValue.getAttribute().getId() == qualityMaxDataElement.getValue())
-            	{
-            		dataElements.add(de);
-            	}
+                if ( attValue.getAttribute().getId() == qualityMaxDataElement.getValue() )
+                {
+                    dataElements.add( de );
+                }
             }
         }
-        for(DataElement dataElement : dataElements)
+        for ( DataElement dataElement : dataElements )
         {
-        	List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>();
-        	OrganisationUnit parentOrgunit = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
-        	if( parentOrgunit != null )
+            List<QualityMaxValue> qualityMaxValues = new ArrayList<QualityMaxValue>();
+            OrganisationUnit parentOrgunit = findParentOrgunitforTariff( organisationUnit, tariff_setting_authority );
+            if ( parentOrgunit != null )
             {
-        		qualityMaxValues = new ArrayList<QualityMaxValue>(qualityMaxValueService.getQuanlityMaxValues(parentOrgunit, dataElement)) ;
+                qualityMaxValues = new ArrayList<QualityMaxValue>( qualityMaxValueService.getQuanlityMaxValues(
+                    parentOrgunit, dataElement ) );
             }
-        	DataValue dataValue = dataValueService.getDataValue(dataElement, period, organisationUnit, optionCombo);
-        	for (QualityMaxValue qualityMaxValue : qualityMaxValues) 
-        	{
-        		
-        		if(qualityMaxValue.getStartDate().getTime() <= period.getStartDate().getTime() && period.getEndDate().getTime() <= qualityMaxValue.getEndDate().getTime()  )
-            	{
-            		qualityMaxValueMap.put(dataElement.getId(), qualityMaxValue);
-            		if(dataValue != null)
-            		{
-            			dataValueMap.put(dataElement.getId(), dataValue );
-            		}
-            		
-            		System.out.println("In Quality Data Value");
-            		break;
-            	}
-			}        	
+            DataValue dataValue = dataValueService.getDataValue( dataElement, period, organisationUnit, optionCombo );
+            for ( QualityMaxValue qualityMaxValue : qualityMaxValues )
+            {
+
+                if ( qualityMaxValue.getStartDate().getTime() <= period.getStartDate().getTime()
+                    && period.getEndDate().getTime() <= qualityMaxValue.getEndDate().getTime() )
+                {
+                    qualityMaxValueMap.put( dataElement.getId(), qualityMaxValue );
+                    if ( dataValue != null )
+                    {
+                        dataValueMap.put( dataElement.getId(), dataValue );
+                    }
+
+                    System.out.println( "In Quality Data Value" );
+                    break;
+                }
+            }
         }
-        Collections.sort(dataElements);
+        Collections.sort( dataElements );
         return SUCCESS;
     }
-	public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
-	{
-		Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
-		if( tariffOULevel == ouLevel )
-		{
-			return organisationUnit;
-		}
-		else
-		{
-			return findParentOrgunitforTariff( organisationUnit.getParent(), tariffOULevel );			
-		}
-	}
+
+    public OrganisationUnit findParentOrgunitforTariff( OrganisationUnit organisationUnit, Integer tariffOULevel )
+    {
+        Integer ouLevel = organisationUnitService.getLevelOfOrganisationUnit( organisationUnit.getId() );
+        if ( tariffOULevel == ouLevel )
+        {
+            return organisationUnit;
+        }
+        else
+        {
+            return findParentOrgunitforTariff( organisationUnit.getParent(), tariffOULevel );
+        }
+    }
 }
