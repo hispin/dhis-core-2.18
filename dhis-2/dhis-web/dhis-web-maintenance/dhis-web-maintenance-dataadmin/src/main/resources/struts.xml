@@ -365,9 +365,6 @@
     </action>
 
     <action name="exportSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.ExportSqlViewResultAction">
-      <result name="csv" type="gridCsvResult" />
-      <result name="xls" type="gridXlsResult" />
-      <result name="pdf" type="gridPdfResult" />
       <result name="html" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">
