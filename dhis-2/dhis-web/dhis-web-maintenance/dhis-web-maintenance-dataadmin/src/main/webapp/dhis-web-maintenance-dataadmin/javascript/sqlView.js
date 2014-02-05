@@ -84,9 +84,3 @@ function showDataSqlViewForm( context ) {
     }
   );
 }
-
-function exportSqlView( id, type ) {
-  var url = "exportSqlView.action?id=" + id + "&type=" + type;
-
-  window.location.href = url;
-}
