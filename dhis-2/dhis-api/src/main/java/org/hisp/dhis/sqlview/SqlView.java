@@ -114,7 +114,7 @@ public class SqlView
                     String filter = criteria[0];
                     String value = criteria[1];
 
-                    if ( StringUtils.isAlphanumeric( filter ) && StringUtils.isAlphanumeric( value ) )
+                    if ( StringUtils.isAlphanumericSpace( filter ) && StringUtils.isAlphanumericSpace( value ) )
                     {
                         map.put( filter, value );
                     }
