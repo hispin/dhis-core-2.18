@@ -528,6 +528,11 @@ public class ReflectionUtils
 
     public static Map<String, Method> getJacksonClassMap( Class<?> clazz )
     {
+        return getJacksonClassMap( clazz, true );
+    }
+
+    public static Map<String, Method> getJacksonClassMap( Class<?> clazz, boolean deep )
+    {
         if ( classMapCache.containsKey( clazz ) )
         {
             return classMapCache.get( clazz );
@@ -543,13 +548,15 @@ public class ReflectionUtils
             {
                 JsonProperty jsonProperty = method.getAnnotation( JsonProperty.class );
 
-                if ( StringUtils.isEmpty( jsonProperty.value() ) )
+                String name = jsonProperty.value();
+
+                if ( StringUtils.isEmpty( name ) )
                 {
                     String[] getters = new String[]{
                         "is", "has", "get"
                     };
 
-                    String name = method.getName();
+                    name = method.getName();
 
                     for ( String getter : getters )
                     {
@@ -559,11 +566,44 @@ public class ReflectionUtils
                         }
                     }
 
-                    output.put( StringUtils.uncapitalize( name ), method );
+                    name = StringUtils.uncapitalize( name );
+                    output.put( name, method );
                 }
                 else
                 {
-                    output.put( jsonProperty.value(), method );
+                    output.put( name, method );
+                }
+
+                Class<?> returnType = method.getReturnType();
+
+                if ( deep && IdentifiableObject.class.isAssignableFrom( returnType ) )
+                {
+                    Map<String, Method> classMap = getJacksonClassMap( returnType, false );
+
+                    for ( String key : classMap.keySet() )
+                    {
+                        output.put( name + "." + key, classMap.get( key ) );
+                    }
+                }
+                else if ( deep && Collection.class.isAssignableFrom( returnType ) )
+                {
+                    Type type = method.getGenericReturnType();
+
+                    if ( ParameterizedType.class.isInstance( type ) )
+                    {
+                        ParameterizedType parameterizedType = (ParameterizedType) type;
+                        Class<?> klass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+
+                        if ( IdentifiableObject.class.isAssignableFrom( klass ) )
+                        {
+                            Map<String, Method> classMap = getJacksonClassMap( klass, false );
+
+                            for ( String key : classMap.keySet() )
+                            {
+                                output.put( name + "." + key, classMap.get( key ) );
+                            }
+                        }
+                    }
                 }
             }
         }
