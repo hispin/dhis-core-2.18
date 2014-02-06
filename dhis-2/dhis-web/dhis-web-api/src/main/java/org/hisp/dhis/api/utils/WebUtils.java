@@ -187,14 +187,14 @@ public class WebUtils
 
     public static <T extends IdentifiableObject> Map<String, Object> filterFields( List<T> entityList, String fields )
     {
-        if ( entityList.isEmpty() || fields == null )
-        {
-            return Maps.newHashMap();
-        }
-
         Map<String, Object> output = Maps.newHashMap();
         ArrayList<Object> objects = Lists.newArrayList();
         output.put( "objects", objects );
+
+        if ( entityList.isEmpty() || fields == null )
+        {
+            return output;
+        }
 
         Map<String, Method> classMap = ReflectionUtils.getJacksonClassMap( entityList.get( 0 ).getClass() );
         String[] split = fields.split( "," );
