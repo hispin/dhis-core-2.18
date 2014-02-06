@@ -3400,7 +3400,7 @@ Ext.onReady( function() {
 						{
 							xtype: 'panel',
 							columnWidth: 0.34,
-							bodyStyle: 'border-style:none; padding:5px 0 0 10px',
+							bodyStyle: 'border-style:none; padding:5px 0 0 8px',
 							defaults: {
 								labelSeparator: '',
 								style: 'margin-bottom:2px',
@@ -3536,7 +3536,7 @@ Ext.onReady( function() {
 						{
 							xtype: 'panel',
 							columnWidth: 0.35,
-							bodyStyle: 'border-style:none; padding:5px 0 0 10px',
+							bodyStyle: 'border-style:none; padding:5px 0 0 8px',
 							defaults: {
 								labelSeparator: '',
 								style: 'margin-bottom:2px',
