@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Maps;
 import org.hisp.dhis.api.controller.exception.NotFoundException;
 import org.hisp.dhis.api.controller.exception.NotFoundForQueryException;
 import org.hisp.dhis.api.utils.WebUtils;
@@ -102,12 +103,15 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
-        Map<String, Object> output = WebUtils.filterFields( entityList, fields );
+        List<Object> objects = WebUtils.filterFields( entityList, fields );
+        Map<String, Object> output = Maps.newLinkedHashMap();
 
         if ( options.hasPaging() )
         {
             output.put( "pager", metaData.getPager() );
         }
+
+        output.put( "objects", objects );
 
         JacksonUtils.toJson( response.getOutputStream(), output );
     }

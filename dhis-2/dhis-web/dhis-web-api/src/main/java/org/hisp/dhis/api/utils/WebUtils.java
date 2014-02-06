@@ -131,7 +131,7 @@ public class WebUtils
         generateLinks( object, true );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static void generateLinks( Object object, boolean deep )
     {
         if ( object == null )
@@ -185,15 +185,13 @@ public class WebUtils
         }
     }
 
-    public static <T extends IdentifiableObject> Map<String, Object> filterFields( List<T> entityList, String fields )
+    public static <T extends IdentifiableObject> List<Object> filterFields( List<T> entityList, String fields )
     {
-        Map<String, Object> output = Maps.newHashMap();
-        ArrayList<Object> objects = Lists.newArrayList();
-        output.put( "objects", objects );
+        List<Object> objects = Lists.newArrayList();
 
         if ( entityList.isEmpty() || fields == null )
         {
-            return output;
+            return objects;
         }
 
         Map<String, Method> classMap = ReflectionUtils.getJacksonClassMap( entityList.get( 0 ).getClass() );
@@ -201,7 +199,7 @@ public class WebUtils
 
         for ( T object : entityList )
         {
-            Map<String, Object> objMap = Maps.newHashMap();
+            Map<String, Object> objMap = Maps.newLinkedHashMap();
 
             for ( String field : split )
             {
@@ -209,10 +207,18 @@ public class WebUtils
                 {
                     Object o = ReflectionUtils.invokeMethod( object, classMap.get( field ) );
 
-                    // skip collections for now
+                    if ( o == null )
+                    {
+                        continue;
+                    }
+
                     if ( !ReflectionUtils.isCollection( o ) )
                     {
                         objMap.put( field, o );
+                    }
+                    else
+                    {
+                        objMap.put( field, getIdentifiableObjectProperties( o ) );
                     }
                 }
             }
@@ -220,6 +226,37 @@ public class WebUtils
             objects.add( objMap );
         }
 
-        return output;
+        return objects;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private static List<Map<String, Object>> getIdentifiableObjectProperties( Object o )
+    {
+        List<Map<String, Object>> idPropertiesList = Lists.newArrayList();
+        Collection<IdentifiableObject> identifiableObjects;
+
+        try
+        {
+            identifiableObjects = (Collection<IdentifiableObject>) o;
+        }
+        catch ( ClassCastException ex )
+        {
+            return null;
+        }
+
+        for ( IdentifiableObject identifiableObject : identifiableObjects )
+        {
+            Map<String, Object> idProps = Maps.newLinkedHashMap();
+
+            idProps.put( "id", identifiableObject.getUid() );
+            idProps.put( "name", identifiableObject.getDisplayName() );
+            idProps.put( "code", identifiableObject.getCode() );
+            idProps.put( "created", identifiableObject.getCreated() );
+            idProps.put( "lastUpdated", identifiableObject.getLastUpdated() );
+
+            idPropertiesList.add( idProps );
+        }
+
+        return idPropertiesList;
     }
 }
