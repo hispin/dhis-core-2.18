@@ -102,7 +102,12 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         postProcessEntities( entityList );
         postProcessEntities( entityList, options, parameters );
 
-        List<Map<String, Object>> output = WebUtils.filterFields( entityList, fields );
+        Map<String, Object> output = WebUtils.filterFields( entityList, fields );
+
+        if ( options.hasPaging() )
+        {
+            output.put( "pager", metaData.getPager() );
+        }
 
         JacksonUtils.toJson( response.getOutputStream(), output );
     }

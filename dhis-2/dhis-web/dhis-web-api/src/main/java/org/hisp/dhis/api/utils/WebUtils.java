@@ -185,14 +185,17 @@ public class WebUtils
         }
     }
 
-    public static <T extends IdentifiableObject> List<Map<String, Object>> filterFields( List<T> entityList, String fields )
+    public static <T extends IdentifiableObject> Map<String, Object> filterFields( List<T> entityList, String fields )
     {
         if ( entityList.isEmpty() || fields == null )
         {
-            return Lists.newArrayList();
+            return Maps.newHashMap();
         }
 
-        List<Map<String, Object>> output = Lists.newArrayList();
+        Map<String, Object> output = Maps.newHashMap();
+        ArrayList<Object> objects = Lists.newArrayList();
+        output.put( "objects", objects );
+
         Map<String, Method> classMap = ReflectionUtils.getJacksonClassMap( entityList.get( 0 ).getClass() );
         String[] split = fields.split( "," );
 
@@ -214,7 +217,7 @@ public class WebUtils
                 }
             }
 
-            output.add( objMap );
+            objects.add( objMap );
         }
 
         return output;
