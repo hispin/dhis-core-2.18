@@ -230,7 +230,7 @@ public class WebUtils
     }
 
     @SuppressWarnings( "unchecked" )
-    private static List<Map<String, Object>> getIdentifiableObjectProperties( Object o )
+    private static Object getIdentifiableObjectProperties( Object o )
     {
         List<Map<String, Object>> idPropertiesList = Lists.newArrayList();
         Collection<IdentifiableObject> identifiableObjects;
@@ -241,7 +241,7 @@ public class WebUtils
         }
         catch ( ClassCastException ex )
         {
-            return null;
+            return o;
         }
 
         for ( IdentifiableObject identifiableObject : identifiableObjects )
@@ -250,7 +250,12 @@ public class WebUtils
 
             idProps.put( "id", identifiableObject.getUid() );
             idProps.put( "name", identifiableObject.getDisplayName() );
-            idProps.put( "code", identifiableObject.getCode() );
+
+            if ( identifiableObject.getCode() == null )
+            {
+                idProps.put( "code", identifiableObject.getCode() );
+            }
+
             idProps.put( "created", identifiableObject.getCreated() );
             idProps.put( "lastUpdated", identifiableObject.getLastUpdated() );
 
