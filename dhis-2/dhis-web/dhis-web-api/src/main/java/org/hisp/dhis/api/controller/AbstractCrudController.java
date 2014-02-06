@@ -57,7 +57,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -84,10 +83,28 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // GET
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/map", method = RequestMethod.GET )
-    public void getJacksonClassMap( OutputStream outputStream ) throws IOException
+    @RequestMapping( value = "/filtered", method = RequestMethod.GET )
+    public void getJacksonClassMap( @RequestParam( required = false ) String fields,
+        @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
-        JacksonUtils.toJson( outputStream, ReflectionUtils.getJacksonClassMap( getEntityClass() ).keySet() );
+        if ( fields == null )
+        {
+            JacksonUtils.toJson( response.getOutputStream(), ReflectionUtils.getJacksonClassMap( getEntityClass() ).keySet() );
+            return;
+        }
+
+        WebOptions options = new WebOptions( parameters );
+        WebMetaData metaData = new WebMetaData();
+        List<T> entityList = getEntityList( metaData, options );
+
+        handleLinksAndAccess( options, metaData, entityList, true );
+
+        postProcessEntities( entityList );
+        postProcessEntities( entityList, options, parameters );
+
+        List<Map<String, Object>> output = WebUtils.filterFields( entityList, fields );
+
+        JacksonUtils.toJson( response.getOutputStream(), output );
     }
 
     @RequestMapping( method = RequestMethod.GET )

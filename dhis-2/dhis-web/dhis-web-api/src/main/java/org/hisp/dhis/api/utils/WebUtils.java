@@ -28,6 +28,8 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.controller.WebMetaData;
@@ -38,9 +40,11 @@ import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.UserCredentials;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
 
@@ -127,7 +131,7 @@ public class WebUtils
         generateLinks( object, true );
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings("unchecked")
     public static void generateLinks( Object object, boolean deep )
     {
         if ( object == null )
@@ -179,5 +183,40 @@ public class WebUtils
                 }
             }
         }
+    }
+
+    public static <T extends IdentifiableObject> List<Map<String, Object>> filterFields( List<T> entityList, String fields )
+    {
+        if ( entityList.isEmpty() || fields == null )
+        {
+            return Lists.newArrayList();
+        }
+
+        List<Map<String, Object>> output = Lists.newArrayList();
+        Map<String, Method> classMap = ReflectionUtils.getJacksonClassMap( entityList.get( 0 ).getClass() );
+        String[] split = fields.split( "," );
+
+        for ( T object : entityList )
+        {
+            Map<String, Object> objMap = Maps.newHashMap();
+
+            for ( String field : split )
+            {
+                if ( classMap.containsKey( field ) )
+                {
+                    Object o = ReflectionUtils.invokeMethod( object, classMap.get( field ) );
+
+                    // skip collections for now
+                    if ( !ReflectionUtils.isCollection( o ) )
+                    {
+                        objMap.put( field, o );
+                    }
+                }
+            }
+
+            output.add( objMap );
+        }
+
+        return output;
     }
 }
