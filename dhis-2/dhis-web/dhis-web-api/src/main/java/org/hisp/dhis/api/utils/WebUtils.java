@@ -214,11 +214,18 @@ public class WebUtils
 
                     if ( !ReflectionUtils.isCollection( o ) )
                     {
-                        objMap.put( field, o );
+                        if ( IdentifiableObject.class.isInstance( o ) )
+                        {
+                            objMap.put( field, getIdentifiableObjectProperties( (IdentifiableObject) o ) );
+                        }
+                        else
+                        {
+                            objMap.put( field, o );
+                        }
                     }
                     else
                     {
-                        objMap.put( field, getIdentifiableObjectProperties( o ) );
+                        objMap.put( field, getIdentifiableObjectCollectionProperties( o ) );
                     }
                 }
             }
@@ -230,7 +237,7 @@ public class WebUtils
     }
 
     @SuppressWarnings( "unchecked" )
-    private static Object getIdentifiableObjectProperties( Object o )
+    private static Object getIdentifiableObjectCollectionProperties( Object o )
     {
         List<Map<String, Object>> idPropertiesList = Lists.newArrayList();
         Collection<IdentifiableObject> identifiableObjects;
@@ -246,22 +253,28 @@ public class WebUtils
 
         for ( IdentifiableObject identifiableObject : identifiableObjects )
         {
-            Map<String, Object> idProps = Maps.newLinkedHashMap();
-
-            idProps.put( "id", identifiableObject.getUid() );
-            idProps.put( "name", identifiableObject.getDisplayName() );
-
-            if ( identifiableObject.getCode() == null )
-            {
-                idProps.put( "code", identifiableObject.getCode() );
-            }
-
-            idProps.put( "created", identifiableObject.getCreated() );
-            idProps.put( "lastUpdated", identifiableObject.getLastUpdated() );
-
+            Map<String, Object> idProps = getIdentifiableObjectProperties( identifiableObject );
             idPropertiesList.add( idProps );
         }
 
         return idPropertiesList;
+    }
+
+    private static Map<String, Object> getIdentifiableObjectProperties( IdentifiableObject identifiableObject )
+    {
+        Map<String, Object> idProps = Maps.newLinkedHashMap();
+
+        idProps.put( "id", identifiableObject.getUid() );
+        idProps.put( "name", identifiableObject.getDisplayName() );
+
+        if ( identifiableObject.getCode() != null )
+        {
+            idProps.put( "code", identifiableObject.getCode() );
+        }
+
+        idProps.put( "created", identifiableObject.getCreated() );
+        idProps.put( "lastUpdated", identifiableObject.getLastUpdated() );
+
+        return idProps;
     }
 }
