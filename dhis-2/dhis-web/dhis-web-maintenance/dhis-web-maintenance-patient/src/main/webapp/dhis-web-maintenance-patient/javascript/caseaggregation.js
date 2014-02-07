@@ -138,16 +138,16 @@ function getParams() {
         programstage.prepend("<option value='' title='" + i18n_all + "'>" + i18n_all + "</option>");
       }
       byId('programStageId').options[0].selected = true;
-      getPatientDataElements();
+      getTrackedEntityDataElements();
 
       clearListById('caseProperty');
       var type = jQuery('#programId option:selected').attr('programType');
       if( type != '3' ) {
         var caseProperty = jQuery('#caseProperty');
-        for( i in json.patientAttributes ) {
-          var id = json.patientAttributes[i].id;
-          var name = json.patientAttributes[i].name;
-          var suggested = json.patientAttributes[i].suggested;
+        for( i in json.attributes ) {
+          var id = json.attributes[i].id;
+          var name = json.attributes[i].name;
+          var suggested = json.attributes[i].suggested;
 
           caseProperty.append("<option value='" + id + "' title='" + name + "' suggested='" + suggested + "'>" + name + "</option>");
         }
@@ -180,13 +180,13 @@ function getProgramStages() {
 // Get DataElements of Program-Stage
 //------------------------------------------------------------------------------
 
-function getPatientDataElements() {
+function getTrackedEntityDataElements() {
   clearListById('dataElements');
   clearListById('dataElementBackups');
   clearListById('deSumId');
   var programStageId = getFieldValue('programStageId');
 
-  jQuery.getJSON('getPatientDataElements.action',
+  jQuery.getJSON('getTrackedEntityDataElements.action',
     {
       programId: getFieldValue('programId'),
       programStageId: programStageId

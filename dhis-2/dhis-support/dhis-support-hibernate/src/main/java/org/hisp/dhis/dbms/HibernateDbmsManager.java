@@ -126,16 +126,14 @@ public class HibernateDbmsManager
         emptyTable( "datasetoperands" );
         emptyTable( "dataset" );
 
-        emptyTable( "patientdatavalue" );
+        emptyTable( "trackedentitydatavalue" );
         emptyTable( "programstageinstance" );
         emptyTable( "programinstance" );
         emptyTable( "programstage_dataelements" );
         emptyTable( "programstage" );
         emptyTable( "program_organisationunits" );
         emptyTable( "program" );
-        emptyTable( "patientidentifier" );
-        emptyTable( "patientidentifier_patient" );
-        emptyTable( "patient" );
+        emptyTable( "trackedentityinstance" );
 
         emptyTable( "minmaxdataelement" );
         emptyTable( "expressiondataelement" );

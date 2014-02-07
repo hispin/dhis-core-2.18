@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.trackedentity.TrackedEntityMobileSetting" table="trackedentitymobilesetting">
+
+    <id name="id" column="trackedentitymobilesettingid">
+      <generator class="native" />
+    </id>
+   
+    <property name="autoUpdateClient" column="autoUpdateClient" not-null="false" />
+    
+    <property name="versionToUpdate" column="versionToUpdate" not-null="false" />
+
+    <list name="attributes">
+      <key column="trackedentitymobilesettingid" />
+      <list-index column="sort_order_attributename" base="0" />
+      <one-to-many class="org.hisp.dhis.trackedentity.TrackedEntityAttribute" />
+    </list>
+
+  </class>
+</hibernate-mapping>

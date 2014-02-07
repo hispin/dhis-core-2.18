@@ -30,8 +30,8 @@ package org.hisp.dhis.relationship;
 
 import java.util.Collection;
 
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Abyot Asalefew
@@ -76,26 +76,26 @@ public interface RelationshipService
     Relationship getRelationship( int id );
 
     /**
-     * Get the relationship between two patients by retrieving a
+     * Get the relationship between two entityInstances by retrieving a
      * {@link RelationshipType}
      * 
-     * @param patientA {@link Patient}
-     * @param patientB {@link Patient}
+     * @param entityInstanceA {@link TrackedEntityInstance}
+     * @param entityInstanceB {@link TrackedEntityInstance}
      * @param relationshipType {@link RelationshipType}
      * 
      * @return {@link RelationshipType}
      */
-    Relationship getRelationship( Patient patientA, Patient patientB, RelationshipType relationshipType );
+    Relationship getRelationship( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB, RelationshipType relationshipType );
 
     /**
-     * Get the relationship between two patients
+     * Get the relationship between two entityInstances
      * 
-     * @param patientA {@link Patient}
-     * @param patientB {@link Patient}
+     * @param entityInstanceA {@link TrackedEntityInstance}
+     * @param entityInstanceB {@link TrackedEntityInstance}
      * 
      * @return {@link RelationshipType}
      */
-    Relationship getRelationship( Patient patientA, Patient patientB );
+    Relationship getRelationship( TrackedEntityInstance entityInstanceA, TrackedEntityInstance entityInstanceB );
 
     /**
      * Returns all {@link Relationship}.
@@ -106,24 +106,24 @@ public interface RelationshipService
     Collection<Relationship> getAllRelationships();
 
     /**
-     * Retrieve relationships of a patient
+     * Retrieve relationships of a instance
      * 
-     * @param patient Patient
+     * @param instance TrackedEntityInstance
      * 
      * @return Relationship list
      */
-    Collection<Relationship> getRelationshipsForPatient( Patient patient );
+    Collection<Relationship> getRelationshipsForTrackedEntityInstance( TrackedEntityInstance instance );
 
     /**
      * Retrieve all relationships by relationship type of a person, for example
-     * a patient might have more than one sibling
+     * a instance might have more than one sibling
      * 
-     * @param patientA Patient
+     * @param entityInstanceA TrackedEntityInstance
      * @param relationshipType RelationshipType
      * 
      * @return Relationship list
      */
-    Collection<Relationship> getRelationships( Patient patientA, RelationshipType relationshipType );
+    Collection<Relationship> getRelationships( TrackedEntityInstance entityInstanceA, RelationshipType relationshipType );
 
     /**
      * Retrieve all relationships of a relationship type

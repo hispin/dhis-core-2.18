@@ -64,7 +64,7 @@
 			#else
 				#set($followup='false')
 			#end
-			<input type="button" class='patient-object' id="newEncounterBtn_$!programInstance.id" name="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript:showCreateNewEvent('$!programInstance.id');" >
+			<input type="button" class='entity-instance-object' id="newEncounterBtn_$!programInstance.id" name="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript:showCreateNewEvent('$!programInstance.id');" >
 		</td>
 	</tr>			
 </table>
@@ -80,9 +80,7 @@
 					#foreach( $programStage in $programInstance.program.programStages )
 					
 						#set($reportDateToUse = "")
-						#if($programStageInstance.programStage.reportDateToUse=='registrationDate' )
-							#set($reportDateToUse = "$format.formatDate( $programInstance.patient.registrationDate)")
-						#elseif($programStageInstance.programStage.reportDateToUse=='dateOfIncident' )
+						#if($programStageInstance.programStage.reportDateToUse=='dateOfIncident' )
 							#set($reportDateToUse = "$format.formatDate( $programInstance.dateOfIncident)")
 						#elseif($programStageInstance.programStage.reportDateToUse=='enrollmentDate' )
 							#set($reportDateToUse = "$format.formatDate( $programInstance.enrollmentDate)")

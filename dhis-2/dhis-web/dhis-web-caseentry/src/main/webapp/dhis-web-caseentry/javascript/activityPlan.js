@@ -2,7 +2,7 @@ isAjax = true;
 
 function orgunitSelected( orgUnits, orgUnitNames )
 {
-	hideById("listPatientDiv");
+	hideById("listEntityInstanceDiv");
 	setFieldValue('orgunitName', orgUnitNames[0]);
 	setFieldValue('orgunitId', orgUnits[0]);
 }
@@ -35,10 +35,10 @@ function displayCadendar()
 function showActitityList()
 {
 	setFieldValue('listAll', "true");
-	hideById('listPatientDiv');
+	hideById('listEntityInstanceDiv');
 	$('#contentDataRecord').html('');
 	var facilityLB = $('input[name=facilityLB]:checked').val();
-	var programId = getFieldValue('programIdAddPatient');
+	var programId = getFieldValue('programIdAddEntityInstance');
     var searchTexts = "stat_" + programId
         + "_" + getFieldValue('startDueDate')
         + "_" + getFieldValue('endDueDate');
@@ -57,13 +57,13 @@ function showActitityList()
 
 	showLoader();
 
-    jQuery('#listPatientDiv').load('getActivityPlanRecords.action', {
+    jQuery('#listEntityInstanceDiv').load('getActivityPlanRecords.action', {
         programId: programId,
         listAll: false,
         searchTexts: searchTexts
     }, function() {
         showById('colorHelpLink');
-        showById('listPatientDiv');
+        showById('listEntityInstanceDiv');
         setTableStyles();
         hideLoader();
     });
@@ -72,10 +72,10 @@ function showActitityList()
 function exportActitityList( type )
 {
     var facilityLB = $('input[name=facilityLB]:checked').val();
-    var params = "programId=" + getFieldValue('programIdAddPatient');
+    var params = "programId=" + getFieldValue('programIdAddEntityInstance');
 
     params += "&type=xls";
-    params += "&searchTexts=stat_" + getFieldValue('programIdAddPatient')
+    params += "&searchTexts=stat_" + getFieldValue('programIdAddEntityInstance')
         + "_" + getFieldValue('startDueDate')
         + "_" + getFieldValue('endDueDate');
 
@@ -94,7 +94,7 @@ function exportActitityList( type )
 }
 
 // --------------------------------------------------------------------
-// Patient program tracking
+// EntityInstance program tracking
 // --------------------------------------------------------------------
 
 function loadDataEntryDialog( programStageInstanceId, programStageUid )
@@ -107,7 +107,7 @@ function loadDataEntryDialog( programStageInstanceId, programStageUid )
     }, function() {
         jQuery('#programStageUid').val(programStageUid);
         showById('reportDateDiv');
-        showById('patientInforTB');
+        showById('entityInstanceInforTB');
         showById('entryForm');
         showById('inputCriteriaDiv');
     }).dialog({

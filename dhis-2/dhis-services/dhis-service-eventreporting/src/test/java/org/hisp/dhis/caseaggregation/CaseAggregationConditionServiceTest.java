@@ -48,13 +48,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -67,6 +60,13 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -92,7 +92,7 @@ public class CaseAggregationConditionServiceTest
     private ProgramStageService programStageService;
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private DataElementService dataElementService;
@@ -113,15 +113,15 @@ public class CaseAggregationConditionServiceTest
     private ProgramStageInstanceService programStageInstanceService;
 
     @Autowired
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
     @Autowired
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService attributeService;
 
     @Autowired
     private PeriodService periodService;
 
-    private PatientAttribute patientAttribute;
+    private TrackedEntityAttribute attribute;
 
     private DataElement dataElementA;
 
@@ -211,22 +211,22 @@ public class CaseAggregationConditionServiceTest
         dataElementService.addDataElement( dataElementD );
 
         // ---------------------------------------------------------------------
-        // Patient
+        // TrackedEntityInstance
         // ---------------------------------------------------------------------
 
-        Patient patient = createPatient( 'A', organisationUnit );
-        patientService.savePatient( patient );
+        TrackedEntityInstance entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
+        entityInstanceService.saveTrackedEntityInstance( entityInstance );
 
         // ---------------------------------------------------------------------
         // Attribue value
         // ---------------------------------------------------------------------
 
-        patientAttribute = createPatientAttribute( 'A' );
-        int attributeId = patientAttributeService.savePatientAttribute( patientAttribute );
+        attribute = createTrackedEntityAttribute( 'A' );
+        int attributeId = attributeService.saveTrackedEntityAttribute( attribute );
 
-        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patient, patientAttribute );
-        Set<PatientAttributeValue> patientAttributeValues = new HashSet<PatientAttributeValue>();
-        patientAttributeValues.add( attributeValue );
+        TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstance, attribute );
+        Set<TrackedEntityAttributeValue> attributeValues = new HashSet<TrackedEntityAttributeValue>();
+        attributeValues.add( attributeValue );
 
         // ---------------------------------------------------------------------
         // Program && Program stages
@@ -248,28 +248,28 @@ public class CaseAggregationConditionServiceTest
         programService.updateProgram( program );
 
         // ---------------------------------------------------------------------
-        // Program Instance && Patient data values
+        // Program Instance && data values
         // ---------------------------------------------------------------------
 
         Calendar today = Calendar.getInstance();
         PeriodType.clearTimeOfDay( today );
-        ProgramInstance programInstance = programInstanceService.enrollPatient( patient, program, today.getTime(),
-            today.getTime(), organisationUnit, null );
+        ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program,
+            today.getTime(), today.getTime(), organisationUnit, null );
 
         ProgramStageInstance stageInstanceA = programStageInstanceService.getProgramStageInstance( programInstance,
             stageA );
         ProgramStageInstance stageInstanceB = programStageInstanceService.getProgramStageInstance( programInstance,
             stageB );
 
-        PatientDataValue dataValueA = new PatientDataValue( stageInstanceA, dataElementA, "A" );
-        PatientDataValue dataValueB = new PatientDataValue( stageInstanceA, dataElementB, "B" );
-        PatientDataValue dataValueC = new PatientDataValue( stageInstanceB, dataElementA, "C" );
-        PatientDataValue dataValueD = new PatientDataValue( stageInstanceB, dataElementB, "D" );
+        TrackedEntityDataValue dataValueA = new TrackedEntityDataValue( stageInstanceA, dataElementA, "A" );
+        TrackedEntityDataValue dataValueB = new TrackedEntityDataValue( stageInstanceA, dataElementB, "B" );
+        TrackedEntityDataValue dataValueC = new TrackedEntityDataValue( stageInstanceB, dataElementA, "C" );
+        TrackedEntityDataValue dataValueD = new TrackedEntityDataValue( stageInstanceB, dataElementB, "D" );
 
-        patientDataValueService.savePatientDataValue( dataValueA );
-        patientDataValueService.savePatientDataValue( dataValueB );
-        patientDataValueService.savePatientDataValue( dataValueC );
-        patientDataValueService.savePatientDataValue( dataValueD );
+        dataValueService.saveTrackedEntityDataValue( dataValueA );
+        dataValueService.saveTrackedEntityDataValue( dataValueB );
+        dataValueService.saveTrackedEntityDataValue( dataValueC );
+        dataValueService.saveTrackedEntityDataValue( dataValueD );
 
         // ---------------------------------------------------------------------
         // Period
@@ -290,7 +290,7 @@ public class CaseAggregationConditionServiceTest
             + CaseAggregationCondition.SEPARATOR_OBJECT + programId + "." + stageAId + "." + deAId + "] is not null";
         expression += " AND [" + CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT
             + CaseAggregationCondition.SEPARATOR_OBJECT + programId + "." + stageAId + "." + deBId + "] is not null";
-        expression += " AND [" + CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE
+        expression += " AND [" + CaseAggregationCondition.OBJECT_TRACKED_ENTITY_ATTRIBUTE
             + CaseAggregationCondition.SEPARATOR_OBJECT + attributeId + "] is not null";
         conditionA = new CaseAggregationCondition( "A", CaseAggregationCondition.AGGRERATION_COUNT, expression,
             dataElementC, categoryOptionCombo );
@@ -430,11 +430,11 @@ public class CaseAggregationConditionServiceTest
     }
 
     @Test
-    public void testGetPatientAttributesInCondition()
+    public void testGetTrackedEntityAttributesInCondition()
     {
-        Collection<PatientAttribute> patientAttributes = aggConditionServiceService
-            .getPatientAttributesInCondition( conditionA.getAggregationExpression() );
-        assertTrue( equals( patientAttributes, patientAttribute ) );
+        Collection<TrackedEntityAttribute> attributes = aggConditionServiceService
+            .getTrackedEntityAttributesInCondition( conditionA.getAggregationExpression() );
+        assertTrue( equals( attributes, attribute ) );
     }
 
     @Test

@@ -67,7 +67,7 @@ jQuery( document ).ready( function()
 		<tr>
 			<td><label>$i18n.getString( "program_stage" ) </label></td>
 			<td>
-				<select style="width:336px;" id="programStageId" name="programStageId" onChange="getPatientDataElements();">
+				<select style="width:336px;" id="programStageId" name="programStageId" onChange="getTrackedEmtityDataElements();">
 					<option value=''>[$i18n.getString('please_select')]</option>
 					#foreach( $programStage in $program.programStages )
 					<option value='$programStage.id'>$programStage.displayName</option>

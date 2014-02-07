@@ -30,12 +30,11 @@ package org.hisp.dhis.program;
 
 import java.util.Iterator;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patientcomment.PatientComment;
-import org.hisp.dhis.patientcomment.PatientCommentService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 
 /**
  * @author Quang Nguyen
@@ -55,20 +54,20 @@ public class ProgramInstanceDeletionHandler
         this.programInstanceService = programInstanceService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
-    private PatientCommentService patientCommentService;
+    private TrackedEntityCommentService commentService;
 
-    public void setPatientCommentService( PatientCommentService patientCommentService )
+    public void setCommentService( TrackedEntityCommentService commentService )
     {
-        this.patientCommentService = patientCommentService;
+        this.commentService = commentService;
     }
-    
+
     public ProgramStageDataElementService programStageDEService;
 
     public void setProgramStageDEService( ProgramStageDataElementService programStageDEService )
@@ -94,25 +93,22 @@ public class ProgramInstanceDeletionHandler
     }
 
     @Override
-    public void deletePatient( Patient patient )
+    public void deleteTrackedEntityInstance( TrackedEntityInstance entityInstance )
     {
-        for ( ProgramInstance programInstance : patient.getProgramInstances() )
+        for ( ProgramInstance programInstance : entityInstance.getProgramInstances() )
         {
             for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
             {
-                for ( PatientDataValue patientDataValue : patientDataValueService
-                    .getPatientDataValues( programStageInstance ) )
+                for ( TrackedEntityDataValue entityInstanceDataValue : dataValueService
+                    .getTrackedEntityDataValues( programStageInstance ) )
                 {
-                    patientDataValueService.deletePatientDataValue( patientDataValue );
+                    dataValueService.deleteTrackedEntityDataValue( entityInstanceDataValue );
                 }
 
                 programStageInstanceService.deleteProgramStageInstance( programStageInstance );
             }
 
-            for ( PatientComment patientComment : programInstance.getPatientComments() )
-            {
-                patientCommentService.deletePatientComment( patientComment );
-            }
+            commentService.deleteTrackedEntityComment( programInstance.getComment() );
 
             programInstanceService.deleteProgramInstance( programInstance );
         }
@@ -122,7 +118,7 @@ public class ProgramInstanceDeletionHandler
     public void deleteProgram( Program program )
     {
         Iterator<ProgramInstance> iterator = program.getProgramInstances().iterator();
-        
+
         while ( iterator.hasNext() )
         {
             ProgramInstance programInstance = iterator.next();

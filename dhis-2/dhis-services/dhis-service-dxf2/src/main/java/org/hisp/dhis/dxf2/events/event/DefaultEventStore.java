@@ -30,13 +30,14 @@ package org.hisp.dhis.dxf2.events.event;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.hisp.dhis.dxf2.events.person.Person;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.system.util.TextUtils;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -61,7 +62,7 @@ public class DefaultEventStore
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -172,11 +173,11 @@ public class DefaultEventStore
 
         if ( person != null )
         {
-            Patient patient = patientService.getPatient( person.getPerson() );
+            TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( person.getPerson() );
 
-            if ( patient != null )
+            if ( entityInstance != null )
             {
-                personId = patient.getId();
+                personId = entityInstance.getId();
             }
         }
 
@@ -259,9 +260,9 @@ public class DefaultEventStore
             + " left join programstageinstance psi on ps.programstageid=psi.programstageid"
             + " left join programinstance pi on pi.programinstanceid=psi.programinstanceid"
             + " left join organisationunit ou on (psi.organisationunitid=ou.organisationunitid)"
-            + " left join patientdatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid"
+            + " left join trackedentitydatavalue pdv on psi.programstageinstanceid=pdv.programstageinstanceid"
             + " left join dataelement de on pdv.dataelementid=de.dataelementid "
-            + " left join patient pa on pa.patientid=pi.patientid ";
+            + " left join trackedentityinstance pa on pa.trackedentityinstanceid=pi.trackedentityinstanceid ";
 
         boolean startedWhere = false;
 
@@ -269,11 +270,11 @@ public class DefaultEventStore
         {
             if ( startedWhere )
             {
-                sql += " and pa.patientid=" + personId;
+                sql += " and pa.trackedentityinstanceid=" + personId;
             }
             else
             {
-                sql += " where pa.patientid=" + personId;
+                sql += " where pa.trackedentityinstanceid=" + personId;
                 startedWhere = true;
             }
         }

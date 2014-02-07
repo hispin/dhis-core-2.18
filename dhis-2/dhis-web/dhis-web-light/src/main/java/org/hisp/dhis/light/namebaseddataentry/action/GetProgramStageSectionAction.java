@@ -34,8 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.light.utils.NamebasedUtils;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -43,6 +41,8 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -69,9 +69,9 @@ public class GetProgramStageSectionAction
         this.util = util;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -130,9 +130,9 @@ public class GetProgramStageSectionAction
         this.patientId = patientId;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance patient;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getPatient()
     {
         return patient;
     }
@@ -248,7 +248,7 @@ public class GetProgramStageSectionAction
 
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
-        patient = patientService.getPatient( patientId );
+        patient = patientService.getTrackedEntityInstance( patientId );
 
         programStage = util.getProgramStage( programId, programStageId );
 

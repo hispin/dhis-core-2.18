@@ -1,50 +1,4 @@
 
-// ----------------------------------------------------------------------------
-// Search patients by name
-// ----------------------------------------------------------------------------
-
-function getPatientsByName( divname )
-{	
-	var fullName = jQuery('#' + divname + ' [id=fullName]').val().replace(/^\s+|\s+$/g,"");
-	if( fullName.length > 0) 
-	{
-		contentDiv = 'resultSearchDiv';
-		$('#resultSearchDiv' ).load("getPatientsByName.action",
-			{
-				fullName: fullName
-			}).dialog({
-				title: i18n_search_result,
-				maximize: true, 
-				closable: true,
-				modal:true,
-				overlay:{ background:'#000000', opacity: 0.8},
-				width: 800,
-				height: 400
-		});
-	}
-	else
-	{
-		alert( i18n_no_patients_found );
-	}
-}
-
-// ----------------------------------------------------------------------------
-// Show patients
-// ----------------------------------------------------------------------------
-
-function isDeathOnChange()
-{
-	var isDeath = byId('isDead').checked;
-	if(isDeath)
-	{
-		showById('deathDateTR');
-	}
-	else
-	{
-		hideById('deathDateTR');
-	}
-}
-
 //------------------------------------------------------------------------------
 // Filter data-element
 //------------------------------------------------------------------------------
@@ -78,10 +32,10 @@ function filterDE( event, value, fieldName )
 // Get Params form Div
 // ----------------------------------------------------------------
 
-function getParamsForDiv( patientDiv)
+function getParamsForDiv( trackedEntityDiv)
 {
 	var params = '';
-	jQuery("#" + patientDiv + " :input").each(function()
+	jQuery("#" + trackedEntityDiv + " :input").each(function()
 		{
 			var elementId = $(this).attr('id');
 			

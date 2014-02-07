@@ -30,8 +30,8 @@ package org.hisp.dhis.mobile.action;
 
 import java.util.List;
 
-import org.hisp.dhis.api.mobile.PatientMobileSettingService;
-import org.hisp.dhis.patient.PatientMobileSetting;
+import org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService;
+import org.hisp.dhis.trackedentity.TrackedEntityMobileSetting;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,11 +45,11 @@ public class J2meClientUpdateAction
     // Dependencies
     // -------------------------------------------------------------------------
     
-    PatientMobileSettingService patientMobileSettingService;
+    TrackedEntityMobileSettingService TrackedEntityMobileSettingService;
 
-    public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
+    public void setTrackedEntityMobileSettingService( TrackedEntityMobileSettingService TrackedEntityMobileSettingService )
     {
-        this.patientMobileSettingService = patientMobileSettingService;
+        this.TrackedEntityMobileSettingService = TrackedEntityMobileSettingService;
     }
     
     // -------------------------------------------------------------------------
@@ -70,43 +70,43 @@ public class J2meClientUpdateAction
         this.autoUpdate = autoUpdate;
     }
     
-    private PatientMobileSetting patientMobileSetting;
+    private TrackedEntityMobileSetting TrackedEntityMobileSetting;
 
-    public PatientMobileSetting getPatientMobileSetting()
+    public TrackedEntityMobileSetting getTrackedEntityMobileSetting()
     {
-        return patientMobileSetting;
+        return TrackedEntityMobileSetting;
     }
 
     @Override
     public String execute()
         throws Exception
     { 
-        List<PatientMobileSetting> list;
+        List<TrackedEntityMobileSetting> list;
         
-        list = (List<PatientMobileSetting>) patientMobileSettingService.getCurrentSetting();
+        list = (List<TrackedEntityMobileSetting>) TrackedEntityMobileSettingService.getCurrentSetting();
         
         if( list.size() == 0 )
         {
-            this.patientMobileSetting = new PatientMobileSetting();
+            this.TrackedEntityMobileSetting = new TrackedEntityMobileSetting();
         }
         else
         {
-            this.patientMobileSetting = list.get( 0 );
+            this.TrackedEntityMobileSetting = list.get( 0 );
         }    
         if ( this.version != 0 )
         {
-            this.patientMobileSetting.setVersionToUpdate( this.version );
+            this.TrackedEntityMobileSetting.setVersionToUpdate( this.version );
         }
         if ( autoUpdate != null && autoUpdate.equals( "yes" ) )
         {
-            this.patientMobileSetting.setAutoUpdateClient( true );
+            this.TrackedEntityMobileSetting.setAutoUpdateClient( true );
         }
         
         if ( autoUpdate != null && autoUpdate.equals( "no" ) )
         {
-            this.patientMobileSetting.setAutoUpdateClient( false );
+            this.TrackedEntityMobileSetting.setAutoUpdateClient( false );
         }
-        patientMobileSettingService.savePatientMobileSetting( this.patientMobileSetting );
+        TrackedEntityMobileSettingService.saveTrackedEntityMobileSetting( this.TrackedEntityMobileSetting );
         return SUCCESS;
     }
 

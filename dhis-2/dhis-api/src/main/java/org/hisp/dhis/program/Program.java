@@ -42,11 +42,11 @@ import org.hisp.dhis.common.view.WithoutOrganisationUnitsView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 
@@ -100,7 +100,7 @@ public class Program
 
     private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
 
-    private Set<ValidationCriteria> patientValidationCriteria = new HashSet<ValidationCriteria>();
+    private Set<ValidationCriteria> validationCriteria = new HashSet<ValidationCriteria>();
 
     private Integer type;
 
@@ -108,13 +108,13 @@ public class Program
 
     private Boolean ignoreOverdueEvents = false;
 
-    private Set<ProgramPatientAttribute> programPatientAttributes = new HashSet<ProgramPatientAttribute>();
+    private Set<ProgramTrackedEntityAttribute> attributes = new HashSet<ProgramTrackedEntityAttribute>();
 
     private Set<UserAuthorityGroup> userRoles = new HashSet<UserAuthorityGroup>();
 
     private Boolean onlyEnrollOnce = false;
 
-    private Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
+    private Set<TrackedEntityInstanceReminder> instanceReminders = new HashSet<TrackedEntityInstanceReminder>();
 
     /**
      * All OrganisationUnitGroup that register data with this program.
@@ -178,18 +178,18 @@ public class Program
     }
 
     /**
-     * Returns PatientAttributes from ProgramPatientAttributes.
+     * Returns TrackedEntityAttributes from ProgramTrackedEntityAttributes.
      */
-    public List<PatientAttribute> getAttributes()
+    public List<TrackedEntityAttribute> getEntityAttributes()
     {
-        List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+        List<TrackedEntityAttribute> entityAttributes = new ArrayList<TrackedEntityAttribute>();
 
-        for ( ProgramPatientAttribute attribute : programPatientAttributes )
+        for ( ProgramTrackedEntityAttribute entityAttribute : attributes )
         {
-            attributes.add( attribute.getPatientAttribute() );
+            entityAttributes.add( entityAttribute.getAttribute() );
         }
 
-        return attributes;
+        return entityAttributes;
     }
 
     public ProgramStage getProgramStageByStage( int stage )
@@ -209,16 +209,16 @@ public class Program
         return null;
     }
 
-    public ValidationCriteria isValid( Patient patient )
+    public ValidationCriteria isValid( TrackedEntityInstance entityInstance )
     {
         try
         {
-            for ( ValidationCriteria criteria : patientValidationCriteria )
+            for ( ValidationCriteria criteria : validationCriteria )
             {
                 String value = "";
-                for ( PatientAttributeValue attributeValue : patient.getAttributeValues() )
+                for ( TrackedEntityAttributeValue attributeValue : entityInstance.getAttributeValues() )
                 {
-                    if ( attributeValue.getPatientAttribute().getUid().equals( criteria.getProperty() ) )
+                    if ( attributeValue.getAttribute().getUid().equals( criteria.getProperty() ) )
                     {
                         value = attributeValue.getValue();
                         break;
@@ -372,14 +372,14 @@ public class Program
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlElementWrapper( localName = "validationCriterias", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "validationCriteria", namespace = DxfNamespaces.DXF_2_0 )
-    public Set<ValidationCriteria> getPatientValidationCriteria()
+    public Set<ValidationCriteria> getValidationCriteria()
     {
-        return patientValidationCriteria;
+        return validationCriteria;
     }
 
-    public void setPatientValidationCriteria( Set<ValidationCriteria> patientValidationCriteria )
+    public void setValidationCriteria( Set<ValidationCriteria> validationCriteria )
     {
-        this.patientValidationCriteria = patientValidationCriteria;
+        this.validationCriteria = validationCriteria;
     }
 
     @JsonProperty
@@ -398,10 +398,10 @@ public class Program
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    private Object getValueFromPatient( String property, Patient patient )
+    private Object getValueFromTrackedEntityInstance( String property, TrackedEntityInstance entityInstance )
         throws Exception
     {
-        return Patient.class.getMethod( "get" + property ).invoke( patient );
+        return TrackedEntityInstance.class.getMethod( "get" + property ).invoke( entityInstance );
     }
 
     @JsonProperty
@@ -464,14 +464,14 @@ public class Program
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public Set<PatientReminder> getPatientReminders()
+    public Set<TrackedEntityInstanceReminder> getInstanceReminders()
     {
-        return patientReminders;
+        return instanceReminders;
     }
 
-    public void setPatientReminders( Set<PatientReminder> patientReminders )
+    public void setInstanceReminders( Set<TrackedEntityInstanceReminder> instanceReminders )
     {
-        this.patientReminders = patientReminders;
+        this.instanceReminders = instanceReminders;
     }
 
     @JsonProperty
@@ -597,13 +597,13 @@ public class Program
     @JsonView( { DetailedView.class, ExportView.class, WithoutOrganisationUnitsView.class } )
     @JacksonXmlElementWrapper( localName = "programPersonAttributes", namespace = DxfNamespaces.DXF_2_0 )
     @JacksonXmlProperty( localName = "programPersonAttribute", namespace = DxfNamespaces.DXF_2_0 )
-    public Set<ProgramPatientAttribute> getProgramPatientAttributes()
+    public Set<ProgramTrackedEntityAttribute> getAttributes()
     {
-        return programPatientAttributes;
+        return attributes;
     }
 
-    public void setProgramPatientAttributes( Set<ProgramPatientAttribute> programPatientAttributes )
+    public void setAttributes( Set<ProgramTrackedEntityAttribute> attributes )
     {
-        this.programPatientAttributes = programPatientAttributes;
+        this.attributes = attributes;
     }
 }

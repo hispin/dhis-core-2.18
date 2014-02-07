@@ -118,7 +118,7 @@ public class DefaultProgramExpressionService
 
     @Override
     public String getProgramExpressionValue( ProgramExpression programExpression,
-        ProgramStageInstance programStageInstance, Map<String, String> patientDataValueMap )
+        ProgramStageInstance programStageInstance, Map<String, String> dataValueMap )
     {
         String value = "";
         if ( programExpression.getExpression().contains( ProgramExpression.DUE_DATE ) )
@@ -138,7 +138,7 @@ public class DefaultProgramExpressionService
             while ( matcher.find() )
             {
                 String key = matcher.group().replaceAll( "[\\[\\]]", "" ).split( SEPARATOR_OBJECT )[1];
-                String dataValue = patientDataValueMap.get( key );
+                String dataValue = dataValueMap.get( key );
                 if ( dataValue == null )
                 {
                     return null;

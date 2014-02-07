@@ -29,14 +29,15 @@ package org.hisp.dhis.caseentry.action.caseentry;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import java.util.Date;
@@ -68,11 +69,11 @@ public class SaveValueAction
         this.dataElementService = dataElementService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private CurrentUserService currentUserService;
@@ -132,7 +133,7 @@ public class SaveValueAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementUid );
 
-        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
+        TrackedEntityDataValue dataValue = dataValueService.getTrackedEntityDataValue( programStageInstance,
             dataElement );
 
         if ( value != null && value.trim().length() == 0 )
@@ -153,31 +154,31 @@ public class SaveValueAction
         providedElsewhere = (providedElsewhere == null) ? false : providedElsewhere;
         String storedBy = currentUserService.getCurrentUsername();
 
-        if ( patientDataValue == null && value != null )
+        if ( dataValue == null && value != null )
         {
-            LOG.debug( "Adding PatientDataValue, value added" );
+            LOG.debug( "Adding Tracked Entity DataValue, value added" );
 
-            patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
-            patientDataValue.setStoredBy( storedBy );
-            patientDataValue.setProvidedElsewhere( providedElsewhere );
+            dataValue = new TrackedEntityDataValue( programStageInstance, dataElement, new Date(), value );
+            dataValue.setStoredBy( storedBy );
+            dataValue.setProvidedElsewhere( providedElsewhere );
 
-            patientDataValueService.savePatientDataValue( patientDataValue );
+            dataValueService.saveTrackedEntityDataValue( dataValue );
         }
 
-        if ( patientDataValue != null && value == null )
+        if ( dataValue != null && value == null )
         {
-            patientDataValueService.deletePatientDataValue( patientDataValue );
+            dataValueService.deleteTrackedEntityDataValue( dataValue );
         }
-        else if ( patientDataValue != null && value != null )
+        else if ( dataValue != null && value != null )
         {
-            LOG.debug( "Updating PatientDataValue, value added/changed" );
+            LOG.debug( "Updating Tracked Entity DataValue, value added/changed" );
 
-            patientDataValue.setValue( value );
-            patientDataValue.setTimestamp( new Date() );
-            patientDataValue.setProvidedElsewhere( providedElsewhere );
-            patientDataValue.setStoredBy( storedBy );
+            dataValue.setValue( value );
+            dataValue.setTimestamp( new Date() );
+            dataValue.setProvidedElsewhere( providedElsewhere );
+            dataValue.setStoredBy( storedBy );
 
-            patientDataValueService.updatePatientDataValue( patientDataValue );
+            dataValueService.updateTrackedEntityDataValue( dataValue );
         }
 
         statusCode = 0;

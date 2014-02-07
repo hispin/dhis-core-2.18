@@ -16,20 +16,19 @@
 	</tr>
 	<tbody id='commentTB' name='commentTB'>
 		#set( $mark = false )
-		#foreach( $comment in $programStageInstance.patientComments )
-			<tr id="comment_$comment.id" #alternate( $mark )>
-				<td>$format.formatDateTime($comment.createdDate)</td>
-				<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
-				<td>$encoder.htmlEncode($comment.creator)</td>
-				<td>$i18n.getString('comment')</td>
-				<td></td>
-				<td>$encoder.htmlEncode($comment.commentText)</td>
-				<td>
-					<a href="javascript:removeComment( '$programStageInstance.id', '$comment.id' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
-				</td>
-			</tr>
-			#set( $mark = !$mark )
-		#end
+		<tr id="comment_$programStageInstance.comment.id" #alternate( $mark )>
+			<td>$format.formatDateTime($programStageInstance.comment.createdDate)</td>
+			<td>$encoder.htmlEncode($programStageInstance.programStage.displayName)</td>
+			<td>$encoder.htmlEncode($programStageInstance.comment.creator)</td>
+			<td>$i18n.getString('comment')</td>
+			<td></td>
+			<td>$encoder.htmlEncode($programStageInstance.comment.commentText)</td>
+			<td>
+				<a href="javascript:removeComment( '$programStageInstance.id', '$programStageInstance.comment.id' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+			</td>
+		</tr>
+		
+		#set( $mark = !$mark )
 		#foreach( $sms in $programStageInstance.outboundSms )
 			<tr id="tr${sms.id}" #alternate( $mark )>
 				<td>$format.formatDateTime($!sms.date)</td>

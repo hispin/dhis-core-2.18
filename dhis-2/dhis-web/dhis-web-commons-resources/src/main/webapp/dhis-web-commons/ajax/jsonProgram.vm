@@ -10,7 +10,7 @@
 	"dateOfEnrollmentDescription": "$!encoder.jsEncode( ${program.dateOfEnrollmentDescription} )",
 	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",
-	"noAttributes": "$!program.patientAttributes.size()",
+	"noAttributes": "$!program.attributes.size()",
 	"onlyEnrollOnce": "$!program.onlyEnrollOnce",
 	"displayOnAllOrgunit": "$!program.displayOnAllOrgunit",
 	"selectEnrollmentDatesInFuture": "$!program.selectEnrollmentDatesInFuture",

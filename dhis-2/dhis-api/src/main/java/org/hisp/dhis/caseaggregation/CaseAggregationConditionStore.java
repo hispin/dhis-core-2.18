@@ -39,13 +39,13 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version PatientAggregationExpressionStore.java Nov 18, 2010 9:27:59 AM
+ * @version CaseAggregationConditionStore.java Nov 18, 2010 9:27:59 AM
  */
 public interface CaseAggregationConditionStore
     extends GenericNameableObjectStore<CaseAggregationCondition>
@@ -168,11 +168,11 @@ public interface CaseAggregationConditionStore
     String parseExpressionDetailsToSql( String caseExpression, String operator, Integer orgunitId, Period period );
 
     /**
-     * Get list of {@link Patient} ids from SQL
+     * Get list of {@link TrackedEntityInstance} ids from SQL
      * 
      * @param sql SQL statement
      * 
-     * @return List of patient ids
+     * @return List of tracked entity instance ids
      */
     List<Integer> executeSQL( String sql );
 }

@@ -55,7 +55,7 @@ public interface UserSettingService
     final String KEY_GENERATE_REPORT_INTERFACE = "keyGenerateReportInterface";
     final String KEY_ANALYSIS_DISPLAY_PROPERTY = "keyAnalysisDisplayProperty";
     final String AUTO_SAVE_CASE_ENTRY_FORM = "autoSaveCaseEntryForm";
-    final String AUTO_SAVE_PATIENT_REGISTRATION_ENTRY_FORM = "autoSavePatientRegistration";
+    final String AUTO_SAVE_TRACKED_ENTITY_REGISTRATION_ENTRY_FORM = "autoSavetTrackedEntityForm";
     final String DEFAULT_ANALYSIS_DISPLAY_PROPERTY = "name";
     
     final List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );

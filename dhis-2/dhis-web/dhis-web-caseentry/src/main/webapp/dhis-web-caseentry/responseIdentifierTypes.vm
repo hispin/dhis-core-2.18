@@ -1,7 +1,7 @@
 #set( $size = $identifierTypes.size() )
 { 
 #set( $size = $attributes.size() )
-"patientAttributes": [
+"attributes": [
 	#foreach( $attribute in $attributes )
 	  {
 		"id":  ${attribute.id} ,

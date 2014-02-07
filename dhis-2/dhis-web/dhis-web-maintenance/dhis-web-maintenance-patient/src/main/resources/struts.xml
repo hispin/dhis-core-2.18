@@ -9,16 +9,16 @@
 	<package name="dhis-web-maintenance-patient" extends="dhis-web-commons"
 		namespace="/dhis-web-maintenance-patient">
 
-		<action name="index" class="org.hisp.dhis.patient.action.NoAction">
+		<action name="index" class="org.hisp.dhis.trackedentity.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/index.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 		</action>
 
-		<!-- Patient RelationshipType -->
+		<!-- RelationshipType -->
 
 		<action name="relationshipType"
-			class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeListAction">
+			class="org.hisp.dhis.trackedentity.action.relationship.GetRelationshipTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/relationshipType.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
@@ -26,7 +26,7 @@
 		</action>
 
 		<action name="getRelationshipType"
-			class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeAction">
+			class="org.hisp.dhis.trackedentity.action.relationship.GetRelationshipTypeAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonRelationshipType.vm
 			</result>
@@ -34,7 +34,7 @@
 		</action>
 
 		<action name="removeRelationshipType"
-			class="org.hisp.dhis.patient.action.relationship.RemoveRelationshipTypeAction">
+			class="org.hisp.dhis.trackedentity.action.relationship.RemoveRelationshipTypeAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -42,13 +42,13 @@
 		</action>
 
 		<action name="addRelationshipType"
-			class="org.hisp.dhis.patient.action.relationship.AddRelationshipTypeAction">
+			class="org.hisp.dhis.trackedentity.action.relationship.AddRelationshipTypeAction">
 			<result name="success" type="redirect">relationshipType.action
 			</result>
 			<param name="requiredAuthorities">F_RELATIONSHIPTYPE_ADD</param>
 		</action>
 
-		<action name="showAddRelationshipTypeForm" class="org.hisp.dhis.patient.action.NoAction">
+		<action name="showAddRelationshipTypeForm" class="org.hisp.dhis.trackedentity.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addRelationshipTypeForm.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
@@ -57,7 +57,7 @@
 		</action>
 
 		<action name="showUpdateRelationshipTypeForm"
-			class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeAction">
+			class="org.hisp.dhis.trackedentity.action.relationship.GetRelationshipTypeAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateRelationshipTypeForm.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
@@ -66,14 +66,14 @@
 		</action>
 
 		<action name="updateRelationshipType"
-			class="org.hisp.dhis.patient.action.relationship.UpdateRelationshipTypeAction">
+			class="org.hisp.dhis.trackedentity.action.relationship.UpdateRelationshipTypeAction">
 			<result name="success" type="redirect">relationshipType.action
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
 		<action name="validateRelationshipType"
-			class="org.hisp.dhis.patient.action.relationship.ValidateRelationshipTypeAction">
+			class="org.hisp.dhis.trackedentity.action.relationship.ValidateRelationshipTypeAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -86,43 +86,43 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<!-- PatientAttribute -->
+		<!-- TrackedEntityAttribute -->
 
-		<action name="patientAttribute"
-			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeListAction">
+		<action name="attribute"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/patientAttribute.vm</param>
+				/dhis-web-maintenance-patient/attribute.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientAttribute.js</param>
+			<param name="javascripts">javascript/attribute.js</param>
 		</action>
 
-		<action name="getPatientAttribute"
-			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeAction">
+		<action name="getAttribute"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPatientAttribute.vm
+				/dhis-web-commons/ajax/jsonTrackedEntityAttribute.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="getPatientAttributes"
-			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeListAction">
+		<action name="getAttributes"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributeListAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPatientAttributes.vm
+				/dhis-web-commons/ajax/jsonTrackedEntityAttributes.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="getPatientAttributeWithoutGroup"
-			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithoutGroupAction">
+		<action name="getAttributeWithoutGroup"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.GetAttributesWithoutGroupAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPatientAttributes.vm
+				/dhis-web-commons/ajax/jsonTrackedEntityAttributes.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="removePatientAttribute"
-			class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeAction">
+		<action name="removeAttribute"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.RemoveAttributeAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -132,42 +132,42 @@
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
 
-		<action name="addPatientAttribute"
-			class="org.hisp.dhis.patient.action.patientattribute.AddPatientAttributeAction">
-			<result name="success" type="redirect">patientAttribute.action
+		<action name="addAttribute"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.AddAttributeAction">
+			<result name="success" type="redirect">attribute.action
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="showAddPatientAttributeForm"
-			class="org.hisp.dhis.patient.action.program.GetUnAnonymousProgramAction">
+		<action name="showAddAttributeForm"
+			class="org.hisp.dhis.trackedentity.action.program.GetUnAnonymousProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/addPatientAttributeForm.vm</param>
-			<param name="javascripts">javascript/patientAttribute.js</param>
+				/dhis-web-maintenance-patient/addAttributeForm.vm</param>
+			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="showUpdatePatientAttributeForm"
-			class="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeAction">
+		<action name="showUpdateAttributeForm"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowUpdateAttributeAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/updatePatientAttibuteForm.vm</param>
-			<param name="javascripts">javascript/patientAttribute.js</param>
+				/dhis-web-maintenance-patient/updateAttibuteForm.vm</param>
+			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="updatePatientAttribute"
-			class="org.hisp.dhis.patient.action.patientattribute.UpdatePatientAttributeAction">
-			<result name="success" type="redirect">patientAttribute.action
+		<action name="updateAttribute"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.UpdateAttributeAction">
+			<result name="success" type="redirect">attribute.action
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="validatePatientAttribute"
-			class="org.hisp.dhis.patient.action.patientattribute.ValidatePatientAttributeAction">
+		<action name="validateAttribute"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ValidateAttributeAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -177,8 +177,8 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="removePatientAttributeOption"
-			class="org.hisp.dhis.patient.action.patientattribute.RemovePatientAttributeOptionAction">
+		<action name="removeAttributeOption"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.RemoveAttributeOptionAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -191,36 +191,36 @@
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
 
-		<action name="patientAttributeVisitSchedule"
-			class="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeVisitScheduleFormAction">
+		<action name="attributeVisitSchedule"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeVisitScheduleFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/patientAttributeVisitSchedule.vm</param>
+				/dhis-web-maintenance-patient/attributeVisitSchedule.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientAttribute.js</param>
+			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="savePatientAttributeVisitSchedule"
-			class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeVisitScheduleAction">
+		<action name="saveAttributeVisitSchedule"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.SaveAttributeVisitScheduleAction">
 			<result name="success" type="redirect">index.action</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 		
-		<action name="patientAttributeInListNoProgram"
-			class="org.hisp.dhis.patient.action.patientattribute.ShowPatientAttributeInListNoProgramAction">
+		<action name="attributeInListNoProgram"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.ShowAttributeInListNoProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
-				/dhis-web-maintenance-patient/patientAttributeInListNoProgram.vm</param>
+				/dhis-web-maintenance-patient/attributeInListNoProgram.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientAttribute.js</param>
+			<param name="javascripts">javascript/attribute.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="savePatientAttributeInListNoProgram"
-			class="org.hisp.dhis.patient.action.patientattribute.SavePatientAttributeInListNoProgramAction">
+		<action name="saveAttributeInListNoProgram"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattribute.SaveAttributeInListNoProgramAction">
 			<result name="success" type="redirect">index.action</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
@@ -228,7 +228,7 @@
 		<!-- Program -->
 
 		<action name="program"
-			class="org.hisp.dhis.patient.action.program.GetProgramListAction">
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programList.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
@@ -236,7 +236,7 @@
 		</action>
 
 		<action name="getProgram"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonProgram.vm
 			</result>
@@ -244,7 +244,7 @@
 		</action>
 
 		<action name="removeProgram"
-			class="org.hisp.dhis.patient.action.program.RemoveProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.RemoveProgramAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -255,14 +255,14 @@
 		</action>
 
 		<action name="addProgram"
-			class="org.hisp.dhis.patient.action.program.AddProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.AddProgramAction">
 			<result name="success" type="redirect">program.action
 			</result>
 			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="showAddProgramForm"
-			class="org.hisp.dhis.patient.action.program.ShowAddProgramFormAction">
+			class="org.hisp.dhis.trackedentity.action.program.ShowAddProgramFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>
@@ -271,7 +271,7 @@
 		</action>
 
 		<action name="showUpdateProgramForm"
-			class="org.hisp.dhis.patient.action.program.ShowUpdateProgramFormAction">
+			class="org.hisp.dhis.trackedentity.action.program.ShowUpdateProgramFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>
@@ -280,14 +280,14 @@
 		</action>
 
 		<action name="updateProgram"
-			class="org.hisp.dhis.patient.action.program.UpdateProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.UpdateProgramAction">
 			<result name="success" type="redirect">program.action
 			</result>
 			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="validateProgram"
-			class="org.hisp.dhis.patient.action.program.ValidateProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.ValidateProgramAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -301,7 +301,7 @@
 		</action>
 
 		<action name="showProgramUserroleForm"
-			class="org.hisp.dhis.patient.action.program.ShowProgramUserroleFormAction">
+			class="org.hisp.dhis.trackedentity.action.program.ShowProgramUserroleFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programUserrole.vm</param>
 			<param name="javascripts">javascript/program.js</param>
@@ -310,21 +310,21 @@
 		</action>
 
 		<action name="defineProgramUserrole"
-			class="org.hisp.dhis.patient.action.program.DefineProgramUserroleAction">
+			class="org.hisp.dhis.trackedentity.action.program.DefineProgramUserroleAction">
 			<result name="success" type="redirect">program.action</result>
 		</action>
 
 		<!-- Program_OrganisationUnit Association -->
 
 		<action name="defineProgramAssociationsForm"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programAssociations.vm</param>
 			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
 		</action>
 
 		<action name="defineProgramAssociations"
-			class="org.hisp.dhis.patient.action.program.DefineProgramAssociationsAction">
+			class="org.hisp.dhis.trackedentity.action.program.DefineProgramAssociationsAction">
 			<result name="success" type="redirect">program.action
 			</result>
 			<param name="anyAuthorities">F_PROGRAM_PUBLIC_ADD,F_PROGRAM_PRIVATE_ADD</param>
@@ -333,14 +333,14 @@
 		<!-- ProgramStage -->
 
 		<action name="programStage"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programStage.vm</param>
 			<param name="javascripts">javascript/programStage.js</param>
 		</action>
 
 		<action name="getProgramStage"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonProgramStage.vm
 			</result>
@@ -348,7 +348,7 @@
 		</action>
 
 		<action name="showAddProgramStageForm"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="input" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseInput.vm
 			</result>
@@ -361,14 +361,14 @@
 		</action>
 
 		<action name="addProgramStage"
-			class="org.hisp.dhis.patient.action.programstage.AddProgramStageAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.AddProgramStageAction">
 			<result name="success" type="redirect">programStage.action?id=${id}
 			</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
 		<action name="validateProgramStage"
-			class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.ValidateProgramStageAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -379,7 +379,7 @@
 		</action>
 
 		<action name="updateProgramStage"
-			class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.UpdateProgramStageAction">
 			<result name="success" type="redirect">
 				programStage.action?id=${programId}
 			</result>
@@ -387,7 +387,7 @@
 		</action>
 
 		<action name="showUpdateProgramStageForm"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/updateProgramStageForm.vm</param>
@@ -397,7 +397,7 @@
 		</action>
 
 		<action name="removeProgramStage"
-			class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.RemoveProgramStageAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -409,14 +409,14 @@
 		</action>
 
 		<action name="saveProgramStageSortOder"
-			class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.SaveProgramStageSortOrderAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
 		<action name="programStageList"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programStageList.vm</param>
 			<param name="javascripts">javascript/programStage.js</param>
@@ -425,7 +425,7 @@
 		<!-- Program stage section -->
 
 		<action name="programStageSectionList"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionListAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageSectionListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/programStageSection.vm</param>
@@ -435,7 +435,7 @@
 		</action>
 
 		<action name="showAddProgramStageSectionForm"
-			class="org.hisp.dhis.patient.action.programstage.ShowAddProgramStageSectionAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.ShowAddProgramStageSectionAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/addProgramStageSectionForm.vm</param>
@@ -445,14 +445,14 @@
 		</action>
 
 		<action name="addProgramStageSection"
-			class="org.hisp.dhis.patient.action.programstage.AddProgramStageSectionAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.AddProgramStageSectionAction">
 			<result name="success" type="redirect">programStageSectionList.action?id=${programStageId}
 			</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_ADD</param>
 		</action>
 
 		<action name="showUpdateProgramStageSectionForm"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageSectionAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/updateProgramStageSectionForm.vm</param>
@@ -462,21 +462,21 @@
 		</action>
 
 		<action name="updateProgramStageSection"
-			class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageSectionAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.UpdateProgramStageSectionAction">
 			<result name="success" type="redirect">programStageSectionList.action?id=${programStageId}
 			</result>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_ADD</param>
 		</action>
 
 		<action name="getProgramStageSection"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageSectionAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonProgramStageSection.vm
 			</result>
 		</action>
 
 		<action name="removeProgramStageSection"
-			class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageSectionAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.RemoveProgramStageSectionAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -487,7 +487,7 @@
 		</action>
 
 		<action name="showProgramStageSectionSortedOderForm"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/programStageSectionSortOder.vm</param>
@@ -497,13 +497,13 @@
 		</action>
 
 		<action name="saveProgramStageSectionSortOrder"
-			class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSectionSortOrderAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.SaveProgramStageSectionSortOrderAction">
 			<result name="success" type="redirect">programStageSectionList.action?id=${id}
 			</result>
 		</action>
 
 		<action name="validateProgramStageSection"
-			class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageSectionAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.ValidateProgramStageSectionAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -515,7 +515,7 @@
 		<!-- Data Entry Form -->
 
 		<action name="viewDataEntryForm"
-			class="org.hisp.dhis.patient.action.dataentryform.ViewDataEntryFormAction">
+			class="org.hisp.dhis.trackedentity.action.dataentryform.ViewDataEntryFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/viewDataEntryForm.vm</param>
 			<param name="javascripts">
@@ -526,28 +526,28 @@
 		</action>
 
 		<action name="saveDataEntryForm"
-			class="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction">
+			class="org.hisp.dhis.trackedentity.action.dataentryform.SaveDataEntryFormAction">
 			<result name="success" type="redirect">
 				programStage.action?id=${programId}
 			</result>
 		</action>
 
 		<action name="autoSaveDataEntryForm"
-			class="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction">
+			class="org.hisp.dhis.trackedentity.action.dataentryform.SaveDataEntryFormAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
 		<action name="delDataEntryForm"
-			class="org.hisp.dhis.patient.action.dataentryform.DelDataEntryFormAction">
+			class="org.hisp.dhis.trackedentity.action.dataentryform.DelDataEntryFormAction">
 			<result name="success" type="redirect">
 				programStage.action?id=${programId}
 			</result>
 		</action>
 
 		<action name="validateDataEntryForm"
-			class="org.hisp.dhis.patient.action.dataentryform.ValidateDataEntryFormAction">
+			class="org.hisp.dhis.trackedentity.action.dataentryform.ValidateDataEntryFormAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -558,148 +558,148 @@
 		</action>
 
 		<action name="getSelectedDataElements"
-			class="org.hisp.dhis.patient.action.dataentryform.GetSelectedDataElementsAction">
+			class="org.hisp.dhis.trackedentity.action.dataentryform.GetSelectedDataElementsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseSelDataElementList.vm
 			</result>
 		</action>
 
 		<action name="showDataEntryForm"
-			class="org.hisp.dhis.patient.action.dataentryform.ShowDataEntryFormAction">
+			class="org.hisp.dhis.trackedentity.action.dataentryform.ShowDataEntryFormAction">
 			<result name="success" type="velocity">
 				/dhis-web-maintenance-patient/dataEntryFormCode.vm
 			</result>
 		</action>
 
 		<action name="setAutoSaveDataEntrySetting"
-			class="org.hisp.dhis.patient.action.dataentryform.SetAutoSaveDataEntrySettingAction">
+			class="org.hisp.dhis.trackedentity.action.dataentryform.SetAutoSaveDataEntrySettingAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
-		<!-- Patient Registration Form -->
+		<!-- Tracked Entity Form -->
 
-		<action name="patientRegistrationForm"
-			class="org.hisp.dhis.patient.action.dataentryform.GetPatientRegistrationFormListAction">
+		<action name="trackedEntityForm"
+			class="org.hisp.dhis.trackedentity.action.dataentryform.GetTrackedEntityFormListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/patientRegistrationForm.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/trackedEntityForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientRegistrationForm.js</param>
+			<param name="javascripts">javascript/trackedEntityForm.js</param>
 			<param name="requiredAuthorities">F_ADD_PATIENT_REGISTRATION_FORM</param>
 		</action>
 
-		<action name="viewPatientRegistrationForm"
-			class="org.hisp.dhis.patient.action.dataentryform.ViewPatientRegistrationFormAction">
+		<action name="viewTrackedEntityForm"
+			class="org.hisp.dhis.trackedentity.action.dataentryform.ViewTrackedEntityFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/viewPatientRegistationForm.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/viewTrackedEntityForm.vm</param>
 			<param name="javascripts">
 				../dhis-web-commons/ckeditor/ckeditor.js,
 				../dhis-web-commons/ckeditor/adapters/jquery.js,
-				javascript/viewPatientRegistationForm.js
+				javascript/viewTrackedEntityForm.js
 			</param>
 			<param name="stylesheets">style/basic.css</param>
 		</action>
 
-		<action name="savePatientRegistrationForm"
-			class="org.hisp.dhis.patient.action.dataentryform.SavePatientRegistrationFormAction">
-			<result name="success" type="redirect">patientRegistrationForm.action
+		<action name="saveTrackedEntityForm"
+			class="org.hisp.dhis.trackedentity.action.dataentryform.SaveTrackedEntityFormAction">
+			<result name="success" type="redirect">trackedEntityForm.action
 			</result>
 		</action>
 
-		<action name="autoSavePatientRegistrationForm"
-			class="org.hisp.dhis.patient.action.dataentryform.SavePatientRegistrationFormAction">
+		<action name="autoSaveTrackedEntityForm"
+			class="org.hisp.dhis.trackedentity.action.dataentryform.SaveTrackedEntityFormAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
-		<action name="delRegistrationFormAction"
-			class="org.hisp.dhis.patient.action.dataentryform.DelRegistrationFormAction">
+		<action name="removeDataEntryForm"
+			class="org.hisp.dhis.trackedentity.action.dataentryform.RemoveDataEntryFormAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
-		<action name="delRegistrationEntryFormAction"
-			class="org.hisp.dhis.patient.action.dataentryform.DelRegistrationFormAction">
-			<result name="success" type="redirect">patientRegistrationForm.action
+		<action name="removeTrackedEntityForm"
+			class="org.hisp.dhis.trackedentity.action.dataentryform.RemoveTrackedEntityFormAction">
+			<result name="success" type="redirect">trackedEntityForm.action
 			</result>
 		</action>
 
-		<action name="showPatientRegistrationForm"
-			class="org.hisp.dhis.patient.action.dataentryform.ShowPatientRegistrationFormAction">
+		<action name="showTrackedEntityForm"
+			class="org.hisp.dhis.trackedentity.action.dataentryform.ShowTrackedEntityFormAction">
 			<result name="success" type="velocity">
 				/dhis-web-maintenance-patient/dataEntryFormCode.vm
 			</result>
 		</action>
 
-		<action name="setAutoSavePatientRegistrationSetting"
-			class="org.hisp.dhis.patient.action.dataentryform.SetAutoSavePatientRegistrationSettingAction">
+		<action name="setAutoSaveTrackedEntityFormSetting"
+			class="org.hisp.dhis.trackedentity.action.dataentryform.SetAutoSaveTrackedEntityFormSettingAction">
 			<result name="success" type="velocity-json">
 				../dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
-		<!-- Patient Attribute Group -->
+		<!-- Tracked Entity Attribute Group -->
 
-		<action name="patientAttributeGroup"
-			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction">
+		<action name="attributeGroup"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.GetAttributeGroupListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/patientAttributeGroup.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/attributeGroup.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientAttributeGroup.js</param>
+			<param name="javascripts">javascript/attributeGroup.js</param>
 		</action>
 
-		<action name="getPatientAttributeGroup"
-			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupAction">
+		<action name="getAttributeGroup"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.GetAttributeGroupAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPatientAttributeGroup.vm
+				/dhis-web-commons/ajax/jsonTrackedEntityAttributeGroup.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="removePatientAttributeGroup"
-			class="org.hisp.dhis.patient.action.patientattributegroup.RemovePatientAttributeGroupAction">
+		<action name="removeAttributeGroup"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.RemoveAttributeGroupAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
 
-		<action name="addPatientAttributeGroup"
-			class="org.hisp.dhis.patient.action.patientattributegroup.AddPatientAttributeGroupAction">
-			<result name="success" type="redirect">patientAttributeGroup.action
+		<action name="addAttributeGroup"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.AddAttributeGroupAction">
+			<result name="success" type="redirect">attributeGroup.action
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="showAddPatientAttributeGroupForm" class="org.hisp.dhis.patient.action.NoAction">
+		<action name="showAddAttributeGroupForm" class="org.hisp.dhis.trackedentity.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addPatientAttributeGroupForm.vm</param>
-			<param name="javascripts">javascript/patientAttributeGroup.js</param>
+			<param name="page">/dhis-web-maintenance-patient/addAttributeGroupForm.vm</param>
+			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="showUpdatePatientAttributeGroupForm"
-			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupAction">
+		<action name="showUpdateAttributeGroupForm"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.GetAttributeGroupAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updatePatientAttibuteGroupForm.vm</param>
-			<param name="javascripts">javascript/patientAttributeGroup.js</param>
+			<param name="page">/dhis-web-maintenance-patient/updateAttibuteGroupForm.vm</param>
+			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="updatePatientAttributeGroup"
-			class="org.hisp.dhis.patient.action.patientattributegroup.UpdatePatientAttributeGroupAction">
-			<result name="success" type="redirect">patientAttributeGroup.action
+		<action name="updateAttributeGroup"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.UpdateAttributeGroupAction">
+			<result name="success" type="redirect">attributeGroup.action
 			</result>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="validatePatientAttributeGroup"
-			class="org.hisp.dhis.patient.action.patientattributegroup.ValidatePatientAttributeGroupAction">
+		<action name="validateAttributeGroup"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.ValidateAttributeGroupAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -712,103 +712,25 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="showSortPatientAttributeGroup"
-			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction">
+		<action name="showSortAttributeGroup"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.GetAttributeGroupListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/sortPatientAttributeGroupForm.vm</param>
-			<param name="javascripts">javascript/patientAttributeGroup.js</param>
+			<param name="page">/dhis-web-maintenance-patient/sortAttributeGroupForm.vm</param>
+			<param name="javascripts">javascript/attributeGroup.js</param>
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="savePatientAttributeGroupSortOrder"
-			class="org.hisp.dhis.patient.action.patientattributegroup.SavePatientAttributeGroupSortOrderAction">
-			<result name="success" type="redirect">patientAttributeGroup.action
+		<action name="saveAttributeGroupSortOrder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityattributegroup.SaveAttributeGroupSortOrderAction">
+			<result name="success" type="redirect">attributeGroup.action
 			</result>
 		</action>
-
-		<!-- Patient Identifier Type -->
-
-		<action name="showAddPatientIdentifierTypeForm"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.ShowAddPatientIdentifierTypeFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">
-				/dhis-web-maintenance-patient/addPatientIdentifierTypeForm.vm</param>
-			<param name="javascripts">javascript/patientIdentifierType.js</param>
-			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
-		</action>
-
-		<action name="validatePatientIdentifierType"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.ValidatePatientIdentifierTypeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<result name="error" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
-			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="showUpdatePatientIdentifierTypeForm"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.ShowUpdatePatientIdentifierTypeForm">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">
-				/dhis-web-maintenance-patient/updatePatientIdentifierType.vm</param>
-			<param name="javascripts">javascript/patientIdentifierType.js</param>
-			<param name="stylesheets">style/basic.css</param>
-			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
-		</action>
-
-		<action name="patientIdentifierType"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">
-				/dhis-web-maintenance-patient/patientIdentifierType.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/patientIdentifierType.js</param>
-		</action>
-
-		<action name="getPatientIdentifierType"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPatientIdentifierType.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="removePatientIdentifierType"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.RemovePatientIdentifierTypeAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<result name="error" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
-			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_DELETE</param>
-		</action>
-
-		<action name="addPatientIdentifierType"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.AddPatientIdentifierTypeAction">
-			<result name="success" type="redirect">patientIdentifierType.action
-			</result>
-			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
-		</action>
-
-		<action name="updatePatientIdentifierType"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.UpdatePatientIdentifierTypeAction">
-			<result name="success" type="redirect">patientIdentifierType.action
-			</result>
-			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
-		</action>
-
+		
 		<!-- Case Aggregation Condition -->
 
 		<action name="caseAggregation"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetAllCaseAggregationConditionAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/caseAggregation.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
@@ -817,7 +739,7 @@
 		</action>
 
 		<action name="showAddCaseAggregationForm"
-			class="org.hisp.dhis.patient.action.caseaggregation.ShowAddCaseAggregationConditionFormAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.ShowAddCaseAggregationConditionFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addCaseAggregation.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
@@ -825,7 +747,7 @@
 		</action>
 
 		<action name="showUpdateCaseAggregationForm"
-			class="org.hisp.dhis.patient.action.caseaggregation.ShowUpdateCaseAggregationConditionFormAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.ShowUpdateCaseAggregationConditionFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateCaseAggregation.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
@@ -833,54 +755,54 @@
 		</action>
 
 		<action name="addCaseAggregation"
-			class="org.hisp.dhis.patient.action.caseaggregation.AddCaseAggregationConditionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.AddCaseAggregationConditionAction">
 			<result name="success" type="redirect">caseAggregation.action
 			</result>
 		</action>
 
 		<action name="updateCaseAggregation"
-			class="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.UpdateCaseAggregationConditionAction">
 			<result name="success" type="redirect">caseAggregation.action
 			</result>
 		</action>
 
 		<action name="removeCaseAggregation"
-			class="org.hisp.dhis.patient.action.caseaggregation.RemoveCaseAggregationConditionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.RemoveCaseAggregationConditionAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
 		<action name="getDataElementsByDataset"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetDataElementsByDataSetAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetDataElementsByDataSetAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-maintenance-patient/responseAggerateDataElement.vm
 			</result>
 		</action>
 
 		<action name="getParamsByProgram"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetParamsByProgramAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetParamsByProgramAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-maintenance-patient/jsonParamsByProgram.vm
 			</result>
 		</action>
 
-		<action name="getPatientDataElements"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetPatientDataElementsAction">
+		<action name="getTrackedEntityDataElements"
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetTrackedEntityDataElementsAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/jsonPatientDataElements.vm
+				/dhis-web-maintenance-patient/jsonTrackedEntityDataElements.vm
 			</result>
 		</action>
 
 		<action name="getAggPSDataElements"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetAggPSDataElementsAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetAggPSDataElementsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseAggDataElement.vm
 			</result>
 		</action>
 
 		<action name="getCaseAggregation"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetCaseAggregationConditionAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonCaseAggregation.vm
 			</result>
@@ -888,7 +810,7 @@
 		</action>
 
 		<action name="getCaseAggregationDescription"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetAggConditionDescriptionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetAggConditionDescriptionAction">
 			<result name="success" type="velocity">
 				/dhis-web-maintenance-patient/responseCaseAggDescription.vm
 			</result>
@@ -896,7 +818,7 @@
 		</action>
 
 		<action name="validateCaseAggregation"
-			class="org.hisp.dhis.patient.action.caseaggregation.ValidateCaseAggregationConditionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.ValidateCaseAggregationConditionAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -907,7 +829,7 @@
 		</action>
 
 		<action name="testCaseAggregationCondition"
-			class="org.hisp.dhis.patient.action.caseaggregation.TestCaseAggregationConditionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.TestCaseAggregationConditionAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -918,23 +840,23 @@
 		</action>
 
 		<action name="getCaseAggConditionByDataset"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction">
+			class="org.hisp.dhis.trackedentity.action.caseaggregation.GetAllCaseAggregationConditionAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/caseAggregationList.vm</param>
 		</action>
 
 		<action name="getProgramStages"
-			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
+			class="org.hisp.dhis.trackedentity.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonProgramStages.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<!-- Validation - PatientValidationCriteria -->
+		<!-- Validation - ValidationCriteria -->
 
 		<action name="validationCriteria"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/validationCriteria.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
@@ -942,7 +864,7 @@
 		</action>
 
 		<action name="showAddValidationCriteriaForm"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addValidationCriteria.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
@@ -950,14 +872,14 @@
 		</action>
 
 		<action name="addValidationCriteria"
-			class="org.hisp.dhis.patient.action.validation.AddValidationCriteriaAction">
+			class="org.hisp.dhis.trackedentity.action.validation.AddValidationCriteriaAction">
 			<result name="success" type="redirect">validationCriteria.action?id=${programId}
 			</result>
 			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
 
 		<action name="showUpdateValidationCriteriaForm"
-			class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction">
+			class="org.hisp.dhis.trackedentity.action.validation.GetValidationCriteriaAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateValidationCriteria.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
@@ -965,21 +887,21 @@
 		</action>
 
 		<action name="getValidationCriteria"
-			class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaAction">
+			class="org.hisp.dhis.trackedentity.action.validation.GetValidationCriteriaAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonValidationCriteria.vm
 			</result>
 		</action>
 
 		<action name="updateValidationCriteria"
-			class="org.hisp.dhis.patient.action.validation.UpdateValidationCriteriaAction">
+			class="org.hisp.dhis.trackedentity.action.validation.UpdateValidationCriteriaAction">
 			<result name="success" type="redirect">validationCriteria.action?id=${programId}
 			</result>
 			<param name="requiredAuthorities">F_VALIDATIONCRITERIA_ADD</param>
 		</action>
 
 		<action name="removeValidationCriteria"
-			class="org.hisp.dhis.patient.action.validation.RemoveValidationCriteriaAction">
+			class="org.hisp.dhis.trackedentity.action.validation.RemoveValidationCriteriaAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -987,7 +909,7 @@
 		</action>
 
 		<action name="validateValidationCriteria"
-			class="org.hisp.dhis.patient.action.validation.ValidateValidationCriteriaAction">
+			class="org.hisp.dhis.trackedentity.action.validation.ValidateValidationCriteriaAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -999,7 +921,7 @@
 		<!-- Program Validation -->
 
 		<action name="programValidation"
-			class="org.hisp.dhis.patient.action.validation.GetProgramValidationListAction">
+			class="org.hisp.dhis.trackedentity.action.validation.GetProgramValidationListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programValidationList.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
@@ -1007,7 +929,7 @@
 		</action>
 
 		<action name="showAddSingleProgramValidationForm"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addSingleProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
@@ -1016,7 +938,7 @@
 		</action>
 
 		<action name="addProgramValidation"
-			class="org.hisp.dhis.patient.action.validation.AddProgramValidationAction">
+			class="org.hisp.dhis.trackedentity.action.validation.AddProgramValidationAction">
 			<result name="success" type="redirect">
 				programValidation.action?programId=${programId}
 			</result>
@@ -1024,7 +946,7 @@
 		</action>
 
 		<action name="showUpdateMultiProgramValidationForm"
-			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
+			class="org.hisp.dhis.trackedentity.action.validation.GetProgramValidationAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateMultiProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
@@ -1033,7 +955,7 @@
 		</action>
 
 		<action name="showUpdateSingleProgramValidationForm"
-			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
+			class="org.hisp.dhis.trackedentity.action.validation.GetProgramValidationAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateSingleProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
@@ -1042,7 +964,7 @@
 		</action>
 
 		<action name="updateProgramValidation"
-			class="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction">
+			class="org.hisp.dhis.trackedentity.action.validation.UpdateProgramValidationAction">
 			<result name="success" type="redirect">
 				programValidation.action?programId=${programId}
 			</result>
@@ -1050,7 +972,7 @@
 		</action>
 
 		<action name="removeProgramValidation"
-			class="org.hisp.dhis.patient.action.validation.RemoveProgramValidationAction">
+			class="org.hisp.dhis.trackedentity.action.validation.RemoveProgramValidationAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -1058,7 +980,7 @@
 		</action>
 
 		<action name="getProgramValidation"
-			class="org.hisp.dhis.patient.action.validation.GetProgramValidationAction">
+			class="org.hisp.dhis.trackedentity.action.validation.GetProgramValidationAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonProgramValidation.vm
 			</result>
@@ -1066,7 +988,7 @@
 		</action>
 
 		<action name="getProgramExpressionDescription"
-			class="org.hisp.dhis.patient.action.validation.GetProgramExpressionDescriptionAction">
+			class="org.hisp.dhis.trackedentity.action.validation.GetProgramExpressionDescriptionAction">
 			<result name="success" type="velocity">
 				/dhis-web-maintenance-patient/responseCaseAggDescription.vm
 			</result>
@@ -1076,7 +998,7 @@
 		<!-- Scheduling -->
 
 		<action name="viewScheduleTasks"
-			class="org.hisp.dhis.patient.action.schedule.GetScheduleParamsAction">
+			class="org.hisp.dhis.trackedentity.action.schedule.GetScheduleParamsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/scheduleSendMessage.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
@@ -1086,7 +1008,7 @@
 		</action>
 
 		<action name="scheduleTasks"
-			class="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction">
+			class="org.hisp.dhis.trackedentity.action.schedule.ScheduleSendMessageTasksAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-maintenance-patient/jsonResponseScheduleTasks.vm
 			</result>
@@ -1094,7 +1016,7 @@
 		</action>
 
 		<action name="viewScheduledCaseAggCondTasks"
-			class="org.hisp.dhis.patient.action.schedule.GetScheduleAggQueryBuilderParamsAction">
+			class="org.hisp.dhis.trackedentity.action.schedule.GetScheduleAggQueryBuilderParamsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/viewScheduledCaseAggTasks.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
@@ -1103,7 +1025,7 @@
 		</action>
 
 		<action name="scheduleCaseAggTasks"
-			class="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction">
+			class="org.hisp.dhis.trackedentity.action.schedule.ScheduleCaseAggregateConditionAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-maintenance-patient/jsonResponseScheduleTasks.vm
 			</result>
@@ -1113,7 +1035,7 @@
 		<!-- Program Indicator -->
 
 		<action name="programIndicator"
-			class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorListAction">
+			class="org.hisp.dhis.trackedentity.action.programtindicator.GetProgramIndicatorListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programIndicator.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
@@ -1122,7 +1044,7 @@
 		</action>
 
 		<action name="getProgramIndicator"
-			class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorAction">
+			class="org.hisp.dhis.trackedentity.action.programtindicator.GetProgramIndicatorAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonProgramIndicator.vm
 			</result>
@@ -1130,7 +1052,7 @@
 		</action>
 
 		<action name="showAddProgramIndicator"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addProgramIndicator.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programIndicator.js</param>
@@ -1138,14 +1060,14 @@
 		</action>
 
 		<action name="addProgramIndicator"
-			class="org.hisp.dhis.patient.action.programtindicator.AddProgramIndicatorAction">
+			class="org.hisp.dhis.trackedentity.action.programtindicator.AddProgramIndicatorAction">
 			<result name="success" type="redirect">programIndicator.action?programId=${programId}
 			</result>
 			<param name="requiredAuthorities">F_ADD_PROGRAM_INDICATOR</param>
 		</action>
 
 		<action name="showUpdateProgramIndicator"
-			class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorAction">
+			class="org.hisp.dhis.trackedentity.action.programtindicator.GetProgramIndicatorAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramIndicator.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programIndicator.js</param>
@@ -1153,14 +1075,14 @@
 		</action>
 
 		<action name="updateProgramIndicator"
-			class="org.hisp.dhis.patient.action.programtindicator.UpdateProgramIndicatorAction">
+			class="org.hisp.dhis.trackedentity.action.programtindicator.UpdateProgramIndicatorAction">
 			<result name="success" type="redirect">programIndicator.action?programId=${programId}
 			</result>
 			<param name="requiredAuthorities">F_ADD_PROGRAM_INDICATOR</param>
 		</action>
 
 		<action name="removeProgramIndicator"
-			class="org.hisp.dhis.patient.action.programtindicator.RemoveProgramIndicatorAction">
+			class="org.hisp.dhis.trackedentity.action.programtindicator.RemoveProgramIndicatorAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -1168,7 +1090,7 @@
 		</action>
 
 		<action name="validateProgramIndicator"
-			class="org.hisp.dhis.patient.action.programtindicator.ValidateProgramIndicatorAction">
+			class="org.hisp.dhis.trackedentity.action.programtindicator.ValidateProgramIndicatorAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
@@ -1179,71 +1101,71 @@
 		</action>
 
 		<action name="getProgramIndicatorDescripttion"
-			class="org.hisp.dhis.patient.action.programtindicator.GetProgramIndicatorDescripttionAction">
+			class="org.hisp.dhis.trackedentity.action.programtindicator.GetProgramIndicatorDescripttionAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
-		<!-- Patient reminder -->
+		<!-- Tracked entity instance reminder -->
 
-		<action name="programPatientReminder"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+		<action name="programReminder"
+			class="org.hisp.dhis.trackedentity.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programPatientReminder.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/programReminder.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/programPatientReminder.js</param>
+			<param name="javascripts">javascript/programReminder.js</param>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
-		<action name="showAddProgramPatientReminder"
-			class="org.hisp.dhis.patient.action.patientreminder.ShowAddProgramPatientReminderAction">
+		<action name="showAddProgramReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ShowAddProgramReminderAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/addProgramPatientReminder.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/programPatientReminder.js</param>
+			<param name="page">/dhis-web-maintenance-patient/addProgramReminder.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programReminder.js</param>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
-		<action name="addProgramPatientReminder"
-			class="org.hisp.dhis.patient.action.patientreminder.AddProgramPatientReminderAction">
-			<result name="success" type="redirect">programPatientReminder.action?id=${programId}
+		<action name="addProgramReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.AddProgramReminderAction">
+			<result name="success" type="redirect">programReminder.action?id=${programId}
 			</result>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
-		<action name="showUpdateProgramPatientReminder"
-			class="org.hisp.dhis.patient.action.patientreminder.GetPatientReminderAction">
+		<action name="showUpdateProgramReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.GetInstanceReminderAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/updateProgramPatientReminder.vm</param>
-			<param name="javascripts">javascript/commons.js,javascript/programPatientReminder.js</param>
+			<param name="page">/dhis-web-maintenance-patient/updateProgramReminder.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programReminder.js</param>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
-		<action name="updateProgramPatientReminder"
-			class="org.hisp.dhis.patient.action.patientreminder.UpdateProgramPatientReminderAction">
-			<result name="success" type="redirect">programPatientReminder.action?id=${programId}
+		<action name="updateProgramReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.UpdateProgramReminderAction">
+			<result name="success" type="redirect">programReminder.action?id=${programId}
 			</result>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
-		<action name="removeProgramPatientReminder"
-			class="org.hisp.dhis.patient.action.patientreminder.RemoveProgramPatientReminderAction">
+		<action name="removeProgramReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.RemoveProgramReminderAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 			<param name="requiredAuthorities">F_PATIENT_REMINDER_MANAGEMENT</param>
 		</action>
 
-		<action name="getPatientReminder"
-			class="org.hisp.dhis.patient.action.patientreminder.GetPatientReminderAction">
+		<action name="getReminder"
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.GetInstanceReminderAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPatientReminder.vm
+				/dhis-web-commons/ajax/jsonTrackedEntityInstanceReminder.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="validateProgramPatientReminder"
-			class="org.hisp.dhis.patient.action.patientreminder.ValidateProgramPatientReminderAction">
+			class="org.hisp.dhis.trackedentity.action.trackedentityinstancereminder.ValidateProgramReminderAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>

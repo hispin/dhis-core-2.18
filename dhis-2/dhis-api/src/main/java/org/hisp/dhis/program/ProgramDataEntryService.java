@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 
 /**
  * @author Chau Thu Tran
@@ -55,7 +55,7 @@ public interface ProgramDataEntryService
      * javascripts and drop down lists.
      * 
      * @param htmlCode the HTML code of the data entry form.
-     * @param dataValues the {@link PatientDataValue} which are registered for
+     * @param dataValues the {@link TrackedEntityDataValue} which are registered for
      *        this form.
      * @param programStage {@link ProgramStage}
      * @param programStageInstance The {@link ProgramStageInstance} associated
@@ -64,7 +64,7 @@ public interface ProgramDataEntryService
      *        program stage instance.
      * @return HTML code for the form.
      */
-    String prepareDataEntryFormForEntry( String htmlCode, Collection<PatientDataValue> dataValues, I18n i18n,
+    String prepareDataEntryFormForEntry( String htmlCode, Collection<TrackedEntityDataValue> dataValues, I18n i18n,
         ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit );
 
     /**

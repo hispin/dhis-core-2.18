@@ -138,7 +138,7 @@ public class GetRepeatableEventRegistrationFormAction
         throws Exception
     {
         programStage = programStageService.getProgramStage( programStageId );
-        patientId = programInstanceService.getProgramInstance( programInstanceId ).getPatient().getId();
+        patientId = programInstanceService.getProgramInstance( programInstanceId ).getEntityInstance().getId();
 
         Calendar cal = Calendar.getInstance();
         int standardIntervalDay = 0;

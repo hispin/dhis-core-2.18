@@ -79,7 +79,7 @@
 			<label for="programStage">$i18n.getString( "program_stage" )</label>
 		</td>
 		<td>
-			<select id="programStageId" name="programStageId" onChange="getPatientDataElements();"></select>
+			<select id="programStageId" name="programStageId" onChange="getEntityInstanceDataElements();"></select>
 		</td>
 	</tr>
 	

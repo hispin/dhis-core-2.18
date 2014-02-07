@@ -39,15 +39,15 @@ import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -62,10 +62,10 @@ public abstract class AbstractPersonService
     // -------------------------------------------------------------------------
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
-    private PatientAttributeValueService patientAttributeValueService;
+    private TrackedEntityAttributeValueService attributeValueService;
 
     @Autowired
     private RelationshipService relationshipService;
@@ -80,39 +80,43 @@ public abstract class AbstractPersonService
     @Override
     public Persons getPersons()
     {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getAllPatients() );
-        return getPersons( patients );
+        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>(
+            entityInstanceService.getAllTrackedEntityInstances() );
+        return getPersons( entityInstances );
     }
 
     @Override
     public Persons getPersons( OrganisationUnit organisationUnit )
     {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, null, null ) );
-        return getPersons( patients );
+        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>(
+            entityInstanceService.getTrackedEntityInstances( organisationUnit, null, null ) );
+        return getPersons( entityInstances );
     }
 
     @Override
     public Persons getPersons( Program program )
     {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( program ) );
-        return getPersons( patients );
+        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>(
+            entityInstanceService.getTrackedEntityInstances( program ) );
+        return getPersons( entityInstances );
     }
 
     @Override
     public Persons getPersons( OrganisationUnit organisationUnit, Program program )
     {
-        List<Patient> patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program ) );
-        return getPersons( patients );
+        List<TrackedEntityInstance> entityInstances = new ArrayList<TrackedEntityInstance>(
+            entityInstanceService.getTrackedEntityInstances( organisationUnit, program ) );
+        return getPersons( entityInstances );
     }
 
     @Override
-    public Persons getPersons( Collection<Patient> patients )
+    public Persons getPersons( Collection<TrackedEntityInstance> entityInstances )
     {
         Persons persons = new Persons();
 
-        for ( Patient patient : patients )
+        for ( TrackedEntityInstance entityInstance : entityInstances )
         {
-            persons.getPersons().add( getPerson( patient ) );
+            persons.getPersons().add( getPerson( entityInstance ) );
         }
 
         return persons;
@@ -121,44 +125,46 @@ public abstract class AbstractPersonService
     @Override
     public Person getPerson( String uid )
     {
-        return getPerson( patientService.getPatient( uid ) );
+        return getPerson( entityInstanceService.getTrackedEntityInstance( uid ) );
     }
 
     @Override
-    public Person getPerson( Patient patient )
+    public Person getPerson( TrackedEntityInstance entityInstance )
     {
-        if ( patient == null )
+        if ( entityInstance == null )
         {
             return null;
         }
 
         Person person = new Person();
-        person.setPerson( patient.getUid() );
-        person.setOrgUnit( patient.getOrganisationUnit().getUid() );
+        person.setPerson( entityInstance.getUid() );
+        person.setOrgUnit( entityInstance.getOrganisationUnit().getUid() );
 
-        Collection<Relationship> relationshipsForPatient = relationshipService.getRelationshipsForPatient( patient );
+        Collection<Relationship> relationships = relationshipService
+            .getRelationshipsForTrackedEntityInstance( entityInstance );
 
-        for ( Relationship relationshipPatient : relationshipsForPatient )
+        for ( Relationship entityRelationship : relationships )
         {
             org.hisp.dhis.dxf2.events.person.Relationship relationship = new org.hisp.dhis.dxf2.events.person.Relationship();
-            relationship.setDisplayName( relationshipPatient.getRelationshipType().getDisplayName() );
-            relationship.setPerson( relationshipPatient.getPatientA().getUid() );
-            relationship.setType( relationshipPatient.getRelationshipType().getUid() );
+            relationship.setDisplayName( entityRelationship.getRelationshipType().getDisplayName() );
+            relationship.setPerson( entityRelationship.getEntityInstanceA().getUid() );
+            relationship.setType( entityRelationship.getRelationshipType().getUid() );
 
             person.getRelationships().add( relationship );
         }
 
-        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patient );
+        Collection<TrackedEntityAttributeValue> attributeValues = attributeValueService
+            .getTrackedEntityAttributeValues( entityInstance );
 
-        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+        for ( TrackedEntityAttributeValue attributeValue : attributeValues )
         {
             Attribute attribute = new Attribute();
-            attribute.setDisplayName( patientAttributeValue.getPatientAttribute().getDisplayName() );
-            attribute.setAttribute( patientAttributeValue.getPatientAttribute().getUid() );
-            attribute.setType( patientAttributeValue.getPatientAttribute().getValueType() );
-            attribute.setCode( patientAttributeValue.getPatientAttribute().getCode() );
-            attribute.setValue( patientAttributeValue.getValue() );
+
+            attribute.setDisplayName( attributeValue.getAttribute().getDisplayName() );
+            attribute.setAttribute( attributeValue.getAttribute().getUid() );
+            attribute.setType( attributeValue.getAttribute().getValueType() );
+            attribute.setCode( attributeValue.getAttribute().getCode() );
+            attribute.setValue( attributeValue.getValue() );
 
             person.getAttributes().add( attribute );
         }
@@ -166,18 +172,18 @@ public abstract class AbstractPersonService
         return person;
     }
 
-    public Patient getPatient( Person person )
+    public TrackedEntityInstance getTrackedEntityInstance( Person person )
     {
         Assert.hasText( person.getOrgUnit() );
 
-        Patient patient = new Patient();
+        TrackedEntityInstance entityInstance = new TrackedEntityInstance();
 
         OrganisationUnit organisationUnit = manager.get( OrganisationUnit.class, person.getOrgUnit() );
         Assert.notNull( organisationUnit );
 
-        patient.setOrganisationUnit( organisationUnit );
+        entityInstance.setOrganisationUnit( organisationUnit );
 
-        return patient;
+        return entityInstance;
     }
 
     // -------------------------------------------------------------------------
@@ -202,14 +208,14 @@ public abstract class AbstractPersonService
             return importSummary;
         }
 
-        Patient patient = getPatient( person );
-        patientService.savePatient( patient );
+        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person );
+        entityInstanceService.saveTrackedEntityInstance( entityInstance );
 
-        updateAttributeValues( person, patient );
-        patientService.updatePatient( patient );
+        updateAttributeValues( person, entityInstance );
+        entityInstanceService.updateTrackedEntityInstance( entityInstance );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
-        importSummary.setReference( patient.getUid() );
+        importSummary.setReference( entityInstance.getUid() );
         importSummary.getImportCount().incrementImported();
 
         return importSummary;
@@ -229,9 +235,9 @@ public abstract class AbstractPersonService
         importConflicts.addAll( checkRelationships( person ) );
         importConflicts.addAll( checkAttributes( person ) );
 
-        Patient patient = manager.get( Patient.class, person.getPerson() );
+        TrackedEntityInstance entityInstance = manager.get( TrackedEntityInstance.class, person.getPerson() );
 
-        if ( patient == null )
+        if ( entityInstance == null )
         {
             importConflicts.add( new ImportConflict( "Person", "person " + person.getPerson()
                 + " does not point to valid person" ) );
@@ -254,16 +260,16 @@ public abstract class AbstractPersonService
             return importSummary;
         }
 
-        removeRelationships( patient );
-        removeAttributeValues( patient );
-        patientService.updatePatient( patient );
+        removeRelationships( entityInstance );
+        removeAttributeValues( entityInstance );
+        entityInstanceService.updateTrackedEntityInstance( entityInstance );
 
-        updateRelationships( person, patient );
-        updateAttributeValues( person, patient );
-        patientService.updatePatient( patient );
+        updateRelationships( person, entityInstance );
+        updateAttributeValues( person, entityInstance );
+        entityInstanceService.updateTrackedEntityInstance( entityInstance );
 
         importSummary.setStatus( ImportStatus.SUCCESS );
-        importSummary.setReference( patient.getUid() );
+        importSummary.setReference( entityInstance.getUid() );
         importSummary.getImportCount().incrementImported();
 
         return importSummary;
@@ -276,11 +282,11 @@ public abstract class AbstractPersonService
     @Override
     public void deletePerson( Person person )
     {
-        Patient patient = patientService.getPatient( person.getPerson() );
+        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( person.getPerson() );
 
-        if ( patient != null )
+        if ( entityInstance != null )
         {
-            patientService.deletePatient( patient );
+            entityInstanceService.deleteTrackedEntityInstance( entityInstance );
         }
         else
         {
@@ -295,7 +301,7 @@ public abstract class AbstractPersonService
     private List<ImportConflict> checkAttributes( Person person )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        Collection<PatientAttribute> patientAttributes = manager.getAll( PatientAttribute.class );
+        Collection<TrackedEntityAttribute> entityAttributes = manager.getAll( TrackedEntityAttribute.class );
         Set<String> cache = new HashSet<String>();
 
         for ( Attribute attribute : person.getAttributes() )
@@ -306,23 +312,24 @@ public abstract class AbstractPersonService
             }
         }
 
-        for ( PatientAttribute patientAttribute : patientAttributes )
+        for ( TrackedEntityAttribute entityAttribute : entityAttributes )
         {
-            if ( patientAttribute.isMandatory() )
+            if ( entityAttribute.isMandatory() )
             {
-                if ( !cache.contains( patientAttribute.getUid() ) )
+                if ( !cache.contains( entityAttribute.getUid() ) )
                 {
                     importConflicts.add( new ImportConflict( "Attribute.type", "Missing required attribute type "
-                        + patientAttribute.getUid() ) );
+                        + entityAttribute.getUid() ) );
                 }
             }
         }
 
         for ( Attribute attribute : person.getAttributes() )
         {
-            PatientAttribute patientAttribute = manager.get( PatientAttribute.class, attribute.getAttribute() );
+            TrackedEntityAttribute entityAttribute = manager.get( TrackedEntityAttribute.class,
+                attribute.getAttribute() );
 
-            if ( patientAttribute == null )
+            if ( entityAttribute == null )
             {
                 importConflicts
                     .add( new ImportConflict( "Attribute.type", "Invalid type " + attribute.getAttribute() ) );
@@ -346,9 +353,9 @@ public abstract class AbstractPersonService
                     .add( new ImportConflict( "Relationship.type", "Invalid type " + relationship.getType() ) );
             }
 
-            Patient patient = manager.get( Patient.class, relationship.getPerson() );
+            TrackedEntityInstance entityInstance = manager.get( TrackedEntityInstance.class, relationship.getPerson() );
 
-            if ( patient == null )
+            if ( entityInstance == null )
             {
                 importConflicts.add( new ImportConflict( "Relationship.person", "Invalid person "
                     + relationship.getPerson() ) );
@@ -358,53 +365,55 @@ public abstract class AbstractPersonService
         return importConflicts;
     }
 
-    private void updateAttributeValues( Person person, Patient patient )
+    private void updateAttributeValues( Person person, TrackedEntityInstance entityInstance )
     {
         for ( Attribute attribute : person.getAttributes() )
         {
-            PatientAttribute patientAttribute = manager.get( PatientAttribute.class, attribute.getAttribute() );
+            TrackedEntityAttribute entityAttribute = manager.get( TrackedEntityAttribute.class,
+                attribute.getAttribute() );
 
-            if ( patientAttribute != null )
+            if ( entityAttribute != null )
             {
-                PatientAttributeValue patientAttributeValue = new PatientAttributeValue();
-                patientAttributeValue.setPatient( patient );
-                patientAttributeValue.setValue( attribute.getValue() );
-                patientAttributeValue.setPatientAttribute( patientAttribute );
+                TrackedEntityAttributeValue attributeValue = new TrackedEntityAttributeValue();
+                attributeValue.setEntityInstance( entityInstance );
+                attributeValue.setValue( attribute.getValue() );
+                attributeValue.setAttribute( entityAttribute );
 
-                patientAttributeValueService.savePatientAttributeValue( patientAttributeValue );
+                attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
             }
         }
     }
 
-    private void updateRelationships( Person person, Patient patient )
+    private void updateRelationships( Person person, TrackedEntityInstance entityInstance )
     {
         for ( org.hisp.dhis.dxf2.events.person.Relationship relationship : person.getRelationships() )
         {
-            Patient patientB = manager.get( Patient.class, relationship.getPerson() );
+            TrackedEntityInstance entityInstanceB = manager.get( TrackedEntityInstance.class, relationship.getPerson() );
             RelationshipType relationshipType = manager.get( RelationshipType.class, relationship.getType() );
 
-            Relationship relationshipPatient = new Relationship();
-            relationshipPatient.setPatientA( patient );
-            relationshipPatient.setPatientB( patientB );
-            relationshipPatient.setRelationshipType( relationshipType );
+            Relationship entityRelationship = new Relationship();
+            entityRelationship.setEntityInstanceA( entityInstance );
+            entityRelationship.setEntityInstanceB( entityInstanceB );
+            entityRelationship.setRelationshipType( relationshipType );
 
-            relationshipService.saveRelationship( relationshipPatient );
+            relationshipService.saveRelationship( entityRelationship );
         }
     }
 
-    private void removeRelationships( Patient patient )
+    private void removeRelationships( TrackedEntityInstance entityInstance )
     {
-        Collection<Relationship> relationshipsForPatient = relationshipService.getRelationshipsForPatient( patient );
+        Collection<Relationship> relationships = relationshipService
+            .getRelationshipsForTrackedEntityInstance( entityInstance );
 
-        for ( Relationship relationship : relationshipsForPatient )
+        for ( Relationship relationship : relationships )
         {
             relationshipService.deleteRelationship( relationship );
         }
     }
 
-    private void removeAttributeValues( Patient patient )
+    private void removeAttributeValues( TrackedEntityInstance entityInstance )
     {
-        patientAttributeValueService.deletePatientAttributeValue( patient );
-        patientService.updatePatient( patient );
+        attributeValueService.deleteTrackedEntityAttributeValue( entityInstance );
+        entityInstanceService.updateTrackedEntityInstance( entityInstance );
     }
 }

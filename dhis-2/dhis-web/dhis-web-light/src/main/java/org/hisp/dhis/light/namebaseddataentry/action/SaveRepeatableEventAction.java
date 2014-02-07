@@ -157,7 +157,7 @@ public class SaveRepeatableEventAction
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        patientId = programInstance.getPatient().getId();
+        patientId = programInstance.getEntityInstance().getId();
         programId = programInstance.getProgram().getId();
 
         ProgramStageInstance programStageInstance = new ProgramStageInstance();

@@ -113,7 +113,7 @@ public interface ProgramIndicatorService
 
     /**
      * Calculate an program indicator value based on program instance and an
-     * indicator defined for a patient
+     * indicator defined for a TrackedEntityInstance
      * 
      * @param programInstance ProgramInstance
      * @param programIndicator ProgramIndicator
@@ -123,7 +123,7 @@ public interface ProgramIndicatorService
     String getProgramIndicatorValue( ProgramInstance programInstance, ProgramIndicator programIndicator );
 
     /**
-     * Get indicator values of all program indicators defined for a patient
+     * Get indicator values of all program indicators defined for a TrackedEntityInstance
      * 
      * @param programInstance ProgramInstance
      * 

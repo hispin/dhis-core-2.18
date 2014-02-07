@@ -17,19 +17,18 @@
   </bean>
 
   <bean id="org.hisp.dhis.mobile.api.ActivityReportingService" class="org.hisp.dhis.mobile.service.ActivityReportingServiceImpl">
-    <property name="patientAttValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-    <property name="patientAttService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+    <property name="attValueService" ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+    <property name="attService" ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-    <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-    <property name="patientMobileSettingService" ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
+    <property name="mobileSettingService" ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService" />
     <property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
-    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+    <property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
     <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
     <property name="relationshipService" ref="org.hisp.dhis.relationship.RelationshipService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+    <property name="dataValueService" ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-    <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+    <property name="attributeService" ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
     <property name="relationshipTypeService" ref="org.hisp.dhis.relationship.RelationshipTypeService" />
     <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
@@ -41,13 +40,13 @@
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
   </bean>
 
-  <bean id="org.hisp.dhis.mobile.service.PatientMobileSettingService"
-    class="org.hisp.dhis.mobile.service.DefaultPatientMobileSettingService">
-    <property name="patientMobileSettingStore" ref="org.hisp.dhis.mobile.service.PatientMobileSettingStore" />
+  <bean id="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingService"
+    class="org.hisp.dhis.mobile.service.DefaultTrackedEntityMobileSettingService">
+    <property name="mobileSettingStore" ref="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingStore" />
   </bean>
 
-  <bean id="org.hisp.dhis.mobile.service.PatientMobileSettingStore" class="org.hisp.dhis.mobile.service.HibernatePatientMobileSettingStore">
-    <property name="clazz" value="org.hisp.dhis.patient.PatientMobileSetting" />
+  <bean id="org.hisp.dhis.api.mobile.TrackedEntityMobileSettingStore" class="org.hisp.dhis.mobile.service.HibernateTrackedEntityMobileSettingStore">
+    <property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntityMobileSetting" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 

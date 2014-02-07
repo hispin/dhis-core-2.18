@@ -51,7 +51,7 @@ public class HibernateProgramStore
     implements ProgramStore
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
     private CurrentUserService currentUserService;

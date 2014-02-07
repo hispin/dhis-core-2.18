@@ -69,7 +69,7 @@ public interface ActivityReportingService
     public Patient enrollProgram( String enrollInfo, Date incidentDate )
         throws NotAllowedException;
 
-    public Collection<org.hisp.dhis.patient.PatientAttribute> getPatientAtts( String programId );
+    public Collection<org.hisp.dhis.trackedentity.TrackedEntityAttribute> getPatientAtts( String programId );
 
     public Collection<PatientAttribute> getAttsForMobile();
 

@@ -2,8 +2,8 @@
 <h3>$i18n.getString( "dhis-web-caseentry" )</h3>
 
 <ul class="introList">
-	#if( $auth.hasAccess( "dhis-web-caseentry", "patient" ) )
-		#introListImgItem( "patient.action" "find_and_add_person" "patient" )
+	#if( $auth.hasAccess( "dhis-web-caseentry", "trackedEntityInstance" ) )
+		#introListImgItem( "trackedEntityInstance.action" "find_and_add_tracked_entity_instance" "patient" )
 	#end
 	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) )
@@ -43,6 +43,6 @@
 	#end
 	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "caseAggregationForm" ) )
-		#introListImgItem( "caseAggregationForm.action" "manual_person_aggregation" "caseaggregation" )
+		#introListImgItem( "caseAggregationForm.action" "manual_tracked_entity_instance_aggregation" "caseaggregation" )
 	#end
 </ul>

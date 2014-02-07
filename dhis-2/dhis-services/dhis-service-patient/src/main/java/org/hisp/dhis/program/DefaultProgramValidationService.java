@@ -43,8 +43,8 @@ import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -60,26 +60,25 @@ public class DefaultProgramValidationService
 
     private ProgramValidationStore validationStore;
 
-    private ProgramStageService programStageService;
-
-    private DataElementService dataElementService;
-
-    private ProgramExpressionService expressionService;
-
-    private PatientDataValueService patientDataValueService;
-
-    // -------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------
-
     public void setValidationStore( ProgramValidationStore validationStore )
     {
         this.validationStore = validationStore;
     }
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    private ProgramStageService programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.programStageService = programStageService;
+    }
+
+    private DataElementService dataElementService;
+
+    private ProgramExpressionService expressionService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     public void setExpressionService( ProgramExpressionService expressionService )
@@ -87,14 +86,11 @@ public class DefaultProgramValidationService
         this.expressionService = expressionService;
     }
 
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.dataElementService = dataElementService;
+        this.dataValueService = dataValueService;
     }
 
     // -------------------------------------------------------------------------
@@ -137,27 +133,27 @@ public class DefaultProgramValidationService
         Collection<ProgramValidationResult> result = new HashSet<ProgramValidationResult>();
 
         // ---------------------------------------------------------------------
-        // Get patient-data-values
+        // Get data-values
         // ---------------------------------------------------------------------
 
         Program program = programStageInstance.getProgramInstance().getProgram();
-        Collection<PatientDataValue> patientDataValues = null;
+        Collection<TrackedEntityDataValue> entityInstanceDataValues = null;
         if ( program.isSingleEvent() )
         {
-            patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
+            entityInstanceDataValues = dataValueService.getTrackedEntityDataValues( programStageInstance );
         }
         else
         {
-            patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance.getProgramInstance()
+            entityInstanceDataValues = dataValueService.getTrackedEntityDataValues( programStageInstance.getProgramInstance()
                 .getProgramStageInstances() );
         }
 
-        Map<String, String> patientDataValueMap = new HashMap<String, String>( patientDataValues.size() );
-        for ( PatientDataValue patientDataValue : patientDataValues )
+        Map<String, String> entityInstanceDataValueMap = new HashMap<String, String>( entityInstanceDataValues.size() );
+        for ( TrackedEntityDataValue entityInstanceDataValue : entityInstanceDataValues )
         {
-            String key = patientDataValue.getProgramStageInstance().getProgramStage().getId() + "."
-                + patientDataValue.getDataElement().getId();
-            patientDataValueMap.put( key, patientDataValue.getValue() );
+            String key = entityInstanceDataValue.getProgramStageInstance().getProgramStage().getId() + "."
+                + entityInstanceDataValue.getDataElement().getId();
+            entityInstanceDataValueMap.put( key, entityInstanceDataValue.getValue() );
         }
 
         // ---------------------------------------------------------------------
@@ -167,11 +163,11 @@ public class DefaultProgramValidationService
         for ( ProgramValidation validate : validation )
         {
             String leftSideValue = expressionService.getProgramExpressionValue( validate.getLeftSide(),
-                programStageInstance, patientDataValueMap );
+                programStageInstance, entityInstanceDataValueMap );
             String rightSideValue = expressionService.getProgramExpressionValue( validate.getRightSide(),
-                programStageInstance, patientDataValueMap );
+                programStageInstance, entityInstanceDataValueMap );
             String operator = validate.getOperator().getMathematicalOperator();
-            
+
             if ( (leftSideValue != null && rightSideValue != null && !((operator.equals( "==" ) && leftSideValue
                 .compareTo( rightSideValue ) == 0)
                 || (operator.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0)
@@ -218,7 +214,7 @@ public class DefaultProgramValidationService
     public Collection<ProgramValidation> getProgramValidation( ProgramStage programStage )
     {
         Collection<ProgramValidation> programValidation = getProgramValidation( programStage.getProgram() );
-        
+
         Iterator<ProgramValidation> iter = programValidation.iterator();
 
         Pattern pattern = Pattern.compile( regExp );
@@ -230,7 +226,7 @@ public class DefaultProgramValidationService
             String expression = validation.getLeftSide().getExpression() + " "
                 + validation.getRightSide().getExpression();
             Matcher matcher = pattern.matcher( expression );
-            
+
             boolean flag = false;
             while ( matcher.find() )
             {
@@ -241,7 +237,7 @@ public class DefaultProgramValidationService
                 String[] ids = info[1].split( SEPARATOR_ID );
 
                 int programStageId = Integer.parseInt( ids[0] );
-                
+
                 if ( programStageId == programStage.getId() )
                 {
                     flag = true;

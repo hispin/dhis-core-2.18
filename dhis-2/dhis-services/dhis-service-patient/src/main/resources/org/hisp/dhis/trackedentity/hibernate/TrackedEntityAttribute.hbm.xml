@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+  >
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.trackedentity.TrackedEntityAttribute" table="trackedentityattribute">
+
+    <id name="id" column="trackedentityattributeid">
+      <generator class="native" />
+    </id>
+    &identifiableProperties;
+
+    <property name="name" column="name" not-null="true" unique="true" length="230" />
+
+    <property name="description" />
+
+    <property name="valueType" column="valuetype" not-null="true" />
+
+    <property name="mandatory" column="mandatory" />
+
+    <property name="groupBy" column="groupby" />
+
+    <many-to-one name="attributeGroup" column="trackedentityattributegroupid" class="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup"
+      foreign-key="fk_attribute_group" />
+
+    <set name="attributeOptions">
+      <key column="trackedentityattributeid" />
+      <one-to-many class="org.hisp.dhis.trackedentity.TrackedEntityAttributeOption" />
+    </set>
+
+    <property name="inherit" column="inherit" />
+
+    <property name="expression" column="expression" />
+
+    <property name="displayOnVisitSchedule" />
+
+    <property name="sortOrderInVisitSchedule" />
+    
+    <property name="displayInListNoProgram" />
+    
+    <property name="unique" column="uniquefield"/>
+    
+    <property name="orgunitScope" />
+
+    <property name="programScope" />
+    
+    <many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
+      	foreign-key="fk_trackedentityattribute_periodtypeid" />
+	
+  </class>
+</hibernate-mapping>

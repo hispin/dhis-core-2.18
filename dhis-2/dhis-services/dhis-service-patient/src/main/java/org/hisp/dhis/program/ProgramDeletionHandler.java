@@ -70,7 +70,7 @@ public class ProgramDeletionHandler
 
         for ( Program program : programs )
         {
-            program.getPatientValidationCriteria().remove( validationCriteria );
+            program.getValidationCriteria().remove( validationCriteria );
             programService.updateProgram( program );
         }
     }

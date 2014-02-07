@@ -23,13 +23,14 @@
 			not-null="true" />
 
 		<property name="endDate" column="enddate" />
-		
+
 		<property name="followup" column="followup" />
 
 		<property name="status" />
 
-		<many-to-one name="patient" class="org.hisp.dhis.patient.Patient"
-			column="patientid" foreign-key="fk_programinstance_patientid" />
+		<many-to-one name="entityInstance"
+			class="org.hisp.dhis.trackedentity.TrackedEntityInstance" column="trackedentityinstanceid"
+			foreign-key="fk_programinstance_trackedentityinstanceid" />
 
 		<many-to-one name="program" class="org.hisp.dhis.program.Program"
 			column="programid" not-null="true" foreign-key="fk_programinstance_programid" />
@@ -45,18 +46,17 @@
 			<many-to-many class="org.hisp.dhis.sms.outbound.OutboundSms"
 				column="outboundsmsid" />
 		</list>
-		
+
 		<list name="messageConversations" table="programinstance_messageconversation">
 			<key column="programinstanceid" />
 			<list-index column="sort_order" base="1" />
 			<many-to-many class="org.hisp.dhis.message.MessageConversation"
 				column="messageconversationid" />
 		</list>
-		
-		<set name="patientComments" order-by="createdDate">
-			<key column="programinstanceid" />
-			<one-to-many class="org.hisp.dhis.patientcomment.PatientComment" />
-		</set>		
+
+		<many-to-one name="comment" cascade="all"
+			class="org.hisp.dhis.trackedentitycomment.TrackedEntityComment"
+			column="trackedentitycommentid" foreign-key="fk_programinstance_commentid" />
 
 	</class>
 </hibernate-mapping>

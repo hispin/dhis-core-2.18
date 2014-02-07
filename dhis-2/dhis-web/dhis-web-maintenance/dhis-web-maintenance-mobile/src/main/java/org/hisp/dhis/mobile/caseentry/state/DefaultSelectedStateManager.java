@@ -32,12 +32,12 @@ import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -76,9 +76,9 @@ public class DefaultSelectedStateManager
         this.selectionManager = selectionManager;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -106,12 +106,12 @@ public class DefaultSelectedStateManager
         return selectionManager.getSelectedOrganisationUnit();
     }
 
-    public void setSelectedPatient( Patient patient )
+    public void setSelectedPatient( TrackedEntityInstance patient )
     {
         getSession().put( SESSION_KEY_SELECTED_PATIENT_ID, patient.getId() );
     }
 
-    public Patient getSelectedPatient()
+    public TrackedEntityInstance getSelectedPatient()
     {
         Integer id = (Integer) getSession().get( SESSION_KEY_SELECTED_PATIENT_ID );
 
@@ -120,7 +120,7 @@ public class DefaultSelectedStateManager
             return null;
         }
 
-        return patientService.getPatient( id );
+        return patientService.getTrackedEntityInstance( id );
     }
 
     public void clearSelectedPatient()

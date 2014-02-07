@@ -35,13 +35,14 @@ import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramPatientAttribute;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.program.ProgramTrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeOption;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
@@ -276,25 +277,25 @@ public class DefaultProgramService
 
         pr.setProgramStages( prStgs );
 
-        List<ProgramPatientAttribute> programPatientAttributes = new ArrayList<ProgramPatientAttribute>(
-            program.getProgramPatientAttributes() );
+        List<ProgramTrackedEntityAttribute> programPatientAttributes = new ArrayList<ProgramTrackedEntityAttribute>(
+            program.getAttributes() );
 
         for ( int i = 0; i < programPatientAttributes.size(); i++ )
         {
-            ProgramPatientAttribute ppa = programPatientAttributes.get( i );
+            ProgramTrackedEntityAttribute ppa = programPatientAttributes.get( i );
             pr.getProgramAttributes().add( this.getPatientAttributeForMobile( ppa ) );
         }
 
         return pr;
     }
 
-    private org.hisp.dhis.api.mobile.model.PatientAttribute getPatientAttributeForMobile( PatientAttribute pa )
+    private org.hisp.dhis.api.mobile.model.PatientAttribute getPatientAttributeForMobile( TrackedEntityAttribute pa )
     {
-        PatientAttributeService patientAttributeService;
+        TrackedEntityAttributeService patientAttributeService;
         List<String> optionList = new ArrayList<String>();
         if ( pa.getAttributeOptions() != null )
         {
-            for ( PatientAttributeOption pao : pa.getAttributeOptions() )
+            for ( TrackedEntityAttributeOption pao : pa.getAttributeOptions() )
             {
                 optionList.add( pao.getName() );
             }
@@ -309,13 +310,13 @@ public class DefaultProgramService
         return mobileAttribute;
     }
 
-    private org.hisp.dhis.api.mobile.model.PatientAttribute getPatientAttributeForMobile( ProgramPatientAttribute ppa )
+    private org.hisp.dhis.api.mobile.model.PatientAttribute getPatientAttributeForMobile( ProgramTrackedEntityAttribute ppa )
     {
-        PatientAttribute pa = ppa.getPatientAttribute();
+        TrackedEntityAttribute pa = ppa.getAttribute();
         List<String> optionList = new ArrayList<String>();
         if ( pa.getAttributeOptions() != null )
         {
-            for ( PatientAttributeOption pao : pa.getAttributeOptions() )
+            for ( TrackedEntityAttributeOption pao : pa.getAttributeOptions() )
             {
                 optionList.add( pao.getName() );
             }

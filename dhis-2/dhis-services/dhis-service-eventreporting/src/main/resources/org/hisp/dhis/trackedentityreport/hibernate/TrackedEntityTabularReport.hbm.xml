@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+  >
+
+<hibernate-mapping>
+	<class name="org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport"
+		table="trackedentitytabularreport">
+
+		<id name="id" column="trackedentitytabularreportid">
+			<generator class="native" />
+		</id>
+   
+   		&identifiableProperties;
+
+		<property name="name" column="name" not-null="true" unique="true"
+			length="230" />
+
+		<many-to-one name="program" class="org.hisp.dhis.program.Program"
+			column="programid" foreign-key="fk_tabularreport_program" />
+
+		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
+			column="programstageid" foreign-key="fk_tabularreport_programstage" />
+
+		<property name="startDate" />
+
+		<property name="endDate" />
+		
+		<list name="dimension" table="trackedentitytabularreport_dimensions">
+	      <key column="trackedentitytabularreportid" foreign-key="fk_tabularreportidid_dimensions" />
+	      <list-index column="sort_order" />
+	      <element type="text" column="itemvalue" />
+	    </list>
+		
+	    <list name="filter" table="trackedentitytabularreport_filters">
+	      <key column="trackedentitytabularreportid" foreign-key="fk_tabularreportid_filters" />
+	      <list-index column="sort_order" />
+	      <element type="text" column="itemvalue" />
+	    </list>
+	    
+		<property name="ouMode" />
+
+		<!-- Access properties -->
+
+		<many-to-one name="user" class="org.hisp.dhis.user.User"
+			column="userid" foreign-key="fk_tabularreport_userid" />
+
+		<property name="publicAccess" length="8" />
+
+		<set name="userGroupAccesses" table="trackedentitytabularreportusergroupaccesses">
+			<key column="trackedentitytabularreportid" />
+			<many-to-many class="org.hisp.dhis.user.UserGroupAccess"
+				column="usergroupaccessid" unique="true" />
+		</set>
+
+	</class>
+</hibernate-mapping>

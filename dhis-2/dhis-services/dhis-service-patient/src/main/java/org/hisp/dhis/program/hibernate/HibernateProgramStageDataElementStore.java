@@ -59,7 +59,7 @@ public class HibernateProgramStageDataElementStore
     }
 
     // -------------------------------------------------------------------------
-    // Basic ProgramStageDataElement
+    // Implemented methods
     // -------------------------------------------------------------------------
 
     public void save( ProgramStageDataElement programStageDataElement )
@@ -83,7 +83,7 @@ public class HibernateProgramStageDataElementStore
         session.delete( programStageDataElement );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageDataElement> getAll()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -93,7 +93,7 @@ public class HibernateProgramStageDataElementStore
         return criteria.list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageDataElement> get( ProgramStage programStage )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -103,7 +103,7 @@ public class HibernateProgramStageDataElementStore
         return criteria.add( Restrictions.eq( "programStage", programStage ) ).list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<ProgramStageDataElement> get( ProgramStage programStage, boolean compulsory )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -126,7 +126,7 @@ public class HibernateProgramStageDataElementStore
         return (ProgramStageDataElement) criteria.uniqueResult();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getListDataElement( ProgramStage programStage )
     {
         Session session = sessionFactory.getCurrentSession();

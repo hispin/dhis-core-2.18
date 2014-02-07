@@ -36,7 +36,7 @@
 				class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_program_organisationunits_organisationunitid" />
 		</set>
 
-		<set name="patientValidationCriteria" table="program_criteria">
+		<set name="validationCriteria" table="program_criteria">
 			<key column="programid" foreign-key="fk_program_criteria_programid" />
 			<many-to-many column="validationcriteriaid"
 				class="org.hisp.dhis.validation.ValidationCriteria" foreign-key="fk_program_criteria_validationcriteriaid" />
@@ -48,9 +48,9 @@
 
 		<property name="onlyEnrollOnce" />
 
-		<set name="programPatientAttributes" cascade="all,delete-orphan" order-by="sort_order">
+		<set name="attributes" cascade="all,delete-orphan" order-by="sort_order">
 			<key column="programid" />
-			<one-to-many class="org.hisp.dhis.program.ProgramPatientAttribute" />
+			<one-to-many class="org.hisp.dhis.program.ProgramTrackedEntityAttribute" />
 		</set>
 		
 		<property name="ignoreOverdueEvents" />
@@ -61,10 +61,10 @@
 				column="userroleid" foreign-key="fk_program_userroles" />
 		</set>
 
-		<set name="patientReminders" order-by="daysAllowedSendMessage"
+		<set name="instanceReminders" order-by="daysAllowedSendMessage"
 			cascade="all">
 			<key column="programid" />
-			<one-to-many class="org.hisp.dhis.patient.PatientReminder" />
+			<one-to-many class="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder" />
 		</set>
 
 		<set name="organisationUnitGroups" table="orgunitgroupprograms">

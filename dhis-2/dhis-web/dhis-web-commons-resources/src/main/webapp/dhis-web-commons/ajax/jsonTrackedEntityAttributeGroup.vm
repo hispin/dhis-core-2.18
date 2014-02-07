@@ -1,0 +1,8 @@
+{ "attributeGroup":
+  {
+    "id": "${attributeGroup.id}",
+    "name": "$!encoder.jsonEncode( ${attributeGroup.name} )",
+	"description": "$!encoder.jsonEncode( ${attributeGroup.description} )",
+	"noAttribute": "${attributeGroup.attributes.size()}"
+  }
+}

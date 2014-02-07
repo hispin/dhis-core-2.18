@@ -1,11 +1,11 @@
 <table>
-	#foreach( $attributeValue in $patient.attributeValues)
+	#foreach( $attributeValue in $entityInstance.attributeValues)
 		#set($value=$attributeValue.value)
 		#if( $attribute.valueType == 'bool')
 			#set($value=$i18n.getString($attributeValue.value))
 		#end
 		<tr>
-			<td>$!attributeValue.patientAttribute.displayName:</td>
+			<td>$!attributeValue.attribute.displayName:</td>
 			<td>$!attributeValue.value</td>
 		</tr>
 	#end  
@@ -29,7 +29,7 @@
 	#set( $mark = 0 )
 	#set( $tabIndex = 1 )
 	
-	#foreach( $patientDataValue in $patientDataValues )
+	#foreach( $dataValue in $dataValues )
 	    #set( $dataElementRowCount = $dataElementRowCount + 1 )    
 	    #if( $mark == 1 )
 	        #set( $mark = 0 )
@@ -43,31 +43,31 @@
 	            
 	        ##data element name
 	        <td>
-	            $encoder.htmlEncode( $patientDataValue.dataElement.name )            
+	            $encoder.htmlEncode( $dataValue.dataElement.name )            
 	        </td>        
 	           
 	        ##value        
 	        <td>        
-	            #if( $patientDataValue.dataElement.type == "bool" )
-	                #if( $patientDataValue.value == "true" )
+	            #if( $dataValue.dataElement.type == "bool" )
+	                #if( $dataValue.value == "true" )
 	                    $i18n.getString( "yes" ) 
-	                #elseif( $patientDataValue.value == "false" )
+	                #elseif( $dataValue.value == "false" )
 	                    $i18n.getString( "no" )
 	                #end                                              
-	            #elseif( $patientDataValue.dataElement.type == "string"  && $patientDataValue.dataElement.isMultiDimensional() )                    
-	                #if( $patientDataValue.value )                       
-	                    #set( $optionValue = $optionValueMap.get( $patientDataValue.dataElement.id ) )
+	            #elseif( $dataValue.dataElement.type == "string"  && $dataValue.dataElement.isMultiDimensional() )                    
+	                #if( $dataValue.value )                       
+	                    #set( $optionValue = $optionValueMap.get( $dataValue.dataElement.id ) )
 	                    $encoder.htmlEncode( $optionValue )
 	                #end                          
 	            #else
-	                $!encoder.htmlEncode( $patientDataValue.value )
+	                $!encoder.htmlEncode( $dataValue.value )
 	            #end
 	        </td> 
 	      
 	        ##providedByAnotherFacility                
 	        <td>            
-	            #if( !$patientDataValue.providedByAnotherFacility )
-					$!patientDataValue.programStageInstance.organisationUnit.name
+	            #if( !$dataValue.providedByAnotherFacility )
+					$!dataValue.programStageInstance.organisationUnit.name
 				#else
 					$i18n.getString("other_facility")
 	            #end                         

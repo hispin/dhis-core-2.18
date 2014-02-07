@@ -43,12 +43,12 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patientreport.PatientAggregateReport;
-import org.hisp.dhis.patientreport.PatientAggregateReportService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -64,18 +64,18 @@ public class GetAggregateReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAggregateReportService aggregateReportService;
+    private TrackedEntityAggregateReportService aggregateReportService;
 
-    public void setAggregateReportService( PatientAggregateReportService aggregateReportService )
+    public void setAggregateReportService( TrackedEntityAggregateReportService aggregateReportService )
     {
         this.aggregateReportService = aggregateReportService;
     }
 
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService attributeService;
 
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    public void setAttributeService( TrackedEntityAttributeService attributeService )
     {
-        this.patientAttributeService = patientAttributeService;
+        this.attributeService = attributeService;
     }
     
     private DataElementService dataElementService;
@@ -103,9 +103,9 @@ public class GetAggregateReportAction
         this.id = id;
     }
 
-    private PatientAggregateReport aggregateReport;
+    private TrackedEntityAggregateReport aggregateReport;
 
-    public PatientAggregateReport getAggregateReport()
+    public TrackedEntityAggregateReport getAggregateReport()
     {
         return aggregateReport;
     }
@@ -117,16 +117,16 @@ public class GetAggregateReportAction
         return programStage;
     }
 
-    private List<PatientAttribute> dimensionAttributes = new ArrayList<PatientAttribute>();
+    private List<TrackedEntityAttribute> dimensionAttributes = new ArrayList<TrackedEntityAttribute>();
 
-    public List<PatientAttribute> getDimensionAttributes()
+    public List<TrackedEntityAttribute> getDimensionAttributes()
     {
         return dimensionAttributes;
     }
 
-    private List<PatientAttribute> filterAttributes = new ArrayList<PatientAttribute>();
+    private List<TrackedEntityAttribute> filterAttributes = new ArrayList<TrackedEntityAttribute>();
 
-    public List<PatientAttribute> getFilterAttributes()
+    public List<TrackedEntityAttribute> getFilterAttributes()
     {
         return filterAttributes;
     }
@@ -181,7 +181,7 @@ public class GetAggregateReportAction
     public String execute()
         throws Exception
     {
-        aggregateReport = aggregateReportService.getPatientAggregateReportByUid( id );
+        aggregateReport = aggregateReportService.getTrackedEntityAggregateReportByUid( id );
 
         Program program = aggregateReport.getProgram();
 
@@ -235,7 +235,7 @@ public class GetAggregateReportAction
             }
             else
             {
-                PatientAttribute at = patientAttributeService.getPatientAttribute( dimensionId );
+                TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( dimensionId );
 
                 if ( at != null && program.getAttributes().contains( at ) )
                 {
@@ -265,7 +265,7 @@ public class GetAggregateReportAction
                 mapFilters.put( filterId, filter.substring( filterId.length() + 1, filter.length() ) );
             }
 
-            PatientAttribute at = patientAttributeService.getPatientAttribute( filterId );
+            TrackedEntityAttribute at = attributeService.getTrackedEntityAttribute( filterId );
 
             if ( at != null && program.getAttributes().contains( at ) )
             {

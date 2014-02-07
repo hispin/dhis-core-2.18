@@ -32,12 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.patientreport.PatientAggregateReport;
-import org.hisp.dhis.patientreport.PatientAggregateReportService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -53,9 +53,9 @@ public class SaveAggregateReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAggregateReportService aggregateReportService;
+    private TrackedEntityAggregateReportService aggregateReportService;
 
-    public void setAggregateReportService( PatientAggregateReportService aggregateReportService )
+    public void setAggregateReportService( TrackedEntityAggregateReportService aggregateReportService )
     {
         this.aggregateReportService = aggregateReportService;
     }
@@ -177,7 +177,7 @@ public class SaveAggregateReportAction
         Program program = programService.getProgram( programId );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        PatientAggregateReport aggregateReport = new PatientAggregateReport( name );
+        TrackedEntityAggregateReport aggregateReport = new TrackedEntityAggregateReport( name );
         aggregateReport.setStartDate( format.parseDate( startDate ) );
         aggregateReport.setEndDate( format.parseDate( endDate ) );
         aggregateReport.setOuMode( ouMode );
@@ -190,7 +190,7 @@ public class SaveAggregateReportAction
         aggregateReport.setSortOrder( sortOrder );
         aggregateReport.setUser( currentUserService.getCurrentUser() );
 
-        aggregateReportService.addPatientAggregateReport( aggregateReport );
+        aggregateReportService.addTrackedEntityAggregateReport( aggregateReport );
 
         return SUCCESS;
     }

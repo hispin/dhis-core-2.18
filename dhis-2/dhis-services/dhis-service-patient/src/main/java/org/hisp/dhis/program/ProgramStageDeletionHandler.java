@@ -35,6 +35,10 @@ import org.hisp.dhis.system.deletion.DeletionHandler;
 public class ProgramStageDeletionHandler
     extends DeletionHandler
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private ProgramStageService programStageService;
 
     public void setProgramStageService( ProgramStageService programStageService )
@@ -42,17 +46,21 @@ public class ProgramStageDeletionHandler
         this.programStageService = programStageService;
     }
 
+    // -------------------------------------------------------------------------
+    // DeletionHandler implementation
+    // -------------------------------------------------------------------------
+
     @Override
     protected String getClassName()
     {
         return ProgramStage.class.getSimpleName();
     }
-    
+
     @Override
     public void deleteProgram( Program program )
     {
         Iterator<ProgramStage> iterator = program.getProgramStages().iterator();
-        
+
         while ( iterator.hasNext() )
         {
             ProgramStage programStage = iterator.next();

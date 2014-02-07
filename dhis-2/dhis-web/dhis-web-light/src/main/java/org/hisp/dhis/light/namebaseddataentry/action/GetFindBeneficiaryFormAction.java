@@ -33,9 +33,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -52,10 +53,10 @@ public class GetFindBeneficiaryFormAction implements Action {
 		this.currentUserService = currentUserService;
 	}
 
-	private PatientAttributeService patientAttributeService;
+	private TrackedEntityAttributeService patientAttributeService;
 
 	public void setPatientAttributeService(
-			PatientAttributeService patientAttributeService) {
+			TrackedEntityAttributeService patientAttributeService) {
 		this.patientAttributeService = patientAttributeService;
 	}
 
@@ -83,14 +84,14 @@ public class GetFindBeneficiaryFormAction implements Action {
 		this.orgUnitId = orgUnitId;
 	}
 
-	private Collection<PatientAttribute> patientAttributes;
+	private Collection<TrackedEntityAttribute> patientAttributes;
 
-	public Collection<PatientAttribute> getPatientAttributes() {
+	public Collection<TrackedEntityAttribute> getPatientAttributes() {
 		return patientAttributes;
 	}
 
 	public void setPatientAttributes(
-			Collection<PatientAttribute> patientAttributes) {
+			Collection<TrackedEntityAttribute> patientAttributes) {
 		this.patientAttributes = patientAttributes;
 	}
 
@@ -148,7 +149,7 @@ public class GetFindBeneficiaryFormAction implements Action {
 					.getAllParentOrganisationUnits(organisationUnit));
 		}
 
-		patientAttributes = patientAttributeService.getAllPatientAttributes();
+		patientAttributes = patientAttributeService.getAllTrackedEntityAttributes();
 
 		return SUCCESS;
 	}

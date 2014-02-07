@@ -29,12 +29,13 @@ package org.hisp.dhis.light.namebaseddataentry.action;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,14 +51,14 @@ public class GetProgramStageListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public PatientService getPatientService()
+    public TrackedEntityInstanceService getPatientService()
     {
         return patientService;
     }
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -109,14 +110,14 @@ public class GetProgramStageListAction
         this.patientId = patientId;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance patient;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getPatient()
     {
         return patient;
     }
 
-    public void setPatient( Patient patient )
+    public void setPatient( TrackedEntityInstance patient )
     {
         this.patient = patient;
     }
@@ -193,7 +194,7 @@ public class GetProgramStageListAction
         programInstance = programInstanceService.getProgramInstance( programInstanceId );
         
         exclusedRepeatableStages = new HashMap<Integer, ProgramStage>();
-        patient = patientService.getPatient( patientId );
+        patient = patientService.getTrackedEntityInstance( patientId );
         programStageInstances = programInstance.getProgramStageInstances();
         repeatableStages = new HashSet<ProgramStage>();
         

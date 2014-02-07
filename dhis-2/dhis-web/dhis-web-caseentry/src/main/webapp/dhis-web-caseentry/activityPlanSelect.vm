@@ -28,8 +28,8 @@
 	<input type='hidden' id='export' name= 'export'>
 	<input type='hidden' class='stage-object-selected'>
 	<select id='displayOnVisitSchedule' name='displayOnVisitSchedule' class='hidden'>
-		#foreach( $patientAttribute in $patientAttributes)
-			<option value='$patientAttribute.id'>$patientAttribute.name</option>
+		#foreach( $attribute in $attributes)
+			<option value='$attribute.id'>$attribute.name</option>
 		#end
 	</select>
 	
@@ -46,7 +46,7 @@
 			<tr>
 				<td>$i18n.getString('program')</td>
 				<td>
-					<select id='programIdAddPatient' name='programIdAddPatient' class="{validate:{required:true}}" >
+					<select id='programIdAddEntityInstance' name='programIdAddEntityInstance' class="{validate:{required:true}}" >
 						#if($programs.size()==0)
 						<option value="">[$i18n.getString( "none_program" )]</option>
 						#elseif($programs.size()>1)
@@ -113,7 +113,7 @@
 			<tr>
 				<td></td>
 				<td>
-					<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'show_activity_list' )" onclick="setFieldValue('export', false);">
+					<input type="submit" class='large-button' id='listEntityInstanceBtn' value="$i18n.getString( 'show_activity_list' )" onclick="setFieldValue('export', false);">
 					<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', true);">
 				</td>
 			</tr>
@@ -122,14 +122,14 @@
 </form>
 
 
-<div id='listPatientDiv'></div> <!-- List searching patients -->
-<div id='patientDashboard'></div> <!-- Patient dashboard -->
-<div id='editPatientDiv'></div> <!-- Add Patient Form -->
-<div id='resultSearchDiv' style='font-size:13px'></div> <!-- List searching patients -->
+<div id='listEntityInstanceDiv'></div> <!-- List searching entity-instances -->
+<div id='entityInstanceDashboard'></div> <!-- EntityInstance dashboard -->
+<div id='editEntityInstanceDiv'></div> <!-- Add EntityInstance Form -->
+<div id='resultSearchDiv' style='font-size:13px'></div> <!-- List searching entityInstances -->
 <div id='enrollmentDiv'></div> <!-- Program Enrollment Form -->
 <div id='listRelationshipDiv'></div> <!-- List relationship -->
 <div id='addRelationshipDiv'></div> <!-- Add relationship -->
-<div id='migrationPatientDiv'></div> <!-- Migration Patient -->
+<div id='migrationEntityInstanceDiv'></div> <!-- Migration EntityInstance -->
 
 <div id='contentDataRecord'></div>
 
@@ -158,7 +158,7 @@
 							+ dateFormat.replace('yy', 'yyyy') + " '" ; 
     var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
     var i18n_saving_value_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_error_code" ) , "'")';
-    var i18n_searching_patient_failed = '$encoder.jsEscape( $i18n.getString( "searching_patient_failed" ) , "'")';
+    var i18n_searching_tracked_entity_instance_failed = '$encoder.jsEscape( $i18n.getString( "searching_tracked_entity_instance_failed" ) , "'")';
     var i18n_complete_confirm_message = '$encoder.jsEscape( $i18n.getString( "complete_confirm_message" ) , "'")';
     var i18n_error_required_field = '$encoder.jsEscape( $i18n.getString( "error_required_field" ) , "'")';
 	var i18n_violate_validation = '$encoder.jsEscape( $i18n.getString( "violate_validation" ) , "'")';
@@ -185,7 +185,7 @@
 	var i18n_clear = '$encoder.jsEscape( $i18n.getString( "clear" ) , "'")';
 	var i18n_insert_a_report_date = '$encoder.jsEscape( $i18n.getString( "insert_a_report_date" ) , "'")';
     var i18n_comment_added = '$encoder.jsEscape( $i18n.getString( "comment_added" ) , "'")';
-	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'")';
+	var i18n_tracked_entity_instance_details_and_history = '$encoder.jsEscape( $i18n.getString( "tracked_entity_instance_details_and_history" ) , "'")';
 	var i18n_please_select_program_stage = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_program_stage" ) , "'")' + ']';
 	var i18n_update = '$encoder.jsEscape( $i18n.getString( "update" ) , "'")';
 	var i18n_please_select_criteria = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_criteria" ) , "'")' + ']';

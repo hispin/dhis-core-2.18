@@ -28,8 +28,8 @@ package org.hisp.dhis.caseentry.action.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.patientreport.PatientAggregateReport;
-import org.hisp.dhis.patientreport.PatientAggregateReportService;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,9 +45,9 @@ public class DeleteAggregateReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientAggregateReportService aggregateReportService;
+    private TrackedEntityAggregateReportService aggregateReportService;
 
-    public void setAggregateReportService( PatientAggregateReportService aggregateReportService )
+    public void setAggregateReportService( TrackedEntityAggregateReportService aggregateReportService )
     {
         this.aggregateReportService = aggregateReportService;
     }
@@ -71,9 +71,9 @@ public class DeleteAggregateReportAction
     public String execute()
         throws Exception
     {
-        PatientAggregateReport aggregateReport = aggregateReportService.getPatientAggregateReportByUid( id );
+        TrackedEntityAggregateReport aggregateReport = aggregateReportService.getTrackedEntityAggregateReportByUid( id );
 
-        aggregateReportService.deletePatientAggregateReport( aggregateReport );
+        aggregateReportService.deleteTrackedEntityAggregateReport( aggregateReport );
 
         return SUCCESS;
     }

@@ -30,6 +30,7 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.opensymphony.xwork2.Action;
+
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -37,8 +38,6 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -46,10 +45,13 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletInputStream;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +85,7 @@ public class UploadAnonymousEventAction
     private CurrentUserService currentUserService;
 
     @Autowired
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
     private I18nFormat format;
 
@@ -308,32 +310,32 @@ public class UploadAnonymousEventAction
             value = null;
         }
 
-        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
+        TrackedEntityDataValue dataValue = dataValueService.getTrackedEntityDataValue( programStageInstance,
             dataElement );
 
         if ( value != null )
         {
-            if ( patientDataValue == null )
+            if ( dataValue == null )
             {
-                patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
-                patientDataValue.setStoredBy( storedBy );
-                patientDataValue.setProvidedElsewhere( providedElsewhere );
+                dataValue = new TrackedEntityDataValue( programStageInstance, dataElement, new Date(), value );
+                dataValue.setStoredBy( storedBy );
+                dataValue.setProvidedElsewhere( providedElsewhere );
 
-                patientDataValueService.savePatientDataValue( patientDataValue );
+                dataValueService.saveTrackedEntityDataValue( dataValue );
             }
             else
             {
-                patientDataValue.setValue( value );
-                patientDataValue.setTimestamp( new Date() );
-                patientDataValue.setProvidedElsewhere( providedElsewhere );
-                patientDataValue.setStoredBy( storedBy );
+                dataValue.setValue( value );
+                dataValue.setTimestamp( new Date() );
+                dataValue.setProvidedElsewhere( providedElsewhere );
+                dataValue.setStoredBy( storedBy );
 
-                patientDataValueService.updatePatientDataValue( patientDataValue );
+                dataValueService.updateTrackedEntityDataValue( dataValue );
             }
         }
-        else if ( patientDataValue != null )
+        else if ( dataValue != null )
         {
-            patientDataValueService.deletePatientDataValue( patientDataValue );
+            dataValueService.deleteTrackedEntityDataValue( dataValue );
         }
     }
 }

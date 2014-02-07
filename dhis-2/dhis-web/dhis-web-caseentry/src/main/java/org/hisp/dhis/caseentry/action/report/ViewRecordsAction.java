@@ -33,11 +33,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,11 +52,11 @@ public class ViewRecordsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -77,11 +77,11 @@ public class ViewRecordsAction
         this.id = id;
     }
 
-    private Collection<PatientDataValue> patientDataValues = new ArrayList<PatientDataValue>();
+    private Collection<TrackedEntityDataValue> dataValues = new ArrayList<TrackedEntityDataValue>();
 
-    public Collection<PatientDataValue> getPatientDataValues()
+    public Collection<TrackedEntityDataValue> getDataValues()
     {
-        return patientDataValues;
+        return dataValues;
     }
 
     private Map<Integer, String> optionValueMap = new HashMap<Integer, String>();
@@ -91,11 +91,11 @@ public class ViewRecordsAction
         return optionValueMap;
     }
 
-    private Patient patient;
+    private TrackedEntityInstance entityInstance;
 
-    public Patient getPatient()
+    public TrackedEntityInstance getEntityInstance()
     {
-        return patient;
+        return entityInstance;
     }
 
     private ProgramStageInstance programStageInstance;
@@ -114,13 +114,13 @@ public class ViewRecordsAction
     {
         programStageInstance = programStageInstanceService.getProgramStageInstance( id );
 
-        patient = programStageInstance.getProgramInstance().getPatient();
+        entityInstance = programStageInstance.getProgramInstance().getEntityInstance();
 
-        patientDataValues = patientDataValueService.getPatientDataValues( programStageInstance );
+        dataValues = dataValueService.getTrackedEntityDataValues( programStageInstance );
 
-        for ( PatientDataValue patientDataValue : patientDataValues )
+        for ( TrackedEntityDataValue dataValue : dataValues )
         {
-            optionValueMap.put( patientDataValue.getDataElement().getId(), patientDataValue.getValue() );
+            optionValueMap.put( dataValue.getDataElement().getId(), dataValue.getValue() );
         }
 
         return SUCCESS;

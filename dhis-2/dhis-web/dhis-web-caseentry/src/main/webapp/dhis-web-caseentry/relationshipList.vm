@@ -1,59 +1,36 @@
 <h5>
-	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
-	&#8226; <a href="javascript:showPatientDashboardForm('$!patient.uid');">$i18n.getString( 'patient_dashboard' )</a>
+	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
+	&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$!entityInstance.uid');">$i18n.getString( 'dashboard' )</a>
 	&#8226; $i18n.getString( "relationship_management" )
 </h5>
 <h3>	
-	&raquo; <a href="javascript:showAddRelationship('$patient.id')" >$i18n.getString( 'seach_available_patient' )</a>
-	&#8226; <a href="javascript:showAddPatientForm( '$patient.id','','', true )" >$i18n.getString( 'add_new_patient' )</a>
+	&raquo; <a href="javascript:showAddRelationship('$entityInstance.id')" >$i18n.getString( 'seach_available_tracked_entity_instance' )</a>
+	&#8226; <a href="javascript:showAddTrackedEntityInstanceForm( '$entityInstance.id','','', true )" >$i18n.getString( 'add_new_tracked_entity_instance' )</a>
 </h3>
 
-<input type="hidden" id="id" name="id" value="$patient.id">
+<input type="hidden" id="id" name="id" value="$entityInstance.id">
 <table class="mainPageTable information">                           
 	<tr>              
 		<td>
 			<table>
-				#foreach( $attributeValue in $patient.attributeValues)
+				#foreach( $attributeValue in $entityInstance.attributeValues)
 					#set($value=$attributeValue.value)
 					#if( $attribute.valueType == 'bool')
 						#set($value=$i18n.getString($attributeValue.value))
 					#end
 					<tr>
-						<td>$!attributeValue.patientAttribute.displayName:</td>
+						<td>$!attributeValue.attribute.displayName:</td>
 						<td>$!attributeValue.value</td>
 					</tr>
 				#end 
 			</table>
 		</td>
-	
-		#if( $patientAttributeValues.size() > 0 )
-		<td align="right">
-				<table>
-					#foreach( $patientAttributeValue in $patientAttributeValues )
-						<tr>
-							<td class="bold text-column">$encoder.htmlEncode( $patientAttributeValue.patientAttribute.name ):</td>
-							<td>
-							#if( $patientAttributeValue.patientAttribute.valueType=="bool")
-								$i18n.getString("$patientAttributeValue.value")
-							#else
-								$encoder.htmlEncode( $patientAttributeValue.value )
-							#end
-							</td>
-						</tr>
-					#end                         
-				</table>
-			
-		</td>
-		#end
-	</tr>
-	
 </table>
 
 <table class="list-table listTable">
                
 	<tr>            
 		<th>$i18n.getString( "relationship" )</th>
-		<th>$i18n.getString( "full_name" )</th>
 		<th style="text-align:center">$i18n.getString( "operations" )</th>
 	</tr>
 	
@@ -62,29 +39,29 @@
 		#foreach( $relationship in $relationships )
 			<tr id="tr${relationship.id}" #alternate( $mark ) >
 				#set( $partnerId = false )    
-				#if( $relationship.patientA.id == $patient.id )
-					#set( $partnerId = $relationship.patientB.id )
+				#if( $relationship.entityInstanceA.id == $entityInstance.id )
+					#set( $partnerId = $relationship.entityInstanceB.id )
 					<td>                                
 						$encoder.htmlEncode( $relationship.relationshipType.BIsToA )
 					</td>
 								
 					<td>
-						$!encoder.htmlEncode( $relationship.patientB.name )
+						$!encoder.htmlEncode( $relationship.entityInstanceB.name )
 					</td>
-				#elseif($relationship.patientB.id == $patient.id )
-					#set( $partnerId = $relationship.patientA.id )
+				#elseif($relationship.entityInstanceB.id == $entityInstance.id )
+					#set( $partnerId = $relationship.entityInstanceA.id )
 					<td>                                
 						$encoder.htmlEncode( $relationship.relationshipType.AIsToB )
 					</td>
 								
 					<td>
-						$!encoder.htmlEncode( $relationship.patientA.name )
+						$!encoder.htmlEncode( $relationship.entityInstanceA.name )
 					</td>
 				#end                  
 				
 				<td style="text-align:center">
-					<a href="javascript:manageRepresentative( '$patient.id', $partnerId )" title="$i18n.getString( 'set_as_representative' )"><img src="images/representative.png" alt="$i18n.getString( 'manage_representative' )"></a>
-					<a href="javascript:removeRelationship( '$relationship.id', '$!encoder.jsEncode( $relationship.patientA.name )', '$encoder.jsEncode( $relationship.relationshipType.aIsToB )', '$!encoder.jsEncode( $relationship.patientB.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+					<a href="javascript:manageRepresentative( '$entityInstance.id', $partnerId )" title="$i18n.getString( 'set_as_representative' )"><img src="images/representative.png" alt="$i18n.getString( 'manage_representative' )"></a>
+					<a href="javascript:removeRelationship( '$relationship.id', '$!encoder.jsEncode( $relationship.entityInstanceA.name )', '$encoder.jsEncode( $relationship.relationshipType.aIsToB )', '$!encoder.jsEncode( $relationship.entityInstanceB.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				</td>   						
 			</tr>
 			#set( $mark = !$mark)

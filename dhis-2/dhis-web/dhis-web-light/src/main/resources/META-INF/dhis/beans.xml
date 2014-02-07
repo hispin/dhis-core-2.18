@@ -168,7 +168,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageSectionAction"
 		scope="prototype">
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
@@ -190,8 +190,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programStageSectionService"
 			ref="org.hisp.dhis.program.ProgramStageSectionService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
@@ -203,7 +203,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="dataElementCategoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
@@ -218,7 +218,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programExpressionService"
 			ref="org.hisp.dhis.program.ProgramExpressionService" />
 		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -228,7 +228,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 	</bean>
 
 	<bean
@@ -236,7 +236,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction"
 		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeService" ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		
 	</bean>
 
@@ -244,7 +244,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction"
 		scope="prototype">
-		  <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		  <property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 	</bean>
 
 
@@ -253,7 +253,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="relationshipService"
@@ -263,14 +263,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
@@ -298,7 +298,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 	</bean>
 
 	<bean
@@ -307,7 +307,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
@@ -316,7 +316,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
@@ -325,7 +325,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
@@ -343,7 +343,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.beneficiaryregistration.action.RegisterBeneficiaryAction"
 		scope="prototype">
 		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	</bean>
@@ -354,11 +354,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 		<property name="patientAttributeOptionService"
-			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
@@ -381,14 +381,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction"
 		class="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 	</bean>
 
 	<bean
 		id="org.hisp.dhis.light.beneficiaryenrollment.action.GetEnrollmentProgramListAction"
 		class="org.hisp.dhis.light.beneficiaryenrollment.action.GetEnrollmentProgramListAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
@@ -397,7 +397,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.beneficiaryenrollment.action.GetProgramEnrollmentFormAction"
 		class="org.hisp.dhis.light.beneficiaryenrollment.action.GetProgramEnrollmentFormAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
@@ -405,18 +405,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.beneficiaryenrollment.action.SaveMobileProgramEnrollmentAction"
 		class="org.hisp.dhis.light.beneficiaryenrollment.action.SaveMobileProgramEnrollmentAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="formUtils" ref="org.hisp.dhis.light.utils.FormUtils" />
 		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
 		<property name="patientAttributeOptionService"
-			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeOptionService" />
 		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
 	</bean>
 
 	<!-- Single Event -->
@@ -437,7 +437,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction"
@@ -445,11 +445,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
@@ -460,9 +460,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
@@ -585,7 +585,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 		<property name="userService" ref="org.hisp.dhis.user.UserService" />
@@ -595,7 +595,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
 		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>

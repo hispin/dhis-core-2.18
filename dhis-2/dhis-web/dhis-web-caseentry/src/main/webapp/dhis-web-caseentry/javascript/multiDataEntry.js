@@ -1,17 +1,17 @@
 isAjax = true;
 
 function multiDataEntryOrgunitSelected( orgUnits, orgUnitNames ) {
-    hideById('patientDashboard');
+    hideById('entityInstanceDashboard');
     showById('searchDiv');
     showById('mainLinkLbl');
-    var width = jQuery('#programIdAddPatient').width();
-    jQuery('#programIdAddPatient').width(width - 30);
+    var width = jQuery('#programIdAddEntityInstance').width();
+    jQuery('#programIdAddEntityInstance').width(width - 30);
     showById("programLoader");
-    disable('programIdAddPatient');
+    disable('programIdAddEntityInstance');
     setFieldValue('orgunitName', orgUnitNames[0]);
     setFieldValue('orgunitId', orgUnits[0]);
-    hideById("listPatientDiv");
-    clearListById('programIdAddPatient');
+    hideById("listEntityInstanceDiv");
+    clearListById('programIdAddEntityInstance');
     $('#contentDataRecord').html('');
 
     jQuery.get("getPrograms.action", {}, function( json ) {
@@ -20,26 +20,26 @@ function multiDataEntryOrgunitSelected( orgUnits, orgUnitNames ) {
         for( i in json.programs ) {
             if( json.programs[i].type == 1 ) {
                 count++;
-                jQuery('#programIdAddPatient').append('<option value="' + json.programs[i].id + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>');
+                jQuery('#programIdAddEntityInstance').append('<option value="' + json.programs[i].id + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>');
             }
         }
 
         if( count == 0 ) {
-            jQuery('#programIdAddPatient').prepend('<option value="" >' + i18n_none_program + '</option>');
+            jQuery('#programIdAddEntityInstance').prepend('<option value="" >' + i18n_none_program + '</option>');
         } else if( count > 1 ) {
-            jQuery('#programIdAddPatient').prepend('<option value="" selected>' + i18n_please_select + '</option>');
+            jQuery('#programIdAddEntityInstance').prepend('<option value="" selected>' + i18n_please_select + '</option>');
         }
 
         enableBtn();
         hideById('programLoader');
-        jQuery('#programIdAddPatient').width(width);
-        enable('programIdAddPatient');
+        jQuery('#programIdAddEntityInstance').width(width);
+        enable('programIdAddEntityInstance');
     });
 }
 
 selection.setListenerFunction( multiDataEntryOrgunitSelected );
 
-function listAllPatient()
+function listAllTrackedEntityInstance()
 {
     var scheduledVisitDays = getFieldValue('scheduledVisitDays');
 
@@ -51,19 +51,19 @@ function listAllPatient()
         var y = date.getFullYear();
         var lastDays = jQuery.datepicker.formatDate(dateFormat, new Date(y, m, d - eval(scheduledVisitDays)));
 
-        var searchTexts = "stat_" + getFieldValue('programIdAddPatient') + "_" + lastDays + "_" + today + "_"
+        var searchTexts = "stat_" + getFieldValue('programIdAddEntityInstance') + "_" + lastDays + "_" + today + "_"
             + getFieldValue('orgunitId') + "_false_" + getFieldValue('statusEvent');
 
-        getPatientList(searchTexts);
+        getTrackedEntityInstanceList(searchTexts);
     }
 }
 
-function getPatientList(searchTexts)
+function getTrackedEntityInstanceList(searchTexts)
 {
-	hideById('listPatientDiv');
+	hideById('listEntityInstanceDiv');
 	hideById('advanced-search');
 	hideById('contentDataRecord');
-    var programId = getFieldValue('programIdAddPatient');
+    var programId = getFieldValue('programIdAddEntityInstance');
 
     var data = {};
     data.listAll = false;
@@ -74,9 +74,9 @@ function getPatientList(searchTexts)
     }
 
     showLoader();
-    jQuery('#listPatientDiv').load('getDataRecords.action', data, function() {
-        setInnerHTML('searchInforLbl', i18n_list_all_patients);
-        showById('listPatientDiv');
+    jQuery('#listEntityInstanceDiv').load('getDataRecords.action', data, function() {
+        setInnerHTML('searchInforLbl', i18n_list_all_tracked_entity_instances);
+        showById('listEntityInstanceDiv');
         setTableStyles();
         hideLoader();
     });
@@ -89,10 +89,10 @@ function getPatientList(searchTexts)
 function advancedSearch( params )
 {
     hideById('contentDataRecord');
-    hideById('listPatientDiv');
+    hideById('listEntityInstanceDiv');
     showLoader();
 
-    var programId = getFieldValue('programIdAddPatient');
+    var programId = getFieldValue('programIdAddEntityInstance');
 
     if( !isNaN(programId) || programId == null) {
         params += "&programId=" + parseInt(programId);
@@ -104,8 +104,8 @@ function advancedSearch( params )
         data: params,
         success: function( html ) {
             setTableStyles();
-            jQuery('#listPatientDiv').html(html);
-            showById('listPatientDiv');
+            jQuery('#listEntityInstanceDiv').html(html);
+            showById('listEntityInstanceDiv');
             hideLoader();
         }
     });
@@ -113,7 +113,7 @@ function advancedSearch( params )
 
 function loadDataEntryDialog( programStageInstanceId ) 
 {
-	jQuery("#patientList input[name='programStageBtn']").each(function(i,item){
+	jQuery("#entityInstanceList input[name='programStageBtn']").each(function(i,item){
 		jQuery(item).removeClass('stage-object-selected');
 	});
 	jQuery( '#' + prefixId + programStageInstanceId ).addClass('stage-object-selected');
@@ -122,7 +122,7 @@ function loadDataEntryDialog( programStageInstanceId )
         programStageInstanceId: programStageInstanceId
     },function() {
         setFieldValue( 'programStageInstanceId', programStageInstanceId );
-        showById('patientInforTB');
+        showById('entityInstanceInforTB');
     }).dialog({
         title:i18n_program_stage,
         maximize:true,

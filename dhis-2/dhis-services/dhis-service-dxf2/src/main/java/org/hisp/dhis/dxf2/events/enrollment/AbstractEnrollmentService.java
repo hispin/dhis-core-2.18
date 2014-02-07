@@ -38,12 +38,12 @@ import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -63,7 +63,7 @@ public abstract class AbstractEnrollmentService
     private PersonService personService;
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private I18nManager i18nManager;
@@ -97,30 +97,30 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollments getEnrollments( Person person )
     {
-        Patient patient = getPatient( person.getPerson() );
-        return getEnrollments( patient );
+        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person.getPerson() );
+        return getEnrollments( entityInstance );
     }
 
     @Override
     public Enrollments getEnrollments( Person person, EnrollmentStatus status )
     {
-        Patient patient = getPatient( person.getPerson() );
-        return getEnrollments( patient, status );
+        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person.getPerson() );
+        return getEnrollments( entityInstance, status );
     }
 
     @Override
-    public Enrollments getEnrollments( Patient patient )
+    public Enrollments getEnrollments( TrackedEntityInstance entityInstance )
     {
-        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( patient.getProgramInstances() );
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>( entityInstance.getProgramInstances() );
 
         return getEnrollments( programInstances );
     }
 
     @Override
-    public Enrollments getEnrollments( Patient patient, EnrollmentStatus status )
+    public Enrollments getEnrollments( TrackedEntityInstance entityInstance, EnrollmentStatus status )
     {
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>(
-            programInstanceService.getProgramInstances( patient, status.getValue() ) );
+            programInstanceService.getProgramInstances( entityInstance, status.getValue() ) );
 
         return getEnrollments( programInstances );
     }
@@ -171,15 +171,15 @@ public abstract class AbstractEnrollmentService
     @Override
     public Enrollments getEnrollments( Program program, Person person )
     {
-        Patient patient = getPatient( person.getPerson() );
-        return getEnrollments( programInstanceService.getProgramInstances( patient, program ) );
+        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person.getPerson() );
+        return getEnrollments( programInstanceService.getProgramInstances( entityInstance, program ) );
     }
 
     @Override
     public Enrollments getEnrollments( Program program, Person person, EnrollmentStatus status )
     {
-        Patient patient = getPatient( person.getPerson() );
-        return getEnrollments( programInstanceService.getProgramInstances( patient, program, status.getValue() ) );
+        TrackedEntityInstance entityInstance = getTrackedEntityInstance( person.getPerson() );
+        return getEnrollments( programInstanceService.getProgramInstances( entityInstance, program, status.getValue() ) );
     }
 
     @Override
@@ -189,9 +189,10 @@ public abstract class AbstractEnrollmentService
 
         for ( ProgramInstance programInstance : programInstances )
         {
-            // check for null, both for pi, and for pi.patient, there are DBs out there where patientid == null
+            // check for null, both for pi, and for pi.entityInstance, there are DBs
+            // out there where trackedentityinstanceid == null
             // even if the program is of type 1/2.
-            if ( programInstance != null && programInstance.getPatient() != null )
+            if ( programInstance != null && programInstance.getEntityInstance() != null )
             {
                 enrollments.getEnrollments().add( getEnrollment( programInstance ) );
             }
@@ -214,7 +215,7 @@ public abstract class AbstractEnrollmentService
         Enrollment enrollment = new Enrollment();
 
         enrollment.setEnrollment( programInstance.getUid() );
-        enrollment.setPerson( programInstance.getPatient().getUid() );
+        enrollment.setPerson( programInstance.getEntityInstance().getUid() );
         enrollment.setProgram( programInstance.getProgram().getUid() );
         enrollment.setStatus( EnrollmentStatus.fromInt( programInstance.getStatus() ) );
         enrollment.setDateOfEnrollment( programInstance.getEnrollmentDate() );
@@ -230,8 +231,8 @@ public abstract class AbstractEnrollmentService
     @Override
     public ImportSummary saveEnrollment( Enrollment enrollment )
     {
-        Patient patient = getPatient( enrollment.getPerson() );
-        Person person = personService.getPerson( patient );
+        TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
+        Person person = personService.getPerson( entityInstance );
         Program program = getProgram( enrollment.getProgram() );
 
         Enrollments enrollments = getEnrollments( program, person, EnrollmentStatus.ACTIVE );
@@ -245,8 +246,8 @@ public abstract class AbstractEnrollmentService
             return importSummary;
         }
 
-        ProgramInstance programInstance = programInstanceService.enrollPatient( patient, program,
-            enrollment.getDateOfEnrollment(), enrollment.getDateOfIncident(), patient.getOrganisationUnit(),
+        ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program,
+            enrollment.getDateOfEnrollment(), enrollment.getDateOfIncident(), entityInstance.getOrganisationUnit(),
             i18nManager.getI18nFormat() );
 
         if ( programInstance == null )
@@ -272,7 +273,8 @@ public abstract class AbstractEnrollmentService
     {
         if ( enrollment == null || enrollment.getEnrollment() == null )
         {
-            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR, "No enrollment or enrollment ID was supplied" );
+            ImportSummary importSummary = new ImportSummary( ImportStatus.ERROR,
+                "No enrollment or enrollment ID was supplied" );
             importSummary.getImportCount().incrementIgnored();
 
             return importSummary;
@@ -288,11 +290,11 @@ public abstract class AbstractEnrollmentService
             return importSummary;
         }
 
-        Patient patient = getPatient( enrollment.getPerson() );
+        TrackedEntityInstance entityInstance = getTrackedEntityInstance( enrollment.getPerson() );
         Program program = getProgram( enrollment.getProgram() );
 
         programInstance.setProgram( program );
-        programInstance.setPatient( patient );
+        programInstance.setEntityInstance( entityInstance );
         programInstance.setDateOfIncident( enrollment.getDateOfIncident() );
         programInstance.setEnrollmentDate( enrollment.getDateOfEnrollment() );
 
@@ -370,16 +372,16 @@ public abstract class AbstractEnrollmentService
         return programs;
     }
 
-    private Patient getPatient( String person )
+    private TrackedEntityInstance getTrackedEntityInstance( String person )
     {
-        Patient patient = patientService.getPatient( person );
+        TrackedEntityInstance entityInstance = entityInstanceService.getTrackedEntityInstance( person );
 
-        if ( patient == null )
+        if ( entityInstance == null )
         {
             throw new IllegalArgumentException( "Person does not exist." );
         }
 
-        return patient;
+        return entityInstance;
     }
 
     private Program getProgram( String id )

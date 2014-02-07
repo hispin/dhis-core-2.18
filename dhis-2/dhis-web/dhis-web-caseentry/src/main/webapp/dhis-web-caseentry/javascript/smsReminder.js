@@ -3,26 +3,26 @@ var generateResultParams = "";
 
 function orgunitSelected( orgUnits, orgUnitNames )
 {
-	var width = jQuery('#programIdAddPatient').width();
-	jQuery('#programIdAddPatient').width(width-30);
+	var width = jQuery('#programIdAddEntityInstance').width();
+	jQuery('#programIdAddEntityInstance').width(width-30);
 	showById( "programLoader" );
-	disable('programIdAddPatient');
-	disable('listPatientBtn');
+	disable('programIdAddEntityInstance');
+	disable('listEntityInstanceBtn');
 	showById('mainLinkLbl');
 	showById('searchDiv');
 	hideById('listEventDiv');
 	hideById('listEventDiv');
-	hideById('patientDashboard');
+	hideById('entityInstanceDashboard');
 	hideById('smsManagementDiv');
 	hideById('sendSmsFormDiv');
-	hideById('editPatientDiv');
+	hideById('editEntityInstanceDiv');
 	hideById('resultSearchDiv');
 	hideById('enrollmentDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
-	hideById('migrationPatientDiv');
+	hideById('migrationEntityInstanceDiv');
 
-	clearListById('programIdAddPatient');
+	clearListById('programIdAddEntityInstance');
 	$('#contentDataRecord').html('');
 	setFieldValue('orgunitName', orgUnitNames[0]);
 	setFieldValue('orgunitId', orgUnits[0]);
@@ -33,21 +33,21 @@ function orgunitSelected( orgUnits, orgUnitNames )
 			for ( i in json.programs ) {
 				if(json.programs[i].type==1){
 					count++;
-					jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
+					jQuery( '#programIdAddEntityInstance').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
 				}
 			}
 			if(count==0){
-				jQuery( '#programIdAddPatient').prepend( '<option value="" selected>' + i18n_none_program + '</option>' );
+				jQuery( '#programIdAddEntityInstance').prepend( '<option value="" selected>' + i18n_none_program + '</option>' );
 			}
 			else if(count>1){
-				jQuery( '#programIdAddPatient').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
-				enable('listPatientBtn');
+				jQuery( '#programIdAddEntityInstance').prepend( '<option value="" selected>' + i18n_please_select + '</option>' );
+				enable('listEntityInstanceBtn');
 			}
 			
 			enableBtn();
 			hideById('programLoader');
-			jQuery('#programIdAddPatient').width(width);
-			enable('programIdAddPatient');
+			jQuery('#programIdAddEntityInstance').width(width);
+			enable('programIdAddEntityInstance');
 		});
 }
 
@@ -57,7 +57,7 @@ selection.setListenerFunction( orgunitSelected );
 // List all events
 // --------------------------------------------------------------------
 
-function listAllPatient()
+function listAllTrackedEntityInstance()
 {
 	hideById('listEventDiv');
 	hideById('advanced-search');
@@ -74,7 +74,7 @@ function listAllPatient()
 	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y1, m, d) );
 	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y2, m, d) );
 	
-	var programId = getFieldValue('programIdAddPatient');
+	var programId = getFieldValue('programIdAddEntityInstance');
 	var searchTexts = "stat_" + programId + "_" 
 				+ startDate + "_" + endDate + "_" 
 				+ getFieldValue('orgunitId') + "_true_" 
@@ -87,7 +87,7 @@ function listAllPatient()
 	generateResultParams = followup + "&programId=" + programId + "&searchTexts=" + searchTexts;
 	
 	showLoader();
-	jQuery('#listEventDiv').load('getSMSPatientRecords.action?' + followup,
+	jQuery('#listEventDiv').load('getSMSTrackedEntityInstanceRecords.action?' + followup,
 		{
 			programId:programId,
 			listAll:false,
@@ -114,11 +114,11 @@ function advancedSearch( params )
 	$('#listEventDiv').html('');
 	hideById('listEventDiv');
 	showLoader();
-	params += "&programId=" + getFieldValue('programIdAddPatient');
+	params += "&programId=" + getFieldValue('programIdAddEntityInstance');
 	generateResultParams = params;
 	
 	$.ajax({
-		url: 'getSMSPatientRecords.action',
+		url: 'getSMSEntityInstanceRecords.action',
 		type:"POST",
 		data: params,
 		success: function( html ){
@@ -213,7 +213,7 @@ function keypressOnMessage(event, field, programStageInstanceId )
 {
 	var key = getKeyCode( event );
 	if ( key==13 ){ // Enter
-		sendSmsOnePatient( field, programStageInstanceId );
+		sendSmsOneTrackedEntityInstance( field, programStageInstanceId );
 	}
 }
 
@@ -286,12 +286,12 @@ function onClickBackBtn()
 	showById('mainLinkLbl');
 	showById('searchDiv');
 	showById('listEventDiv');
-	hideById('migrationPatientDiv');
+	hideById('migrationEntityInstanceDiv');
 	hideById('smsManagementDiv');
-	hideById('patientDashboard');
+	hideById('entityInstanceDashboard');
 	
 	if( eventList == 1){
-		listAllPatient();
+		listAllTrackedEntityInstance();
 	}
 	else if( eventList == 2){
 		validateAdvancedSearch();

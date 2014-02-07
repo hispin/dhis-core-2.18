@@ -39,11 +39,11 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.patientreport.PatientAggregateReport;
-import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.trackedentityreport.TrackedEntityAggregateReport;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupAccess;
@@ -108,8 +108,8 @@ public final class SharingUtils
         addType( IndicatorGroupSet.class, "indicatorGroupSet", null, "F_INDICATORGROUPSET_PUBLIC_ADD", "F_INDICATORGROUPSET_PRIVATE_ADD" );
         addType( Program.class, "program", null, "F_PROGRAM_PUBLIC_ADD", "F_PROGRAM_PRIVATE_ADD" );
         addType( UserGroup.class, "userGroup", null, "F_USERGROUP_PUBLIC_ADD", null );
-        addType( PatientTabularReport.class, "patientTabularReport", null, "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD", null );
-        addType( PatientAggregateReport.class, "patientAggregateReport", null, "F_PATIENT_TABULAR_REPORT_PUBLIC_ADD", null );
+        addType( TrackedEntityTabularReport.class, "trackedEntityTabularReport", null, "F_TRACKED_ENTITY_TABULAR_REPORT_PUBLIC_ADD", null );
+        addType( TrackedEntityAggregateReport.class, "trackedEntityAggregateReport", null, "F_TRACKED_ENTITY_TABULAR_REPORT_PUBLIC_ADD", null );
 
         addType( org.hisp.dhis.mapping.Map.class, "map", "F_MAP_EXTERNAL", "F_MAP_PUBLIC_ADD", null );
         addType( Chart.class, "chart", "F_CHART_EXTERNAL", "F_CHART_PUBLIC_ADD", null );

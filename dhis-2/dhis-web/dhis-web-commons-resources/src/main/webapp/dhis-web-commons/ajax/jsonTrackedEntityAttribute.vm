@@ -1,0 +1,13 @@
+{ "attribute":
+  {
+    "id": "${attribute.id}",
+	"name": "$!encoder.jsonEncode( ${attribute.name} )",
+	"code": "$!encoder.jsonEncode( ${attribute.code} )",
+	"description": "$!encoder.jsonEncode( ${attribute.description} )",
+	"mandatory":  "$!{attribute.mandatory}",
+	"unique":  "$!{attribute.unique}",
+	"valueType": "$!attribute.valueType",
+	"displayInListNoProgram": "$!attribute.displayInListNoProgram",
+	"inherit": "$!attribute.inherit"
+  }
+}

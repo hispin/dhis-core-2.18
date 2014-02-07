@@ -33,7 +33,7 @@
 				</tr>
 				</thead>
 				<tbody id="list">
-				#foreach($criteria in $program.patientValidationCriteria)
+				#foreach($criteria in $program.validationCriteria)
 				<tr id="tr${criteria.id}" data-id="$!criteria.id" data-uid="$!criteria.uid" data-type="ValidationCriteria" data-name="$encoder.htmlEncode( $!criteria.displayName )"
 				    data-can-manage="$security.canManage( $criteria )"
 				    data-can-update="$security.canUpdate( $criteria )"

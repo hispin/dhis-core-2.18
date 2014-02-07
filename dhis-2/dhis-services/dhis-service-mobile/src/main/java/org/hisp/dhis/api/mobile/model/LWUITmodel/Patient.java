@@ -37,6 +37,7 @@ import java.util.List;
 
 import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.PatientAttribute;
+import org.hisp.dhis.api.mobile.model.LWUITmodel.ProgramInstance;
 
 /**
  * @author Nguyen Kim Lai

@@ -29,13 +29,14 @@ package org.hisp.dhis.light.singleevent.action;
  */
 
 import com.opensymphony.xwork2.Action;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.util.SessionUtils;
 
 import java.util.ArrayList;
@@ -85,14 +86,14 @@ public class GetSingleEventBeneficiaryAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService patientService;
 
-    public PatientService getPatientService()
+    public TrackedEntityInstanceService getPatientService()
     {
         return patientService;
     }
 
-    public void setPatientService( PatientService patientService )
+    public void setPatientService( TrackedEntityInstanceService patientService )
     {
         this.patientService = patientService;
     }
@@ -101,14 +102,14 @@ public class GetSingleEventBeneficiaryAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<Patient> singleEventBeneficiaryList = new ArrayList<Patient>();
+    private List<TrackedEntityInstance> singleEventBeneficiaryList = new ArrayList<TrackedEntityInstance>();
 
-    public List<Patient> getSingleEventBeneficiaryList()
+    public List<TrackedEntityInstance> getSingleEventBeneficiaryList()
     {
         return singleEventBeneficiaryList;
     }
 
-    public void setSingleEventBeneficiaryList( List<Patient> singleEventBeneficiaryList )
+    public void setSingleEventBeneficiaryList( List<TrackedEntityInstance> singleEventBeneficiaryList )
     {
         this.singleEventBeneficiaryList = singleEventBeneficiaryList;
     }
@@ -158,9 +159,9 @@ public class GetSingleEventBeneficiaryAction
 
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Program program = programService.getProgram( programId );
-        Collection<Patient> allPatient = patientService.getPatients( orgUnit, 0, Integer.MAX_VALUE );
+        Collection<TrackedEntityInstance> allPatient = patientService.getTrackedEntityInstances( orgUnit, 0, Integer.MAX_VALUE );
 
-        for ( Patient patient : allPatient )
+        for ( TrackedEntityInstance patient : allPatient )
         {
             if ( programInstanceService.getProgramInstances( patient, program ).size() == 0 )
             {

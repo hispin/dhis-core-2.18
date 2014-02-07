@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<patients>
-#foreach( $patient  in $patients )
-<patient>
-  <id>$patient.id</id>  
-  #foreach( $attribute in $patient.attributes )
+<entityInstances>
+#foreach( $entityInstance  in $entityInstances )
+<entityInstance>
+  <id>$entityInstance.id</id>  
+  #foreach( $attribute in $entityInstance.attributes )
     #set( $attributeValue = "" )
-    #set( $key = $patient.id + "_" + $attribute.id )
-    #set( $attributeValue = $patientAttributeValueMap.get( $key ) )             
+    #set( $key = $entityInstance.id + "_" + $attribute.id )
+    #set( $attributeValue = $attributeValueMap.get( $key ) )             
     <attribute>
         <name>$!encoder.xmlEncode( $attribute.displayName )</name>
         <value>$!encoder.xmlEncode( $attributeValue )</value>
     </attribute> 
   #end  
-  #foreach( $program in $patient.programs )
+  #foreach( $program in $entityInstance.programs )
     <program>
         <name>$!encoder.xmlEncode( $program.displayName )</name>
     </program> 
   #end         
-</patient>
+</entityInstance>
 #end
-</patients>
+</entityInstances>

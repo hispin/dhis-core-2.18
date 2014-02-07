@@ -30,10 +30,10 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,11 +55,11 @@ public class SaveProvidingFacilityAction
         this.dataElementService = dataElementService;
     }
 
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -113,14 +113,14 @@ public class SaveProvidingFacilityAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
-            dataElement );
+        TrackedEntityDataValue DataValue = dataValueService.getTrackedEntityDataValue(
+            programStageInstance, dataElement );
 
-        if ( patientDataValue != null )
+        if ( DataValue != null )
         {
-            patientDataValue.setProvidedElsewhere( providedElsewhere );
+            DataValue.setProvidedElsewhere( providedElsewhere );
 
-            patientDataValueService.updatePatientDataValue( patientDataValue );
+            dataValueService.updateTrackedEntityDataValue( DataValue );
         }
 
         return SUCCESS;

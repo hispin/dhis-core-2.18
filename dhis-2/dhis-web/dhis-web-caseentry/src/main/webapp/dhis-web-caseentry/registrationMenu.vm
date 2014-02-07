@@ -1,9 +1,9 @@
 
-<a href="index.action"><h2>$i18n.getString( "patient" )&nbsp;</h2></a>
+<a href="index.action"><h2>$i18n.getString( "tracked_entity_instance" )&nbsp;</h2></a>
 
 <ul>
-	#if( $auth.hasAccess( "dhis-web-caseentry", "patient" ) )
-	<li><a href="patient.action">$i18n.getString( "find_and_add_person" )</a></li>
+	#if( $auth.hasAccess( "dhis-web-caseentry", "trackedEntityInstance" ) )
+	<li><a href="trackedEntityInstance.action">$i18n.getString( "find_and_add_tracked_entity_instance" )</a></li>
 	#end
 	#if( $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) )
 		<li><a href="activityPlanSelect.action">$i18n.getString( "activity_plan" )</a></li>  

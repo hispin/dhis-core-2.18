@@ -45,10 +45,10 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -63,7 +63,7 @@ public class ProgramExpressionServiceTest
     private ProgramExpressionService programExpressionService;
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -90,7 +90,7 @@ public class ProgramExpressionServiceTest
     private ProgramStageInstanceService programStageInstanceService;
 
     @Autowired
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
     private ProgramExpression programExpressionA;
 
@@ -131,18 +131,18 @@ public class ProgramExpressionServiceTest
         deAId = dataElementService.addDataElement( dataElementA );
         deBId = dataElementService.addDataElement( dataElementB );
 
-        Patient patient = createPatient( 'A', organisationUnit );
-        patientService.savePatient( patient );
+        TrackedEntityInstance entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
+        entityInstanceService.saveTrackedEntityInstance( entityInstance );
 
-        ProgramInstance programInstance = programInstanceService.enrollPatient( patient, program, new Date(),
+        ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, new Date(),
             new Date(), organisationUnit, null );
         stageInstance = programStageInstanceService.getProgramStageInstance( programInstance, stageA );
 
-        PatientDataValue dataValueA = new PatientDataValue( stageInstance, dataElementA, "1" );
-        PatientDataValue dataValueB = new PatientDataValue( stageInstance, dataElementB, "2" );
+        TrackedEntityDataValue dataValueA = new TrackedEntityDataValue( stageInstance, dataElementA, "1" );
+        TrackedEntityDataValue dataValueB = new TrackedEntityDataValue( stageInstance, dataElementB, "2" );
 
-        patientDataValueService.savePatientDataValue( dataValueA );
-        patientDataValueService.savePatientDataValue( dataValueB );
+        dataValueService.saveTrackedEntityDataValue( dataValueA );
+        dataValueService.saveTrackedEntityDataValue( dataValueB );
 
         programExpressionA = new ProgramExpression( "[" + ProgramExpression.OBJECT_PROGRAM_STAGE_DATAELEMENT
             + ProgramExpression.SEPARATOR_OBJECT + stageAId + "." + deAId + "]", "A" );

@@ -45,21 +45,21 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patient.PatientReminderService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
-import org.hisp.dhis.patientcomment.PatientComment;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
+import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,19 +81,19 @@ public class DefaultProgramInstanceService
         this.programInstanceStore = programInstanceStore;
     }
 
-    private PatientAttributeValueService patientAttributeValueService;
+    private TrackedEntityAttributeValueService attributeValueService;
 
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    public void setAttributeValueService( TrackedEntityAttributeValueService attributeValueService )
     {
-        this.patientAttributeValueService = patientAttributeValueService;
+        this.attributeValueService = attributeValueService;
     }
 
-    private PatientDataValueService patientDataValueService;
-
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    public void setDataValueService( TrackedEntityDataValueService dataValueService )
     {
-        this.patientDataValueService = patientDataValueService;
+        this.dataValueService = dataValueService;
     }
+
+    private TrackedEntityDataValueService dataValueService;
 
     private ProgramService programService;
 
@@ -116,11 +116,11 @@ public class DefaultProgramInstanceService
         this.currentUserService = currentUserService;
     }
 
-    private PatientReminderService patientReminderService;
+    private TrackedEntityInstanceReminderService reminderService;
 
-    public void setPatientReminderService( PatientReminderService patientReminderService )
+    public void setReminderService( TrackedEntityInstanceReminderService reminderService )
     {
-        this.patientReminderService = patientReminderService;
+        this.reminderService = reminderService;
     }
 
     private MessageService messageService;
@@ -209,19 +209,20 @@ public class DefaultProgramInstanceService
         return programInstanceStore.get( program, status );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Patient patient, Integer status )
+    public Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Integer status )
     {
-        return programInstanceStore.get( patient, status );
+        return programInstanceStore.get( entityInstance, status );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Patient patient, Program program )
+    public Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Program program )
     {
-        return programInstanceStore.get( patient, program );
+        return programInstanceStore.get( entityInstance, program );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Patient patient, Program program, Integer status )
+    public Collection<ProgramInstance> getProgramInstances( TrackedEntityInstance entityInstance, Program program,
+        Integer status )
     {
-        return programInstanceStore.get( patient, program, status );
+        return programInstanceStore.get( entityInstance, program, status );
     }
 
     public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit,
@@ -252,25 +253,15 @@ public class DefaultProgramInstanceService
         return programInstanceStore.count( program, orgunitIds, startDate, endDate );
     }
 
-    public List<Grid> getProgramInstanceReport( Patient patient, I18n i18n, I18nFormat format )
+    public List<Grid> getProgramInstanceReport( TrackedEntityInstance instance, I18n i18n, I18nFormat format )
     {
         List<Grid> grids = new ArrayList<Grid>();
 
         // ---------------------------------------------------------------------
-        // Get registered personal patient data
+        // Get registered personal entityInstance data
         // ---------------------------------------------------------------------
 
         Grid attrGrid = new ListGrid();
-
-        if ( patient.getName() == null )
-        {
-            attrGrid.setTitle( "" );
-        }
-        else
-        {
-            attrGrid.setTitle( patient.getName() );
-        }
-        attrGrid.setSubtitle( "" );
 
         attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
         attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
@@ -284,29 +275,29 @@ public class DefaultProgramInstanceService
             .getProgramsByCurrentUser( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
         programs.addAll( programService.getProgramsByCurrentUser( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
 
-        Collection<PatientAttributeValue> attributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patient );
-        Iterator<PatientAttributeValue> iterAttribute = attributeValues.iterator();
+        Collection<TrackedEntityAttributeValue> attributeValues = attributeValueService
+            .getTrackedEntityAttributeValues( instance );
+        Iterator<TrackedEntityAttributeValue> iterAttribute = attributeValues.iterator();
 
         for ( Program program : programs )
         {
-            List<PatientAttribute> atttributes = program.getAttributes();
+            List<TrackedEntityAttribute> atttributes = program.getEntityAttributes();
             while ( iterAttribute.hasNext() )
             {
-                PatientAttributeValue attributeValue = iterAttribute.next();
-                if ( !atttributes.contains( attributeValue.getPatientAttribute() ) )
+                TrackedEntityAttributeValue attributeValue = iterAttribute.next();
+                if ( !atttributes.contains( attributeValue.getAttribute() ) )
                 {
                     iterAttribute.remove();
                 }
             }
         }
 
-        for ( PatientAttributeValue attributeValue : attributeValues )
+        for ( TrackedEntityAttributeValue attributeValue : attributeValues )
         {
             attrGrid.addRow();
-            attrGrid.addValue( attributeValue.getPatientAttribute().getDisplayName() );
+            attrGrid.addValue( attributeValue.getAttribute().getDisplayName() );
             String value = attributeValue.getValue();
-            if ( attributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_BOOL ) )
+            if ( attributeValue.getAttribute().getValueType().equals( TrackedEntityAttribute.TYPE_BOOL ) )
             {
                 value = i18n.getString( value );
             }
@@ -320,7 +311,7 @@ public class DefaultProgramInstanceService
         // Get all program data registered
         // ---------------------------------------------------------------------
 
-        Collection<ProgramInstance> programInstances = patient.getProgramInstances();
+        Collection<ProgramInstance> programInstances = instance.getProgramInstances();
 
         if ( programInstances.size() > 0 )
         {
@@ -364,16 +355,16 @@ public class DefaultProgramInstanceService
         grid.addValue( programInstance.getProgram().getDateOfEnrollmentDescription() );
         grid.addValue( format.formatDate( programInstance.getEnrollmentDate() ) );
 
-        // Get patient-attribute-values which belong to the program
-        
-        Patient patient = programInstance.getPatient();
+        // Get attribute-values which belong to the program
 
-        Collection<PatientAttribute> atttributes = programInstance.getProgram().getAttributes();
+        TrackedEntityInstance instance = programInstance.getEntityInstance();
 
-        for ( PatientAttribute attrtibute : atttributes )
+        Collection<TrackedEntityAttribute> atttributes = programInstance.getProgram().getEntityAttributes();
+
+        for ( TrackedEntityAttribute attrtibute : atttributes )
         {
-            PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
-                attrtibute );
+            TrackedEntityAttributeValue attributeValue = attributeValueService.getTrackedEntityAttributeValue(
+                instance, attrtibute );
             if ( attributeValue != null )
             {
                 grid.addRow();
@@ -382,16 +373,15 @@ public class DefaultProgramInstanceService
             }
         }
 
-        // Get patient comments for the program instance
+        // Get entityInstance comments for the program instance
 
-        Set<PatientComment> patientComments = programInstance.getPatientComments();
-
-        for ( PatientComment patientComment : patientComments )
+        TrackedEntityComment comment = programInstance.getComment();
+        if ( comment != null )
         {
             grid.addRow();
             grid.addValue( i18n.getString( "comment" ) + " " + i18n.getString( "on" ) + " "
-                + format.formatDateTime( patientComment.getCreatedDate() ) );
-            grid.addValue( patientComment.getCommentText() );
+                + format.formatDateTime( comment.getCreatedDate() ) );
+            grid.addValue( comment.getCommentText() );
         }
 
         // Get sms of the program-instance
@@ -448,28 +438,29 @@ public class DefaultProgramInstanceService
     public Collection<SchedulingProgramObject> getScheduleMesssages()
     {
         Collection<SchedulingProgramObject> result = programInstanceStore
-            .getSendMesssageEvents( PatientReminder.ENROLLEMENT_DATE_TO_COMPARE );
+            .getSendMesssageEvents( TrackedEntityInstanceReminder.ENROLLEMENT_DATE_TO_COMPARE );
 
-        result.addAll( programInstanceStore.getSendMesssageEvents( PatientReminder.INCIDENT_DATE_TO_COMPARE ) );
+        result.addAll( programInstanceStore
+            .getSendMesssageEvents( TrackedEntityInstanceReminder.INCIDENT_DATE_TO_COMPARE ) );
 
         return result;
     }
 
     public Collection<OutboundSms> sendMessages( ProgramInstance programInstance, int status, I18nFormat format )
     {
-        Patient patient = programInstance.getPatient();
+        TrackedEntityInstance entityInstance = programInstance.getEntityInstance();
         Collection<OutboundSms> outboundSmsList = new HashSet<OutboundSms>();
 
-        Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
+        Collection<TrackedEntityInstanceReminder> reminders = programInstance.getProgram().getInstanceReminders();
 
-        for ( PatientReminder rm : reminders )
+        for ( TrackedEntityInstanceReminder rm : reminders )
         {
             if ( rm != null
                 && rm.getWhenToSend() != null
                 && rm.getWhenToSend() == status
-                && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
+                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DIRECT_SMS || rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
             {
-                OutboundSms outboundSms = sendProgramMessage( rm, programInstance, patient, format );
+                OutboundSms outboundSms = sendProgramMessage( rm, programInstance, entityInstance, format );
 
                 if ( outboundSms != null )
                 {
@@ -487,17 +478,18 @@ public class DefaultProgramInstanceService
     {
         Collection<MessageConversation> messageConversations = new HashSet<MessageConversation>();
 
-        Collection<PatientReminder> reminders = programInstance.getProgram().getPatientReminders();
-        for ( PatientReminder rm : reminders )
+        Collection<TrackedEntityInstanceReminder> reminders = programInstance.getProgram().getInstanceReminders();
+        for ( TrackedEntityInstanceReminder rm : reminders )
         {
             if ( rm != null
                 && rm.getWhenToSend() != null
                 && rm.getWhenToSend() == status
-                && (rm.getMessageType() == PatientReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm.getMessageType() == PatientReminder.MESSAGE_TYPE_BOTH) )
+                && (rm.getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_DHIS_MESSAGE || rm
+                    .getMessageType() == TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH) )
             {
                 int id = messageService.sendMessage( programInstance.getProgram().getDisplayName(),
-                    patientReminderService.getMessageFromTemplate( rm, programInstance, format ), null,
-                    patientReminderService.getUsers( rm, programInstance.getPatient() ), null, false, true );
+                    reminderService.getMessageFromTemplate( rm, programInstance, format ), null,
+                    reminderService.getUsers( rm, programInstance.getEntityInstance() ), null, false, true );
                 messageConversations.add( messageService.getMessageConversation( id ) );
             }
         }
@@ -506,8 +498,8 @@ public class DefaultProgramInstanceService
     }
 
     @Override
-    public ProgramInstance enrollPatient( Patient patient, Program program, Date enrollmentDate, Date dateOfIncident,
-        OrganisationUnit organisationUnit, I18nFormat format )
+    public ProgramInstance enrollTrackedEntityInstance( TrackedEntityInstance entityInstance, Program program,
+        Date enrollmentDate, Date dateOfIncident, OrganisationUnit organisationUnit, I18nFormat format )
     {
         // ---------------------------------------------------------------------
         // Add program instance
@@ -515,7 +507,7 @@ public class DefaultProgramInstanceService
 
         ProgramInstance programInstance = new ProgramInstance();
 
-        programInstance.enrollPatient( patient, program );
+        programInstance.enrollTrackedEntityInstance( entityInstance, program );
 
         if ( enrollmentDate != null )
         {
@@ -567,7 +559,8 @@ public class DefaultProgramInstanceService
             outboundSms = new ArrayList<OutboundSms>();
         }
 
-        outboundSms.addAll( sendMessages( programInstance, PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
+        outboundSms.addAll( sendMessages( programInstance, TrackedEntityInstanceReminder.SEND_WHEN_TO_EMROLLEMENT,
+            format ) );
 
         // -----------------------------------------------------------------
         // Send message when to completed the program
@@ -580,7 +573,8 @@ public class DefaultProgramInstanceService
             messages = new ArrayList<MessageConversation>();
         }
 
-        messages.addAll( sendMessageConversations( programInstance, PatientReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
+        messages.addAll( sendMessageConversations( programInstance,
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_EMROLLEMENT, format ) );
 
         updateProgramInstance( programInstance );
 
@@ -617,7 +611,8 @@ public class DefaultProgramInstanceService
             outboundSms = new ArrayList<OutboundSms>();
         }
 
-        outboundSms.addAll( sendMessages( programInstance, PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
+        outboundSms.addAll( sendMessages( programInstance,
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
 
         // -----------------------------------------------------------------
         // Send DHIS message when to completed the program
@@ -631,7 +626,7 @@ public class DefaultProgramInstanceService
         }
 
         messageConversations.addAll( sendMessageConversations( programInstance,
-            PatientReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_PROGRAM, format ) );
 
         // -----------------------------------------------------------------
         // Update program-instance
@@ -771,37 +766,37 @@ public class DefaultProgramInstanceService
             // Values
             // -----------------------------------------------------------------
 
-            Collection<PatientDataValue> patientDataValues = patientDataValueService
-                .getPatientDataValues( programStageInstance );
+            Collection<TrackedEntityDataValue> entityDataValues = dataValueService
+                .getTrackedEntityDataValues( programStageInstance );
 
-            for ( PatientDataValue patientDataValue : patientDataValues )
+            for ( TrackedEntityDataValue entityInstanceDataValue : entityDataValues )
             {
-                DataElement dataElement = patientDataValue.getDataElement();
+                DataElement dataElement = entityInstanceDataValue.getDataElement();
 
                 grid.addRow();
                 grid.addValue( dataElement.getFormNameFallback() );
 
                 if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                 {
-                    grid.addValue( i18n.getString( patientDataValue.getValue() ) );
+                    grid.addValue( i18n.getString( entityInstanceDataValue.getValue() ) );
                 }
                 else
                 {
-                    grid.addValue( patientDataValue.getValue() );
+                    grid.addValue( entityInstanceDataValue.getValue() );
                 }
             }
         }
     }
 
-    private OutboundSms sendProgramMessage( PatientReminder patientReminder, ProgramInstance programInstance,
-        Patient patient, I18nFormat format )
+    private OutboundSms sendProgramMessage( TrackedEntityInstanceReminder reminder, ProgramInstance programInstance,
+        TrackedEntityInstance entityInstance, I18nFormat format )
     {
-        Set<String> phoneNumbers = patientReminderService.getPhonenumbers( patientReminder, patient );
+        Set<String> phoneNumbers = reminderService.getPhonenumbers( reminder, entityInstance );
         OutboundSms outboundSms = null;
 
         if ( phoneNumbers.size() > 0 )
         {
-            String msg = patientReminderService.getMessageFromTemplate( patientReminder, programInstance, format );
+            String msg = reminderService.getMessageFromTemplate( reminder, programInstance, format );
 
             try
             {

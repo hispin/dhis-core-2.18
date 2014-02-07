@@ -6,9 +6,9 @@
 		<td>&nbsp;</td>
 		<td id='searchInforLbl'>
 		#if($!listAll)
-			$i18n.getString( "list_all_patients" )
+			$i18n.getString( "list_all_tracked_entity_instances" )
 		#else
-			$i18n.getString( "search_patients" )
+			$i18n.getString( "search_tracked_entity_instances" )
 		#end
 		</td>
 	</tr>	
@@ -28,9 +28,9 @@
 		<tr>
 			<th>#</th>
 			<th>$i18n.getString('date_scheduled')</th>
-			#foreach( $programAttribute in $program.programPatientAttributes )
+			#foreach( $programAttribute in $program.programAttributes )
 				#if($programAttribute.displayedInList=='true')
-					 $programAttribute.patientAttribute.displayName
+					 $programAttribute.attribute.displayName
 				#end
 			#end
 			<th>$i18n.getString( "events" )</th>
@@ -40,7 +40,7 @@
 	<tbody id="list">
 	#set( $mark = false ) 
 	#foreach( $programStageInstance in $programStageInstances )
-		#set($patient = $programStageInstance.programInstance.patient)
+		#set($entityInstance = $programStageInstance.programInstance.entityInstance)
 		<tr id='tr$programStageInstance.id' #alternate( $mark )>
 			<td>
 				#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
@@ -55,14 +55,14 @@
 				#end
 			</td>
 			
-			#if( $auth.hasAccess( "dhis-web-caseentry", "accessPatientAttributes" ) )
-				#foreach( $programAttribute in $program.programPatientAttributes )
+			#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
+				#foreach( $programAttribute in $program.programAttributes )
 					#if($programAttribute.displayedInList=='true')
-						<td><a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )">
-							#foreach( $attributeValue in $patient.attributeValues)
-								#if($!attributeValue.patientAttribute.id==$programAttribute.patientAttribute.id)
+						<td><a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
+							#foreach( $attributeValue in $entityInstance.attributeValues)
+								#if($!attributeValue.attribute.id==$programAttribute.attribute.id)
 									#set($value=$attributeValue.value)
-									#if( $programAttribute.patientAttribute.valueType == 'bool')
+									#if( $programAttribute.attribute.valueType == 'bool')
 										#set($value=$i18n.getString($attributeValue.value))
 									#end
 								#end
@@ -77,9 +77,9 @@
 			<td><a href="javascript:loadDataEntryDialog( $programStageInstance.id );">$programStageInstance.programStage.displayName</a></td>
 			
 			<td>
-				<a href="javascript:isDashboard=false;showPatientDashboardForm( '$patient.uid' )" title="$i18n.getString( 'patient_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "patient_dashboard" )'></a>
+				<a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )" title="$i18n.getString( 'tracked_entity_instance_dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "tracked_entity_instance_dashboard" )'></a>
 				<a href="javascript:loadDataEntryDialog( $programStageInstance.id );" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
-				<a href="javascript:showPatientHistory('$patient.id')" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
+				<a href="javascript:showTrackedEntityInstanceHistory('$entityInstance.id')" title='$i18n.getString( "tracked_entity_instance_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "tracked_entity_instance_details_and_history" )'></a>
 			</td>
 			
 		</tr>

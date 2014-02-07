@@ -37,8 +37,8 @@ function validationCriteria( context ) {
   location.href = 'validationCriteria.action?id=' + context.id;
 }
 
-function programPatientReminder( context ){
-  location.href = 'programPatientReminder.action?id=' + context.id;
+function programReminder( context ){
+  location.href = 'programReminder.action?id=' + context.id;
 }
 
 function showProgramDetails( context ) {

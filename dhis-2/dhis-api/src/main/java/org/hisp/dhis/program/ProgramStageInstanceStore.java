@@ -36,8 +36,8 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Abyot Asalefew
@@ -90,16 +90,16 @@ public interface ProgramStageInstanceStore
     Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances, boolean completed );
 
     /**
-     * Get all events by patient, optionally filtering by completed.
+     * Get all events by TrackedEntityInstance, optionally filtering by completed.
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * 
      * @param completed - optional flag to only get completed (
      *        <code>true</code> ) or uncompleted (<code>false</code>) instances.
      * 
      * @return ProgramStageInstance list
      */
-    List<ProgramStageInstance> get( Patient patient, Boolean completed );
+    List<ProgramStageInstance> get( TrackedEntityInstance entityInstance, Boolean completed );
 
     /**
      * Remove events without any data values
@@ -118,7 +118,7 @@ public interface ProgramStageInstanceStore
     void update( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms );
 
     /**
-     * Retrieve scheduled list of patients registered
+     * Retrieve scheduled list of entityInstances registered
      * 
      * @return A SchedulingProgramObject list
      */

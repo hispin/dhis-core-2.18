@@ -29,7 +29,7 @@ package org.hisp.dhis.api.controller.event;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
-import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping( value = PersonAttributeGroupController.RESOURCE_PATH )
-public class PersonAttributeGroupController extends AbstractCrudController<PatientAttributeGroup>
+public class PersonAttributeGroupController extends AbstractCrudController<TrackedEntityAttributeGroup>
 {
     public static final String RESOURCE_PATH = "/personAttributeGroups";
 }

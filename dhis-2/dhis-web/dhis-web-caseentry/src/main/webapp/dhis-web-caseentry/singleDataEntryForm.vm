@@ -16,7 +16,7 @@
 	</tr>
 	<!-- Identifiers/Attributes belong to the selected single program -->
 	#set($program = $programStage.program)
-	#parse( "/dhis-web-caseentry/identifierAndAttributeForm.vm" )
+	#parse( "/dhis-web-caseentry/attributeFormDiv.vm" )
 	
 	</table>
 	
@@ -60,9 +60,9 @@
 						#foreach( $programStageDataElement in $section.programStageDataElements )
 									#set( $dataElementRowCount = $dataElementRowCount + 1 )    
 									#set( $mark = !$mark )
-									#set( $patientDataValue = false )
+									#set( $dataValue = false )
 									#set( $key = $programStageDataElement.dataElement.id )
-									#set( $patientDataValue = $patientDataValueMap.get( $key ) )    
+									#set( $dataValue = $dataValueMap.get( $key ) )    
 									<tr #alternate( $mark )>
 										##data element name
 										<td id="$key-cell" class='text-column' align='center'>
@@ -105,17 +105,17 @@
 											#end
 												
 											#if( $programStageDataElement.dataElement.textType == "longText" )
-												<textarea name="entryfield" type="text" id="$id" maxlength=255 class="{validate:{$validate}}" >$!encoder.htmlEncode( $patientDataValue.value )</textarea>
+												<textarea name="entryfield" type="text" id="$id" maxlength=255 class="{validate:{$validate}}" >$!encoder.htmlEncode( $dataValue.value )</textarea>
 											#elseif( $programStageDataElement.dataElement.type == "bool" )
 												<select name="entryfield" id="$id" class="{validate:{$validate}}" >
 													<option value="">[$i18n.getString( "select_value" )]</option>
-													<option value="true" #if( $patientDataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
-													<option value="false" #if( $patientDataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
+													<option value="true" #if( $dataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
+													<option value="false" #if( $dataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
 												</select>
 											#elseif( $programStageDataElement.dataElement.type == "trueOnly" )
 												<input name="entryfield" type="checkbox" id="$id" class="{validate:{$validate}}" >
 											#elseif( $programStageDataElement.dataElement.type == "date" )
-												<input name="entryfield" class='datefield' type="text" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" class="{validate:{$validate}}">
+												<input name="entryfield" class='datefield' type="text" id="$id" name="entryfield" value="$!encoder.htmlEncode( $dataValue.value )" class="{validate:{$validate}}">
 												<script type="text/javascript">
 													datePicker( '$programStageDataElement.programStage.uid' + '-' + '$programStageDataElement.dataElement.uid' + '-val', false, false);
 												</script> 
@@ -126,7 +126,7 @@
 															<td>
 													<input id='$id' class='$id' name="$id" options='no' type='radio' optionset='$programStageDataElement.dataElement.optionSet.uid'
 														data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }"
-														#if( $patientDataValue.value == $option) checked #end
+														#if( $dataValue.value == $option) checked #end
 														onclick="saveRadio( '$programStageDataElement.dataElement.uid', '' )" tabindex="$tabIndex" />$i18n.getString("non_value")
 														</td>
 													#set($index=1)
@@ -138,7 +138,7 @@
 														<td>
 														<input id='$id' class='$id' name="$id" type='radio' options='no' optionset='$programStageDataElement.dataElement.optionSet.uid'
 															data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
-														#if( $patientDataValue.value == $option) checked #end value="$encoder.htmlEncode($option)"
+														#if( $dataValue.value == $option) checked #end value="$encoder.htmlEncode($option)"
 														onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option' )" tabindex="$tabIndex" />$encoder.htmlEncode($option)
 														</td>
 														#set($index=$index + 1)
@@ -146,12 +146,12 @@
 													</tr>
 													</table>
 												#else
-													<input optionset='$programStageDataElement.dataElement.optionSet.uid' id='$id' name="entryfield" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
+													<input optionset='$programStageDataElement.dataElement.optionSet.uid' id='$id' name="entryfield" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $dataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
 												#end
 											#elseif($programStageDataElement.dataElement.type=='username')
-												<input name="entryfield" username='true' class="auto-field optionset" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
+												<input name="entryfield" username='true' class="auto-field optionset" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $dataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
 											#else
-												<input name="entryfield" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" class="{validate:{$validate}}" />
+												<input name="entryfield" id="$id" type="text" value="$!encoder.htmlEncode( $dataValue.value )" class="{validate:{$validate}}" />
 											#end
 											</td>
 											
@@ -184,16 +184,16 @@
 	</tr>
 	<!-- Identifiers/Attributes belong to the selected single program -->
 	#set($program = $programStage.program)
-	#parse( "/dhis-web-caseentry/identifierAndAttributeForm.vm" )
+	#parse( "/dhis-web-caseentry/attributeFormDiv.vm" )
 	
 	<!-- Data elements -->
 #set( $dataElementRowCount = 0 )
 #set( $tabIndex = 1 )
 #foreach( $programStageDataElement in $programStageDataElements )
 	#set( $dataElementRowCount = $dataElementRowCount + 1 )    
-	#set( $patientDataValue = false )
+	#set( $dataValue = false )
 	#set( $key = $programStageDataElement.dataElement.id )
-	#set( $patientDataValue = $patientDataValueMap.get( $key ) )    
+	#set( $dataValue = $dataValueMap.get( $key ) )    
 	<tr>
 		##data element name
 		<td class='text-column' align='center'>
@@ -237,17 +237,17 @@
 			#end
 				
 			#if( $programStageDataElement.dataElement.textType == "longText" )
-				<textarea name="entryfield" type="text" id="$id" maxlength=255 class="{validate:{$validate}}" >$!encoder.htmlEncode( $patientDataValue.value )</textarea>
+				<textarea name="entryfield" type="text" id="$id" maxlength=255 class="{validate:{$validate}}" >$!encoder.htmlEncode( $dataValue.value )</textarea>
 			#elseif( $programStageDataElement.dataElement.type == "bool" )
 				<select name="entryfield" id="$id" class="{validate:{$validate}}" >
 					<option value="">[$i18n.getString( "select_value" )]</option>
-					<option value="true" #if( $patientDataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
-					<option value="false" #if( $patientDataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
+					<option value="true" #if( $dataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
+					<option value="false" #if( $dataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
 				</select>
 			#elseif( $programStageDataElement.dataElement.type == "trueOnly" )
 				<input name="entryfield" type="checkbox" id="$id" class="{validate:{$validate}}" >
 			#elseif( $programStageDataElement.dataElement.type == "date" )
-				<input name="entryfield" class='datefield' type="text" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )"class="{validate:{$validate}}">
+				<input name="entryfield" class='datefield' type="text" id="$id" name="entryfield" value="$!encoder.htmlEncode( $dataValue.value )"class="{validate:{$validate}}">
 				<script type="text/javascript">
 					datePicker( '$programStageDataElement.programStage.uid' + '-' + '$programStageDataElement.dataElement.uid' + '-val', false, false);
 				</script> 
@@ -258,7 +258,7 @@
 							<td>
 					<input id='$id' class='$id' name="$id" options='no' type='radio' optionset='$programStageDataElement.dataElement.optionSet.uid'
 						data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }"
-						#if( $patientDataValue.value == $option) checked #end
+						#if( $dataValue.value == $option) checked #end
 						onclick="saveRadio( '$programStageDataElement.dataElement.uid', '' )" tabindex="$tabIndex" />$i18n.getString("non_value")
 						</td>
 					#set($index=1)
@@ -270,7 +270,7 @@
 						<td>
 						<input id='$id' class='$id' name="$id" type='radio' options='no' optionset='$programStageDataElement.dataElement.optionSet.uid'
 							data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
-						#if( $patientDataValue.value == $option) checked #end value="$encoder.htmlEncode($option)"
+						#if( $dataValue.value == $option) checked #end value="$encoder.htmlEncode($option)"
 						onclick="saveRadio( '$programStageDataElement.dataElement.uid', '$option' )" tabindex="$tabIndex" />$encoder.htmlEncode($option)
 						</td>
 						#set($index=$index + 1)
@@ -278,12 +278,12 @@
 					</tr>
 					</table>
 				#else
-					<input optionset='$programStageDataElement.dataElement.optionSet.uid' id='$id' name="entryfield" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
+					<input optionset='$programStageDataElement.dataElement.optionSet.uid' id='$id' name="entryfield" options='$hasOptionSet' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" type="text" value="$!encoder.htmlEncode( $dataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" class="auto-field optionset" />
 				#end
 			#elseif($programStageDataElement.dataElement.type=='username')
-				<input name="entryfield" username='true' class="auto-field optionset" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
+				<input name="entryfield" username='true' class="auto-field optionset" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $dataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" />
 			#else
-				<input name="entryfield" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" class="{validate:{$validate}}" />
+				<input name="entryfield" id="$id" type="text" value="$!encoder.htmlEncode( $dataValue.value )" class="{validate:{$validate}}" />
 			#end
 			#if( $programStage.displayProvidedOtherFacility=='true' )
 				#set( $id = $programStageDataElement.programStage.uid + '_' + $programStageDataElement.dataElement.uid + '_facility' )

@@ -42,5 +42,5 @@ function detailsReport()
 	showById('detailsDiv');
 	showById('totalLbl');
 	showById('programStageTitleLbl');
-	hideById('patientNameLbl');
+	hideById('entityInstanceNameLbl');
 }

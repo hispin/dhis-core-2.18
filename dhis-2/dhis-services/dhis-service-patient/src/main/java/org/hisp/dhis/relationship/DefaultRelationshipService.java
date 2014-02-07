@@ -30,7 +30,7 @@ package org.hisp.dhis.relationship;
 
 import java.util.Collection;
 
-import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -71,9 +71,9 @@ public class DefaultRelationshipService
         return relationshipStore.get( id );
     }
 
-    public Collection<Relationship> getRelationshipsForPatient( Patient patient )
+    public Collection<Relationship> getRelationshipsForTrackedEntityInstance( TrackedEntityInstance instance )
     {
-        return relationshipStore.getForPatient( patient );
+        return relationshipStore.getForTrackedEntityInstance( instance );
     }
 
     public int saveRelationship( Relationship relationship )
@@ -91,18 +91,18 @@ public class DefaultRelationshipService
         return relationshipStore.getByRelationshipType( relationshipType );
     }
 
-    public Collection<Relationship> getRelationships( Patient patientA, RelationshipType relationshipType )
+    public Collection<Relationship> getRelationships( TrackedEntityInstance instanceA, RelationshipType relationshipType )
     {
-        return relationshipStore.get( patientA, relationshipType );
+        return relationshipStore.get( instanceA, relationshipType );
     }
 
-    public Relationship getRelationship( Patient patientA, Patient patientB, RelationshipType relationshipType )
+    public Relationship getRelationship( TrackedEntityInstance instanceA, TrackedEntityInstance instanceB, RelationshipType relationshipType )
     {
-        return relationshipStore.get( patientA, patientB, relationshipType );
+        return relationshipStore.get( instanceA, instanceB, relationshipType );
     }
     
-    public Relationship getRelationship( Patient patientA, Patient patientB )
+    public Relationship getRelationship( TrackedEntityInstance instanceA, TrackedEntityInstance instanceB )
     {
-        return relationshipStore.get( patientA, patientB );
+        return relationshipStore.get( instanceA, instanceB );
     }
 }

@@ -67,7 +67,7 @@ jQuery( document ).ready( function()
 	<tr>
 			<td><label>$i18n.getString( "program_stage" ) </label></td>
 			<td>
-				<select style="width:336px;" id="programStageId" name="programStageId" onChange="getPatientDataElements();">
+				<select style="width:336px;" id="programStageId" name="programStageId" onChange="getTrackedEntityDataElements();">
 					<option value=''>[$i18n.getString('please_select')]</option>
 					#foreach( $programStage in $programIndicator.program.programStages )
 					<option value='$programStage.id'>$programStage.displayName</option>
@@ -93,7 +93,7 @@ jQuery( document ).ready( function()
 	var i18n_remove_reminder = '$encoder.jsEscape( $i18n.getString( "remove_reminder" ) , "'")';   
 	var i18n_days_before_after_comparison_date = '$encoder.jsEscape( $i18n.getString( "days_before_after_comparison_date" ) , "'")';   
 	var i18n_params = '$encoder.jsEscape( $i18n.getString( "params" ) , "'")';   
-	var i18n_patient_name = '$encoder.jsEscape( $i18n.getString( "patient_name" ) , "'")';   
+	var i18n_tracked_entity_name = '$encoder.jsEscape( $i18n.getString( "tracked_entity_name" ) , "'")';   
 	var i18n_program_name = '$encoder.jsEscape( $i18n.getString( "program_name" ) , "'")';   
 	var i18n_incident_date = '$encoder.jsEscape( $i18n.getString( "incident_date" ) , "'")';   
 	var i18n_days_since_incident_date = '$encoder.jsEscape( $i18n.getString( "days_since_incident_date" ) , "'")';   

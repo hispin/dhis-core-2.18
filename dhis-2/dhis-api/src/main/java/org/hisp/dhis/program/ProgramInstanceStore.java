@@ -30,7 +30,7 @@ package org.hisp.dhis.program;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 import java.util.Collection;
 import java.util.Date;
@@ -119,37 +119,37 @@ public interface ProgramInstanceStore
     Collection<ProgramInstance> get( Collection<Program> programs, Integer status );
 
     /**
-     * Retrieve program instances on a patient by a status
+     * Retrieve program instances on a TrackedEntityInstance by a status
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param status Status of program-instance, include STATUS_ACTIVE,
      *        STATUS_COMPLETED and STATUS_CANCELLED
      * 
      * @return ProgramInstance list
      */
-    Collection<ProgramInstance> get( Patient patient, Integer status );
+    Collection<ProgramInstance> get( TrackedEntityInstance entityInstance, Integer status );
 
     /**
-     * Retrieve program instances on a patient by a program
+     * Retrieve program instances on a TrackedEntityInstance by a program
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param program Program
      * 
      * @return ProgramInstance list
      */
-    Collection<ProgramInstance> get( Patient patient, Program program );
+    Collection<ProgramInstance> get( TrackedEntityInstance entityInstance, Program program );
 
     /**
-     * Retrieve program instances on a patient with a status by a program
+     * Retrieve program instances on a TrackedEntityInstance with a status by a program
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param program Program
      * @param status Status of program-instance, include STATUS_ACTIVE,
      *        STATUS_COMPLETED and STATUS_CANCELLED
      * 
      * @return ProgramInstance list
      */
-    Collection<ProgramInstance> get( Patient patient, Program program, Integer status );
+    Collection<ProgramInstance> get( TrackedEntityInstance entityInstance, Program program, Integer status );
 
     /**
      * Retrieve program instances with active status on an orgunit by a program

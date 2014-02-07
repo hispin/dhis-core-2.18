@@ -1,13 +1,13 @@
 <h3>$i18n.getString( "dhis-web-maintenance-patient" )</h3>
 
 <ul class="introList">
-    #introListImgItem( "patientAttribute.action" "patient_attribute" "patient" )
-    #introListImgItem( "patientAttributeVisitSchedule.action" "patient_attribute_visit_schedule" "patient" )
-    #introListImgItem( "patientAttributeGroup.action" "patient_attribute_group" "patient" )
+    #introListImgItem( "attribute.action" "attribute" "patient" )
+    #introListImgItem( "attributeVisitSchedule.action" "attribute_visit_schedule" "patient" )
+    #introListImgItem( "attributeGroup.action" "attribute_group" "patient" )
     #introListImgItem( "relationshipType.action" "relationship_type" "patient" )
-    #introListImgItem( "patientRegistrationForm.action" "patient_registration_form" "pivottable" )
+    #introListImgItem( "trackedEntityForm.action" "registration_form" "pivottable" )
     #introListImgItem( "program.action" "program" "program" )
-    #introListImgItem( "caseAggregation.action" "patient_aggregation_query_builder" "caseaggregationmapping" )
+    #introListImgItem( "caseAggregation.action" "aggregation_query_builder" "caseaggregationmapping" )
 	
 	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
 		#introListImgItem( "viewScheduleTasks.action" "schedule_automated_message_reminder" "scheduling" )

@@ -36,9 +36,9 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.Map;
-import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.trackedentityreport.TrackedEntityTabularReport;
 import org.hisp.dhis.user.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -62,7 +62,7 @@ public class DashboardSearchResult
 
     private List<Document> resources = new ArrayList<Document>();
     
-    private List<PatientTabularReport> patientTabularReports = new ArrayList<PatientTabularReport>();
+    private List<TrackedEntityTabularReport> trackedEntityTabularReports = new ArrayList<TrackedEntityTabularReport>();
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -86,7 +86,7 @@ public class DashboardSearchResult
         results += reportTables.size();
         results += reports.size();
         results += resources.size();
-        results += patientTabularReports.size();
+        results += trackedEntityTabularReports.size();
         return results;
     }
 
@@ -127,9 +127,9 @@ public class DashboardSearchResult
     }  
     
     @JsonProperty
-    public int getPatientTabularReportCount()
+    public int getTrackedEntityTabularReportCount()
     {
-        return patientTabularReports.size();
+        return trackedEntityTabularReports.size();
     }    
 
 
@@ -221,17 +221,17 @@ public class DashboardSearchResult
         this.resources = resources;
     }
 
-    @JsonProperty( value = "patientTabularReports" )
+    @JsonProperty( value = "tabularReports" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JacksonXmlElementWrapper( localName = "patientTabularReports", namespace = DxfNamespaces.DXF_2_0)
-    @JacksonXmlProperty( localName = "patientTabularReports", namespace = DxfNamespaces.DXF_2_0)
-    public List<PatientTabularReport> getPatientTabularReports()
+    @JacksonXmlElementWrapper( localName = "tabularReports", namespace = DxfNamespaces.DXF_2_0)
+    @JacksonXmlProperty( localName = "tabularReports", namespace = DxfNamespaces.DXF_2_0)
+    public List<TrackedEntityTabularReport> getTrackedEntityTabularReports()
     {
-        return patientTabularReports;
+        return trackedEntityTabularReports;
     }
 
-    public void setPatientTabularReports( List<PatientTabularReport> patientTabularReports )
+    public void setTrackedEntityTabularReports( List<TrackedEntityTabularReport> trackedEntityTabularReports )
     {
-        this.patientTabularReports = patientTabularReports;
+        this.trackedEntityTabularReports = trackedEntityTabularReports;
     }
 }

@@ -38,8 +38,9 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 
 /**
  * @author Abyot Asalefew
@@ -50,42 +51,42 @@ public interface ProgramStageInstanceService
     String ID = ProgramStageInstanceService.class.getName();
 
     /**
-     * Adds an {@link PatientAttribute}
+     * Adds an {@link TrackedEntityAttribute}
      * 
-     * @param patientAttribute The to PatientAttribute add.
+     * @param TrackedEntityAttribute The to TrackedEntityAttribute add.
      * 
-     * @return A generated unique id of the added {@link PatientAttribute}.
+     * @return A generated unique id of the added {@link TrackedEntityAttribute}.
      */
     int addProgramStageInstance( ProgramStageInstance programStageInstance );
 
     /**
-     * Deletes a {@link PatientAttribute}.
+     * Deletes a {@link TrackedEntityAttribute}.
      * 
-     * @param patientAttribute the PatientAttribute to delete.
+     * @param programStageInstance the TrackedEntityAttribute to delete.
      */
     void deleteProgramStageInstance( ProgramStageInstance programStageInstance );
 
     /**
-     * Updates an {@link PatientAttribute}.
+     * Updates an {@link TrackedEntityAttribute}.
      * 
-     * @param patientAttribute the PatientAttribute to update.
+     * @param TrackedEntityAttribute the TrackedEntityAttribute to update.
      */
     void updateProgramStageInstance( ProgramStageInstance programStageInstance );
 
     /**
-     * Returns a {@link PatientAttribute}.
+     * Returns a {@link TrackedEntityAttribute}.
      * 
-     * @param id the id of the PatientAttribute to return.
+     * @param id the id of the TrackedEntityAttribute to return.
      * 
-     * @return the PatientAttribute with the given id
+     * @return the TrackedEntityAttribute with the given id
      */
     ProgramStageInstance getProgramStageInstance( int id );
 
     /**
-     * Returns the {@link PatientAttribute} with the given UID.
+     * Returns the {@link TrackedEntityAttribute} with the given UID.
      * 
      * @param uid the UID.
-     * @return the PatientAttribute with the given UID, or null if no match.
+     * @return the TrackedEntityAttribute with the given UID, or null if no match.
      */
     ProgramStageInstance getProgramStageInstance( String uid );
 
@@ -133,16 +134,16 @@ public interface ProgramStageInstanceService
     Map<Integer, Integer> statusProgramStageInstances( Collection<ProgramStageInstance> programStageInstances );
 
     /**
-     * Get all events by patient, optionally filtering by completed.
+     * Get all events by TrackedEntityInstance, optionally filtering by completed.
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * 
      * @param completed - optional flag to only get completed (
      *        <code>true</code> ) or uncompleted (<code>false</code>) instances.
      * 
      * @return ProgramStageInstance list
      */
-    List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
+    List<ProgramStageInstance> getProgramStageInstances( TrackedEntityInstance entityInstance, Boolean completed );
 
     /**
      * Get an event report of program instance
@@ -172,7 +173,7 @@ public interface ProgramStageInstanceService
     void updateProgramStageInstances( Collection<Integer> programStageInstances, OutboundSms outboundSms );
 
     /**
-     * Retrieve scheduled list of patients registered
+     * Retrieve scheduled list of entityInstances registered
      * 
      * @return A SchedulingProgramObject list
      */
@@ -327,14 +328,14 @@ public interface ProgramStageInstanceService
      * program-stage-instance. The similar thing happens for single event with
      * registration.
      * 
-     * @param patient Patient
+     * @param entityInstance TrackedEntityInstance
      * @param program Single event without registration
      * @param executionDate Report date of the event
      * @param organisationUnit Orgunit where the event happens
      * 
      * @return ProgramStageInstance ProgramStageInstance object
      */
-    ProgramStageInstance createProgramStageInstance( Patient patient, Program program, Date executionDate,
+    ProgramStageInstance createProgramStageInstance( TrackedEntityInstance entityInstance, Program program, Date executionDate,
         OrganisationUnit organisationUnit );
 
     Grid searchEvents( ProgramStage programStage, List<TabularEventColumn> columns,

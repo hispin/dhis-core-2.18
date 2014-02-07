@@ -11,19 +11,19 @@
 </script>
 
 <h5>
-	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
-	&#8226; <a href="javascript:showPatientDashboardForm('$!patient.uid');">$i18n.getString( 'patient_dashboard' )</a>
-	&#8226; <a href="javascript:showRelationshipList( '$patient.id' )">$i18n.getString( "relationship_management" )</a>
+	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
+	&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$!entityInstance.uid');">$i18n.getString( 'tracked_entity_instance_dashboard' )</a>
+	&#8226; <a href="javascript:showRelationshipList( '$entityInstance.id' )">$i18n.getString( "relationship_management" )</a>
 	
 </h5>
 <h3>
-	&raquo; $i18n.getString( 'seach_available_patient' )
-	&#8226; <a href="javascript:showAddPatientForm( '$patient.id','','', true )" >$i18n.getString( 'add_new_patient' )</a>
+	&raquo; $i18n.getString( 'seach_available_tracked_entity_instance' )
+	&#8226; <a href="javascript:showAddTrackedEntityInstanceForm( '$entityInstance.id','','', true )" >$i18n.getString( 'add_new_tracked_entity_instance' )</a>
 </h3>
 
 <form id="relationshipSelectForm" name="relationshipSelectForm" method="post" action="showAddRelationshipForm.action">
-<input type="hidden" id="patientId" name="patientId" value="$patient.id"/>
-<input type="hidden" id="patientUid" name="patientUid" value="$patient.uid"/>
+<input type="hidden" id="entityInstanceId" name="entityInstanceId" value="$entityInstance.id"/>
+<input type="hidden" id="entityInstanceUid" name="entityInstanceUid" value="$entityInstance.uid"/>
 
 <table>
 	<tr>
@@ -46,8 +46,8 @@
                                     
             <tr>           
                 <td colspan='2'>
-                    <select id="searchingAttributeId" name="searchingAttributeId" #if( $patientAttributes.size() == 0 ) disabled="disabled" #end style='width:200px;'>
-                        #foreach( $attribute in $patientAttributes )
+                    <select id="searchingAttributeId" name="searchingAttributeId" #if( $entityInstanceAttributes.size() == 0 ) disabled="disabled" #end style='width:200px;'>
+                        #foreach( $attribute in $attributes )
                             <option value="$attribute.id" #if( $searchingAttributeId && $attribute.id == $searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.displayName )</option>
                         #end
                     </select> 

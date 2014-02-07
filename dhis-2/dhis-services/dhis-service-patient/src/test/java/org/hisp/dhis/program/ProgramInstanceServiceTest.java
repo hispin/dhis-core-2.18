@@ -43,18 +43,18 @@ import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientReminder;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.config.SmsConfigurationManager;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
+import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -71,7 +71,7 @@ public class ProgramInstanceServiceTest
     private ProgramInstanceService programInstanceService;
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -86,10 +86,10 @@ public class ProgramInstanceServiceTest
     private SmsConfigurationManager smsConfigurationManager;
 
     @Autowired
-    private PatientAttributeService patientAttributeService;
+    private TrackedEntityAttributeService attributeService;
 
     @Autowired
-    private PatientAttributeValueService patientAttributeValueService;
+    private TrackedEntityAttributeValueService attributeValueService;
 
     private Date incidenDate;
 
@@ -113,7 +113,7 @@ public class ProgramInstanceServiceTest
 
     private ProgramInstance programInstanceD;
 
-    private Patient patientA;
+    private TrackedEntityInstance entityInstanceA;
 
     private Collection<Integer> orgunitIds;
 
@@ -139,17 +139,19 @@ public class ProgramInstanceServiceTest
 
         programA = createProgram( 'A', new HashSet<ProgramStage>(), organisationUnitA );
 
-        PatientReminder patientReminderA = new PatientReminder( "A", 0, "Test program message template", PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
-            PatientReminder.SEND_TO_PATIENT, null, PatientReminder.MESSAGE_TYPE_BOTH );
+        TrackedEntityInstanceReminder reminderA = new TrackedEntityInstanceReminder( "A", 0,
+            "Test program message template", TrackedEntityInstanceReminder.ENROLLEMENT_DATE_TO_COMPARE,
+            TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE, null, TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH );
 
-        PatientReminder patientReminderB = new PatientReminder( "B", 0, "Test program message template", PatientReminder.ENROLLEMENT_DATE_TO_COMPARE,
-            PatientReminder.SEND_TO_PATIENT, PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
-            PatientReminder.MESSAGE_TYPE_BOTH );
+        TrackedEntityInstanceReminder reminderB = new TrackedEntityInstanceReminder( "B", 0,
+            "Test program message template", TrackedEntityInstanceReminder.ENROLLEMENT_DATE_TO_COMPARE,
+            TrackedEntityInstanceReminder.SEND_TO_TRACKED_ENTITY_INSTANCE, TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT,
+            TrackedEntityInstanceReminder.MESSAGE_TYPE_BOTH );
 
-        Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
-        patientReminders.add( patientReminderA );
-        patientReminders.add( patientReminderB );
-        programA.setPatientReminders( patientReminders );
+        Set<TrackedEntityInstanceReminder> reminders = new HashSet<TrackedEntityInstanceReminder>();
+        reminders.add( reminderA );
+        reminders.add( reminderB );
+        programA.setInstanceReminders( reminders );
 
         programService.addProgram( programA );
 
@@ -171,11 +173,11 @@ public class ProgramInstanceServiceTest
         programC = createProgram( 'C', new HashSet<ProgramStage>(), organisationUnitA );
         programService.addProgram( programC );
 
-        patientA = createPatient( 'A', organisationUnitA );
-        patientService.savePatient( patientA );
+        entityInstanceA = createTrackedEntityInstance( 'A', organisationUnitA );
+        entityInstanceService.saveTrackedEntityInstance( entityInstanceA );
 
-        Patient patientB = createPatient( 'B', organisationUnitB );
-        patientService.savePatient( patientB );
+        TrackedEntityInstance entityInstanceB = createTrackedEntityInstance( 'B', organisationUnitB );
+        entityInstanceService.saveTrackedEntityInstance( entityInstanceB );
 
         Calendar calIncident = Calendar.getInstance();
         PeriodType.clearTimeOfDay( calIncident );
@@ -186,18 +188,18 @@ public class ProgramInstanceServiceTest
         PeriodType.clearTimeOfDay( calEnrollment );
         enrollmentDate = calEnrollment.getTime();
 
-        programInstanceA = new ProgramInstance( enrollmentDate, incidenDate, patientA, programA );
+        programInstanceA = new ProgramInstance( enrollmentDate, incidenDate, entityInstanceA, programA );
         programInstanceA.setUid( "UID-A" );
 
-        programInstanceB = new ProgramInstance( enrollmentDate, incidenDate, patientA, programB );
+        programInstanceB = new ProgramInstance( enrollmentDate, incidenDate, entityInstanceA, programB );
         programInstanceB.setUid( "UID-B" );
         programInstanceB.setStatus( ProgramInstance.STATUS_CANCELLED );
 
-        programInstanceC = new ProgramInstance( enrollmentDate, incidenDate, patientA, programC );
+        programInstanceC = new ProgramInstance( enrollmentDate, incidenDate, entityInstanceA, programC );
         programInstanceC.setUid( "UID-C" );
         programInstanceC.setStatus( ProgramInstance.STATUS_COMPLETED );
 
-        programInstanceD = new ProgramInstance( enrollmentDate, incidenDate, patientB, programA );
+        programInstanceD = new ProgramInstance( enrollmentDate, incidenDate, entityInstanceB, programA );
         programInstanceD.setUid( "UID-D" );
     }
 
@@ -423,7 +425,7 @@ public class ProgramInstanceServiceTest
     }
 
     @Test
-    public void testGetProgramInstancesByPatientStatus()
+    public void testGetProgramInstancesByEntityInstanceStatus()
     {
         programInstanceService.addProgramInstance( programInstanceA );
         programInstanceService.addProgramInstance( programInstanceD );
@@ -432,51 +434,51 @@ public class ProgramInstanceServiceTest
         programs.add( programA );
         programs.add( programB );
 
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patientA,
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstanceA,
             ProgramInstance.STATUS_ACTIVE );
         assertEquals( 1, programInstances.size() );
         assertTrue( programInstances.contains( programInstanceA ) );
     }
 
     @Test
-    public void testGetProgramInstancesByPatientProgram()
+    public void testGetProgramInstancesByEntityInstanceProgram()
     {
         programInstanceService.addProgramInstance( programInstanceA );
         programInstanceService.addProgramInstance( programInstanceD );
 
-        ProgramInstance programInstance = programInstanceService.enrollPatient( patientA, programA, enrollmentDate,
+        ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programA, enrollmentDate,
             incidenDate, organisationUnitA, null );
         programInstance.setStatus( ProgramInstance.STATUS_COMPLETED );
         programInstanceService.updateProgramInstance( programInstance );
 
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patientA, programA );
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstanceA, programA );
         assertEquals( 2, programInstances.size() );
         assertTrue( programInstances.contains( programInstanceA ) );
         assertTrue( programInstances.contains( programInstance ) );
     }
 
     @Test
-    public void testGetProgramInstancesByPatientProgramStatus()
+    public void testGetProgramInstancesByEntityInstanceProgramStatus()
     {
         programInstanceService.addProgramInstance( programInstanceA );
 
-        ProgramInstance programInstance1 = programInstanceService.enrollPatient( patientA, programA, enrollmentDate,
+        ProgramInstance programInstance1 = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programA, enrollmentDate,
             incidenDate, organisationUnitA, null );
         programInstance1.setStatus( ProgramInstance.STATUS_COMPLETED );
         programInstanceService.updateProgramInstance( programInstance1 );
 
-        ProgramInstance programInstance2 = programInstanceService.enrollPatient( patientA, programA, enrollmentDate,
+        ProgramInstance programInstance2 = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programA, enrollmentDate,
             incidenDate, organisationUnitA, null );
         programInstance2.setStatus( ProgramInstance.STATUS_COMPLETED );
         programInstanceService.updateProgramInstance( programInstance2 );
 
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patientA, programA,
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( entityInstanceA, programA,
             ProgramInstance.STATUS_COMPLETED );
         assertEquals( 2, programInstances.size() );
         assertTrue( programInstances.contains( programInstance1 ) );
         assertTrue( programInstances.contains( programInstance2 ) );
 
-        programInstances = programInstanceService.getProgramInstances( patientA, programA,
+        programInstances = programInstanceService.getProgramInstances( entityInstanceA, programA,
             ProgramInstance.STATUS_ACTIVE );
         assertEquals( 1, programInstances.size() );
         assertTrue( programInstances.contains( programInstanceA ) );
@@ -561,21 +563,20 @@ public class ProgramInstanceServiceTest
     @Test
     public void testSendMessages()
     {
-        PatientAttribute attribute = createPatientAttribute( 'A' );
-        attribute.setValueType( PatientAttribute.TYPE_PHONE_NUMBER );
-        patientAttributeService.savePatientAttribute( attribute );
+        TrackedEntityAttribute attribute = createTrackedEntityAttribute( 'A' );
+        attribute.setValueType( TrackedEntityAttribute.TYPE_PHONE_NUMBER );
+        attributeService.saveTrackedEntityAttribute( attribute );
 
-        PatientAttributeValue attributeValue = createPatientAttributeValue( 'A', patientA,
-            attribute );
+        TrackedEntityAttributeValue attributeValue = createTrackedEntityAttributeValue( 'A', entityInstanceA, attribute );
         attributeValue.setValue( "123456789" );
-        patientAttributeValueService.savePatientAttributeValue( attributeValue );
+        attributeValueService.saveTrackedEntityAttributeValue( attributeValue );
 
-        patientA.getAttributeValues().add( attributeValue );
-        patientService.updatePatient( patientA );
+        entityInstanceA.getAttributeValues().add( attributeValue );
+        entityInstanceService.updateTrackedEntityInstance( entityInstanceA );
 
         programInstanceService.addProgramInstance( programInstanceA );
         Collection<OutboundSms> outboundSmsList = programInstanceService.sendMessages( programInstanceA,
-            PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
         assertEquals( 1, outboundSmsList.size() );
         assertEquals( "Test program message template", outboundSmsList.iterator().next().getMessage() );
     }
@@ -590,16 +591,15 @@ public class ProgramInstanceServiceTest
         programInstanceService.addProgramInstance( programInstanceB );
 
         Collection<MessageConversation> messages = programInstanceService.sendMessageConversations( programInstanceA,
-            PatientReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
+            TrackedEntityInstanceReminder.SEND_WHEN_TO_C0MPLETED_EVENT, mockFormat );
         assertEquals( 1, messages.size() );
-        assertEquals( "Test program message template", messages.iterator().next().getMessages().get( 0 )
-            .getText() );
+        assertEquals( "Test program message template", messages.iterator().next().getMessages().get( 0 ).getText() );
     }
 
     @Test
-    public void testEnrollPatient()
+    public void testEnrollTrackedEntityInstance()
     {
-        ProgramInstance programInstance = programInstanceService.enrollPatient( patientA, programB, enrollmentDate,
+        ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstanceA, programB, enrollmentDate,
             incidenDate, organisationUnitA, mockFormat );
 
         assertNotNull( programInstanceService.getProgramInstance( programInstance.getId() ) );

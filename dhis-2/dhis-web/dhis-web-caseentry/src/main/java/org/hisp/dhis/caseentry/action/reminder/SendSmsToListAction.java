@@ -37,12 +37,12 @@ import java.util.Set;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.SmsSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -61,7 +61,7 @@ public class SendSmsToListAction
 
     private OrganisationUnitSelectionManager selectionManager;
 
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     private SmsSender smsSender;
 
@@ -127,9 +127,9 @@ public class SendSmsToListAction
         this.searchByUserOrgunits = searchByUserOrgunits;
     }
 
-    public void setPatientService( PatientService patientService )
+    public void setEntityInstanceService( TrackedEntityInstanceService entityInstanceService )
     {
-        this.patientService = patientService;
+        this.entityInstanceService = entityInstanceService;
     }
 
     public void setSearchTexts( List<String> searchTexts )
@@ -176,10 +176,10 @@ public class SendSmsToListAction
             organisationUnit = null;
         }
 
-        Collection<Integer> programStageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunits,
+        Collection<Integer> programStageInstanceIds = entityInstanceService.getProgramStageInstances( searchTexts, orgunits,
             followup, ProgramInstance.STATUS_ACTIVE, null, null );
 
-        Set<String> phoneNumberList = new HashSet<String>( patientService.getPatientPhoneNumbers( searchTexts,
+        Set<String> phoneNumberList = new HashSet<String>( entityInstanceService.getTrackedEntityInstancePhoneNumbers( searchTexts,
             orgunits, followup, ProgramInstance.STATUS_ACTIVE, null, null ) );
         try
         {

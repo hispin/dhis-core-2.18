@@ -43,10 +43,10 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
+import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -80,13 +80,13 @@ public class ProgramValidationServiceTest
     private ProgramStageService programStageService;
 
     @Autowired
-    private PatientService patientService;
+    private TrackedEntityInstanceService entityInstanceService;
 
     @Autowired
     private ProgramInstanceService programInstanceService;
 
     @Autowired
-    private PatientDataValueService patientDataValueService;
+    private TrackedEntityDataValueService dataValueService;
 
     private Program program;
 
@@ -143,10 +143,10 @@ public class ProgramValidationServiceTest
         programStageDataElementService.addProgramStageDataElement( stageDataElementC );
         programStageDataElementService.addProgramStageDataElement( stageDataElementD );
 
-        Patient patient = createPatient( 'A', organisationUnit );
-        patientService.savePatient( patient );
+        TrackedEntityInstance entityInstance = createTrackedEntityInstance( 'A', organisationUnit );
+        entityInstanceService.saveTrackedEntityInstance( entityInstance );
 
-        ProgramInstance programInstance = programInstanceService.enrollPatient( patient, program, new Date(),
+        ProgramInstance programInstance = programInstanceService.enrollTrackedEntityInstance( entityInstance, program, new Date(),
             new Date(), organisationUnit, null );
 
         stageInstanceA = programStageInstanceService.getProgramStageInstance( programInstance, stageA );
@@ -157,15 +157,15 @@ public class ProgramValidationServiceTest
         programStageInstances.add( stageInstanceB );
         programInstance.setProgramStageInstances( programStageInstances );
 
-        PatientDataValue dataValueA = new PatientDataValue( stageInstanceA, dataElementA, "1" );
-        PatientDataValue dataValueB = new PatientDataValue( stageInstanceA, dataElementB, "1" );
-        PatientDataValue dataValueC = new PatientDataValue( stageInstanceB, dataElementA, "2" );
-        PatientDataValue dataValueD = new PatientDataValue( stageInstanceB, dataElementB, "3" );
+        TrackedEntityDataValue dataValueA = new TrackedEntityDataValue( stageInstanceA, dataElementA, "1" );
+        TrackedEntityDataValue dataValueB = new TrackedEntityDataValue( stageInstanceA, dataElementB, "1" );
+        TrackedEntityDataValue dataValueC = new TrackedEntityDataValue( stageInstanceB, dataElementA, "2" );
+        TrackedEntityDataValue dataValueD = new TrackedEntityDataValue( stageInstanceB, dataElementB, "3" );
 
-        patientDataValueService.savePatientDataValue( dataValueA );
-        patientDataValueService.savePatientDataValue( dataValueB );
-        patientDataValueService.savePatientDataValue( dataValueC );
-        patientDataValueService.savePatientDataValue( dataValueD );
+        dataValueService.saveTrackedEntityDataValue( dataValueA );
+        dataValueService.saveTrackedEntityDataValue( dataValueB );
+        dataValueService.saveTrackedEntityDataValue( dataValueC );
+        dataValueService.saveTrackedEntityDataValue( dataValueD );
 
         ProgramExpression programExpressionA = new ProgramExpression( "["
             + ProgramExpression.OBJECT_PROGRAM_STAGE_DATAELEMENT + ProgramExpression.SEPARATOR_OBJECT + psIdA + "."
@@ -232,7 +232,7 @@ public class ProgramValidationServiceTest
     }
 
     @Test
-    public void testGetPatientvalidationById()
+    public void testGetEntityInstancevalidationById()
     {
         int idA = programValidationService.addProgramValidation( validationA );
         int idB = programValidationService.addProgramValidation( validationB );
