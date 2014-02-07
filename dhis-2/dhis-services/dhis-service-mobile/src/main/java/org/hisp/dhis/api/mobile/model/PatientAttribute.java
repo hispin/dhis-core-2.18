@@ -47,17 +47,22 @@ public class PatientAttribute
 
     private String type;
 
+    private boolean isMandatory;
+    
+    private boolean isDisplayedInList = false;
+
     private List<String> predefinedValues = new ArrayList<String>();
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public PatientAttribute( String name, String value, String type, List<String> predefinedValues )
+    public PatientAttribute( String name, String value, String type, boolean isMandatory, List<String> predefinedValues )
     {
         this.name = name;
         this.value = value;
         this.type = type;
+        this.isMandatory = isMandatory;
         this.predefinedValues = predefinedValues;
     }
 
@@ -121,6 +126,26 @@ public class PatientAttribute
         this.predefinedValues = predefinedValues;
     }
 
+    public boolean isMandatory()
+    {
+        return isMandatory;
+    }
+
+    public void setMandatory( boolean isMandatory )
+    {
+        this.isMandatory = isMandatory;
+    }
+    
+    public boolean isDisplayedInList()
+    {
+        return isDisplayedInList;
+    }
+
+    public void setDisplayedInList( boolean isDisplayedInList )
+    {
+        this.isDisplayedInList = isDisplayedInList;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
@@ -128,6 +153,8 @@ public class PatientAttribute
         dout.writeUTF( this.name );
         dout.writeUTF( this.value );
         dout.writeUTF( this.type );
+        dout.writeBoolean( this.isMandatory );
+        dout.writeBoolean( this.isDisplayedInList );
 
         int valueSize = this.predefinedValues.size();
         dout.writeInt( valueSize );
@@ -148,6 +175,8 @@ public class PatientAttribute
         name = dataInputStream.readUTF();
         value = dataInputStream.readUTF();
         type = dataInputStream.readUTF();
+        isMandatory = dataInputStream.readBoolean();
+        isDisplayedInList = dataInputStream.readBoolean();
 
         List<String> optionList = new ArrayList<String>();
 
